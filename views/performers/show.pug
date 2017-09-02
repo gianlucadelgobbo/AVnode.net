@@ -1,0 +1,91 @@
+extends ../layout
+
+block teaser
+  if performer.teaserImage
+    .d-flex.justify-content-center.align-items-start
+      if performer.teaserImage
+        img.img-fluid(
+          src=performer.teaserImage.publicUrl
+          alt=performer.name
+        )
+
+block title
+  if title
+    .jumbotron.jumbotron-fluid
+      .container
+        .row
+          .col-lg-8
+            h1.display-4=performer.stagename
+            if performer.name
+              p.lead=performer.name
+            if performer.about
+              p=performer.about
+            each email in performer.publicEmails
+              i.fa.fa-fw.fa-envelope-o
+              span=email.email
+            if performer.citizenship
+              p=performer.citizenship
+
+          if performer.image
+            .col-lg-4
+              img.card-img-top.img-fluid(
+                src=performer.image.publicUrl
+                alt=performer.name
+              )
+
+block content
+  .row
+    .col-lg-12
+      h3=__('Events')
+      .card-deck
+        each event in performer.events
+          .card
+            if event.image
+              img.card-img-top.img-fluid(
+                src=event.image.publicUrl
+                alt=event.title
+              )
+            .card-block
+              h4.card-title=event.title
+              h6.card-subtitle.text-muted=event.subtitle
+            .card-block.pt-0
+              p.card-text=event.dateFormatted
+              a.btn.btn-secondary(href=event.publicUrl)=__('More')
+  br
+  br
+  .row
+    .col-lg-12
+      h3=__('Crews')
+      .card-deck
+        each crew in performer.crews
+          .card
+            if crew.image
+              img.card-img-top.img-fluid(
+                src=crew.image.publicUrl
+                alt=crew.title
+              )
+            .card-block
+              h4.card-title=crew.title
+              h6.card-subtitle.text-muted=crew.subtitle
+            .card-block.pt-0
+              p.card-text=crew.dateFormatted
+              a.btn.btn-secondary(href=crew.publicUrl)=__('More')
+  br
+  br
+  .row
+    .col-lg-12
+      h3=__('Performances')
+      .card-deck
+        each performance in performer.performances
+          .card
+            if performance.image
+              img.card-img-top.img-fluid(
+                src=performance.image.publicUrl
+                alt=performance.title
+              )
+            .card-block
+              h4.card-title=performance.title
+              h6.card-subtitle.text-muted=performance.subtitle
+            .card-block.pt-0
+              p.card-text=performance.dateFormatted
+              a.btn.btn-secondary(href=performance.publicUrl)=__('More')

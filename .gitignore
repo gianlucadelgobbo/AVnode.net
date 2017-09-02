@@ -1,0 +1,10 @@
+public/css/main.css
+.env*
+node_modules
+npm-debug.log
+storage/
+.db
+.elasticsearch
+logs/*
+storage
+.DS_Store

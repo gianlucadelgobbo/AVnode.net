@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  mongo:
+    ports:
+      - "127.0.0.1:28009:27017"
+  web:
+    build: .
+    ports:
+    - "127.0.0.1:7777:3000"
+    networks:
+      - avnet
+    volumes:
+      - ./:/usr/local/app
+    depends_on:
+      - mongo
+      - elasticsearch
+    environment:
+      - NODE_ENV=production
+      - DEBUG=avnode,avnode.debug

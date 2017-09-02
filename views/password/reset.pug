@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  form(method='post', action="/password/reset")
+    input(type='hidden', name='_csrf', value=_csrf)
+    input(type='hidden', name='user', value=userId)
+    .form-group
+      label(for='password')=__('Password')
+      input.form-control(type='password', name='password', id='password', placeholder=__('Use at least eight characters'), required)
+    .form-group
+      label(for='retypePassword')=__('Retype password')
+      input.form-control(type='password', name='retypePassword', id='retypePassword', placeholder=__('Use at least eight characters'), required)
+    .form-group
+      button.btn.btn-primary.btn-success(type='submit')=__('reset password')
+        i.fa.fa-angle-right.fa-fw

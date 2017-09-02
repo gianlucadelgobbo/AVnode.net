@@ -1,0 +1,19 @@
+extends ../../layout
+
+mixin embbedVideo(asset)
+  if asset.video.type == 'youtube'
+    iframe(src="https://www.youtube.com/embed/" + asset.video.id frameborder="0" allowfullscreen)
+  if asset.video.type == 'vimeo'
+    iframe(src="https://player.vimeo.com/video/" + asset.video.id frameborder="0" allowfullscreen)
+
+
+block content
+  include ../nav
+  .row
+    .col-lg-3.col-md-4
+      include ../subnav
+    .col-lg-9.col-md-8
+      .list-group
+        each asset in assets
+          .list-group-item
+            +embbedVideo(asset)

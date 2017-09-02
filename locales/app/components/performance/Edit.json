@@ -1,0 +1,50 @@
+[
+  {
+    "id": "performance.edit.form.label.title",
+    "defaultMessage": "Name"
+  },
+  {
+    "id": "performance.edit.form.label.teaserimage",
+    "defaultMessage": "Teaser Image"
+  },
+  {
+    "id": "performance.edit.form.label.image",
+    "defaultMessage": "Image"
+  },
+  {
+    "id": "performance.edit.form.label.about",
+    "defaultMessage": "About"
+  },
+  {
+    "id": "performance.edit.form.label.videoLink.action",
+    "defaultMessage": "Add video"
+  },
+  {
+    "id": "performance.edit.form.label.performers",
+    "defaultMessage": "Performers"
+  },
+  {
+    "id": "performance.edit.form.label.suggestPerformers",
+    "defaultMessage": "Assign performers"
+  },
+  {
+    "id": "performer.edit.form.label.suggestPerformersLoading",
+    "defaultMessage": "Finding performers…"
+  },
+  {
+    "id": "performance.edit.form.label.crews",
+    "defaultMessage": "Crews"
+  },
+  {
+    "id": "performance.edit.form.label.suggestCrews",
+    "defaultMessage": "Assign crews"
+  },
+  {
+    "id": "crew.edit.form.label.suggestCrewsLoading",
+    "defaultMessage": "Finding crews…"
+  },
+  {
+    "id": "general.form.save",
+    "defaultMessage": "Save"
+  }
+]

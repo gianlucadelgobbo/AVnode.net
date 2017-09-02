@@ -1,0 +1,17 @@
+.card.mb-2
+  .card-block
+    .badge.badge-default= __('Event')
+    .media
+      if item.image
+        img.card-img-top.img-fluid(
+          class="d-flex align-self-start mr-3"
+          width=200
+          src=item.image.publicUrl
+          alt=item.name
+        )
+      .media-body
+        h4.card-title
+          =item.title
+        h5= item.subtitle
+        p= item.about
+        a.btn.btn-primary(href=item.publicUrl)=__('More')

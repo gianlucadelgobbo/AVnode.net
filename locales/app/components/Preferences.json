@@ -1,0 +1,18 @@
+[
+  {
+    "id": "user.edit.form.label.language",
+    "defaultMessage": "Language"
+  },
+  {
+    "id": "user.edit.form.label.language.empty",
+    "defaultMessage": "Please select"
+  },
+  {
+    "id": "user.edit.form.label.language.en",
+    "defaultMessage": "English"
+  },
+  {
+    "id": "user.edit.form.label.language.de",
+    "defaultMessage": "German"
+  }
+]

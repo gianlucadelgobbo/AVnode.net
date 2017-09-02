@@ -1,0 +1,67 @@
+extends ../layout
+
+block teaser
+  if performance.teaserImage
+    .d-flex.justify-content-center.align-items-start
+      img.img-fluid(
+        src=performance.teaserImage.publicUrl
+        alt=performance.name
+      )
+
+block title
+  if title
+    .jumbotron.jumbotron-fluid
+      .container
+        .row
+          .col-lg-8
+            h1.display-4=performance.title
+            if performance.about
+              p.lead=performance.about
+          .col-lg-4
+            if performance.image
+              img.card-img-top.img-fluid(
+                src=performance.image.publicUrl
+                alt=performance.name
+              )
+
+block content
+  if performance.video
+    if performance.video.video.type === 'vimeo'
+      iframe(
+        src=`https://player.vimeo.com/video/${performance.video.video.id}`
+        width="640"
+        height="360"
+        frameborder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen
+      )
+
+  .row
+    .col-lg-8
+      h3=__('Performer')
+      .card-columns
+        each user in performance.performers
+          .card
+            if user.image
+              img.card-img-top.img-fluid(
+                src=user.image.publicUrl
+                alt=user.name
+              )
+            .card-block
+              h6.text-muted.card-title=__('Performer')
+              h5.card-subtitle.mb-3=user.stagename
+              a.btn.btn-primary(href=user.publicUrl)=__('More')
+    .col-lg-4
+      .card-columns
+        each crew in performance.crews
+          .card
+            if crew.image
+              img.card-img-top.img-fluid(
+                src=crew.image.publicUrl
+                alt=crew.name
+              )
+            .card-block
+              h6.text-muted.card-title=__('Organizing Crew')
+              h5.card-subtitle.mb-3=crew.name
+              a.btn.btn-primary(href=crew.publicUrl)=__('More')

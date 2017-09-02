@@ -1,0 +1,20 @@
+extends ../../layout
+
+block content
+  include ../nav
+  .row
+    .col-lg-3.col-md-4
+      include ../subnav
+    .col-lg-9.col-md-8
+      form(method='post')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .card
+          .card-header=__('New Video')
+          .card-block
+            .form-group
+              label(for='video')=__('Video')
+              input.form-control(type='text', name='url', id='video', placeholder='', autofocus, required)
+              span.help
+                | YouTube or Vimeo link
+            .form-group
+              button.btn.btn-primary(type='submit')=__('Save')
