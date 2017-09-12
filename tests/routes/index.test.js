@@ -14,7 +14,7 @@ describe('Routes: /', () => {
     done();
   });
 
-  it('GET to /returns 200 and a page',  (done) => {
+  it('GET to / returns 200 and a page',  (done) => {
     request(server)
       .get('/')
       .expect('Content-Type', /html/)

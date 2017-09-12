@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "PORT=3001 NODE_ENV=testing mocha --reporter spec --recursive tests",
+    "testwin": "mocha --reporter spec --recursive tests",
     "test:watch": "PORT=3001 NODE_ENV=testing mocha --watch --reporter spec --recursive tests",
     "lint": "eslint -c .eslintrc.json --ignore-path .gitignore --ignore-path .eslintignore .",
     "dev": "DEBUG=avnode.debug,avnode nodemon -i tests -i locales -i storage -i .db -i .elasticsearch -i app index.js"
@@ -77,7 +78,7 @@
     "isomorphic-fetch": "^2.2.1",
     "json-loader": "^0.5.4",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.2.0",
+    "mocha": "^3.5.3",
     "mocha-mongoose-fix-overwitemodelerror": "^1.0.0",
     "morgan": "^1.8.1",
     "ncp": "^2.0.0",
@@ -88,6 +89,7 @@
     "preact-redux": "^2.0.0",
     "preact-router": "^2.4.1",
     "promise-polyfill": "^6.0.2",
+    "proxyquire": "^1.7.11",
     "raw-loader": "^0.5.1",
     "react": "^15.4.2",
     "redux": "^3.6.0",
@@ -101,7 +103,6 @@
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.10.1",
-    "webpack-hot-middleware": "^2.17.1",
-    "proxyquire": "^1.7.11"
+    "webpack-hot-middleware": "^2.17.1"
   }
 }

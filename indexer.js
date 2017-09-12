@@ -97,7 +97,7 @@ const initialize = () => {
       }
     });
   } else {
-    console.log('Nothing happend… ¯\\_(ツ)_/¯');
+    console.log('Nothing happened… ¯\\_(ツ)_/¯');
   }
 };
 

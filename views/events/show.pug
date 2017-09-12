@@ -45,22 +45,22 @@ block content
                 h5.card-subtitle.mb-3=performance.stagename
                 a.btn.btn-primary(href=performance.publicUrl)=__('More')
 
-
-      if event.performances[0].performers.length > 0
-        h4=__('Performers')
-        .card-columns
-          each performance in event.performances
-            each performer in performance.performers
-              .card
-                if performer.image
-                  img.card-img-top.img-fluid(
-                    src=performer.image.publicUrl
-                    alt=performer.name
-                  )
-                .card-block
-                  h6.text-muted.card-title=__('Performer')
-                  h5.card-subtitle.mb-3=performer.stagename
-                  a.btn.btn-primary(href=performer.publicUrl)=__('More')
+      if event.performances.length > 0
+        if event.performances[0].performers.length > 0
+          h4=__('Performers')
+          .card-columns
+            each performance in event.performances
+              each performer in performance.performers
+                .card
+                  if performer.image
+                    img.card-img-top.img-fluid(
+                      src=performer.image.publicUrl
+                      alt=performer.name
+                    )
+                  .card-block
+                    h6.text-muted.card-title=__('Performer')
+                    h5.card-subtitle.mb-3=performer.stagename
+                    a.btn.btn-primary(href=performer.publicUrl)=__('More')
 
     .col-lg-4
       if event.venues.length > 0
