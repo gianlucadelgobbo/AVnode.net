@@ -109,7 +109,7 @@
   },
   {
     "id": "user.edit.form.label.email",
-    "defaultMessage": "Manage your email adresses"
+    "defaultMessage": "Manage your email addresses"
   },
   {
     "id": "user.edit.form.label.email.action.add",

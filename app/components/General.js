@@ -377,7 +377,7 @@ const General = ({
             <label htmlFor="email">
               <FormattedMessage
                 id="user.edit.form.label.email"
-                defaultMessage="Manage your email adresses"
+                defaultMessage="Manage your email addresses"
               />
             </label>
             <div className="input-group">
@@ -467,7 +467,7 @@ const General = ({
                 component="input"
                 placeholder={intl.formatMessage({
                   id: 'user.edit.form.label.stagename.placeholder',
-                  defaultMessage: 'Switcheroony'
+                  defaultMessage: 'ChangeMe'
                 })}
                 value={user.stagename}
               />
