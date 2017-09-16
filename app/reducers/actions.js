@@ -62,6 +62,9 @@ export const RESPONSE_SUGGEST_PERFORMANCE_PERFORMER = 'RESPONSE_SUGGEST_PERFORMA
 export const REQUEST_ADD_PERFORMANCE_PERFORMER = 'REQUEST_ADD_PERFORMANCE_PERFORMER';
 export const REQUEST_DELETE_PERFORMANCE_PERFORMER = 'REQUEST_DELETE_PERFORMANCE_PERFORMER';
 
+//const mailer = require('../../lib/utilities/mailer');
+const uuid = require('uuid');
+
 // Wrap fetch with some default settings, always
 // return parsed JSON…
 const fetch = (path, options = {}, json = true) => {
@@ -705,19 +708,32 @@ export function editUser(dispatch) {
   return data => {
     console.log('new email? ' + data.email);
     // fetch user before updating to check for email change
-    var result = data.emails.map((m) => {
+    let found = false;
+    let result = data.emails.map((m) => {
       if (m.email === data.email) {
         // new email exists in emails
+        found = true;
         return 'exists';
-      } else {
-        // BL FIXME send confirmation email
-        data.emails.push({email:data.email,
-          is_primary: false,
-          is_confirmed: false});
+      } else {       
         return 'new';
       }
     });
-    console.log('result ' + result);
+
+    console.log('found ' + found);
+    if (!found) {
+      // BL FIXME send confirmation email
+      data.confirm = uuid.v4();
+      data.emails.push({email:data.email,
+        is_primary: false,
+        is_confirmed: false});
+      /*mailer.confirmNewEmail({ to: data.email }, { uuid: data.confirm }, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        req.flash('success', { msg: i18n.__('Please check your inbox and confirm your new Email') });
+        res.redirect('/');
+      });*/
+    }
     data.emails.map((m) =>
       {console.log(m.email);}    
     );

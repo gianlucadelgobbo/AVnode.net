@@ -105,6 +105,7 @@ const General = ({
   intl,
   addUserProfileImage,
   addUserTeaserImage,
+  // addUserEmail,
   handleSubmit,
   saveProfile,
   fetchCountries
@@ -118,11 +119,15 @@ const General = ({
     addUserTeaserImage(userId, files[0]);
   };
 
+  /*const onAddUserEmail = (userId) => ( _ev) => {
+    //console.log(userId + ' userId ' + _ev + ' email ' )
+    addUserEmail(userId);
+  }; */
+
   if (!user._countries) {
     fetchCountries();
   }
 
-  console.log(user._id, user.name, user.password);
   return (
     <Layout>
       <form onSubmit={handleSubmit(saveProfile)}>
