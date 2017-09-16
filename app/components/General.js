@@ -105,6 +105,7 @@ const General = ({
   intl,
   addUserProfileImage,
   addUserTeaserImage,
+  // addUserEmail,
   handleSubmit,
   saveProfile,
   fetchCountries
@@ -118,11 +119,15 @@ const General = ({
     addUserTeaserImage(userId, files[0]);
   };
 
+  /*const onAddUserEmail = (userId) => ( _ev) => {
+    //console.log(userId + ' userId ' + _ev + ' email ' )
+    addUserEmail(userId);
+  }; */
+
   if (!user._countries) {
     fetchCountries();
   }
 
-  console.log(user._id, user.name, user.password);
   return (
     <Layout>
       <form onSubmit={handleSubmit(saveProfile)}>
@@ -176,24 +181,43 @@ const General = ({
               </option>
             </Field>
           </div>
-          <div className="form-group">
-            <label htmlFor="name">
-              <FormattedMessage
-                id="user.edit.form.label.name"
-                defaultMessage="Name"
-              />
-            </label>
-            <Field
-              className="form-control"
-              name="name"
-              component="input"
-              placeholder={intl.formatMessage({
-                id: 'user.edit.form.label.name.default',
-                defaultMessage: 'Jane Doe'
-              })}
-            />
-          </div>
           <div className="row">
+            <div className="col-md-6 form-group">
+              <label htmlFor="surname">
+                <FormattedMessage
+                  id="user.edit.form.label.surname"
+                  defaultMessage="Surname"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="surname"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.surname.default',
+                  defaultMessage: 'Jane'
+                })}
+              />
+            </div>
+            <div className="col-md-6 form-group">
+              <label htmlFor="name">
+                <FormattedMessage
+                  id="user.edit.form.label.name"
+                  defaultMessage="Name"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="name"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.name.default',
+                  defaultMessage: 'Doe'
+                })}
+              />
+              </div>
+            </div>
+            <div className="row">
             <div className="col-md-6 form-group">
               <label htmlFor="birthday">
                 <FormattedMessage

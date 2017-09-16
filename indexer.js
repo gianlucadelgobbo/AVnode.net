@@ -9,11 +9,12 @@ const indexHelper = {
   crews: require('./lib/plugins/elasticsearch/Crew').cleanForIndex,
   users: require('./lib/plugins/elasticsearch/User').cleanForIndex,
   events: require('./lib/plugins/elasticsearch/Event').cleanForIndex,
+  addresses: require('./lib/plugins/elasticsearch/Address').cleanForIndex,
   performances: require('./lib/plugins/elasticsearch/Performance').cleanForIndex
 };
-
+// BL why plural, should be crew,etc as seen in the es files?
 const TYPES = [
-  'users', 'events', 'performances', 'crews'
+  'users', 'events', 'performances', 'crews', 'addresses'
 ];
 
 const index = (doc, done) => {
