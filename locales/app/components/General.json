@@ -60,6 +60,10 @@
     "defaultMessage": "Who cares, right?"
   },
   {
+    "id": "user.edit.form.label.surname",
+    "defaultMessage": "Surname"
+  },
+  {
     "id": "user.edit.form.label.name",
     "defaultMessage": "Name"
   },
