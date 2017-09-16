@@ -5,10 +5,12 @@
   "scripts": {
     "start": "node index.js",
     "test": "PORT=3001 NODE_ENV=testing mocha --reporter spec --recursive tests",
-    "testwin": "mocha --reporter spec --recursive tests",
+    "testwin": "set PORT=3001 && set NODE_ENV=testing && mocha --reporter spec --recursive tests",
     "test:watch": "PORT=3001 NODE_ENV=testing mocha --watch --reporter spec --recursive tests",
+    "testwin:watch": "set PORT=3001 && set NODE_ENV=testing && mocha --watch --reporter spec --recursive tests",
     "lint": "eslint -c .eslintrc.json --ignore-path .gitignore --ignore-path .eslintignore .",
-    "dev": "DEBUG=avnode.debug,avnode nodemon -i tests -i locales -i storage -i .db -i .elasticsearch -i app index.js"
+    "dev": "DEBUG=avnode.debug,avnode nodemon -i tests -i locales -i storage -i .db -i .elasticsearch -i app index.js",
+    "devwin": "set DEBUG=avnode.debug,avnode && nodemon -i tests -i locales -i storage -i .db -i .elasticsearch -i app index.js"
   },
   "author": "",
   "license": "ISC",
