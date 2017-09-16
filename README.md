@@ -28,3 +28,9 @@ We're using [docker][docker] for the database (and later probably the whole proj
 * Run `npm i` in this directory to start up mongodb in docker.
 * Copy `example.env.local` to `.env.local`. 
 * Run `npm run dev` to run in development mode.
+
+### Edit .env.local
+
+ACCESSKEYID, SECRETACCESSKEY for AWS
+GOOGLEMAPSAPIKEY for google maps
+And other environment variables if needed.
