@@ -3,6 +3,7 @@ import isomorphicFetch from 'isomorphic-fetch';
 export const NAVIGATE = 'NAVIGATE';
 export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
+export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
 export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
@@ -688,8 +689,39 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
+/*export function addUserEmail(dispatch) {
+  return dispatch => {
+    dispatch({
+      type: REQUEST_ADD_USEREMAIL
+    });
+    return fetch(`/account/api/user/${userId}/email/${addedEmail}`, {
+      method: 'PUT',
+    })
+    .then(json => dispatch(gotUser(json)));
+  };
+} */
+
 export function editUser(dispatch) {
   return data => {
+    console.log('new email? ' + data.email);
+    // fetch user before updating to check for email change
+    var result = data.emails.map((m) => {
+      if (m.email === data.email) {
+        // new email exists in emails
+        return 'exists';
+      } else {
+        // BL FIXME send confirmation email
+        data.emails.push({email:data.email,
+          is_primary: false,
+          is_confirmed: false});
+        return 'new';
+      }
+    });
+    console.log('result ' + result);
+    data.emails.map((m) =>
+      {console.log(m.email);}    
+    );
+    // end email add
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
