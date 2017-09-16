@@ -146,7 +146,7 @@ class Venue extends React.Component {
         <div class="google-maps-places">
           <Field
             className="form-control"
-            name="suggest-venu-for-event"
+            name="suggest-venue-for-event"
             component="input"
             placeholder='Search for a venue'
             {...inputProps}
