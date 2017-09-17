@@ -108,6 +108,18 @@
     "defaultMessage": "Confirm Password"
   },
   {
+    "id": "user.edit.form.fieldset.address",
+    "defaultMessage": "Address"
+  },
+  {
+    "id": "user.edit.form.label.streetnumber",
+    "defaultMessage": "Street Number"
+  },
+  {
+    "id": "user.edit.form.label.street",
+    "defaultMessage": "Street"
+  },
+  {
     "id": "user.edit.form.fieldset.email",
     "defaultMessage": "Emails"
   },
