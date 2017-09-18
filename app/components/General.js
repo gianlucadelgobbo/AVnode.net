@@ -389,6 +389,51 @@ const General = ({
           </Modal>
         </fieldset>
 
+      <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="user.edit.form.fieldset.address"
+            defaultMessage="Address"
+          />
+        </legend>
+        <div className="row">
+          <div className="col-md-3 form-group">
+            <label htmlFor="streetnumber">
+              <FormattedMessage
+                id="user.edit.form.label.streetnumber"
+                defaultMessage="Street Number"
+              />
+            </label>
+            <Field
+              className="form-control"
+              name="streetnumber"
+              component="input"
+              placeholder={intl.formatMessage({
+                id: 'user.edit.form.label.streetnumber.default',
+                defaultMessage: '1'
+              })}
+            />
+          </div>
+          <div className="col-md-9 form-group">
+            <label htmlFor="street">
+              <FormattedMessage
+                id="user.edit.form.label.street"
+                defaultMessage="Street"
+              />
+            </label>
+            <Field
+              className="form-control"
+              name="street"
+              component="input"
+              placeholder={intl.formatMessage({
+                id: 'user.edit.form.label.street.default',
+                defaultMessage: 'Avenue...'
+              })}
+            />
+            </div>
+          </div>
+        </fieldset>
+
         <fieldset className="form-group">
           <legend>
             <FormattedMessage

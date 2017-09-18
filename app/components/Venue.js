@@ -1,14 +1,9 @@
 import React, { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
+import Map from './map';
 
 const styles = {
-  mapCard: {
-    margin: '10px 0'
-  },
-  map: {
-    height: '200px'
-  },
   venueSuggestionBox: {
     border: '1px solid #D3D3D3',
     borderRadius: '0 3px 3px 0'
@@ -20,47 +15,6 @@ const styles = {
     background: 'white'
   }
 };
-
-class Map extends React.Component {
-  constructor(props) {
-		super(props);
-	}
-	componentDidMount() {
-		const map = new google.maps.Map(document.getElementById('map-' + this.props.venue._id), {
-			zoom: 12,
-			center: this.props.venue.geometry.location
-		});
-
-		const marker = new google.maps.Marker({
-			position: this.props.venue.geometry.location,
-			map: map,
-			title: this.props.venue.address
-		});
-	}
-	render() {
-		return (
-			<div class='card' style={styles.mapCard}>
-				<div style={styles.map} class='card-img-top' id={'map-' + this.props.venue._id}></div>
-				<div class='card-block'>
-					<p class='card-text'>
-          <div class="pull-left">
-            {this.props.venue.address}
-          </div>
-          <div class="pull-right">
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={() => this.props.onDelete(this.props.venue._id)}
-              >
-              <i class="fa fa-trash"></i>
-            </button>
-          </div>
-          </p>
-				</div>
-			</div>
-		);
-	}
-}
 
 class Venue extends React.Component {
 	constructor(props) {
@@ -85,36 +39,36 @@ class Venue extends React.Component {
 	}
 
 	autocompleteCallback(predictions, status) {
-		if (status === 'OK') {
-			this.setState({
-				suggestions: predictions.map((p) => ({
-					title: p.description,
+    if (status === 'OK') {
+      this.setState({
+        suggestions: predictions.map((p) => ({
+          title: p.description,
 					placeId: p.place_id
 				}))
 			});
 		}
 	}
-
+  
   reset() {
     this.setState({
       suggestions: []
     });
   }
-
+  
 	fetchPredictions(e) {
-		if (e.target.value.length > 3) {
-			this.autocompleteService.getPlacePredictions({
-				input: e.target.value
+    if (e.target.value.length > 3) {
+      this.autocompleteService.getPlacePredictions({
+        input: e.target.value
 			}, this.autocompleteCallback);
 		}
 	}
-
+  
   delete(venueId) {
     this.props.delete(this.props.event._id, venueId);
   }
 	save(place) {
-		this.geocoder.geocode({placeId: place.placeId}, (results, status) => {
-			this.props.complete(this.props.event._id, results[0]);
+    this.geocoder.geocode({placeId: place.placeId}, (results, status) => {
+      this.props.complete(this.props.event._id, results[0]);
       this.reset();
 		});
 	}
