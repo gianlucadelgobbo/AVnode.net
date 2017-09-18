@@ -13,6 +13,8 @@ export const OPEN_STAGENAME_MODAL = 'OPEN_STAGENAME_MODAL';
 export const CLOSE_STAGENAME_MODAL = 'CLOSE_STAGENAME_MODAL';
 export const OPEN_PASSWORD_MODAL = 'OPEN_PASSWORD_MODAL';
 export const CLOSE_PASSWORD_MODAL = 'CLOSE_PASSWORD_MODAL';
+export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
+export const REQUEST_DELETE_USER_PLACE = 'REQUEST_DELETE_USER_PLACE';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -770,7 +772,7 @@ export function fetchCountries(dispatch) {
     ));
   };
 }
-
+// venues
 export function addEventVenue(dispatch) {
   return (id, location) => {
     dispatch({
@@ -800,6 +802,41 @@ export function removeEventVenue(dispatch) {
     });
     return fetch(
       `/account/api/event/${eventId}/venue/${venueId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+// Places
+export function addPlace(dispatch) {
+  return (id, location) => {
+    dispatch({
+      type: REQUEST_ADD_USER_PLACE,
+      payload: {
+        user: id,
+        location: location
+      }
+    });
+    return fetch(
+      '/account/api/user/place', {
+        method: 'POST',
+        body: JSON.stringify({id, location })
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+export function removePlace(dispatch) {
+  return (userId, placeId) => {
+    dispatch({
+      type: REQUEST_DELETE_USER_PLACE,
+      payload: {
+        user: userId,
+        place: placeId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/place/${placeId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));

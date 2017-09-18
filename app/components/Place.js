@@ -4,11 +4,11 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Map from './map';
 
 const styles = {
-  venueSuggestionBox: {
+  placeSuggestionBox: {
     border: '1px solid #D3D3D3',
     borderRadius: '0 3px 3px 0'
   },
-  venueSuggestion: {
+  placeSuggestion: {
     padding: '10px 13px',
     borderBottom: '1px solid #DBDBDB',
     cursor: 'pointer',
@@ -16,7 +16,7 @@ const styles = {
   }
 };
 
-class Venue extends React.Component {
+class Place extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,12 +63,12 @@ class Venue extends React.Component {
     }
   }
 
-  delete(venueId) {
-    this.props.delete(this.props.event._id, venueId);
+  delete(placeId) {
+    this.props.delete(this.props.user._id, placeId);
   }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
-      this.props.complete(this.props.event._id, results[0]);
+      this.props.complete(this.props.user._id, results[0]);
       this.reset();
     });
   }
@@ -91,29 +91,29 @@ class Venue extends React.Component {
     const inputProps = this.getInputProps();
     return (
       <div className="form-group">
-        <label htmlFor="venues">
+        <label htmlFor="places">
           <FormattedMessage
-            id="venue.edit.form.label.venues"
-            defaultMessage="Venues"
+            id="place.edit.form.label.places"
+            defaultMessage="Places"
           />
         </label>
         <div class="google-maps-places">
           <Field
             className="form-control"
-            name="suggest-venue-for-event"
+            name="suggest-place-for-user"
             component="input"
-            placeholder='Search for a venue'
+            placeholder='Search for a place'
             {...inputProps}
           />
           {this.state.suggestions.length > 0 && (
             <div
-              style={styles.venueSuggestionBox}
+              style={styles.placeSuggestionBox}
             >
               {this.state.suggestions.map((p, idx) => (
                 <div
                   key={p.placeId}
                   onClick={() => this.save(p)}
-                  style={styles.venueSuggestion}
+                  style={styles.placeSuggestion}
                 >
 
                   <i class="fa fa-map-marker"></i> &nbsp;
@@ -122,19 +122,21 @@ class Venue extends React.Component {
               ))}
             </div>
           )}
-          {this.props.event && this.props.event.venues.length > 0 && this.props.event.venues.map((v) => (
-            <Map venue={v} onDelete={this.delete} />
-          ))}
+          { // this.props.user && this.props.user.places.length > 0 && this.props.user.places.map((p) => (
+            this.props.user && this.props.user.places.length > 0 && this.props.user.places.map((p) => (
+              <Map place={p} onDelete={this.delete} />
+            ))
+          }
         </div>
       </div>
     );
   }
 }
 
-Venue.propTypes = {
+Place.propTypes = {
   inputProps: (props, propName) => {
     const inputProps = props[propName];
   },
 };
 
-export default Venue;
+export default Place;

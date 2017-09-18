@@ -34,5 +34,6 @@ We're using [docker][docker] for the database (and later probably the whole proj
 ### Edit .env.local
 
 ACCESSKEYID, SECRETACCESSKEY for AWS
-GOOGLEMAPSAPIKEY for google maps
+GOOGLEMAPSAPIKEY for google maps.
+
 And other environment variables if needed.
