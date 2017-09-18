@@ -39,36 +39,36 @@ class Venue extends React.Component {
 	}
 
 	autocompleteCallback(predictions, status) {
-		if (status === 'OK') {
-			this.setState({
-				suggestions: predictions.map((p) => ({
-					title: p.description,
+    if (status === 'OK') {
+      this.setState({
+        suggestions: predictions.map((p) => ({
+          title: p.description,
 					placeId: p.place_id
 				}))
 			});
 		}
 	}
-
+  
   reset() {
     this.setState({
       suggestions: []
     });
   }
-
+  
 	fetchPredictions(e) {
-		if (e.target.value.length > 3) {
-			this.autocompleteService.getPlacePredictions({
-				input: e.target.value
+    if (e.target.value.length > 3) {
+      this.autocompleteService.getPlacePredictions({
+        input: e.target.value
 			}, this.autocompleteCallback);
 		}
 	}
-
+  
   delete(venueId) {
     this.props.delete(this.props.event._id, venueId);
   }
 	save(place) {
-		this.geocoder.geocode({placeId: place.placeId}, (results, status) => {
-			this.props.complete(this.props.event._id, results[0]);
+    this.geocoder.geocode({placeId: place.placeId}, (results, status) => {
+      this.props.complete(this.props.event._id, results[0]);
       this.reset();
 		});
 	}

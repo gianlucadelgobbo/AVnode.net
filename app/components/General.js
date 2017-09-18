@@ -427,7 +427,7 @@ const General = ({
               component="input"
               placeholder={intl.formatMessage({
                 id: 'user.edit.form.label.street.default',
-                defaultMessage: 'Avenue'
+                defaultMessage: 'Avenue...'
               })}
             />
             </div>

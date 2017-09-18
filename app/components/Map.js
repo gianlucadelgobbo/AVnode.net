@@ -16,13 +16,11 @@ class Map extends React.Component {
 		super(props);
 	}
 	componentDidMount() {
-    console.log(this.props.venue._id);
 		const map = new google.maps.Map(document.getElementById('map-' + this.props.venue._id), {
 			zoom: 12,
 			center: this.props.venue.geometry.location
 		});
 
-    console.log(this.props.venue.geometry.location);
 		const marker = new google.maps.Marker({
 			position: this.props.venue.geometry.location,
 			map: map,
