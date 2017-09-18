@@ -19,6 +19,7 @@ We're using [docker][docker] for the database (and later probably the whole proj
 * Run `docker-compose up -d` in this directory to start up mongodb in docker.
 * Copy `example.env.local` to `.env.local`. 
 * Run `npm run dev` to run in development mode.
+* Create the `storage` folder.
 
 ### Alternative setup for development without Docker
 
@@ -28,6 +29,7 @@ We're using [docker][docker] for the database (and later probably the whole proj
 * Run `npm i` in this directory to start up mongodb in docker.
 * Copy `example.env.local` to `.env.local`. 
 * Run `npm run dev` to run in development mode.
+* Create the `storage` folder.
 
 ### Edit .env.local
 
