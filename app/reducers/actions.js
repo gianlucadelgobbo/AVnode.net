@@ -706,18 +706,15 @@ export function addUserTeaserImage(dispatch) {
 export function editUser(dispatch) {
   return data => {
     // fetch user before updating to check for email change
-    let found = false;
-    let result = data.emails.map((m) => {
+    let emailFound = false;
+    data.emails.map((m) => {
       if (m.email === data.email) {
         // email in the form already exists in emails
-        found = true;
-        return 'exists';
-      } else {       
-        return 'new';
+        emailFound = true;
       }
     });
     // in case of new email, add it to the emails
-    if (!found) {
+    if (!emailFound) {
       data.emails.push({email:data.email,
         is_primary: false,
         is_confirmed: false
@@ -735,6 +732,41 @@ export function editUser(dispatch) {
         });*/
     }
     // end email add
+
+    // fetch user before updating to check if unique address
+    let addressFound = false;
+    let primary = true;
+    data.address = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
+    
+    data.addresses.map((a) => {
+      // if an address exist, new ones are not set to primary (for now)
+      primary = false;
+      console.log('address exists? ' + data.address);
+      if (a.address === data.address) {
+        // address in the form already exists in addresses
+        addressFound = true;
+        console.log('address found');
+      }
+    });
+    if (!addressFound) {
+      console.log('address not found');
+      if (!data.addresses) data.addresses = [];
+      // add the address to the array
+      data.addresses.push({
+        address: data.address, // BL gmap response formatted_address, should be unique
+        street_number: data.street_number,
+        route: data.route,
+        postal_code: data.postal_code,
+        locality: data.locality,
+        administrative_area_level_1: data.administrative_area_level_1,
+        country: data.country,
+        lat: data.lat,
+        lng: data.lng,
+        is_primary: primary // only first address is primary for now
+      });
+    }
+    // end address add
+    
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id

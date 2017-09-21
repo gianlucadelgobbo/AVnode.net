@@ -19,6 +19,7 @@ const styles = {
 class Place extends React.Component {
   constructor(props) {
     super(props);
+    console.log('props:' +JSON.stringify(props.user.addresses));
     this.state = {
       suggestions: []
     };
@@ -77,7 +78,8 @@ class Place extends React.Component {
     const defaultInputProps = {
       type: "text",
     }
-
+    console.log('defaultInputProps:' +JSON.stringify(defaultInputProps));
+    console.log('this.props.inputProps:' +JSON.stringify(this.props.inputProps));
     return {
       ...defaultInputProps,
       ...this.props.inputProps,
@@ -122,8 +124,8 @@ class Place extends React.Component {
               ))}
             </div>
           )}
-          { // this.props.user && this.props.user.places.length > 0 && this.props.user.places.map((p) => (
-            this.props.user && this.props.user.places.length > 0 && this.props.user.places.map((p) => (
+          {
+            this.props.user && this.props.user.addresses && this.props.user.addresses.length > 0 && this.props.user.addresses.map((p) => (
               <Map place={p} onDelete={this.delete} />
             ))
           }

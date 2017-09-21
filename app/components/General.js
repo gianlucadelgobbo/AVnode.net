@@ -5,97 +5,8 @@ import ImageDropzone from './ImageDropzone';
 import Modal from './Modal';
 import Layout from './Layout';
 import Place from './PlaceContainer';
-
-const Email = ({ email }) => {
-  return (
-    <li className="list-group-item justify-content-between">
-      {email.email}
-      {email.is_primary ?
-        <span className="badge badge-primary">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.primary"
-            defaultMessage="Primary"
-          />
-        </span> :
-        null
-      }
-      {email.is_confirmed ?
-        <span className="badge badge-success">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.confirmed"
-            defaultMessage="Confirmed"
-          />
-        </span> :
-        <span className="badge badge-danger">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.unconfirmed"
-            defaultMessage="Unconfirmed"
-          />
-        </span>
-      }
-      {email.is_public ?
-        <span className="badge badge-default">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.public"
-            defaultMessage="Public"
-          />
-        </span> :
-        <span className="badge badge-default">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.private"
-            defaultMessage="Private"
-          />
-        </span>
-      }
-      <span className="input-group-btn">
-        {!email.is_primary ?
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.primary"
-              defaultMessage="Make it primary"
-            />
-          </button> :
-          null
-        }
-        {email.is_public ?
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.private"
-              defaultMessage="Make it private"
-            />
-          </button> :
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.public"
-              defaultMessage="Make it public"
-            />
-          </button>
-        }
-        {!email.is_primary ?
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.delete"
-              defaultMessage="Delete"
-            />
-          </button> :
-          null
-        }
-      </span>
-    </li>
-  );
-};
+import Address from './Address';
+import Email from './Email';
 
 const General = ({
   user,
@@ -106,7 +17,6 @@ const General = ({
   intl,
   addUserProfileImage,
   addUserTeaserImage,
-  // addUserEmail,
   handleSubmit,
   saveProfile,
   fetchCountries
@@ -120,16 +30,8 @@ const General = ({
     addUserTeaserImage(userId, files[0]);
   };
 
-  /*const onAddUserEmail = (userId) => ( _ev) => {
-    //console.log(userId + ' userId ' + _ev + ' email ' )
-    addUserEmail(userId);
-  }; */
-
   if (!user._countries) {
     fetchCountries();
-  }
-  if (!user.places) {
-    user.places = {};
   }
 
   return (
@@ -393,8 +295,6 @@ const General = ({
           </Modal>
         </fieldset>
 
-        <Place user={user} />
-
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
@@ -402,6 +302,9 @@ const General = ({
               defaultMessage="Address"
             />
           </legend>
+        
+          <Place user={user} />
+          
           <div className="row">
             <div className="col-md-3 form-group">
               <label htmlFor="street_number">
@@ -509,6 +412,12 @@ const General = ({
                 })}
               />
             </div>
+            <ul className="list-group mt-2">
+              {user && user.addresses && user.addresses.map((a) => (
+                <Address address={a} />
+              ))
+              }
+            </ul>
           </div>
         </fieldset>
 
