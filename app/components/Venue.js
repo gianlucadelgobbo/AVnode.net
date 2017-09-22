@@ -123,7 +123,7 @@ class Venue extends React.Component {
             </div>
           )}
           {this.props.event && this.props.event.venues.length > 0 && this.props.event.venues.map((v) => (
-            <Map venue={v} onDelete={this.delete} />
+            <Map place={v} onDelete={this.delete} />
           ))}
         </div>
       </div>

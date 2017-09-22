@@ -750,20 +750,26 @@ export function editUser(dispatch) {
     });
     if (!addressFound) {
       console.log('address not found');
+      // init if first address
       if (!data.addresses) data.addresses = [];
-      // add the address to the array
-      data.addresses.push({
-        address: data.address, // BL gmap response formatted_address, should be unique
-        street_number: data.street_number,
-        route: data.route,
-        postal_code: data.postal_code,
-        locality: data.locality,
-        administrative_area_level_1: data.administrative_area_level_1,
-        country: data.country,
-        lat: data.lat,
-        lng: data.lng,
-        is_primary: primary // only first address is primary for now
-      });
+      // verify data.address is valid and lat lng found
+      if (data.address && data.address.geometry) {
+        // add the address to the array
+        data.addresses.push({
+          address: data.address, // BL gmap response formatted_address, should be unique
+          street_number: data.street_number,
+          route: data.route,
+          postal_code: data.postal_code,
+          locality: data.locality,
+          administrative_area_level_1: data.administrative_area_level_1,
+          country: data.country,
+          geometry: data.location.geometry,
+          place_id: data.location.place_id,
+          // lat: data.lat,
+          // lng: data.lng,
+          is_primary: primary // only first address is primary for now
+        });
+      }
     }
     // end address add
     
@@ -849,6 +855,7 @@ export function addPlace(dispatch) {
         location: location
       }
     });
+    console.log('addPlace' + id + JSON.stringify(location))
     return fetch(
       '/account/api/user/place', {
         method: 'POST',
