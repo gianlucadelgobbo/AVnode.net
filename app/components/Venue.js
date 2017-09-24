@@ -1,7 +1,7 @@
 import React, { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Map from './map';
+import Map from './Map';
 
 const styles = {
   venueSuggestionBox: {
