@@ -19,6 +19,7 @@ const styles = {
 class Venue extends React.Component {
   constructor(props) {
     super(props);
+    console.log('Venue props:' + JSON.stringify(props));
     this.state = {
       suggestions: []
     };
@@ -68,6 +69,10 @@ class Venue extends React.Component {
   }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
+      console.log('Venue place: ' + JSON.stringify(place));
+      console.log('Venue results[0]: ' + JSON.stringify(results[0]));
+      
+      results[0].name = place.title;
       this.props.complete(this.props.event._id, results[0]);
       this.reset();
     });
@@ -99,10 +104,16 @@ class Venue extends React.Component {
         </label>
         <div class="google-maps-places">
           <Field
+              className="form-control"
+              name="name"
+              component="input"
+              placeholder='Venue name'
+          />
+          <Field
             className="form-control"
             name="suggest-venue-for-event"
             component="input"
-            placeholder='Search for a venue'
+            placeholder='Search for a venue address'
             {...inputProps}
           />
           {this.state.suggestions.length > 0 && (
