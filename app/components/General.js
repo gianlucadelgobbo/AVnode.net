@@ -4,97 +4,9 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import ImageDropzone from './ImageDropzone';
 import Modal from './Modal';
 import Layout from './Layout';
-
-const Email = ({email}) => {
-  return (
-    <li className="list-group-item justify-content-between">
-      {email.email}
-      { email.is_primary ?
-        <span className="badge badge-primary">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.primary"
-            defaultMessage="Primary"
-          />
-        </span> :
-        null
-      }
-      { email.is_confirmed ?
-        <span className="badge badge-success">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.confirmed"
-            defaultMessage="Confirmed"
-          />
-        </span> :
-        <span className="badge badge-danger">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.unconfirmed"
-            defaultMessage="Unconfirmed"
-          />
-        </span>
-      }
-      { email.is_public ?
-        <span className="badge badge-default">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.public"
-            defaultMessage="Public"
-          />
-        </span> :
-        <span className="badge badge-default">
-          <FormattedMessage
-            id="user.edit.form.label.email.badge.private"
-            defaultMessage="Private"
-          />
-        </span>
-      }
-      <span className="input-group-btn">
-        { !email.is_primary ?
-          <button 
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.primary"
-              defaultMessage="Make it primary"
-            />
-          </button> :
-          null
-        }
-        { email.is_public ?
-          <button 
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.private"
-              defaultMessage="Make it private"
-            />
-          </button> :
-          <button 
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.public"
-              defaultMessage="Make it public"
-            />
-          </button>
-        }
-        { !email.is_primary ?
-          <button 
-            type="button"
-            className="btn btn-secondary btn-sm"
-          >
-            <FormattedMessage
-              id="user.edit.form.label.email.action.delete"
-              defaultMessage="Delete"
-            />
-          </button> :
-          null
-        }
-      </span>
-    </li>
-  );
-};
+import Place from './PlaceContainer';
+import Address from './Address';
+import Email from './Email';
 
 const General = ({
   user,
@@ -105,7 +17,6 @@ const General = ({
   intl,
   addUserProfileImage,
   addUserTeaserImage,
-  // addUserEmail,
   handleSubmit,
   saveProfile,
   fetchCountries
@@ -118,11 +29,6 @@ const General = ({
   const onTeaserImageDrop = (userId) => (files, _something, _ev) => {
     addUserTeaserImage(userId, files[0]);
   };
-
-  /*const onAddUserEmail = (userId) => ( _ev) => {
-    //console.log(userId + ' userId ' + _ev + ' email ' )
-    addUserEmail(userId);
-  }; */
 
   if (!user._countries) {
     fetchCountries();
@@ -215,9 +121,9 @@ const General = ({
                   defaultMessage: 'Doe'
                 })}
               />
-              </div>
             </div>
-            <div className="row">
+          </div>
+          <div className="row">
             <div className="col-md-6 form-group">
               <label htmlFor="birthday">
                 <FormattedMessage
@@ -227,7 +133,7 @@ const General = ({
               </label>
               <div className="input-group date" data-provide="datepicker-inline">
                 <div className="input-group-addon">
-                    <i className="fa fa-calendar"></i>
+                  <i className="fa fa-calendar"></i>
                 </div>
                 <Field
                   className="form-control"
@@ -250,7 +156,7 @@ const General = ({
                   defaultMessage="Citizenship"
                 />
               </label>
-              { user._countries ?
+              {user._countries ?
                 <Field
                   className="form-control custom-select"
                   name="citizenship"
@@ -263,11 +169,11 @@ const General = ({
                       defaultMessage="Please select"
                     />
                   </option>
-                  { user._countries.map((c) => (
+                  {user._countries.map((c) => (
                     <option value={c.key.toLowerCase()}>{c.name}</option>
-                    ))
+                  ))
                   }
-                  { /* FIXME: How do we handle countries here? */ }
+                  { /* FIXME: How do we handle countries here? */}
                 </Field> :
                 <p>Loading a list of countries…</p>
               }
@@ -304,7 +210,7 @@ const General = ({
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={ openPasswordModal }
+            onClick={openPasswordModal}
           >
             <FormattedMessage
               id="user.edit.form.label.password.change"
@@ -313,8 +219,8 @@ const General = ({
           </button>
           <Modal
             title="Caution"
-            open={ user._passwordModalActive }
-            close={ closePasswordModal }
+            open={user._passwordModalActive}
+            close={closePasswordModal}
             footer={
               <button
                 type="button"
@@ -389,48 +295,129 @@ const General = ({
           </Modal>
         </fieldset>
 
-      <fieldset className="form-group">
-        <legend>
-          <FormattedMessage
-            id="user.edit.form.fieldset.address"
-            defaultMessage="Address"
-          />
-        </legend>
-        <div className="row">
-          <div className="col-md-3 form-group">
-            <label htmlFor="streetnumber">
-              <FormattedMessage
-                id="user.edit.form.label.streetnumber"
-                defaultMessage="Street Number"
-              />
-            </label>
-            <Field
-              className="form-control"
-              name="streetnumber"
-              component="input"
-              placeholder={intl.formatMessage({
-                id: 'user.edit.form.label.streetnumber.default',
-                defaultMessage: '1'
-              })}
+        <fieldset className="form-group">
+          <legend>
+            <FormattedMessage
+              id="user.edit.form.fieldset.address"
+              defaultMessage="Address"
             />
-          </div>
-          <div className="col-md-9 form-group">
-            <label htmlFor="street">
-              <FormattedMessage
-                id="user.edit.form.label.street"
-                defaultMessage="Street"
+          </legend>
+        
+          <Place user={user} />
+          
+          <div className="row">
+            <div className="col-md-3 form-group">
+              <label htmlFor="street_number">
+                <FormattedMessage
+                  id="user.edit.form.label.street_number"
+                  defaultMessage="Street Number"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="street_number"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.street_number.default',
+                  defaultMessage: '1'
+                })}
               />
-            </label>
-            <Field
-              className="form-control"
-              name="street"
-              component="input"
-              placeholder={intl.formatMessage({
-                id: 'user.edit.form.label.street.default',
-                defaultMessage: 'Avenue...'
-              })}
-            />
             </div>
+            <div className="col-md-9 form-group">
+              <label htmlFor="route">
+                <FormattedMessage
+                  id="user.edit.form.label.route"
+                  defaultMessage="Street"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="route"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.route.default',
+                  defaultMessage: 'avenue...'
+                })}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-3 form-group">
+              <label htmlFor="postal_code">
+                <FormattedMessage
+                  id="user.edit.form.label.postal_code"
+                  defaultMessage="Postal code"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="postal_code"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.postal_code.default',
+                  defaultMessage: 'zip'
+                })}
+              />
+            </div>
+            <div className="col-md-9 form-group">
+              <label htmlFor="locality">
+                <FormattedMessage
+                  id="user.edit.form.label.locality"
+                  defaultMessage="Locality"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="locality"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.locality.default',
+                  defaultMessage: 'city'
+                })}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-9 form-group">
+              <label htmlFor="administrative_area_level_1">
+                <FormattedMessage
+                  id="user.edit.form.label.administrative_area_level_1"
+                  defaultMessage="Region"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="administrative_area_level_1"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.administrative_area_level_1.default',
+                  defaultMessage: 'region'
+                })}
+              />
+            </div>
+            <div className="col-md-3 form-group">
+              <label htmlFor="country">
+                <FormattedMessage
+                  id="user.edit.form.label.country"
+                  defaultMessage="Country"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="country"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.country.default',
+                  defaultMessage: 'country'
+                })}
+              />
+            </div>
+            <ul className="list-group mt-2">
+              {user && user.addresses && user.addresses.map((a) => (
+                <Address address={a} />
+              ))
+              }
+            </ul>
           </div>
         </fieldset>
 
@@ -472,9 +459,9 @@ const General = ({
               </span>
             </div>
             <ul className="list-group mt-2">
-              { user && user.emails && user.emails.map((e) => (
+              {user && user.emails && user.emails.map((e) => (
                 <Email email={e} />
-                ))
+              ))
               }
             </ul>
           </div>
@@ -489,12 +476,12 @@ const General = ({
           </legend>
           <p>
             Current stagename: <strong>{user.stagename}</strong><br />
-            <pre>{user.publicUrl}</pre> { /* FIXME */ }
+            <pre>{user.publicUrl}</pre> { /* FIXME */}
           </p>
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={ openStagenameModal }
+            onClick={openStagenameModal}
           >
             <FormattedMessage
               id="user.edit.form.label.stagename.openModal"
@@ -504,7 +491,7 @@ const General = ({
           <Modal
             title="Caution"
             open={user._stagenameModalActive}
-            close={ closeStagenameModal }
+            close={closeStagenameModal}
             footer={
               <button
                 type="button"
@@ -530,16 +517,16 @@ const General = ({
                 defaultMessage="Stagename"
               />
             </label>
-              <Field
-                className="form-control"
-                name="stagename"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.stagename.placeholder',
-                  defaultMessage: 'ChangeMe'
-                })}
-                value={user.stagename}
-              />
+            <Field
+              className="form-control"
+              name="stagename"
+              component="input"
+              placeholder={intl.formatMessage({
+                id: 'user.edit.form.label.stagename.placeholder',
+                defaultMessage: 'ChangeMe'
+              })}
+              value={user.stagename}
+            />
           </Modal>
         </fieldset>
 
@@ -558,7 +545,7 @@ const General = ({
                 defaultMessage="Profile Image"
               />
             </label>
-            { user && user.image ?
+            {user && user.image ?
               <div>
                 <img
                   className="img-thumbnail mb-3"
@@ -581,13 +568,13 @@ const General = ({
                 defaultMessage="Teaser Image"
               />
             </label>
-            { user && user.teaserImage ?
+            {user && user.teaserImage ?
               <div>
                 <img
                   className="img-thumbnail mb-3"
                   src={user.teaserImage.publicUrl}
                   alt={`image of ${user.stagename}`}
-                  />
+                />
               </div> :
               null
             }

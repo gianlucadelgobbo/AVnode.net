@@ -1,0 +1,38 @@
+[
+  {
+    "id": "user.edit.form.label.email.badge.primary",
+    "defaultMessage": "Primary"
+  },
+  {
+    "id": "user.edit.form.label.email.badge.confirmed",
+    "defaultMessage": "Confirmed"
+  },
+  {
+    "id": "user.edit.form.label.email.badge.unconfirmed",
+    "defaultMessage": "Unconfirmed"
+  },
+  {
+    "id": "user.edit.form.label.email.badge.public",
+    "defaultMessage": "Public"
+  },
+  {
+    "id": "user.edit.form.label.email.badge.private",
+    "defaultMessage": "Private"
+  },
+  {
+    "id": "user.edit.form.label.email.action.primary",
+    "defaultMessage": "Make it primary"
+  },
+  {
+    "id": "user.edit.form.label.email.action.private",
+    "defaultMessage": "Make it private"
+  },
+  {
+    "id": "user.edit.form.label.email.action.public",
+    "defaultMessage": "Make it public"
+  },
+  {
+    "id": "user.edit.form.label.email.action.delete",
+    "defaultMessage": "Delete"
+  }
+]

@@ -201,18 +201,64 @@ let PerformanceForm = props => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="about">
+        <label htmlFor="about">
+          <FormattedMessage
+            id="performance.edit.form.label.about"
+            defaultMessage="About"
+          />
+        </label>
+        <Field
+          className="form-control"
+          name="about"
+          component="textarea"
+          value={props.about}
+        />
+      </div>
+      
+      <div className="form-group">
+          <label htmlFor="tech_art">
             <FormattedMessage
-              id="performance.edit.form.label.about"
-              defaultMessage="About"
+              id="performance.edit.form.label.tech_art"
+              defaultMessage="Artist hardware"
             />
           </label>
           <Field
             className="form-control"
-            name="about"
+            name="tech_art"
             component="textarea"
-            value={props.about}
+            value={props.tech_art}
           />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="tech_req">
+            <FormattedMessage
+              id="performance.edit.form.label.tech_req"
+              defaultMessage="Technical Support (what you need)"
+            />
+          </label>
+          <Field
+            className="form-control"
+            name="tech_req"
+            component="textarea"
+            value={props.tech_req}
+          />
+        </div>
+
+        <div className="form-check">
+          <label className="form-check-label">
+            <Field
+              className="form-check-input form-control-lg"
+              name="is_public"
+              component="input"
+              type="checkbox"
+              value={props.is_public}
+            />
+            <FormattedMessage
+              id="performance.edit.form.label.is_public"
+              defaultMessage="Performance is public"
+            />
+          </label>
         </div>
 
         { performance && performance.video ?
