@@ -112,12 +112,28 @@
     "defaultMessage": "Address"
   },
   {
-    "id": "user.edit.form.label.streetnumber",
+    "id": "user.edit.form.label.street_number",
     "defaultMessage": "Street Number"
   },
   {
-    "id": "user.edit.form.label.street",
+    "id": "user.edit.form.label.route",
     "defaultMessage": "Street"
+  },
+  {
+    "id": "user.edit.form.label.postal_code",
+    "defaultMessage": "Postal code"
+  },
+  {
+    "id": "user.edit.form.label.locality",
+    "defaultMessage": "Locality"
+  },
+  {
+    "id": "user.edit.form.label.administrative_area_level_1",
+    "defaultMessage": "Region"
+  },
+  {
+    "id": "user.edit.form.label.country",
+    "defaultMessage": "Country"
   },
   {
     "id": "user.edit.form.fieldset.email",

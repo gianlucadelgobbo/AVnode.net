@@ -13,6 +13,8 @@ export const OPEN_STAGENAME_MODAL = 'OPEN_STAGENAME_MODAL';
 export const CLOSE_STAGENAME_MODAL = 'CLOSE_STAGENAME_MODAL';
 export const OPEN_PASSWORD_MODAL = 'OPEN_PASSWORD_MODAL';
 export const CLOSE_PASSWORD_MODAL = 'CLOSE_PASSWORD_MODAL';
+export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
+export const REQUEST_DELETE_USER_PLACE = 'REQUEST_DELETE_USER_PLACE';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -704,18 +706,15 @@ export function addUserTeaserImage(dispatch) {
 export function editUser(dispatch) {
   return data => {
     // fetch user before updating to check for email change
-    let found = false;
-    let result = data.emails.map((m) => {
+    let emailFound = false;
+    data.emails.map((m) => {
       if (m.email === data.email) {
         // email in the form already exists in emails
-        found = true;
-        return 'exists';
-      } else {       
-        return 'new';
+        emailFound = true;
       }
     });
     // in case of new email, add it to the emails
-    if (!found) {
+    if (!emailFound) {
       data.emails.push({email:data.email,
         is_primary: false,
         is_confirmed: false
@@ -733,6 +732,47 @@ export function editUser(dispatch) {
         });*/
     }
     // end email add
+
+    // fetch user before updating to check if unique address
+    let addressFound = false;
+    let primary = true;
+    data.address = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
+    
+    data.addresses.map((a) => {
+      // if an address exist, new ones are not set to primary (for now)
+      primary = false;
+      console.log('address exists? ' + data.address);
+      if (a.address === data.address) {
+        // address in the form already exists in addresses
+        addressFound = true;
+        console.log('address found');
+      }
+    });
+    if (!addressFound) {
+      console.log('address not found');
+      // init if first address
+      if (!data.addresses) data.addresses = [];
+      // verify data.address is valid and lat lng found
+      if (data.address && data.address.geometry) {
+        // add the address to the array
+        data.addresses.push({
+          address: data.address, // BL gmap response formatted_address, should be unique
+          street_number: data.street_number,
+          route: data.route,
+          postal_code: data.postal_code,
+          locality: data.locality,
+          administrative_area_level_1: data.administrative_area_level_1,
+          country: data.country,
+          geometry: data.location.geometry,
+          place_id: data.location.place_id,
+          // lat: data.lat,
+          // lng: data.lng,
+          is_primary: primary // only first address is primary for now
+        });
+      }
+    }
+    // end address add
+    
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
@@ -770,7 +810,7 @@ export function fetchCountries(dispatch) {
     ));
   };
 }
-
+// venues
 export function addEventVenue(dispatch) {
   return (id, location) => {
     dispatch({
@@ -800,6 +840,42 @@ export function removeEventVenue(dispatch) {
     });
     return fetch(
       `/account/api/event/${eventId}/venue/${venueId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+// Places
+export function addPlace(dispatch) {
+  return (id, location) => {
+    dispatch({
+      type: REQUEST_ADD_USER_PLACE,
+      payload: {
+        user: id,
+        location: location
+      }
+    });
+    console.log('addPlace' + id + JSON.stringify(location))
+    return fetch(
+      '/account/api/user/place', {
+        method: 'POST',
+        body: JSON.stringify({id, location })
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+export function removePlace(dispatch) {
+  return (userId, placeId) => {
+    dispatch({
+      type: REQUEST_DELETE_USER_PLACE,
+      payload: {
+        user: userId,
+        place: placeId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/place/${placeId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));

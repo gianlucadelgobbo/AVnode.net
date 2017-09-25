@@ -16,6 +16,18 @@
     "defaultMessage": "About"
   },
   {
+    "id": "performance.edit.form.label.tech_art",
+    "defaultMessage": "Artist hardware"
+  },
+  {
+    "id": "performance.edit.form.label.tech_req",
+    "defaultMessage": "Technical Support (what you need)"
+  },
+  {
+    "id": "performance.edit.form.label.is_public",
+    "defaultMessage": "Performance is public"
+  },
+  {
     "id": "performance.edit.form.label.videoLink.action",
     "defaultMessage": "Add video"
   },

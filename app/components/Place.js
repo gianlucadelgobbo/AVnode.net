@@ -4,11 +4,11 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Map from './Map';
 
 const styles = {
-  venueSuggestionBox: {
+  placeSuggestionBox: {
     border: '1px solid #D3D3D3',
     borderRadius: '0 3px 3px 0'
   },
-  venueSuggestion: {
+  placeSuggestion: {
     padding: '10px 13px',
     borderBottom: '1px solid #DBDBDB',
     cursor: 'pointer',
@@ -16,13 +16,12 @@ const styles = {
   }
 };
 
-class Venue extends React.Component {
+class Place extends React.Component {
   constructor(props) {
     super(props);
-    console.log('Venue props:' + JSON.stringify(props));
+    console.log('props:' +JSON.stringify(props.user.addresses));
     this.state = {
-      suggestions: [],
-      name: ''
+      suggestions: []
     };
     this.autocompleteCallback = this.autocompleteCallback.bind(this);
     this.delete = this.delete.bind(this);
@@ -65,18 +64,12 @@ class Venue extends React.Component {
     }
   }
 
-  delete(venueId) {
-    this.props.delete(this.props.event._id, venueId);
+  delete(placeId) {
+    this.props.delete(this.props.user._id, placeId);
   }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
-      /* console.log('Venue place: ' + JSON.stringify(place));
-      console.log('Venue results[0]: ' + JSON.stringify(results[0]));
-      console.log('this.state.name: ' + this.state.name); */
-      // verify if a Venue name is set, otherwise use the address
-      if (this.state.name.length < 1) this.state.name = place.title;
-      results[0].name = this.state.name;
-      this.props.complete(this.props.event._id, results[0]);
+      this.props.complete(this.props.user._id, results[0]);
       this.reset();
     });
   }
@@ -85,7 +78,8 @@ class Venue extends React.Component {
     const defaultInputProps = {
       type: "text",
     }
-
+    console.log('defaultInputProps:' +JSON.stringify(defaultInputProps));
+    console.log('this.props.inputProps:' +JSON.stringify(this.props.inputProps));
     return {
       ...defaultInputProps,
       ...this.props.inputProps,
@@ -99,39 +93,29 @@ class Venue extends React.Component {
     const inputProps = this.getInputProps();
     return (
       <div className="form-group">
-        <label htmlFor="venues">
+        <label htmlFor="places">
           <FormattedMessage
-            id="venue.edit.form.label.venues"
-            defaultMessage="Venues"
+            id="place.edit.form.label.places"
+            defaultMessage="Places"
           />
         </label>
         <div class="google-maps-places">
           <Field
-              className="form-control"
-              name="name"
-              component="input"
-              placeholder='Input a new Venue name'
-              onChange={(event, newValue, previousValue) => {
-                // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
-                this.state.name = newValue;
-              }}
-          />
-          <Field
             className="form-control"
-            name="suggest-venue-for-event"
+            name="suggest-place-for-user"
             component="input"
-            placeholder='Search for an address for this new Venue'
+            placeholder='Search for a place'
             {...inputProps}
           />
           {this.state.suggestions.length > 0 && (
             <div
-              style={styles.venueSuggestionBox}
+              style={styles.placeSuggestionBox}
             >
               {this.state.suggestions.map((p, idx) => (
                 <div
                   key={p.placeId}
                   onClick={() => this.save(p)}
-                  style={styles.venueSuggestion}
+                  style={styles.placeSuggestion}
                 >
 
                   <i class="fa fa-map-marker"></i> &nbsp;
@@ -140,19 +124,21 @@ class Venue extends React.Component {
               ))}
             </div>
           )}
-          {this.props.event && this.props.event.venues.length > 0 && this.props.event.venues.map((v) => (
-            <Map place={v} onDelete={this.delete} />
-          ))}
+          {
+            this.props.user && this.props.user.addresses && this.props.user.addresses.length > 0 && this.props.user.addresses.map((p) => (
+              <Map place={p} onDelete={this.delete} />
+            ))
+          }
         </div>
       </div>
     );
   }
 }
 
-Venue.propTypes = {
+Place.propTypes = {
   inputProps: (props, propName) => {
     const inputProps = props[propName];
   },
 };
 
-export default Venue;
+export default Place;
