@@ -12,8 +12,9 @@ const styles = {
 class Map extends React.Component {
 	constructor(props) {
 		super(props);
-		// console.log('map props:' + JSON.stringify(props));
-		// console.log('map props place:' + JSON.stringify(props.place));
+		console.log('map props:' + JSON.stringify(props));
+		console.log('map props place:' + JSON.stringify(props.place));
+		console.log('map props place.address:' + JSON.stringify(props.place.address));
 	}
 	componentDidMount() {
 		const map = new google.maps.Map(document.getElementById('map-' + this.props.place._id), {

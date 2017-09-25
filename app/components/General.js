@@ -6,6 +6,7 @@ import Modal from './Modal';
 import Layout from './Layout';
 import Place from './PlaceContainer';
 import Email from './Email';
+import Address from './Address';
 
 const General = ({
   user,
@@ -305,9 +306,10 @@ const General = ({
           <Place user={user} />
 
           <ul className="list-group mt-2">
-            {user && user.addresses && user.addresses.map((a) => (
-              <Address address={a} />
-            ))
+            {
+              user && user.addresses && user.addresses.map((a) => (
+                <Address address={a} />
+              ))
             }
           </ul>
 

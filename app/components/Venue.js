@@ -70,9 +70,9 @@ class Venue extends React.Component {
   }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
-      /* console.log('Venue place: ' + JSON.stringify(place));
+       console.log('Venue place: ' + JSON.stringify(place));
       console.log('Venue results[0]: ' + JSON.stringify(results[0]));
-      console.log('this.state.name: ' + this.state.name); */
+      console.log('this.state.name: ' + this.state.name); 
       // verify if a Venue name is set, otherwise use the address
       if (this.state.name.length < 1) this.state.name = place.title;
       results[0].name = this.state.name;

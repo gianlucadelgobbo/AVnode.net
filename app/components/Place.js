@@ -19,7 +19,7 @@ const styles = {
 class Place extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props:' +JSON.stringify(props));
+    console.log('Place props:' +JSON.stringify(props));
     this.state = {
       suggestions: [],
       name: ''
@@ -132,7 +132,6 @@ class Place extends React.Component {
                   onClick={() => this.save(p)}
                   style={styles.placeSuggestion}
                 >
-
                   <i class="fa fa-map-marker"></i> &nbsp;
                   {p.title}
                 </div>
