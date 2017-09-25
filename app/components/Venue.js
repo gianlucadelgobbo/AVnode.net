@@ -21,7 +21,8 @@ class Venue extends React.Component {
     super(props);
     console.log('Venue props:' + JSON.stringify(props));
     this.state = {
-      suggestions: []
+      suggestions: [],
+      name: ''
     };
     this.autocompleteCallback = this.autocompleteCallback.bind(this);
     this.delete = this.delete.bind(this);
@@ -69,10 +70,12 @@ class Venue extends React.Component {
   }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
-      console.log('Venue place: ' + JSON.stringify(place));
+      /* console.log('Venue place: ' + JSON.stringify(place));
       console.log('Venue results[0]: ' + JSON.stringify(results[0]));
-      
-      results[0].name = place.title;
+      console.log('this.state.name: ' + this.state.name); */
+      // verify if a Venue name is set, otherwise use the address
+      if (this.state.name.length < 1) this.state.name = place.title;
+      results[0].name = this.state.name;
       this.props.complete(this.props.event._id, results[0]);
       this.reset();
     });
@@ -107,13 +110,17 @@ class Venue extends React.Component {
               className="form-control"
               name="name"
               component="input"
-              placeholder='Venue name'
+              placeholder='Input a new Venue name'
+              onChange={(event, newValue, previousValue) => {
+                // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
+                this.state.name = newValue;
+              }}
           />
           <Field
             className="form-control"
             name="suggest-venue-for-event"
             component="input"
-            placeholder='Search for a venue address'
+            placeholder='Search for an address for this new Venue'
             {...inputProps}
           />
           {this.state.suggestions.length > 0 && (
