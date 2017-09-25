@@ -18,11 +18,11 @@ class Map extends React.Component {
 	componentDidMount() {
 		const map = new google.maps.Map(document.getElementById('map-' + this.props.place._id), {
 			zoom: 12,
-			center: this.props.place.geometry.location
+			center: this.props.place.address.geometry.location
 		});
 		// console.log('map-' + this.props.place._id + ' address: ' + JSON.stringify(this.props.place.address));
 		const marker = new google.maps.Marker({
-			position: this.props.place.geometry.location,
+			position: this.props.place.address.geometry.location,
 			map: map,
 			title: this.props.place.address.formatted_address
 		});
