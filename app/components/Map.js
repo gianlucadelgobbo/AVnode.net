@@ -16,12 +16,13 @@ class Map extends React.Component {
 		console.log('map props place:' + JSON.stringify(props.place));
 		console.log('map props place.address:' + JSON.stringify(props.place.address));
 	}
+
 	componentDidMount() {
 		const map = new google.maps.Map(document.getElementById('map-' + this.props.place._id), {
 			zoom: 12,
 			center: this.props.place.address.geometry.location
 		});
-		// console.log('map-' + this.props.place._id + ' address: ' + JSON.stringify(this.props.place.address));
+		console.log('map-' + this.props.place._id + ' address: ' + JSON.stringify(this.props.place.address));
 		const marker = new google.maps.Marker({
 			position: this.props.place.address.geometry.location,
 			map: map,
@@ -35,7 +36,7 @@ class Map extends React.Component {
 				<div className='card-block'>
 					<p className='card-text'>
 						<div className="pull-left">
-							{this.props.place.name}
+							{this.props.place.name} : {this.props.place.address.formatted_address}
 						</div>
 						<div className="pull-right">
 							<button

@@ -1,7 +1,6 @@
 import React, { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Map from './Map';
 
 const styles = {
   placeSuggestionBox: {
@@ -19,7 +18,6 @@ const styles = {
 class Place extends React.Component {
   constructor(props) {
     super(props);
-    console.log('Place props:' +JSON.stringify(props));
     this.state = {
       suggestions: [],
       name: ''
@@ -70,9 +68,6 @@ class Place extends React.Component {
   }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
-      /* console.log('Place place: ' + JSON.stringify(place));
-      console.log('Place results[0]: ' + JSON.stringify(results[0]));
-      console.log('this.state.name: ' + this.state.name); */
       // verify if a Place name is set, otherwise use the address
       if (this.state.name.length < 1) this.state.name = place.title;
       results[0].name = this.state.name;      
@@ -109,7 +104,7 @@ class Place extends React.Component {
               className="form-control"
               name="name"
               component="input"
-              placeholder='Input a new Place name (Home or Work or ?)'
+              placeholder='Input a new Address name (Home or Work or ?)'
               onChange={(event, newValue, previousValue) => {
                 // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
                 this.state.name = newValue;
@@ -119,7 +114,7 @@ class Place extends React.Component {
             className="form-control"
             name="suggest-place-for-user"
             component="input"
-            placeholder='Search for an address for this new Place'
+            placeholder='Search for an address (format: street number, street ...)'
             {...inputProps}
           />
           {this.state.suggestions.length > 0 && (
@@ -138,11 +133,6 @@ class Place extends React.Component {
               ))}
             </div>
           )}
-          {
-            this.props.user && this.props.user.addresses && this.props.user.addresses.length > 0 && this.props.user.addresses.map((p) => (
-              <Map place={p} onDelete={this.delete} />
-            ))
-          }
         </div>
       </div>
     );

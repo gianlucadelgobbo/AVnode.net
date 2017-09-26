@@ -53,7 +53,8 @@ class Venue extends React.Component {
 
   reset() {
     this.setState({
-      suggestions: []
+      suggestions: [],
+      name: ''
     });
   }
 
@@ -68,15 +69,53 @@ class Venue extends React.Component {
   delete(venueId) {
     this.props.delete(this.props.event._id, venueId);
   }
+
+  formatAddress(location, name) {
+		let street_number = '';
+		let route = '';
+		let postal_code = '';
+		let locality = '';
+		let administrative_area_level_1 = '';
+		let country = '';
+		console.log('formatAddress:' + JSON.stringify(location));
+		for (var i in location.address_components) {
+			if (location.address_components[i].types[0] == 'street_number') street_number = location.address_components[i].long_name;
+			if (location.address_components[i].types[0] == 'route') route = location.address_components[i].long_name;
+			if (location.address_components[i].types[0] == 'postal_code') postal_code = location.address_components[i].long_name;
+			if (location.address_components[i].types[0] == 'locality') locality = location.address_components[i].long_name;
+			if (location.address_components[i].types[0] == 'administrative_area_level_1') administrative_area_level_1 = location.address_components[i].long_name;
+			if (location.address_components[i].types[0] == 'country') country = location.address_components[i].long_name;
+		}
+
+		// BL TODO check if place_id is unique 
+		const address = {
+			formatted_address: location.formatted_address, // BL gmap response formatted_address, should not be updated to stay unique
+			street_number: street_number,
+			route: route,
+			postal_code: postal_code,
+			locality: locality,
+			administrative_area_level_1,
+			country: country,
+			geometry: location.geometry,
+			place_id: location.place_id,
+			name: name, // BL friendly name indexed for search
+			is_primary: true
+		};
+		return address;
+  }
+  
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
-       console.log('Venue place: ' + JSON.stringify(place));
-      console.log('Venue results[0]: ' + JSON.stringify(results[0]));
+      console.log('Venue place: ' + JSON.stringify(place));
+      console.log('Venue place.placeId: ' + place.placeId);
+      console.log('this.props.event._id: ' + this.props.event._id);
       console.log('this.state.name: ' + this.state.name); 
       // verify if a Venue name is set, otherwise use the address
+      console.log('Venue save place,status:' + status);
       if (this.state.name.length < 1) this.state.name = place.title;
       results[0].name = this.state.name;
-      this.props.complete(this.props.event._id, results[0]);
+      this.props.complete(this.props.event._id, this.formatAddress(results[0], this.state.name));
+      //this.props.complete(this.props.event._id, results[0]);
       this.reset();
     });
   }
@@ -112,7 +151,6 @@ class Venue extends React.Component {
               component="input"
               placeholder='Input a new Venue name'
               onChange={(event, newValue, previousValue) => {
-                // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
                 this.state.name = newValue;
               }}
           />
@@ -140,8 +178,8 @@ class Venue extends React.Component {
               ))}
             </div>
           )}
-          {this.props.event && this.props.event.venues.length > 0 && this.props.event.venues.map((v) => (
-            <Map place={v} onDelete={this.delete} />
+          {this.props.event && this.props.event.venues.length > 0 && this.props.event.venues.map((p) => (
+            <Map place={p} onDelete={this.delete} />
           ))}
         </div>
       </div>
