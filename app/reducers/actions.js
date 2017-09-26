@@ -820,6 +820,7 @@ export function addEventVenue(dispatch) {
         location: location
       }
     });
+    //console.log('addEventVenue, event:' + id + ' location:' + JSON.stringify(location) );
     return fetch(
       '/account/api/event/venue', {
         method: 'POST',
