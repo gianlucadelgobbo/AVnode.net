@@ -6,7 +6,6 @@ import {
   closePasswordModal,
   addUserProfileImage,
   addUserTeaserImage,
-  //addUserEmail,
   fetchCountries,
   editUser,
 } from '../reducers/actions';
@@ -24,7 +23,6 @@ const mapDispatchToProps = (dispatch) => ({
   closePasswordModal: dispatch(closePasswordModal),
   addUserProfileImage: dispatch(addUserProfileImage),
   addUserTeaserImage: dispatch(addUserTeaserImage),
-  //addUserEmail: dispatch(addUserEmail),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });

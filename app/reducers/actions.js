@@ -705,6 +705,7 @@ export function addUserTeaserImage(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
+    console.log(JSON.stringify(data));
     // fetch user before updating to check for email change
     let emailFound = false;
     data.emails.map((m) => {
@@ -736,13 +737,14 @@ export function editUser(dispatch) {
     // fetch user before updating to check if unique address
     let addressFound = false;
     let primary = true;
-    data.address = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
-    
+    // data.address = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
+    let inputAddress = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
+
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
       primary = false;
-      console.log('address exists? ' + data.address);
-      if (a.address === data.address) {
+      console.log('address exists? ' + inputAddress);
+      if (a.address === inputAddress) {
         // address in the form already exists in addresses
         addressFound = true;
         console.log('address found');
@@ -753,10 +755,10 @@ export function editUser(dispatch) {
       // init if first address
       if (!data.addresses) data.addresses = [];
       // verify data.address is valid and lat lng found
-      if (data.address && data.address.geometry) {
+      if (inputAddress && data.address.geometry) {
         // add the address to the array
         data.addresses.push({
-          address: data.address, // BL gmap response formatted_address, should be unique
+          address: inputAddress, // BL gmap response formatted_address, should be unique
           street_number: data.street_number,
           route: data.route,
           postal_code: data.postal_code,
@@ -765,8 +767,6 @@ export function editUser(dispatch) {
           country: data.country,
           geometry: data.location.geometry,
           place_id: data.location.place_id,
-          // lat: data.lat,
-          // lng: data.lng,
           is_primary: primary // only first address is primary for now
         });
       }
@@ -820,6 +820,7 @@ export function addEventVenue(dispatch) {
         location: location
       }
     });
+    //console.log('addEventVenue, event:' + id + ' location:' + JSON.stringify(location) );
     return fetch(
       '/account/api/event/venue', {
         method: 'POST',

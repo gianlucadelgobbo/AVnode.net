@@ -1,7 +1,6 @@
 import React, { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Map from './Map';
 
 const styles = {
   placeSuggestionBox: {
@@ -19,9 +18,9 @@ const styles = {
 class Place extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props:' +JSON.stringify(props.user.addresses));
     this.state = {
-      suggestions: []
+      suggestions: [],
+      name: ''
     };
     this.autocompleteCallback = this.autocompleteCallback.bind(this);
     this.delete = this.delete.bind(this);
@@ -69,6 +68,9 @@ class Place extends React.Component {
   }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
+      // verify if a Place name is set, otherwise use the address
+      if (this.state.name.length < 1) this.state.name = place.title;
+      results[0].name = this.state.name;      
       this.props.complete(this.props.user._id, results[0]);
       this.reset();
     });
@@ -78,8 +80,6 @@ class Place extends React.Component {
     const defaultInputProps = {
       type: "text",
     }
-    console.log('defaultInputProps:' +JSON.stringify(defaultInputProps));
-    console.log('this.props.inputProps:' +JSON.stringify(this.props.inputProps));
     return {
       ...defaultInputProps,
       ...this.props.inputProps,
@@ -101,10 +101,20 @@ class Place extends React.Component {
         </label>
         <div class="google-maps-places">
           <Field
+              className="form-control"
+              name="name"
+              component="input"
+              placeholder='Input a new Address name (Home or Work or ?)'
+              onChange={(event, newValue, previousValue) => {
+                // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
+                this.state.name = newValue;
+              }}
+          />
+          <Field
             className="form-control"
             name="suggest-place-for-user"
             component="input"
-            placeholder='Search for a place'
+            placeholder='Search for an address (format: street number, street ...)'
             {...inputProps}
           />
           {this.state.suggestions.length > 0 && (
@@ -117,18 +127,12 @@ class Place extends React.Component {
                   onClick={() => this.save(p)}
                   style={styles.placeSuggestion}
                 >
-
                   <i class="fa fa-map-marker"></i> &nbsp;
                   {p.title}
                 </div>
               ))}
             </div>
           )}
-          {
-            this.props.user && this.props.user.addresses && this.props.user.addresses.length > 0 && this.props.user.addresses.map((p) => (
-              <Map place={p} onDelete={this.delete} />
-            ))
-          }
         </div>
       </div>
     );

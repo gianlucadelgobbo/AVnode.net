@@ -5,8 +5,8 @@ import ImageDropzone from './ImageDropzone';
 import Modal from './Modal';
 import Layout from './Layout';
 import Place from './PlaceContainer';
-import Address from './Address';
 import Email from './Email';
+import Address from './Address';
 
 const General = ({
   user,
@@ -304,121 +304,15 @@ const General = ({
           </legend>
         
           <Place user={user} />
-          
-          <div className="row">
-            <div className="col-md-3 form-group">
-              <label htmlFor="street_number">
-                <FormattedMessage
-                  id="user.edit.form.label.street_number"
-                  defaultMessage="Street Number"
-                />
-              </label>
-              <Field
-                className="form-control"
-                name="street_number"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.street_number.default',
-                  defaultMessage: '1'
-                })}
-              />
-            </div>
-            <div className="col-md-9 form-group">
-              <label htmlFor="route">
-                <FormattedMessage
-                  id="user.edit.form.label.route"
-                  defaultMessage="Street"
-                />
-              </label>
-              <Field
-                className="form-control"
-                name="route"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.route.default',
-                  defaultMessage: 'avenue...'
-                })}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-3 form-group">
-              <label htmlFor="postal_code">
-                <FormattedMessage
-                  id="user.edit.form.label.postal_code"
-                  defaultMessage="Postal code"
-                />
-              </label>
-              <Field
-                className="form-control"
-                name="postal_code"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.postal_code.default',
-                  defaultMessage: 'zip'
-                })}
-              />
-            </div>
-            <div className="col-md-9 form-group">
-              <label htmlFor="locality">
-                <FormattedMessage
-                  id="user.edit.form.label.locality"
-                  defaultMessage="Locality"
-                />
-              </label>
-              <Field
-                className="form-control"
-                name="locality"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.locality.default',
-                  defaultMessage: 'city'
-                })}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-9 form-group">
-              <label htmlFor="administrative_area_level_1">
-                <FormattedMessage
-                  id="user.edit.form.label.administrative_area_level_1"
-                  defaultMessage="Region"
-                />
-              </label>
-              <Field
-                className="form-control"
-                name="administrative_area_level_1"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.administrative_area_level_1.default',
-                  defaultMessage: 'region'
-                })}
-              />
-            </div>
-            <div className="col-md-3 form-group">
-              <label htmlFor="country">
-                <FormattedMessage
-                  id="user.edit.form.label.country"
-                  defaultMessage="Country"
-                />
-              </label>
-              <Field
-                className="form-control"
-                name="country"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.country.default',
-                  defaultMessage: 'country'
-                })}
-              />
-            </div>
-            <ul className="list-group mt-2">
-              {user && user.addresses && user.addresses.map((a) => (
+
+          <ul className="list-group mt-2">
+            {
+              user && user.addresses && user.addresses.map((a) => (
                 <Address address={a} />
               ))
-              }
-            </ul>
-          </div>
+            }
+          </ul>
+
         </fieldset>
 
         <fieldset className="form-group">
