@@ -70,7 +70,7 @@ block content
         each venue in event.venues
           .card
             iframe.card-img-top.img-fluid(
-              src=`https://www.google.com/maps/embed/v1/place?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&q=${venue.address}`
+              src=`https://www.google.com/maps/embed/v1/place?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&q=${venue.address.formatted_address}`
               width="100%"
               height="250"
               frameborder="0"
@@ -79,8 +79,8 @@ block content
             )
             .card-block
               h6.text-muted.card-title=__('Venue')
-              h5.card-subtitle.mb-3=venue.address
-              a.btn.btn-primary(target="_blank", href='https://maps.google.com?q=' + encodeURIComponent(venue.address))=__('directions')
+              h5.card-subtitle.mb-3=venue.address.name + ' : ' + venue.address.formatted_address
+              a.btn.btn-primary(target="_blank", href='https://maps.google.com?q=' + encodeURIComponent(venue.address.formatted_address))=__('directions')
 
 
       if event.organizers.length > 0
