@@ -1,41 +1,5 @@
 [
   {
-    "id": "user.edit.form.label.email.badge.primary",
-    "defaultMessage": "Primary"
-  },
-  {
-    "id": "user.edit.form.label.email.badge.confirmed",
-    "defaultMessage": "Confirmed"
-  },
-  {
-    "id": "user.edit.form.label.email.badge.unconfirmed",
-    "defaultMessage": "Unconfirmed"
-  },
-  {
-    "id": "user.edit.form.label.email.badge.public",
-    "defaultMessage": "Public"
-  },
-  {
-    "id": "user.edit.form.label.email.badge.private",
-    "defaultMessage": "Private"
-  },
-  {
-    "id": "user.edit.form.label.email.action.primary",
-    "defaultMessage": "Make it primary"
-  },
-  {
-    "id": "user.edit.form.label.email.action.private",
-    "defaultMessage": "Make it private"
-  },
-  {
-    "id": "user.edit.form.label.email.action.public",
-    "defaultMessage": "Make it public"
-  },
-  {
-    "id": "user.edit.form.label.email.action.delete",
-    "defaultMessage": "Delete"
-  },
-  {
     "id": "user.edit.form.fieldset.general",
     "defaultMessage": "General"
   },
@@ -110,30 +74,6 @@
   {
     "id": "user.edit.form.fieldset.address",
     "defaultMessage": "Address"
-  },
-  {
-    "id": "user.edit.form.label.street_number",
-    "defaultMessage": "Street Number"
-  },
-  {
-    "id": "user.edit.form.label.route",
-    "defaultMessage": "Street"
-  },
-  {
-    "id": "user.edit.form.label.postal_code",
-    "defaultMessage": "Postal code"
-  },
-  {
-    "id": "user.edit.form.label.locality",
-    "defaultMessage": "Locality"
-  },
-  {
-    "id": "user.edit.form.label.administrative_area_level_1",
-    "defaultMessage": "Region"
-  },
-  {
-    "id": "user.edit.form.label.country",
-    "defaultMessage": "Country"
   },
   {
     "id": "user.edit.form.fieldset.email",
