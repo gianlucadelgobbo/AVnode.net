@@ -44,7 +44,7 @@ class Map extends React.Component {
 				<div class='card-block'>
 					<p class='card-text'>
           <div class="pull-left">
-            {this.props.venue.name} : {this.props.venue.address.formatted_address}
+            {this.props.venue.address.name} : {this.props.venue.address.formatted_address}
           </div>
           <div class="pull-right">
             <button

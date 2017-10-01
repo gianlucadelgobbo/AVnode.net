@@ -1,7 +1,7 @@
 import { connect } from 'preact-redux';
 import Place from './Place';
 
-import { addPlace, removePlace } from '../reducers/actions';
+import { addPlace, removePlace } from '../../reducers/actions';
 
 const mapStateToProps = ({user}) => {
   return {

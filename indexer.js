@@ -14,7 +14,7 @@ const indexHelper = {
 };
 // BL why plural, should be crew,etc as seen in the es files?
 const TYPES = [
-  'users', 'events', 'performances', 'crews', 'addresses'
+  'users', 'events', 'performances', 'crews', 'venues'
 ];
 
 const index = (doc, done) => {
