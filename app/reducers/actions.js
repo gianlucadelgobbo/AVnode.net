@@ -79,7 +79,7 @@ const fetch = (path, options = {}, json = true) => {
       'Content-Type': 'application/json'
     };
   }
-
+  console.log('fetch' + JSON.stringify(path) + ' ' +JSON.stringify(opts));
   return isomorphicFetch(path, opts)
     .then(response => response.json());
 };
