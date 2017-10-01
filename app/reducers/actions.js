@@ -699,24 +699,26 @@ export function editUser(dispatch) {
     console.log(JSON.stringify(data));
     console.log('data.link:' +data.link);
     // link, verify unique
-    let linkFound = false;
-    let primaryLink = true;
-    data.links.map((l) => {
-      primaryLink = false;
-      if (l.url === data.link) {
-        // url in the form already exists in links
-        linkFound = true;
-      }
-    });
-    // in case of new link, add it to the links
-    if (!linkFound) {
-      console.log('data.link:' +data.link);
-      data.links.push({url:data.link,
-        is_primary: primaryLink,
-        is_confirmed: false,
-        is_public: false,
-        type: data.linktype
+    if (data.link) {
+      let linkFound = false;
+      let primaryLink = true;
+      data.links.map((l) => {
+        primaryLink = false;
+        if (l.url === data.link) {
+          // url in the form already exists in links
+          linkFound = true;
+        }
       });
+      // in case of new link, add it to the links
+      if (!linkFound) {
+        console.log('data.link:' +data.link);
+        data.links.push({url:data.link,
+          is_primary: primaryLink,
+          is_confirmed: false,
+          is_public: false,
+          type: data.linktype
+        });
+      }
     }
 
     // fetch user before updating to check for email change
@@ -750,7 +752,6 @@ export function editUser(dispatch) {
     // fetch user before updating to check if unique address
     let addressFound = false;
     let primaryAddress = true;
-    // data.address = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
     let inputAddress = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
 
     data.addresses.map((a) => {
@@ -809,10 +810,10 @@ export function changeLanguage(dispatch) {
     });
   };
 }
-// links
+// linktypes
 export function fetchLinkTypes(dispatch) {
   return () => {
-    return fetch('/account/api/links')
+    return fetch('/account/api/linktypes')
     .then(json => (
       dispatch({
         type: RESPONSE_LINKTYPES,
