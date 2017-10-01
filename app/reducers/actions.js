@@ -6,6 +6,7 @@ export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
 export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
+export const RESPONSE_LINKTYPES = 'RESPONSE_LINKTYPES';
 export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
 export const REQUEST_ADD_USERPROFILEIMAGE = 'REQUEST_ADD_USERPROFILEIMAGE';
 export const REQUEST_ADD_USERTEASERIMAGE = 'REQUEST_ADD_USERTEASERIMAGE';
@@ -15,6 +16,8 @@ export const OPEN_PASSWORD_MODAL = 'OPEN_PASSWORD_MODAL';
 export const CLOSE_PASSWORD_MODAL = 'CLOSE_PASSWORD_MODAL';
 export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_DELETE_USER_PLACE = 'REQUEST_DELETE_USER_PLACE';
+export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
+export const REQUEST_DELETE_USER_LINK = 'REQUEST_DELETE_USER_LINK';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -691,21 +694,31 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
-/*export function addUserEmail(dispatch) {
-  return dispatch => {
-    dispatch({
-      type: REQUEST_ADD_USEREMAIL
-    });
-    return fetch(`/account/api/user/${userId}/email/${addedEmail}`, {
-      method: 'PUT',
-    })
-    .then(json => dispatch(gotUser(json)));
-  };
-} */
-
 export function editUser(dispatch) {
   return data => {
     console.log(JSON.stringify(data));
+    console.log('data.link:' +data.link);
+    // link, verify unique
+    let linkFound = false;
+    let primaryLink = true;
+    data.links.map((l) => {
+      primaryLink = false;
+      if (l.url === data.link) {
+        // url in the form already exists in links
+        linkFound = true;
+      }
+    });
+    // in case of new link, add it to the links
+    if (!linkFound) {
+      console.log('data.link:' +data.link);
+      data.links.push({url:data.link,
+        is_primary: primaryLink,
+        is_confirmed: false,
+        is_public: false,
+        type: data.linktype
+      });
+    }
+
     // fetch user before updating to check for email change
     let emailFound = false;
     data.emails.map((m) => {
@@ -736,13 +749,13 @@ export function editUser(dispatch) {
 
     // fetch user before updating to check if unique address
     let addressFound = false;
-    let primary = true;
+    let primaryAddress = true;
     // data.address = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
     let inputAddress = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
 
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
-      primary = false;
+      primaryAddress = false;
       console.log('address exists? ' + inputAddress);
       if (a.address === inputAddress) {
         // address in the form already exists in addresses
@@ -754,8 +767,8 @@ export function editUser(dispatch) {
       console.log('address not found');
       // init if first address
       if (!data.addresses) data.addresses = [];
-      // verify data.address is valid and lat lng found
-      if (inputAddress && data.address.geometry) {
+      // verify data.location is valid and lat lng found
+      if (inputAddress && data.location && data.location.geometry) {
         // add the address to the array
         data.addresses.push({
           address: inputAddress, // BL gmap response formatted_address, should be unique
@@ -767,7 +780,7 @@ export function editUser(dispatch) {
           country: data.country,
           geometry: data.location.geometry,
           place_id: data.location.place_id,
-          is_primary: primary // only first address is primary for now
+          is_primary: primaryAddress // only first address is primary for now
         });
       }
     }
@@ -796,7 +809,21 @@ export function changeLanguage(dispatch) {
     });
   };
 }
-
+// links
+export function fetchLinkTypes(dispatch) {
+  return () => {
+    return fetch('/account/api/links')
+    .then(json => (
+      dispatch({
+        type: RESPONSE_LINKTYPES,
+        payload: {
+          linktypes: json
+        }
+      })
+    ));
+  };
+}
+// countries
 export function fetchCountries(dispatch) {
   return () => {
     return fetch('/account/api/countries')
@@ -846,6 +873,7 @@ export function removeEventVenue(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
+
 // Places
 export function addPlace(dispatch) {
   return (id, location) => {
@@ -856,7 +884,6 @@ export function addPlace(dispatch) {
         location: location
       }
     });
-    console.log('addPlace' + id + JSON.stringify(location))
     return fetch(
       '/account/api/user/place', {
         method: 'POST',
@@ -877,6 +904,42 @@ export function removePlace(dispatch) {
     });
     return fetch(
       `/account/api/user/${userId}/place/${placeId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+// Links
+export function addLink(dispatch) {
+  return (id, link) => {
+    dispatch({
+      type: REQUEST_ADD_USER_LINK,
+      payload: {
+        user: id,
+        link: link
+      }
+    });
+    return fetch(
+      '/account/api/user/link', {
+        method: 'POST',
+        body: JSON.stringify({id, link })
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+export function removeLink(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_DELETE_USER_LINK,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/link/${linkId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));

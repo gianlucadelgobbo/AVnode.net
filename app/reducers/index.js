@@ -7,6 +7,7 @@ import {
   GOT_USER,
   EDIT_USER,
   CHANGE_LANGUAGE,
+  RESPONSE_LINKTYPES,
   RESPONSE_COUNTRIES,
   REQUEST_ADD_USERPROFILEIMAGE,
   REQUEST_ADD_USERTEASERIMAGE,
@@ -249,7 +250,11 @@ const user = (state = initialValues, action) => {
         language: action.payload.language
       })
     });
-  case RESPONSE_COUNTRIES:
+    case RESPONSE_LINKTYPES:
+    return Object.assign({}, state, {
+      _linktypes: action.payload.linktypes
+    });  
+    case RESPONSE_COUNTRIES:
     return Object.assign({}, state, {
       _countries: action.payload.countries
     });

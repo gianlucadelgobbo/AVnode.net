@@ -4,9 +4,10 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import ImageDropzone from './ImageDropzone';
 import Modal from './Modal';
 import Layout from './Layout';
-import Place from './PlaceContainer';
-import Email from './Email';
-import Address from './Address';
+import Place from './place/PlaceContainer';
+import Address from './place/Address';
+import Email from './emails/Email';
+import Link from './link/Link';
 
 const General = ({
   user,
@@ -19,6 +20,7 @@ const General = ({
   addUserTeaserImage,
   handleSubmit,
   saveProfile,
+  fetchLinkTypes,
   fetchCountries
   }) => {
 
@@ -32,6 +34,9 @@ const General = ({
 
   if (!user._countries) {
     fetchCountries();
+  }
+  if (!user._linktypes) {
+    fetchLinkTypes();
   }
 
   return (
@@ -161,7 +166,7 @@ const General = ({
                   className="form-control custom-select"
                   name="citizenship"
                   component="select"
-                  value={user.gender}
+                  value={user.citizenship}
                 >
                   <option value="">
                     <FormattedMessage
@@ -302,7 +307,7 @@ const General = ({
               defaultMessage="Address"
             />
           </legend>
-        
+
           <Place user={user} />
 
           <ul className="list-group mt-2">
@@ -312,7 +317,81 @@ const General = ({
               ))
             }
           </ul>
+        </fieldset>
 
+        <fieldset className="form-group">
+          <legend>
+            <FormattedMessage
+              id="user.edit.form.fieldset.links"
+              defaultMessage="Links"
+            />
+          </legend>
+
+          <div className="form-group">
+            <label htmlFor="link">
+              <FormattedMessage
+                id="user.edit.form.label.addlink"
+                defaultMessage="Add link"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control"
+                name="link"
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'user.edit.form.label.link.placeholder',
+                  defaultMessage: 'https://www...'
+                })}
+              />
+              
+            </div>
+
+            <div className="col-md-6 form-group">
+              <label htmlFor="linktype">
+                <FormattedMessage
+                  id="user.edit.form.label.linktype"
+                  defaultMessage="Link type"
+                />
+              </label>
+              {user._linktypes ?
+                <Field
+                  className="form-control custom-select"
+                  name="linktype"
+                  component="select"
+                  value={user.linktype}
+                >
+                  <option value="">
+                    <FormattedMessage
+                      id="user.edit.form.label.linktype.empty"
+                      defaultMessage="Please select"
+                    />
+                  </option>
+                  {user._linktypes.map((c) => (
+                    <option value={c.key.toLowerCase()}>{c.name}</option>
+                  ))
+                  }
+                  { /*  */}
+                </Field> :
+                <p>Loading a link types…</p>
+              }
+            </div>
+
+
+            <label>
+              <FormattedMessage
+                id="user.edit.form.label.link"
+                defaultMessage="Manage your links"
+              />
+            </label>
+            <ul className="list-group mt-2">
+              {
+                user && user.links && user.links.map((l) => (
+                  <Link link={l} />
+                ))
+              }
+            </ul>
+          </div>
         </fieldset>
 
         <fieldset className="form-group">
