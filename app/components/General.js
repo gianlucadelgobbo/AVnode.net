@@ -327,27 +327,27 @@ const General = ({
             />
           </legend>
 
-          <div className="form-group">
-            <label htmlFor="link">
-              <FormattedMessage
-                id="user.edit.form.label.addlink"
-                defaultMessage="Add link"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="link"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.link.placeholder',
-                  defaultMessage: 'https://www...'
-                })}
-              />
-              
+          <div className="row">
+            <div className="col-md-9 form-group">
+              <label htmlFor="link">
+                <FormattedMessage
+                  id="user.edit.form.label.addlink"
+                  defaultMessage="Add link"
+                />
+              </label>
+              <div className="input-group">
+                <Field
+                  className="form-control"
+                  name="link"
+                  component="input"
+                  placeholder={intl.formatMessage({
+                    id: 'user.edit.form.label.link.placeholder',
+                    defaultMessage: 'https://www...'
+                  })}
+                />
+              </div>
             </div>
-
-            <div className="col-md-6 form-group">
+            <div className="col-md-3 form-group">
               <label htmlFor="linktype">
                 <FormattedMessage
                   id="user.edit.form.label.linktype"
@@ -361,7 +361,7 @@ const General = ({
                   component="select"
                   value={user.linktype}
                 >
-                  <option value="">
+                  <option value="www">
                     <FormattedMessage
                       id="user.edit.form.label.linktype.empty"
                       defaultMessage="Please select"
@@ -376,201 +376,196 @@ const General = ({
                 <p>Loading a link types…</p>
               }
             </div>
-
-
-            <label>
-              <FormattedMessage
-                id="user.edit.form.label.link"
-                defaultMessage="Manage your links"
-              />
-            </label>
-            <ul className="list-group mt-2">
-              {
-                user && user.links && user.links.map((l) => (
-                  <Link link={l} />
-                ))
-              }
-            </ul>
           </div>
+
+        <label>
+          <FormattedMessage
+            id="user.edit.form.label.link"
+            defaultMessage="Manage your links"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            user && user.links && user.links.map((l) => (
+              <Link link={l} />
+            ))
+          }
+        </ul>
         </fieldset>
 
-        <fieldset className="form-group">
-          <legend>
+      <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="user.edit.form.fieldset.email"
+            defaultMessage="Emails"
+          />
+        </legend>
+
+        <div className="form-group">
+          <label htmlFor="email">
             <FormattedMessage
-              id="user.edit.form.fieldset.email"
-              defaultMessage="Emails"
+              id="user.edit.form.label.email"
+              defaultMessage="Primary email, change to add new email"
             />
-          </legend>
+          </label>
+          <div className="input-group">
+            <Field
+              className="form-control"
+              name="email"
+              component="input"
+              placeholder={intl.formatMessage({
+                id: 'user.edit.form.label.email.placeholder',
+                defaultMessage: 'foo@example.com'
+              })}
+            />
 
-          <div className="form-group">
-            <label htmlFor="email">
-              <FormattedMessage
-                id="user.edit.form.label.email"
-                defaultMessage="Manage your email addresses"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="email"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.email.placeholder',
-                  defaultMessage: 'foo@example.com'
-                })}
-              />
-              <span className="input-group-btn">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                >
-                  <FormattedMessage
-                    id="user.edit.form.label.email.action.add"
-                    defaultMessage="Add new Email"
-                  />
-                </button>
-              </span>
-            </div>
-            <ul className="list-group mt-2">
-              {user && user.emails && user.emails.map((e) => (
-                <Email email={e} />
-              ))
-              }
-            </ul>
           </div>
-        </fieldset>
+          <label>
+            <FormattedMessage
+              id="user.edit.form.label.manageemail"
+              defaultMessage="Manage your email addresses"
+            />
+          </label>
+          <ul className="list-group mt-2">
+            {user && user.emails && user.emails.map((e) => (
+              <Email email={e} />
+            ))
+            }
+          </ul>
+        </div>
+      </fieldset>
 
-        <fieldset className="form-group">
-          <legend>
+      <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="user.edit.form.label.stagename"
+            defaultMessage="Stagename"
+          />
+        </legend>
+        <p>
+          Current stagename: <strong>{user.stagename}</strong><br />
+          <pre>{user.publicUrl}</pre> { /* FIXME */}
+        </p>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={openStagenameModal}
+        >
+          <FormattedMessage
+            id="user.edit.form.label.stagename.openModal"
+            defaultMessage="Change your stagename"
+          />
+        </button>
+        <Modal
+          title="Caution"
+          open={user._stagenameModalActive}
+          close={closeStagenameModal}
+          footer={
+            <button
+              type="button"
+              className="btn btn-danger"
+            >
+              <FormattedMessage
+                id="user.edit.form.label.stagename.change"
+                defaultMessage="Change"
+              />
+            </button>
+          }
+        >
+          <p>
+            <FormattedMessage
+              id="user.edit.form.label.stagename.change.disclaimer"
+              defaultMessage="Changing your stagename can have unintended side effects!"
+            />
+          </p>
+
+          <label htmlFor="stagename">
             <FormattedMessage
               id="user.edit.form.label.stagename"
               defaultMessage="Stagename"
             />
-          </legend>
-          <p>
-            Current stagename: <strong>{user.stagename}</strong><br />
-            <pre>{user.publicUrl}</pre> { /* FIXME */}
-          </p>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={openStagenameModal}
-          >
-            <FormattedMessage
-              id="user.edit.form.label.stagename.openModal"
-              defaultMessage="Change your stagename"
-            />
-          </button>
-          <Modal
-            title="Caution"
-            open={user._stagenameModalActive}
-            close={closeStagenameModal}
-            footer={
-              <button
-                type="button"
-                className="btn btn-danger"
-              >
-                <FormattedMessage
-                  id="user.edit.form.label.stagename.change"
-                  defaultMessage="Change"
-                />
-              </button>
-            }
-          >
-            <p>
-              <FormattedMessage
-                id="user.edit.form.label.stagename.change.disclaimer"
-                defaultMessage="Changing your stagename can have unintended side effects!"
-              />
-            </p>
+          </label>
+          <Field
+            className="form-control"
+            name="stagename"
+            component="input"
+            placeholder={intl.formatMessage({
+              id: 'user.edit.form.label.stagename.placeholder',
+              defaultMessage: 'ChangeMe'
+            })}
+            value={user.stagename}
+          />
+        </Modal>
+      </fieldset>
 
-            <label htmlFor="stagename">
-              <FormattedMessage
-                id="user.edit.form.label.stagename"
-                defaultMessage="Stagename"
-              />
-            </label>
-            <Field
-              className="form-control"
-              name="stagename"
-              component="input"
-              placeholder={intl.formatMessage({
-                id: 'user.edit.form.label.stagename.placeholder',
-                defaultMessage: 'ChangeMe'
-              })}
-              value={user.stagename}
-            />
-          </Modal>
-        </fieldset>
-
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
-              id="user.edit.form.label.images"
-              defaultMessage="Images"
-            />
-          </legend>
-
-          <div className="form-group">
-            <label htmlFor="profileImage">
-              <FormattedMessage
-                id="user.edit.form.label.profileImage"
-                defaultMessage="Profile Image"
-              />
-            </label>
-            {user && user.image ?
-              <div>
-                <img
-                  className="img-thumbnail mb-3"
-                  src={user.image.publicUrl}
-                  alt={`image of ${user.stagename}`}
-                />
-              </div> :
-              null
-            }
-            <ImageDropzone
-              imageUploadInProgress={(user && user.profileImageUploadInProgress)}
-              onDrop={onProfileImageDrop(user._id)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="image">
-              <FormattedMessage
-                id="user.edit.form.label.teaserImage"
-                defaultMessage="Teaser Image"
-              />
-            </label>
-            {user && user.teaserImage ?
-              <div>
-                <img
-                  className="img-thumbnail mb-3"
-                  src={user.teaserImage.publicUrl}
-                  alt={`image of ${user.stagename}`}
-                />
-              </div> :
-              null
-            }
-            <ImageDropzone
-              imageUploadInProgress={(user && user.teaserImageUploadInProgress)}
-              onDrop={onTeaserImageDrop(user._id)}
-            />
-          </div>
-        </fieldset>
+      <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="user.edit.form.label.images"
+            defaultMessage="Images"
+          />
+        </legend>
 
         <div className="form-group">
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
+          <label htmlFor="profileImage">
             <FormattedMessage
-              id="general.form.save"
-              defaultMessage="Save"
+              id="user.edit.form.label.profileImage"
+              defaultMessage="Profile Image"
             />
-          </button>
+          </label>
+          {user && user.image ?
+            <div>
+              <img
+                className="img-thumbnail mb-3"
+                src={user.image.publicUrl}
+                alt={`image of ${user.stagename}`}
+              />
+            </div> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(user && user.profileImageUploadInProgress)}
+            onDrop={onProfileImageDrop(user._id)}
+          />
         </div>
+
+        <div className="form-group">
+          <label htmlFor="image">
+            <FormattedMessage
+              id="user.edit.form.label.teaserImage"
+              defaultMessage="Teaser Image"
+            />
+          </label>
+          {user && user.teaserImage ?
+            <div>
+              <img
+                className="img-thumbnail mb-3"
+                src={user.teaserImage.publicUrl}
+                alt={`image of ${user.stagename}`}
+              />
+            </div> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(user && user.teaserImageUploadInProgress)}
+            onDrop={onTeaserImageDrop(user._id)}
+          />
+        </div>
+      </fieldset>
+
+      <div className="form-group">
+        <button
+          className="btn btn-primary"
+          type="submit"
+        >
+          <FormattedMessage
+            id="general.form.save"
+            defaultMessage="Save"
+          />
+        </button>
+      </div>
       </form>
-    </Layout>
+    </Layout >
   );
 };
 
