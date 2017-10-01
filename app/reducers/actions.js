@@ -8,6 +8,7 @@ export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const RESPONSE_LINKTYPES = 'RESPONSE_LINKTYPES';
 export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
+export const RESPONSE_LANGUAGES = 'RESPONSE_LANGUAGES';
 export const REQUEST_ADD_USERPROFILEIMAGE = 'REQUEST_ADD_USERPROFILEIMAGE';
 export const REQUEST_ADD_USERTEASERIMAGE = 'REQUEST_ADD_USERTEASERIMAGE';
 export const OPEN_STAGENAME_MODAL = 'OPEN_STAGENAME_MODAL';
@@ -79,7 +80,7 @@ const fetch = (path, options = {}, json = true) => {
       'Content-Type': 'application/json'
     };
   }
-  console.log('fetch' + JSON.stringify(path) + ' ' +JSON.stringify(opts));
+  // console.log('fetch' + JSON.stringify(path));
   return isomorphicFetch(path, opts)
     .then(response => response.json());
 };
@@ -833,6 +834,20 @@ export function fetchCountries(dispatch) {
         type: RESPONSE_COUNTRIES,
         payload: {
           countries: json
+        }
+      })
+    ));
+  };
+}
+// languages
+export function fetchLanguages(dispatch) {
+  return () => {
+    return fetch('/account/api/languages')
+    .then(json => (
+      dispatch({
+        type: RESPONSE_LANGUAGES,
+        payload: {
+          languages: json
         }
       })
     ));
