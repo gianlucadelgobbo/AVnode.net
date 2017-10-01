@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 const Link = ({ link }) => {
     return (
       <li className="list-group-item justify-content-between">
-        {link.url} : {link.type}
+        {link.type} : {link.url}
         {link.is_primary ?
           <span className="badge badge-primary">
             <FormattedMessage
