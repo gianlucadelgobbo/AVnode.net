@@ -15,6 +15,8 @@ export const OPEN_PASSWORD_MODAL = 'OPEN_PASSWORD_MODAL';
 export const CLOSE_PASSWORD_MODAL = 'CLOSE_PASSWORD_MODAL';
 export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_DELETE_USER_PLACE = 'REQUEST_DELETE_USER_PLACE';
+export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
+export const REQUEST_DELETE_USER_LINK = 'REQUEST_DELETE_USER_LINK';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -846,6 +848,7 @@ export function removeEventVenue(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
+
 // Places
 export function addPlace(dispatch) {
   return (id, location) => {
@@ -856,7 +859,6 @@ export function addPlace(dispatch) {
         location: location
       }
     });
-    console.log('addPlace' + id + JSON.stringify(location))
     return fetch(
       '/account/api/user/place', {
         method: 'POST',
@@ -877,6 +879,42 @@ export function removePlace(dispatch) {
     });
     return fetch(
       `/account/api/user/${userId}/place/${placeId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+// Links
+export function addLink(dispatch) {
+  return (id, link) => {
+    dispatch({
+      type: REQUEST_ADD_USER_LINK,
+      payload: {
+        user: id,
+        link: link
+      }
+    });
+    return fetch(
+      '/account/api/user/link', {
+        method: 'POST',
+        body: JSON.stringify({id, link })
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+export function removeLink(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_DELETE_USER_LINK,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/link/${linkId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));

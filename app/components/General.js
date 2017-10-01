@@ -4,9 +4,10 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import ImageDropzone from './ImageDropzone';
 import Modal from './Modal';
 import Layout from './Layout';
-import Place from './PlaceContainer';
+import Place from './place/PlaceContainer';
+import Address from './place/Address';
 import Email from './Email';
-import Address from './Address';
+import Links from './link/Links';
 
 const General = ({
   user,
@@ -312,7 +313,53 @@ const General = ({
               ))
             }
           </ul>
+        </fieldset>       
 
+        <fieldset className="form-group">
+          <legend>
+            <FormattedMessage
+              id="user.edit.form.fieldset.links"
+              defaultMessage="Links"
+            />
+          </legend>
+        
+          <div className="form-group">
+          <label htmlFor="link">
+            <FormattedMessage
+              id="user.edit.form.label.link"
+              defaultMessage="Manage your links"
+            />
+          </label>
+          <div className="input-group">
+            <Field
+              className="form-control"
+              name="link"
+              component="input"
+              placeholder={intl.formatMessage({
+                id: 'user.edit.form.label.link.placeholder',
+                defaultMessage: 'https://www...'
+              })}
+            />
+            <span className="input-group-btn">
+              <button
+                type="button"
+                className="btn btn-secondary"
+              >
+                <FormattedMessage
+                  id="user.edit.form.label.link.action.add"
+                  defaultMessage="Add new Link"
+                />
+              </button>
+            </span>
+          </div>
+          <ul className="list-group mt-2">
+            {
+              user && user.links && user.links.map((l) => (
+                <Links link={l} />
+              ))
+            }
+          </ul>
+          </div>
         </fieldset>
 
         <fieldset className="form-group">
