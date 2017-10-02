@@ -53,5 +53,6 @@
 	"Reset your password": "Reset your password",
 	"Retype password": "Retype password",
 	"Your password has been reset.": "Your password has been reset.",
-	"Account already exists.": "Account already exists."
+	"Account already exists.": "Account already exists.",
+	"Email %s not found.": "Email %s not found."
 }
