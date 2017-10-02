@@ -14,6 +14,20 @@ const Address = ({ address }) => {
           </span> :
           null
         }
+        {address.is_public ?
+          <span className="badge badge-default">
+            <FormattedMessage
+              id="user.edit.form.label.address.badge.public"
+              defaultMessage="Public"
+            />
+          </span> :
+          <span className="badge badge-default">
+            <FormattedMessage
+              id="user.edit.form.label.address.badge.private"
+              defaultMessage="Private"
+            />
+          </span>
+        }
       </li>
     );
   };
