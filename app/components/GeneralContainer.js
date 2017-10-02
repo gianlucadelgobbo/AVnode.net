@@ -7,7 +7,6 @@ import {
   addUserProfileImage,
   addUserTeaserImage,
   fetchLinkTypes,
-  fetchLanguages,
   fetchCountries,
   editUser,
 } from '../reducers/actions';
@@ -27,7 +26,6 @@ const mapDispatchToProps = (dispatch) => ({
   addUserTeaserImage: dispatch(addUserTeaserImage),
   saveProfile: dispatch(editUser),
   fetchLinkTypes: dispatch(fetchLinkTypes),
-  fetchLanguages: dispatch(fetchLanguages),
   fetchCountries: dispatch(fetchCountries)
 });
 
