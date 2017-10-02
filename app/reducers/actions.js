@@ -696,8 +696,6 @@ export function addUserTeaserImage(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
-    console.log(JSON.stringify(data));
-    console.log('data.link:' +data.link);
 
     // about, verify unique
     if (data.about) {
@@ -717,7 +715,7 @@ export function editUser(dispatch) {
       });
       // in case of new about, add it to the abouts
       if (!aboutFound) {
-        console.log('data.about:' +data.about);
+        if (!data.aboutlanguage) data.aboutlanguage = 'en';
         data.abouts.push({abouttext:data.about,
           is_primary: primaryAbout,
           lang: data.aboutlanguage,
