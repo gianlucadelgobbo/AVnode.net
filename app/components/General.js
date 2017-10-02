@@ -9,6 +9,7 @@ import Address from './place/Address';
 import Email from './emails/Email';
 import Link from './link/Link';
 import About from './about/About';
+const allLanguages = require('language-list')();
 
 const General = ({
   user,
@@ -21,7 +22,7 @@ const General = ({
   addUserTeaserImage,
   handleSubmit,
   saveProfile,
-  fetchLanguages,
+
   fetchLinkTypes,
   fetchCountries
   }) => {
@@ -41,11 +42,9 @@ const General = ({
     fetchLinkTypes();
   }
   if (!user._languages) {
-    // init
-    user._languages = [{'key':'fr','name':'fr'},{'key':'es','name':'es'},{'key':'it','name':'it'}];
-    // BL FIXME not working
-    fetchLanguages();
+    user._languages = allLanguages.getData();
   }
+  
 
   return (
     <Layout>
@@ -227,7 +226,7 @@ const General = ({
                 <label htmlFor="aboutlanguage">
                   <FormattedMessage
                     id="user.edit.form.label.aboutlanguage"
-                    defaultMessage="About Language"
+                    defaultMessage="Language"
                   />
                 </label>
                 {user._languages ?
@@ -240,11 +239,11 @@ const General = ({
                     <option value="en">
                       <FormattedMessage
                         id="user.edit.form.label.aboutlanguage.empty"
-                        defaultMessage="en"
+                        defaultMessage="English"
                       />
                     </option>
                     {user._languages.map((c) => (
-                      <option value={c.key}>{c.name}</option>
+                      <option value={c.code}>{c.language}</option>
                     ))
                     }
                     { /*  */}

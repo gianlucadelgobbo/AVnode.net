@@ -8,7 +8,6 @@ export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const RESPONSE_LINKTYPES = 'RESPONSE_LINKTYPES';
 export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
-export const RESPONSE_LANGUAGES = 'RESPONSE_LANGUAGES';
 export const REQUEST_ADD_USERPROFILEIMAGE = 'REQUEST_ADD_USERPROFILEIMAGE';
 export const REQUEST_ADD_USERTEASERIMAGE = 'REQUEST_ADD_USERTEASERIMAGE';
 export const OPEN_STAGENAME_MODAL = 'OPEN_STAGENAME_MODAL';
@@ -704,6 +703,9 @@ export function editUser(dispatch) {
     if (data.about) {
       let aboutFound = false;
       let primaryAbout = true;
+      // init if first about
+      if (!data.abouts) data.abouts = [];
+      // check existing abouts
       data.abouts.map((a) => {
         primaryAbout = false;
         if (a.lang === data.aboutlanguage) {
@@ -780,6 +782,8 @@ export function editUser(dispatch) {
     let primaryAddress = true;
     let inputAddress = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
 
+    // init if first address
+    if (!data.addresses) data.addresses = [];
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
       primaryAddress = false;
@@ -792,8 +796,6 @@ export function editUser(dispatch) {
     });
     if (!addressFound) {
       console.log('address not found');
-      // init if first address
-      if (!data.addresses) data.addresses = [];
       // verify data.location is valid and lat lng found
       if (inputAddress && data.location && data.location.geometry) {
         // add the address to the array
@@ -859,20 +861,6 @@ export function fetchCountries(dispatch) {
         type: RESPONSE_COUNTRIES,
         payload: {
           countries: json
-        }
-      })
-    ));
-  };
-}
-// languages
-export function fetchLanguages(dispatch) {
-  return () => {
-    return fetch('/account/api/languages')
-    .then(json => (
-      dispatch({
-        type: RESPONSE_LANGUAGES,
-        payload: {
-          languages: json
         }
       })
     ));
