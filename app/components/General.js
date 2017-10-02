@@ -43,6 +43,7 @@ const General = ({
   if (!user._languages) {
     // init
     user._languages = [{'key':'fr','name':'fr'},{'key':'es','name':'es'},{'key':'it','name':'it'}];
+    // BL FIXME not working
     fetchLanguages();
   }
 
