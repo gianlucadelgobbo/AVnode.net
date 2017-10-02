@@ -8,6 +8,7 @@ export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const RESPONSE_LINKTYPES = 'RESPONSE_LINKTYPES';
 export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
+export const RESPONSE_LANGUAGES = 'RESPONSE_LANGUAGES';
 export const REQUEST_ADD_USERPROFILEIMAGE = 'REQUEST_ADD_USERPROFILEIMAGE';
 export const REQUEST_ADD_USERTEASERIMAGE = 'REQUEST_ADD_USERTEASERIMAGE';
 export const OPEN_STAGENAME_MODAL = 'OPEN_STAGENAME_MODAL';
@@ -79,7 +80,7 @@ const fetch = (path, options = {}, json = true) => {
       'Content-Type': 'application/json'
     };
   }
-  console.log('fetch' + JSON.stringify(path) + ' ' +JSON.stringify(opts));
+  // console.log('fetch' + JSON.stringify(path));
   return isomorphicFetch(path, opts)
     .then(response => response.json());
 };
@@ -698,6 +699,29 @@ export function editUser(dispatch) {
   return data => {
     console.log(JSON.stringify(data));
     console.log('data.link:' +data.link);
+
+    // about, verify unique
+    if (data.about) {
+      let aboutFound = false;
+      let primaryAbout = true;
+      data.abouts.map((a) => {
+        primaryAbout = false;
+        if (a.lang === data.aboutlanguage) {
+          // about in the form already exists in abouts
+          aboutFound = true;
+        }
+      });
+      // in case of new about, add it to the abouts
+      if (!aboutFound) {
+        console.log('data.about:' +data.about);
+        data.abouts.push({abouttext:data.about,
+          is_primary: primaryAbout,
+          lang: data.aboutlanguage,
+          abouttext: data.about
+        });
+      }
+    }
+
     // link, verify unique
     if (data.link) {
       let linkFound = false;
@@ -833,6 +857,20 @@ export function fetchCountries(dispatch) {
         type: RESPONSE_COUNTRIES,
         payload: {
           countries: json
+        }
+      })
+    ));
+  };
+}
+// languages
+export function fetchLanguages(dispatch) {
+  return () => {
+    return fetch('/account/api/languages')
+    .then(json => (
+      dispatch({
+        type: RESPONSE_LANGUAGES,
+        payload: {
+          languages: json
         }
       })
     ));
