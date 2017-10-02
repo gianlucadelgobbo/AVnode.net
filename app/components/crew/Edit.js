@@ -14,7 +14,6 @@ import {
   removeCrewMember,
 } from '../../reducers/actions';
 import ImageDropzone from '../ImageDropzone';
-import About from '../about/About';
 
 const Member = injectIntl(({member, me, onDelete, intl}) => {
   const meLabel = intl.formatMessage({
