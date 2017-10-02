@@ -9,6 +9,7 @@ import Address from './place/Address';
 import Email from './emails/Email';
 import Link from './link/Link';
 import About from './about/About';
+
 const allLanguages = require('language-list')();
 
 const General = ({
