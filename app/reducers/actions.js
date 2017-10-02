@@ -709,6 +709,8 @@ export function editUser(dispatch) {
         if (a.lang === data.aboutlanguage) {
           // about in the form already exists in abouts
           aboutFound = true;
+          // update abouttext
+          a.abouttext = data.about;
         }
       });
       // in case of new about, add it to the abouts

@@ -41,10 +41,9 @@ const General = ({
     fetchLinkTypes();
   }
   if (!user._languages) {
-    user._languages = [];
+    // init
+    user._languages = [{'key':'fr','name':'fr'},{'key':'es','name':'es'},{'key':'it','name':'it'}];
     fetchLanguages();
-    console.log('fetchLanguages');
-    user._languages.push([{'key':'en','name':'en'},{'key':'fr','name':'fr'}]);
   }
 
   return (

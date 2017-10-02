@@ -5,6 +5,15 @@ const About = ({ about }) => {
     return (
       <li className="list-group-item justify-content-between">
         {about.lang} : {about.abouttext}
+        {about.is_primary ?
+          <span className="badge badge-primary">
+            <FormattedMessage
+              id="user.edit.form.label.address.badge.primary"
+              defaultMessage="Primary"
+            />
+          </span> :
+          null
+        }
       </li>
     );
   };
