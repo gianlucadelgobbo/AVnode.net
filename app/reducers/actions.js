@@ -699,6 +699,29 @@ export function editUser(dispatch) {
   return data => {
     console.log(JSON.stringify(data));
     console.log('data.link:' +data.link);
+
+    // about, verify unique
+    if (data.about) {
+      let aboutFound = false;
+      let primaryAbout = true;
+      data.abouts.map((a) => {
+        primaryAbout = false;
+        if (a.lang === data.aboutlanguage) {
+          // about in the form already exists in abouts
+          aboutFound = true;
+        }
+      });
+      // in case of new about, add it to the abouts
+      if (!aboutFound) {
+        console.log('data.about:' +data.about);
+        data.abouts.push({abouttext:data.about,
+          is_primary: primaryAbout,
+          lang: data.aboutlanguage,
+          abouttext: data.about
+        });
+      }
+    }
+
     // link, verify unique
     if (data.link) {
       let linkFound = false;

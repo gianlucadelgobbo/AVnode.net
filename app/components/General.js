@@ -41,7 +41,10 @@ const General = ({
     fetchLinkTypes();
   }
   if (!user._languages) {
+    user._languages = [];
     fetchLanguages();
+    console.log('fetchLanguages');
+    user._languages.push([{'key':'en','name':'en'},{'key':'fr','name':'fr'}]);
   }
 
   return (
@@ -234,14 +237,14 @@ const General = ({
                     component="select"
                     value={user.aboutlanguage}
                   >
-                    <option value="www">
+                    <option value="en">
                       <FormattedMessage
                         id="user.edit.form.label.aboutlanguage.empty"
-                        defaultMessage="Please select"
+                        defaultMessage="en"
                       />
                     </option>
                     {user._languages.map((c) => (
-                      <option value={c.key.toLowerCase()}>{c.name}</option>
+                      <option value={c.key}>{c.name}</option>
                     ))
                     }
                     { /*  */}
