@@ -18,7 +18,7 @@ import About from '../about/About';
 
 const allLanguages = require('language-list')();
 
-const Member = injectIntl(({member, me, onDelete, intl}) => {
+const Member = injectIntl(({ member, me, onDelete, intl }) => {
   const meLabel = intl.formatMessage({
     id: 'crew.edit.form.member.met',
     defaultMessage: 'Me'
@@ -27,12 +27,12 @@ const Member = injectIntl(({member, me, onDelete, intl}) => {
     <li className="list-group-item justify-content-between">
       <span>
         {`${member.stagename} `}
-        { (member._id === me) ?
+        {(member._id === me) ?
           <i className="badge badge-default badge-pill">{meLabel}</i>
           : null
         }
       </span>
-      { member.deletionInProgress ?
+      {member.deletionInProgress ?
         <button
           type="button"
           className="btn btn-danger disabled"
@@ -80,10 +80,14 @@ let CrewForm = props => {
     const file = files[0];
     return dispatch(addCrewTeaserImage(crewId, file));
   };
+
   if (!props._languages) {
-    console.log('TODO optimize load props._languages from user' )
-    props._languages = allLanguages.getData();
+    console.log('TODO optimize load props._languages from user')
+    props._languages = props.user._languages || allLanguages.getData();
+  } else {
+    console.log('props._languages already loaded!')
   }
+
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -116,12 +120,12 @@ let CrewForm = props => {
               defaultMessage="TeaserImage"
             />
           </label>
-          { crew && crew.teaserImage ?
+          {crew && crew.teaserImage ?
             <img
               className="img-thumbnail mb-3"
               src={crew.teaserImage.publicUrl}
               alt={`teaser image of ${crew.name}`}
-              /> :
+            /> :
             null
           }
           <ImageDropzone
@@ -137,12 +141,12 @@ let CrewForm = props => {
               defaultMessage="Image"
             />
           </label>
-          { crew && crew.image ?
+          {crew && crew.image ?
             <img
               className="img-thumbnail mb-3"
               src={crew.image.publicUrl}
               alt={`image of ${crew.name}`}
-              /> :
+            /> :
             null
           }
           <ImageDropzone
@@ -151,73 +155,69 @@ let CrewForm = props => {
           />
         </div>
 
-
-
-            <div className="row">
-              <div className="col-md-9 form-group">
-                <label htmlFor="about">
-                  <FormattedMessage
-                    id="crew.edit.form.label.addabout"
-                    defaultMessage="About"
-                  />
-                </label>
-                <div className="input-group">
-                  <Field
-                    className="form-control"
-                    name="about"
-                    component="textarea"
-                    rows="4"
-                    placeholder="About the crew"
-                    value={props.about}
-                  />
-                </div>
-              </div>
-              <div className="col-md-3 form-group">
-                <label htmlFor="aboutlanguage">
-                  <FormattedMessage
-                    id="crew.edit.form.label.aboutlanguage"
-                    defaultMessage="Language"
-                  />
-                </label>
-                {props._languages ?
-                  <Field
-                    className="form-control custom-select"
-                    name="aboutlanguage"
-                    component="select"
-                    value={props.aboutlanguage}
-                  >
-                    <option value="en">
-                      <FormattedMessage
-                        id="crew.edit.form.label.aboutlanguage.empty"
-                        defaultMessage="English"
-                      />
-                    </option>
-                    {props._languages.map((c) => (
-                      <option value={c.code}>{c.language}</option>
-                    ))
-                    }
-                    { /*  */}
-                  </Field> :
-                  <p>Loading languages…</p>
-                }
-              </div>
-            </div>
-
-            <label>
+        <div className="row">
+          <div className="col-md-9 form-group">
+            <label htmlFor="about">
               <FormattedMessage
-                id="crew.edit.form.label.about"
-                defaultMessage="Manage your About texts"
+                id="crew.edit.form.label.addabout"
+                defaultMessage="About"
               />
             </label>
-            <ul className="list-group mt-2">
-              {
-                crew && crew.abouts && crew.abouts.map((a) => (
-                  <About about={a} />
+            <div className="input-group">
+              <Field
+                className="form-control"
+                name="about"
+                component="textarea"
+                rows="4"
+                placeholder="About the crew"
+                value={props.about}
+              />
+            </div>
+          </div>
+          <div className="col-md-3 form-group">
+            <label htmlFor="aboutlanguage">
+              <FormattedMessage
+                id="crew.edit.form.label.aboutlanguage"
+                defaultMessage="Language"
+              />
+            </label>
+            {props._languages ?
+              <Field
+                className="form-control custom-select"
+                name="aboutlanguage"
+                component="select"
+                value={props.aboutlanguage}
+              >
+                <option value="en">
+                  <FormattedMessage
+                    id="crew.edit.form.label.aboutlanguage.empty"
+                    defaultMessage="English"
+                  />
+                </option>
+                {props._languages.map((c) => (
+                  <option value={c.code}>{c.language}</option>
                 ))
-              }
-            </ul>
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading languages…</p>
+            }
+          </div>
+        </div>
 
-
+        <label>
+          <FormattedMessage
+            id="crew.edit.form.label.about"
+            defaultMessage="Manage your About texts"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            crew && crew.abouts && crew.abouts.map((a) => (
+              <About about={a} />
+            ))
+          }
+        </ul>
 
         <div className="form-group">
           <label htmlFor="members">
@@ -227,13 +227,13 @@ let CrewForm = props => {
             />
           </label>
           <ul className="list-group">
-            { crew && crew.members && crew.members.map((m) => (
+            {crew && crew.members && crew.members.map((m) => (
               <Member
                 member={m}
                 me={props.user._id}
                 onDelete={removeMember(crew._id)(m)}
               />
-              ))
+            ))
             }
           </ul>
         </div>
@@ -253,10 +253,10 @@ let CrewForm = props => {
               id: 'crew.edit.form.label.suggestMembers',
               defaultMessage: 'Type to find users…'
             })}
-            onKeyUp={ findMember }
+            onKeyUp={findMember}
           />
           <div className="mt-1 list-group">
-            { user && user._memberSuggestionInProgress ?
+            {user && user._memberSuggestionInProgress ?
               <div className="list-group-item">
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
@@ -267,15 +267,15 @@ let CrewForm = props => {
               </div> :
               null
             }
-            { memberSuggestions.map((m) => (
+            {memberSuggestions.map((m) => (
               <button
                 type="button"
                 className="list-group-item list-group-item-action"
-                onClick={ addMember(props._id)(m) }
+                onClick={addMember(props._id)(m)}
               >
-                  {m.stagename} ({m.name})
+                {m.stagename} ({m.name})
                 </button>
-              ))
+            ))
             }
           </div>
         </div>
