@@ -20,6 +20,9 @@ import {
   removePerformancePerformer
 } from '../../reducers/actions';
 import ImageDropzone from '../ImageDropzone';
+import About from '../about/About';
+
+const allLanguages = require('language-list')();
 
 const Crew = injectIntl(({crew, onDelete, intl}) => {
   return (
@@ -131,6 +134,13 @@ let PerformanceForm = props => {
     return dispatch(addPerformanceTeaserImage(performanceId, file));
   };
 
+  if (!props._languages) {
+    console.log('TODO optimize load props._languages from user' )
+    props._languages = props.user._languages || allLanguages.getData();
+  } else {
+    console.log('props._languages already loaded!' )
+  }
+
   let videoLink; // FIXME
 
   return (
@@ -200,20 +210,71 @@ let PerformanceForm = props => {
           />
         </div>
 
-        <div className="form-group">
-        <label htmlFor="about">
-          <FormattedMessage
-            id="performance.edit.form.label.about"
-            defaultMessage="About"
-          />
-        </label>
-        <Field
-          className="form-control"
-          name="about"
-          component="textarea"
-          value={props.about}
-        />
-      </div>
+
+            <div className="row">
+              <div className="col-md-9 form-group">
+                <label htmlFor="about">
+                  <FormattedMessage
+                    id="performance.edit.form.label.addabout"
+                    defaultMessage="About"
+                  />
+                </label>
+                <div className="input-group">
+                  <Field
+                    className="form-control"
+                    name="about"
+                    component="textarea"
+                    rows="4"
+                    placeholder="About the performance"
+                    value={props.about}
+                  />
+                </div>
+              </div>
+              <div className="col-md-3 form-group">
+                <label htmlFor="aboutlanguage">
+                  <FormattedMessage
+                    id="performance.edit.form.label.aboutlanguage"
+                    defaultMessage="Language"
+                  />
+                </label>
+                {props._languages ?
+                  <Field
+                    className="form-control custom-select"
+                    name="aboutlanguage"
+                    component="select"
+                    value={props.aboutlanguage}
+                  >
+                    <option value="en">
+                      <FormattedMessage
+                        id="performance.edit.form.label.aboutlanguage.empty"
+                        defaultMessage="English"
+                      />
+                    </option>
+                    {props._languages.map((c) => (
+                      <option value={c.code}>{c.language}</option>
+                    ))
+                    }
+                    { /*  */}
+                  </Field> :
+                  <p>Loading languages…</p>
+                }
+              </div>
+            </div>
+
+            <label>
+              <FormattedMessage
+                id="performance.edit.form.label.about"
+                defaultMessage="Manage your About texts"
+              />
+            </label>
+            <ul className="list-group mt-2">
+              {
+                performance && performance.abouts && performance.abouts.map((a) => (
+                  <About about={a} />
+                ))
+              }
+            </ul>
+
       
       <div className="form-group">
           <label htmlFor="tech_art">

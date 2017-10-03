@@ -100,6 +100,32 @@ export function fetchUser() {
 }
 
 export function editEvent(data) {
+  // about, verify unique
+  if (data.about) {
+    let aboutFound = false;
+    let primaryAbout = true;
+    // init if first about
+    if (!data.abouts) data.abouts = [];
+    // check existing abouts
+    data.abouts.map((a) => {
+      primaryAbout = false;
+      if (a.lang === data.aboutlanguage) {
+        // about in the form already exists in abouts
+        aboutFound = true;
+        // update abouttext
+        a.abouttext = data.about;
+      }
+    });
+    // in case of new about, add it to the abouts
+    if (!aboutFound) {
+      if (!data.aboutlanguage) data.aboutlanguage = 'en';
+      data.abouts.push({
+        is_primary: primaryAbout,
+        lang: data.aboutlanguage,
+        abouttext: data.about
+      });
+    }
+  }
   return dispatch => {
     dispatch({
       type: REQUEST_EDIT_EVENT,
@@ -154,7 +180,7 @@ export function addEventImage(id, file) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -170,7 +196,7 @@ export function addEventTeaserImage(id, file) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -201,7 +227,7 @@ export function addEventPerformance(eventId, performanceId) {
     return fetch(`/account/api/event/${eventId}/performance/${performanceId}`, {
       method: 'PUT',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -217,7 +243,7 @@ export function removeEventPerformance(eventId, performanceId) {
     return fetch(`/account/api/event/${eventId}/performance/${performanceId}`, {
       method: 'DELETE',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -248,7 +274,7 @@ export function addEventOrganizer(eventId, organizerId) {
     return fetch(`/account/api/event/${eventId}/organizer/${organizerId}`, {
       method: 'PUT',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -264,7 +290,7 @@ export function removeEventOrganizer(eventId, organizerId) {
     return fetch(`/account/api/event/${eventId}/organizer/${organizerId}`, {
       method: 'DELETE',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -295,7 +321,7 @@ export function addEventOrganizingCrew(eventId, organizingCrewId) {
     return fetch(`/account/api/event/${eventId}/organizingcrew/${organizingCrewId}`, {
       method: 'PUT',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -311,7 +337,7 @@ export function removeEventOrganizingCrew(eventId, organizingCrewId) {
     return fetch(`/account/api/event/${eventId}/organizingcrew/${organizingCrewId}`, {
       method: 'DELETE',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -344,32 +370,32 @@ export function deleteCrew(id) {
 }
 
 export function editCrew(data) {
-      // about, verify unique
-      if (data.about) {
-        let aboutFound = false;
-        let primaryAbout = true;
-        // init if first about
-        if (!data.abouts) data.abouts = [];
-        // check existing abouts
-        data.abouts.map((a) => {
-          primaryAbout = false;
-          if (a.lang === data.aboutlanguage) {
-            // about in the form already exists in abouts
-            aboutFound = true;
-            // update abouttext
-            a.abouttext = data.about;
-          }
-        });
-        // in case of new about, add it to the abouts
-        if (!aboutFound) {
-          if (!data.aboutlanguage) data.aboutlanguage = 'en';
-          data.abouts.push({abouttext:data.about,
-            is_primary: primaryAbout,
-            lang: data.aboutlanguage,
-            abouttext: data.about
-          });
-        }
+  // about, verify unique
+  if (data.about) {
+    let aboutFound = false;
+    let primaryAbout = true;
+    // init if first about
+    if (!data.abouts) data.abouts = [];
+    // check existing abouts
+    data.abouts.map((a) => {
+      primaryAbout = false;
+      if (a.lang === data.aboutlanguage) {
+        // about in the form already exists in abouts
+        aboutFound = true;
+        // update abouttext
+        a.abouttext = data.about;
       }
+    });
+    // in case of new about, add it to the abouts
+    if (!aboutFound) {
+      if (!data.aboutlanguage) data.aboutlanguage = 'en';
+      data.abouts.push({
+        is_primary: primaryAbout,
+        lang: data.aboutlanguage,
+        abouttext: data.about
+      });
+    }
+  }
   return dispatch => {
     dispatch({
       type: REQUEST_EDIT_CREW,
@@ -411,7 +437,7 @@ export function addCrewMember(crewId, member) {
     return fetch(`/account/api/crew/${crewId}/member/${member.id}`, {
       method: 'PUT',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -427,7 +453,7 @@ export function removeCrewMember(crewId, member) {
     return fetch(`/account/api/crew/${crewId}/member/${member._id}`, {
       method: 'DELETE',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -443,7 +469,7 @@ export function addCrewImage(id, file) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -459,7 +485,7 @@ export function addCrewTeaserImage(id, file) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -492,6 +518,32 @@ export function deletePerformance(id) {
 }
 
 export function editPerformance(data) {
+  // about, verify unique
+  if (data.about) {
+    let aboutFound = false;
+    let primaryAbout = true;
+    // init if first about
+    if (!data.abouts) data.abouts = [];
+    // check existing abouts
+    data.abouts.map((a) => {
+      primaryAbout = false;
+      if (a.lang === data.aboutlanguage) {
+        // about in the form already exists in abouts
+        aboutFound = true;
+        // update abouttext
+        a.abouttext = data.about;
+      }
+    });
+    // in case of new about, add it to the abouts
+    if (!aboutFound) {
+      if (!data.aboutlanguage) data.aboutlanguage = 'en';
+      data.abouts.push({
+        is_primary: primaryAbout,
+        lang: data.aboutlanguage,
+        abouttext: data.about
+      });
+    }
+  }
   return dispatch => {
     dispatch({
       type: REQUEST_EDIT_PERFORMANCE,
@@ -518,7 +570,7 @@ export function addPerformanceImage(id, file) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -534,11 +586,11 @@ export function addPerformanceTeaserImage(id, file) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
-export function addPerformanceVideo({_id, video}) {
+export function addPerformanceVideo({ _id, video }) {
   return dispatch => {
     console.log('FIND ME', _id, video);
     dispatch({
@@ -550,9 +602,9 @@ export function addPerformanceVideo({_id, video}) {
     });
     return fetch(`/account/api/performance/${_id}/video`, {
       method: 'POST',
-      body: JSON.stringify({ video})
+      body: JSON.stringify({ video })
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -583,7 +635,7 @@ export function addPerformanceCrew(performanceId, crewId) {
     return fetch(`/account/api/performance/${performanceId}/crew/${crewId}`, {
       method: 'PUT',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -599,7 +651,7 @@ export function removePerformanceCrew(performanceId, crewId) {
     return fetch(`/account/api/performance/${performanceId}/crew/${crewId}`, {
       method: 'DELETE',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -630,7 +682,7 @@ export function addPerformancePerformer(performanceId, performerId) {
     return fetch(`/account/api/performance/${performanceId}/performer/${performerId}`, {
       method: 'PUT',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -646,7 +698,7 @@ export function removePerformancePerformer(performanceId, performerId) {
     return fetch(`/account/api/performance/${performanceId}/performer/${performerId}`, {
       method: 'DELETE',
     })
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -700,7 +752,7 @@ export function addUserProfileImage(dispatch) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -716,7 +768,7 @@ export function addUserTeaserImage(dispatch) {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
-    .then(json => dispatch(gotUser(json)));
+      .then(json => dispatch(gotUser(json)));
   };
 }
 
@@ -742,7 +794,7 @@ export function editUser(dispatch) {
       // in case of new about, add it to the abouts
       if (!aboutFound) {
         if (!data.aboutlanguage) data.aboutlanguage = 'en';
-        data.abouts.push({abouttext:data.about,
+        data.abouts.push({
           is_primary: primaryAbout,
           lang: data.aboutlanguage,
           abouttext: data.about
@@ -763,8 +815,9 @@ export function editUser(dispatch) {
       });
       // in case of new link, add it to the links
       if (!linkFound) {
-        console.log('data.link:' +data.link);
-        data.links.push({url:data.link,
+        console.log('data.link:' + data.link);
+        data.links.push({
+          url: data.link,
           is_primary: primaryLink,
           is_confirmed: false,
           is_public: false,
@@ -783,28 +836,29 @@ export function editUser(dispatch) {
     });
     // in case of new email, add it to the emails
     if (!emailFound) {
-      data.emails.push({email:data.email,
+      data.emails.push({
+        email: data.email,
         is_primary: false,
         is_confirmed: false
       });
-        /* BL FIXME send confirmation email in another part of the app
-        // DOES NOT RUN ON THE SERVER const mailer = require('../../lib/utilities/mailer');
-        // const uuid = require('uuid');
-        data.confirm = uuid.v4();
-        mailer.confirmNewEmail({ to: data.email }, { uuid: data.confirm }, (err) => {
-          if (err) {
-            console.log(err);
-          }
-          req.flash('success', { msg: i18n.__('Please check your inbox and confirm your new Email') });
-          res.redirect('/');
-        });*/
+      /* BL FIXME send confirmation email in another part of the app
+      // DOES NOT RUN ON THE SERVER const mailer = require('../../lib/utilities/mailer');
+      // const uuid = require('uuid');
+      data.confirm = uuid.v4();
+      mailer.confirmNewEmail({ to: data.email }, { uuid: data.confirm }, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        req.flash('success', { msg: i18n.__('Please check your inbox and confirm your new Email') });
+        res.redirect('/');
+      });*/
     }
     // end email add
 
     // fetch user before updating to check if unique address
     let addressFound = false;
     let primaryAddress = true;
-    let inputAddress = data.street_number + ', ' + data.route  + ', ' + data.locality + ', ' + data.country;
+    let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
 
     // init if first address
     if (!data.addresses) data.addresses = [];
@@ -838,7 +892,7 @@ export function editUser(dispatch) {
       }
     }
     // end address add
-    
+
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
@@ -866,28 +920,28 @@ export function changeLanguage(dispatch) {
 export function fetchLinkTypes(dispatch) {
   return () => {
     return fetch('/account/api/linktypes')
-    .then(json => (
-      dispatch({
-        type: RESPONSE_LINKTYPES,
-        payload: {
-          linktypes: json
-        }
-      })
-    ));
+      .then(json => (
+        dispatch({
+          type: RESPONSE_LINKTYPES,
+          payload: {
+            linktypes: json
+          }
+        })
+      ));
   };
 }
 // countries
 export function fetchCountries(dispatch) {
   return () => {
     return fetch('/account/api/countries')
-    .then(json => (
-      dispatch({
-        type: RESPONSE_COUNTRIES,
-        payload: {
-          countries: json
-        }
-      })
-    ));
+      .then(json => (
+        dispatch({
+          type: RESPONSE_COUNTRIES,
+          payload: {
+            countries: json
+          }
+        })
+      ));
   };
 }
 // venues
@@ -904,7 +958,7 @@ export function addEventVenue(dispatch) {
     return fetch(
       '/account/api/event/venue', {
         method: 'POST',
-        body: JSON.stringify({id, location })
+        body: JSON.stringify({ id, location })
       })
       .then(json => dispatch(gotUser(json)));
   };
@@ -940,7 +994,7 @@ export function addPlace(dispatch) {
     return fetch(
       '/account/api/user/place', {
         method: 'POST',
-        body: JSON.stringify({id, location })
+        body: JSON.stringify({ id, location })
       })
       .then(json => dispatch(gotUser(json)));
   };
@@ -976,7 +1030,7 @@ export function addLink(dispatch) {
     return fetch(
       '/account/api/user/link', {
         method: 'POST',
-        body: JSON.stringify({id, link })
+        body: JSON.stringify({ id, link })
       })
       .then(json => dispatch(gotUser(json)));
   };
