@@ -14,6 +14,9 @@ import {
   removeCrewMember,
 } from '../../reducers/actions';
 import ImageDropzone from '../ImageDropzone';
+import About from '../about/About';
+
+const allLanguages = require('language-list')();
 
 const Member = injectIntl(({member, me, onDelete, intl}) => {
   const meLabel = intl.formatMessage({
@@ -77,7 +80,10 @@ let CrewForm = props => {
     const file = files[0];
     return dispatch(addCrewTeaserImage(crewId, file));
   };
-
+  if (!props._languages) {
+    console.log('TODO optimize load props._languages from user' )
+    props._languages = allLanguages.getData();
+  }
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -145,20 +151,73 @@ let CrewForm = props => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="about">
-            <FormattedMessage
-              id="crew.edit.form.label.about"
-              defaultMessage="About"
-            />
-          </label>
-          <Field
-            className="form-control"
-            name="about"
-            component="textarea"
-            value={props.about}
-          />
-        </div>
+
+
+            <div className="row">
+              <div className="col-md-9 form-group">
+                <label htmlFor="about">
+                  <FormattedMessage
+                    id="crew.edit.form.label.addabout"
+                    defaultMessage="About"
+                  />
+                </label>
+                <div className="input-group">
+                  <Field
+                    className="form-control"
+                    name="about"
+                    component="textarea"
+                    rows="4"
+                    placeholder="About the crew"
+                    value={props.about}
+                  />
+                </div>
+              </div>
+              <div className="col-md-3 form-group">
+                <label htmlFor="aboutlanguage">
+                  <FormattedMessage
+                    id="crew.edit.form.label.aboutlanguage"
+                    defaultMessage="Language"
+                  />
+                </label>
+                {props._languages ?
+                  <Field
+                    className="form-control custom-select"
+                    name="aboutlanguage"
+                    component="select"
+                    value={props.aboutlanguage}
+                  >
+                    <option value="en">
+                      <FormattedMessage
+                        id="crew.edit.form.label.aboutlanguage.empty"
+                        defaultMessage="English"
+                      />
+                    </option>
+                    {props._languages.map((c) => (
+                      <option value={c.code}>{c.language}</option>
+                    ))
+                    }
+                    { /*  */}
+                  </Field> :
+                  <p>Loading languages…</p>
+                }
+              </div>
+            </div>
+
+            <label>
+              <FormattedMessage
+                id="crew.edit.form.label.about"
+                defaultMessage="Manage your About texts"
+              />
+            </label>
+            <ul className="list-group mt-2">
+              {
+                crew && crew.abouts && crew.abouts.map((a) => (
+                  <About about={a} />
+                ))
+              }
+            </ul>
+
+
 
         <div className="form-group">
           <label htmlFor="members">
