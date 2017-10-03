@@ -27,14 +27,17 @@ import {
 
 } from '../../reducers/actions';
 import ImageDropzone from '../ImageDropzone';
+import About from '../about/About';
 
-const OrganizingCrew = injectIntl(({crew, onDelete, intl}) => {
+const allLanguages = require('language-list')();
+
+const OrganizingCrew = injectIntl(({ crew, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       <span>
-      {crew.name}
+        {crew.name}
       </span>
-      { crew.deletionInProgress ?
+      {crew.deletionInProgress ?
         <button
           type="button"
           className="btn btn-danger disabled"
@@ -54,13 +57,13 @@ const OrganizingCrew = injectIntl(({crew, onDelete, intl}) => {
   );
 });
 
-const Performance = injectIntl(({performance, onDelete, intl}) => {
+const Performance = injectIntl(({ performance, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       <span>
         {performance.title}
       </span>
-      { performance.deletionInProgress ?
+      {performance.deletionInProgress ?
         <button
           type="button"
           className="btn btn-danger disabled"
@@ -80,7 +83,7 @@ const Performance = injectIntl(({performance, onDelete, intl}) => {
   );
 });
 
-const Organizer = injectIntl(({organizer, me, onDelete, intl}) => {
+const Organizer = injectIntl(({ organizer, me, onDelete, intl }) => {
   const meLabel = intl.formatMessage({
     id: 'event.edit.form.organizer.met',
     defaultMessage: 'Me'
@@ -89,12 +92,12 @@ const Organizer = injectIntl(({organizer, me, onDelete, intl}) => {
     <li className="list-group-item justify-content-between">
       <span>
         {`${organizer.stagename} `}
-        { (organizer._id === me) ?
+        {(organizer._id === me) ?
           <i className="badge badge-default badge-pill">{meLabel}</i>
           : null
         }
       </span>
-      { organizer.deletionInProgress ?
+      {organizer.deletionInProgress ?
         <button
           type="button"
           className="btn btn-danger disabled"
@@ -184,6 +187,13 @@ let EventForm = props => {
     return dispatch(addEventTeaserImage(eventId, file));
   };
 
+  if (!props._languages) {
+    console.log('TODO optimize load props._languages from user')
+    props._languages = props.user._languages || allLanguages.getData();
+  } else {
+    console.log('props._languages already loaded!')
+  }
+  
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -208,20 +218,69 @@ let EventForm = props => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="about">
-            <FormattedMessage
-              id="event.edit.form.label.about"
-              defaultMessage="About"
-            />
-          </label>
-          <Field
-            className="form-control"
-            name="about"
-            component="textarea"
-            value={props.about}
-          />
+        <div className="row">
+          <div className="col-md-9 form-group">
+            <label htmlFor="about">
+              <FormattedMessage
+                id="event.edit.form.label.addabout"
+                defaultMessage="About"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control"
+                name="about"
+                component="textarea"
+                rows="4"
+                placeholder="About the event"
+                value={props.about}
+              />
+            </div>
+          </div>
+          <div className="col-md-3 form-group">
+            <label htmlFor="aboutlanguage">
+              <FormattedMessage
+                id="event.edit.form.label.aboutlanguage"
+                defaultMessage="Language"
+              />
+            </label>
+            {props._languages ?
+              <Field
+                className="form-control custom-select"
+                name="aboutlanguage"
+                component="select"
+                value={props.aboutlanguage}
+              >
+                <option value="en">
+                  <FormattedMessage
+                    id="event.edit.form.label.aboutlanguage.empty"
+                    defaultMessage="English"
+                  />
+                </option>
+                {props._languages.map((c) => (
+                  <option value={c.code}>{c.language}</option>
+                ))
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading languages…</p>
+            }
+          </div>
         </div>
+
+        <label>
+          <FormattedMessage
+            id="event.edit.form.label.about"
+            defaultMessage="Manage your About texts"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            event && event.abouts && event.abouts.map((a) => (
+              <About about={a} />
+            ))
+          }
+        </ul>
 
         <div className="form-check">
           <label className="form-check-label">
@@ -266,12 +325,12 @@ let EventForm = props => {
             imageUploadInProgress={(event && event.imageUploadInProgress)}
             onDrop={onTeaserImageDrop(props._id)}
           />
-          { event && event.teaserImage ?
+          {event && event.teaserImage ?
             <div><img
               className="img-thumbnail mt-2"
               src={event.teaserImage.publicUrl}
               alt={`image of ${event.title}`}
-              /></div> :
+            /></div> :
             null
           }
         </div>
@@ -287,12 +346,12 @@ let EventForm = props => {
             imageUploadInProgress={(event && event.imageUploadInProgress)}
             onDrop={onImageDrop(props._id)}
           />
-          { event && event.image ?
+          {event && event.image ?
             <div><img
               className="img-thumbnail mt-2"
               src={event.image.publicUrl}
               alt={`image of ${event.title}`}
-              /></div> :
+            /></div> :
             null
           }
         </div>
@@ -305,12 +364,12 @@ let EventForm = props => {
             />
           </label>
           <ul className="list-group">
-            { event && event.performances && event.performances.map((performance) => (
+            {event && event.performances && event.performances.map((performance) => (
               <Performance
                 performance={performance}
                 onDelete={removePerformance(performance.id)}
               />
-              ))
+            ))
             }
           </ul>
         </div>
@@ -330,10 +389,10 @@ let EventForm = props => {
               id: 'event.edit.form.label.suggestPerformances',
               defaultMessage: 'Type to find performances…'
             })}
-            onKeyUp={ findPerformance }
+            onKeyUp={findPerformance}
           />
           <div className="mt-1 list-group">
-            { event && event._performanceSuggestionInProgress ?
+            {event && event._performanceSuggestionInProgress ?
               <div className="list-group-item">
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
@@ -344,15 +403,15 @@ let EventForm = props => {
               </div> :
               null
             }
-            { performanceSuggestions.map((c) => (
+            {performanceSuggestions.map((c) => (
               <button
                 type="button"
                 className="list-group-item list-group-item-action"
-                onClick={ addPerformance(c.id) }
+                onClick={addPerformance(c.id)}
               >
-                  {c.title}
-                </button>
-              ))
+                {c.title}
+              </button>
+            ))
             }
           </div>
         </div>
@@ -365,13 +424,13 @@ let EventForm = props => {
             />
           </label>
           <ul className="list-group">
-            { event && event.organizers && event.organizers.map((organizer) => (
+            {event && event.organizers && event.organizers.map((organizer) => (
               <Organizer
                 organizer={organizer}
                 me={props.user._id}
                 onDelete={removeOrganizer(organizer.id)}
               />
-              ))
+            ))
             }
           </ul>
         </div>
@@ -391,10 +450,10 @@ let EventForm = props => {
               id: 'event.edit.form.label.suggestOrganizers',
               defaultMessage: 'Type to find organizers…'
             })}
-            onKeyUp={ findOrganizer }
+            onKeyUp={findOrganizer}
           />
           <div className="mt-1 list-group">
-            { event && event._organizerSuggestionInProgress ?
+            {event && event._organizerSuggestionInProgress ?
               <div className="list-group-item">
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
@@ -405,15 +464,15 @@ let EventForm = props => {
               </div> :
               null
             }
-            { organizerSuggestions.map((c) => (
+            {organizerSuggestions.map((c) => (
               <button
                 type="button"
                 className="list-group-item list-group-item-action"
-                onClick={ addOrganizer(c.id) }
+                onClick={addOrganizer(c.id)}
               >
-                  {c.stagename} ({c.name})
+                {c.stagename} ({c.name})
                 </button>
-              ))
+            ))
             }
           </div>
         </div>
@@ -426,12 +485,12 @@ let EventForm = props => {
             />
           </label>
           <ul className="list-group">
-            { event && event.organizing_crews && event.organizing_crews.map((crew) => (
+            {event && event.organizing_crews && event.organizing_crews.map((crew) => (
               <OrganizingCrew
                 crew={crew}
                 onDelete={removeOrganizingCrew(crew.id)}
               />
-              ))
+            ))
             }
           </ul>
         </div>
@@ -451,10 +510,10 @@ let EventForm = props => {
               id: 'event.edit.form.label.suggestOrganizingCrews',
               defaultMessage: 'Type to find crews…'
             })}
-            onKeyUp={ findOrganizingCrew }
+            onKeyUp={findOrganizingCrew}
           />
           <div className="mt-1 list-group">
-            { event && event._organizingCrewSuggestionInProgress ?
+            {event && event._organizingCrewSuggestionInProgress ?
               <div className="list-group-item">
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
@@ -465,15 +524,15 @@ let EventForm = props => {
               </div> :
               null
             }
-            { organizingCrewSuggestions.map((c) => (
+            {organizingCrewSuggestions.map((c) => (
               <button
                 type="button"
                 className="list-group-item list-group-item-action"
-                onClick={ addOrganizingCrew(c.id) }
+                onClick={addOrganizingCrew(c.id)}
               >
-                  {c.stagename} ({c.name})
+                {c.stagename} ({c.name})
                 </button>
-              ))
+            ))
             }
           </div>
         </div>
