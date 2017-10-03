@@ -8,7 +8,7 @@ const About = ({ about }) => {
         {about.is_primary ?
           <span className="badge badge-primary">
             <FormattedMessage
-              id="user.edit.form.label.address.badge.primary"
+              id="user.edit.form.label.about.badge.primary"
               defaultMessage="Primary"
             />
           </span> :

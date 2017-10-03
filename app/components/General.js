@@ -23,7 +23,6 @@ const General = ({
   addUserTeaserImage,
   handleSubmit,
   saveProfile,
-
   fetchLinkTypes,
   fetchCountries
   }) => {
@@ -45,7 +44,6 @@ const General = ({
   if (!user._languages) {
     user._languages = allLanguages.getData();
   }
-  
 
   return (
     <Layout>

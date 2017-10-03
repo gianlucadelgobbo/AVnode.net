@@ -344,6 +344,32 @@ export function deleteCrew(id) {
 }
 
 export function editCrew(data) {
+      // about, verify unique
+      if (data.about) {
+        let aboutFound = false;
+        let primaryAbout = true;
+        // init if first about
+        if (!data.abouts) data.abouts = [];
+        // check existing abouts
+        data.abouts.map((a) => {
+          primaryAbout = false;
+          if (a.lang === data.aboutlanguage) {
+            // about in the form already exists in abouts
+            aboutFound = true;
+            // update abouttext
+            a.abouttext = data.about;
+          }
+        });
+        // in case of new about, add it to the abouts
+        if (!aboutFound) {
+          if (!data.aboutlanguage) data.aboutlanguage = 'en';
+          data.abouts.push({abouttext:data.about,
+            is_primary: primaryAbout,
+            lang: data.aboutlanguage,
+            abouttext: data.about
+          });
+        }
+      }
   return dispatch => {
     dispatch({
       type: REQUEST_EDIT_CREW,
