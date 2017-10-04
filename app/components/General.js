@@ -425,7 +425,7 @@ const General = ({
                   component="select"
                   value={user.linktype}
                 >
-                  <option value="www">
+                  <option value="web">
                     <FormattedMessage
                       id="user.edit.form.label.linktype.empty"
                       defaultMessage="Please select"
