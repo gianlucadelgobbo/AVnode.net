@@ -12,6 +12,8 @@ import LinkTypes from '../link/LinkTypes';
 import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
 import Languages from '../language/Languages';
+import Category from '../category/EventCategory';
+import Categories from '../category/Event';
 
 import {
   editEvent,
@@ -349,6 +351,62 @@ let EventForm = props => {
             null
           }
         </div>
+
+        <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="event.edit.form.fieldset.categories"
+            defaultMessage="Categories"
+          />
+        </legend>
+
+        <div className="row">
+          <div className="col-md-9 form-group">
+            <label htmlFor="category">
+              <FormattedMessage
+                id="event.edit.form.label.addcategory"
+                defaultMessage="Add category"
+              />
+            </label>
+            {Categories ?
+              <Field
+                className="form-control custom-select"
+                name="category"
+                component="select"
+                value={props.category}
+              >
+                <option value="event">
+                  <FormattedMessage
+                    id="event.edit.form.label.category.empty"
+                    defaultMessage="Please select"
+                  />
+                </option>
+                {Categories.map((c) => (
+                  <option value={c.key.toLowerCase()}>{c.name}</option>
+                ))
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading categories…</p>
+            }
+          </div>
+        </div>
+
+        <label>
+          <FormattedMessage
+            id="event.edit.form.label.category"
+            defaultMessage="Manage your categories"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            event && event.categories && event.categories.map((c) => (
+              <Category category={c} />
+            ))
+          }
+        </ul>
+      </fieldset>
+
 
         <fieldset className="form-group">
         <legend>
