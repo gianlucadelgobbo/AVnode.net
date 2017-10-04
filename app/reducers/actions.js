@@ -889,15 +889,12 @@ export function editUser(dispatch) {
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
       primaryAddress = false;
-      console.log('address exists? ' + inputAddress);
       if (a.address === inputAddress) {
         // address in the form already exists in addresses
         addressFound = true;
-        console.log('address found');
       }
     });
     if (!addressFound) {
-      console.log('address not found');
       // verify data.location is valid and lat lng found
       if (inputAddress && data.location && data.location.geometry) {
         // add the address to the array

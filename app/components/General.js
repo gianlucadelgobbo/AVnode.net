@@ -8,9 +8,9 @@ import Place from './place/PlaceContainer';
 import Address from './place/Address';
 import Email from './emails/Email';
 import Link from './link/Link';
+import LinkTypes from './link/LinkTypes';
 import About from './about/About';
-
-const allLanguages = require('language-list')();
+import Languages from './language/Languages';
 
 const General = ({
   user,
@@ -23,7 +23,6 @@ const General = ({
   addUserTeaserImage,
   handleSubmit,
   saveProfile,
-  fetchLinkTypes,
   fetchCountries
   }) => {
 
@@ -37,12 +36,6 @@ const General = ({
 
   if (!user._countries) {
     fetchCountries();
-  }
-  if (!user._linktypes) {
-    fetchLinkTypes();
-  }
-  if (!user._languages) {
-    user._languages = allLanguages.getData();
   }
 
   return (
@@ -228,7 +221,7 @@ const General = ({
                     defaultMessage="Language"
                   />
                 </label>
-                {user._languages ?
+                {Languages ?
                   <Field
                     className="form-control custom-select"
                     name="aboutlanguage"
@@ -241,7 +234,7 @@ const General = ({
                         defaultMessage="English"
                       />
                     </option>
-                    {user._languages.map((c) => (
+                    {Languages.map((c) => (
                       <option value={c.code}>{c.language}</option>
                     ))
                     }
@@ -418,7 +411,7 @@ const General = ({
                   defaultMessage="Link type"
                 />
               </label>
-              {user._linktypes ?
+              {LinkTypes ?
                 <Field
                   className="form-control custom-select"
                   name="linktype"
@@ -431,7 +424,7 @@ const General = ({
                       defaultMessage="Please select"
                     />
                   </option>
-                  {user._linktypes.map((c) => (
+                  {LinkTypes.map((c) => (
                     <option value={c.key.toLowerCase()}>{c.name}</option>
                   ))
                   }

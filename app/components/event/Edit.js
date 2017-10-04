@@ -11,6 +11,7 @@ import Link from '../link/Link';
 import LinkTypes from '../link/LinkTypes';
 import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
+import Languages from '../language/Languages';
 
 import {
   editEvent,
@@ -30,8 +31,6 @@ import {
   removeEventOrganizingCrew
 
 } from '../../reducers/actions';
-
-const allLanguages = require('language-list')();
 
 const OrganizingCrew = injectIntl(({ crew, onDelete, intl }) => {
   return (
@@ -189,13 +188,6 @@ let EventForm = props => {
     return dispatch(addEventTeaserImage(eventId, file));
   };
 
-  if (!props._languages) {
-    console.log('TODO optimize load props._languages from user')
-    props._languages = props.user._languages || allLanguages.getData();
-  } else {
-    console.log('props._languages already loaded!')
-  }
-
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -246,7 +238,7 @@ let EventForm = props => {
                 defaultMessage="Language"
               />
             </label>
-            {props._languages ?
+            {Languages ?
               <Field
                 className="form-control custom-select"
                 name="aboutlanguage"
@@ -259,7 +251,7 @@ let EventForm = props => {
                     defaultMessage="English"
                   />
                 </option>
-                {props._languages.map((c) => (
+                {Languages.map((c) => (
                   <option value={c.code}>{c.language}</option>
                 ))
                 }
