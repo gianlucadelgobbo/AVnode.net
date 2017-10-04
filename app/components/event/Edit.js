@@ -7,6 +7,10 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 
 import Venue from '../VenueContainer';
+import Link from '../link/Link';
+import LinkTypes from '../link/LinkTypes';
+import ImageDropzone from '../ImageDropzone';
+import About from '../about/About';
 
 import {
   editEvent,
@@ -26,8 +30,6 @@ import {
   removeEventOrganizingCrew
 
 } from '../../reducers/actions';
-import ImageDropzone from '../ImageDropzone';
-import About from '../about/About';
 
 const allLanguages = require('language-list')();
 
@@ -193,7 +195,7 @@ let EventForm = props => {
   } else {
     console.log('props._languages already loaded!')
   }
-  
+
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -355,6 +357,77 @@ let EventForm = props => {
             null
           }
         </div>
+
+        <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="event.edit.form.fieldset.links"
+            defaultMessage="Links"
+          />
+        </legend>
+
+        <div className="row">
+          <div className="col-md-9 form-group">
+            <label htmlFor="link">
+              <FormattedMessage
+                id="event.edit.form.label.addlink"
+                defaultMessage="Add link"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control"
+                name="link"
+                component="input"
+                placeholder="https://www..."
+              />
+            </div>
+          </div>
+          <div className="col-md-3 form-group">
+            <label htmlFor="linktype">
+              <FormattedMessage
+                id="event.edit.form.label.linktype"
+                defaultMessage="Link type"
+              />
+            </label>
+            {LinkTypes ?
+              <Field
+                className="form-control custom-select"
+                name="linktype"
+                component="select"
+                value={props.linktype}
+              >
+                <option value="web">
+                  <FormattedMessage
+                    id="event.edit.form.label.linktype.empty"
+                    defaultMessage="Please select"
+                  />
+                </option>
+                {LinkTypes.map((c) => (
+                  <option value={c.key.toLowerCase()}>{c.name}</option>
+                ))
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading a link types…</p>
+            }
+          </div>
+        </div>
+
+        <label>
+          <FormattedMessage
+            id="event.edit.form.label.link"
+            defaultMessage="Manage your links"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            event && event.links && event.links.map((l) => (
+              <Link link={l} />
+            ))
+          }
+        </ul>
+      </fieldset>
 
         <div className="form-group">
           <label htmlFor="performances">

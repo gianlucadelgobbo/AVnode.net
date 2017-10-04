@@ -126,6 +126,30 @@ export function editEvent(data) {
       });
     }
   }
+
+  // link, verify unique
+  if (data.link) {
+    let linkFound = false;
+    let primaryLink = true;
+    data.links.map((l) => {
+      primaryLink = false;
+      if (l.url === data.link) {
+        // url in the form already exists in links
+        linkFound = true;
+      }
+    });
+    // in case of new link, add it to the links
+    if (!linkFound) {
+      console.log('data.link:' + data.link);
+      data.links.push({
+        url: data.link,
+        is_primary: primaryLink,
+        is_confirmed: false,
+        is_public: false,
+        type: data.linktype
+      });
+    }
+  }
   return dispatch => {
     dispatch({
       type: REQUEST_EDIT_EVENT,
