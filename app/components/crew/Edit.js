@@ -5,6 +5,10 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
+import ImageDropzone from '../ImageDropzone';
+import About from '../about/About';
+import Languages from '../language/Languages';
+
 import {
   editCrew,
   suggestCrewMember,
@@ -13,10 +17,6 @@ import {
   addCrewTeaserImage,
   removeCrewMember,
 } from '../../reducers/actions';
-import ImageDropzone from '../ImageDropzone';
-import About from '../about/About';
-
-const allLanguages = require('language-list')();
 
 const Member = injectIntl(({ member, me, onDelete, intl }) => {
   const meLabel = intl.formatMessage({
@@ -80,13 +80,6 @@ let CrewForm = props => {
     const file = files[0];
     return dispatch(addCrewTeaserImage(crewId, file));
   };
-
-  if (!props._languages) {
-    console.log('TODO optimize load props._languages from user')
-    props._languages = props.user._languages || allLanguages.getData();
-  } else {
-    console.log('props._languages already loaded!')
-  }
 
   return (
     <Layout>
@@ -181,7 +174,7 @@ let CrewForm = props => {
                 defaultMessage="Language"
               />
             </label>
-            {props._languages ?
+            {Languages ?
               <Field
                 className="form-control custom-select"
                 name="aboutlanguage"
@@ -194,7 +187,7 @@ let CrewForm = props => {
                     defaultMessage="English"
                   />
                 </option>
-                {props._languages.map((c) => (
+                {Languages.map((c) => (
                   <option value={c.code}>{c.language}</option>
                 ))
                 }

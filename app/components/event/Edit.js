@@ -11,6 +11,9 @@ import Link from '../link/Link';
 import LinkTypes from '../link/LinkTypes';
 import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
+import Languages from '../language/Languages';
+import Category from '../category/EventCategory';
+import Categories from '../category/Event';
 
 import {
   editEvent,
@@ -30,8 +33,6 @@ import {
   removeEventOrganizingCrew
 
 } from '../../reducers/actions';
-
-const allLanguages = require('language-list')();
 
 const OrganizingCrew = injectIntl(({ crew, onDelete, intl }) => {
   return (
@@ -189,13 +190,6 @@ let EventForm = props => {
     return dispatch(addEventTeaserImage(eventId, file));
   };
 
-  if (!props._languages) {
-    console.log('TODO optimize load props._languages from user')
-    props._languages = props.user._languages || allLanguages.getData();
-  } else {
-    console.log('props._languages already loaded!')
-  }
-
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -246,7 +240,7 @@ let EventForm = props => {
                 defaultMessage="Language"
               />
             </label>
-            {props._languages ?
+            {Languages ?
               <Field
                 className="form-control custom-select"
                 name="aboutlanguage"
@@ -259,7 +253,7 @@ let EventForm = props => {
                     defaultMessage="English"
                   />
                 </option>
-                {props._languages.map((c) => (
+                {Languages.map((c) => (
                   <option value={c.code}>{c.language}</option>
                 ))
                 }
@@ -357,6 +351,62 @@ let EventForm = props => {
             null
           }
         </div>
+
+        <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="event.edit.form.fieldset.categories"
+            defaultMessage="Categories"
+          />
+        </legend>
+
+        <div className="row">
+          <div className="col-md-9 form-group">
+            <label htmlFor="category">
+              <FormattedMessage
+                id="event.edit.form.label.addcategory"
+                defaultMessage="Add category"
+              />
+            </label>
+            {Categories ?
+              <Field
+                className="form-control custom-select"
+                name="category"
+                component="select"
+                value={props.category}
+              >
+                <option value="event">
+                  <FormattedMessage
+                    id="event.edit.form.label.category.empty"
+                    defaultMessage="Please select"
+                  />
+                </option>
+                {Categories.map((c) => (
+                  <option value={c.key.toLowerCase()}>{c.name}</option>
+                ))
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading categories…</p>
+            }
+          </div>
+        </div>
+
+        <label>
+          <FormattedMessage
+            id="event.edit.form.label.category"
+            defaultMessage="Manage your categories"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            event && event.categories && event.categories.map((c) => (
+              <Category category={c} />
+            ))
+          }
+        </ul>
+      </fieldset>
+
 
         <fieldset className="form-group">
         <legend>
