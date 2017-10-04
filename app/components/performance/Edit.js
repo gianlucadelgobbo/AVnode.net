@@ -6,6 +6,9 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
 import Video from '../Video';
+import ImageDropzone from '../ImageDropzone';
+import About from '../about/About';
+import Languages from '../language/Languages';
 
 import {
   editPerformance,
@@ -19,10 +22,6 @@ import {
   addPerformancePerformer,
   removePerformancePerformer
 } from '../../reducers/actions';
-import ImageDropzone from '../ImageDropzone';
-import About from '../about/About';
-
-const allLanguages = require('language-list')();
 
 const Crew = injectIntl(({crew, onDelete, intl}) => {
   return (
@@ -134,13 +133,6 @@ let PerformanceForm = props => {
     return dispatch(addPerformanceTeaserImage(performanceId, file));
   };
 
-  if (!props._languages) {
-    console.log('TODO optimize load props._languages from user' )
-    props._languages = props.user._languages || allLanguages.getData();
-  } else {
-    console.log('props._languages already loaded!' )
-  }
-
   let videoLink; // FIXME
 
   return (
@@ -237,7 +229,7 @@ let PerformanceForm = props => {
                     defaultMessage="Language"
                   />
                 </label>
-                {props._languages ?
+                {Languages ?
                   <Field
                     className="form-control custom-select"
                     name="aboutlanguage"
@@ -250,7 +242,7 @@ let PerformanceForm = props => {
                         defaultMessage="English"
                       />
                     </option>
-                    {props._languages.map((c) => (
+                    {Languages.map((c) => (
                       <option value={c.code}>{c.language}</option>
                     ))
                     }

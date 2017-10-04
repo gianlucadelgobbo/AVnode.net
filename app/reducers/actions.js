@@ -150,6 +150,25 @@ export function editEvent(data) {
       });
     }
   }
+
+  // category, verify unique
+  if (data.category) {
+    let categoryFound = false;
+    data.categories.map((c) => {
+      if (c.name === data.category) {
+        // name in the form already exists in categories
+        categoryFound = true;
+      }
+    });
+    // in case of new category, add it to the categories
+    if (!categoryFound) {
+      console.log('data.category:' + data.category);
+      data.categories.push({
+        name: data.category
+      });
+    }
+  }
+
   return dispatch => {
     dispatch({
       type: REQUEST_EDIT_EVENT,
@@ -889,15 +908,12 @@ export function editUser(dispatch) {
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
       primaryAddress = false;
-      console.log('address exists? ' + inputAddress);
       if (a.address === inputAddress) {
         // address in the form already exists in addresses
         addressFound = true;
-        console.log('address found');
       }
     });
     if (!addressFound) {
-      console.log('address not found');
       // verify data.location is valid and lat lng found
       if (inputAddress && data.location && data.location.geometry) {
         // add the address to the array
