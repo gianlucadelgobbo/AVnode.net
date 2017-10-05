@@ -41,6 +41,7 @@ export const REQUEST_ADD_EVENT_ORGANIZINGCREW = 'REQUEST_ADD_EVENT_ORGANIZINGCRE
 export const REQUEST_DELETE_EVENT_ORGANIZINGCREW = 'REQUEST_DELETE_EVENT_ORGANIZINGCREW';
 export const REQUEST_ADD_EVENT_VENUE = 'REQUEST_ADD_EVENT_VENUE';
 export const REQUEST_DELETE_EVENT_VENUE = 'REQUEST_DELETE_EVENT_VENUE';
+export const REQUEST_DELETE_EVENT_CATEGORY = 'REQUEST_DELETE_EVENT_CATEGORY';
 
 export const REQUEST_ADD_CREW = 'REQUEST_ADD_CREW';
 export const REQUEST_DELETE_CREW = 'REQUEST_DELETE_CREW';
@@ -66,6 +67,7 @@ export const REQUEST_SUGGEST_PERFORMANCE_PERFORMER = 'REQUEST_SUGGEST_PERFORMANC
 export const RESPONSE_SUGGEST_PERFORMANCE_PERFORMER = 'RESPONSE_SUGGEST_PERFORMANCE_PERFORMER';
 export const REQUEST_ADD_PERFORMANCE_PERFORMER = 'REQUEST_ADD_PERFORMANCE_PERFORMER';
 export const REQUEST_DELETE_PERFORMANCE_PERFORMER = 'REQUEST_DELETE_PERFORMANCE_PERFORMER';
+export const REQUEST_DELETE_PERFORMANCE_CATEGORY = 'REQUEST_DELETE_PERFORMANCE_CATEGORY';
 
 // Wrap fetch with some default settings, always
 // return parsed JSON…
@@ -162,7 +164,6 @@ export function editEvent(data) {
     });
     // in case of new category, add it to the categories
     if (!categoryFound) {
-      console.log('data.category:' + data.category);
       data.categories.push({
         name: data.category
       });
@@ -500,6 +501,22 @@ export function removeCrewMember(crewId, member) {
   };
 }
 
+export function removeEventCategory(eventId, categoryId) {
+  return dispatch => {
+    dispatch({
+      type: REQUEST_DELETE_EVENT_CATEGORY,
+      payload: {
+        eventId,
+        categoryId
+      }
+    });
+    return fetch(`/account/api/event/${eventId}/category/${categoryId}`, {
+      method: 'DELETE',
+    })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 export function addCrewImage(id, file) {
   return dispatch => {
     dispatch({
@@ -587,6 +604,22 @@ export function editPerformance(data) {
       });
     }
   }
+  // category, verify unique
+  if (data.category) {
+    let categoryFound = false;
+    data.categories.map((c) => {
+      if (c.name === data.category) {
+        // name in the form already exists in categories
+        categoryFound = true;
+      }
+    });
+    // in case of new category, add it to the categories
+    if (!categoryFound) {
+      data.categories.push({
+        name: data.category
+      });
+    }
+  }
   return dispatch => {
     dispatch({
       type: REQUEST_EDIT_PERFORMANCE,
@@ -635,7 +668,6 @@ export function addPerformanceTeaserImage(id, file) {
 
 export function addPerformanceVideo({ _id, video }) {
   return dispatch => {
-    console.log('FIND ME', _id, video);
     dispatch({
       type: REQUEST_ADD_PERFORMANCEVIDEO,
       payload: {
@@ -697,7 +729,22 @@ export function removePerformanceCrew(performanceId, crewId) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-
+// BL remove performance category
+export function removePerformanceCategory(performanceId, categoryId) {
+  return dispatch => {
+    dispatch({
+      type: REQUEST_DELETE_PERFORMANCE_CATEGORY,
+      payload: {
+        performanceId,
+        categoryId
+      }
+    });
+    return fetch(`/account/api/performance/${performanceId}/category/${categoryId}`, {
+      method: 'DELETE',
+    })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 export function suggestPerformancePerformer(performanceId, q) {
   return dispatch => {
     dispatch({
