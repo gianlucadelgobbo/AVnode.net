@@ -1,21 +1,21 @@
-import React, { h } from 'preact';
+import { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
-const Category = ({ category }) => {
+const Category = injectIntl(({ category, onDelete, intl }) => {
     return (
         <li className="list-group-item justify-content-between">
-            {category.name}
+            <span>
+                {category.name}
+            </span>
             <button
                 type="button"
-                className="btn btn-secondary btn-sm"
+                className="btn btn-danger"
+                onClick={onDelete}
             >
-                <FormattedMessage
-                    id="user.edit.form.label.category.action.delete"
-                    defaultMessage="Delete"
-                />
+                <i className="fa fa-trash"></i>
             </button>
         </li>
     );
-};
+});
 
 export default Category;

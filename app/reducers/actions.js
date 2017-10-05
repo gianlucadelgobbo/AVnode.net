@@ -41,6 +41,7 @@ export const REQUEST_ADD_EVENT_ORGANIZINGCREW = 'REQUEST_ADD_EVENT_ORGANIZINGCRE
 export const REQUEST_DELETE_EVENT_ORGANIZINGCREW = 'REQUEST_DELETE_EVENT_ORGANIZINGCREW';
 export const REQUEST_ADD_EVENT_VENUE = 'REQUEST_ADD_EVENT_VENUE';
 export const REQUEST_DELETE_EVENT_VENUE = 'REQUEST_DELETE_EVENT_VENUE';
+export const REQUEST_DELETE_EVENT_CATEGORY = 'REQUEST_DELETE_EVENT_CATEGORY';
 
 export const REQUEST_ADD_CREW = 'REQUEST_ADD_CREW';
 export const REQUEST_DELETE_CREW = 'REQUEST_DELETE_CREW';
@@ -500,6 +501,21 @@ export function removeCrewMember(crewId, member) {
   };
 }
 
+export function removeEventCategory(eventId, categoryId) {
+  return dispatch => {
+    dispatch({
+      type: REQUEST_DELETE_EVENT_CATEGORY,
+      payload: {
+        eventId,
+        categoryId
+      }
+    });
+    return fetch(`/account/api/event/${eventId}/category/${categoryId}`, {
+      method: 'DELETE',
+    })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 export function addCrewImage(id, file) {
   return dispatch => {
     dispatch({
@@ -635,7 +651,6 @@ export function addPerformanceTeaserImage(id, file) {
 
 export function addPerformanceVideo({ _id, video }) {
   return dispatch => {
-    console.log('FIND ME', _id, video);
     dispatch({
       type: REQUEST_ADD_PERFORMANCEVIDEO,
       payload: {

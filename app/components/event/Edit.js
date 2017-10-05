@@ -30,7 +30,9 @@ import {
 
   suggestEventOrganizingCrew,
   addEventOrganizingCrew,
-  removeEventOrganizingCrew
+  removeEventOrganizingCrew,
+
+  removeEventCategory
 
 } from '../../reducers/actions';
 
@@ -188,6 +190,11 @@ let EventForm = props => {
   const onTeaserImageDrop = (eventId) => (files, _something, _ev) => {
     const file = files[0];
     return dispatch(addEventTeaserImage(eventId, file));
+  };
+
+  const removeCategory = (categoryId) => (e) => {
+    e.preventDefault();
+    return dispatch(removeEventCategory(event._id, categoryId));
   };
 
   return (
@@ -401,7 +408,10 @@ let EventForm = props => {
         <ul className="list-group mt-2">
           {
             event && event.categories && event.categories.map((c) => (
-              <Category category={c} />
+              <Category
+                category={c} 
+                onDelete={removeCategory(c._id)}
+              />
             ))
           }
         </ul>
