@@ -9,27 +9,34 @@ import Video from '../Video';
 import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
 import Languages from '../language/Languages';
+import Category from '../category/Category';
+import Categories from '../category/Performance';
 
 import {
   editPerformance,
   addPerformanceImage,
   addPerformanceTeaserImage,
   addPerformanceVideo,
+
   suggestPerformanceCrew,
   addPerformanceCrew,
   removePerformanceCrew,
+
   suggestPerformancePerformer,
   addPerformancePerformer,
-  removePerformancePerformer
+  removePerformancePerformer,
+
+  removePerformanceCategory
+  
 } from '../../reducers/actions';
 
-const Crew = injectIntl(({crew, onDelete, intl}) => {
+const Crew = injectIntl(({ crew, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       <span>
-      {crew.name}
+        {crew.name}
       </span>
-      { crew.deletionInProgress ?
+      {crew.deletionInProgress ?
         <button
           type="button"
           className="btn btn-danger disabled"
@@ -49,7 +56,7 @@ const Crew = injectIntl(({crew, onDelete, intl}) => {
   );
 });
 
-const Performer = injectIntl(({performer, me, onDelete, intl}) => {
+const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
   const meLabel = intl.formatMessage({
     id: 'performance.edit.form.performer.met',
     defaultMessage: 'Me'
@@ -58,12 +65,12 @@ const Performer = injectIntl(({performer, me, onDelete, intl}) => {
     <li className="list-group-item justify-content-between">
       <span>
         {`${performer.stagename} `}
-        { (performer._id === me) ?
+        {(performer._id === me) ?
           <i className="badge badge-default badge-pill">{meLabel}</i>
           : null
         }
       </span>
-      { performer.deletionInProgress ?
+      {performer.deletionInProgress ?
         <button
           type="button"
           className="btn btn-danger disabled"
@@ -133,6 +140,11 @@ let PerformanceForm = props => {
     return dispatch(addPerformanceTeaserImage(performanceId, file));
   };
 
+  const removeCategory = (categoryId) => (e) => {
+    e.preventDefault();
+    return dispatch(removePerformanceCategory(performance._id, categoryId));
+  };
+
   let videoLink; // FIXME
 
   return (
@@ -160,6 +172,72 @@ let PerformanceForm = props => {
           />
         </div>
 
+
+
+        <div className="row">
+          <div className="col-md-9 form-group">
+            <label htmlFor="about">
+              <FormattedMessage
+                id="performance.edit.form.label.addabout"
+                defaultMessage="About"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control"
+                name="about"
+                component="textarea"
+                rows="4"
+                placeholder="About the performance"
+                value={props.about}
+              />
+            </div>
+          </div>
+          <div className="col-md-3 form-group">
+            <label htmlFor="aboutlanguage">
+              <FormattedMessage
+                id="performance.edit.form.label.aboutlanguage"
+                defaultMessage="Language"
+              />
+            </label>
+            {Languages ?
+              <Field
+                className="form-control custom-select"
+                name="aboutlanguage"
+                component="select"
+                value={props.aboutlanguage}
+              >
+                <option value="en">
+                  <FormattedMessage
+                    id="performance.edit.form.label.aboutlanguage.empty"
+                    defaultMessage="English"
+                  />
+                </option>
+                {Languages.map((c) => (
+                  <option value={c.code}>{c.language}</option>
+                ))
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading languages…</p>
+            }
+          </div>
+        </div>
+
+        <label>
+          <FormattedMessage
+            id="performance.edit.form.label.about"
+            defaultMessage="Manage your About texts"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            performance && performance.abouts && performance.abouts.map((a) => (
+              <About about={a} />
+            ))
+          }
+        </ul>
+
         <div className="form-group">
           <label htmlFor="teaserImage">
             <FormattedMessage
@@ -167,12 +245,12 @@ let PerformanceForm = props => {
               defaultMessage="Teaser Image"
             />
           </label>
-          { performance && performance.teaserImage ?
+          {performance && performance.teaserImage ?
             <img
               className="img-thumbnail mb-3"
               src={performance.teaserImage.publicUrl}
               alt={`image of ${performance.title}`}
-              /> :
+            /> :
             null
           }
           <ImageDropzone
@@ -188,12 +266,12 @@ let PerformanceForm = props => {
               defaultMessage="Image"
             />
           </label>
-          { performance && performance.image ?
+          {performance && performance.image ?
             <img
               className="img-thumbnail mb-3"
               src={performance.image.publicUrl}
               alt={`image of ${performance.title}`}
-              /> :
+            /> :
             null
           }
           <ImageDropzone
@@ -202,73 +280,65 @@ let PerformanceForm = props => {
           />
         </div>
 
+        <fieldset className="form-group">
+        <legend>
+          <FormattedMessage
+            id="performance.edit.form.fieldset.categories"
+            defaultMessage="Categories"
+          />
+        </legend>
 
-            <div className="row">
-              <div className="col-md-9 form-group">
-                <label htmlFor="about">
-                  <FormattedMessage
-                    id="performance.edit.form.label.addabout"
-                    defaultMessage="About"
-                  />
-                </label>
-                <div className="input-group">
-                  <Field
-                    className="form-control"
-                    name="about"
-                    component="textarea"
-                    rows="4"
-                    placeholder="About the performance"
-                    value={props.about}
-                  />
-                </div>
-              </div>
-              <div className="col-md-3 form-group">
-                <label htmlFor="aboutlanguage">
-                  <FormattedMessage
-                    id="performance.edit.form.label.aboutlanguage"
-                    defaultMessage="Language"
-                  />
-                </label>
-                {Languages ?
-                  <Field
-                    className="form-control custom-select"
-                    name="aboutlanguage"
-                    component="select"
-                    value={props.aboutlanguage}
-                  >
-                    <option value="en">
-                      <FormattedMessage
-                        id="performance.edit.form.label.aboutlanguage.empty"
-                        defaultMessage="English"
-                      />
-                    </option>
-                    {Languages.map((c) => (
-                      <option value={c.code}>{c.language}</option>
-                    ))
-                    }
-                    { /*  */}
-                  </Field> :
-                  <p>Loading languages…</p>
-                }
-              </div>
-            </div>
-
-            <label>
+        <div className="row">
+          <div className="col-md-9 form-group">
+            <label htmlFor="category">
               <FormattedMessage
-                id="performance.edit.form.label.about"
-                defaultMessage="Manage your About texts"
+                id="performance.edit.form.label.addcategory"
+                defaultMessage="Add category"
               />
             </label>
-            <ul className="list-group mt-2">
-              {
-                performance && performance.abouts && performance.abouts.map((a) => (
-                  <About about={a} />
+            {Categories ?
+              <Field
+                className="form-control custom-select"
+                name="category"
+                component="select"
+                value={props.category}
+              >
+                <option value="performance">
+                  <FormattedMessage
+                    id="performance.edit.form.label.category.empty"
+                    defaultMessage="Please select"
+                  />
+                </option>
+                {Categories.map((c) => (
+                  <option value={c.key.toLowerCase()}>{c.name}</option>
                 ))
-              }
-            </ul>
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading categories…</p>
+            }
+          </div>
+        </div>
 
-      
-      <div className="form-group">
+        <label>
+          <FormattedMessage
+            id="performance.edit.form.label.category"
+            defaultMessage="Manage your categories"
+          />
+        </label>
+        <ul className="list-group mt-2">
+          {
+            performance && performance.categories && performance.categories.map((c) => (
+              <Category
+                category={c} 
+                onDelete={removeCategory(c._id)}
+              />
+            ))
+          }
+        </ul>
+      </fieldset>
+
+        <div className="form-group">
           <label htmlFor="tech_art">
             <FormattedMessage
               id="performance.edit.form.label.tech_art"
@@ -314,7 +384,7 @@ let PerformanceForm = props => {
           </label>
         </div>
 
-        { performance && performance.video ?
+        {performance && performance.video ?
           <Video {...performance.video.video} /> :
           <div className="form-group">
             <div className="input-group">
@@ -322,7 +392,7 @@ let PerformanceForm = props => {
                 className="form-control"
                 name="video"
                 component="input"
-                ref={ node => { videoLink = node; }}
+                ref={node => { videoLink = node; }}
                 placeholder={intl.formatMessage({
                   id: 'performance.edit.form.label.videoLink.placeholder',
                   defaultMessage: 'https://vimeo.com/xyzxyzxyzxyz'
@@ -332,7 +402,7 @@ let PerformanceForm = props => {
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={ e => {
+                  onClick={e => {
                     e.preventDefault();
                     return dispatch(addPerformanceVideo({
                       _id: performance._id,
@@ -358,13 +428,13 @@ let PerformanceForm = props => {
             />
           </label>
           <ul className="list-group">
-            { performance && performance.performers && performance.performers.map((performer) => (
+            {performance && performance.performers && performance.performers.map((performer) => (
               <Performer
                 performer={performer}
                 me={props.user._id}
                 onDelete={removePerformer(performer.id)}
               />
-              ))
+            ))
             }
           </ul>
         </div>
@@ -384,10 +454,10 @@ let PerformanceForm = props => {
               id: 'performance.edit.form.label.suggestPerformers',
               defaultMessage: 'Type to find performers…'
             })}
-            onKeyUp={ findPerformer }
+            onKeyUp={findPerformer}
           />
           <div className="mt-1 list-group">
-            { performance && performance._performerSuggestionInProgress ?
+            {performance && performance._performerSuggestionInProgress ?
               <div className="list-group-item">
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
@@ -398,15 +468,15 @@ let PerformanceForm = props => {
               </div> :
               null
             }
-            { performerSuggestions.map((c) => (
+            {performerSuggestions.map((c) => (
               <button
                 type="button"
                 className="list-group-item list-group-item-action"
-                onClick={ addPerformer(c.id) }
+                onClick={addPerformer(c.id)}
               >
-                  {c.stagename} ({c.name})
+                {c.stagename} ({c.name})
                 </button>
-              ))
+            ))
             }
           </div>
         </div>
@@ -419,12 +489,12 @@ let PerformanceForm = props => {
             />
           </label>
           <ul className="list-group">
-            { performance && performance.crews && performance.crews.map((crew) => (
+            {performance && performance.crews && performance.crews.map((crew) => (
               <Crew
                 crew={crew}
                 onDelete={removeCrew(crew.id)}
               />
-              ))
+            ))
             }
           </ul>
         </div>
@@ -444,10 +514,10 @@ let PerformanceForm = props => {
               id: 'performance.edit.form.label.suggestCrews',
               defaultMessage: 'Type to find crews…'
             })}
-            onKeyUp={ findCrew }
+            onKeyUp={findCrew}
           />
           <div className="mt-1 list-group">
-            { performance && performance._crewSuggestionInProgress ?
+            {performance && performance._crewSuggestionInProgress ?
               <div className="list-group-item">
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
@@ -458,15 +528,15 @@ let PerformanceForm = props => {
               </div> :
               null
             }
-            { crewSuggestions.map((c) => (
+            {crewSuggestions.map((c) => (
               <button
                 type="button"
                 className="list-group-item list-group-item-action"
-                onClick={ addCrew(c.id) }
+                onClick={addCrew(c.id)}
               >
-                  {c.name}
-                </button>
-              ))
+                {c.name}
+              </button>
+            ))
             }
           </div>
         </div>
