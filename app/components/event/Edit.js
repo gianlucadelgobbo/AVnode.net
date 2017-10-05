@@ -12,7 +12,7 @@ import LinkTypes from '../link/LinkTypes';
 import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
 import Languages from '../language/Languages';
-import Category from '../category/EventCategory';
+import Category from '../category/Category';
 import Categories from '../category/Event';
 
 import {
