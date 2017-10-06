@@ -6,7 +6,7 @@ import Layout from './Layout';
 const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
   const onChange = ({ target: { value } }) => {
     if (value !== '') {
-      changeLanguage(value);
+      changeLanguage(value, user._id);
     }
   };
   return (
@@ -18,7 +18,7 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
     >
       <form onSubmit={onSubmit} onChange={onChange}>
         <div className="form-group">
-          <label htmlFor="gender">
+          <label htmlFor="language">
             <FormattedMessage
               id="user.edit.form.label.language"
               defaultMessage="Language"

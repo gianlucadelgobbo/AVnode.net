@@ -994,13 +994,20 @@ export function editUser(dispatch) {
 }
 
 export function changeLanguage(dispatch) {
-  return language => {
+  // BL FIXME on loading Prefs page, should show this language in the DL
+  return (language, userid ) => {
+    // console.log('changeLanguage lng: ' + JSON.stringify(language) );
+    // console.log('changeLanguage user: ' + JSON.stringify(userid) );
     dispatch({
       type: CHANGE_LANGUAGE,
       payload: {
         language
       }
     });
+    return fetch(
+      `/account/api/user/${userid}/language/${language}`, {
+        method: 'PUT'
+      }).then(json => dispatch(gotUser(json)));
   };
 }
 // linktypes
