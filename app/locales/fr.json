@@ -1,0 +1,15 @@
+{
+    "Account": "Votre compte",
+    "Gender": "S",
+    "nav.profile" : "Profil",
+    "nav.crews" : "Equipe",
+    "nav.performances" : "Performances",
+    "nav.preferences" : "Préférences",
+    "nav.events" : "Evénements",
+    "preferences.edit.form.title" : "Titre",
+    "user.edit.form.label.language" : "Langage",
+    "user.edit.form.label.language.empty" : "Sélectionner",
+    "user.edit.form.label.language.en" : "Anglais",
+    "user.edit.form.label.language.de" : "Allemand",
+    "user.edit.form.label.language.fr" : "Français"
+}
