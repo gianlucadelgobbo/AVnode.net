@@ -60,30 +60,22 @@ const Link = ({ link }) => {
               type="button"
               className="btn btn-secondary btn-sm"
             >
-              <FormattedMessage
-                id="user.edit.form.label.link.action.private"
-                defaultMessage="Make it private"
-              />
+              <i className="fa fa-shield"></i>
             </button> :
             <button
               type="button"
               className="btn btn-secondary btn-sm"
             >
-              <FormattedMessage
-                id="user.edit.form.label.link.action.public"
-                defaultMessage="Make it public"
-              />
+            <i className="fa fa-exchange"></i>
             </button>
           }
           {!link.is_primary ?
             <button
               type="button"
-              className="btn btn-secondary btn-sm"
+              className="btn btn-danger"
+              aria-label="Delete"
             >
-              <FormattedMessage
-                id="user.edit.form.label.link.action.delete"
-                defaultMessage="Delete"
-              />
+              <i className="fa fa-trash"></i>
             </button> :
             null
           }
