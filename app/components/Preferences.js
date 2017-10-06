@@ -3,8 +3,8 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from './Layout';
 
-const Preferences = ({user, changeLanguage, onSubmit, intl}) => {
-  const onChange = ({target: { value }}) => {
+const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
+  const onChange = ({ target: { value } }) => {
     if (value !== '') {
       changeLanguage(value);
     }
@@ -16,7 +16,7 @@ const Preferences = ({user, changeLanguage, onSubmit, intl}) => {
         defaultMessage: 'Your Preferences'
       })}
     >
-      <form onSubmit={ onSubmit } onChange={ onChange }>
+      <form onSubmit={onSubmit} onChange={onChange}>
         <div className="form-group">
           <label htmlFor="gender">
             <FormattedMessage
@@ -47,6 +47,12 @@ const Preferences = ({user, changeLanguage, onSubmit, intl}) => {
                 defaultMessage="German"
               />
             </option>
+            <option value="fr">
+              <FormattedMessage
+                id="user.edit.form.label.language.fr"
+                defaultMessage="French"
+              />
+            </option>
           </Field>
         </div>
       </form>
@@ -54,4 +60,4 @@ const Preferences = ({user, changeLanguage, onSubmit, intl}) => {
   );
 };
 
-export default injectIntl(reduxForm({form: 'user'})(Preferences));
+export default injectIntl(reduxForm({ form: 'user' })(Preferences));

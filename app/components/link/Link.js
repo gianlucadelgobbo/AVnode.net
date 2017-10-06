@@ -48,10 +48,7 @@ const Link = ({ link }) => {
               type="button"
               className="btn btn-secondary btn-sm"
             >
-              <FormattedMessage
-                id="user.edit.form.label.link.action.primary"
-                defaultMessage="Make it primary"
-              />
+            <i className="fa fa-star"></i>
             </button> :
             null
           }
