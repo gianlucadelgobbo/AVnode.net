@@ -58,7 +58,7 @@ const Crew = injectIntl(({ crew, onDelete, intl }) => {
 
 const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
   const meLabel = intl.formatMessage({
-    id: 'performance.edit.form.performer.met',
+    id: 'me',
     defaultMessage: 'Me'
   });
   return (
@@ -394,7 +394,7 @@ let PerformanceForm = props => {
                 component="input"
                 ref={node => { videoLink = node; }}
                 placeholder={intl.formatMessage({
-                  id: 'performance.edit.form.label.videoLink.placeholder',
+                  id: 'videolink.placeholder',
                   defaultMessage: 'https://vimeo.com/xyzxyzxyzxyz'
                 })}
               />
@@ -547,7 +547,7 @@ let PerformanceForm = props => {
             type="submit"
           >
             <FormattedMessage
-              id="general.form.save"
+              id="form.save"
               defaultMessage="Save"
             />
           </button>

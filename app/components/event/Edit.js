@@ -680,7 +680,7 @@ let EventForm = props => {
               type="submit"
             >
               <FormattedMessage
-                id="general.form.save"
+                id="form.save"
                 defaultMessage="Save"
               />
             </button>
