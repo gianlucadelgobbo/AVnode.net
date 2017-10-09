@@ -272,6 +272,28 @@ let CrewForm = props => {
             }
           </div>
         </div>
+        <h3>
+            <FormattedMessage
+              id="crew.edit.form.label.org_extradata_title"
+              defaultMessage="Organization Extra Data"
+            />
+        </h3>
+        <div className="form-group">
+          <label htmlFor="name">
+            <FormattedMessage
+              id="crew.edit.form.label.name"
+              defaultMessage="Name"
+            />
+          </label>
+          <Field
+            className="form-control form-control-lg"
+            name="name"
+            component="input"
+            type="text"
+            value={props.name}
+          />
+        </div>
+
 
         <div className="form-group">
           <button
