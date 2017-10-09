@@ -8,7 +8,7 @@ const Address = ({ address }) => {
         {address.is_primary ?
           <span className="badge badge-primary">
             <FormattedMessage
-              id="user.edit.form.label.address.badge.primary"
+              id="Primary"
               defaultMessage="Primary"
             />
           </span> :
@@ -17,13 +17,13 @@ const Address = ({ address }) => {
         {address.is_public ?
           <span className="badge badge-default">
             <FormattedMessage
-              id="user.edit.form.label.address.badge.public"
+              id="Public"
               defaultMessage="Public"
             />
           </span> :
           <span className="badge badge-default">
             <FormattedMessage
-              id="user.edit.form.label.address.badge.private"
+              id="Private"
               defaultMessage="Private"
             />
           </span>
