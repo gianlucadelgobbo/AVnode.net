@@ -225,7 +225,7 @@ let EventForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="about">
               <FormattedMessage
-                id="event.edit.form.label.addabout"
+                id="addabout"
                 defaultMessage="About"
               />
             </label>
@@ -243,7 +243,7 @@ let EventForm = props => {
           <div className="col-md-3 form-group">
             <label htmlFor="aboutlanguage">
               <FormattedMessage
-                id="event.edit.form.label.aboutlanguage"
+                id="language"
                 defaultMessage="Language"
               />
             </label>
@@ -256,7 +256,7 @@ let EventForm = props => {
               >
                 <option value="en">
                   <FormattedMessage
-                    id="event.edit.form.label.aboutlanguage.empty"
+                    id="language.en"
                     defaultMessage="English"
                   />
                 </option>
@@ -273,7 +273,7 @@ let EventForm = props => {
 
         <label>
           <FormattedMessage
-            id="event.edit.form.label.about"
+            id="manageabout"
             defaultMessage="Manage your About texts"
           />
         </label>
@@ -421,7 +421,7 @@ let EventForm = props => {
         <fieldset className="form-group">
         <legend>
           <FormattedMessage
-            id="event.edit.form.fieldset.links"
+            id="links"
             defaultMessage="Links"
           />
         </legend>
@@ -430,7 +430,7 @@ let EventForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="link">
               <FormattedMessage
-                id="event.edit.form.label.addlink"
+                id="addlink"
                 defaultMessage="Add link"
               />
             </label>
@@ -446,7 +446,7 @@ let EventForm = props => {
           <div className="col-md-3 form-group">
             <label htmlFor="linktype">
               <FormattedMessage
-                id="event.edit.form.label.linktype"
+                id="linktype"
                 defaultMessage="Link type"
               />
             </label>
@@ -459,7 +459,7 @@ let EventForm = props => {
               >
                 <option value="web">
                   <FormattedMessage
-                    id="event.edit.form.label.linktype.empty"
+                    id="Please select"
                     defaultMessage="Please select"
                   />
                 </option>
@@ -476,7 +476,7 @@ let EventForm = props => {
 
         <label>
           <FormattedMessage
-            id="event.edit.form.label.link"
+            id="link"
             defaultMessage="Manage your links"
           />
         </label>
@@ -492,7 +492,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="performances">
             <FormattedMessage
-              id="event.edit.form.label.performances"
+              id="performances"
               defaultMessage="Performances"
             />
           </label>
