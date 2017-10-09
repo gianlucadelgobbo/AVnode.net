@@ -73,20 +73,20 @@ const General = ({
               </option>
               <option value="female">
                 <FormattedMessage
-                  id="user.edit.form.label.gender.female"
+                  id="Female"
                   defaultMessage="Female"
                 />
               </option>
               <option value="male">
                 <FormattedMessage
-                  id="user.edit.form.label.gender.male"
+                  id="Male"
                   defaultMessage="Male"
                 />
               </option>
               <option value="other">
                 <FormattedMessage
                   id="user.edit.form.label.gender.other"
-                  defaultMessage="Who cares, right?"
+                  defaultMessage="Other"
                 />
               </option>
             </Field>
@@ -104,7 +104,7 @@ const General = ({
                 name="surname"
                 component="input"
                 placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.surname.default',
+                  id: 'surname.placeholder',
                   defaultMessage: 'Jane'
                 })}
               />
@@ -121,7 +121,7 @@ const General = ({
                 name="name"
                 component="input"
                 placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.name.default',
+                  id: 'name.placeholder',
                   defaultMessage: 'Doe'
                 })}
               />
@@ -146,7 +146,7 @@ const General = ({
                   data-provide="datepicker"
                   data-date-format="yyyy-mm-dd"
                   placeholder={intl.formatMessage({
-                    id: 'user.edit.form.label.name.default',
+                    id: 'date.placeholder',
                     defaultMessage: 'YYYY-MM-DD'
                   })}
                   value={user.birthday}
@@ -207,7 +207,7 @@ const General = ({
                     component="textarea"
                     rows="4"
                     placeholder={intl.formatMessage({
-                      id: 'user.edit.form.label.about.placeholder',
+                      id: 'about.placeholder',
                       defaultMessage: 'Tell me something about you.'
                     })}
                     value={user.about}
@@ -308,7 +308,7 @@ const General = ({
                 component="input"
                 type="password"
                 placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.password.placeholder',
+                  id: 'password.placeholder',
                   defaultMessage: 'PASSWORD'
                 })}
               />
@@ -316,7 +316,7 @@ const General = ({
             <div className="form-group">
               <label htmlFor="newPassword">
                 <FormattedMessage
-                  id="user.edit.form.label.newPassword"
+                  id="newPassword"
                   defaultMessage="New Password"
                 />
               </label>
@@ -326,7 +326,7 @@ const General = ({
                 component="input"
                 type="password"
                 placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.newPassword.placeholder',
+                  id: 'newPassword.placeholder',
                   defaultMessage: 's0m3th|ngS3cr37'
                 })}
               />
@@ -334,7 +334,7 @@ const General = ({
             <div className="form-group">
               <label htmlFor="confirmNewPassword">
                 <FormattedMessage
-                  id="user.edit.form.label.confirmNewPassword"
+                  id="confirmNewPassword"
                   defaultMessage="Confirm Password"
                 />
               </label>
@@ -344,7 +344,7 @@ const General = ({
                 component="input"
                 type="password"
                 placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.newPassword.placeholder',
+                  id: 'newPassword.placeholder',
                   defaultMessage: 's0m3th|ngS3cr37'
                 })}
               />
@@ -388,7 +388,7 @@ const General = ({
             <div className="col-md-9 form-group">
               <label htmlFor="link">
                 <FormattedMessage
-                  id="user.edit.form.label.addlink"
+                  id="addlink"
                   defaultMessage="Add link"
                 />
               </label>
@@ -398,7 +398,7 @@ const General = ({
                   name="link"
                   component="input"
                   placeholder={intl.formatMessage({
-                    id: 'user.edit.form.label.link.placeholder',
+                    id: 'link.placeholder',
                     defaultMessage: 'https://www...'
                   })}
                 />
@@ -407,7 +407,7 @@ const General = ({
             <div className="col-md-3 form-group">
               <label htmlFor="linktype">
                 <FormattedMessage
-                  id="user.edit.form.label.linktype"
+                  id="linktype"
                   defaultMessage="Link type"
                 />
               </label>
@@ -420,7 +420,7 @@ const General = ({
                 >
                   <option value="web">
                     <FormattedMessage
-                      id="user.edit.form.label.linktype.empty"
+                      id="Please select"
                       defaultMessage="Please select"
                     />
                   </option>
@@ -453,7 +453,7 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="user.edit.form.fieldset.email"
+              id="emails"
               defaultMessage="Emails"
             />
           </legend>
@@ -461,7 +461,7 @@ const General = ({
           <div className="form-group">
             <label htmlFor="email">
               <FormattedMessage
-                id="user.edit.form.label.email"
+                id="email"
                 defaultMessage="Primary email, change to add new email"
               />
             </label>
@@ -471,7 +471,7 @@ const General = ({
                 name="email"
                 component="input"
                 placeholder={intl.formatMessage({
-                  id: 'user.edit.form.label.email.placeholder',
+                  id: 'email.placeholder',
                   defaultMessage: 'foo@example.com'
                 })}
               />
@@ -479,7 +479,7 @@ const General = ({
             </div>
             <label>
               <FormattedMessage
-                id="user.edit.form.label.manageemail"
+                id="manageemail"
                 defaultMessage="Manage your email addresses"
               />
             </label>
@@ -547,7 +547,7 @@ const General = ({
               name="stagename"
               component="input"
               placeholder={intl.formatMessage({
-                id: 'user.edit.form.label.stagename.placeholder',
+                id: 'stagename.placeholder',
                 defaultMessage: 'ChangeMe'
               })}
               value={user.stagename}
@@ -616,7 +616,7 @@ const General = ({
             type="submit"
           >
             <FormattedMessage
-              id="general.form.save"
+              id="form.save"
               defaultMessage="Save"
             />
           </button>

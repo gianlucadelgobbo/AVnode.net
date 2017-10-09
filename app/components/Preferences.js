@@ -12,7 +12,7 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
   return (
     <Layout
       title={intl.formatMessage({
-        id: 'preferences.edit.form.title',
+        id: 'Title',
         defaultMessage: 'Your Preferences'
       })}
     >
@@ -20,7 +20,7 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
         <div className="form-group">
           <label htmlFor="language">
             <FormattedMessage
-              id="user.edit.form.label.language"
+              id="Language"
               defaultMessage="Language"
             />
           </label>
@@ -31,25 +31,25 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
           >
             <option value="">
               <FormattedMessage
-                id="user.edit.form.label.language.empty"
+                id="Please select"
                 defaultMessage="Please select"
               />
             </option>
             <option value="en">
               <FormattedMessage
-                id="user.edit.form.label.language.en"
+                id="language.en"
                 defaultMessage="English"
               />
             </option>
             <option value="de">
               <FormattedMessage
-                id="user.edit.form.label.language.de"
+                id="language.de"
                 defaultMessage="German"
               />
             </option>
             <option value="fr">
               <FormattedMessage
-                id="user.edit.form.label.language.fr"
+                id="language.fr"
                 defaultMessage="French"
               />
             </option>

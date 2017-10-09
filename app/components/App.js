@@ -10,13 +10,17 @@ import CrewEdit from './crew/Edit';
 import Performances from './Performances';
 import PerformanceEdit from './performance/Edit';
 import Preferences from './PreferencesContainer';
+import { FormattedMessage } from 'preact-intl';
 
 const App = () => {
   return (
     <div>
       <div className="jumbotron jumbotron-fluid">
-        <div className="container">
-          <h1 className="display-4">Account</h1>
+        <div className="container">      
+          <h1 className="display-4"><FormattedMessage
+              id="Account"
+              defaultMessage="Account"
+            /></h1>
         </div>
       </div>
       <div className="container-fluid account-nav-wrap">
