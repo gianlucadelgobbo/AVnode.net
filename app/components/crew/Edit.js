@@ -9,6 +9,8 @@ import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
 import Languages from '../language/Languages';
 
+import Place from '../place/PlaceContainer';
+
 import {
   editCrew,
   suggestCrewMember,
@@ -600,11 +602,15 @@ let CrewForm = props => {
             />
           </label>
           <Field
-              className="form-control form-control-lg"
-              name="org_aims_and_activities"
-              component="input"
-              type="text"
-              value={props.org_aims_and_activities}
+            className="form-control"
+            name="org_aims_and_activities"
+            component="textarea"
+            rows="4"
+            placeholder={props.intl.formatMessage({
+              id: 'about.placeholder',
+              defaultMessage: 'Tell me something about aims and activities of the organisation.'
+            })}
+            value={props.org_aims_and_activities}
           />
         </div>
 
@@ -624,101 +630,24 @@ let CrewForm = props => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="org_address">
+        <fieldset className="form-group">
+          <legend>
             <FormattedMessage
-                id="crew.edit.form.label.org_address"
-                defaultMessage="Organisation address"
+              id="crew.edit.form.label.org_address"
+              defaultMessage="Organisation address"
             />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_address"
-              component="input"
-              type="text"
-              value={props.org_address}
-          />
-        </div>
+          </legend>
 
-        <div className="form-group">
-          <label htmlFor="org_post_code">
-            <FormattedMessage
-                id="crew.edit.form.label.org_post_code"
-                defaultMessage="Organisation post code"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_post_code"
-              component="input"
-              type="text"
-              value={props.org_post_code}
-          />
-        </div>
+          <Place user={crew} />
 
-        <div className="form-group">
-          <label htmlFor="org_city">
-            <FormattedMessage
-                id="crew.edit.form.label.org_city"
-                defaultMessage="Organisation city"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_city"
-              component="input"
-              type="text"
-              value={props.org_city}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_region">
-            <FormattedMessage
-                id="crew.edit.form.label.org_region"
-                defaultMessage="Organisation region"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_region"
-              component="input"
-              type="text"
-              value={props.org_region}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_country">
-            <FormattedMessage
-                id="crew.edit.form.label.org_country"
-                defaultMessage="Organisation country"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_country"
-              component="input"
-              type="text"
-              value={props.org_country}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_geolocation">
-            <FormattedMessage
-                id="crew.edit.form.label.org_geolocation"
-                defaultMessage="Organisation geolocation"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_geolocation"
-              component="input"
-              type="text"
-              value={props.org_geolocation}
-          />
-        </div>
+          <ul className="list-group mt-2">
+            {
+              crew && crew.org_addresses && crew.org_addresses.map((a) => (
+                <Address address={a} />
+              ))
+            }
+          </ul>
+        </fieldset>
 
         <div className="form-group">
           <label htmlFor="org_vat_number">
@@ -728,13 +657,12 @@ let CrewForm = props => {
             />
           </label>
           <Field
-              className="form-control form-control-lg"
-              name="org_vat_number"
-              component="input"
-              type="text"
-              value={props.org_vat_number}
-          />
-        </div>
+            className="form-control form-control-lg"
+            name="org_able_to_recuperate_vat"
+            component="input"
+            type="text"
+            value={props.org_vat_number}
+          />       </div>
 
         <div className="form-group">
           <label htmlFor="org_able_to_recuperate_vat">
@@ -743,13 +671,11 @@ let CrewForm = props => {
                 defaultMessage="Able to recuperate VAT?"
             />
           </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_able_to_recuperate_vat"
-              component="input"
-              type="text"
-              value={props.org_able_to_recuperate_vat}
-          />
+          <div>
+            <input type="radio" value="1" name="org_able_to_recuperate_vat" /> YES
+            <input type="radio" value="0" name="org_able_to_recuperate_vat" /> NO
+          </div>
+
         </div>
 
         <div className="form-group">
@@ -856,12 +782,30 @@ let CrewForm = props => {
             />
           </label>
           <Field
-              className="form-control form-control-lg"
-              name="org_contact_language"
-              component="input"
-              type="text"
-              value={props.org_contact_language}
-          />
+            className="form-control custom-select"
+            name="org_contact_language"
+            component="select"
+          >
+            <option value="">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_language.empty"
+                defaultMessage="Please select"
+              />
+            </option>
+            <option value="en">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_language.en"
+                defaultMessage="English"
+              />
+            </option>
+            <option value="it">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_language.it"
+                defaultMessage="Italiano"
+              />
+            </option>
+          </Field>
+
         </div>
 
         <div className="form-group">
@@ -1044,15 +988,22 @@ let CrewForm = props => {
           <label htmlFor="org_statute">
             <FormattedMessage
                 id="crew.edit.form.label.org_statute"
-                defaultMessage="Organisation statute"
+                defaultMessage="Organisation statute (pdf only)"
             />
           </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_statute"
-              component="input"
-              type="text"
-              value={props.org_statute}
+          {crew && crew.org_statute ?
+            <div>
+              <img
+                className="img-thumbnail mb-3"
+                src={crew.org_statute.publicUrl}
+                alt={`Organisation statute of ${props.org_name}`}
+              />
+            </div> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+            onDrop={onImageDrop(props._id)}
           />
         </div>
 
@@ -1060,15 +1011,22 @@ let CrewForm = props => {
           <label htmlFor="org_members_cv">
             <FormattedMessage
                 id="crew.edit.form.label.org_members_cv"
-                defaultMessage="Organisation members cv"
+                defaultMessage="Organisation members cv (pdf only)"
             />
           </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_members_cv"
-              component="input"
-              type="text"
-              value={props.org_members_cv}
+          {crew && crew.org_members_cv ?
+            <div>
+              <img
+                className="img-thumbnail mb-3"
+                src={crew.org_members_cv.publicUrl}
+                alt={`Organisation members cv of ${props.org_name}`}
+              />
+            </div> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+            onDrop={onImageDrop(props._id)}
           />
         </div>
 
@@ -1076,15 +1034,22 @@ let CrewForm = props => {
           <label htmlFor="org_activity_report">
             <FormattedMessage
                 id="crew.edit.form.label.org_activity_report"
-                defaultMessage="Organisation Activity Report"
+                defaultMessage="Organisation Activity Report (pdf only)"
             />
           </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_activity_report"
-              component="input"
-              type="text"
-              value={props.org_activity_report}
+          {crew && crew.org_activity_report ?
+            <div>
+              <img
+                className="img-thumbnail mb-3"
+                src={crew.org_activity_report.publicUrl}
+                alt={`Activity Report of ${props.org_name}`}
+              />
+            </div> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+            onDrop={onImageDrop(props._id)}
           />
         </div>
 
@@ -1160,11 +1125,15 @@ let CrewForm = props => {
             />
           </label>
           <Field
-              className="form-control form-control-lg"
-              name="org_relevance_in_the_project"
-              component="input"
-              type="text"
-              value={props.org_relevance_in_the_project}
+            className="form-control"
+            name="org_relevance_in_the_project"
+            component="textarea"
+            rows="4"
+            placeholder={props.intl.formatMessage({
+              id: 'about.placeholder',
+              defaultMessage: 'Tell me something about organisation relevance in the project.'
+            })}
+            value={props.org_relevance_in_the_project}
           />
         </div>
 
@@ -1176,11 +1145,15 @@ let CrewForm = props => {
             />
           </label>
           <Field
-              className="form-control form-control-lg"
-              name="org_emerging_artists_definition"
-              component="input"
-              type="text"
-              value={props.org_emerging_artists_definition}
+            className="form-control"
+            name="org_emerging_artists_definition"
+            component="textarea"
+            rows="4"
+            placeholder={props.intl.formatMessage({
+              id: 'about.placeholder',
+              defaultMessage: 'Tell me the organisation emerging artists definition.'
+            })}
+            value={props.org_emerging_artists_definition}
           />
         </div>
 
@@ -1192,11 +1165,15 @@ let CrewForm = props => {
             />
           </label>
           <Field
-              className="form-control form-control-lg"
-              name="org_eu_grants_received_in_the_last_3_years"
-              component="input"
-              type="text"
-              value={props.org_eu_grants_received_in_the_last_3_years}
+            className="form-control"
+            name="org_eu_grants_received_in_the_last_3_years"
+            component="textarea"
+            rows="4"
+            placeholder={props.intl.formatMessage({
+              id: 'about.placeholder',
+              defaultMessage: 'EU grants received in the last 3 years.'
+            })}
+            value={props.org_eu_grants_received_in_the_last_3_years}
           />
         </div>
 
@@ -1216,165 +1193,179 @@ let CrewForm = props => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_name">
-            <FormattedMessage
+        <fieldset className="form-group">
+          <legend>Organisation activities</legend>
+
+          <div className="form-group">
+            <label htmlFor="activity_name">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_name"
                 defaultMessage="Activity Name"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_name"
               component="input"
               type="text"
               value={props.activity_name}
-          />
-        </div>
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_start_date">
-            <FormattedMessage
+          <div className="form-group">
+            <label htmlFor="activity_logo">
+              <FormattedMessage
+                id="crew.edit.form.label.activity_logo"
+                defaultMessage="Activity logo (.svg only)"
+              />
+            </label>
+            {crew && crew.activity_logo ?
+              <div>
+                <img
+                  className="img-thumbnail mb-3"
+                  src={crew.activity_logo.publicUrl}
+                  alt={`Logo of ${props.org_name}`}
+                />
+              </div> :
+              null
+            }
+            <ImageDropzone
+              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              onDrop={onImageDrop(props._id)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="activity_start_date">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_start_date"
                 defaultMessage="Activity start date"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_start_date"
               component="input"
               type="text"
               value={props.activity_start_date}
-          />
-        </div>
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_end_date">
-            <FormattedMessage
+          <div className="form-group">
+            <label htmlFor="activity_end_date">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_end_date"
                 defaultMessage="Activity end date"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_end_date"
               component="input"
               type="text"
               value={props.activity_end_date}
-          />
-        </div>
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_month">
-            <FormattedMessage
+          <div className="form-group">
+            <label htmlFor="activity_month">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_month"
                 defaultMessage="Activity Month"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_month"
               component="input"
               type="text"
               value={props.activity_month}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="activity_city">
-            <FormattedMessage
-                id="crew.edit.form.label.activity_city"
-                defaultMessage="Activity City"
             />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="activity_city"
-              component="input"
-              type="text"
-              value={props.activity_city}
-          />
-        </div>
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_country">
-            <FormattedMessage
-                id="crew.edit.form.label.activity_country"
-                defaultMessage="Activity Country"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="activity_country"
-              component="input"
-              type="text"
-              value={props.activity_country}
-          />
-        </div>
+          <fieldset className="form-group">
+            <legend>
+              <FormattedMessage
+                id="crew.edit.form.label.activity_address"
+                defaultMessage="Activity address"
+              />
+            </legend>
 
-        <div className="form-group">
-          <label htmlFor="activity_website">
-            <FormattedMessage
+            <Place user={crew} />
+
+            <ul className="list-group mt-2">
+              {
+                crew && crew.activity_addresses && crew.activity_addresses.map((a) => (
+                  <Address address={a} />
+                ))
+              }
+            </ul>
+          </fieldset>
+
+          <div className="form-group">
+            <label htmlFor="activity_website">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_website"
                 defaultMessage="Activity Website"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_website"
               component="input"
               type="text"
               value={props.activity_website}
-          />
-        </div>
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_facebook">
-            <FormattedMessage
+          <div className="form-group">
+            <label htmlFor="activity_facebook">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_facebook"
                 defaultMessage="Activity Facebook"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_facebook"
               component="input"
               type="text"
               value={props.activity_facebook}
-          />
-        </div>
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_instagram">
-            <FormattedMessage
+          <div className="form-group">
+            <label htmlFor="activity_instagram">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_instagram"
                 defaultMessage="Activity Instagram"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_instagram"
               component="input"
               type="text"
               value={props.activity_instagram}
-          />
-        </div>
+            />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="activity_other_profiles">
-            <FormattedMessage
+          <div className="form-group">
+            <label htmlFor="activity_other_profiles">
+              <FormattedMessage
                 id="crew.edit.form.label.activity_other_profiles"
                 defaultMessage="Activity Other profiles"
-            />
-          </label>
-          <Field
+              />
+            </label>
+            <Field
               className="form-control form-control-lg"
               name="activity_other_profiles"
               component="input"
               type="text"
               value={props.activity_other_profiles}
-          />
-        </div>
+            />
+          </div>
+        </fieldset>
+
 
 
 
