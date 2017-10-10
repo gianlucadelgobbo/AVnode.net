@@ -8,7 +8,7 @@ const Address = ({ address }) => {
         {address.is_primary ?
           <span className="badge badge-primary">
             <FormattedMessage
-              id="Primary"
+              id="primary"
               defaultMessage="Primary"
             />
           </span> :
@@ -17,13 +17,13 @@ const Address = ({ address }) => {
         {address.is_public ?
           <span className="badge badge-default">
             <FormattedMessage
-              id="Public"
+              id="public"
               defaultMessage="Public"
             />
           </span> :
           <span className="badge badge-default">
             <FormattedMessage
-              id="Private"
+              id="private"
               defaultMessage="Private"
             />
           </span>

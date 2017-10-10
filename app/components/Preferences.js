@@ -20,7 +20,7 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
         <div className="form-group">
           <label htmlFor="language">
             <FormattedMessage
-              id="Language"
+              id="language"
               defaultMessage="Language"
             />
           </label>
@@ -51,6 +51,12 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
               <FormattedMessage
                 id="language.fr"
                 defaultMessage="French"
+              />
+            </option>
+            <option value="it">
+              <FormattedMessage
+                id="language.it"
+                defaultMessage="Italian"
               />
             </option>
           </Field>
