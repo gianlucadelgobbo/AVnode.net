@@ -5,16 +5,19 @@ import { addLocaleData } from 'preact-intl';
 import messagesEN from '../locales/en.json';
 import messagesDE from '../locales/de.json';
 import messagesFR from '../locales/fr.json';
+import messagesIT from '../locales/it.json';
 // FIXME: Import locale data for every supported locale…
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 import fr from 'react-intl/locale-data/fr';
-addLocaleData([...en, ...de, ...fr]);
+import it from 'react-intl/locale-data/it';
+addLocaleData([...en, ...de, ...fr, ...it]);
 
 const messages = {
   en: messagesEN,
   de: messagesDE,
-  fr: messagesFR
+  fr: messagesFR,
+  it: messagesIT
 };
 
 const getLocale = (user) => {
