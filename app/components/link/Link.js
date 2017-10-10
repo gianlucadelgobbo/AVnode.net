@@ -8,7 +8,7 @@ const Link = ({ link }) => {
         {link.is_primary ?
           <span className="badge badge-primary">
             <FormattedMessage
-              id="user.edit.form.label.link.badge.primary"
+              id="primary"
               defaultMessage="Primary"
             />
           </span> :
@@ -17,13 +17,13 @@ const Link = ({ link }) => {
         {link.is_confirmed ?
           <span className="badge badge-success">
             <FormattedMessage
-              id="user.edit.form.label.link.badge.confirmed"
+              id="confirmed"
               defaultMessage="Confirmed"
             />
           </span> :
           <span className="badge badge-danger">
             <FormattedMessage
-              id="user.edit.form.label.link.badge.unconfirmed"
+              id="unconfirmed"
               defaultMessage="Unconfirmed"
             />
           </span>
@@ -31,13 +31,13 @@ const Link = ({ link }) => {
         {link.is_public ?
           <span className="badge badge-default">
             <FormattedMessage
-              id="user.edit.form.label.link.badge.public"
+              id="public"
               defaultMessage="Public"
             />
           </span> :
           <span className="badge badge-default">
             <FormattedMessage
-              id="user.edit.form.label.link.badge.private"
+              id="private"
               defaultMessage="Private"
             />
           </span>

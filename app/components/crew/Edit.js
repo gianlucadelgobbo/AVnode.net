@@ -93,7 +93,7 @@ let CrewForm = props => {
         <div className="form-group">
           <label htmlFor="name">
             <FormattedMessage
-              id="crew.edit.form.label.name"
+              id="name"
               defaultMessage="Name"
             />
           </label>
@@ -152,7 +152,7 @@ let CrewForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="about">
               <FormattedMessage
-                id="crew.edit.form.label.addabout"
+                id="addabout"
                 defaultMessage="About"
               />
             </label>
@@ -170,7 +170,7 @@ let CrewForm = props => {
           <div className="col-md-3 form-group">
             <label htmlFor="aboutlanguage">
               <FormattedMessage
-                id="crew.edit.form.label.aboutlanguage"
+                id="language"
                 defaultMessage="Language"
               />
             </label>
@@ -183,7 +183,7 @@ let CrewForm = props => {
               >
                 <option value="en">
                   <FormattedMessage
-                    id="crew.edit.form.label.aboutlanguage.empty"
+                    id="language.en"
                     defaultMessage="English"
                   />
                 </option>
@@ -200,7 +200,7 @@ let CrewForm = props => {
 
         <label>
           <FormattedMessage
-            id="crew.edit.form.label.about"
+            id="manageabout"
             defaultMessage="Manage your About texts"
           />
         </label>
