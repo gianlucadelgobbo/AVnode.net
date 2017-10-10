@@ -178,7 +178,7 @@ let PerformanceForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="about">
               <FormattedMessage
-                id="performance.edit.form.label.addabout"
+                id="addabout"
                 defaultMessage="About"
               />
             </label>
@@ -196,7 +196,7 @@ let PerformanceForm = props => {
           <div className="col-md-3 form-group">
             <label htmlFor="aboutlanguage">
               <FormattedMessage
-                id="performance.edit.form.label.aboutlanguage"
+                id="language"
                 defaultMessage="Language"
               />
             </label>
@@ -209,7 +209,7 @@ let PerformanceForm = props => {
               >
                 <option value="en">
                   <FormattedMessage
-                    id="performance.edit.form.label.aboutlanguage.empty"
+                    id="language.en"
                     defaultMessage="English"
                   />
                 </option>
@@ -226,7 +226,7 @@ let PerformanceForm = props => {
 
         <label>
           <FormattedMessage
-            id="performance.edit.form.label.about"
+            id="manageabout"
             defaultMessage="Manage your About texts"
           />
         </label>

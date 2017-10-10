@@ -95,7 +95,7 @@ class Place extends React.Component {
       <div className="form-group">
         <label htmlFor="places">
           <FormattedMessage
-            id="place.edit.form.label.places"
+            id="places"
             defaultMessage="Places"
           />
         </label>

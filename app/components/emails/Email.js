@@ -8,7 +8,7 @@ const Email = ({ email }) => {
         {email.is_primary ?
           <span className="badge badge-primary">
             <FormattedMessage
-              id="email.edit.form.label.email.badge.primary"
+              id="primary"
               defaultMessage="Primary"
             />
           </span> :
@@ -17,13 +17,13 @@ const Email = ({ email }) => {
         {email.is_confirmed ?
           <span className="badge badge-success">
             <FormattedMessage
-              id="email.edit.form.label.email.badge.confirmed"
+              id="confirmed"
               defaultMessage="Confirmed"
             />
           </span> :
           <span className="badge badge-danger">
             <FormattedMessage
-              id="email.edit.form.label.email.badge.unconfirmed"
+              id="unconfirmed"
               defaultMessage="Unconfirmed"
             />
           </span>
@@ -31,13 +31,13 @@ const Email = ({ email }) => {
         {email.is_public ?
           <span className="badge badge-default">
             <FormattedMessage
-              id="email.edit.form.label.email.badge.public"
+              id="public"
               defaultMessage="Public"
             />
           </span> :
           <span className="badge badge-default">
             <FormattedMessage
-              id="email.edit.form.label.email.badge.private"
+              id="private"
               defaultMessage="Private"
             />
           </span>
@@ -49,7 +49,7 @@ const Email = ({ email }) => {
               className="btn btn-secondary btn-sm"
             >
               <FormattedMessage
-                id="email.edit.form.label.email.action.primary"
+                id="makeitprimary"
                 defaultMessage="Make it primary"
               />
             </button> :
@@ -61,7 +61,7 @@ const Email = ({ email }) => {
               className="btn btn-secondary btn-sm"
             >
               <FormattedMessage
-                id="email.edit.form.label.email.action.private"
+                id="makeitprivate"
                 defaultMessage="Make it private"
               />
             </button> :
@@ -70,7 +70,7 @@ const Email = ({ email }) => {
               className="btn btn-secondary btn-sm"
             >
               <FormattedMessage
-                id="email.edit.form.label.email.action.public"
+                id="makeitpublic"
                 defaultMessage="Make it public"
               />
             </button>
@@ -81,7 +81,7 @@ const Email = ({ email }) => {
               className="btn btn-secondary btn-sm"
             >
               <FormattedMessage
-                id="email.edit.form.label.email.action.delete"
+                id="delete"
                 defaultMessage="Delete"
               />
             </button> :

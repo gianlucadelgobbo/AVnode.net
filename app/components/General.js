@@ -49,14 +49,14 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="user.edit.form.fieldset.general"
+              id="general"
               defaultMessage="General"
             />
           </legend>
           <div className="form-group">
             <label htmlFor="gender">
               <FormattedMessage
-                id="user.edit.form.label.gender"
+                id="gender"
                 defaultMessage="Gender"
               />
             </label>
@@ -67,7 +67,7 @@ const General = ({
             >
               <option value="">
                 <FormattedMessage
-                  id="user.edit.form.label.gender.empty"
+                  id="Please select"
                   defaultMessage="Please select"
                 />
               </option>
@@ -85,7 +85,7 @@ const General = ({
               </option>
               <option value="other">
                 <FormattedMessage
-                  id="user.edit.form.label.gender.other"
+                  id="Other"
                   defaultMessage="Other"
                 />
               </option>
@@ -95,7 +95,7 @@ const General = ({
             <div className="col-md-6 form-group">
               <label htmlFor="surname">
                 <FormattedMessage
-                  id="user.edit.form.label.surname"
+                  id="surname"
                   defaultMessage="Surname"
                 />
               </label>
@@ -112,7 +112,7 @@ const General = ({
             <div className="col-md-6 form-group">
               <label htmlFor="name">
                 <FormattedMessage
-                  id="user.edit.form.label.name"
+                  id="name"
                   defaultMessage="Name"
                 />
               </label>
@@ -131,7 +131,7 @@ const General = ({
             <div className="col-md-6 form-group">
               <label htmlFor="birthday">
                 <FormattedMessage
-                  id="user.edit.form.label.birthday"
+                  id="birthday"
                   defaultMessage="Birthday"
                 />
               </label>
@@ -156,7 +156,7 @@ const General = ({
             <div className="col-md-6 form-group">
               <label htmlFor="citizenship">
                 <FormattedMessage
-                  id="user.edit.form.label.citizenship"
+                  id="citizenship"
                   defaultMessage="Citizenship"
                 />
               </label>
@@ -169,7 +169,7 @@ const General = ({
                 >
                   <option value="">
                     <FormattedMessage
-                      id="user.edit.form.label.citizenship.empty"
+                      id="Please select"
                       defaultMessage="Please select"
                     />
                   </option>
@@ -187,7 +187,7 @@ const General = ({
           <fieldset className="form-group">
             <legend>
               <FormattedMessage
-                id="user.edit.form.fieldset.abouts"
+                id="abouts"
                 defaultMessage="About you..."
               />
             </legend>
@@ -196,7 +196,7 @@ const General = ({
               <div className="col-md-9 form-group">
                 <label htmlFor="about">
                   <FormattedMessage
-                    id="user.edit.form.label.addabout"
+                    id="addabout"
                     defaultMessage="About you"
                   />
                 </label>
@@ -217,7 +217,7 @@ const General = ({
               <div className="col-md-3 form-group">
                 <label htmlFor="aboutlanguage">
                   <FormattedMessage
-                    id="user.edit.form.label.aboutlanguage"
+                    id="language"
                     defaultMessage="Language"
                   />
                 </label>
@@ -230,7 +230,7 @@ const General = ({
                   >
                     <option value="en">
                       <FormattedMessage
-                        id="user.edit.form.label.aboutlanguage.empty"
+                        id="language.en"
                         defaultMessage="English"
                       />
                     </option>
@@ -247,7 +247,7 @@ const General = ({
 
             <label>
               <FormattedMessage
-                id="user.edit.form.label.about"
+                id="manageabout"
                 defaultMessage="Manage your About texts"
               />
             </label>
@@ -265,7 +265,7 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="user.edit.form.fieldset.password"
+              id="password"
               defaultMessage="Password"
             />
           </legend>
@@ -275,7 +275,7 @@ const General = ({
             onClick={openPasswordModal}
           >
             <FormattedMessage
-              id="user.edit.form.label.password.change"
+              id="password.change"
               defaultMessage="Change your password"
             />
           </button>
@@ -289,7 +289,7 @@ const General = ({
                 className="btn btn-danger"
               >
                 <FormattedMessage
-                  id="user.edit.form.label.stagename.change"
+                  id="change"
                   defaultMessage="Change"
                 />
               </button>
@@ -360,7 +360,7 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="user.edit.form.fieldset.address"
+              id="address"
               defaultMessage="Address"
             />
           </legend>
@@ -379,7 +379,7 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="user.edit.form.fieldset.links"
+              id="links"
               defaultMessage="Links"
             />
           </legend>
@@ -437,7 +437,7 @@ const General = ({
 
           <label>
             <FormattedMessage
-              id="user.edit.form.label.link"
+              id="link"
               defaultMessage="Manage your links"
             />
           </label>
@@ -495,12 +495,18 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="user.edit.form.label.stagename"
+              id="stagename"
               defaultMessage="Stagename"
             />
           </legend>
           <p>
-            Current stagename: <strong>{user.stagename}</strong><br />
+          <label>
+              <FormattedMessage
+                id="currentstagename"
+                defaultMessage="Current stagename"
+              />
+            </label>
+            : <strong>{user.stagename}</strong><br />
             <pre>{user.publicUrl}</pre> { /* FIXME */}
           </p>
           <button
@@ -509,7 +515,7 @@ const General = ({
             onClick={openStagenameModal}
           >
             <FormattedMessage
-              id="user.edit.form.label.stagename.openModal"
+              id="stagename.openModal"
               defaultMessage="Change your stagename"
             />
           </button>
@@ -523,7 +529,7 @@ const General = ({
                 className="btn btn-danger"
               >
                 <FormattedMessage
-                  id="user.edit.form.label.stagename.change"
+                  id="change"
                   defaultMessage="Change"
                 />
               </button>
@@ -531,14 +537,14 @@ const General = ({
           >
             <p>
               <FormattedMessage
-                id="user.edit.form.label.stagename.change.disclaimer"
+                id="stagename.change.disclaimer"
                 defaultMessage="Changing your stagename can have unintended side effects!"
               />
             </p>
 
             <label htmlFor="stagename">
               <FormattedMessage
-                id="user.edit.form.label.stagename"
+                id="stagename"
                 defaultMessage="Stagename"
               />
             </label>
@@ -558,7 +564,7 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="user.edit.form.label.images"
+              id="images"
               defaultMessage="Images"
             />
           </legend>
@@ -566,7 +572,7 @@ const General = ({
           <div className="form-group">
             <label htmlFor="profileImage">
               <FormattedMessage
-                id="user.edit.form.label.profileImage"
+                id="profileImage"
                 defaultMessage="Profile Image"
               />
             </label>
@@ -589,7 +595,7 @@ const General = ({
           <div className="form-group">
             <label htmlFor="image">
               <FormattedMessage
-                id="user.edit.form.label.teaserImage"
+                id="teaserImage"
                 defaultMessage="Teaser Image"
               />
             </label>
