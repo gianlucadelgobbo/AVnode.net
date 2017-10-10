@@ -518,16 +518,24 @@ let CrewForm = props => {
           <label htmlFor="org_website">
             <FormattedMessage
                 id="crew.edit.form.label.org_website"
-                defaultMessage="Organisation url"
+                defaultMessage="Organisation website"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
               name="org_website"
               component="input"
               type="text"
               value={props.org_website}
-          />
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -537,13 +545,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation Web & Social Channels"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
-              name="org_web_social_channels"
+              name="org_website"
               component="input"
               type="text"
-              value={props.org_web_social_channels}
-          />
+              value={props.org_website}
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -553,13 +569,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation Web & Social Channels for LIKES & SHARES"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
-              name="org_web_social_channels_for_project_likes_shares"
+              name="org_website"
               component="input"
               type="text"
-              value={props.org_web_social_channels_for_project_likes_shares}
-          />
+              value={props.org_website}
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -569,13 +593,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation public email"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
-              name="org_public_email"
+              name="org_website"
               component="input"
               type="text"
-              value={props.org_public_email}
-          />
+              value={props.org_website}
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -585,13 +617,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation phone"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
-              name="org_phone"
+              name="org_website"
               component="input"
               type="text"
-              value={props.org_phone}
-          />
+              value={props.org_website}
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -630,24 +670,22 @@ let CrewForm = props => {
           />
         </div>
 
-        <fieldset className="form-group">
-          <legend>
+        <div className="form-group">
+          <label htmlFor="org_address">
             <FormattedMessage
               id="crew.edit.form.label.org_address"
-              defaultMessage="Organisation address"
+              defaultMessage="Organisation legal address (only one)"
             />
-          </legend>
-
+          </label>
           <Place user={crew} />
-
           <ul className="list-group mt-2">
             {
-              crew && crew.org_addresses && crew.org_addresses.map((a) => (
+              crew && crew.org_address && crew.org_address.map((a) => (
                 <Address address={a} />
               ))
             }
           </ul>
-        </fieldset>
+        </div>
 
         <div className="form-group">
           <label htmlFor="org_vat_number">
@@ -662,7 +700,8 @@ let CrewForm = props => {
             component="input"
             type="text"
             value={props.org_vat_number}
-          />       </div>
+          />
+        </div>
 
         <div className="form-group">
           <label htmlFor="org_able_to_recuperate_vat">
@@ -695,168 +734,6 @@ let CrewForm = props => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_contact_title">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_title"
-                defaultMessage="Organisation contact title"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_title"
-              component="input"
-              type="text"
-              value={props.org_contact_title}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_name">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_name"
-                defaultMessage="Organisation contact name"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_name"
-              component="input"
-              type="text"
-              value={props.org_contact_name}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_surname">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_surname"
-                defaultMessage="Organisation contact surname"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_surname"
-              component="input"
-              type="text"
-              value={props.org_contact_surname}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_role">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_role"
-                defaultMessage="Organisation contact role"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_role"
-              component="input"
-              type="text"
-              value={props.org_contact_role}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_email">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_email"
-                defaultMessage="Organisation contact email"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_email"
-              component="input"
-              type="text"
-              value={props.org_contact_email}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_language">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_language"
-                defaultMessage="Organisation contact language"
-            />
-          </label>
-          <Field
-            className="form-control custom-select"
-            name="org_contact_language"
-            component="select"
-          >
-            <option value="">
-              <FormattedMessage
-                id="crew.edit.form.label.org_contact_language.empty"
-                defaultMessage="Please select"
-              />
-            </option>
-            <option value="en">
-              <FormattedMessage
-                id="crew.edit.form.label.org_contact_language.en"
-                defaultMessage="English"
-              />
-            </option>
-            <option value="it">
-              <FormattedMessage
-                id="crew.edit.form.label.org_contact_language.it"
-                defaultMessage="Italiano"
-              />
-            </option>
-          </Field>
-
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_mobile_phone">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_mobile_phone"
-                defaultMessage="Organisation contact mobile phone"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_mobile_phone"
-              component="input"
-              type="text"
-              value={props.org_contact_mobile_phone}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_skype">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_skype"
-                defaultMessage="Organisation contact skype"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_skype"
-              component="input"
-              type="text"
-              value={props.org_contact_skype}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_contact_facebook">
-            <FormattedMessage
-                id="crew.edit.form.label.org_contact_facebook"
-                defaultMessage="Organisation contact facebook"
-            />
-          </label>
-          <Field
-              className="form-control form-control-lg"
-              name="org_contact_facebook"
-              component="input"
-              type="text"
-              value={props.org_contact_facebook}
-          />
-        </div>
-
-        <div className="form-group">
           <label htmlFor="org_legal_representative_title">
             <FormattedMessage
                 id="crew.edit.form.label.org_legal_representative_title"
@@ -864,12 +741,30 @@ let CrewForm = props => {
             />
           </label>
           <Field
-              className="form-control form-control-lg"
-              name="org_legal_representative_title"
-              component="input"
-              type="text"
-              value={props.org_legal_representative_title}
-          />
+            className="form-control custom-select"
+            name="org_legal_representative_title"
+            component="select"
+          >
+            <option value="">
+              <FormattedMessage
+                id="crew.edit.form.label.org_legal_representative_title.empty"
+                defaultMessage="Please select"
+              />
+            </option>
+            <option value="en">
+              <FormattedMessage
+                id="crew.edit.form.label.org_legal_representative_title.mr"
+                defaultMessage="Mr."
+              />
+            </option>
+            <option value="it">
+              <FormattedMessage
+                id="crew.edit.form.label.org_legal_representative_title.miss"
+                defaultMessage="Miss"
+              />
+            </option>
+          </Field>
+
         </div>
 
         <div className="form-group">
@@ -927,13 +822,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation legal representative email"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
               name="org_legal_representative_email"
               component="input"
               type="text"
               value={props.org_legal_representative_email}
-          />
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -943,13 +846,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation legal representative mobile phone"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
               name="org_legal_representative_mobile_phone"
               component="input"
               type="text"
               value={props.org_legal_representative_mobile_phone}
-          />
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -959,13 +870,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation legal representative skype"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
               name="org_legal_representative_skype"
               component="input"
               type="text"
               value={props.org_legal_representative_skype}
-          />
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -975,13 +894,21 @@ let CrewForm = props => {
                 defaultMessage="Organisation legal representative facebook"
             />
           </label>
-          <Field
+          <div className="input-group">
+            <Field
               className="form-control form-control-lg"
               name="org_legal_representative_facebook"
               component="input"
               type="text"
               value={props.org_legal_representative_facebook}
-          />
+            />
+            <div className="input-group-addon">
+              <i className="fa fa-minus"></i>
+            </div>
+            <div className="input-group-addon">
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -1194,7 +1121,229 @@ let CrewForm = props => {
         </div>
 
         <fieldset className="form-group">
-          <legend>Organisation activities</legend>
+          <legend>
+            <FormattedMessage
+              id="crew.edit.form.label.org_contacts"
+              defaultMessage="Organisation contacts (multiple)"
+            />
+          </legend>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_title">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_title"
+                defaultMessage="Organisation contact title"
+              />
+            </label>
+            <Field
+              className="form-control custom-select"
+              name="org_contact_title"
+              component="select"
+            >
+              <option value="">
+                <FormattedMessage
+                  id="crew.edit.form.label.org_contact_title.empty"
+                  defaultMessage="Please select"
+                />
+              </option>
+              <option value="en">
+                <FormattedMessage
+                  id="crew.edit.form.label.org_contact_title.mr"
+                  defaultMessage="Mr."
+                />
+              </option>
+              <option value="it">
+                <FormattedMessage
+                  id="crew.edit.form.label.org_contact_language.miss"
+                  defaultMessage="Miss"
+                />
+              </option>
+            </Field>
+
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_name">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_name"
+                defaultMessage="Organisation contact name"
+              />
+            </label>
+            <Field
+              className="form-control form-control-lg"
+              name="org_contact_name"
+              component="input"
+              type="text"
+              value={props.org_contact_name}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_surname">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_surname"
+                defaultMessage="Organisation contact surname"
+              />
+            </label>
+            <Field
+              className="form-control form-control-lg"
+              name="org_contact_surname"
+              component="input"
+              type="text"
+              value={props.org_contact_surname}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_role">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_role"
+                defaultMessage="Organisation contact role"
+              />
+            </label>
+            <Field
+              className="form-control form-control-lg"
+              name="org_contact_role"
+              component="input"
+              type="text"
+              value={props.org_contact_role}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_email">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_email"
+                defaultMessage="Organisation contact email"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="org_contact_email"
+                component="input"
+                type="text"
+                value={props.org_contact_email}
+              />
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_language">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_language"
+                defaultMessage="Organisation contact language"
+              />
+            </label>
+            <Field
+              className="form-control custom-select"
+              name="org_contact_language"
+              component="select"
+            >
+              <option value="">
+                <FormattedMessage
+                  id="crew.edit.form.label.org_contact_language.empty"
+                  defaultMessage="Please select"
+                />
+              </option>
+              <option value="en">
+                <FormattedMessage
+                  id="crew.edit.form.label.org_contact_language.en"
+                  defaultMessage="English"
+                />
+              </option>
+              <option value="it">
+                <FormattedMessage
+                  id="crew.edit.form.label.org_contact_language.it"
+                  defaultMessage="Italiano"
+                />
+              </option>
+            </Field>
+
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_mobile_phone">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_mobile_phone"
+                defaultMessage="Organisation contact mobile phone"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="org_contact_mobile_phone"
+                component="input"
+                type="text"
+                value={props.org_contact_mobile_phone}
+              />
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_skype">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_skype"
+                defaultMessage="Organisation contact skype"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="org_contact_skype"
+                component="input"
+                type="text"
+                value={props.org_contact_skype}
+              />
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="org_contact_facebook">
+              <FormattedMessage
+                id="crew.edit.form.label.org_contact_facebook"
+                defaultMessage="Organisation contact facebook"
+              />
+            </label>
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="org_contact_facebook"
+                component="input"
+                type="text"
+                value={props.org_contact_facebook}
+              />
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset className="form-group">
+          <legend>Organisation activities (multiple)</legend>
 
           <div className="form-group">
             <label htmlFor="activity_name">
@@ -1241,64 +1390,227 @@ let CrewForm = props => {
                 defaultMessage="Activity start date"
               />
             </label>
-            <Field
-              className="form-control form-control-lg"
-              name="activity_start_date"
-              component="input"
-              type="text"
-              value={props.activity_start_date}
-            />
+            <div className="input-group">
+              <div className="input-group-addon">
+                <i className="fa fa-calendar"></i>
+              </div>
+              <Field
+                className="form-control form-control-lg"
+                name="activity_start_date"
+                component="input"
+                type="text"
+                value={props.activity_start_date}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="activity_is_running">
+              <FormattedMessage
+                id="crew.edit.form.label.activity_is_running"
+                defaultMessage="Activity is running?"
+              />
+            </label>
+            <div>
+              <input type="radio" value="1" name="activity_is_running" /> YES
+              <input type="radio" value="0" name="activity_is_running" /> NO
+            </div>
+
           </div>
 
           <div className="form-group">
             <label htmlFor="activity_end_date">
               <FormattedMessage
                 id="crew.edit.form.label.activity_end_date"
-                defaultMessage="Activity end date"
+                defaultMessage="Activity end date (only if it is not running)"
               />
             </label>
-            <Field
-              className="form-control form-control-lg"
-              name="activity_end_date"
-              component="input"
-              type="text"
-              value={props.activity_end_date}
-            />
+            <div className="input-group">
+              <div className="input-group-addon">
+                <i className="fa fa-calendar"></i>
+              </div>
+              <Field
+                className="form-control form-control-lg"
+                name="activity_end_date"
+                component="input"
+                type="text"
+                value={props.activity_end_date}
+              />
+            </div>
+
           </div>
 
           <div className="form-group">
             <label htmlFor="activity_month">
               <FormattedMessage
-                id="crew.edit.form.label.activity_month"
-                defaultMessage="Activity Month"
+                id="crew.edit.form.label.activity_season"
+                defaultMessage="Activity main season"
               />
             </label>
             <Field
-              className="form-control form-control-lg"
-              name="activity_month"
-              component="input"
-              type="text"
-              value={props.activity_month}
-            />
+              className="form-control custom-select"
+              name="activity_season"
+              component="select"
+            >
+              <option value="">
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.empty"
+                  defaultMessage="Please select"
+                />
+              </option>
+              <option value='fullyear'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.fullyear"
+                  defaultMessage="Full year"
+                />
+              </option>
+              <option value='winter'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.winter"
+                  defaultMessage="Winter"
+                />
+              </option>
+              <option value='spring'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.spring"
+                  defaultMessage="Spring"
+                />
+              </option>
+              <option value='summer'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.summer"
+                  defaultMessage="Summer"
+                />
+              </option>
+              <option value='autumn'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.autumn"
+                  defaultMessage="Autumn"
+                />
+              </option>
+              <option value='01'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.january"
+                  defaultMessage="January"
+                />
+              </option>
+              <option value='02'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.february"
+                  defaultMessage="February"
+                />
+              </option>
+              <option value='03'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.march"
+                  defaultMessage="March"
+                />
+              </option>
+              <option value='04'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.april"
+                  defaultMessage="April"
+              />
+              </option>
+              <option value='05'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.may"
+                  defaultMessage="May"
+                />
+              </option>
+              <option value='06'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.june"
+                  defaultMessage="June"
+                />
+              </option>
+              <option value='07'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.july"
+                  defaultMessage="July"
+                />
+              </option>
+              <option value='08'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.august"
+                  defaultMessage="August"
+                />
+              </option>
+              <option value='09'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.september"
+                  defaultMessage="September"
+                />
+              </option>
+              <option value='10'>
+                <FormattedMessage
+                id="crew.edit.form.label.activity_season.october"
+                defaultMessage="October"
+                />
+              </option>
+              <option value='11'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.november"
+                  defaultMessage="November"
+                />
+              </option>
+              <option value='12'>
+                <FormattedMessage
+                  id="crew.edit.form.label.activity_season.december"
+                  defaultMessage="December"
+                />
+              </option>
+            </Field>
           </div>
 
           <fieldset className="form-group">
             <legend>
               <FormattedMessage
                 id="crew.edit.form.label.activity_address"
-                defaultMessage="Activity address"
+                defaultMessage="Activity cities"
               />
             </legend>
 
-            <Place user={crew} />
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="activity_city"
+                component="input"
+                type="text"
+                value={props.activity_end_date}
+              />
+              <Field
+                className="form-control custom-select"
+                name="activity_country"
+                component="select"
+              >
+                <option value="">
+                  <FormattedMessage
+                    id="crew.edit.form.label.activity_country.empty"
+                    defaultMessage="Please select a country"
+                  />
+                </option>
+                <option value="en">
+                  <FormattedMessage
+                    id="crew.edit.form.label.activity_country.en"
+                    defaultMessage="English"
+                  />
+                </option>
+                <option value="it">
+                  <FormattedMessage
+                    id="crew.edit.form.label.activity_country.it"
+                    defaultMessage="Italiano"
+                  />
+                </option>
+              </Field>
 
-            <ul className="list-group mt-2">
-              {
-                crew && crew.activity_addresses && crew.activity_addresses.map((a) => (
-                  <Address address={a} />
-                ))
-              }
-            </ul>
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
           </fieldset>
 
           <div className="form-group">
@@ -1308,61 +1620,69 @@ let CrewForm = props => {
                 defaultMessage="Activity Website"
               />
             </label>
-            <Field
-              className="form-control form-control-lg"
-              name="activity_website"
-              component="input"
-              type="text"
-              value={props.activity_website}
-            />
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="activity_website"
+                component="input"
+                type="text"
+                value={props.activity_website}
+              />
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="activity_facebook">
+            <label htmlFor="activity_profiles">
               <FormattedMessage
-                id="crew.edit.form.label.activity_facebook"
-                defaultMessage="Activity Facebook"
+                id="crew.edit.form.label.activity_profiles"
+                defaultMessage="Activity Social and other profiles"
               />
             </label>
-            <Field
-              className="form-control form-control-lg"
-              name="activity_facebook"
-              component="input"
-              type="text"
-              value={props.activity_facebook}
-            />
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="activity_profiles"
+                component="input"
+                type="text"
+                value={props.activity_profiles}
+              />
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
           </div>
 
           <div className="form-group">
             <label htmlFor="activity_instagram">
               <FormattedMessage
-                id="crew.edit.form.label.activity_instagram"
-                defaultMessage="Activity Instagram"
+                id="crew.edit.form.label.activity_public_email"
+                defaultMessage="Activity Public Email"
               />
             </label>
-            <Field
-              className="form-control form-control-lg"
-              name="activity_instagram"
-              component="input"
-              type="text"
-              value={props.activity_instagram}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_other_profiles">
-              <FormattedMessage
-                id="crew.edit.form.label.activity_other_profiles"
-                defaultMessage="Activity Other profiles"
+            <div className="input-group">
+              <Field
+                className="form-control form-control-lg"
+                name="activity_public_email"
+                component="input"
+                type="text"
+                value={props.activity_public_email}
               />
-            </label>
-            <Field
-              className="form-control form-control-lg"
-              name="activity_other_profiles"
-              component="input"
-              type="text"
-              value={props.activity_other_profiles}
-            />
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+              <div className="input-group-addon">
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
           </div>
         </fieldset>
 
