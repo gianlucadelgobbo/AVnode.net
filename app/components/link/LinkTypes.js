@@ -1,11 +1,21 @@
-const linkTypes = [
-    { 'key': 'web', 'name': 'Website' },
-    { 'key': 'sk', 'name': 'Skype' },
-    { 'key': 'tel', 'name': 'Telephone' },
-    { 'key': 'fb', 'name': 'Facebook' },
-    { 'key': 'tw', 'name': 'Twitter' },
-    { 'key': 'ot', 'name': 'Other' }
-];
-  
+const linkTypes = {'user':[
+  { 'key': 'web', 'privacy': 'public',   'name': 'Websites' },
+  { 'key': 'tw',  'privacy': 'public',   'name': 'Social channels' },
+  { 'key': 'sk',  'privacy': 'private',  'name': 'Skype' },
+  { 'key': 'mb',  'privacy': 'private',  'name': 'Mobile' },
+  { 'key': 'tel', 'privacy': 'private',  'name': 'Phone' }
+]};
+
 export default linkTypes;
- 
+ /*
+const LinkTypes = {
+  'web': {'name': 'Website'},
+  'sk': {'name': 'Skype'},
+  'tel': {'name': 'Telephone'},
+  'fb': {'name': 'Facebook'},
+  'tw': {'name': 'Twitter'},
+  'ot': {'name': 'Other'}
+};
+
+export default LinkTypes;
+*/

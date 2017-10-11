@@ -8,6 +8,7 @@ import Place from './place/PlaceContainer';
 import Address from './place/Address';
 import Email from './emails/Email';
 import Link from './link/Link';
+import LinksEdit from './link/LinksEdit';
 import LinkTypes from './link/LinkTypes';
 import About from './about/About';
 import Languages from './language/Languages';
@@ -376,6 +377,8 @@ const General = ({
           </ul>
         </fieldset>
 
+        <LinksEdit links={user.links} LinkTypes={LinkTypes.user} />
+
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
@@ -411,7 +414,7 @@ const General = ({
                   defaultMessage="Link type"
                 />
               </label>
-              {LinkTypes ?
+              {LinkTypes.user ?
                 <Field
                   className="form-control custom-select"
                   name="linktype"
@@ -424,7 +427,7 @@ const General = ({
                       defaultMessage="Please select"
                     />
                   </option>
-                  {LinkTypes.map((c) => (
+                  {LinkTypes.user.map((c) => (
                     <option value={c.key.toLowerCase()}>{c.name}</option>
                   ))
                   }
