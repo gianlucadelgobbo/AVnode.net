@@ -401,7 +401,7 @@ let EventForm = props => {
 
         <label>
           <FormattedMessage
-            id="event.edit.form.label.category"
+            id="managecategories"
             defaultMessage="Manage your categories"
           />
         </label>
@@ -510,7 +510,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="performance">
             <FormattedMessage
-              id="event.edit.form.label.suggestPerformances"
+              id="assignperformances"
               defaultMessage="Assign performances"
             />
           </label>
@@ -519,7 +519,7 @@ let EventForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'event.edit.form.label.suggestPerformances',
+              id: 'suggestperformances',
               defaultMessage: 'Type to find performances…'
             })}
             onKeyUp={findPerformance}
@@ -530,7 +530,7 @@ let EventForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="event.edit.form.label.suggestPerformancesLoading"
+                  id="suggestperformancesloading"
                   defaultMessage="Finding performances…"
                 />
               </div> :
@@ -552,7 +552,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="organizers">
             <FormattedMessage
-              id="event.edit.form.label.organizers"
+              id="organizers"
               defaultMessage="Organizers"
             />
           </label>
@@ -571,7 +571,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="organizer">
             <FormattedMessage
-              id="event.edit.form.label.suggestOrganizers"
+              id="assignorganizers"
               defaultMessage="Assign organizers"
             />
           </label>
@@ -580,7 +580,7 @@ let EventForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'event.edit.form.label.suggestOrganizers',
+              id: 'suggestorganizers',
               defaultMessage: 'Type to find organizers…'
             })}
             onKeyUp={findOrganizer}

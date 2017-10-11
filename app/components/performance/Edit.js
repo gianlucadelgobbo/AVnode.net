@@ -159,7 +159,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="title">
             <FormattedMessage
-              id="performance.edit.form.label.title"
+              id="Title"
               defaultMessage="Name"
             />
           </label>
@@ -241,7 +241,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="teaserImage">
             <FormattedMessage
-              id="performance.edit.form.label.teaserimage"
+              id="teaserImage"
               defaultMessage="Teaser Image"
             />
           </label>
@@ -262,7 +262,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="image">
             <FormattedMessage
-              id="performance.edit.form.label.image"
+              id="image"
               defaultMessage="Image"
             />
           </label>
@@ -283,7 +283,7 @@ let PerformanceForm = props => {
         <fieldset className="form-group">
         <legend>
           <FormattedMessage
-            id="performance.edit.form.fieldset.categories"
+            id="categories"
             defaultMessage="Categories"
           />
         </legend>
@@ -292,7 +292,7 @@ let PerformanceForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="category">
               <FormattedMessage
-                id="performance.edit.form.label.addcategory"
+                id="addcategory"
                 defaultMessage="Add category"
               />
             </label>
@@ -305,7 +305,7 @@ let PerformanceForm = props => {
               >
                 <option value="performance">
                   <FormattedMessage
-                    id="performance.edit.form.label.category.empty"
+                    id="Please select"
                     defaultMessage="Please select"
                   />
                 </option>
@@ -322,7 +322,7 @@ let PerformanceForm = props => {
 
         <label>
           <FormattedMessage
-            id="performance.edit.form.label.category"
+            id="managecategories"
             defaultMessage="Manage your categories"
           />
         </label>
@@ -341,7 +341,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="tech_art">
             <FormattedMessage
-              id="performance.edit.form.label.tech_art"
+              id="tech_art"
               defaultMessage="Artist hardware"
             />
           </label>
@@ -356,7 +356,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="tech_req">
             <FormattedMessage
-              id="performance.edit.form.label.tech_req"
+              id="tech_req"
               defaultMessage="Technical Support (what you need)"
             />
           </label>
@@ -378,7 +378,7 @@ let PerformanceForm = props => {
               value={props.is_public}
             />
             <FormattedMessage
-              id="performance.edit.form.label.is_public"
+              id="performanceispublic"
               defaultMessage="Performance is public"
             />
           </label>
@@ -411,7 +411,7 @@ let PerformanceForm = props => {
                   }}
                 >
                   <FormattedMessage
-                    id="performance.edit.form.label.videoLink.action"
+                    id="addvideo"
                     defaultMessage="Add video"
                   />
                 </button>
@@ -423,7 +423,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="performers">
             <FormattedMessage
-              id="performance.edit.form.label.performers"
+              id="performers"
               defaultMessage="Performers"
             />
           </label>
@@ -442,7 +442,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="performer">
             <FormattedMessage
-              id="performance.edit.form.label.suggestPerformers"
+              id="assignperformers"
               defaultMessage="Assign performers"
             />
           </label>
@@ -451,7 +451,7 @@ let PerformanceForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'performance.edit.form.label.suggestPerformers',
+              id: 'suggestperformers',
               defaultMessage: 'Type to find performers…'
             })}
             onKeyUp={findPerformer}
@@ -462,7 +462,7 @@ let PerformanceForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="performer.edit.form.label.suggestPerformersLoading"
+                  id="suggestperformersloading"
                   defaultMessage="Finding performers…"
                 />
               </div> :
@@ -484,7 +484,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="crews">
             <FormattedMessage
-              id="performance.edit.form.label.crews"
+              id="crews"
               defaultMessage="Crews"
             />
           </label>
@@ -502,7 +502,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="crew">
             <FormattedMessage
-              id="performance.edit.form.label.suggestCrews"
+              id="assigncrews"
               defaultMessage="Assign crews"
             />
           </label>
@@ -511,7 +511,7 @@ let PerformanceForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'performance.edit.form.label.suggestCrews',
+              id: 'suggestcrews',
               defaultMessage: 'Type to find crews…'
             })}
             onKeyUp={findCrew}
@@ -522,7 +522,7 @@ let PerformanceForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="crew.edit.form.label.suggestCrewsLoading"
+                  id="suggestcrewsloading"
                   defaultMessage="Finding crews…"
                 />
               </div> :
