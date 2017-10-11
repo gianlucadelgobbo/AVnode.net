@@ -411,7 +411,7 @@ let PerformanceForm = props => {
                   }}
                 >
                   <FormattedMessage
-                    id="addvideo"
+                    id="addVideo"
                     defaultMessage="Add video"
                   />
                 </button>
@@ -442,7 +442,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="performer">
             <FormattedMessage
-              id="assignperformers"
+              id="assignPerformers"
               defaultMessage="Assign performers"
             />
           </label>
@@ -451,7 +451,7 @@ let PerformanceForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'suggestperformers',
+              id: 'suggestPerformers',
               defaultMessage: 'Type to find performers…'
             })}
             onKeyUp={findPerformer}
@@ -462,7 +462,7 @@ let PerformanceForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="suggestperformersloading"
+                  id="suggestPerformersLoading"
                   defaultMessage="Finding performers…"
                 />
               </div> :
@@ -502,7 +502,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="crew">
             <FormattedMessage
-              id="assigncrews"
+              id="assignCrews"
               defaultMessage="Assign crews"
             />
           </label>
@@ -511,7 +511,7 @@ let PerformanceForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'suggestcrews',
+              id: 'suggestCrews',
               defaultMessage: 'Type to find crews…'
             })}
             onKeyUp={findCrew}
@@ -522,7 +522,7 @@ let PerformanceForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="suggestcrewsloading"
+                  id="suggestCrewsLoading"
                   defaultMessage="Finding crews…"
                 />
               </div> :
