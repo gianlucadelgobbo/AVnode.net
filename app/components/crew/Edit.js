@@ -28,7 +28,7 @@ const Member = injectIntl(({ member, me, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       <span>
-        {'${member.stagename} '}
+        {`${member.stagename}`}
         {(member._id === me) ?
           <i className="badge badge-default badge-pill">{meLabel}</i>
           : null
@@ -121,7 +121,7 @@ let CrewForm = props => {
             <img
               className="img-thumbnail mb-3"
               src={crew.teaserImage.publicUrl}
-              alt={'teaser image of ${crew.name}'}
+              alt={`teaser image of ${crew.name}`}
             /> :
             null
           }
@@ -139,12 +139,12 @@ let CrewForm = props => {
               values={{visibility: <span class="badge badge-success">PUBLIC</span>}}
             />
           </label>
-          {crew && crew.image ?
-            <img
+          {crew && crew.image && crew.image.publicUrl ?
+            <div><img
               className="img-thumbnail mb-3"
               src={crew.image.publicUrl}
-              alt={'image of ${crew.name}'}
-            /> :
+              alt={`image of ${crew.name}`}
+            /></div> :
             null
           }
           <ImageDropzone
@@ -513,7 +513,7 @@ let CrewForm = props => {
               <img
                   className="img-thumbnail mb-3"
                   src={crew.org_logo.publicUrl}
-                  alt={'Logo of ${props.org_name}'}
+                  alt={`Logo of ${props.org_name}`}
               />
             </div> :
             null
@@ -984,7 +984,7 @@ let CrewForm = props => {
               <img
                 className="img-thumbnail mb-3"
                 src={crew.org_statute.publicUrl}
-                alt={'Organisation statute of ${props.org_name}'}
+                alt={`Organisation statute of ${props.org_name}`}
               />
             </div> :
             null
@@ -1008,7 +1008,7 @@ let CrewForm = props => {
               <img
                 className="img-thumbnail mb-3"
                 src={crew.org_members_cv.publicUrl}
-                alt={'Organisation members cv of ${props.org_name}'}
+                alt={`Organisation members cv of ${props.org_name}`}
               />
             </div> :
             null
@@ -1032,7 +1032,7 @@ let CrewForm = props => {
               <img
                 className="img-thumbnail mb-3"
                 src={crew.org_activity_report.publicUrl}
-                alt={'Activity Report of ${props.org_name}'}
+                alt={`Activity Report of ${props.org_name}`}
               />
             </div> :
             null
@@ -1472,7 +1472,7 @@ let CrewForm = props => {
                 <img
                   className="img-thumbnail mb-3"
                   src={crew.activity_logo.publicUrl}
-                  alt={'Logo of ${props.org_name}'}
+                  alt={`Logo of ${props.org_name}`}
                 />
               </div> :
               null
