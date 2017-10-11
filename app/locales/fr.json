@@ -68,6 +68,13 @@
     "makeitprivate": "Rendre privé",
     "makeitpublic": "Rendre publique",
     "delete": "Supprimer",
+    "region": "Région",
+    "country": "Pays",
+    "street_number": "N°",
+    "route": "Voie",
+    "postal_code": "Code postal",
+    "locality": "Commune",
+    "manual_input": "Saisie manuelle de l'adresse",
     "": "",
     "": "",
     "date.placeholder": "YYYY-MM-DD"
