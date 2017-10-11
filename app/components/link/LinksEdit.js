@@ -16,6 +16,7 @@ const LinksEdit = (args) => {
         links_families[args.links[i].type].push(args.links[i]);
       }
     }
+    if (!links_families[LinkTypes_families[l]]) links_families[LinkTypes_families[l]] = [];
   }
   return (
     <fieldset className="form-group">
