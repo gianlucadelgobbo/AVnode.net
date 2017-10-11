@@ -14,7 +14,16 @@ const styles = {
     background: 'white'
   }
 };
-
+const required = value => value ? undefined : 'Required';
+const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type}/>
+      {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
 class Place extends React.Component {
   constructor(props) {
     super(props);
@@ -104,7 +113,7 @@ class Place extends React.Component {
               className="form-control"
               name="name"
               component="input"
-              placeholder='Input a new Address name (Home or Work or ?)'
+              placeholder='Input a new Address name (Home or Work or ...)'
               onChange={(event, newValue, previousValue) => {
                 // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
                 this.state.name = newValue;
@@ -134,6 +143,103 @@ class Place extends React.Component {
             </div>
           )}
         </div>
+
+        <fieldset className="form-group">
+          <legend>
+            <FormattedMessage
+              id="manual_input"
+              defaultMessage="Or manually input address"
+            />
+          </legend>
+          <div className="row">
+            <div className="col-md-3 form-group">
+              <label htmlFor="street_number">
+                <FormattedMessage
+                  id="street_number"
+                  defaultMessage="Street Number"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="street_number"
+                component="input"
+              />
+            </div>
+            <div className="col-md-9 form-group">
+              <label htmlFor="route">
+                <FormattedMessage
+                  id="route"
+                  defaultMessage="Street"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="route"
+                component="input"
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-3 form-group">
+              <label htmlFor="postal_code">
+                <FormattedMessage
+                  id="postal_code"
+                  defaultMessage="Postal code"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="postal_code"
+                component="input"
+              />
+            </div>
+            <div className="col-md-9 form-group">
+              <label htmlFor="locality">
+                <FormattedMessage
+                  id="locality"
+                  defaultMessage="Locality"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="locality"
+                component={renderField}
+                component="input"
+                validate={ [ required ] }
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-9 form-group">
+              <label htmlFor="administrative_area_level_1">
+                <FormattedMessage
+                  id="region"
+                  defaultMessage="Region"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="administrative_area_level_1"
+                component="input"
+              />
+            </div>
+            <div className="col-md-3 form-group">
+              <label htmlFor="country">
+                <FormattedMessage
+                  id="country"
+                  defaultMessage="Country"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name="country"
+                component="input"
+                validate={ [ required ] }
+              />
+            </div>
+          </div>
+        </fieldset>
+
       </div>
     );
   }
