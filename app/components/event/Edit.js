@@ -90,7 +90,7 @@ const Performance = injectIntl(({ performance, onDelete, intl }) => {
 
 const Organizer = injectIntl(({ organizer, me, onDelete, intl }) => {
   const meLabel = intl.formatMessage({
-    id: 'event.edit.form.organizer.met',
+    id: 'Me',
     defaultMessage: 'Me'
   });
   return (
@@ -208,7 +208,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="title">
             <FormattedMessage
-              id="event.edit.form.label.title"
+              id="name"
               defaultMessage="Name"
             />
           </label>
@@ -295,7 +295,7 @@ let EventForm = props => {
               value={props.is_public}
             />
             <FormattedMessage
-              id="event.edit.form.label.is_public"
+              id="eventIsPublic"
               defaultMessage="Event is public"
             />
           </label>
@@ -311,7 +311,7 @@ let EventForm = props => {
               value={props.is_open}
             />
             <FormattedMessage
-              id="event.edit.form.label.is_open"
+              id="callIsOpen"
               defaultMessage="Call is open"
             />
           </label>
@@ -320,7 +320,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="teaserimage">
             <FormattedMessage
-              id="event.edit.form.label.teaserimage"
+              id="teaserImage"
               defaultMessage="TeaserImage"
             />
           </label>
@@ -341,7 +341,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="image">
             <FormattedMessage
-              id="event.edit.form.label.image"
+              id="image"
               defaultMessage="Image"
             />
           </label>
@@ -362,7 +362,7 @@ let EventForm = props => {
         <fieldset className="form-group">
         <legend>
           <FormattedMessage
-            id="event.edit.form.fieldset.categories"
+            id="categories"
             defaultMessage="Categories"
           />
         </legend>
@@ -371,7 +371,7 @@ let EventForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="category">
               <FormattedMessage
-                id="event.edit.form.label.addcategory"
+                id="addCategory"
                 defaultMessage="Add category"
               />
             </label>
@@ -384,7 +384,7 @@ let EventForm = props => {
               >
                 <option value="event">
                   <FormattedMessage
-                    id="event.edit.form.label.category.empty"
+                    id="Please select"
                     defaultMessage="Please select"
                   />
                 </option>
@@ -401,7 +401,7 @@ let EventForm = props => {
 
         <label>
           <FormattedMessage
-            id="event.edit.form.label.category"
+            id="managecategories"
             defaultMessage="Manage your categories"
           />
         </label>
@@ -510,7 +510,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="performance">
             <FormattedMessage
-              id="event.edit.form.label.suggestPerformances"
+              id="assignPerformances"
               defaultMessage="Assign performances"
             />
           </label>
@@ -519,7 +519,7 @@ let EventForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'event.edit.form.label.suggestPerformances',
+              id: 'suggestPerformances',
               defaultMessage: 'Type to find performances…'
             })}
             onKeyUp={findPerformance}
@@ -530,7 +530,7 @@ let EventForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="event.edit.form.label.suggestPerformancesLoading"
+                  id="suggestPerformancesloading"
                   defaultMessage="Finding performances…"
                 />
               </div> :
@@ -552,7 +552,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="organizers">
             <FormattedMessage
-              id="event.edit.form.label.organizers"
+              id="organizers"
               defaultMessage="Organizers"
             />
           </label>
@@ -571,7 +571,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="organizer">
             <FormattedMessage
-              id="event.edit.form.label.suggestOrganizers"
+              id="assignOrganizers"
               defaultMessage="Assign organizers"
             />
           </label>
@@ -580,7 +580,7 @@ let EventForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'event.edit.form.label.suggestOrganizers',
+              id: 'suggestOrganizers',
               defaultMessage: 'Type to find organizers…'
             })}
             onKeyUp={findOrganizer}
@@ -591,7 +591,7 @@ let EventForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="event.edit.form.label.suggestOrganizersLoading"
+                  id="suggestOrganizersLoading"
                   defaultMessage="Finding organizers…"
                 />
               </div> :
@@ -613,7 +613,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="organizingCrews">
             <FormattedMessage
-              id="event.edit.form.label.organizingCrews"
+              id="organizingCrews"
               defaultMessage="OrganizingCrews"
             />
           </label>
@@ -631,7 +631,7 @@ let EventForm = props => {
         <div className="form-group">
           <label htmlFor="organizingCrew">
             <FormattedMessage
-              id="event.edit.form.label.suggestOrganizingCrews"
+              id="assignOrganizingCrews"
               defaultMessage="Assign an organizing crew"
             />
           </label>
@@ -640,7 +640,7 @@ let EventForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'event.edit.form.label.suggestOrganizingCrews',
+              id: 'suggestOrganizingCrews',
               defaultMessage: 'Type to find crews…'
             })}
             onKeyUp={findOrganizingCrew}
@@ -651,7 +651,7 @@ let EventForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="event.edit.form.label.suggestOrganizingCrewsLoading"
+                  id="suggestOrganizingCrewsLoading"
                   defaultMessage="Finding organizingCrews…"
                 />
               </div> :
@@ -688,7 +688,7 @@ let EventForm = props => {
           <div class="col-6 text-right">
             <a href="/account/events" class="btn btn-warning">
               <FormattedMessage
-                id="general.cancel"
+                id="cancel"
                 defaultMessage="Cancel"
               />
             </a>
