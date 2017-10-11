@@ -292,7 +292,7 @@ let PerformanceForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="category">
               <FormattedMessage
-                id="addcategory"
+                id="addCategory"
                 defaultMessage="Add category"
               />
             </label>
@@ -378,7 +378,7 @@ let PerformanceForm = props => {
               value={props.is_public}
             />
             <FormattedMessage
-              id="performanceispublic"
+              id="performanceIsPublic"
               defaultMessage="Performance is public"
             />
           </label>

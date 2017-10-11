@@ -183,7 +183,7 @@ class Venue extends React.Component {
       <div className="form-group">
         <label htmlFor="venues">
           <FormattedMessage
-            id="venue.edit.form.label.venues"
+            id="venues"
             defaultMessage="Venues"
           />
         </label>
