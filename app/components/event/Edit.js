@@ -688,7 +688,7 @@ let EventForm = props => {
           <div class="col-6 text-right">
             <a href="/account/events" class="btn btn-warning">
               <FormattedMessage
-                id="general.cancel"
+                id="cancel"
                 defaultMessage="Cancel"
               />
             </a>

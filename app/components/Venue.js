@@ -134,7 +134,7 @@ class Venue extends React.Component {
 
 		// BL TODO check if place_id is unique 
 		const address = {
-			formatted_address: location.formatted_address, // BL gmap response formatted_address, should not be updated to stay unique
+			formatted_address: location.formatted_address, // BL gmap response formatted_address
 			street_number: street_number,
 			route: route,
 			postal_code: postal_code,
@@ -142,7 +142,7 @@ class Venue extends React.Component {
 			administrative_area_level_1,
 			country: country,
 			geometry: location.geometry,
-			place_id: location.place_id,
+			place_id: location.place_id, // unique
 			name: name, // BL friendly name indexed for search
 			is_primary: true
 		};
