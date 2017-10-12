@@ -3,7 +3,8 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
 
 const LinksEdit = (args) => {
-  console.log(args);
+  var LinkTypes;
+  console.log("LinksEdit component");
   let LinkTypes_families = [];
   for(let i in args.LinkTypes) {
     LinkTypes_families.push(args.LinkTypes[i].key);
@@ -26,43 +27,60 @@ const LinksEdit = (args) => {
           defaultMessage="Links"
         />
       </legend>
-
-
-      {Object.keys(links_families).map((item, i) => (
+      /* */
+      {LinkTypes_families.indexOf('web')!=-1 ?
         <div className="form-group">
-          {console.log(args.LinkTypes[i].name)}
           <label htmlFor="{item}">
             <FormattedMessage
-              id="{item}"
-              defaultMessage={'{title} {visibility}'}
-              values={{title: args.LinkTypes[i].name, visibility: args.LinkTypes[i].privacy == 'public' ? <span class="badge badge-success">PUBLIC</span> : <span class="badge badge-danger">PRIVATE</span>}}
+              id="web"
+              defaultMessage={"Website"}
             />
-          </label>
-            {links_families[item].map((c, i) => (
-              <div className="input-group">
-                <Field
-                  className="form-control"
-                  name={`${item}[${i}]`}
-                  component="input"
-                  type="text"
-                  value={c.url}
+            {args.LinkTypes.find((element) => {
+              if ( element.key === 'web') LinkTypes = element;
+            })}
+            console.log(LinkTypes)
+            {LinkTypes.privacy == 'public' ?
+              <span class="badge badge-success">
+                <FormattedMessage
+                  id="public"
+                  defaultMessage='PUBLIC'
                 />
-                {c.url}
-                <div className="input-group-addon">
-                  <i className="fa fa-link"></i>
-                </div>
-                <div className="input-group-addon">
-                  <i className="fa fa-minus"></i>
-                </div>
+              </span>
+              :
+              <span class="badge badge-danger">
+                <FormattedMessage
+                  id="private"
+                  defaultMessage='PRIVATE'
+                />
+              </span>
+            }
+          </label>
+          &nbsp;
+          {links_families['web'].map((item, i) => (
+            <div className="input-group">
+              <Field
+                className="form-control"
+                name="web"
+                component="input"
+                type="text"
+                value={links_families['web'][i].url}
+              />
+              {links_families['web'][i].url}
+              <div className="input-group-addon">
+                <i className="fa fa-link"></i>
               </div>
-            ))}
+              <div className="input-group-addon">
+                <i className="fa fa-minus"></i>
+              </div>
+            </div>
+
+          ))}
           <div className="input-group">
             <Field
               className="form-control"
-              name={`${item}[${links_families[item].length}]`}
+              name="web"
               component="input"
               type="text"
-              value=''
             />
             <div className="input-group-addon">
               <i className="fa fa-link"></i>
@@ -71,9 +89,10 @@ const LinksEdit = (args) => {
               <i className="fa fa-plus"></i>
             </div>
           </div>
-
         </div>
-      ))}
+        :
+        null
+      }
     </fieldset>
   );
 };

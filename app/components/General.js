@@ -8,7 +8,11 @@ import Place from './place/PlaceContainer';
 import Address from './place/Address';
 import Email from './emails/Email';
 import Link from './link/Link';
-import LinksEdit from './link/LinksEdit';
+import LinksWebEdit from './link/LinksWebEdit';
+import LinksSocialEdit from './link/LinksSocialEdit';
+import LinksSkypeEdit from './link/LinksSkypeEdit';
+import LinksMobileEdit from './link/LinksMobileEdit';
+import LinksPhoneEdit from './link/LinksPhoneEdit';
 import LinkTypes from './link/LinkTypes';
 import About from './about/About';
 import Languages from './language/Languages';
@@ -377,7 +381,19 @@ const General = ({
           </ul>
         </fieldset>
 
-        <LinksEdit links={user.links} LinkTypes={LinkTypes.user} />
+        <fieldset className="form-group">
+          <legend>
+            <FormattedMessage
+              id="links"
+              defaultMessage="Links"
+            />
+          </legend>
+          <LinksWebEdit links={user.links} LinkTypes={LinkTypes.user} />
+          <LinksSocialEdit links={user.links} LinkTypes={LinkTypes.user} />
+          <LinksSkypeEdit links={user.links} LinkTypes={LinkTypes.user} />
+          <LinksMobileEdit links={user.links} LinkTypes={LinkTypes.user} />
+          <LinksPhoneEdit links={user.links} LinkTypes={LinkTypes.user} />
+        </fieldset>
 
         <fieldset className="form-group">
           <legend>
