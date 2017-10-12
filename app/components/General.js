@@ -24,6 +24,7 @@ const General = ({
   addUserTeaserImage,
   handleSubmit,
   saveProfile,
+  aboutUserMakePrimary,
   fetchCountries
   }) => {
 
@@ -33,6 +34,11 @@ const General = ({
 
   const onTeaserImageDrop = (userId) => (files, _something, _ev) => {
     addUserTeaserImage(userId, files[0]);
+  };
+
+  const onAboutMakePrimary = (userId) => (about) => (e) => {
+    about.is_primary = true;
+    aboutUserMakePrimary(userId, about._id);
   };
 
   if (!user._countries) {
@@ -255,7 +261,10 @@ const General = ({
             <ul className="list-group mt-2">
               {
                 user && user.abouts && user.abouts.map((a) => (
-                  <About about={a} />
+                  <About 
+                    about={a}
+                    onMakePrimary={onAboutMakePrimary(user._id)(a)}
+                  />
                 ))
               }
             </ul>

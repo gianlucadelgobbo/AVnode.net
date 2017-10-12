@@ -7,7 +7,8 @@ import {
   addUserProfileImage,
   addUserTeaserImage,
   fetchCountries,
-  editUser,
+  aboutUserMakePrimary,
+  editUser
 } from '../reducers/actions';
 import General from './General';
 
@@ -23,6 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
   closePasswordModal: dispatch(closePasswordModal),
   addUserProfileImage: dispatch(addUserProfileImage),
   addUserTeaserImage: dispatch(addUserTeaserImage),
+  aboutUserMakePrimary: dispatch(aboutUserMakePrimary),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });
