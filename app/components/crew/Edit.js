@@ -1225,10 +1225,10 @@ let CrewForm = props => {
 
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="org_permanent_employers">
+            <label htmlFor="org_permanent_employees">
               <FormattedMessage
-                id="org_permanent_employers"
-                defaultMessage="Organisation permanent employers"
+                id="org_permanent_employees"
+                defaultMessage="Organisation permanent employees"
               />
             </label>
             &nbsp;
@@ -1240,18 +1240,18 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_permanent_employers"
+              name="org_permanent_employees"
               component="input"
               type="text"
-              value={props.org_permanent_employers}
+              value={props.org_permanent_employees}
             />
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="org_permanent_employers_avnode">
+            <label htmlFor="org_permanent_employees_avnode">
               <FormattedMessage
-                id="org_permanent_employers_avnode"
-                defaultMessage="Organisation permanent employers AVnode"
+                id="org_permanent_employees_avnode"
+                defaultMessage="Organisation permanent employees AVnode"
               />
             </label>
             &nbsp;
@@ -1263,20 +1263,20 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_permanent_employers_avnode"
+              name="org_permanent_employees_avnode"
               component="input"
               type="text"
-              value={props.org_permanent_employers_avnode}
+              value={props.org_permanent_employees_avnode}
             />
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="org_temporary_employers">
+            <label htmlFor="org_temporary_employees">
               <FormattedMessage
-                id="org_temporary_employers"
-                defaultMessage="Organisation temporary employers"
+                id="org_temporary_employees"
+                defaultMessage="Organisation temporary employees"
               />
             </label>
             &nbsp;
@@ -1288,18 +1288,18 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_temporary_employers"
+              name="org_temporary_employees"
               component="input"
               type="text"
-              value={props.org_temporary_employers}
+              value={props.org_temporary_employees}
             />
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="org_temporary_employers_avnode">
+            <label htmlFor="org_temporary_employees_avnode">
               <FormattedMessage
-                id="org_temporary_employers_avnode"
-                defaultMessage="Organisation temporary employers AVnode"
+                id="org_temporary_employees_avnode"
+                defaultMessage="Organisation temporary employees AVnode"
               />
             </label>
             &nbsp;
@@ -1311,10 +1311,10 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_temporary_employers_avnode"
+              name="org_temporary_employees_avnode"
               component="input"
               type="text"
-              value={props.org_temporary_employers_avnode}
+              value={props.org_temporary_employees_avnode}
             />
           </div>
         </div>
