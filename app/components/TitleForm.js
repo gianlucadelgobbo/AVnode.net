@@ -1,7 +1,8 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
+import { injectIntl, FormattedMessage } from 'preact-intl';
 
-const TitleForm = ({ajaxInProgress, dispatch, action, label, placeholder}) => {
+const TitleForm = injectIntl(({ ajaxInProgress, dispatch, action, label, placeholder, intl }) => {
   let input;
   return (
     <div>
@@ -14,7 +15,10 @@ const TitleForm = ({ajaxInProgress, dispatch, action, label, placeholder}) => {
         input.value = '';
       }}>
         <label>
-          Name
+          <FormattedMessage
+            id="name"
+            defaultMessage="Name"
+          />
         </label>
         <div className="input-group">
           <input
@@ -24,18 +28,22 @@ const TitleForm = ({ajaxInProgress, dispatch, action, label, placeholder}) => {
               input = node;
             }}
           />
-        { ajaxInProgress ?
-          <button type="button" className="input-group-addon disabled">
-            Wait for it…
-          </button> :
-          <button type="submit" className="input-group-addon">
-            {label}
-          </button>
-        }
+          {ajaxInProgress ?
+            <button type="button" className="input-group-addon disabled">
+              <FormattedMessage
+                id="pleaseWait"
+                defaultMessage="Please wait…"
+              />
+
+            </button> :
+            <button type="submit" className="input-group-addon">
+              {label}
+            </button>
+          }
         </div>
       </form>
     </div>
   );
-};
+});
 
 export default connect()(TitleForm);
