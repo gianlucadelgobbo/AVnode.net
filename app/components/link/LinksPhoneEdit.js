@@ -3,12 +3,8 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
 
 const LinksPhoneEdit = (args) => {
-  var LinkTypes;
   var links = [];
   for(let i in args.links) if (args.links[i].type == "tel") links.push(args.links[i]);
-  {args.LinkTypes.find((element) => {
-    if ( element.key === 'tel') LinkTypes = element;
-  })}
 
   console.log("LinksPhoneEdit component");
 
@@ -20,7 +16,7 @@ const LinksPhoneEdit = (args) => {
             defaultMessage="Phone"
           />
           &nbsp;
-          {LinkTypes.privacy == 'public' ?
+          {args.privacy == 'public' ?
             <span class="badge badge-success">
               <FormattedMessage
                 id="public"
@@ -36,11 +32,9 @@ const LinksPhoneEdit = (args) => {
             </span>
           }
         </label>
-        {console.log(args)}
         {links ?
           links.map((item, i) => (
             <div className="input-group">
-              {console.log(item)}
               <Field
                 className="form-control"
                 name="tel"

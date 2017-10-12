@@ -397,11 +397,11 @@ const General = ({
               defaultMessage="Links"
             />
           </legend>
-          <LinksWebEdit links={user.links} LinkTypes={LinkTypes.user} />
-          <LinksSocialEdit links={user.links} LinkTypes={LinkTypes.user} />
-          <LinksSkypeEdit links={user.links} LinkTypes={LinkTypes.user} />
-          <LinksMobileEdit links={user.links} LinkTypes={LinkTypes.user} />
-          <LinksPhoneEdit links={user.links} LinkTypes={LinkTypes.user} />
+          <LinksWebEdit links={user.links} privacy="public" />
+          <LinksSocialEdit links={user.links} privacy="public" />
+          <LinksSkypeEdit links={user.links} privacy="private" />
+          <LinksMobileEdit links={user.links} privacy="private" />
+          <LinksPhoneEdit links={user.links} privacy="private" />
         </fieldset>
 
         <fieldset className="form-group">
