@@ -18,6 +18,7 @@ export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_DELETE_USER_PLACE = 'REQUEST_DELETE_USER_PLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
 export const REQUEST_DELETE_USER_LINK = 'REQUEST_DELETE_USER_LINK';
+export const REQUEST_USER_MAKEABOUTPRIMARY = 'REQUEST_USER_MAKEABOUTPRIMARY';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -862,6 +863,23 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
+export function aboutUserMakePrimary(dispatch) {
+  return (id, aboutId) => {
+    console.log(id + " aboutid: " + aboutId);
+    dispatch({
+      type: REQUEST_USER_MAKEABOUTPRIMARY,
+      payload: {
+        user: id,
+        about: aboutId
+      }
+    });
+    return fetch(`/account/api/user/${id}/about/${aboutId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 export function editUser(dispatch) {
   return data => {
 
@@ -873,12 +891,11 @@ export function editUser(dispatch) {
       if (!data.abouts) data.abouts = [];
       // check existing abouts
       data.abouts.map((a) => {
+        // if not the first, we don't set it to primary
         primaryAbout = false;
         if (a.lang === data.aboutlanguage) {
           // about in the form already exists in abouts
           aboutFound = true;
-          // update abouttext
-          a.abouttext = data.about;
         }
       });
       // in case of new about, add it to the abouts
