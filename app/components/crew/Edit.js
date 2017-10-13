@@ -11,6 +11,15 @@ import Languages from '../language/Languages';
 
 import Place from '../place/PlaceContainer';
 
+import OrgContact from './OrgContact';
+import OrgActivity from './OrgActivity';
+
+import LinksWebEdit from '../link/LinksWebEdit';
+import LinksSocialEdit from '../link/LinksSocialEdit';
+import LinksSkypeEdit from '../link/LinksSkypeEdit';
+import LinksMobileEdit from '../link/LinksMobileEdit';
+import LinksPhoneEdit from '../link/LinksPhoneEdit';
+
 import {
   editCrew,
   suggestCrewMember,
@@ -82,7 +91,9 @@ let CrewForm = props => {
     const file = files[0];
     return dispatch(addCrewTeaserImage(crewId, file));
   };
-
+  
+  if (!props.org) props.org = {};
+  
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -319,14 +330,14 @@ let CrewForm = props => {
 
         <h3>
           <FormattedMessage
-            id="crew.edit.form.label.org_extradata_title"
+            id="crew.edit.form.label.crew.org.extradata_title"
             defaultMessage="Organization Extra Data"
           />
         </h3>
         <div className="form-group">
-          <label htmlFor="org_name">
+          <label htmlFor="crew.org.name">
             <FormattedMessage
-              id="org_name"
+              id="crew.org.name"
               defaultMessage="Organisation legal name"
             />
           </label>
@@ -339,17 +350,17 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_name"
+            name="crew.org.name"
             component="input"
             type="text"
-            value={props.org_name}
+            value={props.org.name}
           />
         </div>
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="org_foundation_year">
+            <label htmlFor="crew.org.foundation_year">
               <FormattedMessage
-                id="org_foundation_year"
+                id="crew.org.foundation_year"
                 defaultMessage="Organisation foundation year"
               />
             </label>
@@ -362,16 +373,16 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_foundation_year"
+              name="crew.org.foundation_year"
               component="input"
               type="text"
-              value={props.org_foundation_year}
+              value={props.org.foundation_year}
             />
           </div>
           <div className="col-md-6 form-group">
-            <label htmlFor="org_type">
+            <label htmlFor="crew.org.type">
               <FormattedMessage
-                id="org_type"
+                id="crew.org.type"
                 defaultMessage="Organisation type"
               />
             </label>
@@ -384,162 +395,162 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control custom-select"
-              name="org_type"
+              name="crew.org.type"
               component="select"
             >
               <option value="">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.empty"
+                  id="crew.edit.form.label.crew.org.type.empty"
                   defaultMessage="Please select"
                 />
               </option>
               <option value="art_gallery">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.art_gallery"
+                  id="crew.edit.form.label.crew.org.type.art_gallery"
                   defaultMessage="Art gallery"
                 />
               </option>
               <option value="centre_for_architecture">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.centre_for_architecture"
+                  id="crew.edit.form.label.crew.org.type.centre_for_architecture"
                   defaultMessage="Centre for Architecture"
                 />
               </option>
               <option value="choir">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.choir"
+                  id="crew.edit.form.label.crew.org.type.choir"
                   defaultMessage="Choir"
                 />
               </option>
               <option value="concert_hall">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.concert_hall"
+                  id="crew.edit.form.label.crew.org.type.concert_hall"
                   defaultMessage="Concert hall"
                 />
               </option>
               <option value="dance_company">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.dance_company"
+                  id="crew.edit.form.label.crew.org.type.dance_company"
                   defaultMessage="Dance Company"
                 />
               </option>
               <option value="design-art_centre">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.design-art_centre"
+                  id="crew.edit.form.label.crew.org.type.design-art_centre"
                   defaultMessage="Design/Art centre"
                 />
               </option>
               <option value="festival">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.festival"
+                  id="crew.edit.form.label.crew.org.type.festival"
                   defaultMessage="Festival (non Audiovisual)"
                 />
               </option>
               <option value="group_of_young_people_active_in_youth_work">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.group_of_young_people_active_in_youth_work"
+                  id="crew.edit.form.label.crew.org.type.group_of_young_people_active_in_youth_work"
                   defaultMessage="Group of young people active in youth work"
                 />
               </option>
               <option value="higher_education_institution">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.higher_education_institution"
+                  id="crew.edit.form.label.crew.org.type.higher_education_institution"
                   defaultMessage="Higher education institution (tertiary level)"
                 />
               </option>
               <option value="library">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.library"
+                  id="crew.edit.form.label.crew.org.type.library"
                   defaultMessage="Library"
                 />
               </option>
               <option value="literature_foundation">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.literature_foundation"
+                  id="crew.edit.form.label.crew.org.type.literature_foundation"
                   defaultMessage="Literature Foundation"
                 />
               </option>
               <option value="local_public_body">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.local_public_body"
+                  id="crew.edit.form.label.crew.org.type.local_public_body"
                   defaultMessage="Local Public body"
                 />
               </option>
               <option value="multimedia_association">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.multimedia_association"
+                  id="crew.edit.form.label.crew.org.type.multimedia_association"
                   defaultMessage="Multimedia association"
                 />
               </option>
               <option value="museum">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.museum"
+                  id="crew.edit.form.label.crew.org.type.museum"
                   defaultMessage="Museum"
                 />
               </option>
               <option value="music_centre">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.music_centre"
+                  id="crew.edit.form.label.crew.org.type.music_centre"
                   defaultMessage="Music Centre"
                 />
               </option>
               <option value="national_public_body">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.national_public_body"
+                  id="crew.edit.form.label.crew.org.type.national_public_body"
                   defaultMessage="National Public body"
                 />
               </option>
               <option value="non-governmental_organisation-association-social_enterprise">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.non-governmental_organisation-association-social_enterprise"
+                  id="crew.edit.form.label.crew.org.type.non-governmental_organisation-association-social_enterprise"
                   defaultMessage="Non-governmental organisation/association/social enterprise"
                 />
               </option>
               <option value="opera">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.opera"
+                  id="crew.edit.form.label.crew.org.type.opera"
                   defaultMessage="Opera"
                 />
               </option>
               <option value="orchestra">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.orchestra"
+                  id="crew.edit.form.label.crew.org.type.orchestra"
                   defaultMessage="Orchestra"
                 />
               </option>
               <option value="regional_public_body">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.regional_public_body"
+                  id="crew.edit.form.label.crew.org.type.regional_public_body"
                   defaultMessage="Regional Public body"
                 />
               </option>
               <option value="research_institute-centre">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.research_institute-centre"
+                  id="crew.edit.form.label.crew.org.type.research_institute-centre"
                   defaultMessage="Research Institute/Centre"
                 />
               </option>
               <option value="school-institute-educational_centre-general_education">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.school-institute-educational_centre-general_education"
+                  id="crew.edit.form.label.crew.org.type.school-institute-educational_centre-general_education"
                   defaultMessage="School/Institute/Educational centre – General education (secondary level)"
                 />
               </option>
               <option value="street_art_association">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.street_art_association"
+                  id="crew.edit.form.label.crew.org.type.street_art_association"
                   defaultMessage="Street art association"
                 />
               </option>
               <option value="theatre">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.theatre"
+                  id="crew.edit.form.label.crew.org.type.theatre"
                   defaultMessage="Theatre"
                 />
               </option>
               <option value="other">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_type.other"
+                  id="crew.edit.form.label.crew.org.type.other"
                   defaultMessage="Other"
                 />
               </option>
@@ -549,9 +560,9 @@ let CrewForm = props => {
 
 
         <div className="form-group">
-          <label htmlFor="org_logo">
+          <label htmlFor="crew.org.logo">
             <FormattedMessage
-              id="org_logo"
+              id="crew.org.logo"
               defaultMessage="Organisation logo (.svg only)"
             />
           </label>
@@ -562,12 +573,12 @@ let CrewForm = props => {
               defaultMessage='Private'
             />
           </span>
-          {crew && crew.org_logo ?
+          {crew && crew.org && crew.org.logo ?
             <div>
               <img
                 className="img-thumbnail mb-3"
-                src={crew.org_logo.publicUrl}
-                alt={`Logo of ${props.org_name}`}
+                src={crew.org.logo.publicUrl}
+                alt={`Logo of ${props.org.name}`}
               />
             </div> :
             null
@@ -578,112 +589,13 @@ let CrewForm = props => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="org_website">
-            <FormattedMessage
-              id="org_website"
-              defaultMessage="Organisation website"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_website"
-              component="input"
-              type="text"
-              value={props.org_website}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-link"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
+        <LinksWebEdit links={props.org.links} privacy="public" />
+        <LinksSocialEdit links={props.org.links} privacy="public" />
 
         <div className="form-group">
-          <label htmlFor="org_web_social_channels">
+          <label htmlFor="crew.org.public_email">
             <FormattedMessage
-              id="org_web_social_channels"
-              defaultMessage="Organisation Web & Social Channels"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_web_social_channels"
-              component="input"
-              type="text"
-              value={props.org_web_social_channels}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-link"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_web_social_channels_for_project_likes_shares">
-            <FormattedMessage
-              id="org_web_social_channels_for_project_likes_shares"
-              defaultMessage="Organisation Web & Social Channels for LIKES & SHARES"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-danger">
-            <FormattedMessage
-              id="private"
-              defaultMessage='Private'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_web_social_channels_for_project_likes_shares"
-              component="input"
-              type="text"
-              value={props.org_web_social_channels_for_project_likes_shares}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-link"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_public_email">
-            <FormattedMessage
-              id="org_public_email"
+              id="crew.org.public_email"
               defaultMessage="Organisation public email"
             />
           </label>
@@ -697,10 +609,10 @@ let CrewForm = props => {
           <div className="input-group">
             <Field
               className="form-control"
-              name="org_public_email"
+              name="crew.org.public_email"
               component="input"
               type="text"
-              value={props.org_public_email}
+              value={props.org.public_email}
             />
             <div className="input-group-addon">
               <i className="fa fa-envelope"></i>
@@ -714,44 +626,12 @@ let CrewForm = props => {
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="org_phone">
-            <FormattedMessage
-              id="org_phone"
-              defaultMessage="Organisation phone"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-danger">
-            <FormattedMessage
-              id="private"
-              defaultMessage='Private'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_phone"
-              component="input"
-              type="text"
-              value={props.org_phone}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-phone"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
+        <LinksPhoneEdit links={props.org.links} privacy="public" />
 
         <div className="form-group">
-          <label htmlFor="org_aims_and_activities">
+          <label htmlFor="crew.org.aims_and_activities">
             <FormattedMessage
-              id="org_aims_and_activities"
+              id="crew.org.aims_and_activities"
               defaultMessage="Aims and activities of the organisation"
             />
           </label>
@@ -764,21 +644,21 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_aims_and_activities"
+            name="crew.org.aims_and_activities"
             component="textarea"
             rows="4"
             placeholder={props.intl.formatMessage({
               id: 'about.placeholder',
               defaultMessage: 'Tell me something about aims and activities of the organisation.'
             })}
-            value={props.org_aims_and_activities}
+            value={props.org.aims_and_activities}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_pic_code">
+          <label htmlFor="crew.org.pic_code">
             <FormattedMessage
-              id="org_pic_code"
+              id="crew.org.pic_code"
               defaultMessage="Organisation PIC Code"
             />
           </label>
@@ -791,17 +671,17 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_pic_code"
+            name="crew.org.pic_code"
             component="input"
             type="text"
-            value={props.org_pic_code}
+            value={props.org.pic_code}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_address">
+          <label htmlFor="crew.org.address">
             <FormattedMessage
-              id="org_address"
+              id="crew.org.address"
               defaultMessage="Organisation legal address (only one)"
             />
           </label>
@@ -815,7 +695,7 @@ let CrewForm = props => {
           <Place user={crew} />
           <ul className="list-group mt-2">
             {
-              crew && crew.org_address && crew.org_address.map((a) => (
+              crew && crew.org && crew.org.address && crew.org.address.map((a) => (
                 <Address address={a} />
               ))
             }
@@ -824,9 +704,9 @@ let CrewForm = props => {
 
         <div className="row">
           <div className="col-md-9 form-group">
-            <label htmlFor="org_vat_number">
+            <label htmlFor="crew.org.vat_number">
               <FormattedMessage
-                id="org_vat_number"
+                id="crew.org.vat_number"
                 defaultMessage="Organisation vat number"
               />
             </label>
@@ -839,32 +719,32 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_able_to_recuperate_vat"
+              name="crew.org.able_to_recuperate_vat"
               component="input"
               type="text"
-              value={props.org_vat_number}
+              value={props.org.vat_number}
             />
           </div>
 
           <div className="col-md-3 form-group">
-            <label htmlFor="org_able_to_recuperate_vat">
+            <label htmlFor="crew.org.able_to_recuperate_vat">
               <FormattedMessage
-                id="crew.edit.form.label.org_able_to_recuperate_vat"
+                id="crew.edit.form.label.crew.org.able_to_recuperate_vat"
                 defaultMessage="Able to recuperate VAT?"
               />
             </label>
             <div>
-              <input type="radio" value="1" name="org_able_to_recuperate_vat" /> YES
-              <input type="radio" value="0" name="org_able_to_recuperate_vat" /> NO
+              <input type="radio" value="1" name="crew.org.able_to_recuperate_vat" /> YES
+              <input type="radio" value="0" name="crew.org.able_to_recuperate_vat" /> NO
             </div>
 
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_official_registration_number">
+          <label htmlFor="crew.org.official_registration_number">
             <FormattedMessage
-              id="org_official_registration_number"
+              id="crew.org.official_registration_number"
               defaultMessage="Organisation official registration number"
             />
           </label>
@@ -877,18 +757,18 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_official_registration_number"
+            name="crew.org.official_registration_number"
             component="input"
             type="text"
-            value={props.org_official_registration_number}
+            value={props.org.official_registration_number}
           />
         </div>
 
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="org_legal_representative_title">
+            <label htmlFor="crew.org.legal_representative_title">
               <FormattedMessage
-                id="org_legal_representative_title"
+                id="crew.org.legal_representative_title"
                 defaultMessage="Organisation legal representative title"
               />
             </label>
@@ -901,24 +781,24 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control custom-select"
-              name="org_legal_representative_title"
+              name="crew.org.legal_representative_title"
               component="select"
             >
               <option value="">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_legal_representative_title.empty"
+                  id="crew.edit.form.label.crew.org.legal_representative_title.empty"
                   defaultMessage="Please select"
                 />
               </option>
               <option value="en">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_legal_representative_title.mr"
+                  id="crew.edit.form.label.crew.org.legal_representative_title.mr"
                   defaultMessage="Mr."
                 />
               </option>
               <option value="it">
                 <FormattedMessage
-                  id="crew.edit.form.label.org_legal_representative_title.miss"
+                  id="crew.edit.form.label.crew.org.legal_representative_title.miss"
                   defaultMessage="Miss"
                 />
               </option>
@@ -926,9 +806,9 @@ let CrewForm = props => {
 
           </div>
           <div className="col-md-6 form-group">
-            <label htmlFor="org_legal_representative_role">
+            <label htmlFor="crew.org.legal_representative_role">
               <FormattedMessage
-                id="org_legal_representative_role"
+                id="crew.org.legal_representative_role"
                 defaultMessage="Organisation legal representative role"
               />
             </label>
@@ -941,19 +821,19 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_legal_representative_role"
+              name="crew.org.legal_representative_role"
               component="input"
               type="text"
-              value={props.org_legal_representative_role}
+              value={props.org.legal_representative_role}
             />
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="org_legal_representative_name">
+            <label htmlFor="crew.org.legal_representative_name">
               <FormattedMessage
-                id="org_legal_representative_name"
+                id="crew.org.legal_representative_name"
                 defaultMessage="Organisation legal representative name"
               />
             </label>
@@ -966,17 +846,17 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_legal_representative_name"
+              name="crew.org.legal_representative_name"
               component="input"
               type="text"
-              value={props.org_legal_representative_name}
+              value={props.org.legal_representative_name}
             />
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="org_legal_representative_surname">
+            <label htmlFor="crew.org.legal_representative_surname">
               <FormattedMessage
-                id="org_legal_representative_surname"
+                id="crew.org.legal_representative_surname"
                 defaultMessage="Organisation legal representative surname"
               />
             </label>
@@ -989,18 +869,18 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_legal_representative_surname"
+              name="crew.org.legal_representative_surname"
               component="input"
               type="text"
-              value={props.org_legal_representative_surname}
+              value={props.org.legal_representative_surname}
             />
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_legal_representative_email">
+          <label htmlFor="crew.org.legal_representative_email">
             <FormattedMessage
-              id="org_legal_representative_email"
+              id="crew.org.legal_representative_email"
               defaultMessage="Organisation legal representative email"
             />
           </label>
@@ -1014,10 +894,10 @@ let CrewForm = props => {
           <div className="input-group">
             <Field
               className="form-control"
-              name="org_legal_representative_email"
+              name="crew.org.legal_representative_email"
               component="input"
               type="text"
-              value={props.org_legal_representative_email}
+              value={props.org.legal_representative_email}
             />
             <div className="input-group-addon">
               <i className="fa fa-envelope"></i>
@@ -1031,112 +911,16 @@ let CrewForm = props => {
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="org_legal_representative_mobile_phone">
-            <FormattedMessage
-              id="org_legal_representative_mobile_phone"
-              defaultMessage="Organisation legal representative mobile phone"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-danger">
-            <FormattedMessage
-              id="private"
-              defaultMessage='Private'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_legal_representative_mobile_phone"
-              component="input"
-              type="text"
-              value={props.org_legal_representative_mobile_phone}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-phone"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
+        <LinksMobileEdit links={props.org.legal_representative_links} privacy="private" />
+
+        <LinksSkypeEdit links={props.org.legal_representative_links} privacy="private" />
+
+        <LinksSocialEdit links={props.org.legal_representative_links} privacy="public" />
 
         <div className="form-group">
-          <label htmlFor="org_legal_representative_skype">
+          <label htmlFor="crew.org.statute">
             <FormattedMessage
-              id="org_legal_representative_skype"
-              defaultMessage="Organisation legal representative skype"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-danger">
-            <FormattedMessage
-              id="private"
-              defaultMessage='Private'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_legal_representative_skype"
-              component="input"
-              type="text"
-              value={props.org_legal_representative_skype}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-phone"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_legal_representative_facebook">
-            <FormattedMessage
-              id="org_legal_representative_facebook"
-              defaultMessage="Organisation legal representative facebook"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-danger">
-            <FormattedMessage
-              id="private"
-              defaultMessage='Private'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_legal_representative_facebook"
-              component="input"
-              type="text"
-              value={props.org_legal_representative_facebook}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-link"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_statute">
-            <FormattedMessage
-              id="org_statute"
+              id="crew.org.statute"
               defaultMessage="Organisation statute (pdf only)"
             />
           </label>
@@ -1147,12 +931,12 @@ let CrewForm = props => {
               defaultMessage='Private'
             />
           </span>
-          {crew && crew.org_statute ?
+          {crew && crew.org && crew.org.statute ?
             <div>
               <img
                 className="img-thumbnail mb-3"
-                src={crew.org_statute.publicUrl}
-                alt={`Organisation statute of ${props.org_name}`}
+                src={crew.org.statute.publicUrl}
+                alt={`Organisation statute of ${props.org.name}`}
               />
             </div> :
             null
@@ -1164,9 +948,9 @@ let CrewForm = props => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_members_cv">
+          <label htmlFor="crew.org.members_cv">
             <FormattedMessage
-              id="org_members_cv"
+              id="crew.org.members_cv"
               defaultMessage="Organisation members cv (pdf only)"
             />
           </label>
@@ -1177,12 +961,12 @@ let CrewForm = props => {
               defaultMessage='Private'
             />
           </span>
-          {crew && crew.org_members_cv ?
+          {crew && crew.org && crew.org.members_cv ?
             <div>
               <img
                 className="img-thumbnail mb-3"
-                src={crew.org_members_cv.publicUrl}
-                alt={`Organisation members cv of ${props.org_name}`}
+                src={crew.org.members_cv.publicUrl}
+                alt={`Organisation members cv of ${props.org.name}`}
               />
             </div> :
             null
@@ -1194,9 +978,9 @@ let CrewForm = props => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_activity_report">
+          <label htmlFor="crew.org.activity_report">
             <FormattedMessage
-              id="org_activity_report"
+              id="crew.org.activity_report"
               defaultMessage="Organisation Activity Report (pdf only)"
             />
           </label>
@@ -1207,12 +991,12 @@ let CrewForm = props => {
                   defaultMessage='Private'
               />
           </span>
-          {crew && crew.org_activity_report ?
+          {crew && crew.org && crew.org.activity_report ?
             <div>
               <img
                 className="img-thumbnail mb-3"
-                src={crew.org_activity_report.publicUrl}
-                alt={`Activity Report of ${props.org_name}`}
+                src={crew.org.activity_report.publicUrl}
+                alt={`Activity Report of ${props.org.name}`}
               />
             </div> :
             null
@@ -1225,9 +1009,9 @@ let CrewForm = props => {
 
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="org_permanent_employees">
+            <label htmlFor="crew.org.permanent_employees">
               <FormattedMessage
-                id="org_permanent_employees"
+                id="crew.org.permanent_employees"
                 defaultMessage="Organisation permanent employees"
               />
             </label>
@@ -1240,17 +1024,17 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_permanent_employees"
+              name="crew.org.permanent_employees"
               component="input"
               type="text"
-              value={props.org_permanent_employees}
+              value={props.org.permanent_employees}
             />
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="org_permanent_employees_avnode">
+            <label htmlFor="crew.org.permanent_employees_avnode">
               <FormattedMessage
-                id="org_permanent_employees_avnode"
+                id="crew.org.permanent_employees_avnode"
                 defaultMessage="Organisation permanent employees AVnode"
               />
             </label>
@@ -1263,19 +1047,19 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_permanent_employees_avnode"
+              name="crew.org.permanent_employees_avnode"
               component="input"
               type="text"
-              value={props.org_permanent_employees_avnode}
+              value={props.org.permanent_employees_avnode}
             />
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="org_temporary_employees">
+            <label htmlFor="crew.org.temporary_employees">
               <FormattedMessage
-                id="org_temporary_employees"
+                id="crew.org.temporary_employees"
                 defaultMessage="Organisation temporary employees"
               />
             </label>
@@ -1288,17 +1072,17 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_temporary_employees"
+              name="crew.org.temporary_employees"
               component="input"
               type="text"
-              value={props.org_temporary_employees}
+              value={props.org.temporary_employees}
             />
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="org_temporary_employees_avnode">
+            <label htmlFor="crew.org.temporary_employees_avnode">
               <FormattedMessage
-                id="org_temporary_employees_avnode"
+                id="crew.org.temporary_employees_avnode"
                 defaultMessage="Organisation temporary employees AVnode"
               />
             </label>
@@ -1311,17 +1095,17 @@ let CrewForm = props => {
             </span>
             <Field
               className="form-control"
-              name="org_temporary_employees_avnode"
+              name="crew.org.temporary_employees_avnode"
               component="input"
               type="text"
-              value={props.org_temporary_employees_avnode}
+              value={props.org.temporary_employees_avnode}
             />
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="org_relevance_in_the_project">
+          <label htmlFor="crew.org.relevance_in_the_project">
             <FormattedMessage
-              id="org_relevance_in_the_project"
+              id="crew.org.relevance_in_the_project"
               defaultMessage="Organisation relevance in the project"
             />
           </label>
@@ -1334,21 +1118,21 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_relevance_in_the_project"
+            name="crew.org.relevance_in_the_project"
             component="textarea"
             rows="4"
             placeholder={props.intl.formatMessage({
               id: 'about.placeholder',
               defaultMessage: 'Tell me something about organisation relevance in the project.'
             })}
-            value={props.org_relevance_in_the_project}
+            value={props.org.relevance_in_the_project}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_emerging_artists_definition">
+          <label htmlFor="crew.org.emerging_artists_definition">
             <FormattedMessage
-              id="org_emerging_artists_definition"
+              id="crew.org.emerging_artists_definition"
               defaultMessage="Organisation emerging artists definition"
             />
           </label>
@@ -1361,21 +1145,21 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_emerging_artists_definition"
+            name="crew.org.emerging_artists_definition"
             component="textarea"
             rows="4"
             placeholder={props.intl.formatMessage({
               id: 'about.placeholder',
               defaultMessage: 'Tell me the organisation emerging artists definition.'
             })}
-            value={props.org_emerging_artists_definition}
+            value={props.org.emerging_artists_definition}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_eu_grants_received_in_the_last_3_years">
+          <label htmlFor="crew.org.eu_grants_received_in_the_last_3_years">
             <FormattedMessage
-              id="org_eu_grants_received_in_the_last_3_years"
+              id="crew.org.eu_grants_received_in_the_last_3_years"
               defaultMessage="EU grants received in the last 3 years"
             />
           </label>
@@ -1388,21 +1172,21 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_eu_grants_received_in_the_last_3_years"
+            name="crew.org.eu_grants_received_in_the_last_3_years"
             component="textarea"
             rows="4"
             placeholder={props.intl.formatMessage({
               id: 'about.placeholder',
               defaultMessage: 'EU grants received in the last 3 years.'
             })}
-            value={props.org_eu_grants_received_in_the_last_3_years}
+            value={props.org.eu_grants_received_in_the_last_3_years}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="org_annual_turnover_in_euro">
+          <label htmlFor="crew.org.annual_turnover_in_euro">
             <FormattedMessage
-              id="org_annual_turnover_in_euro"
+              id="crew.org.annual_turnover_in_euro"
               defaultMessage="Organisation annual turnover in euro"
             />
           </label>
@@ -1415,726 +1199,42 @@ let CrewForm = props => {
           </span>
           <Field
             className="form-control"
-            name="org_annual_turnover_in_euro"
+            name="crew.org.annual_turnover_in_euro"
             component="input"
             type="text"
-            value={props.org_annual_turnover_in_euro}
+            value={props.org.annual_turnover_in_euro}
           />
         </div>
 
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="crew.edit.form.label.org_contacts"
+              id="crew.edit.form.label.crew.org.contacts"
               defaultMessage="Organisation contacts (multiple)"
             />
           </legend>
-
-          <div className="row">
-            <div className="col-md-6 form-group">
-              <label htmlFor="org_contact_title">
-                <FormattedMessage
-                  id="org_contact_title"
-                  defaultMessage="Organisation contact title"
-                />
-              </label>
-              &nbsp;
-              <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
-              </span>
-              <Field
-                className="form-control custom-select"
-                name="org_contact_title"
-                component="select"
-              >
-                <option value="">
-                  <FormattedMessage
-                    id="crew.edit.form.label.org_contact_title.empty"
-                    defaultMessage="Please select"
-                  />
-                </option>
-                <option value="en">
-                  <FormattedMessage
-                    id="crew.edit.form.label.org_contact_title.mr"
-                    defaultMessage="Mr."
-                  />
-                </option>
-                <option value="it">
-                  <FormattedMessage
-                    id="crew.edit.form.label.org_contact_language.miss"
-                    defaultMessage="Miss"
-                  />
-                </option>
-              </Field>
-            </div>
-            <div className="col-md-6 form-group">
-              <label htmlFor="org_contact_role">
-                <FormattedMessage
-                  id="org_contact_role"
-                  defaultMessage="Organisation contact role"
-                />
-              </label>
-              &nbsp;
-              <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
-              </span>
-              <Field
-                className="form-control"
-                name="org_contact_role"
-                component="input"
-                type="text"
-                value={props.org_contact_role}
-              />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-6 form-group">
-              <label htmlFor="org_contact_name">
-                <FormattedMessage
-                  id="org_contact_name"
-                  defaultMessage="Organisation contact name"
-                />
-              </label>
-              &nbsp;
-              <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
-              </span>
-              <Field
-                className="form-control"
-                name="org_contact_name"
-                component="input"
-                type="text"
-                value={props.org_contact_name}
-              />
-            </div>
-
-            <div className="col-md-6 form-group">
-              <label htmlFor="org_contact_surname">
-                <FormattedMessage
-                  id="org_contact_surname"
-                  defaultMessage="Organisation contact surname"
-                />
-              </label>
-              &nbsp;
-              <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
-              </span>
-              <Field
-                className="form-control"
-                name="org_contact_surname"
-                component="input"
-                type="text"
-                value={props.org_contact_surname}
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="org_contact_email">
-              <FormattedMessage
-                id="org_contact_email"
-                defaultMessage="Organisation contact email"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="org_contact_email"
-                component="input"
-                type="text"
-                value={props.org_contact_email}
-              />
-              <div className="input-group-addon">
-                <i className="fa fa-envelope"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="org_contact_language">
-              <FormattedMessage
-                id="org_contact_language"
-                defaultMessage="Organisation contact language"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
-            </span>
-            <Field
-              className="form-control custom-select"
-              name="org_contact_language"
-              component="select"
-            >
-              <option value="">
-                <FormattedMessage
-                  id="crew.edit.form.label.org_contact_language.empty"
-                  defaultMessage="Please select"
-                />
-              </option>
-              <option value="en">
-                <FormattedMessage
-                  id="crew.edit.form.label.org_contact_language.en"
-                  defaultMessage="English"
-                />
-              </option>
-              <option value="it">
-                <FormattedMessage
-                  id="crew.edit.form.label.org_contact_language.it"
-                  defaultMessage="Italiano"
-                />
-              </option>
-            </Field>
-
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="org_contact_mobile_phone">
-              <FormattedMessage
-                id="org_contact_mobile_phone"
-                defaultMessage="Organisation contact mobile phone"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="org_contact_mobile_phone"
-                component="input"
-                type="text"
-                value={props.org_contact_mobile_phone}
-              />
-              <div className="input-group-addon">
-                <i className="fa fa-phone"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="org_contact_skype">
-              <FormattedMessage
-                id="org_contact_skype"
-                defaultMessage="Organisation contact skype"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="org_contact_skype"
-                component="input"
-                type="text"
-                value={props.org_contact_skype}
-              />
-              <div className="input-group-addon">
-                <i className="fa fa-phone"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="org_contact_facebook">
-              <FormattedMessage
-                id="org_contact_facebook"
-                defaultMessage="Organisation contact facebook"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-danger">
-              <FormattedMessage
-                id="private"
-                defaultMessage='Private'
-              />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="org_contact_facebook"
-                component="input"
-                type="text"
-                value={props.org_contact_facebook}
-              />
-              <div className="input-group-addon">
-                <i className="fa fa-link"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-          </div>
+          {
+            crew && crew.contacts && crew.contacts.map((a) => (
+                <OrgContact contact={a} />
+            ))
+          }
+          <OrgContact contact={{}} />
         </fieldset>
+
         <fieldset className="form-group">
-          <legend>Organisation activities (multiple)</legend>
-
-          <div className="form-group">
-            <label htmlFor="activity_name">
-              <FormattedMessage
-                id="activity_name"
-                defaultMessage="Activity Name"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <Field
-              className="form-control"
-              name="activity_name"
-              component="input"
-              type="text"
-              value={props.activity_name}
+          <legend></legend>
+          <legend>
+            <FormattedMessage
+                id="crew.edit.form.label.crew.org.activities"
+                defaultMessage="Organisation activities (multiple)"
             />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_logo">
-              <FormattedMessage
-                id="activity_logo"
-                defaultMessage="Activity logo (.svg only)"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            {crew && crew.activity_logo ?
-              <div>
-                <img
-                  className="img-thumbnail mb-3"
-                  src={crew.activity_logo.publicUrl}
-                  alt={`Logo of ${props.org_name}`}
-                />
-              </div> :
-              null
-            }
-            <ImageDropzone
-              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
-              onDrop={onImageDrop(props._id)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="activity_start_date">
-              <FormattedMessage
-                id="activity_start_date"
-                defaultMessage="Activity start date"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div className="input-group">
-              <div className="input-group-addon">
-                <i className="fa fa-calendar"></i>
-              </div>
-              <Field
-                className="form-control"
-                name="activity_start_date"
-                component="input"
-                type="text"
-                value={props.activity_start_date}
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_is_running">
-              <FormattedMessage
-                id="activity_is_running"
-                defaultMessage="Activity is running?"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div>
-              <input type="radio" value="1" name="activity_is_running" /> YES
-              <input type="radio" value="0" name="activity_is_running" /> NO
-            </div>
-
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_end_date">
-              <FormattedMessage
-                id="activity_end_date"
-                defaultMessage="Activity end date (only if it is not running)"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div className="input-group">
-              <div className="input-group-addon">
-                <i className="fa fa-calendar"></i>
-              </div>
-              <Field
-                className="form-control"
-                name="activity_end_date"
-                component="input"
-                type="text"
-                value={props.activity_end_date}
-              />
-            </div>
-
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_month">
-              <FormattedMessage
-                id="activity_season"
-                defaultMessage="Activity main season"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-danger">
-              <FormattedMessage
-                id="private"
-                defaultMessage='Private'
-              />
-            </span>
-            <Field
-              className="form-control custom-select"
-              name="activity_season"
-              component="select"
-            >
-              <option value="">
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.empty"
-                  defaultMessage="Please select"
-                />
-              </option>
-              <option value='fullyear'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.fullyear"
-                  defaultMessage="Full year"
-                />
-              </option>
-              <option value='winter'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.winter"
-                  defaultMessage="Winter"
-                />
-              </option>
-              <option value='spring'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.spring"
-                  defaultMessage="Spring"
-                />
-              </option>
-              <option value='summer'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.summer"
-                  defaultMessage="Summer"
-                />
-              </option>
-              <option value='autumn'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.autumn"
-                  defaultMessage="Autumn"
-                />
-              </option>
-              <option value='01'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.january"
-                  defaultMessage="January"
-                />
-              </option>
-              <option value='02'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.february"
-                  defaultMessage="February"
-                />
-              </option>
-              <option value='03'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.march"
-                  defaultMessage="March"
-                />
-              </option>
-              <option value='04'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.april"
-                  defaultMessage="April"
-                />
-              </option>
-              <option value='05'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.may"
-                  defaultMessage="May"
-                />
-              </option>
-              <option value='06'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.june"
-                  defaultMessage="June"
-                />
-              </option>
-              <option value='07'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.july"
-                  defaultMessage="July"
-                />
-              </option>
-              <option value='08'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.august"
-                  defaultMessage="August"
-                />
-              </option>
-              <option value='09'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.september"
-                  defaultMessage="September"
-                />
-              </option>
-              <option value='10'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.october"
-                  defaultMessage="October"
-                />
-              </option>
-              <option value='11'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.november"
-                  defaultMessage="November"
-                />
-              </option>
-              <option value='12'>
-                <FormattedMessage
-                  id="crew.edit.form.label.activity_season.december"
-                  defaultMessage="December"
-                />
-              </option>
-            </Field>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_city">
-              <FormattedMessage
-                id="activity_address"
-                defaultMessage="Activity cities"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="activity_city"
-                component="input"
-                type="text"
-                value={props.activity_end_date}
-              />
-              <Field
-                className="form-control custom-select"
-                name="activity_country"
-                component="select"
-              >
-                <option value="">
-                  <FormattedMessage
-                    id="crew.edit.form.label.activity_country.empty"
-                    defaultMessage="Please select a country"
-                  />
-                </option>
-                <option value="en">
-                  <FormattedMessage
-                    id="crew.edit.form.label.activity_country.en"
-                    defaultMessage="English"
-                  />
-                </option>
-                <option value="it">
-                  <FormattedMessage
-                    id="crew.edit.form.label.activity_country.it"
-                    defaultMessage="Italiano"
-                  />
-                </option>
-              </Field>
-
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_website">
-              <FormattedMessage
-                id="activity_website"
-                defaultMessage="Activity Website"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="activity_website"
-                component="input"
-                type="text"
-                value={props.activity_website}
-              />
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_profiles">
-              <FormattedMessage
-                id="activity_web_social_channels"
-                defaultMessage="Activity Web & Social Channels"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="activity_web_social_channels"
-                component="input"
-                type="text"
-                value={props.activity_profiles}
-              />
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="activity_instagram">
-              <FormattedMessage
-                id="activity_public_email"
-                defaultMessage="Activity Public Email"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="activity_public_email"
-                component="input"
-                type="text"
-                value={props.activity_public_email}
-              />
-              <div className="input-group-addon">
-                <i className="fa fa-envelope"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-plus"></i>
-              </div>
-            </div>
-          </div>
+          </legend>
+          {
+            crew && crew.activities && crew.activities.map((a) => (
+                <OrgActivity contact={a} />
+            ))
+          }
+          <OrgActivity contact={{}} />
         </fieldset>
 
 
