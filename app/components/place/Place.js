@@ -14,7 +14,7 @@ const styles = {
     background: 'white'
   }
 };
-const required = value => value ? undefined : 'Required';
+/* const required = value => value ? undefined : 'Required';
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <div>
     <label>{label}</label>
@@ -23,13 +23,14 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
       {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
     </div>
   </div>
-)
+  validate={ [ required ] }
+) */
 class Place extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       suggestions: [],
-      name: ''
+      placename: ''
     };
     this.autocompleteCallback = this.autocompleteCallback.bind(this);
     this.delete = this.delete.bind(this);
@@ -78,8 +79,8 @@ class Place extends React.Component {
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
       // verify if a Place name is set, otherwise use the address
-      if (this.state.name.length < 1) this.state.name = place.title;
-      results[0].name = this.state.name;      
+      if (this.state.placename.length < 1) this.state.placename = place.title;
+      results[0].placename = this.state.placename;      
       this.props.complete(this.props.user._id, results[0]);
       this.reset();
     });
@@ -111,12 +112,12 @@ class Place extends React.Component {
         <div class="google-maps-places">
           <Field
               className="form-control"
-              name="name"
+              name="placename"
               component="input"
               placeholder='Input a new Address name (Home or Work or ...)'
               onChange={(event, newValue, previousValue) => {
                 // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
-                this.state.name = newValue;
+                this.state.placename = newValue;
               }}
           />
           <Field
@@ -203,9 +204,7 @@ class Place extends React.Component {
               <Field
                 className="form-control"
                 name="locality"
-                component={renderField}
-                component="input"
-                validate={ [ required ] }
+                component="input"               
               />
             </div>
           </div>
@@ -234,7 +233,6 @@ class Place extends React.Component {
                 className="form-control"
                 name="country"
                 component="input"
-                validate={ [ required ] }
               />
             </div>
           </div>
