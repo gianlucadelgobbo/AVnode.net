@@ -44,7 +44,7 @@ class Map extends React.Component {
 				<div class='card-block'>
 					<p class='card-text'>
           <div class="pull-left">
-            {this.props.venue.address.name} : {this.props.venue.address.formatted_address}
+            {this.props.venue.address.placename} : {this.props.venue.address.formatted_address}
           </div>
           <div class="pull-right">
             <button
@@ -67,7 +67,7 @@ class Venue extends React.Component {
 		super(props);
 		this.state = {
 			suggestions: [],
-      name: ''
+      placename: ''
 		};
 		this.autocompleteCallback = this.autocompleteCallback.bind(this);
 		this.delete = this.delete.bind(this);
@@ -99,7 +99,7 @@ class Venue extends React.Component {
   reset() {
     this.setState({
       suggestions: [],
-      name: ''
+      placename: ''
     });
   }
 
@@ -115,7 +115,7 @@ class Venue extends React.Component {
     this.props.delete(this.props.event._id, venueId);
   }
 
-  formatAddress(location, name) {
+  formatAddress(location, placename) {
 		let street_number = '';
 		let route = '';
 		let postal_code = '';
@@ -143,7 +143,7 @@ class Venue extends React.Component {
 			country: country,
 			geometry: location.geometry,
 			place_id: location.place_id, // unique
-			name: name, // BL friendly name indexed for search
+			placename: placename, // BL friendly name indexed for search
 			is_primary: true
 		};
 		return address;
@@ -153,12 +153,12 @@ class Venue extends React.Component {
       console.log('Venue place: ' + JSON.stringify(place));
       console.log('Venue place.placeId: ' + place.placeId);
       console.log('this.props.event._id: ' + this.props.event._id);
-      console.log('this.state.name: ' + this.state.name); 
-      // verify if a Venue name is set, otherwise use the address
+      console.log('this.state.placename: ' + this.state.placename); 
+      // verify if a Venue placename is set, otherwise use the address
       console.log('Venue save place,status:' + status);
-      if (this.state.name.length < 1) this.state.name = place.title;
-      results[0].name = this.state.name;
-			this.props.complete(this.props.event._id, this.formatAddress(results[0], this.state.name));
+      if (this.state.placename.length < 1) this.state.placename = place.title;
+      results[0].placename = this.state.placename;
+			this.props.complete(this.props.event._id, this.formatAddress(results[0], this.state.placename));
       this.reset();
 		});
 	}
@@ -190,11 +190,11 @@ class Venue extends React.Component {
         <div class="google-maps-places">
           <Field
               className="form-control"
-              name="name"
+              name="placename"
               component="input"
               placeholder='Input a new Venue name'
               onChange={(event, newValue, previousValue) => {
-                this.state.name = newValue;
+                this.state.placename = newValue;
               }}
           />
           <Field
