@@ -93,7 +93,7 @@ let CrewForm = props => {
     return dispatch(addCrewTeaserImage(crewId, file));
   };
   const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
-    // about.is_primary = true;
+    about.is_primary = true;
     return dispatch(aboutCrewMakePrimary(crewId, about._id));
   };
   
@@ -299,7 +299,7 @@ let CrewForm = props => {
             type="text"
             autoComplete="off"
             placeholder={props.intl.formatMessage({
-              id: 'crew.edit.form.label.suggestMembers',
+              id: 'assignMembers',
               defaultMessage: 'Type to find users…'
             })}
             onKeyUp={findMember}
@@ -310,7 +310,7 @@ let CrewForm = props => {
                 <i className="fa fa-fw fa-spinner fa-pulse"></i>
                 {' '}
                 <FormattedMessage
-                  id="crew.edit.form.label.suggestMembersLoading"
+                  id="suggestMembersLoading"
                   defaultMessage="Finding users…"
                 />
               </div> :
@@ -329,16 +329,9 @@ let CrewForm = props => {
           </div>
         </div>
 
-
-
-
-
-
-
-
         <h3>
           <FormattedMessage
-            id="crew.edit.form.label.crew.org.extradata_title"
+            id="org_extradata_title"
             defaultMessage="Organization Extra Data"
           />
         </h3>
@@ -597,108 +590,6 @@ let CrewForm = props => {
           />
         </div>
 
-
-        <div className="form-group">
-          <label htmlFor="org_website">
-            <FormattedMessage
-              id="org_website"
-              defaultMessage="Organisation website"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-success">
-            <FormattedMessage
-              id="public"
-              defaultMessage='Public'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_website"
-              component="input"
-              type="text"
-              value={props.org_website}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-link"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_web_social_channels">
-            <FormattedMessage
-              id="org_web_social_channels"
-              defaultMessage="Organisation Web & Social Channels"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-success">
-            <FormattedMessage
-              id="public"
-              defaultMessage='Public'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_web_social_channels"
-              component="input"
-              type="text"
-              value={props.org_web_social_channels}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-link"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="org_web_social_channels_for_project_likes_shares">
-            <FormattedMessage
-              id="org_web_social_channels_for_project_likes_shares"
-              defaultMessage="Organisation Web & Social Channels for LIKES & SHARES"
-            />
-          </label>
-          &nbsp;
-          <span class="badge badge-danger">
-            <FormattedMessage
-              id="private"
-              defaultMessage='Private'
-            />
-          </span>
-          <div className="input-group">
-            <Field
-              className="form-control"
-              name="org_web_social_channels_for_project_likes_shares"
-              component="input"
-              type="text"
-              value={props.org_web_social_channels_for_project_likes_shares}
-            />
-            <div className="input-group-addon">
-              <i className="fa fa-link"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-minus"></i>
-            </div>
-            <div className="input-group-addon">
-              <i className="fa fa-plus"></i>
-            </div>
-          </div>
-        </div>
 
         <LinksWebEdit links={props.org.links} privacy="public" />
         <LinksSocialEdit links={props.org.links} privacy="public" />
