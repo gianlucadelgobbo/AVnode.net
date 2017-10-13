@@ -18,7 +18,7 @@ import {
   addCrewImage,
   addCrewTeaserImage,
   aboutCrewMakePrimary,
-  removeCrewMember,
+  removeCrewMember
 } from '../../reducers/actions';
 
 const Member = injectIntl(({ member, me, onDelete, intl }) => {
@@ -84,8 +84,8 @@ let CrewForm = props => {
     return dispatch(addCrewTeaserImage(crewId, file));
   };
   const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
-    about.is_primary = true;
-    aboutCrewMakePrimary(crewId, about._id);
+    // about.is_primary = true;
+    return dispatch(aboutCrewMakePrimary(crewId, about._id));
   };
   return (
     <Layout>
