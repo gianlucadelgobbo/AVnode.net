@@ -40,7 +40,7 @@ const General = ({
     addUserTeaserImage(userId, files[0]);
   };
 
-  const onAboutMakePrimary = (userId) => (about) => (e) => {
+  const onUserAboutMakePrimary = (userId) => (about) => (e) => {
     about.is_primary = true;
     aboutUserMakePrimary(userId, about._id);
   };
@@ -267,7 +267,7 @@ const General = ({
                 user && user.abouts && user.abouts.map((a) => (
                   <About 
                     about={a}
-                    onMakePrimary={onAboutMakePrimary(user._id)(a)}
+                    onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
                   />
                 ))
               }
