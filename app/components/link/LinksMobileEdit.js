@@ -40,15 +40,16 @@ const LinksMobileEdit = (args) => {
                 name="mb"
                 component="input"
                 type="text"
+                placeholder="Your mobile number"
                 value={item.url}
               />
               {item.url}
-              <div className="input-group-addon">
-                <i className="fa fa-link"></i>
-              </div>
-              <div className="input-group-addon">
-                <i className="fa fa-minus"></i>
-              </div>
+              <span class="input-group-btn">
+                <a href={`phone:${item.url}`} target="_blank" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Call Mobile"><i className="fa fa-link"></i></a>
+              </span>
+              <span class="input-group-btn">
+                <button onClick={alert('remove '+{i})} class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Remove Mobile"><i className="fa fa-minus"></i></button>
+              </span>
             </div>
           ))
         :
@@ -60,13 +61,11 @@ const LinksMobileEdit = (args) => {
             name="mb"
             component="input"
             type="text"
+            placeholder="Your mobile number"
           />
-          <div className="input-group-addon">
-            <i className="fa fa-link"></i>
-          </div>
-          <div className="input-group-addon">
-            <i className="fa fa-plus"></i>
-          </div>
+          <span class="input-group-btn">
+            <button onClick={alert('add ')} class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Add Mobile"><i className="fa fa-plus"></i></button>
+          </span>
         </div>
       </div>
   );
