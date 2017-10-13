@@ -53,6 +53,7 @@ export const REQUEST_ADD_CREWMEMBER = 'REQUEST_ADD_CREWMEMBER';
 export const REQUEST_DELETE_CREWMEMBER = 'REQUEST_DELETE_CREWMEMBER';
 export const REQUEST_ADD_CREWIMAGE = 'REQUEST_ADD_CREWIMAGE';
 export const REQUEST_ADD_CREWTEASERIMAGE = 'REQUEST_ADD_CREWTEASERIMAGE';
+export const REQUEST_CREW_MAKEABOUTPRIMARY = "REQUEST_CREW_MAKEABOUTPRIMARY";
 
 export const REQUEST_ADD_PERFORMANCE = 'REQUEST_ADD_PERFORMANCE';
 export const REQUEST_DELETE_PERFORMANCE = 'REQUEST_DELETE_PERFORMANCE';
@@ -357,7 +358,22 @@ export function suggestEventOrganizingCrew(eventId, q) {
       });
   };
 }
-
+export function aboutCrewMakePrimary(dispatch) {
+  return (id, aboutId) => {
+    console.log(id + " aboutid: " + aboutId);
+    dispatch({
+      type: REQUEST_CREW_MAKEABOUTPRIMARY,
+      payload: {
+        crew: id,
+        about: aboutId
+      }
+    });
+    return fetch(`/account/api/crew/${id}/about/${aboutId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 export function addEventOrganizingCrew(eventId, organizingCrewId) {
   return dispatch => {
     dispatch({

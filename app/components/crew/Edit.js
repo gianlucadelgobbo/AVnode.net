@@ -17,6 +17,7 @@ import {
   addCrewMember,
   addCrewImage,
   addCrewTeaserImage,
+  aboutCrewMakePrimary,
   removeCrewMember,
 } from '../../reducers/actions';
 
@@ -82,7 +83,10 @@ let CrewForm = props => {
     const file = files[0];
     return dispatch(addCrewTeaserImage(crewId, file));
   };
-
+  const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
+    about.is_primary = true;
+    aboutCrewMakePrimary(crewId, about._id);
+  };
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
@@ -101,10 +105,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
+            <FormattedMessage
+              id="public"
+              defaultMessage='Public'
+            />
           </span>
           <Field
             className="form-control form-control-lg"
@@ -124,10 +128,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
+            <FormattedMessage
+              id="public"
+              defaultMessage='Public'
+            />
           </span>
           {crew && crew.teaserImage ?
             <img
@@ -152,10 +156,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
+            <FormattedMessage
+              id="public"
+              defaultMessage='Public'
+            />
           </span>
           {crew && crew.image && crew.image.publicUrl ?
             <div><img
@@ -181,10 +185,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div className="input-group">
               <Field
@@ -237,7 +241,10 @@ let CrewForm = props => {
         <ul className="list-group mt-2">
           {
             crew && crew.abouts && crew.abouts.map((a) => (
-              <About about={a} />
+              <About
+                about={a}
+                onMakePrimary={onCrewAboutMakePrimary(crew._id)(a)}
+              />
             ))
           }
         </ul>
@@ -587,10 +594,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
+            <FormattedMessage
+              id="public"
+              defaultMessage='Public'
+            />
           </span>
           <div className="input-group">
             <Field
@@ -621,10 +628,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
+            <FormattedMessage
+              id="public"
+              defaultMessage='Public'
+            />
           </span>
           <div className="input-group">
             <Field
@@ -689,10 +696,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-success">
-              <FormattedMessage
-                  id="public"
-                  defaultMessage='Public'
-              />
+            <FormattedMessage
+              id="public"
+              defaultMessage='Public'
+            />
           </span>
           <div className="input-group">
             <Field
@@ -1202,10 +1209,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-danger">
-              <FormattedMessage
-                  id="private"
-                  defaultMessage='Private'
-              />
+            <FormattedMessage
+              id="private"
+              defaultMessage='Private'
+            />
           </span>
           {crew && crew.org_activity_report ?
             <div>
@@ -1233,10 +1240,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <Field
               className="form-control"
@@ -1256,10 +1263,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <Field
               className="form-control"
@@ -1281,10 +1288,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <Field
               className="form-control"
@@ -1304,10 +1311,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <Field
               className="form-control"
@@ -1327,10 +1334,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-danger">
-              <FormattedMessage
-                  id="private"
-                  defaultMessage='Private'
-              />
+            <FormattedMessage
+              id="private"
+              defaultMessage='Private'
+            />
           </span>
           <Field
             className="form-control"
@@ -1354,10 +1361,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-danger">
-              <FormattedMessage
-                  id="private"
-                  defaultMessage='Private'
-              />
+            <FormattedMessage
+              id="private"
+              defaultMessage='Private'
+            />
           </span>
           <Field
             className="form-control"
@@ -1381,10 +1388,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-danger">
-              <FormattedMessage
-                  id="private"
-                  defaultMessage='Private'
-              />
+            <FormattedMessage
+              id="private"
+              defaultMessage='Private'
+            />
           </span>
           <Field
             className="form-control"
@@ -1408,10 +1415,10 @@ let CrewForm = props => {
           </label>
           &nbsp;
           <span class="badge badge-danger">
-              <FormattedMessage
-                  id="private"
-                  defaultMessage='Private'
-              />
+            <FormattedMessage
+              id="private"
+              defaultMessage='Private'
+            />
           </span>
           <Field
             className="form-control"
@@ -1440,10 +1447,10 @@ let CrewForm = props => {
               </label>
               &nbsp;
               <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
+                <FormattedMessage
+                  id="private"
+                  defaultMessage='Private'
+                />
               </span>
               <Field
                 className="form-control custom-select"
@@ -1479,10 +1486,10 @@ let CrewForm = props => {
               </label>
               &nbsp;
               <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
+                <FormattedMessage
+                  id="private"
+                  defaultMessage='Private'
+                />
               </span>
               <Field
                 className="form-control"
@@ -1504,10 +1511,10 @@ let CrewForm = props => {
               </label>
               &nbsp;
               <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
+                <FormattedMessage
+                  id="private"
+                  defaultMessage='Private'
+                />
               </span>
               <Field
                 className="form-control"
@@ -1527,10 +1534,10 @@ let CrewForm = props => {
               </label>
               &nbsp;
               <span class="badge badge-danger">
-                  <FormattedMessage
-                      id="private"
-                      defaultMessage='Private'
-                  />
+                <FormattedMessage
+                  id="private"
+                  defaultMessage='Private'
+                />
               </span>
               <Field
                 className="form-control"
@@ -1551,10 +1558,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <div className="input-group">
               <Field
@@ -1585,10 +1592,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <Field
               className="form-control custom-select"
@@ -1626,10 +1633,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <div className="input-group">
               <Field
@@ -1661,10 +1668,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-danger">
-                <FormattedMessage
-                    id="private"
-                    defaultMessage='Private'
-                />
+              <FormattedMessage
+                id="private"
+                defaultMessage='Private'
+              />
             </span>
             <div className="input-group">
               <Field
@@ -1733,10 +1740,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <Field
               className="form-control"
@@ -1756,10 +1763,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             {crew && crew.activity_logo ?
               <div>
@@ -1785,10 +1792,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div className="input-group">
               <div className="input-group-addon">
@@ -1813,10 +1820,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div>
               <input type="radio" value="1" name="activity_is_running" /> YES
@@ -1834,10 +1841,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div className="input-group">
               <div className="input-group-addon">
@@ -1993,10 +2000,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div className="input-group">
               <Field
@@ -2049,10 +2056,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div className="input-group">
               <Field
@@ -2080,10 +2087,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div className="input-group">
               <Field
@@ -2111,10 +2118,10 @@ let CrewForm = props => {
             </label>
             &nbsp;
             <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
+              <FormattedMessage
+                id="public"
+                defaultMessage='Public'
+              />
             </span>
             <div className="input-group">
               <Field
