@@ -15,6 +15,7 @@ import {
   CLOSE_STAGENAME_MODAL,
   OPEN_PASSWORD_MODAL,
   CLOSE_PASSWORD_MODAL,
+  REQUEST_USER_MAKEABOUTPRIMARY,
 
   EDIT_EVENT,
   REQUEST_DELETE_EVENT,
@@ -33,6 +34,7 @@ import {
   REQUEST_ADD_CREWIMAGE,
   ADD_CREWMEMBER,
   REQUEST_DELETE_CREWMEMBER,
+  REQUEST_CREW_MAKEABOUTPRIMARY,
 
   REQUEST_ADD_PERFORMANCEIMAGE,
   REQUEST_SUGGEST_PERFORMANCE_CREW,
@@ -108,7 +110,10 @@ const crew = (state = {}, action) => {
           }
         })
       });
+    case REQUEST_CREW_MAKEABOUTPRIMARY:
+      return state;
     default:
+      console.log("crew default, returns state");
       return state;
   }
 };
@@ -215,6 +220,7 @@ const user = (state = initialValues, action) => {
     case REQUEST_ADD_CREWIMAGE:
     case REQUEST_DELETE_CREWMEMBER:
     case ADD_CREWMEMBER:
+    case REQUEST_CREW_MAKEABOUTPRIMARY:
       return Object.assign({}, state, {
         crews: state.crews.map((c) => {
           return crew(c, action);
@@ -258,7 +264,11 @@ const user = (state = initialValues, action) => {
       return Object.assign({}, state, {
         _countries: action.payload.countries
       });
+    case REQUEST_USER_MAKEABOUTPRIMARY:
+      console.log("REQUEST_USER_MAKEABOUTPRIMARY state._id " + state._id);
+      return state;
     default:
+      console.log("user default, returns state");
       return state;
   }
 };
