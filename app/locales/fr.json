@@ -160,6 +160,7 @@
     "org_contact_skype": "Skype du contact de l'organisation",
     "org_website": "Site Internet de l'organisation",
     "org_public_email": "Email public de l'organisation",
+    "org_activities": "Activités de l'organisation",
     "activity_name": "Nom de l'activité",
     "activity_logo": "Logo de l'activité (format svg)",
     "activity_start_date": "Date de démarrage de l'activité",
