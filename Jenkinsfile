@@ -1,6 +1,6 @@
 #!groovy
 node {
-	def livePath = '/sites/avnode.z7'
+	def livePath = '/sites/avnode.net.bruce'
 	def node = 'node:boron'
 	stage('Update source') {
 		sh "cd ${livePath} && git checkout -- locales/ && git pull"
