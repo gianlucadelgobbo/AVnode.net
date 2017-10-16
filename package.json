@@ -11,7 +11,7 @@
     "lint": "eslint -c .eslintrc.json --ignore-path .gitignore --ignore-path .eslintignore .",
     "dev": "DEBUG=avnode.debug,avnode nodemon -i tests -i locales -i storage -i .db -i .elasticsearch -i app index.js",
     "devwin": "set DEBUG=avnode.debug,avnode && nodemon -i tests -i locales -i storage -i .db -i .elasticsearch -i app index.js",
-    "prod": "NODE_ENV=production webpack",
+    "prod": "NODE_ENV=production ./node_modules/.bin/webpack",
     "prodwin": "set NODE_ENV=production && webpack"
   },
   "author": "",
