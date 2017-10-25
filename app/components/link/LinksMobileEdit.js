@@ -48,7 +48,7 @@ const LinksMobileEdit = (args) => {
                 <a href={`tel:${item.url}`} target="_blank" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Call Mobile"><i className="fa fa-link"></i></a>
               </span>
               <span class="input-group-btn">
-                <button onClick={alert('remove '+{i})} class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Remove Mobile"><i className="fa fa-minus"></i></button>
+                <button onClick={console.log('remove '+{i})} class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Remove Mobile"><i className="fa fa-minus"></i></button>
               </span>
             </div>
           ))
