@@ -111,11 +111,11 @@ app.use(routes);
 //
 // error middleware for errors that occurred in middleware
 // declared before this
-/*
+
 app.use(function onerror(err, req, res, next) {
-  console.log('asdf');
-  throw err;
-});*/
+  console.log('Error:' + err);
+  //throw err;
+});
 
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');

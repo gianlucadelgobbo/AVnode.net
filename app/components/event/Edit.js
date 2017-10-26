@@ -439,7 +439,7 @@ let EventForm = props => {
                 className="form-control"
                 name="link"
                 component="input"
-                placeholder="https://www..."
+                placeholder="https://www…"
               />
             </div>
           </div>
