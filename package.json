@@ -14,7 +14,11 @@
     "build": "NODE_ENV=production ./node_modules/.bin/webpack",
     "buildwin": "set NODE_ENV=production && webpack"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brucelane/AVnode.net.git"
+  },
+  "author": "Bruce LANE",
   "license": "ISC",
   "dependencies": {
     "async": "^2.4.1",
