@@ -113,7 +113,7 @@ const crew = (state = {}, action) => {
     case REQUEST_CREW_MAKEABOUTPRIMARY:
       return state;
     default:
-      console.log("crew default, returns state");
+      console.log("crew action not defined: " + action.type);
       return state;
   }
 };
@@ -268,7 +268,7 @@ const user = (state = initialValues, action) => {
       console.log("REQUEST_USER_MAKEABOUTPRIMARY state._id " + state._id);
       return state;
     default:
-      console.log("user default, returns state");
+      console.log("user action not defined: " + action.type);
       return state;
   }
 };
