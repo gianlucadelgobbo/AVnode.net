@@ -8,7 +8,6 @@
     ["transform-decorators-legacy"],
     ["transform-react-jsx", { "pragma": "h" }],
     ["react-intl", {
-        "messagesDir": "./locales/",
 	"moduleSourceName": "preact-intl"
     }]
   ]
