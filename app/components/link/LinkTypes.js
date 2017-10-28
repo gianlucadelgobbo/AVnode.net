@@ -7,15 +7,4 @@ const linkTypes = {'user':[
 ]};
 
 export default linkTypes;
- /*
-const LinkTypes = {
-  'web': {'name': 'Website'},
-  'sk': {'name': 'Skype'},
-  'tel': {'name': 'Telephone'},
-  'fb': {'name': 'Facebook'},
-  'tw': {'name': 'Twitter'},
-  'ot': {'name': 'Other'}
-};
-
-export default LinkTypes;
-*/
+ 
