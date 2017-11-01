@@ -44,7 +44,7 @@ const ImageDropzone = ({imageUploadInProgress, onDrop}) => {
     <div style={dropzoneStyle}>
       <i className="fa fa-fw fa-spinner fa-pulse"></i>
       {' '}
-      <FormattedMessage id="crew.edit.form.label.imageUploading" defaultMessage="Squeezing your image through the tubes…" />
+      <FormattedMessage id="imageUploading" defaultMessage="Squeezing your image through the tubes…" />
     </div>
     ) : (
         <Field
