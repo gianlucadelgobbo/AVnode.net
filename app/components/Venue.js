@@ -156,10 +156,15 @@ class Venue extends React.Component {
       console.log('this.state.placename: ' + this.state.placename); 
       // verify if a Venue placename is set, otherwise use the address
       console.log('Venue save place,status:' + status);
-      if (this.state.placename.length < 1) this.state.placename = place.title;
-      results[0].placename = this.state.placename;
-			this.props.complete(this.props.event._id, this.formatAddress(results[0], this.state.placename));
-      this.reset();
+      if (status === 'ZERO_RESULTS') {
+        console.log('Error, status:' + status);
+      } else {
+        if (this.state.placename.length < 1) this.state.placename = place.title;
+        results[0].placename = this.state.placename;
+        this.props.complete(this.props.event._id, this.formatAddress(results[0], this.state.placename));
+        this.reset();
+      }
+
 		});
 	}
 
