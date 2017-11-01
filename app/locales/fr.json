@@ -183,5 +183,12 @@
 	"Organizing Crews": "Equipes organisatrices",
 	"AVnode.net": "AVnode.net",
 	"Performer": "Performer",
-	"Organizing Crew": "Equipe organisatrice"
+	"Organizing Crew": "Equipe organisatrice",
+	"Login": "Connexion",
+	"Sign up": "Inscription",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Mot de passe",
+	"Use at least eight characters": "8 caractères minimum",
+	"Forgot your password?": "Mot de passe oublié?"
 }
