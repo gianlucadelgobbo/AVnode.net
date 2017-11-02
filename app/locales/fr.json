@@ -190,5 +190,9 @@
 	"example@foo.bar": "example@foo.bar",
 	"Password": "Mot de passe",
 	"Use at least eight characters": "8 caractères minimum",
-	"Forgot your password?": "Mot de passe oublié?"
+	"Forgot your password?": "Mot de passe oublié?",
+	"Email %s not found.": "Email %s non trouvé.",
+	"Stagename": "Nom d'artiste",
+	"Confirm Password": "Confirmer le mot de passe",
+	"Signup": "Inscription"
 }
