@@ -27,7 +27,7 @@ import {
   removePerformancePerformer,
 
   removePerformanceCategory
-  
+
 } from '../../reducers/actions';
 
 const Crew = injectIntl(({ crew, onDelete, intl }) => {
@@ -281,62 +281,62 @@ let PerformanceForm = props => {
         </div>
 
         <fieldset className="form-group">
-        <legend>
-          <FormattedMessage
-            id="categories"
-            defaultMessage="Categories"
-          />
-        </legend>
+          <legend>
+            <FormattedMessage
+              id="categories"
+              defaultMessage="Categories"
+            />
+          </legend>
 
-        <div className="row">
-          <div className="col-md-9 form-group">
-            <label htmlFor="category">
-              <FormattedMessage
-                id="addCategory"
-                defaultMessage="Add category"
-              />
-            </label>
-            {Categories ?
-              <Field
-                className="form-control custom-select"
-                name="category"
-                component="select"
-                value={props.category}
-              >
-                <option value="performance">
-                  <FormattedMessage
-                    id="Please select"
-                    defaultMessage="Please select"
-                  />
-                </option>
-                {Categories.map((c) => (
-                  <option value={c.key.toLowerCase()}>{c.name}</option>
-                ))
-                }
-                { /*  */}
-              </Field> :
-              <p>Loading categories…</p>
-            }
+          <div className="row">
+            <div className="col-md-9 form-group">
+              <label htmlFor="category">
+                <FormattedMessage
+                  id="addCategory"
+                  defaultMessage="Add category"
+                />
+              </label>
+              {Categories ?
+                <Field
+                  className="form-control custom-select"
+                  name="category"
+                  component="select"
+                  value={props.category}
+                >
+                  <option value="performance">
+                    <FormattedMessage
+                      id="Please select"
+                      defaultMessage="Please select"
+                    />
+                  </option>
+                  {Categories.map((c) => (
+                    <option value={c.key.toLowerCase()}>{c.name}</option>
+                  ))
+                  }
+                  { /*  */}
+                </Field> :
+                <p>Loading categories…</p>
+              }
+            </div>
           </div>
-        </div>
 
-        <label>
-          <FormattedMessage
-            id="managecategories"
-            defaultMessage="Manage your categories"
-          />
-        </label>
-        <ul className="list-group mt-2">
-          {
-            performance && performance.categories && performance.categories.map((c) => (
-              <Category
-                category={c} 
-                onDelete={removeCategory(c._id)}
-              />
-            ))
-          }
-        </ul>
-      </fieldset>
+          <label>
+            <FormattedMessage
+              id="managecategories"
+              defaultMessage="Manage your categories"
+            />
+          </label>
+          <ul className="list-group mt-2">
+            {
+              performance && performance.categories && performance.categories.map((c) => (
+                <Category
+                  category={c}
+                  onDelete={removeCategory(c._id)}
+                />
+              ))
+            }
+          </ul>
+        </fieldset>
 
         <div className="form-group">
           <label htmlFor="tech_art">
@@ -384,41 +384,40 @@ let PerformanceForm = props => {
           </label>
         </div>
 
-        {performance && performance.video ?
-          <Video {...performance.video.video} /> :
-          <div className="form-group">
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="video"
-                component="input"
-                ref={node => { videoLink = node; }}
-                placeholder={intl.formatMessage({
-                  id: 'videolink.placeholder',
-                  defaultMessage: 'https://vimeo.com/xyzxyzxyzxyz'
-                })}
-              />
-              <span className="input-group-btn">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={e => {
-                    e.preventDefault();
-                    return dispatch(addPerformanceVideo({
-                      _id: performance._id,
-                      video: videoLink.value
-                    }));
-                  }}
-                >
-                  <FormattedMessage
-                    id="addVideo"
-                    defaultMessage="Add video"
-                  />
-                </button>
-              </span>
-            </div>
+        <div className="form-group">
+          <div className="input-group">
+            <Field
+              className="form-control"
+              name="video"
+              component="input"
+              ref={node => { videoLink = node; }}
+              placeholder={intl.formatMessage({
+                id: 'videolink.placeholder',
+                defaultMessage: 'https://vimeo.com/xyzxyzxyzxyz'
+              })}
+            />
+            <span className="input-group-btn">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={e => {
+                  e.preventDefault();
+                  return dispatch(addPerformanceVideo({
+                    _id: performance._id,
+                    video: videoLink.value
+                  }));
+                }}
+              >
+                <FormattedMessage
+                  id="addVideo"
+                  defaultMessage="Add video"
+                />
+              </button>
+            </span>
           </div>
-        }
+        </div>
+
+        {performance && performance.video ? <Video {...performance.video.video} /> : null}
 
         <div className="form-group">
           <label htmlFor="performers">

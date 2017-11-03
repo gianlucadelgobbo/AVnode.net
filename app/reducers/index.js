@@ -52,7 +52,7 @@ const initialValues = {
   crews: []
 };
 const event = (state = {}, action) => {
-  console.log("event action: " + action.type);
+  console.log('event action type: ' + action.type + ' action: ' + JSON.stringify(action) );
   switch (action.type) {
     case EDIT_EVENT:
       if (state._id !== action.json._id) {
@@ -78,13 +78,13 @@ const event = (state = {}, action) => {
         imageUploadInProgress: true
       });
     default:
-    console.log("info, event action not handled: " + action.type);
+    console.log('info, event action not handled: ' + action.type);
     return state;
   }
 };
 
 const crew = (state = {}, action) => {
-  console.log("crew action : " + action.type);
+  console.log('crew action type: ' + action.type + ' action: ' + JSON.stringify(action));
   switch (action.type) {
     case ADD_CREWMEMBER:
       if (state._id !== action.payload.crewId) {
@@ -118,13 +118,13 @@ const crew = (state = {}, action) => {
     case REQUEST_CREW_MAKEABOUTPRIMARY:
       return state;
     default:
-      console.log("info, crew action not handled: " + action.type);
+      console.log('info, crew action not handled: ' + action.type);
       return state;
   }
 };
 
 const performance = (state = {}, action) => {
-  console.log("performance action: " + action.type);
+  console.log('performance action type: ' + action.type + ' action: ' + JSON.stringify(action));
   switch (action.type) {
     case REQUEST_ADD_PERFORMANCEIMAGE:
       if (state._id !== action.payload.performanceId) {
@@ -134,7 +134,7 @@ const performance = (state = {}, action) => {
         imageUploadInProgress: true
       });
     default:
-    console.log("info, performance action not handled: " + action.type);
+    console.log('info, performance action not handled: ' + action.type);
     return state;
   }
 };
@@ -142,7 +142,7 @@ const performance = (state = {}, action) => {
 // EVENT.REQUEST_ADD
 // CREW.REQUEST_SUGGEST_MEMBER
 const user = (state = initialValues, action) => {
-  console.log("user action: " + action.type);
+  console.log('user action type: ' + action.type + ' action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
       return Object.assign({}, state, {
@@ -289,10 +289,10 @@ const user = (state = initialValues, action) => {
         _countries: action.payload.countries
       });
     case REQUEST_USER_MAKEABOUTPRIMARY:
-      console.log("REQUEST_USER_MAKEABOUTPRIMARY state._id " + state._id);
+      console.log('REQUEST_USER_MAKEABOUTPRIMARY state._id ' + state._id);
       return state;
     default:
-      console.log("info, user action not handled: " + action.type);
+      console.log('info, user action not handled: ' + action.type);
       return state;
   }
 };
