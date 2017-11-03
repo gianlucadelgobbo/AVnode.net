@@ -194,5 +194,13 @@
 	"Email %s not found.": "Email %s non trouvé.",
 	"Stagename": "Nom d'artiste",
 	"Confirm Password": "Confirmer le mot de passe",
-	"Signup": "Inscription"
+	"Signup": "Inscription",
+	"art_gallery": "Galerie d'art",
+	"centre_for_architecture": "Centre d'architecture",
+	"choir": "Chorale",
+	"concert_hall": "Salle de concert",
+	"Required": "Requis",
+	"What are you searching for?": "Que recherchez vous?",
+	"Event": "Evénement",
+	"Crew": "Equipe"
 }

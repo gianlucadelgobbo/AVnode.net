@@ -17,6 +17,25 @@ import LinkTypes from './link/LinkTypes';
 import About from './about/About';
 import Languages from './language/Languages';
 
+const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
+
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
 const General = ({
   user,
   openStagenameModal,
@@ -113,7 +132,8 @@ const General = ({
               <Field
                 className="form-control"
                 name="surname"
-                component="input"
+                component={renderField}
+                validate={[required]}
                 placeholder={intl.formatMessage({
                   id: 'surname.placeholder',
                   defaultMessage: 'Jane'
