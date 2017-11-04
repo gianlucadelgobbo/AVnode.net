@@ -18,7 +18,7 @@ html(lang='en')
     link(rel='stylesheet', href='/css/main.css')
     script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js')
     script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
     //script(src='/js/ajax.js')
@@ -38,8 +38,20 @@ html(lang='en')
           id="navbar-collapse"
         )
           ul.navbar-nav.mr-auto
-            li.nav-item
-              a.nav-link(href='/performers')=__('Performers')
+            if user
+              li.nav-item.dropdown
+                a.nav-link.dropdown-toggle(href='/performers')(id='navbardrop')(data-toggle='dropdown')=__('Performers')
+                div.dropdown-menu
+                  a.dropdown-item(href='/performers')=__('All performers')
+                  a.dropdown-item(href='/account/profile')=__('Your general profile')
+                  a.dropdown-item(href="#")=__('About you')
+                  a.dropdown-item(href="#")=__('Your address')
+                  a.dropdown-item(href="#")=__('Your links')
+                  a.dropdown-item(href="#")=__('Your emails')
+                  a.dropdown-item(href="#")=__('Your images')
+            else
+              li.nav-item
+                a.nav-link(href='/performers')=__('Performers')
             li.nav-item
               a.nav-link(href='/crews')=__('Crews')
             li.nav-item
