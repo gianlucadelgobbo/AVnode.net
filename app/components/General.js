@@ -101,19 +101,19 @@ const General = ({
                   defaultMessage="Please select"
                 />
               </option>
-              <option value="female">
+              <option value="F">
                 <FormattedMessage
                   id="Female"
                   defaultMessage="Female"
                 />
               </option>
-              <option value="male">
+              <option value="M">
                 <FormattedMessage
                   id="Male"
                   defaultMessage="Male"
                 />
               </option>
-              <option value="other">
+              <option value="O">
                 <FormattedMessage
                   id="Other"
                   defaultMessage="Other"

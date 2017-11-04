@@ -38,20 +38,8 @@ html(lang='en')
           id="navbar-collapse"
         )
           ul.navbar-nav.mr-auto
-            if user
-              li.nav-item.dropdown
-                a.nav-link.dropdown-toggle(href='/performers')(id='navbardrop')(data-toggle='dropdown')=__('Performers')
-                div.dropdown-menu
-                  a.dropdown-item(href='/performers')=__('All performers')
-                  a.dropdown-item(href='/account/profile')=__('Your general profile')
-                  a.dropdown-item(href="#")=__('About you')
-                  a.dropdown-item(href="#")=__('Your address')
-                  a.dropdown-item(href="#")=__('Your links')
-                  a.dropdown-item(href="#")=__('Your emails')
-                  a.dropdown-item(href="#")=__('Your images')
-            else
-              li.nav-item
-                a.nav-link(href='/performers')=__('Performers')
+            li.nav-item
+              a.nav-link(href='/performers')=__('Performers')
             li.nav-item
               a.nav-link(href='/crews')=__('Crews')
             li.nav-item
@@ -82,6 +70,23 @@ html(lang='en')
     include partials/flash
     main
       block teaser
+      block sidemenu
+        .nav-container
+          nav.navbar.bg-light
+            ul.navbar-nav
+              if user
+                li.nav-item
+                  a.nav-link(href='/account/profile')
+                    i.fa.fa-user.fa-lg.fa-fw
+                li.nav-item
+                  a.nav-link(href='/account/crews')
+                    i.fa.fa-users.fa-lg.fa-fw
+                li.nav-item
+                  a.nav-link(href='/account/performances')
+                    i.fa.fa-music.fa-lg.fa-fw
+                li.nav-item
+                  a.nav-link(href='/account/events')
+                    i.fa.fa-calendar.fa-lg.fa-fw
       block title
         if title
           .jumbotron.jumbotron-fluid
@@ -91,6 +96,7 @@ html(lang='en')
                 p.lead.mb-0=subtitle
       .container
         block content
+
     footer
       .container
         .text-muted=__('AVnode.net')
