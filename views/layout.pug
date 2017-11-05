@@ -16,9 +16,10 @@ html(lang='en')
     //link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css')
     link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
     link(rel='stylesheet', href='/css/main.css')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js')
     script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
     //script(src='/js/ajax.js')
     //script(src='/js/autocomplete.js')
@@ -69,6 +70,23 @@ html(lang='en')
     include partials/flash
     main
       block teaser
+      block sidemenu
+        .nav-container
+          nav.navbar.bg-light
+            ul.navbar-nav
+              if user
+                li.nav-item
+                  a.nav-link(href='/account/profile')
+                    i.fa.fa-user.fa-lg.fa-fw
+                li.nav-item
+                  a.nav-link(href='/account/crews')
+                    i.fa.fa-users.fa-lg.fa-fw
+                li.nav-item
+                  a.nav-link(href='/account/performances')
+                    i.fa.fa-music.fa-lg.fa-fw
+                li.nav-item
+                  a.nav-link(href='/account/events')
+                    i.fa.fa-calendar.fa-lg.fa-fw
       block title
         if title
           .jumbotron.jumbotron-fluid
@@ -78,6 +96,7 @@ html(lang='en')
                 p.lead.mb-0=subtitle
       .container
         block content
+
     footer
       .container
         .text-muted=__('AVnode.net')
