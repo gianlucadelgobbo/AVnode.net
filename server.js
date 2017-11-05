@@ -85,7 +85,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 84600 }));
-
+// not needed because in public/ app.use(express.static(path.join(__dirname, process.env.STORAGE), { maxAge: 84600 }));
 
 // FIXME
 // From your there could be dragons!!!
