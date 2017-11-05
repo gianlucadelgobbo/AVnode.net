@@ -64,7 +64,7 @@ const LinksMobileEdit = (args) => {
             placeholder="Your mobile number"
           />
           <span class="input-group-btn">
-            <button onClick={console.log('add ')} class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Add Mobile"><i className="fa fa-plus"></i></button>
+            <button onClick={e => { e.preventDefault(); console.log('add ') }} class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Add Mobile"><i className="fa fa-plus"></i></button>
           </span>
         </div>
       </div>

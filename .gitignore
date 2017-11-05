@@ -3,8 +3,10 @@ public/css/main.css
 node_modules
 npm-debug.log
 storage/
+warehouse/
 .db
 .elasticsearch
 logs/*
 storage
+warehouse
 .DS_Store
