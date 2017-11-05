@@ -408,151 +408,151 @@ let CrewForm = props => {
               </option>
               <option value="art_gallery">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.art_gallery"
+                  id="art_gallery"
                   defaultMessage="Art gallery"
                 />
               </option>
               <option value="centre_for_architecture">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.centre_for_architecture"
+                  id="centre_for_architecture"
                   defaultMessage="Centre for Architecture"
                 />
               </option>
               <option value="choir">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.choir"
+                  id="choir"
                   defaultMessage="Choir"
                 />
               </option>
               <option value="concert_hall">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.concert_hall"
+                  id="concert_hall"
                   defaultMessage="Concert hall"
                 />
               </option>
               <option value="dance_company">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.dance_company"
+                  id="dance_company"
                   defaultMessage="Dance Company"
                 />
               </option>
               <option value="design-art_centre">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.design-art_centre"
+                  id="design-art_centre"
                   defaultMessage="Design/Art centre"
                 />
               </option>
               <option value="festival">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.festival"
+                  id="festival"
                   defaultMessage="Festival (non Audiovisual)"
                 />
               </option>
               <option value="group_of_young_people_active_in_youth_work">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.group_of_young_people_active_in_youth_work"
+                  id="group_of_young_people_active_in_youth_work"
                   defaultMessage="Group of young people active in youth work"
                 />
               </option>
               <option value="higher_education_institution">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.higher_education_institution"
+                  id="higher_education_institution"
                   defaultMessage="Higher education institution (tertiary level)"
                 />
               </option>
               <option value="library">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.library"
+                  id="library"
                   defaultMessage="Library"
                 />
               </option>
               <option value="literature_foundation">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.literature_foundation"
+                  id="literature_foundation"
                   defaultMessage="Literature Foundation"
                 />
               </option>
               <option value="local_public_body">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.local_public_body"
+                  id="local_public_body"
                   defaultMessage="Local Public body"
                 />
               </option>
               <option value="multimedia_association">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.multimedia_association"
+                  id="multimedia_association"
                   defaultMessage="Multimedia association"
                 />
               </option>
               <option value="museum">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.museum"
+                  id="museum"
                   defaultMessage="Museum"
                 />
               </option>
               <option value="music_centre">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.music_centre"
+                  id="music_centre"
                   defaultMessage="Music Centre"
                 />
               </option>
               <option value="national_public_body">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.national_public_body"
+                  id="national_public_body"
                   defaultMessage="National Public body"
                 />
               </option>
               <option value="non-governmental_organisation-association-social_enterprise">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.non-governmental_organisation-association-social_enterprise"
+                  id="non-governmental_organisation-association-social_enterprise"
                   defaultMessage="Non-governmental organisation/association/social enterprise"
                 />
               </option>
               <option value="opera">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.opera"
+                  id="opera"
                   defaultMessage="Opera"
                 />
               </option>
               <option value="orchestra">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.orchestra"
+                  id="orchestra"
                   defaultMessage="Orchestra"
                 />
               </option>
               <option value="regional_public_body">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.regional_public_body"
+                  id="regional_public_body"
                   defaultMessage="Regional Public body"
                 />
               </option>
               <option value="research_institute-centre">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.research_institute-centre"
+                  id="research_institute-centre"
                   defaultMessage="Research Institute/Centre"
                 />
               </option>
               <option value="school-institute-educational_centre-general_education">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.school-institute-educational_centre-general_education"
+                  id="school-institute-educational_centre-general_education"
                   defaultMessage="School/Institute/Educational centre – General education (secondary level)"
                 />
               </option>
               <option value="street_art_association">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.street_art_association"
+                  id="street_art_association"
                   defaultMessage="Street art association"
                 />
               </option>
               <option value="theatre">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.theatre"
+                  id="theatre"
                   defaultMessage="Theatre"
                 />
               </option>
               <option value="other">
                 <FormattedMessage
-                  id="crew.edit.form.label.crew.org.type.other"
+                  id="other"
                   defaultMessage="Other"
                 />
               </option>
