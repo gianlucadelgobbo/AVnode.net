@@ -19,7 +19,7 @@ We're using [docker][docker] for the database (and later probably the whole proj
 * Run `docker-compose up -d` in this directory to start up mongodb in docker.
 * Copy `example.env.local` to `.env.local`. 
 * Run `npm run dev` to run in development mode.
-* Create the `storage` folder.
+* Create the `warehouse` folder for assets storage.
 
 ### Alternative setup for development without Docker
 
@@ -30,7 +30,7 @@ We're using [docker][docker] for the database (and later probably the whole proj
 * If `sharp` package does issues, run `npm i` in `node_modules/sharp` to compile it.
 * Copy `example.env.local` to `.env.local`. 
 * Run `npm run dev` to run in development mode.
-* Create the `storage` folder.
+* Create the `warehouse` folder for assets storage.
 
 ### Edit .env.local
 
