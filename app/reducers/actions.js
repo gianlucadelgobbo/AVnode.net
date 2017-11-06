@@ -3,6 +3,8 @@ import isomorphicFetch from 'isomorphic-fetch';
 export const NAVIGATE = 'NAVIGATE';
 export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
+export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
+export const REQUEST_EDIT_USERLINKS = 'REQUEST_EDIT_USERLINKS';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
 export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
@@ -925,30 +927,6 @@ export function editUser(dispatch) {
       }
     }
 
-    // link, verify unique
-    if (data.link) {
-      let linkFound = false;
-      let primaryLink = true;
-      data.links.map((l) => {
-        primaryLink = false;
-        if (l.url === data.link) {
-          // url in the form already exists in links
-          linkFound = true;
-        }
-      });
-      // in case of new link, add it to the links
-      if (!linkFound) {
-        console.log('data.link:' + data.link);
-        data.links.push({
-          url: data.link,
-          is_primary: primaryLink,
-          is_confirmed: false,
-          is_public: false,
-          type: data.linktype
-        });
-      }
-    }
-
     // fetch user before updating to check for email change
     let emailFound = false;
     data.emails.map((m) => {
@@ -964,17 +942,7 @@ export function editUser(dispatch) {
         is_primary: false,
         is_confirmed: false
       });
-      /* BL FIXME send confirmation email in another part of the app
-      // DOES NOT RUN ON THE SERVER const mailer = require('../../lib/utilities/mailer');
-      // const uuid = require('uuid');
-      data.confirm = uuid.v4();
-      mailer.confirmNewEmail({ to: data.email }, { uuid: data.confirm }, (err) => {
-        if (err) {
-          console.log(err);
-        }
-        req.flash('success', { msg: i18n.__('Please check your inbox and confirm your new Email') });
-        res.redirect('/');
-      });*/
+      // BL FIXME send confirmation email in another part of the app
     }
     // end email add
 
@@ -1026,9 +994,63 @@ export function editUser(dispatch) {
   };
 }
 
+export function editUserImages(dispatch) {
+  return data => {
+    dispatch({
+      type: REQUEST_EDIT_USERIMAGES,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function editUserLinks(dispatch) {
+  return data => {
+
+    // link, verify unique
+    if (data.link) {
+      let linkFound = false;
+      let primaryLink = true;
+      data.links.map((l) => {
+        primaryLink = false;
+        if (l.url === data.link) {
+          // url in the form already exists in links
+          linkFound = true;
+        }
+      });
+      // in case of new link, add it to the links
+      if (!linkFound) {
+        console.log('data.link:' + data.link);
+        data.links.push({
+          url: data.link,
+          is_primary: primaryLink,
+          is_confirmed: false,
+          is_public: false,
+          type: data.linktype
+        });
+      };
+    };
+
+    dispatch({
+      type: REQUEST_EDIT_USERLINKS,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 export function changeLanguage(dispatch) {
   // BL FIXME on loading Prefs page, should show this language in the DL
-  return (language, userid ) => {
+  return (language, userid) => {
     // console.log('changeLanguage lng: ' + JSON.stringify(language) );
     // console.log('changeLanguage user: ' + JSON.stringify(userid) );
     dispatch({

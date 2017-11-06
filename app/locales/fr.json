@@ -204,5 +204,6 @@
 	"Event": "Evénement",
 	"Crew": "Equipe",
 	"No results found…": "Aucun résultat…",
-	"Invalid email or password.": "Email ou mot de passe invalide."
+	"Invalid email or password.": "Email ou mot de passe invalide.",
+	"Email %s, password not found.": "Email %s, mot de passe non trouvé."
 }

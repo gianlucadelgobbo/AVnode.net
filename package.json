@@ -104,7 +104,7 @@
     "raw-loader": "^0.5.1",
     "react": "^15.4.2",
     "redux": "^3.6.0",
-    "redux-form": "^6.5.0",
+    "redux-form": "^7.1.2",
     "redux-logger": "^2.8.2",
     "redux-thunk": "^2.2.0",
     "replace-bundle-webpack-plugin": "^1.0.0",

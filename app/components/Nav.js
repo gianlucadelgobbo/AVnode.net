@@ -4,7 +4,7 @@ import { navigate } from '../reducers/actions';
 import { FormattedMessage } from 'preact-intl';
 import { route, Router, Route, Link } from 'preact-router';
 
-const Nav = ({user, dispatch}) => {
+const Nav = ({ user, dispatch }) => {
   const classes = (path) => {
     return (user.active === path) ? 'nav-link active' : 'nav-link'
   }
@@ -14,6 +14,18 @@ const Nav = ({user, dispatch}) => {
         <FormattedMessage
           id="Profile"
           defaultMessage="Profile"
+        />
+      </a>
+      <a className={classes('/account/profileimages')} href="/account/profileimages" onClick={e => { dispatch(navigate('/account/profileimages')) }}>
+        <FormattedMessage
+          id="images"
+          defaultMessage="Images"
+        />
+      </a>
+      <a className={classes('/account/profilelinks')} href="/account/profilelinks" onClick={e => { dispatch(navigate('/account/profilelinks')) }}>
+        <FormattedMessage
+          id="links"
+          defaultMessage="Links"
         />
       </a>
       <a className={classes('/account/crews')} href="/account/crews" onClick={e => { dispatch(navigate('/account/crews')) }}>
@@ -44,7 +56,7 @@ const Nav = ({user, dispatch}) => {
   );
 };
 
-const mapStateToProps = ({user}) => ({
+const mapStateToProps = ({ user }) => ({
   user: user
 });
 

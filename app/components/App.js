@@ -2,7 +2,9 @@ import { h } from 'preact';
 import Router from 'preact-router';
 
 import Nav from './Nav';
-import Profile from './GeneralContainer';
+import Profile from './user/GeneralContainer';
+import ProfileImages from './user/ProfileImages';
+import ProfileLinks from './user/ProfileLinks';
 import Events from './Events';
 import EventEdit from './event/Edit';
 import Crews from './Crews';
@@ -16,11 +18,11 @@ const App = () => {
   return (
     <div>
       <div className="jumbotron jumbotron-fluid">
-        <div className="container">      
+        <div className="container">
           <h1 className="display-4"><FormattedMessage
-              id="Account"
-              defaultMessage="Account"
-            /></h1>
+            id="Account"
+            defaultMessage="Account"
+          /></h1>
         </div>
       </div>
       <div className="container-fluid account-nav-wrap">
@@ -31,6 +33,8 @@ const App = () => {
       <div className="container">
         <Router>
           <Profile path="/account/profile" />
+          <ProfileImages path="/account/profileimages" />
+          <ProfileLinks path="/account/profilelinks" />
           <Events path="/account/events" />
           <EventEdit path="/account/events/:_id" />
           <Crews path="/account/crews" />
