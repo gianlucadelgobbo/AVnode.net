@@ -2,96 +2,110 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Link from '../link/Link';
-import LinkType from '../link/LinkType';
+import About from '../about/About';
 import Layout from '../Layout';
 import {
-    editUserLinks
+    aboutUserMakePrimary,
+    editUserAbouts
 } from '../../reducers/actions';
+import Languages from '../language/Languages';
 
-const ProfileLinksForm = ({
+const ProfileAboutsForm = ({
     user,
     intl,
     handleSubmit,
+    aboutUserMakePrimary,
     saveProfile
     }) => {
- 
+
+    const onUserAboutMakePrimary = (userId) => (about) => (e) => {
+        about.is_primary = true;
+        aboutUserMakePrimary(userId, about._id);
+    };
+
     return (
         <Layout>
             <form onSubmit={handleSubmit(saveProfile)}>
+
                 <fieldset className="form-group">
                     <legend>
                         <FormattedMessage
-                            id="links"
-                            defaultMessage="Links"
+                            id="abouts"
+                            defaultMessage="About you..."
                         />
                     </legend>
 
                     <div className="row">
                         <div className="col-md-9 form-group">
-                            <label htmlFor="link">
+                            <label htmlFor="about">
                                 <FormattedMessage
-                                    id="addlink"
-                                    defaultMessage="Add link"
+                                    id="addabout"
+                                    defaultMessage="About you"
                                 />
                             </label>
                             <div className="input-group">
                                 <Field
                                     className="form-control"
-                                    name="link"
-                                    component="input"
+                                    name="about"
+                                    component="textarea"
+                                    rows="4"
                                     placeholder={intl.formatMessage({
-                                        id: 'link.placeholder',
-                                        defaultMessage: 'https://www...'
+                                        id: 'about.placeholder',
+                                        defaultMessage: 'Tell me something about you.'
                                     })}
+                                    value={user.about}
                                 />
                             </div>
                         </div>
                         <div className="col-md-3 form-group">
-                            <label htmlFor="linktype">
+                            <label htmlFor="aboutlanguage">
                                 <FormattedMessage
-                                    id="linktype"
-                                    defaultMessage="Link type"
+                                    id="language"
+                                    defaultMessage="Language"
                                 />
                             </label>
-                            {LinkType ?
+                            {Languages ?
                                 <Field
                                     className="form-control custom-select"
-                                    name="linktype"
+                                    name="aboutlanguage"
                                     component="select"
-                                    value={user.linktype}
+                                    value={user.aboutlanguage}
                                 >
-                                    <option value="web">
+                                    <option value="en">
                                         <FormattedMessage
-                                            id="Please select"
-                                            defaultMessage="Please select"
+                                            id="language.en"
+                                            defaultMessage="English"
                                         />
                                     </option>
-                                    {LinkType.map((c) => (
-                                        <option value={c.key.toLowerCase()}>{c.name}</option>
+                                    {Languages.map((c) => (
+                                        <option value={c.code}>{c.language}</option>
                                     ))
                                     }
                                     { /*  */}
                                 </Field> :
-                                <p>Loading a link types…</p>
+                                <p>Loading languages…</p>
                             }
                         </div>
                     </div>
 
                     <label>
                         <FormattedMessage
-                            id="link"
-                            defaultMessage="Manage your links"
+                            id="manageabout"
+                            defaultMessage="Manage your About texts"
                         />
                     </label>
                     <ul className="list-group mt-2">
                         {
-                            user && user.links && user.links.map((l) => (
-                                <Link link={l} />
+                            user && user.abouts && user.abouts.map((a) => (
+                                <About
+                                    about={a}
+                                    onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
+                                />
                             ))
                         }
                     </ul>
                 </fieldset>
+
 
 
                 <div className="form-group">
@@ -112,6 +126,6 @@ const ProfileLinksForm = ({
 };
 
 export default injectIntl(reduxForm({
-    form: 'userlinks',
+    form: 'userabouts',
     enableReinitialize: true
-  })(ProfileLinksForm));
+})(ProfileAboutsForm));

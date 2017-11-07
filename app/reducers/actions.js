@@ -5,6 +5,7 @@ export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
 export const REQUEST_EDIT_USERLINKS = 'REQUEST_EDIT_USERLINKS';
+export const REQUEST_EDIT_USERABOUTS = 'REQUEST_EDIT_USERABOUTS';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
 export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
@@ -901,32 +902,6 @@ export function aboutUserMakePrimary(dispatch) {
 export function editUser(dispatch) {
   return data => {
 
-    // about, verify unique
-    if (data.about) {
-      let aboutFound = false;
-      let primaryAbout = true;
-      // init if first about
-      if (!data.abouts) data.abouts = [];
-      // check existing abouts
-      data.abouts.map((a) => {
-        // if not the first, we don't set it to primary
-        primaryAbout = false;
-        if (a.lang === data.aboutlanguage) {
-          // about in the form already exists in abouts
-          aboutFound = true;
-        }
-      });
-      // in case of new about, add it to the abouts
-      if (!aboutFound) {
-        if (!data.aboutlanguage) data.aboutlanguage = 'en';
-        data.abouts.push({
-          is_primary: primaryAbout,
-          lang: data.aboutlanguage,
-          abouttext: data.about
-        });
-      }
-    }
-
     // fetch user before updating to check for email change
     let emailFound = false;
     data.emails.map((m) => {
@@ -994,6 +969,48 @@ export function editUser(dispatch) {
   };
 }
 
+export function editUserAbouts(dispatch) {
+  return data => {
+    // about, verify unique
+    if (data.about) {
+      console.log('editUserAbouts data: ' + JSON.stringify(data) );
+      let aboutFound = false;
+      let primaryAbout = true;
+      // init if first about
+      if (!data.abouts) data.abouts = [];
+      // check existing abouts
+      data.abouts.map((a) => {
+        // if not the first, we don't set it to primary
+        primaryAbout = false;
+        if (a.lang === data.aboutlanguage) {
+          // about in the form already exists in abouts
+          aboutFound = true;
+        }
+      });
+      // in case of new about, add it to the abouts
+      if (!aboutFound) {
+        if (!data.aboutlanguage) data.aboutlanguage = 'en';
+        data.abouts.push({
+          is_primary: primaryAbout,
+          lang: data.aboutlanguage,
+          abouttext: data.about
+        });
+      }
+    }
+
+    dispatch({
+      type: REQUEST_EDIT_USERABOUTS,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 export function editUserImages(dispatch) {
   return data => {
     dispatch({
@@ -1008,6 +1025,7 @@ export function editUserImages(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+
 export function editUserLinks(dispatch) {
   return data => {
 

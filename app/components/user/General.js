@@ -6,8 +6,6 @@ import Layout from '../Layout';
 import Place from '../place/PlaceContainer';
 import Address from '../place/Address';
 import Email from '../emails/Email';
-import About from '../about/About';
-import Languages from '../language/Languages';
 
 const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -37,14 +35,9 @@ const General = ({
   intl,
   handleSubmit,
   saveProfile,
-  aboutUserMakePrimary,
   fetchCountries
   }) => {
 
-  const onUserAboutMakePrimary = (userId) => (about) => (e) => {
-    about.is_primary = true;
-    aboutUserMakePrimary(userId, about._id);
-  };
 
   if (!user._countries) {
     fetchCountries();
@@ -196,86 +189,6 @@ const General = ({
               }
             </div>
           </div>
-
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="abouts"
-                defaultMessage="About you..."
-              />
-            </legend>
-
-            <div className="row">
-              <div className="col-md-9 form-group">
-                <label htmlFor="about">
-                  <FormattedMessage
-                    id="addabout"
-                    defaultMessage="About you"
-                  />
-                </label>
-                <div className="input-group">
-                  <Field
-                    className="form-control"
-                    name="about"
-                    component="textarea"
-                    rows="4"
-                    placeholder={intl.formatMessage({
-                      id: 'about.placeholder',
-                      defaultMessage: 'Tell me something about you.'
-                    })}
-                    value={user.about}
-                  />
-                </div>
-              </div>
-              <div className="col-md-3 form-group">
-                <label htmlFor="aboutlanguage">
-                  <FormattedMessage
-                    id="language"
-                    defaultMessage="Language"
-                  />
-                </label>
-                {Languages ?
-                  <Field
-                    className="form-control custom-select"
-                    name="aboutlanguage"
-                    component="select"
-                    value={user.aboutlanguage}
-                  >
-                    <option value="en">
-                      <FormattedMessage
-                        id="language.en"
-                        defaultMessage="English"
-                      />
-                    </option>
-                    {Languages.map((c) => (
-                      <option value={c.code}>{c.language}</option>
-                    ))
-                    }
-                    { /*  */}
-                  </Field> :
-                  <p>Loading languages…</p>
-                }
-              </div>
-            </div>
-
-            <label>
-              <FormattedMessage
-                id="manageabout"
-                defaultMessage="Manage your About texts"
-              />
-            </label>
-            <ul className="list-group mt-2">
-              {
-                user && user.abouts && user.abouts.map((a) => (
-                  <About 
-                    about={a}
-                    onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
-                  />
-                ))
-              }
-            </ul>
-          </fieldset>
-
         </fieldset>
 
         <fieldset className="form-group">

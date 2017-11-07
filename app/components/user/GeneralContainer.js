@@ -5,7 +5,6 @@ import {
   openPasswordModal,
   closePasswordModal,
   fetchCountries,
-  aboutUserMakePrimary,
   editUser
 } from '../../reducers/actions';
 import General from './General';
@@ -20,7 +19,6 @@ const mapDispatchToProps = (dispatch) => ({
   closeStagenameModal: dispatch(closeStagenameModal),
   openPasswordModal: dispatch(openPasswordModal),
   closePasswordModal: dispatch(closePasswordModal),
-  aboutUserMakePrimary: dispatch(aboutUserMakePrimary),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });

@@ -8,8 +8,7 @@ import {
 import ProfileImages from './ProfileImages';
 
 const mapStateToProps = ({user}) => ({
-  user: user,
-  initialValues: user
+  user: user
 });
 
 const mapDispatchToProps = (dispatch) => ({

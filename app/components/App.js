@@ -3,6 +3,7 @@ import Router from 'preact-router';
 
 import Nav from './Nav';
 import Profile from './user/GeneralContainer';
+import ProfileAbouts from './user/ProfileAboutsContainer';
 import ProfileImages from './user/ProfileImagesContainer';
 import ProfileLinks from './user/ProfileLinksContainer';
 import Events from './Events';
@@ -33,6 +34,7 @@ const App = () => {
       <div className="container">
         <Router>
           <Profile path="/account/profile" />
+          <ProfileAbouts path="/account/profileabouts" />
           <ProfileImages path="/account/profileimages" />
           <ProfileLinks path="/account/profilelinks" />
           <Events path="/account/events" />
