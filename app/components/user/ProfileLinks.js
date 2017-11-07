@@ -9,13 +9,22 @@ import {
     editUserLinks
 } from '../../reducers/actions';
 
-let ProfileLinksForm = props => {
-    console.log( JSON.stringify(props) );
-    const { handleSubmit, dispatch, user, intl } = props;
-
+const ProfileLinksForm = ({
+    user,
+    openStagenameModal,
+    closeStagenameModal,
+    openPasswordModal,
+    closePasswordModal,
+    intl,
+    handleSubmit,
+    saveProfile,
+    aboutUserMakePrimary,
+    fetchCountries
+    }) => {
+ 
     return (
         <Layout>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(saveProfile)}>
                 <fieldset className="form-group">
                     <legend>
                         <FormattedMessage
@@ -108,30 +117,7 @@ let ProfileLinksForm = props => {
     );
 };
 
-ProfileLinksForm = injectIntl(reduxForm({ form: 'userlinks' })(ProfileLinksForm));
-
-const EditProfileLinks = props => {
-    const onSubmit = (props, dispatch) => {
-        dispatch(editUserLinks(props));
-    };
-    return (
-        <ProfileLinksForm
-            initialValues={props.user}
-            onSubmit={onSubmit}
-            {...props}
-        />
-    );
-};
-
-const mapStateToProps = (state, props) => {
-    console.log('props:' +  JSON.stringify(props) );
-    console.log('state:' + JSON.stringify(state) );
-    
-    return {
-        user: state.user
-    };
-};
-const mapDispatchToProps = (dispatch) => ({
-    complete: dispatch(editUserLinks)
-  });
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfileLinks);
+export default injectIntl(reduxForm({
+    form: 'userlinks',
+    enableReinitialize: true
+  })(ProfileLinksForm));

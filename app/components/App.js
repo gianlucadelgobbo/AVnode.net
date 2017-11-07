@@ -3,8 +3,8 @@ import Router from 'preact-router';
 
 import Nav from './Nav';
 import Profile from './user/GeneralContainer';
-import ProfileImages from './user/ProfileImages';
-import ProfileLinks from './user/ProfileLinks';
+import ProfileImages from './user/ProfileImagesContainer';
+import ProfileLinks from './user/ProfileLinksContainer';
 import Events from './Events';
 import EventEdit from './event/Edit';
 import Crews from './Crews';
