@@ -61,6 +61,7 @@ export const REQUEST_CREW_MAKEABOUTPRIMARY = 'REQUEST_CREW_MAKEABOUTPRIMARY';
 export const REQUEST_ADD_PERFORMANCE = 'REQUEST_ADD_PERFORMANCE';
 export const REQUEST_DELETE_PERFORMANCE = 'REQUEST_DELETE_PERFORMANCE';
 export const REQUEST_EDIT_PERFORMANCE = 'REQUEST_EDIT_PERFORMANCE';
+export const REQUEST_EDIT_PERFORMANCEABOUTS ='REQUEST_EDIT_PERFORMANCEABOUTS';
 export const REQUEST_ADD_PERFORMANCEIMAGE = 'REQUEST_ADD_PERFORMANCEIMAGE';
 export const REQUEST_ADD_PERFORMANCETEASERIMAGE = 'REQUEST_ADD_PERFORMANCETEASERIMAGE';
 export const REQUEST_ADD_PERFORMANCEVIDEO = 'REQUEST_ADD_PERFORMANCEVIDEO';
@@ -598,6 +599,38 @@ export function deletePerformance(id) {
 }
 
 export function editPerformance(data) {
+
+  // category, verify unique
+  if (data.category) {
+    let categoryFound = false;
+    data.categories.map((c) => {
+      if (c.name === data.category) {
+        // name in the form already exists in categories
+        categoryFound = true;
+      }
+    });
+    // in case of new category, add it to the categories
+    if (!categoryFound) {
+      data.categories.push({
+        name: data.category
+      });
+    }
+  }
+  return dispatch => {
+    dispatch({
+      type: REQUEST_EDIT_PERFORMANCE,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/performance/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function editPerformanceAbouts(data) {
   // about, verify unique
   if (data.about) {
     let aboutFound = false;
@@ -624,25 +657,10 @@ export function editPerformance(data) {
       });
     }
   }
-  // category, verify unique
-  if (data.category) {
-    let categoryFound = false;
-    data.categories.map((c) => {
-      if (c.name === data.category) {
-        // name in the form already exists in categories
-        categoryFound = true;
-      }
-    });
-    // in case of new category, add it to the categories
-    if (!categoryFound) {
-      data.categories.push({
-        name: data.category
-      });
-    }
-  }
+
   return dispatch => {
     dispatch({
-      type: REQUEST_EDIT_PERFORMANCE,
+      type: REQUEST_EDIT_PERFORMANCEABOUTS,
       id: data._id
     });
     return fetch(
