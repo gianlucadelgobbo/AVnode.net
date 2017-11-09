@@ -12,6 +12,7 @@ import Crews from './Crews';
 import CrewEdit from './crew/Edit';
 import Performances from './Performances';
 import PerformanceEdit from './performance/Edit';
+import PerformanceAbouts from './performance/PerformanceAbouts';
 import Preferences from './PreferencesContainer';
 import { FormattedMessage } from 'preact-intl';
 
@@ -42,6 +43,7 @@ const App = () => {
           <Crews path="/account/crews" />
           <CrewEdit path="/account/crews/:_id" />
           <Performances path="/account/performances" />
+          <PerformanceAbouts path="/account/performanceabouts/:_id" />
           <PerformanceEdit path="/account/performances/:_id" />
           <Preferences path="/account/preferences" />
         </Router>

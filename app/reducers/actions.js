@@ -74,6 +74,7 @@ export const RESPONSE_SUGGEST_PERFORMANCE_PERFORMER = 'RESPONSE_SUGGEST_PERFORMA
 export const REQUEST_ADD_PERFORMANCE_PERFORMER = 'REQUEST_ADD_PERFORMANCE_PERFORMER';
 export const REQUEST_DELETE_PERFORMANCE_PERFORMER = 'REQUEST_DELETE_PERFORMANCE_PERFORMER';
 export const REQUEST_DELETE_PERFORMANCE_CATEGORY = 'REQUEST_DELETE_PERFORMANCE_CATEGORY';
+export const REQUEST_PERFORMANCE_MAKEABOUTPRIMARY = 'REQUEST_PERFORMANCE_MAKEABOUTPRIMARY';
 
 // Wrap fetch with some default settings, always
 // return parsed JSON…
@@ -597,6 +598,24 @@ export function deletePerformance(id) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function aboutPerformanceMakePrimary(dispatch) {
+  return (userId, perfId, aboutId) => {
+    console.log("aboutPerformanceMakePrimary userId: " + userId + " perfid: " + perfid + " aboutid: " + aboutId);
+    dispatch({
+      type: REQUEST_PERFORMANCE_MAKEABOUTPRIMARY,
+      payload: {
+        performance: perfId,
+        user: userId,
+        about: aboutId
+      }
+    });
+    return fetch(`/account/api/performance/${performance}/user/${user}/about/${aboutId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 
 export function editPerformance(data) {
 
