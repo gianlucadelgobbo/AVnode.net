@@ -8,21 +8,7 @@ import Layout from '../Layout';
 import Languages from '../language/Languages';
 
 import {
-  editPerformanceAbouts,
-  /*addPerformanceImage,
-  addPerformanceTeaserImage,
-  addPerformanceVideo,
-
-  suggestPerformanceCrew,
-  addPerformanceCrew,
-  removePerformanceCrew,
-
-  suggestPerformancePerformer,
-  addPerformancePerformer,
-  removePerformancePerformer,
-
-  removePerformanceCategory*/
-  
+  editPerformanceAbouts  
 } from '../../reducers/actions';
 
 

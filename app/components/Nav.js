@@ -34,6 +34,18 @@ const Nav = ({ user, dispatch }) => {
           defaultMessage="Links"
         />
       </a>
+      <a className={classes('/account/profileemails')} href="/account/profileemails" onClick={e => { dispatch(navigate('/account/profileemails')) }}>
+        <FormattedMessage
+          id="emails"
+          defaultMessage="Emails"
+        />
+      </a>
+      <a className={classes('/account/profileaddresses')} href="/account/profileaddresses" onClick={e => { dispatch(navigate('/account/profileaddresses')) }}>
+        <FormattedMessage
+          id="addresses"
+          defaultMessage="Addresses"
+        />
+      </a>
       <a className={classes('/account/crews')} href="/account/crews" onClick={e => { dispatch(navigate('/account/crews')) }}>
         <FormattedMessage
           id="Crews"

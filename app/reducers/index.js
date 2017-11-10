@@ -52,7 +52,7 @@ const initialValues = {
   crews: []
 };
 const event = (state = {}, action) => {
-  console.log('event action type: ' + action.type + ' action: ' + JSON.stringify(action) );
+  console.log('event action type: ' + action.type + ' action: ' + JSON.stringify(action));
   switch (action.type) {
     case EDIT_EVENT:
       if (state._id !== action.json._id) {
@@ -78,8 +78,8 @@ const event = (state = {}, action) => {
         imageUploadInProgress: true
       });
     default:
-    console.log('info, event action not handled: ' + action.type);
-    return state;
+      console.log('info, event action not handled: ' + action.type);
+      return state;
   }
 };
 
@@ -134,15 +134,16 @@ const performance = (state = {}, action) => {
         imageUploadInProgress: true
       });
     default:
-    console.log('info, performance action not handled: ' + action.type);
-    return state;
+      console.log('info, performance action not handled: ' + action.type);
+      return state;
   }
 };
 
 // EVENT.REQUEST_ADD
 // CREW.REQUEST_SUGGEST_MEMBER
 const user = (state = initialValues, action) => {
-  console.log('user action type: ' + action.type + ' action: ' + JSON.stringify(action));
+  console.log('user action type: ' + action.type);
+ //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
       return Object.assign({}, state, {
@@ -291,6 +292,11 @@ const user = (state = initialValues, action) => {
     case REQUEST_USER_MAKEABOUTPRIMARY:
       console.log('REQUEST_USER_MAKEABOUTPRIMARY state._id ' + state._id);
       return state;
+    /*case '@@redux-form/BLUR':
+      console.log('BLUR field ' + JSON.stringify(action));
+      return Object.assign({}, state, {
+        action: action
+      });*/
     default:
       console.log('info, user action not handled: ' + action.type);
       return state;

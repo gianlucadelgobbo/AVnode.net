@@ -61,7 +61,7 @@ export const REQUEST_CREW_MAKEABOUTPRIMARY = 'REQUEST_CREW_MAKEABOUTPRIMARY';
 export const REQUEST_ADD_PERFORMANCE = 'REQUEST_ADD_PERFORMANCE';
 export const REQUEST_DELETE_PERFORMANCE = 'REQUEST_DELETE_PERFORMANCE';
 export const REQUEST_EDIT_PERFORMANCE = 'REQUEST_EDIT_PERFORMANCE';
-export const REQUEST_EDIT_PERFORMANCEABOUTS ='REQUEST_EDIT_PERFORMANCEABOUTS';
+export const REQUEST_EDIT_PERFORMANCEABOUTS = 'REQUEST_EDIT_PERFORMANCEABOUTS';
 export const REQUEST_ADD_PERFORMANCEIMAGE = 'REQUEST_ADD_PERFORMANCEIMAGE';
 export const REQUEST_ADD_PERFORMANCETEASERIMAGE = 'REQUEST_ADD_PERFORMANCETEASERIMAGE';
 export const REQUEST_ADD_PERFORMANCEVIDEO = 'REQUEST_ADD_PERFORMANCEVIDEO';
@@ -935,10 +935,56 @@ export function aboutUserMakePrimary(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function emailUserMakePrimary(dispatch) {
+  return (id, emailId) => {
+    console.log(id + " emailId: " + emailId);
+    dispatch({
+      type: REQUEST_USER_MAKEEMAILPRIMARY,
+      payload: {
+        user: id,
+        email: emailId
+      }
+    });
+    return fetch(`/account/api/user/${id}/email/${emailId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function addressUserMakePrimary(dispatch) {
+  return (id, addressId) => {
+    console.log(id + " addressId: " + addressId);
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPRIMARY,
+      payload: {
+        user: id,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${id}/address/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 
 export function editUser(dispatch) {
   return data => {
+    dispatch({
+      type: REQUEST_EDIT_USER,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 
+export function editUserEmails(dispatch) {
+  return data => {
     // fetch user before updating to check for email change
     let emailFound = false;
     data.emails.map((m) => {
@@ -957,6 +1003,22 @@ export function editUser(dispatch) {
       // BL FIXME send confirmation email in another part of the app
     }
     // end email add
+
+    dispatch({
+      type: REQUEST_EDIT_USER,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function editUserAddresses(dispatch) {
+  return data => {
 
     // fetch user before updating to check if unique address
     let addressFound = false;
@@ -991,7 +1053,6 @@ export function editUser(dispatch) {
         });
       }
     }
-    // end address add
 
     dispatch({
       type: REQUEST_EDIT_USER,
@@ -1010,7 +1071,7 @@ export function editUserAbouts(dispatch) {
   return data => {
     // about, verify unique
     if (data.about) {
-      console.log('editUserAbouts data: ' + JSON.stringify(data) );
+      console.log('editUserAbouts data: ' + JSON.stringify(data));
       let aboutFound = false;
       let primaryAbout = true;
       // init if first about

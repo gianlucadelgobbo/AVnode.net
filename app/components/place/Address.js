@@ -4,7 +4,7 @@ import { FormattedMessage } from 'preact-intl';
 const Address = ({ address }) => {
     return (
       <li className="list-group-item justify-content-between">
-        {address.placename} : {address.formatted_address}
+        {address.locality} : {address.formatted_address}
         {address.is_primary ?
           <span className="badge badge-primary">
             <FormattedMessage

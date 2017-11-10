@@ -6,6 +6,8 @@ import Profile from './user/GeneralContainer';
 import ProfileAbouts from './user/ProfileAboutsContainer';
 import ProfileImages from './user/ProfileImagesContainer';
 import ProfileLinks from './user/ProfileLinksContainer';
+import ProfileEmails from './user/ProfileEmailsContainer';
+import ProfileAddresses from './user/ProfileAddressesContainer';
 import Events from './Events';
 import EventEdit from './event/Edit';
 import Crews from './Crews';
@@ -38,6 +40,8 @@ const App = () => {
           <ProfileAbouts path="/account/profileabouts" />
           <ProfileImages path="/account/profileimages" />
           <ProfileLinks path="/account/profilelinks" />
+          <ProfileEmails path="/account/profileemails" />
+          <ProfileAddresses path="/account/profileaddresses" />
           <Events path="/account/events" />
           <EventEdit path="/account/events/:_id" />
           <Crews path="/account/crews" />

@@ -3,9 +3,6 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Modal from '../Modal';
 import Layout from '../Layout';
-import Place from '../place/PlaceContainer';
-import Address from '../place/Address';
-import Email from '../emails/Email';
 
 const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -37,10 +34,15 @@ const General = ({
   saveProfile,
   fetchCountries
   }) => {
-
+    
+  let isFormValid = true;
 
   if (!user._countries) {
     fetchCountries();
+  }
+
+  const handleChange= () => {
+    console.log(user);
   }
 
   return (
@@ -111,7 +113,7 @@ const General = ({
                 validate={[required]}
                 placeholder={intl.formatMessage({
                   id: 'surname.placeholder',
-                  defaultMessage: 'Jane'
+                  defaultMessage: 'Surname required'
                 })}
               />
             </div>
@@ -125,10 +127,12 @@ const General = ({
               <Field
                 className="form-control"
                 name="name"
-                component="input"
+                component={renderField}
+                validate={[required]}
+                onChange={handleChange}
                 placeholder={intl.formatMessage({
                   id: 'name.placeholder',
-                  defaultMessage: 'Doe'
+                  defaultMessage: 'Name required'
                 })}
               />
             </div>
@@ -289,67 +293,6 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="address"
-              defaultMessage="Address"
-            />
-          </legend>
-
-          <Place user={user} />
-
-          <ul className="list-group mt-2">
-            {
-              user && user.addresses && user.addresses.map((a) => (
-                <Address address={a} />
-              ))
-            }
-          </ul>
-        </fieldset>
-
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
-              id="emails"
-              defaultMessage="Emails"
-            />
-          </legend>
-
-          <div className="form-group">
-            <label htmlFor="email">
-              <FormattedMessage
-                id="email"
-                defaultMessage="Primary email, change to add new email"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="email"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'email.placeholder',
-                  defaultMessage: 'foo@example.com'
-                })}
-              />
-
-            </div>
-            <label>
-              <FormattedMessage
-                id="manageemail"
-                defaultMessage="Manage your email addresses"
-              />
-            </label>
-            <ul className="list-group mt-2">
-              {user && user.emails && user.emails.map((e) => (
-                <Email email={e} />
-              ))
-              }
-            </ul>
-          </div>
-        </fieldset>
-
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
               id="stagename"
               defaultMessage="Stagename"
             />
@@ -419,6 +362,7 @@ const General = ({
         <div className="form-group">
           <button
             className="btn btn-primary"
+            disabled={!isFormValid}
             type="submit"
           >
             <FormattedMessage
