@@ -4,12 +4,9 @@ import {
   closeStagenameModal,
   openPasswordModal,
   closePasswordModal,
-  addUserProfileImage,
-  addUserTeaserImage,
   fetchCountries,
-  aboutUserMakePrimary,
   editUser
-} from '../reducers/actions';
+} from '../../reducers/actions';
 import General from './General';
 
 const mapStateToProps = ({user}) => ({
@@ -22,9 +19,6 @@ const mapDispatchToProps = (dispatch) => ({
   closeStagenameModal: dispatch(closeStagenameModal),
   openPasswordModal: dispatch(openPasswordModal),
   closePasswordModal: dispatch(closePasswordModal),
-  addUserProfileImage: dispatch(addUserProfileImage),
-  addUserTeaserImage: dispatch(addUserTeaserImage),
-  aboutUserMakePrimary: dispatch(aboutUserMakePrimary),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });

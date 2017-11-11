@@ -17,8 +17,9 @@ const PerformanceShow = ({performance, dispatch}) => {
             <i className="fa fa-fw fa-trash"></i>
           </button>
         }
-        <a className="btn btn-secondary" href={'/account/performances/' + performance._id}><i className="fa fa-edit"></i></a>
-      </span>
+        <a className="btn btn-secondary" href={'/account/performances/' + performance._id} data-toggle="tooltip" data-placement="top" title="Edit performance"><i className="fa fa-edit"></i></a>
+        <a className="btn btn-secondary" href={'/account/performanceabouts/' + performance._id} data-toggle="tooltip" data-placement="top" title="Edit about section"><i className="fa fa-question"></i></a>
+        </span>
     </li>
   );
 };

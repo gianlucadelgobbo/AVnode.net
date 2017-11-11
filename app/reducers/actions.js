@@ -3,6 +3,9 @@ import isomorphicFetch from 'isomorphic-fetch';
 export const NAVIGATE = 'NAVIGATE';
 export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
+export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
+export const REQUEST_EDIT_USERLINKS = 'REQUEST_EDIT_USERLINKS';
+export const REQUEST_EDIT_USERABOUTS = 'REQUEST_EDIT_USERABOUTS';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
 export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
@@ -58,6 +61,7 @@ export const REQUEST_CREW_MAKEABOUTPRIMARY = 'REQUEST_CREW_MAKEABOUTPRIMARY';
 export const REQUEST_ADD_PERFORMANCE = 'REQUEST_ADD_PERFORMANCE';
 export const REQUEST_DELETE_PERFORMANCE = 'REQUEST_DELETE_PERFORMANCE';
 export const REQUEST_EDIT_PERFORMANCE = 'REQUEST_EDIT_PERFORMANCE';
+export const REQUEST_EDIT_PERFORMANCEABOUTS = 'REQUEST_EDIT_PERFORMANCEABOUTS';
 export const REQUEST_ADD_PERFORMANCEIMAGE = 'REQUEST_ADD_PERFORMANCEIMAGE';
 export const REQUEST_ADD_PERFORMANCETEASERIMAGE = 'REQUEST_ADD_PERFORMANCETEASERIMAGE';
 export const REQUEST_ADD_PERFORMANCEVIDEO = 'REQUEST_ADD_PERFORMANCEVIDEO';
@@ -70,6 +74,7 @@ export const RESPONSE_SUGGEST_PERFORMANCE_PERFORMER = 'RESPONSE_SUGGEST_PERFORMA
 export const REQUEST_ADD_PERFORMANCE_PERFORMER = 'REQUEST_ADD_PERFORMANCE_PERFORMER';
 export const REQUEST_DELETE_PERFORMANCE_PERFORMER = 'REQUEST_DELETE_PERFORMANCE_PERFORMER';
 export const REQUEST_DELETE_PERFORMANCE_CATEGORY = 'REQUEST_DELETE_PERFORMANCE_CATEGORY';
+export const REQUEST_PERFORMANCE_MAKEABOUTPRIMARY = 'REQUEST_PERFORMANCE_MAKEABOUTPRIMARY';
 
 // Wrap fetch with some default settings, always
 // return parsed JSON…
@@ -593,8 +598,58 @@ export function deletePerformance(id) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function aboutPerformanceMakePrimary(dispatch) {
+  return (userId, perfId, aboutId) => {
+    console.log("aboutPerformanceMakePrimary userId: " + userId + " perfid: " + perfid + " aboutid: " + aboutId);
+    dispatch({
+      type: REQUEST_PERFORMANCE_MAKEABOUTPRIMARY,
+      payload: {
+        performance: perfId,
+        user: userId,
+        about: aboutId
+      }
+    });
+    return fetch(`/account/api/performance/${performance}/user/${user}/about/${aboutId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 
 export function editPerformance(data) {
+
+  // category, verify unique
+  if (data.category) {
+    let categoryFound = false;
+    data.categories.map((c) => {
+      if (c.name === data.category) {
+        // name in the form already exists in categories
+        categoryFound = true;
+      }
+    });
+    // in case of new category, add it to the categories
+    if (!categoryFound) {
+      data.categories.push({
+        name: data.category
+      });
+    }
+  }
+  return dispatch => {
+    dispatch({
+      type: REQUEST_EDIT_PERFORMANCE,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/performance/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function editPerformanceAbouts(data) {
   // about, verify unique
   if (data.about) {
     let aboutFound = false;
@@ -621,25 +676,10 @@ export function editPerformance(data) {
       });
     }
   }
-  // category, verify unique
-  if (data.category) {
-    let categoryFound = false;
-    data.categories.map((c) => {
-      if (c.name === data.category) {
-        // name in the form already exists in categories
-        categoryFound = true;
-      }
-    });
-    // in case of new category, add it to the categories
-    if (!categoryFound) {
-      data.categories.push({
-        name: data.category
-      });
-    }
-  }
+
   return dispatch => {
     dispatch({
-      type: REQUEST_EDIT_PERFORMANCE,
+      type: REQUEST_EDIT_PERFORMANCEABOUTS,
       id: data._id
     });
     return fetch(
@@ -895,60 +935,61 @@ export function aboutUserMakePrimary(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function emailUserMakePrimary(dispatch) {
+  return (id, emailId) => {
+    console.log(id + " emailId: " + emailId);
+    dispatch({
+      type: REQUEST_USER_MAKEEMAILPRIMARY,
+      payload: {
+        user: id,
+        email: emailId
+      }
+    });
+    return fetch(`/account/api/user/${id}/email/${emailId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function addressUserMakePrimary(dispatch) {
+  return (id, addressId) => {
+    console.log(id + " addressId: " + addressId);
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPRIMARY,
+      payload: {
+        user: id,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${id}/address/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 
 export function editUser(dispatch) {
   return data => {
+    console.log('_______________ACTION editUser__________________________________');
+    console.log('editUser data id: ' + data._id);
+    console.log('editUser data name: ' + data.name);
+    console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
+    
+    dispatch({
+      type: REQUEST_EDIT_USER,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 
-    // about, verify unique
-    if (data.about) {
-      let aboutFound = false;
-      let primaryAbout = true;
-      // init if first about
-      if (!data.abouts) data.abouts = [];
-      // check existing abouts
-      data.abouts.map((a) => {
-        // if not the first, we don't set it to primary
-        primaryAbout = false;
-        if (a.lang === data.aboutlanguage) {
-          // about in the form already exists in abouts
-          aboutFound = true;
-        }
-      });
-      // in case of new about, add it to the abouts
-      if (!aboutFound) {
-        if (!data.aboutlanguage) data.aboutlanguage = 'en';
-        data.abouts.push({
-          is_primary: primaryAbout,
-          lang: data.aboutlanguage,
-          abouttext: data.about
-        });
-      }
-    }
-
-    // link, verify unique
-    if (data.link) {
-      let linkFound = false;
-      let primaryLink = true;
-      data.links.map((l) => {
-        primaryLink = false;
-        if (l.url === data.link) {
-          // url in the form already exists in links
-          linkFound = true;
-        }
-      });
-      // in case of new link, add it to the links
-      if (!linkFound) {
-        console.log('data.link:' + data.link);
-        data.links.push({
-          url: data.link,
-          is_primary: primaryLink,
-          is_confirmed: false,
-          is_public: false,
-          type: data.linktype
-        });
-      }
-    }
-
+export function editUserEmails(dispatch) {
+  return data => {
     // fetch user before updating to check for email change
     let emailFound = false;
     data.emails.map((m) => {
@@ -964,19 +1005,25 @@ export function editUser(dispatch) {
         is_primary: false,
         is_confirmed: false
       });
-      /* BL FIXME send confirmation email in another part of the app
-      // DOES NOT RUN ON THE SERVER const mailer = require('../../lib/utilities/mailer');
-      // const uuid = require('uuid');
-      data.confirm = uuid.v4();
-      mailer.confirmNewEmail({ to: data.email }, { uuid: data.confirm }, (err) => {
-        if (err) {
-          console.log(err);
-        }
-        req.flash('success', { msg: i18n.__('Please check your inbox and confirm your new Email') });
-        res.redirect('/');
-      });*/
+      // BL FIXME send confirmation email in another part of the app
     }
     // end email add
+
+    dispatch({
+      type: REQUEST_EDIT_USER,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function editUserAddresses(dispatch) {
+  return data => {
 
     // fetch user before updating to check if unique address
     let addressFound = false;
@@ -1011,7 +1058,6 @@ export function editUser(dispatch) {
         });
       }
     }
-    // end address add
 
     dispatch({
       type: REQUEST_EDIT_USER,
@@ -1026,9 +1072,118 @@ export function editUser(dispatch) {
   };
 }
 
+export function editUserAbouts(dispatch) {
+  return data => {
+    console.log('_______________ACTION editUserAbouts__________________________________');
+    console.log('editUserAbouts data id: ' + data._id);
+    // about, verify unique
+    if (data.about) {
+      console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
+      let aboutFound = false;
+      let primaryAbout = true;
+      // init if first about
+      if (!data.abouts) {
+        console.log('editUserAbouts no abouts');
+        data.abouts = [];
+      } 
+      // check existing abouts
+      data.abouts.map((a) => {
+        // if not the first, we don't set it to primary
+        primaryAbout = false;
+        console.log('editUserAbouts about' + JSON.stringify(a));       
+        if (a.lang === data.aboutlanguage) {
+          // about in the form already exists in abouts
+          console.log('editUserAbouts about exists in this language');
+          aboutFound = true;
+        }
+      });
+      // in case of new about, add it to the abouts
+      if (!aboutFound) {
+        console.log('editUserAbouts about doesnt exist in this lang, adding');
+        if (!data.aboutlanguage) {
+          console.log('editUserAbouts aboutlanguage not set defaults to en');
+          data.aboutlanguage = 'en';
+        } 
+        data.abouts.push({
+          is_primary: primaryAbout,
+          lang: data.aboutlanguage,
+          abouttext: data.about
+        });
+      }
+      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));     
+    }
+
+    dispatch({
+      type: REQUEST_EDIT_USERABOUTS,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function editUserImages(dispatch) {
+  return data => {
+    dispatch({
+      type: REQUEST_EDIT_USERIMAGES,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function editUserLinks(dispatch) {
+  return data => {
+
+    // link, verify unique
+    if (data.link) {
+      let linkFound = false;
+      let primaryLink = true;
+      data.links.map((l) => {
+        primaryLink = false;
+        if (l.url === data.link) {
+          // url in the form already exists in links
+          linkFound = true;
+        }
+      });
+      // in case of new link, add it to the links
+      if (!linkFound) {
+        console.log('data.link:' + data.link);
+        data.links.push({
+          url: data.link,
+          is_primary: primaryLink,
+          is_confirmed: false,
+          is_public: false,
+          type: data.linktype
+        });
+      };
+    };
+
+    dispatch({
+      type: REQUEST_EDIT_USERLINKS,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 export function changeLanguage(dispatch) {
   // BL FIXME on loading Prefs page, should show this language in the DL
-  return (language, userid ) => {
+  return (language, userid) => {
     // console.log('changeLanguage lng: ' + JSON.stringify(language) );
     // console.log('changeLanguage user: ' + JSON.stringify(userid) );
     dispatch({

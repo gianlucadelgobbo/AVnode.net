@@ -1,21 +1,8 @@
 import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import ImageDropzone from './ImageDropzone';
-import Modal from './Modal';
-import Layout from './Layout';
-import Place from './place/PlaceContainer';
-import Address from './place/Address';
-import Email from './emails/Email';
-import Link from './link/Link';
-import LinksWebEdit from './link/LinksWebEdit';
-import LinksSocialEdit from './link/LinksSocialEdit';
-import LinksSkypeEdit from './link/LinksSkypeEdit';
-import LinksMobileEdit from './link/LinksMobileEdit';
-import LinksPhoneEdit from './link/LinksPhoneEdit';
-import LinkTypes from './link/LinkTypes';
-import About from './about/About';
-import Languages from './language/Languages';
+import Modal from '../Modal';
+import Layout from '../Layout';
 
 const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -43,29 +30,19 @@ const General = ({
   openPasswordModal,
   closePasswordModal,
   intl,
-  addUserProfileImage,
-  addUserTeaserImage,
   handleSubmit,
   saveProfile,
-  aboutUserMakePrimary,
   fetchCountries
   }) => {
-
-  const onProfileImageDrop = (userId) => (files, _something, _ev) => {
-    addUserProfileImage(userId, files[0]);
-  };
-
-  const onTeaserImageDrop = (userId) => (files, _something, _ev) => {
-    addUserTeaserImage(userId, files[0]);
-  };
-
-  const onUserAboutMakePrimary = (userId) => (about) => (e) => {
-    about.is_primary = true;
-    aboutUserMakePrimary(userId, about._id);
-  };
+    
+  let isFormValid = true;
 
   if (!user._countries) {
     fetchCountries();
+  }
+
+  const handleChange= () => {
+    console.log(user);
   }
 
   return (
@@ -136,7 +113,7 @@ const General = ({
                 validate={[required]}
                 placeholder={intl.formatMessage({
                   id: 'surname.placeholder',
-                  defaultMessage: 'Jane'
+                  defaultMessage: 'Surname required'
                 })}
               />
             </div>
@@ -150,10 +127,12 @@ const General = ({
               <Field
                 className="form-control"
                 name="name"
-                component="input"
+                component={renderField}
+                validate={[required]}
+                onChange={handleChange}
                 placeholder={intl.formatMessage({
                   id: 'name.placeholder',
-                  defaultMessage: 'Doe'
+                  defaultMessage: 'Name required'
                 })}
               />
             </div>
@@ -214,86 +193,6 @@ const General = ({
               }
             </div>
           </div>
-
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="abouts"
-                defaultMessage="About you..."
-              />
-            </legend>
-
-            <div className="row">
-              <div className="col-md-9 form-group">
-                <label htmlFor="about">
-                  <FormattedMessage
-                    id="addabout"
-                    defaultMessage="About you"
-                  />
-                </label>
-                <div className="input-group">
-                  <Field
-                    className="form-control"
-                    name="about"
-                    component="textarea"
-                    rows="4"
-                    placeholder={intl.formatMessage({
-                      id: 'about.placeholder',
-                      defaultMessage: 'Tell me something about you.'
-                    })}
-                    value={user.about}
-                  />
-                </div>
-              </div>
-              <div className="col-md-3 form-group">
-                <label htmlFor="aboutlanguage">
-                  <FormattedMessage
-                    id="language"
-                    defaultMessage="Language"
-                  />
-                </label>
-                {Languages ?
-                  <Field
-                    className="form-control custom-select"
-                    name="aboutlanguage"
-                    component="select"
-                    value={user.aboutlanguage}
-                  >
-                    <option value="en">
-                      <FormattedMessage
-                        id="language.en"
-                        defaultMessage="English"
-                      />
-                    </option>
-                    {Languages.map((c) => (
-                      <option value={c.code}>{c.language}</option>
-                    ))
-                    }
-                    { /*  */}
-                  </Field> :
-                  <p>Loading languages…</p>
-                }
-              </div>
-            </div>
-
-            <label>
-              <FormattedMessage
-                id="manageabout"
-                defaultMessage="Manage your About texts"
-              />
-            </label>
-            <ul className="list-group mt-2">
-              {
-                user && user.abouts && user.abouts.map((a) => (
-                  <About 
-                    about={a}
-                    onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
-                  />
-                ))
-              }
-            </ul>
-          </fieldset>
-
         </fieldset>
 
         <fieldset className="form-group">
@@ -394,155 +293,6 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="address"
-              defaultMessage="Address"
-            />
-          </legend>
-
-          <Place user={user} />
-
-          <ul className="list-group mt-2">
-            {
-              user && user.addresses && user.addresses.map((a) => (
-                <Address address={a} />
-              ))
-            }
-          </ul>
-        </fieldset>
-
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
-              id="links"
-              defaultMessage="Links"
-            />
-          </legend>
-          <LinksWebEdit links={user.links} privacy="public" />
-          <LinksSocialEdit links={user.links} privacy="public" />
-          <LinksSkypeEdit links={user.links} privacy="private" />
-          <LinksMobileEdit links={user.links} privacy="private" />
-          <LinksPhoneEdit links={user.links} privacy="private" />
-        </fieldset>
-
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
-              id="links"
-              defaultMessage="Links"
-            />
-          </legend>
-
-          <div className="row">
-            <div className="col-md-9 form-group">
-              <label htmlFor="link">
-                <FormattedMessage
-                  id="addlink"
-                  defaultMessage="Add link"
-                />
-              </label>
-              <div className="input-group">
-                <Field
-                  className="form-control"
-                  name="link"
-                  component="input"
-                  placeholder={intl.formatMessage({
-                    id: 'link.placeholder',
-                    defaultMessage: 'https://www...'
-                  })}
-                />
-              </div>
-            </div>
-            <div className="col-md-3 form-group">
-              <label htmlFor="linktype">
-                <FormattedMessage
-                  id="linktype"
-                  defaultMessage="Link type"
-                />
-              </label>
-              {LinkTypes.user ?
-                <Field
-                  className="form-control custom-select"
-                  name="linktype"
-                  component="select"
-                  value={user.linktype}
-                >
-                  <option value="web">
-                    <FormattedMessage
-                      id="Please select"
-                      defaultMessage="Please select"
-                    />
-                  </option>
-                  {LinkTypes.user.map((c) => (
-                    <option value={c.key.toLowerCase()}>{c.name}</option>
-                  ))
-                  }
-                  { /*  */}
-                </Field> :
-                <p>Loading a link types…</p>
-              }
-            </div>
-          </div>
-
-          <label>
-            <FormattedMessage
-              id="link"
-              defaultMessage="Manage your links"
-            />
-          </label>
-          <ul className="list-group mt-2">
-            {
-              user && user.links && user.links.map((l) => (
-                <Link link={l} />
-              ))
-            }
-          </ul>
-        </fieldset>
-
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
-              id="emails"
-              defaultMessage="Emails"
-            />
-          </legend>
-
-          <div className="form-group">
-            <label htmlFor="email">
-              <FormattedMessage
-                id="email"
-                defaultMessage="Primary email, change to add new email"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="email"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'email.placeholder',
-                  defaultMessage: 'foo@example.com'
-                })}
-              />
-
-            </div>
-            <label>
-              <FormattedMessage
-                id="manageemail"
-                defaultMessage="Manage your email addresses"
-              />
-            </label>
-            <ul className="list-group mt-2">
-              {user && user.emails && user.emails.map((e) => (
-                <Email email={e} />
-              ))
-              }
-            </ul>
-          </div>
-        </fieldset>
-
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
               id="stagename"
               defaultMessage="Stagename"
             />
@@ -609,64 +359,10 @@ const General = ({
           </Modal>
         </fieldset>
 
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
-              id="images"
-              defaultMessage="Images"
-            />
-          </legend>
-
-          <div className="form-group">
-            <label htmlFor="profileImage">
-              <FormattedMessage
-                id="profileImage"
-                defaultMessage="Profile Image"
-              />
-            </label>
-            {user && user.image ?
-              <div>
-                <img
-                  className="img-thumbnail mb-3"
-                  src={user.image.publicUrl}
-                  alt={`image of ${user.stagename}`}
-                />
-              </div> :
-              null
-            }
-            <ImageDropzone
-              imageUploadInProgress={(user && user.profileImageUploadInProgress)}
-              onDrop={onProfileImageDrop(user._id)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="image">
-              <FormattedMessage
-                id="teaserImage"
-                defaultMessage="Teaser Image"
-              />
-            </label>
-            {user && user.teaserImage ?
-              <div>
-                <img
-                  className="img-thumbnail mb-3"
-                  src={user.teaserImage.publicUrl}
-                  alt={`image of ${user.stagename}`}
-                />
-              </div> :
-              null
-            }
-            <ImageDropzone
-              imageUploadInProgress={(user && user.teaserImageUploadInProgress)}
-              onDrop={onTeaserImageDrop(user._id)}
-            />
-          </div>
-        </fieldset>
-
         <div className="form-group">
           <button
             className="btn btn-primary"
+            disabled={!isFormValid}
             type="submit"
           >
             <FormattedMessage
