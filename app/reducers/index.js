@@ -16,6 +16,7 @@ import {
   OPEN_PASSWORD_MODAL,
   CLOSE_PASSWORD_MODAL,
   REQUEST_USER_MAKEABOUTPRIMARY,
+  REQUEST_USER_DELETEABOUT,
 
   EDIT_EVENT,
   REQUEST_DELETE_EVENT,
@@ -143,7 +144,7 @@ const performance = (state = {}, action) => {
 // CREW.REQUEST_SUGGEST_MEMBER
 const user = (state = initialValues, action) => {
   //console.log('user action type: ' + action.type);
- //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
+  //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
       return Object.assign({}, state, {
@@ -290,7 +291,8 @@ const user = (state = initialValues, action) => {
         _countries: action.payload.countries
       });
     case REQUEST_USER_MAKEABOUTPRIMARY:
-      console.log('REQUEST_USER_MAKEABOUTPRIMARY state._id ' + state._id);
+      return state;
+    case REQUEST_USER_DELETEABOUT:
       return state;
     /*case '@@redux-form/BLUR':
       console.log('BLUR field ' + JSON.stringify(action));

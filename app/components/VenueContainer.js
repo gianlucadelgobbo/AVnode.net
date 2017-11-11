@@ -5,7 +5,8 @@ import { addEventVenue, removeEventVenue } from '../reducers/actions';
 
 const mapStateToProps = ({user}) => {
   return {
-    user: user
+    user: user,
+    initialValues: user
   }
 };
 

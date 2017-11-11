@@ -1,7 +1,7 @@
 import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
-const About = ({ about, onMakePrimary }) => {
+const About = ({ about, onMakePrimary, onUserAboutDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       {about.lang} : {about.abouttext}
@@ -12,17 +12,41 @@ const About = ({ about, onMakePrimary }) => {
             defaultMessage="Primary"
           />
         </span> :
-        <button
-          type="button"
-          className="btn btn-secondary btn-sm"
-          onClick={onMakePrimary}
-        >
-          <i className="fa fa-star"></i>
-          <FormattedMessage
-            id="makeitprimary"
-            defaultMessage="Make it primary"
-          />
-        </button>
+        <span>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={onMakePrimary}
+          >
+            <i 
+              className="fa fa-star" 
+              data-toggle="tooltip" 
+              data-placement="top" 
+              title={intl.formatMessage({
+                id: "makeitprimary",
+                defaultMessage: "Make it primary"
+              })}
+              >
+            </i>
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger btn-sm"
+            aria-label="Delete"
+            onClick={onUserAboutDelete}
+          >
+            <i 
+              className="fa fa-trash"
+              data-toggle="tooltip" 
+              data-placement="top" 
+              title={intl.formatMessage({
+                id: "delete",
+                defaultMessage: "Delete"
+              })}
+            >
+            </i>
+          </button>
+        </span>
       }
     </li>
   );

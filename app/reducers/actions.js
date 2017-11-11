@@ -22,6 +22,7 @@ export const REQUEST_DELETE_USER_PLACE = 'REQUEST_DELETE_USER_PLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
 export const REQUEST_DELETE_USER_LINK = 'REQUEST_DELETE_USER_LINK';
 export const REQUEST_USER_MAKEABOUTPRIMARY = 'REQUEST_USER_MAKEABOUTPRIMARY';
+export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -935,6 +936,25 @@ export function aboutUserMakePrimary(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+
+export function aboutUserDelete(dispatch) {
+  return (userId, aboutId) => {
+    console.log(userId + " aboutid: " + aboutId);
+    dispatch({
+      type: REQUEST_USER_DELETEABOUT,
+      payload: {
+        user: userId,
+        about: aboutId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/about/${aboutId}`, {
+      method: 'DELETE'
+    }) // why , false ?
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+
 export function emailUserMakePrimary(dispatch) {
   return (id, emailId) => {
     console.log(id + " emailId: " + emailId);
@@ -1038,6 +1058,7 @@ export function editUserAddresses(dispatch) {
       if (a.address === inputAddress) {
         // address in the form already exists in addresses
         addressFound = true;
+        // BL TODO CHECK if address needs updating the fields
       }
     });
     if (!addressFound) {
@@ -1075,35 +1096,37 @@ export function editUserAddresses(dispatch) {
 export function editUserAbouts(dispatch) {
   return data => {
     console.log('_______________ACTION editUserAbouts__________________________________');
-    console.log('editUserAbouts data id: ' + data._id);
+    // console.log('editUserAbouts data id: ' + data._id);
     // about, verify unique
     if (data.about) {
-      console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
+      // console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
       let aboutFound = false;
       let primaryAbout = true;
+      if (!data.aboutlanguage) {
+        // console.log('editUserAbouts aboutlanguage not set defaults to en');
+        data.aboutlanguage = 'en';
+      } 
       // init if first about
       if (!data.abouts) {
-        console.log('editUserAbouts no abouts');
+        // console.log('editUserAbouts no abouts');
         data.abouts = [];
       } 
       // check existing abouts
       data.abouts.map((a) => {
         // if not the first, we don't set it to primary
         primaryAbout = false;
-        console.log('editUserAbouts about' + JSON.stringify(a));       
+        // console.log('editUserAbouts about' + JSON.stringify(a));       
         if (a.lang === data.aboutlanguage) {
           // about in the form already exists in abouts
-          console.log('editUserAbouts about exists in this language');
+          // console.log('editUserAbouts about exists in this language');
           aboutFound = true;
+          // update text
+          a.abouttext = data.about;
         }
       });
       // in case of new about, add it to the abouts
       if (!aboutFound) {
-        console.log('editUserAbouts about doesnt exist in this lang, adding');
-        if (!data.aboutlanguage) {
-          console.log('editUserAbouts aboutlanguage not set defaults to en');
-          data.aboutlanguage = 'en';
-        } 
+        // console.log('editUserAbouts about doesnt exist in this lang, adding');        
         data.abouts.push({
           is_primary: primaryAbout,
           lang: data.aboutlanguage,
@@ -1294,7 +1317,7 @@ export function removePlace(dispatch) {
     return fetch(
       `/account/api/user/${userId}/place/${placeId}`, {
         method: 'DELETE'
-      })
+      }) // why not , false ?
       .then(json => dispatch(gotUser(json)));
   };
 };

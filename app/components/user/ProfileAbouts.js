@@ -6,6 +6,7 @@ import About from '../about/About';
 import Layout from '../Layout';
 import {
     aboutUserMakePrimary,
+    aboutUserDelete,
     editUserAbouts
 } from '../../reducers/actions';
 import Languages from '../language/Languages';
@@ -15,6 +16,7 @@ const ProfileAboutsForm = ({
     intl,
     handleSubmit,
     aboutUserMakePrimary,
+    aboutUserDelete,
     saveProfile
     }) => {
 
@@ -22,7 +24,9 @@ const ProfileAboutsForm = ({
         about.is_primary = true;
         aboutUserMakePrimary(userId, about._id);
     };
-
+    const onUserAboutDelete = (userId) => (about) => (e) => {
+        aboutUserDelete(userId, about._id);
+    };
     return (
         <Layout>
             <form onSubmit={handleSubmit(saveProfile)}>
@@ -100,6 +104,8 @@ const ProfileAboutsForm = ({
                                 <About
                                     about={a}
                                     onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
+                                    onDeleteAbout={onUserAboutDelete(user._id)(a)}
+                                    intl={intl}
                                 />
                             ))
                         }
