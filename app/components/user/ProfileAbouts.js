@@ -1,0 +1,131 @@
+import { h } from 'preact';
+import { connect } from 'preact-redux';
+import { Field, reduxForm } from 'redux-form';
+import { injectIntl, FormattedMessage } from 'preact-intl';
+import About from '../about/About';
+import Layout from '../Layout';
+import {
+    aboutUserMakePrimary,
+    editUserAbouts
+} from '../../reducers/actions';
+import Languages from '../language/Languages';
+
+const ProfileAboutsForm = ({
+    user,
+    intl,
+    handleSubmit,
+    aboutUserMakePrimary,
+    saveProfile
+    }) => {
+
+    const onUserAboutMakePrimary = (userId) => (about) => (e) => {
+        about.is_primary = true;
+        aboutUserMakePrimary(userId, about._id);
+    };
+
+    return (
+        <Layout>
+            <form onSubmit={handleSubmit(saveProfile)}>
+
+                <fieldset className="form-group">
+                    <legend>
+                        <FormattedMessage
+                            id="abouts"
+                            defaultMessage="About you..."
+                        />
+                    </legend>
+
+                    <div className="row">
+                        <div className="col-md-9 form-group">
+                            <label htmlFor="about">
+                                <FormattedMessage
+                                    id="addabout"
+                                    defaultMessage="About you"
+                                />
+                            </label>
+                            <div className="input-group">
+                                <Field
+                                    className="form-control"
+                                    name="about"
+                                    component="textarea"
+                                    rows="4"
+                                    placeholder={intl.formatMessage({
+                                        id: 'about.placeholder',
+                                        defaultMessage: 'Tell me something about you.'
+                                    })}
+                                    value={user.about}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-3 form-group">
+                            <label htmlFor="aboutlanguage">
+                                <FormattedMessage
+                                    id="language"
+                                    defaultMessage="Language"
+                                />
+                            </label>
+                            {Languages ?
+                                <Field
+                                    className="form-control custom-select"
+                                    name="aboutlanguage"
+                                    component="select"
+                                    value={user.aboutlanguage}
+                                >
+                                    <option value="en">
+                                        <FormattedMessage
+                                            id="language.en"
+                                            defaultMessage="English"
+                                        />
+                                    </option>
+                                    {Languages.map((c) => (
+                                        <option value={c.code}>{c.language}</option>
+                                    ))
+                                    }
+                                    { /*  */}
+                                </Field> :
+                                <p>Loading languages…</p>
+                            }
+                        </div>
+                    </div>
+
+                    <label>
+                        <FormattedMessage
+                            id="manageabout"
+                            defaultMessage="Manage your About texts"
+                        />
+                    </label>
+                    <ul className="list-group mt-2">
+                        {
+                            user && user.abouts && user.abouts.map((a) => (
+                                <About
+                                    about={a}
+                                    onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
+                                />
+                            ))
+                        }
+                    </ul>
+                </fieldset>
+
+
+
+                <div className="form-group">
+                    <button
+                        className="btn btn-primary"
+                        type="submit"
+                    >
+                        <FormattedMessage
+                            id="form.save"
+                            defaultMessage="Save"
+                        />
+                    </button>
+                </div>
+
+            </form>
+        </Layout >
+    );
+};
+
+export default injectIntl(reduxForm({
+    form: 'userabouts',
+    enableReinitialize: true
+})(ProfileAboutsForm));

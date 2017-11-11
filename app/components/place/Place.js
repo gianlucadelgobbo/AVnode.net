@@ -14,7 +14,7 @@ const styles = {
     background: 'white'
   }
 };
-/*                 
+
 const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
 const renderField = ({
@@ -33,13 +33,13 @@ const renderField = ({
     </div>
   </div>
 )
-) */
+
 class Place extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       suggestions: [],
-      placename: ''
+      locality: ''
     };
     this.autocompleteCallback = this.autocompleteCallback.bind(this);
     this.delete = this.delete.bind(this);
@@ -88,8 +88,8 @@ class Place extends React.Component {
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
       // verify if a Place name is set, otherwise use the address
-      if (this.state.placename.length < 1) this.state.placename = place.title;
-      results[0].placename = this.state.placename;      
+      if (this.state.locality.length < 1) this.state.locality = place.locality;
+      results[0].locality = this.state.locality;      
       this.props.complete(this.props.user._id, results[0]);
       this.reset();
     });
@@ -121,12 +121,12 @@ class Place extends React.Component {
         <div class="google-maps-places">
           <Field
               className="form-control"
-              name="placename"
+              name="locality"
               component="input"
               placeholder='Input a new Address name (Home or Work or ...)'
               onChange={(event, newValue, previousValue) => {
                 // console.log('newValue ' + newValue + ' previousValue ' + previousValue);
-                this.state.placename = newValue;
+                this.state.locality = newValue;
               }}
           />
           <Field
