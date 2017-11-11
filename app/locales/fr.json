@@ -40,10 +40,10 @@
 	"password.placeholder": "Mot de passe",
 	"newPassword.placeholder": "S3cr37",
 	"about.placeholder": "A propos",
-	"surname.placeholder": "Prénom",
-	"surname": "Prénom",
-	"name.placeholder": "Nom",
-	"name": "Nom",
+	"surname.placeholder": "Nom (requis)",
+	"surname": "Nom",
+	"name.placeholder": "Prénom (requis)",
+	"name": "Prénom",
 	"form.save": "Sauver",
 	"profileImage": "Image de profil",
 	"image": "Image",
@@ -61,6 +61,7 @@
 	"unconfirmed": "Non confirmé",
 	"confirmed": "Confirmé",
 	"address": "Adresse",
+	"addresses": "Adresses",
 	"places": "Endroits",
 	"general": "Général",
 	"abouts": "A propos",
@@ -204,5 +205,7 @@
 	"Event": "Evénement",
 	"Crew": "Equipe",
 	"No results found…": "Aucun résultat…",
-	"Invalid email or password.": "Email ou mot de passe invalide."
+	"Invalid email or password.": "Email ou mot de passe invalide.",
+	"Email %s, password not found.": "Email %s, mot de passe non trouvé.",
+	"Members": "Members"
 }
