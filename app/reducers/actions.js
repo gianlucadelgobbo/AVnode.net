@@ -23,6 +23,7 @@ export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
 export const REQUEST_DELETE_USER_LINK = 'REQUEST_DELETE_USER_LINK';
 export const REQUEST_USER_MAKEABOUTPRIMARY = 'REQUEST_USER_MAKEABOUTPRIMARY';
 export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
+export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -920,24 +921,24 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
-export function aboutUserMakePrimary(dispatch) {
-  return (id, aboutId) => {
-    console.log(id + " aboutid: " + aboutId);
+export function userAboutMakePrimary(dispatch) {
+  return (userId, aboutId) => {
+    console.log(userId + " aboutid: " + aboutId);
     dispatch({
       type: REQUEST_USER_MAKEABOUTPRIMARY,
       payload: {
-        user: id,
+        user: userId,
         about: aboutId
       }
     });
-    return fetch(`/account/api/user/${id}/about/${aboutId}`, {
+    return fetch(`/account/api/user/${userId}/about/${aboutId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
 
-export function aboutUserDelete(dispatch) {
+export function userAboutDelete(dispatch) {
   return (userId, aboutId) => {
     console.log(userId + " aboutid: " + aboutId);
     dispatch({
@@ -949,7 +950,7 @@ export function aboutUserDelete(dispatch) {
     });
     return fetch(`/account/api/user/${userId}/about/${aboutId}`, {
       method: 'DELETE'
-    }) // why , false ?
+    })
       .then(json => dispatch(gotUser(json)));
   };
 }
@@ -994,7 +995,7 @@ export function editUser(dispatch) {
     console.log('editUser data id: ' + data._id);
     console.log('editUser data name: ' + data.name);
     console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
-    
+
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
@@ -1105,12 +1106,12 @@ export function editUserAbouts(dispatch) {
       if (!data.aboutlanguage) {
         // console.log('editUserAbouts aboutlanguage not set defaults to en');
         data.aboutlanguage = 'en';
-      } 
+      }
       // init if first about
       if (!data.abouts) {
         // console.log('editUserAbouts no abouts');
         data.abouts = [];
-      } 
+      }
       // check existing abouts
       data.abouts.map((a) => {
         // if not the first, we don't set it to primary
@@ -1133,7 +1134,7 @@ export function editUserAbouts(dispatch) {
           abouttext: data.about
         });
       }
-      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));     
+      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));
     }
 
     dispatch({
@@ -1340,8 +1341,23 @@ export function addLink(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
-
-export function removeLink(dispatch) {
+export function userLinkMakePrimary(dispatch) {
+  return (userId, linkId) => {
+    console.log(userId + " linkId: " + linkId);
+    dispatch({
+      type: REQUEST_USER_MAKELINKPRIMARY,
+      payload: {
+        user: userId,
+        about: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/link/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userLinkDelete(dispatch) {
   return (userId, linkId) => {
     dispatch({
       type: REQUEST_DELETE_USER_LINK,
@@ -1357,3 +1373,4 @@ export function removeLink(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
+userLinkMakePrimary

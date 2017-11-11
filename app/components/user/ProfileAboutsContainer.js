@@ -1,8 +1,8 @@
 import { connect } from 'preact-redux';
 
 import {   
-    aboutUserMakePrimary,
-    aboutUserDelete,
+    userAboutMakePrimary,
+    userAboutDelete,
     editUserAbouts 
 } from '../../reducers/actions';
 import ProfileAbouts from './ProfileAbouts';
@@ -13,8 +13,8 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    aboutUserMakePrimary: dispatch(aboutUserMakePrimary),
-    aboutUserDelete: dispatch(aboutUserDelete),
+    userAboutMakePrimary: dispatch(userAboutMakePrimary),
+    userAboutDelete: dispatch(userAboutDelete),
     saveProfile: dispatch(editUserAbouts)
 });
 

@@ -1,7 +1,7 @@
 import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
-const About = ({ about, onMakePrimary, onUserAboutDelete, intl }) => {
+const About = ({ about, onMakePrimary, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       {about.lang} : {about.abouttext}
@@ -32,8 +32,7 @@ const About = ({ about, onMakePrimary, onUserAboutDelete, intl }) => {
           <button
             type="button"
             className="btn btn-danger btn-sm"
-            aria-label="Delete"
-            onClick={onUserAboutDelete}
+            onClick={onDelete}
           >
             <i 
               className="fa fa-trash"

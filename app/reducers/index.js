@@ -17,6 +17,7 @@ import {
   CLOSE_PASSWORD_MODAL,
   REQUEST_USER_MAKEABOUTPRIMARY,
   REQUEST_USER_DELETEABOUT,
+  REQUEST_USER_MAKELINKPRIMARY,
 
   EDIT_EVENT,
   REQUEST_DELETE_EVENT,
@@ -291,8 +292,8 @@ const user = (state = initialValues, action) => {
         _countries: action.payload.countries
       });
     case REQUEST_USER_MAKEABOUTPRIMARY:
-      return state;
     case REQUEST_USER_DELETEABOUT:
+    case REQUEST_USER_MAKELINKPRIMARY:
       return state;
     /*case '@@redux-form/BLUR':
       console.log('BLUR field ' + JSON.stringify(action));

@@ -1,6 +1,10 @@
 import { connect } from 'preact-redux';
 
-import { editUserLinks } from '../../reducers/actions';
+import { 
+    userLinkMakePrimary,
+    userLinkDelete,
+    editUserLinks
+} from '../../reducers/actions';
 import ProfileLinks from './ProfileLinks';
 
 const mapStateToProps = ({user}) => ({
@@ -9,6 +13,8 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    userLinkMakePrimary: dispatch(userLinkMakePrimary),
+    userLinkDelete: dispatch(userLinkDelete),
     saveProfile: dispatch(editUserLinks)
 });
 

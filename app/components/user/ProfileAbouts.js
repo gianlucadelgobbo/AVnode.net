@@ -4,28 +4,24 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import About from '../about/About';
 import Layout from '../Layout';
-import {
-    aboutUserMakePrimary,
-    aboutUserDelete,
-    editUserAbouts
-} from '../../reducers/actions';
 import Languages from '../language/Languages';
 
 const ProfileAboutsForm = ({
     user,
     intl,
     handleSubmit,
-    aboutUserMakePrimary,
-    aboutUserDelete,
+    userAboutMakePrimary,
+    userAboutDelete,
     saveProfile
     }) => {
 
     const onUserAboutMakePrimary = (userId) => (about) => (e) => {
         about.is_primary = true;
-        aboutUserMakePrimary(userId, about._id);
+        userAboutMakePrimary(userId, about._id);
     };
     const onUserAboutDelete = (userId) => (about) => (e) => {
-        aboutUserDelete(userId, about._id);
+        console.log('onUserAboutDelete');
+        userAboutDelete(userId, about._id);
     };
     return (
         <Layout>
@@ -104,7 +100,7 @@ const ProfileAboutsForm = ({
                                 <About
                                     about={a}
                                     onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
-                                    onDeleteAbout={onUserAboutDelete(user._id)(a)}
+                                    onDelete={onUserAboutDelete(user._id)(a)}
                                     intl={intl}
                                 />
                             ))

@@ -5,17 +5,25 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Link from '../link/Link';
 import LinkType from '../link/LinkType';
 import Layout from '../Layout';
-import {
-    editUserLinks
-} from '../../reducers/actions';
 
 const ProfileLinksForm = ({
     user,
     intl,
     handleSubmit,
+    userLinkMakePrimary,
+    userLinkDelete,
     saveProfile
     }) => {
- 
+
+    const onUserLinkMakePrimary = (userId) => (link) => (e) => {
+        link.is_primary = true;
+        userLinkMakePrimary(userId, link._id);
+    };
+    const onUserLinkDelete = (userId) => (link) => (e) => {
+        console.log('onUserLinkDelete');
+        userLinkDelete(userId, link._id);
+    };
+
     return (
         <Layout>
             <form onSubmit={handleSubmit(saveProfile)}>
@@ -87,7 +95,12 @@ const ProfileLinksForm = ({
                     <ul className="list-group mt-2">
                         {
                             user && user.links && user.links.map((l) => (
-                                <Link link={l} />
+                                <Link
+                                    link={l}
+                                    onMakePrimary={onUserLinkMakePrimary(user._id)(l)}
+                                    onDelete={onUserLinkDelete(user._id)(l)}
+                                    intl={intl}
+                                />
                             ))
                         }
                     </ul>
@@ -114,4 +127,4 @@ const ProfileLinksForm = ({
 export default injectIntl(reduxForm({
     form: 'userlinks',
     enableReinitialize: true
-  })(ProfileLinksForm));
+})(ProfileLinksForm));
