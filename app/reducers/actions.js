@@ -24,6 +24,9 @@ export const REQUEST_DELETE_USER_LINK = 'REQUEST_DELETE_USER_LINK';
 export const REQUEST_USER_MAKEABOUTPRIMARY = 'REQUEST_USER_MAKEABOUTPRIMARY';
 export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
 export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
+export const REQUEST_USER_MAKELINKPRIVATE = 'REQUEST_USER_MAKELINKPRIVATE';
+export const REQUEST_USER_MAKELINKPUBLIC = 'REQUEST_USER_MAKELINKPUBLIC';
+export const REQUEST_USER_LINKCONFIRM = 'REQUEST_USER_LINKCONFIRM';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -1343,12 +1346,11 @@ export function addLink(dispatch) {
 };
 export function userLinkMakePrimary(dispatch) {
   return (userId, linkId) => {
-    console.log(userId + " linkId: " + linkId);
     dispatch({
       type: REQUEST_USER_MAKELINKPRIMARY,
       payload: {
         user: userId,
-        about: linkId
+        link: linkId
       }
     });
     return fetch(`/account/api/user/${userId}/link/${linkId}`, {
@@ -1357,6 +1359,53 @@ export function userLinkMakePrimary(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function userLinkMakePrivate(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_MAKELINKPRIVATE,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makelinkprivate/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userLinkMakePublic(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_MAKELINKPUBLIC,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makelinkpublic/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userLinkConfirm(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_LINKCONFIRM,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/linkconfirm/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+userLinkConfirm
+
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {
     dispatch({

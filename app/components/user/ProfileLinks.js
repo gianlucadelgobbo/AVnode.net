@@ -11,13 +11,25 @@ const ProfileLinksForm = ({
     intl,
     handleSubmit,
     userLinkMakePrimary,
+    userLinkMakePrivate,
+    userLinkMakePublic,
+    userLinkConfirm,
     userLinkDelete,
     saveProfile
     }) => {
 
     const onUserLinkMakePrimary = (userId) => (link) => (e) => {
-        link.is_primary = true;
+        // link.is_primary = true;
         userLinkMakePrimary(userId, link._id);
+    };
+    const onUserLinkMakePrivate = (userId) => (link) => (e) => {
+        userLinkMakePrivate(userId, link._id);
+    };
+    const onUserLinkMakePublic = (userId) => (link) => (e) => {
+        userLinkMakePublic(userId, link._id);
+    };
+    const onUserLinkConfirm = (userId) => (link) => (e) => {
+        userLinkConfirm(userId, link._id);
     };
     const onUserLinkDelete = (userId) => (link) => (e) => {
         console.log('onUserLinkDelete');
@@ -98,6 +110,9 @@ const ProfileLinksForm = ({
                                 <Link
                                     link={l}
                                     onMakePrimary={onUserLinkMakePrimary(user._id)(l)}
+                                    onMakePrivate={onUserLinkMakePrivate(user._id)(l)}
+                                    onMakePublic={onUserLinkMakePublic(user._id)(l)}
+                                    onConfirm={onUserLinkConfirm(user._id)(l)}
                                     onDelete={onUserLinkDelete(user._id)(l)}
                                     intl={intl}
                                 />
