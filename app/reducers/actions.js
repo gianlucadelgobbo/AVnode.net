@@ -970,6 +970,11 @@ export function addressUserMakePrimary(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
+    console.log('_______________ACTION editUser__________________________________');
+    console.log('editUser data id: ' + data._id);
+    console.log('editUser data name: ' + data.name);
+    console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
+    
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
@@ -1069,31 +1074,43 @@ export function editUserAddresses(dispatch) {
 
 export function editUserAbouts(dispatch) {
   return data => {
+    console.log('_______________ACTION editUserAbouts__________________________________');
+    console.log('editUserAbouts data id: ' + data._id);
     // about, verify unique
     if (data.about) {
-      console.log('editUserAbouts data: ' + JSON.stringify(data));
+      console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
       let aboutFound = false;
       let primaryAbout = true;
       // init if first about
-      if (!data.abouts) data.abouts = [];
+      if (!data.abouts) {
+        console.log('editUserAbouts no abouts');
+        data.abouts = [];
+      } 
       // check existing abouts
       data.abouts.map((a) => {
         // if not the first, we don't set it to primary
         primaryAbout = false;
+        console.log('editUserAbouts about' + JSON.stringify(a));       
         if (a.lang === data.aboutlanguage) {
           // about in the form already exists in abouts
+          console.log('editUserAbouts about exists in this language');
           aboutFound = true;
         }
       });
       // in case of new about, add it to the abouts
       if (!aboutFound) {
-        if (!data.aboutlanguage) data.aboutlanguage = 'en';
+        console.log('editUserAbouts about doesnt exist in this lang, adding');
+        if (!data.aboutlanguage) {
+          console.log('editUserAbouts aboutlanguage not set defaults to en');
+          data.aboutlanguage = 'en';
+        } 
         data.abouts.push({
           is_primary: primaryAbout,
           lang: data.aboutlanguage,
           abouttext: data.about
         });
       }
+      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));     
     }
 
     dispatch({

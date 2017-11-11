@@ -142,7 +142,7 @@ const performance = (state = {}, action) => {
 // EVENT.REQUEST_ADD
 // CREW.REQUEST_SUGGEST_MEMBER
 const user = (state = initialValues, action) => {
-  console.log('user action type: ' + action.type);
+  //console.log('user action type: ' + action.type);
  //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:

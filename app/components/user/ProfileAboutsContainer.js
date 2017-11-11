@@ -7,7 +7,8 @@ import {
 import ProfileAbouts from './ProfileAbouts';
 
 const mapStateToProps = ({user}) => ({
-    user: user
+    user: user,
+    initialValues: user
 });
 
 const mapDispatchToProps = (dispatch) => ({
