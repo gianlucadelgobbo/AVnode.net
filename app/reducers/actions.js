@@ -1166,7 +1166,13 @@ export function editUserAddresses(dispatch) {
     let addressFound = false;
     let primaryAddress = true;
     let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
-
+    console.log('_______________ACTION editUserAddresses__________________________________');
+    console.log('editUserAddresses data id: ' + data._id);
+    console.log('editUserAddresses data street_number: ' + data.street_number);    
+    console.log('editUserAddresses data route: ' + data.route);
+    console.log('editUserAddresses data locality: ' + data.locality);
+    console.log('editUserAddresses data country: ' + data.country);
+    
     // init if first address
     if (!data.addresses) data.addresses = [];
     data.addresses.map((a) => {
