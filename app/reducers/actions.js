@@ -21,7 +21,7 @@ export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_USER_DELETEPLACE = 'REQUEST_USER_DELETEPLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
 export const REQUEST_USER_DELETELINK = 'REQUEST_USER_DELETELINK';
-export const REQUEST_USER_MAKEABOUTPRIMARY = 'REQUEST_USER_MAKEABOUTPRIMARY';
+export const REQUEST_EDIT_USERABOUT = 'REQUEST_EDIT_USERABOUT';
 export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
 export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
 export const REQUEST_USER_MAKELINKPRIVATE = 'REQUEST_USER_MAKELINKPRIVATE';
@@ -932,11 +932,11 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
-export function userAboutMakePrimary(dispatch) {
+export function userAboutEdit(dispatch) {
   return (userId, aboutId) => {
     console.log(userId + " aboutid: " + aboutId);
     dispatch({
-      type: REQUEST_USER_MAKEABOUTPRIMARY,
+      type: REQUEST_EDIT_USERABOUT,
       payload: {
         user: userId,
         about: aboutId
@@ -1045,7 +1045,7 @@ export function userEmailDelete(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
-    console.log('_______________ACTION editUser__________________________________');
+    console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data id: ' + data._id);
     console.log('editUser data name: ' + data.name);
     console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
@@ -1185,7 +1185,7 @@ export function editUserAddresses(dispatch) {
     let addressFound = false;
     let primaryAddress = true;
     let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
-    console.log('_______________ACTION editUserAddresses__________________________________');
+    console.log('_______________ ACTION editUserAddresses __________________________________');
     console.log('editUserAddresses data id: ' + data._id);
     console.log('editUserAddresses data street_number: ' + data.street_number);    
     console.log('editUserAddresses data route: ' + data.route);
@@ -1198,15 +1198,21 @@ export function editUserAddresses(dispatch) {
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
       primaryAddress = false;
-      if (a.address === inputAddress) {
+      if (a.address === inputAddress) {        
         // address in the form already exists in addresses
         addressFound = true;
-        // BL TODO CHECK if address needs updating the fields
+        // update the fields
+        user.street_number = data.street_number;
+        user.route = data.route;
+        user.postal_code = data.postal_code;
+        user.locality = data.locality;
+        user.administrative_area_level_1 = data.administrative_area_level_1;
+        user.country = data.country;  
       }
     });
     if (!addressFound) {
       // verify data.location is valid and lat lng found
-      if (inputAddress && data.location && data.location.geometry) {
+      if (inputAddress) {// && data.location && data.location.geometry) {
         // add the address to the array
         data.addresses.push({
           address: inputAddress, // BL gmap response formatted_address, should be unique
@@ -1216,8 +1222,8 @@ export function editUserAddresses(dispatch) {
           locality: data.locality,
           administrative_area_level_1: data.administrative_area_level_1,
           country: data.country,
-          geometry: data.location.geometry,
-          place_id: data.location.place_id,
+          geometry: (data.location && data.location.geometry) ? data.location.geometry : {},
+          place_id: (data.location && data.location.place_id) ? data.location.place_id : '',
           is_primary: primaryAddress // only first address is primary for now
         });
       }

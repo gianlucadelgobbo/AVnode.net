@@ -1,30 +1,30 @@
 import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
-const About = ({ about, onMakePrimary, onDelete, intl }) => {
+const About = ({ about, onEdit, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       {about.lang} : {about.abouttext}
       {about.is_primary ?
         <span className="badge badge-primary">
           <FormattedMessage
-            id="primary"
-            defaultMessage="Primary"
+            id="editing"
+            defaultMessage="Editing"
           />
         </span> :
         <span>
           <button
             type="button"
             className="btn btn-secondary btn-sm"
-            onClick={onMakePrimary}
+            onClick={onEdit}
           >
             <i 
-              className="fa fa-star" 
+              className="fa fa-edit" 
               data-toggle="tooltip" 
               data-placement="top" 
               title={intl.formatMessage({
-                id: "makeitprimary",
-                defaultMessage: "Make it primary"
+                id: "edit",
+                defaultMessage: "Edit"
               })}
               >
             </i>

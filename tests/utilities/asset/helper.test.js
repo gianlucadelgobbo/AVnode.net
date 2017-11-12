@@ -7,21 +7,21 @@ describe('Asset Helper Utitility', () => {
   afterEach(() => {
   });
   it('isYoutube should return true on valid youtube link', () => {
-    const url = 'https://www.youtube.com/watch?v=OaRBPXLgKyg';
+    const url = 'https://www.youtube.com/watch?v=O7NmiIv6l38';
     assert.equal(
       true,
       helper.isYoutube(url)
     );
   });
   it('isYoutube should return true on valid youtu.be link', () => {
-    const url = 'https://youtu.be/OaRBPXLgKyg';
+    const url = 'https://youtu.be/O7NmiIv6l38';
     assert.equal(
       true,
       helper.isYoutube(url)
     );
   });
   it('isYoutube should return true on missing proctocol', () => {
-    const url = 'https://youtu.be/OaRBPXLgKyg';
+    const url = 'https://youtu.be/O7NmiIv6l38';
     assert.equal(
       true,
       helper.isYoutube(url)
@@ -35,7 +35,7 @@ describe('Asset Helper Utitility', () => {
     );
   });
   it('isYoutube should return false on invalid url', () => {
-    const url = 'https://vimeo.com/207528129';
+    const url = 'https://vimeo.com/202193116';
     assert.equal(
       false,
       helper.isYoutube(url)
@@ -43,7 +43,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   it('isYoutube should return false on invalid url', () => {
-    const url = 'https://vimeo.com/207528129';
+    const url = 'https://vimeo.com/202193116';
     assert.equal(
       false,
       helper.isYoutube(url)
@@ -51,7 +51,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   it('isVimeo should return true on valid url', () => {
-    const url = 'https://vimeo.com/207528129';
+    const url = 'https://vimeo.com/202193116';
     assert.equal(
       true,
       helper.isVimeo(url)
@@ -59,7 +59,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   it('isVimeo should return true on valid url with missing protocol', () => {
-    const url = 'vimeo.com/207528129';
+    const url = 'vimeo.com/202193116';
     assert.equal(
       true,
       helper.isVimeo(url)
@@ -75,7 +75,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   it('isVimeo should return false on invalid url', () => {
-    const url = 'youtu.be/OaRBPXLgKyg';
+    const url = 'youtu.be/O7NmiIv6l38';
     assert.equal(
       false,
       helper.isVimeo(url)
@@ -83,7 +83,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   it('getVideoType should return youtube for youtube link', () => {
-    const url = 'youtu.be/OaRBPXLgKyg';
+    const url = 'youtu.be/O7NmiIv6l38';
     assert.equal(
       'youtube',
       helper.getVideoType(url)
@@ -91,7 +91,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   it('getVideoType should return vimeo for vimeo link', () => {
-    const url = 'vimeo.com/207528129';
+    const url = 'vimeo.com/202193116';
     assert.equal(
       'vimeo',
       helper.getVideoType(url)
@@ -99,7 +99,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   it('getVideoType should return unknown for unknown video link', () => {
-    const url = 'some-unknonw-hoster.com/207528129';
+    const url = 'some-unknonw-hoster.com/202193116';
     assert.equal(
       'unknown',
       helper.getVideoType(url)
@@ -119,34 +119,34 @@ describe('Asset Helper Utitility', () => {
     );
   }); */
 
-  it('should extract youtube video id from https://www.youtube.com/watch?v=_QdPW8JrYzQ', () => {
-    const url = 'https://www.youtube.com/watch?v=_QdPW8JrYzQ';
+  it('should extract youtube video id from https://www.youtube.com/watch?v=O7NmiIv6l38', () => {
+    const url = 'https://www.youtube.com/watch?v=O7NmiIv6l38';
     assert.equal(
-        '_QdPW8JrYzQ',
+        'O7NmiIv6l38',
         helper.youtubeParser(url)
       );
   });
 
-  it('should extract youtube video id from https://youtu.be/_QdPW8JrYzQ', () => {
-    const url = 'https://youtu.be/_QdPW8JrYzQ';
+  it('should extract youtube video id from https://youtu.be/O7NmiIv6l38', () => {
+    const url = 'https://youtu.be/O7NmiIv6l38';
     assert.equal(
-        '_QdPW8JrYzQ',
+        'O7NmiIv6l38',
         helper.youtubeParser(url)
       );
   });
 
-  it('should extract vimeo id from https://vimeo.com/208509565', () => {
-    const url = 'https://vimeo.com/208509565';
+  it('should extract vimeo id from https://vimeo.com/202193116', () => {
+    const url = 'https://vimeo.com/202193116';
     assert.equal(
-        '208509565',
+        '202193116',
         helper.vimeoParser(url)
       );
   });
 
-  it('should extract vimeo id from vimeo.com/208509565', () => {
-    const url = 'vimeo.com/208509565';
+  it('should extract vimeo id from vimeo.com/202193116', () => {
+    const url = 'vimeo.com/202193116';
     assert.equal(
-        '208509565',
+        '202193116',
         helper.vimeoParser(url)
       );
   });
