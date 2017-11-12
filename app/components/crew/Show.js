@@ -12,7 +12,7 @@ const CrewShow = ({crew, dispatch}) => {
           <button className="btn btn-secondary disabled">
             <i className="fa fa-fw fa-spinner fa-pulse"></i>
           </button> :
-          <button className="btn btn-secondary"
+          <button className="btn btn-danger"
             onClick={() => { dispatch(deleteCrew(crew._id)); }}>
             <i className="fa fa-fw fa-trash"></i>
           </button>

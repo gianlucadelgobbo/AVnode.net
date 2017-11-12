@@ -16,7 +16,22 @@ import {
   OPEN_PASSWORD_MODAL,
   CLOSE_PASSWORD_MODAL,
   REQUEST_USER_MAKEABOUTPRIMARY,
-
+  REQUEST_USER_DELETEABOUT,
+  REQUEST_USER_MAKELINKPRIMARY,
+  REQUEST_USER_MAKELINKPRIVATE,
+  REQUEST_USER_MAKELINKPUBLIC,
+  REQUEST_USER_LINKCONFIRM,
+  REQUEST_USER_DELETELINK,
+  REQUEST_USER_DELETEEMAIL,
+  REQUEST_USER_MAKEEMAILPRIMARY,
+  REQUEST_USER_MAKEEMAILPRIVATE,
+  REQUEST_USER_MAKEEMAILPUBLIC,
+  REQUEST_USER_EMAILCONFIRM,
+  REQUEST_USER_MAKEADDRESSPRIMARY,
+  REQUEST_USER_MAKEADDRESSPRIVATE,
+  REQUEST_USER_MAKEADDRESSPUBLIC,
+  REQUEST_USER_DELETEADDRESS,
+  
   EDIT_EVENT,
   REQUEST_DELETE_EVENT,
   REQUEST_EDIT_EVENT,
@@ -143,7 +158,7 @@ const performance = (state = {}, action) => {
 // CREW.REQUEST_SUGGEST_MEMBER
 const user = (state = initialValues, action) => {
   //console.log('user action type: ' + action.type);
- //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
+  //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
       return Object.assign({}, state, {
@@ -290,7 +305,21 @@ const user = (state = initialValues, action) => {
         _countries: action.payload.countries
       });
     case REQUEST_USER_MAKEABOUTPRIMARY:
-      console.log('REQUEST_USER_MAKEABOUTPRIMARY state._id ' + state._id);
+    case REQUEST_USER_DELETEABOUT:
+    case REQUEST_USER_MAKELINKPRIMARY:
+    case REQUEST_USER_MAKELINKPRIVATE:
+    case REQUEST_USER_MAKELINKPUBLIC:
+    case REQUEST_USER_LINKCONFIRM:
+    case REQUEST_USER_DELETELINK:
+    case REQUEST_USER_DELETEEMAIL:
+    case REQUEST_USER_MAKEEMAILPRIMARY:
+    case REQUEST_USER_MAKEEMAILPRIVATE:
+    case REQUEST_USER_MAKEEMAILPUBLIC:
+    case REQUEST_USER_EMAILCONFIRM:
+    case REQUEST_USER_MAKEADDRESSPRIMARY:
+    case REQUEST_USER_MAKEADDRESSPRIVATE:
+    case REQUEST_USER_MAKEADDRESSPUBLIC:
+    case REQUEST_USER_DELETEADDRESS:
       return state;
     /*case '@@redux-form/BLUR':
       console.log('BLUR field ' + JSON.stringify(action));
