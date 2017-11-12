@@ -21,7 +21,7 @@ export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_USER_DELETEPLACE = 'REQUEST_USER_DELETEPLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
 export const REQUEST_USER_DELETELINK = 'REQUEST_USER_DELETELINK';
-export const REQUEST_USER_MAKEABOUTPRIMARY = 'REQUEST_USER_MAKEABOUTPRIMARY';
+export const REQUEST_EDIT_USERABOUT = 'REQUEST_EDIT_USERABOUT';
 export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
 export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
 export const REQUEST_USER_MAKELINKPRIVATE = 'REQUEST_USER_MAKELINKPRIVATE';
@@ -932,11 +932,11 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
-export function userAboutMakePrimary(dispatch) {
+export function userAboutEdit(dispatch) {
   return (userId, aboutId) => {
     console.log(userId + " aboutid: " + aboutId);
     dispatch({
-      type: REQUEST_USER_MAKEABOUTPRIMARY,
+      type: REQUEST_EDIT_USERABOUT,
       payload: {
         user: userId,
         about: aboutId
