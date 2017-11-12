@@ -42,7 +42,6 @@ class Place extends React.Component {
       locality: ''
     };
     this.autocompleteCallback = this.autocompleteCallback.bind(this);
-    this.delete = this.delete.bind(this);
   }
   componentDidMount() {
     if (!window.google) {
@@ -82,16 +81,14 @@ class Place extends React.Component {
     }
   }
 
-  delete(placeId) {
-    this.props.delete(this.props.user._id, placeId);
-  }
   save(place) {
     this.geocoder.geocode({ placeId: place.placeId }, (results, status) => {
+      // BL 20171112 saving on the button, not here     
       // verify if a Place name is set, otherwise use the address
-      if (this.state.locality.length < 1) this.state.locality = place.locality;
-      results[0].locality = this.state.locality;      
+      // if (this.state.locality.length < 1) this.state.locality = place.locality;
+      // results[0].locality = this.state.locality; 
       this.props.complete(this.props.user._id, results[0]);
-      this.reset();
+      // this.reset();
     });
   }
 

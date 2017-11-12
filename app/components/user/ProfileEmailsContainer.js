@@ -1,7 +1,11 @@
 import { connect } from 'preact-redux';
 
 import {   
-    emailUserMakePrimary,
+    userEmailMakePrimary,
+    userEmailMakePrivate,
+    userEmailMakePublic,
+    userEmailConfirm,
+    userEmailDelete,
     editUserEmails 
 } from '../../reducers/actions';
 import ProfileEmails from './ProfileEmails';
@@ -12,8 +16,11 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    emailUserMakePrimary: dispatch(emailUserMakePrimary),
-    saveProfile: dispatch(editUserEmails)
+    userEmailMakePrimary: dispatch(userEmailMakePrimary),
+    userEmailMakePrivate: dispatch(userEmailMakePrivate),
+    userEmailMakePublic: dispatch(userEmailMakePublic),
+    userEmailConfirm: dispatch(userEmailConfirm),
+    userEmailDelete: dispatch(userEmailDelete),    saveProfile: dispatch(editUserEmails)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileEmails);
