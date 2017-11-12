@@ -1,17 +1,17 @@
 import { connect } from 'preact-redux';
 import Place from './Place';
 
-import { addPlace, removePlace } from '../../reducers/actions';
+import { addPlace } from '../../reducers/actions';
 
 const mapStateToProps = ({user}) => {
   return {
-    user: user
+    user: user,
+    initialValues: user
   }
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  complete: dispatch(addPlace),
-  delete: dispatch(removePlace)
+  complete: dispatch(addPlace)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Place);

@@ -18,10 +18,24 @@ export const CLOSE_STAGENAME_MODAL = 'CLOSE_STAGENAME_MODAL';
 export const OPEN_PASSWORD_MODAL = 'OPEN_PASSWORD_MODAL';
 export const CLOSE_PASSWORD_MODAL = 'CLOSE_PASSWORD_MODAL';
 export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
-export const REQUEST_DELETE_USER_PLACE = 'REQUEST_DELETE_USER_PLACE';
+export const REQUEST_USER_DELETEPLACE = 'REQUEST_USER_DELETEPLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
-export const REQUEST_DELETE_USER_LINK = 'REQUEST_DELETE_USER_LINK';
+export const REQUEST_USER_DELETELINK = 'REQUEST_USER_DELETELINK';
 export const REQUEST_USER_MAKEABOUTPRIMARY = 'REQUEST_USER_MAKEABOUTPRIMARY';
+export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
+export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
+export const REQUEST_USER_MAKELINKPRIVATE = 'REQUEST_USER_MAKELINKPRIVATE';
+export const REQUEST_USER_MAKELINKPUBLIC = 'REQUEST_USER_MAKELINKPUBLIC';
+export const REQUEST_USER_LINKCONFIRM = 'REQUEST_USER_LINKCONFIRM';
+export const REQUEST_USER_DELETEEMAIL = 'REQUEST_USER_DELETEEMAIL';
+export const REQUEST_USER_MAKEEMAILPRIMARY = 'REQUEST_USER_MAKEEMAILPRIMARY';
+export const REQUEST_USER_MAKEEMAILPRIVATE = 'REQUEST_USER_MAKEEMAILPRIVATE';
+export const REQUEST_USER_MAKEEMAILPUBLIC = 'REQUEST_USER_MAKEEMAILPUBLIC';
+export const REQUEST_USER_EMAILCONFIRM = 'REQUEST_USER_EMAILCONFIRM';
+export const REQUEST_USER_MAKEADDRESSPRIMARY = 'REQUEST_USER_MAKEADDRESSPRIMARY';
+export const REQUEST_USER_MAKEADDRESSPRIVATE = 'REQUEST_USER_MAKEADDRESSPRIVATE';
+export const REQUEST_USER_MAKEADDRESSPUBLIC = 'REQUEST_USER_MAKEADDRESSPUBLIC';
+export const REQUEST_USER_DELETEADDRESS = 'REQUEST_USER_DELETEADDRESS';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -88,7 +102,6 @@ const fetch = (path, options = {}, json = true) => {
       'Content-Type': 'application/json'
     };
   }
-  // console.log('fetch' + JSON.stringify(path));
   return isomorphicFetch(path, opts)
     .then(response => response.json());
 };
@@ -919,54 +932,116 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
-export function aboutUserMakePrimary(dispatch) {
-  return (id, aboutId) => {
-    console.log(id + " aboutid: " + aboutId);
+export function userAboutMakePrimary(dispatch) {
+  return (userId, aboutId) => {
+    console.log(userId + " aboutid: " + aboutId);
     dispatch({
       type: REQUEST_USER_MAKEABOUTPRIMARY,
       payload: {
-        user: id,
+        user: userId,
         about: aboutId
       }
     });
-    return fetch(`/account/api/user/${id}/about/${aboutId}`, {
+    return fetch(`/account/api/user/${userId}/about/${aboutId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function emailUserMakePrimary(dispatch) {
-  return (id, emailId) => {
-    console.log(id + " emailId: " + emailId);
+
+export function userAboutDelete(dispatch) {
+  return (userId, aboutId) => {
+    console.log(userId + " aboutid: " + aboutId);
+    dispatch({
+      type: REQUEST_USER_DELETEABOUT,
+      payload: {
+        user: userId,
+        about: aboutId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/about/${aboutId}`, {
+      method: 'DELETE'
+    })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userEmailMakePrimary(dispatch) {
+  return (userId, emailId) => {
+    console.log(userId + " emailId: " + emailId);
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIMARY,
       payload: {
-        user: id,
+        user: userId,
         email: emailId
       }
     });
-    return fetch(`/account/api/user/${id}/email/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/email/${emailId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function addressUserMakePrimary(dispatch) {
-  return (id, addressId) => {
-    console.log(id + " addressId: " + addressId);
+export function userEmailMakePrivate(dispatch) {
+  return (userId, emailId) => {
     dispatch({
-      type: REQUEST_USER_MAKEADDRESSPRIMARY,
+      type: REQUEST_USER_MAKEEMAILPRIVATE,
       payload: {
-        user: id,
-        address: addressId
+        user: userId,
+        email: emailId
       }
     });
-    return fetch(`/account/api/user/${id}/address/${addressId}`, {
+    return fetch(`/account/api/user/${userId}/makeemailprivate/${emailId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function userEmailMakePublic(dispatch) {
+  return (userId, emailId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEEMAILPUBLIC,
+      payload: {
+        user: userId,
+        email: emailId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makeemailpublic/${emailId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userEmailConfirm(dispatch) {
+  return (userId, emailId) => {
+    dispatch({
+      type: REQUEST_USER_EMAILCONFIRM,
+      payload: {
+        user: userId,
+        email: emailId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/emailconfirm/${emailId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userEmailDelete(dispatch) {
+  return (userId, emailId) => {
+    dispatch({
+      type: REQUEST_USER_DELETEEMAIL,
+      payload: {
+        user: userId,
+        email: emailId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/email/${emailId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
 
 export function editUser(dispatch) {
   return data => {
@@ -974,7 +1049,7 @@ export function editUser(dispatch) {
     console.log('editUser data id: ' + data._id);
     console.log('editUser data name: ' + data.name);
     console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
-    
+
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
@@ -1021,6 +1096,87 @@ export function editUserEmails(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+// User Addresses
+
+export function userAddressMakePrimary(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPRIMARY,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/address/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userAddressMakePrivate(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPRIVATE,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makeaddressprivate/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userAddressMakePublic(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPUBLIC,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makeaddresspublic/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userAddressDelete(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_DELETEADDRESS,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/address/${addressId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+export function addPlace(dispatch) {
+  return (id, location) => {
+    dispatch({
+      type: REQUEST_ADD_USER_PLACE,
+      payload: {
+        user: id,
+        location: location
+      }
+    });
+    return fetch(
+      '/account/api/user/place', {
+        method: 'POST',
+        body: JSON.stringify({ id, location })
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
 
 export function editUserAddresses(dispatch) {
   return data => {
@@ -1029,7 +1185,14 @@ export function editUserAddresses(dispatch) {
     let addressFound = false;
     let primaryAddress = true;
     let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
-
+    console.log('_______________ACTION editUserAddresses__________________________________');
+    console.log('editUserAddresses data id: ' + data._id);
+    console.log('editUserAddresses data street_number: ' + data.street_number);    
+    console.log('editUserAddresses data route: ' + data.route);
+    console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
+    console.log('editUserAddresses data locality: ' + data.locality);
+    console.log('editUserAddresses data country: ' + data.country);
+    
     // init if first address
     if (!data.addresses) data.addresses = [];
     data.addresses.map((a) => {
@@ -1038,6 +1201,7 @@ export function editUserAddresses(dispatch) {
       if (a.address === inputAddress) {
         // address in the form already exists in addresses
         addressFound = true;
+        // BL TODO CHECK if address needs updating the fields
       }
     });
     if (!addressFound) {
@@ -1075,42 +1239,44 @@ export function editUserAddresses(dispatch) {
 export function editUserAbouts(dispatch) {
   return data => {
     console.log('_______________ACTION editUserAbouts__________________________________');
-    console.log('editUserAbouts data id: ' + data._id);
+    // console.log('editUserAbouts data id: ' + data._id);
     // about, verify unique
     if (data.about) {
-      console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
+      // console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
       let aboutFound = false;
       let primaryAbout = true;
+      if (!data.aboutlanguage) {
+        // console.log('editUserAbouts aboutlanguage not set defaults to en');
+        data.aboutlanguage = 'en';
+      }
       // init if first about
       if (!data.abouts) {
-        console.log('editUserAbouts no abouts');
+        // console.log('editUserAbouts no abouts');
         data.abouts = [];
-      } 
+      }
       // check existing abouts
       data.abouts.map((a) => {
         // if not the first, we don't set it to primary
         primaryAbout = false;
-        console.log('editUserAbouts about' + JSON.stringify(a));       
+        // console.log('editUserAbouts about' + JSON.stringify(a));       
         if (a.lang === data.aboutlanguage) {
           // about in the form already exists in abouts
-          console.log('editUserAbouts about exists in this language');
+          // console.log('editUserAbouts about exists in this language');
           aboutFound = true;
+          // update text
+          a.abouttext = data.about;
         }
       });
       // in case of new about, add it to the abouts
       if (!aboutFound) {
-        console.log('editUserAbouts about doesnt exist in this lang, adding');
-        if (!data.aboutlanguage) {
-          console.log('editUserAbouts aboutlanguage not set defaults to en');
-          data.aboutlanguage = 'en';
-        } 
+        // console.log('editUserAbouts about doesnt exist in this lang, adding');        
         data.abouts.push({
           is_primary: primaryAbout,
           lang: data.aboutlanguage,
           abouttext: data.about
         });
       }
-      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));     
+      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));
     }
 
     dispatch({
@@ -1263,41 +1429,6 @@ export function removeEventVenue(dispatch) {
   };
 };
 
-// Places
-export function addPlace(dispatch) {
-  return (id, location) => {
-    dispatch({
-      type: REQUEST_ADD_USER_PLACE,
-      payload: {
-        user: id,
-        location: location
-      }
-    });
-    return fetch(
-      '/account/api/user/place', {
-        method: 'POST',
-        body: JSON.stringify({ id, location })
-      })
-      .then(json => dispatch(gotUser(json)));
-  };
-};
-
-export function removePlace(dispatch) {
-  return (userId, placeId) => {
-    dispatch({
-      type: REQUEST_DELETE_USER_PLACE,
-      payload: {
-        user: userId,
-        place: placeId
-      }
-    });
-    return fetch(
-      `/account/api/user/${userId}/place/${placeId}`, {
-        method: 'DELETE'
-      })
-      .then(json => dispatch(gotUser(json)));
-  };
-};
 
 // Links
 export function addLink(dispatch) {
@@ -1317,11 +1448,71 @@ export function addLink(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
-
-export function removeLink(dispatch) {
+export function userLinkMakePrimary(dispatch) {
   return (userId, linkId) => {
     dispatch({
-      type: REQUEST_DELETE_USER_LINK,
+      type: REQUEST_USER_MAKELINKPRIMARY,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/link/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userLinkMakePrivate(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_MAKELINKPRIVATE,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makelinkprivate/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userLinkMakePublic(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_MAKELINKPUBLIC,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makelinkpublic/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userLinkConfirm(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_LINKCONFIRM,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/linkconfirm/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function userLinkDelete(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_DELETELINK,
       payload: {
         user: userId,
         link: linkId
@@ -1334,3 +1525,4 @@ export function removeLink(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
+
