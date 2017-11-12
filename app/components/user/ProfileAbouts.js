@@ -10,14 +10,14 @@ const ProfileAboutsForm = ({
     user,
     intl,
     handleSubmit,
-    userAboutMakePrimary,
+    userAboutEdit,
     userAboutDelete,
     saveProfile
     }) => {
 
-    const onUserAboutMakePrimary = (userId) => (about) => (e) => {
+    const onUserAboutEdit = (userId) => (about) => (e) => {
         about.is_primary = true;
-        userAboutMakePrimary(userId, about._id);
+        userAboutEdit(userId, about._id);
     };
     const onUserAboutDelete = (userId) => (about) => (e) => {
         console.log('onUserAboutDelete');
@@ -88,6 +88,17 @@ const ProfileAboutsForm = ({
                         </div>
                     </div>
 
+                    <div className="form-group">
+                        <button
+                            className="btn btn-primary"
+                            type="submit"
+                        >
+                            <FormattedMessage
+                                id="form.save"
+                                defaultMessage="Save"
+                            />
+                        </button>
+                    </div>
                     <label>
                         <FormattedMessage
                             id="manageabout"
@@ -99,7 +110,7 @@ const ProfileAboutsForm = ({
                             user && user.abouts && user.abouts.map((a) => (
                                 <About
                                     about={a}
-                                    onMakePrimary={onUserAboutMakePrimary(user._id)(a)}
+                                    onEdit={onUserAboutEdit(user._id)(a)}
                                     onDelete={onUserAboutDelete(user._id)(a)}
                                     intl={intl}
                                 />
@@ -107,20 +118,6 @@ const ProfileAboutsForm = ({
                         }
                     </ul>
                 </fieldset>
-
-
-
-                <div className="form-group">
-                    <button
-                        className="btn btn-primary"
-                        type="submit"
-                    >
-                        <FormattedMessage
-                            id="form.save"
-                            defaultMessage="Save"
-                        />
-                    </button>
-                </div>
 
             </form>
         </Layout >
