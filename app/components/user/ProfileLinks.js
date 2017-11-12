@@ -19,7 +19,6 @@ const ProfileLinksForm = ({
     }) => {
 
     const onUserLinkMakePrimary = (userId) => (link) => (e) => {
-        // link.is_primary = true;
         userLinkMakePrimary(userId, link._id);
     };
     const onUserLinkMakePrivate = (userId) => (link) => (e) => {
@@ -32,7 +31,6 @@ const ProfileLinksForm = ({
         userLinkConfirm(userId, link._id);
     };
     const onUserLinkDelete = (userId) => (link) => (e) => {
-        console.log('onUserLinkDelete');
         userLinkDelete(userId, link._id);
     };
 
