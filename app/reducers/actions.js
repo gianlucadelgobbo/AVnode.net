@@ -27,6 +27,11 @@ export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
 export const REQUEST_USER_MAKELINKPRIVATE = 'REQUEST_USER_MAKELINKPRIVATE';
 export const REQUEST_USER_MAKELINKPUBLIC = 'REQUEST_USER_MAKELINKPUBLIC';
 export const REQUEST_USER_LINKCONFIRM = 'REQUEST_USER_LINKCONFIRM';
+export const REQUEST_DELETE_USER_EMAIL = 'REQUEST_DELETE_USER_EMAIL';
+export const REQUEST_USER_MAKEEMAILPRIMARY = 'REQUEST_USER_MAKEEMAILPRIMARY';
+export const REQUEST_USER_MAKEEMAILPRIVATE = 'REQUEST_USER_MAKEEMAILPRIVATE';
+export const REQUEST_USER_MAKEEMAILPUBLIC = 'REQUEST_USER_MAKEEMAILPUBLIC';
+export const REQUEST_USER_EMAILCONFIRM = 'REQUEST_USER_EMAILCONFIRM';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -957,24 +962,83 @@ export function userAboutDelete(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-
-
-export function emailUserMakePrimary(dispatch) {
-  return (id, emailId) => {
-    console.log(id + " emailId: " + emailId);
+export function userEmailMakePrimary(dispatch) {
+  return (userId, emailId) => {
+    console.log(userId + " emailId: " + emailId);
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIMARY,
       payload: {
-        user: id,
+        user: userId,
         email: emailId
       }
     });
-    return fetch(`/account/api/user/${id}/email/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/email/${emailId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function userEmailMakePrivate(dispatch) {
+  return (userId, emailId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEEMAILPRIVATE,
+      payload: {
+        user: userId,
+        email: emailId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makeemailprivate/${emailId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userEmailMakePublic(dispatch) {
+  return (userId, emailId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEEMAILPUBLIC,
+      payload: {
+        user: userId,
+        email: emailId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makeemailpublic/${emailId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userEmailConfirm(dispatch) {
+  return (userId, emailId) => {
+    dispatch({
+      type: REQUEST_USER_EMAILCONFIRM,
+      payload: {
+        user: userId,
+        email: emailId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/emailconfirm/${emailId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userEmailDelete(dispatch) {
+  return (userId, emailId) => {
+    dispatch({
+      type: REQUEST_DELETE_USER_EMAIL,
+      payload: {
+        user: userId,
+        email: emailId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/email/${emailId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
 export function addressUserMakePrimary(dispatch) {
   return (id, addressId) => {
     console.log(id + " addressId: " + addressId);
@@ -1404,7 +1468,6 @@ export function userLinkConfirm(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-userLinkConfirm
 
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {
@@ -1422,4 +1485,4 @@ export function userLinkDelete(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
-userLinkMakePrimary
+

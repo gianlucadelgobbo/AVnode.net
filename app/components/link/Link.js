@@ -38,7 +38,7 @@ const Link = ({ link, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, onD
             </i>
           </button>
         </span>
-       }
+      }
       {link.is_public ?
         <span className="badge badge-success">
           <FormattedMessage
