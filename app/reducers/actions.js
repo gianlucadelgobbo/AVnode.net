@@ -1042,69 +1042,7 @@ export function userEmailDelete(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
-// User Addresses
-export function userAddressDelete(dispatch) {
-  return (userId, addressId) => {
-    dispatch({
-      type: REQUEST_USER_DELETEADDRESS,
-      payload: {
-        user: userId,
-        address: addressId
-      }
-    });
-    return fetch(
-      `/account/api/user/${userId}/address/${addressId}`, {
-        method: 'DELETE'
-      })
-      .then(json => dispatch(gotUser(json)));
-  };
-};
 
-export function userAddressMakePrimary(dispatch) {
-  return (userId, addressId) => {
-    dispatch({
-      type: REQUEST_USER_MAKEADDRESSPRIMARY,
-      payload: {
-        user: userId,
-        address: addressId
-      }
-    });
-    return fetch(`/account/api/user/${userId}/address/${addressId}`, {
-      method: 'PUT',
-    }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}
-export function userAddressMakePrivate(dispatch) {
-  return (userId, addressId) => {
-    dispatch({
-      type: REQUEST_USER_MAKEADDRESSPRIVATE,
-      payload: {
-        user: userId,
-        address: addressId
-      }
-    });
-    return fetch(`/account/api/user/${userId}/makeaddressprivate/${addressId}`, {
-      method: 'PUT',
-    }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}
-export function userAddressMakePublic(dispatch) {
-  return (userId, addressId) => {
-    dispatch({
-      type: REQUEST_USER_MAKEADDRESSPUBLIC,
-      payload: {
-        user: userId,
-        address: addressId
-      }
-    });
-    return fetch(`/account/api/user/${userId}/makeaddresspublic/${addressId}`, {
-      method: 'PUT',
-    }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}
 export function editUser(dispatch) {
   return data => {
     console.log('_______________ACTION editUser__________________________________');
@@ -1158,6 +1096,87 @@ export function editUserEmails(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+// User Addresses
+
+export function userAddressMakePrimary(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPRIMARY,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/address/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userAddressMakePrivate(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPRIVATE,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makeaddressprivate/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userAddressMakePublic(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_MAKEADDRESSPUBLIC,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/makeaddresspublic/${addressId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userAddressDelete(dispatch) {
+  return (userId, addressId) => {
+    dispatch({
+      type: REQUEST_USER_DELETEADDRESS,
+      payload: {
+        user: userId,
+        address: addressId
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/address/${addressId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
+
+export function addPlace(dispatch) {
+  return (id, location) => {
+    dispatch({
+      type: REQUEST_ADD_USER_PLACE,
+      payload: {
+        user: id,
+        location: location
+      }
+    });
+    return fetch(
+      '/account/api/user/place', {
+        method: 'POST',
+        body: JSON.stringify({ id, location })
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
 
 export function editUserAddresses(dispatch) {
   return data => {
@@ -1170,6 +1189,7 @@ export function editUserAddresses(dispatch) {
     console.log('editUserAddresses data id: ' + data._id);
     console.log('editUserAddresses data street_number: ' + data.street_number);    
     console.log('editUserAddresses data route: ' + data.route);
+    console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
     console.log('editUserAddresses data locality: ' + data.locality);
     console.log('editUserAddresses data country: ' + data.country);
     
@@ -1409,41 +1429,6 @@ export function removeEventVenue(dispatch) {
   };
 };
 
-// Places
-export function addPlace(dispatch) {
-  return (id, location) => {
-    dispatch({
-      type: REQUEST_ADD_USER_PLACE,
-      payload: {
-        user: id,
-        location: location
-      }
-    });
-    return fetch(
-      '/account/api/user/place', {
-        method: 'POST',
-        body: JSON.stringify({ id, location })
-      })
-      .then(json => dispatch(gotUser(json)));
-  };
-};
-
-export function removePlace(dispatch) {
-  return (userId, placeId) => {
-    dispatch({
-      type: REQUEST_USER_DELETEPLACE,
-      payload: {
-        user: userId,
-        place: placeId
-      }
-    });
-    return fetch(
-      `/account/api/user/${userId}/place/${placeId}`, {
-        method: 'DELETE'
-      }) // why not , false ?
-      .then(json => dispatch(gotUser(json)));
-  };
-};
 
 // Links
 export function addLink(dispatch) {

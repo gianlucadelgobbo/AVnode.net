@@ -44,6 +44,17 @@ const ProfileAddressesForm = ({
 
                     <Place user={user} />
 
+                <div className="form-group">
+                    <button
+                        className="btn btn-primary"
+                        type="submit"
+                    >
+                        <FormattedMessage
+                            id="form.save"
+                            defaultMessage="Save"
+                        />
+                    </button>
+                </div>
                     <ul className="list-group mt-2">
                         {
                             user && user.addresses && user.addresses.map((a) => (
@@ -60,17 +71,6 @@ const ProfileAddressesForm = ({
                     </ul>
                 </fieldset>
 
-                <div className="form-group">
-                    <button
-                        className="btn btn-primary"
-                        type="submit"
-                    >
-                        <FormattedMessage
-                            id="form.save"
-                            defaultMessage="Save"
-                        />
-                    </button>
-                </div>
 
             </form>
         </Layout >
