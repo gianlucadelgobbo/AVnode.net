@@ -932,39 +932,6 @@ export function addUserTeaserImage(dispatch) {
   };
 }
 
-export function userAboutEdit(dispatch) {
-  return (userId, aboutId) => {
-    console.log(userId + " aboutid: " + aboutId);
-    dispatch({
-      type: REQUEST_EDIT_USERABOUT,
-      payload: {
-        user: userId,
-        about: aboutId
-      }
-    });
-    return fetch(`/account/api/user/${userId}/about/${aboutId}`, {
-      method: 'PUT',
-    }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}
-
-export function userAboutDelete(dispatch) {
-  return (userId, aboutId) => {
-    console.log(userId + " aboutid: " + aboutId);
-    dispatch({
-      type: REQUEST_USER_DELETEABOUT,
-      payload: {
-        user: userId,
-        about: aboutId
-      }
-    });
-    return fetch(`/account/api/user/${userId}/about/${aboutId}`, {
-      method: 'DELETE'
-    })
-      .then(json => dispatch(gotUser(json)));
-  };
-}
 export function userEmailMakePrimary(dispatch) {
   return (userId, emailId) => {
     console.log(userId + " emailId: " + emailId);

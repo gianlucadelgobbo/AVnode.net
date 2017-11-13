@@ -5,13 +5,16 @@ import {
   openPasswordModal,
   closePasswordModal,
   fetchCountries,
+  //userAboutEdit,
+  //userAboutDelete,
   editUser
 } from '../../reducers/actions';
-import General from './General';
+import ProfilePublic from './ProfilePublic';
 
-const mapStateToProps = ({user}) => ({
+const mapStateToProps = ({user, submitting}) => ({
   user: user,
-  initialValues: user
+  initialValues: user, 
+  submitting: submitting
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -19,8 +22,10 @@ const mapDispatchToProps = (dispatch) => ({
   closeStagenameModal: dispatch(closeStagenameModal),
   openPasswordModal: dispatch(openPasswordModal),
   closePasswordModal: dispatch(closePasswordModal),
+  //userAboutEdit: dispatch(userAboutEdit),
+  //userAboutDelete: dispatch(userAboutDelete),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(General);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);
