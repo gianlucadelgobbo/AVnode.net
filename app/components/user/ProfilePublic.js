@@ -35,8 +35,6 @@ const ProfilePublic = ({
   intl,
   handleSubmit,
   saveProfile,
-  //userAboutEdit,
-  //userAboutDelete,
   fetchCountries
   }) => {
 
@@ -44,14 +42,7 @@ const ProfilePublic = ({
     fetchCountries();
     console.log('submitting' + submitting);
   }
-  /*const onUserAboutEdit = (userId) => (about) => (e) => {
-    about.is_primary = true;
-    userAboutEdit(userId, about._id);
-  };
-  const onUserAboutDelete = (userId) => (about) => (e) => {
-    console.log('onUserAboutDelete');
-    userAboutDelete(userId, about._id);
-  };*/
+
   const handleChange = () => {
     console.log(user);
   }

@@ -16,12 +16,6 @@ const Nav = ({ user, dispatch }) => {
           defaultMessage="Public data"
         />
       </a>
-      <a className={classes('/account/profileabouts')} href="/account/profileabouts" onClick={e => { dispatch(navigate('/account/profileabouts')) }}>
-        <FormattedMessage
-          id="about"
-          defaultMessage="About"
-        />
-      </a>
       <a className={classes('/account/profileimages')} href="/account/profileimages" onClick={e => { dispatch(navigate('/account/profileimages')) }}>
         <FormattedMessage
           id="images"
