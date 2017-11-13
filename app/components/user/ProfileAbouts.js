@@ -3,8 +3,8 @@ import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import About from '../about/About';
-import Layout from '../Layout';
 import Languages from '../language/Languages';
+import Layout from '../Layout';
 
 const ProfileAboutsForm = ({
     user,

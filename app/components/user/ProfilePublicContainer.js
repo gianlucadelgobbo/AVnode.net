@@ -5,6 +5,8 @@ import {
   openPasswordModal,
   closePasswordModal,
   fetchCountries,
+  //userAboutEdit,
+  //userAboutDelete,
   editUser
 } from '../../reducers/actions';
 import ProfilePublic from './ProfilePublic';
@@ -20,6 +22,8 @@ const mapDispatchToProps = (dispatch) => ({
   closeStagenameModal: dispatch(closeStagenameModal),
   openPasswordModal: dispatch(openPasswordModal),
   closePasswordModal: dispatch(closePasswordModal),
+  //userAboutEdit: dispatch(userAboutEdit),
+  //userAboutDelete: dispatch(userAboutDelete),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });

@@ -931,7 +931,7 @@ export function addUserTeaserImage(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-
+/*
 export function userAboutEdit(dispatch) {
   return (userId, aboutId) => {
     console.log(userId + " aboutid: " + aboutId);
@@ -964,7 +964,7 @@ export function userAboutDelete(dispatch) {
     })
       .then(json => dispatch(gotUser(json)));
   };
-}
+}*/
 export function userEmailMakePrimary(dispatch) {
   return (userId, emailId) => {
     console.log(userId + " emailId: " + emailId);
