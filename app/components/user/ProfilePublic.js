@@ -3,6 +3,8 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Modal from '../Modal';
 import Layout from '../Layout';
+import About from '../about/About';
+import Languages from '../language/Languages';
 
 const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -12,19 +14,20 @@ const renderField = ({
   type,
   meta: { touched, error, warning }
 }) => (
-  <div>
-    <label>{label}</label>
     <div>
-      <input {...input} placeholder={label} type={type} />
-      {touched &&
-        ((error && <span>{error}</span>) ||
-          (warning && <span>{warning}</span>))}
+      <label>{label}</label>
+      <div>
+        <input {...input} placeholder={label} type={type} />
+        {touched &&
+          ((error && <span>{error}</span>) ||
+            (warning && <span>{warning}</span>))}
+      </div>
     </div>
-  </div>
-)
+  )
 
-const General = ({
+const ProfilePublic = ({
   user,
+  submitting,
   openStagenameModal,
   closeStagenameModal,
   openPasswordModal,
@@ -34,14 +37,13 @@ const General = ({
   saveProfile,
   fetchCountries
   }) => {
-    
-  let isFormValid = true;
 
   if (!user._countries) {
     fetchCountries();
+    console.log('submitting' + submitting);
   }
 
-  const handleChange= () => {
+  const handleChange = () => {
     console.log(user);
   }
 
@@ -56,8 +58,8 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="general"
-              defaultMessage="General"
+              id="myAccountPublicData"
+              defaultMessage="My Account Public data"
             />
           </legend>
           <div className="form-group">
@@ -298,7 +300,7 @@ const General = ({
             />
           </legend>
           <p>
-          <label>
+            <label>
               <FormattedMessage
                 id="currentstagename"
                 defaultMessage="Current stagename"
@@ -358,11 +360,90 @@ const General = ({
             />
           </Modal>
         </fieldset>
+        <fieldset className="form-group">
+          <legend>
+            <FormattedMessage
+              id="abouts"
+              defaultMessage="About you..."
+            />
+          </legend>
 
+          <div className="row">
+            <div className="col-md-9 form-group">
+              <label htmlFor="about">
+                <FormattedMessage
+                  id="addabout"
+                  defaultMessage="About you"
+                />
+              </label>
+              <div className="input-group">
+                <Field
+                  className="form-control"
+                  name="about"
+                  component="textarea"
+                  rows="4"
+                  placeholder={intl.formatMessage({
+                    id: 'about.placeholder',
+                    defaultMessage: 'Tell me something about you.'
+                  })}
+                  value={user.about}
+                />
+              </div>
+            </div>
+            <div className="col-md-3 form-group">
+              <label htmlFor="aboutlanguage">
+                <FormattedMessage
+                  id="language"
+                  defaultMessage="Language"
+                />
+              </label>
+              {Languages ?
+                <Field
+                  className="form-control custom-select"
+                  name="aboutlanguage"
+                  component="select"
+                  value={user.aboutlanguage}
+                >
+                  <option value="en">
+                    <FormattedMessage
+                      id="language.en"
+                      defaultMessage="English"
+                    />
+                  </option>
+                  {Languages.map((c) => (
+                    <option value={c.code}>{c.language}</option>
+                  ))
+                  }
+                  { /*  */}
+                </Field> :
+                <p>Loading languages…</p>
+              }
+            </div>
+          </div>
+
+          <label>
+            <FormattedMessage
+              id="manageabout"
+              defaultMessage="Manage your About texts"
+            />
+          </label>
+          <ul className="list-group mt-2">
+            {
+              user && user.abouts && user.abouts.map((a) => (
+                <About
+                  about={a}
+                  //onEdit={onUserAboutEdit(user._id)(a)}
+                  //onDelete={onUserAboutDelete(user._id)(a)}
+                  intl={intl}
+                />
+              ))
+            }
+          </ul>
+        </fieldset>
         <div className="form-group">
           <button
             className="btn btn-primary"
-            disabled={!isFormValid}
+            disabled={submitting}
             type="submit"
           >
             <FormattedMessage
@@ -379,4 +460,4 @@ const General = ({
 export default injectIntl(reduxForm({
   form: 'user',
   enableReinitialize: true
-})(General));
+})(ProfilePublic));
