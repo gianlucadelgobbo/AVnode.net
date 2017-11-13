@@ -210,5 +210,6 @@
 	"No results found…": "Aucun résultat…",
 	"Invalid email or password.": "Email ou mot de passe invalide.",
 	"Email %s, password not found.": "Email %s, mot de passe non trouvé.",
-	"Members": "Members"
+	"Members": "Members",
+	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, password not found. Migration from flxer done, please Login again."
 }
