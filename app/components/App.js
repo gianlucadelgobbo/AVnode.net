@@ -2,7 +2,7 @@ import { h } from 'preact';
 import Router from 'preact-router';
 
 import Nav from './Nav';
-import Profile from './user/GeneralContainer';
+import Profile from './user/ProfilePublicContainer';
 import ProfileAbouts from './user/ProfileAboutsContainer';
 import ProfileImages from './user/ProfileImagesContainer';
 import ProfileLinks from './user/ProfileLinksContainer';

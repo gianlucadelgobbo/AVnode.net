@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { connect } from 'preact-redux';
+// import { connect } from 'preact-redux';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import About from '../about/About';
@@ -15,15 +15,15 @@ const ProfileAboutsForm = ({
     saveProfile
     }) => {
 
-    const onUserAboutEdit = (userId) => (about) => (e) => {
-        about.is_primary = true;
-        userAboutEdit(userId, about._id);
+  const onUserAboutEdit = (userId) => (about) => (e) => {
+      about.is_primary = true;
+      userAboutEdit(userId, about._id);
     };
-    const onUserAboutDelete = (userId) => (about) => (e) => {
-        console.log('onUserAboutDelete');
-        userAboutDelete(userId, about._id);
+  const onUserAboutDelete = (userId) => (about) => (e) => {
+      console.log('onUserAboutDelete');
+      userAboutDelete(userId, about._id);
     };
-    return (
+  return (
         <Layout>
             <form onSubmit={handleSubmit(saveProfile)}>
 
@@ -50,8 +50,8 @@ const ProfileAboutsForm = ({
                                     component="textarea"
                                     rows="4"
                                     placeholder={intl.formatMessage({
-                                        id: 'about.placeholder',
-                                        defaultMessage: 'Tell me something about you.'
+                                      id: 'about.placeholder',
+                                      defaultMessage: 'Tell me something about you.'
                                     })}
                                     value={user.about}
                                 />
@@ -125,6 +125,6 @@ const ProfileAboutsForm = ({
 };
 
 export default injectIntl(reduxForm({
-    form: 'userabouts',
-    enableReinitialize: true
+  form: 'userabouts',
+  enableReinitialize: true
 })(ProfileAboutsForm));

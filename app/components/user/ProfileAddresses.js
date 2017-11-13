@@ -17,20 +17,20 @@ const ProfileAddressesForm = ({
     saveProfile
     }) => {
 
-    const onUserAddressMakePrimary = (userId) => (address) => (e) => {
-        userAddressMakePrimary(userId, address._id);
+  const onUserAddressMakePrimary = (userId) => (address) => (e) => {
+      userAddressMakePrimary(userId, address._id);
     };
-    const onUserAddressMakePrivate = (userId) => (address) => (e) => {
-        userAddressMakePrivate(userId, address._id);
+  const onUserAddressMakePrivate = (userId) => (address) => (e) => {
+      userAddressMakePrivate(userId, address._id);
     };
-    const onUserAddressMakePublic = (userId) => (address) => (e) => {
-        userAddressMakePublic(userId, address._id);
+  const onUserAddressMakePublic = (userId) => (address) => (e) => {
+      userAddressMakePublic(userId, address._id);
     };
-    const onUserAddressDelete = (userId) => (address) => (e) => {
-        userAddressDelete(userId, address._id);
+  const onUserAddressDelete = (userId) => (address) => (e) => {
+      userAddressDelete(userId, address._id);
     };
 
-    return (
+  return (
         <Layout>
             <form onSubmit={handleSubmit(saveProfile)}>
 
@@ -78,6 +78,6 @@ const ProfileAddressesForm = ({
 };
 
 export default injectIntl(reduxForm({
-    form: 'useraddresses',
-    enableReinitialize: true
+  form: 'useraddresses',
+  enableReinitialize: true
 })(ProfileAddressesForm));

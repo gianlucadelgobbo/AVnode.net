@@ -23,8 +23,9 @@ const renderField = ({
   </div>
 )
 
-const General = ({
+const ProfilePublic = ({
   user,
+  submitting,
   openStagenameModal,
   closeStagenameModal,
   openPasswordModal,
@@ -34,11 +35,10 @@ const General = ({
   saveProfile,
   fetchCountries
   }) => {
-    
-  let isFormValid = true;
 
   if (!user._countries) {
     fetchCountries();
+    console.log ('submitting' + submitting);
   }
 
   const handleChange= () => {
@@ -56,8 +56,8 @@ const General = ({
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
-              id="general"
-              defaultMessage="General"
+              id="myAccountPublicData"
+              defaultMessage="My Account Public data"
             />
           </legend>
           <div className="form-group">
@@ -362,7 +362,7 @@ const General = ({
         <div className="form-group">
           <button
             className="btn btn-primary"
-            disabled={!isFormValid}
+            disabled={submitting}
             type="submit"
           >
             <FormattedMessage
@@ -379,4 +379,4 @@ const General = ({
 export default injectIntl(reduxForm({
   form: 'user',
   enableReinitialize: true
-})(General));
+})(ProfilePublic));

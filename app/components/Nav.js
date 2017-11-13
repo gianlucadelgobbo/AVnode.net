@@ -12,8 +12,8 @@ const Nav = ({ user, dispatch }) => {
     <nav id="account-nav" class="nav nav-pills nav-justified">
       <a className={classes('/account/profile')} href="/account/profile" onClick={e => { dispatch(navigate('/account/profile')) }}>
         <FormattedMessage
-          id="Profile"
-          defaultMessage="Profile"
+          id="publicData"
+          defaultMessage="Public data"
         />
       </a>
       <a className={classes('/account/profileabouts')} href="/account/profileabouts" onClick={e => { dispatch(navigate('/account/profileabouts')) }}>

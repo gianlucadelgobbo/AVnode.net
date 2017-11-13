@@ -7,11 +7,12 @@ import {
   fetchCountries,
   editUser
 } from '../../reducers/actions';
-import General from './General';
+import ProfilePublic from './ProfilePublic';
 
-const mapStateToProps = ({user}) => ({
+const mapStateToProps = ({user, submitting}) => ({
   user: user,
-  initialValues: user
+  initialValues: user, 
+  submitting: submitting
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -23,4 +24,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchCountries: dispatch(fetchCountries)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(General);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);
