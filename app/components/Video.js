@@ -2,8 +2,8 @@ import { h } from 'preact';
 
 const Video = ({ id, type }) => {
   switch (type) {
-    case 'vimeo':
-      return (
+  case 'vimeo':
+    return (
         <iframe
           src={`https://player.vimeo.com/video/${id}`}
           width="640"
@@ -14,9 +14,9 @@ const Video = ({ id, type }) => {
           allowfullscreen
         >
         </iframe>
-      );
-    case 'youtube':
-      return (
+    );
+  case 'youtube':
+    return (
         <iframe
           src={`https://www.youtube.com/embed/${id}`}
           width="640"
@@ -27,8 +27,8 @@ const Video = ({ id, type }) => {
           allowfullscreen
         >
         </iframe>
-      );
-  };
+    );
+  }
 };
 
 export default Video;

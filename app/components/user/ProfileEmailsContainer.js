@@ -11,16 +11,16 @@ import {
 import ProfileEmails from './ProfileEmails';
 
 const mapStateToProps = ({user}) => ({
-    user: user,
-    initialValues: user
+  user: user,
+  initialValues: user
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    userEmailMakePrimary: dispatch(userEmailMakePrimary),
-    userEmailMakePrivate: dispatch(userEmailMakePrivate),
-    userEmailMakePublic: dispatch(userEmailMakePublic),
-    userEmailConfirm: dispatch(userEmailConfirm),
-    userEmailDelete: dispatch(userEmailDelete),    saveProfile: dispatch(editUserEmails)
+  userEmailMakePrimary: dispatch(userEmailMakePrimary),
+  userEmailMakePrivate: dispatch(userEmailMakePrivate),
+  userEmailMakePublic: dispatch(userEmailMakePublic),
+  userEmailConfirm: dispatch(userEmailConfirm),
+  userEmailDelete: dispatch(userEmailDelete),    saveProfile: dispatch(editUserEmails)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileEmails);
