@@ -5,6 +5,9 @@ import Modal from '../Modal';
 import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
+import LinksWebEdit from '../link/LinksWebEdit';
+import LinksSocialEdit from '../link/LinksSocialEdit';
+import LinkTypes from '../link/LinkTypes';
 
 const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -432,14 +435,15 @@ const ProfilePublic = ({
               user && user.abouts && user.abouts.map((a) => (
                 <About
                   about={a}
-                  //onEdit={onUserAboutEdit(user._id)(a)}
-                  //onDelete={onUserAboutDelete(user._id)(a)}
                   intl={intl}
                 />
               ))
             }
           </ul>
         </fieldset>
+
+        <LinksWebEdit links={user.links} />
+
         <div className="form-group">
           <button
             className="btn btn-primary"
