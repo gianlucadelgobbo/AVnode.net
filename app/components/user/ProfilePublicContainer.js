@@ -11,10 +11,10 @@ import {
 } from '../../reducers/actions';
 import ProfilePublic from './ProfilePublic';
 
-const mapStateToProps = ({user, submitting}) => ({
+const mapStateToProps = ({user}) => ({
   user: user,
-  initialValues: user, 
-  submitting: submitting
+  initialValues: user//, 
+  //submitting: submitting
 });
 
 const mapDispatchToProps = (dispatch) => ({

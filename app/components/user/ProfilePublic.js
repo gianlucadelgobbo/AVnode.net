@@ -8,29 +8,14 @@ import Languages from '../language/Languages';
 import LinksWeb from '../link/LinksWeb';
 import LinksSocial from '../link/LinksSocial';
 //import LinkTypes from '../link/LinkTypes';
+import validate from './validate'
+import renderField from './renderField'
 
-const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
-
-const renderField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error, warning }
-}) => (
-    <div>
-      <label>{label}</label>
-      <div>
-        <input {...input} placeholder={label} type={type} />
-        {touched &&
-          ((error && <span>{error}</span>) ||
-            (warning && <span>{warning}</span>))}
-      </div>
-    </div>
-  )
+// const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
 const ProfilePublic = ({
   user,
-  submitting,
+  //submitting,
   openStagenameModal,
   closeStagenameModal,
   openPasswordModal,
@@ -43,7 +28,7 @@ const ProfilePublic = ({
 
   if (!user._countries) {
     fetchCountries();
-    console.log('submitting' + submitting);
+    //console.log('submitting' + submitting);
   }
 
   const handleChange = () => {
@@ -114,8 +99,8 @@ const ProfilePublic = ({
               <Field
                 className="form-control"
                 name="surname"
+                type="text"
                 component={renderField}
-                validate={[required]}
                 placeholder={intl.formatMessage({
                   id: 'surname.placeholder',
                   defaultMessage: 'Surname required'
@@ -133,7 +118,7 @@ const ProfilePublic = ({
                 className="form-control"
                 name="name"
                 component={renderField}
-                validate={[required]}
+                type="text"
                 onChange={handleChange}
                 placeholder={intl.formatMessage({
                   id: 'name.placeholder',
@@ -143,7 +128,7 @@ const ProfilePublic = ({
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 form-group">
+            {/*<div className="col-md-6 form-group">
               <label htmlFor="birthday">
                 <FormattedMessage
                   id="birthday"
@@ -167,7 +152,7 @@ const ProfilePublic = ({
                   value={user.birthday}
                 />
               </div>
-            </div>
+                </div>*/ }
             <div className="col-md-6 form-group">
               <label htmlFor="citizenship">
                 <FormattedMessage
@@ -296,73 +281,56 @@ const ProfilePublic = ({
         </fieldset>
 
         <fieldset className="form-group">
+
+
+
           <legend>
+            <FormattedMessage
+              id="details"
+              defaultMessage="Details"
+            />
+          </legend>
+
+          <label htmlFor="stagename">
             <FormattedMessage
               id="stagename"
               defaultMessage="Stagename"
             />
-          </legend>
-          <p>
-            <label>
-              <FormattedMessage
-                id="currentstagename"
-                defaultMessage="Current stagename"
-              />
-            </label>
-            : <strong>{user.stagename}</strong><br />
-            <pre>{user.publicUrl}</pre> { /* FIXME */}
-          </p>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={openStagenameModal}
-          >
+          </label>
+          <Field
+            className="form-control"
+            name="stagename"
+            component="input"
+            value={user.stagename}
+          />
+          <label htmlFor="slug">
             <FormattedMessage
-              id="stagename.openModal"
-              defaultMessage="Change your stagename"
+              id="slug"
+              defaultMessage="Profile url"
             />
-          </button>
-          <Modal
-            title="Caution"
-            open={user._stagenameModalActive}
-            close={closeStagenameModal}
-            footer={
-              <button
-                type="button"
-                className="btn btn-danger"
-              >
-                <FormattedMessage
-                  id="change"
-                  defaultMessage="Change"
-                />
-              </button>
-            }
-          >
-            <p>
-              <FormattedMessage
-                id="stagename.change.disclaimer"
-                defaultMessage="Changing your stagename can have unintended side effects!"
-              />
-            </p>
-
-            <label htmlFor="stagename">
-              <FormattedMessage
-                id="stagename"
-                defaultMessage="Stagename"
-              />
-            </label>
+          </label>
+          <div className="input-group">
             <Field
               className="form-control"
-              name="stagename"
+              name="slug"
               component="input"
-              placeholder={intl.formatMessage({
-                id: 'stagename.placeholder',
-                defaultMessage: 'ChangeMe'
-              })}
-              value={user.stagename}
+              value={user.slug}
             />
-          </Modal>
+          </div>
+          <p>
+            <pre>{user.publicUrl}</pre> { /* FIXME */}
+          </p>
+
+          <p>
+            <FormattedMessage
+              id="url.change.disclaimer"
+              defaultMessage="Changing your url can have unintended side effects!"
+            />
+          </p>
+
+
         </fieldset>
+
         <fieldset className="form-group">
           <legend>
             <FormattedMessage
@@ -447,7 +415,7 @@ const ProfilePublic = ({
             id="websites"
             defaultMessage="Websites"
           />
-          &nbsp;         
+          &nbsp;
         </label>
         <Field
           className="form-control"
@@ -463,7 +431,7 @@ const ProfilePublic = ({
             id="socials"
             defaultMessage="Social channels"
           />
-          &nbsp;         
+          &nbsp;
         </label>
         <Field
           className="form-control"
@@ -477,7 +445,7 @@ const ProfilePublic = ({
         <div className="form-group">
           <button
             className="btn btn-primary"
-            disabled={submitting}
+            // disabled={submitting}
             type="submit"
           >
             <FormattedMessage
@@ -493,5 +461,6 @@ const ProfilePublic = ({
 
 export default injectIntl(reduxForm({
   form: 'user',
-  enableReinitialize: true
+  enableReinitialize: true,
+  validate
 })(ProfilePublic));
