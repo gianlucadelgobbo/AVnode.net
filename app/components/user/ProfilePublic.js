@@ -5,9 +5,9 @@ import Modal from '../Modal';
 import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
-import LinksWebEdit from '../link/LinksWebEdit';
-import LinksSocialEdit from '../link/LinksSocialEdit';
-import LinkTypes from '../link/LinkTypes';
+import LinksWeb from '../link/LinksWeb';
+import LinksSocial from '../link/LinksSocial';
+//import LinkTypes from '../link/LinkTypes';
 
 const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -442,7 +442,37 @@ const ProfilePublic = ({
           </ul>
         </fieldset>
 
-        <LinksWebEdit links={user.links} />
+        <label htmlFor="linkweb">
+          <FormattedMessage
+            id="websites"
+            defaultMessage="Websites"
+          />
+          &nbsp;         
+        </label>
+        <Field
+          className="form-control"
+          name="linkweb"
+          component="input"
+          type="text"
+          value={user.linkweb}
+        />
+        <LinksWeb links={user.links} />
+
+        <label htmlFor="linksocial">
+          <FormattedMessage
+            id="socials"
+            defaultMessage="Social channels"
+          />
+          &nbsp;         
+        </label>
+        <Field
+          className="form-control"
+          name="linksocial"
+          component="input"
+          type="text"
+          value={user.linksocial}
+        />
+        <LinksSocial links={user.links} />
 
         <div className="form-group">
           <button

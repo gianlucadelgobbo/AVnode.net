@@ -211,6 +211,7 @@
 	"Invalid email or password.": "Email ou mot de passe invalide.",
 	"Email %s, password not found.": "Email %s, mot de passe non trouvé.",
 	"Members": "Members",
+	"websites": "Sites Internet",
 	"myAccountPublicData": "Données publiques de mon compte",
 	"publicData": "Données publiques",
 	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, password not found. Migration from flxer done, please Login again."
