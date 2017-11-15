@@ -48,9 +48,8 @@
 	"profileImage": "Image de profil",
 	"image": "Image",
 	"images": "Images",
-	"stagename.openModal": "Changer votre nom de scène",
 	"change": "Changer",
-	"stagename.change.disclaimer": "Changer son nom de scène peut avoir d'importantes répercussions!",
+	"url.change.disclaimer": "Changer son url peut avoir d'importantes répercussions!",
 	"stagename": "Nom de scène",
 	"currentstagename": "Nom de scène courant",
 	"teaserImage": "Image de couverture",
@@ -211,6 +210,7 @@
 	"Invalid email or password.": "Email ou mot de passe invalide.",
 	"Email %s, password not found.": "Email %s, mot de passe non trouvé.",
 	"Members": "Members",
+	"websites": "Sites Internet",
 	"myAccountPublicData": "Données publiques de mon compte",
 	"publicData": "Données publiques",
 	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, password not found. Migration from flxer done, please Login again."
