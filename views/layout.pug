@@ -67,26 +67,16 @@ html(lang='en')
               a.nav-link.ml-3(href='/search?q=*')
                 i.fa.fa-search.fa-lg.fa-fw
                 =__('Search')
+
     include partials/flash
     main
       block teaser
-      block sidemenu
-        .nav-container
-          nav.navbar.bg-light
-            ul.navbar-nav
-              if user
-                li.nav-item
-                  a.nav-link(href='/account/profile')
-                    i.fa.fa-user.fa-lg.fa-fw
-                li.nav-item
-                  a.nav-link(href='/account/crews')
-                    i.fa.fa-users.fa-lg.fa-fw
-                li.nav-item
-                  a.nav-link(href='/account/performances')
-                    i.fa.fa-music.fa-lg.fa-fw
-                li.nav-item
-                  a.nav-link(href='/account/events')
-                    i.fa.fa-calendar.fa-lg.fa-fw
+
+      ul.nav.navbar-nav.pull-left
+        each item in config.sections
+          if (item.view_list)
+            li
+              a(href="/account/"+item.basepath)=item.title
       block title
         if title
           .jumbotron.jumbotron-fluid

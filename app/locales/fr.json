@@ -213,5 +213,6 @@
 	"websites": "Sites Internet",
 	"myAccountPublicData": "Données publiques de mon compte",
 	"publicData": "Données publiques",
-	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, password not found. Migration from flxer done, please Login again."
+	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, mot de passe introuvable. Migration de flxer, veuillez vous connecter à nouveau.",
+	"Logout": "Déconnexion"
 }
