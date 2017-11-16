@@ -2,6 +2,7 @@ import { h } from 'preact';
 import Router from 'preact-router';
 
 import Nav from './Nav';
+import SideNav from './SideNav';
 import Profile from './user/ProfilePublicContainer';
 import ProfileImages from './user/ProfileImagesContainer';
 import ProfileLinks from './user/ProfileLinksContainer';
@@ -33,13 +34,16 @@ const App = () => {
           <Nav />
         </div>
       </div>
+      <div className="container-fluid">
+        <SideNav />
+      </div>
       <div className="container">
         <Router>
           <Profile path="/account/profile" />
-          <ProfileImages path="/account/profileimages" />
-          <ProfileLinks path="/account/profilelinks" />
-          <ProfileEmails path="/account/profileemails" />
-          <ProfileAddresses path="/account/profileaddresses" />
+          <ProfileImages path="/account/profile/images" />
+          <ProfileLinks path="/account/profile/links" />
+          <ProfileEmails path="/account/profile/emails" />
+          <ProfileAddresses path="/account/profile/addresses" />
           <Events path="/account/events" />
           <EventEdit path="/account/events/:_id" />
           <Crews path="/account/crews" />

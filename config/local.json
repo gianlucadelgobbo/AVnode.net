@@ -119,6 +119,7 @@
       "title": "Crews",
       "limit": 20,
       "basepath": "crews",
+      "view_list": "crews",
       "coll": "users"
     },
     "events": {

@@ -71,12 +71,6 @@ html(lang='en')
     include partials/flash
     main
       block teaser
-
-      ul.nav.navbar-nav.pull-left
-        each item in config.sections
-          if (item.view_list)
-            li
-              a(href="/account/"+item.basepath)=item.title
       block title
         if title
           .jumbotron.jumbotron-fluid
