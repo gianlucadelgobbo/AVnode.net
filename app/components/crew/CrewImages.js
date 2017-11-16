@@ -1,30 +1,29 @@
 import { h } from 'preact';
-import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import ImageDropzone from '../ImageDropzone';
 import Layout from '../Layout';
 
-const ProfileImagesForm = ({
-    user,
+const CrewImagesForm = ({
+    crew,
     intl,
     handleSubmit,
-    saveProfile,
-    addUserProfileImage,
-    addUserTeaserImage
+    saveCrew,
+    addCrewProfileImage,
+    addCrewTeaserImage
     }) => {
  
-    const onProfileImageDrop = (userId) => (files, _something, _ev) => {
-        addUserProfileImage(userId, files[0]);
+  const onProfileImageDrop = (crewId) => (files, _something, _ev) => {
+      addCrewProfileImage(crewId, files[0]);
     };
 
-    const onTeaserImageDrop = (userId) => (files, _something, _ev) => {
-        addUserTeaserImage(userId, files[0]);
+  const onTeaserImageDrop = (crewId) => (files, _something, _ev) => {
+      addCrewTeaserImage(crewId, files[0]);
     };
 
-    return (
+  return (
         <Layout>
-            <form onSubmit={handleSubmit(saveProfile)}>
+            <form onSubmit={handleSubmit(saveCrew)}>
                 <fieldset className="form-group">
                     <legend>
                         <FormattedMessage
@@ -37,22 +36,22 @@ const ProfileImagesForm = ({
                         <label htmlFor="profileImage">
                             <FormattedMessage
                                 id="profileImage"
-                                defaultMessage="Profile Image"
+                                defaultMessage="Crew Image"
                             />
                         </label>
-                        {user && user.image ?
+                        {crew && crew.image ?
                             <div>
                                 <img
                                     className="img-thumbnail mb-3"
-                                    src={user.image.publicUrl}
-                                    alt={`image of ${user.stagename}`}
+                                    src={crew.image.publicUrl}
+                                    alt={`image of ${crew.stagename}`}
                                 />
                             </div> :
                             null
                         }
                         <ImageDropzone
-                            imageUploadInProgress={(user && user.profileImageUploadInProgress)}
-                            onDrop={onProfileImageDrop(user._id)}
+                            imageUploadInProgress={(crew && crew.profileImageUploadInProgress)}
+                            onDrop={onProfileImageDrop(crew._id)}
                         />
                     </div>
 
@@ -63,19 +62,19 @@ const ProfileImagesForm = ({
                                 defaultMessage="Teaser Image"
                             />
                         </label>
-                        {user && user.teaserImage ?
+                        {crew && crew.teaserImage ?
                             <div>
                                 <img
                                     className="img-thumbnail mb-3"
-                                    src={user.teaserImage.publicUrl}
-                                    alt={`image of ${user.stagename}`}
+                                    src={crew.teaserImage.publicUrl}
+                                    alt={`image of ${crew.stagename}`}
                                 />
                             </div> :
                             null
                         }
                         <ImageDropzone
-                            imageUploadInProgress={(user && user.teaserImageUploadInProgress)}
-                            onDrop={onTeaserImageDrop(user._id)}
+                            imageUploadInProgress={(crew && crew.teaserImageUploadInProgress)}
+                            onDrop={onTeaserImageDrop(crew._id)}
                         />
                     </div>
                 </fieldset>
@@ -97,6 +96,6 @@ const ProfileImagesForm = ({
     );
 };
 export default injectIntl(reduxForm({
-    form: 'userimages',
-    enableReinitialize: true
-  })(ProfileImagesForm));
+  form: 'crewimages',
+  enableReinitialize: true
+})(CrewImagesForm));

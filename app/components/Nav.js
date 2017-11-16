@@ -18,25 +18,25 @@ const Nav = ({ user, dispatch }) => {
       </a>
       <a className={classes('/account/crews')} href="/account/crews" onClick={e => { dispatch(navigate('/account/crews')) }}>
         <FormattedMessage
-          id="Crews"
+          id="crews"
           defaultMessage="Crews"
         /> <span class="badge badge-pill badge-default">{user.crews.length}</span>
       </a>
       <a className={classes('/account/performances')} href="/account/performances" onClick={e => { dispatch(navigate('/account/performances')) }}>
         <FormattedMessage
-          id="Performances"
+          id="performances"
           defaultMessage="Performances"
         /> <span class="badge badge-pill badge-default">{user.performances.length}</span>
       </a>
       <a className={classes('/account/events')} href="/account/events" onClick={e => { dispatch(navigate('/account/events')) }}>
         <FormattedMessage
-          id="Events"
+          id="events"
           defaultMessage="Events"
         /> <span class="badge badge-pill badge-default">{user.events.length}</span>
       </a>
       <a className={classes('/account/preferences')} href="/account/preferences" onClick={e => { dispatch(navigate('/account/preferences')) }}>
         <FormattedMessage
-          id="Preferences"
+          id="preferences"
           defaultMessage="Preferences"
         />
       </a>

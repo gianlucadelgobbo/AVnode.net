@@ -70,19 +70,19 @@ const ProfilePublic = ({
               </option>
               <option value="F">
                 <FormattedMessage
-                  id="Female"
+                  id="female"
                   defaultMessage="Female"
                 />
               </option>
               <option value="M">
                 <FormattedMessage
-                  id="Male"
+                  id="male"
                   defaultMessage="Male"
                 />
               </option>
               <option value="O">
                 <FormattedMessage
-                  id="Other"
+                  id="other"
                   defaultMessage="Other"
                 />
               </option>
@@ -121,7 +121,7 @@ const ProfilePublic = ({
                 type="text"
                 onChange={handleChange}
                 placeholder={intl.formatMessage({
-                  id: 'name.placeholder',
+                  id: 'firstname.placeholder',
                   defaultMessage: 'Name required'
                 })}
               />
