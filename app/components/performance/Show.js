@@ -12,13 +12,12 @@ const PerformanceShow = ({performance, dispatch}) => {
           <button className="btn btn-secondary disabled">
             <i className="fa fa-fw fa-spinner fa-pulse"></i>
           </button> :
-          <button className="btn btn-secondary"
+          <button className="btn btn-danger"
             onClick={() => { dispatch(deletePerformance(performance._id)); }}>
             <i className="fa fa-fw fa-trash"></i>
           </button>
         }
-        <a className="btn btn-secondary" href={'/account/performances/' + performance._id} data-toggle="tooltip" data-placement="top" title="Edit performance"><i className="fa fa-edit"></i></a>
-        <a className="btn btn-secondary" href={'/account/performanceabouts/' + performance._id} data-toggle="tooltip" data-placement="top" title="Edit about section"><i className="fa fa-question"></i></a>
+        <a className="btn btn-secondary" href={'/account/performance/public/' + performance._id} data-toggle="tooltip" data-placement="top" title="Edit performance"><i className="fa fa-edit"></i></a>
         </span>
     </li>
   );

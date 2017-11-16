@@ -15,11 +15,13 @@ import ProfileConnections from './user/ProfileConnections';
 // Crews
 import Crews from './Crews';
 import CrewEdit from './crew/Edit';
+import CrewPublic from './crew/CrewPublicContainer';
 import CrewImages from './crew/CrewImagesContainer';
 import CrewMembers from './crew/CrewMembersContainer';
 // Performances
 import Performances from './Performances';
 import PerformanceEdit from './performance/Edit';
+import PerformancePublic from './performance/PerformancePublicContainer';
 //import PerformanceAbouts from './performance/PerformanceAbouts';
 import PerformanceImages from './performance/PerformanceImagesContainer';
 import PerformanceEvents from './performance/PerformanceEventsContainer';
@@ -30,13 +32,13 @@ import PerformanceSettings from './performance/PerformanceSettingsContainer';
 // Events
 import Events from './Events';
 import EventEdit from './event/Edit';
+import EventPublic from './event/EventPublicContainer';
 import EventImages from './event/EventImagesContainer';
 import EventPerformances from './event/EventPerformancesContainer';
 import EventPartners from './event/EventPartnersContainer';
 import EventPhotoGallery from './event/EventPhotoGalleryContainer';
 import EventVideoGallery from './event/EventVideoGalleryContainer';
 import EventSettings from './event/EventSettingsContainer';
-
 // Preferences
 import Preferences from './PreferencesContainer';
 import { FormattedMessage } from 'preact-intl';
@@ -71,25 +73,28 @@ const App = () => {
           <ProfilePassword path="/account/profile/password" />
           <ProfileConnections path="/account/profile/connections" />
           <Crews path="/account/crews" />
-          <CrewImages path="/account/crew/images" />
-          <CrewMembers path="/account/crew/members" />
-          <CrewEdit path="/account/crews/:_id" />
+          <CrewPublic path="/account/crew/public/:_id" />
+          <CrewImages path="/account/crew/images/:_id" />
+          <CrewMembers path="/account/crew/members/:_id" />
+          <CrewEdit path="/account/crew/:_id" />
           <Performances path="/account/performances" />
-          <PerformanceEdit path="/account/performances/:_id" />
-          <PerformanceImages path="/account/performance/images" />
-          <PerformanceEvents path="/account/performance/events" />
-          <PerformanceAuthors path="/account/performance/authors" />
-          <PerformancePhotoGallery path="/account/performance/photogallery" />
-          <PerformanceVideoGallery path="/account/performance/videogallery" />
-          <PerformanceSettings path="/account/performance/settings" />
+          <PerformancePublic path="/account/performance/public/:_id" />
+          <PerformanceEdit path="/account/performance/:_id" />
+          <PerformanceImages path="/account/performance/images/:_id" />
+          <PerformanceEvents path="/account/performance/events/:_id" />
+          <PerformanceAuthors path="/account/performance/authors/:_id" />
+          <PerformancePhotoGallery path="/account/performance/photogallery/:_id" />
+          <PerformanceVideoGallery path="/account/performance/videogallery/:_id" />
+          <PerformanceSettings path="/account/performance/settings/:_id" />
           <Events path="/account/events" />
-          <EventEdit path="/account/events/:_id" />
-          <EventImages path="/account/event/images" />
-          <EventPerformances path="/account/event/performances" />
-          <EventPartners path="/account/event/partners" />
-          <EventPhotoGallery path="/account/event/photogallery" />
-          <EventVideoGallery path="/account/event/videogallery" />
-          <EventSettings path="/account/event/settings" />
+          <EventPublic path="/account/event/public/:_id" />
+          <EventEdit path="/account/event/:_id" />
+          <EventImages path="/account/event/images/:_id" />
+          <EventPerformances path="/account/event/performances/:_id" />
+          <EventPartners path="/account/event/partners/:_id" />
+          <EventPhotoGallery path="/account/event/photogallery/:_id" />
+          <EventVideoGallery path="/account/event/videogallery/:_id" />
+          <EventSettings path="/account/event/settings/:_id" />
           <Preferences path="/account/preferences" />
         </Router>
       </div>

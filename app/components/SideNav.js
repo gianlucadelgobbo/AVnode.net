@@ -9,9 +9,7 @@ const SideNav = ({ user, dispatch }) => {
         return (user.active === path) ? 'nav-link active' : 'nav-link'
     }
     const visible = (path) => {
-        console.log(' user.active ' + user.active + ' path ' + path);
-        console.log(user.active.indexOf(path));
-        //return (user.active.indexOf(path) > -1) ? 'visibility: visible' : 'visibility: hidden'  style={visible('/account/profile')}
+        console.log('--> user.active:'+user.active +' path:'+path +' found:'+user.active.indexOf(path));
         return (user.active.indexOf(path) > -1)
     }
     return (
@@ -57,21 +55,21 @@ const SideNav = ({ user, dispatch }) => {
                 </div>
                 : null
             }
-            {visible('/account/crews') ?
+            {visible('/account/crew/') ?
                 <div>
-                    <a className={classes('/account/crews')} href="/account/crews" onClick={e => { dispatch(navigate('/account/crews')) }}>
+                    <a className={classes('/account/crew/public')} href="/account/crew/public" onClick={e => { dispatch(navigate('/account/crew/public')) }}>
                         <FormattedMessage
                             id="publicData"
                             defaultMessage="Public data"
                         />
                     </a>
-                    <a className={classes('/account/crews/images')} href="/account/crews/images" onClick={e => { dispatch(navigate('/account/crews/images')) }}>
+                    <a className={classes('/account/crew/images')} href="/account/crew/images" onClick={e => { dispatch(navigate('/account/crew/images')) }}>
                         <FormattedMessage
                             id="images"
                             defaultMessage="Images"
                         />
                     </a>
-                    <a className={classes('/account/crews/members')} href="/account/crews/members" onClick={e => { dispatch(navigate('/account/crews/members')) }}>
+                    <a className={classes('/account/crew/members')} href="/account/crew/members" onClick={e => { dispatch(navigate('/account/crew/members')) }}>
                         <FormattedMessage
                             id="members"
                             defaultMessage="Members"
@@ -80,9 +78,9 @@ const SideNav = ({ user, dispatch }) => {
                 </div>
                 : null
             }
-            {visible('/account/performance') ?
+            {visible('/account/performance/') ?
                 <div>
-                    <a className={classes('/account/performances')} href="/account/performances" onClick={e => { dispatch(navigate('/account/performances')) }}>
+                    <a className={classes('/account/performance/public')} href="/account/performance/public" onClick={e => { dispatch(navigate('/account/performance/public')) }}>
                         <FormattedMessage
                             id="publicData"
                             defaultMessage="Public data"
@@ -128,21 +126,21 @@ const SideNav = ({ user, dispatch }) => {
                 </div>
                 : null
             }
-            {visible('/account/event') ?
+            {visible('/account/event/') ?
                 <div>
-                    <a className={classes('/account/events')} href="/account/events" onClick={e => { dispatch(navigate('/account/events')) }}>
+                    <a className={classes('/account/event/public')} href="/account/event/public" onClick={e => { dispatch(navigate('/account/event/public')) }}>
                         <FormattedMessage
                             id="publicData"
                             defaultMessage="Public data"
                         />
                     </a>
                     <a className={classes('/account/event/images')} href="/account/event/images" onClick={e => { dispatch(navigate('/account/event/images')) }}>
-                    <FormattedMessage
-                        id="images"
-                        defaultMessage="Images"
-                    />
-                </a>
-                <a className={classes('/account/event/performances')} href="/account/event/performances" onClick={e => { dispatch(navigate('/account/event/performances')) }}>
+                        <FormattedMessage
+                            id="images"
+                            defaultMessage="Images"
+                        />
+                    </a>
+                    <a className={classes('/account/event/performances')} href="/account/event/performances" onClick={e => { dispatch(navigate('/account/event/performances')) }}>
                         <FormattedMessage
                             id="performances"
                             defaultMessage="Performances"

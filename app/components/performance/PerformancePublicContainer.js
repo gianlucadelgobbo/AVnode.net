@@ -2,14 +2,14 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
-const PerformanceImagesContainer = injectIntl(() => {
+const PerformancePublicContainer = injectIntl(() => {
   return (
     <div>
         <label>
-        PerformanceImagesContainer
+        PerformancePublicContainer
         </label>
     </div>
   );
 });
 
-export default PerformanceImagesContainer;
+export default PerformancePublicContainer;
