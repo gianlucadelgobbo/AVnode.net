@@ -15,7 +15,7 @@ const i18n = require('./lib/plugins/i18n');
 const passport = require('./lib/plugins/passport');
 const routes = require('./lib/routes');
 
-config = require('getconfig');
+// config = require('getconfig');
 
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
