@@ -327,7 +327,7 @@ const user = (state = initialValues, action) => {
         action: action
       });*/
     default:
-      console.log('info, user action not handled: ' + action.type);
+      // console.log('info, user action not handled: ' + action.type);
       return state;
   }
 };
