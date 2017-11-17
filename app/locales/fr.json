@@ -222,5 +222,8 @@
 	"connections": "Connections",
 	"Search": "Search",
 	"More": "More",
-	"Members": "Members"
+	"Members": "Members",
+	"Login": "Login",
+	"Sign up": "Sign up",
+	"Password": "Password"
 }
