@@ -115,7 +115,7 @@ app.use(routes);
 // declared before this
 
 app.use(function onerror(err, req, res, next) {
-  console.log('Error:' + err);
+  console.log('Server Error:' + err);
   //throw err;
 });
 

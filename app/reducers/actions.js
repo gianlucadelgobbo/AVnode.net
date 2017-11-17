@@ -106,8 +106,8 @@ const fetch = (path, options = {}, json = true) => {
     .then(response => response.json());
 };
 
-export function navigate(active) {
-  return { type: NAVIGATE, active };
+export function navigate(active, id) {
+  return { type: NAVIGATE, active, id };
 }
 
 export function gotUser(json) {

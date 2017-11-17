@@ -161,8 +161,10 @@ const user = (state = initialValues, action) => {
   //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
+      console.log('NAVIGATE user action: ' + JSON.stringify(action));
       return Object.assign({}, state, {
-        active: action.active
+        active: action.active,
+        id: action.id
       });
     case GOT_USER:
       return Object.assign({}, state, action.json, {

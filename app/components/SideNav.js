@@ -9,7 +9,10 @@ const SideNav = ({ user, dispatch }) => {
         return (user.active === path) ? 'nav-link active' : 'nav-link'
     }
     const visible = (path) => {
-        console.log('--> user.active:'+user.active +' path:'+path +' found:'+user.active.indexOf(path));
+        if (user.active.indexOf(path) > -1) {
+            //console.log('--> user'+ JSON.stringify(user));
+            console.log('--> user.active:'+user.active +' path:'+path +' found:'+user.active.indexOf(path));
+        }
         return (user.active.indexOf(path) > -1)
     }
     return (

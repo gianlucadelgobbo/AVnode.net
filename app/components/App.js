@@ -2,7 +2,7 @@ import { h } from 'preact';
 import Router from 'preact-router';
 // Navigation
 import Nav from './Nav';
-import SideNav from './SideNav';
+// import SideNav from './SideNav';
 // Profile
 import Profile from './user/ProfilePublicContainer';
 import ProfileImages from './user/ProfileImagesContainer';
@@ -59,9 +59,9 @@ const App = () => {
           <Nav />
         </div>
       </div>
-      <div className="container-fluid">
+      {/*<div className="container-fluid">
         <SideNav />
-      </div>
+          </div>*/}
       <div className="container">
         <Router>
           <Profile path="/account/profile" />
