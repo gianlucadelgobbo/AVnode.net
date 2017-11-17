@@ -28,7 +28,7 @@ const PerformanceShow = ({performance, dispatch}) => {
         */
 }      
         <button className="btn btn-info"
-            onClick={() => {dispatch(navigate('/account/performance/public/', performance._id)); }}>
+            onClick={() => {dispatch(navigate('/account/performance/public/' + performance._id)); }}>
             <i className="fa fa-fw fa-edit"></i>
           </button>
 
