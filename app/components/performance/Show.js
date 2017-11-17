@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-//import { route } from 'preact-router';
+import { route } from 'preact-router';
 import { navigate, deletePerformance } from '../../reducers/actions';
 
 const PerformanceShow = ({performance, dispatch}) => {
@@ -23,6 +23,11 @@ const PerformanceShow = ({performance, dispatch}) => {
             onClick={() => {dispatch(navigate('/account/performance/public/' + performance._id)); }}>
             <i className="fa fa-fw fa-edit"></i>
           </button>
+          <button className="btn btn-info"
+            onClick={() => {route('/account/performance/public/' + performance._id, true); }}>
+            <i className="fa fa-fw fa-edit"></i>
+          </button>
+
       </span>
     </li>
   );

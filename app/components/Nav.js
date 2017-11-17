@@ -9,6 +9,7 @@ const Nav = ({ user, dispatch }) => {
     console.log('--> user.active:'+user.active +' path:'+path +' found:'+user.active.indexOf(path));    
     return (user.active.indexOf( path ) > -1) ? 'nav-link active' : 'nav-link'
   }
+
   return (
     <nav id="account-nav" class="nav nav-pills nav-justified">
       <a className={classes('/account/profile')} href="/account/profile" onClick={e => { dispatch(navigate('/account/profile')) }}>
@@ -44,7 +45,6 @@ const Nav = ({ user, dispatch }) => {
     </nav>
   );
 };
-
 
 const mapStateToProps = ({ user }) => ({
   user: user

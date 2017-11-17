@@ -13,7 +13,7 @@ const SideNav = ({ user, dispatch }) => {
         return (user.active.indexOf(path) > -1)
     }
     return (
-        <nav id="account-nav" class="nav-pills nav-justified pull-left">
+        <nav id="account-sidenav" class="nav-pills nav-justified pull-left">
             {visible('/account/profile') ?
                 <div>
                     <a className={classes('/account/profile')} href="/account/profile" onClick={e => { dispatch(navigate('/account/profile')) }}>
