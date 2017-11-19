@@ -5,13 +5,15 @@ import { FormattedMessage } from 'preact-intl';
 // import { route, Router, Route, Link } from 'preact-router';
 
 const SideNav = ({ user, dispatch }) => {
+    let id;
     const classes = (path) => {
         return (user.active === path) ? 'nav-link active' : 'nav-link'
     }
     const visible = (path) => {
         if (user.active.indexOf(path) > -1) {
+            id = user.active.substring(user.active.lastIndexOf('/') + 1);
             //console.log('--> user'+ JSON.stringify(user));
-            console.log('--> user.active:'+user.active +' path:'+path +' found:'+user.active.indexOf(path));
+            console.log('SIDENAV--> user.active:'+user.active +' path:'+path +' id:'+id +' found:'+user.active.indexOf(path));
         }
         return (user.active.indexOf(path) > -1)
     }
@@ -81,9 +83,9 @@ const SideNav = ({ user, dispatch }) => {
                 </div>
                 : null
             }
-            {visible('/account/performance/') ?
+            {visible('/account/performances/') ?
                 <div>
-                    <a className={classes('/account/performance/public')} href="/account/performance/public" onClick={e => { dispatch(navigate('/account/performance/public')) }}>
+                    <a className={classes('/account/performances/public/'+id)} href={`/account/performance/public/${id}`} onClick={e => { dispatch(navigate('/account/performance/public'+id)) }}>
                         <FormattedMessage
                             id="publicData"
                             defaultMessage="Public data"

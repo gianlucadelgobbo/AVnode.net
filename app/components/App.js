@@ -2,7 +2,7 @@ import { h } from 'preact';
 import Router from 'preact-router';
 // Navigation
 import Nav from './Nav';
-// import SideNav from './SideNav';
+import SideNav from './SideNav';
 // Profile
 import Profile from './user/ProfilePublicContainer';
 import ProfileImages from './user/ProfileImagesContainer';
@@ -59,9 +59,9 @@ const App = () => {
           <Nav />
         </div>
       </div>
-      {/*<div className="container-fluid">
+      <div className="container-fluid">
         <SideNav />
-          </div>*/}
+      </div>
       <div className="container">
         <Router>
           <Profile path="/account/profile" />
@@ -78,8 +78,9 @@ const App = () => {
           <CrewMembers path="/account/crew/members/:_id" />
           <CrewEdit path="/account/crew/:_id" />
           <Performances path="/account/performances" />
-          <PerformancePublic path="/account/performance/public/:_id" />
-          <PerformanceEdit path="/account/performance/:_id" />
+          <PerformancePublic path="/account/performances/public/:_id" />
+          <PerformancePublic path="/account/performances/public" />
+          <PerformanceEdit path="/account/performances/:_id" />
           <PerformanceImages path="/account/performance/images/:_id" />
           <PerformanceEvents path="/account/performance/events/:_id" />
           <PerformanceAuthors path="/account/performance/authors/:_id" />

@@ -115,8 +115,11 @@ app.use(routes);
 // declared before this
 
 app.use(function onerror(err, req, res, next) {
-  console.log('Server Error:' + err);
-  //throw err;
+  // happens on user not logged in  
+  if (err) {
+    console.log('Server Error:' + err);
+    //throw err;
+  }
 });
 
 const webpack = require('webpack');
