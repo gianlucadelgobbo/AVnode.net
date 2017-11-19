@@ -4,7 +4,7 @@ import { navigate } from '../reducers/actions';
 import { FormattedMessage } from 'preact-intl';
 // import { route, Router, Route, Link } from 'preact-router';
 
-const SideNav = ({ user, dispatch }) => {
+const SideNav = ({ user, dispatch, url }) => {
     let id;
     const classes = (path) => {
         return (user.active === path) ? 'nav-link active' : 'nav-link'
@@ -13,11 +13,13 @@ const SideNav = ({ user, dispatch }) => {
         if (user.active.indexOf(path) > -1) {
             id = user.active.substring(user.active.lastIndexOf('/') + 1);
             //console.log('--> user'+ JSON.stringify(user));
-            console.log('SIDENAV--> user.active:'+user.active +' path:'+path +' id:'+id +' found:'+user.active.indexOf(path));
+            console.log('SIDENAV--> user.active:'+user.active +' url:'+url +' path:'+path +' id:'+id +' found:'+user.active.indexOf(path));
         }
         return (user.active.indexOf(path) > -1)
     }
     return (
+        <div>
+        <pre>sidenav:{user.active} URL:{url}</pre>
         <nav id="account-sidenav" class="nav-pills nav-justified pull-left">
             {visible('/account/profile') ?
                 <div>
@@ -83,15 +85,15 @@ const SideNav = ({ user, dispatch }) => {
                 </div>
                 : null
             }
-            {visible('/account/performances/') ?
+            {visible('/account/performance/') ?
                 <div>
-                    <a className={classes('/account/performances/public/'+id)} href={`/account/performance/public/${id}`} onClick={e => { dispatch(navigate('/account/performance/public'+id)) }}>
+                    <a className={classes('/account/performance/public/'+id)} onClick={e => { dispatch(navigate('/account/performance/public'+id));}}>
                         <FormattedMessage
                             id="publicData"
                             defaultMessage="Public data"
                         />
                     </a>
-                    <a className={classes('/account/performance/images')} href="/account/performance/images" onClick={e => { dispatch(navigate('/account/performance/images')) }}>
+                    <a className={classes('/account/performance/images/'+id)} href="/account/performances/images" onClick={e => { dispatch(navigate('/account/performances/images'+id)) }}>
                         <FormattedMessage
                             id="images"
                             defaultMessage="Images"
@@ -181,6 +183,7 @@ const SideNav = ({ user, dispatch }) => {
             }
 
         </nav>
+        </div>
     );
 };
 

@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import Router from 'preact-router';
+import Match from 'preact-router/match';
 // Navigation
 import Nav from './Nav';
 import SideNav from './SideNav';
@@ -48,7 +49,8 @@ const App = () => {
     <div>
       <div className="jumbotron jumbotron-fluid">
         <div className="container">
-          <h1 className="display-4"><FormattedMessage
+          <h1 className="display-4">
+          <FormattedMessage
             id="account"
             defaultMessage="Account"
           /></h1>
@@ -59,9 +61,11 @@ const App = () => {
           <Nav />
         </div>
       </div>
-      <div className="container-fluid">
-        <SideNav />
-      </div>
+{ /*     <div className="container-fluid">
+        <Match>
+          { ({ url }) => <SideNav url={url} /> }
+        </Match>
+  </div>*/}
       <div className="container">
         <Router>
           <Profile path="/account/profile" />
@@ -78,8 +82,7 @@ const App = () => {
           <CrewMembers path="/account/crew/members/:_id" />
           <CrewEdit path="/account/crew/:_id" />
           <Performances path="/account/performances" />
-          <PerformancePublic path="/account/performances/public/:_id" />
-          <PerformancePublic path="/account/performances/public" />
+          <PerformancePublic path="/account/performance/public/:_id" />
           <PerformanceEdit path="/account/performances/:_id" />
           <PerformanceImages path="/account/performance/images/:_id" />
           <PerformanceEvents path="/account/performance/events/:_id" />

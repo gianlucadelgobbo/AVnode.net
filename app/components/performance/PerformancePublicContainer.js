@@ -12,6 +12,7 @@ import Languages from '../language/Languages';
 import Category from '../category/Category';
 import Categories from '../category/Performance';
 import PerformanceNav from './PerformanceNav';
+import Match from 'preact-router/match';
 import {
     editPerformance,
     addPerformanceImage,
@@ -150,9 +151,9 @@ let PerformanceForm = props => {
     return (
         <div className="container-fluid account-nav-wrap">
             <div className="container-fluid">
-                <PerformanceNav
-                    performance={props.performance}
-                />
+                <Match>
+                    {({ url }) => <PerformanceNav url={url} performance={props.performance} />}
+                </Match>
             </div>
             <Layout>
                 <form onSubmit={handleSubmit}>
