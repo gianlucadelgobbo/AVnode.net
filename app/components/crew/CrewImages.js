@@ -3,6 +3,8 @@ import { reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import ImageDropzone from '../ImageDropzone';
 import Layout from '../Layout';
+import CrewNav from './CrewNav';
+import Match from 'preact-router/match';
 
 const CrewImagesForm = ({
     crew,
@@ -22,6 +24,12 @@ const CrewImagesForm = ({
     };
 
   return (
+    <div>
+    <div className="container-fluid">
+      <Match>
+        {({ url }) => <CrewNav url={url} />}
+      </Match>
+    </div>
         <Layout>
             <form onSubmit={handleSubmit(saveCrew)}>
                 <fieldset className="form-group">
@@ -93,6 +101,7 @@ const CrewImagesForm = ({
 
             </form>
         </Layout >
+        </div>
     );
 };
 export default injectIntl(reduxForm({

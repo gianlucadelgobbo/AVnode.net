@@ -30,31 +30,31 @@ const PerformanceNav = ({ user, dispatch, url }) => {
                         defaultMessage="Images"
                     />
                 </a>
-                <a className={classes('/account/performance/events')} href={`/account/performance/events/${id}`} onClick={e => { dispatch(navigate('/account/performance/events')) }}>
+                <a className={classes('/account/performance/events/'+id)} href={`/account/performance/events/${id}`} onClick={e => { dispatch(navigate('/account/performance/events/'+id)) }}>
                     <FormattedMessage
                         id="events"
                         defaultMessage="Events"
                     />
                 </a>
-                <a className={classes('/account/performance/authors')} href={`/account/performance/authors/${id}`} onClick={e => { dispatch(navigate('/account/performance/authors')) }}>
+                <a className={classes('/account/performance/authors/'+id)} href={`/account/performance/authors/${id}`} onClick={e => { dispatch(navigate('/account/performance/authors/'+id)) }}>
                     <FormattedMessage
                         id="authors"
                         defaultMessage="Authors"
                     />
                 </a>
-                <a className={classes('/account/performance/photogallery')} href={`/account/performance/photogallery/${id}`} onClick={e => { dispatch(navigate('/account/performance/photogallery')) }}>
+                <a className={classes('/account/performance/photogallery/'+id)} href={`/account/performance/photogallery/${id}`} onClick={e => { dispatch(navigate('/account/performance/photogallery/'+id)) }}>
                     <FormattedMessage
                         id="photogallery"
                         defaultMessage="Photo gallery"
                     />
                 </a>
-                <a className={classes('/account/performance/videogallery')} href={`/account/performance/videogallery/${id}`} onClick={e => { dispatch(navigate('/account/performance/videogallery')) }}>
+                <a className={classes('/account/performance/videogallery/'+id)} href={`/account/performance/videogallery/${id}`} onClick={e => { dispatch(navigate('/account/performance/videogallery/'+id)) }}>
                     <FormattedMessage
                         id="videogallery"
                         defaultMessage="Video gallery"
                     />
                 </a>
-                <a className={classes('/account/performance/settings')} href={`/account/performance/settings/${id}`} onClick={e => { dispatch(navigate('/account/performance/settings')) }}>
+                <a className={classes('/account/performance/settings/'+id)} href={`/account/performance/settings/${id}`} onClick={e => { dispatch(navigate('/account/performance/settings/'+id)) }}>
                     <FormattedMessage
                         id="settings"
                         defaultMessage="Settings"
