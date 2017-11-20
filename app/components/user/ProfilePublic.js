@@ -17,8 +17,6 @@ import Match from 'preact-router/match';
 const ProfilePublic = ({
   user,
   //submitting,
-  openStagenameModal,
-  closeStagenameModal,
   openPasswordModal,
   closePasswordModal,
   intl,

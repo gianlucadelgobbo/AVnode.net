@@ -1,13 +1,7 @@
 import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Modal from '../Modal';
 import Layout from '../Layout';
-import About from '../about/About';
-import Languages from '../language/Languages';
-import LinksWeb from '../link/LinksWeb';
-import LinksSocial from '../link/LinksSocial';
-//import LinkTypes from '../link/LinkTypes';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
