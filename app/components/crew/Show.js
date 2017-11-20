@@ -17,7 +17,7 @@ const CrewShow = ({crew, dispatch}) => {
             <i className="fa fa-fw fa-trash"></i>
           </button>
         }
-        <a className="btn btn-secondary" href={'/account/crews/' + crew._id}><i className="fa fa-edit"></i></a>
+        <a className="btn btn-secondary" href={'/account/crew/public/' + crew._id}><i className="fa fa-edit"></i></a>
       </span>
     </li>
   );

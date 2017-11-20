@@ -19,10 +19,6 @@ const ProfilePassword = ({
   saveProfile
   }) => {
 
-  if (!user._countries) {
-    fetchCountries();
-    //console.log('submitting' + submitting);
-  }
 
   const handleChange = () => {
     console.log(user);

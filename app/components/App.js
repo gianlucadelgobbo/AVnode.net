@@ -74,7 +74,7 @@ const App = () => {
           <CrewPublic path="/account/crew/public/:_id" />
           <CrewImages path="/account/crew/images/:_id" />
           <CrewMembers path="/account/crew/members/:_id" />
-          <CrewEdit path="/account/crew/:_id" />
+          <CrewEdit path="/account/crews/:_id" />
           <Performances path="/account/performances" />
           <PerformancePublic path="/account/performance/public/:_id" />
           <PerformanceEdit path="/account/performances/:_id" />

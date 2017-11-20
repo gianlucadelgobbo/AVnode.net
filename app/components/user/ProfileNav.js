@@ -29,6 +29,18 @@ const ProfileNav = ({ user, dispatch, url }) => {
                 </a>
                 <a className={classes('/account/profile/emails')} href="/account/profile/emails" onClick={e => { dispatch(navigate('/account/profile/emails')); }}>
                     <FormattedMessage
+                        id="emails"
+                        defaultMessage="Emails"
+                    />
+                </a>
+                <a className={classes('/account/profile/private')} href="/account/profile/private" onClick={e => { dispatch(navigate('/account/profile/private')); }}>
+                    <FormattedMessage
+                        id="privateData"
+                        defaultMessage="Private data"
+                    />
+                </a>
+                <a className={classes('/account/profile/emails')} href="/account/profile/password" onClick={e => { dispatch(navigate('/account/profile/password')); }}>
+                    <FormattedMessage
                         id="password"
                         defaultMessage="Password"
                     />
