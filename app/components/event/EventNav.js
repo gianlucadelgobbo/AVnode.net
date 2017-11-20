@@ -8,15 +8,11 @@ const EventNav = ({ user, dispatch, url }) => {
     let id = url.substring(url.lastIndexOf('/') + 1);
     const classes = (path) => {
         console.log('eNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
-        if (url.indexOf(path) > -1) {
-            console.log('eNav--> event' + JSON.stringify(event));
-        }
-        return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link'
+        return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
     }
 
     return (
         <div>
-            <pre>EventNav:{user.active} URL:{url}</pre>
             <nav id="account-sidenav" class="nav-justified pull-left">
                 <a className={classes('/account/event/public/'+id)} href={`/account/event/public/${id}`} onClick={e => { dispatch(navigate('/account/event/public/'+id)) }}>
                     <FormattedMessage
@@ -66,9 +62,8 @@ const EventNav = ({ user, dispatch, url }) => {
     );
 };
 
-const mapStateToProps = ({ user, event }) => ({
-    user: user,
-    event: event
+const mapStateToProps = ({ user }) => ({
+    user: user
 });
 
 export default connect(mapStateToProps)(EventNav);

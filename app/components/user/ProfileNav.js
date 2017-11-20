@@ -13,7 +13,6 @@ const ProfileNav = ({ user, dispatch, url }) => {
 
     return (
         <div>
-            <pre>ProfileNav:{user.active} URL:{url}</pre>
             <nav id="account-sidenav" class="nav-justified pull-left">
                 <a className={classes('/account/profile')} href="/account/profile" onClick={e => { dispatch(navigate('/account/profile')); }}>
                     <FormattedMessage

@@ -19,7 +19,6 @@ const SideNav = ({ user, dispatch, url }) => {
     }
     return (
         <div>
-        <pre>sidenav:{user.active} URL:{url}</pre>
         <nav id="account-sidenav" class="nav-pills nav-justified pull-left">
             {visible('/account/profile') ?
                 <div>

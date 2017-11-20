@@ -4,33 +4,33 @@ import { reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
-import CrewNav from './CrewNav';
+import EventNav from './EventNav';
 import Match from 'preact-router/match';
 import ImageDropzone from '../ImageDropzone';
 
 import {
-  addCrewImage,
-  addCrewTeaserImage
+  addEventImage,
+  addEventTeaserImage
 } from '../../reducers/actions';
 
-let CrewForm = props => {
-  const { dispatch, crew } = props;
+let EventForm = props => {
+  const { dispatch, event } = props;
 
-  const onImageDrop = (crewId) => (files, _something, _ev) => {
+  const onImageDrop = (eventId) => (files, _something, _ev) => {
     const file = files[0];
-    return dispatch(addCrewImage(crewId, file));
+    return dispatch(addEventImage(eventId, file));
   };
 
-  const onTeaserImageDrop = (crewId) => (files, _something, _ev) => {
+  const onTeaserImageDrop = (eventId) => (files, _something, _ev) => {
     const file = files[0];
-    return dispatch(addCrewTeaserImage(crewId, file));
+    return dispatch(addEventTeaserImage(eventId, file));
   };
 
   return (
     <div>
       <div className="container-fluid">
         <Match>
-          {({ url }) => <CrewNav url={url} crew={props.crew} />}
+          {({ url }) => <EventNav url={url} event={props.event} />}
         </Match>
       </div>
       <Layout>
@@ -41,16 +41,16 @@ let CrewForm = props => {
                 defaultMessage="Teaser Image"
               />
             </label>
-            {crew && crew.teaserImage ?
+            {event && event.teaserImage ?
               <img
                 className="img-thumbnail mb-3"
-                src={crew.teaserImage.publicUrl}
-                alt={`image of ${crew.title}`}
+                src={event.teaserImage.publicUrl}
+                alt={`image of ${event.title}`}
               /> :
               null
             }
             <ImageDropzone
-              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              imageUploadInProgress={(event && event.imageUploadInProgress)}
               onDrop={onTeaserImageDrop(props._id)}
             />
           </div>
@@ -62,16 +62,16 @@ let CrewForm = props => {
                 defaultMessage="Image"
               />
             </label>
-            {crew && crew.image ?
+            {event && event.image ?
               <img
                 className="img-thumbnail mb-3"
-                src={crew.image.publicUrl}
-                alt={`image of ${crew.title}`}
+                src={event.image.publicUrl}
+                alt={`image of ${event.title}`}
               /> :
               null
             }
             <ImageDropzone
-              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              imageUploadInProgress={(event && event.imageUploadInProgress)}
               onDrop={onImageDrop(props._id)}
             />
           </div>
@@ -80,12 +80,12 @@ let CrewForm = props => {
   );
 };
 
-CrewForm = injectIntl(reduxForm({ form: 'crew' })(CrewForm));
+EventForm = injectIntl(reduxForm({ form: 'event' })(EventForm));
 
-const CrewImages = props => {
+const EventImages = props => {
   return (
-    <CrewForm
-      initialValues={props.crew}
+    <EventForm
+      initialValues={props.event}
       {...props}
     />
   );
@@ -93,12 +93,12 @@ const CrewImages = props => {
 
 const mapStateToProps = (state, props) => {
   return {
-    crew: (state.user.crews.find(c => { return c._id === props._id; })),
+    event: (state.user.events.find(c => { return c._id === props._id; })),
     user: state.user
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  addCrewImage: dispatch(addCrewImage),
-  addCrewTeaserImage: dispatch(addCrewTeaserImage)
+  addEventImage: dispatch(addEventImage),
+  addEventTeaserImage: dispatch(addEventTeaserImage)
 });
-export default connect(mapStateToProps, mapDispatchToProps)(CrewImages);
+export default connect(mapStateToProps, mapDispatchToProps)(EventImages);

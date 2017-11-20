@@ -6,7 +6,6 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
 import Video from '../Video';
-import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
 import Languages from '../language/Languages';
 import Category from '../category/Category';
@@ -15,8 +14,6 @@ import PerformanceNav from './PerformanceNav';
 import Match from 'preact-router/match';
 import {
     editPerformance,
-    addPerformanceImage,
-    addPerformanceTeaserImage,
     addPerformanceVideo,
 
     suggestPerformanceCrew,
@@ -131,16 +128,6 @@ let PerformanceForm = props => {
         return dispatch(removePerformancePerformer(performance._id, performerId));
     };
 
-    const onImageDrop = (performanceId) => (files, _something, _ev) => {
-        const file = files[0];
-        return dispatch(addPerformanceImage(performanceId, file));
-    };
-
-    const onTeaserImageDrop = (performanceId) => (files, _something, _ev) => {
-        const file = files[0];
-        return dispatch(addPerformanceTeaserImage(performanceId, file));
-    };
-
     const removeCategory = (categoryId) => (e) => {
         e.preventDefault();
         return dispatch(removePerformanceCategory(performance._id, categoryId));
@@ -242,48 +229,6 @@ let PerformanceForm = props => {
                             ))
                         }
                     </ul>
-
-                    <div className="form-group">
-                        <label htmlFor="teaserImage">
-                            <FormattedMessage
-                                id="teaserImage"
-                                defaultMessage="Teaser Image"
-                            />
-                        </label>
-                        {performance && performance.teaserImage ?
-                            <img
-                                className="img-thumbnail mb-3"
-                                src={performance.teaserImage.publicUrl}
-                                alt={`image of ${performance.title}`}
-                            /> :
-                            null
-                        }
-                        <ImageDropzone
-                            imageUploadInProgress={(performance && performance.imageUploadInProgress)}
-                            onDrop={onTeaserImageDrop(props._id)}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="image">
-                            <FormattedMessage
-                                id="image"
-                                defaultMessage="Image"
-                            />
-                        </label>
-                        {performance && performance.image ?
-                            <img
-                                className="img-thumbnail mb-3"
-                                src={performance.image.publicUrl}
-                                alt={`image of ${performance.title}`}
-                            /> :
-                            null
-                        }
-                        <ImageDropzone
-                            imageUploadInProgress={(performance && performance.imageUploadInProgress)}
-                            onDrop={onImageDrop(props._id)}
-                        />
-                    </div>
 
                     <fieldset className="form-group">
                         <legend>

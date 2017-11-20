@@ -4,33 +4,33 @@ import { reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
-import CrewNav from './CrewNav';
+import PerformanceNav from './PerformanceNav';
 import Match from 'preact-router/match';
 import ImageDropzone from '../ImageDropzone';
 
 import {
-  addCrewImage,
-  addCrewTeaserImage
+  addPerformanceImage,
+  addPerformanceTeaserImage
 } from '../../reducers/actions';
 
-let CrewForm = props => {
-  const { dispatch, crew } = props;
+let PerformanceForm = props => {
+  const { dispatch, performance } = props;
 
-  const onImageDrop = (crewId) => (files, _something, _ev) => {
+  const onImageDrop = (performanceId) => (files, _something, _ev) => {
     const file = files[0];
-    return dispatch(addCrewImage(crewId, file));
+    return dispatch(addPerformanceImage(performanceId, file));
   };
 
-  const onTeaserImageDrop = (crewId) => (files, _something, _ev) => {
+  const onTeaserImageDrop = (performanceId) => (files, _something, _ev) => {
     const file = files[0];
-    return dispatch(addCrewTeaserImage(crewId, file));
+    return dispatch(addPerformanceTeaserImage(performanceId, file));
   };
 
   return (
     <div>
       <div className="container-fluid">
         <Match>
-          {({ url }) => <CrewNav url={url} crew={props.crew} />}
+          {({ url }) => <PerformanceNav url={url} />}
         </Match>
       </div>
       <Layout>
@@ -41,16 +41,16 @@ let CrewForm = props => {
                 defaultMessage="Teaser Image"
               />
             </label>
-            {crew && crew.teaserImage ?
+            {performance && performance.teaserImage ?
               <img
                 className="img-thumbnail mb-3"
-                src={crew.teaserImage.publicUrl}
-                alt={`image of ${crew.title}`}
+                src={performance.teaserImage.publicUrl}
+                alt={`image of ${performance.title}`}
               /> :
               null
             }
             <ImageDropzone
-              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              imageUploadInProgress={(performance && performance.imageUploadInProgress)}
               onDrop={onTeaserImageDrop(props._id)}
             />
           </div>
@@ -62,16 +62,16 @@ let CrewForm = props => {
                 defaultMessage="Image"
               />
             </label>
-            {crew && crew.image ?
+            {performance && performance.image ?
               <img
                 className="img-thumbnail mb-3"
-                src={crew.image.publicUrl}
-                alt={`image of ${crew.title}`}
+                src={performance.image.publicUrl}
+                alt={`image of ${performance.title}`}
               /> :
               null
             }
             <ImageDropzone
-              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              imageUploadInProgress={(performance && performance.imageUploadInProgress)}
               onDrop={onImageDrop(props._id)}
             />
           </div>
@@ -80,12 +80,12 @@ let CrewForm = props => {
   );
 };
 
-CrewForm = injectIntl(reduxForm({ form: 'crew' })(CrewForm));
+PerformanceForm = injectIntl(reduxForm({ form: 'performance' })(PerformanceForm));
 
-const CrewImages = props => {
+const PerformanceImages = props => {
   return (
-    <CrewForm
-      initialValues={props.crew}
+    <PerformanceForm
+      initialValues={props.performance}
       {...props}
     />
   );
@@ -93,12 +93,12 @@ const CrewImages = props => {
 
 const mapStateToProps = (state, props) => {
   return {
-    crew: (state.user.crews.find(c => { return c._id === props._id; })),
+    performance: (state.user.performances.find(c => { return c._id === props._id; })),
     user: state.user
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  addCrewImage: dispatch(addCrewImage),
-  addCrewTeaserImage: dispatch(addCrewTeaserImage)
+  addPerformanceImage: dispatch(addPerformanceImage),
+  addPerformanceTeaserImage: dispatch(addPerformanceTeaserImage)
 });
-export default connect(mapStateToProps, mapDispatchToProps)(CrewImages);
+export default connect(mapStateToProps, mapDispatchToProps)(PerformanceImages);
