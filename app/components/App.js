@@ -3,7 +3,6 @@ import Router from 'preact-router';
 import Match from 'preact-router/match';
 // Navigation
 import Nav from './Nav';
-import SideNav from './SideNav';
 // Profile
 import Profile from './user/ProfilePublicContainer';
 import ProfileImages from './user/ProfileImagesContainer';
@@ -61,11 +60,6 @@ const App = () => {
           <Nav />
         </div>
       </div>
-{ /*     <div className="container-fluid">
-        <Match>
-          { ({ url }) => <SideNav url={url} /> }
-        </Match>
-  </div>*/}
       <div className="container">
         <Router>
           <Profile path="/account/profile" />

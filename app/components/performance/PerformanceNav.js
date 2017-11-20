@@ -10,7 +10,6 @@ const PerformanceNav = ({ user, dispatch, url }) => {
         console.log('PeNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
         if (url.indexOf(path) > -1) {
             console.log('PNav--> perf' + JSON.stringify(performance));
-            console.log('PNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
         }
         return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link'
     }
