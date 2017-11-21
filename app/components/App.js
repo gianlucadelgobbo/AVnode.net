@@ -9,7 +9,7 @@ import ProfileImages from './user/ProfileImagesContainer';
 import ProfileLinks from './user/ProfileLinksContainer';
 import ProfileEmails from './user/ProfileEmailsContainer';
 import ProfileAddresses from './user/ProfileAddressesContainer';
-import ProfilePrivate from './user/ProfilePrivate';
+import ProfilePrivate from './user/ProfilePrivateContainer';
 import ProfilePassword from './user/ProfilePassword';
 import ProfileConnections from './user/ProfileConnections';
 // Crews

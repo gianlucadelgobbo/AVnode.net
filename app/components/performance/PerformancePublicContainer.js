@@ -62,7 +62,7 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
     return (
         <li className="list-group-item justify-content-between">
             <span>
-                {`${performer.stagename} `}
+                FIX:{`${performer.stagename} `}{`${performer.name} `}{`${performer._id} `}
                 {(performer._id === me) ?
                     <i className="badge badge-default badge-pill">{meLabel}</i>
                     : null
@@ -378,7 +378,8 @@ let PerformanceForm = props => {
                             />
                         </label>
                         <ul className="list-group">
-                            {performance && performance.performers && performance.performers.map((performer) => (
+                {/*performance && performance.performers && performance.performers.map((performer) => (*/}
+                            {performance && performance.users && performance.users.map((performer) => (
                                 <Performer
                                     performer={performer}
                                     me={props.user._id}

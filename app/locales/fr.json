@@ -204,6 +204,7 @@
 	"Email %s, password not found.": "Email %s, mot de passe non trouvé.",
 	"websites": "Sites Internet",
 	"myAccountPublicData": "Données publiques de mon compte",
+	"myAccountPrivateData": "Données privées de mon compte",
 	"publicData": "Données publiques",
 	"privateData": "Données privées",
 	"socials": "Réseaux sociaux",

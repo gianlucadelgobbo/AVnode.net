@@ -1012,8 +1012,10 @@ export function userEmailDelete(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
+    let str = JSON.stringify(data);
     console.log('_______________ ACTION editUser __________________________________');
-    console.log('editUser data id: ' + data._id);
+    console.log('editUser data length: ' + str.length);
+    //console.log('editUser data: ' + str);
     console.log('editUser data name: ' + data.name);
     console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
 
