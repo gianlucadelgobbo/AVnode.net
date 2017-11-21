@@ -15,6 +15,8 @@ const i18n = require('./lib/plugins/i18n');
 const passport = require('./lib/plugins/passport');
 const routes = require('./lib/routes');
 
+// config = require('getconfig');
+
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
 dotenv.load({ path: '.env.local' });
@@ -113,8 +115,11 @@ app.use(routes);
 // declared before this
 
 app.use(function onerror(err, req, res, next) {
-  console.log('Error:' + err);
-  //throw err;
+  // happens on user not logged in  
+  if (err) {
+    console.log('Server Error:' + err);
+    //throw err;
+  }
 });
 
 const webpack = require('webpack');

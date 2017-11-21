@@ -614,7 +614,7 @@ let EventForm = props => {
           <label htmlFor="organizingCrews">
             <FormattedMessage
               id="organizingCrews"
-              defaultMessage="OrganizingCrews"
+              defaultMessage="Organizing Crews"
             />
           </label>
           <ul className="list-group">
