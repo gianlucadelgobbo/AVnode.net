@@ -62,7 +62,7 @@ const App = () => {
       </div>
       <div className="container">
         <Router>
-          <Profile path="/account/profile" />
+          <Profile path="/account/profile/public" />
           <ProfileImages path="/account/profile/images" />
           <ProfileLinks path="/account/profile/links" />
           <ProfileEmails path="/account/profile/emails" />

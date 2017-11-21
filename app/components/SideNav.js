@@ -22,7 +22,7 @@ const SideNav = ({ user, dispatch, url }) => {
         <nav id="account-sidenav" class="nav-pills nav-justified pull-left">
             {visible('/account/profile') ?
                 <div>
-                    <a className={classes('/account/profile')} href="/account/profile" onClick={e => { dispatch(navigate('/account/profile')); }}>
+                    <a className={classes('/account/profile/public')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')); }}>
                         <FormattedMessage
                             id="publicData"
                             defaultMessage="Public data"
