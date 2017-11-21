@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Modal from '../Modal';
 import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
@@ -17,8 +16,6 @@ import Match from 'preact-router/match';
 const ProfilePublic = ({
   user,
   //submitting,
-  openPasswordModal,
-  closePasswordModal,
   intl,
   handleSubmit,
   saveProfile,

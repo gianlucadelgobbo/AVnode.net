@@ -226,5 +226,6 @@
 	"Members": "Members",
 	"Login": "Login",
 	"Sign up": "Sign up",
-	"Password": "Password"
+	"currentPassword": "Mot de passe actuel",
+	"Password": "Mot de passe"
 }

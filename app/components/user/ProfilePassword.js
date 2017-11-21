@@ -41,36 +41,12 @@ const ProfilePassword = ({
                 defaultMessage="Password"
               />
             </legend>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={openPasswordModal}
-            >
-              <FormattedMessage
-                id="password.change"
-                defaultMessage="Change your password"
-              />
-            </button>
-            <Modal
-              title="Caution"
-              open={user._passwordModalActive}
-              close={closePasswordModal}
-              footer={
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                >
-                  <FormattedMessage
-                    id="change"
-                    defaultMessage="Change"
-                  />
-                </button>
-              }
-            >
+
+
               <div className="form-group">
                 <label htmlFor="password">
                   <FormattedMessage
-                    id="user.edit.form.label.password"
+                    id="currentPassword"
                     defaultMessage="Current Password"
                   />
                 </label>
@@ -121,12 +97,6 @@ const ProfilePassword = ({
                   })}
                 />
               </div>
-              <div className="form-group">
-                <button className="btn btn-primary" type="submit">
-                  Change Password
-              </button>
-              </div>
-            </Modal>
           </fieldset>
 
           <div className="form-group">
@@ -136,8 +106,8 @@ const ProfilePassword = ({
               type="submit"
             >
               <FormattedMessage
-                id="form.save"
-                defaultMessage="Save"
+                id="password.change"
+                defaultMessage="Change your password"
               />
             </button>
           </div>
