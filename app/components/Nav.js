@@ -12,25 +12,25 @@ const Nav = ({ user, dispatch }) => {
 
   return (
     <nav id="account-nav" class="nav nav-pills nav-justified">
-      <a className={classes('/account/profile/public')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')) }}>
+      <a className={classes('/account/profile')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')) }}>
         <FormattedMessage
           id="profile"
           defaultMessage="Profile"
         />
       </a>
-      <a className={classes('/account/crews')} href="/account/crews" onClick={e => { dispatch(navigate('/account/crews')) }}>
+      <a className={classes('/account/crew')} href="/account/crews" onClick={e => { dispatch(navigate('/account/crews')) }}>
         <FormattedMessage
           id="crews"
           defaultMessage="Crews"
         /> <span class="badge badge-pill badge-default">{user.crews.length}</span>
       </a>
-      <a className={classes('/account/performances')} href="/account/performances" onClick={e => { dispatch(navigate('/account/performances')) }}>
+      <a className={classes('/account/performance')} href="/account/performances" onClick={e => { dispatch(navigate('/account/performances')) }}>
         <FormattedMessage
           id="performances"
           defaultMessage="Performances"
         /> <span class="badge badge-pill badge-default">{user.performances.length}</span>
       </a>
-      <a className={classes('/account/events')} href="/account/events" onClick={e => { dispatch(navigate('/account/events')) }}>
+      <a className={classes('/account/event')} href="/account/events" onClick={e => { dispatch(navigate('/account/events')) }}>
         <FormattedMessage
           id="events"
           defaultMessage="Events"

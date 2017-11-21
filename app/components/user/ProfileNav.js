@@ -14,7 +14,7 @@ const ProfileNav = ({ user, dispatch, url }) => {
     return (
         <div>
             <nav id="account-sidenav" class="nav-justified pull-left">
-                <a className={classes('/account/profile')} href="/account/profile" onClick={e => { dispatch(navigate('/account/profile')); }}>
+                <a className={classes('/account/profile/public')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')); }}>
                     <FormattedMessage
                         id="publicData"
                         defaultMessage="Public data"
@@ -38,7 +38,7 @@ const ProfileNav = ({ user, dispatch, url }) => {
                         defaultMessage="Private data"
                     />
                 </a>
-                <a className={classes('/account/profile/emails')} href="/account/profile/password" onClick={e => { dispatch(navigate('/account/profile/password')); }}>
+                <a className={classes('/account/profile/password')} href="/account/profile/password" onClick={e => { dispatch(navigate('/account/profile/password')); }}>
                     <FormattedMessage
                         id="password"
                         defaultMessage="Password"
