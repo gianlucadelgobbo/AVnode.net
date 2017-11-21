@@ -159,7 +159,7 @@ let PerformanceForm = props => {
         <div className="form-group">
           <label htmlFor="title">
             <FormattedMessage
-              id="Title"
+              id="title"
               defaultMessage="Name"
             />
           </label>

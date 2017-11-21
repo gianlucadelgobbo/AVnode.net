@@ -65,6 +65,18 @@ footer {
       padding: .5rem 1rem;
     }
   }
+  #account-sidenav {
+    .nav-link {
+      background-color: $gray-lighter;
+      color: $gray-dark;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      &.active {
+        background-color: $gray-lightest;
+      }
+      padding: .5rem 1rem;
+    }
+  }
   fieldset {
     margin-top: 2rem;
   }
