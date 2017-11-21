@@ -28,7 +28,7 @@ const ActualDropzone = (onDrop) =>  (field) => {
         activeClassName="drop"
       >
         <div>
-          <FormattedMessage id="ImageDrop" defaultMessage="Drop image here or click to upload…" />
+          <FormattedMessage id="imageDrop" defaultMessage="Drop image here or click to upload…" />
         </div>
       </Dropzone>
       {field.meta.touched &&

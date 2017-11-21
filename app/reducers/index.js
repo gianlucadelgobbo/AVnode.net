@@ -161,6 +161,7 @@ const user = (state = initialValues, action) => {
   //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
+      console.log('NAVIGATE user action: ' + JSON.stringify(action));
       return Object.assign({}, state, {
         active: action.active
       });
@@ -327,7 +328,7 @@ const user = (state = initialValues, action) => {
         action: action
       });*/
     default:
-      console.log('info, user action not handled: ' + action.type);
+      // console.log('info, user action not handled: ' + action.type);
       return state;
   }
 };
