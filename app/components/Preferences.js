@@ -12,7 +12,7 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
   return (
     <Layout
       title={intl.formatMessage({
-        id: 'Title',
+        id: 'title',
         defaultMessage: 'Your Preferences'
       })}
     >

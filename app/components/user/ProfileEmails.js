@@ -5,6 +5,8 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Email from '../emails/Email';
 import Layout from '../Layout';
 import Languages from '../language/Languages';
+import ProfileNav from './ProfileNav';
+import Match from 'preact-router/match';
 
 const ProfileEmailsForm = ({
   user,
@@ -35,6 +37,12 @@ const ProfileEmailsForm = ({
   };
 
   return (
+    <div className="container-fluid account-nav-wrap">
+    <div className="container-fluid">
+      <Match>
+        {({ url }) => <ProfileNav url={url} />}
+      </Match>
+    </div>
     <Layout>
       <form onSubmit={handleSubmit(saveProfile)}>
 
@@ -102,6 +110,7 @@ const ProfileEmailsForm = ({
 
       </form>
     </Layout >
+    </div>
   );
 };
 

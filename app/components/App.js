@@ -1,19 +1,45 @@
 import { h } from 'preact';
 import Router from 'preact-router';
-
+import Match from 'preact-router/match';
+// Navigation
 import Nav from './Nav';
+// Profile
 import Profile from './user/ProfilePublicContainer';
 import ProfileImages from './user/ProfileImagesContainer';
 import ProfileLinks from './user/ProfileLinksContainer';
 import ProfileEmails from './user/ProfileEmailsContainer';
 import ProfileAddresses from './user/ProfileAddressesContainer';
-import Events from './Events';
-import EventEdit from './event/Edit';
+import ProfilePrivate from './user/ProfilePrivateContainer';
+import ProfilePassword from './user/ProfilePasswordContainer';
+import ProfileConnections from './user/ProfileConnections';
+// Crews
 import Crews from './Crews';
 import CrewEdit from './crew/Edit';
+import CrewPublic from './crew/CrewPublicContainer';
+import CrewImages from './crew/CrewImages';
+import CrewMembers from './crew/CrewMembersContainer';
+// Performances
 import Performances from './Performances';
 import PerformanceEdit from './performance/Edit';
-import PerformanceAbouts from './performance/PerformanceAbouts';
+import PerformancePublic from './performance/PerformancePublicContainer';
+//import PerformanceAbouts from './performance/PerformanceAbouts';
+import PerformanceImages from './performance/PerformanceImages';
+import PerformanceEvents from './performance/PerformanceEventsContainer';
+import PerformanceAuthors from './performance/PerformanceAuthorsContainer';
+import PerformancePhotoGallery from './performance/PerformancePhotoGalleryContainer';
+import PerformanceVideoGallery from './performance/PerformanceVideoGalleryContainer';
+import PerformanceSettings from './performance/PerformanceSettingsContainer';
+// Events
+import Events from './Events';
+import EventEdit from './event/Edit';
+import EventPublic from './event/EventPublicContainer';
+import EventImages from './event/EventImages';
+import EventPerformances from './event/EventPerformancesContainer';
+import EventPartners from './event/EventPartnersContainer';
+import EventPhotoGallery from './event/EventPhotoGalleryContainer';
+import EventVideoGallery from './event/EventVideoGalleryContainer';
+import EventSettings from './event/EventSettingsContainer';
+// Preferences
 import Preferences from './PreferencesContainer';
 import { FormattedMessage } from 'preact-intl';
 
@@ -22,8 +48,9 @@ const App = () => {
     <div>
       <div className="jumbotron jumbotron-fluid">
         <div className="container">
-          <h1 className="display-4"><FormattedMessage
-            id="Account"
+          <h1 className="display-4">
+          <FormattedMessage
+            id="account"
             defaultMessage="Account"
           /></h1>
         </div>
@@ -35,18 +62,37 @@ const App = () => {
       </div>
       <div className="container">
         <Router>
-          <Profile path="/account/profile" />
-          <ProfileImages path="/account/profileimages" />
-          <ProfileLinks path="/account/profilelinks" />
-          <ProfileEmails path="/account/profileemails" />
-          <ProfileAddresses path="/account/profileaddresses" />
-          <Events path="/account/events" />
-          <EventEdit path="/account/events/:_id" />
+          <Profile path="/account/profile/public" />
+          <ProfileImages path="/account/profile/images" />
+          <ProfileLinks path="/account/profile/links" />
+          <ProfileEmails path="/account/profile/emails" />
+          <ProfileAddresses path="/account/profile/addresses" />
+          <ProfilePrivate path="/account/profile/private" />
+          <ProfilePassword path="/account/profile/password" />
+          <ProfileConnections path="/account/profile/connections" />
           <Crews path="/account/crews" />
+          <CrewPublic path="/account/crew/public/:_id" />
+          <CrewImages path="/account/crew/images/:_id" />
+          <CrewMembers path="/account/crew/members/:_id" />
           <CrewEdit path="/account/crews/:_id" />
           <Performances path="/account/performances" />
-          <PerformanceAbouts path="/account/performanceabouts/:_id" />
+          <PerformancePublic path="/account/performance/public/:_id" />
           <PerformanceEdit path="/account/performances/:_id" />
+          <PerformanceImages path="/account/performance/images/:_id" />
+          <PerformanceEvents path="/account/performance/events/:_id" />
+          <PerformanceAuthors path="/account/performance/authors/:_id" />
+          <PerformancePhotoGallery path="/account/performance/photogallery/:_id" />
+          <PerformanceVideoGallery path="/account/performance/videogallery/:_id" />
+          <PerformanceSettings path="/account/performance/settings/:_id" />
+          <Events path="/account/events" />
+          <EventPublic path="/account/event/public/:_id" />
+          <EventEdit path="/account/event/:_id" />
+          <EventImages path="/account/event/images/:_id" />
+          <EventPerformances path="/account/event/performances/:_id" />
+          <EventPartners path="/account/event/partners/:_id" />
+          <EventPhotoGallery path="/account/event/photogallery/:_id" />
+          <EventVideoGallery path="/account/event/videogallery/:_id" />
+          <EventSettings path="/account/event/settings/:_id" />
           <Preferences path="/account/preferences" />
         </Router>
       </div>
