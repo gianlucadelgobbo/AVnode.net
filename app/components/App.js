@@ -15,13 +15,13 @@ import ProfileConnections from './user/ProfileConnections';
 // Crews
 import Crews from './Crews';
 import CrewEdit from './crew/Edit';
-import CrewPublic from './crew/CrewPublicContainer';
+import CrewPublic from './crew/CrewPublic';
 import CrewImages from './crew/CrewImages';
 import CrewMembers from './crew/CrewMembersContainer';
 // Performances
 import Performances from './Performances';
 import PerformanceEdit from './performance/Edit';
-import PerformancePublic from './performance/PerformancePublicContainer';
+import PerformancePublic from './performance/PerformancePublic';
 //import PerformanceAbouts from './performance/PerformanceAbouts';
 import PerformanceImages from './performance/PerformanceImages';
 import PerformanceEvents from './performance/PerformanceEventsContainer';

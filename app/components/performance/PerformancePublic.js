@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { route } from 'preact-router';
+// import { route } from 'preact-router';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
@@ -136,7 +136,7 @@ let PerformanceForm = props => {
     let videoLink; // FIXME
 
     return (
-        <div className="container-fluid account-nav-wrap">
+        <div>
             <div className="container-fluid">
                 <Match>
                     {({ url }) => <PerformanceNav url={url} performance={props.performance} />}
@@ -511,12 +511,12 @@ let PerformanceForm = props => {
 
 PerformanceForm = injectIntl(reduxForm({ form: 'performance' })(PerformanceForm));
 
-const PerformancePublicContainer = props => {
+const PerformancePublic = props => {
     const onSubmit = (props, dispatch) => {
         dispatch(editPerformance(props));
     };
     const onSubmitSuccess = () => {
-        route('/account/performances');
+        //route('/account/performances');
     };
     return (
         <PerformanceForm
@@ -535,5 +535,5 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-export default connect(mapStateToProps)(PerformancePublicContainer);
+export default connect(mapStateToProps)(PerformancePublic);
 

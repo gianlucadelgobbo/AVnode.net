@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { connect } from 'preact-redux';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
@@ -18,31 +19,30 @@ import LinksMobileEdit from '../link/LinksMobileEdit';
 import LinksPhoneEdit from '../link/LinksPhoneEdit';
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
+import {
+    editCrew,
+    aboutCrewMakePrimary
+} from '../../reducers/actions';
 
-const CrewPublic = ({
-    crew,
-    //submitting,
-    intl,
-    handleSubmit,
-    saveCrew
-    }) => {
+let CrewForm = props => {
+    const { handleSubmit, dispatch, crew, user, intl } = props;
 
     const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
-        about.is_primary = true;
+        //about.is_primary = true;
         return dispatch(aboutCrewMakePrimary(crewId, about._id));
     };
 
-    if (!crew.org) crew.org = {};
+    if (!props.org) props.org = {};
 
     return (
-        <div className="container-fluid account-nav-wrap">
+        <div>
             <div className="container-fluid">
                 <Match>
-                    {({ url }) => <CrewNav url={url} />}
+                    {({ url }) => <CrewNav url={url} crew={props.crew} />}
                 </Match>
             </div>
             <Layout>
-                <form onSubmit={handleSubmit(saveCrew)}>
+                <form onSubmit={handleSubmit}>
                     <Field
                         name="_id"
                         component="input"
@@ -57,7 +57,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-success">
+            <span class="badge badge-success">
                             <FormattedMessage
                                 id="public"
                                 defaultMessage='Public'
@@ -68,7 +68,7 @@ const CrewPublic = ({
                             name="name"
                             component="input"
                             type="text"
-                            value={crew.name}
+                            value={props.name}
                         />
                     </div>
 
@@ -81,7 +81,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-success">
+              <span class="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
@@ -94,7 +94,7 @@ const CrewPublic = ({
                                     component="textarea"
                                     rows="4"
                                     placeholder="About the crew"
-                                    value={crew.about}
+                                    value={props.about}
                                 />
                             </div>
                         </div>
@@ -110,7 +110,7 @@ const CrewPublic = ({
                                     className="form-control custom-select"
                                     name="aboutlanguage"
                                     component="select"
-                                    value={crew.aboutlanguage}
+                                    value={props.aboutlanguage}
                                 >
                                     <option value="en">
                                         <FormattedMessage
@@ -160,7 +160,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -171,7 +171,7 @@ const CrewPublic = ({
                             name="org_name"
                             component="input"
                             type="text"
-                            value={crew.org_name}
+                            value={props.org_name}
                         />
                     </div>
                     <div className="row">
@@ -183,7 +183,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-success">
+              <span class="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
@@ -194,7 +194,7 @@ const CrewPublic = ({
                                 name="org_foundation_year"
                                 component="input"
                                 type="text"
-                                value={crew.org_foundation_year}
+                                value={props.org_foundation_year}
                             />
                         </div>
                         <div className="col-md-6 form-group">
@@ -205,7 +205,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-success">
+              <span class="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
@@ -376,11 +376,8 @@ const CrewPublic = ({
                         </div>
                     </div>
 
-
-
-
-                    <LinksWebEdit links={crew.org_links} privacy="public" />
-                    <LinksSocialEdit links={crew.org_links} privacy="public" />
+                    <LinksWebEdit links={props.org_links} privacy="public" />
+                    <LinksSocialEdit links={props.org_links} privacy="public" />
 
                     <div className="form-group">
                         <label htmlFor="org_public_email">
@@ -390,7 +387,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-success">
+            <span class="badge badge-success">
                             <FormattedMessage
                                 id="public"
                                 defaultMessage='Public'
@@ -402,7 +399,7 @@ const CrewPublic = ({
                                 name="org_public_email"
                                 component="input"
                                 type="text"
-                                value={crew.org_public_email}
+                                value={props.org_public_email}
                             />
                             <div className="input-group-addon">
                                 <i className="fa fa-envelope"></i>
@@ -416,7 +413,7 @@ const CrewPublic = ({
                         </div>
                     </div>
 
-                    <LinksPhoneEdit links={crew.org_links} privacy="public" />
+                    <LinksPhoneEdit links={props.org_links} privacy="public" />
 
                     <div className="form-group">
                         <label htmlFor="org_aims_and_activities">
@@ -426,7 +423,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -437,11 +434,11 @@ const CrewPublic = ({
                             name="org_aims_and_activities"
                             component="textarea"
                             rows="4"
-                            placeholder={crew.intl.formatMessage({
+                            placeholder={props.intl.formatMessage({
                                 id: 'about.placeholder',
                                 defaultMessage: 'Tell me something about aims and activities of the organisation.'
                             })}
-                            value={crew.org_aims_and_activities}
+                            value={props.org_aims_and_activities}
                         />
                     </div>
 
@@ -453,7 +450,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -464,7 +461,7 @@ const CrewPublic = ({
                             name="org_pic_code"
                             component="input"
                             type="text"
-                            value={crew.org_pic_code}
+                            value={props.org_pic_code}
                         />
                     </div>
 
@@ -476,7 +473,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -501,7 +498,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -512,7 +509,7 @@ const CrewPublic = ({
                                 name="org_able_to_recuperate_vat"
                                 component="input"
                                 type="text"
-                                value={crew.org_vat_number}
+                                value={props.org_vat_number}
                             />
                         </div>
 
@@ -525,8 +522,8 @@ const CrewPublic = ({
                             </label>
                             <div>
                                 <input type="radio" value="1" name="org_able_to_recuperate_vat" /> YES
-              <input type="radio" value="0" name="org_able_to_recuperate_vat" /> NO
-            </div>
+                <input type="radio" value="0" name="org_able_to_recuperate_vat" /> NO
+              </div>
 
                         </div>
                     </div>
@@ -539,7 +536,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -550,7 +547,7 @@ const CrewPublic = ({
                             name="org_official_registration_number"
                             component="input"
                             type="text"
-                            value={crew.org_official_registration_number}
+                            value={props.org_official_registration_number}
                         />
                     </div>
 
@@ -563,7 +560,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -603,7 +600,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -614,7 +611,7 @@ const CrewPublic = ({
                                 name="org_legal_representative_role"
                                 component="input"
                                 type="text"
-                                value={crew.org_legal_representative_role}
+                                value={props.org_legal_representative_role}
                             />
                         </div>
                     </div>
@@ -628,7 +625,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -639,7 +636,7 @@ const CrewPublic = ({
                                 name="org_legal_representative_name"
                                 component="input"
                                 type="text"
-                                value={crew.org_legal_representative_name}
+                                value={props.org_legal_representative_name}
                             />
                         </div>
 
@@ -651,7 +648,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -662,7 +659,7 @@ const CrewPublic = ({
                                 name="org_legal_representative_surname"
                                 component="input"
                                 type="text"
-                                value={crew.org_legal_representative_surname}
+                                value={props.org_legal_representative_surname}
                             />
                         </div>
                     </div>
@@ -675,7 +672,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -687,7 +684,7 @@ const CrewPublic = ({
                                 name="org_legal_representative_email"
                                 component="input"
                                 type="text"
-                                value={crew.org_legal_representative_email}
+                                value={props.org_legal_representative_email}
                             />
                             <div className="input-group-addon">
                                 <i className="fa fa-envelope"></i>
@@ -701,11 +698,11 @@ const CrewPublic = ({
                         </div>
                     </div>
 
-                    <LinksMobileEdit links={crew.org_legal_representative_links} privacy="private" />
+                    <LinksMobileEdit links={props.org_legal_representative_links} privacy="private" />
 
-                    <LinksSkypeEdit links={crew.org_legal_representative_links} privacy="private" />
+                    <LinksSkypeEdit links={props.org_legal_representative_links} privacy="private" />
 
-                    <LinksSocialEdit links={crew.org_legal_representative_links} privacy="public" />
+                    <LinksSocialEdit links={props.org_legal_representative_links} privacy="public" />
 
                     <div className="form-group">
                         <label htmlFor="org_statute">
@@ -715,7 +712,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -726,15 +723,15 @@ const CrewPublic = ({
                                 <img
                                     className="img-thumbnail mb-3"
                                     src={crew.org_statute.publicUrl}
-                                    alt={`Organisation statute of ${crew.org_name}`}
+                                    alt={`Organisation statute of ${props.org_name}`}
                                 />
                             </div> :
                             null
                         }
-                        <ImageDropzone
-                            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
-                            onDrop={onImageDrop(crew._id)}
-                        />
+                        {/* BL FIXME add pdf upload <ImageDropzone
+              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              onDrop={onImageDrop(props._id)}
+            /> */}
                     </div>
 
                     <div className="form-group">
@@ -745,7 +742,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -756,15 +753,16 @@ const CrewPublic = ({
                                 <img
                                     className="img-thumbnail mb-3"
                                     src={crew.org_members_cv.publicUrl}
-                                    alt={`Organisation members cv of ${crew.org_name}`}
+                                    alt={`Organisation members cv of ${props.org_name}`}
                                 />
                             </div> :
                             null
                         }
-                        <ImageDropzone
-                            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
-                            onDrop={onImageDrop(crew._id)}
-                        />
+                        {/* BL FIXME add  upload
+            <ImageDropzone
+              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              onDrop={onImageDrop(props._id)}
+             /> */ }
                     </div>
 
                     <div className="form-group">
@@ -775,7 +773,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -786,15 +784,16 @@ const CrewPublic = ({
                                 <img
                                     className="img-thumbnail mb-3"
                                     src={crew.org_activity_report.publicUrl}
-                                    alt={`Activity Report of ${crew.org_name}`}
+                                    alt={`Activity Report of ${props.org_name}`}
                                 />
                             </div> :
                             null
                         }
-                        <ImageDropzone
-                            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
-                            onDrop={onImageDrop(crew._id)}
-                        />
+                        {/* BL FIXME add  upload
+            <ImageDropzone
+              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+              onDrop={onImageDrop(props._id)}
+            /> */ }
                     </div>
 
                     <div className="row">
@@ -806,7 +805,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -817,7 +816,7 @@ const CrewPublic = ({
                                 name="org_permanent_employees"
                                 component="input"
                                 type="text"
-                                value={crew.org_permanent_employees}
+                                value={props.org_permanent_employees}
                             />
                         </div>
 
@@ -829,7 +828,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -840,7 +839,7 @@ const CrewPublic = ({
                                 name="org_permanent_employees_avnode"
                                 component="input"
                                 type="text"
-                                value={crew.org_permanent_employees_avnode}
+                                value={props.org_permanent_employees_avnode}
                             />
                         </div>
                     </div>
@@ -854,7 +853,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -865,7 +864,7 @@ const CrewPublic = ({
                                 name="org_temporary_employees"
                                 component="input"
                                 type="text"
-                                value={crew.org_temporary_employees}
+                                value={props.org_temporary_employees}
                             />
                         </div>
 
@@ -877,7 +876,7 @@ const CrewPublic = ({
                                 />
                             </label>
                             &nbsp;
-            <span class="badge badge-danger">
+              <span class="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -888,7 +887,7 @@ const CrewPublic = ({
                                 name="org_temporary_employees_avnode"
                                 component="input"
                                 type="text"
-                                value={crew.org_temporary_employees_avnode}
+                                value={props.org_temporary_employees_avnode}
                             />
                         </div>
                     </div>
@@ -900,7 +899,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -911,11 +910,11 @@ const CrewPublic = ({
                             name="org_relevance_in_the_project"
                             component="textarea"
                             rows="4"
-                            placeholder={crew.intl.formatMessage({
+                            placeholder={props.intl.formatMessage({
                                 id: 'about.placeholder',
                                 defaultMessage: 'Tell me something about organisation relevance in the project.'
                             })}
-                            value={crew.org_relevance_in_the_project}
+                            value={props.org_relevance_in_the_project}
                         />
                     </div>
 
@@ -927,7 +926,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -938,11 +937,11 @@ const CrewPublic = ({
                             name="org_emerging_artists_definition"
                             component="textarea"
                             rows="4"
-                            placeholder={crew.intl.formatMessage({
+                            placeholder={props.intl.formatMessage({
                                 id: 'about.placeholder',
                                 defaultMessage: 'Tell me the organisation emerging artists definition.'
                             })}
-                            value={crew.org_emerging_artists_definition}
+                            value={props.org_emerging_artists_definition}
                         />
                     </div>
 
@@ -954,7 +953,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -965,11 +964,11 @@ const CrewPublic = ({
                             name="org_eu_grants_received_in_the_last_3_years"
                             component="textarea"
                             rows="4"
-                            placeholder={crew.intl.formatMessage({
+                            placeholder={props.intl.formatMessage({
                                 id: 'about.placeholder',
                                 defaultMessage: 'EU grants received in the last 3 years.'
                             })}
-                            value={crew.org_eu_grants_received_in_the_last_3_years}
+                            value={props.org_eu_grants_received_in_the_last_3_years}
                         />
                     </div>
 
@@ -981,7 +980,7 @@ const CrewPublic = ({
                             />
                         </label>
                         &nbsp;
-          <span class="badge badge-danger">
+            <span class="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -992,7 +991,7 @@ const CrewPublic = ({
                             name="org_annual_turnover_in_euro"
                             component="input"
                             type="text"
-                            value={crew.org_annual_turnover_in_euro}
+                            value={props.org_annual_turnover_in_euro}
                         />
                     </div>
 
@@ -1027,9 +1026,6 @@ const CrewPublic = ({
                         <OrgActivity contact={{}} />
                     </fieldset>
 
-
-
-
                     <div className="form-group">
                         <button
                             className="btn btn-primary"
@@ -1047,7 +1043,31 @@ const CrewPublic = ({
     );
 };
 
-export default injectIntl(reduxForm({
-    form: 'crew',
-    enableReinitialize: true
-  })(CrewPublic));
+CrewForm = injectIntl(reduxForm({ form: 'crew' })(CrewForm));
+
+const CrewPublic = props => {
+    const onSubmit = (props, dispatch) => {
+        dispatch(editCrew(props));
+    };
+    const onSubmitSuccess = () => {
+        //route('/account/crews');
+    };
+    return (
+        <CrewForm
+            initialValues={props.crew}
+            onSubmit={onSubmit}
+            onSubmitSuccess={onSubmitSuccess}
+            {...props}
+        />
+    );
+};
+
+const mapStateToProps = (state, props) => {
+    return {
+        crew: (state.user.crews.find(c => { return c._id === props._id; })),
+        user: state.user,
+    };
+};
+
+export default connect(mapStateToProps)(CrewPublic);
+
