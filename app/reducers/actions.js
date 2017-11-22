@@ -510,6 +510,9 @@ export function suggestCrewMember(crewId, q) {
 }
 
 export function addCrewMember(crewId, member) {
+  const action = `actions, addCrewMember(crewId: ${crewId}, member: ${JSON.stringify(member)}`;
+  console.log(`${action} member.id: ${member.id})`);
+  
   return dispatch => {
     dispatch({
       type: REQUEST_ADD_CREWMEMBER

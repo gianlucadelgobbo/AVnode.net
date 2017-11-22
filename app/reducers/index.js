@@ -105,15 +105,15 @@ const crew = (state = {}, action) => {
   console.log('crew action type: ' + action.type + ' action: ' + JSON.stringify(action));
   switch (action.type) {
     case REQUEST_ADD_CREWMEMBER:
-    console.log('BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
-    
-      if (state._id !== action.payload.crewId) {
-        return state;
-      }
-      return Object.assign({}, state, {
-        members: R.append(action.payload.member, state.members)
-      });
+      console.log('--> crew BL FIXME not called, useless?');
+      // BL FIXME crewId undefined if (state._id !== action.payload.crewId) {
+      return state;
+    /* }
+    return Object.assign({}, state, {
+      members: R.append(action.payload.member, state.members)
+    }); */
     case REQUEST_ADD_CREWIMAGE:
+    console.log('--> crew REQUEST_ADD_CREWIMAGE');
       if (state._id !== action.payload.crewId) {
         return state;
       }
@@ -135,8 +135,8 @@ const crew = (state = {}, action) => {
         imageUploadInProgress: true
       });
     case REQUEST_DELETE_CREWMEMBER:
-    console.log('BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
-    
+      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+
       if (state._id !== action.payload.crewId) {
         return state;
       }
@@ -152,8 +152,8 @@ const crew = (state = {}, action) => {
         })
       });
     case REQUEST_CREW_MAKEABOUTPRIMARY:
-    console.log('BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
-    
+      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+
       return state;
     default:
       console.log('info, crew action not handled: ' + action.type);
@@ -277,9 +277,17 @@ const user = (state = initialValues, action) => {
         _organizingCrewSuggestionInProgress: false
       });
     case REQUEST_ADD_CREWMEMBER:
+      return state;
     case REQUEST_DELETE_CREWMEMBER:
     case REQUEST_CREW_MAKEABOUTPRIMARY:
-      console.log('BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+      console.log('--> user BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+      /* BL FIXME copied from crew see up! crewId undefined if (state._id !== action.payload.crewId) {
+        return state;
+         }
+        return Object.assign({}, state, {
+          members: R.append(action.payload.member, state.members)
+        }); */
+      console.log('user action: ' + JSON.stringify(action) + ' state: ' + JSON.stringify(state.crews) + ' action.payload: ' + JSON.stringify(action.payload));
       return Object.assign({}, state, {
         crews: state.crews.map((c) => {
           return crew(c, action);

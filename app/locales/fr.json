@@ -227,5 +227,8 @@
 	"Login": "Login",
 	"Sign up": "Sign up",
 	"currentPassword": "Mot de passe actuel",
-	"Password": "Mot de passe"
+	"Password": "Mot de passe",
+	"Stagename": "Stagename",
+	"Confirm Password": "Confirm Password",
+	"Signup": "Signup"
 }
