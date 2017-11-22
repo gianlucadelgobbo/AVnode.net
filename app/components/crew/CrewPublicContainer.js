@@ -1,22 +1,19 @@
-import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { injectIntl, FormattedMessage } from 'preact-intl';
-import CrewNav from './CrewNav';
-import Match from 'preact-router/match';
+import {
+  editCrew,
+  aboutCrewMakePrimary
+} from '../../reducers/actions';
+import CrewPublic from './CrewPublic';
 
-const CrewPublicContainer = injectIntl(() => {
-  return (
-    <div>
-          <div className="container-fluid">
-      <Match>
-        {({ url }) => <CrewNav url={url} />}
-      </Match>
-    </div>
-        <label>
-        CrewPublicContainer
-        </label>
-    </div>
-  );
+const mapStateToProps = (state, props) => {
+  return {
+    crew: (state.user.crews.find(c => { return c._id === props._id; })),
+    user: state.user
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  saveCrew: dispatch(editCrew),
+  aboutCrewMakePrimary: dispatch(aboutCrewMakePrimary)
 });
 
-export default CrewPublicContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(CrewPublic);

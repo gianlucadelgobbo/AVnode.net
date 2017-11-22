@@ -70,6 +70,7 @@ export const REQUEST_ADD_CREWMEMBER = 'REQUEST_ADD_CREWMEMBER';
 export const REQUEST_DELETE_CREWMEMBER = 'REQUEST_DELETE_CREWMEMBER';
 export const REQUEST_ADD_CREWIMAGE = 'REQUEST_ADD_CREWIMAGE';
 export const REQUEST_ADD_CREWTEASERIMAGE = 'REQUEST_ADD_CREWTEASERIMAGE';
+export const REQUEST_ADD_CREWORGLOGO = 'REQUEST_ADD_CREWORGLOGO';
 export const REQUEST_CREW_MAKEABOUTPRIMARY = 'REQUEST_CREW_MAKEABOUTPRIMARY';
 
 export const REQUEST_ADD_PERFORMANCE = 'REQUEST_ADD_PERFORMANCE';
@@ -584,6 +585,21 @@ export function addCrewTeaserImage(id, file) {
   };
 }
 
+export function addOrgLogoImage(id, file) {
+  return dispatch => {
+    dispatch({
+      type: REQUEST_ADD_CREWORGLOGO,
+      payload: {
+        crewId: id
+      }
+    });
+    return fetch(`/account/api/crew/${id}/orglogo`, {
+      method: 'POST',
+      body: wrapInFormData(file)
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 export function addPerformance(title) {
   return dispatch => {
     dispatch({

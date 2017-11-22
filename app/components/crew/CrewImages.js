@@ -10,7 +10,8 @@ import ImageDropzone from '../ImageDropzone';
 
 import {
   addCrewImage,
-  addCrewTeaserImage
+  addCrewTeaserImage,
+  addOrgLogoImage
 } from '../../reducers/actions';
 
 let CrewForm = props => {
@@ -26,6 +27,11 @@ let CrewForm = props => {
     return dispatch(addCrewTeaserImage(crewId, file));
   };
 
+  const onOrgLogoDrop = (crewId) => (files, _something, _ev) => {
+    const file = files[0];
+    return dispatch(addOrgLogoImage(crewId, file));
+  };
+
   return (
     <div>
       <div className="container-fluid">
@@ -34,47 +40,77 @@ let CrewForm = props => {
         </Match>
       </div>
       <Layout>
-          <div className="form-group">
-            <label htmlFor="teaserImage">
-              <FormattedMessage
-                id="teaserImage"
-                defaultMessage="Teaser Image"
-              />
-            </label>
-            {crew && crew.teaserImage ?
-              <img
-                className="img-thumbnail mb-3"
-                src={crew.teaserImage.publicUrl}
-                alt={`image of ${crew.title}`}
-              /> :
-              null
-            }
-            <ImageDropzone
-              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
-              onDrop={onTeaserImageDrop(props._id)}
+        <div className="form-group">
+          <label htmlFor="teaserImage">
+            <FormattedMessage
+              id="teaserImage"
+              defaultMessage="Teaser Image"
             />
-          </div>
+          </label>
+          {crew && crew.teaserImage ?
+            <img
+              className="img-thumbnail mb-3"
+              src={crew.teaserImage.publicUrl}
+              alt={`image of ${crew.title}`}
+            /> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+            onDrop={onTeaserImageDrop(props._id)}
+          />
+        </div>
 
-          <div className="form-group">
-            <label htmlFor="image">
-              <FormattedMessage
-                id="image"
-                defaultMessage="Image"
-              />
-            </label>
-            {crew && crew.image ?
+        <div className="form-group">
+          <label htmlFor="image">
+            <FormattedMessage
+              id="image"
+              defaultMessage="Image"
+            />
+          </label>
+          {crew && crew.image ?
+            <img
+              className="img-thumbnail mb-3"
+              src={crew.image.publicUrl}
+              alt={`image of ${crew.title}`}
+            /> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+            onDrop={onImageDrop(props._id)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="org_logo">
+            <FormattedMessage
+              id="org_logo"
+              defaultMessage="Organisation logo (.svg only)"
+            />
+          </label>
+          &nbsp;
+          <span class="badge badge-danger">
+            <FormattedMessage
+              id="private"
+              defaultMessage='Private'
+            />
+          </span>
+          {crew && crew.org_logo ?
+            <div>
               <img
                 className="img-thumbnail mb-3"
-                src={crew.image.publicUrl}
-                alt={`image of ${crew.title}`}
-              /> :
-              null
-            }
-            <ImageDropzone
-              imageUploadInProgress={(crew && crew.imageUploadInProgress)}
-              onDrop={onImageDrop(props._id)}
-            />
-          </div>
+                src={crew.org_logo.publicUrl}
+                alt={`Logo of ${crew.org_name}`}
+              />
+            </div> :
+            null
+          }
+          <ImageDropzone
+            imageUploadInProgress={(crew && crew.imageUploadInProgress)}
+            onDrop={onOrgLogoDrop(props._id)}
+          />
+        </div>
       </Layout>
     </div>
   );

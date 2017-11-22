@@ -44,7 +44,7 @@ const ProfilePassword = ({
 
 
               <div className="form-group">
-                <label htmlFor="password">
+                <label htmlFor="currentPassword">
                   <FormattedMessage
                     id="currentPassword"
                     defaultMessage="Current Password"
@@ -52,7 +52,7 @@ const ProfilePassword = ({
                 </label>
                 <Field
                   className="form-control"
-                  name="password"
+                  name="currentPassword"
                   component="input"
                   type="password"
                   placeholder={intl.formatMessage({
