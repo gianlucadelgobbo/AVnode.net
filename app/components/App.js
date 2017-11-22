@@ -17,7 +17,7 @@ import Crews from './Crews';
 import CrewEdit from './crew/Edit';
 import CrewPublic from './crew/CrewPublic';
 import CrewImages from './crew/CrewImages';
-import CrewMembers from './crew/CrewMembersContainer';
+import CrewMembers from './crew/CrewMembers';
 // Performances
 import Performances from './Performances';
 import PerformanceEdit from './performance/Edit';
