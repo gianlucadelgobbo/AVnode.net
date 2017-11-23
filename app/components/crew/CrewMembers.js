@@ -21,6 +21,15 @@ const Member = injectIntl(({ member, me, onDelete, intl }) => {
   });
   return (
     <li className="list-group-item justify-content-between">
+      {member.file ? 
+      <img
+        className="img-small mb-3"
+        src={`https://bruce.avnode.net${member.file.file}`}
+        alt={`image of ${member.stagename}`}
+      />
+      : 
+      null
+      }
       <span>
         {`${member.stagename}`}
         {(member._id === me) ?
@@ -53,20 +62,20 @@ let CrewMembersForm = props => {
   const memberSuggestions = props.user._memberSuggestions || [];
   const findMember = (e) => {
     e.preventDefault();
-    console.log('findMember, search:' + JSON.stringify(e.target.value) );
+    console.log('findMember, search:' + JSON.stringify(e.target.value));
     if (e.target.value.length > 2) {
       return dispatch(suggestCrewMember(crew._id, e.target.value));
     } // FIXME: handle reset
   };
   const addMember = (crewId) => (member) => (e) => {
     e.preventDefault();
-    console.log('addMember, crewId:' + crewId + ' member:' + JSON.stringify(member) );
+    console.log('addMember, crewId:' + crewId + ' member:' + JSON.stringify(member));
     return dispatch(addCrewMember(crewId, member));
   };
 
   const removeMember = (crewId) => (member) => (e) => {
     e.preventDefault();
-    console.log('removeMember, crewId:' + crewId + ' member:' + JSON.stringify(member) );
+    console.log('removeMember, crewId:' + crewId + ' member:' + JSON.stringify(member));
     return dispatch(removeCrewMember(crewId, member));
   };
 

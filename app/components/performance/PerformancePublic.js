@@ -61,8 +61,17 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
     });
     return (
         <li className="list-group-item justify-content-between">
+            {performer.file ?
+            <img
+                className="img-small mb-3"
+                src={`https://bruce.avnode.net${performer.file.file}`}
+                alt={`image of ${performance.stagename}`}
+            />
+            :
+            null
+            }
             <span>
-                FIX:{`${performer.stagename} `}{`${performer.name} `}{`${performer._id} `}
+                {`${performer.stagename} `}
                 {(performer._id === me) ?
                     <i className="badge badge-default badge-pill">{meLabel}</i>
                     : null
@@ -378,8 +387,7 @@ let PerformanceForm = props => {
                             />
                         </label>
                         <ul className="list-group">
-                {/*performance && performance.performers && performance.performers.map((performer) => (*/}
-                            {performance && performance.users && performance.users.map((performer) => (
+                            {performance && performance.performers && performance.performers.map((performer) => (
                                 <Performer
                                     performer={performer}
                                     me={props.user._id}
