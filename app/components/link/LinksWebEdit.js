@@ -6,7 +6,7 @@ const LinksWebEdit = (args) => {
   var links = [];
   for(let i in args.links) if (args.links[i].type == "web") links.push(args.links[i]);
 
-  console.log("LinksWebEdit component" + JSON.stringify(args) );
+  // console.log("LinksWebEdit component" + JSON.stringify(args) );
 
   return (
       <div className="form-group">

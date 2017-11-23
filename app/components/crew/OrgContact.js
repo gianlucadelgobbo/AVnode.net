@@ -7,8 +7,8 @@ import LinksMobileEdit from '../link/LinksMobileEdit';
 
 const OrgContact = (args) => {
 
-  console.log("OrgContact component");
-  console.log(args);
+  // console.log("OrgContact component");
+  // console.log(args);
 
   return (
     <div>

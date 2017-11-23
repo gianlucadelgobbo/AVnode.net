@@ -6,7 +6,7 @@ const LinksMobileEdit = (args) => {
   var links = [];
   for(let i in args.links) if (args.links[i].type == "mb") links.push(args.links[i]);
 
-  console.log("LinksMobileEdit component");
+  // console.log("LinksMobileEdit component");
 
   return (
       <div className="form-group">

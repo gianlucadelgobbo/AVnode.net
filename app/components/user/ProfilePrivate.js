@@ -125,7 +125,7 @@ const ProfilePrivate = ({
               </div>
             </div>
             <div className="row">
-              {/*<div className="col-md-6 form-group">
+              <div className="col-md-6 form-group">
               <label htmlFor="birthday">
                 <FormattedMessage
                   id="birthday"
@@ -149,7 +149,7 @@ const ProfilePrivate = ({
                   value={user.birthday}
                 />
               </div>
-                </div>*/ }
+                </div>
               <div className="col-md-6 form-group">
                 <label htmlFor="citizenship">
                   <FormattedMessage
