@@ -108,6 +108,7 @@ const fetch = (path, options = {}, json = true) => {
 };
 
 export function navigate(active) {
+  console.log( JSON.stringify(active) );
   return { type: NAVIGATE, active };
 }
 

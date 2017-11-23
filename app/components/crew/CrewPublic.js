@@ -1063,7 +1063,10 @@ const CrewPublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-    console.log('CrewPublic mapStateToProps');
+    console.log('_______________ props __________________________________');
+    console.log('--> CrewPublic mapStateToProps: ' + JSON.stringify(props));
+    console.log('_______________ state __________________________________');
+    console.log('--> CrewPublic mapStateToProps: ' + JSON.stringify(state));
     return {
         crew: (state.user.crews.find(c => { return c._id === props._id; })),
         user: state.user,
