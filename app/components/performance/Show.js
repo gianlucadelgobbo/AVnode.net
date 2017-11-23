@@ -6,7 +6,7 @@ import { deletePerformance } from '../../reducers/actions';
 const PerformanceShow = ({ performance, dispatch }) => {
   return (
     <li className="list-group-item justify-content-between">
-      {performance.title}
+      {performance.title} ({performance.slug})
       <span>
         {performance.ajaxInProgress === true ?
           <button className="btn btn-secondary disabled">

@@ -113,7 +113,7 @@ const crew = (state = {}, action) => {
       members: R.append(action.payload.member, state.members)
     }); */
     case REQUEST_ADD_CREWIMAGE:
-    console.log('--> crew REQUEST_ADD_CREWIMAGE');
+      console.log('--> crew REQUEST_ADD_CREWIMAGE');
       if (state._id !== action.payload.crewId) {
         return state;
       }
@@ -184,7 +184,10 @@ const user = (state = initialValues, action) => {
   //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
-      console.log('NAVIGATE user action: ' + JSON.stringify(action));
+      let str = JSON.stringify(state);
+      console.log('_______________ index redux NAVIGATE __________________________________');
+      console.log('NAVIGATE state length: ' + str.length);
+      console.log('NAVIGATE user action: ' + JSON.stringify(action) + ' state: ' + JSON.stringify(state));
       return Object.assign({}, state, {
         active: action.active
       });
