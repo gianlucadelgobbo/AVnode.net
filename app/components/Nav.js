@@ -6,7 +6,7 @@ import { FormattedMessage } from 'preact-intl';
 
 const Nav = ({ user, dispatch }) => {
   const classes = (path) => {
-    if (user.active.indexOf( path ) > -1) console.log('NAV--> user.active:'+user.active +' path:'+path +' found:'+user.active.indexOf(path));    
+    // if (user.active.indexOf( path ) > -1) console.log('NAV--> user.active:'+user.active +' path:'+path +' found:'+user.active.indexOf(path));    
     return (user.active.indexOf( path ) > -1) ? 'nav-link active' : 'nav-link'
   }
 

@@ -8,8 +8,8 @@ import ImageDropzone from '../ImageDropzone';
 
 const OrgActivity = (args) => {
 
-  console.log("OrgActivity component");
-  console.log(args);
+  // console.log("OrgActivity component");
+  // console.log(args);
 
   const onImageDrop = (crewId) => (files, _something, _ev) => {
     const file = files[0];
@@ -170,109 +170,109 @@ const OrgActivity = (args) => {
         >
           <option value="">
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.empty"
+                id="empty"
                 defaultMessage="Please select"
             />
           </option>
           <option value='fullyear'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.fullyear"
+                id="fullyear"
                 defaultMessage="Full year"
             />
           </option>
           <option value='winter'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.winter"
+                id="winter"
                 defaultMessage="Winter"
             />
           </option>
           <option value='spring'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.spring"
+                id="spring"
                 defaultMessage="Spring"
             />
           </option>
           <option value='summer'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.summer"
+                id="summer"
                 defaultMessage="Summer"
             />
           </option>
           <option value='autumn'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.autumn"
+                id="autumn"
                 defaultMessage="Autumn"
             />
           </option>
           <option value='01'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.january"
+                id="january"
                 defaultMessage="January"
             />
           </option>
           <option value='02'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.february"
+                id="february"
                 defaultMessage="February"
             />
           </option>
           <option value='03'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.march"
+                id="march"
                 defaultMessage="March"
             />
           </option>
           <option value='04'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.april"
+                id="april"
                 defaultMessage="April"
             />
           </option>
           <option value='05'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.may"
+                id="may"
                 defaultMessage="May"
             />
           </option>
           <option value='06'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.june"
+                id="june"
                 defaultMessage="June"
             />
           </option>
           <option value='07'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.july"
+                id="july"
                 defaultMessage="July"
             />
           </option>
           <option value='08'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.august"
+                id="august"
                 defaultMessage="August"
             />
           </option>
           <option value='09'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.september"
+                id="september"
                 defaultMessage="September"
             />
           </option>
           <option value='10'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.october"
+                id="october"
                 defaultMessage="October"
             />
           </option>
           <option value='11'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.november"
+                id="november"
                 defaultMessage="November"
             />
           </option>
           <option value='12'>
             <FormattedMessage
-                id="crew.edit.form.label.activity_season.december"
+                id="december"
                 defaultMessage="December"
             />
           </option>

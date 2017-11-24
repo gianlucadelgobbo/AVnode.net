@@ -6,7 +6,7 @@ const LinksSocialEdit = (args) => {
   var links = [];
   for(let i in args.links) if (args.links[i].type == "tw") links.push(args.links[i]);
 
-  console.log("LinksSocialEdit component");
+  // console.log("LinksSocialEdit component");
 
   return (
       <div className="form-group">
