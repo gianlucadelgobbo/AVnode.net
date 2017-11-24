@@ -14,14 +14,14 @@ import ProfilePassword from './user/ProfilePasswordContainer';
 import ProfileConnections from './user/ProfileConnections';
 // Crews
 import Crews from './Crews';
-import CrewEdit from './crew/Edit';
-import CrewPublic from './crew/CrewPublicContainer';
+// import CrewEdit from './crew/Edit';
+import CrewPublic from './crew/CrewPublic';
 import CrewImages from './crew/CrewImages';
-import CrewMembers from './crew/CrewMembersContainer';
+import CrewMembers from './crew/CrewMembers';
 // Performances
 import Performances from './Performances';
-import PerformanceEdit from './performance/Edit';
-import PerformancePublic from './performance/PerformancePublicContainer';
+// import PerformanceEdit from './performance/Edit';
+import PerformancePublic from './performance/PerformancePublic';
 //import PerformanceAbouts from './performance/PerformanceAbouts';
 import PerformanceImages from './performance/PerformanceImages';
 import PerformanceEvents from './performance/PerformanceEventsContainer';
@@ -31,7 +31,7 @@ import PerformanceVideoGallery from './performance/PerformanceVideoGalleryContai
 import PerformanceSettings from './performance/PerformanceSettingsContainer';
 // Events
 import Events from './Events';
-import EventEdit from './event/Edit';
+// import EventEdit from './event/Edit';
 import EventPublic from './event/EventPublicContainer';
 import EventImages from './event/EventImages';
 import EventPerformances from './event/EventPerformancesContainer';
@@ -74,10 +74,8 @@ const App = () => {
           <CrewPublic path="/account/crew/public/:_id" />
           <CrewImages path="/account/crew/images/:_id" />
           <CrewMembers path="/account/crew/members/:_id" />
-          <CrewEdit path="/account/crews/:_id" />
           <Performances path="/account/performances" />
           <PerformancePublic path="/account/performance/public/:_id" />
-          <PerformanceEdit path="/account/performances/:_id" />
           <PerformanceImages path="/account/performance/images/:_id" />
           <PerformanceEvents path="/account/performance/events/:_id" />
           <PerformanceAuthors path="/account/performance/authors/:_id" />
@@ -86,7 +84,6 @@ const App = () => {
           <PerformanceSettings path="/account/performance/settings/:_id" />
           <Events path="/account/events" />
           <EventPublic path="/account/event/public/:_id" />
-          <EventEdit path="/account/event/:_id" />
           <EventImages path="/account/event/images/:_id" />
           <EventPerformances path="/account/event/performances/:_id" />
           <EventPartners path="/account/event/partners/:_id" />

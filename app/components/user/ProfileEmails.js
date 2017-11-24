@@ -37,7 +37,7 @@ const ProfileEmailsForm = ({
   };
 
   return (
-    <div className="container-fluid account-nav-wrap">
+    <div>
     <div className="container-fluid">
       <Match>
         {({ url }) => <ProfileNav url={url} />}

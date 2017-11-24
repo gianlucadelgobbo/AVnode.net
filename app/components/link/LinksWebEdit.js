@@ -2,11 +2,11 @@ import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
 
-const LinksWebEdit = (args) => {
+const LinksWebEdit = (props) => {
   var links = [];
-  for(let i in args.links) if (args.links[i].type == "web") links.push(args.links[i]);
+  for(let i in props.links) if (props.links[i].type == "web") links.push(props.links[i]);
 
-  console.log("LinksWebEdit component" + JSON.stringify(args) );
+  console.log("LinksWebEdit component" + JSON.stringify(props) );
 
   return (
       <div className="form-group">
@@ -16,7 +16,7 @@ const LinksWebEdit = (args) => {
             defaultMessage="Websites"
           />
           &nbsp;
-          {args.privacy == 'public' ?
+          {props.privacy == 'public' ?
             <span class="badge badge-success">
               <FormattedMessage
                 id="public"

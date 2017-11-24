@@ -15,11 +15,10 @@ block content
   .card-group.mb-3
     each item in performers
       .card
-        if item.image
-          img.card-img-top.img-fluid(
-            src=item.image.publicUrl
-            alt=item.name
-          )
+        img.card-img-top.img-fluid(
+          src=item.imageUrl
+          alt=item.name
+        )
         .card-block
           h4.card-title
             =item.stagename
@@ -32,11 +31,10 @@ block content
   .card-group
     each item in performances
       .card
-        if item.image
-          img.card-img-top.img-fluid(
-            src=item.image.publicUrl
-            alt=item.name
-          )
+        img.card-img-top.img-fluid(
+          src=item.imageUrl
+          alt=item.name
+        )
         .card-block
           h4.card-title
             =item.title

@@ -1,9 +1,5 @@
 import { connect } from 'preact-redux';
 import {
-  openStagenameModal,
-  closeStagenameModal,
-  openPasswordModal,
-  closePasswordModal,
   fetchCountries,
   //userAboutEdit,
   //userAboutDelete,
@@ -18,10 +14,6 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  openStagenameModal: dispatch(openStagenameModal),
-  closeStagenameModal: dispatch(closeStagenameModal),
-  openPasswordModal: dispatch(openPasswordModal),
-  closePasswordModal: dispatch(closePasswordModal),
   //userAboutEdit: dispatch(userAboutEdit),
   //userAboutDelete: dispatch(userAboutDelete),
   saveProfile: dispatch(editUser),

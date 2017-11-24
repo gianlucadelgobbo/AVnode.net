@@ -1239,9 +1239,6 @@ let CrewForm = props => {
           <OrgActivity contact={{}} />
         </fieldset>
 
-
-
-
         <div className="form-group">
           <button
             className="btn btn-primary"
