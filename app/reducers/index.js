@@ -31,7 +31,7 @@ import {
   REQUEST_USER_MAKEADDRESSPRIVATE,
   REQUEST_USER_MAKEADDRESSPUBLIC,
   REQUEST_USER_DELETEADDRESS,
-  
+
   EDIT_EVENT,
   REQUEST_DELETE_EVENT,
   REQUEST_EDIT_EVENT,
@@ -48,9 +48,12 @@ import {
   REQUEST_SUGGEST_CREWMEMBER,
   RESPONSE_SUGGEST_CREWMEMBER,
   REQUEST_ADD_CREWIMAGE,
-  ADD_CREWMEMBER,
+  REQUEST_ADD_CREWTEASERIMAGE,
+  REQUEST_ADD_CREWORGLOGO,
+  REQUEST_ADD_CREWMEMBER,
   REQUEST_DELETE_CREWMEMBER,
   REQUEST_CREW_MAKEABOUTPRIMARY,
+
 
   REQUEST_ADD_PERFORMANCE,
   REQUEST_ADD_PERFORMANCEIMAGE,
@@ -101,14 +104,30 @@ const event = (state = {}, action) => {
 const crew = (state = {}, action) => {
   console.log('crew action type: ' + action.type + ' action: ' + JSON.stringify(action));
   switch (action.type) {
-    case ADD_CREWMEMBER:
+    case REQUEST_ADD_CREWMEMBER:
+      console.log('--> crew BL FIXME not called, useless?');
+      // BL FIXME crewId undefined if (state._id !== action.payload.crewId) {
+      return state;
+    /* }
+    return Object.assign({}, state, {
+      members: R.append(action.payload.member, state.members)
+    }); */
+    case REQUEST_ADD_CREWIMAGE:
+      console.log('--> crew REQUEST_ADD_CREWIMAGE');
       if (state._id !== action.payload.crewId) {
         return state;
       }
       return Object.assign({}, state, {
-        members: R.append(action.payload.member, state.members)
+        imageUploadInProgress: true
       });
-    case REQUEST_ADD_CREWIMAGE:
+    case REQUEST_ADD_CREWTEASERIMAGE:
+      if (state._id !== action.payload.crewId) {
+        return state;
+      }
+      return Object.assign({}, state, {
+        imageUploadInProgress: true
+      });
+    case REQUEST_ADD_CREWORGLOGO:
       if (state._id !== action.payload.crewId) {
         return state;
       }
@@ -116,6 +135,8 @@ const crew = (state = {}, action) => {
         imageUploadInProgress: true
       });
     case REQUEST_DELETE_CREWMEMBER:
+      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+
       if (state._id !== action.payload.crewId) {
         return state;
       }
@@ -131,6 +152,8 @@ const crew = (state = {}, action) => {
         })
       });
     case REQUEST_CREW_MAKEABOUTPRIMARY:
+      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+
       return state;
     default:
       console.log('info, crew action not handled: ' + action.type);
@@ -161,7 +184,10 @@ const user = (state = initialValues, action) => {
   //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
-      console.log('NAVIGATE user action: ' + JSON.stringify(action));
+      let str = JSON.stringify(state);
+      console.log('_______________ index redux NAVIGATE __________________________________');
+      console.log('NAVIGATE state length: ' + str.length);
+      console.log('NAVIGATE user action: ' + JSON.stringify(action) + ' state: ' + JSON.stringify(state));
       return Object.assign({}, state, {
         active: action.active
       });
@@ -253,20 +279,29 @@ const user = (state = initialValues, action) => {
         _organizingCrewSuggestions: action.suggestions,
         _organizingCrewSuggestionInProgress: false
       });
-    case REQUEST_ADD_CREWIMAGE:
+    case REQUEST_ADD_CREWMEMBER:
+      return state;
     case REQUEST_DELETE_CREWMEMBER:
-    case ADD_CREWMEMBER:
     case REQUEST_CREW_MAKEABOUTPRIMARY:
+      console.log('--> user BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+      /* BL FIXME copied from crew see up! crewId undefined if (state._id !== action.payload.crewId) {
+        return state;
+         }
+        return Object.assign({}, state, {
+          members: R.append(action.payload.member, state.members)
+        }); */
+      console.log('user action: ' + JSON.stringify(action) + ' state: ' + JSON.stringify(state.crews) + ' action.payload: ' + JSON.stringify(action.payload));
       return Object.assign({}, state, {
         crews: state.crews.map((c) => {
           return crew(c, action);
         })
       });
 
-    case REQUEST_ADD_CREWIMAGE:
+    case REQUEST_ADD_PERFORMANCEIMAGE:
+      console.log('BL FIXME REQUEST_ADD_PERFORMANCEIMAGE');
       return Object.assign({}, state, {
-        performances: state.performances.map((c) => {
-          return performance(c, action);
+        performances: state.performances.map((p) => {
+          return performance(p, action);
         })
       });
 

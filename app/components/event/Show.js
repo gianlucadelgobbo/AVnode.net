@@ -6,7 +6,7 @@ import { deleteEvent } from '../../reducers/actions';
 const EventShow = ({event, dispatch}) => {
   return (
     <li className="list-group-item justify-content-between">
-      {event.title}
+      {event.title} ({event.slug})
       <span>
         { event.ajaxInProgress === true ?
           <button className="btn btn-secondary disabled">

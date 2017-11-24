@@ -10,3 +10,7 @@ logs/*
 storage
 warehouse
 .DS_Store
+.vscode/
+package-lock.json
+.eslintrc.json
+font-awesome.css

@@ -6,7 +6,7 @@ const LinksPhoneEdit = (args) => {
   var links = [];
   for(let i in args.links) if (args.links[i].type == "tel") links.push(args.links[i]);
 
-  console.log("LinksPhoneEdit component");
+  // console.log("LinksPhoneEdit component");
 
   return (
       <div className="form-group">

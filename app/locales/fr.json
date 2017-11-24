@@ -118,7 +118,7 @@
 	"org_name": "Nom légal",
 	"org_foundation_year": "Date de création",
 	"org_type": "Type d'organisation",
-	"org_logo": "Logo (format svg)",
+	"org_logo": "Logo de l'organisation (format svg)",
 	"org_web_social_channels": "Sites Internet et réseaux sociaux de l'organisation",
 	"org_web_social_channels_for_project_likes_shares": "Canaux Web et Sociaux pour Partages et Likes",
 	"org_phone": "Téléphone organisation",
@@ -227,5 +227,14 @@
 	"Login": "Login",
 	"Sign up": "Sign up",
 	"currentPassword": "Mot de passe actuel",
-	"Password": "Mot de passe"
+	"Password": "Mot de passe",
+	"Stagename": "Stagename",
+	"Confirm Password": "Confirm Password",
+	"Signup": "Signup",
+	"addUrl": "Ajouter/modifier une url",
+	"url": "Url",
+	"websiteUrl": "Url du site",
+	"manageLinksWeb": "Gérer vos urls",
+	"manageLinksSocial": "Gérer vos sites sociaux",
+	"Performer": "Performer"
 }

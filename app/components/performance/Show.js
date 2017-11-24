@@ -6,6 +6,14 @@ import { deletePerformance } from '../../reducers/actions';
 const PerformanceShow = ({ performance, dispatch }) => {
   return (
     <li className="list-group-item justify-content-between">
+      {performance.file ?
+        <img
+          className="img-small mb-3"
+          src={`https://bruce.avnode.net${performance.file.file}`}
+          alt={`image of ${performance.title}`}
+        />
+        :
+        null}
       {performance.title}
       <span>
         {performance.ajaxInProgress === true ?
