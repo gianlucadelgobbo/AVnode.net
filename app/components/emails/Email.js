@@ -2,7 +2,8 @@ import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 const Email = ({ email, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, onDelete, intl }) => {
-    return (
+  
+  return (
       <li className="list-group-item justify-content-between">
         {email.email}
         {email.is_confirmed ?

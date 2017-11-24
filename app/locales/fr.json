@@ -231,5 +231,10 @@
 	"Stagename": "Stagename",
 	"Confirm Password": "Confirm Password",
 	"Signup": "Signup",
+	"addUrl": "Ajouter/modifier une url",
+	"url": "Url",
+	"websiteUrl": "Url du site",
+	"manageLinksWeb": "Gérer vos urls",
+	"manageLinksSocial": "Gérer vos sites sociaux",
 	"Performer": "Performer"
 }
