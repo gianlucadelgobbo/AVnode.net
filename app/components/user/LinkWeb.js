@@ -6,10 +6,6 @@ const LinkWeb = ({ linkWeb, onEdit, onMakePrimary, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       {linkWeb.type} : {linkWeb.url}
-      <button className="btn btn-info btn-sm"
-          onClick={onEdit}>
-          <i className="fa fa-fw fa-edit"></i>
-        </button>
       {linkWeb.is_primary ?
         <span className="badge badge-primary">
           <FormattedMessage
@@ -18,6 +14,22 @@ const LinkWeb = ({ linkWeb, onEdit, onMakePrimary, onDelete, intl }) => {
           />
         </span> :
         <span>
+          <button
+            type="button"
+            className="btn btn-danger btn-sm"
+            onClick={onDelete}
+          >
+            <i
+              className="fa fa-trash"
+              data-toggle="tooltip"
+              data-placement="top"
+              title={intl.formatMessage({
+                id: "delete",
+                defaultMessage: "Delete"
+              })}
+            >
+            </i>
+          </button>
           <button
             type="button"
             className="btn btn-secondary btn-sm"
@@ -34,21 +46,9 @@ const LinkWeb = ({ linkWeb, onEdit, onMakePrimary, onDelete, intl }) => {
             >
             </i>
           </button>
-          <button
-            type="button"
-            className="btn btn-danger btn-sm"
-            onClick={onDelete}
-          >
-            <i
-              className="fa fa-trash"
-              data-toggle="tooltip"
-              data-placement="top"
-              title={intl.formatMessage({
-                id: "delete",
-                defaultMessage: "Delete"
-              })}
-            >
-            </i>
+          <button className="btn btn-info btn-sm"
+            onClick={onEdit}>
+            <i className="fa fa-fw fa-edit"></i>
           </button>
         </span>
       }
