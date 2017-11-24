@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { route } from 'preact-router';
+// import { route } from 'preact-router';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
@@ -61,8 +61,17 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
     });
     return (
         <li className="list-group-item justify-content-between">
+            {performer.file ?
+            <img
+                className="img-small mb-3"
+                src={`https://bruce.avnode.net${performer.file.file}`}
+                alt={`image of ${performance.stagename}`}
+            />
+            :
+            null
+            }
             <span>
-                FIX:{`${performer.stagename} `}{`${performer.name} `}{`${performer._id} `}
+                {`${performer.stagename} `}
                 {(performer._id === me) ?
                     <i className="badge badge-default badge-pill">{meLabel}</i>
                     : null
@@ -136,7 +145,7 @@ let PerformanceForm = props => {
     let videoLink; // FIXME
 
     return (
-        <div className="container-fluid account-nav-wrap">
+        <div>
             <div className="container-fluid">
                 <Match>
                     {({ url }) => <PerformanceNav url={url} performance={props.performance} />}
@@ -378,8 +387,7 @@ let PerformanceForm = props => {
                             />
                         </label>
                         <ul className="list-group">
-                {/*performance && performance.performers && performance.performers.map((performer) => (*/}
-                            {performance && performance.users && performance.users.map((performer) => (
+                            {performance && performance.performers && performance.performers.map((performer) => (
                                 <Performer
                                     performer={performer}
                                     me={props.user._id}
@@ -511,12 +519,12 @@ let PerformanceForm = props => {
 
 PerformanceForm = injectIntl(reduxForm({ form: 'performance' })(PerformanceForm));
 
-const PerformancePublicContainer = props => {
+const PerformancePublic = props => {
     const onSubmit = (props, dispatch) => {
         dispatch(editPerformance(props));
     };
     const onSubmitSuccess = () => {
-        route('/account/performances');
+        //route('/account/performances');
     };
     return (
         <PerformanceForm
@@ -535,5 +543,5 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-export default connect(mapStateToProps)(PerformancePublicContainer);
+export default connect(mapStateToProps)(PerformancePublic);
 

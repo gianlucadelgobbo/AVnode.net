@@ -6,7 +6,7 @@ import { deleteCrew } from '../../reducers/actions';
 const CrewShow = ({ crew, dispatch }) => {
   return (
     <li className="list-group-item justify-content-between">
-      {crew.name}
+      {crew.name} ({crew.slug})
       <span>
         {crew.ajaxInProgress === true ?
           <button className="btn btn-secondary disabled">

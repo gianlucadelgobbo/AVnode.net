@@ -6,7 +6,7 @@ const LinksSkypeEdit = (args) => {
   var links = [];
   for(let i in args.links) if (args.links[i].type == "sk") links.push(args.links[i]);
 
-  console.log("LinksSkypeEdit component");
+  // console.log("LinksSkypeEdit component");
 
   return (
       <div className="form-group">

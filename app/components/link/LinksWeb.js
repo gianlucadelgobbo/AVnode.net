@@ -2,10 +2,11 @@ import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
 
-const LinksWebEdit = (props) => {
+const LinksWeb = (props) => {
   var links = [];
   for(let i in props.links) if (props.links[i].type == "web") links.push(props.links[i]);
-
+  console.log("LinksWeb component" + JSON.stringify(props) );
+  
   return (
       <div className="form-group">
         
@@ -29,4 +30,4 @@ const LinksWebEdit = (props) => {
   );
 };
 
-export default LinksWebEdit;
+export default LinksWeb;
