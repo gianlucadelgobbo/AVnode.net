@@ -8,10 +8,10 @@ const Video = ({ id, type }) => {
           src={`https://player.vimeo.com/video/${id}`}
           width="640"
           height="360"
-          frameborder="0"
+          frameBorder="0"
           webkitallowfullscreen
           mozallowfullscreen
-          allowfullscreen
+          allowFullScreen
         >
         </iframe>
     );
@@ -21,10 +21,10 @@ const Video = ({ id, type }) => {
           src={`https://www.youtube.com/embed/${id}`}
           width="640"
           height="360"
-          frameborder="0"
+          frameBorder="0"
           webkitallowfullscreen
           mozallowfullscreen
-          allowfullscreen
+          allowFullScreen
         >
         </iframe>
     );
