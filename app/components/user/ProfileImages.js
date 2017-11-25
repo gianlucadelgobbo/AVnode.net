@@ -16,15 +16,15 @@ const ProfileImagesForm = ({
     addUserTeaserImage
     }) => {
 
-    const onProfileImageDrop = (userId) => (files, _something, _ev) => {
-        addUserProfileImage(userId, files[0]);
-    };
+  const onProfileImageDrop = (userId) => (files, _something, _ev) => {
+    addUserProfileImage(userId, files[0]);
+  };
 
-    const onTeaserImageDrop = (userId) => (files, _something, _ev) => {
-        addUserTeaserImage(userId, files[0]);
-    };
+  const onTeaserImageDrop = (userId) => (files, _something, _ev) => {
+    addUserTeaserImage(userId, files[0]);
+  };
 
-    return (
+  return (
         <div>
             <div className="container-fluid">
                 <Match>
@@ -103,9 +103,9 @@ const ProfileImagesForm = ({
                 </form>
             </Layout >
         </div>
-    );
+  );
 };
 export default injectIntl(reduxForm({
-    form: 'userimages',
-    enableReinitialize: true
+  form: 'userimages',
+  enableReinitialize: true
 })(ProfileImagesForm));
