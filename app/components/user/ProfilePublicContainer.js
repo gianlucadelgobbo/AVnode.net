@@ -3,6 +3,8 @@ import {
   fetchCountries,
   userLinkMakePrimary,
   userLinkDelete,
+  userLinkWebEdit,
+  userLinkSocialEdit,
   //userAboutEdit,
   //userAboutDelete,
   editUser
@@ -16,8 +18,10 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  userLinkWebMakePrimary: dispatch(userLinkMakePrimary),
-  userLinkWebDelete: dispatch(userLinkDelete),
+  userLinkMakePrimary: dispatch(userLinkMakePrimary),
+  userLinkDelete: dispatch(userLinkDelete),
+  userLinkWebEdit: dispatch(userLinkWebEdit),
+  userLinkSocialEdit: dispatch(userLinkSocialEdit),
   //userAboutEdit: dispatch(userAboutEdit),
   //userAboutDelete: dispatch(userAboutDelete),
   saveProfile: dispatch(editUser),

@@ -22,8 +22,10 @@ const ProfilePublic = ({
   intl,
   handleSubmit,
   saveProfile,
-  userLinkWebMakePrimary,
-  userLinkWebDelete,
+  userLinkMakePrimary,
+  userLinkDelete,
+  userLinkWebEdit,
+  userLinkSocialEdit,
   fetchCountries
   }) => {
 
@@ -32,52 +34,33 @@ const ProfilePublic = ({
   }
   if (!user._countries) {
     fetchCountries();
-    //console.log('submitting' + submitting);
   }
 
-  /* const handleChange = () => {
-    console.log(user);
-  } */
   const onLinkWebEdit = (link) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    user.linkWeb = link.url;
-    console.log('onLinkWebEdit dirty:' + dirty 
-    + ' invalid:' + invalid
-    + ' pristine:' + pristine
-    + ' valid:' + valid);
+    console.log('onLinkWebEdit dirty:' + dirty + ' invalid:' + invalid + ' pristine:' + pristine + ' valid:' + valid);
+    return userLinkWebEdit(user._id, link._id);
   };
   const onLinkWebMakePrimary = (link) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    /* user && user.links && user.links.map((l) => (
-      l.is_primary = (l.url === link.url)
-    )); */
-    return userLinkWebMakePrimary(user._id, link._id);
+    return userLinkMakePrimary(user._id, link._id);
+  };
+  const onLinkWebDelete = (link) => (e) => {
+    e.preventDefault();
+    return userLinkDelete(user._id, link._id);
   };
 
   const onLinkSocialEdit = (link) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    user.linkSocial = link.url;
-    /*user && user.links && user.links.map((l) => (
-      l.url === link.url ? user.linkWeb = l.url : null
-    ));*/
+    return userLinkSocialEdit(user._id, link._id);
   };
   const onLinkSocialMakePrimary = (link) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    user && user.links && user.links.map((l) => (
-      l.is_primary = (l.url === link.url)
-    ));
-  };
-  const onLinkWebDelete = (link) => (e) => {
-    e.preventDefault();
-    return userLinkWebDelete(user._id, link._id);
+    return userLinkMakePrimary(user._id, link._id);
   };
   const onLinkSocialDelete = (link) => (e) => {
     e.preventDefault();
-
+    return userLinkDelete(user._id, link._id);
   };
   return (
     <div>
