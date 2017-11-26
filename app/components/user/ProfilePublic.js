@@ -15,9 +15,15 @@ import Match from 'preact-router/match';
 const ProfilePublic = ({
   user,
   //submitting,
+  dirty,
+  invalid,
+  pristine,
+  valid,
   intl,
   handleSubmit,
   saveProfile,
+  userLinkWebMakePrimary,
+  userLinkWebDelete,
   fetchCountries
   }) => {
 
@@ -36,17 +42,18 @@ const ProfilePublic = ({
     e.preventDefault();
     console.log(JSON.stringify(link));
     user.linkWeb = link.url;
-    handleSubmit(saveProfile);
-    /*user && user.links && user.links.map((l) => (
-      l.url === link.url ? user.linkWeb = l.url : null
-    ));*/
+    console.log('onLinkWebEdit dirty:' + dirty 
+    + ' invalid:' + invalid
+    + ' pristine:' + pristine
+    + ' valid:' + valid);
   };
   const onLinkWebMakePrimary = (link) => (e) => {
     e.preventDefault();
     console.log(JSON.stringify(link));
-    user && user.links && user.links.map((l) => (
+    /* user && user.links && user.links.map((l) => (
       l.is_primary = (l.url === link.url)
-    ));
+    )); */
+    return userLinkWebMakePrimary(user._id, link._id);
   };
 
   const onLinkSocialEdit = (link) => (e) => {
@@ -63,11 +70,10 @@ const ProfilePublic = ({
     user && user.links && user.links.map((l) => (
       l.is_primary = (l.url === link.url)
     ));
-    handleSubmit(saveProfile);
   };
   const onLinkWebDelete = (link) => (e) => {
     e.preventDefault();
-    //return dispatch(onLinkWebMakePrimary(userId, linkId));
+    return userLinkWebDelete(user._id, link._id);
   };
   const onLinkSocialDelete = (link) => (e) => {
     e.preventDefault();
