@@ -118,7 +118,8 @@ const ProfilePassword = ({
 };
 
 export default injectIntl(reduxForm({
-  form: 'user',
+  form: 'userPassword',
   enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
   validate
 })(ProfilePassword));

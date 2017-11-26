@@ -4,5 +4,5 @@ const performanceCategories = [
     { 'key': 'mapping', 'name': 'Mapping' },
     { 'key': 'techno', 'name': 'Techno' }
 ];
-  
+
 export default performanceCategories;

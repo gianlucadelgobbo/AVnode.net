@@ -80,7 +80,7 @@ let EventForm = props => {
   );
 };
 
-EventForm = injectIntl(reduxForm({ form: 'event' })(EventForm));
+EventForm = injectIntl(reduxForm({ form: 'eventImages' })(EventForm));
 
 const EventImages = props => {
   return (

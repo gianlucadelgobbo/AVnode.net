@@ -1043,7 +1043,7 @@ let CrewForm = props => {
     );
 };
 
-CrewForm = injectIntl(reduxForm({ form: 'crew' })(CrewForm));
+CrewForm = injectIntl(reduxForm({ form: 'crewPublic' })(CrewForm));
 
 const CrewPublic = props => {
     const onSubmit = (props, dispatch) => {
