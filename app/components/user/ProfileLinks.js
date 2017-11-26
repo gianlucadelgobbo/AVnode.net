@@ -138,6 +138,7 @@ const ProfileLinksForm = ({
 };
 
 export default injectIntl(reduxForm({
-  form: 'userlinks',
-  enableReinitialize: true
+  form: 'userLinks',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(ProfileLinksForm));

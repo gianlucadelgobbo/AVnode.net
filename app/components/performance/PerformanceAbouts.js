@@ -155,7 +155,7 @@ let PerformanceForm = props => {
   );
 };
 
-PerformanceForm = injectIntl(reduxForm({ form: 'performance' })(PerformanceForm));
+PerformanceForm = injectIntl(reduxForm({ form: 'performanceAbouts' })(PerformanceForm));
 
 const EditPerformanceAbouts = props => {
   const onSubmit = (props, dispatch) => {

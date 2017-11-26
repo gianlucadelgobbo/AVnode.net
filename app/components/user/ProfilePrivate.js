@@ -201,7 +201,8 @@ const ProfilePrivate = ({
 };
 
 export default injectIntl(reduxForm({
-  form: 'user',
+  form: 'userPrivate',
   enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
   validate
 })(ProfilePrivate));

@@ -115,6 +115,7 @@ const ProfileEmailsForm = ({
 };
 
 export default injectIntl(reduxForm({
-  form: 'useremails',
-  enableReinitialize: true
+  form: 'userEmails',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(ProfileEmailsForm));

@@ -80,7 +80,7 @@ let PerformanceForm = props => {
   );
 };
 
-PerformanceForm = injectIntl(reduxForm({ form: 'performance' })(PerformanceForm));
+PerformanceForm = injectIntl(reduxForm({ form: 'performanceImages' })(PerformanceForm));
 
 const PerformanceImages = props => {
   return (
