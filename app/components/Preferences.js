@@ -66,4 +66,4 @@ const Preferences = ({ user, changeLanguage, onSubmit, intl }) => {
   );
 };
 
-export default injectIntl(reduxForm({ form: 'user' })(Preferences));
+export default injectIntl(reduxForm({ form: 'userPreferences' })(Preferences));

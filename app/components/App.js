@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import Router from 'preact-router';
-import Match from 'preact-router/match';
 // Navigation
 import Nav from './Nav';
 // Profile
