@@ -75,6 +75,7 @@ const ProfileAddressesForm = ({
 };
 
 export default injectIntl(reduxForm({
-  form: 'useraddresses',
-  enableReinitialize: true
+  form: 'userAddresses',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(ProfileAddressesForm));

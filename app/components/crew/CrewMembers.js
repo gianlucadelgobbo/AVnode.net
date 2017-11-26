@@ -179,7 +179,7 @@ let CrewMembersForm = props => {
   );
 };
 
-CrewMembersForm = injectIntl(reduxForm({ form: 'crewmembers' })(CrewMembersForm));
+CrewMembersForm = injectIntl(reduxForm({ form: 'crewMembers' })(CrewMembersForm));
 
 const CrewMembers = props => {
   return (

@@ -106,6 +106,7 @@ const ProfileImagesForm = ({
   );
 };
 export default injectIntl(reduxForm({
-  form: 'userimages',
-  enableReinitialize: true
+  form: 'userImages',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(ProfileImagesForm));
