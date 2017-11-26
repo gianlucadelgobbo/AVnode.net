@@ -5,7 +5,6 @@ export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
 export const REQUEST_EDIT_USERLINKS = 'REQUEST_EDIT_USERLINKS';
-export const REQUEST_EDIT_USERABOUTS = 'REQUEST_EDIT_USERABOUTS';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
 export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
@@ -21,7 +20,7 @@ export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_USER_DELETEPLACE = 'REQUEST_USER_DELETEPLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
 export const REQUEST_USER_DELETELINK = 'REQUEST_USER_DELETELINK';
-export const REQUEST_EDIT_USERABOUT = 'REQUEST_EDIT_USERABOUT';
+export const REQUEST_USER_EDITABOUT = 'REQUEST_USER_EDITABOUT';
 export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
 export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
 export const REQUEST_USER_EDITWEBLINK = 'REQUEST_USER_EDITWEBLINK';
@@ -110,7 +109,7 @@ const fetch = (path, options = {}, json = true) => {
 };
 
 export function navigate(active) {
-  console.log( JSON.stringify(active) );
+  console.log(JSON.stringify(active));
   return { type: NAVIGATE, active };
 }
 
@@ -514,7 +513,7 @@ export function suggestCrewMember(crewId, q) {
 
 export function addCrewMember(crewId, member) {
   const action = `actions, addCrewMember(crewId: ${crewId}`;
-  
+
   return dispatch => {
     dispatch({
       type: REQUEST_ADD_CREWMEMBER
@@ -1177,18 +1176,18 @@ export function editUserAddresses(dispatch) {
     let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
     console.log('_______________ ACTION editUserAddresses __________________________________');
     console.log('editUserAddresses data id: ' + data._id);
-    console.log('editUserAddresses data street_number: ' + data.street_number);    
+    console.log('editUserAddresses data street_number: ' + data.street_number);
     console.log('editUserAddresses data route: ' + data.route);
     console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
     console.log('editUserAddresses data locality: ' + data.locality);
     console.log('editUserAddresses data country: ' + data.country);
-    
+
     // init if first address
     if (!data.addresses) data.addresses = [];
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
       primaryAddress = false;
-      if (a.address === inputAddress) {        
+      if (a.address === inputAddress) {
         // address in the form already exists in addresses
         addressFound = true;
         // update the fields
@@ -1197,7 +1196,7 @@ export function editUserAddresses(dispatch) {
         user.postal_code = data.postal_code;
         user.locality = data.locality;
         user.administrative_area_level_1 = data.administrative_area_level_1;
-        user.country = data.country;  
+        user.country = data.country;
       }
     });
     if (!addressFound) {
@@ -1232,58 +1231,23 @@ export function editUserAddresses(dispatch) {
   };
 }
 
-export function editUserAbouts(dispatch) {
-  return data => {
-    console.log('_______________ACTION editUserAbouts__________________________________');
-    // console.log('editUserAbouts data id: ' + data._id);
-    // about, verify unique
-    if (data.about) {
-      // console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
-      let aboutFound = false;
-      let primaryAbout = true;
-      if (!data.aboutlanguage) {
-        // console.log('editUserAbouts aboutlanguage not set defaults to en');
-        data.aboutlanguage = 'en';
-      }
-      // init if first about
-      if (!data.abouts) {
-        // console.log('editUserAbouts no abouts');
-        data.abouts = [];
-      }
-      // check existing abouts
-      data.abouts.map((a) => {
-        // if not the first, we don't set it to primary
-        primaryAbout = false;
-        // console.log('editUserAbouts about' + JSON.stringify(a));       
-        if (a.lang === data.aboutlanguage) {
-          // about in the form already exists in abouts
-          // console.log('editUserAbouts about exists in this language');
-          aboutFound = true;
-          // update text
-          a.abouttext = data.about;
-        }
-      });
-      // in case of new about, add it to the abouts
-      if (!aboutFound) {
-        // console.log('editUserAbouts about doesnt exist in this lang, adding');        
-        data.abouts.push({
-          is_primary: primaryAbout,
-          lang: data.aboutlanguage,
-          abouttext: data.about
-        });
-      }
-      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));
-    }
+export function userAboutEdit(dispatch) {
+  return (userId, aboutlanguage) => {
+    console.log('_______________ACTION userAboutEdit __________________________________');
+    console.log('userAboutEdit userId: ' + JSON.stringify(userId));
+    console.log('userAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
 
     dispatch({
-      type: REQUEST_EDIT_USERABOUTS,
-      id: data._id
+      type: REQUEST_USER_EDITABOUT,
+      payload: {
+        user: userId,
+        aboutlanguage: aboutlanguage
+      }
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data)
-      })
+      `/account/api/user/${userId}/about/${aboutlanguage}`, {
+        method: 'PUT'
+      }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }

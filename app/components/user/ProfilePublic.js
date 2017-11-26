@@ -22,6 +22,7 @@ const ProfilePublic = ({
   intl,
   handleSubmit,
   saveProfile,
+  userAboutEdit,
   userLinkMakePrimary,
   userLinkDelete,
   userLinkWebEdit,
@@ -35,7 +36,11 @@ const ProfilePublic = ({
   if (!user._countries) {
     fetchCountries();
   }
-
+  
+  const onAboutEdit = (about) => (e) => {
+    e.preventDefault();
+    return userAboutEdit(user._id, about.lang);
+  };
   const onLinkWebEdit = (link) => (e) => {
     e.preventDefault();
     console.log('onLinkWebEdit dirty:' + dirty + ' invalid:' + invalid + ' pristine:' + pristine + ' valid:' + valid);
@@ -204,6 +209,7 @@ const ProfilePublic = ({
                 user && user.abouts && user.abouts.map((a) => (
                   <About
                     about={a}
+                    onEdit={onAboutEdit(a)}
                     intl={intl}
                   />
                 ))

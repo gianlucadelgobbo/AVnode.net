@@ -15,7 +15,7 @@ import {
   CLOSE_STAGENAME_MODAL,
   OPEN_PASSWORD_MODAL,
   CLOSE_PASSWORD_MODAL,
-  REQUEST_EDIT_USERABOUT,
+  REQUEST_USER_EDITABOUT,
   REQUEST_USER_DELETEABOUT,
   REQUEST_USER_EDITWEBLINK,
   REQUEST_USER_EDITSOCIALLINK,
@@ -342,7 +342,7 @@ const user = (state = initialValues, action) => {
       return Object.assign({}, state, {
         _countries: action.payload.countries
       });
-    case REQUEST_EDIT_USERABOUT:
+    case REQUEST_USER_EDITABOUT:
     case REQUEST_USER_DELETEABOUT:
     case REQUEST_USER_MAKELINKPRIMARY:
     case REQUEST_USER_EDITWEBLINK:
