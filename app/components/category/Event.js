@@ -3,5 +3,5 @@ const eventCategories = [
     { 'key': 'meeting', 'name': 'Meeting' },
     { 'key': 'evening', 'name': 'Evening' }
 ];
-  
+
 export default eventCategories;

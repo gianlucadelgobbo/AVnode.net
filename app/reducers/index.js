@@ -187,7 +187,7 @@ const user = (state = initialValues, action) => {
       let str = JSON.stringify(state);
       console.log('_______________ index redux NAVIGATE __________________________________');
       console.log('NAVIGATE state length: ' + str.length);
-      console.log('NAVIGATE user action: ' + JSON.stringify(action) + ' state: ' + JSON.stringify(state));
+      console.log('NAVIGATE user action: ' + JSON.stringify(action) + ' state.publicUrl: ' + JSON.stringify(state.publicUrl));
       return Object.assign({}, state, {
         active: action.active
       });
