@@ -21,15 +21,18 @@ import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
     editCrew,
-    aboutCrewMakePrimary
+    aboutCrewEdit,
+    aboutCrewDelete
 } from '../../reducers/actions';
 
 let CrewForm = props => {
     const { handleSubmit, dispatch, crew, user, intl } = props;
 
-    const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
-        //about.is_primary = true;
-        return dispatch(aboutCrewMakePrimary(crewId, about._id));
+    const onCrewAboutEdit = (crewId) => (about) => (e) => {
+        return dispatch(aboutCrewEdit(crewId, about.lang));
+    };
+    const onCrewAboutDelete = (crewId) => (about) => (e) => {
+        return dispatch(aboutCrewDelete(crewId, about.lang));
     };
 
     if (!props.org) props.org = {};
@@ -140,7 +143,9 @@ let CrewForm = props => {
                             crew && crew.abouts && crew.abouts.map((a) => (
                                 <About
                                     about={a}
-                                    onMakePrimary={onCrewAboutMakePrimary(crew._id)(a)}
+                                    onEdit={onCrewAboutEdit(crew._id)(a)}
+                                    onDelete={onCrewAboutDelete(crew._id)(a)}
+                                    intl={intl}
                                 />
                             ))
                         }

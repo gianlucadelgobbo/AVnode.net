@@ -24,12 +24,15 @@ import {
     addPerformancePerformer,
     removePerformancePerformer,
 
+    aboutPerformanceEdit,
+    aboutPerformanceDelete,
+
     removePerformanceCategory
 
 } from '../../reducers/actions';
 
 const Crew = injectIntl(({ crew, onDelete, intl }) => {
-    return (
+  return (
         <li className="list-group-item justify-content-between">
             <span>
                 {crew.name}
@@ -55,20 +58,20 @@ const Crew = injectIntl(({ crew, onDelete, intl }) => {
 });
 
 const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
-    const meLabel = intl.formatMessage({
-        id: 'me',
-        defaultMessage: 'Me'
+  const meLabel = intl.formatMessage({
+      id: 'me',
+      defaultMessage: 'Me'
     });
-    return (
+  return (
         <li className="list-group-item justify-content-between">
             {performer.file ?
-            <img
-                className="img-small mb-3"
-                src={`https://bruce.avnode.net${performer.file.file}`}
-                alt={`image of ${performance.stagename}`}
-            />
-            :
-            null
+                <img
+                    className="img-small mb-3"
+                    src={`https://bruce.avnode.net${performer.file.file}`}
+                    alt={`image of ${performance.stagename}`}
+                />
+                :
+                null
             }
             <span>
                 {`${performer.stagename} `}
@@ -98,53 +101,61 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
 });
 
 let PerformanceForm = props => {
-    const { handleSubmit, dispatch, performance, user, intl } = props;
-    const crewSuggestions = props.user._crewSuggestions || [];
+  const { handleSubmit, dispatch, performance, user, intl } = props;
+  const crewSuggestions = props.user._crewSuggestions || [];
 
-    const findCrew = (e) => {
-        e.preventDefault();
-        if (e.target.value.length > 2) {
-            return dispatch(suggestPerformanceCrew(performance._id, e.target.value));
+  const findCrew = (e) => {
+      e.preventDefault();
+      if (e.target.value.length > 2) {
+          return dispatch(suggestPerformanceCrew(performance._id, e.target.value));
         } // FIXME: handle reset
     };
 
-    const addCrew = (crewId) => (e) => {
-        e.preventDefault();
-        return dispatch(addPerformanceCrew(performance._id, crewId));
+  const addCrew = (crewId) => (e) => {
+      e.preventDefault();
+      return dispatch(addPerformanceCrew(performance._id, crewId));
     };
 
-    const removeCrew = (crewId) => (e) => {
-        e.preventDefault();
-        return dispatch(removePerformanceCrew(performance._id, crewId));
+  const removeCrew = (crewId) => (e) => {
+      e.preventDefault();
+      return dispatch(removePerformanceCrew(performance._id, crewId));
     };
 
-    const performerSuggestions = props.user._performerSuggestions || [];
+  const performerSuggestions = props.user._performerSuggestions || [];
 
-    const findPerformer = (e) => {
-        e.preventDefault();
-        if (e.target.value.length > 2) {
-            return dispatch(suggestPerformancePerformer(performance._id, e.target.value));
+  const findPerformer = (e) => {
+      e.preventDefault();
+      if (e.target.value.length > 2) {
+          return dispatch(suggestPerformancePerformer(performance._id, e.target.value));
         } // FIXME: handle reset
     };
 
-    const addPerformer = (performerId) => (e) => {
-        e.preventDefault();
-        return dispatch(addPerformancePerformer(performance._id, performerId));
+  const addPerformer = (performerId) => (e) => {
+      e.preventDefault();
+      return dispatch(addPerformancePerformer(performance._id, performerId));
     };
 
-    const removePerformer = (performerId) => (e) => {
-        e.preventDefault();
-        return dispatch(removePerformancePerformer(performance._id, performerId));
+  const removePerformer = (performerId) => (e) => {
+      e.preventDefault();
+      return dispatch(removePerformancePerformer(performance._id, performerId));
     };
 
-    const removeCategory = (categoryId) => (e) => {
-        e.preventDefault();
-        return dispatch(removePerformanceCategory(performance._id, categoryId));
+  const removeCategory = (categoryId) => (e) => {
+      e.preventDefault();
+      return dispatch(removePerformanceCategory(performance._id, categoryId));
     };
 
-    let videoLink; // FIXME
+  const onPerformanceAboutEdit = (about) => (e) => {
+      return dispatch(aboutPerformanceEdit(performance._id, about.lang));
+    };
 
-    return (
+  const onPerformanceAboutDelete = (about) => (e) => {
+      return dispatch(aboutPerformanceDelete(performance._id, about.lang));
+    };
+
+  let videoLink; // FIXME
+
+  return (
         <div>
             <div className="container-fluid">
                 <Match>
@@ -234,7 +245,12 @@ let PerformanceForm = props => {
                     <ul className="list-group mt-2">
                         {
                             performance && performance.abouts && performance.abouts.map((a) => (
-                                <About about={a} />
+                                <About
+                                    about={a}
+                                    onEdit={onPerformanceAboutEdit(a)}
+                                    onDelete={onPerformanceAboutDelete(a)}
+                                    intl={intl}
+                                />
                             ))
                         }
                     </ul>
@@ -353,8 +369,8 @@ let PerformanceForm = props => {
                                     component="input"
                                     ref={node => { videoLink = node; }}
                                     placeholder={intl.formatMessage({
-                                        id: 'videolink.placeholder',
-                                        defaultMessage: 'https://vimeo.com/xyzxyzxyzxyz'
+                                      id: 'videolink.placeholder',
+                                      defaultMessage: 'https://vimeo.com/xyzxyzxyzxyz'
                                     })}
                                 />
                                 <span className="input-group-btn">
@@ -362,10 +378,10 @@ let PerformanceForm = props => {
                                         type="button"
                                         className="btn btn-secondary"
                                         onClick={e => {
-                                            e.preventDefault();
-                                            return dispatch(addPerformanceVideo({
-                                                _id: performance._id,
-                                                video: videoLink.value
+                                          e.preventDefault();
+                                          return dispatch(addPerformanceVideo({
+                                              _id: performance._id,
+                                              video: videoLink.value
                                             }));
                                         }}
                                     >
@@ -410,8 +426,8 @@ let PerformanceForm = props => {
                             type="text"
                             autoComplete="off"
                             placeholder={props.intl.formatMessage({
-                                id: 'suggestPerformers',
-                                defaultMessage: 'Type to find performers…'
+                              id: 'suggestPerformers',
+                              defaultMessage: 'Type to find performers…'
                             })}
                             onKeyUp={findPerformer}
                         />
@@ -470,8 +486,8 @@ let PerformanceForm = props => {
                             type="text"
                             autoComplete="off"
                             placeholder={props.intl.formatMessage({
-                                id: 'suggestCrews',
-                                defaultMessage: 'Type to find crews…'
+                              id: 'suggestCrews',
+                              defaultMessage: 'Type to find crews…'
                             })}
                             onKeyUp={findCrew}
                         />
@@ -520,13 +536,13 @@ let PerformanceForm = props => {
 PerformanceForm = injectIntl(reduxForm({ form: 'performancePublic' })(PerformanceForm));
 
 const PerformancePublic = props => {
-    const onSubmit = (props, dispatch) => {
-        dispatch(editPerformance(props));
+  const onSubmit = (props, dispatch) => {
+      dispatch(editPerformance(props));
     };
-    const onSubmitSuccess = () => {
+  const onSubmitSuccess = () => {
         //route('/account/performances');
     };
-    return (
+  return (
         <PerformanceForm
             initialValues={props.performance}
             onSubmit={onSubmit}
@@ -537,9 +553,9 @@ const PerformancePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-    return {
-        performance: (state.user.performances.find(c => { return c._id === props._id; })),
-        user: state.user,
+  return {
+      performance: (state.user.performances.find(p => { return p._id === props._id; })),
+      user: state.user,
     };
 };
 

@@ -27,7 +27,7 @@ import {
   addCrewImage,
   addCrewTeaserImage,
   removeCrewMember,
-  aboutCrewMakePrimary
+  aboutCrewEdit
 } from '../../reducers/actions';
 
 const Member = injectIntl(({ member, me, onDelete, intl }) => {
@@ -95,7 +95,7 @@ let CrewForm = props => {
 
   const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
     about.is_primary = true;
-    return dispatch(aboutCrewMakePrimary(crewId, about._id));
+    return dispatch(aboutCrewEdit(crewId, about._id));
   };
 
   if (!props.org) props.org = {};
