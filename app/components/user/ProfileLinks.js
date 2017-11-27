@@ -66,18 +66,18 @@ const ProfileLinksForm = ({
                             </div>
                         </div>
                         <div className="col-md-3 form-group">
-                            <label htmlFor="linktype">
+                            <label htmlFor="linkType">
                                 <FormattedMessage
-                                    id="linktype"
+                                    id="linkType"
                                     defaultMessage="Link type"
                                 />
                             </label>
                             {LinkType ?
                                 <Field
                                     className="form-control custom-select"
-                                    name="linktype"
+                                    name="linkType"
                                     component="select"
-                                    value={user.linktype}
+                                    value={user.linkType}
                                 >
                                     <option value="web">
                                         <FormattedMessage

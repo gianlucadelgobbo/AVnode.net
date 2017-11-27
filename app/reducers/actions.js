@@ -23,8 +23,7 @@ export const REQUEST_USER_DELETELINK = 'REQUEST_USER_DELETELINK';
 export const REQUEST_USER_EDITABOUT = 'REQUEST_USER_EDITABOUT';
 export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
 export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
-export const REQUEST_USER_EDITWEBLINK = 'REQUEST_USER_EDITWEBLINK';
-export const REQUEST_USER_EDITSOCIALLINK = 'REQUEST_USER_EDITSOCIALLINK';
+export const REQUEST_USER_EDITLINK = 'REQUEST_USER_EDITLINK';
 export const REQUEST_USER_MAKELINKPRIVATE = 'REQUEST_USER_MAKELINKPRIVATE';
 export const REQUEST_USER_MAKELINKPUBLIC = 'REQUEST_USER_MAKELINKPUBLIC';
 export const REQUEST_USER_LINKCONFIRM = 'REQUEST_USER_LINKCONFIRM';
@@ -174,7 +173,7 @@ export function editEvent(data) {
         is_primary: primaryLink,
         is_confirmed: false,
         is_public: false,
-        type: data.linktype
+        type: data.linkType
       });
     }
   }
@@ -1382,7 +1381,7 @@ export function editUserLinks(dispatch) {
           is_primary: primaryLink,
           is_confirmed: false,
           is_public: false,
-          type: data.linktype
+          type: data.linkType
         });
       };
     };
@@ -1502,36 +1501,22 @@ export function addLink(dispatch) {
   };
 };
 
-export function userLinkWebEdit(dispatch) {
+export function userLinkEdit(dispatch) {
   return (userId, linkId) => {
     dispatch({
-      type: REQUEST_USER_EDITWEBLINK,
+      type: REQUEST_USER_EDITLINK,
       payload: {
         user: userId,
         link: linkId
       }
     });
-    return fetch(`/account/api/user/${userId}/linkweb/${linkId}`, {
+    return fetch(`/account/api/user/${userId}/link/${linkId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function userLinkSocialEdit(dispatch) {
-  return (userId, linkId) => {
-    dispatch({
-      type: REQUEST_USER_EDITSOCIALLINK,
-      payload: {
-        user: userId,
-        link: linkId
-      }
-    });
-    return fetch(`/account/api/user/${userId}/linksocial/${linkId}`, {
-      method: 'PUT',
-    }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}
+
 export function userLinkMakePrimary(dispatch) {
   return (userId, linkId) => {
     dispatch({

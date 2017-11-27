@@ -25,10 +25,9 @@ const ProfilePublic = ({
   saveProfile,
   userAboutEdit,
   userAboutDelete,
-  userLinkMakePrimary,
+//  userLinkMakePrimary,
   userLinkDelete,
-  userLinkWebEdit,
-  userLinkSocialEdit,
+  userLinkEdit,
   fetchCountries
   }) => {
 
@@ -42,35 +41,35 @@ const ProfilePublic = ({
 
   const onAboutEdit = (about) => (e) => {
     e.preventDefault();
+    console.log('dirty:' + dirty + ' invalid:' + invalid + ' pristine:' + pristine + ' valid:' + valid);
     return userAboutEdit(user._id, about.lang);
   };
   const onAboutDelete = (about) => (e) => {
     e.preventDefault();
     return userAboutDelete(user._id, about.lang);
   };
-  const onLinkWebEdit = (link) => (e) => {
+  /* const onLinkWebEdit = (link) => (e) => {
     e.preventDefault();
-    console.log('onLinkWebEdit dirty:' + dirty + ' invalid:' + invalid + ' pristine:' + pristine + ' valid:' + valid);
     return userLinkWebEdit(user._id, link._id);
   };
   const onLinkWebMakePrimary = (link) => (e) => {
     e.preventDefault();
     return userLinkMakePrimary(user._id, link._id);
   };
-  const onLinkWebDelete = (link) => (e) => {
-    e.preventDefault();
-    return userLinkDelete(user._id, link._id);
-  };
-
-  const onLinkSocialEdit = (link) => (e) => {
-    e.preventDefault();
-    return userLinkSocialEdit(user._id, link._id);
-  };
   const onLinkSocialMakePrimary = (link) => (e) => {
     e.preventDefault();
     return userLinkMakePrimary(user._id, link._id);
   };
-  const onLinkSocialDelete = (link) => (e) => {
+  const onLinkWebDelete = (link) => (e) => {
+    e.preventDefault();
+    return userLinkDelete(user._id, link._id);
+  }; */
+
+  const onLinkEdit = (link) => (e) => {
+    e.preventDefault();
+    return userLinkEdit(user._id, link._id);
+  };
+  const onLinkDelete = (link) => (e) => {
     e.preventDefault();
     return userLinkDelete(user._id, link._id);
   };
@@ -262,9 +261,9 @@ const ProfilePublic = ({
                   l.type === 'web' ?
                     <LinkWeb
                       linkWeb={l}
-                      onMakePrimary={onLinkWebMakePrimary(l)}
-                      onEdit={onLinkWebEdit(l)}
-                      onDelete={onLinkWebDelete(l)}
+                      //onMakePrimary={onLinkWebMakePrimary(l)}
+                      onEdit={onLinkEdit(l)}
+                      onDelete={onLinkDelete(l)}
                       intl={intl}
                     />
                     :
@@ -303,20 +302,20 @@ const ProfilePublic = ({
                 </div>
               </div>
               <div className="col-md-3 form-group">
-                <label htmlFor="linktype">
+                <label htmlFor="linkType">
                   <FormattedMessage
-                    id="linktype"
+                    id="linkType"
                     defaultMessage="Link type"
                   />
                 </label>
                 {LinkType ?
                   <Field
                     className="form-control custom-select"
-                    name="linktype"
+                    name="linkType"
                     component="select"
-                    value={user.linkSocialType}
+                    value={user.linkType}
                   >
-                    <option value="web">
+                    <option value="ot">
                       <FormattedMessage
                         id="Please select"
                         defaultMessage="Please select"
@@ -341,12 +340,12 @@ const ProfilePublic = ({
             <ul className="list-group mt-2">
               {
                 user && user.links && user.links.map((l) => (
-                  l.type !== 'web' ?
+                  l.type === 'tw' || l.type === 'fb' || l.type === 'ot' ?
                     <LinkSocial
                       linkSocial={l}
-                      onMakePrimary={onLinkSocialMakePrimary(l)}
-                      onEdit={onLinkSocialEdit(l)}
-                      onDelete={onLinkSocialDelete(l)}
+                      //onMakePrimary={onLinkSocialMakePrimary(l)}
+                      onEdit={onLinkEdit(l)}
+                      onDelete={onLinkDelete(l)}
                       intl={intl}
                     />
                     :
