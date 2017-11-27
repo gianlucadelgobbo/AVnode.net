@@ -5,8 +5,8 @@ import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
 import LinkType from '../link/LinkType';
-import LinkWeb from './LinkWeb';
-import LinkSocial from './LinkSocial';
+import LinkWeb from '../link/LinkWeb';
+import LinkSocial from '../link/LinkSocial';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
@@ -48,22 +48,6 @@ const ProfilePublic = ({
     e.preventDefault();
     return userAboutDelete(user._id, about.lang);
   };
-  /* const onLinkWebEdit = (link) => (e) => {
-    e.preventDefault();
-    return userLinkWebEdit(user._id, link._id);
-  };
-  const onLinkWebMakePrimary = (link) => (e) => {
-    e.preventDefault();
-    return userLinkMakePrimary(user._id, link._id);
-  };
-  const onLinkSocialMakePrimary = (link) => (e) => {
-    e.preventDefault();
-    return userLinkMakePrimary(user._id, link._id);
-  };
-  const onLinkWebDelete = (link) => (e) => {
-    e.preventDefault();
-    return userLinkDelete(user._id, link._id);
-  }; */
 
   const onLinkEdit = (link) => (e) => {
     e.preventDefault();

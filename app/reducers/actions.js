@@ -381,10 +381,10 @@ export function suggestEventOrganizingCrew(eventId, q) {
       });
   };
 }
-export function aboutCrewEdit(id, aboutlanguage) {
+export function crewAboutEdit(id, aboutlanguage) {
   return dispatch => {
-    console.log('_______________ACTION aboutCrewEdit __________________________________');
-    console.log('aboutCrewEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    console.log('_______________ACTION crewAboutEdit __________________________________');
+    console.log('crewAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_CREW_EDITABOUT,
       payload: {
@@ -398,10 +398,10 @@ export function aboutCrewEdit(id, aboutlanguage) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function aboutCrewDelete(id, aboutlanguage) {
+export function crewAboutDelete(id, aboutlanguage) {
   return dispatch => {
-    console.log('_______________ACTION aboutCrewDelete __________________________________');
-    console.log('aboutCrewDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    console.log('_______________ACTION crewAboutDelete __________________________________');
+    console.log('crewAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_CREW_DELETEABOUT,
       payload: {
