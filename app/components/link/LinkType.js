@@ -1,5 +1,4 @@
 const linkType = [
-    { 'key': 'web', 'name': 'Website' },
     { 'key': 'sk', 'name': 'Skype' },
     { 'key': 'tel', 'name': 'Telephone' },
     { 'key': 'fb', 'name': 'Facebook' },

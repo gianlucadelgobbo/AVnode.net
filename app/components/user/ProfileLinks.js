@@ -18,23 +18,23 @@ const ProfileLinksForm = ({
     saveProfile
     }) => {
 
-  const onUserLinkMakePrimary = (userId) => (link) => (e) => {
-    userLinkMakePrimary(userId, link._id);
-  };
-  const onUserLinkMakePrivate = (userId) => (link) => (e) => {
-    userLinkMakePrivate(userId, link._id);
-  };
-  const onUserLinkMakePublic = (userId) => (link) => (e) => {
-    userLinkMakePublic(userId, link._id);
-  };
-  const onUserLinkConfirm = (userId) => (link) => (e) => {
-    userLinkConfirm(userId, link._id);
-  };
-  const onUserLinkDelete = (userId) => (link) => (e) => {
-    userLinkDelete(userId, link._id);
-  };
+    const onUserLinkMakePrimary = (userId) => (link) => (e) => {
+        userLinkMakePrimary(userId, link._id);
+    };
+    const onUserLinkMakePrivate = (userId) => (link) => (e) => {
+        userLinkMakePrivate(userId, link._id);
+    };
+    const onUserLinkMakePublic = (userId) => (link) => (e) => {
+        userLinkMakePublic(userId, link._id);
+    };
+    const onUserLinkConfirm = (userId) => (link) => (e) => {
+        userLinkConfirm(userId, link._id);
+    };
+    const onUserLinkDelete = (userId) => (link) => (e) => {
+        userLinkDelete(userId, link._id);
+    };
 
-  return (
+    return (
         <Layout>
             <form onSubmit={handleSubmit(saveProfile)}>
                 <fieldset className="form-group">
@@ -59,8 +59,8 @@ const ProfileLinksForm = ({
                                     name="link"
                                     component="input"
                                     placeholder={intl.formatMessage({
-                                      id: 'link.placeholder',
-                                      defaultMessage: 'https://www...'
+                                        id: 'link.placeholder',
+                                        defaultMessage: 'https://www...'
                                     })}
                                 />
                             </div>
@@ -134,11 +134,11 @@ const ProfileLinksForm = ({
 
             </form>
         </Layout >
-  );
+    );
 };
 
 export default injectIntl(reduxForm({
-  form: 'userLinks',
-  enableReinitialize: true,
-  keepDirtyOnReinitialize: true
+    form: 'userLinks',
+    enableReinitialize: true,
+    keepDirtyOnReinitialize: true
 })(ProfileLinksForm));

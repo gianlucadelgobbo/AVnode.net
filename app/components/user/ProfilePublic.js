@@ -4,6 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
+import LinkType from '../link/LinkType';
 import LinkWeb from './LinkWeb';
 import LinkSocial from './LinkSocial';
 import validate from './validate'
@@ -37,8 +38,8 @@ const ProfilePublic = ({
   if (!user._countries) {
     fetchCountries();
   }
-  
-  
+
+
   const onAboutEdit = (about) => (e) => {
     e.preventDefault();
     return userAboutEdit(user._id, about.lang);
@@ -216,7 +217,7 @@ const ProfilePublic = ({
                   <About
                     about={a}
                     onEdit={onAboutEdit(a)}
-                    onDelete={onAboutDelete(a)}                    
+                    onDelete={onAboutDelete(a)}
                     intl={intl}
                   />
                 ))
@@ -280,23 +281,56 @@ const ProfilePublic = ({
                 defaultMessage="Social channels"
               />
             </legend>
-            <label htmlFor="linkSocial">
-              <FormattedMessage
-                id="url"
-                defaultMessage="Url"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="linkSocial"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'addUrl',
-                  defaultMessage: 'Add/edit url'
-                })}
-                value={user.linkSocial}
-              />
+            <div className="row">
+              <div className="col-md-9 form-group">
+                <label htmlFor="linkSocial">
+                  <FormattedMessage
+                    id="url"
+                    defaultMessage="Url"
+                  />
+                </label>
+                <div className="input-group">
+                  <Field
+                    className="form-control"
+                    name="linkSocial"
+                    component="input"
+                    placeholder={intl.formatMessage({
+                      id: 'addUrl',
+                      defaultMessage: 'Add/edit url'
+                    })}
+                    value={user.linkSocial}
+                  />
+                </div>
+              </div>
+              <div className="col-md-3 form-group">
+                <label htmlFor="linktype">
+                  <FormattedMessage
+                    id="linktype"
+                    defaultMessage="Link type"
+                  />
+                </label>
+                {LinkType ?
+                  <Field
+                    className="form-control custom-select"
+                    name="linktype"
+                    component="select"
+                    value={user.linkSocialType}
+                  >
+                    <option value="web">
+                      <FormattedMessage
+                        id="Please select"
+                        defaultMessage="Please select"
+                      />
+                    </option>
+                    {LinkType.map((c) => (
+                      <option value={c.key.toLowerCase()}>{c.name}</option>
+                    ))
+                    }
+                    { /*  */}
+                  </Field> :
+                  <p>Loading a link types…</p>
+                }
+              </div>
             </div>
             <label>
               <FormattedMessage
@@ -307,7 +341,7 @@ const ProfilePublic = ({
             <ul className="list-group mt-2">
               {
                 user && user.links && user.links.map((l) => (
-                  l.type === 'tw' ?
+                  l.type !== 'web' ?
                     <LinkSocial
                       linkSocial={l}
                       onMakePrimary={onLinkSocialMakePrimary(l)}
