@@ -1251,6 +1251,26 @@ export function userAboutEdit(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function userAboutDelete(dispatch) {
+  return (userId, aboutlanguage) => {
+    console.log('_______________ACTION userAboutDelete __________________________________');
+    console.log('userAboutDelete userId: ' + JSON.stringify(userId));
+    console.log('userAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+
+    dispatch({
+      type: REQUEST_USER_DELETEABOUT,
+      payload: {
+        user: userId,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/about/${aboutlanguage}`, {
+        method: 'DELETE'
+      }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 
 export function editUserImages(dispatch) {
   return data => {

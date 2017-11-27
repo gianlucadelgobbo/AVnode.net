@@ -23,6 +23,7 @@ const ProfilePublic = ({
   handleSubmit,
   saveProfile,
   userAboutEdit,
+  userAboutDelete,
   userLinkMakePrimary,
   userLinkDelete,
   userLinkWebEdit,
@@ -37,9 +38,14 @@ const ProfilePublic = ({
     fetchCountries();
   }
   
+  
   const onAboutEdit = (about) => (e) => {
     e.preventDefault();
     return userAboutEdit(user._id, about.lang);
+  };
+  const onAboutDelete = (about) => (e) => {
+    e.preventDefault();
+    return userAboutDelete(user._id, about.lang);
   };
   const onLinkWebEdit = (link) => (e) => {
     e.preventDefault();
@@ -210,6 +216,7 @@ const ProfilePublic = ({
                   <About
                     about={a}
                     onEdit={onAboutEdit(a)}
+                    onDelete={onAboutDelete(a)}                    
                     intl={intl}
                   />
                 ))

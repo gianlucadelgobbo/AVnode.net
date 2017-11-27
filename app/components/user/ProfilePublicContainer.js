@@ -6,7 +6,7 @@ import {
   userLinkWebEdit,
   userLinkSocialEdit,
   userAboutEdit,
-  //userAboutDelete,
+  userAboutDelete,
   editUser
 } from '../../reducers/actions';
 import ProfilePublic from './ProfilePublic';
@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
   userLinkWebEdit: dispatch(userLinkWebEdit),
   userLinkSocialEdit: dispatch(userLinkSocialEdit),
   userAboutEdit: dispatch(userAboutEdit),
-  //userAboutDelete: dispatch(userAboutDelete),
+  userAboutDelete: dispatch(userAboutDelete),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });
