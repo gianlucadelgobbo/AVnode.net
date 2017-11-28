@@ -14,5 +14,11 @@
 	"Account already exists.": "Account already exists.",
 	"Results": "Results",
 	"Please check your inbox for information.": "Please check your inbox for information.",
-	"Hmm…": "Hmm…"
+	"Hmm…": "Hmm…",
+	"Sign up": "Sign up",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?"
 }
