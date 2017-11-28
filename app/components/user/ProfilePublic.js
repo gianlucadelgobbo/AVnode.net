@@ -4,8 +4,9 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
-import LinkWeb from './LinkWeb';
-import LinkSocial from './LinkSocial';
+import LinkType from '../link/LinkType';
+import LinkWeb from '../link/LinkWeb';
+import LinkSocial from '../link/LinkSocial';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
@@ -15,9 +16,18 @@ import Match from 'preact-router/match';
 const ProfilePublic = ({
   user,
   //submitting,
+  dirty,
+  invalid,
+  pristine,
+  valid,
   intl,
   handleSubmit,
   saveProfile,
+  userAboutEdit,
+  userAboutDelete,
+//  userLinkMakePrimary,
+  userLinkDelete,
+  userLinkEdit,
   fetchCountries
   }) => {
 
@@ -26,52 +36,26 @@ const ProfilePublic = ({
   }
   if (!user._countries) {
     fetchCountries();
-    //console.log('submitting' + submitting);
   }
 
-  /* const handleChange = () => {
-    console.log(user);
-  } */
-  const onLinkWebEdit = (link) => (e) => {
+
+  const onAboutEdit = (about) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    user.linkWeb = link.url;
-    handleSubmit(saveProfile);
-    /*user && user.links && user.links.map((l) => (
-      l.url === link.url ? user.linkWeb = l.url : null
-    ));*/
+    console.log('dirty:' + dirty + ' invalid:' + invalid + ' pristine:' + pristine + ' valid:' + valid);
+    return userAboutEdit(user._id, about.lang);
   };
-  const onLinkWebMakePrimary = (link) => (e) => {
+  const onAboutDelete = (about) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    user && user.links && user.links.map((l) => (
-      l.is_primary = (l.url === link.url)
-    ));
+    return userAboutDelete(user._id, about.lang);
   };
 
-  const onLinkSocialEdit = (link) => (e) => {
+  const onLinkEdit = (link) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    user.linkSocial = link.url;
-    /*user && user.links && user.links.map((l) => (
-      l.url === link.url ? user.linkWeb = l.url : null
-    ));*/
+    return userLinkEdit(user._id, link._id);
   };
-  const onLinkSocialMakePrimary = (link) => (e) => {
+  const onLinkDelete = (link) => (e) => {
     e.preventDefault();
-    console.log(JSON.stringify(link));
-    user && user.links && user.links.map((l) => (
-      l.is_primary = (l.url === link.url)
-    ));
-    handleSubmit(saveProfile);
-  };
-  const onLinkWebDelete = (link) => (e) => {
-    e.preventDefault();
-    //return dispatch(onLinkWebMakePrimary(userId, linkId));
-  };
-  const onLinkSocialDelete = (link) => (e) => {
-    e.preventDefault();
-
+    return userLinkDelete(user._id, link._id);
   };
   return (
     <div>
@@ -215,6 +199,8 @@ const ProfilePublic = ({
                 user && user.abouts && user.abouts.map((a) => (
                   <About
                     about={a}
+                    onEdit={onAboutEdit(a)}
+                    onDelete={onAboutDelete(a)}
                     intl={intl}
                   />
                 ))
@@ -259,9 +245,9 @@ const ProfilePublic = ({
                   l.type === 'web' ?
                     <LinkWeb
                       linkWeb={l}
-                      onMakePrimary={onLinkWebMakePrimary(l)}
-                      onEdit={onLinkWebEdit(l)}
-                      onDelete={onLinkWebDelete(l)}
+                      //onMakePrimary={onLinkWebMakePrimary(l)}
+                      onEdit={onLinkEdit(l)}
+                      onDelete={onLinkDelete(l)}
                       intl={intl}
                     />
                     :
@@ -278,23 +264,56 @@ const ProfilePublic = ({
                 defaultMessage="Social channels"
               />
             </legend>
-            <label htmlFor="linkSocial">
-              <FormattedMessage
-                id="url"
-                defaultMessage="Url"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="linkSocial"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'addUrl',
-                  defaultMessage: 'Add/edit url'
-                })}
-                value={user.linkSocial}
-              />
+            <div className="row">
+              <div className="col-md-9 form-group">
+                <label htmlFor="linkSocial">
+                  <FormattedMessage
+                    id="url"
+                    defaultMessage="Url"
+                  />
+                </label>
+                <div className="input-group">
+                  <Field
+                    className="form-control"
+                    name="linkSocial"
+                    component="input"
+                    placeholder={intl.formatMessage({
+                      id: 'addUrl',
+                      defaultMessage: 'Add/edit url'
+                    })}
+                    value={user.linkSocial}
+                  />
+                </div>
+              </div>
+              <div className="col-md-3 form-group">
+                <label htmlFor="linkType">
+                  <FormattedMessage
+                    id="linkType"
+                    defaultMessage="Link type"
+                  />
+                </label>
+                {LinkType ?
+                  <Field
+                    className="form-control custom-select"
+                    name="linkType"
+                    component="select"
+                    value={user.linkType}
+                  >
+                    <option value="ot">
+                      <FormattedMessage
+                        id="Please select"
+                        defaultMessage="Please select"
+                      />
+                    </option>
+                    {LinkType.map((c) => (
+                      <option value={c.key.toLowerCase()}>{c.name}</option>
+                    ))
+                    }
+                    { /*  */}
+                  </Field> :
+                  <p>Loading a link types…</p>
+                }
+              </div>
             </div>
             <label>
               <FormattedMessage
@@ -305,12 +324,12 @@ const ProfilePublic = ({
             <ul className="list-group mt-2">
               {
                 user && user.links && user.links.map((l) => (
-                  l.type === 'tw' ?
+                  l.type === 'tw' || l.type === 'fb' || l.type === 'ot' ?
                     <LinkSocial
                       linkSocial={l}
-                      onMakePrimary={onLinkSocialMakePrimary(l)}
-                      onEdit={onLinkSocialEdit(l)}
-                      onDelete={onLinkSocialDelete(l)}
+                      //onMakePrimary={onLinkSocialMakePrimary(l)}
+                      onEdit={onLinkEdit(l)}
+                      onDelete={onLinkDelete(l)}
                       intl={intl}
                     />
                     :
@@ -340,6 +359,6 @@ const ProfilePublic = ({
 export default injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true,
+  //keepDirtyOnReinitialize: true,
   validate
 })(ProfilePublic));
