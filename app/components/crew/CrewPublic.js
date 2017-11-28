@@ -12,24 +12,38 @@ import Place from '../place/PlaceContainer';
 import OrgContact from './OrgContact';
 import OrgActivity from './OrgActivity';
 
-import LinksWebEdit from '../link/LinksWebEdit';
-import LinksSocialEdit from '../link/LinksSocialEdit';
-import LinksSkypeEdit from '../link/LinksSkypeEdit';
+import LinkType from '../link/LinkType';
+import LinkWeb from '../link/LinkWeb';
+import LinkSocial from '../link/LinkSocial';
+/*import LinksSkypeEdit from '../link/LinksSkypeEdit';
 import LinksMobileEdit from '../link/LinksMobileEdit';
-import LinksPhoneEdit from '../link/LinksPhoneEdit';
+import LinksPhoneEdit from '../link/LinksPhoneEdit';*/
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
     editCrew,
-    aboutCrewMakePrimary
+    crewAboutEdit,
+    crewAboutDelete,
+    crewLinkDelete,
+    crewLinkEdit
 } from '../../reducers/actions';
 
 let CrewForm = props => {
     const { handleSubmit, dispatch, crew, user, intl } = props;
 
-    const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
-        //about.is_primary = true;
-        return dispatch(aboutCrewMakePrimary(crewId, about._id));
+    const onCrewAboutEdit = (crewId) => (about) => (e) => {
+        return dispatch(crewAboutEdit(crewId, about.lang));
+    };
+    const onCrewAboutDelete = (crewId) => (about) => (e) => {
+        return dispatch(crewAboutDelete(crewId, about.lang));
+    };
+    const onLinkEdit = (link) => (e) => {
+        e.preventDefault();
+        return crewLinkEdit(props._id, link._id);
+    };
+    const onLinkDelete = (link) => (e) => {
+        e.preventDefault();
+        return crewLinkDelete(props._id, link._id);
     };
 
     if (!props.org) props.org = {};
@@ -140,7 +154,9 @@ let CrewForm = props => {
                             crew && crew.abouts && crew.abouts.map((a) => (
                                 <About
                                     about={a}
-                                    onMakePrimary={onCrewAboutMakePrimary(crew._id)(a)}
+                                    onEdit={onCrewAboutEdit(crew._id)(a)}
+                                    onDelete={onCrewAboutDelete(crew._id)(a)}
+                                    intl={intl}
                                 />
                             ))
                         }
@@ -376,9 +392,136 @@ let CrewForm = props => {
                         </div>
                     </div>
 
-                    <LinksWebEdit links={props.org_links} privacy="public" />
-                    <LinksSocialEdit links={props.org_links} privacy="public" />
+                    <fieldset className="form-group">
+                        <legend>
+                            <FormattedMessage
+                                id="websites"
+                                defaultMessage="Websites"
+                            />
+                        </legend>
+                        <label htmlFor="linkWeb">
+                            <FormattedMessage
+                                id="websiteUrl"
+                                defaultMessage="Website Url"
+                            />
+                        </label>
+                        <div className="input-group">
+                            <Field
+                                className="form-control"
+                                name="linkWeb"
+                                component="input"
+                                placeholder={intl.formatMessage({
+                                    id: 'addUrl',
+                                    defaultMessage: 'Add/edit url'
+                                })}
+                                value={props.linkWeb}
+                            />
+                        </div>
+                        <label>
+                            <FormattedMessage
+                                id="manageLinksWeb"
+                                defaultMessage="Manage your Web Links"
+                            />
+                        </label>
+                        <ul className="list-group mt-2">
+                            {
+                                props && props.links && props.links.map((l) => (
+                                    l.type === 'web' ?
+                                        <LinkWeb
+                                            linkWeb={l}
+                                            //onMakePrimary={onLinkWebMakePrimary(l)}
+                                            onEdit={onLinkEdit(l)}
+                                            onDelete={onLinkDelete(l)}
+                                            intl={intl}
+                                        />
+                                        :
+                                        null
+                                ))
+                            }
+                        </ul>
+                    </fieldset>
 
+                    <fieldset className="form-group">
+                        <legend>
+                            <FormattedMessage
+                                id="socials"
+                                defaultMessage="Social channels"
+                            />
+                        </legend>
+                        <div className="row">
+                            <div className="col-md-9 form-group">
+                                <label htmlFor="linkSocial">
+                                    <FormattedMessage
+                                        id="url"
+                                        defaultMessage="Url"
+                                    />
+                                </label>
+                                <div className="input-group">
+                                    <Field
+                                        className="form-control"
+                                        name="linkSocial"
+                                        component="input"
+                                        placeholder={intl.formatMessage({
+                                            id: 'addUrl',
+                                            defaultMessage: 'Add/edit url'
+                                        })}
+                                        value={props.linkSocial}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-3 form-group">
+                                <label htmlFor="linkType">
+                                    <FormattedMessage
+                                        id="linkType"
+                                        defaultMessage="Link type"
+                                    />
+                                </label>
+                                {LinkType ?
+                                    <Field
+                                        className="form-control custom-select"
+                                        name="linkType"
+                                        component="select"
+                                        value={props.linkType}
+                                    >
+                                        <option value="ot">
+                                            <FormattedMessage
+                                                id="Please select"
+                                                defaultMessage="Please select"
+                                            />
+                                        </option>
+                                        {LinkType.map((c) => (
+                                            <option value={c.key.toLowerCase()}>{c.name}</option>
+                                        ))
+                                        }
+                                        { /*  */}
+                                    </Field> :
+                                    <p>Loading a link types…</p>
+                                }
+                            </div>
+                        </div>
+                        <label>
+                            <FormattedMessage
+                                id="manageLinksSocial"
+                                defaultMessage="Manage your Social Links"
+                            />
+                        </label>
+                        <ul className="list-group mt-2">
+                            {
+                                props && props.links && props.links.map((l) => (
+                                    l.type === 'tw' || l.type === 'fb' || l.type === 'ot' ?
+                                        <LinkSocial
+                                            linkSocial={l}
+                                            //onMakePrimary={onLinkSocialMakePrimary(l)}
+                                            onEdit={onLinkEdit(l)}
+                                            onDelete={onLinkDelete(l)}
+                                            intl={intl}
+                                        />
+                                        :
+                                        null
+                                ))
+                            }
+                        </ul>
+                    </fieldset>
                     <div className="form-group">
                         <label htmlFor="org_public_email">
                             <FormattedMessage
@@ -413,7 +556,7 @@ let CrewForm = props => {
                         </div>
                     </div>
 
-                    <LinksPhoneEdit links={props.org_links} privacy="public" />
+                        {/* BL TODO <LinksPhoneEdit links={props.org_links} privacy="public" />*/}
 
                     <div className="form-group">
                         <label htmlFor="org_aims_and_activities">
@@ -698,11 +841,11 @@ let CrewForm = props => {
                         </div>
                     </div>
 
-                    <LinksMobileEdit links={props.org_legal_representative_links} privacy="private" />
+                    {/* BL TODO <LinksMobileEdit links={props.org_legal_representative_links} privacy="private" />
 
                     <LinksSkypeEdit links={props.org_legal_representative_links} privacy="private" />
 
-                    <LinksSocialEdit links={props.org_legal_representative_links} privacy="public" />
+                        <LinksSocialEdit links={props.org_legal_representative_links} privacy="public" />*/}
 
                     <div className="form-group">
                         <label htmlFor="org_statute">

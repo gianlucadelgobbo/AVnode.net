@@ -75,13 +75,17 @@ app.use((req, res, next) => {
     return next();
   }
   if (!req.user &&
-      req.path !== '/login' &&
-      req.path !== '/signup' &&
-      !req.path.match(/^\/auth/) &&
-      !req.path.match(/\./)) {
-    req.session.returnTo = req.path;
+    req.path !== '/login' &&
+    req.path !== '/signup' &&
+    !req.path.match(/^\/auth/) &&
+    !req.path.match(/\./)) {
+      if (req.path.match(/^\/account/)) {
+        res.redirect('/login');
+      } else {
+        req.session.returnTo = req.path;
+      }
   } else if (req.user &&
-      req.path == '/account') {
+    req.path == '/account') {
     req.session.returnTo = req.path;
   }
   next();
@@ -101,12 +105,12 @@ app.use(routes);
 // FIXME
 // Blocks pug exceptions, do we need it at all?
 //
-// app.use(function (err, req, res, _next) {
-//   if (err.isBoom) {
-//     req.flash('errors', { msg: err.message });
-//     return res.redirect('back');
-//   }
-// });
+app.use(function (err, req, res, _next) {
+  if (err.isBoom) {
+    req.flash('errors', { msg: err.message });
+    return res.redirect('back');
+  }
+});
 
 // FIXME
 // What was this about?
@@ -117,7 +121,7 @@ app.use(routes);
 app.use(function onerror(err, req, res, next) {
   // happens on user not logged in  
   if (err) {
-    console.log('Server Error:' + err);
+    console.log(`🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 Server Error:${err}`);
     //throw err;
   }
 });

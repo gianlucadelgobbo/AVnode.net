@@ -18,23 +18,23 @@ const ProfileLinksForm = ({
     saveProfile
     }) => {
 
-  const onUserLinkMakePrimary = (userId) => (link) => (e) => {
-    userLinkMakePrimary(userId, link._id);
-  };
-  const onUserLinkMakePrivate = (userId) => (link) => (e) => {
-    userLinkMakePrivate(userId, link._id);
-  };
-  const onUserLinkMakePublic = (userId) => (link) => (e) => {
-    userLinkMakePublic(userId, link._id);
-  };
-  const onUserLinkConfirm = (userId) => (link) => (e) => {
-    userLinkConfirm(userId, link._id);
-  };
-  const onUserLinkDelete = (userId) => (link) => (e) => {
-    userLinkDelete(userId, link._id);
-  };
+    const onUserLinkMakePrimary = (userId) => (link) => (e) => {
+        userLinkMakePrimary(userId, link._id);
+    };
+    const onUserLinkMakePrivate = (userId) => (link) => (e) => {
+        userLinkMakePrivate(userId, link._id);
+    };
+    const onUserLinkMakePublic = (userId) => (link) => (e) => {
+        userLinkMakePublic(userId, link._id);
+    };
+    const onUserLinkConfirm = (userId) => (link) => (e) => {
+        userLinkConfirm(userId, link._id);
+    };
+    const onUserLinkDelete = (userId) => (link) => (e) => {
+        userLinkDelete(userId, link._id);
+    };
 
-  return (
+    return (
         <Layout>
             <form onSubmit={handleSubmit(saveProfile)}>
                 <fieldset className="form-group">
@@ -59,25 +59,25 @@ const ProfileLinksForm = ({
                                     name="link"
                                     component="input"
                                     placeholder={intl.formatMessage({
-                                      id: 'link.placeholder',
-                                      defaultMessage: 'https://www...'
+                                        id: 'link.placeholder',
+                                        defaultMessage: 'https://www...'
                                     })}
                                 />
                             </div>
                         </div>
                         <div className="col-md-3 form-group">
-                            <label htmlFor="linktype">
+                            <label htmlFor="linkType">
                                 <FormattedMessage
-                                    id="linktype"
+                                    id="linkType"
                                     defaultMessage="Link type"
                                 />
                             </label>
                             {LinkType ?
                                 <Field
                                     className="form-control custom-select"
-                                    name="linktype"
+                                    name="linkType"
                                     component="select"
-                                    value={user.linktype}
+                                    value={user.linkType}
                                 >
                                     <option value="web">
                                         <FormattedMessage
@@ -134,11 +134,11 @@ const ProfileLinksForm = ({
 
             </form>
         </Layout >
-  );
+    );
 };
 
 export default injectIntl(reduxForm({
-  form: 'userLinks',
-  enableReinitialize: true,
-  keepDirtyOnReinitialize: true
+    form: 'userLinks',
+    enableReinitialize: true,
+    keepDirtyOnReinitialize: true
 })(ProfileLinksForm));
