@@ -71,9 +71,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   const path = req.path.split('/')[1];
-  console.log(path);
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
-    console.log('/auth|login|logout|signup|images|fonts found');
     return next();
   }
   if (!req.user &&
@@ -81,8 +79,11 @@ app.use((req, res, next) => {
     req.path !== '/signup' &&
     !req.path.match(/^\/auth/) &&
     !req.path.match(/\./)) {
-    // BL 20171128 req.session.returnTo = req.path;
-    res.redirect('/login');
+      if (req.path.match(/^\/account/)) {
+        res.redirect('/login');
+      } else {
+        req.session.returnTo = req.path;
+      }
   } else if (req.user &&
     req.path == '/account') {
     req.session.returnTo = req.path;

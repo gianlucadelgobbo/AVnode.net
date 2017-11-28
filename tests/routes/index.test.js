@@ -15,10 +15,10 @@ describe('Routes: /', () => {
     done();
   });
 
-  it('GET to unknown route returns 302', (done) => {
+  it('GET to unknown route returns 404', (done) => {
     request(server)
       .get('/foo/bar')
-      .expect(302, done);
+      .expect(404, done);
   });
 
 });
