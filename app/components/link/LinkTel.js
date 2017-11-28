@@ -1,10 +1,10 @@
 import { h } from 'preact';
-import { FormattedMessage } from 'preact-intl';
 
-const About = ({ about, onEdit, onDelete, intl }) => {
+const LinkTel = ({ linkTel, onEdit, onDelete, intl }) => {
+
   return (
     <li className="list-group-item justify-content-between">
-      {about.lang} : {about.abouttext}
+      {linkTel.type} : <a href={`tel:${linkTel.url}`} target="_blank">{linkTel.url}</a>
       <span>
         <button
           type="button"
@@ -22,6 +22,7 @@ const About = ({ about, onEdit, onDelete, intl }) => {
           >
           </i>
         </button>
+
         <button className="btn btn-success btn-sm"
           onClick={onEdit}>
           <i
@@ -36,8 +37,9 @@ const About = ({ about, onEdit, onDelete, intl }) => {
           </i>
         </button>
       </span>
+
     </li>
   );
 };
 
-export default About;
+export default LinkTel;

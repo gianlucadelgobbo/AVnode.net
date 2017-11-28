@@ -2,6 +2,8 @@ import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
+import LinkType from '../link/LinkType';
+import LinkTel from '../link/LinkTel';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
@@ -14,6 +16,8 @@ const ProfilePrivate = ({
   intl,
   handleSubmit,
   saveProfile,
+  userLinkDelete,
+  userLinkEdit,
   fetchCountries
   }) => {
 
@@ -21,7 +25,14 @@ const ProfilePrivate = ({
     fetchCountries();
     //console.log('submitting' + submitting);
   }
-
+  const onLinkEdit = (link) => (e) => {
+    e.preventDefault();
+    return userLinkEdit(user._id, link._id);
+  };
+  const onLinkDelete = (link) => (e) => {
+    e.preventDefault();
+    return userLinkDelete(user._id, link._id);
+  };
   const handleChange = () => {
     console.log(user);
   }
@@ -182,6 +193,88 @@ const ProfilePrivate = ({
             </div>
           </fieldset>
 
+
+          <fieldset className="form-group">
+            <legend>
+              <FormattedMessage
+                id="phoneNumbers"
+                defaultMessage="Phone Numbers"
+              />
+            </legend>
+            <div className="row">
+              <div className="col-md-9 form-group">
+                <label htmlFor="linkTel">
+                  <FormattedMessage
+                    id="number"
+                    defaultMessage="Number"
+                  />
+                </label>
+                <div className="input-group">
+                  <Field
+                    className="form-control"
+                    name="linkTel"
+                    component="input"
+                    placeholder={intl.formatMessage({
+                      id: 'addNumber',
+                      defaultMessage: 'Add/edit number'
+                    })}
+                    value={user.linkTel}
+                  />
+                </div>
+              </div>
+              <div className="col-md-3 form-group">
+                <label htmlFor="linkType">
+                  <FormattedMessage
+                    id="linkType"
+                    defaultMessage="Link type"
+                  />
+                </label>
+                {LinkType ?
+                  <Field
+                    className="form-control custom-select"
+                    name="linkType"
+                    component="select"
+                    value={user.linkType}
+                  >
+                    <option value="ot">
+                      <FormattedMessage
+                        id="Please select"
+                        defaultMessage="Please select"
+                      />
+                    </option>
+                    {LinkType.map((c) => (
+                      <option value={c.key.toLowerCase()}>{c.name}</option>
+                    ))
+                    }
+                    { /*  */}
+                  </Field> :
+                  <p>Loading a link types…</p>
+                }
+              </div>
+            </div>
+            <label>
+              <FormattedMessage
+                id="manageLinksTel"
+                defaultMessage="Manage your Phone Links"
+              />
+            </label>
+            <ul className="list-group mt-2">
+              {
+                user && user.links && user.links.map((l) => (
+                  l.type === 'sk' || l.type === 'tel' || l.type === 'mb' ?
+                    <LinkTel
+                      linkTel={l}
+                      onEdit={onLinkEdit(l)}
+                      onDelete={onLinkDelete(l)}
+                      intl={intl}
+                    />
+                    :
+                    null
+                ))
+              }
+            </ul>
+          </fieldset>
+
           <div className="form-group">
             <button
               className="btn btn-primary"
@@ -203,6 +296,6 @@ const ProfilePrivate = ({
 export default injectIntl(reduxForm({
   form: 'userPrivate',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true,
+  //keepDirtyOnReinitialize: true,
   validate
 })(ProfilePrivate));

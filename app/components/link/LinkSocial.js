@@ -1,10 +1,33 @@
 import { h } from 'preact';
-import { FormattedMessage } from 'preact-intl';
 
-const About = ({ about, onEdit, onDelete, intl }) => {
+const LinkSocial = ({ linkSocial, onEdit, onDelete, intl }) => {
+
   return (
     <li className="list-group-item justify-content-between">
-      {about.lang} : {about.abouttext}
+      {linkSocial.type} : <a href={`${linkSocial.url}`} target="_blank">{linkSocial.url}</a>
+      {/*linkSocial.is_primary ?
+        <span className="badge badge-primary">
+          <FormattedMessage
+            id="primary"
+            defaultMessage="Primary"
+          />
+      </span> : 
+      <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={onMakePrimary}
+          >
+            <i
+              className="fa fa-star"
+              data-toggle="tooltip"
+              data-placement="top"
+              title={intl.formatMessage({
+                id: "makeitprimary",
+                defaultMessage: "Make it primary"
+              })}
+            >
+            </i>
+          </button>*/}
       <span>
         <button
           type="button"
@@ -22,6 +45,7 @@ const About = ({ about, onEdit, onDelete, intl }) => {
           >
           </i>
         </button>
+
         <button className="btn btn-success btn-sm"
           onClick={onEdit}>
           <i
@@ -36,8 +60,9 @@ const About = ({ about, onEdit, onDelete, intl }) => {
           </i>
         </button>
       </span>
+
     </li>
   );
 };
 
-export default About;
+export default LinkSocial;

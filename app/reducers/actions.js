@@ -5,7 +5,6 @@ export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
 export const REQUEST_EDIT_USERLINKS = 'REQUEST_EDIT_USERLINKS';
-export const REQUEST_EDIT_USERABOUTS = 'REQUEST_EDIT_USERABOUTS';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
 export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
@@ -21,9 +20,10 @@ export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_USER_DELETEPLACE = 'REQUEST_USER_DELETEPLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
 export const REQUEST_USER_DELETELINK = 'REQUEST_USER_DELETELINK';
-export const REQUEST_EDIT_USERABOUT = 'REQUEST_EDIT_USERABOUT';
+export const REQUEST_USER_EDITABOUT = 'REQUEST_USER_EDITABOUT';
 export const REQUEST_USER_DELETEABOUT = 'REQUEST_USER_DELETEABOUT';
 export const REQUEST_USER_MAKELINKPRIMARY = 'REQUEST_USER_MAKELINKPRIMARY';
+export const REQUEST_USER_EDITLINK = 'REQUEST_USER_EDITLINK';
 export const REQUEST_USER_MAKELINKPRIVATE = 'REQUEST_USER_MAKELINKPRIVATE';
 export const REQUEST_USER_MAKELINKPUBLIC = 'REQUEST_USER_MAKELINKPUBLIC';
 export const REQUEST_USER_LINKCONFIRM = 'REQUEST_USER_LINKCONFIRM';
@@ -71,7 +71,8 @@ export const REQUEST_DELETE_CREWMEMBER = 'REQUEST_DELETE_CREWMEMBER';
 export const REQUEST_ADD_CREWIMAGE = 'REQUEST_ADD_CREWIMAGE';
 export const REQUEST_ADD_CREWTEASERIMAGE = 'REQUEST_ADD_CREWTEASERIMAGE';
 export const REQUEST_ADD_CREWORGLOGO = 'REQUEST_ADD_CREWORGLOGO';
-export const REQUEST_CREW_MAKEABOUTPRIMARY = 'REQUEST_CREW_MAKEABOUTPRIMARY';
+export const REQUEST_CREW_EDITABOUT = 'REQUEST_CREW_EDITABOUT';
+export const REQUEST_CREW_DELETEABOUT = 'REQUEST_CREW_DELETEABOUT';
 
 export const REQUEST_ADD_PERFORMANCE = 'REQUEST_ADD_PERFORMANCE';
 export const REQUEST_DELETE_PERFORMANCE = 'REQUEST_DELETE_PERFORMANCE';
@@ -90,6 +91,8 @@ export const REQUEST_ADD_PERFORMANCE_PERFORMER = 'REQUEST_ADD_PERFORMANCE_PERFOR
 export const REQUEST_DELETE_PERFORMANCE_PERFORMER = 'REQUEST_DELETE_PERFORMANCE_PERFORMER';
 export const REQUEST_DELETE_PERFORMANCE_CATEGORY = 'REQUEST_DELETE_PERFORMANCE_CATEGORY';
 export const REQUEST_PERFORMANCE_MAKEABOUTPRIMARY = 'REQUEST_PERFORMANCE_MAKEABOUTPRIMARY';
+export const REQUEST_PERFORMANCE_EDITABOUT = 'REQUEST_PERFORMANCE_EDITABOUT';
+export const REQUEST_PERFORMANCE_DELETEABOUT = 'REQUEST_PERFORMANCE_DELETEABOUT';
 
 // Wrap fetch with some default settings, always
 // return parsed JSON…
@@ -108,7 +111,7 @@ const fetch = (path, options = {}, json = true) => {
 };
 
 export function navigate(active) {
-  console.log( JSON.stringify(active) );
+  console.log(JSON.stringify(active));
   return { type: NAVIGATE, active };
 }
 
@@ -170,7 +173,7 @@ export function editEvent(data) {
         is_primary: primaryLink,
         is_confirmed: false,
         is_public: false,
-        type: data.linktype
+        type: data.linkType
       });
     }
   }
@@ -378,18 +381,36 @@ export function suggestEventOrganizingCrew(eventId, q) {
       });
   };
 }
-export function aboutCrewMakePrimary(id, aboutId) {
+export function crewAboutEdit(id, aboutlanguage) {
   return dispatch => {
+    console.log('_______________ACTION crewAboutEdit __________________________________');
+    console.log('crewAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
-      type: REQUEST_CREW_MAKEABOUTPRIMARY,
+      type: REQUEST_CREW_EDITABOUT,
       payload: {
         crew: id,
-        about: aboutId
+        aboutlanguage: aboutlanguage
       }
     });
-    console.log("id:" + id + " aboutId" + aboutId);
-    return fetch(`/account/api/crew/${id}/about/${aboutId}`, {
+    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
       method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function crewAboutDelete(id, aboutlanguage) {
+  return dispatch => {
+    console.log('_______________ACTION crewAboutDelete __________________________________');
+    console.log('crewAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    dispatch({
+      type: REQUEST_CREW_DELETEABOUT,
+      payload: {
+        crew: id,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
+      method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
@@ -454,12 +475,10 @@ export function editCrew(data) {
   // about, verify unique
   if (data.about) {
     let aboutFound = false;
-    let primaryAbout = true;
     // init if first about
     if (!data.abouts) data.abouts = [];
     // check existing abouts
     data.abouts.map((a) => {
-      primaryAbout = false;
       if (a.lang === data.aboutlanguage) {
         // about in the form already exists in abouts
         aboutFound = true;
@@ -471,7 +490,6 @@ export function editCrew(data) {
     if (!aboutFound) {
       if (!data.aboutlanguage) data.aboutlanguage = 'en';
       data.abouts.push({
-        is_primary: primaryAbout,
         lang: data.aboutlanguage,
         abouttext: data.about
       });
@@ -512,7 +530,7 @@ export function suggestCrewMember(crewId, q) {
 
 export function addCrewMember(crewId, member) {
   const action = `actions, addCrewMember(crewId: ${crewId}`;
-  
+
   return dispatch => {
     dispatch({
       type: REQUEST_ADD_CREWMEMBER
@@ -650,7 +668,29 @@ export function aboutPerformanceMakePrimary(dispatch) {
 
 
 export function editPerformance(data) {
-
+  // about, verify unique
+  if (data.about) {
+    let aboutFound = false;
+    // init if first about
+    if (!data.abouts) data.abouts = [];
+    // check existing abouts
+    data.abouts.map((a) => {
+      if (a.lang === data.aboutlanguage) {
+        // about in the form already exists in abouts
+        aboutFound = true;
+        // update abouttext
+        a.abouttext = data.about;
+      }
+    });
+    // in case of new about, add it to the abouts
+    if (!aboutFound) {
+      if (!data.aboutlanguage) data.aboutlanguage = 'en';
+      data.abouts.push({
+        lang: data.aboutlanguage,
+        abouttext: data.about
+      });
+    }
+  }
   // category, verify unique
   if (data.category) {
     let categoryFound = false;
@@ -680,7 +720,40 @@ export function editPerformance(data) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-
+export function performanceAboutEdit(id, aboutlanguage) {
+  return dispatch => {
+    console.log('_______________ACTION performanceAboutEdit __________________________________');
+    console.log('performanceAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    dispatch({
+      type: REQUEST_PERFORMANCE_EDITABOUT,
+      payload: {
+        performance: id,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function performanceAboutDelete(id, aboutlanguage) {
+  return dispatch => {
+    console.log('_______________ACTION performanceAboutDelete __________________________________');
+    console.log('performanceAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    dispatch({
+      type: REQUEST_PERFORMANCE_DELETEABOUT,
+      payload: {
+        performance: id,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
+      method: 'DELETE',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 export function editPerformanceAbouts(data) {
   // about, verify unique
   if (data.about) {
@@ -1175,18 +1248,18 @@ export function editUserAddresses(dispatch) {
     let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
     console.log('_______________ ACTION editUserAddresses __________________________________');
     console.log('editUserAddresses data id: ' + data._id);
-    console.log('editUserAddresses data street_number: ' + data.street_number);    
+    console.log('editUserAddresses data street_number: ' + data.street_number);
     console.log('editUserAddresses data route: ' + data.route);
     console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
     console.log('editUserAddresses data locality: ' + data.locality);
     console.log('editUserAddresses data country: ' + data.country);
-    
+
     // init if first address
     if (!data.addresses) data.addresses = [];
     data.addresses.map((a) => {
       // if an address exist, new ones are not set to primary (for now)
       primaryAddress = false;
-      if (a.address === inputAddress) {        
+      if (a.address === inputAddress) {
         // address in the form already exists in addresses
         addressFound = true;
         // update the fields
@@ -1195,7 +1268,7 @@ export function editUserAddresses(dispatch) {
         user.postal_code = data.postal_code;
         user.locality = data.locality;
         user.administrative_area_level_1 = data.administrative_area_level_1;
-        user.country = data.country;  
+        user.country = data.country;
       }
     });
     if (!addressFound) {
@@ -1230,58 +1303,43 @@ export function editUserAddresses(dispatch) {
   };
 }
 
-export function editUserAbouts(dispatch) {
-  return data => {
-    console.log('_______________ACTION editUserAbouts__________________________________');
-    // console.log('editUserAbouts data id: ' + data._id);
-    // about, verify unique
-    if (data.about) {
-      // console.log('editUserAbouts data.about: ' + JSON.stringify(data.about));
-      let aboutFound = false;
-      let primaryAbout = true;
-      if (!data.aboutlanguage) {
-        // console.log('editUserAbouts aboutlanguage not set defaults to en');
-        data.aboutlanguage = 'en';
-      }
-      // init if first about
-      if (!data.abouts) {
-        // console.log('editUserAbouts no abouts');
-        data.abouts = [];
-      }
-      // check existing abouts
-      data.abouts.map((a) => {
-        // if not the first, we don't set it to primary
-        primaryAbout = false;
-        // console.log('editUserAbouts about' + JSON.stringify(a));       
-        if (a.lang === data.aboutlanguage) {
-          // about in the form already exists in abouts
-          // console.log('editUserAbouts about exists in this language');
-          aboutFound = true;
-          // update text
-          a.abouttext = data.about;
-        }
-      });
-      // in case of new about, add it to the abouts
-      if (!aboutFound) {
-        // console.log('editUserAbouts about doesnt exist in this lang, adding');        
-        data.abouts.push({
-          is_primary: primaryAbout,
-          lang: data.aboutlanguage,
-          abouttext: data.about
-        });
-      }
-      console.log('editUserAbouts saving abouts:' + JSON.stringify(data.abouts));
-    }
+export function userAboutEdit(dispatch) {
+  return (userId, aboutlanguage) => {
+    console.log('_______________ACTION userAboutEdit __________________________________');
+    console.log('userAboutEdit userId: ' + JSON.stringify(userId));
+    console.log('userAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
 
     dispatch({
-      type: REQUEST_EDIT_USERABOUTS,
-      id: data._id
+      type: REQUEST_USER_EDITABOUT,
+      payload: {
+        user: userId,
+        aboutlanguage: aboutlanguage
+      }
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data)
-      })
+      `/account/api/user/${userId}/about/${aboutlanguage}`, {
+        method: 'PUT'
+      }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function userAboutDelete(dispatch) {
+  return (userId, aboutlanguage) => {
+    console.log('_______________ACTION userAboutDelete __________________________________');
+    console.log('userAboutDelete userId: ' + JSON.stringify(userId));
+    console.log('userAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+
+    dispatch({
+      type: REQUEST_USER_DELETEABOUT,
+      payload: {
+        user: userId,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(
+      `/account/api/user/${userId}/about/${aboutlanguage}`, {
+        method: 'DELETE'
+      }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
@@ -1323,7 +1381,7 @@ export function editUserLinks(dispatch) {
           is_primary: primaryLink,
           is_confirmed: false,
           is_public: false,
-          type: data.linktype
+          type: data.linkType
         });
       };
     };
@@ -1442,6 +1500,23 @@ export function addLink(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
+
+export function userLinkEdit(dispatch) {
+  return (userId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_EDITLINK,
+      payload: {
+        user: userId,
+        link: linkId
+      }
+    });
+    return fetch(`/account/api/user/${userId}/link/${linkId}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
 export function userLinkMakePrimary(dispatch) {
   return (userId, linkId) => {
     dispatch({

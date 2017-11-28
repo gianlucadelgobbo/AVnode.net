@@ -1,8 +1,8 @@
 import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
-import LinksSocialEdit from '../link/LinksSocialEdit';
-import LinksWebEdit from '../link/LinksWebEdit';
+/*import LinksSocialEdit from '../link/LinksSocialEdit';
+import LinksWebEdit from '../link/LinksWebEdit'; */
 
 import ImageDropzone from '../ImageDropzone';
 
@@ -335,9 +335,9 @@ const OrgActivity = (args) => {
         </div>
       </div>
 
-      <LinksWebEdit links={args.contact.links} privacy="public" />
+      {/* BL TODO <LinksWebEdit links={args.contact.links} privacy="public" />
 
-      <LinksSocialEdit links={args.contact.links} privacy="public" />
+      <LinksSocialEdit links={args.contact.links} privacy="public" />*/}
 
     </div>
   );

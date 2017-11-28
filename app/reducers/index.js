@@ -15,8 +15,9 @@ import {
   CLOSE_STAGENAME_MODAL,
   OPEN_PASSWORD_MODAL,
   CLOSE_PASSWORD_MODAL,
-  REQUEST_EDIT_USERABOUT,
+  REQUEST_USER_EDITABOUT,
   REQUEST_USER_DELETEABOUT,
+  REQUEST_USER_EDITLINK,
   REQUEST_USER_MAKELINKPRIMARY,
   REQUEST_USER_MAKELINKPRIVATE,
   REQUEST_USER_MAKELINKPUBLIC,
@@ -52,11 +53,13 @@ import {
   REQUEST_ADD_CREWORGLOGO,
   REQUEST_ADD_CREWMEMBER,
   REQUEST_DELETE_CREWMEMBER,
-  REQUEST_CREW_MAKEABOUTPRIMARY,
-
+  REQUEST_CREW_EDITABOUT,
+  REQUEST_CREW_DELETEABOUT,
 
   REQUEST_ADD_PERFORMANCE,
   REQUEST_ADD_PERFORMANCEIMAGE,
+  REQUEST_PERFORMANCE_EDITABOUT,
+  REQUEST_PERFORMANCE_DELETEABOUT,
   REQUEST_SUGGEST_PERFORMANCE_CREW,
   RESPONSE_SUGGEST_PERFORMANCE_CREW,
   REQUEST_SUGGEST_PERFORMANCE_PERFORMER,
@@ -135,7 +138,7 @@ const crew = (state = {}, action) => {
         imageUploadInProgress: true
       });
     case REQUEST_DELETE_CREWMEMBER:
-      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_EDITABOUT IN CREW AND USER');
 
       if (state._id !== action.payload.crewId) {
         return state;
@@ -151,8 +154,8 @@ const crew = (state = {}, action) => {
           }
         })
       });
-    case REQUEST_CREW_MAKEABOUTPRIMARY:
-      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+    case REQUEST_CREW_EDITABOUT:
+      console.log('--> crew BL FIXME WHY DUPLICATE  REQUEST_DELETE_CREWMEMBER REQUEST_CREW_EDITABOUT IN CREW AND USER');
 
       return state;
     default:
@@ -282,8 +285,8 @@ const user = (state = initialValues, action) => {
     case REQUEST_ADD_CREWMEMBER:
       return state;
     case REQUEST_DELETE_CREWMEMBER:
-    case REQUEST_CREW_MAKEABOUTPRIMARY:
-      console.log('--> user BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_MAKEABOUTPRIMARY IN CREW AND USER');
+    case REQUEST_CREW_EDITABOUT:
+      console.log('--> user BL FIXME WHY DUPLICATE REQUEST_ADD_CREWMEMBER REQUEST_DELETE_CREWMEMBER REQUEST_CREW_EDITABOUT IN CREW AND USER');
       /* BL FIXME copied from crew see up! crewId undefined if (state._id !== action.payload.crewId) {
         return state;
          }
@@ -340,9 +343,10 @@ const user = (state = initialValues, action) => {
       return Object.assign({}, state, {
         _countries: action.payload.countries
       });
-    case REQUEST_EDIT_USERABOUT:
+    /*case REQUEST_USER_EDITABOUT:
     case REQUEST_USER_DELETEABOUT:
     case REQUEST_USER_MAKELINKPRIMARY:
+    case REQUEST_USER_EDITLINK:
     case REQUEST_USER_MAKELINKPRIVATE:
     case REQUEST_USER_MAKELINKPUBLIC:
     case REQUEST_USER_LINKCONFIRM:
@@ -357,7 +361,7 @@ const user = (state = initialValues, action) => {
     case REQUEST_USER_MAKEADDRESSPUBLIC:
     case REQUEST_USER_DELETEADDRESS:
       return state;
-    /*case '@@redux-form/BLUR':
+    case '@@redux-form/BLUR':
       console.log('BLUR field ' + JSON.stringify(action));
       return Object.assign({}, state, {
         action: action
