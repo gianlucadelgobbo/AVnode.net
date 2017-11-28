@@ -720,10 +720,10 @@ export function editPerformance(data) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function aboutPerformanceEdit(id, aboutlanguage) {
+export function performanceAboutEdit(id, aboutlanguage) {
   return dispatch => {
-    console.log('_______________ACTION aboutPerformanceEdit __________________________________');
-    console.log('aboutPerformanceEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    console.log('_______________ACTION performanceAboutEdit __________________________________');
+    console.log('performanceAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_PERFORMANCE_EDITABOUT,
       payload: {
@@ -737,10 +737,10 @@ export function aboutPerformanceEdit(id, aboutlanguage) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function aboutPerformanceDelete(id, aboutlanguage) {
+export function performanceAboutDelete(id, aboutlanguage) {
   return dispatch => {
-    console.log('_______________ACTION aboutPerformanceDelete __________________________________');
-    console.log('aboutPerformanceDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    console.log('_______________ACTION performanceAboutDelete __________________________________');
+    console.log('performanceAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_PERFORMANCE_DELETEABOUT,
       payload: {

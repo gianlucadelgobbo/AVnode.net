@@ -24,8 +24,8 @@ import {
     addPerformancePerformer,
     removePerformancePerformer,
 
-    aboutPerformanceEdit,
-    aboutPerformanceDelete,
+    performanceAboutEdit,
+    performanceAboutDelete,
 
     removePerformanceCategory
 
@@ -146,11 +146,11 @@ let PerformanceForm = props => {
     };
 
   const onPerformanceAboutEdit = (about) => (e) => {
-      return dispatch(aboutPerformanceEdit(performance._id, about.lang));
+      return dispatch(performanceAboutEdit(performance._id, about.lang));
     };
 
   const onPerformanceAboutDelete = (about) => (e) => {
-      return dispatch(aboutPerformanceDelete(performance._id, about.lang));
+      return dispatch(performanceAboutDelete(performance._id, about.lang));
     };
 
   let videoLink; // FIXME

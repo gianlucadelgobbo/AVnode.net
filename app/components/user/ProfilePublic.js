@@ -359,6 +359,6 @@ const ProfilePublic = ({
 export default injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true,
+  //keepDirtyOnReinitialize: true,
   validate
 })(ProfilePublic));
