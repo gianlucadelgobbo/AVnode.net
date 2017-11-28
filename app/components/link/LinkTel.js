@@ -1,33 +1,10 @@
 import { h } from 'preact';
 
-const LinkSocial = ({ linkSocial, onEdit, onDelete, intl }) => {
+const LinkTel = ({ linkTel, onEdit, onDelete, intl }) => {
 
   return (
     <li className="list-group-item justify-content-between">
-      {linkSocial.type} : <a href={`${linkSocial.url}`} target="_blank">{linkSocial.url}</a>
-      {/*linkSocial.is_primary ?
-        <span className="badge badge-primary">
-          <FormattedMessage
-            id="primary"
-            defaultMessage="Primary"
-          />
-      </span> : 
-      <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={onMakePrimary}
-          >
-            <i
-              className="fa fa-star"
-              data-toggle="tooltip"
-              data-placement="top"
-              title={intl.formatMessage({
-                id: "makeitprimary",
-                defaultMessage: "Make it primary"
-              })}
-            >
-            </i>
-          </button>*/}
+      {linkTel.type} : <a href={`tel:${linkTel.url}`} target="_blank">{linkTel.url}</a>
       <span>
         <button
           type="button"
@@ -65,4 +42,4 @@ const LinkSocial = ({ linkSocial, onEdit, onDelete, intl }) => {
   );
 };
 
-export default LinkSocial;
+export default LinkTel;

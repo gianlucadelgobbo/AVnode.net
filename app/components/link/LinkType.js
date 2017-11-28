@@ -9,4 +9,3 @@ const linkType = [
 ];
   
 export default linkType;
-  
