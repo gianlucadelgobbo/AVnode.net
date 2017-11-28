@@ -77,15 +77,14 @@ app.use((req, res, next) => {
     return next();
   }
   if (!req.user &&
-      req.path !== '/login' &&
-      req.path !== '/signup' &&
-      !req.path.match(/^\/auth/) &&
-      !req.path.match(/\./)) {
-    console.log('match');
-    req.session.returnTo = req.path;
+    req.path !== '/login' &&
+    req.path !== '/signup' &&
+    !req.path.match(/^\/auth/) &&
+    !req.path.match(/\./)) {
+    // BL 20171128 req.session.returnTo = req.path;
+    res.redirect('/login');
   } else if (req.user &&
-      req.path == '/account') {
-        console.log('req.user');
+    req.path == '/account') {
     req.session.returnTo = req.path;
   }
   next();
@@ -121,7 +120,7 @@ app.use(function (err, req, res, _next) {
 app.use(function onerror(err, req, res, next) {
   // happens on user not logged in  
   if (err) {
-    console.log('Server Error:' + err);
+    console.log(`🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 Server Error:${err}`);
     //throw err;
   }
 });
