@@ -20,7 +20,8 @@ const mapDispatchToProps = (dispatch) => ({
   userEmailMakePrivate: dispatch(userEmailMakePrivate),
   userEmailMakePublic: dispatch(userEmailMakePublic),
   userEmailConfirm: dispatch(userEmailConfirm),
-  userEmailDelete: dispatch(userEmailDelete),    saveProfile: dispatch(editUserEmails)
+  userEmailDelete: dispatch(userEmailDelete),
+  saveProfile: dispatch(editUserEmails)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileEmails);

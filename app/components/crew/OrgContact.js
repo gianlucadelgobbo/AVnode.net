@@ -1,9 +1,9 @@
 import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
-import LinksSocialEdit from '../link/LinksSocialEdit';
+/* import LinksSocialEdit from '../link/LinksSocialEdit';
 import LinksSkypeEdit from '../link/LinksSkypeEdit';
-import LinksMobileEdit from '../link/LinksMobileEdit';
+import LinksMobileEdit from '../link/LinksMobileEdit'; */
 
 const OrgContact = (args) => {
 
@@ -198,11 +198,11 @@ const OrgContact = (args) => {
         </Field>
       </div>
 
-      <LinksMobileEdit links={args.contact.links} privacy="private" />
+      {/* BL TODO <LinksMobileEdit links={args.contact.links} privacy="private" />
 
       <LinksSkypeEdit links={args.contact.links} privacy="private" />
 
-      <LinksSocialEdit links={args.contact.links} privacy="public" />
+  <LinksSocialEdit links={args.contact.links} privacy="public" /> */}
     </div>
   );
 };
