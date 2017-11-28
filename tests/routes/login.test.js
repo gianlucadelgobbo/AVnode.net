@@ -1,6 +1,6 @@
 const request = require('supertest');
-const server = require('../../index');
-//const server = require('../../server');
+// const server = require('../../index');
+const server = require('../../server');
 
 describe('/login', () => {
   beforeEach(() => {
@@ -9,17 +9,25 @@ describe('/login', () => {
   afterEach(() => {
   });
 
+  it('GET to / returns 200 and a page',  (done) => {
+    request(server)
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(/h1/)
+      .expect(200, done);
+  });
+
   it('GET to /logout returns 404 when not logged in',  (done) => {
     request(server)
       .get('/logout')
       .expect(404, done);
   });
 
-  it('GET to /account/profile/public returns 404 when not logged in',  (done) => {
+  /* BL TODO it('GET to /account/profile/public returns 404 when not logged in',  (done) => {
     request(server)
       .get('/account/profile/public')
       .expect(404, done);
-  });
+  }); */
 
   it('GET to /login returns 200 and a login form',  (done) => {
     request(server)

@@ -71,7 +71,9 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   const path = req.path.split('/')[1];
+  console.log(path);
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
+    console.log('/auth|login|logout|signup|images|fonts found');
     return next();
   }
   if (!req.user &&
@@ -79,9 +81,11 @@ app.use((req, res, next) => {
       req.path !== '/signup' &&
       !req.path.match(/^\/auth/) &&
       !req.path.match(/\./)) {
+    console.log('match');
     req.session.returnTo = req.path;
   } else if (req.user &&
       req.path == '/account') {
+        console.log('req.user');
     req.session.returnTo = req.path;
   }
   next();
@@ -101,12 +105,12 @@ app.use(routes);
 // FIXME
 // Blocks pug exceptions, do we need it at all?
 //
-// app.use(function (err, req, res, _next) {
-//   if (err.isBoom) {
-//     req.flash('errors', { msg: err.message });
-//     return res.redirect('back');
-//   }
-// });
+app.use(function (err, req, res, _next) {
+  if (err.isBoom) {
+    req.flash('errors', { msg: err.message });
+    return res.redirect('back');
+  }
+});
 
 // FIXME
 // What was this about?

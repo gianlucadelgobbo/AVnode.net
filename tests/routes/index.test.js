@@ -7,10 +7,11 @@ describe('Routes: /', () => {
   before((done) => {
     mongoose.models = {};
     mongoose.modelSchemas = {};
-    server.listen(done);
+    //server.listen(done);
+    done();
   });
   after((done) => {
-    server.listen().close();
+    //server.listen().close();
     done();
   });
 
