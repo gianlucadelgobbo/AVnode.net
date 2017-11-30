@@ -9,7 +9,7 @@ const PerformanceShow = ({ performance, dispatch }) => {
       {performance.file ?
         <img
           className="img-small mb-3"
-          src={`https://bruce.avnode.net${performance.file.file}`}
+          src={`${performance.imageUrl}`}
           alt={`image of ${performance.title}`}
         />
         :
