@@ -7,6 +7,7 @@ import Languages from '../language/Languages';
 import LinkType from '../link/LinkType';
 import LinkWeb from '../link/LinkWeb';
 import LinkSocial from '../link/LinkSocial';
+import AddressPublic from '../place/AddressPublic';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
@@ -25,9 +26,10 @@ const ProfilePublic = ({
   saveProfile,
   userAboutEdit,
   userAboutDelete,
-//  userLinkMakePrimary,
+  //  userLinkMakePrimary,
   userLinkDelete,
   userLinkEdit,
+  userAddressDelete,
   fetchCountries
   }) => {
 
@@ -57,6 +59,10 @@ const ProfilePublic = ({
     e.preventDefault();
     return userLinkDelete(user._id, link._id);
   };
+  const onUserAddressDelete = (userId) => (address) => (e) => {
+    userAddressDelete(userId, address._id);
+  };
+
   return (
     <div>
       <div className="container-fluid">
@@ -338,6 +344,80 @@ const ProfilePublic = ({
               }
             </ul>
           </fieldset>
+
+          <fieldset className="form-group">
+            <legend>
+              <FormattedMessage
+                id="address"
+                defaultMessage="Address"
+              />
+            </legend>
+            <div className="row">
+              <div className="col-md-9 form-group">
+                <label htmlFor="locality">
+                  <FormattedMessage
+                    id="locality"
+                    defaultMessage="Locality"
+                  />
+                </label>
+                <Field
+                  className="form-control"
+                  name="locality"
+                  component="input"
+                  placeholder='Locality'
+                  value={user.locality}
+                />
+              </div>
+              <div className="col-md-3 form-group">
+                <label htmlFor="country">
+                  <FormattedMessage
+                    id="country"
+                    defaultMessage="Country"
+                  />
+                </label>
+                {user._countries ?
+                  <Field
+                    className="form-control custom-select"
+                    name="country"
+                    component="select"
+                    value={user.country}
+                  >
+                    <option value="">
+                      <FormattedMessage
+                        id="Please select"
+                        defaultMessage="Please select"
+                      />
+                    </option>
+                    {user._countries.map((c) => (
+                      <option value={c.name}>{c.name}</option>
+                    ))
+                    }
+                    { /* FIXME: How do we handle countries here? */}
+                  </Field> :
+                  <p>Loading a list of countries…</p>
+                }
+              </div>
+            </div>
+            <label>
+                  <FormattedMessage
+                    id="editFullAddress"
+                    defaultMessage="Edit full address in the private section"
+                  />
+                </label>
+            <ul className="list-group mt-2">
+              {
+                user && user.addresses && user.addresses.map((a) => (
+                  <AddressPublic
+                    address={a}
+                    onDelete={onUserAddressDelete(user._id)(a)}
+                    intl={intl}
+                  />
+                ))
+              }
+            </ul>
+
+          </fieldset>
+
           <div className="form-group">
             <button
               className="btn btn-primary"

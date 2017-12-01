@@ -1104,13 +1104,31 @@ export function userEmailDelete(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
+    let addressFound = false;
     let str = JSON.stringify(data);
     console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data length: ' + str.length);
     //console.log('editUser data: ' + str);
     console.log('editUser data name: ' + data.name);
-    console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
+    //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
+    console.log('editUserAddresses data locality: ' + data.locality);
+    console.log('editUserAddresses data country: ' + data.country);
 
+    // public address fields
+    if (!data.addresses) data.addresses = [];
+    data.addresses.map((a) => {
+      if (a.locality === data.locality) {
+        // address in the form already exists in addresses
+        addressFound = true;
+      }
+    });
+    if (!addressFound) {
+      // add the address to the array
+      data.addresses.push({
+        locality: data.locality,
+        country: data.country,
+      });
+    }
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
