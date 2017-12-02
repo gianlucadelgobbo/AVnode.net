@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
-import LinkType from '../link/LinkType';
+import PhoneLinkTypes from '../link/PhoneLinkTypes';
 import LinkTel from '../link/LinkTel';
 import validate from './validate'
 import renderField from './renderField'
@@ -17,7 +17,7 @@ const ProfilePrivate = ({
   handleSubmit,
   saveProfile,
   userLinkDelete,
-  userLinkEdit,
+  //userLinkEdit,
   fetchCountries
   }) => {
 
@@ -25,10 +25,10 @@ const ProfilePrivate = ({
     fetchCountries();
     //console.log('submitting' + submitting);
   }
-  const onLinkEdit = (link) => (e) => {
+  /*const onLinkEdit = (link) => (e) => {
     e.preventDefault();
     return userLinkEdit(user._id, link._id);
-  };
+  };*/
   const onLinkDelete = (link) => (e) => {
     e.preventDefault();
     return userLinkDelete(user._id, link._id);
@@ -202,7 +202,7 @@ const ProfilePrivate = ({
               />
             </legend>
             <div className="row">
-              <div className="col-md-9 form-group">
+              <div className="col-md-7 form-group">
                 <label htmlFor="linkTel">
                   <FormattedMessage
                     id="number"
@@ -222,27 +222,21 @@ const ProfilePrivate = ({
                   />
                 </div>
               </div>
-              <div className="col-md-3 form-group">
+              <div className="col-md-5 form-group">
                 <label htmlFor="linkType">
                   <FormattedMessage
                     id="linkType"
                     defaultMessage="Link type"
                   />
                 </label>
-                {LinkType ?
+                {PhoneLinkTypes ?
                   <Field
                     className="form-control custom-select"
                     name="linkType"
                     component="select"
                     value={user.linkType}
                   >
-                    <option value="ot">
-                      <FormattedMessage
-                        id="Please select"
-                        defaultMessage="Please select"
-                      />
-                    </option>
-                    {LinkType.map((c) => (
+                    {PhoneLinkTypes.map((c) => (
                       <option value={c.key.toLowerCase()}>{c.name}</option>
                     ))
                     }
@@ -264,7 +258,7 @@ const ProfilePrivate = ({
                   l.type === 'sk' || l.type === 'tel' || l.type === 'mb' ?
                     <LinkTel
                       linkTel={l}
-                      onEdit={onLinkEdit(l)}
+                      //onEdit={onLinkEdit(l)}
                       onDelete={onLinkDelete(l)}
                       intl={intl}
                     />

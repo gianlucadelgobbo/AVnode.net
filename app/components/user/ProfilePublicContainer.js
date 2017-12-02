@@ -1,9 +1,9 @@
 import { connect } from 'preact-redux';
 import {
   fetchCountries,
-  userLinkMakePrimary,
+  userLinkAdd,
   userLinkDelete,
-  userLinkEdit,
+  //userLinkEdit,
   userAboutEdit,
   userAboutDelete,
   userAddressDelete,  
@@ -18,9 +18,9 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  userLinkMakePrimary: dispatch(userLinkMakePrimary),
-  userLinkDelete: dispatch(userLinkDelete),
-  userLinkEdit: dispatch(userLinkEdit),
+  userLinkAdd: dispatch(userLinkAdd),
+  //userLinkDelete: dispatch(userLinkDelete),
+  //userLinkEdit: dispatch(userLinkEdit),
   userAboutEdit: dispatch(userAboutEdit),
   userAboutDelete: dispatch(userAboutDelete),
   userAddressDelete: dispatch(userAddressDelete),

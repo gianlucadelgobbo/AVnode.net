@@ -1379,30 +1379,8 @@ export function editUserImages(dispatch) {
 
 export function editUserLinks(dispatch) {
   return data => {
-
-    // link, verify unique
-    if (data.link) {
-      let linkFound = false;
-      let primaryLink = true;
-      data.links.map((l) => {
-        primaryLink = false;
-        if (l.url === data.link) {
-          // url in the form already exists in links
-          linkFound = true;
-        }
-      });
-      // in case of new link, add it to the links
-      if (!linkFound) {
-        console.log('data.link:' + data.link);
-        data.links.push({
-          url: data.link,
-          is_primary: primaryLink,
-          is_confirmed: false,
-          is_public: false,
-          type: data.linkType
-        });
-      };
-    };
+    console.log('_______________ACTION editUserLinks __________________________________');
+    console.log('editUserLinks type: ' + JSON.stringify(data.linkType));
 
     dispatch({
       type: REQUEST_EDIT_USERLINKS,
@@ -1501,7 +1479,7 @@ export function removeEventVenue(dispatch) {
 
 
 // Links
-export function addLink(dispatch) {
+export function userLinkAdd(dispatch) {
   return (id, link) => {
     dispatch({
       type: REQUEST_ADD_USER_LINK,
@@ -1518,7 +1496,7 @@ export function addLink(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
-
+/*
 export function userLinkEdit(dispatch) {
   return (userId, linkId) => {
     dispatch({
@@ -1594,7 +1572,7 @@ export function userLinkConfirm(dispatch) {
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
+} */
 
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {

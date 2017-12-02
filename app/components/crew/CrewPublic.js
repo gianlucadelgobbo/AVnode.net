@@ -12,7 +12,7 @@ import Place from '../place/PlaceContainer';
 import OrgContact from './OrgContact';
 import OrgActivity from './OrgActivity';
 
-import LinkType from '../link/LinkType';
+import WebLinkTypes from '../link/WebLinkTypes';
 import LinkWeb from '../link/LinkWeb';
 import LinkSocial from '../link/LinkSocial';
 /*import LinksSkypeEdit from '../link/LinksSkypeEdit';
@@ -476,7 +476,7 @@ let CrewForm = props => {
                                         defaultMessage="Link type"
                                     />
                                 </label>
-                                {LinkType ?
+                                {WebLinkTypes ?
                                     <Field
                                         className="form-control custom-select"
                                         name="linkType"
@@ -489,7 +489,7 @@ let CrewForm = props => {
                                                 defaultMessage="Please select"
                                             />
                                         </option>
-                                        {LinkType.map((c) => (
+                                        {WebLinkTypes.map((c) => (
                                             <option value={c.key.toLowerCase()}>{c.name}</option>
                                         ))
                                         }

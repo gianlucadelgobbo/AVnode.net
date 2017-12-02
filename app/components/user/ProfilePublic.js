@@ -4,13 +4,15 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
-import LinkType from '../link/LinkType';
+//import WebLinkTypes from '../link/WebLinkTypes';
 import LinkWeb from '../link/LinkWeb';
-import LinkSocial from '../link/LinkSocial';
+//import LinkSocial from '../link/LinkSocial';
 import AddressPublic from '../place/AddressPublic';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
+import ProfileLinksWeb from './ProfileLinksWeb';
+import ProfileLinksSocial from './ProfileLinksSocial';
 import Match from 'preact-router/match';
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -28,7 +30,7 @@ const ProfilePublic = ({
   userAboutDelete,
   //  userLinkMakePrimary,
   userLinkDelete,
-  userLinkEdit,
+  //userLinkEdit,
   userAddressDelete,
   fetchCountries
   }) => {
@@ -51,10 +53,10 @@ const ProfilePublic = ({
     return userAboutDelete(user._id, about.lang);
   };
 
-  const onLinkEdit = (link) => (e) => {
+  /*const onLinkEdit = (link) => (e) => {
     e.preventDefault();
     return userLinkEdit(user._id, link._id);
-  };
+  };*/
   const onLinkDelete = (link) => (e) => {
     e.preventDefault();
     return userLinkDelete(user._id, link._id);
@@ -122,7 +124,7 @@ const ProfilePublic = ({
               />
             </div>
             <p>
-              <pre>{user.publicUrl}</pre> { /* FIXME */}
+              {user.publicUrl}
             </p>
 
             <p>
@@ -214,134 +216,21 @@ const ProfilePublic = ({
             </ul>
           </fieldset>
 
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="websites"
-                defaultMessage="Websites"
-              />
-            </legend>
-            <label htmlFor="linkWeb">
-              <FormattedMessage
-                id="websiteUrl"
-                defaultMessage="Website Url"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="linkWeb"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'addUrl',
-                  defaultMessage: 'Add/edit url'
-                })}
-                value={user.linkWeb}
-              />
-            </div>
-            <label>
-              <FormattedMessage
-                id="manageLinksWeb"
-                defaultMessage="Manage your Web Links"
-              />
-            </label>
+          <fieldset>
             <ul className="list-group mt-2">
-              {
-                user && user.links && user.links.map((l) => (
-                  l.type === 'web' ?
-                    <LinkWeb
-                      linkWeb={l}
-                      //onMakePrimary={onLinkWebMakePrimary(l)}
-                      onEdit={onLinkEdit(l)}
-                      onDelete={onLinkDelete(l)}
-                      intl={intl}
-                    />
-                    :
-                    null
-                ))
-              }
+              <ProfileLinksWeb
+                user={user}
+                intl={intl}
+              />
             </ul>
           </fieldset>
 
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="socials"
-                defaultMessage="Social channels"
-              />
-            </legend>
-            <div className="row">
-              <div className="col-md-9 form-group">
-                <label htmlFor="linkSocial">
-                  <FormattedMessage
-                    id="url"
-                    defaultMessage="Url"
-                  />
-                </label>
-                <div className="input-group">
-                  <Field
-                    className="form-control"
-                    name="linkSocial"
-                    component="input"
-                    placeholder={intl.formatMessage({
-                      id: 'addUrl',
-                      defaultMessage: 'Add/edit url'
-                    })}
-                    value={user.linkSocial}
-                  />
-                </div>
-              </div>
-              <div className="col-md-3 form-group">
-                <label htmlFor="linkType">
-                  <FormattedMessage
-                    id="linkType"
-                    defaultMessage="Link type"
-                  />
-                </label>
-                {LinkType ?
-                  <Field
-                    className="form-control custom-select"
-                    name="linkType"
-                    component="select"
-                    value={user.linkType}
-                  >
-                    <option value="ot">
-                      <FormattedMessage
-                        id="Please select"
-                        defaultMessage="Please select"
-                      />
-                    </option>
-                    {LinkType.map((c) => (
-                      <option value={c.key.toLowerCase()}>{c.name}</option>
-                    ))
-                    }
-                    { /*  */}
-                  </Field> :
-                  <p>Loading a link types…</p>
-                }
-              </div>
-            </div>
-            <label>
-              <FormattedMessage
-                id="manageLinksSocial"
-                defaultMessage="Manage your Social Links"
-              />
-            </label>
+          <fieldset>
             <ul className="list-group mt-2">
-              {
-                user && user.links && user.links.map((l) => (
-                  l.type === 'tw' || l.type === 'fb' || l.type === 'ot' ?
-                    <LinkSocial
-                      linkSocial={l}
-                      //onMakePrimary={onLinkSocialMakePrimary(l)}
-                      onEdit={onLinkEdit(l)}
-                      onDelete={onLinkDelete(l)}
-                      intl={intl}
-                    />
-                    :
-                    null
-                ))
-              }
+              <ProfileLinksSocial
+                user={user}
+                intl={intl}
+              />
             </ul>
           </fieldset>
 
@@ -399,11 +288,11 @@ const ProfilePublic = ({
               </div>
             </div>
             <label>
-                  <FormattedMessage
-                    id="editFullAddress"
-                    defaultMessage="Edit full address in the private section"
-                  />
-                </label>
+              <FormattedMessage
+                id="editFullAddress"
+                defaultMessage="Edit full address in the private section"
+              />
+            </label>
             <ul className="list-group mt-2">
               {
                 user && user.addresses && user.addresses.map((a) => (
@@ -415,7 +304,6 @@ const ProfilePublic = ({
                 ))
               }
             </ul>
-
           </fieldset>
 
           <div className="form-group">
