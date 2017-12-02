@@ -1,6 +1,6 @@
 import { h } from 'preact';
 
-const LinkTel = ({ linkTel, onEdit, onDelete, intl }) => {
+const LinkTel = ({ linkTel, onDelete, intl }) => {
 
   return (
     <li className="list-group-item justify-content-between">
@@ -22,22 +22,7 @@ const LinkTel = ({ linkTel, onEdit, onDelete, intl }) => {
           >
           </i>
         </button>
-
-        {/*<button className="btn btn-success btn-sm"
-          onClick={onEdit}>
-          <i
-            className="fa fa-fw fa-edit"
-            data-toggle="tooltip"
-            data-placement="top"
-            title={intl.formatMessage({
-              id: "edit",
-              defaultMessage: "Edit"
-            })}
-          >
-          </i>
-          </button>*/}
       </span>
-
     </li>
   );
 };

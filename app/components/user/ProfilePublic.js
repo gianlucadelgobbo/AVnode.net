@@ -4,9 +4,6 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import About from '../about/About';
 import Languages from '../language/Languages';
-//import WebLinkTypes from '../link/WebLinkTypes';
-import LinkWeb from '../link/LinkWeb';
-//import LinkSocial from '../link/LinkSocial';
 import AddressPublic from '../place/AddressPublic';
 import validate from './validate'
 import renderField from './renderField'
@@ -41,25 +38,14 @@ const ProfilePublic = ({
   if (!user._countries) {
     fetchCountries();
   }
-
-
-  const onAboutEdit = (about) => (e) => {
+  /*const onAboutEdit = (about) => (e) => {
     e.preventDefault();
     console.log('dirty:' + dirty + ' invalid:' + invalid + ' pristine:' + pristine + ' valid:' + valid);
     return userAboutEdit(user._id, about.lang);
-  };
+  };*/
   const onAboutDelete = (about) => (e) => {
     e.preventDefault();
     return userAboutDelete(user._id, about.lang);
-  };
-
-  /*const onLinkEdit = (link) => (e) => {
-    e.preventDefault();
-    return userLinkEdit(user._id, link._id);
-  };*/
-  const onLinkDelete = (link) => (e) => {
-    e.preventDefault();
-    return userLinkDelete(user._id, link._id);
   };
   const onUserAddressDelete = (userId) => (address) => (e) => {
     userAddressDelete(userId, address._id);
@@ -207,7 +193,7 @@ const ProfilePublic = ({
                 user && user.abouts && user.abouts.map((a) => (
                   <About
                     about={a}
-                    onEdit={onAboutEdit(a)}
+                    //onEdit={onAboutEdit(a)}
                     onDelete={onAboutDelete(a)}
                     intl={intl}
                   />
