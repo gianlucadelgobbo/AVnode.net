@@ -1,32 +1,21 @@
 import { h } from 'preact';
-import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import About from '../about/About';
 import Languages from '../language/Languages';
 
-import Layout from '../Layout';
-import {
-  userAboutDelete,  
-  editUserAbouts
-} from '../../reducers/actions';
-
-let ProfileAboutsForm = ({
+const ProfileAboutsForm = injectIntl(({
   user,
   intl,
-  handleSubmit,
-  userAboutDelete,
-  saveProfile
+  userAboutDelete
 }) => {
 
-  const onAboutDelete = (link) => (e) => {
-    e.preventDefault();
-    return userAboutDelete(user._id, link._id);
+  const onAboutDelete = (about) => (e) => {
+    console.log('onAboutDelete' + about);
+    return userAboutDelete(user._id, about.lang);
   };
   return (
-    <Layout>
-    <form onSubmit={handleSubmit(saveProfile)}>
-        <fieldset className="form-group">
+    <fieldset className="form-group">
       <legend>
         <FormattedMessage
           id="abouts"
@@ -50,7 +39,6 @@ let ProfileAboutsForm = ({
             id: 'about.placeholder',
             defaultMessage: 'Tell me something about you.'
           })}
-          value={user.about}
         />
       </div>
       <div className="form-group">
@@ -82,7 +70,13 @@ let ProfileAboutsForm = ({
           <p>Loading languages…</p>
         }
       </div>
-
+      <div className="input-group-addon">
+          <button
+            className="btn btn-success btn-sm"
+          >
+            <i className="fa fa-plus"></i>
+          </button>
+        </div>
       <label>
         <FormattedMessage
           id="manageabout"
@@ -101,43 +95,7 @@ let ProfileAboutsForm = ({
         }
       </ul>
     </fieldset>
-    </form>
-    </Layout >
   );
-};
-
-ProfileAboutsForm = injectIntl(reduxForm({
-  form: 'userAbouts',
-  enableReinitialize: true,
-  //keepDirtyOnReinitialize: true
-})(ProfileAboutsForm));
-
-const EditAbouts = props => {
-  const onSubmit = (props, dispatch) => {
-  };
-  const onSubmitSuccess = () => {
-    //route('/account/...');
-  };
-  return (
-    <ProfileAboutsForm
-      initialValues={props.user}
-      onSubmit={onSubmit}
-      onSubmitSuccess={onSubmitSuccess}
-      {...props}
-    />
-  );
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  userAboutDelete: dispatch(userAboutDelete),
-  saveProfile: dispatch(editUserAbouts)
 });
 
-const mapStateToProps = (state, props) => {
-  return {
-    user: state.user,
-    initialValues: state.user
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditAbouts);
+export default ProfileAboutsForm;

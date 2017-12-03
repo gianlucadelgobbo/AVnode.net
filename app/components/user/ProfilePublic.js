@@ -37,19 +37,7 @@ const ProfilePublic = ({
   if (!user._countries) {
     fetchCountries();
   }
-  /*const onAboutEdit = (about) => (e) => {
-    e.preventDefault();
-    console.log('dirty:' + dirty + ' invalid:' + invalid + ' pristine:' + pristine + ' valid:' + valid);
-    return userAboutEdit(user._id, about.lang);
-  };*/
-  const onAboutDelete = (about) => (e) => {
-    e.preventDefault();
-    return userAboutDelete(user._id, about.lang);
-  };
-  const onLinkWebSubmit = (link) => (e) => {
-    e.preventDefault();
-    console.log('onLinkWebSubmit: ' + link.url);
-  };
+
   const onUserAddressDelete = (userId) => (address) => (e) => {
     e.preventDefault();
     userAddressDelete(userId, address._id);
@@ -125,15 +113,11 @@ const ProfilePublic = ({
             </p>
           </fieldset>
 
-
-          <fieldset>
-            <ProfileAbouts
-              user={user}
-              intl={intl}
-
-            />
-          </fieldset>
-
+          <ProfileAbouts
+            user={user}
+            intl={intl}
+            userAboutDelete={userAboutDelete}
+          />
 
           <ProfileLinksWeb
             user={user}
