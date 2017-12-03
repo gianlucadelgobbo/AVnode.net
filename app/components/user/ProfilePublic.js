@@ -8,6 +8,7 @@ import AddressPublic from '../place/AddressPublic';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
+import ProfileAbouts from './ProfileAbouts';
 import ProfileLinksWeb from './ProfileLinksWeb';
 import ProfileLinksSocial from './ProfileLinksSocial';
 import Match from 'preact-router/match';
@@ -25,9 +26,7 @@ const ProfilePublic = ({
   saveProfile,
   userAboutEdit,
   userAboutDelete,
-  //  userLinkMakePrimary,
   userLinkDelete,
-  //userLinkEdit,
   userAddressDelete,
   fetchCountries
   }) => {
@@ -47,7 +46,12 @@ const ProfilePublic = ({
     e.preventDefault();
     return userAboutDelete(user._id, about.lang);
   };
+  const onLinkWebSubmit = (link) => (e) => {
+    e.preventDefault();
+    console.log('onLinkWebSubmit: ' + link.url);
+  };
   const onUserAddressDelete = (userId) => (address) => (e) => {
+    e.preventDefault();
     userAddressDelete(userId, address._id);
   };
 
@@ -121,104 +125,27 @@ const ProfilePublic = ({
             </p>
           </fieldset>
 
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="abouts"
-                defaultMessage="About you..."
-              />
-            </legend>
-
-            <div className="row">
-              <div className="col-md-9 form-group">
-                <label htmlFor="about">
-                  <FormattedMessage
-                    id="addabout"
-                    defaultMessage="About you"
-                  />
-                </label>
-                <div className="input-group">
-                  <Field
-                    className="form-control"
-                    name="about"
-                    component="textarea"
-                    rows="4"
-                    placeholder={intl.formatMessage({
-                      id: 'about.placeholder',
-                      defaultMessage: 'Tell me something about you.'
-                    })}
-                    value={user.about}
-                  />
-                </div>
-              </div>
-              <div className="col-md-3 form-group">
-                <label htmlFor="aboutlanguage">
-                  <FormattedMessage
-                    id="language"
-                    defaultMessage="Language"
-                  />
-                </label>
-                {Languages ?
-                  <Field
-                    className="form-control custom-select"
-                    name="aboutlanguage"
-                    component="select"
-                    value={user.aboutlanguage}
-                  >
-                    <option value="en">
-                      <FormattedMessage
-                        id="language.en"
-                        defaultMessage="English"
-                      />
-                    </option>
-                    {Languages.map((c) => (
-                      <option value={c.code}>{c.language}</option>
-                    ))
-                    }
-                    { /*  */}
-                  </Field> :
-                  <p>Loading languages…</p>
-                }
-              </div>
-            </div>
-
-            <label>
-              <FormattedMessage
-                id="manageabout"
-                defaultMessage="Manage your About texts"
-              />
-            </label>
-            <ul className="list-group mt-2">
-              {
-                user && user.abouts && user.abouts.map((a) => (
-                  <About
-                    about={a}
-                    //onEdit={onAboutEdit(a)}
-                    onDelete={onAboutDelete(a)}
-                    intl={intl}
-                  />
-                ))
-              }
-            </ul>
-          </fieldset>
 
           <fieldset>
-            <ul className="list-group mt-2">
-              <ProfileLinksWeb
-                user={user}
-                intl={intl}
-              />
-            </ul>
+            <ProfileAbouts
+              user={user}
+              intl={intl}
+
+            />
           </fieldset>
 
-          <fieldset>
-            <ul className="list-group mt-2">
-              <ProfileLinksSocial
-                user={user}
-                intl={intl}
-              />
-            </ul>
-          </fieldset>
+
+          <ProfileLinksWeb
+            user={user}
+            intl={intl}
+            userLinkDelete={userLinkDelete}
+          />
+
+          <ProfileLinksSocial
+            user={user}
+            intl={intl}
+            userLinkDelete={userLinkDelete}
+          />
 
           <fieldset className="form-group">
             <legend>

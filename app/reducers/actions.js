@@ -1109,11 +1109,11 @@ export function editUser(dispatch) {
     console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data length: ' + str.length);
     //console.log('editUser data: ' + str);
-    console.log('editUser data name: ' + data.name);
+    console.log('editUser data linkWeb: ' + data.linkWeb);
     //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
     console.log('editUserAddresses data locality: ' + data.locality);
     console.log('editUserAddresses data country: ' + data.country);
-
+    //data.linkweb = '';
     // public address fields
     if (!data.addresses) data.addresses = [];
     data.addresses.map((a) => {
@@ -1320,7 +1320,23 @@ export function editUserAddresses(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function editUserAbouts(dispatch) {
+  return data => {
+    console.log('_______________ACTION editUserAbouts __________________________________');
+    console.log('editUserAbouts aboutlanguage: ' + JSON.stringify(data.aboutlanguage));
 
+    dispatch({
+      type: REQUEST_EDIT_USERABOUTS,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 export function userAboutEdit(dispatch) {
   return (userId, aboutlanguage) => {
     console.log('_______________ACTION userAboutEdit __________________________________');

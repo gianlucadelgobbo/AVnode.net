@@ -11,7 +11,7 @@ import ProfilePassword from './user/ProfilePasswordContainer';
 import ProfileConnections from './user/ProfileConnections';
 // Crews
 import Crews from './Crews';
-// import CrewEdit from './crew/Edit';
+import CrewOrganization from './crew/CrewOrganization';
 import CrewPublic from './crew/CrewPublic';
 import CrewImages from './crew/CrewImages';
 import CrewMembers from './crew/CrewMembers';
@@ -67,6 +67,7 @@ const App = () => {
           <ProfileConnections path="/account/profile/connections" />
           <Crews path="/account/crews" />
           <CrewPublic path="/account/crew/public/:_id" />
+          <CrewOrganization path="/account/crew/organization/:_id" />
           <CrewImages path="/account/crew/images/:_id" />
           <CrewMembers path="/account/crew/members/:_id" />
           <Performances path="/account/performances" />

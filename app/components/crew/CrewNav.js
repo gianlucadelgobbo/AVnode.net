@@ -13,9 +13,15 @@ const CrewNav = ({ user, dispatch, url }) => {
   return (
 <nav id="account-sidenav" className="nav-justified pull-left">
 <a className={classes('/account/crew/public/'+id)} href={`/account/crew/public/${id}`} onClick={e => { dispatch(navigate('/account/crew/public/'+id)); }}>
+<FormattedMessage
+    id="publicData"
+    defaultMessage="Public data"
+/>
+</a>
+<a className={classes('/account/crew/organization/'+id)} href={`/account/crew/organization/${id}`} onClick={e => { dispatch(navigate('/account/crew/organization/'+id)); }}>
     <FormattedMessage
-        id="publicData"
-        defaultMessage="Public data"
+        id="organization"
+        defaultMessage="Organization"
     />
 </a>
 <a className={classes('/account/crew/images/'+id)} href={`/account/crew/images/${id}`} onClick={e => { dispatch(navigate('/account/crew/images/'+id)); }}>

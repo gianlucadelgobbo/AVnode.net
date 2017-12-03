@@ -115,7 +115,7 @@ let ProfileLinksPhoneForm = ({
 ProfileLinksPhoneForm = injectIntl(reduxForm({
   form: 'userLinksPhone',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true
+  //keepDirtyOnReinitialize: true
 })(ProfileLinksPhoneForm));
 
 const EditLinksPhone = props => {
