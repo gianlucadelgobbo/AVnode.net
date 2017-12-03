@@ -1113,22 +1113,7 @@ export function editUser(dispatch) {
     //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
     console.log('editUserAddresses data locality: ' + data.locality);
     console.log('editUserAddresses data country: ' + data.country);
-    //data.linkweb = '';
-    // public address fields
-    if (!data.addresses) data.addresses = [];
-    data.addresses.map((a) => {
-      if (a.locality === data.locality) {
-        // address in the form already exists in addresses
-        addressFound = true;
-      }
-    });
-    if (!addressFound) {
-      // add the address to the array
-      data.addresses.push({
-        locality: data.locality,
-        country: data.country,
-      });
-    }
+  
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
