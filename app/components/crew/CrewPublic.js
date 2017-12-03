@@ -18,26 +18,26 @@ import {
 } from '../../reducers/actions';
 
 let CrewForm = props => {
-    const { handleSubmit, dispatch, crew, user, intl } = props;
+  const { handleSubmit, dispatch, crew, user, intl } = props;
 
-    const onCrewAboutEdit = (crewId) => (about) => (e) => {
-        return dispatch(crewAboutEdit(crewId, about.lang));
-    };
-    const onCrewAboutDelete = (crewId) => (about) => (e) => {
-        return dispatch(crewAboutDelete(crewId, about.lang));
-    };
-    const onLinkEdit = (link) => (e) => {
-        e.preventDefault();
-        return crewLinkEdit(props._id, link._id);
-    };
-    const onLinkDelete = (link) => (e) => {
-        e.preventDefault();
-        return crewLinkDelete(props._id, link._id);
-    };
+  const onCrewAboutEdit = (crewId) => (about) => (e) => {
+    return dispatch(crewAboutEdit(crewId, about.lang));
+  };
+  const onCrewAboutDelete = (crewId) => (about) => (e) => {
+    return dispatch(crewAboutDelete(crewId, about.lang));
+  };
+  const onLinkEdit = (link) => (e) => {
+    e.preventDefault();
+    return crewLinkEdit(props._id, link._id);
+  };
+  const onLinkDelete = (link) => (e) => {
+    e.preventDefault();
+    return crewLinkDelete(props._id, link._id);
+  };
 
-    if (!props.org) props.org = {};
+  if (!props.org) props.org = {};
 
-    return (
+  return (
         <div>
             <div className="container-fluid">
                 <Match>
@@ -165,37 +165,37 @@ let CrewForm = props => {
                 </form>
             </Layout>
         </div>
-    );
+  );
 };
 
 CrewForm = injectIntl(reduxForm({ form: 'crewPublic' })(CrewForm));
 
 const CrewPublic = props => {
-    const onSubmit = (props, dispatch) => {
-        dispatch(editCrew(props));
-    };
-    const onSubmitSuccess = () => {
+  const onSubmit = (props, dispatch) => {
+    dispatch(editCrew(props));
+  };
+  const onSubmitSuccess = () => {
         //route('/account/crews');
-    };
-    return (
+  };
+  return (
         <CrewForm
             initialValues={props.crew}
             onSubmit={onSubmit}
             onSubmitSuccess={onSubmitSuccess}
             {...props}
         />
-    );
+  );
 };
 
 const mapStateToProps = (state, props) => {
-    console.log('_______________ props __________________________________');
-    console.log('--> CrewPublic mapStateToProps: ' + JSON.stringify(props));
-    console.log('_______________ state __________________________________');
-    console.log('--> CrewPublic mapStateToProps: ' + JSON.stringify(state));
-    return {
-        crew: (state.user.crews.find(c => { return c._id === props._id; })),
-        user: state.user,
-    };
+  console.log('_______________ props __________________________________');
+  console.log('--> CrewPublic props.url: ' + JSON.stringify(props.url));
+  console.log('_______________ state __________________________________');
+  console.log('--> CrewPublic state.user.crewId: ' + JSON.stringify(state.user.crewId));
+  return {
+    crew: (state.user.crews.find(c => { return c._id === props._id; })),
+    user: state.user,
+  };
 };
 
 export default connect(mapStateToProps)(CrewPublic);

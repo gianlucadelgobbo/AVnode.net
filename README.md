@@ -29,8 +29,8 @@ We're using [docker][docker] for the database (and later probably the whole proj
 * Run `npm i` to install dependencies.
 * If `sharp` package does issues, run `npm i` in `node_modules/sharp` to compile it.
 * Copy `example.env.local` to `.env.local`. 
-* Run `npm run dev` to run in development mode.
 * Create the `warehouse` and `storage` folders for assets storage.
+* Run `npm run dev` to run in development mode.
 
 ### Edit .env.local
 

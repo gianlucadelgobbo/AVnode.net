@@ -1,6 +1,9 @@
 import isomorphicFetch from 'isomorphic-fetch';
 
 export const NAVIGATE = 'NAVIGATE';
+export const CREW_NAVIGATE = 'CREW_NAVIGATE';
+export const PERFORMANCE_NAVIGATE = 'PERFORMANCE_NAVIGATE';
+export const EVENT_NAVIGATE = 'EVENT_NAVIGATE';
 export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
@@ -111,8 +114,23 @@ const fetch = (path, options = {}, json = true) => {
 };
 
 export function navigate(active) {
-  console.log(JSON.stringify(active));
+  console.log('navigate(active):' + JSON.stringify(active));
   return { type: NAVIGATE, active };
+}
+
+export function crewNavigate(active) {
+  console.log('crewNavigate(active):' + JSON.stringify(active));
+  return { type: CREW_NAVIGATE, active };
+}
+
+export function performanceNavigate(active) {
+  console.log('performanceNavigate(active):' + JSON.stringify(active));
+  return { type: PERFORMANCE_NAVIGATE, active };
+}
+
+export function eventNavigate(active) {
+  console.log('eventNavigate(active):' + JSON.stringify(active));
+  return { type: EVENT_NAVIGATE, active };
 }
 
 export function gotUser(json) {

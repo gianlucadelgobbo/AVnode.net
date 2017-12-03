@@ -4,6 +4,9 @@ import R from 'ramda';
 
 import {
   NAVIGATE,
+  CREW_NAVIGATE,
+  PERFORMANCE_NAVIGATE,
+  EVENT_NAVIGATE,
   GOT_USER,
   EDIT_USER,
   CHANGE_LANGUAGE,
@@ -188,12 +191,35 @@ const user = (state = initialValues, action) => {
   //if (action.type != 'GOT_USER') console.log('user action: ' + JSON.stringify(action));
   switch (action.type) {
     case NAVIGATE:
-      let str = JSON.stringify(state);
       console.log('_______________ index redux NAVIGATE __________________________________');
-      console.log('NAVIGATE state length: ' + str.length);
+      console.log('NAVIGATE state length: ' + JSON.stringify(state).length);
       console.log('NAVIGATE user action: ' + JSON.stringify(action) + ' state.publicUrl: ' + JSON.stringify(state.publicUrl));
       return Object.assign({}, state, {
         active: action.active
+      });
+    case CREW_NAVIGATE:
+      console.log('_______________ index redux CREW_NAVIGATE __________________________________');
+      console.log('CREW_NAVIGATE state length: ' + JSON.stringify(state).length);
+      console.log('CREW_NAVIGATE user action: ' + JSON.stringify(action) + ' state.publicUrl: ' + JSON.stringify(state.publicUrl));
+      return Object.assign({}, state, {
+        active: action.active,
+        crewId: action.active.substring(action.active.lastIndexOf('/') + 1)
+      });
+    case PERFORMANCE_NAVIGATE:
+      console.log('_______________ index redux PERFORMANCE_NAVIGATE __________________________________');
+      console.log('PERFORMANCE_NAVIGATE state length: ' + JSON.stringify(state).length);
+      console.log('PERFORMANCE_NAVIGATE user action: ' + JSON.stringify(action) + ' state.publicUrl: ' + JSON.stringify(state.publicUrl));
+      return Object.assign({}, state, {
+        active: action.active,
+        performanceId: action.active.substring(action.active.lastIndexOf('/') + 1)
+      });
+    case EVENT_NAVIGATE:
+      console.log('_______________ index redux EVENT_NAVIGATE __________________________________');
+      console.log('EVENT_NAVIGATE state length: ' + JSON.stringify(state).length);
+      console.log('EVENT_NAVIGATE user action: ' + JSON.stringify(action) + ' state.publicUrl: ' + JSON.stringify(state.publicUrl));
+      return Object.assign({}, state, {
+        active: action.active,
+        eventId: action.active.substring(action.active.lastIndexOf('/') + 1)
       });
     case GOT_USER:
       return Object.assign({}, state, action.json, {

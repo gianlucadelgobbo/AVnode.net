@@ -16,7 +16,6 @@ const ProfilePrivate = ({
   handleSubmit,
   saveProfile,
   userLinkDelete,
-  //userLinkEdit,
   fetchCountries
   }) => {
 
@@ -24,14 +23,7 @@ const ProfilePrivate = ({
     fetchCountries();
     //console.log('submitting' + submitting);
   }
-  /*const onLinkEdit = (link) => (e) => {
-    e.preventDefault();
-    return userLinkEdit(user._id, link._id);
-  };*/
-  const onLinkDelete = (link) => (e) => {
-    e.preventDefault();
-    return userLinkDelete(user._id, link._id);
-  };
+
   const handleChange = () => {
     console.log(user);
   }
