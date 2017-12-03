@@ -67,7 +67,7 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
             {performer.file ?
                 <img
                     className="img-small mb-3"
-                    src={`https://bruce.avnode.net${performer.file.file}`}
+                    src={`${performer.imageUrl}`}
                     alt={`image of ${performance.stagename}`}
                 />
                 :

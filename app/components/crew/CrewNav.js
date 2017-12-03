@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { navigate } from '../../reducers/actions';
+import { crewNavigate } from '../../reducers/actions';
 import { FormattedMessage } from 'preact-intl';
 
 const CrewNav = ({ user, dispatch, url }) => {
@@ -12,19 +12,25 @@ const CrewNav = ({ user, dispatch, url }) => {
 
   return (
 <nav id="account-sidenav" className="nav-justified pull-left">
-<a className={classes('/account/crew/public/'+id)} href={`/account/crew/public/${id}`} onClick={e => { dispatch(navigate('/account/crew/public/'+id)); }}>
+<a className={classes('/account/crew/public/'+id)} href={`/account/crew/public/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/public/'+id)); }}>
+<FormattedMessage
+    id="publicData"
+    defaultMessage="Public data"
+/>
+</a>
+<a className={classes('/account/crew/organization/'+id)} href={`/account/crew/organization/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/organization/'+id)); }}>
     <FormattedMessage
-        id="publicData"
-        defaultMessage="Public data"
+        id="organization"
+        defaultMessage="Organization"
     />
 </a>
-<a className={classes('/account/crew/images/'+id)} href={`/account/crew/images/${id}`} onClick={e => { dispatch(navigate('/account/crew/images/'+id)); }}>
+<a className={classes('/account/crew/images/'+id)} href={`/account/crew/images/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/images/'+id)); }}>
     <FormattedMessage
         id="images"
         defaultMessage="Images"
     />
 </a>
-<a className={classes('/account/crew/members/'+id)} href={`/account/crew/members/${id}`} onClick={e => { dispatch(navigate('/account/crew/members/'+id)); }}>
+<a className={classes('/account/crew/members/'+id)} href={`/account/crew/members/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/members/'+id)); }}>
     <FormattedMessage
         id="members"
         defaultMessage="Members"

@@ -26,7 +26,7 @@
 	"primary": "Principal",
 	"public": "Public",
 	"addlink": "Ajouter un lien",
-	"linkType": "Type de lien",
+	"linkType": "Type",
 	"link": "Lien",
 	"links": "Liens",
 	"manageemail": "Gérer vos adresses email",
@@ -242,5 +242,6 @@
 	"Performer": "Artiste",
 	"Schedule": "Programme",
 	"Organizers": "Organisateurs",
+	"editFullAddress": "Saisir votre adresse complète dans la section privée",
 	"Email confirmed": "Email confirmé"
 }
