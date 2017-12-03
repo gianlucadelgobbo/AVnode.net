@@ -41,42 +41,42 @@ const ProfileAboutsForm = injectIntl(({
           })}
         />
       </div>
-      <div className="form-group">
-        <label htmlFor="aboutlanguage">
-          <FormattedMessage
-            id="language"
-            defaultMessage="Language"
-          />
-        </label>
-        {Languages ?
-          <Field
-            className="form-control custom-select"
-            name="aboutlanguage"
-            component="select"
-            value={user.aboutlanguage}
-          >
-            <option value="en">
-              <FormattedMessage
-                id="language.en"
-                defaultMessage="English"
-              />
-            </option>
-            {Languages.map((c) => (
-              <option value={c.code}>{c.language}</option>
-            ))
-            }
-            { /*  */}
-          </Field> :
-          <p>Loading languages…</p>
-        }
-      </div>
-      <div className="input-group-addon">
-          <button
-            className="btn btn-success btn-sm"
-          >
+      <div className="row">
+        <div className="col-sm-10 input-group">
+          <label htmlFor="aboutlanguage">
+            <FormattedMessage
+              id="language"
+              defaultMessage="Language"
+            />
+          </label>
+          {Languages ?
+            <Field
+              className="form-control custom-select"
+              name="aboutlanguage"
+              component="select"
+              value={user.aboutlanguage}
+            >
+              <option value="en">
+                <FormattedMessage
+                  id="language.en"
+                  defaultMessage="English"
+                />
+              </option>
+              {Languages.map((c) => (
+                <option value={c.code}>{c.language}</option>
+              ))
+              }
+              { /*  */}
+            </Field> :
+            <p>Loading languages…</p>
+          }
+        </div>
+        <div className="col-sm-2 input-group-addon">
+          <button className="btn btn-success btn-sm">
             <i className="fa fa-plus"></i>
           </button>
         </div>
+      </div>
       <label>
         <FormattedMessage
           id="manageabout"

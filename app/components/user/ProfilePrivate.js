@@ -117,8 +117,8 @@ const ProfilePrivate = ({
               <div className="col-md-6 form-group">
                 <label htmlFor="name">
                   <FormattedMessage
-                    id="name"
-                    defaultMessage="Name"
+                    id="firstname"
+                    defaultMessage="First name"
                   />
                 </label>
                 <Field
@@ -136,30 +136,30 @@ const ProfilePrivate = ({
             </div>
             <div className="row">
               <div className="col-md-6 form-group">
-              <label htmlFor="birthday">
-                <FormattedMessage
-                  id="birthday"
-                  defaultMessage="Birthday"
-                />
-              </label>
-              <div className="input-group date" data-provide="datepicker-inline">
-                <div className="input-group-addon">
-                  <i className="fa fa-calendar"></i>
+                <label htmlFor="birthday">
+                  <FormattedMessage
+                    id="birthday"
+                    defaultMessage="Birthday"
+                  />
+                </label>
+                <div className="input-group date" data-provide="datepicker-inline">
+                  <div className="input-group-addon">
+                    <i className="fa fa-calendar"></i>
+                  </div>
+                  <Field
+                    className="form-control"
+                    name="birthday"
+                    component="input"
+                    data-provide="datepicker"
+                    data-date-format="yyyy-mm-dd"
+                    placeholder={intl.formatMessage({
+                      id: 'date.placeholder',
+                      defaultMessage: 'YYYY-MM-DD'
+                    })}
+                    value={user.birthday}
+                  />
                 </div>
-                <Field
-                  className="form-control"
-                  name="birthday"
-                  component="input"
-                  data-provide="datepicker"
-                  data-date-format="yyyy-mm-dd"
-                  placeholder={intl.formatMessage({
-                    id: 'date.placeholder',
-                    defaultMessage: 'YYYY-MM-DD'
-                  })}
-                  value={user.birthday}
-                />
               </div>
-                </div>
               <div className="col-md-6 form-group">
                 <label htmlFor="citizenship">
                   <FormattedMessage
@@ -192,14 +192,11 @@ const ProfilePrivate = ({
             </div>
           </fieldset>
 
-          <fieldset>
-            <ul className="list-group mt-2">
-              <ProfileLinksTel
-                user={user}
-                intl={intl}
-              />
-            </ul>
-          </fieldset>
+          <ProfileLinksTel
+            user={user}
+            intl={intl}
+            userLinkDelete={userLinkDelete}
+          />
 
           <div className="form-group">
             <button
