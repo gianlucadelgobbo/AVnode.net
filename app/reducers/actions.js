@@ -1,6 +1,9 @@
 import isomorphicFetch from 'isomorphic-fetch';
 
 export const NAVIGATE = 'NAVIGATE';
+export const CREW_NAVIGATE = 'CREW_NAVIGATE';
+export const PERFORMANCE_NAVIGATE = 'PERFORMANCE_NAVIGATE';
+export const EVENT_NAVIGATE = 'EVENT_NAVIGATE';
 export const GOT_USER = 'GOT_USER';
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
@@ -111,8 +114,23 @@ const fetch = (path, options = {}, json = true) => {
 };
 
 export function navigate(active) {
-  console.log(JSON.stringify(active));
+  console.log('navigate(active):' + JSON.stringify(active));
   return { type: NAVIGATE, active };
+}
+
+export function crewNavigate(active) {
+  console.log('crewNavigate(active):' + JSON.stringify(active));
+  return { type: CREW_NAVIGATE, active };
+}
+
+export function performanceNavigate(active) {
+  console.log('performanceNavigate(active):' + JSON.stringify(active));
+  return { type: PERFORMANCE_NAVIGATE, active };
+}
+
+export function eventNavigate(active) {
+  console.log('eventNavigate(active):' + JSON.stringify(active));
+  return { type: EVENT_NAVIGATE, active };
 }
 
 export function gotUser(json) {
@@ -1104,13 +1122,16 @@ export function userEmailDelete(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
+    let addressFound = false;
     let str = JSON.stringify(data);
     console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data length: ' + str.length);
     //console.log('editUser data: ' + str);
-    console.log('editUser data name: ' + data.name);
-    console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
-
+    console.log('editUser data linkWeb: ' + data.linkWeb);
+    //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
+    console.log('editUserAddresses data locality: ' + data.locality);
+    console.log('editUserAddresses data country: ' + data.country);
+  
     dispatch({
       type: REQUEST_EDIT_USER,
       id: data._id
@@ -1302,7 +1323,23 @@ export function editUserAddresses(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+export function editUserAbouts(dispatch) {
+  return data => {
+    console.log('_______________ACTION editUserAbouts __________________________________');
+    console.log('editUserAbouts aboutlanguage: ' + JSON.stringify(data.aboutlanguage));
 
+    dispatch({
+      type: REQUEST_EDIT_USERABOUTS,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/user/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 export function userAboutEdit(dispatch) {
   return (userId, aboutlanguage) => {
     console.log('_______________ACTION userAboutEdit __________________________________');
@@ -1361,30 +1398,8 @@ export function editUserImages(dispatch) {
 
 export function editUserLinks(dispatch) {
   return data => {
-
-    // link, verify unique
-    if (data.link) {
-      let linkFound = false;
-      let primaryLink = true;
-      data.links.map((l) => {
-        primaryLink = false;
-        if (l.url === data.link) {
-          // url in the form already exists in links
-          linkFound = true;
-        }
-      });
-      // in case of new link, add it to the links
-      if (!linkFound) {
-        console.log('data.link:' + data.link);
-        data.links.push({
-          url: data.link,
-          is_primary: primaryLink,
-          is_confirmed: false,
-          is_public: false,
-          type: data.linkType
-        });
-      };
-    };
+    console.log('_______________ACTION editUserLinks __________________________________');
+    console.log('editUserLinks type: ' + JSON.stringify(data.linkType));
 
     dispatch({
       type: REQUEST_EDIT_USERLINKS,
@@ -1483,7 +1498,7 @@ export function removeEventVenue(dispatch) {
 
 
 // Links
-export function addLink(dispatch) {
+export function userLinkAdd(dispatch) {
   return (id, link) => {
     dispatch({
       type: REQUEST_ADD_USER_LINK,
@@ -1500,7 +1515,7 @@ export function addLink(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 };
-
+/*
 export function userLinkEdit(dispatch) {
   return (userId, linkId) => {
     dispatch({
@@ -1576,7 +1591,7 @@ export function userLinkConfirm(dispatch) {
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
+} */
 
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {

@@ -2,10 +2,11 @@ import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 const Email = ({ email, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, onDelete, intl }) => {
-  
+
   return (
-      <li className="list-group-item justify-content-between">
-        {email.email}
+    <li className="list-group-item justify-content-between">
+      {email.email}
+      <span>
         {email.is_confirmed ?
           <span className="badge badge-success">
             <FormattedMessage
@@ -13,15 +14,40 @@ const Email = ({ email, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, o
               defaultMessage="Confirmed"
             />
           </span> :
-          <span className="badge badge-danger">
+          <span className="badge badge-info">
             <FormattedMessage
               id="unconfirmed"
               defaultMessage="Unconfirmed"
             />
           </span>
         }
-        {email.is_confirmed ? null : 
-        <span className="badge badge-info">
+        {email.is_public ?
+          <span className="badge badge-success">
+            <FormattedMessage
+              id="public"
+              defaultMessage="Public"
+            />
+          </span>
+          :
+          <span className="badge badge-warning">
+            <FormattedMessage
+              id="private"
+              defaultMessage="Private"
+            />
+          </span>
+        }
+        {email.is_primary ?
+          <span className="badge badge-primary">
+            <FormattedMessage
+              id="primary"
+              defaultMessage="Primary"
+            />
+          </span> :
+          null
+        }
+      </span>
+      <span>
+        {email.is_confirmed ? null :
           <button
             type="button"
             className="btn btn-info btn-sm"
@@ -38,25 +64,8 @@ const Email = ({ email, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, o
             >
             </i>
           </button>
-        </span>
-      }
-      {email.is_public ?
-        <span className="badge badge-success">
-          <FormattedMessage
-            id="public"
-            defaultMessage="Public"
-          />
-        </span>
-        :
-        <span className="badge badge-warning">
-          <FormattedMessage
-            id="private"
-            defaultMessage="Private"
-          />
-        </span>
-      }
-      {email.is_public ?
-        <span className="badge badge-success">
+        }
+        {email.is_public ?
           <button
             type="button"
             className="btn btn-success btn-sm"
@@ -73,8 +82,7 @@ const Email = ({ email, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, o
             >
             </i>
           </button>
-        </span> :
-        <span className="badge badge-warning">
+          :
           <button
             type="button"
             className="btn btn-warning btn-sm"
@@ -91,52 +99,42 @@ const Email = ({ email, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, o
             >
             </i>
           </button>
-        </span>
-      }
-      {email.is_primary ?
-        <span className="badge badge-primary">
-          <FormattedMessage
-            id="primary"
-            defaultMessage="Primary"
-          />
-        </span> :
-        <span>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={onMakePrimary}
+        }
+        <button
+          type="button"
+          className="btn btn-secondary btn-sm"
+          onClick={onMakePrimary}
+        >
+          <i
+            className="fa fa-star"
+            data-toggle="tooltip"
+            data-placement="top"
+            title={intl.formatMessage({
+              id: "makeitprimary",
+              defaultMessage: "Make it primary"
+            })}
           >
-            <i
-              className="fa fa-star"
-              data-toggle="tooltip"
-              data-placement="top"
-              title={intl.formatMessage({
-                id: "makeitprimary",
-                defaultMessage: "Make it primary"
-              })}
-            >
-            </i>
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger btn-sm"
-            onClick={onDelete}
+          </i>
+        </button>
+        <button
+          type="button"
+          className="btn btn-danger btn-sm"
+          onClick={onDelete}
+        >
+          <i
+            className="fa fa-trash"
+            data-toggle="tooltip"
+            data-placement="top"
+            title={intl.formatMessage({
+              id: "delete",
+              defaultMessage: "Delete"
+            })}
           >
-            <i
-              className="fa fa-trash"
-              data-toggle="tooltip"
-              data-placement="top"
-              title={intl.formatMessage({
-                id: "delete",
-                defaultMessage: "Delete"
-              })}
-            >
-            </i>
-          </button>
-        </span>
-      }
-      </li>
-    );
-  };
+          </i>
+        </button>
+      </span>
+    </li>
+  );
+};
 
-  export default Email;
+export default Email;
