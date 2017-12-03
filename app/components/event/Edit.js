@@ -8,7 +8,7 @@ import Layout from '../Layout';
 
 import Venue from '../VenueContainer';
 import Link from '../link/Link';
-import LinkType from '../link/LinkType';
+import WebLinkTypes from '../link/WebLinkTypes';
 import ImageDropzone from '../ImageDropzone';
 import About from '../about/About';
 import Languages from '../language/Languages';
@@ -450,7 +450,7 @@ let EventForm = props => {
                 defaultMessage="Link type"
               />
             </label>
-            {LinkType ?
+            {WebLinkTypes ?
               <Field
                 className="form-control custom-select"
                 name="linkType"
@@ -463,7 +463,7 @@ let EventForm = props => {
                     defaultMessage="Please select"
                   />
                 </option>
-                {LinkType.map((c) => (
+                {WebLinkTypes.map((c) => (
                   <option value={c.key.toLowerCase()}>{c.name}</option>
                 ))
                 }

@@ -6,10 +6,10 @@ import LinksWebEdit from '../link/LinksWebEdit'; */
 
 import ImageDropzone from '../ImageDropzone';
 
-const OrgActivity = (args) => {
+const OrgActivity = (props) => {
 
   // console.log("OrgActivity component");
-  // console.log(args);
+  // console.log(props);
 
   const onImageDrop = (crewId) => (files, _something, _ev) => {
     const file = files[0];
@@ -37,7 +37,7 @@ const OrgActivity = (args) => {
             name="activity_name"
             component="input"
             type="text"
-            value={args.contact.activity_name}
+            value={props.contact.activity_name}
         />
       </div>
 
@@ -55,19 +55,19 @@ const OrgActivity = (args) => {
                     defaultMessage='Public'
                 />
             </span>
-        {args.contact.activity_logo ?
+        {props.contact.activity_logo ?
             <div>
               <img
                   className="img-thumbnail mb-3"
-                  src={args.contact.activity_logo.publicUrl}
-                  alt={`Logo of ${args.contact.org.name}`}
+                  src={props.contact.activity_logo.publicUrl}
+                  alt={`Logo of ${props.contact.org.name}`}
               />
             </div> :
             null
         }
         <ImageDropzone
-            imageUploadInProgress={(args.contact.imageUploadInProgress)}
-            onDrop={onImageDrop(args.contact._id)}
+            imageUploadInProgress={(props.contact.imageUploadInProgress)}
+            onDrop={onImageDrop(props.contact._id)}
         />
       </div>
 
@@ -94,7 +94,7 @@ const OrgActivity = (args) => {
               name="activity_start_date"
               component="input"
               type="text"
-              value={args.contact.activity_start_date}
+              value={props.contact.activity_start_date}
           />
         </div>
       </div>
@@ -143,7 +143,7 @@ const OrgActivity = (args) => {
               name="activity_end_date"
               component="input"
               type="text"
-              value={args.contact.activity_end_date}
+              value={props.contact.activity_end_date}
           />
         </div>
 
@@ -299,7 +299,7 @@ const OrgActivity = (args) => {
               name="activity_city"
               component="input"
               type="text"
-              value={args.contact.activity_end_date}
+              value={props.contact.activity_end_date}
           />
           <Field
               className="form-control custom-select"
@@ -335,9 +335,9 @@ const OrgActivity = (args) => {
         </div>
       </div>
 
-      {/* BL TODO <LinksWebEdit links={args.contact.links} privacy="public" />
+      {/* BL TODO <LinksWebEdit links={props.contact.links} privacy="public" />
 
-      <LinksSocialEdit links={args.contact.links} privacy="public" />*/}
+      <LinksSocialEdit links={props.contact.links} privacy="public" />*/}
 
     </div>
   );

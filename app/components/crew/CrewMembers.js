@@ -24,7 +24,7 @@ const Member = injectIntl(({ member, me, onDelete, intl }) => {
       {member.file ? 
       <img
         className="img-small mb-3"
-        src={`https://bruce.avnode.net${member.file.file}`}
+        src={`${member.imageUrl}`}       
         alt={`image of ${member.stagename}`}
       />
       : 

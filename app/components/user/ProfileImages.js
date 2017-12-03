@@ -88,7 +88,7 @@ const ProfileImagesForm = ({
                         </div>
                     </fieldset>
 
-                    <div className="form-group">
+                    {/*<div className="form-group">
                         <button
                             className="btn btn-primary"
                             type="submit"
@@ -98,7 +98,7 @@ const ProfileImagesForm = ({
                                 defaultMessage="Save"
                             />
                         </button>
-                    </div>
+                        </div>*/}
 
                 </form>
             </Layout >
