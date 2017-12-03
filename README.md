@@ -38,3 +38,8 @@ ACCESSKEYID, SECRETACCESSKEY for AWS
 GOOGLEMAPSAPIKEY for google maps.
 
 And other environment variables if needed.
+
+### On ARM
+
+* npm rebuild sharp
+* npm rebuild node-sass
