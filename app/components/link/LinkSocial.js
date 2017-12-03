@@ -46,7 +46,7 @@ const LinkSocial = ({ linkSocial, onEdit, onDelete, intl }) => {
           </i>
         </button>
 
-        <button className="btn btn-success btn-sm"
+        {/*<button className="btn btn-success btn-sm"
           onClick={onEdit}>
           <i
             className="fa fa-fw fa-edit"
@@ -58,7 +58,7 @@ const LinkSocial = ({ linkSocial, onEdit, onDelete, intl }) => {
             })}
           >
           </i>
-        </button>
+          </button>*/}
       </span>
 
     </li>

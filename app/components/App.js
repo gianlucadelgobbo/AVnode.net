@@ -5,15 +5,13 @@ import Nav from './Nav';
 // Profile
 import Profile from './user/ProfilePublicContainer';
 import ProfileImages from './user/ProfileImagesContainer';
-import ProfileLinks from './user/ProfileLinksContainer';
 import ProfileEmails from './user/ProfileEmailsContainer';
-import ProfileAddresses from './user/ProfileAddressesContainer';
 import ProfilePrivate from './user/ProfilePrivateContainer';
 import ProfilePassword from './user/ProfilePasswordContainer';
 import ProfileConnections from './user/ProfileConnections';
 // Crews
 import Crews from './Crews';
-// import CrewEdit from './crew/Edit';
+import CrewOrganization from './crew/CrewOrganization';
 import CrewPublic from './crew/CrewPublic';
 import CrewImages from './crew/CrewImages';
 import CrewMembers from './crew/CrewMembers';
@@ -63,14 +61,13 @@ const App = () => {
         <Router>
           <Profile path="/account/profile/public" />
           <ProfileImages path="/account/profile/images" />
-          <ProfileLinks path="/account/profile/links" />
           <ProfileEmails path="/account/profile/emails" />
-          <ProfileAddresses path="/account/profile/addresses" />
           <ProfilePrivate path="/account/profile/private" />
           <ProfilePassword path="/account/profile/password" />
           <ProfileConnections path="/account/profile/connections" />
           <Crews path="/account/crews" />
           <CrewPublic path="/account/crew/public/:_id" />
+          <CrewOrganization path="/account/crew/organization/:_id" />
           <CrewImages path="/account/crew/images/:_id" />
           <CrewMembers path="/account/crew/members/:_id" />
           <Performances path="/account/performances" />

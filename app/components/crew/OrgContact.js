@@ -1,14 +1,8 @@
 import React, { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
-/* import LinksSocialEdit from '../link/LinksSocialEdit';
-import LinksSkypeEdit from '../link/LinksSkypeEdit';
-import LinksMobileEdit from '../link/LinksMobileEdit'; */
 
-const OrgContact = (args) => {
-
-  // console.log("OrgContact component");
-  // console.log(args);
+const OrgContact = (props) => {
 
   return (
     <div>
@@ -71,7 +65,7 @@ const OrgContact = (args) => {
               name="crew.org.contact_role"
               component="input"
               type="text"
-              value={args.contact.contact_role}
+              value={props.contact.contact_role}
           />
         </div>
       </div>
@@ -96,7 +90,7 @@ const OrgContact = (args) => {
               name="crew.org.contact_name"
               component="input"
               type="text"
-              value={args.contact.contact_name}
+              value={props.contact.contact_name}
           />
         </div>
 
@@ -119,7 +113,7 @@ const OrgContact = (args) => {
               name="crew.org.contact_surname"
               component="input"
               type="text"
-              value={args.contact.contact_surname}
+              value={props.contact.contact_surname}
           />
         </div>
       </div>
@@ -144,7 +138,7 @@ const OrgContact = (args) => {
               name="crew.org.contact_email"
               component="input"
               type="text"
-              value={args.contact.contact_email}
+              value={props.contact.contact_email}
           />
           <div className="input-group-addon">
             <i className="fa fa-envelope"></i>
@@ -198,11 +192,11 @@ const OrgContact = (args) => {
         </Field>
       </div>
 
-      {/* BL TODO <LinksMobileEdit links={args.contact.links} privacy="private" />
+      {/* BL TODO <LinksMobileEdit links={props.contact.links} privacy="private" />
 
-      <LinksSkypeEdit links={args.contact.links} privacy="private" />
+      <LinksSkypeEdit links={props.contact.links} privacy="private" />
 
-  <LinksSocialEdit links={args.contact.links} privacy="public" /> */}
+  <LinksSocialEdit links={props.contact.links} privacy="public" /> */}
     </div>
   );
 };

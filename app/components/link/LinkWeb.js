@@ -44,7 +44,7 @@ const LinkWeb = ({ linkWeb, onEdit, onDelete, intl }) => {
               })}
             >
             </i>
-          </button>*/}
+          </button>
         <button className="btn btn-success btn-sm"
           onClick={onEdit}>
           <i
@@ -57,7 +57,7 @@ const LinkWeb = ({ linkWeb, onEdit, onDelete, intl }) => {
             })}
           >
           </i>
-        </button>
+        </button>*/}
       </span>
     </li>
   );
