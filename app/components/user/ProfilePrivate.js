@@ -7,6 +7,13 @@ import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';
+import Moment from 'moment'
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+
+Moment.locale('en');
+momentLocalizer()
+
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
 const ProfilePrivate = ({
@@ -27,6 +34,14 @@ const ProfilePrivate = ({
   const handleChange = () => {
     console.log(user);
   }
+  
+  const renderDateTimePicker = ({ input: { onChange, value }, showTime }) =>
+  <DateTimePicker
+    onChange={onChange}
+    format="YYYY-MM-DD"
+    time={showTime}
+    value={!value ? null : new Date(value)}
+  />
 
   return (
     <div>
@@ -134,6 +149,16 @@ const ProfilePrivate = ({
                     defaultMessage="Birthday"
                   />
                 </label>
+                  <Field    
+                    name="birthday"
+                    showTime={false}
+                    component={renderDateTimePicker} 
+                    placeholder={intl.formatMessage({
+                      id: 'date.placeholder',
+                      defaultMessage: 'YYYY-MM-DD'
+                    })}
+                  />
+                  {/*
                 <div className="input-group date" data-provide="datepicker-inline">
                   <div className="input-group-addon">
                     <i className="fa fa-calendar"></i>
@@ -148,9 +173,11 @@ const ProfilePrivate = ({
                       id: 'date.placeholder',
                       defaultMessage: 'YYYY-MM-DD'
                     })}
-                    value={user.birthday}
+                    
                   />
+                  
                 </div>
+                  */}
               </div>
               <div className="col-md-6 form-group">
                 <label htmlFor="citizenship">
