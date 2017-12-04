@@ -6,8 +6,6 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
 import ImageDropzone from '../ImageDropzone';
-import About from '../about/About';
-import Languages from '../language/Languages';
 
 import Place from '../place/PlaceContainer';
 
@@ -26,8 +24,7 @@ import {
   addCrewMember,
   addCrewImage,
   addCrewTeaserImage,
-  removeCrewMember,
-  crewAboutEdit
+  removeCrewMember
 } from '../../reducers/actions';
 
 const Member = injectIntl(({ member, me, onDelete, intl }) => {
@@ -93,10 +90,10 @@ let CrewForm = props => {
     return dispatch(addCrewTeaserImage(crewId, file));
   };
 
-  const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
+  /*const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
     about.is_primary = true;
     return dispatch(crewAboutEdit(crewId, about._id));
-  };
+  };*/
 
   if (!props.org) props.org = {};
   
@@ -187,80 +184,6 @@ let CrewForm = props => {
             onDrop={onImageDrop(props._id)}
           />
         </div>
-
-        <div className="row">
-          <div className="col-md-9 form-group">
-            <label htmlFor="about">
-              <FormattedMessage
-                id="addabout"
-                defaultMessage="About"
-              />
-            </label>
-            &nbsp;
-            <span class="badge badge-success">
-                <FormattedMessage
-                    id="public"
-                    defaultMessage='Public'
-                />
-            </span>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="about"
-                component="textarea"
-                rows="4"
-                placeholder="About the crew"
-                value={props.about}
-              />
-            </div>
-          </div>
-          <div className="col-md-3 form-group">
-            <label htmlFor="aboutlanguage">
-              <FormattedMessage
-                id="language"
-                defaultMessage="Language"
-              />
-            </label>
-            {Languages ?
-              <Field
-                className="form-control custom-select"
-                name="aboutlanguage"
-                component="select"
-                value={props.aboutlanguage}
-              >
-                <option value="en">
-                  <FormattedMessage
-                    id="language.en"
-                    defaultMessage="English"
-                  />
-                </option>
-                {Languages.map((c) => (
-                  <option value={c.code}>{c.language}</option>
-                ))
-                }
-                { /*  */}
-              </Field> :
-              <p>Loading languages…</p>
-            }
-          </div>
-        </div>
-
-        <label>
-          <FormattedMessage
-            id="manageabout"
-            defaultMessage="Manage your About texts"
-          />
-        </label>
-        <ul className="list-group mt-2">
-          {
-            crew && crew.abouts && crew.abouts.map((a) => (
-              <About
-                about={a}
-                onMakePrimary={onCrewAboutMakePrimary(crew._id)(a)}
-              />
-            ))
-          }
-        </ul>
 
         <div className="form-group">
           <label htmlFor="members">

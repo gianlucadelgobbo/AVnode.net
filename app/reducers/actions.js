@@ -399,7 +399,7 @@ export function suggestEventOrganizingCrew(eventId, q) {
       });
   };
 }
-export function crewAboutEdit(id, aboutlanguage) {
+/*export function crewAboutEdit(id, aboutlanguage) {
   return dispatch => {
     console.log('_______________ACTION crewAboutEdit __________________________________');
     console.log('crewAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
@@ -415,7 +415,7 @@ export function crewAboutEdit(id, aboutlanguage) {
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
+}*/
 export function crewAboutDelete(dispatch) {
   return (crewId, aboutlanguage) => {
     console.log('_______________ACTION crewAboutDelete __________________________________');
@@ -767,6 +767,24 @@ export function performanceAboutDelete(dispatch) {
       }
     });
     return fetch(`/account/api/performance/${perfId}/about/${aboutlanguage}`, {
+      method: 'DELETE',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function eventAboutDelete(dispatch) {
+  return (eventId, aboutlanguage) => {
+    console.log('_______________ACTION eventAboutDelete __________________________________');
+    console.log('eventAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    dispatch({
+      type: REQUEST_EVENT_DELETEABOUT,
+      payload: {
+        event: eventId,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(`/account/api/event/${eventId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
