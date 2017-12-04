@@ -5,7 +5,7 @@ import Layout from '../Layout';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
-import ProfileAbouts from './ProfileAbouts';
+import Abouts from '../about/Abouts';
 import ProfileLinksWeb from './ProfileLinksWeb';
 import ProfileLinksSocial from './ProfileLinksSocial';
 import ProfileAddressesPublic from './ProfileAddressesPublic';
@@ -22,7 +22,7 @@ const ProfilePublic = ({
   intl,
   handleSubmit,
   saveProfile,
-  userAboutDelete,
+  aboutDelete,
   userLinkDelete,
   userAddressDelete,
   fetchCountries
@@ -105,10 +105,10 @@ const ProfilePublic = ({
             </p>
           </fieldset>
 
-          <ProfileAbouts
-            user={user}
+          <Abouts
+            current={user}
             intl={intl}
-            userAboutDelete={userAboutDelete}
+            aboutDelete={aboutDelete}
           />
 
           <ProfileLinksWeb

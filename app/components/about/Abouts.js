@@ -1,18 +1,18 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import About from '../about/About';
+import About from './About';
 import Languages from '../language/Languages';
 
 const ProfileAboutsForm = injectIntl(({
-  user,
+  current,
   intl,
-  userAboutDelete
+  aboutDelete
 }) => {
 
   const onAboutDelete = (about) => (e) => {
     console.log('onAboutDelete' + about);
-    return userAboutDelete(user._id, about.lang);
+    return aboutDelete(current._id, about.lang);
   };
   return (
     <fieldset className="form-group">
@@ -37,7 +37,7 @@ const ProfileAboutsForm = injectIntl(({
           rows="4"
           placeholder={intl.formatMessage({
             id: 'about.placeholder',
-            defaultMessage: 'Tell me something about you.'
+            defaultMessage: 'About'
           })}
         />
       </div>
@@ -54,7 +54,6 @@ const ProfileAboutsForm = injectIntl(({
               className="form-control custom-select"
               name="aboutlanguage"
               component="select"
-              value={user.aboutlanguage}
             >
               <option value="en">
                 <FormattedMessage
@@ -85,7 +84,7 @@ const ProfileAboutsForm = injectIntl(({
       </label>
       <ul className="list-group mt-2">
         {
-          user && user.abouts && user.abouts.map((a) => (
+          current && current.abouts && current.abouts.map((a) => (
             <About
               about={a}
               onDelete={onAboutDelete(a)}

@@ -416,18 +416,18 @@ export function crewAboutEdit(id, aboutlanguage) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function crewAboutDelete(id, aboutlanguage) {
-  return dispatch => {
+export function crewAboutDelete(dispatch) {
+  return (crewId, aboutlanguage) => {
     console.log('_______________ACTION crewAboutDelete __________________________________');
     console.log('crewAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_CREW_DELETEABOUT,
       payload: {
-        crew: id,
+        crew: crewId,
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
+    return fetch(`/account/api/crew/${crewId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -755,18 +755,18 @@ export function performanceAboutEdit(id, aboutlanguage) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function performanceAboutDelete(id, aboutlanguage) {
-  return dispatch => {
+export function performanceAboutDelete(dispatch) {
+  return (perfId, aboutlanguage) => {
     console.log('_______________ACTION performanceAboutDelete __________________________________');
     console.log('performanceAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_PERFORMANCE_DELETEABOUT,
       payload: {
-        performance: id,
+        performance: perfId,
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
+    return fetch(`/account/api/performance/${perfId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1323,7 +1323,7 @@ export function editUserAddresses(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function editUserAbouts(dispatch) {
+/*export function editUserAbouts(dispatch) {
   return data => {
     console.log('_______________ACTION editUserAbouts __________________________________');
     console.log('editUserAbouts aboutlanguage: ' + JSON.stringify(data.aboutlanguage));
@@ -1359,7 +1359,7 @@ export function userAboutEdit(dispatch) {
       }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
+}*/
 export function userAboutDelete(dispatch) {
   return (userId, aboutlanguage) => {
     console.log('_______________ACTION userAboutDelete __________________________________');
