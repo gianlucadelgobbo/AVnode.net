@@ -1147,6 +1147,7 @@ export function editUser(dispatch) {
     //console.log('editUser data: ' + str);
     console.log('editUser data linkWeb: ' + data.linkWeb);
     //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
+    console.log('editUserAddresses data postal_code: ' + data.postal_code);
     console.log('editUserAddresses data locality: ' + data.locality);
     console.log('editUserAddresses data country: ' + data.country);
   

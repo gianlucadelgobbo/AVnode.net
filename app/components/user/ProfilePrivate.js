@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import ProfileLinksTel from './ProfileLinksTel';
+import ProfileAddressesPrivate from './ProfileAddressesPrivate';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
@@ -23,6 +24,7 @@ const ProfilePrivate = ({
   handleSubmit,
   saveProfile,
   userLinkDelete,
+  userAddressDelete,
   fetchCountries
   }) => {
 
@@ -215,6 +217,11 @@ const ProfilePrivate = ({
             user={user}
             intl={intl}
             userLinkDelete={userLinkDelete}
+          />
+          <ProfileAddressesPrivate
+            user={user}
+            intl={intl}
+            userAddressDelete={userAddressDelete}
           />
 
           <div className="form-group">
