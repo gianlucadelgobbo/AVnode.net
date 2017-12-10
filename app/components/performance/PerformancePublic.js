@@ -66,13 +66,13 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
                 <img
                     className="img-small mb-3"
                     src={`${performer.imageUrl}`}
-                    alt={`image of ${performance.stagename}`}
+                    alt={`image of ${performance.username}`}
                 />
                 :
                 null
             }
             <span>
-                {`${performer.stagename} `}
+                {`${performer.username} `}
                 {(performer._id === me) ?
                     <i className="badge badge-default badge-pill">{meLabel}</i>
                     : null
@@ -383,7 +383,7 @@ let PerformanceForm = props => {
                                     className="list-group-item list-group-item-action"
                                     onClick={addPerformer(c.id)}
                                 >
-                                    {c.stagename} ({c.name})
+                                    {c.username} ({c.name})
                 </button>
                             ))
                             }

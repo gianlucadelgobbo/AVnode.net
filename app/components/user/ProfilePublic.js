@@ -67,17 +67,17 @@ const ProfilePublic = ({
               />
             </legend>
 
-            <label htmlFor="stagename">
+            <label htmlFor="username">
               <FormattedMessage
-                id="stagename"
-                defaultMessage="Stagename"
+                id="username"
+                defaultMessage="username"
               />
             </label>
             <Field
               className="form-control"
-              name="stagename"
+              name="username"
               component="input"
-              value={user.stagename}
+              value={user.username}
             />
             <label htmlFor="slug">
               <FormattedMessage

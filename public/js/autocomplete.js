@@ -14,7 +14,7 @@ $(document).ready(function(){
             result += '<a class="btn btn-secondary btn-block text-left ajax" href="#"';
             result += ' data-method="put"';
             result += ' data-endpoint="' + targetEndpoint + member.id + '">';
-            result += member.stagename;
+            result += member.username;
             result += '</a>';
           });
           $('#members').html(result);

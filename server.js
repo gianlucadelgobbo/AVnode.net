@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
+
 // Require mongoose models once!
 require('./lib/models');
 

@@ -100,6 +100,7 @@ export const REQUEST_PERFORMANCE_DELETEABOUT = 'REQUEST_PERFORMANCE_DELETEABOUT'
 // Wrap fetch with some default settings, always
 // return parsed JSON…
 const fetch = (path, options = {}, json = true) => {
+  console.log('fetch, path:' + path);
   const opts = Object.assign({}, {
     credentials: 'same-origin'
   }, options);
@@ -109,7 +110,7 @@ const fetch = (path, options = {}, json = true) => {
       'Content-Type': 'application/json'
     };
   }
-  return isomorphicFetch(path, opts)
+  return isomorphicFetch(`${process.env.API}${path}`, opts)
     .then(response => response.json());
 };
 
@@ -139,7 +140,7 @@ export function gotUser(json) {
 
 export function fetchUser() {
   return dispatch => {
-    return fetch('/account/api/user')
+    return fetch('/api/user')
       .then(json => dispatch(gotUser(json)));
   };
 }
@@ -219,7 +220,7 @@ export function editEvent(data) {
       id: data._id
     });
     return fetch(
-      `/account/api/event/${data._id}`, {
+      `/api/event/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -233,7 +234,7 @@ export function addEvent(title) {
       type: REQUEST_ADD_EVENT
     });
     return fetch(
-      '/account/api/event', {
+      '/api/event', {
         method: 'POST',
         body: JSON.stringify({ title })
       })
@@ -248,7 +249,7 @@ export function deleteEvent(id) {
       id
     });
     return fetch(
-      `/account/api/event/${id}`, {
+      `/api/event/${id}`, {
         method: 'DELETE',
       })
       .then(json => dispatch(gotUser(json)));
@@ -263,7 +264,7 @@ export function addEventImage(id, file) {
         eventId: id
       }
     });
-    return fetch(`/account/api/event/${id}/image`, {
+    return fetch(`/api/event/${id}/image`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -279,7 +280,7 @@ export function addEventTeaserImage(id, file) {
         eventId: id
       }
     });
-    return fetch(`/account/api/event/${id}/teaser`, {
+    return fetch(`/api/event/${id}/teaser`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -296,7 +297,7 @@ export function suggestEventPerformance(eventId, q) {
         eventId
       }
     });
-    return fetch(`/account/api/search/performance?q=${q}`)
+    return fetch(`/api/search/performance?q=${q}`)
       .then(json => {
         dispatch({
           type: RESPONSE_SUGGEST_EVENT_PERFORMANCE,
@@ -311,7 +312,7 @@ export function addEventPerformance(eventId, performanceId) {
     dispatch({
       type: REQUEST_ADD_EVENT_PERFORMANCE
     });
-    return fetch(`/account/api/event/${eventId}/performance/${performanceId}`, {
+    return fetch(`/api/event/${eventId}/performance/${performanceId}`, {
       method: 'PUT',
     })
       .then(json => dispatch(gotUser(json)));
@@ -327,7 +328,7 @@ export function removeEventPerformance(eventId, performanceId) {
         performanceId
       }
     });
-    return fetch(`/account/api/event/${eventId}/performance/${performanceId}`, {
+    return fetch(`/api/event/${eventId}/performance/${performanceId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -343,7 +344,7 @@ export function suggestEventOrganizer(eventId, q) {
         eventId
       }
     });
-    return fetch(`/account/api/search/user?q=${q}`)
+    return fetch(`/api/search/user?q=${q}`)
       .then(json => {
         dispatch({
           type: RESPONSE_SUGGEST_EVENT_ORGANIZER,
@@ -358,7 +359,7 @@ export function addEventOrganizer(eventId, organizerId) {
     dispatch({
       type: REQUEST_ADD_EVENT_ORGANIZER
     });
-    return fetch(`/account/api/event/${eventId}/organizer/${organizerId}`, {
+    return fetch(`/api/event/${eventId}/organizer/${organizerId}`, {
       method: 'PUT',
     })
       .then(json => dispatch(gotUser(json)));
@@ -374,7 +375,7 @@ export function removeEventOrganizer(eventId, organizerId) {
         organizerId
       }
     });
-    return fetch(`/account/api/event/${eventId}/organizer/${organizerId}`, {
+    return fetch(`/api/event/${eventId}/organizer/${organizerId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -390,7 +391,7 @@ export function suggestEventOrganizingCrew(eventId, q) {
         eventId
       }
     });
-    return fetch(`/account/api/search/crew?q=${q}`)
+    return fetch(`/api/search/crew?q=${q}`)
       .then(json => {
         dispatch({
           type: RESPONSE_SUGGEST_EVENT_ORGANIZINGCREW,
@@ -410,7 +411,7 @@ export function suggestEventOrganizingCrew(eventId, q) {
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
+    return fetch(`/api/crew/${id}/about/${aboutlanguage}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -427,7 +428,7 @@ export function crewAboutDelete(dispatch) {
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/crew/${crewId}/about/${aboutlanguage}`, {
+    return fetch(`/api/crew/${crewId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -438,7 +439,7 @@ export function addEventOrganizingCrew(eventId, organizingCrewId) {
     dispatch({
       type: REQUEST_ADD_EVENT_ORGANIZINGCREW
     });
-    return fetch(`/account/api/event/${eventId}/organizingcrew/${organizingCrewId}`, {
+    return fetch(`/api/event/${eventId}/organizingcrew/${organizingCrewId}`, {
       method: 'PUT',
     })
       .then(json => dispatch(gotUser(json)));
@@ -454,7 +455,7 @@ export function removeEventOrganizingCrew(eventId, organizingCrewId) {
         organizingCrewId
       }
     });
-    return fetch(`/account/api/event/${eventId}/organizingcrew/${organizingCrewId}`, {
+    return fetch(`/api/event/${eventId}/organizingcrew/${organizingCrewId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -467,7 +468,7 @@ export function addCrew(title) {
       type: REQUEST_ADD_CREW
     });
     return fetch(
-      '/account/api/crew', {
+      '/api/crew', {
         method: 'POST',
         body: JSON.stringify({ title })
       })
@@ -482,7 +483,7 @@ export function deleteCrew(id) {
       id
     });
     return fetch(
-      `/account/api/crew/${id}`, {
+      `/api/crew/${id}`, {
         method: 'DELETE',
       })
       .then(json => dispatch(gotUser(json)));
@@ -519,7 +520,7 @@ export function editCrew(data) {
       id: data._id
     });
     return fetch(
-      `/account/api/crew/${data._id}`, {
+      `/api/crew/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -536,7 +537,7 @@ export function suggestCrewMember(crewId, q) {
         crewId
       }
     });
-    return fetch(`/account/api/search/user?q=${q}`)
+    return fetch(`/api/search/user?q=${q}`)
       .then(json => {
         dispatch({
           type: RESPONSE_SUGGEST_CREWMEMBER,
@@ -553,7 +554,7 @@ export function addCrewMember(crewId, member) {
     dispatch({
       type: REQUEST_ADD_CREWMEMBER
     });
-    return fetch(`/account/api/crew/${crewId}/member/${member.id}`, {
+    return fetch(`/api/crew/${crewId}/member/${member.id}`, {
       method: 'PUT',
     })
       .then(json => dispatch(gotUser(json)));
@@ -569,7 +570,7 @@ export function removeCrewMember(crewId, member) {
         memberId: member._id
       }
     });
-    return fetch(`/account/api/crew/${crewId}/member/${member._id}`, {
+    return fetch(`/api/crew/${crewId}/member/${member._id}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -585,7 +586,7 @@ export function removeEventCategory(eventId, categoryId) {
         categoryId
       }
     });
-    return fetch(`/account/api/event/${eventId}/category/${categoryId}`, {
+    return fetch(`/api/event/${eventId}/category/${categoryId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -600,7 +601,7 @@ export function addCrewImage(id, file) {
         crewId: id
       }
     });
-    return fetch(`/account/api/crew/${id}/image`, {
+    return fetch(`/api/crew/${id}/image`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -616,7 +617,7 @@ export function addCrewTeaserImage(id, file) {
         crewId: id
       }
     });
-    return fetch(`/account/api/crew/${id}/teaser`, {
+    return fetch(`/api/crew/${id}/teaser`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -632,7 +633,7 @@ export function addOrgLogoImage(id, file) {
         crewId: id
       }
     });
-    return fetch(`/account/api/crew/${id}/orglogo`, {
+    return fetch(`/api/crew/${id}/orglogo`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -645,7 +646,7 @@ export function addPerformance(title) {
       type: REQUEST_ADD_PERFORMANCE
     });
     return fetch(
-      '/account/api/performance', {
+      '/api/performance', {
         method: 'POST',
         body: JSON.stringify({ title })
       })
@@ -660,7 +661,7 @@ export function deletePerformance(id) {
       id
     });
     return fetch(
-      `/account/api/performance/${id}`, {
+      `/api/performance/${id}`, {
         method: 'DELETE',
       })
       .then(json => dispatch(gotUser(json)));
@@ -677,7 +678,7 @@ export function aboutPerformanceMakePrimary(dispatch) {
         about: aboutId
       }
     });
-    return fetch(`/account/api/performance/${performance}/user/${user}/about/${aboutId}`, {
+    return fetch(`/api/performance/${performance}/user/${user}/about/${aboutId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -731,7 +732,7 @@ export function editPerformance(data) {
       id: data._id
     });
     return fetch(
-      `/account/api/performance/${data._id}`, {
+      `/api/performance/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -749,7 +750,7 @@ export function performanceAboutEdit(id, aboutlanguage) {
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
+    return fetch(`/api/performance/${id}/about/${aboutlanguage}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -766,7 +767,7 @@ export function performanceAboutDelete(dispatch) {
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/performance/${perfId}/about/${aboutlanguage}`, {
+    return fetch(`/api/performance/${perfId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -784,7 +785,7 @@ export function eventAboutDelete(dispatch) {
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/event/${eventId}/about/${aboutlanguage}`, {
+    return fetch(`/api/event/${eventId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -824,7 +825,7 @@ export function editPerformanceAbouts(data) {
       id: data._id
     });
     return fetch(
-      `/account/api/performance/${data._id}`, {
+      `/api/performance/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -840,7 +841,7 @@ export function addPerformanceImage(id, file) {
         performanceId: id
       }
     });
-    return fetch(`/account/api/performance/${id}/image`, {
+    return fetch(`/api/performance/${id}/image`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -856,7 +857,7 @@ export function addPerformanceTeaserImage(id, file) {
         performanceId: id
       }
     });
-    return fetch(`/account/api/performance/${id}/teaser`, {
+    return fetch(`/api/performance/${id}/teaser`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -873,7 +874,7 @@ export function addPerformanceVideo({ _id, video }) {
         video: video
       }
     });
-    return fetch(`/account/api/performance/${_id}/video`, {
+    return fetch(`/api/performance/${_id}/video`, {
       method: 'POST',
       body: JSON.stringify({ video })
     })
@@ -890,7 +891,7 @@ export function suggestPerformanceCrew(performanceId, q) {
         performanceId
       }
     });
-    return fetch(`/account/api/search/crew?q=${q}`)
+    return fetch(`/api/search/crew?q=${q}`)
       .then(json => {
         dispatch({
           type: RESPONSE_SUGGEST_PERFORMANCE_CREW,
@@ -905,7 +906,7 @@ export function addPerformanceCrew(performanceId, crewId) {
     dispatch({
       type: REQUEST_ADD_PERFORMANCE_CREW
     });
-    return fetch(`/account/api/performance/${performanceId}/crew/${crewId}`, {
+    return fetch(`/api/performance/${performanceId}/crew/${crewId}`, {
       method: 'PUT',
     })
       .then(json => dispatch(gotUser(json)));
@@ -921,7 +922,7 @@ export function removePerformanceCrew(performanceId, crewId) {
         crewId
       }
     });
-    return fetch(`/account/api/performance/${performanceId}/crew/${crewId}`, {
+    return fetch(`/api/performance/${performanceId}/crew/${crewId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -937,7 +938,7 @@ export function removePerformanceCategory(performanceId, categoryId) {
         categoryId
       }
     });
-    return fetch(`/account/api/performance/${performanceId}/category/${categoryId}`, {
+    return fetch(`/api/performance/${performanceId}/category/${categoryId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -952,7 +953,7 @@ export function suggestPerformancePerformer(performanceId, q) {
         performanceId
       }
     });
-    return fetch(`/account/api/search/user?q=${q}`)
+    return fetch(`/api/search/user?q=${q}`)
       .then(json => {
         dispatch({
           type: RESPONSE_SUGGEST_PERFORMANCE_PERFORMER,
@@ -967,7 +968,7 @@ export function addPerformancePerformer(performanceId, performerId) {
     dispatch({
       type: REQUEST_ADD_PERFORMANCE_PERFORMER
     });
-    return fetch(`/account/api/performance/${performanceId}/performer/${performerId}`, {
+    return fetch(`/api/performance/${performanceId}/performer/${performerId}`, {
       method: 'PUT',
     })
       .then(json => dispatch(gotUser(json)));
@@ -983,7 +984,7 @@ export function removePerformancePerformer(performanceId, performerId) {
         performerId
       }
     });
-    return fetch(`/account/api/performance/${performanceId}/performer/${performerId}`, {
+    return fetch(`/api/performance/${performanceId}/performer/${performerId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -1036,7 +1037,7 @@ export function addUserProfileImage(dispatch) {
         user: id
       }
     });
-    return fetch(`/account/api/user/${id}/image/profile`, {
+    return fetch(`/api/user/${id}/image/profile`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -1052,7 +1053,7 @@ export function addUserTeaserImage(dispatch) {
         user: id
       }
     });
-    return fetch(`/account/api/user/${id}/image/teaser`, {
+    return fetch(`/api/user/${id}/image/teaser`, {
       method: 'POST',
       body: wrapInFormData(file)
     }, false)
@@ -1070,7 +1071,7 @@ export function userEmailMakePrimary(dispatch) {
         email: emailId
       }
     });
-    return fetch(`/account/api/user/${userId}/email/${emailId}`, {
+    return fetch(`/api/user/${userId}/email/${emailId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1085,7 +1086,7 @@ export function userEmailMakePrivate(dispatch) {
         email: emailId
       }
     });
-    return fetch(`/account/api/user/${userId}/makeemailprivate/${emailId}`, {
+    return fetch(`/api/user/${userId}/makeemailprivate/${emailId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1100,7 +1101,7 @@ export function userEmailMakePublic(dispatch) {
         email: emailId
       }
     });
-    return fetch(`/account/api/user/${userId}/makeemailpublic/${emailId}`, {
+    return fetch(`/api/user/${userId}/makeemailpublic/${emailId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1115,7 +1116,7 @@ export function userEmailConfirm(dispatch) {
         email: emailId
       }
     });
-    return fetch(`/account/api/user/${userId}/emailconfirm/${emailId}`, {
+    return fetch(`/api/user/${userId}/emailconfirm/${emailId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1131,7 +1132,7 @@ export function userEmailDelete(dispatch) {
       }
     });
     return fetch(
-      `/account/api/user/${userId}/email/${emailId}`, {
+      `/api/user/${userId}/email/${emailId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));
@@ -1156,7 +1157,7 @@ export function editUser(dispatch) {
       id: data._id
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
+      `/api/user/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -1190,7 +1191,7 @@ export function editUserEmails(dispatch) {
       id: data._id
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
+      `/api/user/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -1208,7 +1209,7 @@ export function userAddressMakePrimary(dispatch) {
         address: addressId
       }
     });
-    return fetch(`/account/api/user/${userId}/address/${addressId}`, {
+    return fetch(`/api/user/${userId}/address/${addressId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1223,7 +1224,7 @@ export function userAddressMakePrivate(dispatch) {
         address: addressId
       }
     });
-    return fetch(`/account/api/user/${userId}/makeaddressprivate/${addressId}`, {
+    return fetch(`/api/user/${userId}/makeaddressprivate/${addressId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1238,7 +1239,7 @@ export function userAddressMakePublic(dispatch) {
         address: addressId
       }
     });
-    return fetch(`/account/api/user/${userId}/makeaddresspublic/${addressId}`, {
+    return fetch(`/api/user/${userId}/makeaddresspublic/${addressId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1254,7 +1255,7 @@ export function userAddressDelete(dispatch) {
       }
     });
     return fetch(
-      `/account/api/user/${userId}/address/${addressId}`, {
+      `/api/user/${userId}/address/${addressId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));
@@ -1271,7 +1272,7 @@ export function addPlace(dispatch) {
       }
     });
     return fetch(
-      '/account/api/user/place', {
+      '/api/user/place', {
         method: 'POST',
         body: JSON.stringify({ id, location })
       })
@@ -1335,7 +1336,7 @@ export function editUserAddresses(dispatch) {
       id: data._id
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
+      `/api/user/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -1352,7 +1353,7 @@ export function editUserAddresses(dispatch) {
       id: data._id
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
+      `/api/user/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -1373,7 +1374,7 @@ export function userAboutEdit(dispatch) {
       }
     });
     return fetch(
-      `/account/api/user/${userId}/about/${aboutlanguage}`, {
+      `/api/user/${userId}/about/${aboutlanguage}`, {
         method: 'PUT'
       }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1393,7 +1394,7 @@ export function userAboutDelete(dispatch) {
       }
     });
     return fetch(
-      `/account/api/user/${userId}/about/${aboutlanguage}`, {
+      `/api/user/${userId}/about/${aboutlanguage}`, {
         method: 'DELETE'
       }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1407,7 +1408,7 @@ export function editUserImages(dispatch) {
       id: data._id
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
+      `/api/user/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -1425,7 +1426,7 @@ export function editUserLinks(dispatch) {
       id: data._id
     });
     return fetch(
-      `/account/api/user/${data._id}`, {
+      `/api/user/${data._id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
@@ -1445,7 +1446,7 @@ export function changeLanguage(dispatch) {
       }
     });
     return fetch(
-      `/account/api/user/${userid}/language/${language}`, {
+      `/api/user/${userid}/language/${language}`, {
         method: 'PUT'
       }).then(json => dispatch(gotUser(json)));
   };
@@ -1453,7 +1454,7 @@ export function changeLanguage(dispatch) {
 // linktypes
 export function fetchLinkTypes(dispatch) {
   return () => {
-    return fetch('/account/api/linktypes')
+    return fetch('/api/linktypes')
       .then(json => (
         dispatch({
           type: RESPONSE_LINKTYPES,
@@ -1467,7 +1468,7 @@ export function fetchLinkTypes(dispatch) {
 // countries
 export function fetchCountries(dispatch) {
   return () => {
-    return fetch('/account/api/countries')
+    return fetch('/api/public/countries')
       .then(json => (
         dispatch({
           type: RESPONSE_COUNTRIES,
@@ -1490,7 +1491,7 @@ export function addEventVenue(dispatch) {
     });
     //console.log('addEventVenue, event:' + id + ' location:' + JSON.stringify(location) );
     return fetch(
-      '/account/api/event/venue', {
+      '/api/event/venue', {
         method: 'POST',
         body: JSON.stringify({ id, location })
       })
@@ -1508,7 +1509,7 @@ export function removeEventVenue(dispatch) {
       }
     });
     return fetch(
-      `/account/api/event/${eventId}/venue/${venueId}`, {
+      `/api/event/${eventId}/venue/${venueId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));
@@ -1527,7 +1528,7 @@ export function userLinkAdd(dispatch) {
       }
     });
     return fetch(
-      '/account/api/user/link', {
+      '/api/user/link', {
         method: 'POST',
         body: JSON.stringify({ id, link })
       })
@@ -1544,7 +1545,7 @@ export function userLinkEdit(dispatch) {
         link: linkId
       }
     });
-    return fetch(`/account/api/user/${userId}/link/${linkId}`, {
+    return fetch(`/api/user/${userId}/link/${linkId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1560,7 +1561,7 @@ export function userLinkMakePrimary(dispatch) {
         link: linkId
       }
     });
-    return fetch(`/account/api/user/${userId}/link/${linkId}`, {
+    return fetch(`/api/user/${userId}/link/${linkId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1575,7 +1576,7 @@ export function userLinkMakePrivate(dispatch) {
         link: linkId
       }
     });
-    return fetch(`/account/api/user/${userId}/makelinkprivate/${linkId}`, {
+    return fetch(`/api/user/${userId}/makelinkprivate/${linkId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1590,7 +1591,7 @@ export function userLinkMakePublic(dispatch) {
         link: linkId
       }
     });
-    return fetch(`/account/api/user/${userId}/makelinkpublic/${linkId}`, {
+    return fetch(`/api/user/${userId}/makelinkpublic/${linkId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1605,7 +1606,7 @@ export function userLinkConfirm(dispatch) {
         link: linkId
       }
     });
-    return fetch(`/account/api/user/${userId}/linkconfirm/${linkId}`, {
+    return fetch(`/api/user/${userId}/linkconfirm/${linkId}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1622,7 +1623,7 @@ export function userLinkDelete(dispatch) {
       }
     });
     return fetch(
-      `/account/api/user/${userId}/link/${linkId}`, {
+      `/api/user/${userId}/link/${linkId}`, {
         method: 'DELETE'
       })
       .then(json => dispatch(gotUser(json)));

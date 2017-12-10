@@ -21,7 +21,7 @@
 	"imageDrop": "Glissez et déposez un fichier image ou cliquez sur cette zone...",
 	"imageUploading": "Chargement en cours",
 	"private": "Privé",
-	"stagename.placeholder": "Saisir un nom de scène",
+	"username.placeholder": "Saisir un nom de scène",
 	"email.placeholder": "email@domaine.fr",
 	"primary": "Principal",
 	"public": "Public",
@@ -51,7 +51,7 @@
 	"images": "Images",
 	"change": "Changer",
 	"url.change.disclaimer": "Changer son url peut avoir d'importantes répercussions!",
-	"currentstagename": "Nom de scène courant",
+	"currentusername": "Nom de scène courant",
 	"teaserImage": "Image de couverture",
 	"birthday": "Date de naissance",
 	"citizenship": "Nationalité",
@@ -186,7 +186,7 @@
 	"Use at least eight characters": "8 caractères minimum",
 	"Forgot your password?": "Mot de passe oublié?",
 	"Email %s not found.": "Email %s non trouvé.",
-	"stagename": "Nom d'artiste",
+	"username": "Nom d'artiste",
 	"confirmPassword": "Confirmer le mot de passe",
 	"confirm": "Confirmer",
 	"edit": "Modifier",
@@ -228,7 +228,6 @@
 	"Sign up": "Inscription",
 	"currentPassword": "Mot de passe actuel",
 	"Password": "Mot de passe",
-	"Stagename": "Nom d'artiste",
 	"Confirm Password": "Confirmer le mot de passe",
 	"addUrl": "Ajouter/modifier une url",
 	"url": "Url",
@@ -243,5 +242,6 @@
 	"Schedule": "Programme",
 	"Organizers": "Organisateurs",
 	"editFullAddress": "Saisir votre adresse complète dans la section privée",
-	"Email confirmed": "Email confirmé"
+	"Email confirmed": "Email confirmé",
+	"Invalid email or password.": "Invalid email or password."
 }

@@ -64,7 +64,7 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       <span>
-        {`${performer.stagename} `}
+        {`${performer.username} `}
         {(performer._id === me) ?
           <i className="badge badge-default badge-pill">{meLabel}</i>
           : null
@@ -474,7 +474,7 @@ let PerformanceForm = props => {
                 className="list-group-item list-group-item-action"
                 onClick={addPerformer(c.id)}
               >
-                {c.stagename} ({c.name})
+                {c.username} ({c.name})
                 </button>
             ))
             }
