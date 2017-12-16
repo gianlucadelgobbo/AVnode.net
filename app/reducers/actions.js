@@ -110,7 +110,7 @@ const fetch = (path, options = {}, json = true) => {
       'Content-Type': 'application/json'
     };
   }
-  return isomorphicFetch(`${process.env.API}${path}`, opts)
+  return isomorphicFetch(`http://localhost:3001/api/${path}`, opts)
     .then(response => response.json());
 };
 
@@ -1468,7 +1468,7 @@ export function fetchLinkTypes(dispatch) {
 // countries
 export function fetchCountries(dispatch) {
   return () => {
-    return fetch('/api/public/countries')
+    return fetch('countries')
       .then(json => (
         dispatch({
           type: RESPONSE_COUNTRIES,
