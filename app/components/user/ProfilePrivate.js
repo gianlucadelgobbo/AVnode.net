@@ -60,6 +60,12 @@ const ProfilePrivate = ({
             type="hidden"
           />
           <fieldset className="form-group">
+            <p>( 
+              <FormattedMessage
+                id="username"
+                defaultMessage="Username"
+            /> : {user.username})
+            </p>
             <legend>
               <FormattedMessage
                 id="myAccountPrivateData"
