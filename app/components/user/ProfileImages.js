@@ -40,7 +40,18 @@ const ProfileImagesForm = ({
                                 defaultMessage="Images"
                             />
                         </legend>
-
+                        {user.file ? 
+                            <div className="form-group">
+                                <label>Thumbnail</label><p></p>
+                                <img
+                                className="img-small mb-3"
+                                src={`${user.squareThumbnailUrl}`}       
+                                alt={`image of ${user.stagename}`}
+                                />
+                            </div>
+                            : 
+                            null
+                        }
                         <div className="form-group">
                             <label htmlFor="profileImage">
                                 <FormattedMessage

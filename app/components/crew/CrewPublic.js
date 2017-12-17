@@ -39,9 +39,9 @@ let CrewForm = props => {
                     />
 
                     <div className="form-group">
-                        <label htmlFor="name">
+                        <label htmlFor="stagename">
                             <FormattedMessage
-                                id="name"
+                                id="stagename"
                                 defaultMessage="Name"
                             />
                         </label>
@@ -54,13 +54,18 @@ let CrewForm = props => {
                         </span>
                         <Field
                             className="form-control form-control-lg"
-                            name="name"
+                            name="stagename"
                             component="input"
                             type="text"
-                            value={props.name}
+                            value={props.stagename}
                         />
                     </div>
-
+                    <p>( 
+                      <FormattedMessage
+                        id="username"
+                        defaultMessage="Username"
+                       /> : {props.username} slug : {props.slug})
+                    </p>
                     <Abouts
                         current={crew}
                         intl={intl}
