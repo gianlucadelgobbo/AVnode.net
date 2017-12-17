@@ -110,7 +110,7 @@ const fetch = (path, options = {}, json = true) => {
       'Content-Type': 'application/json'
     };
   }
-  return isomorphicFetch(`http://localhost:3001/api/${path}`, opts)
+  return isomorphicFetch(path, opts)
     .then(response => response.json());
 };
 
@@ -140,7 +140,7 @@ export function gotUser(json) {
 
 export function fetchUser() {
   return dispatch => {
-    return fetch('/api/user')
+    return fetch('/account/api/user')
       .then(json => dispatch(gotUser(json)));
   };
 }
@@ -1468,7 +1468,7 @@ export function fetchLinkTypes(dispatch) {
 // countries
 export function fetchCountries(dispatch) {
   return () => {
-    return fetch('countries')
+    return fetch('/account/api/countries')
       .then(json => (
         dispatch({
           type: RESPONSE_COUNTRIES,
