@@ -35,7 +35,7 @@ const Member = injectIntl(({ member, me, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       <span>
-        {`${member.username}`}
+        {`${member.stagename}`}
         {(member._id === me) ?
           <i className="badge badge-default badge-pill">{meLabel}</i>
           : null
@@ -246,7 +246,7 @@ let CrewForm = props => {
                 className="list-group-item list-group-item-action"
                 onClick={addMember(props._id)(m)}
               >
-                {m.username} ({m.name})
+                {m.stagename} ({m.name})
                 </button>
             ))
             }

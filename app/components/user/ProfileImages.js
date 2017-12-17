@@ -53,7 +53,7 @@ const ProfileImagesForm = ({
                                     <img
                                         className="img-thumbnail mb-3"
                                         src={user.image.publicUrl}
-                                        alt={`image of ${user.username}`}
+                                        alt={`image of ${user.stagename}`}
                                     />
                                 </div> :
                                 null
@@ -76,7 +76,7 @@ const ProfileImagesForm = ({
                                     <img
                                         className="img-thumbnail mb-3"
                                         src={user.teaserImage.publicUrl}
-                                        alt={`image of ${user.username}`}
+                                        alt={`image of ${user.stagename}`}
                                     />
                                 </div> :
                                 null

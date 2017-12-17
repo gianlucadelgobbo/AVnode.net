@@ -1,11 +1,14 @@
 extends layout
 
 block content
-  form(method='put')
+  form(method='post')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       label(for='username')=__('username')
       input.form-control(type='text', name='username', id='username', placeholder=__('username'), autocomplete='off', autofocus, required)
+    .form-group
+      label(for='stagename')=__('stagename')
+      input.form-control(type='text', name='stagename', id='stagename', placeholder=__('stagename'), autocomplete='off', autofocus, required)
     .form-group
       label(for='name')=__('name')
       input.form-control(type='text', name='name', id='name', placeholder=__('name'), autocomplete='off', autofocus, required)

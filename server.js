@@ -8,7 +8,6 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
-const cookiesMiddleware = require('universal-cookie-express');
 
 // Require mongoose models once!
 require('./lib/models');
@@ -49,13 +48,7 @@ app.use(session({
     autoReconnect: true
   })
 }));
-// cookies
-app
-.use(cookiesMiddleware())
-.use(function(req, res) {
-  // get the user cookies using universal-cookie
-  req.universalCookies.get('avnode-token')
-});
+
 // FIXME
 // This blocks mocha testing, so we disable it
 // in this context…

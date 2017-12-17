@@ -25,13 +25,13 @@ const Member = injectIntl(({ member, me, onDelete, intl }) => {
       <img
         className="img-small mb-3"
         src={`${member.imageUrl}`}       
-        alt={`image of ${member.username}`}
+        alt={`image of ${member.stagename}`}
       />
       : 
       null
       }
       <span>
-        {`${member.username}`}
+        {`${member.stagename}`}
         {(member._id === me) ?
           <i className="badge badge-default badge-pill">{meLabel}</i>
           : null
@@ -155,7 +155,7 @@ let CrewMembersForm = props => {
                   className="list-group-item list-group-item-action"
                   onClick={addMember(props._id)(m)}
                 >
-                  {m.username} ({m.name})
+                  {m.stagename} ({m.name})
                       </button>
               ))
               }

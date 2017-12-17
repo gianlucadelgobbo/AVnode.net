@@ -66,13 +66,13 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
                 <img
                     className="img-small mb-3"
                     src={`${performer.imageUrl}`}
-                    alt={`image of ${performance.username}`}
+                    alt={`image of ${performance.stagename}`}
                 />
                 :
                 null
             }
             <span>
-                {`${performer.username} `}
+                {`${performer.stagename} `}
                 {(performer._id === me) ?
                     <i className="badge badge-default badge-pill">{meLabel}</i>
                     : null

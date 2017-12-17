@@ -42,7 +42,7 @@ block content
                 )
               .card-block
                 h6.text-muted.card-title=__('Performance')
-                h5.card-subtitle.mb-3=performance.username
+                h5.card-subtitle.mb-3=performance.stagename
                 a.btn.btn-primary(href=performance.publicUrl)=__('More')
 
       if event.performances.length > 0
@@ -59,7 +59,7 @@ block content
                     )
                   .card-block
                     h6.text-muted.card-title=__('Performer')
-                    h5.card-subtitle.mb-3=performer.username
+                    h5.card-subtitle.mb-3=performer.stagename
                     a.btn.btn-primary(href=performer.publicUrl)=__('More')
 
     .col-lg-4
@@ -95,7 +95,7 @@ block content
                 alt=user.name
               )
             .card-block
-              h6.text-muted.card-title=user.username
+              h6.text-muted.card-title=user.stagename
               h5.card-subtitle.mb-3=user.name
               a.btn.btn-primary(href=user.publicUrl)=__('More')
 
