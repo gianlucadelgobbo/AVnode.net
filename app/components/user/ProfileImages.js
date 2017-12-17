@@ -42,7 +42,8 @@ const ProfileImagesForm = ({
                         </legend>
                         {user.file ? 
                             <div className="form-group">
-                                <label>Thumbnail</label><p></p>
+                                <label>Thumbnail</label>
+                                <p></p>
                                 <img
                                 className="img-small mb-3"
                                 src={`${user.squareThumbnailUrl}`}       

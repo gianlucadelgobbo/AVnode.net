@@ -6,6 +6,14 @@ import { deleteCrew } from '../../reducers/actions';
 const CrewShow = ({ crew, dispatch }) => {
   return (
     <li className="list-group-item justify-content-between">
+      {crew.file ?
+        <img
+          className="img-small mb-3"
+          src={`${crew.squareThumbnailUrl}`}
+          alt={`image of ${crew.stagename}`}
+        />
+        :
+        null}
       {crew.stagename} ({crew.slug})
       <span>
         {crew.ajaxInProgress === true ?
