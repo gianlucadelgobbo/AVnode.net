@@ -490,31 +490,47 @@ export function deleteCrew(id) {
   };
 }
 
-export function editCrew(data) {
-  // about, verify unique
-  if (data.about) {
-    let aboutFound = false;
-    // init if first about
-    if (!data.abouts) data.abouts = [];
-    // check existing abouts
-    data.abouts.map((a) => {
-      if (a.lang === data.aboutlanguage) {
-        // about in the form already exists in abouts
-        aboutFound = true;
-        // update abouttext
-        a.abouttext = data.about;
-      }
-    });
-    // in case of new about, add it to the abouts
-    if (!aboutFound) {
-      if (!data.aboutlanguage) data.aboutlanguage = 'en';
-      data.abouts.push({
-        lang: data.aboutlanguage,
-        abouttext: data.about
+export function editCrew(dispatch) {
+  return data => {
+    console.log('_______________ACTION editCrew __________________________________');
+    console.log('editCrew data._id: ' + JSON.stringify(data._id));
+  /* if (data._id) {
+    // about, verify unique
+    if (data.about) {
+      let aboutFound = false;
+      // init if first about
+      if (!data.abouts) data.abouts = [];
+      // check existing abouts
+      data.abouts.map((a) => {
+        if (a.lang === data.aboutlanguage) {
+          // about in the form already exists in abouts
+          aboutFound = true;
+          // update abouttext
+          a.abouttext = data.about;
+        }
       });
+      // in case of new about, add it to the abouts
+      if (!aboutFound) {
+        if (!data.aboutlanguage) data.aboutlanguage = 'en';
+        data.abouts.push({
+          lang: data.aboutlanguage,
+          abouttext: data.about
+        });
+      }
     }
-  }
-  return dispatch => {
+    return dispatch => {
+      dispatch({
+        type: REQUEST_EDIT_CREW,
+        id: data._id
+      });
+      return fetch(
+        `/account/api/crew/${data._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(data)
+        })
+        .then(json => dispatch(gotUser(json)));
+    };
+  } */
     dispatch({
       type: REQUEST_EDIT_CREW,
       id: data._id
@@ -1144,16 +1160,9 @@ export function userEmailDelete(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
-    let addressFound = false;
     let str = JSON.stringify(data);
     console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data length: ' + str.length);
-    //console.log('editUser data: ' + str);
-    console.log('editUser data linkWeb: ' + data.linkWeb);
-    //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
-    console.log('editUserAddresses data postal_code: ' + data.postal_code);
-    console.log('editUserAddresses data locality: ' + data.locality);
-    console.log('editUserAddresses data country: ' + data.country);
   
     dispatch({
       type: REQUEST_EDIT_USER,
