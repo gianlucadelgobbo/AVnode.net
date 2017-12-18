@@ -15,7 +15,7 @@ import {
 } from '../../reducers/actions';
 
 let CrewForm = props => {
-  const { handleSubmit, aboutDelete, crew, intl } = props;
+  const { handleSubmit, editCrew, aboutDelete, crew, intl } = props;
 
     /*const onCrewAboutDelete = (crewId) => (about) => (e) => {
         return dispatch(crewAboutDelete(crewId, about.lang));
@@ -94,7 +94,8 @@ const CrewPublic = props => {
   console.log('CrewPublic props');
   const onSubmit = (props, dispatch) => {
     console.log('CrewPublic onSubmit');
-    dispatch(editCrew(props));
+    //dispatch(editCrew(props));
+    //editCrew(dispatch);
   };
   const onSubmitSuccess = () => {
     console.log('CrewPublic onSubmitSuccess');
