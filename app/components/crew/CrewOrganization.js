@@ -23,7 +23,7 @@ import {
 } from '../../reducers/actions';
 
 let CrewOrganizationForm = props => {
-    const { handleSubmit, dispatch, crew, user, intl } = props;
+    const { handleSubmit, dispatch, editCrew, crew, user, intl } = props;
 
     const onLinkEdit = (link) => (e) => {
         e.preventDefault();
@@ -44,7 +44,7 @@ let CrewOrganizationForm = props => {
                 </Match>
             </div>
             <Layout>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(editCrew)}>
                     <Field
                         name="_id"
                         component="input"
@@ -1080,7 +1080,8 @@ CrewOrganizationForm = injectIntl(reduxForm({ form: 'crewOrganization' })(CrewOr
 
 const CrewOrganization = props => {
     const onSubmit = (props, dispatch) => {
-        dispatch(editCrew(props));
+        //dispatch(editCrew(props));
+        //editCrew(dispatch);
     };
     const onSubmitSuccess = () => {
         //route('/account/crews');
@@ -1106,5 +1107,9 @@ const mapStateToProps = (state, props) => {
     };
 };
 
-export default connect(mapStateToProps)(CrewOrganization);
+const mapDispatchToProps = (dispatch) => ({
+    editCrew: dispatch(editCrew)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CrewOrganization);
 

@@ -31,7 +31,7 @@ let CrewForm = props => {
                 </Match>
             </div>
             <Layout>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(editCrew)}>
                     <Field
                         name="_id"
                         component="input"
@@ -121,7 +121,8 @@ const mapStateToProps = (state, props) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  aboutDelete: dispatch(crewAboutDelete)
+  aboutDelete: dispatch(crewAboutDelete),
+  editCrew: dispatch(editCrew)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrewPublic);
