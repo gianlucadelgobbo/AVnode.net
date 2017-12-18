@@ -1,3 +1,5 @@
+// Usage: node indexer.js --all 
+// not tested: node indexer.js --all [crews, users, events, performances]
 const _ = require('lodash');
 const async = require('async');
 const args = require('minimist')(process.argv.slice(2));
@@ -6,10 +8,10 @@ const MongoClient = require('mongodb').MongoClient;
 const es = require('./lib/plugins/elasticsearch').getClient();
 const INDEX = require('./lib/plugins/elasticsearch').INDEX;
 const indexHelper = {
-  crews: require('./lib/plugins/elasticsearch/Crew').cleanForIndex,
+  // crews: require('./lib/plugins/elasticsearch/Crew').cleanForIndex,
   users: require('./lib/plugins/elasticsearch/User').cleanForIndex,
   events: require('./lib/plugins/elasticsearch/Event').cleanForIndex,
-  addresses: require('./lib/plugins/elasticsearch/Address').cleanForIndex,
+  //addresses: require('./lib/plugins/elasticsearch/Address').cleanForIndex,
   performances: require('./lib/plugins/elasticsearch/Performance').cleanForIndex
 };
 // BL why was plural, should be crew,etc as seen in the es files?
@@ -73,7 +75,7 @@ const reindex = (db, types, done) => {
 
 const connect = (next) => {
   console.log('Establish connection to ' + config.MONGODB_URI);
-  MongoClient.connect(config.MONGODB_URI, (err, db) => {
+  MongoClient.connect('mongodb://127.0.0.1:27017/avnode_bruce', (err, db) => {
     if (err) {
       throw err;
     }

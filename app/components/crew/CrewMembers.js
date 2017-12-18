@@ -155,7 +155,7 @@ let CrewMembersForm = props => {
                   className="list-group-item list-group-item-action"
                   onClick={addMember(props._id)(m)}
                 >
-                  {m.stagename} ({m.name})
+                  {m.stagename} ({m.slug})
                       </button>
               ))
               }
