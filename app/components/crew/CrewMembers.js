@@ -182,9 +182,20 @@ let CrewMembersForm = props => {
 CrewMembersForm = injectIntl(reduxForm({ form: 'crewMembers' })(CrewMembersForm));
 
 const CrewMembers = props => {
+  const onSubmit = (props, dispatch) => {
+    console.log('CrewPublic onSubmit');
+    //dispatch(editCrew(props));
+    //editCrew(dispatch);
+  };
+  const onSubmitSuccess = () => {
+    console.log('CrewPublic onSubmitSuccess');
+        //route('/account/crews');
+  };
   return (
     <CrewMembersForm
       initialValues={props.crew}
+      onSubmit={onSubmit}
+      onSubmitSuccess={onSubmitSuccess}
       {...props}
     />
   );
