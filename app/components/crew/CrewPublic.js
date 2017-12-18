@@ -4,36 +4,22 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
-import About from '../about/About';
-import Languages from '../language/Languages';
+import Abouts from '../about/Abouts';
+// import Languages from '../language/Languages';
 
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
     editCrew,
-    crewAboutEdit,
-    crewAboutDelete,
-    crewLinkDelete,
-    crewLinkEdit
+    crewAboutDelete
 } from '../../reducers/actions';
 
 let CrewForm = props => {
-  const { handleSubmit, dispatch, crew, user, intl } = props;
+  const { handleSubmit, editCrew, aboutDelete, crew, intl } = props;
 
-  const onCrewAboutEdit = (crewId) => (about) => (e) => {
-    return dispatch(crewAboutEdit(crewId, about.lang));
-  };
-  const onCrewAboutDelete = (crewId) => (about) => (e) => {
-    return dispatch(crewAboutDelete(crewId, about.lang));
-  };
-  const onLinkEdit = (link) => (e) => {
-    e.preventDefault();
-    return crewLinkEdit(props._id, link._id);
-  };
-  const onLinkDelete = (link) => (e) => {
-    e.preventDefault();
-    return crewLinkDelete(props._id, link._id);
-  };
+    /*const onCrewAboutDelete = (crewId) => (about) => (e) => {
+        return dispatch(crewAboutDelete(crewId, about.lang));
+    };*/
 
   if (!props.org) props.org = {};
 
@@ -45,7 +31,7 @@ let CrewForm = props => {
                 </Match>
             </div>
             <Layout>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(editCrew)}>
                     <Field
                         name="_id"
                         component="input"
@@ -53,9 +39,9 @@ let CrewForm = props => {
                     />
 
                     <div className="form-group">
-                        <label htmlFor="name">
+                        <label htmlFor="stagename">
                             <FormattedMessage
-                                id="name"
+                                id="stagename"
                                 defaultMessage="Name"
                             />
                         </label>
@@ -68,89 +54,23 @@ let CrewForm = props => {
                         </span>
                         <Field
                             className="form-control form-control-lg"
-                            name="name"
+                            name="stagename"
                             component="input"
                             type="text"
-                            value={props.name}
+                            value={props.stagename}
                         />
                     </div>
-
-                    <div className="row">
-                        <div className="col-md-9 form-group">
-                            <label htmlFor="about">
-                                <FormattedMessage
-                                    id="addabout"
-                                    defaultMessage="About"
-                                />
-                            </label>
-                            &nbsp;
-              <span class="badge badge-success">
-                                <FormattedMessage
-                                    id="public"
-                                    defaultMessage='Public'
-                                />
-                            </span>
-                            <div className="input-group">
-                                <Field
-                                    className="form-control"
-                                    name="about"
-                                    component="textarea"
-                                    rows="4"
-                                    placeholder="About the crew"
-                                    value={props.about}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-3 form-group">
-                            <label htmlFor="aboutlanguage">
-                                <FormattedMessage
-                                    id="language"
-                                    defaultMessage="Language"
-                                />
-                            </label>
-                            {Languages ?
-                                <Field
-                                    className="form-control custom-select"
-                                    name="aboutlanguage"
-                                    component="select"
-                                    value={props.aboutlanguage}
-                                >
-                                    <option value="en">
-                                        <FormattedMessage
-                                            id="language.en"
-                                            defaultMessage="English"
-                                        />
-                                    </option>
-                                    {Languages.map((c) => (
-                                        <option value={c.code}>{c.language}</option>
-                                    ))
-                                    }
-                                    { /*  */}
-                                </Field> :
-                                <p>Loading languages…</p>
-                            }
-                        </div>
-                    </div>
-
-                    <label>
-                        <FormattedMessage
-                            id="manageabout"
-                            defaultMessage="Manage your About texts"
-                        />
-                    </label>
-                    <ul className="list-group mt-2">
-                        {
-                            crew && crew.abouts && crew.abouts.map((a) => (
-                                <About
-                                    about={a}
-                                    onEdit={onCrewAboutEdit(crew._id)(a)}
-                                    onDelete={onCrewAboutDelete(crew._id)(a)}
-                                    intl={intl}
-                                />
-                            ))
-                        }
-                    </ul>
-
+                    <p>( 
+                      <FormattedMessage
+                        id="username"
+                        defaultMessage="Username"
+                       /> : {props.username} slug : {props.slug})
+                    </p>
+                    <Abouts
+                        current={crew}
+                        intl={intl}
+                        aboutDelete={aboutDelete}
+                    />
                     <div className="form-group">
                         <button
                             className="btn btn-primary"
@@ -171,10 +91,14 @@ let CrewForm = props => {
 CrewForm = injectIntl(reduxForm({ form: 'crewPublic' })(CrewForm));
 
 const CrewPublic = props => {
+  console.log('CrewPublic props');
   const onSubmit = (props, dispatch) => {
-    dispatch(editCrew(props));
+    console.log('CrewPublic onSubmit');
+    //dispatch(editCrew(props));
+    //editCrew(dispatch);
   };
   const onSubmitSuccess = () => {
+    console.log('CrewPublic onSubmitSuccess');
         //route('/account/crews');
   };
   return (
@@ -194,9 +118,13 @@ const mapStateToProps = (state, props) => {
   console.log('--> CrewPublic state.user.crewId: ' + JSON.stringify(state.user.crewId));
   return {
     crew: (state.user.crews.find(c => { return c._id === props._id; })),
-    user: state.user,
+    user: state.user
   };
 };
+const mapDispatchToProps = (dispatch) => ({
+  aboutDelete: dispatch(crewAboutDelete),
+  editCrew: dispatch(editCrew)
+});
 
-export default connect(mapStateToProps)(CrewPublic);
+export default connect(mapStateToProps, mapDispatchToProps)(CrewPublic);
 

@@ -4,6 +4,7 @@ import {
   fetchCountries,
   userLinkDelete,
   //userLinkEdit,
+  userAddressDelete,    
   editUser
 } from '../../reducers/actions';
 import ProfilePrivate from './ProfilePrivate';
@@ -16,6 +17,7 @@ const mapStateToProps = ({user}) => ({
 const mapDispatchToProps = (dispatch) => ({
   userLinkDelete: dispatch(userLinkDelete),
   //userLinkEdit: dispatch(userLinkEdit),
+  userAddressDelete: dispatch(userAddressDelete),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });

@@ -3,8 +3,8 @@ import {
   fetchCountries,
   userLinkAdd,
   userLinkDelete,
-  editUserAbouts,
-  userAboutEdit,
+  //editUserAbouts,
+  //userAboutEdit,
   userAboutDelete,
   userAddressDelete,  
   editUser
@@ -20,9 +20,9 @@ const mapStateToProps = ({user}) => ({
 const mapDispatchToProps = (dispatch) => ({
   userLinkAdd: dispatch(userLinkAdd),
   userLinkDelete: dispatch(userLinkDelete),
-  editUserAbouts: dispatch(editUserAbouts),
-  userAboutEdit: dispatch(userAboutEdit),
-  userAboutDelete: dispatch(userAboutDelete),
+  //editUserAbouts: dispatch(editUserAbouts),
+  //userAboutEdit: dispatch(userAboutEdit),
+  aboutDelete: dispatch(userAboutDelete),
   userAddressDelete: dispatch(userAddressDelete),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
