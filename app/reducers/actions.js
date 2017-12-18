@@ -100,6 +100,7 @@ export const REQUEST_PERFORMANCE_DELETEABOUT = 'REQUEST_PERFORMANCE_DELETEABOUT'
 // Wrap fetch with some default settings, always
 // return parsed JSON…
 const fetch = (path, options = {}, json = true) => {
+  console.log('fetch, path:' + path);
   const opts = Object.assign({}, {
     credentials: 'same-origin'
   }, options);
@@ -399,7 +400,7 @@ export function suggestEventOrganizingCrew(eventId, q) {
       });
   };
 }
-export function crewAboutEdit(id, aboutlanguage) {
+/*export function crewAboutEdit(id, aboutlanguage) {
   return dispatch => {
     console.log('_______________ACTION crewAboutEdit __________________________________');
     console.log('crewAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
@@ -415,19 +416,19 @@ export function crewAboutEdit(id, aboutlanguage) {
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
-export function crewAboutDelete(id, aboutlanguage) {
-  return dispatch => {
+}*/
+export function crewAboutDelete(dispatch) {
+  return (crewId, aboutlanguage) => {
     console.log('_______________ACTION crewAboutDelete __________________________________');
     console.log('crewAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_CREW_DELETEABOUT,
       payload: {
-        crew: id,
+        crew: crewId,
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
+    return fetch(`/account/api/crew/${crewId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -489,31 +490,47 @@ export function deleteCrew(id) {
   };
 }
 
-export function editCrew(data) {
-  // about, verify unique
-  if (data.about) {
-    let aboutFound = false;
-    // init if first about
-    if (!data.abouts) data.abouts = [];
-    // check existing abouts
-    data.abouts.map((a) => {
-      if (a.lang === data.aboutlanguage) {
-        // about in the form already exists in abouts
-        aboutFound = true;
-        // update abouttext
-        a.abouttext = data.about;
-      }
-    });
-    // in case of new about, add it to the abouts
-    if (!aboutFound) {
-      if (!data.aboutlanguage) data.aboutlanguage = 'en';
-      data.abouts.push({
-        lang: data.aboutlanguage,
-        abouttext: data.about
+export function editCrew(dispatch) {
+  return data => {
+    console.log('_______________ACTION editCrew __________________________________');
+    console.log('editCrew data._id: ' + JSON.stringify(data._id));
+  /* if (data._id) {
+    // about, verify unique
+    if (data.about) {
+      let aboutFound = false;
+      // init if first about
+      if (!data.abouts) data.abouts = [];
+      // check existing abouts
+      data.abouts.map((a) => {
+        if (a.lang === data.aboutlanguage) {
+          // about in the form already exists in abouts
+          aboutFound = true;
+          // update abouttext
+          a.abouttext = data.about;
+        }
       });
+      // in case of new about, add it to the abouts
+      if (!aboutFound) {
+        if (!data.aboutlanguage) data.aboutlanguage = 'en';
+        data.abouts.push({
+          lang: data.aboutlanguage,
+          abouttext: data.about
+        });
+      }
     }
-  }
-  return dispatch => {
+    return dispatch => {
+      dispatch({
+        type: REQUEST_EDIT_CREW,
+        id: data._id
+      });
+      return fetch(
+        `/account/api/crew/${data._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(data)
+        })
+        .then(json => dispatch(gotUser(json)));
+    };
+  } */
     dispatch({
       type: REQUEST_EDIT_CREW,
       id: data._id
@@ -528,7 +545,10 @@ export function editCrew(data) {
 }
 
 export function suggestCrewMember(crewId, q) {
+  const action = `actions, suggestCrewMember(crewId: ${crewId}, q: ${q}`;
   return dispatch => {
+    console.log('_______________ACTION suggestCrewMember __________________________________');
+    console.log(`${action}, q: ${q}`);
     dispatch({
       type: REQUEST_SUGGEST_CREWMEMBER,
       payload: {
@@ -547,7 +567,7 @@ export function suggestCrewMember(crewId, q) {
 }
 
 export function addCrewMember(crewId, member) {
-  const action = `actions, addCrewMember(crewId: ${crewId}`;
+  //const action = `actions, addCrewMember(crewId: ${crewId}`;
 
   return dispatch => {
     dispatch({
@@ -755,18 +775,36 @@ export function performanceAboutEdit(id, aboutlanguage) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function performanceAboutDelete(id, aboutlanguage) {
-  return dispatch => {
+export function performanceAboutDelete(dispatch) {
+  return (perfId, aboutlanguage) => {
     console.log('_______________ACTION performanceAboutDelete __________________________________');
     console.log('performanceAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_PERFORMANCE_DELETEABOUT,
       payload: {
-        performance: id,
+        performance: perfId,
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
+    return fetch(`/account/api/performance/${perfId}/about/${aboutlanguage}`, {
+      method: 'DELETE',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function eventAboutDelete(dispatch) {
+  return (eventId, aboutlanguage) => {
+    console.log('_______________ACTION eventAboutDelete __________________________________');
+    console.log('eventAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    dispatch({
+      type: REQUEST_EVENT_DELETEABOUT,
+      payload: {
+        event: eventId,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(`/account/api/event/${eventId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1122,15 +1160,9 @@ export function userEmailDelete(dispatch) {
 
 export function editUser(dispatch) {
   return data => {
-    let addressFound = false;
     let str = JSON.stringify(data);
     console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data length: ' + str.length);
-    //console.log('editUser data: ' + str);
-    console.log('editUser data linkWeb: ' + data.linkWeb);
-    //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
-    console.log('editUserAddresses data locality: ' + data.locality);
-    console.log('editUserAddresses data country: ' + data.country);
   
     dispatch({
       type: REQUEST_EDIT_USER,
@@ -1323,7 +1355,7 @@ export function editUserAddresses(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function editUserAbouts(dispatch) {
+/*export function editUserAbouts(dispatch) {
   return data => {
     console.log('_______________ACTION editUserAbouts __________________________________');
     console.log('editUserAbouts aboutlanguage: ' + JSON.stringify(data.aboutlanguage));
@@ -1359,7 +1391,7 @@ export function userAboutEdit(dispatch) {
       }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
+}*/
 export function userAboutDelete(dispatch) {
   return (userId, aboutlanguage) => {
     console.log('_______________ACTION userAboutDelete __________________________________');

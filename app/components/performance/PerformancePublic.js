@@ -1,12 +1,11 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-// import { route } from 'preact-router';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
 import Video from '../Video';
-import About from '../about/About';
+import Abouts from '../about/Abouts';
 import Languages from '../language/Languages';
 import Category from '../category/Category';
 import Categories from '../category/Performance';
@@ -24,7 +23,6 @@ import {
     addPerformancePerformer,
     removePerformancePerformer,
 
-    performanceAboutEdit,
     performanceAboutDelete,
 
     removePerformanceCategory
@@ -101,7 +99,7 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
 });
 
 let PerformanceForm = props => {
-  const { handleSubmit, dispatch, performance, user, intl } = props;
+  const { handleSubmit, dispatch, aboutDelete, performance, intl } = props;
   const crewSuggestions = props.user._crewSuggestions || [];
 
   const findCrew = (e) => {
@@ -145,13 +143,13 @@ let PerformanceForm = props => {
       return dispatch(removePerformanceCategory(performance._id, categoryId));
     };
 
-  const onPerformanceAboutEdit = (about) => (e) => {
+  /*const onPerformanceAboutEdit = (about) => (e) => {
       return dispatch(performanceAboutEdit(performance._id, about.lang));
     };
 
   const onPerformanceAboutDelete = (about) => (e) => {
       return dispatch(performanceAboutDelete(performance._id, about.lang));
-    };
+  };*/
 
   let videoLink; // FIXME
 
@@ -186,75 +184,11 @@ let PerformanceForm = props => {
                         />
                     </div>
 
-                    <div className="row">
-                        <div className="col-md-9 form-group">
-                            <label htmlFor="about">
-                                <FormattedMessage
-                                    id="addabout"
-                                    defaultMessage="About"
-                                />
-                            </label>
-                            <div className="input-group">
-                                <Field
-                                    className="form-control"
-                                    name="about"
-                                    component="textarea"
-                                    rows="4"
-                                    placeholder="About the performance"
-                                    value={props.about}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-3 form-group">
-                            <label htmlFor="aboutlanguage">
-                                <FormattedMessage
-                                    id="language"
-                                    defaultMessage="Language"
-                                />
-                            </label>
-                            {Languages ?
-                                <Field
-                                    className="form-control custom-select"
-                                    name="aboutlanguage"
-                                    component="select"
-                                    value={props.aboutlanguage}
-                                >
-                                    <option value="en">
-                                        <FormattedMessage
-                                            id="language.en"
-                                            defaultMessage="English"
-                                        />
-                                    </option>
-                                    {Languages.map((c) => (
-                                        <option value={c.code}>{c.language}</option>
-                                    ))
-                                    }
-                                    { /*  */}
-                                </Field> :
-                                <p>Loading languages…</p>
-                            }
-                        </div>
-                    </div>
-
-                    <label>
-                        <FormattedMessage
-                            id="manageabout"
-                            defaultMessage="Manage your About texts"
-                        />
-                    </label>
-                    <ul className="list-group mt-2">
-                        {
-                            performance && performance.abouts && performance.abouts.map((a) => (
-                                <About
-                                    about={a}
-                                    onEdit={onPerformanceAboutEdit(a)}
-                                    onDelete={onPerformanceAboutDelete(a)}
-                                    intl={intl}
-                                />
-                            ))
-                        }
-                    </ul>
-
+                    <Abouts
+                        current={performance}
+                        intl={intl}
+                        aboutDelete={aboutDelete}
+                    />
                     <fieldset className="form-group">
                         <legend>
                             <FormattedMessage
@@ -449,7 +383,7 @@ let PerformanceForm = props => {
                                     className="list-group-item list-group-item-action"
                                     onClick={addPerformer(c.id)}
                                 >
-                                    {c.stagename} ({c.name})
+                                    {c.username} ({c.name})
                 </button>
                             ))
                             }
@@ -536,10 +470,13 @@ let PerformanceForm = props => {
 PerformanceForm = injectIntl(reduxForm({ form: 'performancePublic' })(PerformanceForm));
 
 const PerformancePublic = props => {
+    console.log('PerformancePublic props');
   const onSubmit = (props, dispatch) => {
+    console.log('PerformancePublic onSubmit');
       dispatch(editPerformance(props));
     };
   const onSubmitSuccess = () => {
+    console.log('PerformancePublic onSubmitSuccess');
         //route('/account/performances');
     };
   return (
@@ -555,9 +492,11 @@ const PerformancePublic = props => {
 const mapStateToProps = (state, props) => {
   return {
       performance: (state.user.performances.find(p => { return p._id === props._id; })),
-      user: state.user,
+      user: state.user
     };
 };
-
-export default connect(mapStateToProps)(PerformancePublic);
+const mapDispatchToProps = (dispatch) => ({
+    aboutDelete: dispatch(performanceAboutDelete)
+  });
+export default connect(mapStateToProps, mapDispatchToProps)(PerformancePublic);
 

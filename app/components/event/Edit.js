@@ -10,8 +10,8 @@ import Venue from '../VenueContainer';
 import Link from '../link/Link';
 import WebLinkTypes from '../link/WebLinkTypes';
 import ImageDropzone from '../ImageDropzone';
-import About from '../about/About';
-import Languages from '../language/Languages';
+import Abouts from '../about/Abouts';
+// import Languages from '../language/Languages';
 import Category from '../category/Category';
 import Categories from '../category/Event';
 
@@ -31,6 +31,8 @@ import {
   suggestEventOrganizingCrew,
   addEventOrganizingCrew,
   removeEventOrganizingCrew,
+
+  eventAboutDelete,
 
   removeEventCategory
 
@@ -221,70 +223,11 @@ let EventForm = props => {
           />
         </div>
 
-        <div className="row">
-          <div className="col-md-9 form-group">
-            <label htmlFor="about">
-              <FormattedMessage
-                id="addabout"
-                defaultMessage="About"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="about"
-                component="textarea"
-                rows="4"
-                placeholder="About the event"
-                value={props.about}
-              />
-            </div>
-          </div>
-          <div className="col-md-3 form-group">
-            <label htmlFor="aboutlanguage">
-              <FormattedMessage
-                id="language"
-                defaultMessage="Language"
-              />
-            </label>
-            {Languages ?
-              <Field
-                className="form-control custom-select"
-                name="aboutlanguage"
-                component="select"
-                value={props.aboutlanguage}
-              >
-                <option value="en">
-                  <FormattedMessage
-                    id="language.en"
-                    defaultMessage="English"
-                  />
-                </option>
-                {Languages.map((c) => (
-                  <option value={c.code}>{c.language}</option>
-                ))
-                }
-                { /*  */}
-              </Field> :
-              <p>Loading languages…</p>
-            }
-          </div>
-        </div>
-
-        <label>
-          <FormattedMessage
-            id="manageabout"
-            defaultMessage="Manage your About texts"
-          />
-        </label>
-        <ul className="list-group mt-2">
-          {
-            event && event.abouts && event.abouts.map((a) => (
-              <About about={a} />
-            ))
-          }
-        </ul>
-
+        <Abouts
+          current={event}
+          intl={intl}
+          aboutDelete={aboutDelete}
+        />
         <div className="form-check">
           <label className="form-check-label">
             <Field
@@ -360,134 +303,134 @@ let EventForm = props => {
         </div>
 
         <fieldset className="form-group">
-        <legend>
-          <FormattedMessage
-            id="categories"
-            defaultMessage="Categories"
-          />
-        </legend>
+          <legend>
+            <FormattedMessage
+              id="categories"
+              defaultMessage="Categories"
+            />
+          </legend>
 
-        <div className="row">
-          <div className="col-md-9 form-group">
-            <label htmlFor="category">
-              <FormattedMessage
-                id="addCategory"
-                defaultMessage="Add category"
-              />
-            </label>
-            {Categories ?
-              <Field
-                className="form-control custom-select"
-                name="category"
-                component="select"
-                value={props.category}
-              >
-                <option value="event">
-                  <FormattedMessage
-                    id="Please select"
-                    defaultMessage="Please select"
-                  />
-                </option>
-                {Categories.map((c) => (
-                  <option value={c.key.toLowerCase()}>{c.name}</option>
-                ))
-                }
-                { /*  */}
-              </Field> :
-              <p>Loading categories…</p>
-            }
+          <div className="row">
+            <div className="col-md-9 form-group">
+              <label htmlFor="category">
+                <FormattedMessage
+                  id="addCategory"
+                  defaultMessage="Add category"
+                />
+              </label>
+              {Categories ?
+                <Field
+                  className="form-control custom-select"
+                  name="category"
+                  component="select"
+                  value={props.category}
+                >
+                  <option value="event">
+                    <FormattedMessage
+                      id="Please select"
+                      defaultMessage="Please select"
+                    />
+                  </option>
+                  {Categories.map((c) => (
+                    <option value={c.key.toLowerCase()}>{c.name}</option>
+                  ))
+                  }
+                  { /*  */}
+                </Field> :
+                <p>Loading categories…</p>
+              }
+            </div>
           </div>
-        </div>
 
-        <label>
-          <FormattedMessage
-            id="managecategories"
-            defaultMessage="Manage your categories"
-          />
-        </label>
-        <ul className="list-group mt-2">
-          {
-            event && event.categories && event.categories.map((c) => (
-              <Category
-                category={c} 
-                onDelete={removeCategory(c._id)}
-              />
-            ))
-          }
-        </ul>
-      </fieldset>
+          <label>
+            <FormattedMessage
+              id="managecategories"
+              defaultMessage="Manage your categories"
+            />
+          </label>
+          <ul className="list-group mt-2">
+            {
+              event && event.categories && event.categories.map((c) => (
+                <Category
+                  category={c}
+                  onDelete={removeCategory(c._id)}
+                />
+              ))
+            }
+          </ul>
+        </fieldset>
 
 
         <fieldset className="form-group">
-        <legend>
-          <FormattedMessage
-            id="links"
-            defaultMessage="Links"
-          />
-        </legend>
+          <legend>
+            <FormattedMessage
+              id="links"
+              defaultMessage="Links"
+            />
+          </legend>
 
-        <div className="row">
-          <div className="col-md-9 form-group">
-            <label htmlFor="link">
-              <FormattedMessage
-                id="addlink"
-                defaultMessage="Add link"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="link"
-                component="input"
-                placeholder="https://www…"
-              />
+          <div className="row">
+            <div className="col-md-9 form-group">
+              <label htmlFor="link">
+                <FormattedMessage
+                  id="addlink"
+                  defaultMessage="Add link"
+                />
+              </label>
+              <div className="input-group">
+                <Field
+                  className="form-control"
+                  name="link"
+                  component="input"
+                  placeholder="https://www…"
+                />
+              </div>
+            </div>
+            <div className="col-md-3 form-group">
+              <label htmlFor="linkType">
+                <FormattedMessage
+                  id="linkType"
+                  defaultMessage="Link type"
+                />
+              </label>
+              {WebLinkTypes ?
+                <Field
+                  className="form-control custom-select"
+                  name="linkType"
+                  component="select"
+                  value={props.linkType}
+                >
+                  <option value="web">
+                    <FormattedMessage
+                      id="Please select"
+                      defaultMessage="Please select"
+                    />
+                  </option>
+                  {WebLinkTypes.map((c) => (
+                    <option value={c.key.toLowerCase()}>{c.name}</option>
+                  ))
+                  }
+                  { /*  */}
+                </Field> :
+                <p>Loading a link types…</p>
+              }
             </div>
           </div>
-          <div className="col-md-3 form-group">
-            <label htmlFor="linkType">
-              <FormattedMessage
-                id="linkType"
-                defaultMessage="Link type"
-              />
-            </label>
-            {WebLinkTypes ?
-              <Field
-                className="form-control custom-select"
-                name="linkType"
-                component="select"
-                value={props.linkType}
-              >
-                <option value="web">
-                  <FormattedMessage
-                    id="Please select"
-                    defaultMessage="Please select"
-                  />
-                </option>
-                {WebLinkTypes.map((c) => (
-                  <option value={c.key.toLowerCase()}>{c.name}</option>
-                ))
-                }
-                { /*  */}
-              </Field> :
-              <p>Loading a link types…</p>
-            }
-          </div>
-        </div>
 
-        <label>
-          <FormattedMessage
-            id="link"
-            defaultMessage="Manage your links"
-          />
-        </label>
-        <ul className="list-group mt-2">
-          {
-            event && event.links && event.links.map((l) => (
-              <Link link={l} />
-            ))
-          }
-        </ul>
-      </fieldset>
+          <label>
+            <FormattedMessage
+              id="link"
+              defaultMessage="Manage your links"
+            />
+          </label>
+          <ul className="list-group mt-2">
+            {
+              event && event.links && event.links.map((l) => (
+                <Link link={l} />
+              ))
+            }
+          </ul>
+        </fieldset>
 
         <div className="form-group">
           <label htmlFor="performances">
@@ -724,5 +667,7 @@ const mapStateToProps = (state, props) => {
     user: state.user
   };
 };
-
-export default connect(mapStateToProps)(EditEvent);
+const mapDispatchToProps = (dispatch) => ({
+  aboutDelete: dispatch(eventAboutDelete)
+});
+export default connect(mapStateToProps, mapDispatchToProps)(EditEvent);

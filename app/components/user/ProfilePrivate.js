@@ -3,10 +3,18 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import ProfileLinksTel from './ProfileLinksTel';
+import ProfileAddressesPrivate from './ProfileAddressesPrivate';
 import validate from './validate'
 import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';
+import Moment from 'moment'
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+
+Moment.locale('en');
+momentLocalizer()
+
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
 const ProfilePrivate = ({
@@ -16,6 +24,7 @@ const ProfilePrivate = ({
   handleSubmit,
   saveProfile,
   userLinkDelete,
+  userAddressDelete,
   fetchCountries
   }) => {
 
@@ -27,6 +36,14 @@ const ProfilePrivate = ({
   const handleChange = () => {
     console.log(user);
   }
+  
+  const renderDateTimePicker = ({ input: { onChange, value }, showTime }) =>
+  <DateTimePicker
+    onChange={onChange}
+    format="YYYY-MM-DD"
+    time={showTime}
+    value={!value ? null : new Date(value)}
+  />
 
   return (
     <div>
@@ -43,6 +60,12 @@ const ProfilePrivate = ({
             type="hidden"
           />
           <fieldset className="form-group">
+            <p>( 
+              <FormattedMessage
+                id="username"
+                defaultMessage="Username"
+            /> : {user.username})
+            </p>
             <legend>
               <FormattedMessage
                 id="myAccountPrivateData"
@@ -109,7 +132,7 @@ const ProfilePrivate = ({
               <div className="col-md-6 form-group">
                 <label htmlFor="name">
                   <FormattedMessage
-                    id="firstname"
+                    id="name"
                     defaultMessage="First name"
                   />
                 </label>
@@ -120,8 +143,8 @@ const ProfilePrivate = ({
                   type="text"
                   onChange={handleChange}
                   placeholder={intl.formatMessage({
-                    id: 'firstname.placeholder',
-                    defaultMessage: 'Name required'
+                    id: 'name.placeholder',
+                    defaultMessage: 'First name required'
                   })}
                 />
               </div>
@@ -134,6 +157,16 @@ const ProfilePrivate = ({
                     defaultMessage="Birthday"
                   />
                 </label>
+                  <Field    
+                    name="birthday"
+                    showTime={false}
+                    component={renderDateTimePicker} 
+                    placeholder={intl.formatMessage({
+                      id: 'date.placeholder',
+                      defaultMessage: 'YYYY-MM-DD'
+                    })}
+                  />
+                  {/*
                 <div className="input-group date" data-provide="datepicker-inline">
                   <div className="input-group-addon">
                     <i className="fa fa-calendar"></i>
@@ -148,9 +181,11 @@ const ProfilePrivate = ({
                       id: 'date.placeholder',
                       defaultMessage: 'YYYY-MM-DD'
                     })}
-                    value={user.birthday}
+                    
                   />
+                  
                 </div>
+                  */}
               </div>
               <div className="col-md-6 form-group">
                 <label htmlFor="citizenship">
@@ -188,6 +223,11 @@ const ProfilePrivate = ({
             user={user}
             intl={intl}
             userLinkDelete={userLinkDelete}
+          />
+          <ProfileAddressesPrivate
+            user={user}
+            intl={intl}
+            userAddressDelete={userAddressDelete}
           />
 
           <div className="form-group">
