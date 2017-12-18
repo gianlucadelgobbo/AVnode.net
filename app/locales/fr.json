@@ -43,9 +43,8 @@
 	"about.placeholder": "A propos",
 	"surname.placeholder": "Nom (requis)",
 	"surname": "Nom",
-	"firstname.placeholder": "Prénom (requis)",
-	"firstname": "Prénom",
-	"name": "Nom",
+	"name.placeholder": "Prénom (requis)",
+	"name": "Prénom",
 	"form.save": "Sauver",
 	"profileImage": "Image de profil",
 	"image": "Image",
@@ -246,5 +245,6 @@
 	"Organizers": "Organisateurs",
 	"editFullAddress": "Saisir votre adresse complète dans la section privée",
 	"Email confirmed": "Email confirmé",
-	"Invalid email or password.": "Invalid email or password."
+	"Invalid email or password.": "Invalid email or password.",
+	"name.placeholder": "name.placeholder"
 }

@@ -132,7 +132,7 @@ const ProfilePrivate = ({
               <div className="col-md-6 form-group">
                 <label htmlFor="name">
                   <FormattedMessage
-                    id="firstname"
+                    id="name"
                     defaultMessage="First name"
                   />
                 </label>
@@ -143,8 +143,8 @@ const ProfilePrivate = ({
                   type="text"
                   onChange={handleChange}
                   placeholder={intl.formatMessage({
-                    id: 'firstname.placeholder',
-                    defaultMessage: 'Name required'
+                    id: 'name.placeholder',
+                    defaultMessage: 'First name required'
                   })}
                 />
               </div>
