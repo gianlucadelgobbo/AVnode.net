@@ -11,13 +11,13 @@ import Place from '../place/PlaceContainer';
 import OrgContact from './OrgContact';
 import OrgActivity from './OrgActivity';
 
-import WebLinkTypes from '../link/WebLinkTypes';
-import LinkWeb from '../link/LinkWeb';
-import LinkSocial from '../link/LinkSocial';
+import LinksWeb from '../link/LinksWeb';
+import LinksSocial from '../link/LinksSocial';
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
-    editCrew//,    crewLinkDelete,    crewLinkEdit
+    editCrew,
+    linkDelete   
 } from '../../reducers/actions';
 
 let CrewOrganizationForm = props => {
@@ -279,137 +279,16 @@ let CrewOrganizationForm = props => {
                             </Field>
                         </div>
                     </div>
-
-                    <fieldset className="form-group">
-                        <legend>
-                            <FormattedMessage
-                                id="websites"
-                                defaultMessage="Websites"
-                            />
-                        </legend>
-                        <label htmlFor="linkWeb">
-                            <FormattedMessage
-                                id="websiteUrl"
-                                defaultMessage="Website Url"
-                            />
-                        </label>
-                        <div className="input-group">
-                            <Field
-                                className="form-control"
-                                name="linkWeb"
-                                component="input"
-                                placeholder={intl.formatMessage({
-                                    id: 'addUrl',
-                                    defaultMessage: 'Add/edit url'
-                                })}
-                                value={props.linkWeb}
-                            />
-                        </div>
-                        <label>
-                            <FormattedMessage
-                                id="manageLinksWeb"
-                                defaultMessage="Manage your Web Links"
-                            />
-                        </label>
-                        <ul className="list-group mt-2">
-                            {
-                                props && props.links && props.links.map((l) => (
-                                    l.type === 'web' ?
-                                        <LinkWeb
-                                            linkWeb={l}
-                                            //onMakePrimary={onLinkWebMakePrimary(l)}
-                                            //onEdit={onLinkEdit(l)}
-                                            //onDelete={linkDelete(l)}
-                                            intl={intl}
-                                        />
-                                        :
-                                        null
-                                ))
-                            }
-                        </ul>
-                    </fieldset>
-
-                    <fieldset className="form-group">
-                        <legend>
-                            <FormattedMessage
-                                id="socials"
-                                defaultMessage="Social channels"
-                            />
-                        </legend>
-                        <div className="row">
-                            <div className="col-md-9 form-group">
-                                <label htmlFor="linkSocial">
-                                    <FormattedMessage
-                                        id="url"
-                                        defaultMessage="Url"
-                                    />
-                                </label>
-                                <div className="input-group">
-                                    <Field
-                                        className="form-control"
-                                        name="linkSocial"
-                                        component="input"
-                                        placeholder={intl.formatMessage({
-                                            id: 'addUrl',
-                                            defaultMessage: 'Add/edit url'
-                                        })}
-                                        value={props.linkSocial}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-3 form-group">
-                                <label htmlFor="linkType">
-                                    <FormattedMessage
-                                        id="linkType"
-                                        defaultMessage="Link type"
-                                    />
-                                </label>
-                                {WebLinkTypes ?
-                                    <Field
-                                        className="form-control custom-select"
-                                        name="linkType"
-                                        component="select"
-                                        value={props.linkType}
-                                    >
-                                        <option value="ot">
-                                            <FormattedMessage
-                                                id="Please select"
-                                                defaultMessage="Please select"
-                                            />
-                                        </option>
-                                        {WebLinkTypes.map((c) => (
-                                            <option value={c.key.toLowerCase()}>{c.name}</option>
-                                        ))
-                                        }
-                                        { /*  */}
-                                    </Field> :
-                                    <p>Loading a link types…</p>
-                                }
-                            </div>
-                        </div>
-                        <label>
-                            <FormattedMessage
-                                id="manageLinksSocial"
-                                defaultMessage="Manage your Social Links"
-                            />
-                        </label>
-                        <ul className="list-group mt-2">
-                            {
-                                props && props.links && props.links.map((l) => (
-                                    l.type === 'tw' || l.type === 'fb' || l.type === 'ot' ?
-                                        <LinkSocial
-                                            linkSocial={l}
-                                            //onMakePrimary={onLinkSocialMakePrimary(l)}
-                                            //onEdit={onLinkEdit(l)}
-                                            //onDelete={onLinkDelete(l)}
-                                            intl={intl}
-                                        />
-                                        :
-                                        null
-                                ))
-                            }
-                        </ul>
-                    </fieldset>
+                    <LinksWeb
+                        current={crew}
+                        intl={intl}
+                        linkDelete={linkDelete}
+                    />
+                    <LinksSocial
+                        current={crew}
+                        intl={intl}
+                        linkDelete={linkDelete}
+                    />
                     <div className="form-group">
                         <label htmlFor="org_public_email">
                             <FormattedMessage

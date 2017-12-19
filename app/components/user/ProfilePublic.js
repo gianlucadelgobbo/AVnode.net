@@ -3,11 +3,11 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import validate from './validate'
-import renderField from './renderField'
+// import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
-import ProfileLinksWeb from './ProfileLinksWeb';
-import ProfileLinksSocial from './ProfileLinksSocial';
+import LinksWeb from '../link/LinksWeb';
+import LinksSocial from '../link/LinksSocial';
 import ProfileAddressesPublic from './ProfileAddressesPublic';
 import Match from 'preact-router/match';
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
@@ -23,7 +23,7 @@ const ProfilePublic = ({
   handleSubmit,
   saveProfile,
   aboutDelete,
-  userLinkDelete,
+  linkDelete,
   userAddressDelete,
   fetchCountries
   }) => {
@@ -111,16 +111,16 @@ const ProfilePublic = ({
             aboutDelete={aboutDelete}
           />
 
-          <ProfileLinksWeb
-            user={user}
+          <LinksWeb
+            current={user}
             intl={intl}
-            userLinkDelete={userLinkDelete}
+            linkDelete={linkDelete}
           />
 
-          <ProfileLinksSocial
-            user={user}
+          <LinksSocial
+            current={user}
             intl={intl}
-            userLinkDelete={userLinkDelete}
+            linkDelete={linkDelete}
           />
           <ProfileAddressesPublic
             user={user}

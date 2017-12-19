@@ -18,8 +18,8 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  userLinkAdd: dispatch(userLinkAdd),
-  userLinkDelete: dispatch(userLinkDelete),
+  linkAdd: dispatch(userLinkAdd),
+  linkDelete: dispatch(userLinkDelete),
   //editUserAbouts: dispatch(editUserAbouts),
   //userAboutEdit: dispatch(userAboutEdit),
   aboutDelete: dispatch(userAboutDelete),

@@ -15,7 +15,7 @@ const mapStateToProps = ({user}) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  userLinkDelete: dispatch(userLinkDelete),
+  linkDelete: dispatch(userLinkDelete),
   //userLinkEdit: dispatch(userLinkEdit),
   userAddressDelete: dispatch(userAddressDelete),
   saveProfile: dispatch(editUser),
