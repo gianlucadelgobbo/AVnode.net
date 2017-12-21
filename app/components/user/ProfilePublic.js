@@ -8,7 +8,7 @@ import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
 import LinksWeb from '../link/LinksWeb';
 import LinksSocial from '../link/LinksSocial';
-import ProfileAddressesPublic from './ProfileAddressesPublic';
+import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -24,7 +24,7 @@ const ProfilePublic = ({
   saveProfile,
   aboutDelete,
   linkDelete,
-  userAddressDelete,
+  addressDelete,
   fetchCountries
   }) => {
 
@@ -122,10 +122,11 @@ const ProfilePublic = ({
             intl={intl}
             linkDelete={linkDelete}
           />
-          <ProfileAddressesPublic
+          <AddressesPublic
+            current={user}
             user={user}
             intl={intl}
-            userAddressDelete={userAddressDelete}
+            addressDelete={addressDelete}
           />
 
           <div className="form-group">

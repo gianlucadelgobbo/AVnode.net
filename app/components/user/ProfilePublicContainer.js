@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
   //editUserAbouts: dispatch(editUserAbouts),
   //userAboutEdit: dispatch(userAboutEdit),
   aboutDelete: dispatch(userAboutDelete),
-  userAddressDelete: dispatch(userAddressDelete),
+  addressDelete: dispatch(userAddressDelete),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });
