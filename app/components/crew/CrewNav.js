@@ -40,8 +40,17 @@ const CrewNav = ({ user, dispatch, url }) => {
 );
 };
 
-const mapStateToProps = ({ user }) => ({
+/* 20171221 const mapStateToProps = ({ user }) => ({
   user: user
-});
-
+});*/
+const mapStateToProps = (state, props) => {
+    console.log('_______________ props __________________________________');
+    console.log('--> CrewNav props.url: ' + JSON.stringify(props.url));
+    console.log('_______________ state __________________________________');
+    console.log('--> CrewNav state.user.crewId: ' + JSON.stringify(state.user.crewId));
+    return {
+        crew: (state.user.crews.find(c => { return c._id === props._id; })),
+        user: state.user
+    };
+};
 export default connect(mapStateToProps)(CrewNav);
