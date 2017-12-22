@@ -1,5 +1,4 @@
 extends ../layout
-
 block teaser
   if performer.teaserImage
     .d-flex.justify-content-center.align-items-start
@@ -8,6 +7,7 @@ block teaser
           src=performer.teaserImage.publicUrl
           alt=performer.name
         )
+
 
 block title
   if title
