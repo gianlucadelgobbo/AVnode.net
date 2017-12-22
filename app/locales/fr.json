@@ -246,5 +246,10 @@
 	"editFullAddress": "Saisir votre adresse complète dans la section privée",
 	"Email confirmed": "Email confirmé",
 	"Invalid email or password.": "Invalid email or password.",
-	"name.placeholder": "name.placeholder"
+	"Organizing Crews": "Organizing Crews",
+	"Organizing Crew": "Organizing Crew",
+	"reset password": "reset password",
+	"Reset your password": "Reset your password",
+	"Retype password": "Retype password",
+	"Your password has been reset.": "Your password has been reset."
 }

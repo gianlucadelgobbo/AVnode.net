@@ -3,14 +3,15 @@ import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import AddressPublic from '../place/AddressPublic';
 
-const ProfileAddressesPublic = injectIntl(({
+const AddressesPublic = injectIntl(({
+  current,
   user,
-    intl,
-    userAddressDelete
+  intl,
+  addressDelete
  }) => {
 
-    const onUserAddressDelete = (address) => (e) => {
-        userAddressDelete(user._id, address._id);
+    const onAddressDelete = (address) => (e) => {
+        addressDelete(current._id, address._id);
     };
     return (
         <fieldset className="form-group">
@@ -34,7 +35,7 @@ const ProfileAddressesPublic = injectIntl(({
                         name="locality"
                         component="input"
                         placeholder='Locality'
-                        value={user.locality}
+                        value={current.locality}
                     />
                 </div>
                 <div className="col-md-3 form-group">
@@ -49,7 +50,7 @@ const ProfileAddressesPublic = injectIntl(({
                             className="form-control custom-select"
                             name="country"
                             component="select"
-                            value={user.country}
+                            value={current.country}
                         >
                             <option value="">
                                 <FormattedMessage
@@ -75,10 +76,10 @@ const ProfileAddressesPublic = injectIntl(({
             </label>
             <ul className="list-group mt-2">
                 {
-                    user && user.addresses && user.addresses.map((a) => (
+                    current && current.addresses && current.addresses.map((a) => (
                         <AddressPublic
                             address={a}
-                            onDelete={onUserAddressDelete(a)}
+                            onDelete={onAddressDelete(a)}
                             intl={intl}
                         />
                     ))
@@ -88,4 +89,4 @@ const ProfileAddressesPublic = injectIntl(({
     );
 });
 
-export default ProfileAddressesPublic;
+export default AddressesPublic;

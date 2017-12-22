@@ -3,6 +3,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
 /*import LinksSocialEdit from '../link/LinksSocialEdit';
 import LinksWebEdit from '../link/LinksWebEdit'; */
+import AddressesPublic from '../place/AddressesPublic';
 
 import ImageDropzone from '../ImageDropzone';
 
@@ -292,7 +293,13 @@ const OrgActivity = (props) => {
                     id="public"
                     defaultMessage='Public'
                 />
-            </span>
+        </span>
+          <AddressesPublic
+            current={props.user}
+            user={props.user}
+            intl={intl}
+            addressDelete={addressDelete}
+          />
         <div className="input-group">
           <Field
               className="form-control"

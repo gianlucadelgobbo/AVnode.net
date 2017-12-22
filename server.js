@@ -120,7 +120,7 @@ app.use(function (err, req, res, _next) {
 // declared before this
 
 app.use(function onerror(err, req, res, next) {
-  // happens on user not logged in  
+  // happens also on user not logged in  
   if (err) {
     console.log(`🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 Server Error:${err}`);
     //throw err;

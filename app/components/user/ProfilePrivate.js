@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
-import ProfileLinksTel from './ProfileLinksTel';
+import LinksTel from '../link/LinksTel';
 import ProfileAddressesPrivate from './ProfileAddressesPrivate';
 import validate from './validate'
 import renderField from './renderField'
@@ -23,7 +23,7 @@ const ProfilePrivate = ({
   intl,
   handleSubmit,
   saveProfile,
-  userLinkDelete,
+  linkDelete,
   userAddressDelete,
   fetchCountries
   }) => {
@@ -219,10 +219,10 @@ const ProfilePrivate = ({
             </div>
           </fieldset>
 
-          <ProfileLinksTel
+          <LinksTel
             user={user}
             intl={intl}
-            userLinkDelete={userLinkDelete}
+            linkDelete={linkDelete}
           />
           <ProfileAddressesPrivate
             user={user}

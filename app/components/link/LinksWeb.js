@@ -1,16 +1,16 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import LinkWeb from '../link/LinkWeb';
+import LinkWeb from './LinkWeb';
 
-const ProfileLinksWebForm = injectIntl(({
-  user,
+const LinksWebForm = injectIntl(({
+  current,
   intl,
-  userLinkDelete
+  linkDelete
   }) => {
 
   const onLinkDelete = (link) => (e) => {
-    return userLinkDelete(user._id, link._id);
+    return linkDelete(current._id, link._id);
   };
 
   return (
@@ -55,7 +55,7 @@ const ProfileLinksWebForm = injectIntl(({
       </label>
       <ul className="list-group mt-2">
         {
-          user && user.links && user.links.map((l) => (
+          current && current.links && current.links.map((l) => (
             l.type === 'web' ?
               <LinkWeb
                 linkWeb={l}
@@ -71,4 +71,4 @@ const ProfileLinksWebForm = injectIntl(({
   );
 });
 
-export default ProfileLinksWebForm;
+export default LinksWebForm;
