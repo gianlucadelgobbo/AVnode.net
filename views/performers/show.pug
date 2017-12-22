@@ -7,6 +7,13 @@ block teaser
           src=performer.teaserImage.publicUrl
           alt=performer.name
         )
+  if performer.cardUrl
+    .d-flex.justify-content-center.align-items-start
+      if performer.cardUrl
+        img.img-fluid(
+          src=performer.cardUrl
+          alt=performer.name
+        )
 
 
 block title
