@@ -220,7 +220,7 @@ const ProfilePrivate = ({
           </fieldset>
 
           <LinksTel
-            user={user}
+            current={user}
             intl={intl}
             linkDelete={linkDelete}
           />

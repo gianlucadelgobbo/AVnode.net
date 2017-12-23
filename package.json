@@ -39,6 +39,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
     "express-status-monitor": "^1.0.1",
+    "getconfig": "^4.0.0",
     "i18n": "^0.8.3",
     "image-size": "^0.6.1",
     "joi": "^10.0.5",
@@ -68,7 +69,9 @@
     "react-widgets-moment": "^4.0.4",
     "request": "^2.79.0",
     "sharp": "^0.18.4",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "winston": "^2.4.0",
+    "winston-daily-rotate-file": "^1.7.2"
   },
   "devDependencies": {
     "babel": "^6.5.2",

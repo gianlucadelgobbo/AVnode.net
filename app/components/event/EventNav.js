@@ -14,13 +14,13 @@ const EventNav = ({ user, dispatch, url }) => {
     return (
         <div>
             <nav id="account-sidenav" class="nav-justified pull-left">
-                <a className={classes('/account/event/public/'+id)} href={`/account/event/public/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/public/'+id)) }}>
+                <a className={classes('/account/event/public/'+id)} href={`/account/event/public/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/public/'+id)); }}>
                     <FormattedMessage
                         id="publicData"
                         defaultMessage="Public data"
                     />
                 </a>
-                <a className={classes('/account/event/images/'+id)} href={`/account/event/images/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/images/'+id)) }}>
+                <a className={classes('/account/event/images/'+id)} href={`/account/event/images/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/images/'+id)); }}>
                     <FormattedMessage
                         id="images"
                         defaultMessage="Images"
