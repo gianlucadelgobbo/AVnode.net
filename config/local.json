@@ -1,4 +1,8 @@
 {
+  "imageWidth": 400,
+  "imageHeight": 300,
+  "teaserWidth": 1920,
+  "teaserHeight": 400,
   "maxFileComment": "1 * 1024 * 1024 * 1024",
   "maxFileSize": 1073741824,
   "defaultLocale": "en",
@@ -17,7 +21,7 @@
     "it":"Italiano",
     "en":"English",
     "es":"Espa&ntilde;ol",
-    "fr":"Fran&ccedil;aise",
+    "fr":"Fran&ccedil;ais",
     "pl":"Polski",
     "ru":"Russian",
     "hu":"Hungarian",
