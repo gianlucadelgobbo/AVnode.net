@@ -1,20 +1,11 @@
 extends ../layout
 block teaser
-  if performer.teaserImage
+  if performer.teaserImageUrl
     .d-flex.justify-content-center.align-items-start
-      if performer.teaserImage
-        img.img-fluid(
-          src=performer.teaserImage.publicUrl
-          alt=performer.name
-        )
-  if performer.cardUrl
-    .d-flex.justify-content-center.align-items-start
-      if performer.cardUrl
-        img.img-fluid(
-          src=performer.cardUrl
-          alt=performer.name
-        )
-
+      img.img-fluid(
+        src=performer.teaserImageUrl
+        alt=performer.name
+      )
 
 block title
   if title
