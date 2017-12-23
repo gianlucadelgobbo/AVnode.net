@@ -126,11 +126,11 @@ let EventPublicForm = props => {
             intl={intl}
             linkDelete={linkDelete}
           />
-          {/*<LinksSocial
-                        current={event}
-                        intl={intl}
-                        linkDelete={linkDelete}
-                    />*/}
+          <LinksSocial
+            current={event}
+            intl={intl}
+            linkDelete={linkDelete}
+          />
 
           <div className="form-group">
             <button

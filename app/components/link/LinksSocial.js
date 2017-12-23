@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import LinkSocial from './LinkSocial';
 import SocialLinkTypes from './SocialLinkTypes';
 
-const LinksSocialForm = injectIntl(({
+const LinksSocial = injectIntl(({
   current,
   intl,
   linkDelete
@@ -92,4 +92,4 @@ const LinksSocialForm = injectIntl(({
   );
 });
 
-export default LinksSocialForm;
+export default LinksSocial;

@@ -1,10 +1,10 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import LinkTel from '../link/LinkTel';
-import PhoneLinkTypes from '../link/PhoneLinkTypes';
+import LinkTel from './LinkTel';
+import PhoneLinkTypes from './PhoneLinkTypes';
 
-const ProfileLinksPhoneForm = injectIntl(({
+const LinksTel = injectIntl(({
   current,
   intl,
   linkDelete
@@ -15,6 +15,7 @@ const ProfileLinksPhoneForm = injectIntl(({
   };
   return (
     <fieldset className="form-group">
+    { console.log(current)}
       <legend>
         <FormattedMessage
           id="phoneNumbers"
@@ -93,4 +94,4 @@ const ProfileLinksPhoneForm = injectIntl(({
   );
 });
 
-export default ProfileLinksPhoneForm;
+export default LinksTel;
