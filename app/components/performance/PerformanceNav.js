@@ -2,7 +2,6 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { performanceNavigate } from '../../reducers/actions';
 import { FormattedMessage } from 'preact-intl';
-// import { route, Router, Route, Link } from 'preact-router';
 
 const PerformanceNav = ({ user, dispatch, url }) => {
     let id = url.substring(url.lastIndexOf('/') + 1);

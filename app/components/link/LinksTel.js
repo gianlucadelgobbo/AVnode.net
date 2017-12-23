@@ -45,7 +45,7 @@ const LinksTel = injectIntl(({
 
         <div className="input-group-addon">
 
-          {PhoneLinkTypes ?
+          {PhoneLinkTypes && current ?
             <Field
               className="form-control custom-select"
               name="linkType"

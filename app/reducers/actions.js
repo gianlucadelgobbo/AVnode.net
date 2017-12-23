@@ -146,15 +146,14 @@ export function fetchUser() {
 }
 
 export function editEvent(data) {
+  console.log('editEvent data:' + JSON.stringify(data));
   // about, verify unique
   if (data.about) {
     let aboutFound = false;
-    let primaryAbout = true;
     // init if first about
     if (!data.abouts) data.abouts = [];
     // check existing abouts
     data.abouts.map((a) => {
-      primaryAbout = false;
       if (a.lang === data.aboutlanguage) {
         // about in the form already exists in abouts
         aboutFound = true;
@@ -166,13 +165,11 @@ export function editEvent(data) {
     if (!aboutFound) {
       if (!data.aboutlanguage) data.aboutlanguage = 'en';
       data.abouts.push({
-        is_primary: primaryAbout,
         lang: data.aboutlanguage,
         abouttext: data.about
       });
     }
   }
-
   // link, verify unique
   if (data.link) {
     let linkFound = false;
@@ -196,7 +193,6 @@ export function editEvent(data) {
       });
     }
   }
-
   // category, verify unique
   if (data.category) {
     let categoryFound = false;
@@ -213,8 +209,8 @@ export function editEvent(data) {
       });
     }
   }
-
   return dispatch => {
+    console.log('editEvent dispatch');
     dispatch({
       type: REQUEST_EDIT_EVENT,
       id: data._id
