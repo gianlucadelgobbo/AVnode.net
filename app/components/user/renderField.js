@@ -8,6 +8,6 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
         {touched && error && <span>{error}</span>}
       </div>
     </div>
-  )
+  );
 
 export default renderField;

@@ -1,7 +1,6 @@
-import React, { h } from 'preact';
-import { injectIntl, FormattedMessage } from 'preact-intl';
+import { h } from 'preact';
 
-const Link = ({ link, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, onDelete, intl }) => {
+const Link = ({ link,  onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       {link.type} : {link.url}
@@ -17,8 +16,8 @@ const Link = ({ link, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, onD
             data-toggle="tooltip"
             data-placement="top"
             title={intl.formatMessage({
-              id: "delete",
-              defaultMessage: "Delete"
+              id: 'delete',
+              defaultMessage: 'Delete'
             })}
           >
           </i>

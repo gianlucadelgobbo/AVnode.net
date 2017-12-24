@@ -2,19 +2,18 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { eventNavigate } from '../../reducers/actions';
 import { FormattedMessage } from 'preact-intl';
-// import { route, Router, Route, Link } from 'preact-router';
 
 const EventNav = ({ user, dispatch, url }) => {
     let id = url.substring(url.lastIndexOf('/') + 1);
     const classes = (path) => {
-        // console.log('eNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
+        console.log('eNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
         return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
     }
 
     return (
         <div>
             <nav id="account-sidenav" class="nav-justified pull-left">
-                <a className={classes('/account/event/public/'+id)} href={`/account/event/public/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/public/'+id)); }}>
+                <a className={classes('/account/event/public/'+id)} href={`/account/event/public/${id}`} onClick={e => {console.log('evt pub'+id); dispatch(eventNavigate('/account/event/public/'+id)); }}>
                     <FormattedMessage
                         id="publicData"
                         defaultMessage="Public data"

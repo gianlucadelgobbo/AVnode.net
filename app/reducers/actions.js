@@ -145,16 +145,15 @@ export function fetchUser() {
   };
 }
 
-export function editEvent(data) {
+export function editEvent(dispatch) {
+ /* console.log('editEvent data:' + JSON.stringify(data));
   // about, verify unique
   if (data.about) {
     let aboutFound = false;
-    let primaryAbout = true;
     // init if first about
     if (!data.abouts) data.abouts = [];
     // check existing abouts
     data.abouts.map((a) => {
-      primaryAbout = false;
       if (a.lang === data.aboutlanguage) {
         // about in the form already exists in abouts
         aboutFound = true;
@@ -166,13 +165,11 @@ export function editEvent(data) {
     if (!aboutFound) {
       if (!data.aboutlanguage) data.aboutlanguage = 'en';
       data.abouts.push({
-        is_primary: primaryAbout,
         lang: data.aboutlanguage,
         abouttext: data.about
       });
     }
   }
-
   // link, verify unique
   if (data.link) {
     let linkFound = false;
@@ -196,7 +193,6 @@ export function editEvent(data) {
       });
     }
   }
-
   // category, verify unique
   if (data.category) {
     let categoryFound = false;
@@ -213,8 +209,22 @@ export function editEvent(data) {
       });
     }
   }
-
   return dispatch => {
+    console.log('editEvent dispatch');
+    dispatch({
+      type: REQUEST_EDIT_EVENT,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/event/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };*/
+  return data => {
+    console.log('_______________ACTION editEvent __________________________________');
+    console.log('editEvent data._id: ' + JSON.stringify(data._id));
     dispatch({
       type: REQUEST_EDIT_EVENT,
       id: data._id
@@ -1624,6 +1634,22 @@ export function userLinkConfirm(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 } */
+export function eventLinkDelete(dispatch) {
+  return (eventId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_DELETELINK,
+      payload: {
+        event: eventId,
+        link: linkId
+      }
+    });
+    return fetch(
+      `/account/api/event/${eventId}/link/${linkId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
 
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {
