@@ -6,7 +6,6 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import Video from '../Video';
 import Abouts from '../about/Abouts';
-import Languages from '../language/Languages';
 import Category from '../category/Category';
 import Categories from '../category/Performance';
 import PerformanceNav from './PerformanceNav';
@@ -25,11 +24,12 @@ import {
 
     performanceAboutDelete,
 
+    addPerformanceCategory,
     removePerformanceCategory
 
 } from '../../reducers/actions';
 
-const Crew = injectIntl(({ crew, onDelete, intl }) => {
+const Crew = injectIntl(({ crew, onDelete }) => {
   return (
         <li className="list-group-item justify-content-between">
             <span>
@@ -98,8 +98,8 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
   );
 });
 
-let PerformanceForm = props => {
-  const { handleSubmit, dispatch, aboutDelete, performance, intl } = props;
+let PerformancePublicForm = props => {
+  const { handleSubmit, dispatch, aboutDelete, removePerformanceCategory, performance, intl } = props;
   const crewSuggestions = props.user._crewSuggestions || [];
 
   const findCrew = (e) => {
@@ -137,10 +137,18 @@ let PerformanceForm = props => {
     e.preventDefault();
     return dispatch(removePerformancePerformer(performance._id, performerId));
   };
-
+  const onChange = ({ target: { value, name } }) => {
+    if (value !== '') {
+      console.log('PerformancePublicForm, onChange name:' + name );
+      if (name === 'category') {
+        console.log('PerformancePublicForm, onChange category value:' + value);
+        dispatch(addPerformanceCategory(performance._id, value));
+      }
+    }
+  }; 
   const removeCategory = (categoryId) => (e) => {
     e.preventDefault();
-    return dispatch(removePerformanceCategory(performance._id, categoryId));
+    removePerformanceCategory(performance._id, categoryId);
   };
 
   /*const onPerformanceAboutEdit = (about) => (e) => {
@@ -161,7 +169,7 @@ let PerformanceForm = props => {
                 </Match>
             </div>
             <Layout>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(editPerformance)} onChange={onChange}>
                     <Field
                         name="_id"
                         component="input"
@@ -219,7 +227,7 @@ let PerformanceForm = props => {
                                             />
                                         </option>
                                         {Categories.map((c) => (
-                                            <option value={c.key.toLowerCase()}>{c.name}</option>
+                                            <option value={c.key}>{c.name}</option>
                                         ))
                                         }
                                         { /*  */}
@@ -467,7 +475,7 @@ let PerformanceForm = props => {
   );
 };
 
-PerformanceForm = injectIntl(reduxForm({ form: 'performancePublic' })(PerformanceForm));
+PerformancePublicForm = injectIntl(reduxForm({ form: 'performancePublic' })(PerformancePublicForm));
 
 const PerformancePublic = props => {
   console.log('PerformancePublic props');
@@ -477,10 +485,9 @@ const PerformancePublic = props => {
   };
   const onSubmitSuccess = () => {
     console.log('PerformancePublic onSubmitSuccess');
-        //route('/account/performances');
   };
   return (
-        <PerformanceForm
+        <PerformancePublicForm
             initialValues={props.performance}
             onSubmit={onSubmit}
             onSubmitSuccess={onSubmitSuccess}
@@ -496,7 +503,10 @@ const mapStateToProps = (state, props) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  aboutDelete: dispatch(performanceAboutDelete)
+  addPerformanceCategory: dispatch(addPerformanceCategory),
+  removePerformanceCategory: dispatch(removePerformanceCategory),
+  aboutDelete: dispatch(performanceAboutDelete),
+  editPerformance: dispatch(editPerformance)
 });
 export default connect(mapStateToProps, mapDispatchToProps)(PerformancePublic);
 

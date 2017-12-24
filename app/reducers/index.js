@@ -66,6 +66,7 @@ import {
   REQUEST_ADD_PERFORMANCEIMAGE,
   REQUEST_PERFORMANCE_EDITABOUT,
   REQUEST_PERFORMANCE_DELETEABOUT,
+  REQUEST_ADD_PERFORMANCE_CATEGORY,
   REQUEST_SUGGEST_PERFORMANCE_CREW,
   RESPONSE_SUGGEST_PERFORMANCE_CREW,
   REQUEST_SUGGEST_PERFORMANCE_PERFORMER,
@@ -347,6 +348,9 @@ const user = (state = initialValues, action) => {
     return Object.assign({}, state, {
       ajaxInProgress: true
     });
+  case REQUEST_ADD_PERFORMANCE_CATEGORY:
+    console.log('REQUEST_ADD_PERFORMANCE_CATEGORY performanceId:' + action.payload.performanceId + ' categoryId:' + action.payload.categoryId + ' user._id = state._id:' + state._id);
+    return state;   
 
   case OPEN_STAGENAME_MODAL:
     return Object.assign({}, state, {

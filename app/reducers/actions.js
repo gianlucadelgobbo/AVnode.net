@@ -97,6 +97,7 @@ export const REQUEST_DELETE_PERFORMANCE_CATEGORY = 'REQUEST_DELETE_PERFORMANCE_C
 export const REQUEST_PERFORMANCE_MAKEABOUTPRIMARY = 'REQUEST_PERFORMANCE_MAKEABOUTPRIMARY';
 export const REQUEST_PERFORMANCE_EDITABOUT = 'REQUEST_PERFORMANCE_EDITABOUT';
 export const REQUEST_PERFORMANCE_DELETEABOUT = 'REQUEST_PERFORMANCE_DELETEABOUT';
+export const REQUEST_ADD_PERFORMANCE_CATEGORY='REQUEST_ADD_PERFORMANCE_CATEGORY';
 
 // Wrap fetch with some default settings, always
 // return parsed JSON…
@@ -163,6 +164,7 @@ export function addEventCategory(id, category) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+
 export function removeEventCategory(dispatch) {
   return (eventId, categoryId) => {
     console.log('_______________ACTION removeEventCategory __________________________________');
@@ -992,14 +994,33 @@ export function removePerformanceCrew(performanceId, crewId) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-// BL remove performance category
-export function removePerformanceCategory(performanceId, categoryId) {
+export function addPerformanceCategory(id, category) {
   return dispatch => {
+    console.log('_______________ACTION addPerformanceCategory __________________________________');
+    console.log('addPerformanceCategory id: ' + id + 'category: ' + category);
+    dispatch({
+      type: REQUEST_ADD_PERFORMANCE_CATEGORY,
+      payload: {
+        performanceId: id,
+        category: category
+      }
+    });
+    return fetch(
+      `/account/api/performance/${id}/category/${category}`, {
+        method: 'PUT'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function removePerformanceCategory(dispatch) {
+  return (performanceId, categoryId) => {
+    console.log('_______________ACTION removePerformanceCategory __________________________________');
+    console.log('removePerformanceCategory performanceId: ' + performanceId + 'categoryId: ' + categoryId);
     dispatch({
       type: REQUEST_DELETE_PERFORMANCE_CATEGORY,
       payload: {
-        performanceId,
-        categoryId
+        performanceId: performanceId,
+        categoryId: categoryId
       }
     });
     return fetch(`/account/api/performance/${performanceId}/category/${categoryId}`, {
@@ -1008,6 +1029,7 @@ export function removePerformanceCategory(performanceId, categoryId) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+
 export function suggestPerformancePerformer(performanceId, q) {
   return dispatch => {
     dispatch({

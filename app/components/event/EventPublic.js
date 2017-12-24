@@ -29,7 +29,6 @@ let EventPublicForm = props => {
       console.log('EventPublicForm, onChange name:' + name );
       if (name === 'category') {
         console.log('EventPublicForm, onChange category value:' + value);
-        // BOF return dispatch(addEventCategory(event._id, value));
         dispatch(addEventCategory(event._id, value));
       }
     }
@@ -99,7 +98,7 @@ let EventPublicForm = props => {
                       />
                     </option>
                     {Categories.map((c) => (
-                      <option value={c.key.toLowerCase()}>{c.name}</option>
+                      <option value={c.key}>{c.name}</option>
                     ))
                     }
                     { /*  */}
