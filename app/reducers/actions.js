@@ -1620,6 +1620,22 @@ export function userLinkConfirm(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 } */
+export function eventLinkDelete(dispatch) {
+  return (eventId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_DELETELINK,
+      payload: {
+        event: eventId,
+        link: linkId
+      }
+    });
+    return fetch(
+      `/account/api/event/${eventId}/link/${linkId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+};
 
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {

@@ -52,14 +52,14 @@ const Crew = injectIntl(({ crew, onDelete, intl }) => {
                 </button>
             }
         </li>
-    );
+  );
 });
 
 const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
   const meLabel = intl.formatMessage({
-      id: 'me',
-      defaultMessage: 'Me'
-    });
+    id: 'me',
+    defaultMessage: 'Me'
+  });
   return (
         <li className="list-group-item justify-content-between">
             {performer.file ?
@@ -95,7 +95,7 @@ const Performer = injectIntl(({ performer, me, onDelete, intl }) => {
                 </button>
             }
         </li>
-    );
+  );
 });
 
 let PerformanceForm = props => {
@@ -103,45 +103,45 @@ let PerformanceForm = props => {
   const crewSuggestions = props.user._crewSuggestions || [];
 
   const findCrew = (e) => {
-      e.preventDefault();
-      if (e.target.value.length > 2) {
-          return dispatch(suggestPerformanceCrew(performance._id, e.target.value));
-        } // FIXME: handle reset
-    };
+    e.preventDefault();
+    if (e.target.value.length > 2) {
+      return dispatch(suggestPerformanceCrew(performance._id, e.target.value));
+    } // FIXME: handle reset
+  };
 
   const addCrew = (crewId) => (e) => {
-      e.preventDefault();
-      return dispatch(addPerformanceCrew(performance._id, crewId));
-    };
+    e.preventDefault();
+    return dispatch(addPerformanceCrew(performance._id, crewId));
+  };
 
   const removeCrew = (crewId) => (e) => {
-      e.preventDefault();
-      return dispatch(removePerformanceCrew(performance._id, crewId));
-    };
+    e.preventDefault();
+    return dispatch(removePerformanceCrew(performance._id, crewId));
+  };
 
   const performerSuggestions = props.user._performerSuggestions || [];
 
   const findPerformer = (e) => {
-      e.preventDefault();
-      if (e.target.value.length > 2) {
-          return dispatch(suggestPerformancePerformer(performance._id, e.target.value));
-        } // FIXME: handle reset
-    };
+    e.preventDefault();
+    if (e.target.value.length > 2) {
+      return dispatch(suggestPerformancePerformer(performance._id, e.target.value));
+    } // FIXME: handle reset
+  };
 
   const addPerformer = (performerId) => (e) => {
-      e.preventDefault();
-      return dispatch(addPerformancePerformer(performance._id, performerId));
-    };
+    e.preventDefault();
+    return dispatch(addPerformancePerformer(performance._id, performerId));
+  };
 
   const removePerformer = (performerId) => (e) => {
-      e.preventDefault();
-      return dispatch(removePerformancePerformer(performance._id, performerId));
-    };
+    e.preventDefault();
+    return dispatch(removePerformancePerformer(performance._id, performerId));
+  };
 
   const removeCategory = (categoryId) => (e) => {
-      e.preventDefault();
-      return dispatch(removePerformanceCategory(performance._id, categoryId));
-    };
+    e.preventDefault();
+    return dispatch(removePerformanceCategory(performance._id, categoryId));
+  };
 
   /*const onPerformanceAboutEdit = (about) => (e) => {
       return dispatch(performanceAboutEdit(performance._id, about.lang));
@@ -314,9 +314,9 @@ let PerformanceForm = props => {
                                         onClick={e => {
                                           e.preventDefault();
                                           return dispatch(addPerformanceVideo({
-                                              _id: performance._id,
-                                              video: videoLink.value
-                                            }));
+                                            _id: performance._id,
+                                            video: videoLink.value
+                                          }));
                                         }}
                                     >
                                         <FormattedMessage
@@ -464,21 +464,21 @@ let PerformanceForm = props => {
                 </form>
             </Layout>
         </div>
-    );
+  );
 };
 
 PerformanceForm = injectIntl(reduxForm({ form: 'performancePublic' })(PerformanceForm));
 
 const PerformancePublic = props => {
-    console.log('PerformancePublic props');
+  console.log('PerformancePublic props');
   const onSubmit = (props, dispatch) => {
     console.log('PerformancePublic onSubmit');
-      dispatch(editPerformance(props));
-    };
+    dispatch(editPerformance(props));
+  };
   const onSubmitSuccess = () => {
     console.log('PerformancePublic onSubmitSuccess');
         //route('/account/performances');
-    };
+  };
   return (
         <PerformanceForm
             initialValues={props.performance}
@@ -486,17 +486,17 @@ const PerformancePublic = props => {
             onSubmitSuccess={onSubmitSuccess}
             {...props}
         />
-    );
+  );
 };
 
 const mapStateToProps = (state, props) => {
   return {
-      performance: (state.user.performances.find(p => { return p._id === props._id; })),
-      user: state.user
-    };
+    performance: (state.user.performances.find(p => { return p._id === props._id; })),
+    user: state.user
+  };
 };
 const mapDispatchToProps = (dispatch) => ({
-    aboutDelete: dispatch(performanceAboutDelete)
-  });
+  aboutDelete: dispatch(performanceAboutDelete)
+});
 export default connect(mapStateToProps, mapDispatchToProps)(PerformancePublic);
 

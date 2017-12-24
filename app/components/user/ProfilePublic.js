@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
-import validate from './validate'
+import validate from './validate';
 // import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
@@ -14,11 +14,11 @@ import Match from 'preact-router/match';
 
 const ProfilePublic = ({
   user,
-  //submitting,
+  /*submitting,
   dirty,
   invalid,
   pristine,
-  valid,
+  valid,*/
   intl,
   handleSubmit,
   saveProfile,

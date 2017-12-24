@@ -10,10 +10,10 @@ const AddressesPublic = injectIntl(({
   addressDelete
  }) => {
 
-    const onAddressDelete = (address) => (e) => {
-        addressDelete(current._id, address._id);
-    };
-    return (
+  const onAddressDelete = (address) => (e) => {
+    addressDelete(current._id, address._id);
+  };
+  return (
         <fieldset className="form-group">
             <legend>
                 <FormattedMessage
@@ -86,7 +86,7 @@ const AddressesPublic = injectIntl(({
                 }
             </ul>
         </fieldset>
-    );
+  );
 });
 
 export default AddressesPublic;

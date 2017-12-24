@@ -1,6 +1,5 @@
 import { h } from 'preact';
-import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Place from '../place/PlaceContainer';
 import Address from '../place/Address';

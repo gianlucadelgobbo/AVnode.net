@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
-import Languages from '../language/Languages';
+//import Languages from '../language/Languages';
 
 import Place from '../place/PlaceContainer';
 
@@ -18,11 +18,11 @@ import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
     editCrew,
-    linkDelete   
+    linkDelete
 } from '../../reducers/actions';
 
 let CrewOrganizationForm = props => {
-    const { handleSubmit, editCrew, crew, intl } = props;
+  const { handleSubmit, editCrew, crew, intl } = props;
 
     /* const onLinkEdit = (link) => (e) => {
         e.preventDefault();
@@ -33,9 +33,9 @@ let CrewOrganizationForm = props => {
         return crewLinkDelete(props._id, link._id);
     }; */
 
-    if (!props.org) props.org = {};
+  if (!props.org) props.org = {};
 
-    return (
+  return (
         <div>
             <div className="container-fluid">
                 <Match>
@@ -49,8 +49,6 @@ let CrewOrganizationForm = props => {
                         component="input"
                         type="hidden"
                     />
-
-                    
                     <h3>
                         <FormattedMessage
                             id="org_extradata_title"
@@ -65,7 +63,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -88,7 +86,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-success">
+              <span className="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
@@ -110,7 +108,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-success">
+              <span className="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
@@ -118,21 +116,21 @@ let CrewOrganizationForm = props => {
                             </span>
                             {OrgTypes ?
                                 <Field
-                                className="form-control custom-select"
-                                name="org_type"
-                                component="select"
+                                    className="form-control custom-select"
+                                    name="org_type"
+                                    component="select"
                                 >
-                                { /*<option value={o.val}>
+                                    { /*<option value={o.val}>
                                     <FormattedMessage
                                     id={o.name}
                                     defaultMessage={o.name}
                                     />
                                 </option> */}
-                                {OrgTypes.map((o) => (
-                                    <option value={o.val}>{o.name}</option>
-                                ))
-                                }
-                                  
+                                    {OrgTypes.map((o) => (
+                                        <option value={o.val}>{o.name}</option>
+                                    ))
+                                    }
+
                                 </Field> :
                                 <p>Loading OrgTypes</p>
                             }
@@ -156,7 +154,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-success">
+            <span className="badge badge-success">
                             <FormattedMessage
                                 id="public"
                                 defaultMessage='Public'
@@ -182,7 +180,7 @@ let CrewOrganizationForm = props => {
                         </div>
                     </div>
 
-                        {/* BL TODO <LinksPhoneEdit links={props.org_links} privacy="public" />*/}
+                    {/* BL TODO <LinksPhoneEdit links={props.org_links} privacy="public" />*/}
 
                     <div className="form-group">
                         <label htmlFor="org_aims_and_activities">
@@ -192,7 +190,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -204,8 +202,8 @@ let CrewOrganizationForm = props => {
                             component="textarea"
                             rows="4"
                             placeholder={props.intl.formatMessage({
-                                id: 'about.placeholder',
-                                defaultMessage: 'Tell me something about aims and activities of the organisation.'
+                              id: 'about.placeholder',
+                              defaultMessage: 'Tell me something about aims and activities of the organisation.'
                             })}
                             value={props.org_aims_and_activities}
                         />
@@ -219,7 +217,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -242,7 +240,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -267,7 +265,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -305,7 +303,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -329,7 +327,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -369,7 +367,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -394,7 +392,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -417,7 +415,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -441,7 +439,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -481,7 +479,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -511,7 +509,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -542,7 +540,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -574,7 +572,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -597,7 +595,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -622,7 +620,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -645,7 +643,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span class="badge badge-danger">
+              <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -668,7 +666,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -680,8 +678,8 @@ let CrewOrganizationForm = props => {
                             component="textarea"
                             rows="4"
                             placeholder={props.intl.formatMessage({
-                                id: 'about.placeholder',
-                                defaultMessage: 'Tell me something about organisation relevance in the project.'
+                              id: 'about.placeholder',
+                              defaultMessage: 'Tell me something about organisation relevance in the project.'
                             })}
                             value={props.org_relevance_in_the_project}
                         />
@@ -695,7 +693,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -707,8 +705,8 @@ let CrewOrganizationForm = props => {
                             component="textarea"
                             rows="4"
                             placeholder={props.intl.formatMessage({
-                                id: 'about.placeholder',
-                                defaultMessage: 'Tell me the organisation emerging artists definition.'
+                              id: 'about.placeholder',
+                              defaultMessage: 'Tell me the organisation emerging artists definition.'
                             })}
                             value={props.org_emerging_artists_definition}
                         />
@@ -722,7 +720,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -734,8 +732,8 @@ let CrewOrganizationForm = props => {
                             component="textarea"
                             rows="4"
                             placeholder={props.intl.formatMessage({
-                                id: 'about.placeholder',
-                                defaultMessage: 'EU grants received in the last 3 years.'
+                              id: 'about.placeholder',
+                              defaultMessage: 'EU grants received in the last 3 years.'
                             })}
                             value={props.org_eu_grants_received_in_the_last_3_years}
                         />
@@ -749,7 +747,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -789,7 +787,7 @@ let CrewOrganizationForm = props => {
                         </legend>
                         {
                             crew && crew.activities && crew.activities.map((a) => (
-                                <OrgActivity 
+                                <OrgActivity
                                     contact={a}
                                     intl={intl}
                                 />
@@ -821,14 +819,14 @@ let CrewOrganizationForm = props => {
 CrewOrganizationForm = injectIntl(reduxForm({ form: 'crewOrganization' })(CrewOrganizationForm));
 
 const CrewOrganization = props => {
-    const onSubmit = (props, dispatch) => {
+  const onSubmit = (props, dispatch) => {
         //dispatch(editCrew(props));
         //editCrew(dispatch);
     };
-    const onSubmitSuccess = () => {
+  const onSubmitSuccess = () => {
         //route('/account/crews');
     };
-    return (
+  return (
         <CrewOrganizationForm
             initialValues={props.crew}
             onSubmit={onSubmit}
@@ -839,19 +837,19 @@ const CrewOrganization = props => {
 };
 
 const mapStateToProps = (state, props) => {
-    console.log('_______________ props __________________________________');
-    console.log('--> CrewOrganization props.url: ' + JSON.stringify(props.url));
-    console.log('_______________ state __________________________________');
-    console.log('--> CrewOrganization state.user.crewId: ' + JSON.stringify(state.user.crewId));
-    return {
-        crew: (state.user.crews.find(c => { return c._id === props._id; })),
-        user: state.user
+  console.log('_______________ props __________________________________');
+  console.log('--> CrewOrganization props.url: ' + JSON.stringify(props.url));
+  console.log('_______________ state __________________________________');
+  console.log('--> CrewOrganization state.user.crewId: ' + JSON.stringify(state.user.crewId));
+  return {
+      crew: (state.user.crews.find(c => { return c._id === props._id; })),
+      user: state.user
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    //linkDelete: dispatch(crewLinkDelete),
-    editCrew: dispatch(editCrew)
+  linkDelete: dispatch(crewLinkDelete),
+  editCrew: dispatch(editCrew)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrewOrganization);

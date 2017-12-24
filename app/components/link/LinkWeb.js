@@ -16,8 +16,8 @@ const LinkWeb = ({ linkWeb, onEdit, onDelete, intl }) => {
             data-toggle="tooltip"
             data-placement="top"
             title={intl.formatMessage({
-              id: "delete",
-              defaultMessage: "Delete"
+              id: 'delete',
+              defaultMessage: 'Delete'
             })}
           >
           </i>

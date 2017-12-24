@@ -26,7 +26,7 @@ const OrgActivity = (props) => {
               defaultMessage="Activity Name"
           />
           &nbsp;
-          <span class="badge badge-success">
+          <span className="badge badge-success">
             <FormattedMessage
               id="public"
               defaultMessage='Public'
@@ -50,7 +50,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -80,7 +80,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -108,7 +108,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -129,7 +129,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -158,7 +158,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-danger">
+        <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'
@@ -288,7 +288,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'

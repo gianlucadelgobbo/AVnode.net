@@ -29,37 +29,37 @@ let EventSettingsForm = props => {
             type="hidden"
           />
 
-<div className="form-check">
-          <label className="form-check-label">
-            <Field
-              className="form-check-input form-control-lg"
-              name="is_public"
-              component="input"
-              type="checkbox"
-              value={props.is_public}
-            />
-            <FormattedMessage
-              id="eventIsPublic"
-              defaultMessage="Event is public"
-            />
-          </label>
-        </div>
+          <div className="form-check">
+            <label className="form-check-label">
+              <Field
+                className="form-check-input form-control-lg"
+                name="is_public"
+                component="input"
+                type="checkbox"
+                value={props.is_public}
+              />
+              <FormattedMessage
+                id="eventIsPublic"
+                defaultMessage="Event is public"
+              />
+            </label>
+          </div>
 
-        <div className="form-check">
-          <label className="form-check-label">
-            <Field
-              className="form-check-input form-control-lg"
-              name="is_open"
-              component="input"
-              type="checkbox"
-              value={props.is_open}
-            />
-            <FormattedMessage
-              id="callIsOpen"
-              defaultMessage="Call is open"
-            />
-          </label>
-        </div>
+          <div className="form-check">
+            <label className="form-check-label">
+              <Field
+                className="form-check-input form-control-lg"
+                name="is_open"
+                component="input"
+                type="checkbox"
+                value={props.is_open}
+              />
+              <FormattedMessage
+                id="callIsOpen"
+                defaultMessage="Call is open"
+              />
+            </label>
+          </div>
 
 
           <div className="form-group">

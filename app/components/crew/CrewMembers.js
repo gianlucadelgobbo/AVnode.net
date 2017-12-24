@@ -102,7 +102,7 @@ let CrewMembersForm = props => {
               />
             </label>
             &nbsp;
-                <span class="badge badge-success">
+                <span className="badge badge-success">
               <FormattedMessage
                 id="public"
                 defaultMessage='Public'

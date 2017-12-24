@@ -1,5 +1,4 @@
 import { h } from 'preact';
-import { injectIntl, FormattedMessage } from 'preact-intl';
 
 const Address = ({ address, onDelete, intl }) => {
   return (
@@ -15,8 +14,8 @@ const Address = ({ address, onDelete, intl }) => {
               data-toggle="tooltip"
               data-placement="top"
               title={intl.formatMessage({
-                id: "delete",
-                defaultMessage: "Delete"
+                id: 'delete',
+                defaultMessage: 'Delete'
               })}
             >
             </i>

@@ -90,7 +90,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
