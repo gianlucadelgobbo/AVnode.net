@@ -84,7 +84,8 @@ EventSettingsForm = injectIntl(reduxForm({ form: 'EventSettings' })(EventSetting
 const EventSettings = props => {
   console.log('EventSettings props');
   const onSubmit = (props, dispatch) => {
-    console.log('EventSettings onSubmit');
+    console.log('EventSettings onSubmit dispatch:' + dispatch);
+    //dispatch(editEvent);
   };
   const onSubmitSuccess = () => {
     console.log('EventSettings onSubmitSuccess');

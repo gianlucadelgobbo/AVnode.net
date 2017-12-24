@@ -145,8 +145,8 @@ export function fetchUser() {
   };
 }
 
-export function editEvent(data) {
-  console.log('editEvent data:' + JSON.stringify(data));
+export function editEvent(dispatch) {
+ /* console.log('editEvent data:' + JSON.stringify(data));
   // about, verify unique
   if (data.about) {
     let aboutFound = false;
@@ -211,6 +211,20 @@ export function editEvent(data) {
   }
   return dispatch => {
     console.log('editEvent dispatch');
+    dispatch({
+      type: REQUEST_EDIT_EVENT,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/event/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
+  };*/
+  return data => {
+    console.log('_______________ACTION editEvent __________________________________');
+    console.log('editEvent data._id: ' + JSON.stringify(data._id));
     dispatch({
       type: REQUEST_EDIT_EVENT,
       id: data._id
