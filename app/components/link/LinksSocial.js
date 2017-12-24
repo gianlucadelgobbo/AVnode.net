@@ -45,7 +45,7 @@ const LinksSocial = injectIntl(({
 
         <div className="input-group-addon">
 
-          {SocialLinkTypes ?
+          {SocialLinkTypes && current ?
             <Field
               className="form-control custom-select"
               name="linkType"

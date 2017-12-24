@@ -9,10 +9,10 @@ const ProfileAddressesPrivate = injectIntl(({
   userAddressDelete
  }) => {
 
-    const onUserAddressDelete = (address) => (e) => {
-        userAddressDelete(user._id, address._id);
-    };
-    return (
+  const onUserAddressDelete = (address) => (e) => {
+    userAddressDelete(user._id, address._id);
+  };
+  return (
         <fieldset className="form-group">
             <legend>
                 <FormattedMessage
@@ -70,7 +70,7 @@ const ProfileAddressesPrivate = injectIntl(({
                             defaultMessage="Locality"
                         />
                     </label>
-                    <span class="badge badge-success">
+                    <span className="badge badge-success">
                     <FormattedMessage
                         id="public"
                         defaultMessage='PUBLIC'
@@ -107,7 +107,7 @@ const ProfileAddressesPrivate = injectIntl(({
                             defaultMessage="Country"
                         />
                     </label>
-                    <span class="badge badge-success">
+                    <span className="badge badge-success">
                     <FormattedMessage
                         id="public"
                         defaultMessage='PUBLIC'
@@ -149,7 +149,7 @@ const ProfileAddressesPrivate = injectIntl(({
                 }
             </ul>
         </fieldset>
-    );
+  );
 });
 
 export default ProfileAddressesPrivate;

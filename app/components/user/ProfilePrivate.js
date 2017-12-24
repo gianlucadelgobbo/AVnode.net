@@ -4,16 +4,16 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import LinksTel from '../link/LinksTel';
 import ProfileAddressesPrivate from './ProfileAddressesPrivate';
-import validate from './validate'
-import renderField from './renderField'
+import validate from './validate';
+import renderField from './renderField';
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';
-import Moment from 'moment'
+import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 
 Moment.locale('en');
-momentLocalizer()
+momentLocalizer();
 
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
@@ -35,7 +35,7 @@ const ProfilePrivate = ({
 
   const handleChange = () => {
     console.log(user);
-  }
+  };
   
   const renderDateTimePicker = ({ input: { onChange, value }, showTime }) =>
   <DateTimePicker

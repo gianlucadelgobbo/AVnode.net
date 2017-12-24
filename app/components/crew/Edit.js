@@ -114,7 +114,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-success">
+          <span className="badge badge-success">
               <FormattedMessage
                   id="public"
                   defaultMessage='Public'
@@ -137,7 +137,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-success">
+          <span className="badge badge-success">
               <FormattedMessage
                   id="public"
                   defaultMessage='Public'
@@ -165,7 +165,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-success">
+          <span className="badge badge-success">
               <FormattedMessage
                   id="public"
                   defaultMessage='Public'
@@ -193,7 +193,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-success">
+          <span className="badge badge-success">
             <FormattedMessage
               id="public"
               defaultMessage='Public'
@@ -267,7 +267,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -290,7 +290,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-success">
+            <span className="badge badge-success">
               <FormattedMessage
                 id="public"
                 defaultMessage='Public'
@@ -312,7 +312,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-success">
+            <span className="badge badge-success">
               <FormattedMessage
                 id="public"
                 defaultMessage='Public'
@@ -492,7 +492,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -525,7 +525,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-success">
+          <span className="badge badge-success">
               <FormattedMessage
                   id="public"
                   defaultMessage='Public'
@@ -561,7 +561,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -588,7 +588,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -611,7 +611,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -636,7 +636,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -674,7 +674,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -698,7 +698,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -738,7 +738,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -763,7 +763,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -786,7 +786,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -810,7 +810,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -850,7 +850,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -880,7 +880,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
@@ -910,7 +910,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'
@@ -941,7 +941,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                 <FormattedMessage
                     id="private"
                     defaultMessage='Private'
@@ -964,7 +964,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                 <FormattedMessage
                     id="private"
                     defaultMessage='Private'
@@ -989,7 +989,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                 <FormattedMessage
                     id="private"
                     defaultMessage='Private'
@@ -1012,7 +1012,7 @@ let CrewForm = props => {
               />
             </label>
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
                 <FormattedMessage
                     id="private"
                     defaultMessage='Private'
@@ -1035,7 +1035,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'
@@ -1062,7 +1062,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'
@@ -1089,7 +1089,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'
@@ -1116,7 +1116,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'

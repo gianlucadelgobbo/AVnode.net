@@ -14,19 +14,19 @@ import Match from 'preact-router/match';
 
 import {
   editEvent,
-  linkDelete,
+  eventLinkDelete,
   removeEventCategory,
   eventAboutDelete
 } from '../../reducers/actions';
 
 let EventPublicForm = props => {
-  const { handleSubmit, editEvent, linkDelete, removeEventCategory, aboutDelete, event, intl } = props
+  const { handleSubmit, editEvent, linkDelete, removeCategory, aboutDelete, event, intl } = props;
 
-  const removeCategory = (categoryId) => (e) => {
+  /* const removeCategory = (categoryId) => (e) => {
     e.preventDefault();
     // BL CHECK return dispatch(removeEventCategory(event._id, categoryId));
     return removeEventCategory(event._id, categoryId);
-  };
+  }; */
 
   return (
     <div>
@@ -155,6 +155,8 @@ const EventPublic = props => {
   console.log('EventPublic props');
   const onSubmit = (props, dispatch) => {
     console.log('EventPublic onSubmit');
+    // loop dispatch(editEvent(props));
+    editEvent(dispatch);
   };
   const onSubmitSuccess = () => {
     console.log('EventPublic onSubmitSuccess');
@@ -180,8 +182,9 @@ const mapStateToProps = (state, props) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  aboutDelete: dispatch(eventAboutDelete),
-  editEvent: dispatch(editEvent)
+  removeCategory: dispatch(removeEventCategory),
+  linkDelete: dispatch(eventLinkDelete),
+  aboutDelete: dispatch(eventAboutDelete)//,  editEvent: dispatch(editEvent)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventPublic);

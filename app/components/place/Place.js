@@ -1,6 +1,6 @@
 import React, { h } from 'preact';
 import { Field } from 'redux-form';
-import { injectIntl, FormattedMessage } from 'preact-intl';
+import { FormattedMessage } from 'preact-intl';
 
 const styles = {
   placeSuggestionBox: {
@@ -94,15 +94,15 @@ class Place extends React.Component {
 
   getInputProps() {
     const defaultInputProps = {
-      type: "text",
-    }
+      type: 'text',
+    };
     return {
       ...defaultInputProps,
       ...this.props.inputProps,
       onKeyDown: (e) => {
-        this.fetchPredictions(e)
+        this.fetchPredictions(e);
       },
-    }
+    };
   }
 
   render() {
@@ -115,7 +115,7 @@ class Place extends React.Component {
             defaultMessage="Places"
           />
         </label>
-        <div class="google-maps-places">
+        <div className="google-maps-places">
           <Field
               className="form-control"
               name="locality"
@@ -143,7 +143,7 @@ class Place extends React.Component {
                   onClick={() => this.save(p)}
                   style={styles.placeSuggestion}
                 >
-                  <i class="fa fa-map-marker"></i> &nbsp;
+                  <i className="fa fa-map-marker"></i> &nbsp;
                   {p.title}
                 </div>
               ))}

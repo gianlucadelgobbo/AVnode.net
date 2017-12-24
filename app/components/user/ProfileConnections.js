@@ -1,5 +1,4 @@
 import { h } from 'preact';
-import { connect } from 'preact-redux';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';

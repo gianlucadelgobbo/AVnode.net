@@ -46,7 +46,7 @@ let CrewForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span class="badge badge-success">
+            <span className="badge badge-success">
                             <FormattedMessage
                                 id="public"
                                 defaultMessage='Public'
@@ -60,11 +60,11 @@ let CrewForm = props => {
                             value={props.stagename}
                         />
                     </div>
-                    <p>( 
+                    <p>(
                       <FormattedMessage
-                        id="username"
-                        defaultMessage="Username"
-                       /> : {props.username} slug : {props.slug})
+                            id="username"
+                            defaultMessage="Username"
+                        /> : {props.username} slug : {props.slug})
                     </p>
                     <Abouts
                         current={crew}
@@ -94,8 +94,8 @@ const CrewPublic = props => {
   console.log('CrewPublic props');
   const onSubmit = (props, dispatch) => {
     console.log('CrewPublic onSubmit');
-    //dispatch(editCrew(props));
-    //editCrew(dispatch);
+        //dispatch(editCrew(props));
+        //editCrew(dispatch);
   };
   const onSubmitSuccess = () => {
     console.log('CrewPublic onSubmitSuccess');
