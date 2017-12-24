@@ -63,6 +63,7 @@ export const REQUEST_DELETE_EVENT_ORGANIZINGCREW = 'REQUEST_DELETE_EVENT_ORGANIZ
 export const REQUEST_ADD_EVENT_VENUE = 'REQUEST_ADD_EVENT_VENUE';
 export const REQUEST_DELETE_EVENT_VENUE = 'REQUEST_DELETE_EVENT_VENUE';
 export const REQUEST_DELETE_EVENT_CATEGORY = 'REQUEST_DELETE_EVENT_CATEGORY';
+export const REQUEST_ADD_EVENT_CATEGORY = 'REQUEST_ADD_EVENT_CATEGORY';
 
 export const REQUEST_ADD_CREW = 'REQUEST_ADD_CREW';
 export const REQUEST_DELETE_CREW = 'REQUEST_DELETE_CREW';
@@ -141,6 +142,41 @@ export function gotUser(json) {
 export function fetchUser() {
   return dispatch => {
     return fetch('/account/api/user')
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function addEventCategory(id, category) {
+  return dispatch => {
+    console.log('_______________ACTION addEventCategory __________________________________');
+    console.log('addEventCategory id: ' + id + 'category: ' + category);
+    dispatch({
+      type: REQUEST_ADD_EVENT_CATEGORY,
+      payload: {
+        eventid: id,
+        category: category
+      }
+    });
+    return fetch(
+      `/account/api/event/${id}/category/${category}`, {
+        method: 'PUT'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function removeEventCategory(dispatch) {
+  return (eventId, categoryId) => {
+    console.log('_______________ACTION removeEventCategory __________________________________');
+    console.log('removeEventCategory eventId: ' + eventId + 'categoryId: ' + categoryId);
+    dispatch({
+      type: REQUEST_DELETE_EVENT_CATEGORY,
+      payload: {
+        eventId: eventId,
+        categoryId: categoryId
+      }
+    });
+    return fetch(`/account/api/event/${eventId}/category/${categoryId}`, {
+      method: 'DELETE',
+    })
       .then(json => dispatch(gotUser(json)));
   };
 }
@@ -606,21 +642,6 @@ export function removeCrewMember(crewId, member) {
   };
 }
 
-export function removeEventCategory(eventId, categoryId) {
-  return dispatch => {
-    dispatch({
-      type: REQUEST_DELETE_EVENT_CATEGORY,
-      payload: {
-        eventId,
-        categoryId
-      }
-    });
-    return fetch(`/account/api/event/${eventId}/category/${categoryId}`, {
-      method: 'DELETE',
-    })
-      .then(json => dispatch(gotUser(json)));
-  };
-}
 
 export function addCrewImage(id, file) {
   return dispatch => {
@@ -698,7 +719,7 @@ export function deletePerformance(id) {
 }
 export function aboutPerformanceMakePrimary(dispatch) {
   return (userId, perfId, aboutId) => {
-    console.log("aboutPerformanceMakePrimary userId: " + userId + " perfid: " + perfid + " aboutid: " + aboutId);
+    console.log('aboutPerformanceMakePrimary userId: ' + userId + ' perfid: ' + perfid + ' aboutid: ' + aboutId);
     dispatch({
       type: REQUEST_PERFORMANCE_MAKEABOUTPRIMARY,
       payload: {
@@ -715,9 +736,9 @@ export function aboutPerformanceMakePrimary(dispatch) {
 }
 
 
-export function editPerformance(data) {
+export function editPerformance(dispatch) {
   // about, verify unique
-  if (data.about) {
+  /* if (data.about) {
     let aboutFound = false;
     // init if first about
     if (!data.abouts) data.abouts = [];
@@ -766,6 +787,20 @@ export function editPerformance(data) {
         body: JSON.stringify(data)
       })
       .then(json => dispatch(gotUser(json)));
+  }; */
+  return data => {
+    console.log('_______________ACTION editPerformance __________________________________');
+    console.log('editPerformance data._id: ' + JSON.stringify(data._id));
+    dispatch({
+      type: REQUEST_EDIT_PERFORMANCE,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/performance/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
   };
 }
 export function performanceAboutEdit(id, aboutlanguage) {
@@ -780,7 +815,7 @@ export function performanceAboutEdit(id, aboutlanguage) {
       }
     });
     return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
-      method: 'PUT',
+      method: 'PUT'
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
@@ -1092,7 +1127,7 @@ export function addUserTeaserImage(dispatch) {
 
 export function userEmailMakePrimary(dispatch) {
   return (userId, emailId) => {
-    console.log(userId + " emailId: " + emailId);
+    console.log(userId + ' emailId: ' + emailId);
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIMARY,
       payload: {

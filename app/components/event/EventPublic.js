@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import Abouts from '../about/Abouts';
-// import Languages from '../language/Languages';
+
 import Category from '../category/Category';
 import Categories from '../category/Event';
 import LinksWeb from '../link/LinksWeb';
@@ -16,18 +16,29 @@ import {
   editEvent,
   eventLinkDelete,
   removeEventCategory,
+  addEventCategory,
   eventAboutDelete
 } from '../../reducers/actions';
 
 let EventPublicForm = props => {
-  const { handleSubmit, editEvent, linkDelete, removeCategory, aboutDelete, event, intl } = props;
+  const { handleSubmit, editEvent, dispatch, linkDelete, removeEventCategory, aboutDelete, event, intl } = props;
+  if (!props.dispatch) console.log('EventPublicForm, ERROR dispatch undefined');
 
-  /* const removeCategory = (categoryId) => (e) => {
+  const onChange = ({ target: { value, name } }) => {
+    if (value !== '') {
+      console.log('EventPublicForm, onChange name:' + name );
+      if (name === 'category') {
+        console.log('EventPublicForm, onChange category value:' + value);
+        // BOF return dispatch(addEventCategory(event._id, value));
+        dispatch(addEventCategory(event._id, value));
+      }
+    }
+  };  
+  const removeCategory = (categoryId) => (e) => {
     e.preventDefault();
-    // BL CHECK return dispatch(removeEventCategory(event._id, categoryId));
-    return removeEventCategory(event._id, categoryId);
-  }; */
-
+    console.log('removeCategory, categoryId:' + categoryId);
+    removeEventCategory(event._id, categoryId);
+  };
   return (
     <div>
       <div className="container-fluid">
@@ -36,7 +47,7 @@ let EventPublicForm = props => {
         </Match>
       </div>
       <Layout>
-        <form onSubmit={handleSubmit(editEvent)}>
+        <form onSubmit={handleSubmit(editEvent)} onChange={onChange}>
           <Field
             name="_id"
             component="input"
@@ -45,8 +56,8 @@ let EventPublicForm = props => {
           <div className="form-group">
             <label htmlFor="title">
               <FormattedMessage
-                id="name"
-                defaultMessage="Name"
+                id="title"
+                defaultMessage="Title"
               />
             </label>
             <Field
@@ -154,9 +165,8 @@ EventPublicForm = injectIntl(reduxForm({ form: 'EventPublic' })(EventPublicForm)
 const EventPublic = props => {
   console.log('EventPublic props');
   const onSubmit = (props, dispatch) => {
-    console.log('EventPublic onSubmit');
-    // loop dispatch(editEvent(props));
-    editEvent(dispatch);
+    console.log('EventPublic onSubmit dispatch' + dispatch);
+    dispatch(editEvent(props));
   };
   const onSubmitSuccess = () => {
     console.log('EventPublic onSubmitSuccess');
@@ -172,19 +182,18 @@ const EventPublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('_______________ props __________________________________');
-  console.log('--> EventPublic props.url: ' + JSON.stringify(props.url));
-  console.log('_______________ state __________________________________');
-  console.log('--> EventPublic state.user.eventId: ' + JSON.stringify(state.user.eventId));
+  // console.log('--> EventPublic props.url: ' + JSON.stringify(props.url));
   return {
     event: (state.user.events.find(e => { return e._id === props._id; })),
     user: state.user
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  removeCategory: dispatch(removeEventCategory),
+  addEventCategory: dispatch(addEventCategory),
+  removeEventCategory: dispatch(removeEventCategory),
   linkDelete: dispatch(eventLinkDelete),
-  aboutDelete: dispatch(eventAboutDelete)//,  editEvent: dispatch(editEvent)
+  aboutDelete: dispatch(eventAboutDelete),
+  editEvent: dispatch(editEvent)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventPublic);

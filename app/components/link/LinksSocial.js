@@ -15,7 +15,7 @@ const LinksSocial = injectIntl(({
   };
   return (
     <fieldset className="form-group">
-    { console.log(current)}
+    { (current) ? <p>ok</p> : <p>KO</p>}
       <legend>
         <FormattedMessage
           id="socials"
