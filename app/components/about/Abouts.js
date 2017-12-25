@@ -27,7 +27,6 @@ const Abouts = injectIntl(({
                   defaultMessage="About section in language:"
                 />
               </label>
-
               {Languages ?
                 <Field
                   className="form-control custom-select"
@@ -91,6 +90,12 @@ const Abouts = injectIntl(({
         >
         </i>
       </button>
+      <label>
+        <FormattedMessage
+          id="addabout"
+          defaultMessage="Add About section"
+        />
+      </label>
     </div>
   ));
 export default Abouts;
