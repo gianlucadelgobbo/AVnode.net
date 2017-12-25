@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import About from './About';
 import Languages from '../language/Languages';
 
-const ProfileAboutsForm = injectIntl(({
+const AboutsForm = injectIntl(({
   current,
   intl,
   aboutDelete
@@ -97,4 +97,4 @@ const ProfileAboutsForm = injectIntl(({
   );
 });
 
-export default ProfileAboutsForm;
+export default AboutsForm;

@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import Abouts from '../about/Abouts';
@@ -38,6 +38,49 @@ let EventPublicForm = props => {
     console.log('removeCategory, categoryId:' + categoryId);
     removeEventCategory(event._id, categoryId);
   };
+  const renderField = ({ input, label, type, meta: { touched, error } }) => (
+    <div>
+      <label>{label}</label>
+      <div>
+        <input {...input} type={type} placeholder={label} />
+        {touched && error && <span>{error}</span>}
+      </div>
+    </div>
+  );
+  const renderAbouts = ({ fields, meta: { error, submitFailed } }) => (
+    <ul>
+      <li>
+        <button type="button" onClick={() => fields.push({})}>
+          Add About
+        </button>
+        {submitFailed && error && <span>{error}</span>}
+      </li>
+      {fields.map((about, index) => (
+        <li key={index}>
+          <button
+            type="button"
+            title="Remove About"
+            onClick={() => fields.remove(index)}
+          />
+          <h4>About #{index + 1}</h4>
+          <Field
+            name={`${about}.lang`}
+            type="text"
+            component={renderField}
+            label="Language"
+          />
+          <Field
+            name={`${about}.abouttext`}
+            type="text"
+            component={renderField}
+            label="About"
+          />
+          
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <div>
       <div className="container-fluid">
@@ -125,7 +168,10 @@ let EventPublicForm = props => {
               }
             </ul>
           </fieldset>
+{ /* abouts start */}
+<FieldArray name="abouts" component={renderAbouts} />
 
+{ /* abouts end */}
           <Abouts
             current={event}
             intl={intl}
