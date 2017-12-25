@@ -40,87 +40,6 @@ let EventPublicForm = props => {
     removeEventCategory(event._id, categoryId);
   };
 
-  const renderAbouts = ({ fields, meta: { error, submitFailed } }) => (
-    <div>
-      {submitFailed && error && <span>{error}</span>}
-
-      {fields.map((about, index) => (
-        <div key={index}>
-          <h4>About {index + 1}</h4>
-          <div className="row">
-            <div className="col-sm-12 input-group">
-              <Field
-                className="form-control"
-                name={`${about}.abouttext`}
-                component="textarea"
-                rows="4"
-                placeholder={intl.formatMessage({
-                  id: 'about.placeholder',
-                  defaultMessage: 'About'
-                })}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-10 input-group-addon">
-              <label htmlFor="aboutlanguage">
-                <FormattedMessage
-                  id="language"
-                  defaultMessage="Language"
-                />
-              </label>
-              {Languages ?
-                <Field
-                  className="form-control custom-select"
-                  name={`${about}.lang`}
-                  component="select"
-                >
-                  <option value="en">
-                    <FormattedMessage
-                      id="language.en"
-                      defaultMessage="English"
-                    />
-                  </option>
-                  {Languages.map((c) => (
-                    <option value={c.code}>{c.language}</option>
-                  ))
-                  }
-                  { /*  */}
-                </Field> :
-                <p>Loading languages…</p>
-              }
-            </div>
-            <div className="col-sm-2 input-group-addon">
-              <button
-                type="button"
-                className="btn btn-danger btn-sm"
-                onClick={() => fields.remove(index)}
-              >
-                <i
-                  className="fa fa-trash"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title={intl.formatMessage({
-                    id: 'delete',
-                    defaultMessage: 'Delete'
-                  })}
-                >
-                </i>
-              </button>
-
-            </div>
-          </div>
-        </div>
-      ))}
-      <button
-        type="button"
-        className="btn btn-success btn-sm"
-        onClick={() => fields.push({})}>
-        <i className="fa fa-plus"></i>
-      </button>
-    </div>
-  );
-
   return (
     <div>
       <div className="container-fluid">
@@ -208,15 +127,11 @@ let EventPublicForm = props => {
               }
             </ul>
           </fieldset>
+          
           { /* abouts start */}
-          <FieldArray name="abouts" component={renderAbouts} />
-
+          <FieldArray name="abouts" component={Abouts} />
           { /* abouts end */}
-          <Abouts
-            current={event}
-            intl={intl}
-            aboutDelete={aboutDelete}
-          />
+
           <LinksWeb
             current={event}
             intl={intl}

@@ -1,100 +1,112 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import About from './About';
 import Languages from '../language/Languages';
 
-const AboutsForm = injectIntl(({
-  current,
-  intl,
-  aboutDelete
-}) => {
-
-  const onAboutDelete = (about) => (e) => {
-    console.log('onAboutDelete' + about);
-    return aboutDelete(current._id, about.lang);
-  };
-  return (
-    <fieldset className="form-group">
+const Abouts = injectIntl(({
+  fields,
+  meta: { error, submitFailed },
+  intl
+}) => (
+    <div>
       <legend>
         <FormattedMessage
           id="abouts"
           defaultMessage="About you..."
         />
       </legend>
+      {submitFailed && error && <span>{error}</span>}
 
-      <label htmlFor="about">
-        <FormattedMessage
-          id="addabout"
-          defaultMessage="About you"
-        />
-      </label>
-      <div className="input-group">
-        <Field
-          className="form-control"
-          name="about"
-          component="textarea"
-          rows="4"
-          placeholder={intl.formatMessage({
-            id: 'about.placeholder',
-            defaultMessage: 'About'
-          })}
-        />
-      </div>
-      <div className="row">
-        <div className="col-sm-10 input-group">
-          <label htmlFor="aboutlanguage">
-            <FormattedMessage
-              id="language"
-              defaultMessage="Language"
-            />
-          </label>
-          {Languages ?
+      {fields.map((about, index) => (
+        <div key={index}>
+          <div className="row">
+            <h6>
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => fields.remove(index)}
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title={intl.formatMessage({
+                    id: 'delete',
+                    defaultMessage: 'Delete'
+                  })}
+                >
+                </i>
+              </button>
+            </h6>
+
+            <label htmlFor="aboutlanguage">
+              <FormattedMessage
+                id="aboutTitle"
+                defaultMessage="About section in language:"
+              />
+            </label>
+            <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => fields.remove(index)}
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title={intl.formatMessage({
+                    id: 'delete',
+                    defaultMessage: 'Delete'
+                  })}
+                >
+                </i>
+              </button>
+            {Languages ?
+              <Field
+                className="form-control custom-select"
+                name={`${about}.lang`}
+                component="select"
+              >
+                <option value="">Select</option>
+                {Languages.map((c) => (
+                  <option value={c.code}>{c.language}</option>
+                ))
+                }
+                { /*  */}
+              </Field> :
+              <p>Loading languages…</p>
+            }
+          </div>
+
+          <div className="col-sm-12 input-group">
             <Field
-              className="form-control custom-select"
-              name="aboutlanguage"
-              component="select"
-            >
-              <option value="en">
-                <FormattedMessage
-                  id="language.en"
-                  defaultMessage="English"
-                />
-              </option>
-              {Languages.map((c) => (
-                <option value={c.code}>{c.language}</option>
-              ))
-              }
-              { /*  */}
-            </Field> :
-            <p>Loading languages…</p>
-          }
-        </div>
-        <div className="col-sm-2 input-group-addon">
-          <button className="btn btn-success btn-sm">
-            <i className="fa fa-plus"></i>
-          </button>
-        </div>
-      </div>
-      <label>
-        <FormattedMessage
-          id="manageabout"
-          defaultMessage="Manage your About texts"
-        />
-      </label>
-      <ul className="list-group mt-2">
-        {
-          current && current.abouts && current.abouts.map((a) => (
-            <About
-              about={a}
-              onDelete={onAboutDelete(a)}
-              intl={intl}
+              className="form-control"
+              name={`${about}.abouttext`}
+              component="textarea"
+              rows="4"
+              placeholder={intl.formatMessage({
+                id: 'about.placeholder',
+                defaultMessage: 'About'
+              })}
             />
-          ))
-        }
-      </ul>
-    </fieldset>
-  );
-});
-
-export default AboutsForm;
+          </div>
+        </div>
+      ))}
+      <button
+        type="button"
+        className="btn btn-success btn-sm"
+        onClick={() => fields.push({})}>
+        <i
+          className="fa fa-plus"
+          data-toggle="tooltip"
+          data-placement="top"
+          title={intl.formatMessage({
+            id: 'add',
+            defaultMessage: 'Add'
+          })}
+        >
+        </i>
+      </button>
+    </div>
+  ));
+export default Abouts;

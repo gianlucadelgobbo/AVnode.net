@@ -813,7 +813,7 @@ let CrewOrganizationForm = props => {
                 </form>
             </Layout>
         </div>
-    );
+  );
 };
 
 CrewOrganizationForm = injectIntl(reduxForm({ form: 'crewOrganization' })(CrewOrganizationForm));
@@ -822,10 +822,10 @@ const CrewOrganization = props => {
   const onSubmit = (props, dispatch) => {
         //dispatch(editCrew(props));
         //editCrew(dispatch);
-    };
+  };
   const onSubmitSuccess = () => {
         //route('/account/crews');
-    };
+  };
   return (
         <CrewOrganizationForm
             initialValues={props.crew}
@@ -833,7 +833,7 @@ const CrewOrganization = props => {
             onSubmitSuccess={onSubmitSuccess}
             {...props}
         />
-    );
+  );
 };
 
 const mapStateToProps = (state, props) => {
@@ -842,9 +842,9 @@ const mapStateToProps = (state, props) => {
   console.log('_______________ state __________________________________');
   console.log('--> CrewOrganization state.user.crewId: ' + JSON.stringify(state.user.crewId));
   return {
-      crew: (state.user.crews.find(c => { return c._id === props._id; })),
-      user: state.user
-    };
+    crew: (state.user.crews.find(c => { return c._id === props._id; })),
+    user: state.user
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({

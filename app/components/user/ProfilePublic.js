@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import validate from './validate';
@@ -104,12 +104,9 @@ const ProfilePublic = ({
               />
             </p>
           </fieldset>
-
-          <Abouts
-            current={user}
-            intl={intl}
-            aboutDelete={aboutDelete}
-          />
+          { /* abouts start */}
+          <FieldArray name="abouts" component={Abouts} />
+          { /* abouts end */}
 
           <LinksWeb
             current={user}
