@@ -235,6 +235,7 @@
 	"Password": "Mot de passe",
 	"Confirm Password": "Confirmer le mot de passe",
 	"addUrl": "Ajouter/modifier une url",
+	"url.placeholder": "https://...",
 	"url": "Url",
 	"addNumber": "Ajouter/modifier un numéro",
 	"number": "Numéro",

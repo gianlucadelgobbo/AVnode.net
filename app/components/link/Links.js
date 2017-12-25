@@ -20,8 +20,7 @@ const Links = injectIntl(({
       {fields.map((link, index) => (
         <div key={index}>
           <div className="row">
-            <div className="col-sm-8 input-group">
-              
+            <div className="col-sm-8 input-group">              
               <Field
                 className="form-control"
                 name={`${link}.url`}

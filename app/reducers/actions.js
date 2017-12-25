@@ -9,7 +9,6 @@ export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
 export const REQUEST_EDIT_USERLINKS = 'REQUEST_EDIT_USERLINKS';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
-export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const RESPONSE_LINKTYPES = 'RESPONSE_LINKTYPES';
 export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
@@ -184,82 +183,6 @@ export function removeEventCategory(dispatch) {
 }
 
 export function editEvent(dispatch) {
- /* console.log('editEvent data:' + JSON.stringify(data));
-  // about, verify unique
-  if (data.about) {
-    let aboutFound = false;
-    // init if first about
-    if (!data.abouts) data.abouts = [];
-    // check existing abouts
-    data.abouts.map((a) => {
-      if (a.lang === data.aboutlanguage) {
-        // about in the form already exists in abouts
-        aboutFound = true;
-        // update abouttext
-        a.abouttext = data.about;
-      }
-    });
-    // in case of new about, add it to the abouts
-    if (!aboutFound) {
-      if (!data.aboutlanguage) data.aboutlanguage = 'en';
-      data.abouts.push({
-        lang: data.aboutlanguage,
-        abouttext: data.about
-      });
-    }
-  }
-  // link, verify unique
-  if (data.link) {
-    let linkFound = false;
-    let primaryLink = true;
-    data.links.map((l) => {
-      primaryLink = false;
-      if (l.url === data.link) {
-        // url in the form already exists in links
-        linkFound = true;
-      }
-    });
-    // in case of new link, add it to the links
-    if (!linkFound) {
-      console.log('data.link:' + data.link);
-      data.links.push({
-        url: data.link,
-        is_primary: primaryLink,
-        is_confirmed: false,
-        is_public: false,
-        type: data.linkType
-      });
-    }
-  }
-  // category, verify unique
-  if (data.category) {
-    let categoryFound = false;
-    data.categories.map((c) => {
-      if (c.name === data.category) {
-        // name in the form already exists in categories
-        categoryFound = true;
-      }
-    });
-    // in case of new category, add it to the categories
-    if (!categoryFound) {
-      data.categories.push({
-        name: data.category
-      });
-    }
-  }
-  return dispatch => {
-    console.log('editEvent dispatch');
-    dispatch({
-      type: REQUEST_EDIT_EVENT,
-      id: data._id
-    });
-    return fetch(
-      `/account/api/event/${data._id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data)
-      })
-      .then(json => dispatch(gotUser(json)));
-  };*/
   return data => {
     console.log('_______________ACTION editEvent __________________________________');
     console.log('editEvent data._id: ' + JSON.stringify(data._id));
@@ -644,7 +567,6 @@ export function removeCrewMember(crewId, member) {
   };
 }
 
-
 export function addCrewImage(id, file) {
   return dispatch => {
     dispatch({
@@ -736,7 +658,6 @@ export function aboutPerformanceMakePrimary(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-
 
 export function editPerformance(dispatch) {
   // about, verify unique
@@ -839,7 +760,7 @@ export function performanceAboutDelete(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-
+// BL FIXME REQUEST_EVENT_DELETEABOUT not defined
 export function eventAboutDelete(dispatch) {
   return (eventId, aboutlanguage) => {
     console.log('_______________ACTION eventAboutDelete __________________________________');
@@ -1223,13 +1144,14 @@ export function userEmailDelete(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function editUser(dispatch) {
   return data => {
     let str = JSON.stringify(data);
     console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data length: ' + str.length);
+    console.log('editUser links: ' + JSON.stringify(data.links));
   
     dispatch({
       type: REQUEST_EDIT_USER,
@@ -1339,7 +1261,7 @@ export function userAddressDelete(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function addPlace(dispatch) {
   return (id, location) => {
@@ -1357,7 +1279,7 @@ export function addPlace(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function editUserAddresses(dispatch) {
   return data => {
@@ -1383,12 +1305,13 @@ export function editUserAddresses(dispatch) {
         // address in the form already exists in addresses
         addressFound = true;
         // update the fields
+        /* BL FIXME user is not defined
         user.street_number = data.street_number;
         user.route = data.route;
         user.postal_code = data.postal_code;
         user.locality = data.locality;
         user.administrative_area_level_1 = data.administrative_area_level_1;
-        user.country = data.country;
+        user.country = data.country; */
       }
     });
     if (!addressFound) {
@@ -1576,7 +1499,7 @@ export function addEventVenue(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function removeEventVenue(dispatch) {
   return (eventId, venueId) => {
@@ -1593,8 +1516,7 @@ export function removeEventVenue(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
-
+}
 
 // Links
 export function userLinkAdd(dispatch) {
@@ -1613,7 +1535,7 @@ export function userLinkAdd(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 /*
 export function userLinkEdit(dispatch) {
   return (userId, linkId) => {
@@ -1706,7 +1628,7 @@ export function eventLinkDelete(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {
@@ -1723,5 +1645,5 @@ export function userLinkDelete(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 

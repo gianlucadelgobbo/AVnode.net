@@ -20,9 +20,10 @@ const ProfilePublic = ({
   invalid,
   pristine,
   valid,*/
+  dispatch,
   intl,
   handleSubmit,
-  saveProfile,
+  editUser,
   linkDelete,
   addressDelete,
   fetchCountries
@@ -43,7 +44,7 @@ const ProfilePublic = ({
         </Match>
       </div>
       <Layout>
-        <form onSubmit={handleSubmit(saveProfile)}>
+        <form onSubmit={handleSubmit(editUser)}>
           <Field
             name="_id"
             component="input"

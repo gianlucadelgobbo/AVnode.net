@@ -8,7 +8,7 @@ import {
   PERFORMANCE_NAVIGATE,
   EVENT_NAVIGATE,
   GOT_USER,
-  EDIT_USER,
+  REQUEST_EDIT_USER,
   CHANGE_LANGUAGE,
   RESPONSE_LINKTYPES,
   RESPONSE_COUNTRIES,
@@ -228,7 +228,10 @@ const user = (state = initialValues, action) => {
     return Object.assign({}, state, action.json, {
       ajaxInProgress: false
     });
-  case EDIT_USER:
+  case REQUEST_EDIT_USER:
+    console.log('_______________ index redux REQUEST_EDIT_USER __________________________________');
+    console.log('REQUEST_EDIT_USER state links: ' + JSON.stringify(state.links));
+    console.log('REQUEST_EDIT_USER action: ' + JSON.stringify(action));
     return state;
   case REQUEST_ADD_USERPROFILEIMAGE:
     return Object.assign({}, state, {
@@ -238,15 +241,12 @@ const user = (state = initialValues, action) => {
     return Object.assign({}, state, {
       teaserImageUploadInProgress: true
     });
-
   case REQUEST_ADD_PERFORMANCE:
     return Object.assign({}, state, {
       ajaxInProgress: true
     });
-
   case EDIT_EVENT:
     return state; // FIXME?!
-
   case REQUEST_ADD_EVENT:
     return Object.assign({}, state, event(state, action), {
       ajaxInProgress: true

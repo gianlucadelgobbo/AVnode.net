@@ -4,7 +4,6 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import Abouts from '../about/Abouts';
-import Languages from '../language/Languages';
 
 import Category from '../category/Category';
 import Categories from '../category/Event';
@@ -22,7 +21,7 @@ import {
 } from '../../reducers/actions';
 
 let EventPublicForm = props => {
-  const { handleSubmit, editEvent, dispatch, linkDelete, removeEventCategory, aboutDelete, event, intl } = props;
+  const { handleSubmit, editEvent, dispatch, linkDelete, removeEventCategory, event, intl } = props;
   if (!props.dispatch) console.log('EventPublicForm, ERROR dispatch undefined');
 
   const onChange = ({ target: { value, name } }) => {
