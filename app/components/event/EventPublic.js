@@ -4,6 +4,7 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import Abouts from '../about/Abouts';
+import Languages from '../language/Languages';
 
 import Category from '../category/Category';
 import Categories from '../category/Event';
@@ -26,59 +27,98 @@ let EventPublicForm = props => {
 
   const onChange = ({ target: { value, name } }) => {
     if (value !== '') {
-      console.log('EventPublicForm, onChange name:' + name );
+      console.log('EventPublicForm, onChange name:' + name);
       if (name === 'category') {
         console.log('EventPublicForm, onChange category value:' + value);
         dispatch(addEventCategory(event._id, value));
       }
     }
-  };  
+  };
   const removeCategory = (categoryId) => (e) => {
     e.preventDefault();
     console.log('removeCategory, categoryId:' + categoryId);
     removeEventCategory(event._id, categoryId);
   };
-  const renderField = ({ input, label, type, meta: { touched, error } }) => (
-    <div>
-      <label>{label}</label>
-      <div>
-        <input {...input} type={type} placeholder={label} />
-        {touched && error && <span>{error}</span>}
-      </div>
-    </div>
-  );
+
   const renderAbouts = ({ fields, meta: { error, submitFailed } }) => (
-    <ul>
-      <li>
-        <button type="button" onClick={() => fields.push({})}>
-          Add About
-        </button>
-        {submitFailed && error && <span>{error}</span>}
-      </li>
+    <div>
+      {submitFailed && error && <span>{error}</span>}
+
       {fields.map((about, index) => (
-        <li key={index}>
-          <button
-            type="button"
-            title="Remove About"
-            onClick={() => fields.remove(index)}
-          />
-          <h4>About #{index + 1}</h4>
-          <Field
-            name={`${about}.lang`}
-            type="text"
-            component={renderField}
-            label="Language"
-          />
-          <Field
-            name={`${about}.abouttext`}
-            type="text"
-            component={renderField}
-            label="About"
-          />
-          
-        </li>
+        <div key={index}>
+          <h4>About {index + 1}</h4>
+          <div className="row">
+            <div className="col-sm-12 input-group">
+              <Field
+                className="form-control"
+                name={`${about}.abouttext`}
+                component="textarea"
+                rows="4"
+                placeholder={intl.formatMessage({
+                  id: 'about.placeholder',
+                  defaultMessage: 'About'
+                })}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-10 input-group-addon">
+              <label htmlFor="aboutlanguage">
+                <FormattedMessage
+                  id="language"
+                  defaultMessage="Language"
+                />
+              </label>
+              {Languages ?
+                <Field
+                  className="form-control custom-select"
+                  name={`${about}.lang`}
+                  component="select"
+                >
+                  <option value="en">
+                    <FormattedMessage
+                      id="language.en"
+                      defaultMessage="English"
+                    />
+                  </option>
+                  {Languages.map((c) => (
+                    <option value={c.code}>{c.language}</option>
+                  ))
+                  }
+                  { /*  */}
+                </Field> :
+                <p>Loading languages…</p>
+              }
+            </div>
+            <div className="col-sm-2 input-group-addon">
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => fields.remove(index)}
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title={intl.formatMessage({
+                    id: 'delete',
+                    defaultMessage: 'Delete'
+                  })}
+                >
+                </i>
+              </button>
+
+            </div>
+          </div>
+        </div>
       ))}
-    </ul>
+      <button
+        type="button"
+        className="btn btn-success btn-sm"
+        onClick={() => fields.push({})}>
+        <i className="fa fa-plus"></i>
+      </button>
+    </div>
   );
 
   return (
@@ -168,10 +208,10 @@ let EventPublicForm = props => {
               }
             </ul>
           </fieldset>
-{ /* abouts start */}
-<FieldArray name="abouts" component={renderAbouts} />
+          { /* abouts start */}
+          <FieldArray name="abouts" component={renderAbouts} />
 
-{ /* abouts end */}
+          { /* abouts end */}
           <Abouts
             current={event}
             intl={intl}
