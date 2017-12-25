@@ -75,7 +75,7 @@ let PerformanceForm = props => {
           <div className="col-md-9 form-group">
             <label htmlFor="about">
               <FormattedMessage
-                id="addabout"
+                id="addAbout"
                 defaultMessage="About"
               />
             </label>

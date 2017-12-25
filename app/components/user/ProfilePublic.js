@@ -6,6 +6,7 @@ import validate from './validate';
 // import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
+import Links from '../link/Links';
 import LinksWeb from '../link/LinksWeb';
 import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
@@ -105,6 +106,10 @@ const ProfilePublic = ({
           </fieldset>
           { /* abouts start */}
           <FieldArray name="abouts" component={Abouts} />
+          { /* abouts end */}
+
+          { /* abouts start */}
+          <FieldArray name="links" component={Links} />
           { /* abouts end */}
 
           <LinksWeb

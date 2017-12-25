@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Languages from '../language/Languages';
+import PublicLinkTypes from './PublicLinkTypes';
 
-const Abouts = injectIntl(({
+const Links = injectIntl(({
   fields,
   meta: { error, submitFailed },
   intl
@@ -11,38 +11,43 @@ const Abouts = injectIntl(({
     <div>
       <legend>
         <FormattedMessage
-          id="abouts"
-          defaultMessage="About you..."
+          id="links"
+          defaultMessage="Links"
         />
       </legend>
       {submitFailed && error && <span>{error}</span>}
 
-      {fields.map((about, index) => (
+      {fields.map((link, index) => (
         <div key={index}>
           <div className="row">
-            <div className="col-sm-10 input-group">
-              <label htmlFor="aboutlanguage">
-                <FormattedMessage
-                  id="aboutTitle"
-                  defaultMessage="About section in language:"
-                />
-              </label>
-              {Languages ?
-                <Field
-                  className="form-control custom-select"
-                  name={`${about}.lang`}
-                  component="select"
-                >
-                  <option value="">Select</option>
-                  {Languages.map((c) => (
-                    <option value={c.code}>{c.language}</option>
-                  ))
-                  }
-                </Field> :
-                <p>Loading languages…</p>
-              }
+            <div className="col-sm-8 input-group">
+              
+              <Field
+                className="form-control"
+                name={`${link}.url`}
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'url.placeholder',
+                  defaultMessage: 'Url'
+                })}
+              />
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-3 input-group">
+            {PublicLinkTypes ?
+              <Field
+                className="form-control custom-select"
+                name={`${link}.type`}
+                component="select"
+              >
+                {PublicLinkTypes.map((c) => (
+                  <option value={c.key.toLowerCase()}>{c.name}</option>
+                ))
+                }
+              </Field> :
+              <p>Loading a link types…</p>
+            }
+            </div>
+            <div className="col-sm-1">
               <button
                 type="button"
                 className="btn btn-danger btn-sm"
@@ -61,17 +66,8 @@ const Abouts = injectIntl(({
               </button>
             </div>
           </div>
-          <div className="col-sm-12 input-group">
-            <Field
-              className="form-control"
-              name={`${about}.abouttext`}
-              component="textarea"
-              rows="4"
-              placeholder={intl.formatMessage({
-                id: 'about.placeholder',
-                defaultMessage: 'About'
-              })}
-            />
+          <div className="col-sm-2 input-group">
+
           </div>
         </div>
       ))}
@@ -92,10 +88,10 @@ const Abouts = injectIntl(({
       </button>
       <label>
         <FormattedMessage
-          id="addAbout"
-          defaultMessage="Add About section"
+          id="addLink"
+          defaultMessage="Add Link"
         />
       </label>
     </div>
   ));
-export default Abouts;
+export default Links;
