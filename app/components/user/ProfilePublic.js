@@ -22,7 +22,6 @@ const ProfilePublic = ({
   intl,
   handleSubmit,
   saveProfile,
-  aboutDelete,
   linkDelete,
   addressDelete,
   fetchCountries
