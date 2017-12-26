@@ -71,13 +71,10 @@ ProfileConnectionsForm = injectIntl(reduxForm({
 })(ProfileConnectionsForm));
 
 const ProfileConnections = props => {
-  console.log('ProfileConnections props');
   const onSubmit = (props, dispatch) => {
-    console.log('ProfileConnections onSubmit dispatch' + dispatch);
     dispatch(editUser(props));
   };
   const onSubmitSuccess = () => {
-    console.log('ProfileConnections onSubmitSuccess');
   };
   return (
     <ProfileConnectionsForm
@@ -90,10 +87,6 @@ const ProfileConnections = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('--> ProfileConnections state.user: ' + JSON.stringify(state.user._id));
-  console.log('--> ProfileConnections state.user.slug: ' + JSON.stringify(state.user.slug));
-  console.log('--> ProfileConnections state.user.stagename: ' + JSON.stringify(state.user.stagename));
-  console.log('--> ProfileConnections state.user.name: ' + JSON.stringify(state.user.name));
   return {  
     user: state.user,
     initialValues: state.user//, 
