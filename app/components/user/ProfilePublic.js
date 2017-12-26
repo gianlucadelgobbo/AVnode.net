@@ -59,7 +59,7 @@ let ProfilePublicForm = props => {
           <Field
             name="_id"
             component="input"
-            
+            type="hidden"
           />
           <fieldset className="form-group">
             <legend>
@@ -120,16 +120,15 @@ let ProfilePublicForm = props => {
           <FieldArray name="abouts" component={Abouts} />
           { /* abouts end */}
 
-          { /* abouts start */}
+          { /* links start */}
           <FieldArray name="links" component={Links} />
-          { /* abouts end */}
+          { /* links end */}
 
-          <LinksWeb
+          { /* <LinksWeb
             current={user}
             intl={intl}
             linkDelete={linkDelete}
           />
-
           <LinksSocial
             current={user}
             intl={intl}
@@ -140,7 +139,10 @@ let ProfilePublicForm = props => {
             user={user}
             intl={intl}
             addressDelete={addressDelete}
-          />
+          /> */}
+          { /* Addresses start */}
+          <FieldArray name="addresses" component={AddressesPublic} />
+          { /* Addresses end */}
 
           <div className="form-group">
             <button
@@ -163,7 +165,7 @@ let ProfilePublicForm = props => {
 ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
-  //keepDirtyOnReinitialize: true,
+  keepDirtyOnReinitialize: true,
   //validate
 })(ProfilePublicForm));
 

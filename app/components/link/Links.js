@@ -31,7 +31,7 @@ const Links = injectIntl(({
                 })}
               />
             </div>
-            <div className="col-sm-3 input-group">
+            <div className="col-sm-4 input-group">
             {PublicLinkTypes ?
               <Field
                 className="form-control custom-select"
@@ -46,7 +46,7 @@ const Links = injectIntl(({
               <p>Loading a link types…</p>
             }
             </div>
-            <div className="col-sm-1">
+            {/*<div className="col-sm-1">
               <button
                 type="button"
                 className="btn btn-danger btn-sm"
@@ -63,10 +63,7 @@ const Links = injectIntl(({
                 >
                 </i>
               </button>
-            </div>
-          </div>
-          <div className="col-sm-2 input-group">
-
+                </div>*/}
           </div>
         </div>
       ))}
