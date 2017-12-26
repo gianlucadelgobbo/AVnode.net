@@ -7,18 +7,12 @@ import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
 import Links from '../link/Links';
-import LinksWeb from '../link/LinksWeb';
-import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 import { connect } from 'preact-redux';
 import {
   fetchCountries,
-  userLinkAdd,
-  userLinkDelete,
-  userAboutDelete,
-  userAddressDelete,  
   editUser
 } from '../../reducers/actions';
 
@@ -30,12 +24,9 @@ let ProfilePublicForm = props => {
     invalid,
     pristine,
     valid,*/
-
     intl,
     handleSubmit,
     editUser,
-    linkDelete,
-    addressDelete,
     fetchCountries
   } = props;
   if (!props.dispatch) console.log('ProfilePublicForm, ERROR dispatch undefined');
@@ -124,22 +115,6 @@ let ProfilePublicForm = props => {
           <FieldArray name="links" component={Links} />
           { /* links end */}
 
-          { /* <LinksWeb
-            current={user}
-            intl={intl}
-            linkDelete={linkDelete}
-          />
-          <LinksSocial
-            current={user}
-            intl={intl}
-            linkDelete={linkDelete}
-          />
-          <AddressesPublic
-            current={user}
-            user={user}
-            intl={intl}
-            addressDelete={addressDelete}
-          /> */}
           { /* Addresses start */}
           <FieldArray name="addresses" component={AddressesPublic} />
           { /* Addresses end */}
@@ -201,10 +176,6 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  linkAdd: dispatch(userLinkAdd),
-  linkDelete: dispatch(userLinkDelete),
-  aboutDelete: dispatch(userAboutDelete),
-  addressDelete: dispatch(userAddressDelete),
   editUser: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries)
 });

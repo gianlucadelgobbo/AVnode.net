@@ -6,7 +6,7 @@ import Nav from './Nav';
 import Profile from './user/ProfilePublic';
 import ProfileImages from './user/ProfileImagesContainer';
 import ProfileEmails from './user/ProfileEmailsContainer';
-import ProfilePrivate from './user/ProfilePrivateContainer';
+import ProfilePrivate from './user/ProfilePrivate';
 import ProfilePassword from './user/ProfilePasswordContainer';
 import ProfileConnections from './user/ProfileConnections';
 // Crews
