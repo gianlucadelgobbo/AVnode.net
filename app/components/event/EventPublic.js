@@ -7,21 +7,20 @@ import Abouts from '../about/Abouts';
 
 import Category from '../category/Category';
 import Categories from '../category/Event';
-import LinksWeb from '../link/LinksWeb';
+import Links from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
 import EventNav from './EventNav';
 import Match from 'preact-router/match';
 
 import {
   editEvent,
-  eventLinkDelete,
   removeEventCategory,
   addEventCategory,
   eventAboutDelete
 } from '../../reducers/actions';
 
 let EventPublicForm = props => {
-  const { handleSubmit, editEvent, dispatch, linkDelete, removeEventCategory, event, intl } = props;
+  const { handleSubmit, editEvent, dispatch, removeEventCategory, event, intl } = props;
   if (!props.dispatch) console.log('EventPublicForm, ERROR dispatch undefined');
 
   const onChange = ({ target: { value, name } }) => {
@@ -131,16 +130,13 @@ let EventPublicForm = props => {
           <FieldArray name="abouts" component={Abouts} />
           { /* abouts end */}
 
-          <LinksWeb
-            current={event}
-            intl={intl}
-            linkDelete={linkDelete}
-          />
-          <LinksSocial
-            current={event}
-            intl={intl}
-            linkDelete={linkDelete}
-          />
+          { /* links start */}
+          <FieldArray name="links" component={Links} />
+          { /* links end */}
+
+          { /* LinksSocial start */}
+          <FieldArray name="linksSocial" component={LinksSocial} />
+          { /* LinksSocial end */}
 
           <div className="form-group">
             <button
@@ -192,7 +188,6 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => ({
   addEventCategory: dispatch(addEventCategory),
   removeEventCategory: dispatch(removeEventCategory),
-  linkDelete: dispatch(eventLinkDelete),
   aboutDelete: dispatch(eventAboutDelete),
   editEvent: dispatch(editEvent)
 });

@@ -7,6 +7,7 @@ import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
 import Links from '../link/Links';
+import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
@@ -114,6 +115,10 @@ let ProfilePublicForm = props => {
           { /* links start */}
           <FieldArray name="links" component={Links} />
           { /* links end */}
+
+          { /* LinksSocial start */}
+          <FieldArray name="linksSocial" component={LinksSocial} />
+          { /* LinksSocial end */}
 
           { /* Addresses start */}
           <FieldArray name="addresses" component={AddressesPublic} />

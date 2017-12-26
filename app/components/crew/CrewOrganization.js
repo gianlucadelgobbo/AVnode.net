@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
@@ -12,13 +12,12 @@ import OrgContact from './OrgContact';
 import OrgActivity from './OrgActivity';
 import OrgTypes from './OrgTypes';
 
-import LinksWeb from '../link/LinksWeb';
+import Links from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
-    editCrew,
-    linkDelete
+    editCrew
 } from '../../reducers/actions';
 
 let CrewOrganizationForm = props => {
@@ -136,16 +135,13 @@ let CrewOrganizationForm = props => {
                             }
                         </div>
                     </div>
-                    <LinksWeb
-                        current={crew}
-                        intl={intl}
-                        linkDelete={linkDelete}
-                    />
-                    {/*<LinksSocial
-                        current={crew}
-                        intl={intl}
-                        linkDelete={linkDelete}
-                    />*/}
+                    { /* links start */}
+                    <FieldArray name="links" component={Links} />
+                    { /* links end */}
+                    { /* linksSocial start */}
+                    <FieldArray name="linksSocial" component={LinksSocial} />
+                    { /* linksSocial end */}
+
                     <div className="form-group">
                         <label htmlFor="org_public_email">
                             <FormattedMessage
@@ -848,7 +844,6 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  linkDelete: dispatch(crewLinkDelete),
   editCrew: dispatch(editCrew)
 });
 
