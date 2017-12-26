@@ -116,9 +116,9 @@ let ProfilePublicForm = props => {
           <FieldArray name="links" component={Links} />
           { /* links end */}
 
-          { /* LinksSocial start */}
+          { /* linksSocial start */}
           <FieldArray name="linksSocial" component={LinksSocial} />
-          { /* LinksSocial end */}
+          { /* linksSocial end */}
 
           { /* Addresses start */}
           <FieldArray name="addresses" component={AddressesPublic} />

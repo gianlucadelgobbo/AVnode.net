@@ -28,7 +28,6 @@ let ProfilePrivateForm = props => {
   intl,
   handleSubmit,
   editUser,
-  linkDelete,
   userAddressDelete,
   fetchCountries
 } = props;
@@ -175,26 +174,6 @@ let ProfilePrivateForm = props => {
                       defaultMessage: 'YYYY-MM-DD'
                     })}
                   />
-                  {/*
-                <div className="input-group date" data-provide="datepicker-inline">
-                  <div className="input-group-addon">
-                    <i className="fa fa-calendar"></i>
-                  </div>
-                  <Field
-                    className="form-control"
-                    name="birthday"
-                    component="input"
-                    data-provide="datepicker"
-                    data-date-format="yyyy-mm-dd"
-                    placeholder={intl.formatMessage({
-                      id: 'date.placeholder',
-                      defaultMessage: 'YYYY-MM-DD'
-                    })}
-                    
-                  />
-                  
-                </div>
-                  */}
               </div>
               <div className="col-md-6 form-group">
                 <label htmlFor="citizenship">
@@ -228,11 +207,10 @@ let ProfilePrivateForm = props => {
             </div>
           </fieldset>
 
-          <LinksTel
-            current={user}
-            intl={intl}
-            linkDelete={linkDelete}
-          />
+          { /* LinksTel start */}
+          <FieldArray name="linksTel" component={LinksTel} />
+          { /* LinksTel end */}
+
           <ProfileAddressesPrivate
             user={user}
             intl={intl}

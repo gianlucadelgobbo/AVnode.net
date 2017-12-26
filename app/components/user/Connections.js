@@ -1,9 +1,8 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import PublicLinkTypes from './PublicLinkTypes';
 
-const Links = injectIntl(({
+const Connections = injectIntl(({
   fields,
   meta: { error, submitFailed },
   intl
@@ -11,41 +10,27 @@ const Links = injectIntl(({
     <div>
       <legend>
         <FormattedMessage
-          id="websites"
-          defaultMessage="Websites"
+          id="connections"
+          defaultMessage="Connections"
         />
       </legend>
       {submitFailed && error && <span>{error}</span>}
 
-      {fields.map((link, index) => (
+      {fields.map((connection, index) => (
         <div key={index}>
           <div className="row">
-            <div className="col-sm-8 input-group">              
+            <div className="col-sm-11 input-group">              
               <Field
                 className="form-control"
-                name={`${link}.url`}
+                name={`${connection}`}
                 component="input"
                 placeholder={intl.formatMessage({
-                  id: 'url.placeholder',
-                  defaultMessage: 'Url'
+                  id: 'connection',
+                  defaultMessage: 'Connection'
                 })}
               />
             </div>
-            <div className="col-sm-3 input-group">
-            {PublicLinkTypes ?
-              <Field
-                className="form-control custom-select"
-                name={`${link}.type`}
-                component="select"
-              >
-                {PublicLinkTypes.map((c) => (
-                  <option value={c.key.toLowerCase()}>{c.name}</option>
-                ))
-                }
-              </Field> :
-              <p>Loading a link types…</p>
-            }
-            </div>
+            
             <div className="col-sm-1">
               <button
                 type="button"
@@ -84,10 +69,10 @@ const Links = injectIntl(({
       </button>
       <label>
         <FormattedMessage
-          id="addLink"
-          defaultMessage="Add Link"
+          id="add"
+          defaultMessage="Add"
         />
       </label>
     </div>
   ));
-export default Links;
+export default Connections;
