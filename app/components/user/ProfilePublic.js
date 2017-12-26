@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
-import validate from './validate';
+//import validate from './validate';
 // import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
@@ -12,25 +12,36 @@ import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
+import { connect } from 'preact-redux';
+import {
+  fetchCountries,
+  userLinkAdd,
+  userLinkDelete,
+  userAboutDelete,
+  userAddressDelete,  
+  editUser
+} from '../../reducers/actions';
 
-const ProfilePublic = ({
-  user,
-  /*submitting,
-  dirty,
-  invalid,
-  pristine,
-  valid,*/
-  dispatch,
-  intl,
-  handleSubmit,
-  editUser,
-  linkDelete,
-  addressDelete,
-  fetchCountries
-  }) => {
+let ProfilePublicForm = props => {
+  const { 
+    user,
+    /*submitting,
+    dirty,
+    invalid,
+    pristine,
+    valid,*/
+
+    intl,
+    handleSubmit,
+    editUser,
+    linkDelete,
+    addressDelete,
+    fetchCountries
+  } = props;
+  if (!props.dispatch) console.log('ProfilePublicForm, ERROR dispatch undefined');
 
   if (!user) {
-    console.log('ProfilePublic ERROR user not defined');
+    console.log('ProfilePublicForm ERROR user not defined');
   }
   if (!user._countries) {
     fetchCountries();
@@ -48,7 +59,7 @@ const ProfilePublic = ({
           <Field
             name="_id"
             component="input"
-            type="hidden"
+            
           />
           <fieldset className="form-group">
             <legend>
@@ -149,9 +160,51 @@ const ProfilePublic = ({
   );
 };
 
-export default injectIntl(reduxForm({
+ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
   //keepDirtyOnReinitialize: true,
-  validate
-})(ProfilePublic));
+  //validate
+})(ProfilePublicForm));
+
+const ProfilePublic = props => {
+  console.log('ProfilePublic props');
+  const onSubmit = (props, dispatch) => {
+    console.log('ProfilePublic onSubmit dispatch' + dispatch);
+    dispatch(editUser(props));
+  };
+  const onSubmitSuccess = () => {
+    console.log('ProfilePublic onSubmitSuccess');
+  };
+  return (
+    <ProfilePublicForm
+      initialValues={props.event}
+      onSubmit={onSubmit}
+      onSubmitSuccess={onSubmitSuccess}
+      {...props}
+    />
+  );
+};
+
+const mapStateToProps = (state, props) => {
+  console.log('--> ProfilePublic state.user: ' + JSON.stringify(state.user._id));
+  console.log('--> ProfilePublic state.user.slug: ' + JSON.stringify(state.user.slug));
+  console.log('--> ProfilePublic state.user.stagename: ' + JSON.stringify(state.user.stagename));
+  console.log('--> ProfilePublic state.user.name: ' + JSON.stringify(state.user.name));
+  return {  
+    user: state.user,
+    initialValues: state.user//, 
+  //submitting: submitting
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  linkAdd: dispatch(userLinkAdd),
+  linkDelete: dispatch(userLinkDelete),
+  aboutDelete: dispatch(userAboutDelete),
+  addressDelete: dispatch(userAddressDelete),
+  editUser: dispatch(editUser),
+  fetchCountries: dispatch(fetchCountries)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);

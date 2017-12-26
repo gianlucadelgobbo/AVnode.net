@@ -159,7 +159,9 @@ let EventPublicForm = props => {
   );
 };
 
-EventPublicForm = injectIntl(reduxForm({ form: 'EventPublic' })(EventPublicForm));
+EventPublicForm = injectIntl(reduxForm({ 
+  form: 'EventPublic' 
+})(EventPublicForm));
 
 const EventPublic = props => {
   console.log('EventPublic props');
