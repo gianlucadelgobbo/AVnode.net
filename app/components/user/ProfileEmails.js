@@ -4,7 +4,6 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Email from '../emails/Email';
 import Layout from '../Layout';
-// import Languages from '../language/Languages';
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';
 

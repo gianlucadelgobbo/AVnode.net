@@ -10,16 +10,11 @@ import Abouts from '../about/Abouts';
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
-    editCrew,
-    crewAboutDelete
+    editCrew
 } from '../../reducers/actions';
 
 let CrewForm = props => {
-  const { handleSubmit, editCrew, aboutDelete, crew, intl } = props;
-
-    /*const onCrewAboutDelete = (crewId) => (about) => (e) => {
-        return dispatch(crewAboutDelete(crewId, about.lang));
-    };*/
+  const { handleSubmit, editCrew, crew, intl } = props;
 
   if (!props.org) props.org = {};
 
@@ -46,7 +41,7 @@ let CrewForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-success">
+                        <span className="badge badge-success">
                             <FormattedMessage
                                 id="public"
                                 defaultMessage='Public'
@@ -92,12 +87,11 @@ const CrewPublic = props => {
   console.log('CrewPublic props');
   const onSubmit = (props, dispatch) => {
     console.log('CrewPublic onSubmit');
-        //dispatch(editCrew(props));
-        //editCrew(dispatch);
+    dispatch(editCrew(props));
   };
   const onSubmitSuccess = () => {
     console.log('CrewPublic onSubmitSuccess');
-        //route('/account/crews');
+    //route('/account/crews');
   };
   return (
         <CrewForm
@@ -120,7 +114,6 @@ const mapStateToProps = (state, props) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  aboutDelete: dispatch(crewAboutDelete),
   editCrew: dispatch(editCrew)
 });
 

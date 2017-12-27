@@ -16,6 +16,7 @@ import {
   fetchCountries,
   editUser
 } from '../../reducers/actions';
+
 Moment.locale('en');
 momentLocalizer();
 

@@ -11,18 +11,30 @@ import Place from '../place/PlaceContainer';
 import OrgContact from './OrgContact';
 import OrgActivity from './OrgActivity';
 import OrgTypes from './OrgTypes';
-
 import Links from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
+import Moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import {
     editCrew
 } from '../../reducers/actions';
 
+Moment.locale('en');
+momentLocalizer();
+
 let CrewOrganizationForm = props => {
   const { handleSubmit, editCrew, crew, intl } = props;
 
+  const renderDateTimePicker = ({ input: { onChange, value }, showTime }) =>
+  <DateTimePicker
+    onChange={onChange}
+    format="YYYY"
+    time={showTime}
+    value={!value ? null : new Date(value)}
+  />;
     /* const onLinkEdit = (link) => (e) => {
         e.preventDefault();
         return crewLinkEdit(props._id, link._id);
@@ -32,7 +44,7 @@ let CrewOrganizationForm = props => {
         return crewLinkDelete(props._id, link._id);
     }; */
 
-  if (!props.org) props.org = {};
+  //if (!props.org) props.org = {};
 
   return (
         <div>
@@ -85,18 +97,20 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span className="badge badge-success">
+                             <span className="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
                                 />
                             </span>
-                            <Field
-                                className="form-control"
+                            <Field    
                                 name="org_foundation_year"
-                                component="input"
-                                type="text"
-                                value={props.org_foundation_year}
+                                showTime={false}
+                                component={renderDateTimePicker} 
+                                placeholder={intl.formatMessage({
+                                  id: 'date.placeholder',
+                                  defaultMessage: 'YYYY'
+                                })}
                             />
                         </div>
                         <div className="col-md-6 form-group">
@@ -812,12 +826,16 @@ let CrewOrganizationForm = props => {
   );
 };
 
-CrewOrganizationForm = injectIntl(reduxForm({ form: 'crewOrganization' })(CrewOrganizationForm));
+CrewOrganizationForm = injectIntl(reduxForm({ 
+  form: 'crewOrganization',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
+})(CrewOrganizationForm));
 
 const CrewOrganization = props => {
   const onSubmit = (props, dispatch) => {
-        //dispatch(editCrew(props));
-        //editCrew(dispatch);
+    console.log('--> onSubmit props.is_crew: ' + props.is_crew);
+    dispatch(editCrew(props));
   };
   const onSubmitSuccess = () => {
         //route('/account/crews');
@@ -833,10 +851,6 @@ const CrewOrganization = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('_______________ props __________________________________');
-  console.log('--> CrewOrganization props.url: ' + JSON.stringify(props.url));
-  console.log('_______________ state __________________________________');
-  console.log('--> CrewOrganization state.user.crewId: ' + JSON.stringify(state.user.crewId));
   return {
     crew: (state.user.crews.find(c => { return c._id === props._id; })),
     user: state.user
