@@ -1,50 +1,50 @@
 import { h } from 'preact';
-import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import PhoneLinkTypes from './PhoneLinkTypes';
+import { Field } from 'redux-form';
+import PublicLinkTypes from './PublicLinkTypes';
 
-const LinksTel = injectIntl(({
+const Links = injectIntl(({
   fields,
   meta: { error, submitFailed },
   intl
-  }) => (
+}) => (
     <div>
       <legend>
         <FormattedMessage
-          id="phoneNumbers"
-          defaultMessage="Phone Numbers"
+          id="websites"
+          defaultMessage="Websites"
         />
       </legend>
       {submitFailed && error && <span>{error}</span>}
+
       {fields.map((link, index) => (
         <div key={index}>
           <div className="row">
-            <div className="col-sm-8 input-group">
+            <div className="col-sm-8 input-group">              
               <Field
                 className="form-control"
                 name={`${link}.url`}
                 component="input"
                 placeholder={intl.formatMessage({
-                  id: 'addNumber',
-                  defaultMessage: 'Add/edit number'
+                  id: 'url.placeholder',
+                  defaultMessage: 'Url'
                 })}
               />
             </div>
-
             <div className="col-sm-3 input-group">
-              {PhoneLinkTypes ?
-                <Field
-                  className="form-control custom-select"
-                  name={`${link}.type`}
-                  component="select"
-                >
-                  {PhoneLinkTypes.map((c) => (
-                    <option value={c.key.toLowerCase()}>{c.name}</option>
-                  ))
-                  }
-                </Field> :
-                <p>Loading a link types…</p>
-              }
+            {PublicLinkTypes ?
+              <Field
+                className="form-control custom-select"
+                name={`${link}.type`}
+                component="select"
+              >
+                {PublicLinkTypes.map((c) => (
+                  <option value={c.key.toLowerCase()}>{c.name}</option>
+                ))
+                }
+              </Field> :
+              <p>Loading a link types…</p>
+            }
             </div>
             <div className="col-sm-1">
               <button
@@ -63,7 +63,7 @@ const LinksTel = injectIntl(({
                 >
                 </i>
               </button>
-            </div>
+                </div>
           </div>
         </div>
       ))}
@@ -84,11 +84,10 @@ const LinksTel = injectIntl(({
       </button>
       <label>
         <FormattedMessage
-          id="add"
-          defaultMessage="Add"
+          id="addLink"
+          defaultMessage="Add Link"
         />
       </label>
     </div>
   ));
-
-export default LinksTel;
+export default Links;

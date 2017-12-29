@@ -1,121 +1,84 @@
 import { h } from 'preact';
-// import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Email from '../emails/Email';
+import { connect } from 'preact-redux';
+import Emails from '../emails/Emails';
 import Layout from '../Layout';
-// import Languages from '../language/Languages';
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';
+import {
+  editUser
+} from '../../reducers/actions';
 
-const ProfileEmailsForm = ({
-  user,
-  intl,
-  handleSubmit,
-  userEmailMakePrimary,
-  userEmailMakePrivate,
-  userEmailMakePublic,
-  userEmailConfirm,
-  userEmailDelete,
-  saveProfile
-  }) => {
-
-  const onUserEmailMakePrimary = (userId) => (email) => (e) => {
-    userEmailMakePrimary(userId, email._id);
-  };
-  const onUserEmailMakePrivate = (userId) => (email) => (e) => {
-    userEmailMakePrivate(userId, email._id);
-  };
-  const onUserEmailMakePublic = (userId) => (email) => (e) => {
-    userEmailMakePublic(userId, email._id);
-  };
-  const onUserEmailConfirm = (userId) => (email) => (e) => {
-    userEmailConfirm(userId, email._id);
-  };
-  const onUserEmailDelete = (userId) => (email) => (e) => {
-    userEmailDelete(userId, email._id);
-  };
+let ProfileEmailsForm = props => {
+  const {
+    user,
+    intl,
+    handleSubmit,
+    editUser
+  } = props;
 
   return (
     <div>
-    <div className="container-fluid">
-      <Match>
-        {({ url }) => <ProfileNav url={url} />}
-      </Match>
-    </div>
-    <Layout>
-      <form onSubmit={handleSubmit(saveProfile)}>
+      <div className="container-fluid">
+        <Match>
+          {({ url }) => <ProfileNav url={url} />}
+        </Match>
+      </div>
+      <Layout>
+        <form onSubmit={handleSubmit(editUser)}>
 
-        <fieldset className="form-group">
-          <legend>
-            <FormattedMessage
-              id="emails"
-              defaultMessage="Emails"
-            />
-          </legend>
+            { /* Emails start */}
+            <FieldArray name="emails" component={Emails} />
 
-          <div className="form-group">
-            <label htmlFor="email">
-              <FormattedMessage
-                id="email"
-                defaultMessage="Primary email, change to add new email"
-              />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="email"
-                component="input"
-                placeholder={intl.formatMessage({
-                  id: 'email.placeholder',
-                  defaultMessage: 'foo@example.com'
-                })}
-              />
-
-            </div>
-            <label>
-              <FormattedMessage
-                id="manageemail"
-                defaultMessage="Manage your email addresses"
-              />
-            </label>
-            <ul className="list-group mt-2">
-              {user && user.emails && user.emails.map((e) => (
-                <Email
-                  email={e}
-                  onMakePrimary={onUserEmailMakePrimary(user._id)(e)}
-                  onMakePrivate={onUserEmailMakePrivate(user._id)(e)}
-                  onMakePublic={onUserEmailMakePublic(user._id)(e)}
-                  onConfirm={onUserEmailConfirm(user._id)(e)}
-                  onDelete={onUserEmailDelete(user._id)(e)}
-                  intl={intl}
+            <div className="form-group">
+              <button
+                className="btn btn-primary"
+                type="submit"
+              >
+                <FormattedMessage
+                  id="form.save"
+                  defaultMessage="Save"
                 />
-              ))
-              }
-            </ul>
-          </div>
-        </fieldset>
-
-        <div className="form-group">
-          <button
-            className="btn btn-primary"
-            type="submit"
-          >
-            <FormattedMessage
-              id="form.save"
-              defaultMessage="Save"
-            />
-          </button>
-        </div>
-
-      </form>
-    </Layout >
+              </button>
+            </div>
+        </form>
+      </Layout >
     </div>
-  );
+      );
 };
 
-export default injectIntl(reduxForm({
+ProfileEmailsForm = injectIntl(reduxForm({
   form: 'userEmails',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true
 })(ProfileEmailsForm));
+
+const ProfileEmails = props => {
+  const onSubmit = (props, dispatch) => {
+    dispatch(editUser(props));
+  };
+  const onSubmitSuccess = () => {
+  };
+  return (
+    <ProfileEmailsForm
+        initialValues={props.user}
+        onSubmit={onSubmit}
+        onSubmitSuccess={onSubmitSuccess}
+        {...props}
+      />
+  );
+};
+
+const mapStateToProps = (state, props) => {
+  return {
+    user: state.user,
+    initialValues: state.user
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  editUser: dispatch(editUser)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileEmails);

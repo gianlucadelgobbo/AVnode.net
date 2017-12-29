@@ -36,7 +36,6 @@ let EventSettingsForm = props => {
                 name="is_public"
                 component="input"
                 type="checkbox"
-                value={props.is_public}
               />
               <FormattedMessage
                 id="eventIsPublic"
@@ -52,7 +51,6 @@ let EventSettingsForm = props => {
                 name="is_open"
                 component="input"
                 type="checkbox"
-                value={props.is_open}
               />
               <FormattedMessage
                 id="callIsOpen"

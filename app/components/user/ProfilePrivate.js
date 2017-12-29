@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import LinksTel from '../link/LinksTel';
@@ -11,23 +11,32 @@ import Match from 'preact-router/match';
 import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import { connect } from 'preact-redux';
+import {
+  fetchCountries,
+  editUser
+} from '../../reducers/actions';
 
 Moment.locale('en');
 momentLocalizer();
 
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
-const ProfilePrivate = ({
-  user,
+let ProfilePrivateForm = props => {
+  const {
+    user,
   //submitting,
   intl,
   handleSubmit,
-  saveProfile,
-  linkDelete,
+  editUser,
   userAddressDelete,
   fetchCountries
-  }) => {
+} = props;
+  if (!props.dispatch) console.log('ProfilePrivate, ERROR dispatch undefined');
 
+  if (!user) {
+    console.log('ProfilePrivate ERROR user not defined');
+  }
   if (!user._countries) {
     fetchCountries();
     //console.log('submitting' + submitting);
@@ -43,7 +52,7 @@ const ProfilePrivate = ({
     format="YYYY-MM-DD"
     time={showTime}
     value={!value ? null : new Date(value)}
-  />
+  />;
 
   return (
     <div>
@@ -53,7 +62,7 @@ const ProfilePrivate = ({
         </Match>
       </div>
       <Layout>
-        <form onSubmit={handleSubmit(saveProfile)}>
+        <form onSubmit={handleSubmit(editUser)}>
           <Field
             name="_id"
             component="input"
@@ -166,26 +175,6 @@ const ProfilePrivate = ({
                       defaultMessage: 'YYYY-MM-DD'
                     })}
                   />
-                  {/*
-                <div className="input-group date" data-provide="datepicker-inline">
-                  <div className="input-group-addon">
-                    <i className="fa fa-calendar"></i>
-                  </div>
-                  <Field
-                    className="form-control"
-                    name="birthday"
-                    component="input"
-                    data-provide="datepicker"
-                    data-date-format="yyyy-mm-dd"
-                    placeholder={intl.formatMessage({
-                      id: 'date.placeholder',
-                      defaultMessage: 'YYYY-MM-DD'
-                    })}
-                    
-                  />
-                  
-                </div>
-                  */}
               </div>
               <div className="col-md-6 form-group">
                 <label htmlFor="citizenship">
@@ -219,11 +208,10 @@ const ProfilePrivate = ({
             </div>
           </fieldset>
 
-          <LinksTel
-            current={user}
-            intl={intl}
-            linkDelete={linkDelete}
-          />
+          { /* LinksTel start */}
+          <FieldArray name="linksTel" component={LinksTel} />
+          { /* LinksTel end */}
+
           <ProfileAddressesPrivate
             user={user}
             intl={intl}
@@ -248,9 +236,47 @@ const ProfilePrivate = ({
   );
 };
 
-export default injectIntl(reduxForm({
+ProfilePrivateForm = injectIntl(reduxForm({
   form: 'userPrivate',
   enableReinitialize: true,
-  //keepDirtyOnReinitialize: true,
+  keepDirtyOnReinitialize: true,
   validate
-})(ProfilePrivate));
+})(ProfilePrivateForm));
+
+const ProfilePrivate = props => {
+  console.log('ProfilePrivate props');
+  const onSubmit = (props, dispatch) => {
+    console.log('ProfilePrivate onSubmit dispatch' + dispatch);
+    dispatch(editUser(props));
+  };
+  const onSubmitSuccess = () => {
+    console.log('ProfilePrivate onSubmitSuccess');
+  };
+  return (
+    <ProfilePrivateForm
+      initialValues={props.user}
+      onSubmit={onSubmit}
+      onSubmitSuccess={onSubmitSuccess}
+      {...props}
+    />
+  );
+};
+
+const mapStateToProps = (state, props) => {
+  console.log('--> ProfilePrivate state.user: ' + JSON.stringify(state.user._id));
+  console.log('--> ProfilePrivate state.user.slug: ' + JSON.stringify(state.user.slug));
+  console.log('--> ProfilePrivate state.user.stagename: ' + JSON.stringify(state.user.stagename));
+  console.log('--> ProfilePrivate state.user.name: ' + JSON.stringify(state.user.name));
+  return {  
+    user: state.user,
+    initialValues: state.user//, 
+  //submitting: submitting
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  editUser: dispatch(editUser),
+  fetchCountries: dispatch(fetchCountries)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePrivate);
