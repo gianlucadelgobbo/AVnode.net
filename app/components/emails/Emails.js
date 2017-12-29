@@ -3,6 +3,8 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field } from 'redux-form';
 import renderField from '../renderField';
 import emailConfirmation from './emailConfirmation';
+import emailPrivacy from './emailPrivacy';
+import emailPrimary from './emailPrimary';
 
 const Emails = injectIntl(({
   fields,
@@ -49,7 +51,24 @@ const Emails = injectIntl(({
                 />
               </label>
             </div>
-
+            <div
+              className="col-sm-1 input-group"
+            >
+              <Field
+                className="form-control"
+                name={`${email}.is_public`}
+                component={emailPrivacy}
+              />
+            </div>
+           <div
+              className="col-sm-1 input-group"
+            >
+              <Field
+                className="form-control"
+                name={`${email}.is_primary`}
+                component={emailPrimary}
+              />
+            </div>
             <div
               className="col-sm-1 input-group"
               onClick={() => onConfirm(userId, index)}
