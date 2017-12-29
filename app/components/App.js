@@ -5,7 +5,7 @@ import Nav from './Nav';
 // Profile
 import Profile from './user/ProfilePublic';
 import ProfileImages from './user/ProfileImagesContainer';
-import ProfileEmails from './user/ProfileEmailsContainer';
+import ProfileEmails from './user/ProfileEmails';
 import ProfilePrivate from './user/ProfilePrivate';
 import ProfilePassword from './user/ProfilePasswordContainer';
 import ProfileConnections from './user/ProfileConnections';

@@ -85,7 +85,6 @@ let CrewOrganizationForm = props => {
                             name="org_name"
                             component="input"
                             type="text"
-                            value={props.org_name}
                         />
                     </div>
                     <div className="row">

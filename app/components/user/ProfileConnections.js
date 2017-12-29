@@ -33,14 +33,7 @@ let ProfileConnectionsForm = props => {
             component="input"
             type="hidden"
           />
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="connections"
-                defaultMessage="Connections"
-              />
-            </legend>
-          </fieldset>
+          
           { /* connections start */}
           <FieldArray name="connections" component={Connections} />
           { /* connections end */}
@@ -78,7 +71,7 @@ const ProfileConnections = props => {
   };
   return (
     <ProfileConnectionsForm
-      initialValues={props.event}
+      initialValues={props.user}
       onSubmit={onSubmit}
       onSubmitSuccess={onSubmitSuccess}
       {...props}

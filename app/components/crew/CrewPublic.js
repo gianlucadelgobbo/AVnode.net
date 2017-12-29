@@ -16,7 +16,7 @@ import {
 let CrewForm = props => {
   const { handleSubmit, editCrew, crew, intl } = props;
 
-  if (!props.org) props.org = {};
+  // if (!props.org) props.org = {};
 
   return (
         <div>
@@ -52,15 +52,14 @@ let CrewForm = props => {
                             name="stagename"
                             component="input"
                             type="text"
-                            value={props.stagename}
                         />
                     </div>
-                    <p>(
+                    { /* <p>(
                       <FormattedMessage
                             id="username"
                             defaultMessage="Username"
-                        /> : {props.username} slug : {props.slug})
-                    </p>
+                        /> : {props.crew.username} slug : {props.crew.slug})
+                    </p> */}
                     { /* abouts start */}
                     <FieldArray name="abouts" component={Abouts} />
                     { /* abouts end */}
@@ -105,9 +104,7 @@ const CrewPublic = props => {
 
 const mapStateToProps = (state, props) => {
   console.log('_______________ props __________________________________');
-  console.log('--> CrewPublic props.url: ' + JSON.stringify(props.url));
-  console.log('_______________ state __________________________________');
-  console.log('--> CrewPublic state.user.crewId: ' + JSON.stringify(state.user.crewId));
+  console.log('--> CrewPublic props.slug: ' + JSON.stringify(props.slug));
   return {
     crew: (state.user.crews.find(c => { return c._id === props._id; })),
     user: state.user

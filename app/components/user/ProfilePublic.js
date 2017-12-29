@@ -30,11 +30,7 @@ let ProfilePublicForm = props => {
     editUser,
     fetchCountries
   } = props;
-  if (!props.dispatch) console.log('ProfilePublicForm, ERROR dispatch undefined');
 
-  if (!user) {
-    console.log('ProfilePublicForm ERROR user not defined');
-  }
   if (!user._countries) {
     fetchCountries();
   }
@@ -160,7 +156,7 @@ const ProfilePublic = props => {
   };
   return (
     <ProfilePublicForm
-      initialValues={props.event}
+      initialValues={props.user}
       onSubmit={onSubmit}
       onSubmitSuccess={onSubmitSuccess}
       {...props}

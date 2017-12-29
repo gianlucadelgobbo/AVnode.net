@@ -254,7 +254,7 @@ const ProfilePrivate = props => {
   };
   return (
     <ProfilePrivateForm
-      initialValues={props.event}
+      initialValues={props.user}
       onSubmit={onSubmit}
       onSubmitSuccess={onSubmitSuccess}
       {...props}

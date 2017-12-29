@@ -1,6 +1,6 @@
 import { h } from 'preact';
-import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
+import { Field } from 'redux-form';
 import PublicLinkTypes from './PublicLinkTypes';
 
 const Links = injectIntl(({
