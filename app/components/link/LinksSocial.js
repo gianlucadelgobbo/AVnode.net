@@ -1,95 +1,94 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import LinkSocial from './LinkSocial';
 import SocialLinkTypes from './SocialLinkTypes';
 
 const LinksSocial = injectIntl(({
-  current,
-  intl,
-  linkDelete
-  }) => {
-
-  const onLinkDelete = (link) => (e) => {
-    return linkDelete(current._id, link._id);
-  };
-  return (
-    <fieldset className="form-group">
-    { console.log(current)}
+  fields,
+  meta: { error, submitFailed },
+  intl
+  }) => (
+    <div>
       <legend>
         <FormattedMessage
           id="socials"
           defaultMessage="Social channels"
         />
       </legend>
+      {submitFailed && error && <span>{error}</span>}
+      {fields.map((link, index) => (
+        <div key={index}>
+          <div className="row">
+            <div className="col-sm-8 input-group">
+              <Field
+                className="form-control"
+                name={`${link}.url`}
+                component="input"
+                placeholder={intl.formatMessage({
+                  id: 'url.placeholder',
+                  defaultMessage: 'Url'
+                })}
+              />
+            </div>
 
-      <label htmlFor="linkSocial">
-        <FormattedMessage
-          id="url"
-          defaultMessage="Url"
-        />
-      </label>
-
-      <div className="input-group">
-        <div className="input-group">
-          <Field
-            className="form-control"
-            name="linkSocial"
-            component="input"
-            placeholder={intl.formatMessage({
-              id: 'link.placeholder',
-              defaultMessage: 'Add url'
-            })}
-          />
-        </div>
-
-        <div className="input-group-addon">
-
-          {SocialLinkTypes && current ?
-            <Field
-              className="form-control custom-select"
-              name="linkType"
-              component="select"
-              value={current.linkType}
-            >
-              {SocialLinkTypes.map((c) => (
-                <option value={c.key.toLowerCase()}>{c.name}</option>
-              ))
+            <div className="col-sm-3 input-group">
+              {SocialLinkTypes ?
+                <Field
+                  className="form-control custom-select"
+                  name={`${link}.type`}
+                  component="select"
+                >
+                  {SocialLinkTypes.map((c) => (
+                    <option value={c.key.toLowerCase()}>{c.name}</option>
+                  ))
+                  }
+                </Field> :
+                <p>Loading a link types…</p>
               }
-            </Field> :
-            <p>Loading a link types…</p>
-          }
+            </div>
+            <div className="col-sm-1">
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => fields.remove(index)}
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title={intl.formatMessage({
+                    id: 'delete',
+                    defaultMessage: 'Delete'
+                  })}
+                >
+                </i>
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="input-group-addon">
-          <button
-            className="btn btn-success btn-sm"
-          >
-            <i className="fa fa-link"></i>
-          </button>
-        </div>
-      </div>
+      ))}
+      <button
+        type="button"
+        className="btn btn-success btn-sm"
+        onClick={() => fields.push({})}>
+        <i
+          className="fa fa-plus"
+          data-toggle="tooltip"
+          data-placement="top"
+          title={intl.formatMessage({
+            id: 'add',
+            defaultMessage: 'Add'
+          })}
+        >
+        </i>
+      </button>
       <label>
         <FormattedMessage
-          id="manageLinksSocial"
-          defaultMessage="Manage your Social Links"
+          id="addLink"
+          defaultMessage="Add Link"
         />
       </label>
-      <ul className="list-group mt-2">
-        {
-          current && current.links && current.links.map((l) => (
-            l.type === 'tw' || l.type === 'fb' || l.type === 'ot' ?
-              <LinkSocial
-                linkSocial={l}
-                onDelete={onLinkDelete(l)}
-                intl={intl}
-              />
-              :
-              null
-          ))
-        }
-      </ul>
-    </fieldset>
-  );
-});
+    </div>
+  ));
 
 export default LinksSocial;

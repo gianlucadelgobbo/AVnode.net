@@ -98,19 +98,6 @@ const ProfileImagesForm = ({
                             />
                         </div>
                     </fieldset>
-
-                    {/*<div className="form-group">
-                        <button
-                            className="btn btn-primary"
-                            type="submit"
-                        >
-                            <FormattedMessage
-                                id="form.save"
-                                defaultMessage="Save"
-                            />
-                        </button>
-                        </div>*/}
-
                 </form>
             </Layout >
         </div>

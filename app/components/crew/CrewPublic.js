@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
@@ -10,18 +10,13 @@ import Abouts from '../about/Abouts';
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
 import {
-    editCrew,
-    crewAboutDelete
+    editCrew
 } from '../../reducers/actions';
 
 let CrewForm = props => {
-  const { handleSubmit, editCrew, aboutDelete, crew, intl } = props;
+  const { handleSubmit, editCrew, crew, intl } = props;
 
-    /*const onCrewAboutDelete = (crewId) => (about) => (e) => {
-        return dispatch(crewAboutDelete(crewId, about.lang));
-    };*/
-
-  if (!props.org) props.org = {};
+  // if (!props.org) props.org = {};
 
   return (
         <div>
@@ -46,7 +41,7 @@ let CrewForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-success">
+                        <span className="badge badge-success">
                             <FormattedMessage
                                 id="public"
                                 defaultMessage='Public'
@@ -57,20 +52,17 @@ let CrewForm = props => {
                             name="stagename"
                             component="input"
                             type="text"
-                            value={props.stagename}
                         />
                     </div>
-                    <p>(
+                    { /* <p>(
                       <FormattedMessage
                             id="username"
                             defaultMessage="Username"
-                        /> : {props.username} slug : {props.slug})
-                    </p>
-                    <Abouts
-                        current={crew}
-                        intl={intl}
-                        aboutDelete={aboutDelete}
-                    />
+                        /> : {props.crew.username} slug : {props.crew.slug})
+                    </p> */}
+                    { /* abouts start */}
+                    <FieldArray name="abouts" component={Abouts} />
+                    { /* abouts end */}
                     <div className="form-group">
                         <button
                             className="btn btn-primary"
@@ -94,12 +86,11 @@ const CrewPublic = props => {
   console.log('CrewPublic props');
   const onSubmit = (props, dispatch) => {
     console.log('CrewPublic onSubmit');
-        //dispatch(editCrew(props));
-        //editCrew(dispatch);
+    dispatch(editCrew(props));
   };
   const onSubmitSuccess = () => {
     console.log('CrewPublic onSubmitSuccess');
-        //route('/account/crews');
+    //route('/account/crews');
   };
   return (
         <CrewForm
@@ -113,16 +104,13 @@ const CrewPublic = props => {
 
 const mapStateToProps = (state, props) => {
   console.log('_______________ props __________________________________');
-  console.log('--> CrewPublic props.url: ' + JSON.stringify(props.url));
-  console.log('_______________ state __________________________________');
-  console.log('--> CrewPublic state.user.crewId: ' + JSON.stringify(state.user.crewId));
+  console.log('--> CrewPublic props.slug: ' + JSON.stringify(props.slug));
   return {
     crew: (state.user.crews.find(c => { return c._id === props._id; })),
     user: state.user
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  aboutDelete: dispatch(crewAboutDelete),
   editCrew: dispatch(editCrew)
 });
 

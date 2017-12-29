@@ -5,9 +5,9 @@ import { FormattedMessage } from 'preact-intl';
 // import { route, Router, Route, Link } from 'preact-router';
 
 const ProfileNav = ({ user, dispatch, url }) => {
-  //let id = url.substring(url.lastIndexOf('/') + 1);
+  let id = url.substring(url.lastIndexOf('/') + 1);
   const classes = (path) => {
-    // console.log('PrNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
+    if (user.active.indexOf(path)==0) console.log('PrNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
     return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
   };
 

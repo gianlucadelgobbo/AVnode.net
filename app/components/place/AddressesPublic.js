@@ -1,92 +1,117 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import AddressPublic from '../place/AddressPublic';
 
 const AddressesPublic = injectIntl(({
-  current,
-  user,
-  intl,
-  addressDelete
- }) => {
+  fields,
+    meta: { error, submitFailed },
+    intl
+ }) => (
 
-  const onAddressDelete = (address) => (e) => {
-    addressDelete(current._id, address._id);
-  };
-  return (
-        <fieldset className="form-group">
+        <div>
             <legend>
                 <FormattedMessage
                     id="address"
                     defaultMessage="Address"
                 />
             </legend>
+            {submitFailed && error && <span>{error}</span>}
 
-            <div className="row">
-                <div className="col-md-9 form-group">
-                    <label htmlFor="locality">
-                        <FormattedMessage
-                            id="locality"
-                            defaultMessage="Locality"
-                        />
-                    </label>
-                    <Field
-                        className="form-control"
-                        name="locality"
-                        component="input"
-                        placeholder='Locality'
-                        value={current.locality}
-                    />
-                </div>
-                <div className="col-md-3 form-group">
-                    <label htmlFor="country">
-                        <FormattedMessage
-                            id="country"
-                            defaultMessage="Country"
-                        />
-                    </label>
-                    {user._countries ?
-                        <Field
-                            className="form-control custom-select"
-                            name="country"
-                            component="select"
-                            value={current.country}
-                        >
-                            <option value="">
+            {fields.map((address, index) => (
+                <div key={index}>
+                    <div className="row">
+                        <div className="col-md-9 form-group">
+                            <label htmlFor="locality">
                                 <FormattedMessage
-                                    id="Please select"
-                                    defaultMessage="Please select"
+                                    id="locality"
+                                    defaultMessage="Locality"
                                 />
-                            </option>
-                            {user._countries.map((c) => (
-                                <option value={c.name}>{c.name}</option>
-                            ))
-                            }
-                            { /* FIXME: How do we handle countries here? */}
-                        </Field> :
-                        <p>Loading a list of countries…</p>
-                    }
+                            </label>
+                            <Field
+                                className="form-control"
+                                name={`${address}.locality`}
+                                component="input"
+                                placeholder='Locality'
+                            />
+                        </div>
+                        <div className="col-md-2 form-group">
+                            <label htmlFor="country">
+                                <FormattedMessage
+                                    id="country"
+                                    defaultMessage="Country"
+                                />
+                            </label>
+                            <Field
+                                className="form-control"
+                                name={`${address}.country`}
+                                component="input"
+                                placeholder='Country'
+                            />
+                            { /* {Countries ?
+                                <Field
+                                    className="form-control custom-select"
+                                    name="country"
+                                    component="select"
+                                >
+                                    <option value="">
+                                        <FormattedMessage
+                                            id="Please select"
+                                            defaultMessage="Please select"
+                                        />
+                                    </option>
+                                    {Countries.map((c) => (
+                                        <option value={c.name}>{c.name}</option>
+                                    ))
+                                    }
+                                     
+                                </Field> :
+                                <p>Loading a list of countries…</p>
+                            }*/}
+                        </div>
+                        <div className="col-sm-1">
+                            <button
+                                type="button"
+                                className="btn btn-danger btn-sm"
+                                onClick={() => fields.remove(index)}
+                            >
+                                <i
+                                    className="fa fa-trash"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title={intl.formatMessage({
+                                      id: 'delete',
+                                      defaultMessage: 'Delete'
+                                    })}
+                                >
+                                </i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            ))}
+            <button
+                type="button"
+                className="btn btn-success btn-sm"
+                onClick={() => fields.push({})}>
+                <i
+                    className="fa fa-plus"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title={intl.formatMessage({
+                      id: 'add',
+                      defaultMessage: 'Add'
+                    })}
+                >
+                </i>
+            </button>
             <label>
                 <FormattedMessage
-                    id="editFullAddress"
-                    defaultMessage="Edit full address in the private section"
+                    id="addAddress"
+                    defaultMessage="Add Address"
                 />
             </label>
-            <ul className="list-group mt-2">
-                {
-                    current && current.addresses && current.addresses.map((a) => (
-                        <AddressPublic
-                            address={a}
-                            onDelete={onAddressDelete(a)}
-                            intl={intl}
-                        />
-                    ))
-                }
-            </ul>
-        </fieldset>
-  );
-});
+        </div>
+
+    ));
 
 export default AddressesPublic;

@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { route } from 'preact-router';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
@@ -222,12 +222,14 @@ let EventForm = props => {
             value={props.title}
           />
         </div>
-
+        { /* abouts start */}
+        <FieldArray name="abouts" component={Abouts} />
+        { /* abouts end
         <Abouts
           current={event}
           intl={intl}
           aboutDelete={aboutDelete}
-        />
+        /> */}
         <div className="form-check">
           <label className="form-check-label">
             <Field

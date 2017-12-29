@@ -1,14 +1,14 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { route } from 'preact-router';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
 import Languages from '../language/Languages';
 
 import {
-  editPerformanceAbouts  
+  editPerformanceAbouts
 } from '../../reducers/actions';
 
 
@@ -67,15 +67,15 @@ let PerformanceForm = props => {
 
         <div className="form-group">
           <label>
-          {props.title}
-          </label>        
+            {props.title}
+          </label>
         </div>
 
         <div className="row">
           <div className="col-md-9 form-group">
             <label htmlFor="about">
               <FormattedMessage
-                id="addabout"
+                id="addAbout"
                 defaultMessage="About"
               />
             </label>
@@ -130,8 +130,8 @@ let PerformanceForm = props => {
         <ul className="list-group mt-2">
           {
             performance && performance.abouts && performance.abouts.map((a) => (
-              <About 
-                about={a} 
+              <About
+                about={a}
                 me={props.user._id}
                 onMakePrimary={onAboutMakePrimary(performance.id)}
               />

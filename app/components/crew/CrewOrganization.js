@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'preact-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 
 import Layout from '../Layout';
@@ -11,19 +11,31 @@ import Place from '../place/PlaceContainer';
 import OrgContact from './OrgContact';
 import OrgActivity from './OrgActivity';
 import OrgTypes from './OrgTypes';
-
-import LinksWeb from '../link/LinksWeb';
+import Links from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
+import LinksTel from '../link/LinksTel';
 import CrewNav from './CrewNav';
 import Match from 'preact-router/match';
+import Moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import {
-    editCrew,
-    linkDelete
+    editCrew
 } from '../../reducers/actions';
+
+Moment.locale('en');
+momentLocalizer();
 
 let CrewOrganizationForm = props => {
   const { handleSubmit, editCrew, crew, intl } = props;
 
+  const renderDateTimePicker = ({ input: { onChange, value }, showTime }) =>
+  <DateTimePicker
+    onChange={onChange}
+    format="YYYY"
+    time={showTime}
+    value={!value ? null : new Date(value)}
+  />;
     /* const onLinkEdit = (link) => (e) => {
         e.preventDefault();
         return crewLinkEdit(props._id, link._id);
@@ -33,7 +45,7 @@ let CrewOrganizationForm = props => {
         return crewLinkDelete(props._id, link._id);
     }; */
 
-  if (!props.org) props.org = {};
+  //if (!props.org) props.org = {};
 
   return (
         <div>
@@ -74,7 +86,6 @@ let CrewOrganizationForm = props => {
                             name="org_name"
                             component="input"
                             type="text"
-                            value={props.org_name}
                         />
                     </div>
                     <div className="row">
@@ -86,18 +97,20 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span className="badge badge-success">
+                             <span className="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
                                 />
                             </span>
-                            <Field
-                                className="form-control"
+                            <Field    
                                 name="org_foundation_year"
-                                component="input"
-                                type="text"
-                                value={props.org_foundation_year}
+                                showTime={false}
+                                component={renderDateTimePicker} 
+                                placeholder={intl.formatMessage({
+                                  id: 'date.placeholder',
+                                  defaultMessage: 'YYYY'
+                                })}
                             />
                         </div>
                         <div className="col-md-6 form-group">
@@ -108,7 +121,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span className="badge badge-success">
+                            <span className="badge badge-success">
                                 <FormattedMessage
                                     id="public"
                                     defaultMessage='Public'
@@ -136,16 +149,33 @@ let CrewOrganizationForm = props => {
                             }
                         </div>
                     </div>
-                    <LinksWeb
-                        current={crew}
-                        intl={intl}
-                        linkDelete={linkDelete}
-                    />
-                    {/*<LinksSocial
-                        current={crew}
-                        intl={intl}
-                        linkDelete={linkDelete}
-                    />*/}
+                    { /* links start */}
+                    <FieldArray name="links" component={Links} />
+                    { /* links end */}
+                    { /* linksSocial start */}
+                    <FieldArray name="linksSocial" component={LinksSocial} />
+                    { /* linksSocial end */}
+
+                    <div className="form-group">
+                        <label htmlFor="org_public_email">
+                            <FormattedMessage
+                                id="org_web_social_channels_for_project_likes_shares"
+                                defaultMessage="Organisation web social channels for project likes shares"
+                            />
+                        </label>                      
+                        <div className="input-group">
+                            <Field
+                                className="form-control"
+                                name="org_web_social_channels_for_project_likes_shares"
+                                component="input"
+                                type="text"
+                            />
+                        </div>
+                    </div>
+
+                    { /* LinksTel start */}
+                    <FieldArray name="org_phone" component={LinksTel} />
+                    { /* LinksTel end */}
                     <div className="form-group">
                         <label htmlFor="org_public_email">
                             <FormattedMessage
@@ -154,7 +184,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-success">
+                        <span className="badge badge-success">
                             <FormattedMessage
                                 id="public"
                                 defaultMessage='Public'
@@ -171,17 +201,8 @@ let CrewOrganizationForm = props => {
                             <div className="input-group-addon">
                                 <i className="fa fa-envelope"></i>
                             </div>
-                            <div className="input-group-addon">
-                                <i className="fa fa-minus"></i>
-                            </div>
-                            <div className="input-group-addon">
-                                <i className="fa fa-plus"></i>
-                            </div>
                         </div>
                     </div>
-
-                    {/* BL TODO <LinksPhoneEdit links={props.org_links} privacy="public" />*/}
-
                     <div className="form-group">
                         <label htmlFor="org_aims_and_activities">
                             <FormattedMessage
@@ -190,7 +211,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -439,7 +460,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -455,22 +476,13 @@ let CrewOrganizationForm = props => {
                             />
                             <div className="input-group-addon">
                                 <i className="fa fa-envelope"></i>
-                            </div>
-                            <div className="input-group-addon">
-                                <i className="fa fa-minus"></i>
-                            </div>
-                            <div className="input-group-addon">
-                                <i className="fa fa-plus"></i>
-                            </div>
+                            </div>  
                         </div>
                     </div>
-
-                    {/* BL TODO <LinksMobileEdit links={props.org_legal_representative_links} privacy="private" />
-
-                    <LinksSkypeEdit links={props.org_legal_representative_links} privacy="private" />
-
-                        <LinksSocialEdit links={props.org_legal_representative_links} privacy="public" />*/}
-
+                    { /* LinksSocial start */}
+                    <FieldArray name="org_web_social_channels" component={LinksSocial} />
+                    { /* LinksSocial end */}
+                    
                     <div className="form-group">
                         <label htmlFor="org_statute">
                             <FormattedMessage
@@ -479,7 +491,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -509,7 +521,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -540,7 +552,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -572,7 +584,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span className="badge badge-danger">
+                            <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -595,7 +607,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span className="badge badge-danger">
+                            <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -620,7 +632,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span className="badge badge-danger">
+                            <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -643,7 +655,7 @@ let CrewOrganizationForm = props => {
                                 />
                             </label>
                             &nbsp;
-              <span className="badge badge-danger">
+                            <span className="badge badge-danger">
                                 <FormattedMessage
                                     id="private"
                                     defaultMessage='Private'
@@ -666,7 +678,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -693,7 +705,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -720,7 +732,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -747,7 +759,7 @@ let CrewOrganizationForm = props => {
                             />
                         </label>
                         &nbsp;
-            <span className="badge badge-danger">
+                        <span className="badge badge-danger">
                             <FormattedMessage
                                 id="private"
                                 defaultMessage='Private'
@@ -813,19 +825,21 @@ let CrewOrganizationForm = props => {
                 </form>
             </Layout>
         </div>
-    );
+  );
 };
 
-CrewOrganizationForm = injectIntl(reduxForm({ form: 'crewOrganization' })(CrewOrganizationForm));
+CrewOrganizationForm = injectIntl(reduxForm({ 
+  form: 'crewOrganization',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
+})(CrewOrganizationForm));
 
 const CrewOrganization = props => {
   const onSubmit = (props, dispatch) => {
-        //dispatch(editCrew(props));
-        //editCrew(dispatch);
-    };
+    dispatch(editCrew(props));
+  };
   const onSubmitSuccess = () => {
-        //route('/account/crews');
-    };
+  };
   return (
         <CrewOrganizationForm
             initialValues={props.crew}
@@ -833,22 +847,17 @@ const CrewOrganization = props => {
             onSubmitSuccess={onSubmitSuccess}
             {...props}
         />
-    );
+  );
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('_______________ props __________________________________');
-  console.log('--> CrewOrganization props.url: ' + JSON.stringify(props.url));
-  console.log('_______________ state __________________________________');
-  console.log('--> CrewOrganization state.user.crewId: ' + JSON.stringify(state.user.crewId));
   return {
-      crew: (state.user.crews.find(c => { return c._id === props._id; })),
-      user: state.user
-    };
+    crew: (state.user.crews.find(c => { return c._id === props._id; })),
+    user: state.user
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  linkDelete: dispatch(crewLinkDelete),
   editCrew: dispatch(editCrew)
 });
 
