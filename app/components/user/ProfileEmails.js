@@ -8,6 +8,7 @@ import ProfileNav from './ProfileNav';
 import validate from '../validate';
 import Match from 'preact-router/match';
 import {
+  userEmailConfirm,
   editUser
 } from '../../reducers/actions';
 
@@ -15,6 +16,8 @@ let ProfileEmailsForm = props => {
   const {
     user,
     intl,
+    userEmailConfirm,
+    dispatch,
     handleSubmit,
     editUser
   } = props;
@@ -28,8 +31,10 @@ let ProfileEmailsForm = props => {
       </div>
       <Layout>
         <form onSubmit={handleSubmit(editUser)}>
-
-            <FieldArray name="emails" component={Emails} />
+            <FieldArray name="emails" component={Emails} props={{
+              onConfirm: props.userEmailConfirm,
+              userId: props.user._id
+            }} />
 
             <div className="form-group">
               <button
@@ -79,6 +84,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  userEmailConfirm: dispatch(userEmailConfirm),
   editUser: dispatch(editUser)
 });
 

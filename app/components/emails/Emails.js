@@ -2,9 +2,12 @@ import { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field } from 'redux-form';
 import renderField from '../renderField';
+import emailConfirmation from './emailConfirmation';
 
 const Emails = injectIntl(({
   fields,
+  onConfirm,
+  userId,
   meta: { error, submitFailed },
   intl
 }) => (
@@ -16,7 +19,7 @@ const Emails = injectIntl(({
         />
       </legend>
       {submitFailed && error && <span>{error}</span>}
-
+      {console.log('userId:' + userId)}
       {fields.map((email, index) => (
         <div key={index}>
           <div className="row">
@@ -25,13 +28,14 @@ const Emails = injectIntl(({
                 className="form-control"
                 name={`${email}.email`}
                 component={renderField}
+                label="email"
                 placeholder={intl.formatMessage({
                   id: 'email.placeholder',
                   defaultMessage: 'email@example.com'
                 })}
               />
             </div>
-            <div className="col-sm-3 input-group">
+            <div className="col-sm-1 input-group">
               <label className="form-check-label">
                 <Field
                   className="form-check-input form-control-lg"
@@ -46,22 +50,38 @@ const Emails = injectIntl(({
               </label>
 
             </div>
-            {/*<div className="col-sm-3 input-group">
-              {`${email}.is_confirmed` ?
-                <span className="badge badge-success">
-                  <FormattedMessage
-                    id="confirmed"
-                    defaultMessage="Confirmed"
-                  />
-                </span> :
-                <span className="badge badge-info">
-                  <FormattedMessage
-                    id="unconfirmed"
-                    defaultMessage="Unconfirmed"
-                  />
-                </span>
-              }
-            </div>*/}
+            <div className="col-sm-1">
+              <button
+                type="button"
+                className="btn btn-info btn-sm"
+                onClick={() => onConfirm(userId, index)}
+              >
+                <i
+                  className="fa fa-check-circle"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title={intl.formatMessage({
+                    id: 'confirm',
+                    defaultMessage: 'Confirm'
+                  })}
+                >
+                </i>
+              </button>
+            </div>
+
+            <div className="col-sm-1 input-group">
+              <button
+                type="button"
+                className="btn btn-info btn-sm"
+                onClick={() => onConfirm(userId, index)}
+              >
+                <Field
+                  className="form-control"
+                  name={`${email}.is_confirmed`}
+                  component={emailConfirmation}
+                /> 
+              </button>              
+            </div>
 
             <div className="col-sm-1">
               <button

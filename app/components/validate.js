@@ -17,7 +17,7 @@ const validate = values => {
       else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email.email)) {
         emailErrors.email = 'Invalid email address';
         emailsArrayErrors[emailIndex] = emailErrors;
-      }    
+      }
     });
     if (emailsArrayErrors.length) {
       errors.emails = emailsArrayErrors;
