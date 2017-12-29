@@ -34,7 +34,7 @@ const Emails = injectIntl(({
               <label className="form-check-label">
                 <Field
                   className="form-check-input form-control-lg"
-                  name="is_public"
+                  name={`${email}.is_public`}
                   component="input"
                   type="checkbox"
                 />
