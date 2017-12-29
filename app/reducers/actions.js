@@ -371,23 +371,7 @@ export function suggestEventOrganizingCrew(eventId, q) {
       });
   };
 }
-/*export function crewAboutEdit(id, aboutlanguage) {
-  return dispatch => {
-    console.log('_______________ACTION crewAboutEdit __________________________________');
-    console.log('crewAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
-    dispatch({
-      type: REQUEST_CREW_EDITABOUT,
-      payload: {
-        crew: id,
-        aboutlanguage: aboutlanguage
-      }
-    });
-    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
-      method: 'PUT',
-    }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}*/
+
 export function crewAboutDelete(dispatch) {
   return (crewId, aboutlanguage) => {
     console.log('_______________ACTION crewAboutDelete __________________________________');
@@ -1116,6 +1100,8 @@ export function userEmailMakePublic(dispatch) {
 }
 export function userEmailConfirm(dispatch) {
   return (userId, emailId) => {
+    console.log('_______________ACTION userEmailConfirm __________________________________');
+    console.log('userEmailConfirm : ' + userId + ' ' + emailId);
     dispatch({
       type: REQUEST_USER_EMAILCONFIRM,
       payload: {
@@ -1345,43 +1331,7 @@ export function editUserAddresses(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-/*export function editUserAbouts(dispatch) {
-  return data => {
-    console.log('_______________ACTION editUserAbouts __________________________________');
-    console.log('editUserAbouts aboutlanguage: ' + JSON.stringify(data.aboutlanguage));
 
-    dispatch({
-      type: REQUEST_EDIT_USERABOUTS,
-      id: data._id
-    });
-    return fetch(
-      `/account/api/user/${data._id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data)
-      })
-      .then(json => dispatch(gotUser(json)));
-  };
-}
-export function userAboutEdit(dispatch) {
-  return (userId, aboutlanguage) => {
-    console.log('_______________ACTION userAboutEdit __________________________________');
-    console.log('userAboutEdit userId: ' + JSON.stringify(userId));
-    console.log('userAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
-
-    dispatch({
-      type: REQUEST_USER_EDITABOUT,
-      payload: {
-        user: userId,
-        aboutlanguage: aboutlanguage
-      }
-    });
-    return fetch(
-      `/account/api/user/${userId}/about/${aboutlanguage}`, {
-        method: 'PUT'
-      }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}*/
 export function userAboutDelete(dispatch) {
   return (userId, aboutlanguage) => {
     console.log('_______________ACTION userAboutDelete __________________________________');

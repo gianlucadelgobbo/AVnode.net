@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 // import Modal from '../Modal';
 import Layout from '../Layout';
-import validate from './validate';
+import validate from '../validate';
 // import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';

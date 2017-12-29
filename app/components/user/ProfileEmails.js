@@ -5,8 +5,10 @@ import { connect } from 'preact-redux';
 import Emails from '../emails/Emails';
 import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
+import validate from '../validate';
 import Match from 'preact-router/match';
 import {
+  userEmailConfirm,
   editUser
 } from '../../reducers/actions';
 
@@ -14,6 +16,8 @@ let ProfileEmailsForm = props => {
   const {
     user,
     intl,
+    userEmailConfirm,
+    dispatch,
     handleSubmit,
     editUser
   } = props;
@@ -27,9 +31,10 @@ let ProfileEmailsForm = props => {
       </div>
       <Layout>
         <form onSubmit={handleSubmit(editUser)}>
-
-            { /* Emails start */}
-            <FieldArray name="emails" component={Emails} />
+            <FieldArray name="emails" component={Emails} props={{
+              onConfirm: props.userEmailConfirm,
+              userId: props.user._id
+            }} />
 
             <div className="form-group">
               <button
@@ -45,13 +50,14 @@ let ProfileEmailsForm = props => {
         </form>
       </Layout >
     </div>
-      );
+  );
 };
 
 ProfileEmailsForm = injectIntl(reduxForm({
   form: 'userEmails',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true
+  keepDirtyOnReinitialize: true,
+  validate
 })(ProfileEmailsForm));
 
 const ProfileEmails = props => {
@@ -78,6 +84,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  userEmailConfirm: dispatch(userEmailConfirm),
   editUser: dispatch(editUser)
 });
 
