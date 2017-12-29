@@ -5,6 +5,7 @@ import { connect } from 'preact-redux';
 import Emails from '../emails/Emails';
 import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
+import validate from '../validate';
 import Match from 'preact-router/match';
 import {
   editUser
@@ -28,7 +29,6 @@ let ProfileEmailsForm = props => {
       <Layout>
         <form onSubmit={handleSubmit(editUser)}>
 
-            { /* Emails start */}
             <FieldArray name="emails" component={Emails} />
 
             <div className="form-group">
@@ -45,13 +45,14 @@ let ProfileEmailsForm = props => {
         </form>
       </Layout >
     </div>
-      );
+  );
 };
 
 ProfileEmailsForm = injectIntl(reduxForm({
   form: 'userEmails',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true
+  keepDirtyOnReinitialize: true,
+  validate
 })(ProfileEmailsForm));
 
 const ProfileEmails = props => {

@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field } from 'redux-form';
+import renderField from '../renderField';
 
 const Emails = injectIntl(({
   fields,
@@ -19,18 +20,18 @@ const Emails = injectIntl(({
       {fields.map((email, index) => (
         <div key={index}>
           <div className="row">
-            <div className="col-sm-8 input-group">              
+            <div className="col-sm-8 input-group">
               <Field
                 className="form-control"
                 name={`${email}.email`}
-                component="input"
+                component={renderField}
                 placeholder={intl.formatMessage({
                   id: 'email.placeholder',
                   defaultMessage: 'email@example.com'
                 })}
               />
             </div>
-            <div className="col-sm-3 input-group">            
+            <div className="col-sm-3 input-group">
               <label className="form-check-label">
                 <Field
                   className="form-check-input form-control-lg"
@@ -43,8 +44,25 @@ const Emails = injectIntl(({
                   defaultMessage="Public"
                 />
               </label>
-         
-            </div>            
+
+            </div>
+            {/*<div className="col-sm-3 input-group">
+              {`${email}.is_confirmed` ?
+                <span className="badge badge-success">
+                  <FormattedMessage
+                    id="confirmed"
+                    defaultMessage="Confirmed"
+                  />
+                </span> :
+                <span className="badge badge-info">
+                  <FormattedMessage
+                    id="unconfirmed"
+                    defaultMessage="Unconfirmed"
+                  />
+                </span>
+              }
+            </div>*/}
+
             <div className="col-sm-1">
               <button
                 type="button"
@@ -62,7 +80,7 @@ const Emails = injectIntl(({
                 >
                 </i>
               </button>
-                </div>
+            </div>
           </div>
         </div>
       ))}
