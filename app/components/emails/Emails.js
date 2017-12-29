@@ -23,7 +23,7 @@ const Emails = injectIntl(({
       {fields.map((email, index) => (
         <div key={index}>
           <div className="row">
-            <div className="col-sm-8 input-group">
+            <div className="col-sm-7 input-group">
               <Field
                 className="form-control"
                 name={`${email}.email`}
@@ -35,7 +35,7 @@ const Emails = injectIntl(({
                 })}
               />
             </div>
-            <div className="col-sm-1 input-group">
+            <div className="col-sm-2 input-group">
               <label className="form-check-label">
                 <Field
                   className="form-check-input form-control-lg"
@@ -48,39 +48,17 @@ const Emails = injectIntl(({
                   defaultMessage="Public"
                 />
               </label>
-
-            </div>
-            <div className="col-sm-1">
-              <button
-                type="button"
-                className="btn btn-info btn-sm"
-                onClick={() => onConfirm(userId, index)}
-              >
-                <i
-                  className="fa fa-check-circle"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title={intl.formatMessage({
-                    id: 'confirm',
-                    defaultMessage: 'Confirm'
-                  })}
-                >
-                </i>
-              </button>
             </div>
 
-            <div className="col-sm-1 input-group">
-              <button
-                type="button"
-                className="btn btn-info btn-sm"
-                onClick={() => onConfirm(userId, index)}
-              >
-                <Field
-                  className="form-control"
-                  name={`${email}.is_confirmed`}
-                  component={emailConfirmation}
-                /> 
-              </button>              
+            <div
+              className="col-sm-1 input-group"
+              onClick={() => onConfirm(userId, index)}
+            >
+              <Field
+                className="form-control"
+                name={`${email}.is_confirmed`}
+                component={emailConfirmation}
+              />
             </div>
 
             <div className="col-sm-1">

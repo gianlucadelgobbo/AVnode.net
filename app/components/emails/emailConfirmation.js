@@ -13,23 +13,36 @@ const emailConfirmation = ({ input, label, type, meta: { touched, error } }) => 
       </span>
       :
       <button
-      type="button"
-      className="btn btn-info btn-sm"
-      //onClick={() => onConfirm(userId, index)}
-    >
-      <i
-        className="fa fa-envelope"
-        data-toggle="tooltip"
-        data-placement="top"
+        type="button"
+        className="btn btn-info btn-sm"
       >
-      </i>
-    </button>
+        <i
+          className="fa fa-envelope"
+          data-toggle="tooltip"
+          data-placement="top"
+          title='Confirm'
+        >
+        </i>
+      </button>
     }
   </div>
 );
 
 export default emailConfirmation;
 /*
+              <div className="col-sm-1">
+                <label
+                  
+                  className="btn btn-info btn-sm"
+                  onClick={() => onConfirm(userId, index)}
+                >
+                  <Field
+                    className="form-control"
+                    name={`${email}.is_confirmed`}
+                    component={emailConfirmation}
+                  />
+                </label>
+              </div>
 <label>{label}</label>
       <div>
         <input {...input} placeholder={label} type={type}/>
