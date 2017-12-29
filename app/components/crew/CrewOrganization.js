@@ -152,10 +152,10 @@ let CrewOrganizationForm = props => {
                     { /* links start */}
                     <FieldArray name="links" component={Links} />
                     { /* links end */}
-                    { /* linksSocial start */}
-                    <FieldArray name="linksSocial" component={LinksSocial} />
-                    { /* linksSocial end */}
 
+                    { /* LinksSocial start */}
+                    <FieldArray name="org_web_social_channels" component={LinksSocial} />
+                    { /* LinksSocial end */}
                     <div className="form-group">
                         <label htmlFor="org_public_email">
                             <FormattedMessage
@@ -479,9 +479,7 @@ let CrewOrganizationForm = props => {
                             </div>  
                         </div>
                     </div>
-                    { /* LinksSocial start */}
-                    <FieldArray name="org_web_social_channels" component={LinksSocial} />
-                    { /* LinksSocial end */}
+
                     
                     <div className="form-group">
                         <label htmlFor="org_statute">
