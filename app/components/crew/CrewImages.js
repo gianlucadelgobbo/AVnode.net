@@ -45,7 +45,7 @@ let CrewForm = props => {
             id="crew"
             defaultMessage="Crew"
           />:
-          {(props.crew) ? props.crew.stagename : null}
+          &nbsp;{(props.crew) ? props.crew.stagename : null}
         </legend>
         <div className="form-group">
           <label htmlFor="teaserImage">

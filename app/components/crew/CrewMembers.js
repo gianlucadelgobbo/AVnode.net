@@ -92,7 +92,7 @@ let CrewMembersForm = props => {
             id="crew"
             defaultMessage="Crew"
           />:
-          {(props.crew) ? props.crew.stagename : null}
+          &nbsp;{(props.crew) ? props.crew.stagename : null}
         </legend>
         <form onSubmit={handleSubmit}>
           <Field
