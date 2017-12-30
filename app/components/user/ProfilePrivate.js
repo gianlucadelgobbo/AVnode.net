@@ -3,7 +3,7 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import LinksTel from '../link/LinksTel';
-import ProfileAddressesPrivate from './ProfileAddressesPrivate';
+import AddressesPrivate from '../place/AddressesPrivate';
 import validate from '../validate';
 import renderField from '../renderField';
 import ProfileNav from './ProfileNav';
@@ -29,7 +29,7 @@ let ProfilePrivateForm = props => {
   intl,
   handleSubmit,
   editUser,
-  userAddressDelete,
+  //userAddressDelete,
   fetchCountries
 } = props;
   if (!props.dispatch) console.log('ProfilePrivate, ERROR dispatch undefined');
@@ -39,7 +39,6 @@ let ProfilePrivateForm = props => {
   }
   if (!user._countries) {
     fetchCountries();
-    //console.log('submitting' + submitting);
   }
 
   const handleChange = () => {
@@ -212,11 +211,16 @@ let ProfilePrivateForm = props => {
           <FieldArray name="linksTel" component={LinksTel} />
           { /* LinksTel end */}
 
-          <ProfileAddressesPrivate
-            user={user}
-            intl={intl}
-            userAddressDelete={userAddressDelete}
+          { /* Addresses start */}
+          <FieldArray 
+            name="addresses" 
+            component={AddressesPrivate} 
+            props={{
+              countries: props.user._countries,
+              userId: props.user._id
+            }}
           />
+          { /* Addresses end */}
 
           <div className="form-group">
             <button
@@ -263,14 +267,9 @@ const ProfilePrivate = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('--> ProfilePrivate state.user: ' + JSON.stringify(state.user._id));
-  console.log('--> ProfilePrivate state.user.slug: ' + JSON.stringify(state.user.slug));
-  console.log('--> ProfilePrivate state.user.stagename: ' + JSON.stringify(state.user.stagename));
-  console.log('--> ProfilePrivate state.user.name: ' + JSON.stringify(state.user.name));
   return {  
     user: state.user,
-    initialValues: state.user//, 
-  //submitting: submitting
+    initialValues: state.user
   };
 };
 

@@ -21,14 +21,14 @@ const Member = injectIntl(({ member, me, onDelete, intl }) => {
   });
   return (
     <li className="list-group-item justify-content-between">
-      {member.file ? 
-      <img
-        className="img-small mb-3"
-        src={`${member.squareThumbnailUrl}`}       
-        alt={`image of ${member.stagename}`}
-      />
-      : 
-      null
+      {member.file ?
+        <img
+          className="img-small mb-3"
+          src={`${member.squareThumbnailUrl}`}
+          alt={`image of ${member.stagename}`}
+        />
+        :
+        null
       }
       <span>
         {`${member.stagename}`}
@@ -87,6 +87,13 @@ let CrewMembersForm = props => {
         </Match>
       </div>
       <Layout>
+        <legend>
+          <FormattedMessage
+            id="crew"
+            defaultMessage="Crew"
+          />:
+          &nbsp;{(props.crew) ? props.crew.stagename : null}
+        </legend>
         <form onSubmit={handleSubmit}>
           <Field
             name="_id"
@@ -189,7 +196,7 @@ const CrewMembers = props => {
   };
   const onSubmitSuccess = () => {
     console.log('CrewPublic onSubmitSuccess');
-        //route('/account/crews');
+    //route('/account/crews');
   };
   return (
     <CrewMembersForm

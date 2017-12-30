@@ -14,11 +14,9 @@ import {
 } from '../../reducers/actions';
 
 let CrewForm = props => {
-  const { handleSubmit, editCrew, crew, intl } = props;
-
-  // if (!props.org) props.org = {};
-
-  return (
+    const { handleSubmit, editCrew, crew, intl } = props;
+ 
+    return (
         <div>
             <div className="container-fluid">
                 <Match>
@@ -26,6 +24,13 @@ let CrewForm = props => {
                 </Match>
             </div>
             <Layout>
+                <legend>
+                    <FormattedMessage
+                        id="crew"
+                        defaultMessage="Crew"
+                    />:
+                    &nbsp;{(props.crew) ? props.crew.stagename : null}
+                </legend>
                 <form onSubmit={handleSubmit(editCrew)}>
                     <Field
                         name="_id"
@@ -36,8 +41,8 @@ let CrewForm = props => {
                     <div className="form-group">
                         <label htmlFor="stagename">
                             <FormattedMessage
-                                id="stagename"
-                                defaultMessage="Name"
+                                id="crew"
+                                defaultMessage="Crew"
                             />
                         </label>
                         &nbsp;
@@ -77,41 +82,41 @@ let CrewForm = props => {
                 </form>
             </Layout>
         </div>
-  );
+    );
 };
 
 CrewForm = injectIntl(reduxForm({ form: 'crewPublic' })(CrewForm));
 
 const CrewPublic = props => {
-  console.log('CrewPublic props');
-  const onSubmit = (props, dispatch) => {
-    console.log('CrewPublic onSubmit');
-    dispatch(editCrew(props));
-  };
-  const onSubmitSuccess = () => {
-    console.log('CrewPublic onSubmitSuccess');
-    //route('/account/crews');
-  };
-  return (
+    console.log('CrewPublic props');
+    const onSubmit = (props, dispatch) => {
+        console.log('CrewPublic onSubmit');
+        dispatch(editCrew(props));
+    };
+    const onSubmitSuccess = () => {
+        console.log('CrewPublic onSubmitSuccess');
+        //route('/account/crews');
+    };
+    return (
         <CrewForm
             initialValues={props.crew}
             onSubmit={onSubmit}
             onSubmitSuccess={onSubmitSuccess}
             {...props}
         />
-  );
+    );
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('_______________ props __________________________________');
-  console.log('--> CrewPublic props.slug: ' + JSON.stringify(props.slug));
-  return {
-    crew: (state.user.crews.find(c => { return c._id === props._id; })),
-    user: state.user
-  };
+    console.log('_______________ props __________________________________');
+    console.log('--> CrewPublic props.slug: ' + JSON.stringify(props.slug));
+    return {
+        crew: (state.user.crews.find(c => { return c._id === props._id; })),
+        user: state.user
+    };
 };
 const mapDispatchToProps = (dispatch) => ({
-  editCrew: dispatch(editCrew)
+    editCrew: dispatch(editCrew)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrewPublic);

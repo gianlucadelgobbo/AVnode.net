@@ -18,7 +18,7 @@ import {
 } from '../../reducers/actions';
 
 let ProfilePublicForm = props => {
-  const { 
+  const {
     user,
     /*submitting,
     dirty,
@@ -111,7 +111,12 @@ let ProfilePublicForm = props => {
           { /* Addresses start */}
           <FieldArray name="addresses" component={AddressesPublic} />
           { /* Addresses end */}
-
+          <label>
+            <FormattedMessage
+              id="editAddressInPrivateSection"
+              defaultMessage="Edit addresses in private section, only the locality and country are displayed publicly"
+            />
+          </label>
           <div className="form-group">
             <button
               className="btn btn-primary"
@@ -161,10 +166,10 @@ const mapStateToProps = (state, props) => {
   console.log('--> ProfilePublic state.user.slug: ' + JSON.stringify(state.user.slug));
   console.log('--> ProfilePublic state.user.stagename: ' + JSON.stringify(state.user.stagename));
   console.log('--> ProfilePublic state.user.name: ' + JSON.stringify(state.user.name));
-  return {  
+  return {
     user: state.user,
     initialValues: state.user//, 
-  //submitting: submitting
+    //submitting: submitting
   };
 };
 
