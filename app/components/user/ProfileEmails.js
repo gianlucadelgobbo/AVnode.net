@@ -35,12 +35,16 @@ let ProfileEmailsForm = props => {
       </div>
       <Layout>
         <form onSubmit={handleSubmit(editUser)}>
-            <FieldArray name="emails" component={Emails} props={{
-              onConfirm: props.userEmailConfirm,
-              onMakePrimary: props.userEmailMakePrimary,
-              onTogglePrivacy: props.userEmailTogglePrivacy,
-              userId: props.user._id
-            }} />
+            <FieldArray 
+              name="emails" 
+              component={Emails} 
+              props={{
+                onConfirm: props.userEmailConfirm,
+                onMakePrimary: props.userEmailMakePrimary,
+                onTogglePrivacy: props.userEmailTogglePrivacy,
+                userId: props.user._id
+              }} 
+            />
 
             <div className="form-group">
               <button
