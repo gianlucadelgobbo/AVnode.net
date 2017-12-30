@@ -9,6 +9,8 @@ import validate from '../validate';
 import Match from 'preact-router/match';
 import {
   userEmailConfirm,
+  userEmailTogglePrivacy,
+  userEmailMakePrimary,
   editUser
 } from '../../reducers/actions';
 
@@ -17,6 +19,8 @@ let ProfileEmailsForm = props => {
     user,
     intl,
     userEmailConfirm,
+    userEmailTogglePrivacy,
+    userEmailMakePrimary,
     dispatch,
     handleSubmit,
     editUser
@@ -33,6 +37,8 @@ let ProfileEmailsForm = props => {
         <form onSubmit={handleSubmit(editUser)}>
             <FieldArray name="emails" component={Emails} props={{
               onConfirm: props.userEmailConfirm,
+              onMakePrimary: props.userEmailMakePrimary,
+              onTogglePrivacy: props.userEmailTogglePrivacy,
               userId: props.user._id
             }} />
 
@@ -85,6 +91,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => ({
   userEmailConfirm: dispatch(userEmailConfirm),
+  userEmailTogglePrivacy: dispatch(userEmailTogglePrivacy),
+  userEmailMakePrimary: dispatch(userEmailMakePrimary),
   editUser: dispatch(editUser)
 });
 
