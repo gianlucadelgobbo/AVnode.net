@@ -8,7 +8,7 @@ const Abouts = injectIntl(({
   meta: { error, submitFailed },
   intl
 }) => (
-    <div>
+    <fieldset>
       <legend>
         <FormattedMessage
           id="abouts"
@@ -17,85 +17,41 @@ const Abouts = injectIntl(({
       </legend>
       {submitFailed && error && <span>{error}</span>}
 
+      {fields.length == 0 ? fields.push() : ''}
+
       {fields.map((about, index) => (
         <div key={index}>
-          <div className="row">
-            <div className="col-sm-10 input-group">
-              <label htmlFor="aboutlanguage">
-                <FormattedMessage
-                  id="aboutTitle"
-                  defaultMessage="About section in language:"
-                />
-              </label>
-              {Languages ?
-                <Field
-                  className="form-control custom-select"
-                  name={`${about}.lang`}
-                  component="select"
-                >
-                  <option value="">Select</option>
+          <div className="container">
+            <div>
+              <div className="container-fluid">
+                <nav class="nav-justified pull-left">
                   {Languages.map((c) => (
-                    <option value={c.code}>{c.language}</option>
+                    <a class="nav-link active" href={c.language}>{c.language}</a>
                   ))
                   }
-                </Field> :
-                <p>Loading languages…</p>
-              }
+                </nav>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  {Languages.map((c) => (
+                    <Field
+                      className="form-control"
+                      name={`${about}.abouttext`}
+                      component="textarea"
+                      rows="8"
+                      placeholder={intl.formatMessage({
+                        id: 'about.placeholder',
+                        defaultMessage: c.language
+                      })}
+                    />
+                  ))
+                  }
+                </div>
+              </div>
             </div>
-            <div className="col-sm-2">
-              <button
-                type="button"
-                className="btn btn-danger btn-sm"
-                onClick={() => fields.remove(index)}
-              >
-                <i
-                  className="fa fa-trash"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title={intl.formatMessage({
-                    id: 'delete',
-                    defaultMessage: 'Delete'
-                  })}
-                >
-                </i>
-              </button>
-            </div>
-          </div>
-          <div className="col-sm-12 input-group">
-            <Field
-              className="form-control"
-              name={`${about}.abouttext`}
-              component="textarea"
-              rows="4"
-              placeholder={intl.formatMessage({
-                id: 'about.placeholder',
-                defaultMessage: 'About'
-              })}
-            />
           </div>
         </div>
       ))}
-      <button
-        type="button"
-        className="btn btn-success btn-sm"
-        onClick={() => fields.push({})}>
-        <i
-          className="fa fa-plus"
-          data-toggle="tooltip"
-          data-placement="top"
-          title={intl.formatMessage({
-            id: 'add',
-            defaultMessage: 'Add'
-          })}
-        >
-        </i>
-      </button>
-      <label>
-        <FormattedMessage
-          id="addAbout"
-          defaultMessage="Add About section"
-        />
-      </label>
-    </div>
+    </fieldset>
   ));
 export default Abouts;

@@ -49,61 +49,53 @@ let ProfilePublicForm = props => {
             component="input"
             type="hidden"
           />
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="myAccountPublicData"
-                defaultMessage="My Account Public data"
-              />
-            </legend>
-
-          </fieldset>
-
-          <fieldset className="form-group">
-            <legend>
-              <FormattedMessage
-                id="details"
-                defaultMessage="Details"
-              />
-            </legend>
-
-            <label htmlFor="stagename">
-              <FormattedMessage
-                id="stagename"
-                defaultMessage="stagename"
-              />
-            </label>
-            <Field
-              className="form-control"
-              name="stagename"
-              component="input"
-              value={user.stagename}
+          <h3>
+            <FormattedMessage
+              id="myAccountPublicData"
+              defaultMessage="My Account Public data"
             />
-            <label htmlFor="slug">
-              <FormattedMessage
-                id="slug"
-                defaultMessage="Profile url"
-              />
-            </label>
-            <div className="input-group">
+          </h3>
+
+            <div class="form-group">
+              <label htmlFor="stagename">
+                <FormattedMessage
+                  id="stagename"
+                  defaultMessage="Stage name"
+                />
+              </label>
               <Field
                 className="form-control"
-                name="slug"
+                name="stagename"
                 component="input"
-                value={user.slug}
+                value={user.stagename}
               />
             </div>
-            <p>
-              {user.publicUrl}
-            </p>
+            <div class="form-group">
+              <label htmlFor="slug">
+                <FormattedMessage
+                  id="slug"
+                  defaultMessage="Profile url"
+                />
+              </label>
+              <div className="input-group">
+                <Field
+                  className="form-control"
+                  name="slug"
+                  component="input"
+                  value={user.slug}
+                />
+              </div>
+              <p>
+                {user.publicUrl}
+              </p>
+              <p>
+                <FormattedMessage
+                  id="url.change.disclaimer"
+                  defaultMessage="Changing your url can have unintended side effects!"
+                />
+              </p>
+            </div>
 
-            <p>
-              <FormattedMessage
-                id="url.change.disclaimer"
-                defaultMessage="Changing your url can have unintended side effects!"
-              />
-            </p>
-          </fieldset>
           { /* abouts start */}
           <FieldArray name="abouts" component={Abouts} />
           { /* abouts end */}
