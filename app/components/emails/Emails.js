@@ -9,6 +9,7 @@ import emailPrimary from './emailPrimary';
 const Emails = injectIntl(({
   fields,
   onConfirm,
+  onTogglePrivacy,
   userId,
   meta: { error, submitFailed },
   intl
@@ -53,6 +54,7 @@ const Emails = injectIntl(({
             </div>
             <div
               className="col-sm-1 input-group"
+              onClick={() => onTogglePrivacy(userId, index)}
             >
               <Field
                 className="form-control"
