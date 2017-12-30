@@ -15,7 +15,7 @@ import {
 
 let CrewForm = props => {
     const { handleSubmit, editCrew, crew, intl } = props;
-
+ 
     return (
         <div>
             <div className="container-fluid">
@@ -29,7 +29,7 @@ let CrewForm = props => {
                         id="crew"
                         defaultMessage="Crew"
                     />:
-                    {(props.crew) ? props.crew.stagename : null}
+                    &nbsp;{(props.crew) ? props.crew.stagename : null}
                 </legend>
                 <form onSubmit={handleSubmit(editCrew)}>
                     <Field
