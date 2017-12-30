@@ -3,7 +3,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 
 const emailPrimary = injectIntl(({ input, label, type, meta: { touched, error }, intl }) => (
   <div>
-    {console.log('emailPrivacy:' + JSON.stringify(input) + input.value)}
+    {/*console.log('emailPrivacy:' + JSON.stringify(input) + input.value)*/}
     {input.value ?
       <span className="badge badge-primary">
         <FormattedMessage

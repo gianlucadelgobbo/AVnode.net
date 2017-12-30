@@ -1054,16 +1054,16 @@ export function addUserTeaserImage(dispatch) {
 }
 
 export function userEmailMakePrimary(dispatch) {
-  return (userId, emailId) => {
-    console.log(userId + ' emailId: ' + emailId);
+  return (userId, emailIndex) => {
+    console.log(userId + ' emailId: ' + emailIndex);
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIMARY,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/email/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/email/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
