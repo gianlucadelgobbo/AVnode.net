@@ -33,6 +33,7 @@ export const REQUEST_USER_DELETEEMAIL = 'REQUEST_USER_DELETEEMAIL';
 export const REQUEST_USER_MAKEEMAILPRIMARY = 'REQUEST_USER_MAKEEMAILPRIMARY';
 export const REQUEST_USER_MAKEEMAILPRIVATE = 'REQUEST_USER_MAKEEMAILPRIVATE';
 export const REQUEST_USER_MAKEEMAILPUBLIC = 'REQUEST_USER_MAKEEMAILPUBLIC';
+export const REQUEST_USER_TOGGLEPRIVACY = 'REQUEST_USER_TOGGLEPRIVACY';
 export const REQUEST_USER_EMAILCONFIRM = 'REQUEST_USER_EMAILCONFIRM';
 export const REQUEST_USER_MAKEADDRESSPRIMARY = 'REQUEST_USER_MAKEADDRESSPRIMARY';
 export const REQUEST_USER_MAKEADDRESSPRIVATE = 'REQUEST_USER_MAKEADDRESSPRIVATE';
@@ -1053,63 +1054,78 @@ export function addUserTeaserImage(dispatch) {
 }
 
 export function userEmailMakePrimary(dispatch) {
-  return (userId, emailId) => {
-    console.log(userId + ' emailId: ' + emailId);
+  return (userId, emailIndex) => {
+    console.log(userId + ' emailId: ' + emailIndex);
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIMARY,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/email/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/email/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function userEmailMakePrivate(dispatch) {
-  return (userId, emailId) => {
+export function userEmailTogglePrivacy(dispatch) {
+  return (userId, emailIndex) => {
+    dispatch({
+      type: REQUEST_USER_TOGGLEPRIVACY,
+      payload: {
+        user: userId,
+        email: emailIndex
+      }
+    });
+    return fetch(`/account/api/user/${userId}/toggleprivacy/${emailIndex}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+/*export function userEmailMakePrivate(dispatch) {
+  return (userId, emailIndex) => {
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIVATE,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/makeemailprivate/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/makeemailprivate/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
 export function userEmailMakePublic(dispatch) {
-  return (userId, emailId) => {
+  return (userId, emailIndex) => {
     dispatch({
       type: REQUEST_USER_MAKEEMAILPUBLIC,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/makeemailpublic/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/makeemailpublic/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
+} */
 export function userEmailConfirm(dispatch) {
-  return (userId, emailId) => {
+  return (userId, emailIndex) => {
     console.log('_______________ACTION userEmailConfirm __________________________________');
-    console.log('userEmailConfirm : ' + userId + ' ' + emailId);
+    console.log('userEmailConfirm : ' + userId + ' ' + emailIndex);
     dispatch({
       type: REQUEST_USER_EMAILCONFIRM,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/emailconfirm/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/emailconfirm/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
