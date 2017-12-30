@@ -55,6 +55,13 @@ let CrewOrganizationForm = props => {
                 </Match>
             </div>
             <Layout>
+                <legend>
+                    <FormattedMessage
+                        id="crew"
+                        defaultMessage="Crew"
+                    />:
+                    {(props.crew) ? props.crew.stagename : null}
+                </legend>
                 <form onSubmit={handleSubmit(editCrew)}>
                     <Field
                         name="_id"

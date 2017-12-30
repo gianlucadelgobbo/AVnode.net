@@ -18,7 +18,7 @@ const AddressesPrivate = injectIntl(({
         />
       </legend>
       {submitFailed && error && <span>{error}</span>}
-      {console.log('userId:' + userId + ' countries:' + countries)}
+      {/*console.log('userId:' + userId)*/}
       {fields.map((address, index) => (
         <div key={index}>
           <label>

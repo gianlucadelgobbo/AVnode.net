@@ -220,12 +220,7 @@ let ProfilePrivateForm = props => {
               userId: props.user._id
             }}
           />
-          { /* Addresses end 
-          <ProfileAddressesPrivate
-            user={user}
-            intl={intl}
-            userAddressDelete={userAddressDelete}
-          />*/}
+          { /* Addresses end */}
 
           <div className="form-group">
             <button
@@ -272,14 +267,9 @@ const ProfilePrivate = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('--> ProfilePrivate state.user: ' + JSON.stringify(state.user._id));
-  console.log('--> ProfilePrivate state.user.slug: ' + JSON.stringify(state.user.slug));
-  console.log('--> ProfilePrivate state.user.stagename: ' + JSON.stringify(state.user.stagename));
-  console.log('--> ProfilePrivate state.user.name: ' + JSON.stringify(state.user.name));
   return {  
     user: state.user,
-    initialValues: state.user//, 
-  //submitting: submitting
+    initialValues: state.user
   };
 };
 
