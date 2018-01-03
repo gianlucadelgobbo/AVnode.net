@@ -56,7 +56,7 @@ let ProfilePublicForm = props => {
             />
           </h3>
 
-            <div class="form-group">
+            <div className="form-group">
               <label htmlFor="stagename">
                 <FormattedMessage
                   id="stagename"
@@ -70,7 +70,7 @@ let ProfilePublicForm = props => {
                 value={user.stagename}
               />
             </div>
-            <div class="form-group">
+            <div className="form-group">
               <label htmlFor="slug">
                 <FormattedMessage
                   id="slug"

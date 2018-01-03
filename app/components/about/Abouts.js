@@ -24,7 +24,7 @@ const Abouts = injectIntl(({
           <div className="container">
             <div>
               <div className="container-fluid">
-                <nav class="nav-justified pull-left">
+                <nav className="nav-justified pull-left">
                   {Languages.map((c) => (
                     <a class="nav-link active" href={c.language}>{c.language}</a>
                   ))

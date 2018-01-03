@@ -38,7 +38,7 @@ const Links = injectIntl(({
               value="web"
             />
             {console.log(PublicLinkTypes)}
-            <span class="input-group-btn">
+            <span className="input-group-btn">
               <button
                 type="button"
                 className="btn btn-danger"
@@ -59,7 +59,7 @@ const Links = injectIntl(({
           </div>
         </div>
       ))}
-      <div class="text-right">
+      <div className="text-right">
         <button
           type="button"
           className="btn btn-success btn-sm"

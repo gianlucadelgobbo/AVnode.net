@@ -33,5 +33,6 @@
 	"surname.placeholder": "surname.placeholder",
 	"Confirm Password": "Confirm Password",
 	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, password not found. Migration from flxer done, please Login again.",
-	"You are logged in, flxer.net account migrated.": "You are logged in, flxer.net account migrated."
+	"You are logged in, flxer.net account migrated.": "You are logged in, flxer.net account migrated.",
+	"Saved": "Saved"
 }
