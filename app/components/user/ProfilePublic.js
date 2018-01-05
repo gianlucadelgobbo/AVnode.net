@@ -34,7 +34,9 @@ let ProfilePublicForm = props => {
   if (!user._countries) {
     fetchCountries();
   }
-
+  function onSwitchLanguage(lang) {
+    console.log(lang);
+  }
   return (
     <div>
       <div className="container-fluid">
@@ -97,7 +99,13 @@ let ProfilePublicForm = props => {
             </div>
 
           { /* abouts start */}
-          <FieldArray name="abouts" component={Abouts} />
+          <FieldArray 
+            name="abouts" 
+            component={Abouts}
+            props={{
+              onSwitchLanguage: onSwitchLanguage
+            }} 
+          />
           { /* abouts end */}
 
           { /* links start */}

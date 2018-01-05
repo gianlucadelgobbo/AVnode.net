@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import renderLabel from '../renderLabel';
+import renderLegend from '../renderLegend';
 
 const AddressesPublic = injectIntl(({
   fields,
@@ -32,7 +32,7 @@ const AddressesPublic = injectIntl(({
                     <Field
                         className="form-control"
                         name={`${address}.locality`}
-                        component={renderLabel}
+                        component={renderLegend}
                         placeholder='Locality'
                     />
                 </div>
@@ -46,7 +46,7 @@ const AddressesPublic = injectIntl(({
                     <Field
                         className="form-control"
                         name={`${address}.country`}
-                        component={renderLabel}
+                        component={renderLegend}
                         placeholder='Country'
                     />
                     
