@@ -1,15 +1,28 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Languages from '../language/Languages';
 import renderLabel from '../renderLabel';
 
 const Abouts = injectIntl(({
   fields,
-  onSwitchLanguage,
+  languages,
   meta: { error, submitFailed },
   intl
-}) => (
+}) => {
+
+  let selectedLanguage;
+
+  const onSwitchLanguage = (e) => {
+    e.preventDefault();
+    selectedLanguage = e.target.__preactattr_.href;
+    console.log( selectedLanguage + JSON.stringify(fields));
+    fields.map((about, index, flds) => (
+      console.log(about, index, flds)
+    ));
+
+  }
+  return (
+  <fieldset>
     <div>
       <legend>
         <FormattedMessage
@@ -20,15 +33,14 @@ const Abouts = injectIntl(({
       {submitFailed && error && <span>{error}</span>}
       <div className="container-fluid">
         <nav className="nav-justified pull-left">
-          {Languages.map((c) => (
+          {languages.map((c) => (
             <a
               className="nav-link active"
               href={c.code}
               onClick={
                 e => {
-                  e.preventDefault();
-                  console.log( e.target.__preactattr_.href);
-                  onSwitchLanguage(e.target.__preactattr_.href);
+                  //console.log( e.target.__preactattr_.href + 's' + selectedLanguage);
+                  onSwitchLanguage(e);
                 }
               }>
               {c.language}
@@ -53,14 +65,12 @@ const Abouts = injectIntl(({
               />
             </div>
 
-          </div>
-          <div className="col-sm-12 input-group">
             <Field
               className="form-control"
               name={`${about}.abouttext`}
               component="textarea"
-              type="hidden"
-              rows="4"
+              style={{display: index==selectedLanguage ? 'block' : 'none'}}
+              rows="12"
               placeholder={intl.formatMessage({
                 id: 'about.placeholder',
                 defaultMessage: 'About'
@@ -70,5 +80,7 @@ const Abouts = injectIntl(({
         </div>
       ))}
     </div>
-  ));
+    </fieldset>
+  );}
+);
 export default Abouts;

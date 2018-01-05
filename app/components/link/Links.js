@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field } from 'redux-form';
-import PublicLinkTypes from './PublicLinkTypes';
+//import PublicLinkTypes from './PublicLinkTypes';
 
 const Links = injectIntl(({
   fields,
@@ -37,7 +37,7 @@ const Links = injectIntl(({
               type="hidden"
               value="web"
             />
-            {console.log(PublicLinkTypes)}
+            {/*console.log(PublicLinkTypes)*/}
             <span className="input-group-btn">
               <button
                 type="button"

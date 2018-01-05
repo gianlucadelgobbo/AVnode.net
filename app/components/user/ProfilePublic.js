@@ -10,6 +10,8 @@ import Links from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
+import Languages from '../language/Languages';
+
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 import { connect } from 'preact-redux';
 import {
@@ -21,22 +23,25 @@ let ProfilePublicForm = props => {
   const {
     user,
     /*submitting,
-    dirty,
-    invalid,
-    pristine,
     valid,*/
     intl,
     handleSubmit,
     editUser,
     fetchCountries
   } = props;
-
+  
   if (!user._countries) {
     fetchCountries();
   }
-  function onSwitchLanguage(lang) {
-    console.log(lang);
+  let languages = []; // Languages;
+  if (user && user.abouts) {
+    //console.log(about.abouttext + ' l ' + about.lang),
+    user.abouts.map((about) => (
+      languages.push(about.lang)
+    ));
   }
+  console.log( JSON.stringify(languages));
+  //console.log( JSON.stringify(user.abouts));
   return (
     <div>
       <div className="container-fluid">
@@ -69,7 +74,6 @@ let ProfilePublicForm = props => {
                 className="form-control"
                 name="stagename"
                 component="input"
-                value={user.stagename}
               />
             </div>
             <div className="form-group">
@@ -84,7 +88,6 @@ let ProfilePublicForm = props => {
                   className="form-control"
                   name="slug"
                   component="input"
-                  value={user.slug}
                 />
               </div>
               <p>
@@ -103,7 +106,7 @@ let ProfilePublicForm = props => {
             name="abouts" 
             component={Abouts}
             props={{
-              onSwitchLanguage: onSwitchLanguage
+              languages: languages
             }} 
           />
           { /* abouts end */}
@@ -170,10 +173,10 @@ const ProfilePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  console.log('--> ProfilePublic state.user: ' + JSON.stringify(state.user._id));
+  /*console.log('--> ProfilePublic state.user: ' + JSON.stringify(state.user._id));
   console.log('--> ProfilePublic state.user.slug: ' + JSON.stringify(state.user.slug));
   console.log('--> ProfilePublic state.user.stagename: ' + JSON.stringify(state.user.stagename));
-  console.log('--> ProfilePublic state.user.name: ' + JSON.stringify(state.user.name));
+  console.log('--> ProfilePublic state.user.name: ' + JSON.stringify(state.user.name));*/
   return {
     user: state.user,
     initialValues: state.user//, 
