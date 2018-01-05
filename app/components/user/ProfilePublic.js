@@ -23,24 +23,41 @@ let ProfilePublicForm = props => {
   const {
     user,
     /*submitting,
-    valid,*/
-    intl,
+    valid,
+    intl,*/
     handleSubmit,
     editUser,
     fetchCountries
   } = props;
-  
+
   if (!user._countries) {
     fetchCountries();
   }
   let languages = []; // Languages;
   if (user && user.abouts) {
     //console.log(about.abouttext + ' l ' + about.lang),
+    let index = 0;
+    
     user.abouts.map((about) => (
-      languages.push(about.lang)
+      Languages.map((l) => (
+        (about.lang == l.code) ? languages.push({ 'code': l.code, 'language': l.language , 'index': index++ }) : null
+      ))
+      //languages.push(about.lang)
     ));
+    /*Languages.map((l) => (
+      user.abouts.map((about) => (
+        (about.lang != l.code) ? null : languages.push({ 'code': l.code, 'language': l.language , 'index': index++ })
+      ))
+      //languages.push(about.lang)
+    ));    
+    // add missing languages
+    Languages.map((L) => (
+      languages.map((l) => (
+        (L.code == l.code) ? null : languages.push({ 'code': L.code, 'language': L.language }) 
+      ))
+    ));*/
   }
-  console.log( JSON.stringify(languages));
+  console.log(JSON.stringify(languages));
   //console.log( JSON.stringify(user.abouts));
   return (
     <div>
@@ -63,51 +80,51 @@ let ProfilePublicForm = props => {
             />
           </h3>
 
-            <div className="form-group">
-              <label htmlFor="stagename">
-                <FormattedMessage
-                  id="stagename"
-                  defaultMessage="Stage name"
-                />
-              </label>
+          <div className="form-group">
+            <label htmlFor="stagename">
+              <FormattedMessage
+                id="stagename"
+                defaultMessage="Stage name"
+              />
+            </label>
+            <Field
+              className="form-control"
+              name="stagename"
+              component="input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="slug">
+              <FormattedMessage
+                id="slug"
+                defaultMessage="Profile url"
+              />
+            </label>
+            <div className="input-group">
               <Field
                 className="form-control"
-                name="stagename"
+                name="slug"
                 component="input"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="slug">
-                <FormattedMessage
-                  id="slug"
-                  defaultMessage="Profile url"
-                />
-              </label>
-              <div className="input-group">
-                <Field
-                  className="form-control"
-                  name="slug"
-                  component="input"
-                />
-              </div>
-              <p>
-                {user.publicUrl}
-              </p>
-              <p>
-                <FormattedMessage
-                  id="url.change.disclaimer"
-                  defaultMessage="Changing your url can have unintended side effects!"
-                />
-              </p>
-            </div>
+            <p>
+              {user.publicUrl}
+            </p>
+            <p>
+              <FormattedMessage
+                id="url.change.disclaimer"
+                defaultMessage="Changing your url can have unintended side effects!"
+              />
+            </p>
+          </div>
 
           { /* abouts start */}
-          <FieldArray 
-            name="abouts" 
+          <FieldArray
+            name="abouts"
             component={Abouts}
             props={{
               languages: languages
-            }} 
+            }}
           />
           { /* abouts end */}
 

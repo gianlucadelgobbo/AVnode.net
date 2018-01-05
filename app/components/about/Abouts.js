@@ -10,17 +10,18 @@ const Abouts = injectIntl(({
   intl
 }) => {
 
-  let selectedLanguage;
+  let selectedLanguage = 0;
 
   const onSwitchLanguage = (e) => {
     e.preventDefault();
     selectedLanguage = e.target.__preactattr_.href;
-    console.log( selectedLanguage + JSON.stringify(fields));
+    console.log( 'selectedLanguage:' + selectedLanguage );
+    console.log( 'languages' + JSON.stringify(languages));
     fields.map((about, index, flds) => (
-      console.log(about, index, flds)
+      console.log(about, index)
     ));
+  };
 
-  }
   return (
   <fieldset>
     <div>
@@ -36,7 +37,7 @@ const Abouts = injectIntl(({
           {languages.map((c) => (
             <a
               className="nav-link active"
-              href={c.code}
+              href={c.index}
               onClick={
                 e => {
                   //console.log( e.target.__preactattr_.href + 's' + selectedLanguage);
