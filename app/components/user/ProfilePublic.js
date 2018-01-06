@@ -35,12 +35,13 @@ let ProfilePublicForm = props => {
   }
   let languages = []; // Languages;
   if (user && user.abouts) {
-    //console.log(about.abouttext + ' l ' + about.lang),
+    console.log('user.abouts.length '+ user.abouts.length);
     let index = 0;
+    let otherLanguagesIndex = 0;
     
     user.abouts.map((about) => (
       Languages.map((l) => (
-        (about.lang == l.code) ? languages.push({ 'code': l.code, 'language': l.language , 'index': index++ }) : null
+        (about.lang == l.code) ? languages.push({ 'code': l.code, 'language': l.language , 'index': index++ }) : languages.push({ 'code': l.code, 'language': l.language , 'index': otherLanguagesIndex++ })
       ))
       //languages.push(about.lang)
     ));

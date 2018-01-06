@@ -1,4 +1,4 @@
-import { h } from 'preact';
+/*import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { route } from 'preact-router';
 import { Field, FieldArray, reduxForm } from 'redux-form';
@@ -171,9 +171,7 @@ let PerformanceForm = props => {
             value={props.title}
           />
         </div>
-        { /* abouts start 
-          <FieldArray name="abouts" component={Abouts} />
-           abouts end */}
+        
 
         <div className="form-group">
           <label htmlFor="teaserImage">
@@ -250,7 +248,7 @@ let PerformanceForm = props => {
                   <option value={c.key.toLowerCase()}>{c.name}</option>
                 ))
                 }
-                { /*  */}
+                
               </Field> :
               <p>Loading categories…</p>
             }
@@ -520,4 +518,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(EditPerformance);
+export default connect(mapStateToProps)(EditPerformance);*/

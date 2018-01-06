@@ -144,7 +144,7 @@ const AddressesPrivate = injectIntl(({
             <div className="col-sm-1">
               <button
                 type="button"
-                className="btn btn-danger btn-sm"
+                className="btn btn-danger"
                 onClick={() => fields.remove(index)}
               >
                 <i

@@ -1,4 +1,4 @@
-import { h } from 'preact';
+/* obsolete import { h } from 'preact';
 import { FormattedMessage } from 'preact-intl';
 
 const About = ({ about, onDelete, intl }) => {
@@ -27,4 +27,4 @@ const About = ({ about, onDelete, intl }) => {
   );
 };
 
-export default About;
+export default About;*/

@@ -1,4 +1,4 @@
-import { h } from 'preact';
+/*import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { route } from 'preact-router';
 import { Field, FieldArray, reduxForm } from 'redux-form';
@@ -222,14 +222,7 @@ let EventForm = props => {
             value={props.title}
           />
         </div>
-        { /* abouts start */}
-        <FieldArray name="abouts" component={Abouts} />
-        { /* abouts end
-        <Abouts
-          current={event}
-          intl={intl}
-          aboutDelete={aboutDelete}
-        /> */}
+       
         <div className="form-check">
           <label className="form-check-label">
             <Field
@@ -337,7 +330,7 @@ let EventForm = props => {
                     <option value={c.key.toLowerCase()}>{c.name}</option>
                   ))
                   }
-                  { /*  */}
+                 
                 </Field> :
                 <p>Loading categories…</p>
               }
@@ -412,7 +405,7 @@ let EventForm = props => {
                     <option value={c.key.toLowerCase()}>{c.name}</option>
                   ))
                   }
-                  { /*  */}
+                  
                 </Field> :
                 <p>Loading a link types…</p>
               }
@@ -673,3 +666,4 @@ const mapDispatchToProps = (dispatch) => ({
   aboutDelete: dispatch(eventAboutDelete)
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditEvent);
+*/
