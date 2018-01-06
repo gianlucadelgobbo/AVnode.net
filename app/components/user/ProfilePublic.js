@@ -36,6 +36,7 @@ let ProfilePublicForm = props => {
   let languages = []; // Languages;
   if (user && user.abouts) {
     console.log('user.abouts.length '+ user.abouts.length);
+    //BL FIXME not working
     let index = 0;
     let otherLanguagesIndex = 0;
     
