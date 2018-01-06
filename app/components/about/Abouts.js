@@ -1,14 +1,30 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Languages from '../language/Languages';
+import renderLabel from '../renderLabel';
 
 const Abouts = injectIntl(({
   fields,
+  languages,
   meta: { error, submitFailed },
   intl
-}) => (
-    <fieldset>
+}) => {
+
+  let selectedLanguage = 0;
+
+  const onSwitchLanguage = (e) => {
+    e.preventDefault();
+    selectedLanguage = e.target.__preactattr_.href;
+    console.log( 'selectedLanguage:' + selectedLanguage );
+    console.log( 'languages' + JSON.stringify(languages));
+    fields.map((about, index, flds) => (
+      console.log(about, index)
+    ));
+  };
+
+  return (
+  <fieldset>
+    <div>
       <legend>
         <FormattedMessage
           id="abouts"
@@ -16,42 +32,56 @@ const Abouts = injectIntl(({
         />
       </legend>
       {submitFailed && error && <span>{error}</span>}
-
-      {fields.length == 0 ? fields.push() : ''}
-
+      <div className="container-fluid">
+        <nav className="nav-justified pull-left">
+          {languages.map((c) => (
+            <a
+              className="nav-link active"
+              href={c.index}
+              onClick={
+                e => {
+                  //console.log( e.target.__preactattr_.href + 's' + selectedLanguage);
+                  onSwitchLanguage(e);
+                }
+              }>
+              {c.language}
+            </a>
+          ))}
+        </nav>
+      </div>
       {fields.map((about, index) => (
         <div key={index}>
-          <div className="container">
-            <div>
-              <div className="container-fluid">
-                <nav className="nav-justified pull-left">
-                  {Languages.map((c) => (
-                    <a class="nav-link active" href={c.language}>{c.language}</a>
-                  ))
-                  }
-                </nav>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  {Languages.map((c) => (
-                    <Field
-                      className="form-control"
-                      name={`${about}.abouttext`}
-                      component="textarea"
-                      rows="8"
-                      placeholder={intl.formatMessage({
-                        id: 'about.placeholder',
-                        defaultMessage: c.language
-                      })}
-                    />
-                  ))
-                  }
-                </div>
-              </div>
+          <div className="row">
+            <div className="col-sm-10 input-group">
+              <label htmlFor="aboutlanguage">
+                <FormattedMessage
+                  id="aboutTitle"
+                  defaultMessage="About section in language:"
+                />
+              </label>
+              <Field
+                className="form-control"
+                name={`${about}.lang`}
+                component={renderLabel}
+              />
             </div>
+
+            <Field
+              className="form-control"
+              name={`${about}.abouttext`}
+              component="textarea"
+              style={{display: index==selectedLanguage ? 'block' : 'none'}}
+              rows="12"
+              placeholder={intl.formatMessage({
+                id: 'about.placeholder',
+                defaultMessage: 'About'
+              })}
+            />
           </div>
         </div>
       ))}
+    </div>
     </fieldset>
-  ));
+  );}
+);
 export default Abouts;

@@ -1,4 +1,4 @@
-import { h } from 'preact';
+/*import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { route } from 'preact-router';
 import { Field, reduxForm } from 'redux-form';
@@ -90,10 +90,7 @@ let CrewForm = props => {
     return dispatch(addCrewTeaserImage(crewId, file));
   };
 
-  /*const onCrewAboutMakePrimary = (crewId) => (about) => (e) => {
-    about.is_primary = true;
-    return dispatch(crewAboutEdit(crewId, about._id));
-  };*/
+ 
 
   if (!props.org) props.org = {};
   
@@ -1204,4 +1201,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(EditCrew);
+export default connect(mapStateToProps)(EditCrew);*/

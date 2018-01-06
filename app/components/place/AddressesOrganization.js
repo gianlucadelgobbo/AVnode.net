@@ -112,7 +112,6 @@ const AddressesOrganization = injectIntl(({
                   className="form-control custom-select"
                   name={`${address}.country`}
                   component="select"
-                  value={`${address}.country`}
                 >
                   <option value="">
                     <FormattedMessage
