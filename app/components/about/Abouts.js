@@ -2,10 +2,11 @@ import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import renderLabel from '../renderLabel';
+import Languages from '../language/Languages';
 
 const Abouts = injectIntl(({
   fields,
-  languages,
+  //languages,
   meta: { error, submitFailed },
   intl
 }) => {
@@ -16,8 +17,8 @@ const Abouts = injectIntl(({
     e.preventDefault();
     selectedLanguage = e.target.__preactattr_.href;
     console.log( 'selectedLanguage:' + selectedLanguage );
-    console.log( 'languages' + JSON.stringify(languages));
-    fields.map((about, index, flds) => (
+    console.log( 'languages' + JSON.stringify(Languages));
+    fields.map((about, index) => (
       console.log(about, index)
     ));
   };
@@ -34,7 +35,7 @@ const Abouts = injectIntl(({
       {submitFailed && error && <span>{error}</span>}
       <div className="container-fluid">
         <nav className="nav-justified pull-left">
-          {languages.map((c) => (
+          {Languages.map((c) => (
             <a
               className="nav-link active"
               href={c.index}
