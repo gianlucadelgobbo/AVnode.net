@@ -6,22 +6,12 @@ import Languages from '../language/Languages';
 
 const Abouts = injectIntl(({
   fields,
-  //languages,
+  selectedLanguage,
+  onSwitchLanguage,
   meta: { error, submitFailed },
   intl
 }) => {
 
-  let selectedLanguage = 0;
-
-  const onSwitchLanguage = (e) => {
-    e.preventDefault();
-    selectedLanguage = e.target.__preactattr_.href;
-    console.log( 'selectedLanguage:' + selectedLanguage );
-    console.log( 'languages' + JSON.stringify(Languages));
-    fields.map((about, index) => (
-      console.log(about, index)
-    ));
-  };
 
   return (
   <fieldset>
@@ -41,7 +31,6 @@ const Abouts = injectIntl(({
               href={c.index}
               onClick={
                 e => {
-                  //console.log( e.target.__preactattr_.href + 's' + selectedLanguage);
                   onSwitchLanguage(e);
                 }
               }>
@@ -66,7 +55,7 @@ const Abouts = injectIntl(({
                 component={renderLabel}
               />
             </div>
-
+      {console.log( 'selected:' + selectedLanguage )}
             <Field
               className="form-control"
               name={`${about}.abouttext`}

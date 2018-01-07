@@ -27,7 +27,12 @@ let ProfilePublicForm = props => {
   if (!user._countries) {
     fetchCountries();
   }
-
+  let selectedLanguage = 3;
+  const onSwitchLanguage = (e) => {
+    e.preventDefault();
+    selectedLanguage = e.target.__preactattr_.href;
+    console.log( 'selectedLanguage:' + selectedLanguage );
+  };
   return (
     <div>
       <div className="container-fluid">
@@ -86,32 +91,16 @@ let ProfilePublicForm = props => {
               />
             </p>
           </div>
-          {/*<Field
-            className="form-control"
-            name="abouts[0].lang"
-            component="input"
-          />
-          abouts && <div>
-            <div>
-              <Field
-                className="form-control"
-                name={`${abouts[0]}.abouttext`}
-                component="textarea"
-                //style={{display: index==selectedLanguage ? 'block' : 'none'}}
-                rows="12"
-              />
-              <Field name={`${abouts[0]}.abouttext`} component="textarea" />
-            </div>
-          </div>*/}
-          { /* abouts start
+          { console.log('sl:' + selectedLanguage)}
+          { /* abouts start */}
           <FieldArray
             name="abouts"
             component={Abouts}
             props={{
-              languages: languages
+              selectedLanguage: selectedLanguage,
+              onSwitchLanguage: onSwitchLanguage
             }}
-          /> */}
-          <FieldArray name="abouts" component={Abouts} />
+          />
           { /* abouts end */}
 
           { /* links start */}
@@ -176,6 +165,7 @@ const ProfilePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
+  // add other languages abouts
   let abouts = selector(state, 'abouts');
   if (abouts && abouts.length < Languages.length) {
     for (let l=0; l < Languages.length; l++) {
@@ -192,7 +182,7 @@ const mapStateToProps = (state, props) => {
     }
     console.log(JSON.stringify(abouts));
   }
- 
+  console.log(props.selectedLanguage);
   return {
     user: state.user,
     initialValues: state.user,
