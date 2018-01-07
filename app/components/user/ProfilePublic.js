@@ -1,9 +1,7 @@
 import { h } from 'preact';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
-//import validate from './validate';
-// import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
 import Links from '../link/Links';
@@ -11,8 +9,6 @@ import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
 import Languages from '../language/Languages';
-
-// const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 import { connect } from 'preact-redux';
 import {
   fetchCountries,
@@ -22,9 +18,7 @@ import {
 let ProfilePublicForm = props => {
   const {
     user,
-    /*submitting,
-    valid,
-    intl,*/
+    abouts,
     handleSubmit,
     editUser,
     fetchCountries
@@ -33,34 +27,12 @@ let ProfilePublicForm = props => {
   if (!user._countries) {
     fetchCountries();
   }
-  let languages = []; // Languages;
-  if (user && user.abouts) {
-    console.log('user.abouts.length '+ user.abouts.length);
-    //BL FIXME not working
-    let index = 0;
-    let otherLanguagesIndex = 0;
-    
-    user.abouts.map((about) => (
-      Languages.map((l) => (
-        (about.lang == l.code) ? languages.push({ 'code': l.code, 'language': l.language , 'index': index++ }) : languages.push({ 'code': l.code, 'language': l.language , 'index': otherLanguagesIndex++ })
-      ))
-      //languages.push(about.lang)
-    ));
-    /*Languages.map((l) => (
-      user.abouts.map((about) => (
-        (about.lang != l.code) ? null : languages.push({ 'code': l.code, 'language': l.language , 'index': index++ })
-      ))
-      //languages.push(about.lang)
-    ));    
-    // add missing languages
-    Languages.map((L) => (
-      languages.map((l) => (
-        (L.code == l.code) ? null : languages.push({ 'code': L.code, 'language': L.language }) 
-      ))
-    ));*/
-  }
-  console.log(JSON.stringify(languages));
-  //console.log( JSON.stringify(user.abouts));
+  let selectedLanguage = 3;
+  const onSwitchLanguage = (e) => {
+    e.preventDefault();
+    selectedLanguage = e.target.__preactattr_.href;
+    console.log( 'selectedLanguage:' + selectedLanguage );
+  };
   return (
     <div>
       <div className="container-fluid">
@@ -119,13 +91,14 @@ let ProfilePublicForm = props => {
               />
             </p>
           </div>
-
+          { console.log('sl:' + selectedLanguage)}
           { /* abouts start */}
           <FieldArray
             name="abouts"
             component={Abouts}
             props={{
-              languages: languages
+              selectedLanguage: selectedLanguage,
+              onSwitchLanguage: onSwitchLanguage
             }}
           />
           { /* abouts end */}
@@ -171,9 +144,9 @@ ProfilePublicForm = injectIntl(reduxForm({
   keepDirtyOnReinitialize: true,
   //validate
 })(ProfilePublicForm));
-
+const selector = formValueSelector('userPublic');
 const ProfilePublic = props => {
-  console.log('ProfilePublic props');
+  //console.log('ProfilePublic props');
   const onSubmit = (props, dispatch) => {
     console.log('ProfilePublic onSubmit dispatch' + dispatch);
     dispatch(editUser(props));
@@ -192,14 +165,28 @@ const ProfilePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  /*console.log('--> ProfilePublic state.user: ' + JSON.stringify(state.user._id));
-  console.log('--> ProfilePublic state.user.slug: ' + JSON.stringify(state.user.slug));
-  console.log('--> ProfilePublic state.user.stagename: ' + JSON.stringify(state.user.stagename));
-  console.log('--> ProfilePublic state.user.name: ' + JSON.stringify(state.user.name));*/
+  // add other languages abouts
+  let abouts = selector(state, 'abouts');
+  if (abouts && abouts.length < Languages.length) {
+    for (let l=0; l < Languages.length; l++) {
+      let found = false;
+      for (let a=0; a < abouts.length; a++) {
+        if (abouts[a].lang == Languages[l].code) {
+          console.log(abouts[a].lang);
+          found = true;
+        }
+      }
+      if (!found) {
+        abouts.push({ 'lang': Languages[l].code, 'abouttext': '', 'index': Languages[l].index });
+      }
+    }
+    console.log(JSON.stringify(abouts));
+  }
+  console.log(props.selectedLanguage);
   return {
     user: state.user,
-    initialValues: state.user//, 
-    //submitting: submitting
+    initialValues: state.user,
+    abouts
   };
 };
 

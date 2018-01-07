@@ -2,25 +2,16 @@ import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import renderLabel from '../renderLabel';
+import Languages from '../language/Languages';
 
 const Abouts = injectIntl(({
   fields,
-  languages,
+  selectedLanguage,
+  onSwitchLanguage,
   meta: { error, submitFailed },
   intl
 }) => {
 
-  let selectedLanguage = 0;
-
-  const onSwitchLanguage = (e) => {
-    e.preventDefault();
-    selectedLanguage = e.target.__preactattr_.href;
-    console.log( 'selectedLanguage:' + selectedLanguage );
-    console.log( 'languages' + JSON.stringify(languages));
-    fields.map((about, index, flds) => (
-      console.log(about, index)
-    ));
-  };
 
   return (
   <fieldset>
@@ -34,13 +25,12 @@ const Abouts = injectIntl(({
       {submitFailed && error && <span>{error}</span>}
       <div className="container-fluid">
         <nav className="nav-justified pull-left">
-          {languages.map((c) => (
+          {Languages.map((c) => (
             <a
               className="nav-link active"
               href={c.index}
               onClick={
                 e => {
-                  //console.log( e.target.__preactattr_.href + 's' + selectedLanguage);
                   onSwitchLanguage(e);
                 }
               }>
@@ -65,7 +55,7 @@ const Abouts = injectIntl(({
                 component={renderLabel}
               />
             </div>
-
+      {console.log( 'selected:' + selectedLanguage )}
             <Field
               className="form-control"
               name={`${about}.abouttext`}

@@ -227,7 +227,8 @@ const user = (state = initialValues, action) => {
     });
   case GOT_USER:
     return Object.assign({}, state, action.json, {
-      ajaxInProgress: false
+      ajaxInProgress: false,
+      profileImageUploadInProgress: false
     });
   case REQUEST_EDIT_USER:
     console.log('_______________ index redux REQUEST_EDIT_USER __________________________________');
