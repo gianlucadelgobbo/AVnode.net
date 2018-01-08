@@ -3,6 +3,7 @@
   "imageHeight": 300,
   "teaserWidth": 1920,
   "teaserHeight": 720,
+  "maxImageSize": "2000000",
   "maxFileComment": "1 * 1024 * 1024 * 1024",
   "maxFileSize": 1073741824,
   "defaultLocale": "en",

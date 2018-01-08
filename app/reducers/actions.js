@@ -168,7 +168,7 @@ export function addEventCategory(id, category) {
 export function removeEventCategory(dispatch) {
   return (eventId, categoryId) => {
     console.log('_______________ACTION removeEventCategory __________________________________');
-    console.log('removeEventCategory eventId: ' + eventId + 'categoryId: ' + categoryId);
+    console.log('removeEventCategory eventId: ' + eventId + ' categoryId: ' + categoryId);
     dispatch({
       type: REQUEST_DELETE_EVENT_CATEGORY,
       payload: {
@@ -1023,6 +1023,8 @@ const wrapInFormData = (file) => {
 
 export function addUserProfileImage(dispatch) {
   return (id, file) => {
+    console.log('______ ACTION addUserProfileImage _______');
+    console.log('id: ' + id + ' file: ' + JSON.stringify(file));
     dispatch({
       type: REQUEST_ADD_USERPROFILEIMAGE,
       payload: {
