@@ -27,7 +27,7 @@ let ProfilePublicForm = props => {
   if (!user._countries) {
     fetchCountries();
   }
-  let selectedLanguage = 3;
+  let selectedLanguage = 0;
   const onSwitchLanguage = (e) => {
     e.preventDefault();
     selectedLanguage = e.target.__preactattr_.href;
@@ -182,7 +182,7 @@ const mapStateToProps = (state, props) => {
     }
     console.log(JSON.stringify(abouts));
   }
-  console.log(props.selectedLanguage);
+  // console.log(props.selectedLanguage);
   return {
     user: state.user,
     initialValues: state.user,
