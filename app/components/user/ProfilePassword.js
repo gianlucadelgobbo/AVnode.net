@@ -1,28 +1,27 @@
 import { h } from 'preact';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import Modal from '../Modal';
+// import Modal from '../Modal';
 import Layout from '../Layout';
-import validate from './validate'
-import renderField from './renderField'
+import validate from '../validate';
+// import renderField from './renderField'
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';
 // const required = value => value ? undefined : <FormattedMessage id="Required" defaultMessage="Required" />;
 
 const ProfilePassword = ({
-  user,
+  //user,
   //submitting,
-  openPasswordModal,
-  closePasswordModal,
+  //openPasswordModal,
+  //closePasswordModal,
   intl,
   handleSubmit,
   saveProfile
   }) => {
 
-
-  const handleChange = () => {
+  /*const handleChange = () => {
     console.log(user);
-  }
+  }*/
 
   return (
     <div>

@@ -1,7 +1,7 @@
 import { h } from 'preact';
-import { injectIntl, FormattedMessage } from 'preact-intl';
+import { FormattedMessage } from 'preact-intl';
 
-const Address = ({ address, onMakePrimary, onMakePrivate, onMakePublic, onConfirm, onDelete, intl }) => {
+const Address = ({ address, onMakePrimary, onMakePrivate, onMakePublic, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       {address.locality} : {address.formatted_address}
@@ -32,8 +32,8 @@ const Address = ({ address, onMakePrimary, onMakePrivate, onMakePublic, onConfir
               data-toggle="tooltip"
               data-placement="top"
               title={intl.formatMessage({
-                id: "makeitprivate",
-                defaultMessage: "Make it private"
+                id: 'makeitprivate',
+                defaultMessage: 'Make it private'
               })}
             >
             </i>
@@ -50,8 +50,8 @@ const Address = ({ address, onMakePrimary, onMakePrivate, onMakePublic, onConfir
               data-toggle="tooltip"
               data-placement="top"
               title={intl.formatMessage({
-                id: "makeitpublic",
-                defaultMessage: "Make it public"
+                id: 'makeitpublic',
+                defaultMessage: 'Make it public'
               })}
             >
             </i>
@@ -76,8 +76,8 @@ const Address = ({ address, onMakePrimary, onMakePrivate, onMakePublic, onConfir
               data-toggle="tooltip"
               data-placement="top"
               title={intl.formatMessage({
-                id: "makeitprimary",
-                defaultMessage: "Make it primary"
+                id: 'makeitprimary',
+                defaultMessage: 'Make it primary'
               })}
             >
             </i>
@@ -92,8 +92,8 @@ const Address = ({ address, onMakePrimary, onMakePrivate, onMakePublic, onConfir
               data-toggle="tooltip"
               data-placement="top"
               title={intl.formatMessage({
-                id: "delete",
-                defaultMessage: "Delete"
+                id: 'delete',
+                defaultMessage: 'Delete'
               })}
             >
             </i>

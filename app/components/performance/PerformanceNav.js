@@ -2,18 +2,17 @@ import { h } from 'preact';
 import { connect } from 'preact-redux';
 import { performanceNavigate } from '../../reducers/actions';
 import { FormattedMessage } from 'preact-intl';
-// import { route, Router, Route, Link } from 'preact-router';
 
 const PerformanceNav = ({ user, dispatch, url }) => {
-    let id = url.substring(url.lastIndexOf('/') + 1);
-    const classes = (path) => {
+  let id = url.substring(url.lastIndexOf('/') + 1);
+  const classes = (path) => {
         // console.log('PeNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
-        return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
-    }
+    return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
+  }
 
-    return (
+  return (
         <div>
-            <nav id="account-sidenav" class="nav-justified pull-left">
+            <nav id="account-sidenav" className="nav-justified pull-left">
                 <a className={classes('/account/performance/public/'+id)} href={`/account/performance/public/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/public/'+id)); }}>
                     <FormattedMessage
                         id="publicData"
@@ -58,11 +57,11 @@ const PerformanceNav = ({ user, dispatch, url }) => {
                 </a>
             </nav>
         </div>
-    );
+  );
 };
 
 const mapStateToProps = ({ user }) => ({
-    user: user
+  user: user
 });
 
 export default connect(mapStateToProps)(PerformanceNav);

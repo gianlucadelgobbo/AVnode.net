@@ -53,7 +53,7 @@ describe('/login', () => {
   it('POST to /login redirects to /',  (done) => {
     request(server)
       .post('/login')
-      .field('firstname', 'Max')
+      .field('name', 'Max')
       .expect(302, done);
   });
 

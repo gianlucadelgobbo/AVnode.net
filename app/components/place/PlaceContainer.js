@@ -7,7 +7,7 @@ const mapStateToProps = ({user}) => {
   return {
     user: user,
     initialValues: user
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({

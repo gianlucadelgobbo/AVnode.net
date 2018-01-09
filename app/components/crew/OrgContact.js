@@ -14,7 +14,7 @@ const OrgContact = (props) => {
               defaultMessage="Organisation contact title"
             />
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -53,7 +53,7 @@ const OrgContact = (props) => {
               defaultMessage="Organisation contact role"
             />
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -78,7 +78,7 @@ const OrgContact = (props) => {
                 defaultMessage="Organisation contact name"
             />
             &nbsp;
-            <span class="badge badge-danger">
+            <span className="badge badge-danger">
               <FormattedMessage
                 id="private"
                 defaultMessage='Private'
@@ -102,7 +102,7 @@ const OrgContact = (props) => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
                   <FormattedMessage
                       id="private"
                       defaultMessage='Private'
@@ -125,7 +125,7 @@ const OrgContact = (props) => {
               defaultMessage="Organisation contact email"
           />
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'
@@ -159,7 +159,7 @@ const OrgContact = (props) => {
               defaultMessage="Organisation contact language"
           />
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'

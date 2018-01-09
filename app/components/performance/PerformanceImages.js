@@ -35,6 +35,19 @@ let PerformanceForm = props => {
       </div>
       <Layout>
           <div className="form-group">
+          {performance.file ? 
+                            <div className="form-group">
+                                <label>Thumbnail</label>
+                                <p></p>
+                                <img
+                                className="img-small mb-3"
+                                src={`${performance.squareThumbnailUrl}`}       
+                                alt={`image of ${performance.title}`}
+                                />
+                            </div>
+                            : 
+                            null
+                        }
             <label htmlFor="teaserImage">
               <FormattedMessage
                 id="teaserImage"
