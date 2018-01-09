@@ -15,7 +15,7 @@ describe('User', () => {
       email: 'john@doe.com'
     });
     assert.equal(
-      process.env.BASE + 'performers/john-doe',
+      '/performers/john-doe',
       user.publicUrl
     );
     done();
