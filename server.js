@@ -12,10 +12,12 @@ const sass = require('node-sass-middleware');
 // Require mongoose models once!
 require('./lib/models');
 
-const i18n = require('i18n');
+const i18n = require('./lib/plugins/i18n');
 const passport = require('./lib/plugins/passport');
 const routes = require('./lib/routes');
 const logger = require('./lib/utilities/logger');
+
+// config = require('getconfig');
 
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
@@ -138,7 +140,7 @@ app.use(function (err, req, res, _next) {
 // declared before this
 
 app.use(function onerror(err, req, res, next) {
-  // happens also on user not logged in  
+  // happens on user not logged in  
   if (err) {
     console.log(`🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 Server Error:${err}`);
     //throw err;
