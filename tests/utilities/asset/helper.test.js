@@ -107,7 +107,7 @@ describe('Asset Helper Utitility', () => {
   });
 
   /* BL FIXME
-  it('setIdentifier should prepend stagename following by random uuid', () => {
+  it('setIdentifier should prepend username following by random uuid', () => {
     const prefix = 'el-majestro';
 
     const identifier = helper.setIdentifier(prefix);

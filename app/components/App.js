@@ -3,10 +3,10 @@ import Router from 'preact-router';
 // Navigation
 import Nav from './Nav';
 // Profile
-import Profile from './user/ProfilePublicContainer';
+import Profile from './user/ProfilePublic';
 import ProfileImages from './user/ProfileImagesContainer';
-import ProfileEmails from './user/ProfileEmailsContainer';
-import ProfilePrivate from './user/ProfilePrivateContainer';
+import ProfileEmails from './user/ProfileEmails';
+import ProfilePrivate from './user/ProfilePrivate';
 import ProfilePassword from './user/ProfilePasswordContainer';
 import ProfileConnections from './user/ProfileConnections';
 // Crews
@@ -21,21 +21,21 @@ import Performances from './Performances';
 import PerformancePublic from './performance/PerformancePublic';
 //import PerformanceAbouts from './performance/PerformanceAbouts';
 import PerformanceImages from './performance/PerformanceImages';
-import PerformanceEvents from './performance/PerformanceEventsContainer';
-import PerformanceAuthors from './performance/PerformanceAuthorsContainer';
-import PerformancePhotoGallery from './performance/PerformancePhotoGalleryContainer';
-import PerformanceVideoGallery from './performance/PerformanceVideoGalleryContainer';
-import PerformanceSettings from './performance/PerformanceSettingsContainer';
+import PerformanceEvents from './performance/PerformanceEvents';
+import PerformanceAuthors from './performance/PerformanceAuthors';
+import PerformancePhotoGallery from './performance/PerformancePhotoGallery';
+import PerformanceVideoGallery from './performance/PerformanceVideoGallery';
+import PerformanceSettings from './performance/PerformanceSettings';
 // Events
 import Events from './Events';
 // import EventEdit from './event/Edit';
-import EventPublic from './event/EventPublicContainer';
+import EventPublic from './event/EventPublic';
 import EventImages from './event/EventImages';
-import EventPerformances from './event/EventPerformancesContainer';
-import EventPartners from './event/EventPartnersContainer';
-import EventPhotoGallery from './event/EventPhotoGalleryContainer';
-import EventVideoGallery from './event/EventVideoGalleryContainer';
-import EventSettings from './event/EventSettingsContainer';
+import EventPerformances from './event/EventPerformances';
+import EventPartners from './event/EventPartners';
+import EventPhotoGallery from './event/EventPhotoGallery';
+import EventVideoGallery from './event/EventVideoGallery';
+import EventSettings from './event/EventSettings';
 // Preferences
 import Preferences from './PreferencesContainer';
 import { FormattedMessage } from 'preact-intl';

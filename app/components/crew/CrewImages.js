@@ -40,6 +40,13 @@ let CrewForm = props => {
         </Match>
       </div>
       <Layout>
+        <legend>
+          <FormattedMessage
+            id="crew"
+            defaultMessage="Crew"
+          />:
+          &nbsp;{(props.crew) ? props.crew.stagename : null}
+        </legend>
         <div className="form-group">
           <label htmlFor="teaserImage">
             <FormattedMessage
@@ -90,7 +97,7 @@ let CrewForm = props => {
             />
           </label>
           &nbsp;
-          <span class="badge badge-danger">
+          <span className="badge badge-danger">
             <FormattedMessage
               id="private"
               defaultMessage='Private'
