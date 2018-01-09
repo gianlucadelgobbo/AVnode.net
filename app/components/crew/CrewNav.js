@@ -6,9 +6,9 @@ import { FormattedMessage } from 'preact-intl';
 const CrewNav = ({ user, dispatch, url }) => {
   let id = url.substring(url.lastIndexOf('/') + 1);
   const classes = (path) => {
-  // console.log('CNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
-  return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
-};
+  //console.log('CNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
+    return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
+  };
 
   return (
 <nav id="account-sidenav" className="nav-justified pull-left">
@@ -37,11 +37,13 @@ const CrewNav = ({ user, dispatch, url }) => {
     />
 </a>
 </nav>
-);
+  );
 };
 
-const mapStateToProps = ({ user }) => ({
-  user: user
-});
-
+const mapStateToProps = (state, props) => {
+  return {
+    crew: (state.user.crews.find(c => { return c._id === props._id; })),
+    user: state.user
+  };
+};
 export default connect(mapStateToProps)(CrewNav);

@@ -9,7 +9,6 @@ export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const REQUEST_EDIT_USERIMAGES = 'REQUEST_EDIT_USERIMAGES';
 export const REQUEST_EDIT_USERLINKS = 'REQUEST_EDIT_USERLINKS';
 export const REQUEST_ADD_USEREMAIL = 'REQUEST_ADD_USEREMAIL';
-export const EDIT_USER = 'EDIT_USER';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const RESPONSE_LINKTYPES = 'RESPONSE_LINKTYPES';
 export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
@@ -34,6 +33,7 @@ export const REQUEST_USER_DELETEEMAIL = 'REQUEST_USER_DELETEEMAIL';
 export const REQUEST_USER_MAKEEMAILPRIMARY = 'REQUEST_USER_MAKEEMAILPRIMARY';
 export const REQUEST_USER_MAKEEMAILPRIVATE = 'REQUEST_USER_MAKEEMAILPRIVATE';
 export const REQUEST_USER_MAKEEMAILPUBLIC = 'REQUEST_USER_MAKEEMAILPUBLIC';
+export const REQUEST_USER_TOGGLEPRIVACY = 'REQUEST_USER_TOGGLEPRIVACY';
 export const REQUEST_USER_EMAILCONFIRM = 'REQUEST_USER_EMAILCONFIRM';
 export const REQUEST_USER_MAKEADDRESSPRIMARY = 'REQUEST_USER_MAKEADDRESSPRIMARY';
 export const REQUEST_USER_MAKEADDRESSPRIVATE = 'REQUEST_USER_MAKEADDRESSPRIVATE';
@@ -63,6 +63,7 @@ export const REQUEST_DELETE_EVENT_ORGANIZINGCREW = 'REQUEST_DELETE_EVENT_ORGANIZ
 export const REQUEST_ADD_EVENT_VENUE = 'REQUEST_ADD_EVENT_VENUE';
 export const REQUEST_DELETE_EVENT_VENUE = 'REQUEST_DELETE_EVENT_VENUE';
 export const REQUEST_DELETE_EVENT_CATEGORY = 'REQUEST_DELETE_EVENT_CATEGORY';
+export const REQUEST_ADD_EVENT_CATEGORY = 'REQUEST_ADD_EVENT_CATEGORY';
 
 export const REQUEST_ADD_CREW = 'REQUEST_ADD_CREW';
 export const REQUEST_DELETE_CREW = 'REQUEST_DELETE_CREW';
@@ -96,10 +97,12 @@ export const REQUEST_DELETE_PERFORMANCE_CATEGORY = 'REQUEST_DELETE_PERFORMANCE_C
 export const REQUEST_PERFORMANCE_MAKEABOUTPRIMARY = 'REQUEST_PERFORMANCE_MAKEABOUTPRIMARY';
 export const REQUEST_PERFORMANCE_EDITABOUT = 'REQUEST_PERFORMANCE_EDITABOUT';
 export const REQUEST_PERFORMANCE_DELETEABOUT = 'REQUEST_PERFORMANCE_DELETEABOUT';
+export const REQUEST_ADD_PERFORMANCE_CATEGORY='REQUEST_ADD_PERFORMANCE_CATEGORY';
 
 // Wrap fetch with some default settings, always
 // return parsed JSON…
 const fetch = (path, options = {}, json = true) => {
+  console.log('4 ACTION fetch, path:' + path);
   const opts = Object.assign({}, {
     credentials: 'same-origin'
   }, options);
@@ -134,86 +137,58 @@ export function eventNavigate(active) {
 }
 
 export function gotUser(json) {
+  console.log('5 ACTION gotUser');
   return { type: GOT_USER, json };
 }
 
 export function fetchUser() {
   return dispatch => {
+    console.log('3 ACTION fetchUser');
     return fetch('/account/api/user')
       .then(json => dispatch(gotUser(json)));
   };
 }
-
-export function editEvent(data) {
-  // about, verify unique
-  if (data.about) {
-    let aboutFound = false;
-    let primaryAbout = true;
-    // init if first about
-    if (!data.abouts) data.abouts = [];
-    // check existing abouts
-    data.abouts.map((a) => {
-      primaryAbout = false;
-      if (a.lang === data.aboutlanguage) {
-        // about in the form already exists in abouts
-        aboutFound = true;
-        // update abouttext
-        a.abouttext = data.about;
-      }
-    });
-    // in case of new about, add it to the abouts
-    if (!aboutFound) {
-      if (!data.aboutlanguage) data.aboutlanguage = 'en';
-      data.abouts.push({
-        is_primary: primaryAbout,
-        lang: data.aboutlanguage,
-        abouttext: data.about
-      });
-    }
-  }
-
-  // link, verify unique
-  if (data.link) {
-    let linkFound = false;
-    let primaryLink = true;
-    data.links.map((l) => {
-      primaryLink = false;
-      if (l.url === data.link) {
-        // url in the form already exists in links
-        linkFound = true;
-      }
-    });
-    // in case of new link, add it to the links
-    if (!linkFound) {
-      console.log('data.link:' + data.link);
-      data.links.push({
-        url: data.link,
-        is_primary: primaryLink,
-        is_confirmed: false,
-        is_public: false,
-        type: data.linkType
-      });
-    }
-  }
-
-  // category, verify unique
-  if (data.category) {
-    let categoryFound = false;
-    data.categories.map((c) => {
-      if (c.name === data.category) {
-        // name in the form already exists in categories
-        categoryFound = true;
-      }
-    });
-    // in case of new category, add it to the categories
-    if (!categoryFound) {
-      data.categories.push({
-        name: data.category
-      });
-    }
-  }
-
+export function addEventCategory(id, category) {
   return dispatch => {
+    console.log('_______________ACTION addEventCategory __________________________________');
+    console.log('addEventCategory id: ' + id + 'category: ' + category);
+    dispatch({
+      type: REQUEST_ADD_EVENT_CATEGORY,
+      payload: {
+        eventid: id,
+        category: category
+      }
+    });
+    return fetch(
+      `/account/api/event/${id}/category/${category}`, {
+        method: 'PUT'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function removeEventCategory(dispatch) {
+  return (eventId, categoryId) => {
+    console.log('_______________ACTION removeEventCategory __________________________________');
+    console.log('removeEventCategory eventId: ' + eventId + ' categoryId: ' + categoryId);
+    dispatch({
+      type: REQUEST_DELETE_EVENT_CATEGORY,
+      payload: {
+        eventId: eventId,
+        categoryId: categoryId
+      }
+    });
+    return fetch(`/account/api/event/${eventId}/category/${categoryId}`, {
+      method: 'DELETE',
+    })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+
+export function editEvent(dispatch) {
+  return data => {
+    console.log('_______________ACTION editEvent __________________________________');
+    console.log('editEvent data._id: ' + JSON.stringify(data._id));
     dispatch({
       type: REQUEST_EDIT_EVENT,
       id: data._id
@@ -399,35 +374,19 @@ export function suggestEventOrganizingCrew(eventId, q) {
       });
   };
 }
-export function crewAboutEdit(id, aboutlanguage) {
-  return dispatch => {
-    console.log('_______________ACTION crewAboutEdit __________________________________');
-    console.log('crewAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
-    dispatch({
-      type: REQUEST_CREW_EDITABOUT,
-      payload: {
-        crew: id,
-        aboutlanguage: aboutlanguage
-      }
-    });
-    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
-      method: 'PUT',
-    }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}
-export function crewAboutDelete(id, aboutlanguage) {
-  return dispatch => {
+
+export function crewAboutDelete(dispatch) {
+  return (crewId, aboutlanguage) => {
     console.log('_______________ACTION crewAboutDelete __________________________________');
     console.log('crewAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_CREW_DELETEABOUT,
       payload: {
-        crew: id,
+        crew: crewId,
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/crew/${id}/about/${aboutlanguage}`, {
+    return fetch(`/account/api/crew/${crewId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -489,31 +448,47 @@ export function deleteCrew(id) {
   };
 }
 
-export function editCrew(data) {
-  // about, verify unique
-  if (data.about) {
-    let aboutFound = false;
-    // init if first about
-    if (!data.abouts) data.abouts = [];
-    // check existing abouts
-    data.abouts.map((a) => {
-      if (a.lang === data.aboutlanguage) {
-        // about in the form already exists in abouts
-        aboutFound = true;
-        // update abouttext
-        a.abouttext = data.about;
-      }
-    });
-    // in case of new about, add it to the abouts
-    if (!aboutFound) {
-      if (!data.aboutlanguage) data.aboutlanguage = 'en';
-      data.abouts.push({
-        lang: data.aboutlanguage,
-        abouttext: data.about
+export function editCrew(dispatch) {
+  return data => {
+    console.log('_______________ACTION editCrew __________________________________');
+    console.log('editCrew data._id: ' + JSON.stringify(data._id));
+  /* if (data._id) {
+    // about, verify unique
+    if (data.about) {
+      let aboutFound = false;
+      // init if first about
+      if (!data.abouts) data.abouts = [];
+      // check existing abouts
+      data.abouts.map((a) => {
+        if (a.lang === data.aboutlanguage) {
+          // about in the form already exists in abouts
+          aboutFound = true;
+          // update abouttext
+          a.abouttext = data.about;
+        }
       });
+      // in case of new about, add it to the abouts
+      if (!aboutFound) {
+        if (!data.aboutlanguage) data.aboutlanguage = 'en';
+        data.abouts.push({
+          lang: data.aboutlanguage,
+          abouttext: data.about
+        });
+      }
     }
-  }
-  return dispatch => {
+    return dispatch => {
+      dispatch({
+        type: REQUEST_EDIT_CREW,
+        id: data._id
+      });
+      return fetch(
+        `/account/api/crew/${data._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(data)
+        })
+        .then(json => dispatch(gotUser(json)));
+    };
+  } */
     dispatch({
       type: REQUEST_EDIT_CREW,
       id: data._id
@@ -528,7 +503,10 @@ export function editCrew(data) {
 }
 
 export function suggestCrewMember(crewId, q) {
+  const action = `actions, suggestCrewMember(crewId: ${crewId}, q: ${q}`;
   return dispatch => {
+    console.log('_______________ACTION suggestCrewMember __________________________________');
+    console.log(`${action}, q: ${q}`);
     dispatch({
       type: REQUEST_SUGGEST_CREWMEMBER,
       payload: {
@@ -547,7 +525,7 @@ export function suggestCrewMember(crewId, q) {
 }
 
 export function addCrewMember(crewId, member) {
-  const action = `actions, addCrewMember(crewId: ${crewId}`;
+  //const action = `actions, addCrewMember(crewId: ${crewId}`;
 
   return dispatch => {
     dispatch({
@@ -570,22 +548,6 @@ export function removeCrewMember(crewId, member) {
       }
     });
     return fetch(`/account/api/crew/${crewId}/member/${member._id}`, {
-      method: 'DELETE',
-    })
-      .then(json => dispatch(gotUser(json)));
-  };
-}
-
-export function removeEventCategory(eventId, categoryId) {
-  return dispatch => {
-    dispatch({
-      type: REQUEST_DELETE_EVENT_CATEGORY,
-      payload: {
-        eventId,
-        categoryId
-      }
-    });
-    return fetch(`/account/api/event/${eventId}/category/${categoryId}`, {
       method: 'DELETE',
     })
       .then(json => dispatch(gotUser(json)));
@@ -668,7 +630,7 @@ export function deletePerformance(id) {
 }
 export function aboutPerformanceMakePrimary(dispatch) {
   return (userId, perfId, aboutId) => {
-    console.log("aboutPerformanceMakePrimary userId: " + userId + " perfid: " + perfid + " aboutid: " + aboutId);
+    console.log('aboutPerformanceMakePrimary userId: ' + userId + ' perfid: ' + perfid + ' aboutid: ' + aboutId);
     dispatch({
       type: REQUEST_PERFORMANCE_MAKEABOUTPRIMARY,
       payload: {
@@ -684,10 +646,9 @@ export function aboutPerformanceMakePrimary(dispatch) {
   };
 }
 
-
-export function editPerformance(data) {
+export function editPerformance(dispatch) {
   // about, verify unique
-  if (data.about) {
+  /* if (data.about) {
     let aboutFound = false;
     // init if first about
     if (!data.abouts) data.abouts = [];
@@ -736,6 +697,20 @@ export function editPerformance(data) {
         body: JSON.stringify(data)
       })
       .then(json => dispatch(gotUser(json)));
+  }; */
+  return data => {
+    console.log('_______________ACTION editPerformance __________________________________');
+    console.log('editPerformance data._id: ' + JSON.stringify(data._id));
+    dispatch({
+      type: REQUEST_EDIT_PERFORMANCE,
+      id: data._id
+    });
+    return fetch(
+      `/account/api/performance/${data._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      .then(json => dispatch(gotUser(json)));
   };
 }
 export function performanceAboutEdit(id, aboutlanguage) {
@@ -750,23 +725,41 @@ export function performanceAboutEdit(id, aboutlanguage) {
       }
     });
     return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
-      method: 'PUT',
+      method: 'PUT'
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function performanceAboutDelete(id, aboutlanguage) {
-  return dispatch => {
+export function performanceAboutDelete(dispatch) {
+  return (perfId, aboutlanguage) => {
     console.log('_______________ACTION performanceAboutDelete __________________________________');
     console.log('performanceAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
     dispatch({
       type: REQUEST_PERFORMANCE_DELETEABOUT,
       payload: {
-        performance: id,
+        performance: perfId,
         aboutlanguage: aboutlanguage
       }
     });
-    return fetch(`/account/api/performance/${id}/about/${aboutlanguage}`, {
+    return fetch(`/account/api/performance/${perfId}/about/${aboutlanguage}`, {
+      method: 'DELETE',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+// BL FIXME REQUEST_EVENT_DELETEABOUT not defined
+export function eventAboutDelete(dispatch) {
+  return (eventId, aboutlanguage) => {
+    console.log('_______________ACTION eventAboutDelete __________________________________');
+    console.log('eventAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+    dispatch({
+      type: REQUEST_EVENT_DELETEABOUT,
+      payload: {
+        event: eventId,
+        aboutlanguage: aboutlanguage
+      }
+    });
+    return fetch(`/account/api/event/${eventId}/about/${aboutlanguage}`, {
       method: 'DELETE',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -909,14 +902,33 @@ export function removePerformanceCrew(performanceId, crewId) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-// BL remove performance category
-export function removePerformanceCategory(performanceId, categoryId) {
+export function addPerformanceCategory(id, category) {
   return dispatch => {
+    console.log('_______________ACTION addPerformanceCategory __________________________________');
+    console.log('addPerformanceCategory id: ' + id + 'category: ' + category);
+    dispatch({
+      type: REQUEST_ADD_PERFORMANCE_CATEGORY,
+      payload: {
+        performanceId: id,
+        category: category
+      }
+    });
+    return fetch(
+      `/account/api/performance/${id}/category/${category}`, {
+        method: 'PUT'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+export function removePerformanceCategory(dispatch) {
+  return (performanceId, categoryId) => {
+    console.log('_______________ACTION removePerformanceCategory __________________________________');
+    console.log('removePerformanceCategory performanceId: ' + performanceId + 'categoryId: ' + categoryId);
     dispatch({
       type: REQUEST_DELETE_PERFORMANCE_CATEGORY,
       payload: {
-        performanceId,
-        categoryId
+        performanceId: performanceId,
+        categoryId: categoryId
       }
     });
     return fetch(`/account/api/performance/${performanceId}/category/${categoryId}`, {
@@ -925,6 +937,7 @@ export function removePerformanceCategory(performanceId, categoryId) {
       .then(json => dispatch(gotUser(json)));
   };
 }
+
 export function suggestPerformancePerformer(performanceId, q) {
   return dispatch => {
     dispatch({
@@ -1012,6 +1025,8 @@ const wrapInFormData = (file) => {
 
 export function addUserProfileImage(dispatch) {
   return (id, file) => {
+    console.log('______ ACTION addUserProfileImage _______');
+    console.log('id: ' + id + ' file: ' + JSON.stringify(file));
     dispatch({
       type: REQUEST_ADD_USERPROFILEIMAGE,
       payload: {
@@ -1043,61 +1058,78 @@ export function addUserTeaserImage(dispatch) {
 }
 
 export function userEmailMakePrimary(dispatch) {
-  return (userId, emailId) => {
-    console.log(userId + " emailId: " + emailId);
+  return (userId, emailIndex) => {
+    console.log(userId + ' emailId: ' + emailIndex);
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIMARY,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/email/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/email/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function userEmailMakePrivate(dispatch) {
-  return (userId, emailId) => {
+export function userEmailTogglePrivacy(dispatch) {
+  return (userId, emailIndex) => {
+    dispatch({
+      type: REQUEST_USER_TOGGLEPRIVACY,
+      payload: {
+        user: userId,
+        email: emailIndex
+      }
+    });
+    return fetch(`/account/api/user/${userId}/toggleprivacy/${emailIndex}`, {
+      method: 'PUT',
+    }, false)
+      .then(json => dispatch(gotUser(json)));
+  };
+}
+/*export function userEmailMakePrivate(dispatch) {
+  return (userId, emailIndex) => {
     dispatch({
       type: REQUEST_USER_MAKEEMAILPRIVATE,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/makeemailprivate/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/makeemailprivate/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
 }
 export function userEmailMakePublic(dispatch) {
-  return (userId, emailId) => {
+  return (userId, emailIndex) => {
     dispatch({
       type: REQUEST_USER_MAKEEMAILPUBLIC,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/makeemailpublic/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/makeemailpublic/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
   };
-}
+} */
 export function userEmailConfirm(dispatch) {
-  return (userId, emailId) => {
+  return (userId, emailIndex) => {
+    console.log('_______________ACTION userEmailConfirm __________________________________');
+    console.log('userEmailConfirm : ' + userId + ' ' + emailIndex);
     dispatch({
       type: REQUEST_USER_EMAILCONFIRM,
       payload: {
         user: userId,
-        email: emailId
+        email: emailIndex
       }
     });
-    return fetch(`/account/api/user/${userId}/emailconfirm/${emailId}`, {
+    return fetch(`/account/api/user/${userId}/emailconfirm/${emailIndex}`, {
       method: 'PUT',
     }, false)
       .then(json => dispatch(gotUser(json)));
@@ -1118,19 +1150,14 @@ export function userEmailDelete(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function editUser(dispatch) {
   return data => {
-    let addressFound = false;
     let str = JSON.stringify(data);
     console.log('_______________ ACTION editUser __________________________________');
     console.log('editUser data length: ' + str.length);
-    //console.log('editUser data: ' + str);
-    console.log('editUser data linkWeb: ' + data.linkWeb);
-    //console.log('editUser data abouts: ' + JSON.stringify(data.abouts));
-    console.log('editUserAddresses data locality: ' + data.locality);
-    console.log('editUserAddresses data country: ' + data.country);
+    console.log('editUser links: ' + JSON.stringify(data.links));
   
     dispatch({
       type: REQUEST_EDIT_USER,
@@ -1240,7 +1267,7 @@ export function userAddressDelete(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function addPlace(dispatch) {
   return (id, location) => {
@@ -1258,7 +1285,7 @@ export function addPlace(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function editUserAddresses(dispatch) {
   return data => {
@@ -1284,12 +1311,13 @@ export function editUserAddresses(dispatch) {
         // address in the form already exists in addresses
         addressFound = true;
         // update the fields
+        /* BL FIXME user is not defined
         user.street_number = data.street_number;
         user.route = data.route;
         user.postal_code = data.postal_code;
         user.locality = data.locality;
         user.administrative_area_level_1 = data.administrative_area_level_1;
-        user.country = data.country;
+        user.country = data.country; */
       }
     });
     if (!addressFound) {
@@ -1323,43 +1351,7 @@ export function editUserAddresses(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 }
-export function editUserAbouts(dispatch) {
-  return data => {
-    console.log('_______________ACTION editUserAbouts __________________________________');
-    console.log('editUserAbouts aboutlanguage: ' + JSON.stringify(data.aboutlanguage));
 
-    dispatch({
-      type: REQUEST_EDIT_USERABOUTS,
-      id: data._id
-    });
-    return fetch(
-      `/account/api/user/${data._id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data)
-      })
-      .then(json => dispatch(gotUser(json)));
-  };
-}
-export function userAboutEdit(dispatch) {
-  return (userId, aboutlanguage) => {
-    console.log('_______________ACTION userAboutEdit __________________________________');
-    console.log('userAboutEdit userId: ' + JSON.stringify(userId));
-    console.log('userAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
-
-    dispatch({
-      type: REQUEST_USER_EDITABOUT,
-      payload: {
-        user: userId,
-        aboutlanguage: aboutlanguage
-      }
-    });
-    return fetch(
-      `/account/api/user/${userId}/about/${aboutlanguage}`, {
-        method: 'PUT'
-      }, false)
-      .then(json => dispatch(gotUser(json)));
-  };
-}
 export function userAboutDelete(dispatch) {
   return (userId, aboutlanguage) => {
     console.log('_______________ACTION userAboutDelete __________________________________');
@@ -1477,7 +1469,7 @@ export function addEventVenue(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
 export function removeEventVenue(dispatch) {
   return (eventId, venueId) => {
@@ -1494,8 +1486,7 @@ export function removeEventVenue(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
-
+}
 
 // Links
 export function userLinkAdd(dispatch) {
@@ -1514,7 +1505,7 @@ export function userLinkAdd(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 /*
 export function userLinkEdit(dispatch) {
   return (userId, linkId) => {
@@ -1592,6 +1583,22 @@ export function userLinkConfirm(dispatch) {
       .then(json => dispatch(gotUser(json)));
   };
 } */
+export function eventLinkDelete(dispatch) {
+  return (eventId, linkId) => {
+    dispatch({
+      type: REQUEST_USER_DELETELINK,
+      payload: {
+        event: eventId,
+        link: linkId
+      }
+    });
+    return fetch(
+      `/account/api/event/${eventId}/link/${linkId}`, {
+        method: 'DELETE'
+      })
+      .then(json => dispatch(gotUser(json)));
+  };
+}
 
 export function userLinkDelete(dispatch) {
   return (userId, linkId) => {
@@ -1608,5 +1615,5 @@ export function userLinkDelete(dispatch) {
       })
       .then(json => dispatch(gotUser(json)));
   };
-};
+}
 
