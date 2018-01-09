@@ -57,7 +57,7 @@ GET avnode/user/_search
 {
   "query" : {
     "prefix" : {
-    "stagename" : "batchass"
+    "username" : "batchass"
     }
   }
 }

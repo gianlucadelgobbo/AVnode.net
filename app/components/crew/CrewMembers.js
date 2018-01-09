@@ -21,14 +21,14 @@ const Member = injectIntl(({ member, me, onDelete, intl }) => {
   });
   return (
     <li className="list-group-item justify-content-between">
-      {member.file ? 
-      <img
-        className="img-small mb-3"
-        src={`${member.imageUrl}`}       
-        alt={`image of ${member.stagename}`}
-      />
-      : 
-      null
+      {member.file ?
+        <img
+          className="img-small mb-3"
+          src={`${member.squareThumbnailUrl}`}
+          alt={`image of ${member.stagename}`}
+        />
+        :
+        null
       }
       <span>
         {`${member.stagename}`}
@@ -87,6 +87,13 @@ let CrewMembersForm = props => {
         </Match>
       </div>
       <Layout>
+        <legend>
+          <FormattedMessage
+            id="crew"
+            defaultMessage="Crew"
+          />:
+          &nbsp;{(props.crew) ? props.crew.stagename : null}
+        </legend>
         <form onSubmit={handleSubmit}>
           <Field
             name="_id"
@@ -102,7 +109,7 @@ let CrewMembersForm = props => {
               />
             </label>
             &nbsp;
-                <span class="badge badge-success">
+                <span className="badge badge-success">
               <FormattedMessage
                 id="public"
                 defaultMessage='Public'
@@ -155,7 +162,7 @@ let CrewMembersForm = props => {
                   className="list-group-item list-group-item-action"
                   onClick={addMember(props._id)(m)}
                 >
-                  {m.stagename} ({m.name})
+                  {m.stagename} ({m.slug})
                       </button>
               ))
               }
@@ -182,9 +189,20 @@ let CrewMembersForm = props => {
 CrewMembersForm = injectIntl(reduxForm({ form: 'crewMembers' })(CrewMembersForm));
 
 const CrewMembers = props => {
+  const onSubmit = (props, dispatch) => {
+    console.log('CrewPublic onSubmit');
+    //dispatch(editCrew(props));
+    //editCrew(dispatch);
+  };
+  const onSubmitSuccess = () => {
+    console.log('CrewPublic onSubmitSuccess');
+    //route('/account/crews');
+  };
   return (
     <CrewMembersForm
       initialValues={props.crew}
+      onSubmit={onSubmit}
+      onSubmitSuccess={onSubmitSuccess}
       {...props}
     />
   );

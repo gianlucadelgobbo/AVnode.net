@@ -8,12 +8,12 @@ const PerformanceAdd = injectIntl(({ ajaxInProgress, intl }) => {
   return (
     <TitleForm
       label={intl.formatMessage({
-        id: "addPerformance",
-        defaultMessage: "Add Performance"
+        id: 'addPerformance',
+        defaultMessage: 'Add Performance'
       })}
       placeholder={intl.formatMessage({
-        id: "nameNewPerformance",
-        defaultMessage: "Name new performance"
+        id: 'nameNewPerformance',
+        defaultMessage: 'Name new performance'
       })}
       ajaxInProgress={ajaxInProgress}
       action={addPerformance}
