@@ -3,6 +3,7 @@ extends layout
 block content
   form(method='post')
     input(type='hidden', name='_csrf', value=_csrf)
+    input(type='hidden', name='next', value=redirect)
     .form-group
       label(for='email')=__('Email')
       input.form-control(type='email', name='email', id='email', placeholder=__('example@foo.bar'), autofocus, required)
