@@ -13,7 +13,7 @@ describe('Event', () => {
       slug: slug.parse('Foo Bar')
     });
     assert.equal(
-      process.env.BASE + 'account/events/foo-bar',
+      '/account/events/foo-bar',
       event.editUrl
     );
     done();
@@ -24,7 +24,7 @@ describe('Event', () => {
       slug: slug.parse('Foo Bar')
     });
     assert.equal(
-      process.env.BASE + 'events/foo-bar',
+      '/events/foo-bar',
       event.publicUrl
     );
     done();
