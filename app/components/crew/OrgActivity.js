@@ -3,6 +3,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field, reduxForm } from 'redux-form';
 /*import LinksSocialEdit from '../link/LinksSocialEdit';
 import LinksWebEdit from '../link/LinksWebEdit'; */
+import AddressesPublic from '../place/AddressesPublic';
 
 import ImageDropzone from '../ImageDropzone';
 
@@ -25,7 +26,7 @@ const OrgActivity = (props) => {
               defaultMessage="Activity Name"
           />
           &nbsp;
-          <span class="badge badge-success">
+          <span className="badge badge-success">
             <FormattedMessage
               id="public"
               defaultMessage='Public'
@@ -49,7 +50,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -79,7 +80,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -107,7 +108,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -128,7 +129,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
@@ -157,7 +158,7 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-danger">
+        <span className="badge badge-danger">
               <FormattedMessage
                   id="private"
                   defaultMessage='Private'
@@ -287,12 +288,18 @@ const OrgActivity = (props) => {
           />
         </label>
         &nbsp;
-        <span class="badge badge-success">
+        <span className="badge badge-success">
                 <FormattedMessage
                     id="public"
                     defaultMessage='Public'
                 />
-            </span>
+        </span>
+          <AddressesPublic
+            current={props.user}
+            user={props.user}
+            intl={intl}
+            addressDelete={addressDelete}
+          />
         <div className="input-group">
           <Field
               className="form-control"

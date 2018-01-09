@@ -5,16 +5,16 @@ import { FormattedMessage } from 'preact-intl';
 // import { route, Router, Route, Link } from 'preact-router';
 
 const ProfileNav = ({ user, dispatch, url }) => {
-    let id = url.substring(url.lastIndexOf('/') + 1);
-    const classes = (path) => {
-        // console.log('PrNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
-        return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link'
-    }
+  let id = url.substring(url.lastIndexOf('/') + 1);
+  const classes = (path) => {
+    //if (user.active.indexOf(path)==0) console.log('PrNav--> user.active:' + user.active + ' id:' + id + ' url:' + url + '--> user.id:' + user.id + ' path:' + path + ' found:' + user.active.indexOf(path));
+    return (url.indexOf(path) > -1) ? 'nav-link active' : 'nav-link';
+  };
 
-    return (
-        <div>
-            <nav id="account-sidenav" class="nav-justified pull-left">
-                <a className={classes('/account/profile/public')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')); }}>
+  return (
+    <div>
+      <nav id="account-sidenav" className="nav-justified pull-left">
+        <a className={classes('/account/profile/public')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')); }}>
                     <FormattedMessage
                         id="publicData"
                         defaultMessage="Public data"
@@ -52,11 +52,11 @@ const ProfileNav = ({ user, dispatch, url }) => {
                 </a>
             </nav>
         </div>
-    );
+  );
 };
 
 const mapStateToProps = ({ user }) => ({
-    user: user
+  user: user
 });
 
 export default connect(mapStateToProps)(ProfileNav);

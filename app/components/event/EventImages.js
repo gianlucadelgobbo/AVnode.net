@@ -13,7 +13,7 @@ import {
   addEventTeaserImage
 } from '../../reducers/actions';
 
-let EventForm = props => {
+let EventImagesForm = props => {
   const { dispatch, event } = props;
 
   const onImageDrop = (eventId) => (files, _something, _ev) => {
@@ -80,11 +80,11 @@ let EventForm = props => {
   );
 };
 
-EventForm = injectIntl(reduxForm({ form: 'eventImages' })(EventForm));
+EventImagesForm = injectIntl(reduxForm({ form: 'eventImages' })(EventImagesForm));
 
 const EventImages = props => {
   return (
-    <EventForm
+    <EventImagesForm
       initialValues={props.event}
       {...props}
     />
