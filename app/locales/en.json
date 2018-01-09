@@ -23,5 +23,8 @@
 	"Forgot your password?": "Forgot your password?",
 	"Email %s not found.": "Email %s not found.",
 	"More": "More",
-	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, password not found. Migration from flxer done, please Login again."
+	"Email %s, password not found. Migration from flxer done, please Login again.": "Email %s, password not found. Migration from flxer done, please Login again.",
+	"Footage": "Footage",
+	"Playlists": "Playlists",
+	"TV Shows": "TV Shows"
 }

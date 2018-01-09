@@ -11,9 +11,10 @@ const sass = require('node-sass-middleware');
 // Require mongoose models once!
 require('./lib/models');
 
-const i18n = require('./lib/plugins/i18n');
+const i18n = require('i18n');
 const passport = require('./lib/plugins/passport');
 const routes = require('./lib/routes');
+const logger = require('./lib/utilities/logger');
 
 // config = require('getconfig');
 
@@ -71,6 +72,25 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   const path = req.path.split('/')[1];
+  const lang = req.headers.host.split('.')[0]!='avnode' ? req.headers.host.split('.')[0] : 'en';
+  logger.debug('lang: '+lang);
+  //delete req.session.sessions;
+  logger.debug(req.session);
+  if(!req.session.sessions) {
+    logger.debug('create sessions');
+    req.session.sessions = {current_lang: 'en'};
+    logger.debug(req.session.sessions);
+  }
+  logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+  if(req.session.sessions.current_lang != lang) {
+    logger.debug('changelang');
+    req.session.sessions.current_lang = lang;
+    logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+    logger.debug('global.getLocale: '+global.getLocale());
+  }
+  global.setLocale(req.session.sessions.current_lang);
+  logger.debug('global.getLocale: '+global.getLocale());
+
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
   }
