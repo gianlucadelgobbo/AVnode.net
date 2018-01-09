@@ -10,7 +10,7 @@ describe('User', () => {
   it('should have a valid virtual property publicUrl', (done) => {
     const user = new User({
       name: 'John Doe',
-      stagename: 'John Doe',
+      username: 'John Doe',
       slug: slug.parse('John Doe'),
       email: 'john@doe.com'
     });
