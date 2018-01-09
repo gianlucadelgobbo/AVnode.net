@@ -14,4 +14,4 @@ warehouse
 package-lock.json
 .eslintrc.json
 font-awesome.css
-.idea/*
+.idea
