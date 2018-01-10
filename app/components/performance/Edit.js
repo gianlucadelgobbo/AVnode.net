@@ -564,7 +564,7 @@ const EditPerformance = props => {
     dispatch(editPerformance(props));
   };
   const onSubmitSuccess = () => {
-    route('/account/performances');
+    route('/admin/performances');
   };
   return (
     <PerformanceForm

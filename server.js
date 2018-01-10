@@ -96,21 +96,25 @@ app.use((req, res, next) => {
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
   }
-  if (!req.user &&
+  /*if (!req.user &&
     req.path !== '/login' &&
     req.path !== '/signup' &&
     !req.path.match(/^\/auth/) &&
     !req.path.match(/\./)) {
-      if (req.path.match(/^\/account/)) {
+      if (req.path.match(/^\/admin/)) {
         res.redirect('/login');
       } else {
         req.session.returnTo = req.path;
       }
-  } else if (req.user &&
-    req.path == '/account') {
+  } else */
+  logger.debug('req.path: '+req.path);
+
+  if (!req.user && req.path.indexOf('/admin')===0) {
     req.session.returnTo = req.path;
+    res.redirect('/login');
+  } else {
+    next();
   }
-  next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 84600 }));
 // not needed because in public/ app.use(express.static(path.join(__dirname, process.env.STORAGE), { maxAge: 84600 }));

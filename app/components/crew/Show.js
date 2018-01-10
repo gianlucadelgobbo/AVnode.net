@@ -26,7 +26,7 @@ const CrewShow = ({ crew, dispatch }) => {
           </button>
         }
         <button className="btn btn-info"
-          onClick={() => { route('/account/crew/public/' + crew._id); }}>
+          onClick={() => { route('/admin/crew/public/' + crew._id); }}>
           <i className="fa fa-fw fa-edit"></i>
         </button>
       </span>

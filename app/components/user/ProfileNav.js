@@ -14,37 +14,37 @@ const ProfileNav = ({ user, dispatch, url }) => {
   return (
     <div>
       <nav id="account-sidenav" className="nav-justified pull-left">
-        <a className={classes('/account/profile/public')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')); }}>
+        <a className={classes('/admin/profile/public')} href="/admin/profile/public" onClick={e => { dispatch(navigate('/admin/profile/public')); }}>
                     <FormattedMessage
                         id="publicData"
                         defaultMessage="Public data"
                     />
                 </a>
-                <a className={classes('/account/profile/images')} href="/account/profile/images" onClick={e => { dispatch(navigate('/account/profile/images')); }}>
+                <a className={classes('/admin/profile/images')} href="/admin/profile/images" onClick={e => { dispatch(navigate('/admin/profile/images')); }}>
                     <FormattedMessage
                         id="images"
                         defaultMessage="Images"
                     />
                 </a>
-                <a className={classes('/account/profile/emails')} href="/account/profile/emails" onClick={e => { dispatch(navigate('/account/profile/emails')); }}>
+                <a className={classes('/admin/profile/emails')} href="/admin/profile/emails" onClick={e => { dispatch(navigate('/admin/profile/emails')); }}>
                     <FormattedMessage
                         id="emails"
                         defaultMessage="Emails"
                     />
                 </a>
-                <a className={classes('/account/profile/private')} href="/account/profile/private" onClick={e => { dispatch(navigate('/account/profile/private')); }}>
+                <a className={classes('/admin/profile/private')} href="/admin/profile/private" onClick={e => { dispatch(navigate('/admin/profile/private')); }}>
                     <FormattedMessage
                         id="privateData"
                         defaultMessage="Private data"
                     />
                 </a>
-                <a className={classes('/account/profile/password')} href="/account/profile/password" onClick={e => { dispatch(navigate('/account/profile/password')); }}>
+                <a className={classes('/admin/profile/password')} href="/admin/profile/password" onClick={e => { dispatch(navigate('/admin/profile/password')); }}>
                     <FormattedMessage
                         id="password"
                         defaultMessage="Password"
                     />
                 </a>
-                <a className={classes('/account/profile/connections')} href="/account/profile/connections" onClick={e => { dispatch(navigate('/account/profile/connections')); }}>
+                <a className={classes('/admin/profile/connections')} href="/admin/profile/connections" onClick={e => { dispatch(navigate('/admin/profile/connections')); }}>
                     <FormattedMessage
                         id="connections"
                         defaultMessage="Connections"

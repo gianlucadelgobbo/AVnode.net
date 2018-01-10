@@ -17,7 +17,7 @@ const EventShow = ({event, dispatch}) => {
             <i className="fa fa-fw fa-trash"></i>
           </button>
         }
-        <a className="btn btn-secondary" href={'/account/event/public/' + event._id}><i className="fa fa-edit"></i></a>
+        <a className="btn btn-secondary" href={'/admin/event/public/' + event._id}><i className="fa fa-edit"></i></a>
       </span>
     </li>
   );

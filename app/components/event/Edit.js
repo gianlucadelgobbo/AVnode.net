@@ -686,7 +686,7 @@ let EventForm = props => {
             </button>
           </div>
           <div class="col-6 text-right">
-            <a href="/account/events" class="btn btn-warning">
+            <a href="/admin/events" class="btn btn-warning">
               <FormattedMessage
                 id="cancel"
                 defaultMessage="Cancel"
@@ -706,7 +706,7 @@ const EditEvent = props => {
     dispatch(editEvent(props));
   };
   const onSubmitSuccess = () => {
-    route('/account/events');
+    route('/admin/events');
   };
   return (
     <EventForm

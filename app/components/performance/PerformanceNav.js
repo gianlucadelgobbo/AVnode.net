@@ -13,43 +13,43 @@ const PerformanceNav = ({ user, dispatch, url }) => {
   return (
         <div>
             <nav id="account-sidenav" className="nav-justified pull-left">
-                <a className={classes('/account/performance/public/'+id)} href={`/account/performance/public/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/public/'+id)); }}>
+                <a className={classes('/admin/performance/public/'+id)} href={`/admin/performance/public/${id}`} onClick={e => { dispatch(performanceNavigate('/admin/performance/public/'+id)); }}>
                     <FormattedMessage
                         id="publicData"
                         defaultMessage="Public data"
                     />
                 </a>
-                <a className={classes('/account/performance/images/'+id)} href={`/account/performance/images/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/images/'+id)); }}>
+                <a className={classes('/admin/performance/images/'+id)} href={`/admin/performance/images/${id}`} onClick={e => { dispatch(performanceNavigate('/admin/performance/images/'+id)); }}>
                     <FormattedMessage
                         id="images"
                         defaultMessage="Images"
                     />
                 </a>
-                <a className={classes('/account/performance/events/'+id)} href={`/account/performance/events/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/events/'+id)); }}>
+                <a className={classes('/admin/performance/events/'+id)} href={`/admin/performance/events/${id}`} onClick={e => { dispatch(performanceNavigate('/admin/performance/events/'+id)); }}>
                     <FormattedMessage
                         id="events"
                         defaultMessage="Events"
                     />
                 </a>
-                <a className={classes('/account/performance/authors/'+id)} href={`/account/performance/authors/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/authors/'+id)); }}>
+                <a className={classes('/admin/performance/authors/'+id)} href={`/admin/performance/authors/${id}`} onClick={e => { dispatch(performanceNavigate('/admin/performance/authors/'+id)); }}>
                     <FormattedMessage
                         id="authors"
                         defaultMessage="Authors"
                     />
                 </a>
-                <a className={classes('/account/performance/photogallery/'+id)} href={`/account/performance/photogallery/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/photogallery/'+id)); }}>
+                <a className={classes('/admin/performance/photogallery/'+id)} href={`/admin/performance/photogallery/${id}`} onClick={e => { dispatch(performanceNavigate('/admin/performance/photogallery/'+id)); }}>
                     <FormattedMessage
                         id="photogallery"
                         defaultMessage="Photo gallery"
                     />
                 </a>
-                <a className={classes('/account/performance/videogallery/'+id)} href={`/account/performance/videogallery/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/videogallery/'+id)); }}>
+                <a className={classes('/admin/performance/videogallery/'+id)} href={`/admin/performance/videogallery/${id}`} onClick={e => { dispatch(performanceNavigate('/admin/performance/videogallery/'+id)); }}>
                     <FormattedMessage
                         id="videogallery"
                         defaultMessage="Video gallery"
                     />
                 </a>
-                <a className={classes('/account/performance/settings/'+id)} href={`/account/performance/settings/${id}`} onClick={e => { dispatch(performanceNavigate('/account/performance/settings/'+id)); }}>
+                <a className={classes('/admin/performance/settings/'+id)} href={`/admin/performance/settings/${id}`} onClick={e => { dispatch(performanceNavigate('/admin/performance/settings/'+id)); }}>
                     <FormattedMessage
                         id="settings"
                         defaultMessage="Settings"

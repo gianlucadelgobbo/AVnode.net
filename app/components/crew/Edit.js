@@ -1262,7 +1262,7 @@ const EditCrew = props => {
     dispatch(editCrew(props));
   };
   const onSubmitSuccess = () => {
-    route('/account/crews');
+    route('/admin/crews');
   };
   return (
     <CrewForm

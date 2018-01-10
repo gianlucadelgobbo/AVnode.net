@@ -12,31 +12,31 @@ const Nav = ({ user, dispatch }) => {
 
   return (
     <nav id="account-nav" className="nav nav-pills nav-justified">
-      <a className={classes('/account/profile')} href="/account/profile/public" onClick={e => { dispatch(navigate('/account/profile/public')) }}>
+      <a className={classes('/admin/profile')} href="/admin/profile/public" onClick={e => { dispatch(navigate('/admin/profile/public')) }}>
         <FormattedMessage
           id="profile"
           defaultMessage="Profile"
         />
       </a>
-      <a className={classes('/account/crew')} href="/account/crews" onClick={e => { dispatch(navigate('/account/crews')) }}>
+      <a className={classes('/admin/crew')} href="/admin/crews" onClick={e => { dispatch(navigate('/admin/crews')) }}>
         <FormattedMessage
           id="crews"
           defaultMessage="Crews"
         /> <span className="badge badge-pill badge-default">{user.crews.length}</span>
       </a>
-      <a className={classes('/account/performance')} href="/account/performances" onClick={e => { dispatch(navigate('/account/performances')) }}>
+      <a className={classes('/admin/performance')} href="/admin/performances" onClick={e => { dispatch(navigate('/admin/performances')) }}>
         <FormattedMessage
           id="performances"
           defaultMessage="Performances"
         /> <span className="badge badge-pill badge-default">{user.performances.length}</span>
       </a>
-      <a className={classes('/account/event')} href="/account/events" onClick={e => { dispatch(navigate('/account/events')) }}>
+      <a className={classes('/admin/event')} href="/admin/events" onClick={e => { dispatch(navigate('/admin/events')) }}>
         <FormattedMessage
           id="events"
           defaultMessage="Events"
         /> <span className="badge badge-pill badge-default">{user.events.length}</span>
       </a>
-      <a className={classes('/account/preferences')} href="/account/preferences" onClick={e => { dispatch(navigate('/account/preferences')) }}>
+      <a className={classes('/admin/preferences')} href="/admin/preferences" onClick={e => { dispatch(navigate('/admin/preferences')) }}>
         <FormattedMessage
           id="preferences"
           defaultMessage="Preferences"

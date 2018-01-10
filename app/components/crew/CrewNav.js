@@ -12,25 +12,25 @@ const CrewNav = ({ user, dispatch, url }) => {
 
   return (
 <nav id="account-sidenav" className="nav-justified pull-left">
-<a className={classes('/account/crew/public/'+id)} href={`/account/crew/public/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/public/'+id)); }}>
+<a className={classes('/admin/crew/public/'+id)} href={`/admin/crew/public/${id}`} onClick={e => { dispatch(crewNavigate('/admin/crew/public/'+id)); }}>
 <FormattedMessage
     id="publicData"
     defaultMessage="Public data"
 />
 </a>
-<a className={classes('/account/crew/organization/'+id)} href={`/account/crew/organization/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/organization/'+id)); }}>
+<a className={classes('/admin/crew/organization/'+id)} href={`/admin/crew/organization/${id}`} onClick={e => { dispatch(crewNavigate('/admin/crew/organization/'+id)); }}>
     <FormattedMessage
         id="organization"
         defaultMessage="Organization"
     />
 </a>
-<a className={classes('/account/crew/images/'+id)} href={`/account/crew/images/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/images/'+id)); }}>
+<a className={classes('/admin/crew/images/'+id)} href={`/admin/crew/images/${id}`} onClick={e => { dispatch(crewNavigate('/admin/crew/images/'+id)); }}>
     <FormattedMessage
         id="images"
         defaultMessage="Images"
     />
 </a>
-<a className={classes('/account/crew/members/'+id)} href={`/account/crew/members/${id}`} onClick={e => { dispatch(crewNavigate('/account/crew/members/'+id)); }}>
+<a className={classes('/admin/crew/members/'+id)} href={`/admin/crew/members/${id}`} onClick={e => { dispatch(crewNavigate('/admin/crew/members/'+id)); }}>
     <FormattedMessage
         id="members"
         defaultMessage="Members"
