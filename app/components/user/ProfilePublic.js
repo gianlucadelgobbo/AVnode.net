@@ -11,11 +11,19 @@ import Match from 'preact-router/match';
 import Languages from '../language/Languages';
 import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
+import renderField from '../renderField';
+import Modal from '../Modal';
 
 import {
   fetchCountries,
   editUser
 } from '../../reducers/actions';
+
+const required = value => value ? undefined : 'Required'
+const maxLength = max => value =>
+  value && value.length > max ? `Must be ${max} characters or less` : undefined
+const maxLength15 = maxLength(15);
+
 
 let ProfilePublicForm = props => {
   const {
@@ -70,7 +78,8 @@ let ProfilePublicForm = props => {
             <Field
               className="form-control"
               name="stagename"
-              component="input"
+              component= {renderField}
+              validate={[ required ]}
             />
           </div>
           <div className="form-group">
@@ -79,14 +88,13 @@ let ProfilePublicForm = props => {
                 id="slug"
                 defaultMessage="Profile url"
               />
-            </label>
-            <div className="input-group">
-              <Field
-                className="form-control"
-                name="slug"
-                component="input"
-              />
-            </div>
+            </label>          
+            <Field
+              className="form-control"
+              name="slug"
+              component= {renderField}
+              validate={[ required ]}
+            />
             <p>
               {user.publicUrl}
             </p>
