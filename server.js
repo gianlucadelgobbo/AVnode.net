@@ -10,12 +10,12 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 
 // Require mongoose models once!
-require('./lib/models');
+require('./app/models');
 
-const i18n = require('./lib/plugins/i18n');
-const passport = require('./lib/plugins/passport');
-const routes = require('./lib/routes');
-const logger = require('./lib/utilities/logger');
+const i18n = require('./app/plugins/i18n');
+const passport = require('./app/plugins/passport');
+const routes = require('./app/routes');
+const logger = require('./app/utilities/logger');
 
 // config = require('getconfig');
 
@@ -26,7 +26,7 @@ dotenv.load({ path: '.env.local' });
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'pug');
 
 app.use(morgan('short'));

@@ -2,10 +2,10 @@ import { connect } from 'preact-redux';
 import Language from './Language';
 import { addLocaleData } from 'preact-intl';
 
-import messagesEN from '../locales/en.json';
-import messagesDE from '../locales/de.json';
-import messagesFR from '../locales/fr.json';
-import messagesIT from '../locales/it.json';
+import messagesEN from '../../../locales/en.json';
+import messagesDE from '../../../locales/de.json';
+import messagesFR from '../../../locales/fr.json';
+import messagesIT from '../../../locales/it.json';
 // FIXME: Import locale data for every supported locale…
 import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';

@@ -1,6 +1,6 @@
 const assert = require('assert');
-const slug = require('../../lib/utilities/slug');
-const User = require('../../lib/models/User');
+const slug = require('../../app/utilities/slug');
+const User = require('../../app/models/User');
 
 describe('User', () => {
   beforeEach(() => {

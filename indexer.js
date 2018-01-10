@@ -5,14 +5,14 @@ const async = require('async');
 const args = require('minimist')(process.argv.slice(2));
 const config = require('dotenv').load({path: '.env.local'});
 const MongoClient = require('mongodb').MongoClient;
-const es = require('./lib/plugins/elasticsearch').getClient();
-const INDEX = require('./lib/plugins/elasticsearch').INDEX;
+const es = require('./app/plugins/elasticsearch').getClient();
+const INDEX = require('./app/plugins/elasticsearch').INDEX;
 const indexHelper = {
-  // crews: require('./lib/plugins/elasticsearch/Crew').cleanForIndex,
-  users: require('./lib/plugins/elasticsearch/User').cleanForIndex,
-  events: require('./lib/plugins/elasticsearch/Event').cleanForIndex,
-  //addresses: require('./lib/plugins/elasticsearch/Address').cleanForIndex,
-  performances: require('./lib/plugins/elasticsearch/Performance').cleanForIndex
+  // crews: require('./app/plugins/elasticsearch/Crew').cleanForIndex,
+  users: require('./app/plugins/elasticsearch/User').cleanForIndex,
+  events: require('./app/plugins/elasticsearch/Event').cleanForIndex,
+  //addresses: require('./app/plugins/elasticsearch/Address').cleanForIndex,
+  performances: require('./app/plugins/elasticsearch/Performance').cleanForIndex
 };
 // BL why was plural, should be crew,etc as seen in the es files?
 const TYPES = [
