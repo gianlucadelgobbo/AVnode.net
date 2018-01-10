@@ -26,7 +26,7 @@ const PerformanceShow = ({ performance, dispatch }) => {
           </button>
         }
         <button className="btn btn-info"
-          onClick={() => { route('/account/performance/public/' + performance._id); }}>
+          onClick={() => { route('/admin/performance/public/' + performance._id); }}>
           <i className="fa fa-fw fa-edit"></i>
         </button>
       </span>

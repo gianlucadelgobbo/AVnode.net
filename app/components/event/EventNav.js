@@ -14,43 +14,43 @@ const EventNav = ({ user, dispatch, url }) => {
   return (
         <div>
             <nav id="account-sidenav" className="nav-justified pull-left">
-                <a className={classes('/account/event/public/'+id)} href={`/account/event/public/${id}`} onClick={e => {console.log('evt pub'+id); dispatch(eventNavigate('/account/event/public/'+id)); }}>
+                <a className={classes('/admin/event/public/'+id)} href={`/admin/event/public/${id}`} onClick={e => {console.log('evt pub'+id); dispatch(eventNavigate('/admin/event/public/'+id)); }}>
                     <FormattedMessage
                         id="publicData"
                         defaultMessage="Public data"
                     />
                 </a>
-                <a className={classes('/account/event/images/'+id)} href={`/account/event/images/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/images/'+id)); }}>
+                <a className={classes('/admin/event/images/'+id)} href={`/admin/event/images/${id}`} onClick={e => { dispatch(eventNavigate('/admin/event/images/'+id)); }}>
                     <FormattedMessage
                         id="images"
                         defaultMessage="Images"
                     />
                 </a>
-                <a className={classes('/account/event/performances/'+id)} href={`/account/event/performances/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/performances/'+id)); }}>
+                <a className={classes('/admin/event/performances/'+id)} href={`/admin/event/performances/${id}`} onClick={e => { dispatch(eventNavigate('/admin/event/performances/'+id)); }}>
                 <FormattedMessage
                     id="performances"
                     defaultMessage="Performances"
                 />
             </a>
-            <a className={classes('/account/event/partners/'+id)} href={`/account/event/partners/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/partners/'+id)); }}>
+            <a className={classes('/admin/event/partners/'+id)} href={`/admin/event/partners/${id}`} onClick={e => { dispatch(eventNavigate('/admin/event/partners/'+id)); }}>
                 <FormattedMessage
                     id="partners"
                     defaultMessage="Partners"
                 />
             </a>
-            <a className={classes('/account/event/photogallery/'+id)} href={`/account/event/photogallery/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/photogallery/'+id)); }}>
+            <a className={classes('/admin/event/photogallery/'+id)} href={`/admin/event/photogallery/${id}`} onClick={e => { dispatch(eventNavigate('/admin/event/photogallery/'+id)); }}>
                 <FormattedMessage
                     id="photogallery"
                     defaultMessage="Photo gallery"
                 />
             </a>
-            <a className={classes('/account/event/videogallery/'+id)} href={`/account/event/videogallery/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/videogallery/'+id)); }}>
+            <a className={classes('/admin/event/videogallery/'+id)} href={`/admin/event/videogallery/${id}`} onClick={e => { dispatch(eventNavigate('/admin/event/videogallery/'+id)); }}>
                 <FormattedMessage
                     id="videogallery"
                     defaultMessage="Video gallery"
                 />
             </a>
-            <a className={classes('/account/event/settings/'+id)} href={`/account/event/settings/${id}`} onClick={e => { dispatch(eventNavigate('/account/event/settings/'+id)); }}>
+            <a className={classes('/admin/event/settings/'+id)} href={`/admin/event/settings/${id}`} onClick={e => { dispatch(eventNavigate('/admin/event/settings/'+id)); }}>
                 <FormattedMessage
                     id="settings"
                     defaultMessage="Settings"

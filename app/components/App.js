@@ -47,8 +47,8 @@ const App = () => {
         <div className="container">
           <h1 className="display-4">
           <FormattedMessage
-            id="account"
-            defaultMessage="Account"
+            id="admin"
+            defaultMessage="Control panel"
           /></h1>
         </div>
       </div>
@@ -59,34 +59,34 @@ const App = () => {
       </div>
       <div className="container">
         <Router>
-          <Profile path="/account/profile/public" />
-          <ProfileImages path="/account/profile/images" />
-          <ProfileEmails path="/account/profile/emails" />
-          <ProfilePrivate path="/account/profile/private" />
-          <ProfilePassword path="/account/profile/password" />
-          <ProfileConnections path="/account/profile/connections" />
-          <Crews path="/account/crews" />
-          <CrewPublic path="/account/crew/public/:_id" />
-          <CrewOrganization path="/account/crew/organization/:_id" />
-          <CrewImages path="/account/crew/images/:_id" />
-          <CrewMembers path="/account/crew/members/:_id" />
-          <Performances path="/account/performances" />
-          <PerformancePublic path="/account/performance/public/:_id" />
-          <PerformanceImages path="/account/performance/images/:_id" />
-          <PerformanceEvents path="/account/performance/events/:_id" />
-          <PerformanceAuthors path="/account/performance/authors/:_id" />
-          <PerformancePhotoGallery path="/account/performance/photogallery/:_id" />
-          <PerformanceVideoGallery path="/account/performance/videogallery/:_id" />
-          <PerformanceSettings path="/account/performance/settings/:_id" />
-          <Events path="/account/events" />
-          <EventPublic path="/account/event/public/:_id" />
-          <EventImages path="/account/event/images/:_id" />
-          <EventPerformances path="/account/event/performances/:_id" />
-          <EventPartners path="/account/event/partners/:_id" />
-          <EventPhotoGallery path="/account/event/photogallery/:_id" />
-          <EventVideoGallery path="/account/event/videogallery/:_id" />
-          <EventSettings path="/account/event/settings/:_id" />
-          <Preferences path="/account/preferences" />
+          <Profile path="/admin/profile/public" />
+          <ProfileImages path="/admin/profile/images" />
+          <ProfileEmails path="/admin/profile/emails" />
+          <ProfilePrivate path="/admin/profile/private" />
+          <ProfilePassword path="/admin/profile/password" />
+          <ProfileConnections path="/admin/profile/connections" />
+          <Crews path="/admin/crews" />
+          <CrewPublic path="/admin/crew/public/:_id" />
+          <CrewOrganization path="/admin/crew/organization/:_id" />
+          <CrewImages path="/admin/crew/images/:_id" />
+          <CrewMembers path="/admin/crew/members/:_id" />
+          <Performances path="/admin/performances" />
+          <PerformancePublic path="/admin/performance/public/:_id" />
+          <PerformanceImages path="/admin/performance/images/:_id" />
+          <PerformanceEvents path="/admin/performance/events/:_id" />
+          <PerformanceAuthors path="/admin/performance/authors/:_id" />
+          <PerformancePhotoGallery path="/admin/performance/photogallery/:_id" />
+          <PerformanceVideoGallery path="/admin/performance/videogallery/:_id" />
+          <PerformanceSettings path="/admin/performance/settings/:_id" />
+          <Events path="/admin/events" />
+          <EventPublic path="/admin/event/public/:_id" />
+          <EventImages path="/admin/event/images/:_id" />
+          <EventPerformances path="/admin/event/performances/:_id" />
+          <EventPartners path="/admin/event/partners/:_id" />
+          <EventPhotoGallery path="/admin/event/photogallery/:_id" />
+          <EventVideoGallery path="/admin/event/videogallery/:_id" />
+          <EventSettings path="/admin/event/settings/:_id" />
+          <Preferences path="/admin/preferences" />
         </Router>
       </div>
     </div>

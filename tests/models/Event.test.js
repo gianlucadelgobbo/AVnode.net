@@ -13,7 +13,7 @@ describe('Event', () => {
       slug: slug.parse('Foo Bar')
     });
     assert.equal(
-      '/account/events/foo-bar',
+      '/admin/events/foo-bar',
       event.editUrl
     );
     done();

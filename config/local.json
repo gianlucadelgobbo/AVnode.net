@@ -39,7 +39,7 @@
   "cp_basepath": "controlpanel",
   "usersListItems": 6,
   "cpanel": {
-    "account": {
+    "admin": {
       "title": "Performers",
       "limit": 20,
       "basepath": "performers",

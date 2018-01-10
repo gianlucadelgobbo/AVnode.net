@@ -29,9 +29,9 @@ describe('/login', () => {
   });
 
   /* BL TODO */
-  it('GET to /account/profile/public returns 302 when not logged in redirects to /login', (done) => {
+  it('GET to /admin/profile/public returns 302 when not logged in redirects to /login', (done) => {
     request(server)
-      .get('/account/profile/public')
+      .get('/admin/profile/public')
       .expect(302, done);
   }); 
 

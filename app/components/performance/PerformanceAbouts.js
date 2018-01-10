@@ -162,7 +162,7 @@ const EditPerformanceAbouts = props => {
     dispatch(editPerformanceAbouts(props));
   };
   const onSubmitSuccess = () => {
-    //route('/account/performances');
+    //route('/admin/performances');
   };
   return (
     <PerformanceForm
