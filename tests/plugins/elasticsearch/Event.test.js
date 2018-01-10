@@ -1,5 +1,5 @@
 const assert = require('assert');
-const indexPlugin = require('../../../lib/plugins/elasticsearch/Event');
+const indexPlugin = require('../../../app/plugins/elasticsearch/Event');
 
 const getEsStub = (i = false, r = false) => {
   return {

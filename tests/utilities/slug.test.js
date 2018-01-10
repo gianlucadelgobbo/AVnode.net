@@ -1,5 +1,5 @@
 const assert = require('assert');
-const slug = require('../../lib/utilities/slug');
+const slug = require('../../app/utilities/slug');
 
 describe('slug parse', () => {
   beforeEach(() => {

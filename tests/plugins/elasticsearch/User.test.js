@@ -1,5 +1,5 @@
 const assert = require('assert');
-const indexPlugin = require('../../../lib/plugins/elasticsearch/User');
+const indexPlugin = require('../../../app/plugins/elasticsearch/User');
 
 const getEsStub = (i = false, r = false) => {
   return {
