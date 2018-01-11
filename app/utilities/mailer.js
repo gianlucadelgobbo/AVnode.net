@@ -24,12 +24,13 @@ module.exports.signup = (options, data, cb) => {
       from: process.env.MAILFROM,
       name: 'AVnode'
     },
-    transport: getTransporter()
+    transport: getTransporter(),
+    views: { root: 'app/views/emails' }
   });
   // console.log('to:' + options.to + ' uuid: ' + data.uuid);
 
   email.send({
-    template: 'templates/signup',
+    template: 'signup',
     message: {
       to: options.to
     },
@@ -49,7 +50,8 @@ module.exports.confirmEmail = (options, data, cb) => {
       from: process.env.MAILFROM,
       name: 'AVnode'
     },
-    transport: getTransporter()
+    transport: getTransporter(),
+    views: { root: 'app/views/emails' }
   });
 
   email.send({
@@ -72,7 +74,8 @@ module.exports.resetPassword = (options, data, cb) => {
       from: process.env.MAILFROM,
       name: 'AVnode'
     },
-    transport: getTransporter()
+    transport: getTransporter(),
+    views: { root: 'app/views/emails' }
   });
   console.log('to:' + options.to + ' uuid: ' + data.uuid);
 
@@ -96,7 +99,8 @@ module.exports.sendMsgEmail = (options, data, cb) => {
       from: process.env.MAILFROM,
       name: 'AVnode'
     },
-    transport: getTransporter()
+    transport: getTransporter(),
+    views: { root: 'app/views/emails' }
   });
   console.log('to:' + options.to + ' uuid: ' + data.msg);
 
@@ -121,7 +125,8 @@ module.exports.addCrewMember = (options, data, cb) => {
       from: process.env.MAILFROM,
       name: 'AVnode'
     },
-    transport: getTransporter()
+    transport: getTransporter(),
+    views: { root: 'app/views/emails' }
   });
   // console.log('to:' + options.to + ' uuid: ' + data.uuid);
 

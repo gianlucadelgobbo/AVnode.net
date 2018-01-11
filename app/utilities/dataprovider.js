@@ -1,5 +1,6 @@
-const mongodb = {};
+const dataprovider = {};
 
+const config = require('getconfig');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
@@ -8,7 +9,7 @@ const Performance = mongoose.model('Performance');
 
 const logger = require('./logger');
 
-mongodb.fetchUser = (id, cb) => {
+dataprovider.fetchUser = (id, cb) => {
     logger.debug('2 fetchUser');  
     User
       .findById(id)
@@ -157,6 +158,36 @@ mongodb.fetchUser = (id, cb) => {
         }]
       }])
       .exec(cb);
-  };
+};
 
-  module.exports = mongodb;
+dataprovider.fetchPerformers = (query, limit, skip, sorting, cb) => {
+  logger.debug('fetchPerformers');  
+  User.count(query, function(error, total) {
+    User.find(query)
+    .populate([{
+      path: 'image',
+      model: 'Asset'
+    }])  
+    .limit(limit)
+    .skip(skip)
+    .sort(sorting)
+    /*.select(config.sections[section].list_fields)*/
+    .exec(function(err, data) {
+      cb(err, data, total);
+    });
+  });
+/*
+  User.find({})
+  .populate([{
+    path: 'image',
+    model: 'Asset'
+  }])
+  .limit(5)
+  .exec((err, data) => {
+    cb(err, data);
+  });
+  */
+};
+
+
+module.exports = dataprovider;

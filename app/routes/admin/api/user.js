@@ -4,7 +4,7 @@ const User = mongoose.model('User');
 
 const logger = require('../../../utilities/logger');
 
-const mongodb = require('../../../utilities/mongodb');
+const dataprovider = require('../../../utilities/dataprovider');
 
 const multer = require('multer');
 // FIXME multiple occurrences
@@ -24,7 +24,7 @@ const up = upload.fields([
 router.get('/', (req, res) => {
     const apiCall = `api, router.get(/user/${JSON.stringify(req.user.id)}`;
     logger.info(`1 ${apiCall} call fetchUser`);
-    mongodb.fetchUser(req.user.id, (err, user) => {
+    dataprovider.fetchUser(req.user.id, (err, user) => {
       if (err) {
         logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
         req.flash('errors', { msg: `${apiCall} findById ERROR: ${JSON.stringify(err)}` });
@@ -67,7 +67,7 @@ router.put('/user/:id/language/:langId', (req, res) => {
       if (err) {
         logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
       }
-      mongodb.fetchUser(req.user.id, (err, user) => {
+      dataprovider.fetchUser(req.user.id, (err, user) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
