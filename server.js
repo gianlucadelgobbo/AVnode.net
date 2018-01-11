@@ -73,7 +73,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   const path = req.path.split('/')[1];
-  const lang = req.headers.host.split('.')[0]!='avnode' ? req.headers.host.split('.')[0] : 'en';
+  const lang = req.headers.host.split('.')[0]!='avnode' || req.headers.host.split('.')[0]!='dev' || req.headers.host.split('.')[0]!='api' ? req.headers.host.split('.')[0] : 'en';
   //logger.debug('req.headers.host: '+req.headers.host);
   //logger.debug('lang: '+lang);
   //delete req.session.sessions;
