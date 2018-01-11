@@ -4,6 +4,7 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
+const Performer = mongoose.model('Performer');
 // const Crew = mongoose.model('Crew');
 const Performance = mongoose.model('Performance');
 
@@ -161,43 +162,12 @@ dataprovider.fetchUser = (id, cb) => {
 };
 
 dataprovider.fetchPerformer = (req, cb) => {
-  logger.debug('fetchPerformer');  
-  User.
+  logger.debug('fetchPerformer'+req.params.slug);  
+  Performer.
   findOne({slug: req.params.slug}).
-  populate([{
-    path: 'image',
-    model: 'Asset'
-  },
-  {
-    path: 'teaserImage',
-    model: 'Asset'
-  },
-  {
-    path: 'events',
-    model: 'Event',
-    populate: [{
-      path: 'image',
-      model: 'Asset'
-    }]
-  },
-  {
-    path: 'performances',
-    model: 'Performance',
-    populate: [{
-      path: 'image',
-      model: 'Asset'
-    }]
-  }, {
-    path: 'crews',
-    model: 'Crew',
-    populate: [{
-      path: 'image',
-      model: 'Asset'
-    },
-    {
-      path: 'members'
-    }]
-  }]).
+  populate({
+    model: Performer
+  }).
   exec((err, performer) => {
     logger.debug(err);
     cb(err, performer);

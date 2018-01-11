@@ -7,6 +7,7 @@ router.get('/', (req, res, next) => {
   logger.debug('Performer');
   dataprovider.fetchPerformer(req, (err, performer) => {
     logger.debug(err);
+    logger.debug(performer);
 
     if (err || performer === null) {
       //return next(err);
