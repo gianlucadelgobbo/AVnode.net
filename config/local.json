@@ -3,7 +3,7 @@
   "imageHeight": 300,
   "teaserWidth": 1920,
   "teaserHeight": 720,
-  "maxImageSize": "2000000",  
+  "maxImageSize": "2000000",
   "maxFileComment": "1 * 1024 * 1024 * 1024",
   "maxFileSize": 1073741824,
   "defaultLocale": "en",
@@ -39,7 +39,7 @@
   "cp_basepath": "controlpanel",
   "usersListItems": 6,
   "cpanel": {
-    "admin": {
+    "account": {
       "title": "Performers",
       "limit": 20,
       "basepath": "performers",
@@ -74,11 +74,11 @@
   },
   "sections": {
     "performers": {
-      "title": "Profile",
+      "title": "Performers",
       "limit": 20,
-      "basepath": "profile",
+      "basepath": "performers",
       "coll": "users",
-      "view_list": "profile",
+      "view_list": "performers",
       "view_edit": "user",
       "list_fields": {
         "display_name":1,
@@ -124,7 +124,12 @@
       "title": "Crews",
       "limit": 20,
       "basepath": "crews",
-      "view_list": "crews",
+      "coll": "users"
+    },
+    "members": {
+      "title": "Members",
+      "limit": 20,
+      "basepath": "members",
       "coll": "users"
     },
     "events": {
