@@ -1,0 +1,20 @@
+.clearfix.submenu
+  if categories
+    - var currentcat
+    .pull-right
+      ul.nav.nav-pills
+        each category in categories
+          li(class="nav-item")
+            if category === filter
+              - currentcat = category
+              a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=__(category)
+            else
+              a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=__(category)
+    .pull-left
+      ul.nav.nav-pills
+        each order in orderings
+          li(class="nav-item")
+            if order === sort
+              a(class="nav-link active", href="/"+section+"/"+currentcat+"/"+order+"/")=__(order)
+            else
+              a(class="nav-link", href="/"+section+"/"+currentcat+"/"+order+"/")=__(order)
