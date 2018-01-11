@@ -2,6 +2,7 @@ const config = require('getconfig');
 const router = require('../router')();
 const logger = require('../../utilities/logger');
 
+const helper = require('../../utilities/asset/helper');
 const dataprovider = require('../../utilities/dataprovider');
 
 router.get('/:filter/:sorting/:page', (req, res) => {
@@ -64,11 +65,12 @@ list = (req, res) => {
       var title = config.sections[section].title;
       var info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
       var link = '/' + section + '/' + filter + '/' + sorting + '/';
-      //var pages = _h.pagination(link, skip, config.sections[section].limit, total);
+      var pages = helper.getPagination(link, skip, config.sections[section].limit, total);
       res.render('performers/list', {
         title: __('Performers'),
         section: section,
         sort: sorting,
+        pages: pages,
         filter: filter,
         categories: config.sections[section].categories,
         orderings: config.sections[section].orders,
