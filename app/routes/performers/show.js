@@ -44,7 +44,7 @@ router.get('/', (req, res, next) => {
       //return next(err);
       res.status(404).render('404', {});
     } else {
-      if (req.query.api) {
+      if (req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         //return next(err);
         res.send(performer);
       } else {

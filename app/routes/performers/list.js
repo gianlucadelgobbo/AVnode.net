@@ -62,37 +62,42 @@ list = (req, res) => {
   
     dataprovider.fetchPerformers(query, config.sections[section].limit, skip, config.sections[section].sortQ[sorting], (err, data, total) => {
       logger.debug('bella');
-      var title = config.sections[section].title;
-      var info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
-      var link = '/' + section + '/' + filter + '/' + sorting + '/';
-      var pages = helper.getPagination(link, skip, config.sections[section].limit, total);
-      res.render('performers/list', {
-        title: __('Performers'),
-        section: section,
-        sort: sorting,
-        pages: pages,
-        filter: filter,
-        categories: config.sections[section].categories,
-        orderings: config.sections[section].orders,
-       data: data
-      });
-      /*res.render(section + '/list', {
-        title: title,
-        info: info,
-        section: section,
-        total: total,
-        path: path,
-        sort: sorting,
-        filter: filter,
-        skip: skip,
-        page: page,
-        pages: pages,
-        result: events,
-        categories: config.sections[section].categories,
-        orderings: config.sections[section].orders,
-        user: req.user,
-        _h: _h
-      });*/
+      if (req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        //return next(err);
+        res.send({total:total, skip:skip, data:data});
+      } else {
+        var title = config.sections[section].title;
+        var info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
+        var link = '/' + section + '/' + filter + '/' + sorting + '/';
+        var pages = helper.getPagination(link, skip, config.sections[section].limit, total);
+        res.render('performers/list', {
+          title: __('Performers'),
+          section: section,
+          sort: sorting,
+          pages: pages,
+          filter: filter,
+          categories: config.sections[section].categories,
+          orderings: config.sections[section].orders,
+          data: data
+        });
+        /*res.render(section + '/list', {
+          title: title,
+          info: info,
+          section: section,
+          total: total,
+          path: path,
+          sort: sorting,
+          filter: filter,
+          skip: skip,
+          page: page,
+          pages: pages,
+          result: events,
+          categories: config.sections[section].categories,
+          orderings: config.sections[section].orders,
+          user: req.user,
+          _h: _h
+        });*/
+      }
     });
   }
 }
