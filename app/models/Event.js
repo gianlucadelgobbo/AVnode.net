@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
-const indexPlugin = require('../plugins/elasticsearch/Event');
+const indexPlugin = require('../utilities/elasticsearch/Event');
 const Category = require('./Category');
 
 const eventSchema = new Schema({

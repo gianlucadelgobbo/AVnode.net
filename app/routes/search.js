@@ -1,5 +1,5 @@
 const router = require('./router')();
-const elasticsearch = require('../plugins/elasticsearch');
+const elasticsearch = require('../utilities/elasticsearch');
 const _ = require('lodash');
 const logger = require('../utilities/logger');
 

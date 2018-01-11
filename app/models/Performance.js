@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const indexPlugin = require('../plugins/elasticsearch/Performance');
+const indexPlugin = require('../utilities/elasticsearch/Performance');
 const Category = require('./Category');
 
 const performanceSchema = new Schema({

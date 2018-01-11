@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const indexPlugin = require('../plugins/elasticsearch/Crew');
+const indexPlugin = require('../utilities/elasticsearch/Crew');
 // const About = require('./About');
 const Link = require('./Link');
 const Address = require('./Address');
