@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 // const moment = require('moment');
-const indexPlugin = require('../plugins/elasticsearch/Venue');
+const indexPlugin = require('../utilities/elasticsearch/Venue');
 const Address = require('./Address');
 
 // BL TODO index name with ES?

@@ -12,10 +12,10 @@ const sass = require('node-sass-middleware');
 // Require mongoose models once!
 require('./app/models');
 
-const i18n = require('./app/plugins/i18n');
-const passport = require('./app/plugins/passport');
+const i18n = require('./app/utilities/i18n');
+const passport = require('./app/utilities/passport');
 const routes = require('./app/routes');
-const logger = require('./app/utilities/logger');
+const logger = require('./app/utilities///logger');
 
 // config = require('getconfig');
 
@@ -74,24 +74,24 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const path = req.path.split('/')[1];
   const lang = req.headers.host.split('.')[0]!='avnode' ? req.headers.host.split('.')[0] : 'en';
-  logger.debug('req.headers.host: '+req.headers.host);
-  logger.debug('lang: '+lang);
+  //logger.debug('req.headers.host: '+req.headers.host);
+  //logger.debug('lang: '+lang);
   //delete req.session.sessions;
-  logger.debug(req.session);
+  //logger.debug(req.session);
   if(!req.session.sessions) {
-    logger.debug('create sessions');
+    //logger.debug('create sessions');
     req.session.sessions = {current_lang: 'en'};
-    logger.debug(req.session.sessions);
+    //logger.debug(req.session.sessions);
   }
-  logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+  //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
   if(req.session.sessions.current_lang != lang) {
-    logger.debug('changelang');
+    //logger.debug('changelang');
     req.session.sessions.current_lang = lang;
-    logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
-    logger.debug('global.getLocale: '+global.getLocale());
+    //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+    //logger.debug('global.getLocale: '+global.getLocale());
   }
   global.setLocale(req.session.sessions.current_lang);
-  logger.debug('global.getLocale: '+global.getLocale());
+  //logger.debug('global.getLocale: '+global.getLocale());
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
@@ -107,7 +107,7 @@ app.use((req, res, next) => {
         req.session.returnTo = req.path;
       }
   } else */
-  logger.debug('req.path: '+req.path);
+  //logger.debug('req.path: '+req.path);
 
   if (!req.user && req.path.indexOf('/admin')===0) {
     req.session.returnTo = req.path;

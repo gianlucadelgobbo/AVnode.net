@@ -1,5 +1,5 @@
 const router = require('./router')();
-const passport = require('../plugins/passport');
+const passport = require('../utilities/passport');
 
 const logger = require('../utilities/logger');
 const mongoose = require('mongoose');

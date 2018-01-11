@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const app = require('./server');
-const mongoose = require('./app/plugins/mongoose');
+const mongoose = require('./app/utilities/mongoose');
 
 const options = {
   useMongoClient: true
