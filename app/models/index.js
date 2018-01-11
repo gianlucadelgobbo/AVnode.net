@@ -5,3 +5,4 @@ require('./Event');
 require('./Performance');
 require('./Venue');
 require('./Address');
+require('./Performer');
