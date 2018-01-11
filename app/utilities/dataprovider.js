@@ -10,8 +10,8 @@ const Performance = mongoose.model('Performance');
 const logger = require('./logger');
 
 dataprovider.fetchUser = (id, cb) => {
-    logger.debug('2 fetchUser');  
-    User
+  logger.debug('fetchUser');  
+  User
       .findById(id)
       //.select({'-galleries': 1})
       .populate([{
@@ -158,6 +158,50 @@ dataprovider.fetchUser = (id, cb) => {
         }]
       }])
       .exec(cb);
+};
+
+dataprovider.fetchPerformer = (req, cb) => {
+  logger.debug('fetchPerformer');  
+  User.
+  findOne({slug: req.params.slug}).
+  populate([{
+    path: 'image',
+    model: 'Asset'
+  },
+  {
+    path: 'teaserImage',
+    model: 'Asset'
+  },
+  {
+    path: 'events',
+    model: 'Event',
+    populate: [{
+      path: 'image',
+      model: 'Asset'
+    }]
+  },
+  {
+    path: 'performances',
+    model: 'Performance',
+    populate: [{
+      path: 'image',
+      model: 'Asset'
+    }]
+  }, {
+    path: 'crews',
+    model: 'Crew',
+    populate: [{
+      path: 'image',
+      model: 'Asset'
+    },
+    {
+      path: 'members'
+    }]
+  }]).
+  exec((err, performer) => {
+    logger.debug(err);
+    cb(err, performer);
+  });
 };
 
 dataprovider.fetchPerformers = (query, limit, skip, sorting, cb) => {

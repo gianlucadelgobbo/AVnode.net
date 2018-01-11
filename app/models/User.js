@@ -185,7 +185,7 @@ userSchema.virtual('publicEmails').get(function () {
 });
 
 userSchema.virtual('publicUrl').get(function () {
-  return `/ ${this.slug}`;
+  return `/${this.slug}`;
 });
 // return thumbnail
 userSchema.virtual('squareThumbnailUrl').get(function () {
