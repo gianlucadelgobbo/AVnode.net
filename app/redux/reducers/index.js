@@ -18,6 +18,8 @@ import {
   CLOSE_STAGENAME_MODAL,
   OPEN_PASSWORD_MODAL,
   CLOSE_PASSWORD_MODAL,
+  OPEN_EDITUSER_MODAL,
+  CLOSE_EDITUSER_MODAL,
   REQUEST_USER_EDITABOUT,
   REQUEST_USER_DELETEABOUT,
   REQUEST_USER_EDITLINK,
@@ -370,6 +372,14 @@ const user = (state = initialValues, action) => {
   case CLOSE_PASSWORD_MODAL:
     return Object.assign({}, state, {
       _passwordModalActive: false
+    });
+  case OPEN_EDITUSER_MODAL:
+    return Object.assign({}, state, {
+      _editUserActive:true
+    });
+  case CLOSE_EDITUSER_MODAL:
+    return Object.assign({}, state, {
+      _editUserActive:false
     });
   case CHANGE_LANGUAGE:
     return Object.assign({}, state, {
