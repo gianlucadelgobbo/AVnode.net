@@ -421,4 +421,31 @@ router.post('/crew', (req, res) => {
       }
     });
   });
+
+  const fetchCrewMemberById = (id, cb) => {
+    User
+      .findById(id)
+      .select({ '_id': 1, 'slug': 1, 'stagename': 1, 'username': 1, 'email': 1, 'file': 1 })
+      .populate({
+        path: 'crews',
+        model: 'User',
+        select: { '_id': 1, 'slug': 1, 'stagename': 1, 'username': 1, 'email': 1, 'file': 1 }
+      })
+      .exec(cb);
+  };
+  /* const fetchUserCrews = (id, cb) => {
+    console.log('crewid:' + id);
+    User
+      .findById(id)
+      .select({ 
+        '-members':1, 
+        '-abouts':1, 
+        'org_name': 1, 
+        'slug': 1, 
+        'stagename': 1, 
+        'username': 1
+      })
+      .exec(cb);
+  }; */
+  
   module.exports = router;

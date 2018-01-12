@@ -6,8 +6,14 @@ const logger = require('../../../utilities/logger');
 
 const dataprovider = require('../../../utilities/dataprovider');
 
+// All for the image upload…
+const config = require('getconfig');
 const multer = require('multer');
-// FIXME multiple occurrences
+const uuid = require('uuid');
+const mime = require('mime');
+const async = require('async');
+const imageUtil = require('../../../utilities/image');
+const assetUtil = require('../../../utilities/asset');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, process.env.STORAGE);
@@ -20,10 +26,25 @@ const upload = multer({ dest: process.env.STORAGE, storage: storage });
 const up = upload.fields([
   { name: 'image', maxCount: 1 }
 ]);
+const checkImageFile = (file, apiCall) => {
+  let valid = true;
+  if (file.size > config.maxImageSize) {
+    errorMessage = `${apiCall} file too large`;
+    logger.debug(errorMessage);
+    valid = false;
+  }
+  // accept image only
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$/)) {
+    errorMessage = `${apiCall} Only image files are allowed ${file.originalname}`;
+    logger.debug(errorMessage);
+    valid = false;
+  }
+  return valid;
+};
 
 router.get('/', (req, res) => {
     const apiCall = `api, router.get(/user/${JSON.stringify(req.user.id)}`;
-    logger.info(`1 ${apiCall} call fetchUser`);
+    logger.info(`1 ${apiCall} call dataprovider.fetchUser`);
     dataprovider.fetchUser(req.user.id, (err, user) => {
       if (err) {
         logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
@@ -38,7 +59,7 @@ router.get('/', (req, res) => {
       logger.info(`${apiCall} user events size ${JSON.stringify(user.events).length})`);
       //logger.debug(`${apiCall} user crews before ${JSON.stringify(user.crews)})`);
       /*user.crews.map((c) => (     
-        fetchUserCrews(c, (err, crew) => {
+        dataprovider.fetchUserCrews(c, (err, crew) => {
           if (err) {
             logger.debug(`${apiCall} user crew findById ERROR: ${JSON.stringify(err)}`);
           }
@@ -53,7 +74,7 @@ router.get('/', (req, res) => {
     });
   });
   // change UI language
-router.put('/user/:id/language/:langId', (req, res) => {
+router.put('/:id/language/:langId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/language/${JSON.stringify(req.params.langId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -76,48 +97,31 @@ router.put('/user/:id/language/:langId', (req, res) => {
     });
   });
 });
-router.post('/user/:id/image/profile', up, (req, res, next) => {
-  // FIXME: Why next() as error handling?
-  // FIXME: Delete old asset if there is one
-  const apiCall = 'api, profile image: ';
-  /**
-   * file: {"fieldname":"image",
-   * "originalname":"hhinvit.JPG",
-   * "encoding":"7bit","mimetype":"image/jpeg",
-   * "destination":"./storage/","filename":"476486d3-cf5d-4c37-8cbe-5172007cf267.jpeg",
-   * "path":"storage\\476486d3-cf5d-4c37-8cbe-5172007cf267.jpeg","size":246033}
-   */
-  async.parallel({
-    image: (cb) => {
-      if (req.files['image']) {
-        const file = req.files['image'][0];
-        if (checkImageFile(file, apiCall)) {
-          assetUtil.createImageAsset(file, (err, assetId) => {
-            if (err) {
-              console.log(err);
-              throw err;
-            }
-            imageUtil.resize(assetId, imageUtil.sizes.user.profile, cb);
-          });
-        } else {
-          cb(null);
-        }
-      } else {
-        cb(null);
-      }
+
+
+
+
+
+router.post('/:id/image/profile', (req, res) => {
+  up(req, res, (err) => {
+    if (err) {
+      // An error occurred when uploading
     }
-  }, (err, results) => {
+    logger.debug('upload err');
+    logger.debug(err);
+    logger.debug('parallel User.findById');
+    logger.debug(req.files);
     User.findById(req.params.id, (err, user) => {
       if (err) {
         req.flash('errors', { msg: `findById ERROR: ${JSON.stringify(err)}` });
-        return next(err);
+        //return next(err);
       }
-      user.image = results['image'];
+      user.image = req.files.image[0].path;
       user.save((err) => {
         if (err) {
-          return next(err);
+          //return next(err);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -125,7 +129,7 @@ router.post('/user/:id/image/profile', up, (req, res, next) => {
   });
 });
 
-router.post('/user/:id/image/teaser', up, (req, res, next) => {
+router.post('/:id/image/teaser', up, (req, res, next) => {
   // FIXME: Why next() as error handling?
   // FIXME: Delete old asset if there is one
   const apiCall = 'api, image teaser: ';
@@ -168,7 +172,7 @@ router.post('/user/:id/image/teaser', up, (req, res, next) => {
         if (err) {
           return next(err);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -176,7 +180,7 @@ router.post('/user/:id/image/teaser', up, (req, res, next) => {
   });
 });
 // remove about from user
-router.delete('/user/:id/about/:aboutlanguage', (req, res) => {
+router.delete('/:id/about/:aboutlanguage', (req, res) => {
   const apiCall = `api, router.delete(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
   logger.debug('________________API DELETE user about ___________________');
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
@@ -196,14 +200,14 @@ router.delete('/user/:id/about/:aboutlanguage', (req, res) => {
         }
       });
       user.save((_err) => {
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
     });
 });
 // edit user about
-router.put('/user/:id/about/:aboutlanguage', (req, res) => {
+router.put('/:id/about/:aboutlanguage', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
   logger.debug('________________API PUT user about ___________________');
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
@@ -232,7 +236,7 @@ router.put('/user/:id/about/:aboutlanguage', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.params.id, (err, user) => {
+        dataprovider.fetchUser(req.params.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -245,7 +249,7 @@ router.put('/user/:id/about/:aboutlanguage', (req, res) => {
   });
 });
 // remove link from user
-router.delete('/user/:id/link/:linkId', (req, res) => {
+router.delete('/:id/link/:linkId', (req, res) => {
   const apiCall = `api, router.delete(/user/${JSON.stringify(req.params.id)}/link/${JSON.stringify(req.params.linkId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
   User
@@ -270,7 +274,7 @@ router.delete('/user/:id/link/:linkId', (req, res) => {
       user.linkType = '';
       user.links.remove(req.params.linkId);
       user.save((_err) => {
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -278,7 +282,7 @@ router.delete('/user/:id/link/:linkId', (req, res) => {
 });
 
 // change user primary email
-router.put('/user/:id/email/:emailIndex', (req, res) => {
+router.put('/:id/email/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/email/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -310,7 +314,7 @@ router.put('/user/:id/email/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -322,7 +326,7 @@ router.put('/user/:id/email/:emailIndex', (req, res) => {
 });
 
 // user email toggleprivacy
-router.put('/user/:id/toggleprivacy/:emailIndex', (req, res) => {
+router.put('/:id/toggleprivacy/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/toggleprivacy/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -344,7 +348,7 @@ router.put('/user/:id/toggleprivacy/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -356,7 +360,7 @@ router.put('/user/:id/toggleprivacy/:emailIndex', (req, res) => {
 });
 
 // user email MakePrivate (obsolete)
-router.put('/user/:id/makeemailprivate/:emailIndex', (req, res) => {
+router.put('/:id/makeemailprivate/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeemailprivate/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -378,7 +382,7 @@ router.put('/user/:id/makeemailprivate/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -390,7 +394,7 @@ router.put('/user/:id/makeemailprivate/:emailIndex', (req, res) => {
 });
 
 // user email MakePublic (obsolete)
-router.put('/user/:id/makeemailpublic/:emailIndex', (req, res) => {
+router.put('/:id/makeemailpublic/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeemailpublic/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -412,7 +416,7 @@ router.put('/user/:id/makeemailpublic/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -424,7 +428,7 @@ router.put('/user/:id/makeemailpublic/:emailIndex', (req, res) => {
 });
 
 // user email confirm
-router.put('/user/:id/emailconfirm/:emailIndex', (req, res) => {
+router.put('/:id/emailconfirm/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/emailconfirm/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -455,7 +459,7 @@ router.put('/user/:id/emailconfirm/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -467,13 +471,13 @@ router.put('/user/:id/emailconfirm/:emailIndex', (req, res) => {
 });
 
 // remove email from user
-router.delete('/user/:id/email/:emailId', (req, res) => {
+router.delete('/:id/email/:emailId', (req, res) => {
   User
     .findById(req.params.id)
     .exec((err, user) => {
       user.emails.remove(req.params.emailId);
       user.save((_err) => {
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -481,7 +485,7 @@ router.delete('/user/:id/email/:emailId', (req, res) => {
 });
 
 // change user primary address
-router.put('/user/:id/address/:addressId', (req, res) => {
+router.put('/:id/address/:addressId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/address/${JSON.stringify(req.params.addressId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -516,7 +520,7 @@ router.put('/user/:id/address/:addressId', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -528,7 +532,7 @@ router.put('/user/:id/address/:addressId', (req, res) => {
 });
 
 // user address MakePrivate
-router.put('/user/:id/makeaddressprivate/:addressId', (req, res) => {
+router.put('/:id/makeaddressprivate/:addressId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeaddressprivate/${JSON.stringify(req.params.addressId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -553,7 +557,7 @@ router.put('/user/:id/makeaddressprivate/:addressId', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -564,7 +568,7 @@ router.put('/user/:id/makeaddressprivate/:addressId', (req, res) => {
   });
 });
 // user address MakePublic
-router.put('/user/:id/makeaddresspublic/:addressId', (req, res) => {
+router.put('/:id/makeaddresspublic/:addressId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeaddresspublic/${JSON.stringify(req.params.addressId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
 
@@ -589,7 +593,7 @@ router.put('/user/:id/makeaddresspublic/:addressId', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -600,7 +604,7 @@ router.put('/user/:id/makeaddresspublic/:addressId', (req, res) => {
   });
 });
 // remove address from user
-router.delete('/user/:id/address/:addressId', (req, res) => {
+router.delete('/:id/address/:addressId', (req, res) => {
   User
     .findById(req.params.id)
     .exec((err, user) => {
@@ -617,14 +621,14 @@ router.delete('/user/:id/address/:addressId', (req, res) => {
         }
       });
       user.save((_err) => {
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
     });
 });
 // add address to user
-router.post('/user/place', (req, res, next) => {
+router.post('/place', (req, res, next) => {
   // BL check if next is needed/used
   const apiCall = 'api, router.post(/user/place)';
   let primary = true;
@@ -684,14 +688,14 @@ router.post('/user/place', (req, res, next) => {
         if (err) {
           return next(err);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
     });
 });
 // add link to user
-router.post('/user/link', (req, res, next) => {
+router.post('/link', (req, res, next) => {
   // BL check if next is needed/used
   const apiCall = 'api, router.post(/user/link)';
   logger.debug(`${apiCall} add link: ${JSON.stringify(req.body.links)}`);
@@ -722,14 +726,14 @@ router.post('/user/link', (req, res, next) => {
         if (err) {
           return next(err);
         }
-        fetchUser(req.user.id, (err, user) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
     });
 });
 
-router.put('/user/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   // FIXME: Find elegant way…
   const apiCall = `api, router.put(/user/${JSON.stringify(req.user.id)}`;
   logger.debug('________________API PUT user___________________');
@@ -748,9 +752,9 @@ router.put('/user/:id', (req, res) => {
           logger.debug(`${apiCall} save ERROR: ${JSON.stringify(uErr)}`);
         }
         // BL FIXME shown only on page refresh... req.flash('success', { msg: __('Saved') });
-        fetchUser(req.params.id, (fErr, user) => {
+        dataprovider.fetchUser(req.params.id, (fErr, user) => {
           if (fErr) {
-            logger.debug(`${apiCall} fetchUser ERROR: ${JSON.stringify(fErr)}`);
+            logger.debug(`${apiCall} dataprovider.fetchUser ERROR: ${JSON.stringify(fErr)}`);
           }
           res.json(user);
         });

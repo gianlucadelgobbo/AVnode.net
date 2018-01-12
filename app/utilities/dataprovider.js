@@ -171,7 +171,7 @@ dataprovider.fetchPerformer = (req, cb) => {
   }]).
   exec((err, performer) => {
     logger.debug("exec");
-    logger.debug(err);
+    logger.debug(performer);
     cb(err, performer);
   });
 };
