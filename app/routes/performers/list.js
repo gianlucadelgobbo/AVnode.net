@@ -58,12 +58,12 @@ list = (req, res) => {
     const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
 
     dataprovider.fetchPerformers(query, config.sections[section].limit, skip, config.sections[section].sortQ[sorting], (err, data, total) => {
-      logger.debug('bella');
-      if (req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      logger.debug('bella'+config.sections[section].title);
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         //return next(err);
         res.send({total:total, skip:skip, data:data});
       } else {
-        let title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
+        const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
         let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
         let link = '/' + section + '/' + filter + '/' + sorting + '/';
         let pages = helper.getPagination(link, skip, config.sections[section].limit, total);
