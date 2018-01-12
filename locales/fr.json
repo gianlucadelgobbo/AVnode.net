@@ -1,0 +1,24 @@
+{
+	"Performers": "Performers",
+	"Performances": "Performances",
+	"Events": "Events",
+	"Footage": "Footage",
+	"Playlists": "Playlists",
+	"TV Shows": "TV Shows",
+	"Search": "Search",
+<<<<<<< HEAD:app/locales/en.json
+	"More": "More",
+	"AVnode.net": "AVnode.net",
+	"Crews": "Crews",
+	"Welcome to AVnode network": "Welcome to AVnode network",
+	"AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.": "AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.",
+	"Email %s not found.": "Email %s not found.",
+	"Create Account": "Create Account",
+	"Account already exists.": "Account already exists.",
+	"You are logged in.": "You are logged in.",
+	"Your Account": "Your Account",
+	"Invalid email or password.": "Invalid email or password."
+=======
+	"AVnode.net": "AVnode.net"
+>>>>>>> 7bb68e35616f4f7cc85376719c6cb16d46e597d7:locales/fr.json
+}

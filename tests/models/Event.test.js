@@ -1,6 +1,6 @@
 const assert = require('assert');
-const slug = require('../../lib/utilities/slug');
-const Event = require('../../lib/models/Event');
+const slug = require('../../app/utilities/slug');
+const Event = require('../../app/models/Event');
 
 describe('Event', () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('Event', () => {
       slug: slug.parse('Foo Bar')
     });
     assert.equal(
-      '/account/events/foo-bar',
+      '/admin/events/foo-bar',
       event.editUrl
     );
     done();

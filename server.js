@@ -10,12 +10,12 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 
 // Require mongoose models once!
-require('./lib/models');
+require('./app/models');
 
-const i18n = require('./lib/plugins/i18n');
-const passport = require('./lib/plugins/passport');
-const routes = require('./lib/routes');
-const logger = require('./lib/utilities/logger');
+const i18n = require('./app/utilities/i18n');
+const passport = require('./app/utilities/passport');
+const routes = require('./app/routes');
+const logger = require('./app/utilities///logger');
 
 // config = require('getconfig');
 
@@ -26,7 +26,7 @@ dotenv.load({ path: '.env.local' });
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'pug');
 
 app.use(morgan('short'));
@@ -73,44 +73,48 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   const path = req.path.split('/')[1];
-  const lang = req.headers.host.split('.')[0]!='avnode' ? req.headers.host.split('.')[0] : 'en';
-  logger.debug('req.headers.host: '+req.headers.host);
-  logger.debug('lang: '+lang);
+  const lang = req.headers.host.split('.')[0]!='avnode' || req.headers.host.split('.')[0]!='dev' || req.headers.host.split('.')[0]!='api' ? req.headers.host.split('.')[0] : 'en';
+  //logger.debug('req.headers.host: '+req.headers.host);
+  //logger.debug('lang: '+lang);
   //delete req.session.sessions;
-  logger.debug(req.session);
+  //logger.debug(req.session);
   if(!req.session.sessions) {
-    logger.debug('create sessions');
+    //logger.debug('create sessions');
     req.session.sessions = {current_lang: 'en'};
-    logger.debug(req.session.sessions);
+    //logger.debug(req.session.sessions);
   }
-  logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+  //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
   if(req.session.sessions.current_lang != lang) {
-    logger.debug('changelang');
+    //logger.debug('changelang');
     req.session.sessions.current_lang = lang;
-    logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
-    logger.debug('global.getLocale: '+global.getLocale());
+    //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+    //logger.debug('global.getLocale: '+global.getLocale());
   }
   global.setLocale(req.session.sessions.current_lang);
-  logger.debug('global.getLocale: '+global.getLocale());
+  //logger.debug('global.getLocale: '+global.getLocale());
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
   }
-  if (!req.user &&
+  /*if (!req.user &&
     req.path !== '/login' &&
     req.path !== '/signup' &&
     !req.path.match(/^\/auth/) &&
     !req.path.match(/\./)) {
-      if (req.path.match(/^\/account/)) {
+      if (req.path.match(/^\/admin/)) {
         res.redirect('/login');
       } else {
         req.session.returnTo = req.path;
       }
-  } else if (req.user &&
-    req.path == '/account') {
+  } else */
+  //logger.debug('req.path: '+req.path);
+
+  if (!req.user && req.path.indexOf('/admin')===0) {
     req.session.returnTo = req.path;
+    res.redirect('/login');
+  } else {
+    next();
   }
-  next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 84600 }));
 // not needed because in public/ app.use(express.static(path.join(__dirname, process.env.STORAGE), { maxAge: 84600 }));
