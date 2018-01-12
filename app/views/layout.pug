@@ -1,0 +1,93 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title #{title} - AVnode.net
+    link(rel='apple-touch-icon', sizes='180x180', href='/images/apple-touch-icon.png')
+    link(rel='icon', type='image/png', href='/images/favicon-32x32.png', sizes='32x32')
+    link(rel='icon', type='image/png', href='/images/favicon-16x16.png', sizes='16x16')
+    link(rel='manifest', href='/images/manifest.json')
+    link(rel='mask-icon', href='/images/safari-pinned-tab.svg', color='#ffffff')
+    link(rel='shortcut, icon', href='/images/favicon.ico')
+    meta(name='msapplication-config', content='/images/browserconfig.xml')
+    meta(name='theme-color', content='#ffffff')
+    //link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css')
+    link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
+    link(rel='stylesheet', href='/css/main.css')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js')
+    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
+    //script(src='/js/ajax.js')
+    //script(src='/js/autocomplete.js')
+  body
+    .container
+      nav.navbar.navbar-toggleable-md.navbar-fixed-top.navbar-inverse.bg-inverse
+        button.navbar-toggler.navbar-toggler-right(
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar-collapse"
+        )
+          span.navbar-toggler-icon
+        a.navbar-brand(href='/')
+          img(src='/images/logo.svg', width='30', height='30', class='d-inline-block align-top' alt='')
+        .collapse.navbar-collapse(
+          id="navbar-collapse"
+        )
+          ul.navbar-nav.mr-auto
+            li.nav-item
+              a.nav-link(href='/performers')=__('Performers')
+            li.nav-item
+              a.nav-link(href='/performances')=__('Performances')
+            li.nav-item
+              a.nav-link(href='/events')=__('Events')
+            li.nav-item
+              a.nav-link(href='/footage')=__('Footage')
+            li.nav-item
+              a.nav-link(href='/playlists')=__('Playlists')
+            li.nav-item
+              a.nav-link(href='/tvshows')=__('TV Shows')
+          ul.navbar-nav
+            if user
+              li.nav-item
+                a.nav-link(href='/admin/profile/public')
+                  i.fa.fa-user.fa-lg.fa-fw
+              li.nav-item
+                form(
+                  method='post'
+                  action='/logout'
+                )
+                  button.btn-link.nav-link
+                    i.fa.fa-power-off.fa-lg.fa-fw
+            else
+              li.nav-item
+                a.btn.btn-outline-secondary(href='/login')=__('Login')
+              li.nav-item
+                a.btn.btn-outline-success.ml-3(href='/signup')=__('Sign up')
+            li.nav-item
+              a.nav-link.ml-3(href='/search?q=*')
+                i.fa.fa-search.fa-lg.fa-fw
+                =__('Search')
+
+    include partials/flash
+    main
+      block teaser
+      block title
+        if title
+          .jumbotron.jumbotron-fluid
+            .container
+              h1.display-4=title
+              if subtitle
+                p.lead.mb-0=subtitle
+      .container
+        block content
+
+    footer
+      .container
+        .text-muted=__('AVnode.net')
+    //script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js')
+    //script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js')
+    //script(src='//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js')

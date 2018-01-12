@@ -1,5 +1,5 @@
 const assert = require('assert');
-const mailer = require('../../lib/utilities/mailer');
+const mailer = require('../../app/utilities/mailer');
 
 describe('Mailer', () => {
   beforeEach(() => {
