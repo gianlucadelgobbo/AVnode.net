@@ -59,7 +59,7 @@ list = (req, res) => {
 
     dataprovider.fetchPerformers(query, config.sections[section].limit, skip, config.sections[section].sortQ[sorting], (err, data, total) => {
       logger.debug('bella'+config.sections[section].title);
-      if (req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         //return next(err);
         res.send({total:total, skip:skip, data:data});
       } else {
