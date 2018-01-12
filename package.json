@@ -11,7 +11,7 @@
     "testwin:watch": "set PORT=3002 && set NODE_ENV=testing && mocha --timeout 30000 --watch --reporter spec --recursive tests",
     "testrouteswin:watch": "set PORT=3002 && set NODE_ENV=testing && mocha --timeout 30000 --watch --reporter spec --recursive tests/routes",
     "lint": "eslint -c .eslintrc.json --ignore-path .gitignore --ignore-path .eslintignore .",
-    "dev": "DEBUG=avnode.debug,avnode nodemon -i tests -i app -i locales -i storage -i .db -i .elasticsearch -i app index.js",
+    "dev": "DEBUG=avnode.debug,avnode nodemon index.js",
     "devwin": "set DEBUG=avnode.debug,avnode && nodemon -i tests -i app -i locales -i storage -i .db -i .elasticsearch -i app index.js",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack",
     "buildwin": "set NODE_ENV=production && webpack"
