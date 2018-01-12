@@ -165,10 +165,12 @@ dataprovider.fetchPerformer = (req, cb) => {
   logger.debug('fetchPerformer'+req.params.slug);  
   Performer.
   findOne({slug: req.params.slug}).
-  populate({
-    model: Performer
-  }).
+  populate([{
+    path: 'image',
+    model: 'Asset'
+  }]).
   exec((err, performer) => {
+    logger.debug("exec");
     logger.debug(err);
     cb(err, performer);
   });
