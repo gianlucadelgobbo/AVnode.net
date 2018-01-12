@@ -11,7 +11,7 @@ const Performance = mongoose.model('Performance');
 const logger = require('./logger');
 
 dataprovider.fetchUser = (id, cb) => {
-  logger.debug('fetchUser');  
+  logger.debug('fetchUser');
   User
       .findById(id)
       //.select({'-galleries': 1})
