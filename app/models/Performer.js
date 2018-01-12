@@ -10,7 +10,7 @@ const Category = require('./Category');
 const performerSchema = new Schema({
   slug: { type: String, unique: true },
   stagename: { type: String, unique: true },
-
+/*
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
@@ -135,7 +135,7 @@ const performerSchema = new Schema({
       audience : Number,
       event: { type : Schema.ObjectId, ref : 'Event' }
     }]
-  }]
+  }]*/
 }, {
   collection: 'users',
   timestamps: true,

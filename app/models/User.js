@@ -42,7 +42,7 @@ const userSchema = new Schema({
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
-  image: { type: Schema.ObjectId, ref: 'Asset' },
+  image: { file: String },
   teaserImage: { type: Schema.ObjectId, ref: 'Asset' },
   file: { file: String },
   is_confirmed: { type: Boolean, default: false },
