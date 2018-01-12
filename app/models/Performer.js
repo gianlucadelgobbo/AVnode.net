@@ -10,7 +10,7 @@ const Category = require('./Category');
 const performerSchema = new Schema({
   slug: { type: String, unique: true },
   stagename: { type: String, unique: true },
-  /*
+
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
@@ -136,7 +136,6 @@ const performerSchema = new Schema({
       event: { type : Schema.ObjectId, ref : 'Event' }
     }]
   }]
-  */
 }, {
   collection: 'users',
   timestamps: true,
@@ -148,9 +147,172 @@ const performerSchema = new Schema({
   }
 });
 
-
-
-performerSchema.plugin(indexPlugin());
+/* performerSchema.virtual('crews', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: '_id'
+}); */
+// crews only
+performerSchema.virtual('crewEditUrl').get(function () {
+    return `/admin/crew/${this.slug}`;
+  });
+  
+  performerSchema.virtual('crewPublicUrl').get(function () {
+    return `/crew/${this.slug}`;
+  });
+  /* BL FIXME later for crews
+  performerSchema.pre('remove', function(next) {
+    const crew = this;
+    crew.model('User').update(
+      { $pull: { crews: crew._id } },
+      next
+    );
+  });*/
+  
+  performerSchema.virtual('birthdayFormatted').get(function () {
+    return moment(this.birthday).format(process.env.DATEFORMAT);
+  });
+  
+  performerSchema.virtual('publicEmails').get(function () {
+    let emails = [];
+    if (this.emails) {
+      this.emails.forEach((email) => {
+        if (email.is_public) {
+          emails.push(email);
+        }
+      });
+    }
+    return emails;
+  });
+  
+  performerSchema.virtual('publicUrl').get(function () {
+    return `/${this.slug}`;
+  });
+  // return thumbnail
+  performerSchema.virtual('squareThumbnailUrl').get(function () {
+    let squareThumbnailUrl = '/images/profile-default.svg';
+  
+    if (this.file && this.file.file) {
+      const serverPath = this.file.file;
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
+      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+      const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+      // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+      squareThumbnailUrl = `${process.env.WAREHOUSE}/${localPath}/55x55/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+    return squareThumbnailUrl;
+  });
+  // return card image
+  performerSchema.virtual('cardUrl').get(function () {
+    let cardUrl = '/images/profile-default.svg';
+  
+    if (this.file && this.file.file) {
+      const serverPath = this.file.file;
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
+      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+      const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+      // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+      cardUrl = `${process.env.WAREHOUSE}/${localPath}/400x300/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+    return cardUrl;
+  });
+  // return teaser image url
+  performerSchema.virtual('teaserImageUrl').get(function () {
+    let teaserImageUrl = '/images/teaser-default.svg';
+    if (this.teaserImage) {
+      teaserImageUrl = this.teaserImage.publicUrl;
+    } else {
+      // from flxer import?
+      if (this.file && this.file.file) {
+        const serverPath = this.file.file;
+        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
+        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        teaserImageUrl = `${process.env.WAREHOUSE}/${localPath}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        // save as asset
+        async.parallel({
+          image: (cb) => {
+            console.log('migrate from flxer');
+            if (teaserImageUrl) {
+              const params = {
+                filename: teaserImageUrl,
+                originalname: serverPath
+              } 
+              assetUtil.createImageAssetFromUrl(params, (err, assetId) => {
+                if (err) {
+                  console.log(err);
+                  throw err;
+                }
+                imageUtil.resize(assetId, imageUtil.sizes.user.teaser, cb);
+              });
+            } else {       
+              cb(null);
+            }
+          }
+        }, (err, results) => { 
+          if (err) {
+            console.log(err);
+            throw err;
+          }
+          console.log('results[image]:' + results['image']);
+          this.teaserImage = results['image'];
+          this.save((err) => {  
+            if (err) {
+              console.log(err);
+              throw err;
+            }   
+            teaserImageUrl = this.teaserImage.publicUrl;      
+          });
+        });
+      }
+    }
+    return teaserImageUrl;
+  });
+  // return original image
+  performerSchema.virtual('imageUrl').get(function () {
+    let image = '/images/profile-default.svg';
+  
+    if (this.image) {
+      image = '/storage/' + this.image + '/512/200';
+    }
+    if (this.file && this.file.file) {
+      const serverPath = this.file.file;
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
+      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+      image = `${process.env.WAREHOUSE}/${localPath}/55x55/${localFileNameWithoutExtension}_jpg.jpg`;
+    }
+    return image;
+  });
+  
+  performerSchema.pre('save', function save(next) {
+    console.log('performerSchema.pre(save) id:' + this._id);
+    const user = this;
+    console.log('performerSchema.pre(save) name:' + JSON.stringify(user.name));
+    //console.log('performerSchema.pre(save) user:' + JSON.stringify(user));
+    if (!user.isModified('password')) { return next(); }
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) { return next(err); }
+      bcrypt.hash(user.password, salt, null, (err, hash) => {
+        if (err) { return next(err); }
+        user.password = hash;
+        next();
+      });
+    });
+  });
+  
+  performerSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+    // console.log('performerSchema comparePassword:' + candidatePassword + ' p: ' + this.password);
+    bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+      cb(err, isMatch);
+    });
+  };
+  
+  performerSchema.plugin(indexPlugin());
 
 const Performer = mongoose.model('Performer', performerSchema);
 
