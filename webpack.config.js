@@ -24,7 +24,7 @@ module.exports = {
 
   resolve: {
     modules: [
-      path.join(__dirname, 'app'),
+      path.join(__dirname, 'app/redux'),
       'node_modules'
     ],
     extensions: ['.jsx', '.js', '.json'],
