@@ -18,6 +18,8 @@ export const OPEN_STAGENAME_MODAL = 'OPEN_STAGENAME_MODAL';
 export const CLOSE_STAGENAME_MODAL = 'CLOSE_STAGENAME_MODAL';
 export const OPEN_PASSWORD_MODAL = 'OPEN_PASSWORD_MODAL';
 export const CLOSE_PASSWORD_MODAL = 'CLOSE_PASSWORD_MODAL';
+export const OPEN_EDITUSER_MODAL = 'OPEN_EDITUSER_MODAL';
+export const CLOSE_EDITUSER_MODAL = 'CLOSE_EDITUSER_MODAL';
 export const REQUEST_ADD_USER_PLACE = 'REQUEST_ADD_USER_PLACE';
 export const REQUEST_USER_DELETEPLACE = 'REQUEST_USER_DELETEPLACE';
 export const REQUEST_ADD_USER_LINK = 'REQUEST_ADD_USER_LINK';
@@ -1013,6 +1015,22 @@ export function closePasswordModal(dispatch) {
   return () => (
     dispatch({
       type: CLOSE_PASSWORD_MODAL
+    })
+  );
+}
+
+export function openEdituserModal(dispatch) {
+  return() => (
+    dispatch({
+      type: OPEN_EDITUSER_MODAL
+    })
+  );
+}
+
+export function closeEdituserModal(dispatch) {
+  return() => (
+    dispatch({
+      type: CLOSE_EDITUSER_MODAL
     })
   );
 }
