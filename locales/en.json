@@ -24,5 +24,7 @@
 	"individuals": "individuals",
 	"crews": "crews",
 	"mostactive": "mostactive",
-	"mostrecent": "mostrecent"
+	"mostrecent": "mostrecent",
+	"File upload only supports the following filetypes": "File upload only supports the following filetypes",
+	"File upload limit is": "File upload limit is"
 }

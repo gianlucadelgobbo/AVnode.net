@@ -166,10 +166,14 @@ router.delete('/performance/:id/about/:aboutlanguage', (req, res) => {
       res.json(user);
     });
   });
+  /*
   const upload2 = multer({ dest: process.env.STORAGE, storage: storage });
   const up2 = upload2.fields([
     { name: 'image', maxCount: 1 }
   ]);
+
+
+
   router.post('/performance/:id/image', up2, (req, res, next) => {
     // FIXME: Why next() as error handling?
     // FIXME: Delete old asset if there is one
@@ -260,7 +264,7 @@ router.delete('/performance/:id/about/:aboutlanguage', (req, res) => {
       });
     });
   });
-  
+  */
   router.put('/performance/:id', (req, res) => {
     const apiCall = `api, router.put(/performance/${JSON.stringify(req.params.id)})`;
     logger.debug(`${apiCall} req.params: ${JSON.stringify(req.params)}`);

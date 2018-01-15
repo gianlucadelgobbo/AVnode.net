@@ -10,18 +10,16 @@ router.get('/', (req, res, next) => {
     logger.debug(performer);
 
     if (err || performer === null) {
-      //return next(err);
       res.status(404).render('404', {});
     } else {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        //return next(err);
+      if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
         res.send(performer);
       } else {
         res.render('performers/show', {
           title: performer.stagename,
           performer: performer
-        });  
-      }  
+        });
+      }
     }
    });
 });

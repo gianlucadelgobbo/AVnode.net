@@ -154,6 +154,9 @@ router.put('/event/:id', (req, res) => {
         });
       });
   });
+
+
+  /*
   // Image upload…
   // FIXME multiple occurrences
   const storage = multer.diskStorage({
@@ -259,7 +262,7 @@ router.put('/event/:id', (req, res) => {
       });
     });
   });
-
+*/
   router.put('/event/:id/performance/:performanceId', (req, res) => {
     const apiCall = `api, router.put(/event/${JSON.stringify(req.params.id)}/performance/${JSON.stringify(req.params.performanceId)})`;
     Performance

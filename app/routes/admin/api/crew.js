@@ -59,7 +59,7 @@ router.post('/crew', (req, res) => {
         });
       });
   });
-  
+/*  
   const upload = multer({ dest: process.env.STORAGE, storage: storage });
   const up = upload.fields([
     { name: 'image', maxCount: 1 }
@@ -202,6 +202,7 @@ router.post('/crew', (req, res) => {
       });
     });
   });
+  */
   // remove about from crew
   router.delete('/crew/:id/about/:aboutlanguage', (req, res) => {
     const apiCall = `api, router.delete(/crew/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
