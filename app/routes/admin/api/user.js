@@ -20,6 +20,18 @@ router.get('/', (req, res) => {
   });
 });
 
+router.post('/:id', (req, res) => {
+  User.findById(req.params.id, (finderr, user) => {
+    if (finderr) {
+      logger.debug(`${JSON.stringify(finderr)}`);
+      req.flash('errors', { msg: `${JSON.stringify(finderr)}` });
+    } else {
+      logger.debug('SAVE PROCESS');
+      res.json(user);
+    }
+  });
+});
+
 router.post('/:id/image/profile', (req, res) => {
   logger.debug('/:id/image/profile');
   upload.uploader(req, res, config.sections[section].media.image, (uploadererr, files) => {
