@@ -25,10 +25,9 @@ router.post('/:id/public', (req, res) => {
     if (finderr) {
       logger.debug(`${JSON.stringify(finderr)}`);
       req.flash('errors', { msg: `${JSON.stringify(finderr)}` });
-    } else {
-      logger.debug('SAVE PROCESS');
-      res.json(user);
     }
+    logger.debug('SAVE PROCESS');
+    res.json(user);
   });
 });
 
