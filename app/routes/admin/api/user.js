@@ -21,13 +21,35 @@ router.get('/', (req, res) => {
 });
 
 router.post('/:id/public', (req, res) => {
+  logger.debug('VALIDATION PROCESS');
   User.findById(req.params.id, (finderr, user) => {
     if (finderr) {
       logger.debug(`${JSON.stringify(finderr)}`);
       req.flash('errors', { msg: `${JSON.stringify(finderr)}` });
+      res.json(user); // USER COULD BE NULL
+    } else {
+      logger.debug('SAVE PROCESS');
+      logger.debug(req.body);
+      user.save((saveerr) => {
+        if (saveerr) {
+          logger.debug('save error');
+          logger.debug(JSON.stringify(saveerr));
+          req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
+          res.json(user); // USER COULD BE NULL
+        } else {
+          dataprovider.fetchUser(req.params.id, (fetcherr, useredited) => {
+            if (fetcherr) {
+              logger.debug('fetch error');
+              logger.debug(JSON.stringify(fetcherr));
+              req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
+              res.json(useredited); // USER COULD BE NULL
+            } else {
+              res.json(useredited);
+            }
+          });
+        }
+      });
     }
-    logger.debug('SAVE PROCESS');
-    res.json(user);
   });
 });
 
