@@ -11,39 +11,69 @@ const upload = require('./upload');
 const section = 'performers';
 
 router.get('/', (req, res) => {
-  const apiCall = `api, router.get(/user/${JSON.stringify(req.user.id)}`;
-  logger.info(`1 ${apiCall} call dataprovider.fetchUser`);
   dataprovider.fetchUser(req.user.id, (err, user) => {
     if (err) {
-      logger.debug(`${apiCall} findById ERRORiiiiii: ${JSON.stringify(err)}`);
-      req.flash('errors', { msg: `${apiCall} findById ERROR: ${JSON.stringify(err)}` });
+      logger.debug(`${JSON.stringify(err)}`);
+      req.flash('errors', { msg: `${JSON.stringify(err)}` });
     }
-    let str = JSON.stringify(user);
-    //logger.debug(`${apiCall} user ${str})`);
-    logger.info(`${apiCall} user size ${str.length})`);
-    logger.info(`${apiCall} user perfs size ${JSON.stringify(user.performances).length})`);
-    logger.info(`${apiCall} user gals size ${JSON.stringify(user.galleries).length})`);
-    logger.info(`${apiCall} user crews size ${JSON.stringify(user.crews).length})`);
-    logger.info(`${apiCall} user events size ${JSON.stringify(user.events).length})`);
-    //logger.debug(`${apiCall} user crews before ${JSON.stringify(user.crews)})`);
-    /*user.crews.map((c) => (     
-      dataprovider.fetchUserCrews(c, (err, crew) => {
-        if (err) {
-          logger.debug(`${apiCall} user crew findById ERROR: ${JSON.stringify(err)}`);
-        }
-        let str = JSON.stringify(crew);
-        logger.debug(`${apiCall} crew ${str})`);
-        logger.debug(`${apiCall} crew size ${str.length})`);
-        user.crews = Object.assign(user.crews, str );
-      })
-    ))*/
-    //logger.debug(`${apiCall} user crews after ${JSON.stringify(user.crews)})`);
-    logger.debug(user.image);
-
     res.json(user);
   });
 });
 
+router.post('/:id/image/profile', (req, res) => {
+  logger.debug('/:id/image/profile');
+  upload.uploader(req, res, config.sections[section].media.image, (uploadererr, files) => {
+    if (uploadererr) {
+      logger.debug(uploadererr);
+      res.json(uploadererr);
+    } else {
+      User.findById(req.params.id, (finderr, user) => {
+        if (finderr) {
+          logger.debug(JSON.stringify(finderr));
+          res.json(finderr);
+        } else {
+          logger.debug('save');
+          logger.debug(files);
+          logger.debug('user.image');
+          logger.debug(user.image);
+          let image = {
+            file: files.image[0].path.replace(global.appRoot, ''),
+            filename: files.image[0].filename,
+            originalname: files.image[0].originalname,
+            mimetype: files.image[0].mimetype,
+            size: files.image[0].size,
+            width: files.image[0].width,
+            height: files.image[0].height
+          };
+          logger.debug('image');
+          logger.debug(image);
+          user.image = image;
+          logger.debug('user.image');
+          logger.debug(user.image);
+          user.save((saveerr) => {
+            if (saveerr) {
+              logger.debug('save error');
+              logger.debug(JSON.stringify(saveerr));
+              res.json(saveerr);
+            } else {
+              dataprovider.fetchUser(req.params.id, (fetcherr, user) => {
+                if (fetcherr) {
+                  logger.debug('fetch error');
+                  logger.debug(JSON.stringify(fetcherr));
+                  res.json(fetcherr);
+                } else {
+                  res.json(user);
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+});
+
+/* C
 router.put('/:id/language/:langId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/language/${JSON.stringify(req.params.langId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
@@ -68,60 +98,6 @@ router.put('/:id/language/:langId', (req, res) => {
   });
 });
 
-router.post('/:id/image/profile', (req, res) => {
-  logger.debug('/:id/image/profile');
-
-  upload.uploader(req, res, config.sections[section].media.image, (err, files) => {
-    logger.debug('upload');
-    if (err) {
-      logger.debug("stocazzo err");
-      logger.debug(err);
-      res.json(err);
-    } else {
-      User.findById(req.params.id, (err, user) => {
-        if (err) {
-          logger.debug('findById erroraaaaaa');
-          logger.debug(JSON.stringify(err));
-          res.json(err);
-        } else {
-          logger.debug('save');
-          logger.debug(files);
-          logger.debug('user.image');
-          logger.debug(user.image);
-          let image = {
-            file: files.image[0].path.replace(global.appRoot, ''),
-            filename: files.image[0].filename,
-            originalname: files.image[0].originalname,
-            mimetype: files.image[0].mimetype,
-            size: files.image[0].size,
-            width: files.image[0].width,
-            height: files.image[0].height
-          };
-          logger.debug('image');
-          logger.debug(image);
-          user.image = image;
-          logger.debug('user.image');
-          logger.debug(user.image);
-          user.save((err) => {
-            if (err) {
-              logger.debug('save error');
-              logger.debug(JSON.stringify(err));
-              res.json(err);
-            } else {
-              dataprovider.fetchUser(req.params.id, (err, user) => {
-                logger.debug("stocazzo");
-                //logger.debug(user);
-                res.json(user);
-              });
-            }
-          });
-        }
-      });  
-    }
-  });
-});
-
-/*
 router.post('/:id/image/teaser', up, (req, res, next) => {
   // FIXME: Why next() as error handling?
   // FIXME: Delete old asset if there is one
