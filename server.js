@@ -22,6 +22,7 @@ const logger = require('./app/utilities///logger');
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
 dotenv.load({ path: '.env.local' });
+global.appRoot = path.resolve(__dirname);
 
 const app = express();
 
