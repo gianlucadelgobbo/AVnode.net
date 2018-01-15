@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/:id', (req, res) => {
+router.post('/:id/public', (req, res) => {
   User.findById(req.params.id, (finderr, user) => {
     if (finderr) {
       logger.debug(`${JSON.stringify(finderr)}`);
