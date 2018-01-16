@@ -11,6 +11,7 @@ const moment = require('moment');
   return moment().format('YYYY/MM/DD');
 };
  */
+/*
 module.exports.createImageAsset = (params, done) => {
   const identifier = helper.setIdentifier();
   const dimensions = sizeOf(helper.getStorageFolder() + '/' + params.filename);
@@ -98,3 +99,4 @@ module.exports.createVideoAsset = (url, done) => {
   })
   .save((err, saved) => done(err, saved._id));
 };
+*/

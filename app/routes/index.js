@@ -18,6 +18,7 @@ const storage = require('./storage');
 const crews = require('./crews');
 const fourOhFour = require('./404');
 */
+router.get('/__webpack_hmr', function(){});
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);

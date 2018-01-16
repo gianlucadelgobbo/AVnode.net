@@ -2,18 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const imageSchema = new Schema({
+  file: String,
   filename: String,
   originalname: String,
   mimetype: String,
   size: Number,
-  height: Number,
   width: Number,
-  origin: {
-    type: Schema.ObjectId,
-    ref: 'Asset'
-  }
+  height: Number
 });
-
+/* C
 const externalVideoSchema = new Schema({
   type: String, // Hoster (youtube, vimeo … )
   id: String, // Video id
@@ -38,6 +35,8 @@ const assetSchema = new Schema({
     ref: 'Asset'
   }
 });
+*/
 
-const Asset = mongoose.model('Asset', assetSchema);
+const Asset = mongoose.model('Asset', imageSchema);
+
 module.exports = Asset;

@@ -118,6 +118,18 @@
         "all":"All",
         "individuals":"Individuals",
         "crews":"Crews"
+      },
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000
+        }
       }
     },
     "crews": {
