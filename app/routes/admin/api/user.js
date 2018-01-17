@@ -11,7 +11,8 @@ const upload = require('./upload');
 const section = 'performers';
 
 router.get('/', (req, res) => {
-  dataprovider.fetchUser(req.user.id, (err, user) => {
+    logger.debug(process);
+dataprovider.fetchUser(req.user.id, (err, user) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       req.flash('errors', { msg: `${JSON.stringify(err)}` });
