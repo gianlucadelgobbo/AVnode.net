@@ -55,15 +55,17 @@ router.post('/:id/public', (req, res) => {
 
 router.post('/:id/image/profile', (req, res) => {
   logger.debug('/:id/image/profile');
-  upload.uploader(req, res, config.sections[section].media.image, (uploadererr, files) => {
+  upload.uploader(req, res, config.cpanel.user.media.image, (uploadererr, files) => {
     if (uploadererr) {
       logger.debug(uploadererr);
-      res.json(uploadererr);
+      req.flash('errors', { msg: `${JSON.stringify(uploadererr)}` });
+      res.json(null); // USER COULD BE NULL
     } else {
       User.findById(req.params.id, (finderr, user) => {
         if (finderr) {
           logger.debug(JSON.stringify(finderr));
-          res.json(finderr);
+          req.flash('errors', { msg: `${JSON.stringify(finderr)}` });
+          res.json(user); // USER COULD BE NULL
         } else {
           logger.debug('save');
           logger.debug(files);
@@ -87,15 +89,17 @@ router.post('/:id/image/profile', (req, res) => {
             if (saveerr) {
               logger.debug('save error');
               logger.debug(JSON.stringify(saveerr));
-              res.json(saveerr);
+              req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
+              res.json(user); // USER COULD BE NULL
             } else {
-              dataprovider.fetchUser(req.params.id, (fetcherr, user) => {
+              dataprovider.fetchUser(req.params.id, (fetcherr, useredited) => {
                 if (fetcherr) {
                   logger.debug('fetch error');
                   logger.debug(JSON.stringify(fetcherr));
-                  res.json(fetcherr);
+                  req.flash('errors', { msg: `${JSON.stringify(fetcherr)}` });
+                  res.json(useredited); // USER COULD BE NULL
                 } else {
-                  res.json(user);
+                  res.json(useredited);
                 }
               });
             }
