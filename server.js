@@ -15,7 +15,7 @@ require('./app/models');
 const i18n = require('./app/utilities/i18n');
 const passport = require('./app/utilities/passport');
 const routes = require('./app/routes');
-const logger = require('./app/utilities///logger');
+const logger = require('./app/utilities/logger');
 
 // config = require('getconfig');
 

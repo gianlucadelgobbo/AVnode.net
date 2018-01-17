@@ -108,11 +108,11 @@ const ProfileImagesForm = ({
                                     defaultMessage="Teaser Image"
                                 />
                             </label>
-                            {user && user.teaserImage ?
+                            {user.teaserImageFormats && user.teaserImageFormats.large ?
                                 <div>
                                     <img
                                         className="img-thumbnail mb-3"
-                                        src={user.teaserImage.publicUrl}
+                                        src={user.teaserImageFormats.large}
                                         alt={`image of ${user.stagename}`}
                                     />
                                 </div> :

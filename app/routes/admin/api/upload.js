@@ -5,27 +5,10 @@ const fs = require('fs');
 const path = require('path');
 const sizeOf = require('image-size');
 
-const config = require('getconfig');
 const imageUtil = require('../../../utilities/image');
-const assetUtil = require('../../../utilities/asset');
-const slugify = require('../../../utilities/slug').parse;
 
 const logger = require('../../../utilities/logger');
 
-/* C
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-  cb(null, process.env.STORAGE);
-  },
-  filename: (req, file, cb) => {
-  cb(null, `${uuid.v4()}.${mime.extension(file.mimetype)}`);
-  }
-});
-const upload = multer({ dest: process.env.STORAGE, storage: storage });
-const up = upload.fields([
-  { name: 'image', maxCount: 1 }
-]);
-*/
 const upload = {};
 
 upload.uploader = (req, res, options, done) => {
