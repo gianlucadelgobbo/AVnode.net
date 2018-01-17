@@ -70,6 +70,30 @@
               "default": "/images/profile-default.svg"
             }
           }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
         }
       },
       "title": "Performers",

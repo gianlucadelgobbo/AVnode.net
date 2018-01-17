@@ -224,6 +224,26 @@ userSchema.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 
+userSchema.virtual('teaserImageFormats').get(function () {
+  let teaserImageFormats = {};
+  //console.log(config.cpanel[adminsez].sizes.teaserImage);
+  if (this.teaserImage && this.teaserImage.file) {
+    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[format] = config.cpanel[adminsez].media.teaserImage.sizes[format].default;
+    }
+    const serverPath = this.teaserImage.file;
+    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
+    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+  }
+  return teaserImageFormats;
+});
+
 
 // return teaser image url
 userSchema.virtual('teaserImageUrl').get(function () {
