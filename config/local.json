@@ -39,7 +39,39 @@
   "cp_basepath": "controlpanel",
   "usersListItems": 6,
   "cpanel": {
-    "account": {
+    "user": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
       "title": "Performers",
       "limit": 20,
       "basepath": "performers",
@@ -118,18 +150,6 @@
         "all":"All",
         "individuals":"Individuals",
         "crews":"Crews"
-      },
-      "media":{
-        "image":{
-          "fields": {
-            "name": "image",
-            "maxCount": 1
-          },
-          "filetypes": ["jpg","jpeg","png","gif","svg"],
-          "maxsize": 2048000,
-          "minwidth": 1000,
-          "minheight": 1000
-        }
       }
     },
     "crews": {
