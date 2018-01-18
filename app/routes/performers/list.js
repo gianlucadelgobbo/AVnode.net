@@ -2,7 +2,7 @@ const config = require('getconfig');
 const router = require('../router')();
 const logger = require('../../utilities/logger');
 
-const helper = require('../../utilities/asset/helper');
+const helper = require('../../utilities/helper');
 const dataprovider = require('../../utilities/dataprovider');
 
 const section = 'performers';

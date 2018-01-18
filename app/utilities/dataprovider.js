@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Asset = mongoose.model('User');
 const Event = mongoose.model('Event');
-const Performer = mongoose.model('Performer');
 // const Crew = mongoose.model('Crew');
 const Performance = mongoose.model('Performance');
 

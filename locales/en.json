@@ -26,5 +26,8 @@
 	"mostactive": "mostactive",
 	"mostrecent": "mostrecent",
 	"File upload only supports the following filetypes": "File upload only supports the following filetypes",
-	"File upload limit is": "File upload limit is"
+	"File upload limit is": "File upload limit is",
+	"Schedule": "Schedule",
+	"Organizers": "Organizers",
+	"Organizing Crews": "Organizing Crews"
 }

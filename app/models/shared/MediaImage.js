@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const Schema = require('mongoose').Schema;
 
-const imageSchema = new Schema({
+const MediaImage = new Schema({
   file: String,
   filename: String,
   originalname: String,
@@ -10,6 +9,8 @@ const imageSchema = new Schema({
   width: Number,
   height: Number
 });
+module.exports = MediaImage;
+
 /* C
 const externalVideoSchema = new Schema({
   type: String, // Hoster (youtube, vimeo … )
@@ -32,11 +33,10 @@ const assetSchema = new Schema({
   video: externalVideoSchema,
   origin: {
     type: Schema.ObjectId,
-    ref: 'Asset'
+    ref: 'MediaImage'
   }
 });
 */
 
-const Asset = mongoose.model('Asset', imageSchema);
+//const MediaImage = mongoose.model('MediaImage', MediaImagee);
 
-module.exports = Asset;
