@@ -11,7 +11,7 @@ const upload = require('./upload');
 const section = 'performers';
 
 router.get('/', (req, res) => {
-  dataprovider.fetchUser(req.user.id, (err, user) => {
+    dataprovider.fetchUser(req.user.id, (err, user) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       req.flash('errors', { msg: `${JSON.stringify(err)}` });
@@ -53,23 +53,33 @@ router.post('/:id/public', (req, res) => {
   });
 });
 
+router.post('/:id/image/teaser', (req, res) => {
+  logger.debug('/:id/image/teaserImage');
+  router.uploader(req, res, 'teaserImage');
+});
+
 router.post('/:id/image/profile', (req, res) => {
-  logger.debug('/:id/image/profile');
-  upload.uploader(req, res, config.sections[section].media.image, (uploadererr, files) => {
+  router.uploader(req, res, 'image');
+});
+
+router.uploader = (req, res, media) => {
+  upload.uploader(req, res, config.cpanel.user.media[media], (uploadererr, files) => {
     if (uploadererr) {
       logger.debug(uploadererr);
-      res.json(uploadererr);
+      req.flash('errors', { msg: `${JSON.stringify(uploadererr)}` });
+      res.json(null); // USER COULD BE NULL
     } else {
       User.findById(req.params.id, (finderr, user) => {
         if (finderr) {
           logger.debug(JSON.stringify(finderr));
-          res.json(finderr);
+          req.flash('errors', { msg: `${JSON.stringify(finderr)}` });
+          res.json(user); // USER COULD BE NULL
         } else {
           logger.debug('save');
           logger.debug(files);
           logger.debug('user.image');
-          logger.debug(user.image);
-          let image = {
+          logger.debug(user[media]);
+          user[media] = {
             file: files.image[0].path.replace(global.appRoot, ''),
             filename: files.image[0].filename,
             originalname: files.image[0].originalname,
@@ -78,24 +88,23 @@ router.post('/:id/image/profile', (req, res) => {
             width: files.image[0].width,
             height: files.image[0].height
           };
-          logger.debug('image');
-          logger.debug(image);
-          user.image = image;
           logger.debug('user.image');
-          logger.debug(user.image);
+          logger.debug(user[media]);
           user.save((saveerr) => {
             if (saveerr) {
               logger.debug('save error');
               logger.debug(JSON.stringify(saveerr));
-              res.json(saveerr);
+              req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
+              res.json(user); // USER COULD BE NULL
             } else {
-              dataprovider.fetchUser(req.params.id, (fetcherr, user) => {
+              dataprovider.fetchUser(req.params.id, (fetcherr, useredited) => {
                 if (fetcherr) {
                   logger.debug('fetch error');
                   logger.debug(JSON.stringify(fetcherr));
-                  res.json(fetcherr);
+                  req.flash('errors', { msg: `${JSON.stringify(fetcherr)}` });
+                  res.json(useredited); // USER COULD BE NULL
                 } else {
-                  res.json(user);
+                  res.json(useredited);
                 }
               });
             }
@@ -104,9 +113,8 @@ router.post('/:id/image/profile', (req, res) => {
       });
     }
   });
-});
+}
 
-/* C
 router.put('/:id/language/:langId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/language/${JSON.stringify(req.params.langId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
@@ -131,56 +139,7 @@ router.put('/:id/language/:langId', (req, res) => {
   });
 });
 
-router.post('/:id/image/teaser', up, (req, res, next) => {
-  // FIXME: Why next() as error handling?
-  // FIXME: Delete old asset if there is one
-  const apiCall = 'api, image teaser: ';
-  async.parallel({
-    image: (cb) => {
-      if (req.files['image']) {
-        const file = req.files['image'][0];
-        if (checkImageFile(file, apiCall)) {
-          assetUtil.createImageAsset(file, (err, assetId) => {
-            if (err) {
-              req.flash('errors', { msg: `${apiCall} createImageAsset ${err}` });
-              logger.debug(`${apiCall} createImageAsset ${err}`);
-              console.log(err);
-              // throw err;
-            } else {
-              req.flash('success', { msg: `${apiCall} createImageAsset ok, resize` });
-              logger.info(`${apiCall} createImageAsset ok, resize`);
-              imageUtil.resize(assetId, imageUtil.sizes.user.teaser, cb);
-            }
-          });
-        } else {
-          cb(null);
-        }
-      } else {
-        cb(null);
-      }
-    }
-  }, (err, results) => {
-    infoMessage = `${apiCall} success: ${JSON.stringify(results)}`;
-    req.flash('success', { msg: errorMessage });
-    logger.info(errorMessage);
 
-    User.findById(req.params.id, (err, user) => {
-      if (err) {
-        req.flash('errors', { msg: `findById ERROR: ${JSON.stringify(err)}` });
-        return next(err);
-      }
-      user.teaserImage = results['image'];
-      user.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
-          res.json(user);
-        });
-      });
-    });
-  });
-});
 // remove about from user
 router.delete('/:id/about/:aboutlanguage', (req, res) => {
   const apiCall = `api, router.delete(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
@@ -766,5 +725,56 @@ router.put('/:id', (req, res) => {
     }
   });
 });
+/*
+router.post('/:id/image/teaser', up, (req, res, next) => {
+  // FIXME: Why next() as error handling?
+  // FIXME: Delete old asset if there is one
+  const apiCall = 'api, image teaser: ';
+  async.parallel({
+    image: (cb) => {
+      if (req.files['image']) {
+        const file = req.files['image'][0];
+        if (checkImageFile(file, apiCall)) {
+          assetUtil.createImageAsset(file, (err, assetId) => {
+            if (err) {
+              req.flash('errors', { msg: `${apiCall} createImageAsset ${err}` });
+              logger.debug(`${apiCall} createImageAsset ${err}`);
+              console.log(err);
+              // throw err;
+            } else {
+              req.flash('success', { msg: `${apiCall} createImageAsset ok, resize` });
+              logger.info(`${apiCall} createImageAsset ok, resize`);
+              imageUtil.resize(assetId, imageUtil.sizes.user.teaser, cb);
+            }
+          });
+        } else {
+          cb(null);
+        }
+      } else {
+        cb(null);
+      }
+    }
+  }, (err, results) => {
+    infoMessage = `${apiCall} success: ${JSON.stringify(results)}`;
+    req.flash('success', { msg: errorMessage });
+    logger.info(errorMessage);
+
+    User.findById(req.params.id, (err, user) => {
+      if (err) {
+        req.flash('errors', { msg: `findById ERROR: ${JSON.stringify(err)}` });
+        return next(err);
+      }
+      user.teaserImage = results['image'];
+      user.save((err) => {
+        if (err) {
+          return next(err);
+        }
+        dataprovider.fetchUser(req.user.id, (err, user) => {
+          res.json(user);
+        });
+      });
+    });
+  });
+});
 */
-  module.exports = router;
+module.exports = router;

@@ -3,6 +3,7 @@ const dataprovider = {};
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Asset = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Performer = mongoose.model('Performer');
 // const Crew = mongoose.model('Crew');
@@ -13,31 +14,23 @@ const logger = require('./logger');
 dataprovider.fetchUser = (id, cb) => {
   logger.debug('fetchUser');
   logger.debug(id);
-  User
-      .findById(id)
+  User.
+      findById(id).
       //.select({'-galleries': 1})
-      .populate([{
-        path: 'image',
-        model: 'Asset'
-      }, {
-        path: 'teaserImage',
-        model: 'Asset'
-      }, {
+      populate([{
         path: 'events',
         model: 'Event',
         populate: [{
-          path: 'image',
-          model: 'Asset'
-        }, {
-          path: 'teaserImage',
-          model: 'Asset'
-        }, {
           path: 'venues',
           model: 'Venue'
         }]
       }, {
         path: 'performances',
         model: 'Performance',
+        populate: [{
+          path: 'video',
+          model: 'Asset'
+        }],
         select: {
           'slug': 1,
           'title': 1,
@@ -51,23 +44,39 @@ dataprovider.fetchUser = (id, cb) => {
           'tech_art': 1,
           'tech_req': 1,
           'video': 1
-        },
-        populate: [{
-          path: 'image',
-          model: 'Asset'
-        }, {
-          path: 'teaserImage',
-          model: 'Asset'
-        }, {
-          path: 'video',
-          model: 'Asset'
-        }] //, {
-        //path: 'performers', select: { 'stagename': 1 } // virtual relation
-        //}//, { //, 'events': 0, 'crews': 0, 'performances': 0, 'addresses': 0, 'emails': 0
-        //path: 'crews' // virtual relation
-        //}   
+        }
       }, {
         path: 'crews',
+        model: 'User',
+        populate: [{
+          path: 'events',
+          model: 'Event'
+        }, {
+          path: 'members', // virtual relation
+          model: 'User',
+          select: { '_id': 1, 'slug': 1, 'stagename': 1, 'username': 1 }
+        }, {
+          path: 'performances',
+          model: 'Performance',
+          populate: [{
+            path: 'video',
+            model: 'Asset'
+          }],
+          select: {
+            'slug': 1,
+            'title': 1,
+            'about': 1,
+            'aboutlanguage': 1,
+            'abouts': 1,
+            'image': 1,
+            'teaserImage': 1,
+            'file': 1,
+            'categories': 1,
+            'tech_art': 1,
+            'tech_req': 1,
+            'video': 1
+          }
+        }],
         select: {
           '-members': 1,
           'slug': 1,
@@ -77,24 +86,9 @@ dataprovider.fetchUser = (id, cb) => {
           'image': 1,
           'teaserImage': 1,
           'file': 1
-        },
-        model: 'User',
-        populate: [{
-          path: 'image',
-          model: 'Asset'
-        }, {
-          path: 'teaserImage',
-          model: 'Asset'
-        }, {
-          path: 'events',
-          model: 'Event'
-        }, {
-          path: 'members', // virtual relation
-          model: 'User',
-          select: { '_id': 1, 'slug': 1, 'stagename': 1, 'username': 1 }
-        }]
-      }])
-      .exec(cb);
+        }
+      }]).
+      exec(cb);
 };
 
 dataprovider.fetchPerformer = (req, cb) => {

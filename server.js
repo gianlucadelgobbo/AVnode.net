@@ -15,7 +15,7 @@ require('./app/models');
 const i18n = require('./app/utilities/i18n');
 const passport = require('./app/utilities/passport');
 const routes = require('./app/routes');
-const logger = require('./app/utilities///logger');
+const logger = require('./app/utilities/logger');
 
 // config = require('getconfig');
 
@@ -40,6 +40,9 @@ app.use(sass({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(flash());
+app.use('/storage', express.static(path.join(__dirname, 'storage')));
+app.use('/warehouse', express.static(path.join(__dirname, 'warehouse')));
+
 app.use(i18n.init);
 app.use(session({
   resave: true,
@@ -118,7 +121,7 @@ app.use((req, res, next) => {
   }
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 84600 }));
-// not needed because in public/ app.use(express.static(path.join(__dirname, process.env.STORAGE), { maxAge: 84600 }));
+// not needed because in public/
 
 // FIXME
 // From your there could be dragons!!!
