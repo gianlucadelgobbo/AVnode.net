@@ -84,5 +84,13 @@
 	"all": "all",
 	"individuals": "individuals",
 	"mostactive": "mostactive",
-	"mostrecent": "mostrecent"
+	"mostrecent": "mostrecent",
+	"Your Account": "Your Account",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?",
+	"stagename": "stagename",
+	"Confirm Password": "Confirm Password"
 }
