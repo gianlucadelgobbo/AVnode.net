@@ -1,7 +1,7 @@
 const router = require('./router')();
 const mongoose = require('mongoose');
 const Asset = mongoose.model('Asset');
-const getStorageFolder = require('../utilities/asset/helper').getStorageFolder;
+const getStorageFolder = require('../utilities/helper').getStorageFolder;
 const logger = require('../utilities/logger'); 
 
 router.get('/:identifier/', ({params}, res) => {
