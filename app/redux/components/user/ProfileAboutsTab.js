@@ -1,9 +1,9 @@
 import { h } from 'preact';
-import { Field } from 'redux-form';
+import { Field, textarea } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import About from '../about/About';
 import Languages from '../language/Languages';
-import { Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs, Row, Col, Nav, NavItem  } from 'react-bootstrap';
 
 const ProfileAboutTabs = injectIntl(({
     user,
@@ -15,30 +15,51 @@ const ProfileAboutTabs = injectIntl(({
         return userAboutDelete(user._id, about.lang);
     };
 
-    return (
-        <Tabs className="tabparent">
-        {user && user.abouts && user.abouts.map((a, index) => (
-        <Tab eventKey={index} title={a.lang}>
-            <span className="deleteicon">
-                <i
-                    className="fa fa-times"
-                    data-toggle="tooltip"
-                    onClick={onAboutDelete(a)}
-                    data-placement="top"
-                    title={intl.formatMessage({
-                    id: "delete",
-                    defaultMessage: "Delete"
-                    })}
-                >
-                </i> 
-            </span>
-            <br/>
-            {a.abouttext}
-        </Tab>
-        ))}
-        </Tabs>
-    )
+    const renderTextArea = ({input, meta: { touched, error, warning }}) => (
+        <div>
+            <label>Content</label>
+            <div>
+                <textarea {...input} placeholder="Content" rows="10" cols="40"/>
+                {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+            </div>
+        </div>
+    );
 
+    return (
+
+
+        <Tab.Container id="left-tabs-example" defaultActiveKey="en">
+        <Row className="clearfix">
+            <Col sm={2} className="navabout">
+                <Nav bsStyle="pills" stacked>
+                {Languages.map((lang,index) => (
+                    <NavItem eventKey={lang.code}>{lang.language}</NavItem>
+                ))}
+                </Nav>
+            </Col>
+            <Col sm={10}>
+                <Tab.Content animation>
+                {user && user.abouts && user.abouts.map((a,j) => (
+                    <Tab.Pane eventKey={a.lang}>
+                    <Field
+                    className="form-control"
+                    name={a.abouttext}
+                    component="textarea"
+                    rows="12"
+                    placeholder={intl.formatMessage({
+                        id: 'about.placeholder',
+                        defaultMessage: a.abouttext                      
+                    })}
+                    />
+                    </Tab.Pane>
+                ))}
+                </Tab.Content>
+            </Col>
+        </Row>
+        </Tab.Container>
+
+
+    )
 
 });
 
