@@ -1,21 +1,14 @@
 const router = require('../router')();
-const mongoose = require('mongoose');
-const Event = mongoose.model('Event');
-// const User = mongoose.model('User');
+const dataprovider = require('../../utilities/dataprovider');
 
-router.get('/', (req, res, next) => {
-  Event
-  .findOne({slug: req.params.slug})
-  .exec((err, event) => {
-    if (err || event === null) {
-      console.log('routes/events/show err:' + err);
-      return next(err);
-    }
-    res.render('events/show', {
-      title: event.title,
-      event: event
-    });
-  });
+const Model = require('mongoose').model('Event');
+const section = 'events';
+
+const logger = require('../../utilities/logger');
+
+router.get('/', (req, res) => {
+  logger.debug('Show ' + section);
+  dataprovider.show(req, res, section, Model);
 });
 
 module.exports = router;

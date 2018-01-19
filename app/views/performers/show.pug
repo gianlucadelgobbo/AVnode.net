@@ -1,10 +1,10 @@
 extends ../layout
 block teaser
-  if performer.teaserImageFormats.large
+  if data.teaserImageFormats.large
     .d-flex.justify-content-center.align-items-start
       img.img-fluid(
-        src=performer.teaserImageFormats.large
-        alt=performer.name
+        src=data.teaserImageFormats.large
+        alt=data.name
       )
 
 block title
@@ -13,22 +13,22 @@ block title
       .container
         .row
           .col-lg-8
-            h1.display-4=performer.stagename
-            if performer.name
-              p.lead=performer.name
-            if performer.about
-              p=performer.about
-            each email in performer.publicEmails
+            h1.display-4=data.stagename
+            if data.name
+              p.lead=data.name
+            if data.about
+              p=data.about
+            each email in data.publicEmails
               i.fa.fa-fw.fa-envelope-o
               span=email.email
-            if performer.citizenship
-              p=performer.citizenship
+            if data.citizenship
+              p=data.citizenship
 
-          if performer.image
+          if data.image
             .col-lg-4
               img.card-img-top.img-fluid(
-                src=performer.imageFormats.medium
-                alt=performer.name
+                src=data.imageFormats.medium
+                alt=data.name
               )
 
 block content
@@ -36,7 +36,7 @@ block content
     .col-lg-12
       h3=__('Events')
       .card-deck
-        each event in performer.events
+        each event in data.events
           .card
             if event.image
               img.card-img-top.img-fluid(
@@ -55,7 +55,7 @@ block content
     .col-lg-12
       h3=__('Crews')
       .card-deck
-        each crew in performer.crews
+        each crew in data.crews
           .card
             if crew.image
               img.card-img-top.img-fluid(
@@ -74,7 +74,7 @@ block content
     .col-lg-12
       h3=__('Performances')
       .card-deck
-        each performance in performer.performances
+        each performance in data.performances
           .card
             if performance.image
               img.card-img-top.img-fluid(
