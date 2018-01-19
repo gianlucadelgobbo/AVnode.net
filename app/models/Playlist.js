@@ -1,15 +1,15 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const indexPlugin = require('../utilities/elasticsearch/Performance');
+const indexPlugin = require('../utilities/elasticsearch/Playlist');
 
 const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
 const Booking = require('./shared/Booking');
 
-const adminsez = 'performance';
+const adminsez = 'playlist';
 
-const performanceSchema = new Schema({
+const playlistSchema = new Schema({
   old_id : String,
 
   creation_date: Date,
@@ -42,7 +42,7 @@ const performanceSchema = new Schema({
 });
 
 // Return thumbnail
-performanceSchema.virtual('imageFormats').get(function () {
+playlistSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
@@ -62,7 +62,7 @@ performanceSchema.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 
-performanceSchema.virtual('teaserImageFormats').get(function () {
+playlistSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
   if (this.teaserImage && this.teaserImage.file) {
@@ -82,41 +82,41 @@ performanceSchema.virtual('teaserImageFormats').get(function () {
   return teaserImageFormats;
 });
 
-performanceSchema.virtual('editUrl').get(function () {
-  return `/admin/performances/public/${this.slug}`;
+playlistSchema.virtual('editUrl').get(function () {
+  return `/admin/playlists/public/${this.slug}`;
 });
 
-performanceSchema.virtual('publicUrl').get(function () {
-  return `/performances/${this.slug}`;
+playlistSchema.virtual('publicUrl').get(function () {
+  return `/playlists/${this.slug}`;
 });
 
-performanceSchema.pre('remove', function(next) {
-  const performance = this;
-  performance.model('User').update(
-    { $pull: { performances: performance._id } },
+playlistSchema.pre('remove', function(next) {
+  const playlist = this;
+  playlist.model('User').update(
+    { $pull: { playlists: playlist._id } },
     next
   );
-  performance.model('Crew').update(
-    { $pull: { performances: performance._id } },
+  playlist.model('Crew').update(
+    { $pull: { playlists: playlist._id } },
     next
   );
 });
 
 /*
 // FIXME: Rename in performer?
-performanceSchema.virtual('performers', {
+playlistSchema.virtual('performers', {
   ref: 'User',
   localField: '_id',
-  foreignField: 'performances'
+  foreignField: 'playlists'
 });
 
-performanceSchema.virtual('crews', {
+playlistSchema.virtual('crews', {
   ref: 'User',
   localField: '_id',
-  foreignField: 'performances'
+  foreignField: 'playlists'
 });
 // return thumbnail
-performanceSchema.virtual('squareThumbnailUrl').get(function () {
+playlistSchema.virtual('squareThumbnailUrl').get(function () {
   let squareThumbnailUrl = '/images/profile-default.svg';
 
   if (this.file && this.file.file) {
@@ -131,7 +131,7 @@ performanceSchema.virtual('squareThumbnailUrl').get(function () {
   return squareThumbnailUrl;
 });
 // return card img
-performanceSchema.virtual('cardUrl').get(function () {
+playlistSchema.virtual('cardUrl').get(function () {
   let cardUrl = '/images/profile-default.svg';
 
   if (this.file && this.file.file) {
@@ -147,7 +147,7 @@ performanceSchema.virtual('cardUrl').get(function () {
 });
 
 // return original image
-performanceSchema.virtual('imageUrl').get(function () {
+playlistSchema.virtual('imageUrl').get(function () {
   let image = '/images/profile-default.svg';
   if (this.image) {
     image = `/storage/${this.image}/512/200`;
@@ -160,8 +160,8 @@ performanceSchema.virtual('imageUrl').get(function () {
 });
 */
 
-performanceSchema.plugin(indexPlugin());
+playlistSchema.plugin(indexPlugin());
 
-const Performance = mongoose.model('Performance', performanceSchema);
+const Playlist = mongoose.model('Playlist', playlistSchema);
 
-module.exports = Performance;
+module.exports = Playlist;

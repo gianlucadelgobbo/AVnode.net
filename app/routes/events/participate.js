@@ -8,39 +8,6 @@ router.get('/', (req, res) => {
   logger.debug('fetchEvent'+req.params.slug);  
   Event
   .findOne({slug: req.params.slug})
-  .populate([{
-    path: 'image',
-    model: 'Asset'
-  },{
-    path: 'teaserImage',
-    model: 'Asset'
-  }, {
-    path: 'venues',
-    model: 'Venue'
-  }, {
-    path: 'performances',
-    model: 'Performance',
-    populate: [{
-      path: 'image',
-      model: 'Asset'
-    }, {
-      path: 'performers'
-    }]
-  }, {
-    path: 'organizers',
-    model: 'User',
-    populate: [{
-      path: 'image',
-      model: 'Asset'
-    }]
-  }, {
-    path: 'organizing_crews',
-    model: 'User',
-    populate: [{
-      path: 'image',
-      model: 'Asset'
-    }]
-  }])
   .exec((err, event) => {
 		console.log('routes/events/participate err:' + err);
     if (err || event === null) {

@@ -77,7 +77,8 @@ list = (req, res) => {
           orderings: config.sections[section].orders,
           data: data
         });
-        /*res.render(section + '/list', {
+        /* C
+        res.render(section + '/list', {
           title: title,
           info: info,
           section: section,
@@ -93,7 +94,8 @@ list = (req, res) => {
           orderings: config.sections[section].orders,
           user: req.user,
           _h: _h
-        });*/
+        });
+        */
       }
     });
   }

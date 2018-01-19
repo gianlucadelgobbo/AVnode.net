@@ -1,9 +1,9 @@
 extends ../layout
 block teaser
-  if performer.teaserImageUrl
+  if performer.teaserImageFormats.large
     .d-flex.justify-content-center.align-items-start
       img.img-fluid(
-        src=performer.teaserImageUrl
+        src=performer.teaserImageFormats.large
         alt=performer.name
       )
 
@@ -27,7 +27,7 @@ block title
           if performer.image
             .col-lg-4
               img.card-img-top.img-fluid(
-                src=performer.image.publicUrl
+                src=performer.imageFormats.medium
                 alt=performer.name
               )
 
@@ -40,7 +40,7 @@ block content
           .card
             if event.image
               img.card-img-top.img-fluid(
-                src=event.image.publicUrl
+                src=event.imageFormats.medium
                 alt=event.title
               )
             .card-block
@@ -59,7 +59,7 @@ block content
           .card
             if crew.image
               img.card-img-top.img-fluid(
-                src=crew.image.publicUrl
+                src=crew.imageFormats.medium
                 alt=crew.title
               )
             .card-block
@@ -78,7 +78,7 @@ block content
           .card
             if performance.image
               img.card-img-top.img-fluid(
-                src=performance.image.publicUrl
+                src=performance.imageFormats.medium
                 alt=performance.title
               )
             .card-block

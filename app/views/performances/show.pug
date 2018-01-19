@@ -4,7 +4,7 @@ block teaser
   if performance.teaserImage
     .d-flex.justify-content-center.align-items-start
       img.img-fluid(
-        src=performance.teaserImage.publicUrl
+        src=performance.teaserImageFormats.large
         alt=performance.name
       )
 
@@ -20,7 +20,7 @@ block title
           .col-lg-4
             if performance.image
               img.card-img-top.img-fluid(
-                src=performance.image.publicUrl
+                src=performance.imageFormats.medium
                 alt=performance.name
               )
 
@@ -41,11 +41,11 @@ block content
     .col-lg-8
       h3=__('Performer')
       .card-columns
-        each user in performance.performers
+        each user in performance.users
           .card
             if user.image
               img.card-img-top.img-fluid(
-                src=user.image.publicUrl
+                src=user.imageFormats.medium
                 alt=user.name
               )
             .card-block
@@ -53,15 +53,4 @@ block content
               h5.card-subtitle.mb-3=user.stagename
               a.btn.btn-primary(href=user.publicUrl)=__('More')
     .col-lg-4
-      .card-columns
-        each crew in performance.crews
-          .card
-            if crew.image
-              img.card-img-top.img-fluid(
-                src=crew.image.publicUrl
-                alt=crew.name
-              )
-            .card-block
-              h6.text-muted.card-title=__('Organizing Crew')
-              h5.card-subtitle.mb-3=crew.name
-              a.btn.btn-primary(href=crew.publicUrl)=__('More')
+      .card-columns Bella

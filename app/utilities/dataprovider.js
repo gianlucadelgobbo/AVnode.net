@@ -3,7 +3,6 @@ const dataprovider = {};
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
-const Asset = mongoose.model('User');
 const Event = mongoose.model('Event');
 // const Crew = mongoose.model('Crew');
 const Performance = mongoose.model('Performance');
@@ -16,6 +15,7 @@ dataprovider.fetchUser = (id, cb) => {
   User.
       findById(id).
       //.select({'-galleries': 1})
+      /*
       populate([{
         path: 'events',
         model: 'Event',
@@ -87,6 +87,7 @@ dataprovider.fetchUser = (id, cb) => {
           'file': 1
         }
       }]).
+      */
       exec(cb);
 };
 
@@ -94,10 +95,7 @@ dataprovider.fetchPerformer = (req, cb) => {
   logger.debug('fetchPerformer'+req.params.slug);  
   Performer.
   findOne({slug: req.params.slug}).
-  populate([{
-    path: 'image',
-    model: 'Asset'
-  }]).
+  //.populate()
   exec((err, performer) => {
     logger.debug("exec");
     logger.debug(performer);
@@ -109,10 +107,7 @@ dataprovider.fetchPerformers = (query, limit, skip, sorting, cb) => {
   logger.debug('fetchPerformers');  
   User.count(query, function(error, total) {
     User.find(query)
-    .populate([{
-      path: 'image',
-      model: 'Asset'
-    }])  
+    //.populate()
     .limit(limit)
     .skip(skip)
     .sort(sorting)
@@ -121,17 +116,6 @@ dataprovider.fetchPerformers = (query, limit, skip, sorting, cb) => {
       cb(err, data, total);
     });
   });
-/*
-  User.find({})
-  .populate([{
-    path: 'image',
-    model: 'Asset'
-  }])
-  .limit(5)
-  .exec((err, data) => {
-    cb(err, data);
-  });
-  */
 };
 
 

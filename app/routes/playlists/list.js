@@ -1,16 +1,18 @@
 const router = require('../router')();
 const mongoose = require('mongoose');
-const Performance = mongoose.model('Performance');
+const Playlist = mongoose.model('Playlist');
 
 const logger = require('../../utilities/logger');
 
 router.get('/', (req, res) => {
-  Performance.find({})
+  logger.debug('Playlist');
+  Playlist.find({})
   .limit(40)  
   //.populate()
   .exec((err, data) => {
-    res.render('performances/list', {
-      title: __('Performances'),
+    logger.debug('Playlist/list');
+    res.render('playlists/list', {
+      title: __('Playlists'),
       data: data
     });
   });

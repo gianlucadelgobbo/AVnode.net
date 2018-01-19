@@ -1,23 +1,23 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const indexPlugin = require('../utilities/elasticsearch/Performance');
+const indexPlugin = require('../utilities/elasticsearch/Footage');
 
 const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
 const Booking = require('./shared/Booking');
 
-const adminsez = 'performance';
+const adminsez = 'footage';
 
-const performanceSchema = new Schema({
+const footageSchema = new Schema({
   old_id : String,
-
   creation_date: Date,
   slug: { type: String, unique: true },
   title: String,
   is_public: { type: Boolean, default: false },
   image: MediaImage,
   teaserImage: MediaImage,
+/*
   //  file: {file: String},
   abouts: [About],
   stats: {},
@@ -31,7 +31,9 @@ const performanceSchema = new Schema({
   galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],
   // videos: [{ type : Schema.ObjectId, ref : 'Videos' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
+  */
 }, {
+  collection: 'footage',
   timestamps: true,
   toObject: {
     virtuals: true
@@ -42,7 +44,7 @@ const performanceSchema = new Schema({
 });
 
 // Return thumbnail
-performanceSchema.virtual('imageFormats').get(function () {
+footageSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
@@ -62,7 +64,7 @@ performanceSchema.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 
-performanceSchema.virtual('teaserImageFormats').get(function () {
+footageSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
   if (this.teaserImage && this.teaserImage.file) {
@@ -82,41 +84,41 @@ performanceSchema.virtual('teaserImageFormats').get(function () {
   return teaserImageFormats;
 });
 
-performanceSchema.virtual('editUrl').get(function () {
-  return `/admin/performances/public/${this.slug}`;
+footageSchema.virtual('editUrl').get(function () {
+  return `/admin/footage/public/${this.slug}`;
 });
 
-performanceSchema.virtual('publicUrl').get(function () {
-  return `/performances/${this.slug}`;
+footageSchema.virtual('publicUrl').get(function () {
+  return `/footage/${this.slug}`;
 });
 
-performanceSchema.pre('remove', function(next) {
-  const performance = this;
-  performance.model('User').update(
-    { $pull: { performances: performance._id } },
+footageSchema.pre('remove', function(next) {
+  const footage = this;
+  footage.model('User').update(
+    { $pull: { footage: footage._id } },
     next
   );
-  performance.model('Crew').update(
-    { $pull: { performances: performance._id } },
+  footage.model('Crew').update(
+    { $pull: { footage: footage._id } },
     next
   );
 });
 
 /*
 // FIXME: Rename in performer?
-performanceSchema.virtual('performers', {
+footageSchema.virtual('performers', {
   ref: 'User',
   localField: '_id',
-  foreignField: 'performances'
+  foreignField: 'footage'
 });
 
-performanceSchema.virtual('crews', {
+footageSchema.virtual('crews', {
   ref: 'User',
   localField: '_id',
-  foreignField: 'performances'
+  foreignField: 'footage'
 });
 // return thumbnail
-performanceSchema.virtual('squareThumbnailUrl').get(function () {
+footageSchema.virtual('squareThumbnailUrl').get(function () {
   let squareThumbnailUrl = '/images/profile-default.svg';
 
   if (this.file && this.file.file) {
@@ -131,7 +133,7 @@ performanceSchema.virtual('squareThumbnailUrl').get(function () {
   return squareThumbnailUrl;
 });
 // return card img
-performanceSchema.virtual('cardUrl').get(function () {
+footageSchema.virtual('cardUrl').get(function () {
   let cardUrl = '/images/profile-default.svg';
 
   if (this.file && this.file.file) {
@@ -147,7 +149,7 @@ performanceSchema.virtual('cardUrl').get(function () {
 });
 
 // return original image
-performanceSchema.virtual('imageUrl').get(function () {
+footageSchema.virtual('imageUrl').get(function () {
   let image = '/images/profile-default.svg';
   if (this.image) {
     image = `/storage/${this.image}/512/200`;
@@ -160,8 +162,8 @@ performanceSchema.virtual('imageUrl').get(function () {
 });
 */
 
-performanceSchema.plugin(indexPlugin());
+footageSchema.plugin(indexPlugin());
 
-const Performance = mongoose.model('Performance', performanceSchema);
+const Footage = mongoose.model('Footage', footageSchema);
 
-module.exports = Performance;
+module.exports = Footage;

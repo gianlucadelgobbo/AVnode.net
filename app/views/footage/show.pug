@@ -1,0 +1,41 @@
+extends ../layout
+
+block teaser
+  if footage.teaserImage
+    .d-flex.justify-content-center.align-items-start
+      img.card-img-top.img-fluid(
+        src=`${footage.teaserImageFormats.large}`
+        alt=`${footage.name}`
+      )
+
+block title
+  if title
+    .jumbotron.jumbotron-fluid
+      .container
+        .row
+          .col-lg-8
+            h1.display-4=title
+            p=footage.about
+          .col-lg-4
+            if footage.image
+              img.card-img-top.img-fluid(
+                src=footage.imageFormats.medium
+                alt=footage.title
+              )
+
+block content
+  .row
+    .col-lg-12
+      h3=__('Members')
+      .card-columns
+        //each member in footage.members
+          .card
+            if member.image
+              img.card-img-top.img-fluid(
+                src=member.imageFormats.medium
+                alt=member.name
+              )
+            .card-block
+              h4.card-title
+                =member.stagename
+              a.btn.btn-primary(href=member.publicUrl)=__('More')

@@ -6,14 +6,10 @@ block content
       .card
         if item.image
           img.card-img-top.img-fluid(
-            src=item.imageFormats.medium
-            alt=item.name
+            src=`${item.imageFormats.medium}`
+            alt=`${item.title} profile image`
           )
-        img.card-img-top.img-fluid(
-          src=item.cardUrl
-          alt=item.name
-        )
         .card-block
-          h4.card-title
-            =item.title
+          h4.card-title=item.title
+          p.card-text=item.about
           a.btn.btn-primary(href=item.publicUrl)=__('More')
