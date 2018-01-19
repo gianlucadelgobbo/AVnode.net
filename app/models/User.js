@@ -7,6 +7,7 @@ const async = require('async');
 const imageUtil = require('../utilities/image');
 const Asset = require('../utilities/asset');
 const Category = require('./Category');
+const Link = require('./Link');
 
 const userSchema = new Schema({
   slug: { type: String, unique: true },
@@ -57,7 +58,7 @@ const userSchema = new Schema({
     mailinglists: {},
     confirm: String
   }],
-  links: [],
+  links: [Link],
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
