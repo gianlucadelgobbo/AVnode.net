@@ -44,7 +44,7 @@ let EventImagesForm = props => {
             {event && event.teaserImage ?
               <img
                 className="img-thumbnail mb-3"
-                src={event.teaserImage.publicUrl}
+                src={event.teaserImageFormats.large}
                 alt={`image of ${event.title}`}
               /> :
               null
@@ -65,7 +65,7 @@ let EventImagesForm = props => {
             {event && event.image ?
               <img
                 className="img-thumbnail mb-3"
-                src={event.image.publicUrl}
+                src={event.imageFormats.medium}
                 alt={`image of ${event.title}`}
               /> :
               null

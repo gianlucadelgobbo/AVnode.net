@@ -5,16 +5,7 @@ const Performance = mongoose.model('Performance');
 router.get('/', (req, res, next) => {
   Performance
   .findOne({slug: req.params.slug})
-  .populate([{
-    path: 'image',
-    model: 'Asset'
-  },{
-    path: 'teaserImage',
-    model: 'Asset'
-  },{
-    path: 'video',
-    model: 'Asset'
-  },{
+  /*.populate([{
     path: 'crews',
     model: 'User'
   },{
@@ -23,9 +14,8 @@ router.get('/', (req, res, next) => {
   },{
     path: 'events',
     model: 'Event'
-  }])
+  }])*/
   .exec((err, performance) => {
-    console.log(performance);
     if (err || performance === null) {
       console.log('routes/performances/show err:' + err);
       return next(err);
