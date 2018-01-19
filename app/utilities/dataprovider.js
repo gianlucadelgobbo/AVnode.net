@@ -126,7 +126,13 @@ dataprovider.show = (req, res, section, model) => {
       res.status(404).render('404', {});
     } else {
       if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
-        res.send(data);
+        if (process.env.DEBUG) {
+          res.render('json', {data: data});
+        } else {
+          res.json(data);
+        }
+        logger.debug(err);
+        //res.send(JSON.stringify(data, null, '\t'));
       } else {
         res.render(section + '/show', {
           title: data.stagename,
