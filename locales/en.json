@@ -26,5 +26,7 @@
 	"mostactive": "mostactive",
 	"mostrecent": "mostrecent",
 	"File upload only supports the following filetypes": "File upload only supports the following filetypes",
-	"File upload limit is": "File upload limit is"
+	"File upload limit is": "File upload limit is",
+	"Create Account": "Create Account",
+	"Account already exists.": "Account already exists."
 }

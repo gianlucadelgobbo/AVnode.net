@@ -5,6 +5,7 @@ import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
 import Links from '../link/Links';
+import LinkWeb from '../link/LinkWeb';
 import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
@@ -13,10 +14,12 @@ import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
 import Modal from '../Modal';
+import ProfileLinksWeb from './ProfileLinksWeb';
 
 import {
   fetchCountries,
-  editUser
+  editUser,
+  userLinkDelete
 } from '../../reducers/actions';
 
 const required = value => value ? undefined : 'Required'
@@ -31,7 +34,9 @@ let ProfilePublicForm = props => {
     abouts,
     handleSubmit,
     editUser,
-    fetchCountries
+    intl,
+    fetchCountries,
+    userLinkDelete
   } = props;
 
   if (!user._countries) {
@@ -118,7 +123,7 @@ let ProfilePublicForm = props => {
           { /* abouts end */}
 
           { /* links start */}
-          <FieldArray name="links" component={Links} />
+          <FieldArray name="links" component={Links}/>
           { /* links end */}
 
           { /* linksSocial start */}
@@ -128,6 +133,16 @@ let ProfilePublicForm = props => {
           { /* Addresses start */}
           <FieldArray name="addresses" component={AddressesPublic} />
           { /* Addresses end */}
+
+
+          <ProfileLinksWeb
+            user={user}
+            intl={intl}
+            userLinkDelete={userLinkDelete}
+          />
+
+
+
           <label>
             <FormattedMessage
               id="editAddressInPrivateSection"
@@ -206,7 +221,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => ({
   editUser: dispatch(editUser),
-  fetchCountries: dispatch(fetchCountries)
+  fetchCountries: dispatch(fetchCountries),
+  userLinkDelete:dispatch(userLinkDelete)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);
