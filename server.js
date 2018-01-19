@@ -35,7 +35,9 @@ app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
   src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public')
+  dest: path.join(__dirname, 'public'),
+  debug: true,
+  outputStyle: 'compressed'
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -113,7 +115,7 @@ app.use((req, res, next) => {
   } else */
   //logger.debug('req.path: '+req.path);
 
-  if (!req.user && req.path.indexOf('/admin')===0) {
+  if (!req.user && req.path.indexOf('/admin') === 0) {
     req.session.returnTo = req.path;
     res.redirect('/login');
   } else {
