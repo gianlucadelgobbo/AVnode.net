@@ -10,7 +10,7 @@ const upload = require('./upload');
 
 const section = 'performers';
 
-router.get('/', (req, res) => {
+/*router.get('/', (req, res) => {
   dataprovider.fetchUser(req.user.id, (err, user) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
@@ -18,8 +18,8 @@ router.get('/', (req, res) => {
     }
     res.json(user);
   });
-});
-/*
+});*/
+
 router.get('/', (req, res) => {
   const apiCall = `api, router.get(/user/${JSON.stringify(req.user.id)}`;
 
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
     res.json(user);
   });
 });
-*/
+
 router.post('/:id/public', (req, res) => {
   logger.debug('VALIDATION PROCESS');
   User.findById(req.params.id, (finderr, user) => {
@@ -78,8 +78,6 @@ router.put('/:id', (req, res) => {
   logger.debug(`${apiCall} req.body.abouts: ${JSON.stringify(req.body.abouts)}`);
   logger.debug(`${apiCall} req.body.name: ${req.body.name}`);
   logger.debug(`${apiCall} req.body.surname: ${req.body.surname}`);
-  logger.debug(`${apiCall} req.body.stagename: ${req.body.stagename}`);
-  logger.debug(`${apiCall} req.body.slug: ${req.body.slug}`);
   // abouts
   if (req.body.about && req.body.about.length > 2) {
     let aboutFound = false;
@@ -342,149 +340,6 @@ router.post('/:id/image/profile', (req, res) => {
   });
 });
 
-router.delete('/:id/about/:aboutlanguage', (req, res) => {
-  const apiCall = `api, router.delete(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
-  logger.debug('________________API DELETE user about ___________________');
-  logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-  User
-    .findById(req.params.id)
-    .exec((err, user) => {
-      if (err) {
-        logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
-      }
-      // after delete, modify user fields with primary address
-      user.abouts.map((a) => {
-        if (a.lang == req.params.aboutlanguage) {
-          user.abouts.remove(a);
-          user.aboutlanguage = '';
-          user.about = '';
-        }
-      });
-      user.save((_err) => {
-        dataprovider.fetchUser(req.user.id, (err, user) => {
-          res.json(user);
-        });
-      });
-    });
-});
-// edit user about
-router.put('/:id/about/:aboutlanguage', (req, res) => {
-  const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
-  logger.debug('________________API PUT user about ___________________');
-  logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
-  User.findById(req.params.id, (err, user) => {
-    if (err) {
-      logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
-    }
-    if (user) {
-      // abouts
-      if (user.abouts) {
-        // find the about
-        user.abouts.map((a) => {
-          // BL notice the == instead of ===
-          if (a.lang == req.params.aboutlanguage) {
-            // about in this language is found
-            logger.debug(`${apiCall} about lang found ${a.abouttext}`);
-            user.about = a.abouttext;
-            user.aboutlanguage = a.lang;
-          }
-        });
-      }
-
-      user.save(() => {
-        if (err) {
-          logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
-        }
-        dataprovider.fetchUser(req.params.id, (err, user) => {
-          if (err) {
-            logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
-          }
-          res.json(user);
-        });
-      });
-    } else {
-      logger.debug(`${apiCall} ERROR user is null`);
-    }
-  });
-});
-
-
-/* C
-router.put('/:id/language/:langId', (req, res) => {
-  const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/language/${JSON.stringify(req.params.langId)})`;
-  logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
-  User.findById(req.params.id, (err, user) => {
-    if (err) {
-      logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
-      req.flash('errors', { msg: `${apiCall} findById ERROR: ${JSON.stringify(err)}` });
-    }
-    user.language = req.params.langId;
-    user.save((err) => {
-      if (err) {
-        logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
-      }
-      dataprovider.fetchUser(req.user.id, (err, user) => {
-        if (err) {
-          logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
-        }
-        res.json(user);
-      });
-    });
-  });
-});
-
-router.post('/:id/image/teaser', up, (req, res, next) => {
-  // FIXME: Why next() as error handling?
-  // FIXME: Delete old asset if there is one
-  const apiCall = 'api, image teaser: ';
-  async.parallel({
-    image: (cb) => {
-      if (req.files['image']) {
-        const file = req.files['image'][0];
-        if (checkImageFile(file, apiCall)) {
-          assetUtil.createImageAsset(file, (err, assetId) => {
-            if (err) {
-              req.flash('errors', { msg: `${apiCall} createImageAsset ${err}` });
-              logger.debug(`${apiCall} createImageAsset ${err}`);
-              console.log(err);
-              // throw err;
-            } else {
-              req.flash('success', { msg: `${apiCall} createImageAsset ok, resize` });
-              logger.info(`${apiCall} createImageAsset ok, resize`);
-              imageUtil.resize(assetId, imageUtil.sizes.user.teaser, cb);
-            }
-          });
-        } else {
-          cb(null);
-        }
-      } else {
-        cb(null);
-      }
-    }
-  }, (err, results) => {
-    infoMessage = `${apiCall} success: ${JSON.stringify(results)}`;
-    req.flash('success', { msg: errorMessage });
-    logger.info(errorMessage);
-
-    User.findById(req.params.id, (err, user) => {
-      if (err) {
-        req.flash('errors', { msg: `findById ERROR: ${JSON.stringify(err)}` });
-        return next(err);
-      }
-      user.teaserImage = results['image'];
-      user.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
-          res.json(user);
-        });
-      });
-    });
-  });
-});
 // remove about from user
 router.delete('/:id/about/:aboutlanguage', (req, res) => {
   const apiCall = `api, router.delete(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
@@ -554,6 +409,146 @@ router.put('/:id/about/:aboutlanguage', (req, res) => {
     }
   });
 });
+
+/* C
+router.put('/:id/language/:langId', (req, res) => {
+  const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/language/${JSON.stringify(req.params.langId)})`;
+  logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
+  User.findById(req.params.id, (err, user) => {
+    if (err) {
+      logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
+      req.flash('errors', { msg: `${apiCall} findById ERROR: ${JSON.stringify(err)}` });
+    }
+    user.language = req.params.langId;
+    user.save((err) => {
+      if (err) {
+        logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
+      }
+      dataprovider.fetchUser(req.user.id, (err, user) => {
+        if (err) {
+          logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
+        }
+        res.json(user);
+      });
+    });
+  });
+});
+router.post('/:id/image/teaser', up, (req, res, next) => {
+  // FIXME: Why next() as error handling?
+  // FIXME: Delete old asset if there is one
+  const apiCall = 'api, image teaser: ';
+  async.parallel({
+    image: (cb) => {
+      if (req.files['image']) {
+        const file = req.files['image'][0];
+        if (checkImageFile(file, apiCall)) {
+          assetUtil.createImageAsset(file, (err, assetId) => {
+            if (err) {
+              req.flash('errors', { msg: `${apiCall} createImageAsset ${err}` });
+              logger.debug(`${apiCall} createImageAsset ${err}`);
+              console.log(err);
+              // throw err;
+            } else {
+              req.flash('success', { msg: `${apiCall} createImageAsset ok, resize` });
+              logger.info(`${apiCall} createImageAsset ok, resize`);
+              imageUtil.resize(assetId, imageUtil.sizes.user.teaser, cb);
+            }
+          });
+        } else {
+          cb(null);
+        }
+      } else {
+        cb(null);
+      }
+    }
+  }, (err, results) => {
+    infoMessage = `${apiCall} success: ${JSON.stringify(results)}`;
+    req.flash('success', { msg: errorMessage });
+    logger.info(errorMessage);
+    User.findById(req.params.id, (err, user) => {
+      if (err) {
+        req.flash('errors', { msg: `findById ERROR: ${JSON.stringify(err)}` });
+        return next(err);
+      }
+      user.teaserImage = results['image'];
+      user.save((err) => {
+        if (err) {
+          return next(err);
+        }
+        dataprovider.fetchUser(req.user.id, (err, user) => {
+          res.json(user);
+        });
+      });
+    });
+  });
+});
+// remove about from user
+router.delete('/:id/about/:aboutlanguage', (req, res) => {
+  const apiCall = `api, router.delete(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
+  logger.debug('________________API DELETE user about ___________________');
+  logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
+  User
+    .findById(req.params.id)
+    .exec((err, user) => {
+      if (err) {
+        logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
+        req.flash('errors', { msg: `${apiCall} findById ERROR: ${JSON.stringify(err)}` });
+      }
+      // after delete, modify user fields with primary address
+      user.abouts.map((a) => {
+        if (a.lang == req.params.aboutlanguage) {
+          user.abouts.remove(a);
+          user.aboutlanguage = '';
+          user.about = '';
+        }
+      });
+      user.save((_err) => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
+          res.json(user);
+        });
+      });
+    });
+});
+// edit user about
+router.put('/:id/about/:aboutlanguage', (req, res) => {
+  const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/about/${JSON.stringify(req.params.aboutlanguage)})`;
+  logger.debug('________________API PUT user about ___________________');
+  logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
+  User.findById(req.params.id, (err, user) => {
+    if (err) {
+      logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
+      req.flash('errors', { msg: `${apiCall} findById ERROR: ${JSON.stringify(err)}` });
+    }
+    if (user) {
+      // abouts
+      if (user.abouts) {
+        // find the about
+        user.abouts.map((a) => {
+          // BL notice the == instead of ===
+          if (a.lang == req.params.aboutlanguage) {
+            // about in this language is found
+            logger.debug(`${apiCall} about lang found ${a.abouttext}`);
+            user.about = a.abouttext;
+            user.aboutlanguage = a.lang;
+          }
+        });
+      }
+      user.save(() => {
+        if (err) {
+          logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
+        }
+        dataprovider.fetchUser(req.params.id, (err, user) => {
+          if (err) {
+            logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
+          }
+          res.json(user);
+        });
+      });
+    } else {
+      logger.debug(`${apiCall} ERROR user is null`);
+    }
+  });
+});
 // remove link from user
 router.delete('/:id/link/:linkId', (req, res) => {
   const apiCall = `api, router.delete(/user/${JSON.stringify(req.params.id)}/link/${JSON.stringify(req.params.linkId)})`;
@@ -586,12 +581,10 @@ router.delete('/:id/link/:linkId', (req, res) => {
       });
     });
 });
-
 // change user primary email
 router.put('/:id/email/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/email/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -599,7 +592,6 @@ router.put('/:id/email/:emailIndex', (req, res) => {
     }
     if (user) {
       if (user.emails) {
-
         // set to primary
         let emailIndex = req.params.emailIndex;
         // check array bounds
@@ -630,12 +622,10 @@ router.put('/:id/email/:emailIndex', (req, res) => {
     }
   });
 });
-
 // user email toggleprivacy
 router.put('/:id/toggleprivacy/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/toggleprivacy/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -664,12 +654,10 @@ router.put('/:id/toggleprivacy/:emailIndex', (req, res) => {
     }
   });
 });
-
 // user email MakePrivate (obsolete)
 router.put('/:id/makeemailprivate/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeemailprivate/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -698,12 +686,10 @@ router.put('/:id/makeemailprivate/:emailIndex', (req, res) => {
     }
   });
 });
-
 // user email MakePublic (obsolete)
 router.put('/:id/makeemailpublic/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeemailpublic/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -732,12 +718,10 @@ router.put('/:id/makeemailpublic/:emailIndex', (req, res) => {
     }
   });
 });
-
 // user email confirm
 router.put('/:id/emailconfirm/:emailIndex', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/emailconfirm/${JSON.stringify(req.params.emailIndex)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -775,7 +759,6 @@ router.put('/:id/emailconfirm/:emailIndex', (req, res) => {
     }
   });
 });
-
 // remove email from user
 router.delete('/:id/email/:emailId', (req, res) => {
   User
@@ -789,12 +772,10 @@ router.delete('/:id/email/:emailId', (req, res) => {
       });
     });
 });
-
 // change user primary address
 router.put('/:id/address/:addressId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/address/${JSON.stringify(req.params.addressId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -820,7 +801,6 @@ router.put('/:id/address/:addressId', (req, res) => {
             user.country = a.country ? a.country : '';
           }
         });
-
       }
       user.save((err) => {
         if (err) {
@@ -836,12 +816,10 @@ router.put('/:id/address/:addressId', (req, res) => {
     }
   });
 });
-
 // user address MakePrivate
 router.put('/:id/makeaddressprivate/:addressId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeaddressprivate/${JSON.stringify(req.params.addressId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -877,7 +855,6 @@ router.put('/:id/makeaddressprivate/:addressId', (req, res) => {
 router.put('/:id/makeaddresspublic/:addressId', (req, res) => {
   const apiCall = `api, router.put(/user/${JSON.stringify(req.params.id)}/makeaddresspublic/${JSON.stringify(req.params.addressId)})`;
   logger.debug(`${apiCall} req.params:' ${JSON.stringify(req.params)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
@@ -987,7 +964,6 @@ router.post('/place', (req, res, next) => {
           placename: user.locality, // BL friendly name: placename is set to locality, because it's required
           is_primary: primary
         };
-
         user.addresses.push(address);
       }
       user.save((err) => {
@@ -1038,14 +1014,12 @@ router.post('/link', (req, res, next) => {
       });
     });
 });
-
 router.put('/:id', (req, res) => {
   // FIXME: Find elegant way…
   const apiCall = `api, router.put(/user/${JSON.stringify(req.user.id)}`;
   logger.debug('________________API PUT user___________________');
   //logger.debug(`${apiCall} req.body.linkSocial: ${req.body.linkSocial}`);
   logger.debug(`${apiCall} req.body.links: ${JSON.stringify(req.body.links)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
