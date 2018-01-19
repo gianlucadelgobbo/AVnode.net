@@ -4,8 +4,8 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
+import ProfileAbouts from './ProfileAbouts';
 import Links from '../link/Links';
-import LinkWeb from '../link/LinkWeb';
 import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
@@ -19,7 +19,8 @@ import ProfileLinksWeb from './ProfileLinksWeb';
 import {
   fetchCountries,
   editUser,
-  userLinkDelete
+  userLinkDelete,
+  userAboutDelete
 } from '../../reducers/actions';
 
 const required = value => value ? undefined : 'Required'
@@ -34,14 +35,13 @@ let ProfilePublicForm = props => {
     abouts,
     handleSubmit,
     editUser,
-    intl,
     fetchCountries,
+    userAboutDelete,
+    intl,
     userLinkDelete
   } = props;
 
-  if (!user._countries) {
-    fetchCountries();
-  }
+
   let selectedLanguage = 0;
   const onSwitchLanguage = (e) => {
     e.preventDefault();
@@ -110,6 +110,13 @@ let ProfilePublicForm = props => {
               />
             </p>
           </div>
+
+          <ProfileAbouts
+            user={user}
+            intl={intl}
+            userAboutDelete={userAboutDelete}
+          />
+          
           {console.log('sl:' + selectedLanguage)}
           { /* abouts start */}
           <FieldArray
@@ -123,17 +130,12 @@ let ProfilePublicForm = props => {
           { /* abouts end */}
 
           { /* links start */}
-          <FieldArray name="links" component={Links}/>
+          <FieldArray name="links" component={Links} />
           { /* links end */}
 
           { /* linksSocial start */}
           <FieldArray name="linksSocial" component={LinksSocial} />
           { /* linksSocial end */}
-
-          { /* Addresses start */}
-          <FieldArray name="addresses" component={AddressesPublic} />
-          { /* Addresses end */}
-
 
           <ProfileLinksWeb
             user={user}
@@ -141,8 +143,9 @@ let ProfilePublicForm = props => {
             userLinkDelete={userLinkDelete}
           />
 
-
-
+          { /* Addresses start */}
+          <FieldArray name="addresses" component={AddressesPublic} />
+          { /* Addresses end */}
           <label>
             <FormattedMessage
               id="editAddressInPrivateSection"
@@ -182,6 +185,7 @@ const ProfilePublic = props => {
   };
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
+    alert("Form Saved");
   };
   return (
     <ProfilePublicForm
@@ -195,6 +199,7 @@ const ProfilePublic = props => {
 
 const mapStateToProps = (state, props) => {
   // add other languages abouts
+  /*
   let abouts = selector(state, 'abouts');
   if (abouts && abouts.length < Languages.length) {
     for (let l = 0; l < Languages.length; l++) {
@@ -210,19 +215,20 @@ const mapStateToProps = (state, props) => {
       }
     }
     console.log(JSON.stringify(abouts));
-  }
+  }*/
   // console.log(props.selectedLanguage);
   return {
     user: state.user,
     initialValues: state.user,
-    abouts
+    //abouts
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   editUser: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries),
-  userLinkDelete:dispatch(userLinkDelete)
+  userLinkDelete: dispatch(userLinkDelete),
+  userAboutDelete: dispatch(userAboutDelete)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);
