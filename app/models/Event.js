@@ -45,12 +45,13 @@ const eventSchema = new Schema({
     }
   },
   organizationsettings: {
-    program_builder: Number,
-    advanced_proposals_manager: Number,
+    program_builder: { type: Boolean, default: false },
+    advanced_proposals_manager: { type: Boolean, default: false },
+    call_is_active: { type: Boolean, default: false },
     call: {
       nextEdition: String,
-      subImg: MediaImage,
-      subBkg: MediaImage,
+      subImg: String,
+      subBkg: String,
       colBkg: String,
       permissions: {},
       calls: [{
@@ -59,7 +60,7 @@ const eventSchema = new Schema({
         permalink: String,
         start_date: Date,
         end_date: Date,
-        admitted: [{ type: Schema.ObjectId,ref: 'Category' }],
+        admitted: [{ type: Schema.ObjectId, ref: 'Category' }],
         excerpt: String,
         terms: String,
         packages: [{
