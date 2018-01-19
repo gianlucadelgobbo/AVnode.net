@@ -1,26 +1,26 @@
 extends ../layout
 
 block teaser
-  if tvshow.teaserImage
+  if data.teaserImage
     .d-flex.justify-content-center.align-items-start
       img.card-img-top.img-fluid(
-        src=`${tvshow.teaserImageFormats.large}`
-        alt=`${tvshow.name}`
+        src=`${data.teaserImageFormats.large}`
+        alt=`${data.name}`
       )
 
 block title
-  if title
+  if data.title
     .jumbotron.jumbotron-fluid
       .container
         .row
           .col-lg-8
-            h1.display-4=title
-            p=tvshow.about
+            h1.display-4=data.title
+            p=data.about
           .col-lg-4
-            if tvshow.image
+            if data.image
               img.card-img-top.img-fluid(
-                src=tvshow.imageFormats.medium
-                alt=tvshow.title
+                src=data.imageFormats.medium
+                alt=data.title
               )
 
 block content
@@ -28,7 +28,7 @@ block content
     .col-lg-12
       h3=__('Members')
       .card-columns
-        //each member in tvshow.members
+        //each member in data.members
           .card
             if member.image
               img.card-img-top.img-fluid(

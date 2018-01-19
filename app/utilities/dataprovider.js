@@ -1,6 +1,8 @@
 const dataprovider = {};
 
 const config = require('getconfig');
+const helper = require('./helper');
+
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
@@ -91,22 +93,20 @@ dataprovider.fetchUser = (id, cb) => {
       exec(cb);
 };
 
-dataprovider.fetchPerformer = (req, cb) => {
-  logger.debug('fetchPerformer'+req.params.slug);  
-  Performer.
+dataprovider.fetchShow = (req, model, cb) => {
+  logger.debug('fetchShow '+req.params.slug);  
+  model.
   findOne({slug: req.params.slug}).
   //.populate()
-  exec((err, performer) => {
-    logger.debug("exec");
-    logger.debug(performer);
-    cb(err, performer);
+  exec((err, data) => {
+    cb(err, data);
   });
 };
 
-dataprovider.fetchPerformers = (query, limit, skip, sorting, cb) => {
-  logger.debug('fetchPerformers');  
-  User.count(query, function(error, total) {
-    User.find(query)
+dataprovider.fetchLists = (model, query, limit, skip, sorting, cb) => {
+  logger.debug('fetchLists');  
+  model.count(query, function(error, total) {
+    model.find(query)
     //.populate()
     .limit(limit)
     .skip(skip)
@@ -118,5 +118,92 @@ dataprovider.fetchPerformers = (query, limit, skip, sorting, cb) => {
   });
 };
 
+dataprovider.show = (req, res, section, model) => {
+  dataprovider.fetchShow(req, model, (err, data) => {
+    logger.debug(err);
+    //logger.debug(data);
+    if (err || data === null) {
+      res.status(404).render('404', {});
+    } else {
+      if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
+        res.send(data);
+      } else {
+        res.render(section + '/show', {
+          title: data.stagename,
+          data: data
+        });
+      }
+    }
+  });
+};
+
+dataprovider.list = (req, res, section, model) => {
+  logger.debug('LIST dataprovider.list');
+
+  const page = req.params.page;
+  const filter = req.params.filter;
+  const sorting = req.params.sorting;
+
+  let notfound = false;
+
+  if (config.sections[section].categories.indexOf(filter) === -1) notfound = true;
+  if (typeof config.sections[section].sortQ[sorting] === 'undefined') notfound = true;
+  if (parseInt(page).toString()!=page.toString()) notfound = true;
+
+  const skip = (page - 1) * config.sections[section].limit;
+
+  if (notfound) {
+    res.status(404).render('404', {
+      title: __('Hmm…'),
+      nav: [],
+      path: req.originalUrl
+    });
+  } else {
+    const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
+
+    dataprovider.fetchLists(model, query, config.sections[section].limit, skip, config.sections[section].sortQ[sorting], (err, data, total) => {
+      logger.debug('bella'+config.sections[section].title);
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        //return next(err);
+        res.send({total:total, skip:skip, data:data});
+      } else {
+        const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
+        let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
+        let link = '/' + section + '/' + filter + '/' + sorting + '/';
+        let pages = helper.getPagination(link, skip, config.sections[section].limit, total);
+        logger.debug(config.sections[section].view_list);
+        res.render(config.sections[section].view_list, {
+          title: title,
+          section: section,
+          sort: sorting,
+          pages: pages,
+          filter: filter,
+          categories: config.sections[section].categories,
+          orderings: config.sections[section].orders,
+          data: data
+        });
+        /* C
+        res.render(section + '/list', {
+          title: title,
+          info: info,
+          section: section,
+          total: total,
+          path: path,
+          sort: sorting,
+          filter: filter,
+          skip: skip,
+          page: page,
+          pages: pages,
+          result: events,
+          categories: config.sections[section].categories,
+          orderings: config.sections[section].orders,
+          user: req.user,
+          _h: _h
+        });
+        */
+      }
+    });
+  }
+};
 
 module.exports = dataprovider;

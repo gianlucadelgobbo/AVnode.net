@@ -1,28 +1,28 @@
 extends ../layout
 
 block teaser
-  if event.teaserImage
+  if data.teaserImage
     .d-flex.justify-content-center.align-items-start
       img.card-img-top.img-fluid(
-        src=`${event.teaserImageFormats.large}`
-        alt=`${event.name}`
+        src=`${data.teaserImageFormats.large}`
+        alt=`${data.name}`
       )
 
 block title
-  if title
+  if data.title
     .jumbotron.jumbotron-fluid
       .container
         .row
           .col-lg-8
-            h1.display-4=title
-            p.lead=event.dateFormatted
-            p.lead=event.subtitle
-            p=event.about
+            h1.display-4=data.title
+            p.lead=data.dateFormatted
+            p.lead=data.subtitle
+            p=data.about
           .col-lg-4
-            if event.image
+            if data.image
               img.card-img-top.img-fluid(
-                src=event.imageFormats.medium
-                alt=event.title
+                src=data.imageFormats.medium
+                alt=data.title
               )
 
 block content
@@ -30,10 +30,10 @@ block content
     .col-lg-8
       h3=__('Schedule')
       p tbd
-      //if event.performances.length > 0
+      //if data.performances.length > 0
         h3=__('Performances')
         .card-columns
-          each performance in event.performances
+          each performance in data.performances
             .card
               if performance.image
                 img.card-img-top.img-fluid(
@@ -45,11 +45,11 @@ block content
                 h5.card-subtitle.mb-3=performance.stagename
                 a.btn.btn-primary(href=performance.publicUrl)=__('More')
 
-      //if event.performances.length > 0
-        if event.performances[0].performers.length > 0
+      //if data.performances.length > 0
+        if data.performances[0].performers.length > 0
           h4=__('Performers')
           .card-columns
-            each performance in event.performances
+            each performance in data.performances
               each performer in performance.performers
                 .card
                   if performer.image
@@ -63,11 +63,11 @@ block content
                     a.btn.btn-primary(href=performer.publicUrl)=__('More')
 
     //.col-lg-4
-      if event.venues.length > 0
+      if data.venues.length > 0
         h5=__('Venues')
         hr
 
-        each venue in event.venues
+        each venue in data.venues
           .card
             iframe.card-img-top.img-fluid(
               src=`https://www.google.com/maps/embed/v1/place?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&q=${venue.address.formatted_address}`
@@ -83,11 +83,11 @@ block content
               a.btn.btn-primary(target="_blank", href='https://maps.google.com?q=' + encodeURIComponent(venue.address.formatted_address))=__('directions')
 
 
-      if event.organizers.length > 0
+      if data.organizers.length > 0
         br
         h5=__('Organizers')
         hr
-        each user in event.organizers
+        each user in data.organizers
           .card
             if user.image
               img.card-img-top.img-fluid(
@@ -99,11 +99,11 @@ block content
               h5.card-subtitle.mb-3=user.name
               a.btn.btn-primary(href=user.publicUrl)=__('More')
 
-      if event.organizing_crews.length > 0
+      if data.organizing_crews.length > 0
         br
         h5=__('Organizing Crews')
         hr
-        each crew in event.organizing_crews
+        each crew in data.organizing_crews
           .card
             if crew.image
               img.card-img-top.img-fluid(
