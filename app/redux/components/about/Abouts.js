@@ -14,6 +14,7 @@ const Abouts = injectIntl(({
 
 
   return (
+    
   <fieldset>
     <div>
       <legend>
@@ -23,11 +24,12 @@ const Abouts = injectIntl(({
         />
       </legend>
       {submitFailed && error && <span>{error}</span>}
+
       <div className="container-fluid">
         <nav className="nav-justified pull-left">
           {Languages.map((c) => (
             <a
-              className="nav-link active"
+              className="nav-link"
               href={c.index}
               onClick={
                 e => {
