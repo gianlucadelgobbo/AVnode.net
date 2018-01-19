@@ -89,17 +89,7 @@ const ProfileAboutsForm = injectIntl(({
           defaultMessage="Manage your About texts"
         />
       </label>
-      <ul className="list-group mt-2">
-        {
-          user && user.abouts && user.abouts.map((a) => (
-            <About
-              about={a}
-              onDelete={onAboutDelete(a)}
-              intl={intl}
-            />
-          ))
-        }
-      </ul>
+
     </fieldset>
   );
 });

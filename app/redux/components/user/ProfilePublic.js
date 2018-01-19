@@ -15,6 +15,7 @@ import renderLabel from '../renderLabel';
 import renderField from '../renderField';
 import Modal from '../Modal';
 import ProfileLinksWeb from './ProfileLinksWeb';
+import ProfileAboutsTab from './ProfileAboutsTab';
 
 import {
   fetchCountries,
@@ -116,18 +117,13 @@ let ProfilePublicForm = props => {
             intl={intl}
             userAboutDelete={userAboutDelete}
           />
-          
-          {console.log('sl:' + selectedLanguage)}
-          { /* abouts start */}
-          <FieldArray
-            name="abouts"
-            component={Abouts}
-            props={{
-              selectedLanguage: selectedLanguage,
-              onSwitchLanguage: onSwitchLanguage
-            }}
+
+          <ProfileAboutsTab
+           user={user}
+           intl={intl}
+           userAboutDelete={userAboutDelete}
           />
-          { /* abouts end */}
+        
 
           { /* links start */}
           <FieldArray name="links" component={Links} />
@@ -136,12 +132,6 @@ let ProfilePublicForm = props => {
           { /* linksSocial start */}
           <FieldArray name="linksSocial" component={LinksSocial} />
           { /* linksSocial end */}
-
-          <ProfileLinksWeb
-            user={user}
-            intl={intl}
-            userLinkDelete={userLinkDelete}
-          />
 
           { /* Addresses start */}
           <FieldArray name="addresses" component={AddressesPublic} />
@@ -198,29 +188,10 @@ const ProfilePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  // add other languages abouts
-  /*
-  let abouts = selector(state, 'abouts');
-  if (abouts && abouts.length < Languages.length) {
-    for (let l = 0; l < Languages.length; l++) {
-      let found = false;
-      for (let a = 0; a < abouts.length; a++) {
-        if (abouts[a].lang == Languages[l].code) {
-          console.log(abouts[a].lang);
-          found = true;
-        }
-      }
-      if (!found) {
-        abouts.push({ 'lang': Languages[l].code, 'abouttext': '', 'index': Languages[l].index });
-      }
-    }
-    console.log(JSON.stringify(abouts));
-  }*/
-  // console.log(props.selectedLanguage);
+
   return {
     user: state.user,
     initialValues: state.user,
-    //abouts
   };
 };
 
