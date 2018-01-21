@@ -58,7 +58,7 @@ const userSchema = new Schema({
     mailinglists: {},
     confirm: String
   }],
-  links: [Link],
+  links: [],
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
