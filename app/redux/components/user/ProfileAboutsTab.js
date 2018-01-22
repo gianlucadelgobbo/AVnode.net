@@ -41,16 +41,29 @@ const ProfileAboutTabs = injectIntl(({
                 <Tab.Content animation>
                 {user && user.abouts && user.abouts.map((a,j) => (
                     <Tab.Pane eventKey={a.lang}>
+                    <label htmlFor="about">
+                        <FormattedMessage
+                        id="addabout"
+                        defaultMessage="About you"
+                        />
+                    </label>
+                    {user.abouts===undefined||""?
+                    <div className="input-group">
                     <Field
-                    className="form-control"
-                    name={a.abouttext}
-                    component="textarea"
-                    rows="12"
-                    placeholder={intl.formatMessage({
+                        className="form-control"
+                        name="about"
+                        component="textarea"
+                        rows="8"
+                        placeholder={intl.formatMessage({
                         id: 'about.placeholder',
-                        defaultMessage: a.abouttext                      
-                    })}
+                        defaultMessage: 'Tell me something about you.'
+                        })}
                     />
+                    </div>:
+                    <div className="input-group">
+                    <textarea name="styled-textarea" id="styled">{a.abouttext}</textarea>
+                    </div>
+                    }
                     </Tab.Pane>
                 ))}
                 </Tab.Content>
