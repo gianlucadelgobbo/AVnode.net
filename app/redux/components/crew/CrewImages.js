@@ -57,7 +57,7 @@ let CrewForm = props => {
           {crew && crew.teaserImage ?
             <img
               className="img-thumbnail mb-3"
-              src={crew.teaserImage.publicUrl}
+              src={crew.teaserImageFormats.large}
               alt={`image of ${crew.title}`}
             /> :
             null
@@ -78,7 +78,7 @@ let CrewForm = props => {
           {crew && crew.image ?
             <img
               className="img-thumbnail mb-3"
-              src={crew.image.publicUrl}
+              src={crew.imageFormats.medium}
               alt={`image of ${crew.title}`}
             /> :
             null

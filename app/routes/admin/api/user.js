@@ -872,7 +872,7 @@ router.put('/:id', (req, res) => {
     }
   });
 });
-
+/*
 router.post('/:id/image/teaser', up, (req, res, next) => {
   // FIXME: Why next() as error handling?
   // FIXME: Delete old asset if there is one
