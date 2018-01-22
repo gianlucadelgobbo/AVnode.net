@@ -126,6 +126,13 @@ footer {
   font-weight: 700;
   color: #700;
   margin-top: 5px;
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  z-index: 999;
+}
+.input-error input {
+  border:1px solid #700;
 }
 .input-error span:before {
   display: inline-block;
@@ -190,4 +197,7 @@ footer {
     width: 100%;
     height: 300px;
     border: none;
+  }
+  .error-label{
+
   }

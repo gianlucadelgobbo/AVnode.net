@@ -1,7 +1,15 @@
 import { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field } from 'redux-form';
-//import PublicLinkTypes from './PublicLinkTypes';
+import renderField from '../renderField';
+
+
+const email = value =>
+  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
+  'Invalid email address' : undefined
+const aol = value =>
+  value && /.+@aol\.com/.test(value) ?
+  'Really? You still use AOL for your email?' : undefined
 
 const Links = injectIntl(({
   fields,
@@ -26,6 +34,10 @@ const Links = injectIntl(({
               className="form-control"
               name={`${link}.url`}
               component="input"
+              type="email"
+              component={renderField} 
+              validate={email}
+              warn={aol}
               placeholder={intl.formatMessage({
                 id: 'url.placeholder',
                 defaultMessage: 'Url'
@@ -37,7 +49,6 @@ const Links = injectIntl(({
               type="hidden"
               value="web"
             />
-            {/*console.log(PublicLinkTypes)*/}
             <span className="input-group-btn">
               <button
                 type="button"
