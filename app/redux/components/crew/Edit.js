@@ -149,7 +149,7 @@ let CrewForm = props => {
           {crew && crew.teaserImage ?
             <img
               className="img-thumbnail mb-3"
-              src={crew.teaserImage.publicUrl}
+              src={crew.teaserImageFormats.large}
               alt={`teaser image of ${crew.name}`}
             /> :
             null
@@ -174,10 +174,10 @@ let CrewForm = props => {
                   defaultMessage='Public'
               />
           </span>
-          {crew && crew.image && crew.image.publicUrl ?
+          {crew && crew.image && crew.imageFormats.medium ?
             <div><img
               className="img-thumbnail mb-3"
-              src={crew.image.publicUrl}
+              src={crew.imageFormats.medium}
               alt={`image of ${crew.name}`}
             /></div> :
             null

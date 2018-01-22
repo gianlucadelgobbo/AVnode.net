@@ -5,6 +5,10 @@ const performers = require('./performers');
 const performances = require('./performances');
 const events = require('./events');
 
+const footage = require('./footage');
+const playlists = require('./playlists');
+const tvshows = require('./tvshows');
+
 const login = require('./login');
 const logout = require('./logout');
 const password = require('./password');
@@ -24,6 +28,10 @@ router.get('/__webpack_hmr', function(){});
 router.use('/performers', performers);
 router.use('/performances', performances);
 router.use('/events', events);
+router.use('/footage', footage);
+router.use('/playlists', playlists);
+router.use('/tvshows', tvshows);
+
 router.use('/login', login);
 router.use('/logout', logout);
 router.use('/password', password);

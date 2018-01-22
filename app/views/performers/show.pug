@@ -1,10 +1,10 @@
 extends ../layout
 block teaser
-  if performer.teaserImageUrl
+  if data.teaserImageFormats.large
     .d-flex.justify-content-center.align-items-start
       img.img-fluid(
-        src=performer.teaserImageUrl
-        alt=performer.name
+        src=data.teaserImageFormats.large
+        alt=data.name
       )
 
 block title
@@ -13,22 +13,22 @@ block title
       .container
         .row
           .col-lg-8
-            h1.display-4=performer.stagename
-            if performer.name
-              p.lead=performer.name
-            if performer.about
-              p=performer.about
-            each email in performer.publicEmails
+            h1.display-4=data.stagename
+            if data.name
+              p.lead=data.name
+            if data.about
+              p=data.about
+            each email in data.publicEmails
               i.fa.fa-fw.fa-envelope-o
               span=email.email
-            if performer.citizenship
-              p=performer.citizenship
+            if data.citizenship
+              p=data.citizenship
 
-          if performer.image
+          if data.image
             .col-lg-4
               img.card-img-top.img-fluid(
-                src=performer.image.publicUrl
-                alt=performer.name
+                src=data.imageFormats.medium
+                alt=data.name
               )
 
 block content
@@ -36,11 +36,11 @@ block content
     .col-lg-12
       h3=__('Events')
       .card-deck
-        each event in performer.events
+        each event in data.events
           .card
             if event.image
               img.card-img-top.img-fluid(
-                src=event.image.publicUrl
+                src=event.imageFormats.medium
                 alt=event.title
               )
             .card-block
@@ -55,11 +55,11 @@ block content
     .col-lg-12
       h3=__('Crews')
       .card-deck
-        each crew in performer.crews
+        each crew in data.crews
           .card
             if crew.image
               img.card-img-top.img-fluid(
-                src=crew.image.publicUrl
+                src=crew.imageFormats.medium
                 alt=crew.title
               )
             .card-block
@@ -74,11 +74,11 @@ block content
     .col-lg-12
       h3=__('Performances')
       .card-deck
-        each performance in performer.performances
+        each performance in data.performances
           .card
             if performance.image
               img.card-img-top.img-fluid(
-                src=performance.image.publicUrl
+                src=performance.imageFormats.medium
                 alt=performance.title
               )
             .card-block

@@ -2,7 +2,7 @@ extends layout
 
 block teaser
   if event && event.teaserImage
-    .teaser-block(style="background-image: url(" + event.teaserImage.publicUrl + ")")
+    .teaser-block(style="background-image: url(" + event.teaserImageFormats.large + ")")
       .container
         .teaser
           .display-6.badge.badge-success Upcoming Event

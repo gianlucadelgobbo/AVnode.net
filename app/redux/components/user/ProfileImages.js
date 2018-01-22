@@ -44,31 +44,52 @@ const ProfileImagesForm = ({
                                 defaultMessage="Images"
                             />
                         </legend>
-                        {user.file ?
-                            <div className="form-group">
-                                <label>Thumbnail</label>
-                                <p></p>
+                        <div className="form-group">
+                            <label htmlFor="smallImage">
+                                <FormattedMessage
+                                    id="smallImage"
+                                    defaultMessage="Small"
+                                />
+                            </label>
+                            {user.imageFormats && user.imageFormats.small ?
                                 <img
-                                    className="img-small mb-3"
-                                    src={`${user.squareThumbnailUrl}`}
+                                    className="img-thumbnail mb-3"
+                                    src={`${user.imageFormats.small}`}
                                     alt={`image of ${user.stagename}`}
                                 />
-                            </div>
-                            :
-                            null
-                        }
+                                :
+                                null
+                            }
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="mediumImage">
+                                <FormattedMessage
+                                    id="mediumImage"
+                                    defaultMessage="Medium"
+                                />
+                            </label>
+                            {user.imageFormats && user.imageFormats.small ?
+                                <img
+                                    className="img-thumbnail mb-3"
+                                    src={`${user.imageFormats.medium}`}
+                                    alt={`image of ${user.stagename}`}
+                                />
+                                :
+                                null
+                            }
+                        </div>
                         <div className="form-group">
                             <label htmlFor="profileImage">
                                 <FormattedMessage
                                     id="profileImage"
-                                    defaultMessage="Profile Image"
+                                    defaultMessage="Large"
                                 />
                             </label>
-                            {user && user.image ?
+                            {user.imageFormats && user.imageFormats.large ?
                                 <div>
                                     <img
                                         className="img-thumbnail mb-3"
-                                        src={user.image.publicUrl}
+                                        src={user.imageFormats.large}
                                         alt={`image of ${user.stagename}`}
                                     />
                                 </div> :
@@ -87,11 +108,11 @@ const ProfileImagesForm = ({
                                     defaultMessage="Teaser Image"
                                 />
                             </label>
-                            {user && user.teaserImage ?
+                            {user.teaserImageFormats && user.teaserImageFormats.large ?
                                 <div>
                                     <img
                                         className="img-thumbnail mb-3"
-                                        src={user.teaserImage.publicUrl}
+                                        src={user.teaserImageFormats.large}
                                         alt={`image of ${user.stagename}`}
                                     />
                                 </div> :

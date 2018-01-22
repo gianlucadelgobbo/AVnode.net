@@ -5,31 +5,15 @@ const fs = require('fs');
 const path = require('path');
 const sizeOf = require('image-size');
 
-const config = require('getconfig');
 const imageUtil = require('../../../utilities/image');
-const assetUtil = require('../../../utilities/asset');
-const slugify = require('../../../utilities/slug').parse;
 
 const logger = require('../../../utilities/logger');
 
-/* C
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-  cb(null, process.env.STORAGE);
-  },
-  filename: (req, file, cb) => {
-  cb(null, `${uuid.v4()}.${mime.extension(file.mimetype)}`);
-  }
-});
-const upload = multer({ dest: process.env.STORAGE, storage: storage });
-const up = upload.fields([
-  { name: 'image', maxCount: 1 }
-]);
-*/
 const upload = {};
 
 upload.uploader = (req, res, options, done) => {
   logger.debug("uploader");
+  logger.debug(options);
 
   // Set Folder and create it do not exist
   const d = new Date();
@@ -90,18 +74,38 @@ upload.uploader = (req, res, options, done) => {
     if (options.fields.name === 'image' && req.files[options.fields.name] && req.files[options.fields.name].length) {
       for (let a = 0; a < req.files[options.fields.name].length; a++) {
         const dimensions = sizeOf(req.files[options.fields.name][a].path);
+
         req.files[options.fields.name][a].width = dimensions.width;
         req.files[options.fields.name][a].height = dimensions.height;
         logger.debug(req.files[options.fields.name][a]);
-        if(dimensions.width > options.minwidth && dimensions.height > options.minheight) {
+        if (dimensions.width > options.minwidth && dimensions.height > options.minheight) {
           req.files[options.fields.name][a].err = __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight;
           logger.debug(__('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight);
         } else {
           logger.debug('Images minimum size is ok');
+          logger.debug(a + 1);
+          logger.debug(req.files);
+          if (a + 1 === req.files[options.fields.name].length) {
+            logger.debug('RESIZZA');
+            imageUtil.resizer(req.files[options.fields.name], options, (resizeerr, info) => {
+              if (resizeerr || !info) {
+                if (resizeerr) {
+                  logger.debug(`Image resize ERROR: ${resizeerr}`);
+                }
+                if (!info) {
+                  logger.debug('Image resize ERROR: info undefined');
+                }
+                done(resizeerr, req.files);
+              } else {
+                done(resizeerr, req.files);
+              }
+            });
+          }
         }
       }
+    } else {
+      done(err, req.files);
     }
-    done(err, req.files);
   });
 };
 
