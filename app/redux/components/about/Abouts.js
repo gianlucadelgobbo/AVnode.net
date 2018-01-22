@@ -3,15 +3,13 @@ import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import renderLabel from '../renderLabel';
 import Languages from '../language/Languages';
+import { Tab, Tabs, Row, Col, Nav, NavItem  } from 'react-bootstrap';
 
 const Abouts = injectIntl(({
   fields,
-  selectedLanguage,
-  onSwitchLanguage,
   meta: { error, submitFailed },
   intl
 }) => {
-
 
   return (
     
@@ -25,53 +23,49 @@ const Abouts = injectIntl(({
       </legend>
       {submitFailed && error && <span>{error}</span>}
 
-      <div className="container-fluid">
-        <nav className="nav-justified pull-left">
-          {Languages.map((c) => (
-            <a
-              className="nav-link"
-              href={c.index}
-              onClick={
-                e => {
-                  onSwitchLanguage(e);
-                }
-              }>
-              {c.language}
-            </a>
-          ))}
-        </nav>
-      </div>
-      {fields.map((about, index) => (
+      <Tab.Container id="left-tab-languages" defaultActiveKey={0}>
+      <Row className="clearfix">
+        <Col sm={2} className="navabout">
+            <Nav bsStyle="pills" stacked>
+            {Languages.map((lang,index) => (
+                <NavItem eventKey={index}>{lang.language}</NavItem>
+            ))}
+            </Nav>
+        </Col>
+        <Col sm={10}>
+        <Tab.Content animation>
+        {fields.map((about, index) => (
+        <Tab.Pane eventKey={index}>
         <div key={index}>
-          <div className="row">
-            <div className="col-sm-10 input-group">
-              <label htmlFor="aboutlanguage">
-                <FormattedMessage
-                  id="aboutTitle"
-                  defaultMessage="About section in language:"
-                />
-              </label>
-              <Field
-                className="form-control"
-                name={`${about}.lang`}
-                component={renderLabel}
-              />
-            </div>
-      {console.log( 'selected:' + selectedLanguage )}
-            <Field
-              className="form-control"
-              name={`${about}.abouttext`}
-              component="textarea"
-              style={{display: index==selectedLanguage ? 'block' : 'none'}}
-              rows="12"
-              placeholder={intl.formatMessage({
-                id: 'about.placeholder',
-                defaultMessage: 'About'
-              })}
+          <label htmlFor="aboutlanguage">
+            <FormattedMessage
+              id="aboutTitle"
+              defaultMessage="About section in language:"
             />
-          </div>
+          </label>
+          <Field
+            className="form-control"
+            name={`${about}.lang`}
+            component={renderLabel}
+          />
         </div>
+        <Field
+          className="form-control"
+          name={`${about}.abouttext`}
+          component="textarea"
+          
+          rows="12"
+          placeholder={intl.formatMessage({
+            id: 'about.placeholder',
+            defaultMessage: 'Tell me something about you'
+          })}
+        />
+        </Tab.Pane>
       ))}
+      </Tab.Content>
+      </Col>
+      </Row>
+  </Tab.Container>
     </div>
     </fieldset>
   );}
