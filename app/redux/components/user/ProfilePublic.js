@@ -112,18 +112,12 @@ let ProfilePublicForm = props => {
             </p>
           </div>
 
-          <ProfileAbouts
-            user={user}
-            intl={intl}
-            userAboutDelete={userAboutDelete}
-          />
 
-          <ProfileAboutsTab
-           user={user}
-           intl={intl}
-           userAboutDelete={userAboutDelete}
+          <FieldArray
+            name="abouts"
+            component={Abouts}
+
           />
-        
 
           { /* links start */}
           <FieldArray name="links" component={Links} />
@@ -189,9 +183,27 @@ const ProfilePublic = props => {
 
 const mapStateToProps = (state, props) => {
 
+  let abouts = selector(state, 'abouts');
+  if (abouts && abouts.length < Languages.length) {
+    for (let l = 0; l < Languages.length; l++) {
+      let found = false;
+      for (let a = 0; a < abouts.length; a++) {
+        if (abouts[a].lang == Languages[l].code) {
+          console.log(abouts[a].lang);
+          found = true;
+        }
+      }
+      if (!found) {
+        abouts.push({ 'lang': Languages[l].code, 'abouttext': '', 'index': Languages[l].index });
+      }
+    }
+    console.log(JSON.stringify(abouts));
+  }
+
   return {
     user: state.user,
     initialValues: state.user,
+    abouts
   };
 };
 
