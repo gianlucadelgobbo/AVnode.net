@@ -1,5 +1,5 @@
 const assert = require('assert');
-const helper = require('../../../app/utilities/asset/helper');
+const helper = require('../../../app/utilities/helper');
 
 describe('Asset Helper Utitility', () => {
   beforeEach(() => {

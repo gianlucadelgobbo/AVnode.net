@@ -1,40 +1,15 @@
 const router = require('../router')();
-const mongoose = require('mongoose');
-const Performance = mongoose.model('Performance');
+const dataprovider = require('../../utilities/dataprovider');
 
-router.get('/', (req, res, next) => {
-  Performance
-  .findOne({slug: req.params.slug})
-  .populate([{
-    path: 'image',
-    model: 'Asset'
-  },{
-    path: 'teaserImage',
-    model: 'Asset'
-  },{
-    path: 'video',
-    model: 'Asset'
-  },{
-    path: 'crews',
-    model: 'User'
-  },{
-    path: 'performers',
-    model: 'User'
-  },{
-    path: 'events',
-    model: 'Event'
-  }])
-  .exec((err, performance) => {
-    console.log(performance);
-    if (err || performance === null) {
-      console.log('routes/performances/show err:' + err);
-      return next(err);
-    }
-    res.render('performances/show', {
-      title: performance.title,
-      performance: performance
-    });
-  });
+const Model = require('mongoose').model('Performance');
+const section = 'performances';
+
+const logger = require('../../utilities/logger');
+
+router.get('/', (req, res) => {
+  logger.debug('Show ' + section);
+  dataprovider.show(req, res, section, Model);
 });
 
 module.exports = router;
+
