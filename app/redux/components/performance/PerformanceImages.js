@@ -57,7 +57,7 @@ let PerformanceForm = props => {
             {performance && performance.teaserImage ?
               <img
                 className="img-thumbnail mb-3"
-                src={performance.teaserImage.publicUrl}
+                src={performance.teaserImageFormats.large}
                 alt={`image of ${performance.title}`}
               /> :
               null
@@ -78,7 +78,7 @@ let PerformanceForm = props => {
             {performance && performance.image ?
               <img
                 className="img-thumbnail mb-3"
-                src={performance.image.publicUrl}
+                src={performance.imageFormats.medium}
                 alt={`image of ${performance.title}`}
               /> :
               null
