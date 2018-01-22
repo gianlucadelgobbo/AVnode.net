@@ -26,30 +26,6 @@ const ProfileAboutTabs = injectIntl(({
     );
 
     return (
-<<<<<<< HEAD
-        <Tabs className="tabparent">
-        {user && user.abouts && user.abouts.map((a, index) => (
-        <Tab eventKey={index} title={a.lang}>
-            <span className="deleteicon">
-                <i
-                    className="fa fa-times"
-                    data-toggle="tooltip"
-                    onClick={onAboutDelete(a)}
-                    data-placement="top"
-                    title={intl.formatMessage({
-                    id: "delete",
-                    defaultMessage: "Delete"
-                    })}
-                >
-                </i> 
-            </span>
-            {a.abouttext}
-        </Tab>
-        ))}
-        </Tabs>
-    )
-=======
->>>>>>> 418061b132b8a1efe00c48f799a3ca6cec38a1b9
 
 
         <Tab.Container id="left-tabs-example" defaultActiveKey="en">
