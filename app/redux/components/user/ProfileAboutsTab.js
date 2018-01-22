@@ -32,7 +32,6 @@ const ProfileAboutTabs = injectIntl(({
                 >
                 </i> 
             </span>
-            <br/>
             {a.abouttext}
         </Tab>
         ))}
