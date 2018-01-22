@@ -4,7 +4,6 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
-import ProfileAbouts from './ProfileAbouts';
 import Links from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
@@ -14,8 +13,6 @@ import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
 import Modal from '../Modal';
-import ProfileLinksWeb from './ProfileLinksWeb';
-import ProfileAboutsTab from './ProfileAboutsTab';
 
 import {
   fetchCountries,
@@ -42,13 +39,6 @@ let ProfilePublicForm = props => {
     userLinkDelete
   } = props;
 
-
-  let selectedLanguage = 0;
-  const onSwitchLanguage = (e) => {
-    e.preventDefault();
-    selectedLanguage = e.target.__preactattr_.href;
-    console.log('selectedLanguage:' + selectedLanguage);
-  };
   return (
     <div>
       <div className="container-fluid">
@@ -112,24 +102,26 @@ let ProfilePublicForm = props => {
             </p>
           </div>
 
-
           <FieldArray
             name="abouts"
             component={Abouts}
-
           />
 
-          { /* links start */}
-          <FieldArray name="links" component={Links} />
-          { /* links end */}
+          <FieldArray 
+            name="links" 
+            component={Links} 
+          />
 
-          { /* linksSocial start */}
-          <FieldArray name="linksSocial" component={LinksSocial} />
-          { /* linksSocial end */}
+          <FieldArray 
+            name="linksSocial" 
+            component={LinksSocial} 
+          />
 
-          { /* Addresses start */}
-          <FieldArray name="addresses" component={AddressesPublic} />
-          { /* Addresses end */}
+          <FieldArray 
+            name="addresses" 
+            component={AddressesPublic} 
+          />
+          
           <label>
             <FormattedMessage
               id="editAddressInPrivateSection"
