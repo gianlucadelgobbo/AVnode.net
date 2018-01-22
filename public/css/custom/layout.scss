@@ -168,7 +168,7 @@ footer {
   .nav>li>a {
     position: relative;
     display: block;
-    padding: 10px 15px;}
+    padding: 5px 15px;}
   .tab-content > .active{
     background-color: #fff;
     padding: 10px;
@@ -178,4 +178,16 @@ footer {
   }
   .nav-tabs>li {
     float: left;
-    margin-bottom: -1px;}
+    margin-bottom: -1px;
+  }
+  .listlanguages li {
+    list-style-type: none;
+  }
+  .navabout ul {
+    display: block;
+  }
+  textarea#styled {
+    width: 100%;
+    height: 300px;
+    border: none;
+  }
