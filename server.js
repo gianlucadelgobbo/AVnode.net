@@ -34,8 +34,8 @@ app.use(morgan('short'));
 app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
-  src: path.join(__dirname, 'public/css'),
-  dest: path.join(__dirname, 'public/css'),
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
   debug: true,
   outputStyle: 'compressed'
 }));
