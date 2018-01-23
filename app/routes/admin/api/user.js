@@ -698,6 +698,153 @@ router.put('/:id', (req, res) => {
   // FIXME: Find elegant way…
   const apiCall = `api, router.put(/user/${JSON.stringify(req.user.id)}`;
   logger.debug('________________API PUT user___________________');
+  logger.debug(`${apiCall} req.body.about: ${req.body.about}`);
+  logger.debug(`${apiCall} req.body.locality: ${req.body.locality}`);
+  logger.debug(`${apiCall} req.body.country: ${req.body.country}`);
+  logger.debug(`${apiCall} req.body.abouts: ${JSON.stringify(req.body.abouts)}`);
+  logger.debug(`${apiCall} req.body.name: ${req.body.name}`);
+  logger.debug(`${apiCall} req.body.surname: ${req.body.surname}`);
+  // abouts
+  if (req.body.about && req.body.about.length > 2) {
+    let aboutFound = false;
+    if (req.body.abouts) {
+      // find the about to set primary
+      req.body.abouts.map((a) => {
+        // BL notice the == instead of ===
+        if (a.lang == req.body.aboutlanguage) {
+          // about in this language is found
+          logger.debug(`${apiCall} about lang found ${a.abouttext}`);
+          aboutFound = true;
+          a.abouttext = req.body.about;
+        }
+      });
+    }
+    if (!aboutFound) {
+      let newAbout = { lang: req.body.aboutlanguage, abouttext: req.body.about };
+      req.body.abouts.push(newAbout);
+    }
+  }
+  // linkWeb
+  logger.debug(`${apiCall} linkWeb ${req.body.linkWeb}`);
+  if (req.body.linkWeb && req.body.linkWeb.length > 2) {
+    let linkWebFound = false;
+    if (req.body.links) {
+      // find the link
+      req.body.links.map((l) => {
+        // BL notice the == instead of ===
+        if (l.url == req.body.linkWeb) {
+          // link url is found
+          logger.debug(`${apiCall} linkWeb found ${l.url}`);
+          linkWebFound = true;
+        }
+      });
+    }
+    if (!linkWebFound) {
+      logger.debug(`${apiCall} linkWeb not found, adding ${req.body.linkWeb}`);
+      let newLinkWeb = { type: 'web', url: req.body.linkWeb };
+      req.body.links.push(newLinkWeb);
+    }
+  }
+  // linkSocial
+  if (req.body.linkSocial && req.body.linkSocial.length > 2) {
+    let linkSocialFound = false;
+    if (req.body.links) {
+      // find the link
+      req.body.links.map((l) => {
+        // BL notice the == instead of ===
+        if (l.url == req.body.linkSocial) {
+          // link is found
+          logger.debug(`${apiCall} linkSocial found ${l.url}`);
+          linkSocialFound = true;
+        }
+      });
+    }
+    if (!linkSocialFound) {
+      logger.debug(`${apiCall} linkSocial create ${req.body.linkType} ${req.body.linkSocial}`);
+      let newLinkSocial = { type: req.body.linkType, url: req.body.linkSocial };
+      req.body.links.push(newLinkSocial);
+    }
+  }
+  // linkTel
+  if (req.body.linkTel && req.body.linkTel.length > 2) {
+    let linkTelFound = false;
+    if (req.body.links) {
+      // find the link
+      req.body.links.map((l) => {
+        // BL notice the == instead of ===
+        if (l.url == req.body.linkTel) {
+          // link is found
+          logger.debug(`${apiCall} linkTel found ${l.url}`);
+          linkTelFound = true;
+        }
+      });
+    }
+    if (!linkTelFound) {
+      logger.debug(`${apiCall} linkTel create ${req.body.linkType} ${req.body.linkTel}`);
+      let newLinkTel = { type: req.body.linkType, url: req.body.linkTel };
+      req.body.links.push(newLinkTel);
+    }
+  }  
+  //  public address fields
+  if (req.body.locality && req.body.country && req.body.locality.length > 2) {
+    let localityFound = false;
+    if (req.body.addresses) {
+      // find the locality
+      req.body.addresses.map((l) => {
+        // BL notice the == instead of ===
+        if (l.locality == req.body.locality) {
+          // locality is found
+          logger.debug(`${apiCall} localityFound found ${l.locality}`);
+          l.country == req.body.country
+          localityFound = true;
+        }
+      });
+    }
+    if (!localityFound) {
+      logger.debug(`${apiCall} localityFound create ${req.body.locality} ${req.body.country}`);
+      let newAddress = { locality: req.body.locality, country: req.body.country };
+      req.body.addresses.push(newAddress);
+    }
+  }
+  const props = {
+    birthday: req.body.birthday,
+    about: req.body.about,
+    aboutlanguage: req.body.aboutlanguage,
+    name: req.body.name,
+    surname: req.body.surname,
+    gender: req.body.gender,
+    citizenship: req.body.citizenship,
+    emails: req.body.emails,
+    links: req.body.links,
+    addresses: req.body.addresses,
+    abouts: req.body.abouts,
+    stagename:req.body.stagename,
+    slug:req.body.slug
+  };
+
+  User.findById(req.user.id, (err, user) => {
+    if (err) {
+      logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
+    }
+    if (user) {
+      Object.assign(user, props);
+      user.save(() => {
+        dataprovider.fetchUser(req.user.id, (err, user) => {
+          res.json(user);
+        });
+      });
+    } else {
+      logger.debug(`${apiCall} ERROR user is null`);
+    }
+  });
+});
+
+
+/*
+router.put('/:id', (req, res) => {
+  // FIXME: Find elegant way…
+  const apiCall = `api, router.put(/user/${JSON.stringify(req.user.id)}`;
+  logger.debug('________________API PUT user___________________');
   //logger.debug(`${apiCall} req.body.linkSocial: ${req.body.linkSocial}`);
   logger.debug(`${apiCall} req.body.links: ${JSON.stringify(req.body.links)}`);
 
@@ -758,7 +905,6 @@ router.post('/:id/image/teaser', up, (req, res, next) => {
     infoMessage = `${apiCall} success: ${JSON.stringify(results)}`;
     req.flash('success', { msg: errorMessage });
     logger.info(errorMessage);
-
     User.findById(req.params.id, (err, user) => {
       if (err) {
         req.flash('errors', { msg: `findById ERROR: ${JSON.stringify(err)}` });

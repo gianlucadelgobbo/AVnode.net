@@ -16,7 +16,9 @@ import Modal from '../Modal';
 
 import {
   fetchCountries,
-  editUser
+  editUser,
+  userLinkDelete,
+  userAboutDelete
 } from '../../reducers/actions';
 
 const required = value => value ? undefined : 'Required'
@@ -31,18 +33,12 @@ let ProfilePublicForm = props => {
     abouts,
     handleSubmit,
     editUser,
-    fetchCountries
+    fetchCountries,
+    userAboutDelete,
+    intl,
+    userLinkDelete
   } = props;
 
-  if (!user._countries) {
-    fetchCountries();
-  }
-  let selectedLanguage = 0;
-  const onSwitchLanguage = (e) => {
-    e.preventDefault();
-    selectedLanguage = e.target.__preactattr_.href;
-    console.log('selectedLanguage:' + selectedLanguage);
-  };
   return (
     <div>
       <div className="container-fluid">
@@ -105,29 +101,27 @@ let ProfilePublicForm = props => {
               />
             </p>
           </div>
-          {console.log('sl:' + selectedLanguage)}
-          { /* abouts start */}
+
           <FieldArray
             name="abouts"
             component={Abouts}
-            props={{
-              selectedLanguage: selectedLanguage,
-              onSwitchLanguage: onSwitchLanguage
-            }}
           />
-          { /* abouts end */}
 
-          { /* links start */}
-          <FieldArray name="links" component={Links} />
-          { /* links end */}
+          <FieldArray 
+            name="links" 
+            component={Links} 
+          />
 
-          { /* linksSocial start */}
-          <FieldArray name="linksSocial" component={LinksSocial} />
-          { /* linksSocial end */}
+          <FieldArray 
+            name="linksSocial" 
+            component={LinksSocial} 
+          />
 
-          { /* Addresses start */}
-          <FieldArray name="addresses" component={AddressesPublic} />
-          { /* Addresses end */}
+          <FieldArray 
+            name="addresses" 
+            component={AddressesPublic} 
+          />
+          
           <label>
             <FormattedMessage
               id="editAddressInPrivateSection"
@@ -158,6 +152,7 @@ ProfilePublicForm = injectIntl(reduxForm({
   keepDirtyOnReinitialize: true,
   //validate
 })(ProfilePublicForm));
+
 const selector = formValueSelector('userPublic');
 const ProfilePublic = props => {
   //console.log('ProfilePublic props');
@@ -167,6 +162,7 @@ const ProfilePublic = props => {
   };
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
+    alert("Form Saved");
   };
   return (
     <ProfilePublicForm
@@ -179,7 +175,7 @@ const ProfilePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-  // add other languages abouts
+
   let abouts = selector(state, 'abouts');
   if (abouts && abouts.length < Languages.length) {
     for (let l = 0; l < Languages.length; l++) {
@@ -196,7 +192,7 @@ const mapStateToProps = (state, props) => {
     }
     console.log(JSON.stringify(abouts));
   }
-  // console.log(props.selectedLanguage);
+
   return {
     user: state.user,
     initialValues: state.user,
@@ -206,7 +202,9 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => ({
   editUser: dispatch(editUser),
-  fetchCountries: dispatch(fetchCountries)
+  fetchCountries: dispatch(fetchCountries),
+  userLinkDelete: dispatch(userLinkDelete),
+  userAboutDelete: dispatch(userAboutDelete)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);
