@@ -152,6 +152,7 @@ ProfilePublicForm = injectIntl(reduxForm({
   keepDirtyOnReinitialize: true,
   //validate
 })(ProfilePublicForm));
+
 const selector = formValueSelector('userPublic');
 const ProfilePublic = props => {
   //console.log('ProfilePublic props');
