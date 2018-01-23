@@ -4,12 +4,7 @@ import { Field } from 'redux-form';
 import renderField from '../renderField';
 
 
-const email = value =>
-  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
-  'Invalid email address' : undefined
-const aol = value =>
-  value && /.+@aol\.com/.test(value) ?
-  'Really? You still use AOL for your email?' : undefined
+const required = value => value ? undefined : 'Required'
 
 const Links = injectIntl(({
   fields,
@@ -34,10 +29,9 @@ const Links = injectIntl(({
               className="form-control"
               name={`${link}.url`}
               component="input"
-              type="email"
+              type="text"
               component={renderField} 
-              validate={email}
-              warn={aol}
+              validate={required}
               placeholder={intl.formatMessage({
                 id: 'url.placeholder',
                 defaultMessage: 'Url'
@@ -49,7 +43,7 @@ const Links = injectIntl(({
               type="hidden"
               value="web"
             />
-            <span className="input-group-btn">
+            <span className="input-group-addon">
               <button
                 type="button"
                 className="btn btn-danger"
