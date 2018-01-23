@@ -5,7 +5,7 @@ const LinkSocial = ({ linkSocial, onEdit, onDelete, intl }) => {
   return (
     <li className="list-group-item justify-content-between">
       {linkSocial.type} : <a href={`${linkSocial.url}`} target="_blank">{linkSocial.url}</a>
-      {/*linkSocial.is_primary ?
+      {linkSocial.is_primary ?
         <span className="badge badge-primary">
           <FormattedMessage
             id="primary"
@@ -27,7 +27,7 @@ const LinkSocial = ({ linkSocial, onEdit, onDelete, intl }) => {
               })}
             >
             </i>
-          </button>*/}
+          </button>}
       <span>
         <button
           type="button"

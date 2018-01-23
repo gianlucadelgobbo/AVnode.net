@@ -43,7 +43,7 @@ const Links = injectIntl(({
               type="hidden"
               value="web"
             />
-            <span className="input-group-addon">
+             <span className="input-group-btn">
               <button
                 type="button"
                 className="btn btn-danger"
