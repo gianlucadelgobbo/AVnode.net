@@ -1,0 +1,44 @@
+// Availability
+- var count = 0;
+- call.performance = parseInt(call.performance)
+- console.log('call.subscriptions')
+- console.log(call.subscriptions)
+- for (var b=0;b<call.admitted[call.performance].users.length;b++)
+  - if (call.admitted[call.performance].users[b].members)
+    - for (var c=0;c<call.admitted[call.performance].users[b].members.length;c++)
+      //- console.log(call.admitted[call.performance].users[b].members[c])
+      .row.mb-3
+        .col-md-1
+          .text-center
+            input.switch(id="subscription"+b+"_"+c, name="subscriptions[" + count + "][subscriber_id]", value=call.admitted[call.performance].users[b].members[c]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].members[c].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined))
+            input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden")
+        .col-md-11
+          label(for="subscription"+b+"_"+c)
+            h3=call.admitted[call.performance].users[b].members[c].stagename+count
+            .subscription(style=!call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
+              - var dates = call.subscriptions[count].days ? call.subscriptions[count].days : []
+              - console.log("STOCAZZO"+count)
+              - console.log(dates)
+              - for (var d=0;d<dett.schedule.length;d++)
+                - console.log(dett.schedule[d])
+                .form-check
+                  input.form-check-input(id="subscription"+b+"_"+c+"_"+d, name="subscriptions[" + count + "][days][" + d + "]", value=dett.schedule[d].date.toString(),    type="checkbox", checked=(dates.indexof(dett.schedule[d].date.toString())!=-1) ? "checked" : undefined))
+                  label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
+                    !=" "+dett.schedule[d].date_formatted
+      - count++
+  - else
+    .row.mb-3
+      .col-md-1
+        .text-center
+          input.switch(id="subscription"+b, name="subscriptions[" + count + "][subscriber_id]", value=call.admitted[call.performance].users[b]._id, onchange="$(this).parent().parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].members[c].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off",checked=call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined)
+          input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden")
+    .col-md-9
+      label(for="subscription"+b)
+        h3=call.admitted[call.performance].users[b].stagename
+        .subscription(style=!call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
+          - for (var c=0;c<dett.schedule.length;c++)
+            .checkbox
+              label
+                input(name="subscriptions[" + count + "][days][" + c + "]", value=dett.schedule[c].date,    type="checkbox",checked=call.subscriptions[count] && call.subscriptions[count].days && call.subscriptions[count].days[c]==dett.schedule[c].date ? "checked" : undefined)
+                !=dett.schedule[c].date
+      - count++
