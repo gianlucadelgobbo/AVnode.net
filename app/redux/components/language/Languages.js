@@ -1,4 +1,4 @@
-const config = require('../../../../config/languages.json');
+import config from '../../../../config/languages.json';
 export default config;
 
 // before 20180103 const allLanguages = require('language-list')();

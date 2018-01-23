@@ -14,6 +14,7 @@ const ProfileAboutsForm = injectIntl(({
     console.log('onAboutDelete' + about);
     return userAboutDelete(user._id, about.lang);
   };
+  const required = value => value ? undefined : 'Required'
   return (
     <fieldset className="form-group">
       <legend>
@@ -41,14 +42,16 @@ const ProfileAboutsForm = injectIntl(({
           })}
         />
       </div>
-      <div className="row">
-        <div className="col-sm-10 input-group">
+   
           <label htmlFor="aboutlanguage">
             <FormattedMessage
               id="language"
               defaultMessage="Language"
             />
           </label>
+          <div className="row">
+          <div className="col-md-10">
+          <div className="input-group">
           {Languages ?
             <Field
               className="form-control custom-select"
@@ -71,29 +74,22 @@ const ProfileAboutsForm = injectIntl(({
             <p>Loading languages…</p>
           }
         </div>
-        <div className="col-sm-2 input-group-addon">
+        </div>
+        <div className="col-md-2">
+        <div className="input-group-addon">
           <button className="btn btn-success btn-sm">
             <i className="fa fa-plus"></i>
           </button>
         </div>
-      </div>
+        </div>
+     </div>
       <label>
         <FormattedMessage
           id="manageabout"
           defaultMessage="Manage your About texts"
         />
       </label>
-      <ul className="list-group mt-2">
-        {
-          user && user.abouts && user.abouts.map((a) => (
-            <About
-              about={a}
-              onDelete={onAboutDelete(a)}
-              intl={intl}
-            />
-          ))
-        }
-      </ul>
+
     </fieldset>
   );
 });
