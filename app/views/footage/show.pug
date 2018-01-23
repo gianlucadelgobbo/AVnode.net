@@ -1,26 +1,26 @@
 extends ../layout
 
 block teaser
-  if crew.teaserImage
+  if data.teaserImage
     .d-flex.justify-content-center.align-items-start
       img.card-img-top.img-fluid(
-        src=`${crew.teaserImage.publicUrl}`
-        alt=`${crew.name}`
+        src=`${data.teaserImageFormats.large}`
+        alt=`${data.name}`
       )
 
 block title
-  if title
+  if data.title
     .jumbotron.jumbotron-fluid
       .container
         .row
           .col-lg-8
-            h1.display-4=title
-            p=crew.about
+            h1.display-4=data.title
+            p=data.about
           .col-lg-4
-            if crew.image
+            if data.image
               img.card-img-top.img-fluid(
-                src=crew.image.publicUrl
-                alt=crew.title
+                src=data.imageFormats.medium
+                alt=data.title
               )
 
 block content
@@ -28,11 +28,11 @@ block content
     .col-lg-12
       h3=__('Members')
       .card-columns
-        each member in crew.members
+        //each member in data.members
           .card
             if member.image
               img.card-img-top.img-fluid(
-                src=member.image.publicUrl
+                src=member.imageFormats.medium
                 alt=member.name
               )
             .card-block

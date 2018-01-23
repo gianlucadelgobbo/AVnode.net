@@ -1,0 +1,30 @@
+// Packages
+- for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
+  - console.log(dett.organizationsettings.call.calls[call.index].packages)
+  - if (dett.organizationsettings.call.calls[call.index].packages[b].personal)
+    - for (var c=0;c<call.subscriptions.length;c++)
+      if call.subscriptions[c].stagename
+        .row
+          .col-md-1
+            .checkbox
+                if dett.organizationsettings.call.calls[call.index].packages[b].requested
+                  input(id="package"+c+"_"+b, name="placeolder", value=dett.organizationsettings.call.calls[call.index].packages[b].name,    type="checkbox", checked="checked", disabled="disabled")
+                  input(name="subscriptions[" + c + "][packages][" + b + "]", value=dett.organizationsettings.call.calls[call.index].packages[b].name,    type="hidden")
+                else
+                  input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "]", value=dett.organizationsettings.call.calls[call.index].packages[b].name,    type="checkbox",checked=(call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b]==dett.organizationsettings.call.calls[call.index].packages[b].name) || dett.organizationsettings.call.calls[call.index].packages[b].requested ? "checked" : undefined)
+          .col-md-8
+              label(for="package"+c+"_"+b)
+                h3!="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + __("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+__("requested")+")" : "")
+                !=dett.organizationsettings.call.calls[call.index].packages[b].description
+                - if (dett.organizationsettings.call.calls[call.index].packages[b].allow_options)
+                  h3=dett.organizationsettings.call.calls[call.index].packages[b].options_name
+                  - var options = dett.organizationsettings.call.calls[call.index].packages[b].options.split(",")
+                  - for (var d=0;d<options.length;d++)
+                    .checkbox
+                      label
+                        input(name="subscriptions[" + c + "][packages][" + b + "][option]", value=options[d],    type="checkbox",checked=call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b].option==options[d] ? "checked" : undefined)
+                        !=options[d]
+          .col-md-3
+            .text-right
+              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price
+              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price_formattednpm

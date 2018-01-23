@@ -1,130 +1,197 @@
+const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
 const indexPlugin = require('../utilities/elasticsearch/Event');
-const Category = require('./Category');
+
+const About = require('./shared/About');
+const MediaImage = require('./shared/MediaImage');
+const Link = require('./shared/Link');
+const Partnership = require('./shared/Partnership');
+const Venue = require('./shared/Venue');
+const Schedule = require('./shared/Schedule');
+//const Package = require('./shared/Package');
+
+const adminsez = 'event';
+const logger = require('../utilities/logger');
+
+const packageSchema = new Schema({
+  name: String,
+  price: Number,
+  description: String,
+  personal: { type: Boolean, default: false },
+  requested: { type: Boolean, default: false },
+  allow_multiple: { type: Boolean, default: false },
+  allow_options: { type: Boolean, default: false },
+  options_name: String,
+  options: String,
+  daily: { type: Boolean, default: false },
+  start_date: Date,
+  end_date: Date
+}, {
+  toObject: {
+    virtuals: true,
+    getters: true
+  },
+  toJSON: {
+    virtuals: true,
+    getters: true
+  }
+});
+
+packageSchema.virtual('price_formatted').get(function () {
+  //return accounting.formatMoney(this.price, '€ ', 2, '.', ',');
+  return this.price;
+});
+
+const callSchema = new Schema({
+  title: String,
+  email: String,
+  permalink: String,
+  start_date: Date,
+  end_date: Date,
+  admitted: [{ type: Schema.ObjectId, ref: 'Category' }],
+  excerpt: String,
+  terms: String,
+  packages: [packageSchema],
+  topics: [{
+    name: String,
+    description: String
+  }]
+}, {
+  toObject: {
+    virtuals: true,
+    getters: true
+  },
+  toJSON: {
+    virtuals: true,
+    getters: true
+  }
+});
+callSchema.virtual('start_date_formatted').get(function () {
+  return moment(this.start_date).format('MMMM Do YYYY, h:mm:ss a');
+});
+callSchema.virtual('end_date_formatted').get(function () {
+  return moment(this.end_date).format('MMMM Do YYYY, h:mm:ss a');
+});
 
 const eventSchema = new Schema({
+  old_id: String,
+  creation_date: Date,
+
   slug: { type: String, unique: true },
   title: String,
-  subtitle: String,
-  image: { type : Schema.ObjectId, ref : 'Asset' },
-  teaserImage: { type : Schema.ObjectId, ref : 'Asset' },
-  file: { file: String },  
-  venues: [{ type : Schema.ObjectId, ref : 'Venue', default: []}],
-  galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],  
-  starts: Date,
-  ends: Date,
-  schedule:[
-    {
-      starts: Date, 
-      ends: Date,
-      venue: { type : Schema.ObjectId, ref : 'Venue', default: []}
-    }
-  ],
-  about: String,
-  aboutlanguage: String, // BL about default language
-  abouts: [], // BL multilang
-  // not needed: address: String, stored in Venue
-  categories: [Category],
-  links: [],
+  subtitles: [About],
+  image: MediaImage,
+  teaserImage: MediaImage,
+  //file: { file: String },
+  abouts: [About], // BL multilang
+  links: [Link],
   is_public: { type: Boolean, default: false },
-  is_open: { type: Boolean, default: false }
+  gallery_is_public: { type: Boolean, default: false },
+  is_freezed: { type: Boolean, default: false },
+  stats: {},
+  partners: [Partnership],
+  categories: [{ type: Schema.ObjectId, ref: 'Category' }],
+  users:  [{ type: Schema.ObjectId, ref: 'Users' }],
+  galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
+  schedule:[Schedule],
+  settings: {
+    permissions: {
+        administrator: [{ type: Schema.ObjectId, ref: 'User' }]
+    }
+  },
+  organizationsettings: {
+    program_builder: { type: Boolean, default: false },
+    advanced_proposals_manager: { type: Boolean, default: false },
+    call_is_active: { type: Boolean, default: false },
+    call: {
+      nextEdition: String,
+      subImg: String,
+      subBkg: String,
+      colBkg: String,
+      permissions: {},
+      calls: [callSchema]
+    }
+  },
+  tobescheduled: [{
+    schedule: {
+      categories: [{ type: Schema.ObjectId, ref: 'Category' }]
+    },
+    performance: { type: Schema.ObjectId, ref: 'Performance' }
+  }],
+  program: [{
+    schedule: {
+      date: Date,
+      starttime: Date,
+      endtime: Date,
+      data_i: String,
+      data_f: String,
+      ora_i: Number,
+      ora_f: Number,
+      rel_id: String,
+      user_id: String,
+      confirm: String,
+      day: String,
+      venue: Venue,
+      categories: [{ type: Schema.ObjectId, ref: 'Category' }]
+    },
+    performance: { type: Schema.ObjectId, ref: 'Performance' }
+  }]
 }, {
   timestamps: true,
   toObject: {
-    virtuals: true
+    virtuals: true,
+    getters: true
   },
   toJSON: {
-    virtuals: true
+    virtuals: true,
+    getters: true
   }
 });
-// return thumbnail
-eventSchema.virtual('squareThumbnailUrl').get(function () {
-  let squareThumbnailUrl = '/images/profile-default.svg';
 
-  if (this.file && this.file.file) {
-    const serverPath = this.file.file;
+
+
+
+eventSchema.virtual('imageFormats').get(function () {
+  logger.debug('imageFormats');
+  let imageFormats = {};
+  //console.log(config.cpanel[adminsez].sizes.image);
+  if (this.image && this.image.file) {
+    for(let format in config.cpanel[adminsez].media.image.sizes) {
+      imageFormats[format] = config.cpanel[adminsez].media.image.sizes[format].default;
+    }
+    const serverPath = this.image.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    squareThumbnailUrl = `${process.env.WAREHOUSE}/${localPath}/55x55/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].media.image.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
   }
-  return squareThumbnailUrl;
+  return imageFormats;
 });
-// return card image
-eventSchema.virtual('cardUrl').get(function () {
-  let cardUrl = '/images/profile-default.svg';
 
-  if (this.file && this.file.file) {
-    const serverPath = this.file.file;
+eventSchema.virtual('teaserImageFormats').get(function () {
+  let teaserImageFormats = {};
+  //console.log(config.cpanel[adminsez].sizes.teaserImage);
+  if (this.teaserImage && this.teaserImage.file) {
+    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[format] = config.cpanel[adminsez].media.teaserImage.sizes[format].default;
+    }
+    const serverPath = this.teaserImage.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    cardUrl = `${process.env.WAREHOUSE}/${localPath}/400x300/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
   }
-  return cardUrl;
-});
-// return original image
-eventSchema.virtual('imageUrl').get(function () {
-  let image = '/images/profile-default.svg';
-
-  if (this.image) {
-    image = '/storage/' + this.image + '/512/200';
-  }
-  if (this.file && this.file.file) {
-    const serverPath = this.file.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    /* if (fs.existsSync(localPath)) {
-
-    } else {
-      try {
-        fs.mkdirSync(localPath);
-      } catch (err) {
-        if (err.code !== 'EEXIST') {
-          console.log(err);
-        }
-      }
-    }  */
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    image = `${process.env.WAREHOUSE}/${localPath}/55x55/${localFileNameWithoutExtension}_jpg.jpg`;
-    // original size image = `${process.env.WAREHOUSE}${this.file.file}`;
-    /* console.log(image);
-    var file = fs.createWriteStream(localPath + '/' + localFileName);
-    var request = https.get(image, function (response) {
-      response.pipe(file);
-      file.on('finish', function () {
-        console.log('The file was saved:' + image);
-
-      });
-    }); */
-
-  }
-  return image;
-});
-
-eventSchema.virtual('organizers', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('organizing_crews', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('performances', {
-  ref: 'Performance',
-  localField: '_id',
-  foreignField: 'events'
+  return teaserImageFormats;
 });
 
 eventSchema.virtual('editUrl').get(function () {
@@ -135,6 +202,25 @@ eventSchema.virtual('publicUrl').get(function () {
   return `/events/${this.slug}`;
 });
 
+/* C
+eventSchema.virtual('organizers',{
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'events'
+});
+
+eventSchema.virtual('organizing_crews',{
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'events'
+});
+
+eventSchema.virtual('performances',{
+  ref: 'Performance',
+  localField: '_id',
+  foreignField: 'events'
+});
+
 eventSchema.virtual('startsFormatted').get(function () {
   return moment(this.starts).format(process.env.DATEFORMAT);
 });
@@ -143,19 +229,7 @@ eventSchema.virtual('endsFormatted').get(function () {
   return moment(this.ends).format(process.env.DATEFORMAT);
 });
 
-eventSchema.virtual('mapUrl').get(function () {
-  let url = '';
-  if (this.address) {
-    url = 'https://maps.googleapis.com/maps/api/staticmap';
-    url += '?center=' + encodeURIComponent(this.address);
-    url += '&zoom=10';
-    url += '&size=400x200';
-    url += '&key=' + process.env.GOOGLEMAPSAPIKEY;
-  }
-  return url;
-});
-
-eventSchema.virtual('organizers', {
+eventSchema.virtual('organizers',{
   ref: 'User',
   localField: '_id',
   foreignField: 'events'
@@ -172,15 +246,17 @@ eventSchema.virtual('dateFormatted').get(function () {
   return date;
 });
 
-eventSchema.pre('remove', function(next) {
+eventSchema.pre('remove',function(next) {
   const event = this;
   event.model('User').update(
     { $pull: { events: event._id } },
     next
   );
 });
+*/
 
 eventSchema.plugin(indexPlugin());
 
 const Event = mongoose.model('Event', eventSchema);
+
 module.exports = Event;
