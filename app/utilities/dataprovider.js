@@ -97,8 +97,25 @@ dataprovider.fetchShow = (req, model, cb) => {
   logger.debug('fetchShow '+req.params.slug);  
   model.
   findOne({slug: req.params.slug}).
-  //.populate()
+  populate().
   exec((err, data) => {
+    cb(err, data);
+  });
+};
+
+dataprovider.getPerformanceByIds = (req, ids, cb) => {
+  logger.debug('getPerformanceByIds ');
+  logger.debug(ids);
+
+  Performance.find({'users':{$in: ids}}).
+  populate({path: 'categories', select: 'name'}).
+  populate({path: 'users', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+  select({ title: 1, categories: 1 }).
+  exec((err, data) => {
+    logger.debug('getPerformanceByIds Res');  
+    logger.debug(err);  
+    //logger.debug(data);  
+    for (var item in data) logger.debug(data[item].users);  
     cb(err, data);
   });
 };

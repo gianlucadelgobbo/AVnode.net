@@ -1,0 +1,22 @@
+// Active calls
+- for(var a=0;a<dett.organizationsettings.call.calls.length;a++)
+  - var admitted = []
+  - for(var b=0;b<dett.organizationsettings.call.calls[a].admitted.length;b++)
+    - admitted.push(dett.organizationsettings.call.calls[a].admitted[b])
+  - var topics = []
+  - for(var b=0;b<dett.organizationsettings.call.calls[a].topics.length;b++)
+    - topics.push(dett.organizationsettings.call.calls[a].topics[b].name)
+  .row
+    .col-md-1
+      .text-right
+        input(type="radio" name="index" value=a checked=call.index==a ? "checked" : undefined)
+    .col-md-11
+      label
+        h4=dett.organizationsettings.call.calls[a].title
+        p=__("Start date")+": "+dett.organizationsettings.call.calls[a].start_date_formatted+" | "+__("End date")+": "+dett.organizationsettings.call.calls[a].end_date+" | "+__("Email")+": "+dett.organizationsettings.call.calls[a].email
+        p=__("Admitted projects") + ": "
+        ul
+          each cat in admitted
+            li=cat.name
+        p=__("Topics") + ": " + topics.join(", ")
+        p!=dett.organizationsettings.call.calls[a].excerpt

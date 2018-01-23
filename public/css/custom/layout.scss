@@ -138,3 +138,121 @@ footer {
   margin-right: 5px;
   margin-left: 5px;
 }
+
+/* PROGRESS BAR */
+li.active > a.hidden-xs {
+  display: block!important;
+ }
+ li.active > a.visible-xs {
+   display: none!important; 
+ }
+ .nav-pills.nav-wizard > li {
+   position: relative;
+   overflow: visible;
+   border-right: 10px solid #fff;
+   border-left: 10px solid #fff;
+   background-color: $gray-200;
+   cursor: default;
+  }
+ .nav-pills.nav-wizard > li:first-child {
+   border-left: 0;
+ }
+ .nav-pills.nav-wizard > li:first-child a {
+   border-radius: 5px 0 0 5px;
+ }
+ .nav-pills.nav-wizard > li:last-child {
+   border-right: 0;
+ }
+ .nav-pills.nav-wizard > li:last-child a {
+   border-radius: 0 5px 5px 0;
+ }
+ .nav-pills.nav-wizard > li a {
+   border-radius: 0;
+   background-color: $gray-200;
+   padding: 8px;
+   display: block;
+ }
+ .nav-pills.nav-wizard > li .nav-arrow {
+   position: absolute;
+   top: 0px;
+   right: -20px;
+   width: 0px;
+   height: 0px;
+   border-style: solid;
+   border-width: 20px 2px 20px 20px;
+   border-color: transparent transparent transparent $gray-200;
+   z-index: 150;
+ }
+ .nav-pills.nav-wizard > li .nav-wedge {
+   position: absolute;
+   top: 0px;
+   left: -19px;
+   width: 0px;
+   height: 0px;
+   border-style: solid;
+   border-width: 20px 0 20px 20px;
+   border-color: $gray-200 $gray-200 $gray-200 transparent;
+   z-index: 150;
+ }
+ .nav-pills.nav-wizard > li.link:hover .nav-arrow {
+   border-color: transparent transparent transparent #aaa;
+ }
+ .nav-pills.nav-wizard > li.link:hover .nav-wedge {
+   border-color: #aaa #aaa #aaa transparent;
+ }
+ .nav-pills.nav-wizard > li.link:hover a {
+  background-color: #aaa;
+  color: #fff;
+}
+
+.nav-pills.nav-wizard > li.active .nav-arrow {
+   border-color: transparent transparent transparent $brand-primary;
+ }
+ .nav-pills.nav-wizard > li.active .nav-wedge {
+   border-color: $brand-primary $brand-primary $brand-primary transparent;
+ }
+ .nav-pills.nav-wizard > li.active a {
+   background-color: $brand-primary;
+   color: #fff;
+   text-decoration: none;
+   display: block;
+ }
+ /* CSS for Credit Card Payment form */
+ .credit-card-box .panel-title {
+     display: inline;
+     font-weight: bold;	
+ }
+ .credit-card-box .form-control.error {
+     border-color: red;
+     outline: 0;
+     box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+ }
+ .credit-card-box label.error {
+   font-weight: bold;
+   color: red;
+   padding: 2px 8px;
+   margin-top: 2px;
+ }
+ .credit-card-box .payment-errors {
+   font-weight: bold;
+   color: red;
+   padding: 2px 8px;
+   margin-top: 2px;
+ }
+ .credit-card-box label {
+     display: block;
+ }
+ 
+ .credit-card-box .display-tr {
+     display: table-row;
+ }
+ .credit-card-box .display-td {
+     display: table-cell;
+     vertical-align: middle;
+     width: 50%;
+ }
+ /* Just looks nicer */
+ .credit-card-box .panel-heading img {
+     min-width: 180px;
+ }
+ /* PROGRESS BAR */
