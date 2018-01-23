@@ -13,17 +13,30 @@ html(lang='en')
     link(rel='shortcut, icon', href='/images/favicon.ico')
     meta(name='msapplication-config', content='/images/browserconfig.xml')
     meta(name='theme-color', content='#ffffff')
+    //link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css')
     link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
     link(rel='stylesheet', href='/css/main.css')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js')
+    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
+    //script(src='/js/ajax.js')
+    //script(src='/js/autocomplete.js')
   body
-    .navbar-expand-lg
-      nav.navbar.navbar-dark
-        a.navbar-brand(href='/')
-          img(src='/images/logo.svg', width='30', height='30', alt='')
-        button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbar-collapse")
+    .container
+      nav.navbar.navbar-toggleable-md.navbar-fixed-top.navbar-inverse.bg-inverse
+        button.navbar-toggler.navbar-toggler-right(
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar-collapse"
+        )
           span.navbar-toggler-icon
-        
-        .collapse.navbar-collapse(id="navbar-collapse")
+        a.navbar-brand(href='/')
+          img(src='/images/logo.svg', width='30', height='30', class='d-inline-block align-top' alt='')
+        .collapse.navbar-collapse(
+          id="navbar-collapse"
+        )
           ul.navbar-nav.mr-auto
             li.nav-item
               a.nav-link(href='/performers')=__('Performers')
@@ -58,8 +71,6 @@ html(lang='en')
               a.nav-link.ml-3(href='/search?q=*')
                 i.fa.fa-search.fa-lg.fa-fw
                 =__('Search')
-    .container
-      
 
     include partials/flash
     main
@@ -77,13 +88,6 @@ html(lang='en')
     footer
       .container
         .text-muted=__('AVnode.net')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js')
-    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
     //script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js')
     //script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js')
     //script(src='//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js')
-    //script(src='/js/ajax.js')
-    //script(src='/js/autocomplete.js')

@@ -63,6 +63,7 @@
     "preact-intl": "^1.0.0",
     "pug": "^2.0.0-beta6",
     "ramda": "^0.25.0",
+    "react-bootstrap": "^0.32.0",
     "react-dropzone": "^3.11.0",
     "react-intl": "^2.2.3",
     "react-redux": "^5.0.3",

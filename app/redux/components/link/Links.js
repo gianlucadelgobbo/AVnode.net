@@ -1,7 +1,10 @@
 import { h } from 'preact';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field } from 'redux-form';
-//import PublicLinkTypes from './PublicLinkTypes';
+import renderField from '../renderField';
+
+
+const required = value => value ? undefined : 'Required'
 
 const Links = injectIntl(({
   fields,
@@ -26,6 +29,9 @@ const Links = injectIntl(({
               className="form-control"
               name={`${link}.url`}
               component="input"
+              type="text"
+              component={renderField} 
+              validate={required}
               placeholder={intl.formatMessage({
                 id: 'url.placeholder',
                 defaultMessage: 'Url'
@@ -37,8 +43,7 @@ const Links = injectIntl(({
               type="hidden"
               value="web"
             />
-            {/*console.log(PublicLinkTypes)*/}
-            <span className="input-group-btn">
+             <span className="input-group-btn">
               <button
                 type="button"
                 className="btn btn-danger"
