@@ -13,6 +13,7 @@ import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
 import Modal from '../Modal';
+import ProfileLinksSocial from './ProfileLinksSocial';
 
 import {
   fetchCountries,
@@ -115,6 +116,10 @@ let ProfilePublicForm = props => {
           <FieldArray 
             name="linksSocial" 
             component={LinksSocial} 
+          />
+
+          <ProfileLinksSocial
+          user={user.LinksSocial}
           />
 
           <FieldArray 

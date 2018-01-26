@@ -704,6 +704,7 @@ router.put('/:id', (req, res) => {
   logger.debug(`${apiCall} req.body.abouts: ${JSON.stringify(req.body.abouts)}`);
   logger.debug(`${apiCall} req.body.name: ${req.body.name}`);
   logger.debug(`${apiCall} req.body.surname: ${req.body.surname}`);
+
   // abouts
   if (req.body.about && req.body.about.length > 2) {
     let aboutFound = false;
