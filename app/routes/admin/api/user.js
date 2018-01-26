@@ -807,7 +807,6 @@ router.put('/:id', (req, res) => {
       req.body.addresses.push(newAddress);
     }
   }
-
   const props = {
     birthday: req.body.birthday,
     about: req.body.about,
