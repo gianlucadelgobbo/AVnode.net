@@ -175,7 +175,7 @@ userSchema.pre('save', function save(next) {
   console.log('userSchema.pre(save) id:' + this._id);
   const user = this;
   console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
-  //console.log('userSchema.pre(save) user:' + JSON.stringify(user));
+  //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
