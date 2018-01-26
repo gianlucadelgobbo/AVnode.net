@@ -746,6 +746,7 @@ router.put('/:id', (req, res) => {
     }
   }
   // linkSocial
+  logger.debug(`${apiCall} linkSocial ${req.body.linkSocial}`);
   if (req.body.linkSocial && req.body.linkSocial.length > 2) {
     let linkSocialFound = false;
     if (req.body.links) {
@@ -806,6 +807,7 @@ router.put('/:id', (req, res) => {
       req.body.addresses.push(newAddress);
     }
   }
+
   const props = {
     birthday: req.body.birthday,
     about: req.body.about,
