@@ -30,18 +30,16 @@ const Links = injectIntl(({
               name={`${link}.url`}
               component="input"
               type="text"
-              component={renderField} 
-              validate={required}
               placeholder={intl.formatMessage({
                 id: 'url.placeholder',
                 defaultMessage: 'Url'
               })}
             />
+            {console.log(link)}
             <Field
               name={`${link}.type`}
               component="input"
-              type="hidden"
-              value="web"
+              type="text"
             />
              <span className="input-group-btn">
               <button

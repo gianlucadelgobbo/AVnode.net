@@ -49,7 +49,7 @@ const ProfileLinksSocialForm = injectIntl(({
               className="form-control custom-select"
               name="linkType"
               component="select"
-              value={user.linkType}
+              value={user}
             >
               {SocialLinkTypes.map((c) => (
                 <option value={c.key.toLowerCase()}>{c.name}</option>
