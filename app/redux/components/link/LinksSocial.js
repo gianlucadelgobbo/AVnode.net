@@ -31,7 +31,12 @@ const LinksSocial = injectIntl(({
                 defaultMessage: 'Url'
               })}
             />
-            {SocialLinkTypes ?
+             <Field
+              name={`${link}.type`}
+              component={({ input, val }) => input.onChange(val)}
+              val="social"
+            />
+            {/*SocialLinkTypes ?
               <Field
                 className="form-control custom-select"
                 name={`${link}.type`}
@@ -43,8 +48,8 @@ const LinksSocial = injectIntl(({
                 }
               </Field> :
               <p>Loading a link types…</p>
-            }
-
+              */}
+            <span className="input-group-btn">
             <button
               type="button"
               className="btn btn-danger"
@@ -61,6 +66,7 @@ const LinksSocial = injectIntl(({
               >
               </i>
             </button>
+            </span>
           </div>
         </div>
       ))}

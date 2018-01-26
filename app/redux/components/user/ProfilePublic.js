@@ -32,6 +32,7 @@ let ProfilePublicForm = props => {
   const {
     user,
     abouts,
+    links,
     handleSubmit,
     editUser,
     fetchCountries,
@@ -154,7 +155,7 @@ let ProfilePublicForm = props => {
 ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true,
+  keepDirtyOnReinitialize: true
   //validate
 })(ProfilePublicForm));
 
@@ -180,7 +181,7 @@ const ProfilePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-
+    
   let abouts = selector(state, 'abouts');
   if (abouts && abouts.length < Languages.length) {
     for (let l = 0; l < Languages.length; l++) {
