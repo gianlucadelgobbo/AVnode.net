@@ -48,8 +48,8 @@ const userSchema = new Schema({
   }],
   addresses: [Address],
   abouts: [About],
-  links: [Link],
-
+  web: [Link],
+  social:[Link],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
