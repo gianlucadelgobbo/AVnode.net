@@ -36,16 +36,11 @@ const Links = injectIntl(({
               })}
             />
             {console.log(link)}
-            <Field
+            {/*<Field
               name={`${link}.type`}
-<<<<<<< HEAD
-              component="input"
-              type="text"
-=======
               component={({ input, val }) => input.onChange(val)}
               val="web"
->>>>>>> 18d3f4c6dfb57fb6b8fba9b024e71cc1199e538a
-            />
+            />*/}
              <span className="input-group-btn">
               <button
                 type="button"

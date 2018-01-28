@@ -49,5 +49,6 @@
 	"Performance selection": "Performance selection",
 	"Email %s not found.": "Email %s not found.",
 	"Create Account": "Create Account",
-	"Account already exists.": "Account already exists."
+	"Account already exists.": "Account already exists.",
+	"Invalid email or password.": "Invalid email or password."
 }

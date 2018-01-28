@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
-import Links from '../link/Links';
+import LinksWeb from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
@@ -22,11 +22,11 @@ import {
   userAboutDelete
 } from '../../reducers/actions';
 
+
 const required = value => value ? undefined : 'Required'
 const maxLength = max => value =>
   value && value.length > max ? `Must be ${max} characters or less` : undefined
 const maxLength15 = maxLength(15);
-
 
 let ProfilePublicForm = props => {
   const {
@@ -40,6 +40,11 @@ let ProfilePublicForm = props => {
     intl,
     userLinkDelete
   } = props;
+
+
+  const linksWeb = value => {
+
+  }
 
   return (
     <div>
@@ -110,17 +115,13 @@ let ProfilePublicForm = props => {
           />
 
           <FieldArray 
-            name="links" 
-            component={Links} 
+            name="web" 
+            component={LinksWeb} 
           />
 
           <FieldArray 
-            name="linksSocial" 
+            name="social"
             component={LinksSocial} 
-          />
-
-          <ProfileLinksSocial
-          user={user.LinksSocial}
           />
 
           <FieldArray 

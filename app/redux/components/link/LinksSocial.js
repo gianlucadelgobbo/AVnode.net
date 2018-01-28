@@ -31,11 +31,11 @@ const LinksSocial = injectIntl(({
                 defaultMessage: 'Url'
               })}
             />
-             <Field
+             {/*<Field
               name={`${link}.type`}
               component={({ input, val }) => input.onChange(val)}
               val="social"
-            />
+             />*/}
             {/*SocialLinkTypes ?
               <Field
                 className="form-control custom-select"
