@@ -199,3 +199,6 @@ textarea#styled {
   height: 300px;
   border: none;
 }
+.input-group-btn:not(:first-child)>.btn, .input-group-btn:not(:first-child)>.btn-group{
+  margin-left:0;
+}

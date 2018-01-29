@@ -3,6 +3,7 @@ import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import SocialLinkTypes from './SocialLinkTypes';
 
+
 const LinksSocial = injectIntl(({
   fields,
   meta: { error, submitFailed },
@@ -57,6 +58,24 @@ const LinksSocial = injectIntl(({
             >
               <i
                 className="fa fa-trash"
+                data-toggle="tooltip"
+                data-placement="top"
+                title={intl.formatMessage({
+                  id: 'delete',
+                  defaultMessage: 'Delete'
+                })}
+              >
+              </i>
+            </button>
+            </span>
+            <span className="input-group-btn">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => fields.remove(index)}
+            >
+              <i
+                className="fa fa-link"
                 data-toggle="tooltip"
                 data-placement="top"
                 title={intl.formatMessage({
