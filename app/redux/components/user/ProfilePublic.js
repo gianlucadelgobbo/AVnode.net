@@ -12,6 +12,7 @@ import Languages from '../language/Languages';
 import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
+import validate from './validate';
 import Modal from '../Modal';
 import ProfileLinksSocial from './ProfileLinksSocial';
 
@@ -19,14 +20,10 @@ import {
   fetchCountries,
   editUser,
   userLinkDelete,
-  userAboutDelete
+  userAboutDelete,
+  openEdituserModal
 } from '../../reducers/actions';
 
-
-const required = value => value ? undefined : 'Required'
-const maxLength = max => value =>
-  value && value.length > max ? `Must be ${max} characters or less` : undefined
-const maxLength15 = maxLength(15);
 
 let ProfilePublicForm = props => {
   const {
@@ -34,6 +31,7 @@ let ProfilePublicForm = props => {
     abouts,
     links,
     handleSubmit,
+    openEdituserModal,
     editUser,
     fetchCountries,
     userAboutDelete,
@@ -41,10 +39,6 @@ let ProfilePublicForm = props => {
     userLinkDelete
   } = props;
 
-
-  const linksWeb = value => {
-
-  }
 
   return (
     <div>
@@ -82,7 +76,6 @@ let ProfilePublicForm = props => {
               className="form-control"
               name="stagename"
               component= {renderField}
-              validate={[ required ]}
             />
           </div>
           <div className="form-group">
@@ -96,7 +89,6 @@ let ProfilePublicForm = props => {
               className="form-control"
               name="slug"
               component= {renderField}
-              validate={[ required ]}
             />
             <p>
               {user.publicUrl}
@@ -156,20 +148,18 @@ let ProfilePublicForm = props => {
 ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
-  keepDirtyOnReinitialize: true
-  //validate
+  keepDirtyOnReinitialize: true,
+  validate
 })(ProfilePublicForm));
 
 const selector = formValueSelector('userPublic');
 const ProfilePublic = props => {
-  //console.log('ProfilePublic props');
   const onSubmit = (props, dispatch) => {
-    console.log('ProfilePublic onSubmit dispatch' + dispatch);
     dispatch(editUser(props));
   };
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
-    alert("Form Saved");
+    <Modal/>
   };
   return (
     <ProfilePublicForm
@@ -211,7 +201,8 @@ const mapDispatchToProps = (dispatch) => ({
   editUser: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries),
   userLinkDelete: dispatch(userLinkDelete),
-  userAboutDelete: dispatch(userAboutDelete)
+  userAboutDelete: dispatch(userAboutDelete),
+  openEdituserModal:dispatch(openEdituserModal)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);
