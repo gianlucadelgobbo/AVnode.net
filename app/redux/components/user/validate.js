@@ -1,10 +1,16 @@
 const validate = values => {
     const errors = {}
     if (!values.surname) {
-      errors.surname = 'Required'
+      errors.surname = 'Surname Required'
     }
     if (!values.name) {
-      errors.name = 'Required'
+      errors.name = 'Name Required'
+    }
+    if (!values.stagename) {
+      errors.stagename = 'Stage Name Required'
+    }
+    if (!values.slug) {
+      errors.slug = 'Slug Required'
     }
     /*if (!values.birthday) {
       errors.birthday = 'Required'

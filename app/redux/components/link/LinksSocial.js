@@ -3,10 +3,12 @@ import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
 import SocialLinkTypes from './SocialLinkTypes';
 
-
 const LinksSocial = injectIntl(({
   user,
+<<<<<<< HEAD
   onSwitchLanguage,
+=======
+>>>>>>> ac957a881f670a7a29fbae9cd4ac84d746b5975a
   fields,
   meta: { error, submitFailed },
   intl
@@ -70,6 +72,7 @@ const LinksSocial = injectIntl(({
               </i>
             </button>
             </span>
+<<<<<<< HEAD
             {user!==undefined ?
             <span className="input-group-btn">
             <a href="#" className="btn btn-primary">
@@ -88,6 +91,8 @@ const LinksSocial = injectIntl(({
            :
            null
            }
+=======
+>>>>>>> ac957a881f670a7a29fbae9cd4ac84d746b5975a
           </div>
         </div>
       ))}
