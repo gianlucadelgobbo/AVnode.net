@@ -26,18 +26,6 @@ import {
   closeEdituserModal
 } from '../../reducers/actions';
 
-<<<<<<< HEAD
-const onSwitchLanguage = (e) => {
-  e.preventDefault();
-  selectedLanguage = e.target.__preactattr_.href;
-  console.log('selectedLanguage:' + selectedLanguage);
-};
-const required = value => value ? undefined : 'Required'
-const maxLength = max => value =>
-  value && value.length > max ? `Must be ${max} characters or less` : undefined
-const maxLength15 = maxLength(15);
-=======
->>>>>>> ac957a881f670a7a29fbae9cd4ac84d746b5975a
 
 let ProfilePublicForm = props => {
   const {
@@ -130,10 +118,6 @@ let ProfilePublicForm = props => {
           <FieldArray 
             name="social"
             component={LinksSocial} 
-            props={{
-              user: user,
-              onSwitchLanguage: onSwitchLanguage
-            }}
           />
 
           <FieldArray 
@@ -195,9 +179,10 @@ const ProfilePublic = props => {
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
   };
- const showResults = (values) => {
-  {openEdituserModal}
-  //window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+ const showResults = (values, dispatch) => {
+   //let clickEventModal = {openEdituserModal};
+   //return clickEventModal;
+  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
 };
 
   return (

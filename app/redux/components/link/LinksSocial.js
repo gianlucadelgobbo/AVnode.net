@@ -4,11 +4,6 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import SocialLinkTypes from './SocialLinkTypes';
 
 const LinksSocial = injectIntl(({
-  user,
-<<<<<<< HEAD
-  onSwitchLanguage,
-=======
->>>>>>> ac957a881f670a7a29fbae9cd4ac84d746b5975a
   fields,
   meta: { error, submitFailed },
   intl
@@ -72,27 +67,6 @@ const LinksSocial = injectIntl(({
               </i>
             </button>
             </span>
-<<<<<<< HEAD
-            {user!==undefined ?
-            <span className="input-group-btn">
-            <a href="#" className="btn btn-primary">
-            <i
-                className="fa fa-link"
-                data-toggle="tooltip"
-                data-placement="top"
-                title={intl.formatMessage({
-                  id: 'link',
-                  defaultMessage: 'Link'
-                })}
-              >
-              </i>
-            </a>
-            </span>
-           :
-           null
-           }
-=======
->>>>>>> ac957a881f670a7a29fbae9cd4ac84d746b5975a
           </div>
         </div>
       ))}
