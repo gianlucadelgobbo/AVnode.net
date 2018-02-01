@@ -22,7 +22,11 @@ import {
   userAboutDelete
 } from '../../reducers/actions';
 
-
+const onSwitchLanguage = (e) => {
+  e.preventDefault();
+  selectedLanguage = e.target.__preactattr_.href;
+  console.log('selectedLanguage:' + selectedLanguage);
+};
 const required = value => value ? undefined : 'Required'
 const maxLength = max => value =>
   value && value.length > max ? `Must be ${max} characters or less` : undefined
@@ -122,6 +126,10 @@ let ProfilePublicForm = props => {
           <FieldArray 
             name="social"
             component={LinksSocial} 
+            props={{
+              user: user,
+              onSwitchLanguage: onSwitchLanguage
+            }}
           />
 
           <FieldArray 

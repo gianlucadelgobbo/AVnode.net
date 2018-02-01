@@ -5,6 +5,8 @@ import SocialLinkTypes from './SocialLinkTypes';
 
 
 const LinksSocial = injectIntl(({
+  user,
+  onSwitchLanguage,
   fields,
   meta: { error, submitFailed },
   intl
@@ -68,24 +70,24 @@ const LinksSocial = injectIntl(({
               </i>
             </button>
             </span>
+            {user!==undefined ?
             <span className="input-group-btn">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => fields.remove(index)}
-            >
-              <i
+            <a href="#" className="btn btn-primary">
+            <i
                 className="fa fa-link"
                 data-toggle="tooltip"
                 data-placement="top"
                 title={intl.formatMessage({
-                  id: 'delete',
-                  defaultMessage: 'Delete'
+                  id: 'link',
+                  defaultMessage: 'Link'
                 })}
               >
               </i>
-            </button>
+            </a>
             </span>
+           :
+           null
+           }
           </div>
         </div>
       ))}
