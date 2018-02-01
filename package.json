@@ -65,6 +65,7 @@
     "react-bootstrap": "^0.32.0",
     "react-dropzone": "^3.11.0",
     "react-intl": "^2.2.3",
+    "react-modal": "^3.1.11",
     "react-redux": "^5.0.3",
     "react-widgets": "^4.1.1",
     "react-widgets-moment": "^4.0.4",
