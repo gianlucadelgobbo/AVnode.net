@@ -93,12 +93,14 @@ const userSchema = new Schema({
 }); */
 
 // Crews only
-userSchema.virtual('crewEditUrl').get(function () {
-  return `/admin/crew/${this.slug}`;
-});
-
-userSchema.virtual('crewPublicUrl').get(function () {
-  return `/crew/${this.slug}`;
+userSchema.virtual('editUrl').get(function () {
+  if (this.slug) {
+    if (this.is_crew) {
+      return `/admin/crew/${this.slug}`;
+    } else {
+      return `/admin/${this.slug}`;
+    } 
+  } 
 });
 
 /* BL FIXME later for crews
@@ -111,7 +113,7 @@ userSchema.pre('remove', function(next) {
 });*/
 
 userSchema.virtual('birthdayFormatted').get(function () {
-  return moment(this.birthday).format(process.env.DATEFORMAT);
+  if (this.birthday) return moment(this.birthday).format(process.env.DATEFORMAT);
 });
 
 userSchema.virtual('publicEmails').get(function () {
@@ -123,11 +125,11 @@ userSchema.virtual('publicEmails').get(function () {
       }
     });
   }
-  return emails;
+  if (emails.length) return emails;
 });
 
 userSchema.virtual('publicUrl').get(function () {
-  return `/${this.slug}`;
+  if (this.slug) return `/${this.slug}`;
 });
 
 // Return thumbnail
