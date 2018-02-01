@@ -4,61 +4,60 @@ block teaser
     .d-flex.justify-content-center.align-items-start
       img.img-fluid(
         src=data.teaserImageFormats.large
-        alt=data.name
+        alt=data.stagename
       )
 
 block title
-  if title
-    .performer_header_wrapper
-      .container
-        .row
-          .col-lg-6
-            h1.main_title=data.name+" "+data.surname          
-            ul.performer_address.list-inline
-              each address in data.addresses
-                li.list-inline-item=address.locality + ", " + address.country
-            div.performer_stats_wrapper
-              ul.performer_stats_list.performer_stats_list_1.list-inline
-                if data.stats.events
-                  li.list-inline-item!=__('Events')+" (<span>"+data.stats.events+"</span>)"
-                if data.stats.performances
-                  li.list-inline-item!=__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
-                if data.stats.crews
-                  li.list-inline-item!=__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
-              ul.performer_stats_list.performer_stats_list_2.list-inline
-                if data.stats.footage
-                  li.list-inline-item!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"
-                if data.stats.playlists
-                  li.list-inline-item!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
-                if data.stats.tvshows
-                  li.list-inline-item!=__('Tvshows')+" (<span>"+data.stats.tvshows+"</span>)"    
-                li.list-inline-item.miss!=__('Gallery')+" (<span>99</span>)"    
-                
-          
-          
-          .col-lg-6
-            .row
-              .col-sm-6            
-                img.rounded-circle.img-fluid.miss(
-                  src="http://lorempixel.com/400/400/", alt=data.name
-                )
-              .col-sm-6
-                img.img-fluid(src="/images/logo_avnode_svg.svg")
-
+  .performer_header_wrapper
     .container
       .row
-        .col-sm-12
-          .performer_map_wrapper
-            h2="auto centred Google map: a marker for each performer's address"
-      
-    if data.abouts
+        .col-lg-6
+          h1.main_title=data.stagename          
+          ul.performer_address.list-inline
+            each address in data.addresses
+              li.list-inline-item=address.locality + ", " + address.country
+          div.performer_stats_wrapper
+            ul.performer_stats_list.performer_stats_list_1.list-inline
+              if data.stats.events
+                li.list-inline-item!=__('Events')+" (<span>"+data.stats.events+"</span>)"
+              if data.stats.performances
+                li.list-inline-item!=__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
+              if data.stats.crews
+                li.list-inline-item!=__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
+            ul.performer_stats_list.performer_stats_list_2.list-inline
+              if data.stats.footage
+                li.list-inline-item!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"
+              if data.stats.playlists
+                li.list-inline-item!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
+              if data.stats.tvshows
+                li.list-inline-item!=__('Tvshows')+" (<span>"+data.stats.tvshows+"</span>)"    
+              li.list-inline-item.miss!=__('Gallery')+" (<span>99</span>)"    
+              
+        
+        
+        .col-lg-6
+          .row
+            .col-sm-6            
+              img.rounded-circle.img-fluid.miss(
+                src=data.imageFormats.medium
+                alt=data.stagename
+              )
+            .col-sm-6
+              img.img-fluid(src="/images/logo_avnode_svg.svg")
+
+  .container
+    .row
+      .col-sm-12
+        .performer_map_wrapper
+          h2="auto centred Google map: a marker for each performer's address"
+    
+  if data.abouts
     .abouts_wrapper
       .container
         .row
           .col-sm-12
-            each about in data.abouts
               .about_wrapper
-                != about.abouttext.replace(/\r\n/g, '<br />')          
+                !=data.about        
               .more_button
                 span.color1.lnr.lnr-plus-circle
     .abouts_divider
@@ -71,14 +70,18 @@ block content
     .col-lg-12
       h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
       .row
-        .col-sm-4
-          .event_item_wrapper
-            img.img-fluid(src="/images/avnode-event_placeholder.png")
-            .event_item_info_wrapper
-              h4.event_item_title.miss="Event Title"
-              ul.event_item_date_and_locality.list-inline
-                li.list-inline-item.event_item_date.miss="19 March 2017"
-                li.list-inline-item.event_item_locality.miss="Rome, Italy"
+        each event in data.events
+          .col-sm-4
+            .event_item_wrapper
+              img.img-fluid(
+                src=event.imageFormats.medium
+                alt=event.title
+              )
+              .event_item_info_wrapper
+                h4.event_item_title.miss=event.title
+                ul.event_item_date_and_locality.list-inline
+                  li.list-inline-item.event_item_date.miss=event.boxDate
+                  li.list-inline-item.event_item_locality=event.boxVenue
   br
   br
   .row

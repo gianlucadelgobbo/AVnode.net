@@ -170,8 +170,28 @@ eventSchema.virtual('imageFormats').get(function () {
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
+  } else {
+    for(let format in config.cpanel[adminsez].media.image.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].media.image.sizes[format].default}`;
+    }
   }
   return imageFormats;
+});
+
+eventSchema.virtual('boxDate').get(function () {
+  let boxDate;
+  if (this.schedule && this.schedule.length) {
+    boxDate = moment(this.schedule[0].date).format(process.env.DATEFORMAT);
+  }
+  return boxDate;
+});
+
+eventSchema.virtual('boxVenue').get(function () {
+  let boxVenue;
+  if (this.schedule && this.schedule.length) {
+    boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
+  }
+  return boxVenue;
 });
 
 eventSchema.virtual('teaserImageFormats').get(function () {
@@ -189,6 +209,10 @@ eventSchema.virtual('teaserImageFormats').get(function () {
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
       teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+  } else {
+    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
     }
   }
   return teaserImageFormats;

@@ -138,10 +138,26 @@ dataprovider.fetchShow = (req, model, cb) => {
     options: { limit: 5 },
     model: Event
   }).
+  populate({
+    path: 'crews',
+    select: {
+      stagename: 1,
+      slug: 1,
+      stats: 1,
+      image: 1
+    },
+    //populate: { path: 'categories', select: 'name permalink', model: Category},
+    options: { limit: 5 },
+    model: User
+  }).
   select({
     stagename: 1,
+    abouts: 1,
+    about: 1,
     is_crew: 1,
     slug: 1,
+    stats: 1,
+    addresses: 1,
     image: 1
   }).
   exec((err, data) => {
