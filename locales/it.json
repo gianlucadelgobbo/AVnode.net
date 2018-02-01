@@ -1,1 +1,20 @@
-{}
+{
+	"Performers": "Performers",
+	"Performances": "Performances",
+	"Events": "Events",
+	"Footage": "Footage",
+	"Playlists": "Playlists",
+	"TV Shows": "TV Shows",
+	"Login": "Login",
+	"Sign up": "Sign up",
+	"Search": "Search",
+	"More": "More",
+	"AVnode.net": "AVnode.net",
+	"all": "all",
+	"individuals": "individuals",
+	"crews": "crews",
+	"mostactive": "mostactive",
+	"mostrecent": "mostrecent",
+	"Crews": "Crews",
+	"Schedule": "Schedule"
+}
