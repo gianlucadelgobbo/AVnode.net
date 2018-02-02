@@ -179,7 +179,7 @@ const ProfilePublic = props => {
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
   };
- const showResults = (values, dispatch) => {
+ const showResults = (values) => {
    //let clickEventModal = {openEdituserModal};
    //return clickEventModal;
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
