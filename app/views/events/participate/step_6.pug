@@ -1,0 +1,69 @@
+// Summary
+div
+  .row
+    .col-md-3
+      .text-right
+        b=__('Call')
+    .col-md-9
+      - var admitted = []
+      - for(var b=0;b<dett.organizationsettings.call.calls[call.index].admitted.length;b++)
+        - admitted.push(dett.organizationsettings.call.calls[call.index].admitted[b])
+      - var topics = []
+      - for(var b=0;b<dett.organizationsettings.call.calls[call.index].topics.length;b++)
+        - topics.push(dett.organizationsettings.call.calls[call.index].topics[b].name)
+      h4=dett.organizationsettings.call.calls[call.index].title
+      p=__("Start date")+": "+dett.organizationsettings.call.calls[call.index].start_date_formatted+" | "+__("End date")+": "+dett.organizationsettings.call.calls[call.index].end_date+" | "+__("Email")+": "+dett.organizationsettings.call.calls[call.index].email
+      p=__("Admitted projects") + ": "
+      ul
+        each cat in admitted
+          li=cat.name
+      p=__("Topics") + ": " + topics.join(", ")
+      p=dett.organizationsettings.call.calls[call.index].excerpt
+
+  .row
+    .col-md-3
+      .text-right
+        b=__('Performance Name')
+    .col-md-9=call.admitted[call.performance].title
+  .row
+    .col-md-3
+      .text-right
+        if call.admitted[call.performance].users.lenght>1
+          b=__('Performers')
+        else
+          b=__('Performer')
+    .col-md-9
+      ul
+        each performer in call.admitted[call.performance].users
+          li=performer.stagename
+  .row
+    .col-md-3
+      .text-right
+        b=__('Reference')
+    .col-md-9=user.stagename
+  .row
+    .col-md-3
+      .text-right
+        b=__('Availability')
+    .col-md-9
+      each subscription in call.subscriptions
+        li
+          b=subscription.stagename
+          ul
+            each day in subscription.days
+              li=day
+  .row
+    .col-md-3
+      .text-right
+        b=__('Packages')
+    .col-md-9
+      each subscription in call.subscriptions
+        li
+          b=subscription.stagename
+          ul
+            each package in subscription.packages
+              li=package
+
+    
+  pre=JSON.stringify(call, null, '\t')
+    
