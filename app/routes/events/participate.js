@@ -1,20 +1,41 @@
 const router = require('../router')();
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 const Event = mongoose.model('Event');
+const dataprovider = require('../../utilities/dataprovider');
+
 const logger = require('../../utilities/logger');
 
+const participateMenu = [
+  __('Active calls'),           // 0
+  __('Terms'),   // 1
+  __('Performance'),  // 2
+  __('Topics'),       // 3
+  __('Availability'),           // 4
+  __('Packages'),               // 5
+  __('Summary'),                // 6
+  __('Submit')                  // 7
+];
 
 router.get('/', (req, res) => {
   logger.debug("GETGETGETGETGET");
+  //delete req.session.call;
   logger.debug(req.session.call);
   Event.
   findOne({slug: req.params.slug}).
+  populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   exec((err, data) => {
     logger.debug('routes/events/participate err:' + err);
+    logger.debug(err);
+    logger.debug(data);
+    let ids = [];
+    if (req.user) ids = [req.user._id].concat(req.user.crews);
+    logger.debug(ids);
+    //logger.debug(performances);
     if (err || data === null) {
-      return next(err);
+      //return next(err);
     }
-    if (!req.session.call) {
+    if (!req.session.call || (req.query.step && req.query.step.toString() === '0')) {
       req.session.call = {
         step: 0,
         event: {
@@ -23,12 +44,35 @@ router.get('/', (req, res) => {
         }
       };
     }
-    logger.debug('events/participate');
+    if (req.query.step && parseInt(req.query.step, 10) < req.session.call.step) {
+      req.session.call.step = parseInt(req.query.step);
+    }
+    let tosave = {};
+    
+    if (req.session.call.step == 6) {
+      tosave = {
+        event: req.session.call.event._id,
+        performance: req.session.call.admitted[req.session.call.performance]._id,
+        user: req.user._id,
+        call_id: req.session.call.index,
+        topics: req.session.call.topics,
+        subscriptions: req.session.call.subscriptions
+      };
+      logger.debug('events/participateaaaaaaa');
+    }
+    logger.debug('events/participateaaaaaaa');
+    logger.debug(req.session.call);
+    logger.debug(data.title);
+    logger.debug(tosave);
+
     res.render('events/participate', {
       title: data.title,
       dett: data,
       call: req.session.call,
-      user: req.user
+      participateMenu: participateMenu,
+      user: req.user,
+      msg: null,
+      tosave: tosave
     });
   });
 });
@@ -37,101 +81,177 @@ router.post('/', (req, res) => {
   logger.debug('fetchEvent'+req.params.slug);  
   Event.
   findOne({slug: req.params.slug}).
+  populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   exec((err, data) => {
     logger.debug('routes/events/participate err:' + err);
     if (err || data === null) {
       return next(err);
     }
-    logger.debug("POSTPOSTPOSTPOSTPOST");
-    logger.debug(req.body);
+    logger.debug('POSTPOSTPOSTPOSTPOST');
+    logger.debug(data.organizationsettings.call.calls[0].packages);
+    logger.debug('POSTPOSTPOSTPOSTPOST');
     logger.debug(req.session.call);
-    //logger.debug(typeof req.body.step);
     if (data && typeof req.body.step!='undefined') {
       var msg;
       switch (parseInt(req.body.step)) {
         case 0 :
           if (data && typeof req.body.index!='undefined') {
-            req.session.call.step = parseInt(req.body.step)+1;
-            req.session.call.index = parseInt(req.body.index);
+            let ids = [req.user._id].concat(req.user.crews);
+            dataprovider.getPerformanceByIds(req, ids, (err, performances) =>{
+              let admitted = {};
+              var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
+              for (let item in admittedCat) {
+                for (let perf in performances) {
+                  var result = performances[perf].categories.map(a => a._id.toString());
+                  if (result.indexOf(admittedCat[item]) !== -1) {
+                    admitted[performances[perf]._id.toString()] = performances[perf];
+                  }
+                }
+              }
+              let admittedA = [];
+              for (let perf in admitted) {
+                logger.debug(admitted[perf].categories);
+                admittedA.push(admitted[perf]);
+              }
+              logger.debug('performances '+performances.length);
+              logger.debug('admitted '+admittedA.length);
+              //logger.debug(admitted);
+              if (admittedA.length) {
+                req.session.call.step = parseInt(req.body.step)+1;
+                req.session.call.index = parseInt(req.body.index);
+                req.session.call.admitted = admittedA;
+              } else {
+                msg = {e:[{name:'index', m:__('Warning: You have no performance eligible for the call selected. Please create a performance and come back.')}]};
+              }
+              if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+                res.json(data);
+              } else {
+                res.render('events/participate', {
+                  title: data.title,
+                  dett: data,
+                  call: req.session.call,
+                  participateMenu: participateMenu,
+                  user: req.user,
+                  msg: msg
+                });
+              }
+            });
           } else {
-            msg = {e:[{name:"index",m:__("Please select a call")}]}
+            msg = {e:[{name:'index', m:__('Please select a call')}]};
           }
           break;
         case 1 :
+          logger.debug('case 1');  
           if (data && req.body.accept=='1') {
-            req.session.call.step = parseInt(req.body.step)+1;
+            req.session.call.step++;
           } else {
-            msg = {e:[{name:"accept",m:__("Please accept the terms and conditions to go forward")}]}
+            msg = {e:[{name:'accept',m:__('Please accept the terms and conditions to go forward')}]}
+          }
+          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            res.json(data);
+          } else {
+            res.render('events/participate', {
+              title: data.title,
+              dett: data,
+              call: req.session.call,
+              participateMenu: participateMenu,
+              user: req.user,
+              msg: msg
+            });
           }
           break;
         case 2 :
           if (data && typeof req.body.performance!='undefined') {
             req.session.call.step = parseInt(req.body.step)+1;
-            for (var a=0; a<passport_user.performances.length; a++) {
-              if (passport_user.performances[a]._id==req.body.performance){
-                req.session.call.performance = passport_user.performances[a];
-                req.session.call.subscriptions = [];
-                for (var b=0; b<req.session.call.performance.users.length; b++) {
-                  if (req.session.call.performance.users[b].members) {
-                    for (var c=0; c<req.session.call.performance.users[b].members.length; c++) {
-                      DB.subscriptions.findOne({subscriber_id:req.session.call.performance.users[b].members[c]._id}, function(e, subscription) {
-                        if (subscription) {
-                          req.session.call.subscriptions.push(subscription);
-                        }
-                      });
-                    }
-                  } else {
-                    DB.subscriptions.findOne({subscriber_id:req.session.call.performance.users[b]._id}, function(e, subscription) {
-                      if (subscription) {
-                        req.session.call.subscriptions.push(subscription);
-                      }
-                    });
-
-                  }
-                }
-              }
-            }
-
+            req.session.call.performance = parseInt(req.body.performance);
           } else {
-            msg = {e:[{name:"accept",m:__("Please select a performance to go forward")}]}
+            msg = {e:[{name:'accept',m:__('Please select a performance to go forward')}]}
           }
+          res.render('events/participate', {
+            title: data.title,
+            dett: data,
+            call: req.session.call,
+            participateMenu: participateMenu,
+            user: req.user,
+            msg: msg
+          });
           break;
         case 3 :
-          if (data && req.body.topics.length) {
+          if (data && req.body.topics && req.body.topics.length) {
             req.session.call.step = parseInt(req.body.step)+1;
             req.session.call.topics = req.body.topics;
           } else {
-            msg = {e:[{name:"accept",m:__("Please select at least 1 topic to go forward")}]}
+            msg = {e:[{name:'accept',m:__('Please select at least 1 topic to go forward')}]}
           }
+          res.render('events/participate', {
+            title: data.title,
+            dett: data,
+            call: req.session.call,
+            participateMenu: participateMenu,
+            user: req.user,
+            msg: msg
+          });
           break;
         case 4 :
+          logger.debug('STOCAZZO');  
+          logger.debug(req.body);  
+          let subscriptions = [];
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
-            req.session.call.step = parseInt(req.body.step)+1;
-            var subscriptions = [];
             for (var a=0; a<req.body.subscriptions.length; a++) {
               if (req.body.subscriptions[a].subscriber_id){
-                var subscriptionA = req.body.subscriptions[a];
-                subscriptions.push(subscriptionA);
+                subscriptions.push(req.body.subscriptions[a]);
               }
             }
-            req.session.call.subscriptions = subscriptions;
-          } else {
-            msg = {e:[{name:"accept",m:__("Please select at least 1 person to go forward")}]}
           }
+          req.session.call.subscriptions = req.body.subscriptions;
+          if (subscriptions.length) {
+            let days = true;
+
+            for (var a=0; a<subscriptions.length; a++) {
+              if (!subscriptions[a].days || !subscriptions[a].days.length) {
+                days = false;
+              }
+            }
+            if (days) {
+              req.session.call.step = parseInt(req.body.step)+1;
+              req.session.call.subscriptions = req.body.subscriptions;
+            } else {
+              msg = {e:[{name:'accept',m:__('Please select at least 1 day for all the people availables to go forward')}]};
+            }
+          } else {
+            msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]};
+          }
+          logger.debug(req.session.call);  
+          res.render('events/participate', {
+            title: data.title,
+            dett: data,
+            call: req.session.call,
+            participateMenu: participateMenu,
+            user: req.user,
+            msg: msg
+          });
           break;
-      }
-      logger.debug(req.session.call);
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        res.json(data);
-      } else {
-        logger.debug('events/participate');  
-        res.render('events/participate', {
-          title: data.title,
-          dett: data,
-          call: req.session.call,
-          user: req.user
-        });
-      }
+        case 5 :
+          if (data && req.body.subscriptions && req.body.subscriptions.length) {
+            req.session.call.step = parseInt(req.body.step)+1;
+            for (var a=0; a<req.body.subscriptions.length; a++) {
+              if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages.length){
+                req.session.call.subscriptions[a].packages = req.body.subscriptions[a].packages;
+              }
+            }
+          } else {
+            msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]}
+          }
+          res.render('events/participate', {
+            title: data.title,
+            dett: data,
+            call: req.session.call,
+            participateMenu: participateMenu,
+            user: req.user,
+            msg: msg
+          });
+          break;
+      }      
     } else {
       res.sendStatus(404);
     }
