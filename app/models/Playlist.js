@@ -16,19 +16,11 @@ const playlistSchema = new Schema({
   slug: { type: String, unique: true },
   title: String,
   is_public: { type: Boolean, default: false },
-  image: MediaImage,
-  teaserImage: MediaImage,
-  //  file: {file: String},
+  //image: MediaImage,
   abouts: [About],
   stats: {},
-  price: String,
-  duration: String,
-  tech_art: String, // what the artist brings
-  tech_req: String, // what the artist need
-  bookings:[Booking],
-
   users: [{ type : Schema.ObjectId, ref : 'User' }],
-  galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],
+  footage: [{ type : Schema.ObjectId, ref : 'Footage' }],
   // videos: [{ type : Schema.ObjectId, ref : 'Videos' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
 }, {
@@ -45,19 +37,8 @@ const playlistSchema = new Schema({
 playlistSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
-  if (this.image && this.image.file) {
-    for(let format in config.cpanel[adminsez].media.image.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].media.image.sizes[format].default;
-    }
-    const serverPath = this.image.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.image.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-    }
+  if (this.footage && this.footage.length && this.footage[0].imageFormats) {
+    imageFormats = this.footage[0].imageFormats;
   } else {
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = `${config.cpanel[adminsez].media.image.sizes[format].default}`;
@@ -65,7 +46,7 @@ playlistSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-
+/*
 playlistSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -89,7 +70,7 @@ playlistSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-
+*/
 playlistSchema.virtual('editUrl').get(function () {
   return `/admin/playlists/public/${this.slug}`;
 });
