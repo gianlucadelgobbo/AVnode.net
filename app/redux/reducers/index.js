@@ -237,7 +237,9 @@ const user = (state = initialValues, action) => {
     console.log('_______________ index redux REQUEST_EDIT_USER __________________________________');
     console.log('REQUEST_EDIT_USER state links: ' + JSON.stringify(state.links));
     console.log('REQUEST_EDIT_USER action: ' + JSON.stringify(action));
-    return state;
+    return Object.assign({}, state, action.json, {
+      _editUserActive:true
+    });
   case REQUEST_ADD_USERPROFILEIMAGE:
     return Object.assign({}, state, {
       imageUploadInProgress: true
