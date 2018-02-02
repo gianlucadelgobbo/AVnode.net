@@ -10,6 +10,8 @@ const Footage = mongoose.model('Footage');
 // const Crew = mongoose.model('Crew');
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
+const Playlist = mongoose.model('Playlist');
+const TVShow = mongoose.model('TVShow');
 
 const logger = require('./logger');
 
@@ -95,71 +97,13 @@ dataprovider.fetchUser = (id, cb) => {
       exec(cb);
 };
 
-dataprovider.fetchShow = (req, model, cb) => {
+dataprovider.fetchShow = (req, model, populate, select, cb) => {
   logger.debug('fetchShow '+req.params.slug);  
   model.
   findOne({slug: req.params.slug}).
   // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-  populate({
-    path: 'footage',
-    select: {
-      title: 1,
-      slug: 1,
-      stats: 1,
-      image: 1
-    },
-    populate: { path: 'users', select: 'stagename', model: User},
-    options: { limit: 5 },
-    model: Footage
-  }).
-  populate({
-    path: 'performances',
-    select: {
-      title: 1,
-      slug: 1,
-      stats: 1,
-      image: 1
-    },
-    populate: { path: 'users', select: 'stagename', model: User},
-    options: { limit: 5 },
-    model: Performance
-  }).
-  populate({
-    path: 'events',
-    select: {
-      title: 1,
-      slug: 1,
-      stats: 1,
-      schedule: 1,
-      categories: 1,
-      image: 1
-    },
-    populate: { path: 'categories', select: 'name permalink', model: Category},
-    options: { limit: 5 },
-    model: Event
-  }).
-  populate({
-    path: 'crews',
-    select: {
-      stagename: 1,
-      slug: 1,
-      stats: 1,
-      image: 1
-    },
-    //populate: { path: 'categories', select: 'name permalink', model: Category},
-    options: { limit: 5 },
-    model: User
-  }).
-  select({
-    stagename: 1,
-    abouts: 1,
-    about: 1,
-    is_crew: 1,
-    slug: 1,
-    stats: 1,
-    addresses: 1,
-    image: 1
-  }).
+  populate(populate).
+  select(select).
   exec((err, data) => {
     cb(err, data);
   });
@@ -198,7 +142,27 @@ dataprovider.fetchLists = (model, query, limit, skip, sorting, cb) => {
 };
 
 dataprovider.show = (req, res, section, model) => {
-  dataprovider.fetchShow(req, model, (err, data) => {
+  let populate = config.sections[section].show.populate;
+  for(let item in populate) {
+    if (populate[item].model === 'User') populate[item].model = User;
+    if (populate[item].model === 'Performance') populate[item].model = Performance;
+    if (populate[item].model === 'Event') populate[item].model = Event;
+    if (populate[item].model === 'TVShow') populate[item].model = TVShow;
+    if (populate[item].model === 'Footage') populate[item].model = Footage;
+    if (populate[item].model === 'Playlist') populate[item].model = Playlist;
+    if (populate[item].model === 'Category') populate[item].model = Category;
+
+    if (populate[item].populate && populate[item].populate.model === 'User') populate[item].populate.model = User;
+    if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
+    if (populate[item].populate && populate[item].populate.model === 'Event') populate[item].populate.model = Event;
+    if (populate[item].populate && populate[item].populate.model === 'TVShow') populate[item].populate.model = TVShow;
+    if (populate[item].populate && populate[item].populate.model === 'Footage') populate[item].populate.model = Footage;
+    if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
+    if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
+  }
+  const select = config.sections[section].show.select;
+
+  dataprovider.fetchShow(req, model, populate, select, (err, data) => {
     logger.debug(err);
     //logger.debug(data);
     if (err || data === null) {

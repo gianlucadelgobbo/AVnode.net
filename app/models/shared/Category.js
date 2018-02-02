@@ -6,14 +6,8 @@ const categorySchema = new Schema({
   ancestor_old_id : Number,
   name : String,
   rel : String,
-  permalink : String,
-  ancestors : [{
-    old_id : Number,
-    ancestor_old_id : Number,
-    name : String,
-    rel : String,
-    permalink : String
-  }]
+  slug : String,
+  ancestor : { type : Schema.ObjectId, ref : 'Category' }
 }, { collection: 'categories' });
 
 const Category = mongoose.model('Category', categorySchema);
