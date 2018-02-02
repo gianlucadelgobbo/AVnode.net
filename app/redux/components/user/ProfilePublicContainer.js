@@ -15,20 +15,17 @@ import ProfilePublic from './ProfilePublic';
 
 const mapStateToProps = ({user}) => ({
   user: user,
-  initialValues: user//, 
-  //submitting: submitting
+  initialValues: user
 });
 
 const mapDispatchToProps = (dispatch) => ({
   userLinkAdd: dispatch(userLinkAdd),
-  userLinkDelete: dispatch(userLinkDelete),
   editUserAbouts: dispatch(editUserAbouts),
   userAboutEdit: dispatch(userAboutEdit),
-  userAboutDelete: dispatch(userAboutDelete),
   userAddressDelete: dispatch(userAddressDelete),
   saveProfile: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries),
-  openEdituserModal:dispatch(openEdituserModal)
+  openEdituserModal:dispatch(openEdituserModal),
   closeEdituserModal:dispatch(closeEdituserModal)
   
 });
