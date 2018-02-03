@@ -7,6 +7,72 @@
   "maxFileComment": "1 * 1024 * 1024 * 1024",
   "maxFileSize": 1073741824,
   "defaultLocale": "en",
+  "dateFormat": {
+    "en": {
+      "single" : "MMMM DD YYYY",
+      "daymonth1" : "MMMM DD",
+      "daymonth2" : "MMMM DD YYYY",
+      "day1" : "MMMM DD",
+      "day2" : "DD YYYY"
+    },
+    "it": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "es": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "fr": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "pl": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "ru": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "hu": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "by": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "gr": {
+      "single" : "DD MMMM YYYY",
+      "daymonth1" : "DD MMMM",
+      "daymonth2" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    }
+  },
+
   "locales": [
     "it",
     "en",
@@ -39,7 +105,63 @@
   "cp_basepath": "controlpanel",
   "usersListItems": 6,
   "cpanel": {
-    "account": {
+    "user": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
       "title": "Performers",
       "limit": 20,
       "basepath": "performers",
@@ -49,7 +171,623 @@
       "list_fields": {
         "title":1,
         "users":1,
-        "permalink":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "sortQ": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
+    },
+    "performance": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "sortQ": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
+    },
+    "event": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "sortQ": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
+    },
+    "crew": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "sortQ": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
+    },
+    "gallery": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "sortQ": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
+    },
+    "footage": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "sortQ": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
+    },
+    "playlist": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "sortQ": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
+    },
+    "tvshow": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 55,
+              "h": 55,
+              "folder": "55x55",
+              "default": "/images/profile-default.svg"
+            },
+            "medium": {
+              "w": 280,
+              "h": 210,
+              "folder": "280x210",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 400,
+              "h": 300,
+              "folder": "400x300",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
         "files":1,
         "categories":1,
         "stats":1
@@ -74,15 +812,15 @@
   },
   "sections": {
     "performers": {
-      "title": "Performers D",
+      "title": "Performers",
       "limit": 20,
       "basepath": "performers",
       "coll": "users",
-      "view_list": "performers",
+      "view_list": "performers/list",
       "view_edit": "user",
       "list_fields": {
         "display_name":1,
-        "permalink":1,
+        "slug":1,
         "files":1,
         "stats":1
       },
@@ -118,6 +856,146 @@
         "all":"All",
         "individuals":"Individuals",
         "crews":"Crews"
+      },
+      "show": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "footage",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "User"},
+          "options": { "limit": 5 },
+          "model": "Footage"
+        }, {
+          "path": "playlists",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "footage", "select": "media", "model": "Footage"}],
+          "options": { "limit": 5 },
+          "model": "Playlist"
+        }, {
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "medias": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "User"},
+          "options": { "limit": 5 },
+          "model": "Gallery"
+        }, {
+          "path": "tvshows",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 5 },
+          "model": "TVShow"
+        }, {
+          "path": "performances",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 5 },
+          "model": "Performance"
+        }, {
+          "path": "events",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 5 },
+          "model": "Event"
+        }, {
+          "path": "crews",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 5 },
+          "model": "User"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "events": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "events",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 5 },
+          "model": "Event"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
       }
     },
     "crews": {
@@ -137,11 +1015,11 @@
       "limit": 20,
       "basepath": "events",
       "coll": "events",
-      "view_list": "events",
+      "view_list": "events/list",
       "list_fields": {
         "title":1,
         "users":1,
-        "permalink":1,
+        "slug":1,
         "files":1,
         "categories":1,
         "stats":1,
@@ -164,22 +1042,22 @@
       "searchQ": {
         "all":  {},
         "clubbing": {
-          "categories.permalink": "clubbing"
+          "categories.slug": "clubbing"
         },
         "corporate": {
-          "categories.permalink": "corporate"
+          "categories.slug": "corporate"
         },
         "festival": {
-          "categories.permalink": "festival"
+          "categories.slug": "festival"
         },
         "one-night": {
-          "categories.permalink": "one-night"
+          "categories.slug": "one-night"
         },
         "television": {
-          "categories.permalink": "television"
+          "categories.slug": "television"
         }, 
         "workshops-learning": {
-          "categories.permalink": "workshops-learning"
+          "categories.slug": "workshops-learning"
         }
       },
       "sortQ": {
@@ -225,11 +1103,11 @@
       "limit": 20,
       "basepath": "performances",
       "coll": "performances",
-      "view_list": "performances",
+      "view_list": "performances/list",
       "list_fields": {
         "title":1,
         "users":1,
-        "permalink":1,
+        "slug":1,
         "files":1,
         "categories":1,
         "stats":1
@@ -250,19 +1128,19 @@
       "searchQ": {
         "all": {},
         "av-performance": {
-          "categories.permalink": "av-performance"
+          "categories.slug": "av-performance"
         },
         "vj-set": {
-          "categories.permalink": "vj-set"
+          "categories.slug": "vj-set"
         },
         "workshop": {
-          "categories.permalink": "workshop"
+          "categories.slug": "workshop"
         },
       "project-showcase": {
-        "categories.permalink": "project-showcase"
+        "categories.slug": "project-showcase"
       },
       "dj-set": {
-        "categories.permalink": "dj-set"
+        "categories.slug": "dj-set"
       }
       },
       "sortQ": {
@@ -293,11 +1171,11 @@
       "limit": 20,
       "basepath": "tvshows",
       "coll": "tvshow",
-      "view_list": "tvshows",
+      "view_list": "tvshows/list",
       "list_fields": {
         "title":1,
         "users":1,
-        "permalink":1,
+        "slug":1,
         "files":1,
         "categories":1,
         "stats":1,
@@ -318,16 +1196,16 @@
       "searchQ": {
         "all": {},
         "performances": {
-          "categories.permalink": "performances"
+          "categories.slug": "performances"
         },
         "vj-dj-sets": {
-          "categories.permalink": "vj-dj-sets"
+          "categories.slug": "vj-dj-sets"
         },
         "docs": {
-          "categories.permalink": "docs"
+          "categories.slug": "docs"
         },
         "video": {
-          "categories.permalink": "video"
+          "categories.slug": "video"
         }
       },
       "sortQ": {
@@ -357,11 +1235,11 @@
       "limit": 20,
       "basepath": "footage",
       "coll": "footage",
-      "view_list": "footage",
+      "view_list": "footage/list",
       "list_fields": {
         "title":1,
         "users":1,
-        "permalink":1,
+        "slug":1,
         "files":1,
         "categories":1,
         "stats":1
@@ -415,11 +1293,11 @@
       "limit": 20,
       "basepath": "playlists",
       "coll": "playlists",
-      "view_list": "playlists",
+      "view_list": "playlists/list",
       "list_fields": {
         "title":1,
         "users":1,
-        "permalink":1,
+        "slug":1,
         "files":1,
         "categories":1,
         "stats":1
@@ -458,11 +1336,11 @@
       "limit": 20,
       "basepath": "gallery",
       "coll": "gallery",
-      "view_list": "gallery",
+      "view_list": "gallery/list",
       "list_fields": {
         "title":1,
         "users":1,
-        "permalink":1,
+        "slug":1,
         "files":1,
         "stats":1
       },

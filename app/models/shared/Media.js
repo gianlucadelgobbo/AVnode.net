@@ -3,6 +3,7 @@ const Schema = require('mongoose').Schema;
 const Media = new Schema({
   file: String,
   filename: String,
+  preview: String,
   originalname: String,
   mimetype: String,
   size: Number,
