@@ -49,20 +49,23 @@ const userSchema = new Schema({
   addresses: [Address],
   abouts: [About],
   web: [Link],
-  social:[Link],
+  social: [Link],
+  phone: [Link],
+  mobile: [Link],
+  skype: [Link],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
   performances: [{ type: Schema.ObjectId, ref: 'Performance' }],
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
+  tvshows: [{ type: Schema.ObjectId, ref: 'TVShow' }],
   partnerships : [{ type: Schema.ObjectId, ref: 'User' }],
+  footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
+  playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
 
   /* A todo
   videos : [{ type: Schema.ObjectId, ref: 'Gallery' }],
-  footage : [{ type: Schema.ObjectId, ref: 'Gallery' }],
-  playlists : [{ type: Schema.ObjectId, ref: 'Gallery' }],
-  tvshows : [{ type: Schema.ObjectId, ref: 'Gallery' }]
   */
 
   roles: [], // BL TODO frontend, issue #5, array of roles
@@ -103,23 +106,29 @@ userSchema.virtual('editUrl').get(function () {
   } 
 });
 
+userSchema.virtual('publicEmails').get(function () {
+  let publicEmails = [];
+  for (let email in this.emails) {
+    if (this.emails[email].is_public) {
+      publicEmails.push(this.emails[email].email);
+    }
+  }
+  return publicEmails;
+});
+
 userSchema.virtual('about').get(function (req) {
   let about = __('Text is missing');
   let aboutA = [];
-  console.log("stocazzo");
-  console.log(global.getLocale());
   if (this.abouts && this.abouts.length) {
     aboutA = this.abouts.filter(item => item.lang === global.getLocale());
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      console.log("stocazzaaaaao");
       aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
       if (aboutA.length && aboutA[0].abouttext) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
-    console.log(about);
   }
   return about;
 });
@@ -134,7 +143,11 @@ userSchema.pre('remove', function(next) {
 });*/
 
 userSchema.virtual('birthdayFormatted').get(function () {
-  if (this.birthday) return moment(this.birthday).format(process.env.DATEFORMAT);
+  if (this.birthday) {
+    const lang = global.getLocale();
+    moment.locale(lang);
+    return moment(this.birthday).format(config.dateFormat[lang].single);
+  }
 });
 
 userSchema.virtual('publicEmails').get(function () {

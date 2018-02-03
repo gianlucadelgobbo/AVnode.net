@@ -170,7 +170,9 @@ performerSchema.virtual('crewEditUrl').get(function () {
   });*/
   
   performerSchema.virtual('birthdayFormatted').get(function () {
-    return moment(this.birthday).format(process.env.DATEFORMAT);
+    const lang = global.getLocale();
+    moment.locale(lang);
+    return moment(this.birthday).format(config.dateFormat[lang].single);
   });
   
   performerSchema.virtual('publicEmails').get(function () {
