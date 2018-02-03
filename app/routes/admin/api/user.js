@@ -704,6 +704,7 @@ router.put('/:id', (req, res) => {
   logger.debug(`${apiCall} req.body.abouts: ${JSON.stringify(req.body.abouts)}`);
   logger.debug(`${apiCall} req.body.name: ${req.body.name}`);
   logger.debug(`${apiCall} req.body.surname: ${req.body.surname}`);
+
   // abouts
   if (req.body.about && req.body.about.length > 2) {
     let aboutFound = false;
@@ -746,7 +747,8 @@ router.put('/:id', (req, res) => {
     }
   }
   // linkSocial
-  if (req.body.linkSocial && req.body.linkSocial.length > 2) {
+  logger.debug(`${apiCall} linksSocial ${req.body.linksSocial}`);
+  /*if (req.body.linksSocial && req.body.linkSocial.length > 2) {
     let linkSocialFound = false;
     if (req.body.links) {
       // find the link
@@ -764,7 +766,21 @@ router.put('/:id', (req, res) => {
       let newLinkSocial = { type: req.body.linkType, url: req.body.linkSocial };
       req.body.links.push(newLinkSocial);
     }
+  }*/
+  /*logger.debug(`${apiCall} linkSocial create ${req.body.linksSocial}`);
+  if(req.body.linksSocial){
+    req.body.linksSocial.map((l) => {
+    let newLinkSocial = l;
+      req.body.links.push(newLinkSocial);
+    });
   }
+  logger.debug(`${apiCall} linkWeb create ${req.body.linksWeb}`);
+  if(req.body.linksWeb){
+    req.body.linksWeb.map((l) => {
+    let newLinkWeb = l;
+      req.body.links.push(newLinkWeb);
+    });
+  }*/
   // linkTel
   if (req.body.linkTel && req.body.linkTel.length > 2) {
     let linkTelFound = false;
@@ -806,6 +822,8 @@ router.put('/:id', (req, res) => {
       req.body.addresses.push(newAddress);
     }
   }
+  console.log(`${JSON.stringify(req.body.web)}`);
+  console.log(`${JSON.stringify(req.body.social)}`);
   const props = {
     birthday: req.body.birthday,
     about: req.body.about,
@@ -815,7 +833,8 @@ router.put('/:id', (req, res) => {
     gender: req.body.gender,
     citizenship: req.body.citizenship,
     emails: req.body.emails,
-    links: req.body.links,
+    web: req.body.web,
+    social:req.body.social,
     addresses: req.body.addresses,
     abouts: req.body.abouts,
     stagename:req.body.stagename,
@@ -847,7 +866,6 @@ router.put('/:id', (req, res) => {
   logger.debug('________________API PUT user___________________');
   //logger.debug(`${apiCall} req.body.linkSocial: ${req.body.linkSocial}`);
   logger.debug(`${apiCall} req.body.links: ${JSON.stringify(req.body.links)}`);
-
   User.findById(req.params.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
