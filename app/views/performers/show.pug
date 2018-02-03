@@ -82,6 +82,8 @@ block content
                 ul.event_item_date_and_locality.list-inline
                   li.list-inline-item.event_item_date=item.boxDate
                   li.list-inline-item.event_item_locality=item.boxVenue
+      .text-right
+        a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')
   br
   br
   .row

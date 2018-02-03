@@ -89,6 +89,16 @@ db.events.find({}).forEach(function(e) {
   db.events.save(e);
 });
 
+db.events.find({"schedule.venue.location.city":{$exists: true}}).forEach(function(e) {
+  if (e.schedule && e.schedule.length) {
+    for(var a=0;a<e.schedule.length;a++){
+      e.schedule[a].venue.location.locality = e.schedule[a].venue.location.city;
+      delete e.schedule[a].venue.location.city;
+    }
+  }
+  db.events.save(e);
+});
+
 
 db.footage.deleteMany({"file.file": { $exists: false}});
 db.footage.find({}).forEach(function(e) {

@@ -144,7 +144,11 @@ userSchema.pre('remove', function(next) {
 });*/
 
 userSchema.virtual('birthdayFormatted').get(function () {
-  if (this.birthday) return moment(this.birthday).format(process.env.DATEFORMAT);
+  if (this.birthday) {
+    const lang = global.getLocale();
+    moment.locale(lang);
+    return moment(this.birthday).format(config.dateFormat[lang].single);
+  }
 });
 
 userSchema.virtual('publicEmails').get(function () {

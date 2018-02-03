@@ -141,9 +141,12 @@ dataprovider.fetchLists = (model, query, limit, skip, sorting, cb) => {
   });
 };
 
-dataprovider.show = (req, res, section, model) => {
-  let populate = config.sections[section].show.populate;
+dataprovider.show = (req, res, section, subsection, model) => {
+  logger.debug("req.params.page");
+  logger.debug(req.params.page);
+  let populate = config.sections[section][subsection].populate;
   for(let item in populate) {
+    if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
     if (populate[item].model === 'User') populate[item].model = User;
     if (populate[item].model === 'Performance') populate[item].model = Performance;
     if (populate[item].model === 'Event') populate[item].model = Event;
@@ -160,7 +163,7 @@ dataprovider.show = (req, res, section, model) => {
     if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
     if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
   }
-  const select = config.sections[section].show.select;
+  const select = config.sections[section][subsection].select;
 
   dataprovider.fetchShow(req, model, populate, select, (err, data) => {
     logger.debug(err);
@@ -177,9 +180,12 @@ dataprovider.show = (req, res, section, model) => {
         logger.debug(err);
         //res.send(JSON.stringify(data, null, '\t'));
       } else {
-        res.render(section + '/show', {
+        logger.debug("nextpage");
+        logger.debug(parseFloat(req.params.page)+1);
+        res.render(section + '/' + subsection, {
           title: data.stagename,
-          data: data
+          data: data,
+          nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       }
     }
