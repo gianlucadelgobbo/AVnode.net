@@ -9,8 +9,71 @@ const MediaImage = require('./shared/MediaImage');
 const Link = require('./shared/Link');
 const Partnership = require('./shared/Partnership');
 const Venue = require('./shared/Venue');
+const Schedule = require('./shared/Schedule');
+//const Package = require('./shared/Package');
 
 const adminsez = 'event';
+const logger = require('../utilities/logger');
+
+const packageSchema = new Schema({
+  name: String,
+  price: Number,
+  description: String,
+  personal: { type: Boolean, default: false },
+  requested: { type: Boolean, default: false },
+  allow_multiple: { type: Boolean, default: false },
+  allow_options: { type: Boolean, default: false },
+  options_name: String,
+  options: String,
+  daily: { type: Boolean, default: false },
+  start_date: Date,
+  end_date: Date
+}, {
+  toObject: {
+    virtuals: true,
+    getters: true
+  },
+  toJSON: {
+    virtuals: true,
+    getters: true
+  }
+});
+
+packageSchema.virtual('price_formatted').get(function () {
+  //return accounting.formatMoney(this.price, '€ ', 2, '.', ',');
+  return this.price;
+});
+
+const callSchema = new Schema({
+  title: String,
+  email: String,
+  permalink: String,
+  start_date: Date,
+  end_date: Date,
+  admitted: [{ type: Schema.ObjectId, ref: 'Category' }],
+  excerpt: String,
+  terms: String,
+  packages: [packageSchema],
+  topics: [{
+    name: String,
+    description: String
+  }]
+}, {
+  toObject: {
+    virtuals: true,
+    getters: true
+  },
+  toJSON: {
+    virtuals: true,
+    getters: true
+  }
+});
+callSchema.virtual('start_date_formatted').get(function () {
+  return moment(this.start_date).format('MMMM Do YYYY, h:mm:ss a');
+});
+callSchema.virtual('end_date_formatted').get(function () {
+  return moment(this.end_date).format('MMMM Do YYYY, h:mm:ss a');
+});
 
 const eventSchema = new Schema({
   old_id: String,
@@ -32,13 +95,7 @@ const eventSchema = new Schema({
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   users:  [{ type: Schema.ObjectId, ref: 'Users' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
-  schedule:[
-    {
-      starts: Date,
-      ends: Date,
-      venue: Venue
-    }
-  ],
+  schedule:[Schedule],
   settings: {
     permissions: {
         administrator: [{ type: Schema.ObjectId, ref: 'User' }]
@@ -54,34 +111,7 @@ const eventSchema = new Schema({
       subBkg: String,
       colBkg: String,
       permissions: {},
-      calls: [{
-        title: String,
-        email: String,
-        permalink: String,
-        start_date: Date,
-        end_date: Date,
-        admitted: [{ type: Schema.ObjectId, ref: 'Category' }],
-        excerpt: String,
-        terms: String,
-        packages: [{
-          name: String,
-          price: Number,
-          description: String,
-          personal: { type: Boolean, default: false },
-          requested: { type: Boolean, default: false },
-          allow_multiple: { type: Boolean, default: false },
-          allow_options: { type: Boolean, default: false },
-          options_name: String,
-          options: String,
-          daily: { type: Boolean, default: false },
-          start_date: Date,
-          end_date: Date
-        }],
-        topics: [{
-          name: String,
-          description: String
-        }]
-      }]
+      calls: [callSchema]
     }
   },
   tobescheduled: [{
@@ -111,15 +141,20 @@ const eventSchema = new Schema({
 }, {
   timestamps: true,
   toObject: {
-    virtuals: true
+    virtuals: true,
+    getters: true
   },
   toJSON: {
-    virtuals: true
+    virtuals: true,
+    getters: true
   }
 });
 
-// Return thumbnail
+
+
+
 eventSchema.virtual('imageFormats').get(function () {
+  logger.debug('imageFormats');
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
@@ -135,8 +170,28 @@ eventSchema.virtual('imageFormats').get(function () {
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
+  } else {
+    for(let format in config.cpanel[adminsez].media.image.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].media.image.sizes[format].default}`;
+    }
   }
   return imageFormats;
+});
+
+eventSchema.virtual('boxDate').get(function () {
+  let boxDate;
+  if (this.schedule && this.schedule.length) {
+    boxDate = moment(this.schedule[0].date).format(process.env.DATEFORMAT);
+  }
+  return boxDate;
+});
+
+eventSchema.virtual('boxVenue').get(function () {
+  let boxVenue;
+  if (this.schedule && this.schedule.length) {
+    boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
+  }
+  return boxVenue;
 });
 
 eventSchema.virtual('teaserImageFormats').get(function () {
@@ -154,6 +209,10 @@ eventSchema.virtual('teaserImageFormats').get(function () {
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
       teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+  } else {
+    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
     }
   }
   return teaserImageFormats;
