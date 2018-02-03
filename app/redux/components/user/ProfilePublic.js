@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
 import Abouts from '../about/Abouts';
-import Links from '../link/Links';
+import LinksWeb from '../link/Links';
 import LinksSocial from '../link/LinksSocial';
 import AddressesPublic from '../place/AddressesPublic';
 import Match from 'preact-router/match';
@@ -12,32 +12,33 @@ import Languages from '../language/Languages';
 import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
-import Modal from '../Modal';
+//import asyncValidate from '../asyncValidate';
+import validate from './validate';
+import ProfileLinksSocial from './ProfileLinksSocial';
+import { Modal, Button } from 'react-bootstrap';
 
 import {
   fetchCountries,
   editUser,
-  userLinkDelete,
-  userAboutDelete
+  openEdituserModal,
+  closeEdituserModal
 } from '../../reducers/actions';
-
-const required = value => value ? undefined : 'Required'
-const maxLength = max => value =>
-  value && value.length > max ? `Must be ${max} characters or less` : undefined
-const maxLength15 = maxLength(15);
 
 
 let ProfilePublicForm = props => {
   const {
     user,
     abouts,
+    links,
     handleSubmit,
+    openEdituserModal,
+    closeEdituserModal,
     editUser,
     fetchCountries,
-    userAboutDelete,
     intl,
-    userLinkDelete
+    submitting
   } = props;
+
 
   return (
     <div>
@@ -75,7 +76,6 @@ let ProfilePublicForm = props => {
               className="form-control"
               name="stagename"
               component= {renderField}
-              validate={[ required ]}
             />
           </div>
           <div className="form-group">
@@ -89,7 +89,6 @@ let ProfilePublicForm = props => {
               className="form-control"
               name="slug"
               component= {renderField}
-              validate={[ required ]}
             />
             <p>
               {user.publicUrl}
@@ -108,12 +107,12 @@ let ProfilePublicForm = props => {
           />
 
           <FieldArray 
-            name="links" 
-            component={Links} 
+            name="web" 
+            component={LinksWeb} 
           />
 
           <FieldArray 
-            name="linksSocial" 
+            name="social"
             component={LinksSocial} 
           />
 
@@ -131,7 +130,8 @@ let ProfilePublicForm = props => {
           <div className="form-group">
             <button
               className="btn btn-primary"
-              // disabled={submitting}
+              //onClick={openEdituserModal}
+              disabled={submitting}
               type="submit"
             >
               <FormattedMessage
@@ -141,6 +141,18 @@ let ProfilePublicForm = props => {
             </button>
           </div>
         </form>
+         <div className="static-modal">
+          <Modal show={user._editUserActive} onHide={openEdituserModal}>
+            <Modal.Header>
+              <Modal.Title></Modal.Title>
+              <button type="button" class="close" onClick={closeEdituserModal} aria-label="Close"><span aria-hidden="true">×</span></button>
+            </Modal.Header>
+            <Modal.Body><h4>Form Saved</h4></Modal.Body>
+            <Modal.Footer>
+              <Button onClick={closeEdituserModal}>Close</Button>
+            </Modal.Footer>
+          </Modal>
+          </div>
       </Layout >
     </div>
   );
@@ -150,20 +162,18 @@ ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  //validate
+  validate
 })(ProfilePublicForm));
 
 const selector = formValueSelector('userPublic');
 const ProfilePublic = props => {
-  //console.log('ProfilePublic props');
   const onSubmit = (props, dispatch) => {
-    console.log('ProfilePublic onSubmit dispatch' + dispatch);
     dispatch(editUser(props));
   };
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
-    alert("Form Saved");
   };
+
   return (
     <ProfilePublicForm
       initialValues={props.user}
@@ -175,7 +185,7 @@ const ProfilePublic = props => {
 };
 
 const mapStateToProps = (state, props) => {
-
+    
   let abouts = selector(state, 'abouts');
   if (abouts && abouts.length < Languages.length) {
     for (let l = 0; l < Languages.length; l++) {
@@ -203,8 +213,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => ({
   editUser: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries),
-  userLinkDelete: dispatch(userLinkDelete),
-  userAboutDelete: dispatch(userAboutDelete)
+  openEdituserModal:dispatch(openEdituserModal),
+  closeEdituserModal:dispatch(closeEdituserModal)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);

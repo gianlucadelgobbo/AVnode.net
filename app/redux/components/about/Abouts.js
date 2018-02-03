@@ -52,8 +52,7 @@ const Abouts = injectIntl(({
         <Field
           className="form-control"
           name={`${about}.abouttext`}
-          component="textarea"
-          
+          component="textarea"      
           rows="12"
           placeholder={intl.formatMessage({
             id: 'about.placeholder',
