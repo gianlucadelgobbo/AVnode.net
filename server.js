@@ -17,7 +17,7 @@ const passport = require('./app/utilities/passport');
 const routes = require('./app/routes');
 const logger = require('./app/utilities/logger');
 
-// config = require('getconfig');
+const config = require('getconfig');
 
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
