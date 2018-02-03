@@ -93,12 +93,35 @@ const userSchema = new Schema({
 }); */
 
 // Crews only
-userSchema.virtual('crewEditUrl').get(function () {
-  return `/admin/crew/${this.slug}`;
+userSchema.virtual('editUrl').get(function () {
+  if (this.slug) {
+    if (this.is_crew) {
+      return `/admin/crew/${this.slug}`;
+    } else {
+      return `/admin/${this.slug}`;
+    } 
+  } 
 });
 
-userSchema.virtual('crewPublicUrl').get(function () {
-  return `/crew/${this.slug}`;
+userSchema.virtual('about').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  console.log("stocazzo");
+  console.log(global.getLocale());
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      console.log("stocazzaaaaao");
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    console.log(about);
+  }
+  return about;
 });
 
 /* BL FIXME later for crews
@@ -111,7 +134,7 @@ userSchema.pre('remove', function(next) {
 });*/
 
 userSchema.virtual('birthdayFormatted').get(function () {
-  return moment(this.birthday).format(process.env.DATEFORMAT);
+  if (this.birthday) return moment(this.birthday).format(process.env.DATEFORMAT);
 });
 
 userSchema.virtual('publicEmails').get(function () {
@@ -123,11 +146,11 @@ userSchema.virtual('publicEmails').get(function () {
       }
     });
   }
-  return emails;
+  if (emails.length) return emails;
 });
 
 userSchema.virtual('publicUrl').get(function () {
-  return `/${this.slug}`;
+  if (this.slug) return `/${this.slug}`;
 });
 
 // Return thumbnail
@@ -146,6 +169,10 @@ userSchema.virtual('imageFormats').get(function () {
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+  } else {
+    for(let format in config.cpanel[adminsez].media.image.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].media.image.sizes[format].default}`;
     }
   }
   return imageFormats;
@@ -166,6 +193,10 @@ userSchema.virtual('teaserImageFormats').get(function () {
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
       teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+  } else {
+    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
     }
   }
   return teaserImageFormats;

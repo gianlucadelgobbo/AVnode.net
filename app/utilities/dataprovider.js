@@ -6,8 +6,10 @@ const helper = require('./helper');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
+const Footage = mongoose.model('Footage');
 // const Crew = mongoose.model('Crew');
 const Performance = mongoose.model('Performance');
+const Category = mongoose.model('Category');
 
 const logger = require('./logger');
 
@@ -97,8 +99,85 @@ dataprovider.fetchShow = (req, model, cb) => {
   logger.debug('fetchShow '+req.params.slug);  
   model.
   findOne({slug: req.params.slug}).
-  //.populate()
+  // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+  populate({
+    path: 'footage',
+    select: {
+      title: 1,
+      slug: 1,
+      stats: 1,
+      image: 1
+    },
+    populate: { path: 'users', select: 'stagename', model: User},
+    options: { limit: 5 },
+    model: Footage
+  }).
+  populate({
+    path: 'performances',
+    select: {
+      title: 1,
+      slug: 1,
+      stats: 1,
+      image: 1
+    },
+    populate: { path: 'users', select: 'stagename', model: User},
+    options: { limit: 5 },
+    model: Performance
+  }).
+  populate({
+    path: 'events',
+    select: {
+      title: 1,
+      slug: 1,
+      stats: 1,
+      schedule: 1,
+      categories: 1,
+      image: 1
+    },
+    populate: { path: 'categories', select: 'name permalink', model: Category},
+    options: { limit: 5 },
+    model: Event
+  }).
+  populate({
+    path: 'crews',
+    select: {
+      stagename: 1,
+      slug: 1,
+      stats: 1,
+      image: 1
+    },
+    //populate: { path: 'categories', select: 'name permalink', model: Category},
+    options: { limit: 5 },
+    model: User
+  }).
+  select({
+    stagename: 1,
+    abouts: 1,
+    about: 1,
+    is_crew: 1,
+    slug: 1,
+    stats: 1,
+    addresses: 1,
+    image: 1
+  }).
   exec((err, data) => {
+    cb(err, data);
+  });
+};
+
+dataprovider.getPerformanceByIds = (req, ids, cb) => {
+  logger.debug('getPerformanceByIds ');
+  logger.debug(ids);
+
+  Performance.find({'users':{$in: ids}}).
+  populate({path: 'categories', select: 'name'}).
+  populate({path: 'users', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+  select({ title: 1, categories: 1 }).
+  exec((err, data) => {
+    logger.debug('getPerformanceByIds Res');  
+    logger.debug(err);  
+    //logger.debug(data);  
+    for (var item in data) logger.debug(data[item].users);  
     cb(err, data);
   });
 };

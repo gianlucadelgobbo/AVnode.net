@@ -12,7 +12,7 @@ import Languages from '../language/Languages';
 import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
-import asyncValidate from '../asyncValidate';
+//import asyncValidate from '../asyncValidate';
 import validate from './validate';
 import ProfileLinksSocial from './ProfileLinksSocial';
 import { Modal, Button } from 'react-bootstrap';
@@ -20,8 +20,6 @@ import { Modal, Button } from 'react-bootstrap';
 import {
   fetchCountries,
   editUser,
-  userLinkDelete,
-  userAboutDelete,
   openEdituserModal,
   closeEdituserModal
 } from '../../reducers/actions';
@@ -37,9 +35,7 @@ let ProfilePublicForm = props => {
     closeEdituserModal,
     editUser,
     fetchCountries,
-    userAboutDelete,
     intl,
-    userLinkDelete,
     submitting
   } = props;
 
@@ -148,10 +144,10 @@ let ProfilePublicForm = props => {
          <div className="static-modal">
           <Modal show={user._editUserActive} onHide={openEdituserModal}>
             <Modal.Header>
-              <Modal.Title>Form Saved</Modal.Title>
+              <Modal.Title></Modal.Title>
               <button type="button" class="close" onClick={closeEdituserModal} aria-label="Close"><span aria-hidden="true">×</span></button>
             </Modal.Header>
-            <Modal.Body><pre class="code-block"></pre></Modal.Body>
+            <Modal.Body><h4>Form Saved</h4></Modal.Body>
             <Modal.Footer>
               <Button onClick={closeEdituserModal}>Close</Button>
             </Modal.Footer>
@@ -166,9 +162,7 @@ ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  validate,
-  asyncValidate,
-  asyncBlurFields: ['stagename'],
+  validate
 })(ProfilePublicForm));
 
 const selector = formValueSelector('userPublic');
@@ -179,17 +173,12 @@ const ProfilePublic = props => {
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
   };
- const showResults = (values) => {
-   //let clickEventModal = {openEdituserModal};
-   //return clickEventModal;
-  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-};
 
   return (
     <ProfilePublicForm
       initialValues={props.user}
       onSubmit={onSubmit}
-      onSubmitSuccess={showResults}
+      onSubmitSuccess={onSubmitSuccess}
       {...props}
     />
   );
@@ -224,8 +213,6 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => ({
   editUser: dispatch(editUser),
   fetchCountries: dispatch(fetchCountries),
-  userLinkDelete: dispatch(userLinkDelete),
-  userAboutDelete: dispatch(userAboutDelete),
   openEdituserModal:dispatch(openEdituserModal),
   closeEdituserModal:dispatch(closeEdituserModal)
 });
