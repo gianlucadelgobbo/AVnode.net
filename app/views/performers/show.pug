@@ -31,7 +31,7 @@ block title
                 li.list-inline-item!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
               if data.stats.tvshows
                 li.list-inline-item!=__('Tvshows')+" (<span>"+data.stats.tvshows+"</span>)"    
-              li.list-inline-item.miss!=__('Gallery')+" (<span>99</span>)"    
+              li.list-inline-item!=__('Gallery')+" (<span>"+data.stats.galleries+"</span>)"    
               
         
         
@@ -70,53 +70,120 @@ block content
     .col-lg-12
       h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
       .row
-        each event in data.events
+        each item in data.events
           .col-sm-4
             .event_item_wrapper
               img.img-fluid(
-                src=event.imageFormats.medium
-                alt=event.title
+                src=item.imageFormats.medium
+                alt=item.title
               )
               .event_item_info_wrapper
-                h4.event_item_title.miss=event.title
+                h4.event_item_title=item.title
                 ul.event_item_date_and_locality.list-inline
-                  li.list-inline-item.event_item_date.miss=event.boxDate
-                  li.list-inline-item.event_item_locality=event.boxVenue
+                  li.list-inline-item.event_item_date=item.boxDate
+                  li.list-inline-item.event_item_locality=item.boxVenue
+      .text-right
+        a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')
   br
   br
   .row
     .col-lg-12
       h3=__('Crews')
       .card-deck
-        each crew in data.crews
+        each item in data.crews
           .card
-            if crew.image
+            if item.imageFormats
               img.card-img-top.img-fluid(
-                src=crew.imageFormats.medium
-                alt=crew.title
+                src=item.imageFormats.medium
+                alt=item.stagename
               )
             .card-block
-              h4.card-title=crew.title
-              h6.card-subtitle.text-muted=crew.subtitle
+              h4.event_item_title=item.stagename
             .card-block.pt-0
-              p.card-text=crew.dateFormatted
-              a.btn.btn-secondary(href=crew.publicUrl)=__('More')
+              a.btn.btn-secondary(href=item.publicUrl)=__('More')
   br
   br
   .row
     .col-lg-12
       h3=__('Performances')
       .card-deck
-        each performance in data.performances
+        each item in data.performances
           .card
-            if performance.image
+            if item.imageFormats
               img.card-img-top.img-fluid(
-                src=performance.imageFormats.medium
-                alt=performance.title
+                src=item.imageFormats.medium
+                alt=item.title
               )
             .card-block
-              h4.card-title=performance.title
-              h6.card-subtitle.text-muted=performance.subtitle
+              h4.event_item_title=item.title
             .card-block.pt-0
-              p.card-text=performance.dateFormatted
-              a.btn.btn-secondary(href=performance.publicUrl)=__('More')
+              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+  br
+  br
+  .row
+    .col-lg-12
+      h3=__('TV Shows')
+      .card-deck
+        each item in data.tvshows
+          .card
+            if item.imageFormats
+              img.card-img-top.img-fluid(
+                src=item.imageFormats.large
+                alt=item.title
+              )
+            .card-block
+              h4.event_item_title=item.title
+            .card-block.pt-0
+              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+  br
+  br
+  .row
+    .col-lg-12
+      h3=__('Footage')
+      .card-deck
+        each item in data.footage
+          .card
+            if item.imageFormats
+              img.card-img-top.img-fluid(
+                src=item.imageFormats.large
+                alt=item.title
+              )
+            .card-block
+              h4.event_item_title=item.title
+            .card-block.pt-0
+              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+  br
+  br
+  .row
+    .col-lg-12
+      h3=__('Playlists')
+      .card-deck
+        each item in data.playlists
+          .card
+            if item.imageFormats
+              img.card-img-top.img-fluid(
+                src=item.imageFormats.large
+                alt=item.title
+              )
+            .card-block
+              h4.event_item_title=item.title
+              h6.card-subtitle.text-muted=item.subtitle
+            .card-block.pt-0
+              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+  br
+  br
+  .row
+    .col-lg-12
+      h3=__('Galleries')
+      .card-deck
+        each item in data.galleries
+          .card
+            if item.imageFormats
+              img.card-img-top.img-fluid(
+                src=item.imageFormats.medium
+                alt=item.title
+              )
+            .card-block
+              h4.event_item_title=item.title
+            .card-block.pt-0
+              a.btn.btn-secondary(href=item.publicUrl)=__('More')

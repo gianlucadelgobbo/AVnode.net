@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const indexPlugin = require('../utilities/elasticsearch/Footage');
 
 const About = require('./shared/About');
-const MediaImage = require('./shared/MediaImage');
+const Media = require('./shared/Media');
 const Booking = require('./shared/Booking');
 
 const adminsez = 'footage';
@@ -15,9 +15,16 @@ const footageSchema = new Schema({
   slug: { type: String, unique: true },
   title: String,
   is_public: { type: Boolean, default: false },
-  image: MediaImage,
-  teaserImage: MediaImage,
+  media: Media,
+  tags: [{
+    old_id : String,
+    tag : String,
+    tot : Number,
+    required : Boolean,
+    exclusive : Boolean
+  }]
 /*
+  teaserImage: MediaImage,
   //  file: {file: String},
   abouts: [About],
   stats: {},
@@ -46,12 +53,12 @@ const footageSchema = new Schema({
 // Return thumbnail
 footageSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.image);
-  if (this.image && this.image.file) {
+  console.log(this.media.file);
+  if (this.media && this.media.file) {
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = config.cpanel[adminsez].media.image.sizes[format].default;
     }
-    const serverPath = this.image.file;
+    const serverPath = this.media.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
@@ -67,7 +74,7 @@ footageSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-
+/*
 footageSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -91,7 +98,7 @@ footageSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-
+*/
 footageSchema.virtual('editUrl').get(function () {
   return `/admin/footage/public/${this.slug}`;
 });
@@ -159,8 +166,8 @@ footageSchema.virtual('cardUrl').get(function () {
 // return original image
 footageSchema.virtual('imageUrl').get(function () {
   let image = '/images/profile-default.svg';
-  if (this.image) {
-    image = `/storage/${this.image}/512/200`;
+  if (this.media) {
+    image = `/storage/${this.media}/512/200`;
   }
   if (this.file && this.file.file) {
     image = `${process.env.WAREHOUSE}${this.file.file}`;

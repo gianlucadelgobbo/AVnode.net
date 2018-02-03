@@ -181,7 +181,21 @@ eventSchema.virtual('imageFormats').get(function () {
 eventSchema.virtual('boxDate').get(function () {
   let boxDate;
   if (this.schedule && this.schedule.length) {
-    boxDate = moment(this.schedule[0].date).format(process.env.DATEFORMAT);
+    const lang = global.getLocale();
+    moment.locale(lang);
+    if (this.schedule.length == 1) {
+      boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].single);
+    } else {
+      if (this.schedule[0].date.getFullYear()!==this.schedule[this.schedule.length-1].date.getFullYear()) {
+        boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].date).format(config.dateFormat[lang].single);
+      } else {
+        if (this.schedule[0].date.getMonth()!==this.schedule[this.schedule.length-1].date.getMonth()) {
+          boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].date).format(config.dateFormat[lang].daymonth2);
+        } else {
+          boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].date).format(config.dateFormat[lang].day2);
+        }
+      }
+    }
   }
   return boxDate;
 });
@@ -246,11 +260,11 @@ eventSchema.virtual('performances',{
 });
 
 eventSchema.virtual('startsFormatted').get(function () {
-  return moment(this.starts).format(process.env.DATEFORMAT);
+  return moment(this.starts).format(config.dateFormat);
 });
 
 eventSchema.virtual('endsFormatted').get(function () {
-  return moment(this.ends).format(process.env.DATEFORMAT);
+  return moment(this.ends).format(config.dateFormat);
 });
 
 eventSchema.virtual('organizers',{
