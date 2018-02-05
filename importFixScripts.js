@@ -99,6 +99,163 @@ db.events.find({"schedule.venue.location.city":{$exists: true}}).forEach(functio
   db.events.save(e);
 });
 
+db.users.find({"addresses.locality": "New York"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "New York") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "New york"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "New york") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "new york"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "new york") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "newyork"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "newyork") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "Newyork"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "Newyork") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "New York, Ny 10003"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "New York, Ny 10003") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "New York, NY 10025"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "New York, NY 10025") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "New York,"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "New York,") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+
+db.users.find({"addresses.locality": "NEW YORK"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "NEW YORK") e.addresses[a].country = 'United States';
+    }
+  }
+  db.users.save(e);
+});
+
+db.users.find({"addresses.locality": "London"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "London") e.addresses[a].country = 'United Kingdom';
+    }
+  }
+  db.users.save(e);
+});
+
+db.users.find({"addresses.locality": "london"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "london") e.addresses[a].country = 'United Kingdom';
+    }
+  }
+  db.users.save(e);
+});
+
+db.users.find({"addresses.country": "Russia"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].country === "Russia") e.addresses[a].country = "Russian Federation";
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "moscow"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "moscow") e.addresses[a].country = 'Russian Federation';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "Moscow"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "Moscow") e.addresses[a].country = 'Russian Federation';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "mexico"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "mexico") e.addresses[a].country = 'Mexico';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "Mexico City"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "Mexico City") e.addresses[a].country = 'Mexico';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "distrito federal"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "distrito federal") e.addresses[a].country = 'Mexico';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "DF"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "DF") e.addresses[a].country = 'Mexico';
+    }
+  }
+  db.users.save(e);
+});
+db.users.find({"addresses.locality": "Ciudad de Mu00e9xico"}).forEach(function(e) {
+  if (e.addresses && e.addresses.length) {
+    for(var a=0;a<e.addresses.length;a++){
+      if (e.addresses[a].locality === "Ciudad de Mu00e9xico") e.addresses[a].country = 'Mexico';
+    }
+  }
+  db.users.save(e);
+});
+
 
 db.footage.deleteMany({"file.file": { $exists: false}});
 db.footage.find({}).forEach(function(e) {
