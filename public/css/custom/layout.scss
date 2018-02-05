@@ -199,3 +199,30 @@ textarea#styled {
   height: 300px;
   border: none;
 }
+.input-group-btn:not(:first-child)>.btn, .input-group-btn:not(:first-child)>.btn-group{
+  margin-left:0;
+}
+.input-group .form-control{
+  z-index:auto;
+}
+.modal-close i {
+  position:absolute;
+  top:0;
+  right:0;
+  padding:5px;
+  cursor:pointer;
+}
+.modal-backdrop.in {
+  opacity:0.5;
+}
+.modal-dialog{
+  margin-top:10%;
+}
+.modal-title {
+  color: #0f8845;
+  margin:0 auto;
+}
+.modal-body h4{
+  text-align:center;
+  color: #0f8845;
+}
