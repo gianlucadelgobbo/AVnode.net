@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const indexPlugin = require('../utilities/elasticsearch/TVShow');
 
 const About = require('./shared/About');
-const MediaImage = require('./shared/MediaImage');
+const Media = require('./shared/Media');
 const Booking = require('./shared/Booking');
 
 const adminsez = 'tvshow';
@@ -16,8 +16,8 @@ const tvshowSchema = new Schema({
   slug: { type: String, unique: true },
   title: String,
   is_public: { type: Boolean, default: false },
-  image: MediaImage,
-  teaserImage: MediaImage,
+  media: Media,
+  // teaserImage: MediaImage,
   //  file: {file: String},
   abouts: [About],
   stats: {},
@@ -45,11 +45,11 @@ const tvshowSchema = new Schema({
 tvshowSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
-  if (this.image && this.image.file) {
+  if (this.media && this.media.file) {
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = config.cpanel[adminsez].media.image.sizes[format].default;
     }
-    const serverPath = this.image.file;
+    const serverPath = this.media.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
@@ -65,7 +65,7 @@ tvshowSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-
+/*
 tvshowSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -89,7 +89,7 @@ tvshowSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-
+*/
 tvshowSchema.virtual('editUrl').get(function () {
   return `/admin/tvshows/public/${this.slug}`;
 });
@@ -157,8 +157,8 @@ tvshowSchema.virtual('cardUrl').get(function () {
 // return original image
 tvshowSchema.virtual('imageUrl').get(function () {
   let image = '/images/profile-default.svg';
-  if (this.image) {
-    image = `/storage/${this.image}/512/200`;
+  if (this.media) {
+    image = `/storage/${this.media}/512/200`;
   }
   if (this.file && this.file.file) {
     image = `${process.env.WAREHOUSE}${this.file.file}`;
