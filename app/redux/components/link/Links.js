@@ -3,9 +3,6 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import { Field } from 'redux-form';
 import renderField from '../renderField';
 
-
-const required = value => value ? undefined : 'Required'
-
 const Links = injectIntl(({
   fields,
   meta: { touched, error, submitFailed },
@@ -35,12 +32,6 @@ const Links = injectIntl(({
                 defaultMessage: 'Url'
               })}
             />
-            {console.log(link)}
-            {/*<Field
-              name={`${link}.type`}
-              component={({ input, val }) => input.onChange(val)}
-              val="web"
-            />*/}
              <span className="input-group-btn">
               <button
                 type="button"

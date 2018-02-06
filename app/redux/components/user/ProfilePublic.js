@@ -114,7 +114,6 @@ let ProfilePublicForm = props => {
           <FieldArray 
             name="social"
             component={LinksSocial} 
-            props={{user:user}}
           />
 
           <FieldArray 
