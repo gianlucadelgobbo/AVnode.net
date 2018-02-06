@@ -1,0 +1,53 @@
+extends ../../../layout
+
+block title
+block teaser
+block content
+  - console.log(data)
+  - var strfull = ""
+  div
+    .p-3
+      h1.color1 Tools
+    .row
+      .col-md-3
+        .p-3
+          h4.color1 Performers
+          ul.nav.flex-column.nav-pills
+            li.nav-item
+              - var link = "/addresses/showall"
+              - console.log(currentUrl)
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+            li.nav-item
+              - link = "/addresses/updatedb"
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+            li.nav-item
+              - link = "/addresses/getgeometry"
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+            li.nav-item
+              - link = "/addresses/setgeometry"
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      .col-md-9
+        table.table
+          tr
+            td status
+            td country
+            td locality
+            td formatted_address
+            td lng;lat
+          if data
+            each add in data
+              tr
+                td=add.status
+                td=add.country
+                td=add.locality
+                td=add.formatted_address
+                td=(add.geometry && add.geometry.lng && add.geometry.lat ? add.geometry.lng+";"+add.geometry.lat : "EMPTY")
+              if add.status == "DONE - DELETE"
+                tr
+                  - var str ="  {country: '"+add.country+"', find: '"+add.locality+"', replace: '"+add.formatted_address+"'}"
+                  - strfull+=str+"\n"
+                  td(colspan="5")!=str
+        pre=strfull
+        //pre=JSON.stringify(data, null, 2)
+  if script
+    !=script
