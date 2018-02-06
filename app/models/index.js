@@ -7,3 +7,4 @@ require('./Gallery');
 require('./Footage');
 require('./Playlist');
 require('./TVShow');
+require('./AddressDB');
