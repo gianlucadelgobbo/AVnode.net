@@ -13,7 +13,7 @@ import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
 //import asyncValidate from '../asyncValidate';
-import validate from './validate';
+import validate from '../validate';
 import ProfileLinksSocial from './ProfileLinksSocial';
 import { Modal, Button } from 'react-bootstrap';
 
