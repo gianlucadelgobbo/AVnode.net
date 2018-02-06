@@ -1,0 +1,12 @@
+extends ../layout
+
+block title
+block teaser
+block content
+ div#app Tools
+  .row
+    .col-md-2 Menu
+    .col-md-10
+      pre=JSON.stringify(data, null, 2)
+  if script
+    !=script

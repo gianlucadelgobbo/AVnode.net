@@ -33,4 +33,11 @@
 	"Nexts": "Nexts",
 	"View all": "View all",
 	"Your Account": "Your Account"
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?",
+	"You are logged in.": "You are logged in."
+
 }
