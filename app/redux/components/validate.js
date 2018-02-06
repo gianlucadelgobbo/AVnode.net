@@ -28,6 +28,13 @@ const validate = values => {
         webErrors.url = 'Invalid link, please insert a valid link ';
         webArrayErrors[windex] =webErrors;
       }
+      if (values.web.length > 5) {
+        if (!webErrors.web) {
+          webErrors.url = []
+        }
+        webErrors.url._error = 'No more than five link allowed'
+        webArrayErrors[windex] = webErrors
+      }
     });
   
     if (webArrayErrors.length) {
