@@ -8,16 +8,16 @@ const required = value => value ? undefined : 'Required'
 
 const Links = injectIntl(({
   fields,
-  meta: { error, submitFailed },
+  meta: { touched, error, submitFailed },
   intl
 }) => (
     <fieldset>
-      <legend>
+      <label>
         <FormattedMessage
           id="websites"
           defaultMessage="Websites"
         />
-      </legend>
+      </label>
       {submitFailed && error && <span>{error}</span>}
 
       {fields.length == 0 ? fields.push() : ''}
@@ -27,9 +27,9 @@ const Links = injectIntl(({
           <div className="input-group mb-3">
             <Field
               className="form-control"
-              name={`${link}.url`}
-              component="input"
               type="text"
+              name={`${link}.url`}
+              component={renderField}          
               placeholder={intl.formatMessage({
                 id: 'url.placeholder',
                 defaultMessage: 'Url'

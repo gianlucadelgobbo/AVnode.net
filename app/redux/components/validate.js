@@ -11,7 +11,29 @@ const validate = values => {
   }
   if (!values.slug) {
     errors.slug = 'Slug Required'
-  }  
+  }
+
+  if (!values.web || !values.web.length) {
+    errors.web = { _error: 'At least one link must be entered' }
+  } else {
+
+    const webArrayErrors = [];
+    values.web.forEach((w, windex) => {
+      const webErrors = {};
+      if (!w || !w.url) {
+        webErrors.url = 'Required';
+        webArrayErrors[windex] = webErrors;
+      }
+      else if (!/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/.test(w.url)) {
+        webErrors.url = 'Invalid link, please insert a valid link ';
+        webArrayErrors[windex] =webErrors;
+      }
+    });
+    if (webArrayErrors.length) {
+      errors.web = webArrayErrors;
+    }
+  }
+/*
   if (values.emails) {
     const emailsArrayErrors = [];
     values.emails.forEach((email, emailIndex) => {
@@ -29,6 +51,7 @@ const validate = values => {
       errors.emails = emailsArrayErrors;
     }
   }
+  
   if (values.abouts) {
     const aboutsArrayErrors = [];
     values.abouts.forEach((about, aboutIndex) => {
@@ -46,6 +69,7 @@ const validate = values => {
       errors.abouts = aboutsArrayErrors;
     }
   }
+  */
   return errors;
 };
   
