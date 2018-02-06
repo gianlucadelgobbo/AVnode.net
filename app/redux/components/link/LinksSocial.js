@@ -4,6 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import SocialLinkTypes from './SocialLinkTypes';
 
 const LinksSocial = injectIntl(({
+  user,
   fields,
   meta: { error, submitFailed },
   intl
@@ -66,7 +67,7 @@ const LinksSocial = injectIntl(({
               >
               </i>
             </button>
-            </span>
+            </span>        
           </div>
         </div>
       ))}
