@@ -24,5 +24,18 @@
 	"AVnode.net": "AVnode.net",
 	"Your Account": "Your Account",
 	"Welcome to AVnode network": "Welcome to AVnode network",
-	"AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.": "AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts."
+	"AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.": "AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.",
+	"Login": "Login",
+	"Sign up": "Sign up",
+	"all": "all",
+	"individuals": "individuals",
+	"crews": "crews",
+	"mostactive": "mostactive",
+	"mostrecent": "mostrecent",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?",
+	"You are logged in.": "You are logged in."
 }
