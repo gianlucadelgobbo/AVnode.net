@@ -40,7 +40,7 @@ block content
                 td=add.status
                 td=add.country
                 td=add.locality
-                td=add.formatted_address
+                td=(add.formatted_address ? add.formatted_address : add.localityOld.join(', '))
                 td=(add.geometry && add.geometry.lng && add.geometry.lat ? add.geometry.lng+";"+add.geometry.lat : "EMPTY")
               if add.status == "DONE - DELETE"
                 tr
@@ -48,6 +48,6 @@ block content
                   - strfull+=str+"\n"
                   td(colspan="5")!=str
         pre=strfull
-        //pre=JSON.stringify(data, null, 2)
+        pre=JSON.stringify(data, null, 2)
   if script
     !=script
