@@ -39,6 +39,7 @@ import {
   REQUEST_USER_MAKEADDRESSPUBLIC,
   REQUEST_USER_DELETEADDRESS,
   REQUEST_ADD_USER_LINK,
+  RESPONSE_SLUG,
 
   EDIT_EVENT,
   REQUEST_DELETE_EVENT,
@@ -399,7 +400,10 @@ const user = (state = initialValues, action) => {
     return Object.assign({}, state, {
       _countries: action.payload.countries
     });
-
+  case RESPONSE_SLUG:
+    return Object.assign({}, state, {
+      _slug:action.payload.slug
+    });
     /*case REQUEST_USER_EDITABOUT:
     case REQUEST_USER_DELETEABOUT:
     case REQUEST_USER_MAKELINKPRIMARY:

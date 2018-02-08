@@ -41,7 +41,7 @@ export const REQUEST_USER_MAKEADDRESSPRIMARY = 'REQUEST_USER_MAKEADDRESSPRIMARY'
 export const REQUEST_USER_MAKEADDRESSPRIVATE = 'REQUEST_USER_MAKEADDRESSPRIVATE';
 export const REQUEST_USER_MAKEADDRESSPUBLIC = 'REQUEST_USER_MAKEADDRESSPUBLIC';
 export const REQUEST_USER_DELETEADDRESS = 'REQUEST_USER_DELETEADDRESS';
-export const VALIDATE_USER_FIELDS = 'VALIDATE_USER_FIELDS';
+export const RESPONSE_SLUG = 'RESPONSE_SLUG';
 
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const ADD_EVENT = 'ADD_EVENT';
@@ -1637,18 +1637,17 @@ export function userLinkDelete(dispatch) {
 }
 
 
-export function validateUserFields(values, dispatch){
-  return (slug) => {
-    dispatch({
-      type: VALIDATE_USER_FIELDS,
-      payload: {
-        slug: slug
-      }
-    });
-    return fetch(
-      `/admin/api/user/slugs/${slug}`, {
-        method: 'GET'
-      })
-      .then(json => dispatch(gotUser(json)));
+// slugs
+export function fetchSlug(slug,dispatch) {
+  return () => {
+    return fetch(`/admin/api/user/slugs/${slug}`)
+      .then(json => (
+        dispatch({
+          type: RESPONSE_SLUG,
+          payload: {
+            slug: json
+          }
+        })
+      ));
   };
 }

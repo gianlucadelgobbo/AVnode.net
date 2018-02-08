@@ -164,7 +164,7 @@ ProfilePublicForm = injectIntl(reduxForm({
   keepDirtyOnReinitialize: true,
   validate,
   asyncValidate,
-  asyncBlurFields: ['stagename']
+  asyncBlurFields: ['slug']
 })(ProfilePublicForm));
 
 const selector = formValueSelector('userPublic');
