@@ -12,11 +12,18 @@ const validate = values => {
     if (!values.slug) {
       errors.slug = 'Slug Required'
     }
-    /*if (!values.birthday) {
-      errors.birthday = 'Required'
-    } else if (isNaN(Number(values.birthday))) {
-        errors.birthday = 'Must be a number'
-    }*/
+    if (!values.web || !values.web.length) {
+      errors.web = { _error: 'At least one link must be entered' }
+    } else {
+      const weblinkArrayErrors = []
+      values.web.forEach((link, linkindex) => {
+        const linkErrors = {}
+        if (!link || !link.url) {
+          linkErrors.url = 'Required'
+          weblinkArrayErrors[linkindex] = linkErrors
+        }
+      });
+    }
     return errors
   }
   

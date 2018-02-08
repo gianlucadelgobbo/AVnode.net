@@ -8,7 +8,7 @@ const required = value => value ? undefined : 'Required'
 
 const Links = injectIntl(({
   fields,
-  meta: { error, submitFailed },
+  meta: { error, submitFailed, touched},
   intl
 }) => (
     <fieldset>
@@ -28,19 +28,9 @@ const Links = injectIntl(({
             <Field
               className="form-control"
               name={`${link}.url`}
-              component="input"
               type="text"
-              placeholder={intl.formatMessage({
-                id: 'url.placeholder',
-                defaultMessage: 'Url'
-              })}
+              component={renderField}
             />
-            {console.log(link)}
-            {/*<Field
-              name={`${link}.type`}
-              component={({ input, val }) => input.onChange(val)}
-              val="web"
-            />*/}
              <span className="input-group-btn">
               <button
                 type="button"
