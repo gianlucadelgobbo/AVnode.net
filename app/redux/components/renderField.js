@@ -1,6 +1,6 @@
 import { h } from 'preact';
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
+const renderField = ({ input, label, type, meta: { asyncValidating, touched, error } }) => (
     
   //{/*console.log('renderField:'+ JSON.stringify(input))*/}
 

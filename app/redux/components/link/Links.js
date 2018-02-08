@@ -5,11 +5,7 @@ import renderField from '../renderField';
 
 const Links = injectIntl(({
   fields,
-<<<<<<< HEAD
-  meta: { error, submitFailed, touched},
-=======
   meta: { touched, error, submitFailed },
->>>>>>> d194a8ff2e8d33ae78d1fd120e763d095205cb2c
   intl
 }) => (
     <fieldset>
@@ -28,11 +24,6 @@ const Links = injectIntl(({
           <div className="input-group mb-3">
             <Field
               className="form-control"
-<<<<<<< HEAD
-              name={`${link}.url`}
-              type="text"
-              component={renderField}
-=======
               type="text"
               name={`${link}.url`}
               component={renderField}          
@@ -40,7 +31,6 @@ const Links = injectIntl(({
                 id: 'url.placeholder',
                 defaultMessage: 'Url'
               })}
->>>>>>> d194a8ff2e8d33ae78d1fd120e763d095205cb2c
             />
              <span className="input-group-btn">
               <button
