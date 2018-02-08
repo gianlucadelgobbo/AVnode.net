@@ -1,11 +1,14 @@
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-const asyncValidate = (values /*, dispatch */) => {
-  return sleep(1000).then(() => { // simulate server latency
-    if (['john', 'paul', 'george', 'ringo'].includes(values.stagename)) {
-      throw { stagename: 'That username is taken' };
-    }
-  });
+import {
+validateUserFields
+} from '../reducers/actions';
+const asyncValidate = (values , dispatch ) => {
+  
+  return new Promise((resolve, reject) => {
+    dispatch(validateUserFields(values))
+    .then((response) => {
+     console.log(response);
+    }); //dispatch
+  }); //promise
 };
 
 export default asyncValidate;

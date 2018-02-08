@@ -1,19 +1,31 @@
 const validate = values => {
+
   const errors = {};
-  if (!values.surname) {
+  let isError = false;
+
+  if (!values.surname || values.surname.trim() === "") {
     errors.surname = 'Surname Required';
+    isError = true;
   }
-  if (!values.name) {
+  if (!values.name || values.name.trim() === "") {
     errors.name = 'Name Required';
+    isError = true;
   }
-  if (!values.stagename) {
-    errors.stagename = 'Stage Name Required'
+  if (!values.stagename || values.stagename.trim() === "") {
+    errors.stagename = 'Stage Name Required';
+    isError = true;
   }
-  else if (values.stagename.length < 5) {
-    errors.stagename = 'Must be 5 characters or more'
+  else if (values.stagename.length < 2) {
+    errors.stagename = 'Must be 2 characters or more';
+    isError = true;
   }
-  if (!values.slug) {
-    errors.slug = 'Slug Required'
+  else if (values.stagename.length > 30) {
+    errors.stagename = 'Must be 30 characters or less';
+    isError = true;
+  }
+  if (!values.slug || values.slug.trim() === "") {
+    errors.slug = 'Slug Required';
+    isError = true;
   }
   if (!values.web || !values.web.length) {
     errors.web = { _error: 'At least one link must be entered' }
@@ -27,6 +39,7 @@ const validate = values => {
       else if (!/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/.test(w.url)) {
         webErrors.url = 'Invalid link, please insert a valid link ';
         webArrayErrors[windex] =webErrors;
+        isError = true;
       }
       if (values.web.length > 5) {
         if (!webErrors.web) {
@@ -39,6 +52,7 @@ const validate = values => {
   
     if (webArrayErrors.length) {
       errors.web = webArrayErrors;
+      isError = true;
     }
   }
 
@@ -54,12 +68,14 @@ const validate = values => {
       else if (!/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/.test(s.url)) {
         socialErrors.url = 'Invalid link, please insert a valid link ';
         socialArrayErrors[sindex] =socialErrors;
+        isError = true;
       }
     });
     if (socialArrayErrors.length) {
-      errors.social = socialArrayErrors;
+        errors.social = socialArrayErrors;
+        isError = true;
+      }
     }
-  }
   
 /*
   if (values.emails) {
