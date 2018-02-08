@@ -1,0 +1,30 @@
+extends ../layout
+
+block title
+block teaser
+block content
+  div#app
+    .p-3
+      h1.color1 Tools
+    .row
+      .col-md-3
+        .p-3
+          h4.color1 Performers
+          ul.nav.flex-column.nav-pills
+            li.nav-item
+              - var link = "/addresses/showall"
+              - console.log(currentUrl)
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+            li.nav-item
+              - link = "/addresses/updatedb"
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+            li.nav-item
+              - link = "/addresses/getgeometry"
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+            li.nav-item
+              - link = "/addresses/setgeometry"
+              a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      .col-md-9
+        pre=JSON.stringify(data, null, 2)
+  if script
+    //!=script

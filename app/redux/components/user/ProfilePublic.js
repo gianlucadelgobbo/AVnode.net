@@ -12,8 +12,8 @@ import Languages from '../language/Languages';
 import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
-//import asyncValidate from '../asyncValidate';
-import validate from './validate';
+import asyncValidate from '../asyncValidate';
+import validate from '../validate';
 import ProfileLinksSocial from './ProfileLinksSocial';
 import { Modal, Button } from 'react-bootstrap';
 
@@ -114,7 +114,6 @@ let ProfilePublicForm = props => {
           <FieldArray 
             name="social"
             component={LinksSocial} 
-            props={{user:user}}
           />
 
           <FieldArray 
@@ -163,7 +162,9 @@ ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  validate
+  validate,
+  asyncValidate,
+  asyncBlurFields: ['stagename']
 })(ProfilePublicForm));
 
 const selector = formValueSelector('userPublic');

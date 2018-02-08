@@ -15,12 +15,12 @@ const Abouts = injectIntl(({
     
   <fieldset>
     <div>
-      <legend>
+      <label>
         <FormattedMessage
           id="abouts"
           defaultMessage="About you..."
         />
-      </legend>
+      </label>
       {submitFailed && error && <span>{error}</span>}
 
       <Tab.Container id="left-tab-languages" defaultActiveKey={0}>

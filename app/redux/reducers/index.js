@@ -80,7 +80,9 @@ const initialValues = {
   active: window.location.pathname,
   events: [],
   performances: [],
-  crews: []
+  crews: [],
+  error:null, 
+  loading: false
 };
 const event = (state = {}, action) => {
   console.log('event action type: ' + action.type + ' action: ' + JSON.stringify(action));
@@ -397,6 +399,7 @@ const user = (state = initialValues, action) => {
     return Object.assign({}, state, {
       _countries: action.payload.countries
     });
+
     /*case REQUEST_USER_EDITABOUT:
     case REQUEST_USER_DELETEABOUT:
     case REQUEST_USER_MAKELINKPRIMARY:
