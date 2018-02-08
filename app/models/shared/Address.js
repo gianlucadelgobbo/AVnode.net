@@ -14,7 +14,7 @@ const Address = new Schema({
   place_id: String,
   is_primary: { type: Boolean, default: false },
   is_public: {type: Boolean, default: false}
-});
+},{ _id : false });
 
 Address.virtual('mapUrl').get(function () {
   let url = '';
