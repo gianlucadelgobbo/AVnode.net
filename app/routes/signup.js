@@ -25,6 +25,7 @@ router.post('/', (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
+        console.log(existingUser);
         req.flash('errors', { msg: __('Account already exists.') });
         return res.redirect('/signup');
       }

@@ -32,5 +32,9 @@
 	"Galleries": "Galleries",
 	"Nexts": "Nexts",
 	"View all": "View all",
-	"Your Account": "Your Account"
+	"Your Account": "Your Account",
+	"Create Account": "Create Account",
+	"You are logged in.": "You are logged in.",
+	"Account already exists.": "Account already exists.",
+	"Slug already exists.": "Slug already exists."
 }
