@@ -38,7 +38,7 @@ exports.get = function get(req, res) {
 				var msg = [];
 				var conta = 0;
 				result.emails.forEach(function(item, index, theArray) {
-					var MC = new MCapi.Mailchimp('d6f941b09ba398bb520ffbb594e48054-us7', true);
+					var MC = new MCapi.Mailchimp('', true);
                     //MC.lists.memberInfo({id:'6be13adfd8', emails:[{email:result.emails[index].email}]}, function (data) {
                     MC.lists.memberInfo({id:'6be13adfd8', emails:[{email:'g.delgobbo@flyer.it'}]}, function (data) {
                         //console.log(data);
