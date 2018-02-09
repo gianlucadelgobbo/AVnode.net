@@ -695,8 +695,8 @@ router.post('/link', (req, res, next) => {
 });
 
 router.get('/slugs/:slug', (req, res, next)=>{
-  const apiCall = 'api, router.post(/user/slugs)';
-  logger.debug(`${apiCall} add slug: ${JSON.stringify(req.body.slug)}`);
+  const apiCall = 'api, router.get(/user/slugs)';
+  logger.debug(`${apiCall} checks slug: ${JSON.stringify(req.params.slug)}`);
   User
   .findOne({ slug : req.params.slug }, (err, user) => {
     if (err) {
@@ -704,7 +704,7 @@ router.get('/slugs/:slug', (req, res, next)=>{
       req.flash('errors', { msg: `${JSON.stringify(err)}` });    
     }
 
-    var response = {slug:req.params.slug,exist:user!=null};
+    var response = {slug:req.params.slug,exist:user!==null};
 
     res.json(response);
 
