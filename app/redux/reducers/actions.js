@@ -1644,9 +1644,7 @@ export function fetchSlug(slug,dispatch) {
       .then(json => (
         dispatch({
           type: RESPONSE_SLUG,
-          payload: {
-            slug: json
-          }
+          payload:json
         })
       ));
   };

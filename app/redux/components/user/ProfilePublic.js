@@ -21,7 +21,8 @@ import {
   fetchCountries,
   editUser,
   openEdituserModal,
-  closeEdituserModal
+  closeEdituserModal,
+  editCrew
 } from '../../reducers/actions';
 
 
@@ -90,9 +91,9 @@ let ProfilePublicForm = props => {
               name="slug"
               component= {renderField}
             />
-            <p>
+            <div className="publicUrl">
               {user.publicUrl}
-            </p>
+            </div>
             <p>
               <FormattedMessage
                 id="url.change.disclaimer"
@@ -130,7 +131,6 @@ let ProfilePublicForm = props => {
           <div className="form-group">
             <button
               className="btn btn-primary"
-              //onClick={openEdituserModal}
               disabled={submitting}
               type="submit"
             >
@@ -164,13 +164,13 @@ ProfilePublicForm = injectIntl(reduxForm({
   keepDirtyOnReinitialize: true,
   validate,
   asyncValidate,
-  asyncBlurFields: ['slug']
+  asyncBlurFields: [ 'slug' ]
 })(ProfilePublicForm));
 
 const selector = formValueSelector('userPublic');
 const ProfilePublic = props => {
   const onSubmit = (props, dispatch) => {
-    dispatch(editUser(props));
+    //dispatch(editUser(props, dispatch));
   };
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
