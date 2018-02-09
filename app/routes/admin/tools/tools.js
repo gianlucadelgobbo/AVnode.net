@@ -39,12 +39,16 @@ router.get('/addresses/updatedb', (req, res) => {
   });
 });
 router.get('/addresses/getgeometry', (req, res) => {
+  console.log('/addresses/getgeometry');
   getgeometry(req, res, cb = (data) => {
+    console.log('getgeometry');
+    const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
+    console.log(script);
     res.render('admin/tools', {
       title: 'admin/tools/addresses/getgeometry',
       currentUrl: req.path,
       data: data,
-      script: '<script>var timeout = setTimeout("location.reload(true);",10000);</script>'
+      script: script
     });
   });
 });
@@ -111,100 +115,96 @@ const setgeometry = (req, res, s, cb) => {
 
 const getgeometry = (req, res, cb) => {
   let allres = [];
-  AddressDB.find({formatted_address: {$exists: false}}).
-  limit(1).
+  AddressDB.find({country_new: {$exists: false}, locality_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  limit(50).
   sort({"country": 1, "locality": 1}).
   then(function(addressesA) {
-    let conta = 0;
-    addressesA.forEach((element, index) => {
-      console.log(process.env.GOOGLEMAPSAPIURL+'&address='+element.locality+','+element.country);
-      request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent(element.locality+','+element.country), (error, response, body) => {
-        console.log(error);
-        if (error) {
-          console.log(error);
-        } else {
-          try {
-            let json = JSON.parse(body);
-            console.log("json");
-            console.log(json);
-            console.log(addressesA[index]);
-            if (json.results.length) {
-              addressesA[index].formatted_address = json.results[0].formatted_address;
-              addressesA[index].status = json.status;
-              for(var part in json.results[0].address_components) {
-                if (json.results[0].address_components[part].types[0] === "locality") json.results[0].locality_new = json.results[0].address_components[part].long_name;
-                if (json.results[0].address_components[part].types[0] === "country") json.results[0].country_new = json.results[0].address_components[part].long_name;
-              }
-              addressesA[index].geometry = json.results[0].geometry.location;
-            } else {
-              addressesA[index].formatted_address = "";
-              addressesA[index].status = json.status;
-            }
-            console.log(addressesA[index]);
-            /*
-            AddressDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
-              if (err) {
-                console.log(err);
-              } else {
-                AddressDB.find({_id: addressesA[index]._id}).
-                then(function(resres) {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    resres[0].res = res;
-                    allres.push(resres);
-                    console.log('resres');
-                    console.log(resres);
-                    conta++;
-                    console.log(conta);
-                    console.log(addressesA.length);
-                    if (conta === addressesA.length) {
-                      cb(allres);
-                    }
-                  }
-                });
-              }
-            });
-            */
-          } catch(e) {
+    if (addressesA.length) {
+      let conta = 0;
+      addressesA.forEach((element, index) => {
+        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+element.locality+','+element.country);
+        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent(element.locality+','+element.country), (error, response, body) => {
+          if (error) {
             console.log(error);
-            console.log(body);
+          } else {
+            conta++;
+            try {
+              let json = JSON.parse(body);
+              console.log(json.results[0].address_components);
+              if (json.results.length) {
+                addressesA[index].formatted_address = json.results[0].formatted_address;
+                addressesA[index].status = json.status;
+                for(const part in json.results[0].address_components) {
+                  if (json.results[0].address_components[part].types[0] === "locality") addressesA[index].locality_new = json.results[0].address_components[part].long_name;
+                  if (json.results[0].address_components[part].types[0] === "country") addressesA[index].country_new = json.results[0].address_components[part].long_name;
+                }
+                addressesA[index].geometry = json.results[0].geometry.location;
+              } else {
+                addressesA[index].formatted_address = "";
+                addressesA[index].status = json.status;
+              }
+              AddressDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  AddressDB.find({_id: addressesA[index]._id}).
+                  then(function(resres) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      allres = allres.concat(resres);
+                    }
+                });
+                }
+              });
+            } catch(e) {
+              console.log("ALL ADDRESS TO BE PROCESSED");
+              console.log(conta);
+              console.log(addressesA.length);
+              //console.log(JSON.parse(body));
+              if (conta === addressesA.length) {
+                console.log(JSON.parse(body));
+                cb([JSON.parse(body)]);
+              }
+            }
           }
-        }
-      });
-      /* UPDATE USERS
-              if (json.results[0].geometry.location) {
-                User.find({"addresses.country": addressesA[index].newAddress.country, "addresses.locality": {$in: addressesA[index].localityOld}}).
-                select({stagename: 1, addresses: 1}).
-                limit(1).
-                exec((err, data) => {
-                  for (let indexsave=0; indexsave < data.length; indexsave++) { 
-                    for (let indexaddress=0; indexaddress < data[indexsave].addresses.length; indexaddress++) { 
-                    //elementsave.addresses.forEach((addresssave, indexaddress) => {
-                      if (data[indexsave].addresses[indexaddress].country == addressesA[index].newAddress.country && addressesA[index].localityOld.indexOf(data[indexsave].addresses[indexaddress].locality)!==-1) {
-                        data[indexsave].addresses[indexaddress] = addressesA[index].newAddress;
-                        console.log('addresssave');
-                        console.log(data[indexsave].addresses[indexaddress]);
-                        data[indexsave].save((err, todo) => {
-                          if (err) {
-                            console.log('addresssave error');
-                          } else {
-                            console.log('addresssave OK');
-                          }
-                        });
+        });
+        /* UPDATE USERS
+                if (json.results[0].geometry.location) {
+                  User.find({"addresses.country": addressesA[index].newAddress.country, "addresses.locality": {$in: addressesA[index].localityOld}}).
+                  select({stagename: 1, addresses: 1}).
+                  limit(1).
+                  exec((err, data) => {
+                    for (let indexsave=0; indexsave < data.length; indexsave++) { 
+                      for (let indexaddress=0; indexaddress < data[indexsave].addresses.length; indexaddress++) { 
+                      //elementsave.addresses.forEach((addresssave, indexaddress) => {
+                        if (data[indexsave].addresses[indexaddress].country == addressesA[index].newAddress.country && addressesA[index].localityOld.indexOf(data[indexsave].addresses[indexaddress].locality)!==-1) {
+                          data[indexsave].addresses[indexaddress] = addressesA[index].newAddress;
+                          console.log('addresssave');
+                          console.log(data[indexsave].addresses[indexaddress]);
+                          data[indexsave].save((err, todo) => {
+                            if (err) {
+                              console.log('addresssave error');
+                            } else {
+                              console.log('addresssave OK');
+                            }
+                          });
+                        }
                       }
                     }
-                  }
-                });
-              }
-      */
-    });
+                  });
+                }
+        */
+      });  
+    } else {
+      cb([{error_message: "ALL ADDRESS PROCESSED"}]);
+    }
   });
 };
 
 const showall = (req, res, save, cb) => {
   // A const q = req.query.q;
-  AddressDB.find({"geometry": {$exists: true}}).
+  AddressDB.find({}).
   sort('country').
   sort('locality').
   exec((err, addressOK) => {
@@ -212,8 +212,10 @@ const showall = (req, res, save, cb) => {
     for(addressOKitem in addressOK) {
       addressOKobj[addressOK[addressOKitem].country+"_"+addressOK[addressOKitem].locality] = addressOK[addressOKitem];
     }
-    User.find({"addresses": {$exists: true}, "addresses.geometry": {$exists: false}}).
+    User.find({"addresses.country": {$exists: true}/*, "addresses.geometry": {$exists: false}*/}).
     select({addresses: 1}).
+    //limit(100).
+    lean().
     exec((err, data) => {
       //let addresses = {};
       function toTitleCase(str) {
@@ -223,6 +225,9 @@ const showall = (req, res, save, cb) => {
           return false;
         }
       }
+      let update = [];
+      let create = [];
+
       for (const item in data) {
         for (const address in data[item].addresses) {
           const country = data[item].addresses[address].country;
@@ -241,51 +246,80 @@ const showall = (req, res, save, cb) => {
           */
           //if (locality && addresses[country].indexOf(locality) === -1) {
             
-          if (country && locality) {
-            console.log("stocazzo ");
+          if (country) {
             if (typeof addressOKobj[country+"_"+locality] === 'undefined') {
-              addressOKobj[country+"_"+locality] = {'country': country, 'locality': locality/*, 'geometry': data[item].addresses[address].geometry*/, localityOld:[localityOld]};
-              addressOKobj[country+"_"+locality].status = "TODO";
+              addressOKobj[country+"_"+locality] = {country: country, locality: locality, localityOld: [localityOld]};
+              //if (addressOKobj[country+"_"+locality].status!="OK") delete addressOKobj[country+"_"+locality].status; 
+              if (save) {
+                create.push(addressOKobj[country+"_"+locality]);
+              } else {
+                addressOKobj[country+"_"+locality].status = 'TO ADD';
+              }
+              //console.log(country);
               //addresses[country].sort();
             } else if(addressOKobj[country+"_"+locality].localityOld.indexOf(localityOld) === -1) {
               addressOKobj[country+"_"+locality].localityOld.push(localityOld);
+              if (!save) {
+              } else {
+                update.push(addressOKobj[country+"_"+locality]);
+              }
             }
           }
         }
       }
       let addressesA = [];
       for (const item in addressOKobj) {
+        /* C
         if (!addressOKobj[item].formatted_address || (addressOKobj[item].formatted_address.toLowerCase().indexOf((addressOKobj[item].country == "United States" ? "USA" : (addressOKobj[item].country == "United Kingdom" ? "UK" : addressOKobj[item].country)).toLowerCase()) === -1 || addressOKobj[item].formatted_address.toLowerCase().indexOf(addressOKobj[item].locality.toLowerCase()) === -1)) {
+          if (!addressOKobj[item].status) addressOKobj[item].status = "DONE";
+          addressOKobj[item].status+= ' - DELETE';
+        } else if (!addressOKobj[item].formatted_address || (addressOKobj[item].formatted_address.toLowerCase().indexOf((addressOKobj[item].country == "United States" ? "USA" : (addressOKobj[item].country == "United Kingdom" ? "UK" : addressOKobj[item].country)).toLowerCase()) === -1 || addressOKobj[item].formatted_address.toLowerCase().indexOf(addressOKobj[item].locality.toLowerCase()) === -1)) {
           if (!addressOKobj[item].status) addressOKobj[item].status = "DONE";
           addressOKobj[item].status+= ' - DELETE';
         } else {
           if (!addressOKobj[item].status) addressOKobj[item].status = "DONE";
           addressOKobj[item].status+= ' - OK';
         }
+        */
         addressesA.push(addressOKobj[item]);
       }
       if (save) {
-        AddressDB.remove({geometry: {$exists: false}}).
-        then(function() {
-          console.log("cancellato ");
-          AddressDB.create(addressesA).
-          then(function() {
-            console.log("salvato ");
+        for (let item in create) {
+          AddressDB.create(create[item], function(err, res) {
+            console.log("createcreatecreate ");
+            console.log(create[item]);
+            console.log("salvatoooooo ");
+            console.log(err);
+            console.log(res);
           });
+        }
+        create.sort(function(a, b) {
+          var x=a.country.toLowerCase(),
+          y=b.country.toLowerCase();
+          return x<y ? -1 : x>y ? 1 : 0;
         });
+        create.sort(function(a, b) {
+          var x=a.locality ? a.locality.toLowerCase() : 'a',
+          y=b.locality ? b.locality.toLowerCase() : 'a';
+          return x<y ? -1 : x>y ? 1 : 0;
+        });
+        cb(create);
+      } else {
+        /*
+        addressesA.sort(function(a, b) {
+          var x=a.country.toLowerCase(),
+          y=b.country.toLowerCase();
+          return x<y ? -1 : x>y ? 1 : 0;
+        });
+        */
+        addressesA.sort(function(a, b) {
+          var x=a.locality ? a.locality.toLowerCase() : 'a',
+          y=b.locality ? b.locality.toLowerCase() : 'a';
+          return x<y ? -1 : x>y ? 1 : 0;
+        });
+        cb(addressesA);
+  
       }
-      addressesA.sort(function(a, b) {
-        console.log(a.locality);
-        var x=a.locality ? a.locality.toLowerCase() : 'a',
-        y=b.locality ? b.locality.toLowerCase() : 'a';
-        return x<y ? -1 : x>y ? 1 : 0;
-      });
-      addressesA.sort(function(a, b) {
-        var x=a.country.toLowerCase(),
-        y=b.country.toLowerCase();
-        return x<y ? -1 : x>y ? 1 : 0;
-      });
-      cb(addressesA);
     });
     /* SAVE
 
