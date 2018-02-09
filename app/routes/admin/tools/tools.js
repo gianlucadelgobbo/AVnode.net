@@ -124,10 +124,14 @@ const getgeometry = (req, res, cb) => {
       addressesA.forEach((element, index) => {
         console.log(process.env.GOOGLEMAPSAPIURL+'&address='+element.locality+','+element.country);
         request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent(element.locality+','+element.country), (error, response, body) => {
+          console.log("requestrequestrequestrequest");
+          console.log(element);
+          console.log(error);
+          console.log(body);
+          conta++;
           if (error) {
             console.log(error);
           } else {
-            conta++;
             try {
               console.log("ADDRESS try");
               let json = JSON.parse(body);
@@ -155,13 +159,20 @@ const getgeometry = (req, res, cb) => {
                     } else {
                       allres = allres.concat(resres);
                     }
+                    //console.log(JSON.parse(body));
+                    if (conta === addressesA.length) {
+                      console.log();
+                      cb(allres);
+                    }
                 });
                 }
               });
             } catch(e) {
               console.log("ADDRESS catch");
-              if (JSON.parse(body).status == "ZERO_RESULTS") {
-                addressesA[index].status = JSON.parse(body).status;
+              const error = JSON.parse(body);
+
+              if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
+                addressesA[index].status = error.status;
                 AddressDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                   if (err) {
                     console.log(err);
@@ -173,14 +184,16 @@ const getgeometry = (req, res, cb) => {
                       } else {
                         allres = allres.concat(resres);
                       }
-                  });
+                    });
                   }
-                });  
-              }
-              //console.log(JSON.parse(body));
-              if (conta === addressesA.length) {
-                console.log();
-                cb(allres);
+                });
+              } else {
+                //console.log(JSON.parse(body));
+                allres = allres.concat([error]);
+                if (conta === addressesA.length) {
+                  console.log();
+                  cb(allres);
+                }
               }
             }
           }
