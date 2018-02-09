@@ -1,19 +1,37 @@
-import { fetchSlug, editUser } from '../reducers/actions';
-const asyncValidate = (values , dispatch ) => {
-  
-  return new Promise((resolve, reject) => {
-    dispatch(fetchSlug(values.slug, dispatch))
-    .then((response) => {
-     //console.log(response);
-     const exist =  response.payload.slug.exist;
-     if(exist){
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+import { fetchSlug } from '../reducers/actions';
+const asyncValidate = (values, dispatch ) => {
+  return dispatch(fetchSlug(values.slug, dispatch)).then((response) => {
+    if (response.payload.exist) {
       throw { slug: 'That slug is taken' }
-     }
-     else{
-       dispatch(editUser);
-     }
-    }); //dispatch
-  }); //promise
-};
+    }
+  });
+   
+}
 
-export default asyncValidate;
+export default asyncValidate
+
+
+/*
+
+
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+import { fetchSlug } from '../reducers/actions';
+
+const asyncValidate = (values, dispatch ) => {
+  return dispatch(fetchSlug(values.slug, dispatch)).then(
+    (error) => values.stagename =  'That username is taken' || null
+).catch((error) => null)
+
+  }
+  //})
+//}
+
+export default asyncValidate
+
+
+
+
+
+*/
