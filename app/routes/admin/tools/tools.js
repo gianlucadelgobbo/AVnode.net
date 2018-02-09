@@ -129,6 +129,7 @@ const getgeometry = (req, res, cb) => {
           } else {
             conta++;
             try {
+              console.log("ADDRESS try");
               let json = JSON.parse(body);
               console.log(json.results[0].address_components);
               if (json.results.length) {
@@ -158,13 +159,28 @@ const getgeometry = (req, res, cb) => {
                 }
               });
             } catch(e) {
-              console.log("ALL ADDRESS TO BE PROCESSED");
-              console.log(conta);
-              console.log(addressesA.length);
+              console.log("ADDRESS catch");
+              if (JSON.parse(body).status == "ZERO_RESULTS") {
+                addressesA[index].status = JSON.parse(body).status;
+                AddressDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    AddressDB.find({_id: addressesA[index]._id}).
+                    then(function(resres) {
+                      if (err) {
+                        console.log(err);
+                      } else {
+                        allres = allres.concat(resres);
+                      }
+                  });
+                  }
+                });  
+              }
               //console.log(JSON.parse(body));
               if (conta === addressesA.length) {
-                console.log(JSON.parse(body));
-                cb([JSON.parse(body)]);
+                console.log();
+                cb(allres);
               }
             }
           }
