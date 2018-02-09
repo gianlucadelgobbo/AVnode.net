@@ -33,5 +33,8 @@
 	"name.placeholder": "name.placeholder",
 	"surname": "surname",
 	"surname.placeholder": "surname.placeholder",
-	"Confirm Password": "Confirm Password"
+	"Confirm Password": "Confirm Password",
+	"Welcome to AVnode network": "Welcome to AVnode network",
+	"AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.": "AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.",
+	"Invalid email or password.": "Invalid email or password."
 }
