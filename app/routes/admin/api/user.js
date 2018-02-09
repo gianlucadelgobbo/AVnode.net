@@ -26,7 +26,7 @@ router.get('/slug/:slug', (req, res) => {
   limit(1).
   lean().
   exec((err, data) => {
-    res.send(data.length);
+    res.send(!data.length);
   });
 });
 
