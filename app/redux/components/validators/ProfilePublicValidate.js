@@ -1,4 +1,5 @@
 import slugvalidate from '../../../utilities/slug.js';
+import validators from '../../../utilities/validators.js';
 
 const profilePublicValidate = values => {
 
@@ -17,12 +18,8 @@ const profilePublicValidate = values => {
       errors.stagename = 'Stage Name Required';
       isError = true;
   }
-  else if (values.stagename.length < 2) {
-      errors.stagename = 'Must be 2 characters or more';
-      isError = true;
-  }
-  else if (values.stagename.length > 30) {
-      errors.stagename = 'Must be 30 characters or less';
+  else if (!validators.validateStringLength(values.stagename, 2, 30)) {
+      errors.stagename = 'Must be more or equal 2 and less or equal 30 characters';
       isError = true;
   }
   if (!values.slug || values.slug.trim() === "") {
@@ -30,7 +27,10 @@ const profilePublicValidate = values => {
       isError = true;
   }
   if(values.slug !== undefined || null || "") {
-      values.slug = slugvalidate.parse(values.slug);
+    if(!validators.isSlug(values.slug)){
+      errors.slug = 'Slug Not Allowed';
+      isError = true;
+    }
   }
   if (!values.web || !values.web.length) {
       errors.web = { _error: 'At least one link must be entered' }
@@ -41,7 +41,7 @@ const profilePublicValidate = values => {
       if (!w || !w.url) {
         webErrors.url = '';
       }
-      else if (!/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/.test(w.url)) {
+      else if (!validators.isUrl(w.url)){
         webErrors.url = 'Invalid link, please insert a valid link ';
         webArrayErrors[windex] =webErrors;
         isError = true;
@@ -70,7 +70,7 @@ const profilePublicValidate = values => {
       if (!s || !s.url) {
         socialErrors.url = '';
       }
-      else if (!/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/.test(s.url)) {
+      else if (!validators.isUrl(s.url)) {
         socialErrors.url = 'Invalid link, please insert a valid link ';
         socialArrayErrors[sindex] =socialErrors;
         isError = true;
