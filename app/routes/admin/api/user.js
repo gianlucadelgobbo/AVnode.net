@@ -723,9 +723,8 @@ router.get('/slugs/:slug', (req, res, next)=>{
       logger.debug(`${JSON.stringify(err)}`);
       req.flash('errors', { msg: `${JSON.stringify(err)}` });    
     }
-
-    var response = {slug:req.params.slug,exist:user!==null};
-
+    //console.log(err +','+ user);
+    var response = {slug:req.params.slug,exist:user!==null?true:false};
     res.json(response);
 
   });
