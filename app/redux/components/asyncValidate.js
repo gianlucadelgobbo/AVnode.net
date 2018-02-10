@@ -1,11 +1,36 @@
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-const asyncValidate = (values /*, dispatch */) => {
-  return sleep(1000).then(() => { // simulate server latency
-    if (['john', 'paul', 'george', 'ringo'].includes(values.stagename)) {
-      throw { stagename: 'That username is taken' };
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+import { fetchSlug } from '../reducers/actions';
+const asyncValidate = (values, dispatch ) => {
+  return dispatch(fetchSlug(values.slug, dispatch)).then((response) => {
+    if(response.payload.exist) {
+      throw { slug: 'That slug is taken' }
     }
   });
-};
+}
 
-export default asyncValidate;
+export default asyncValidate
+
+
+/*
+
+
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+import { fetchSlug } from '../reducers/actions';
+
+const asyncValidate = (values, dispatch ) => {
+  return dispatch(fetchSlug(values.slug, dispatch)).then(
+    (error) => values.stagename =  'That username is taken' || null
+).catch((error) => null)
+
+  }
+  //})
+//}
+
+export default asyncValidate
+
+
+
+
+
+*/
