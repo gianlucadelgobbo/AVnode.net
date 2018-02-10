@@ -694,6 +694,16 @@ router.post('/link', (req, res, next) => {
     });
 });
 
+router.get('/slug/:slug', (req, res) => {
+  User.find({slug:req.params.slug}).
+  select({slug: 1}).
+  limit(1).
+  lean().
+  exec((err, data) => {
+    res.send(!data.length);
+  });
+});
+
 router.get('/slugs/:slug', (req, res, next)=>{
   const apiCall = 'api, router.get(/user/slugs)';
   logger.debug(`${apiCall} checks slug: ${JSON.stringify(req.params.slug)}`);
