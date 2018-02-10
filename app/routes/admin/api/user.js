@@ -20,6 +20,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/slug/:slug', (req, res) => {
+  User.find({slug:req.params.slug}).
+  select({slug: 1}).
+  limit(1).
+  lean().
+  exec((err, data) => {
+    res.send(!data.length);
+  });
+});
+
 router.post('/:id/public', (req, res) => {
   logger.debug('VALIDATION PROCESS');
   User.findById(req.params.id, (finderr, user) => {
