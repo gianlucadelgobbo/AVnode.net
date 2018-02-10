@@ -6,7 +6,6 @@ const asyncValidate = (values, dispatch ) => {
       throw { slug: 'That slug is taken' }
     }
   });
-   
 }
 
 export default asyncValidate
