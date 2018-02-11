@@ -12,8 +12,8 @@ import Languages from '../language/Languages';
 import { connect } from 'preact-redux';
 import renderLabel from '../renderLabel';
 import renderField from '../renderField';
-//import asyncValidate from '../asyncValidate';
-import validate from '../validate';
+import asyncValidate from '../asyncValidate';
+import validate from '../validators/ProfilePublicValidate';
 import ProfileLinksSocial from './ProfileLinksSocial';
 import { Modal, Button } from 'react-bootstrap';
 
@@ -21,7 +21,8 @@ import {
   fetchCountries,
   editUser,
   openEdituserModal,
-  closeEdituserModal
+  closeEdituserModal,
+  editCrew
 } from '../../reducers/actions';
 
 
@@ -90,9 +91,9 @@ let ProfilePublicForm = props => {
               name="slug"
               component= {renderField}
             />
-            <p>
+            <div className="publicUrl">
               {user.publicUrl}
-            </p>
+            </div>
             <p>
               <FormattedMessage
                 id="url.change.disclaimer"
@@ -130,7 +131,6 @@ let ProfilePublicForm = props => {
           <div className="form-group">
             <button
               className="btn btn-primary"
-              //onClick={openEdituserModal}
               disabled={submitting}
               type="submit"
             >
@@ -162,13 +162,15 @@ ProfilePublicForm = injectIntl(reduxForm({
   form: 'userPublic',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  validate
+  validate,
+  asyncValidate,
+  asyncBlurFields: [ 'slug' ]
 })(ProfilePublicForm));
 
 const selector = formValueSelector('userPublic');
 const ProfilePublic = props => {
   const onSubmit = (props, dispatch) => {
-    dispatch(editUser(props));
+    //dispatch(editUser(props, dispatch));
   };
   const onSubmitSuccess = () => {
     console.log('ProfilePublic onSubmitSuccess');
