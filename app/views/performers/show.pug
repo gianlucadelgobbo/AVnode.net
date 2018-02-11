@@ -64,9 +64,6 @@ block title
                 span.color1.lnr.lnr-plus-circle
     .abouts_divider
 
-
-
-
 block content
   .container
     section.row.performer_events_wrapper
@@ -75,18 +72,7 @@ block content
         .row
           each item in data.events
             .col-sm-4
-              .event_item_wrapper
-                a(href=item.publicUrl, title=item.title)
-                  img.img-fluid(
-                    src=item.imageFormats.large
-                    alt=item.title
-                  )
-                .event_item_info_wrapper
-                  a(href=item.publicUrl, title=item.title)
-                    h4.event_item_title=item.title
-                  ul.event_item_date_and_locality.list-inline
-                    li.list-inline-item.event_item_date=item.boxDate
-                    li.list-inline-item.event_item_locality_paese.miss="Paese, Città"                  
+              include ../partials/boxEvent
         //.text-right
           a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')
   
@@ -99,37 +85,8 @@ block content
             .performance_divider.basic_divider
             .row
               each item in data.performances
-                .col-sm-4                
-                  .performance_item_wrapper
-                    if item.imageFormats
-                      a(href=item.publicUrl, title=item.title)
-                        img.card-img-top.img-fluid(
-                          src=item.imageFormats.large
-                          alt=item.title
-                        )
-                    .performance_item_info_wrapper
-                      a(href=item.publicUrl, title=item.title)
-                        h4.performance_item_title=item.title
-                      if item.categories
-                        ul.list-inline.category_performance_item
-                          each category in item.categories
-                            li.list-inline-item=category.name
-                      if item.users
-                        .users_performance_item_wrapper
-                          each user in item.users
-                            div
-                              img(src=user.imageFormats.small, alt=user.stagename)
-                            div
-                              p.users_performance_item_name=user.stagename
-                              p.users_performance_item_views.miss="999 views"
-                          .users_performance_item_likes.miss
-                            span.color2.lnr.lnr-heart
-                            br
-                            span="999 likes"
-                        
-
-
-                  
+                .col-sm-4
+                  include ../partials/boxPerformance
   br
   br
   .row
@@ -137,33 +94,8 @@ block content
       h3=__('Crews')
       .card-deck
         each item in data.crews
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.medium
-                alt=item.stagename
-              )
-            .card-block
-              h4.event_item_title=item.stagename
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Performances')
-      .card-deck
-        each item in data.performances
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.medium
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+          .col-sm-4
+            include ../partials/boxPerformer
   br
   br
   .row
@@ -171,16 +103,8 @@ block content
       h3=__('TV Shows')
       .card-deck
         each item in data.tvshows
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.large
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+          .col-sm-4
+            include ../partials/boxTVShow
   br
   br
   .row
@@ -188,16 +112,8 @@ block content
       h3=__('Footage')
       .card-deck
         each item in data.footage
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.large
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+          .col-sm-4
+            include ../partials/boxFootage
   br
   br
   .row
@@ -205,17 +121,8 @@ block content
       h3=__('Playlists')
       .card-deck
         each item in data.playlists
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.large
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-              h6.card-subtitle.text-muted=item.subtitle
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+          .col-sm-4
+            include ../partials/boxPlaylist
   br
   br
   .row
@@ -223,13 +130,5 @@ block content
       h3=__('Galleries')
       .card-deck
         each item in data.galleries
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.medium
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+          .col-sm-4
+            include ../partials/boxGallery

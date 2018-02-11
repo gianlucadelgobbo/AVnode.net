@@ -3,7 +3,7 @@ const Validators = {};
 // General Functions //
 Validators.validateStringLength = function validateStringLength (str, min, max) {
   return str.length <= max && str.length >= min;
-}:
+};
 
 Validators.isEmail = function isEmail (e) {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -28,6 +28,8 @@ Validators.isDate = function isDate (aaaa, mm, gg){
   }
 
   return res;
-}
+};
 
-if (typeof exports !== 'undefined') exports.Validators = Validators;
+if (typeof exports !== 'undefined') {
+  exports.Validators = Validators;
+}
