@@ -98,7 +98,7 @@ footageSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-*/
+
 footageSchema.virtual('editUrl').get(function () {
   return `/admin/footage/public/${this.slug}`;
 });
@@ -106,6 +106,7 @@ footageSchema.virtual('editUrl').get(function () {
 footageSchema.virtual('publicUrl').get(function () {
   return `/footage/${this.slug}`;
 });
+*/
 
 footageSchema.pre('remove', function(next) {
   const footage = this;

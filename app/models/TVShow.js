@@ -21,15 +21,9 @@ const tvshowSchema = new Schema({
   //  file: {file: String},
   abouts: [About],
   stats: {},
-  price: String,
-  duration: String,
-  tech_art: String, // what the artist brings
-  tech_req: String, // what the artist need
-  bookings:[Booking],
+  programming:[Date],
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],
-  galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],
-  // videos: [{ type : Schema.ObjectId, ref : 'Videos' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
 }, {
   timestamps: true,
@@ -89,7 +83,6 @@ tvshowSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-*/
 tvshowSchema.virtual('editUrl').get(function () {
   return `/admin/tvshows/public/${this.slug}`;
 });
@@ -97,6 +90,7 @@ tvshowSchema.virtual('editUrl').get(function () {
 tvshowSchema.virtual('publicUrl').get(function () {
   return `/tvshows/${this.slug}`;
 });
+*/
 
 tvshowSchema.pre('remove', function(next) {
   const tvshow = this;

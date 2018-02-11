@@ -1,0 +1,10 @@
+.card
+  if item.imageFormats
+    img.card-img-top.img-fluid(
+      src=item.imageFormats.large
+      alt=item.title
+    )
+  .card-block
+    h4.event_item_title=item.title
+  .card-block.pt-0
+    a.btn.btn-secondary(href='/playlists/'+item.slug)=__('More')

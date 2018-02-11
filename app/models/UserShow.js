@@ -55,12 +55,12 @@ const userSchema = new Schema({
   skype: [Link],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
-  members: [{ type: Schema.ObjectId, ref: 'User' }],
+  members: [{ type: Schema.ObjectId, ref: 'UserShow' }],
   performances: [{ type: Schema.ObjectId, ref: 'Performance' }],
-  events: [{ type: Schema.ObjectId, ref: 'EventShow' }],
+  events: [{ type: Schema.ObjectId, ref: 'Event' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
   tvshows: [{ type: Schema.ObjectId, ref: 'TVShow' }],
-  partnerships : [{ type: Schema.ObjectId, ref: 'User' }],
+  partnerships : [{ type: Schema.ObjectId, ref: 'UserShow' }],
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
 
@@ -81,11 +81,19 @@ const userSchema = new Schema({
   tokens: Array
 }, {
   timestamps: true,
+  collection: 'users',
   toObject: {
     virtuals: false // BL FIXME check http://mongoosejs.com/docs/api.html#schema_Schema-virtual
   },
   toJSON: {
-    virtuals: true
+    virtuals: true,
+    transform: (doc, ret, options) => {
+      delete ret.id;
+      delete ret.image;
+      delete ret.abouts;
+      delete ret.__v;
+      delete ret._id;
+    }
   }
 });
 
@@ -96,7 +104,7 @@ userSchema.methods.toJSON = function() {
   return obj;
 }
 userSchema.virtual('crews', {
-  ref: 'User',
+  ref: 'UserShow',
   localField: '_id',
   foreignField: '_id'
 }); */
@@ -137,7 +145,7 @@ userSchema.virtual('about').get(function (req) {
 /* BL FIXME later for crews
 userSchema.pre('remove', function(next) {
   const crew = this;
-  crew.model('User').update(
+  crew.model('UserShow').update(
     { $pull: { crews: crew._id } },
     next
   );
@@ -240,6 +248,6 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
 
 userSchema.plugin(indexPlugin());
 
-const User = mongoose.model('User', userSchema);
+const UserShow = mongoose.model('UserShow', userSchema);
 
-module.exports = User;
+module.exports = UserShow;

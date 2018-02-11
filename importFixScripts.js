@@ -2980,12 +2980,20 @@ db.galleries.find({}).forEach(function(e) {
     }
     e.medias = tmpA;
   }
-  e.image = e.file;
+  e.image = {file: e.medias[0].file};
   delete e.file;
   db.galleries.save(e);
 });
 
+db.galleries.find({}).forEach(function(e) {
+  e.image = {file: e.medias[0].file};
+  db.galleries.save(e);
+});
 
+db.playlists.find({}).forEach(function(e) {
+  e.image = {file: e.footage[0].file};
+  db.playlists.save(e);
+});
 
 
 db.tvshows.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
@@ -2998,9 +3006,9 @@ db.performances.find({"files.file":{'$regex': '90x68/'}}).forEach(function(e) {
   e.files[0].file = e.files[0].file.replace('90x68/','');
   db.performances.save(e);
 });
-db.gallery.find({"files.file":{'$regex': '128x96/'}}).forEach(function(e) {
+db.galleries.find({"files.file":{'$regex': '128x96/'}}).forEach(function(e) {
   e.files[0].file = e.files[0].file.replace('128x96/','');
-  db.gallery.save(e);
+  db.galleries.save(e);
 });
 
 

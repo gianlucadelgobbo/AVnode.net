@@ -79,7 +79,18 @@ const programSchema = new Schema({
     getters: true
   },
   toJSON: {
-    virtuals: true
+    virtuals: true,
+    transform: (doc, ret, options) => {
+      delete ret.schedule.data_i;
+      delete ret.schedule.data_f;
+      delete ret.schedule.ora_i;
+      delete ret.schedule.ora_f;
+      delete ret.schedule.rel_id;
+      delete ret.schedule.user_id;
+      delete ret.schedule.confirm;
+      delete ret.schedule.day;
+      delete ret.schedule.date;
+    }
   }
 });
 
@@ -139,6 +150,7 @@ const eventSchema = new Schema({
   stats: {},
   partners: [Partnership],
   program: [programSchema],
+  schedule: [Schedule],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   users:  [{ type: Schema.ObjectId, ref: 'UserShow' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
@@ -162,6 +174,7 @@ const eventSchema = new Schema({
   }
 }, {
   timestamps: true,
+  collection: 'events',
   toObject: {
     virtuals: true,
     getters: true
@@ -171,6 +184,7 @@ const eventSchema = new Schema({
     transform: (doc, ret, options) => {
       delete ret.id;
       delete ret.image;
+      delete ret.schedule;
       delete ret.abouts;
       delete ret.subtitles;
       delete ret.__v;
@@ -243,6 +257,8 @@ eventSchema.virtual('imageFormats').get(function () {
 
 eventSchema.virtual('boxDate').get(function () {
   let boxDate;
+  console.log('boxDate');
+  console.log(this.schedule);
   if (this.schedule && this.schedule.length) {
     const lang = global.getLocale();
     moment.locale(lang);
@@ -358,6 +374,6 @@ eventSchema.pre('remove',function(next) {
 
 eventSchema.plugin(indexPlugin());
 
-const Event = mongoose.model('Event', eventSchema);
+const EventShow = mongoose.model('EventShow', eventSchema);
 
-module.exports = Event;
+module.exports = EventShow;
