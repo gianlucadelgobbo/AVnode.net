@@ -704,6 +704,33 @@ router.post('/link', (req, res, next) => {
     });
 });
 
+router.get('/slug/:slug', (req, res) => {
+  User.find({slug:req.params.slug}).
+  select({slug: 1}).
+  limit(1).
+  lean().
+  exec((err, data) => {
+    res.send(!data.length);
+  });
+});
+
+router.get('/slugs/:slug', (req, res, next)=>{
+  const apiCall = 'api, router.get(/user/slugs)';
+  logger.debug(`${apiCall} checks slug: ${JSON.stringify(req.params.slug)}`);
+  User
+  .findOne({ slug : req.params.slug }, (err, user) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      req.flash('errors', { msg: `${JSON.stringify(err)}` });    
+    }
+    //console.log(err +','+ user);
+    var response = {slug:req.params.slug,exist:user!==null?true:false};
+    res.json(response);
+
+  });
+});
+
+
 router.put('/:id', (req, res) => {
   // FIXME: Find elegant way…
   const apiCall = `api, router.put(/user/${JSON.stringify(req.user.id)}`;
@@ -714,7 +741,7 @@ router.put('/:id', (req, res) => {
   logger.debug(`${apiCall} req.body.abouts: ${JSON.stringify(req.body.abouts)}`);
   logger.debug(`${apiCall} req.body.name: ${req.body.name}`);
   logger.debug(`${apiCall} req.body.surname: ${req.body.surname}`);
-
+  logger.debug(`${apiCall} req.body.slug: ${req.body.slug}`);
   // abouts
   if (req.body.about && req.body.about.length > 2) {
     let aboutFound = false;
@@ -832,8 +859,17 @@ router.put('/:id', (req, res) => {
       req.body.addresses.push(newAddress);
     }
   }
-  console.log(`${JSON.stringify(req.body.web)}`);
-  console.log(`${JSON.stringify(req.body.social)}`);
+
+  /*User.findOne({ $or: [{ slug: req.body.slug }] }, (err, existingUser) => {
+    if (err) {
+      return next(err);
+    }
+    if (existingUser) {
+      console.log(existingUser);
+      req.flash('errors', { msg: __('Slug already exists.') });
+    }
+  });
+*/
   const props = {
     birthday: req.body.birthday,
     about: req.body.about,
@@ -850,7 +886,7 @@ router.put('/:id', (req, res) => {
     stagename:req.body.stagename,
     slug:req.body.slug
   };
-
+  
   User.findById(req.user.id, (err, user) => {
     if (err) {
       logger.debug(`${apiCall} findById ERROR: ${JSON.stringify(err)}`);
