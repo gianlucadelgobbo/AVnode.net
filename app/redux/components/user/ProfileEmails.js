@@ -5,7 +5,7 @@ import { connect } from 'preact-redux';
 import Emails from '../emails/Emails';
 import Layout from '../Layout';
 import ProfileNav from './ProfileNav';
-import validate from '../validate';
+//import validate from '../validate';
 import Match from 'preact-router/match';
 import {
   userEmailConfirm,
@@ -67,7 +67,7 @@ ProfileEmailsForm = injectIntl(reduxForm({
   form: 'userEmails',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  validate
+  //validate
 })(ProfileEmailsForm));
 
 const ProfileEmails = props => {

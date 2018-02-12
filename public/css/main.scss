@@ -31,8 +31,12 @@ small, .small {
     font-size: 60%;
     font-weight: inherit;
 }
- .miss {
-    border-left: 1px solid red;
+@keyframes blink { 50% { border-color: #ff0000; }  } 
+
+.miss {
+    border: 1px solid;
+    border-color: transparent;
+    animation: blink .5s step-end infinite alternate; 
  }     
  img.miss {
      border: 3px solid red;
@@ -93,6 +97,10 @@ small, .small {
     display: inline-block;
     margin: 0 0px 0 5px;
 }
+
+.performer_stats_list_1 li span {
+    color: $color1;
+}
 .performer_stats_list_2 li:last-child:after {
     content: "";
 }
@@ -148,13 +156,69 @@ small, .small {
     color: $color2;
 }
 
+.performer_image_wrapper {
+    position: relative;
+    padding-bottom: 100%; /* 1000:1000 */
+    height: 0;    
+}
+
+.performer_image_bkg {
+    width: 1000px;
+    height: 1000px;
+    text-align: center;
+    font-family: sans-serif;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    border-radius: 50%;      
+}
+
+
+.performer_performances_wrapper .main_title {
+    color: #282828;
+    margin-bottom: 60px;    
+}
+
+.performer_events_wrapper {
+    padding: 100px 0;
+}
+
+
+.performer_performances_wrapper {
+    background-color: $color1;
+    padding: 120px 0;
+    transform: skewy(2deg);
+}
+
+.performer_performances_wrapper .content_wrapper {
+    transform: skewy(-2deg);
+}
+
+.basic_divider {
+    width: 100%;
+    height: 7px;
+    background-color: #282828;
+    left: -50%;
+    position: absolute;
+    top: 60px;    
+}
+
+
+
+
+
+
 
 // ITEM EVENT
 
 .event_item_title {
     text-transform: inherit;
     font-weight: 300;
-    font-size: 18px;
+    font-size: 16px;
     color: #A6A8AB;
 }
 
@@ -186,5 +250,74 @@ small, .small {
     border-bottom: 1px solid #0F8FCF;
     margin-bottom: 0;
     padding-bottom: 10px;
+    font-size: 13px;
+}
+
+.event_item_wrapper {
+    margin-bottom: 30px;
+}
+
+
+
+
+
+
+
+
+// ITEM PERFORMANCE
+
+.performance_item_info_wrapper {
+    background-color: #282828;
+    padding: 15px;
+}
+
+.performance_item_title {
+    color: $color1;
+    text-transform: inherit;
+    font-weight: 300;
+    font-size: 16px;
+}
+.users_performance_item_wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.users_performance_item_wrapper img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.category_performance_item {
+    color: #A6A8AB;
+    font-size: 13px;
+    border-bottom: 1px solid #A6A8AB;
+    padding-bottom: 10px;
+}
+
+.category_performance_item li:after {
+    content: "/";
+    color: $color1;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.category_performance_item li:last-child:after {
+    content: "";
+}
+
+.users_performance_item_name {
+    color: $color1;
     font-size: 14px;
+    margin-bottom: 0px;
+}
+
+.users_performance_item_views {
+   color: #A6A8AB;
+   font-size: 14px; 
+}
+
+.users_performance_item_likes {
+    color: #A6A8AB;
+   font-size: 14px; 
+   text-align: center;
 }

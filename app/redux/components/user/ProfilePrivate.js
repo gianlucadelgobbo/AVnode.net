@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Layout from '../Layout';
 import LinksTel from '../link/LinksTel';
 import AddressesPrivate from '../place/AddressesPrivate';
-import validate from '../validate';
+//import validate from '../validate';
 import renderField from '../renderField';
 import ProfileNav from './ProfileNav';
 import Match from 'preact-router/match';
@@ -244,7 +244,7 @@ ProfilePrivateForm = injectIntl(reduxForm({
   form: 'userPrivate',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  validate
+  //validate
 })(ProfilePrivateForm));
 
 const ProfilePrivate = props => {
