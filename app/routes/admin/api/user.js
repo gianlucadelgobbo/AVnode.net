@@ -20,6 +20,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/slug/:slug', (req, res) => {
+  User.find({slug:req.params.slug}).
+  select({slug: 1}).
+  limit(1).
+  lean().
+  exec((err, data) => {
+    res.send(!data.length);
+  });
+});
+
 router.post('/:id/public', (req, res) => {
   logger.debug('VALIDATION PROCESS');
   User.findById(req.params.id, (finderr, user) => {
@@ -694,6 +704,16 @@ router.post('/link', (req, res, next) => {
     });
 });
 
+router.get('/slug/:slug', (req, res) => {
+  User.find({slug:req.params.slug}).
+  select({slug: 1}).
+  limit(1).
+  lean().
+  exec((err, data) => {
+    res.send(!data.length);
+  });
+});
+
 router.get('/slugs/:slug', (req, res, next)=>{
   const apiCall = 'api, router.get(/user/slugs)';
   logger.debug(`${apiCall} checks slug: ${JSON.stringify(req.params.slug)}`);
@@ -703,9 +723,8 @@ router.get('/slugs/:slug', (req, res, next)=>{
       logger.debug(`${JSON.stringify(err)}`);
       req.flash('errors', { msg: `${JSON.stringify(err)}` });    
     }
-
-    var response = {slug:req.params.slug,exist:user!==null};
-
+    //console.log(err +','+ user);
+    var response = {slug:req.params.slug,exist:user!==null?true:false};
     res.json(response);
 
   });

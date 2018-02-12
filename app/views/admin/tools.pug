@@ -1,7 +1,4 @@
-extends ../layout
-
-block title
-block teaser
+extends ../layout_tools
 block content
   div#app
     .p-3
@@ -27,4 +24,4 @@ block content
       .col-md-9
         pre=JSON.stringify(data, null, 2)
   if script
-    //!=script
+    !=script

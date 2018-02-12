@@ -402,7 +402,7 @@ const user = (state = initialValues, action) => {
     });
   case RESPONSE_SLUG:
     return Object.assign({}, state, {
-      _slug:action.payload.slug
+      slug:action.payload.slug
     });
     /*case REQUEST_USER_EDITABOUT:
     case REQUEST_USER_DELETEABOUT:
