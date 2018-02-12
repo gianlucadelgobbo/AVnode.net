@@ -1,12 +1,12 @@
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 import { fetchSlug } from '../reducers/actions';
 const asyncValidate = (values, dispatch ) => {
-  return dispatch(fetchSlug(values.slug, dispatch)).then((response) => {
-    if(response.payload.exist) {
-      throw { slug: 'That slug is taken' }
-    }
-  });
-}
+    return dispatch(fetchSlug(values.slug, dispatch)).then((response) => {
+      if(response.payload.exist) {
+        throw { slug: 'That slug is taken' }
+      }
+    });
+  }
 
 export default asyncValidate
 
