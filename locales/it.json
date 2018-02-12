@@ -26,5 +26,10 @@
 	"Galleries": "Galleries",
 	"Welcome to AVnode network": "Welcome to AVnode network",
 	"AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.": "AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.",
-	"Nexts": "Nexts"
+	"Nexts": "Nexts",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?"
 }
