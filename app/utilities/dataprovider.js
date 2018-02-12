@@ -183,12 +183,21 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
         logger.debug(err);
         //res.send(JSON.stringify(data, null, '\t'));
+      } else if (req.query.xml) {
+        logger.debug("nextpage");
+        logger.debug(parseFloat(req.params.page)+1);
+        res.render(section + '/fpData', {
+          title: data.stagename,
+          data: data,
+          nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+        });
       } else {
         logger.debug("nextpage");
         logger.debug(parseFloat(req.params.page)+1);
         res.render(section + '/' + subsection, {
           title: data.stagename,
           data: data,
+          path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       }
@@ -206,12 +215,13 @@ dataprovider.list = (req, res, section, model) => {
   let notfound = false;
 
   if (config.sections[section].categories.indexOf(filter) === -1) notfound = true;
-  if (typeof config.sections[section].sortQ[sorting] === 'undefined') notfound = true;
+  if (typeof config.sections[section].ordersQueries[sorting] === 'undefined') notfound = true;
   if (parseInt(page).toString()!=page.toString()) notfound = true;
 
   const skip = (page - 1) * config.sections[section].limit;
   const select = config.sections[section].list_fields;
   const populate = config.sections[section].list_populate;
+  logger.debug(notfound);
 
   if (notfound) {
     res.status(404).render('404', {
@@ -220,9 +230,12 @@ dataprovider.list = (req, res, section, model) => {
       path: req.originalUrl
     });
   } else {
-    const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
+    //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
+    const query = config.sections[section].categoriesQueries[filter];
+    logger.debug('query: '+query.toString());
+    logger.debug(query);
 
-    dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].sortQ[sorting], (err, data, total) => {
+    dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
       logger.debug('bella'+config.sections[section].title);
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         if (process.env.DEBUG) {
@@ -246,6 +259,7 @@ dataprovider.list = (req, res, section, model) => {
           filter: filter,
           categories: config.sections[section].categories,
           orderings: config.sections[section].orders,
+          labels: config.sections[section].labels,
           data: data
         });
         /* C

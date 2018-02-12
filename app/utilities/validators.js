@@ -34,5 +34,5 @@ validators.isDate = (aaaa, mm, gg) => {
 };
 
 if (typeof exports !== 'undefined') {
-  exports.Validators = Validators;
+  exports.validators = validators;
 }
