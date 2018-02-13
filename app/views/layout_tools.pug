@@ -72,7 +72,16 @@ html(lang='en')
                 =__('Search')
     include partials/flash
     main.container-fluid
-      block content
+      div
+        .p-3
+          h1.color1 Tools
+        .row
+          .col-md-2
+            include admin/tools_menu
+          .col-md-10
+            block content
+      if script
+        !=script
 
     footer
       .container-fluid

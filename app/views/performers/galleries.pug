@@ -44,88 +44,15 @@ block title
             .col-sm-6
               img.img-fluid(src="/images/logo_avnode_svg.svg")
 
-  .container
-    .row
-      .col-sm-12
-        .performer_map_wrapper
-          h2="auto centred Google map: a marker for each performer's address"
-    
-  if data.abouts
-    .abouts_wrapper
-      .container
-        .row
-          .col-sm-12
-              .about_wrapper
-                !=data.about        
-              .more_button
-                span.color1.lnr.lnr-plus-circle
-    .abouts_divider
-
 block content
   .container
-    section.row.performer_events_wrapper
+    section.row.performer_crews_wrapper
       .col-lg-12
-        h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+        h2.main_title.indented_title.color1!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"
         .row
-          each item in data.events
+          each item in data.galleries
             .col-sm-4
-              include ../partials/boxEvent
-        //.text-right
-          a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')
-  
-  section.performer_performances_wrapper
-    .content_wrapper
-      .container
-        .row
-          .col-lg-12
-            h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
-            .performance_divider.basic_divider
-            .row
-              each item in data.performances
-                .col-sm-4
-                  include ../partials/boxPerformance
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Crews')
-      .card-deck
-        each item in data.crews
-          .col-sm-4
-            include ../partials/boxPerformer
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('TV Shows')
-      .card-deck
-        each item in data.tvshows
-          .col-sm-4
-            include ../partials/boxTVShow
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Footage')
-      .card-deck
-        each item in data.footage
-          .col-sm-4
-            include ../partials/boxFootage
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Playlists')
-      .card-deck
-        each item in data.playlists
-          .col-sm-4
-            include ../partials/boxPlaylist
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Galleries')
-      .card-deck
-        each item in data.galleries
-          .col-sm-4
-            include ../partials/boxGallery
+              include ../partials/boxGallery
+      .text-center
+        a.btn.btn-primary(href="/#{data.slug}/events/page/#{nextpage}/")=__("Nexts")+" >>"
+                  

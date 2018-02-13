@@ -24,6 +24,13 @@ block title
               )
 
 block content
+  video#my-video.video-js(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{aspectRatio:"16:9", fluid: true}')
+    source(src='https://flxer.net'+data.media.file, type='video/mp4')
+    //source(src='MY_VIDEO.webm', type='video/webm')
+    p.vjs-no-js
+      !=__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
+      a(href='http://videojs.com/html5-video-support/', target='_blank')=!__("supports HTML5 video")
+
   object(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', width='550', height='400', align='middle',  type="application/x-shockwave-flash", data='http://localhost:8006/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
     param(name='movie', value='http://localhost:8006/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
     embed(width='550', height='400', align='middle',  src='http://localhost:8006/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')

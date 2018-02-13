@@ -17,6 +17,24 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/files/showall', (req, res) => {
+  logger.debug('/admin/tools/files/showall');
+  User.
+  find({"image.file": {$exists: true}}).
+  //limit(1).
+  lean(1).
+  select({image:1,creation_date: 1}).
+  exec((err, userImages) => {
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'admin/tools/files/showall',
+      currentUrl: req.path,
+      data: userImages,
+      script: false
+    });
+  });
+});
+
 router.get('/addresses/showall', (req, res) => {
   logger.debug('/admin/tools/addresses/showall');
   showall(req, res, false, cb = (data) => {
