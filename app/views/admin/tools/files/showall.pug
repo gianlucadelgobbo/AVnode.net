@@ -1,7 +1,16 @@
 extends ../../../layout_tools
 block content
+  h2=title
   ol
-    if data
+    if data.length
       each item, index in data
-        li=item.image.file
+        li
+          !=global.appRoot+'/public'+item.file + " "+item.exists
+          if item.files
+            !="<br />File: "+item.files.file
+            !="<br />originalFile: "+item.files.originalFile
+            !="<br />previewFile: "+item.files.previewFile
+            !="<br />FileNew: "+item.files.fileNew
+            !="<br />previewFileNew: "+item.files.previewFileNew
+            !="<br />originalFileNew: "+item.files.originalFileNew
   //pre=JSON.stringify(data, null, 2)
