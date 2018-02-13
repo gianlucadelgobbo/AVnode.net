@@ -1,0 +1,7 @@
+extends ../../../layout_tools
+block content
+  ol
+    if data
+      each item, index in data
+        li=item.image.file
+  //pre=JSON.stringify(data, null, 2)

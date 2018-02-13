@@ -31,6 +31,16 @@ router.get('/footage/page/:page', (req, res) => {
   dataprovider.show(req, res, section, 'footage', Model);
 });
 
+router.get('/playlists', (req, res) => {
+  logger.debug('Show ' + section + ' playlists');
+  dataprovider.show(req, res, section, 'playlists', Model);
+});
+
+router.get('/footage/page/:page', (req, res) => {
+  logger.debug('Show ' + section + ' footage');
+  dataprovider.show(req, res, section, 'footage', Model);
+});
+
 router.get('/galleries', (req, res) => {
   logger.debug('Show ' + section + ' galleries');
   dataprovider.show(req, res, section, 'galleries', Model);
