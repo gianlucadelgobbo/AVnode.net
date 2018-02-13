@@ -18,6 +18,9 @@
     h4.color1 Files
     ul.nav.flex-column.nav-pills
       li.nav-item
-        - var link = "/files/showall"
+        - var link = "/files/userimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/galleryfiles"
         - console.log(currentUrl)
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link

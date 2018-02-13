@@ -1,7 +1,7 @@
-@import "custom/overrides";
+//@import "custom/overrides";
 //@import "node_modules/bootstrap/scss/bootstrap";
 @import "bootstrap/bootstrap";
-@import "custom/layout";
+//@import "custom/layout";
 //@import "node_modules/react-widgets/lib/scss/react-widgets";
 
 
@@ -9,6 +9,10 @@
 
  $color1 : #0F8FCF;
  $color2 : #fff;
+
+pre {
+  background-color: $color2;
+}
 
 
  @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700');

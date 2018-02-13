@@ -2990,6 +2990,86 @@ db.galleries.find({}).forEach(function(e) {
   db.galleries.save(e);
 });
 
+db.galleries.find({}).forEach(function(gallery) {
+  gallery.performances = [];
+
+  var res = db.performances.find({"galleries": gallery._id}).toArray();
+  var conta = 0;
+  res.forEach(function(performance) {
+    conta++;
+    gallery.performances.push(performance._id);
+    printjson(gallery.title+' performance: '+performance.title+' conta: '+conta+' res.length: '+res.length);
+    if (conta == res.length) {
+      printjson('SAVEEEEEE');
+      printjson(gallery);
+      db.galleries.save(gallery);
+    }
+  });
+});
+
+db.galleries.find({"stats.video": "2", "stats.img": "4"}).limit(1).forEach(function(gallery) {
+  conta = 0;
+  var newMedias = [];
+  var newVideos = [];
+  gallery.medias.forEach(function(media) {
+    const serverPath = media.file;
+    const localFileNameExtension = serverPath.substring(serverPath.lastIndexOf('.') + 1);
+    if (localFileNameExtension == "mp4") {
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
+      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
+      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+      const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
+      const localFileNameWithoutOriginalExtension = localFileName.substring(0, localFileName.lastIndexOf('_'));
+      const files = {
+        file: media.file,
+        previewFile: `${localPath}/preview_files/${localFileNameWithoutExtension}.png`,
+        originalFile: `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`,
+        fileNew: media.file.replace('/warehouse/', '/warehouse/videos/'),
+        previewFileNew: `${localPath}/${localFileNameWithoutExtension}.png`.replace('/warehouse/','/warehouse/videos_previews/'),
+        originalFileNew: `${localPath}/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`.replace('/warehouse/','/warehouse/videos_originals/'),
+      };
+      if (conta == 0) gallery.image.file = files.fileNew;
+      media.file = files.fileNew;
+      var video = gallery;
+      video.media = media;
+      newVideos.push(video);
+    } else {
+      newMedias.push(media);
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
+      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
+      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+      const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
+      const localFileNameWithoutOriginalExtension = localFileName.substring(0, localFileName.lastIndexOf('_'));
+      const files = {
+        file: media.file,
+        previewFile: `${localPath}/preview_files/${localFileNameWithoutExtension}.png`,
+        originalFile: `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`,
+        fileNew: media.file.replace('/warehouse/', '/warehouse/videos/'),
+        previewFileNew: `${localPath}/${localFileNameWithoutExtension}.png`.replace('/warehouse/','/warehouse/videos_previews/'),
+        originalFileNew: `${localPath}/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`.replace('/warehouse/','/warehouse/videos_originals/'),
+      };
+      if (conta == 0) gallery.image.file = files.fileNew;
+      media.file = files.fileNew;      
+    }
+
+    conta++;
+    if (conta == gallery.medias.length) {
+      printjson('SAVEEEEEE');
+      delete gallery.stats.video;
+      gallery.stats.img = newMedias.length;
+      gallery.medias = newMedias;
+      printjson(gallery);
+      newVideos.forEach(function(video) {
+        delete video.medias;
+        delete video._id;
+        printjson('SAVEEEEEE VIDEO!!!');
+        printjson(video);
+      });
+      //db.galleries.save(gallery);
+    }
+  });
+});
+
 db.playlists.find({}).forEach(function(e) {
   e.image = {file: e.footage[0].file};
   db.playlists.save(e);
