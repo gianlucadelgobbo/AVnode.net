@@ -1,4 +1,3 @@
-import slugvalidate from '../../../utilities/slug.js';
 import validators from '../../../utilities/validators.js';
 
 const profilePublicValidate = values => {
