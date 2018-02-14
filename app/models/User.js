@@ -57,7 +57,7 @@ const userSchema = new Schema({
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
   performances: [{ type: Schema.ObjectId, ref: 'Performance' }],
-  events: [{ type: Schema.ObjectId, ref: 'EventShow' }],
+  events: [{ type: Schema.ObjectId, ref: 'Event' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
   tvshows: [{ type: Schema.ObjectId, ref: 'TVShow' }],
   partnerships : [{ type: Schema.ObjectId, ref: 'User' }],
@@ -103,36 +103,7 @@ userSchema.virtual('crews', {
 
 // Crews only
 
-userSchema.virtual('publicEmails').get(function () {
-  let emails = [];
-  if (this.emails && this.emails.length) {
-    this.emails.forEach((email) => {
-      if (email.is_public) {
-        emails.push(email);
-      }
-    });
-    if (emails.length) {
-      return emails;
-    }
-  }
-});
 
-userSchema.virtual('about').get(function (req) {
-  let about = __('Text is missing');
-  let aboutA = [];
-  if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
-    if (aboutA.length && aboutA[0].abouttext) {
-      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-    } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
-      if (aboutA.length && aboutA[0].abouttext) {
-        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-      }
-    }
-    return about;
-  }
-});
 
 /* BL FIXME later for crews
 userSchema.pre('remove', function(next) {
