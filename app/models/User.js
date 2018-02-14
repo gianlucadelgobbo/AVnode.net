@@ -16,7 +16,7 @@ const OrganizationData = require('./shared/OrganizationData');
 const adminsez = 'user';
 
 const userSchema = new Schema({
-  old_id : String,
+  old_id: String,
 
   slug: { type: String, unique: true },
   stagename: { type: String, unique: true },
@@ -57,7 +57,7 @@ const userSchema = new Schema({
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
   performances: [{ type: Schema.ObjectId, ref: 'Performance' }],
-  events: [{ type: Schema.ObjectId, ref: 'Event' }],
+  events: [{ type: Schema.ObjectId, ref: 'EventShow' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
   tvshows: [{ type: Schema.ObjectId, ref: 'TVShow' }],
   partnerships : [{ type: Schema.ObjectId, ref: 'User' }],
@@ -89,31 +89,32 @@ const userSchema = new Schema({
   }
 });
 
-/* userSchema.virtual('crews', {
+/*
+userSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  delete obj.image;
+  return obj;
+}
+userSchema.virtual('crews', {
   ref: 'User',
   localField: '_id',
   foreignField: '_id'
 }); */
 
 // Crews only
-userSchema.virtual('editUrl').get(function () {
-  if (this.slug) {
-    if (this.is_crew) {
-      return `/admin/crew/${this.slug}`;
-    } else {
-      return `/admin/${this.slug}`;
-    } 
-  } 
-});
 
 userSchema.virtual('publicEmails').get(function () {
-  let publicEmails = [];
-  for (let email in this.emails) {
-    if (this.emails[email].is_public) {
-      publicEmails.push(this.emails[email].email);
+  let emails = [];
+  if (this.emails && this.emails.length) {
+    this.emails.forEach((email) => {
+      if (email.is_public) {
+        emails.push(email);
+      }
+    });
+    if (emails.length) {
+      return emails;
     }
   }
-  return publicEmails;
 });
 
 userSchema.virtual('about').get(function (req) {
@@ -129,8 +130,8 @@ userSchema.virtual('about').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
+    return about;
   }
-  return about;
 });
 
 /* BL FIXME later for crews
@@ -140,7 +141,22 @@ userSchema.pre('remove', function(next) {
     { $pull: { crews: crew._id } },
     next
   );
-});*/
+});
+
+userSchema.virtual('publicUrl').get(function () {
+  if (this.slug) return `/${this.slug}`;
+});
+userSchema.virtual('editUrl').get(function () {
+  if (this.slug) {
+    if (this.is_crew) {
+      return `/admin/crew/${this.slug}`;
+    } else {
+      return `/admin/${this.slug}`;
+    } 
+  } 
+});
+
+*/
 
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
@@ -148,22 +164,6 @@ userSchema.virtual('birthdayFormatted').get(function () {
     moment.locale(lang);
     return moment(this.birthday).format(config.dateFormat[lang].single);
   }
-});
-
-userSchema.virtual('publicEmails').get(function () {
-  let emails = [];
-  if (this.emails) {
-    this.emails.forEach((email) => {
-      if (email.is_public) {
-        emails.push(email);
-      }
-    });
-  }
-  if (emails.length) return emails;
-});
-
-userSchema.virtual('publicUrl').get(function () {
-  if (this.slug) return `/${this.slug}`;
 });
 
 // Return thumbnail
@@ -190,7 +190,7 @@ userSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-
+/*
 userSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -214,7 +214,7 @@ userSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-
+*/
 userSchema.pre('save', function save(next) {
   console.log('userSchema.pre(save) id:' + this._id);
   const user = this;

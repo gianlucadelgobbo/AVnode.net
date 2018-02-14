@@ -1,0 +1,26 @@
+.menu
+  .p-3
+    h4.color1 Performers
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/addresses/showall"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/updatedb"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/getgeometry"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/setgeometry"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
+    h4.color1 Files
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/files/userimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/galleryfiles"
+        - console.log(currentUrl)
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link

@@ -1,15 +1,12 @@
 extends ../layout
 
 block content
-  .card-columns
-    each item in data
-      .card
-        if item.image
-          img.card-img-top.img-fluid(
-            src=`${item.imageFormats.medium}`
-            alt=`${item.title} profile image`
-          )
-        .card-block
-          h4.card-title=item.title
-          p.card-text=item.about
-          a.btn.btn-primary(href=item.publicUrl)=__('More')
+  .container
+    include ../partials/filters-menu
+    hr
+    .row
+      each item in data
+        .col-md-4
+          include ../partials/boxTVShow
+    hr
+    include ../partials/pagination

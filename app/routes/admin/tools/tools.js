@@ -1,8 +1,10 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Gallery = mongoose.model('Gallery');
 const AddressDB = mongoose.model('AddressDB');
 const request = require('request');
+const fs = require('fs');
 
 const logger = require('../../../utilities/logger');
 
@@ -14,6 +16,59 @@ router.get('/', (req, res) => {
     title: 'admin/tools',
     currentUrl: req.path,
     data: 'LOAD DATA'
+  });
+});
+
+router.get('/files/userimages', (req, res) => {
+  logger.debug('/admin/tools/files/userimages');
+  let data = [];
+  User.
+  find({"image.file": {$exists: true}}).
+  limit(1).
+  lean(1).
+  select({image: 1, creation_date: 1}).
+  exec((err, users) => {
+    for (let user in users) {
+      users[user].image.exists = fs.existsSync(global.appRoot+'/public'+users[user].image.file);
+      data.push(users[user].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      tit: 'User images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/galleryfiles', (req, res) => {
+  logger.debug('/admin/tools/files/galleryfiles');
+  let data = [];
+  Gallery.
+  find({"medias.0": {$exists: true}}).
+  limit(1).
+  //lean(1).
+  select({medias:1, creation_date: 1}).
+  exec((err, galleries) => {
+    for (let gallery=0; gallery<galleries.length; gallery++) {
+      for (let media=0; media<galleries[gallery].medias.length; media++) {
+        console.log(galleries[gallery].medias[media].files);
+        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting_mov.png
+        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting.png
+        // https://flxer.net/warehouse/2017/10/55x55/dsu_shadowpainting_mov_mp4.jpg
+        // https://flxer.net/warehouse/2017/10/dsu_shadowpainting_mov.mp4
+        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+'/public'+galleries[gallery].medias[media].file);
+        data.push(galleries[gallery].medias[media]);
+      }
+     }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Gallery medias',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
   });
 });
 
@@ -115,15 +170,16 @@ const setgeometry = (req, res, s, cb) => {
 
 const getgeometry = (req, res, cb) => {
   let allres = [];
-  AddressDB.find({country_new: {$exists: false}, locality_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  //AddressDB.find({country_new: {$exists: false}, locality_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  AddressDB.find({country_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
   limit(50).
   sort({"country": 1, "locality": 1}).
   then(function(addressesA) {
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
-        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+element.locality+','+element.country);
-        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent(element.locality+','+element.country), (error, response, body) => {
+        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
+        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country), (error, response, body) => {
           console.log("requestrequestrequestrequest");
           console.log(element);
           console.log(error);
@@ -159,17 +215,18 @@ const getgeometry = (req, res, cb) => {
                     } else {
                       allres = allres.concat(resres);
                     }
-                    //console.log(JSON.parse(body));
+                    console.log("update end");
                     if (conta === addressesA.length) {
-                      console.log();
+                      console.log("update end");
                       cb(allres);
                     }
                 });
                 }
               });
             } catch(e) {
-              console.log("ADDRESS catch");
               const error = JSON.parse(body);
+              console.log("ADDRESS catch");
+              console.log(error);
 
               if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
                 addressesA[index].status = error.status;
@@ -184,6 +241,9 @@ const getgeometry = (req, res, cb) => {
                       } else {
                         allres = allres.concat(resres);
                       }
+                      if (conta === addressesA.length) {
+                        cb(allres);
+                      }
                     });
                   }
                 });
@@ -191,7 +251,6 @@ const getgeometry = (req, res, cb) => {
                 //console.log(JSON.parse(body));
                 allres = allres.concat([error]);
                 if (conta === addressesA.length) {
-                  console.log();
                   cb(allres);
                 }
               }

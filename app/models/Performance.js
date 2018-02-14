@@ -41,6 +41,24 @@ const performanceSchema = new Schema({
   }
 });
 
+performanceSchema.virtual('about').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    return about;
+  }
+});
+
+
 // Return thumbnail
 performanceSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
@@ -65,7 +83,7 @@ performanceSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-
+/*
 performanceSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -97,7 +115,7 @@ performanceSchema.virtual('editUrl').get(function () {
 performanceSchema.virtual('publicUrl').get(function () {
   return `/performances/${this.slug}`;
 });
-
+*/
 performanceSchema.pre('remove', function(next) {
   const performance = this;
   performance.model('User').update(
