@@ -704,15 +704,6 @@ router.post('/link', (req, res, next) => {
     });
 });
 
-router.get('/slug/:slug', (req, res) => {
-  User.find({slug:req.params.slug}).
-  select({slug: 1}).
-  limit(1).
-  lean().
-  exec((err, data) => {
-    res.send(!data.length);
-  });
-});
 
 router.get('/slugs/:slug', (req, res, next)=>{
   const apiCall = 'api, router.get(/user/slugs)';
@@ -723,7 +714,7 @@ router.get('/slugs/:slug', (req, res, next)=>{
       logger.debug(`${JSON.stringify(err)}`);
       req.flash('errors', { msg: `${JSON.stringify(err)}` });    
     }
-    //console.log(err +','+ user);
+    //console.log(err +','+ user);s
     var response = {slug:req.params.slug,exist:user!==null?true:false};
     res.json(response);
 
