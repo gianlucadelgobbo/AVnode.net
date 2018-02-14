@@ -4,32 +4,25 @@ import validators from '../../../utilities/validators.js';
 const profilePublicValidate = values => {
 
   const errors = {};
-  let isError = false;
 
   if (!values.surname || values.surname.trim() === "") {
       errors.surname = 'Surname Required';
-      isError = true;
   }
   if (!values.name || values.name.trim() === "") {
       errors.name = 'Name Required';
-      isError = true;
   }
   if (!values.stagename || values.stagename.trim() === "") {
       errors.stagename = 'Stage Name Required';
-      isError = true;
   }
   else if (!validators.validateStringLength(values.stagename, 2, 30)) {
       errors.stagename = 'Must be more or equal 2 and less or equal 30 characters';
-      isError = true;
   }
   if (!values.slug || values.slug.trim() === "") {
       errors.slug = 'Slug Required';
-      isError = true;
   }
   if(values.slug !== undefined || null || "") {
     if(!validators.isSlug(values.slug)){
       errors.slug = 'Slug Not Allowed';
-      isError = true;
     }
   }
   if (!values.web || !values.web.length) {
@@ -44,7 +37,6 @@ const profilePublicValidate = values => {
       else if (!validators.isUrl(w.url)){
         webErrors.url = 'Invalid link, please insert a valid link ';
         webArrayErrors[windex] =webErrors;
-        isError = true;
       }
       if (values.web.length > 5) {
         if (!webErrors.web) {
@@ -56,8 +48,7 @@ const profilePublicValidate = values => {
     });
   
     if (webArrayErrors.length) {
-      errors.web = webArrayErrors;
-      isError = true;
+        errors.web = webArrayErrors;
     }
   }
 
@@ -73,12 +64,10 @@ const profilePublicValidate = values => {
       else if (!validators.isUrl(s.url)) {
         socialErrors.url = 'Invalid link, please insert a valid link ';
         socialArrayErrors[sindex] =socialErrors;
-        isError = true;
       }
     });
     if (socialArrayErrors.length) {
         errors.social = socialArrayErrors;
-        isError = true;
       }
     }
   
