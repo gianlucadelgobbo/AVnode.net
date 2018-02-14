@@ -59,7 +59,7 @@ const userSchema = new Schema({
   performances: [{ type: Schema.ObjectId, ref: 'Performance' }],
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
-  tvshows: [{ type: Schema.ObjectId, ref: 'TVShow' }],
+  videos: [{ type: Schema.ObjectId, ref: 'Video' }],
   partnerships : [{ type: Schema.ObjectId, ref: 'User' }],
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
