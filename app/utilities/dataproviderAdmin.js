@@ -11,7 +11,7 @@ const Footage = mongoose.model('Footage');
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
 const Playlist = mongoose.model('Playlist');
-const TVShow = mongoose.model('TVShow');
+const Video = mongoose.model('Video');
 
 const logger = require('./logger');
 

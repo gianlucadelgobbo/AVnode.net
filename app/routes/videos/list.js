@@ -2,8 +2,8 @@ const config = require('getconfig');
 const router = require('../router')();
 const dataprovider = require('../../utilities/dataprovider');
 
-const Model = require('mongoose').model('TVShow');
-const section = 'tvshows';
+const Model = require('mongoose').model('Video');
+const section = 'videos';
 
 const logger = require('../../utilities/logger');
 

@@ -29,9 +29,10 @@ block title
                 li.list-inline-item!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"
               if data.stats.playlists
                 li.list-inline-item!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
-              if data.stats.tvshows
-                li.list-inline-item!=__('Tvshows')+" (<span>"+data.stats.tvshows+"</span>)"    
-              li.list-inline-item!=__('Gallery')+" (<span>"+data.stats.galleries+"</span>)"    
+              if data.stats.videos
+                li.list-inline-item!=__('Videos')+" (<span>"+data.stats.videos+"</span>)"    
+              if data.stats.galleries
+                li.list-inline-item!=__('Galleries')+" (<span>"+data.stats.galleries+"</span>)"    
         .col-lg-5
           .row
             .col-sm-6
@@ -97,11 +98,11 @@ block content
   br
   .row
     .col-lg-12
-      h3=__('TV Shows')
+      h3=__('Videos')
       .card-deck
-        each item in data.tvshows
+        each item in data.videos
           .col-sm-4
-            include ../partials/boxTVShow
+            include ../partials/boxVideo
   br
   br
   .row

@@ -1,15 +1,15 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const indexPlugin = require('../utilities/elasticsearch/TVShow');
+const indexPlugin = require('../utilities/elasticsearch/Video');
 
 const About = require('./shared/About');
 const Media = require('./shared/Media');
 const Booking = require('./shared/Booking');
 
-const adminsez = 'tvshow';
+const adminsez = 'video';
 
-const tvshowSchema = new Schema({
+const videoSchema = new Schema({
   old_id : String,
 
   creation_date: Date,
@@ -23,9 +23,12 @@ const tvshowSchema = new Schema({
   stats: {},
   programming:[Date],
 
+  performances: [{ type : Schema.ObjectId, ref : 'Performances' }],
+  events: [{ type : Schema.ObjectId, ref : 'Event' }],
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
 }, {
+  collection: 'videos',
   timestamps: true,
   toObject: {
     virtuals: true
@@ -36,7 +39,7 @@ const tvshowSchema = new Schema({
 });
 
 // Return thumbnail
-tvshowSchema.virtual('imageFormats').get(function () {
+videoSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   if (this.media && this.media.file) {
@@ -60,7 +63,7 @@ tvshowSchema.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 /*
-tvshowSchema.virtual('teaserImageFormats').get(function () {
+videoSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
   if (this.teaserImage && this.teaserImage.file) {
@@ -83,42 +86,42 @@ tvshowSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-tvshowSchema.virtual('editUrl').get(function () {
-  return `/admin/tvshows/public/${this.slug}`;
+videoSchema.virtual('editUrl').get(function () {
+  return `/admin/videos/public/${this.slug}`;
 });
 
-tvshowSchema.virtual('publicUrl').get(function () {
-  return `/tvshows/${this.slug}`;
+videoSchema.virtual('publicUrl').get(function () {
+  return `/videos/${this.slug}`;
 });
 */
 
-tvshowSchema.pre('remove', function(next) {
-  const tvshow = this;
-  tvshow.model('User').update(
-    { $pull: { tvshows: tvshow._id } },
+videoSchema.pre('remove', function(next) {
+  const video = this;
+  video.model('User').update(
+    { $pull: { videos: video._id } },
     next
   );
-  tvshow.model('Crew').update(
-    { $pull: { tvshows: tvshow._id } },
+  video.model('Crew').update(
+    { $pull: { videos: video._id } },
     next
   );
 });
 
 /*
 // FIXME: Rename in performer?
-tvshowSchema.virtual('performers', {
+videoSchema.virtual('performers', {
   ref: 'User',
   localField: '_id',
-  foreignField: 'tvshows'
+  foreignField: 'videos'
 });
 
-tvshowSchema.virtual('crews', {
+videoSchema.virtual('crews', {
   ref: 'User',
   localField: '_id',
-  foreignField: 'tvshows'
+  foreignField: 'videos'
 });
 // return thumbnail
-tvshowSchema.virtual('squareThumbnailUrl').get(function () {
+videoSchema.virtual('squareThumbnailUrl').get(function () {
   let squareThumbnailUrl = '/images/profile-default.svg';
 
   if (this.file && this.file.file) {
@@ -133,7 +136,7 @@ tvshowSchema.virtual('squareThumbnailUrl').get(function () {
   return squareThumbnailUrl;
 });
 // return card img
-tvshowSchema.virtual('cardUrl').get(function () {
+videoSchema.virtual('cardUrl').get(function () {
   let cardUrl = '/images/profile-default.svg';
 
   if (this.file && this.file.file) {
@@ -149,7 +152,7 @@ tvshowSchema.virtual('cardUrl').get(function () {
 });
 
 // return original image
-tvshowSchema.virtual('imageUrl').get(function () {
+videoSchema.virtual('imageUrl').get(function () {
   let image = '/images/profile-default.svg';
   if (this.media) {
     image = `/storage/${this.media}/512/200`;
@@ -162,8 +165,8 @@ tvshowSchema.virtual('imageUrl').get(function () {
 });
 */
 
-tvshowSchema.plugin(indexPlugin());
+videoSchema.plugin(indexPlugin());
 
-const TVShow = mongoose.model('TVShow', tvshowSchema);
+const Video = mongoose.model('Video', videoSchema);
 
-module.exports = TVShow;
+module.exports = Video;
