@@ -20,9 +20,9 @@ const profilePublicValidate = values => {
   if (!values.slug || values.slug.trim() === "") {
       errors.slug = 'Slug Required';
   }
-  if(values.slug !== undefined || null || "") {
+  if(values.slug) {
     if(!validators.isSlug(values.slug)){
-      errors.slug = 'Slug Not Allowed';
+      errors.slug = 'Characters Not Allowed';
     }
   }
   if (!values.web || !values.web.length) {
@@ -48,7 +48,7 @@ const profilePublicValidate = values => {
     });
   
     if (webArrayErrors.length) {
-        errors.web = webArrayErrors;
+      errors.web = webArrayErrors;
     }
   }
 
