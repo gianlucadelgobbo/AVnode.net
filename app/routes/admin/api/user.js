@@ -5,13 +5,13 @@ const User = mongoose.model('User');
 
 const logger = require('../../../utilities/logger');
 
-const dataprovider = require('../../../utilities/dataprovider');
+const dataproviderAdmin = require('../../../utilities/dataproviderAdmin');
 const upload = require('./upload');
 
 const section = 'performers';
 
 router.get('/', (req, res) => {
-    dataprovider.fetchUser(req.user.id, (err, user) => {
+    dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       req.flash('errors', { msg: `${JSON.stringify(err)}` });
@@ -47,7 +47,7 @@ router.post('/:id/public', (req, res) => {
           req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
           res.json(user); // USER COULD BE NULL
         } else {
-          dataprovider.fetchUser(req.params.id, (fetcherr, useredited) => {
+          dataproviderAdmin.fetchUser(req.params.id, (fetcherr, useredited) => {
             if (fetcherr) {
               logger.debug('fetch error');
               logger.debug(JSON.stringify(fetcherr));
@@ -107,7 +107,7 @@ router.uploader = (req, res, media) => {
               req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
               res.json(user); // USER COULD BE NULL
             } else {
-              dataprovider.fetchUser(req.params.id, (fetcherr, useredited) => {
+              dataproviderAdmin.fetchUser(req.params.id, (fetcherr, useredited) => {
                 if (fetcherr) {
                   logger.debug('fetch error');
                   logger.debug(JSON.stringify(fetcherr));
@@ -139,7 +139,7 @@ router.put('/:id/language/:langId', (req, res) => {
       if (err) {
         logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
       }
-      dataprovider.fetchUser(req.user.id, (err, user) => {
+      dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
@@ -171,7 +171,7 @@ router.delete('/:id/about/:aboutlanguage', (req, res) => {
         }
       });
       user.save((_err) => {
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -207,7 +207,7 @@ router.put('/:id/about/:aboutlanguage', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.params.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.params.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -245,7 +245,7 @@ router.delete('/:id/link/:linkId', (req, res) => {
       user.linkType = '';
       user.links.remove(req.params.linkId);
       user.save((_err) => {
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -285,7 +285,7 @@ router.put('/:id/email/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -319,7 +319,7 @@ router.put('/:id/toggleprivacy/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -353,7 +353,7 @@ router.put('/:id/makeemailprivate/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -387,7 +387,7 @@ router.put('/:id/makeemailpublic/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -430,7 +430,7 @@ router.put('/:id/emailconfirm/:emailIndex', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -448,7 +448,7 @@ router.delete('/:id/email/:emailId', (req, res) => {
     .exec((err, user) => {
       user.emails.remove(req.params.emailId);
       user.save((_err) => {
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -491,7 +491,7 @@ router.put('/:id/address/:addressId', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -528,7 +528,7 @@ router.put('/:id/makeaddressprivate/:addressId', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -564,7 +564,7 @@ router.put('/:id/makeaddresspublic/:addressId', (req, res) => {
         if (err) {
           logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           if (err) {
             logger.debug(`${apiCall} ERROR:' ${JSON.stringify(err)}`);
           }
@@ -592,7 +592,7 @@ router.delete('/:id/address/:addressId', (req, res) => {
         }
       });
       user.save((_err) => {
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -659,7 +659,7 @@ router.post('/place', (req, res, next) => {
         if (err) {
           return next(err);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -697,7 +697,7 @@ router.post('/link', (req, res, next) => {
         if (err) {
           return next(err);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -894,7 +894,7 @@ router.put('/:id', (req, res) => {
     if (user) {
       Object.assign(user, props);
       user.save(() => {
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
@@ -924,9 +924,9 @@ router.put('/:id', (req, res) => {
           logger.debug(`${apiCall} save ERROR: ${JSON.stringify(uErr)}`);
         }
         // BL FIXME shown only on page refresh... req.flash('success', { msg: __('Saved') });
-        dataprovider.fetchUser(req.params.id, (fErr, user) => {
+        dataproviderAdmin.fetchUser(req.params.id, (fErr, user) => {
           if (fErr) {
-            logger.debug(`${apiCall} dataprovider.fetchUser ERROR: ${JSON.stringify(fErr)}`);
+            logger.debug(`${apiCall} dataproviderAdmin.fetchUser ERROR: ${JSON.stringify(fErr)}`);
           }
           res.json(user);
         });
@@ -979,7 +979,7 @@ router.post('/:id/image/teaser', up, (req, res, next) => {
         if (err) {
           return next(err);
         }
-        dataprovider.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
           res.json(user);
         });
       });
