@@ -16,7 +16,8 @@ router.use('/tools', tools);
 
 router.get('/*', (req, res) => {
   res.render('admin/index', {
-    title: __('Your Account')
+    title: __('Your Account'),
+    is_admin: true
   });
 });
 

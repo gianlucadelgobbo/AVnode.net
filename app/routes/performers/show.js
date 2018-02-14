@@ -1,7 +1,7 @@
 const router = require('../router')();
 const dataprovider = require('../../utilities/dataprovider');
 
-const Model = require('mongoose').model('User');
+const Model = require('mongoose').model('UserShow');
 const section = 'performers';
 
 const logger = require('../../utilities/logger');
@@ -24,6 +24,16 @@ router.get('/events/page/:page', (req, res) => {
 router.get('/footage', (req, res) => {
   logger.debug('Show ' + section + ' footage');
   dataprovider.show(req, res, section, 'footage', Model);
+});
+
+router.get('/footage/page/:page', (req, res) => {
+  logger.debug('Show ' + section + ' footage');
+  dataprovider.show(req, res, section, 'footage', Model);
+});
+
+router.get('/playlists', (req, res) => {
+  logger.debug('Show ' + section + ' playlists');
+  dataprovider.show(req, res, section, 'playlists', Model);
 });
 
 router.get('/footage/page/:page', (req, res) => {

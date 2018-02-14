@@ -180,7 +180,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -268,7 +268,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -356,7 +356,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -444,7 +444,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -532,7 +532,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -620,7 +620,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -708,7 +708,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -796,7 +796,7 @@
         "mostrecent",
         "mostactive"
       ],
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
@@ -819,11 +819,12 @@
       "view_list": "performers/list",
       "view_edit": "user",
       "list_fields": {
-        "display_name":1,
+        "stagename":1,
         "slug":1,
-        "files":1,
+        "image":1,
         "stats":1
       },
+      "list_populate": [],
       "orders": [
         "mostactive",
         "mostrecent"
@@ -833,7 +834,7 @@
         "individuals",
         "crews"
       ],
-      "searchQ": {
+      "categoriesQueries": {
         "all": {},
         "individuals": {
           "is_crew": 0
@@ -842,7 +843,7 @@
           "is_crew": 1
         }
       },
-      "sortQ": {
+      "ordersQueries": {
         "mostactive": {
           "activity": -1
         },
@@ -877,9 +878,9 @@
             "slug": 1,
             "tags": 1,
             "stats": 1,
-            "media": 1
+            "media.file": 1
           },
-          "populate": { "path": "users", "select": "stagename", "model": "User"},
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
           "options": { "limit": 5 },
           "model": "Footage"
         }, {
@@ -890,7 +891,7 @@
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "footage", "select": "media", "model": "Footage"}],
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"}],
           "options": { "limit": 5 },
           "model": "Playlist"
         }, {
@@ -899,10 +900,9 @@
             "title": 1,
             "slug": 1,
             "stats": 1,
-            "medias": 1,
-            "image": 1
+            "image.file": 1
           },
-          "populate": { "path": "users", "select": "stagename", "model": "User"},
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
           "options": { "limit": 5 },
           "model": "Gallery"
         }, {
@@ -912,9 +912,9 @@
             "slug": 1,
             "categories": 1,
             "stats": 1,
-            "media": 1
+            "media.file": 1
           },
-          "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
           "model": "TVShow"
         }, {
@@ -926,7 +926,7 @@
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
           "model": "Performance"
         }, {
@@ -941,7 +941,7 @@
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
           "options": { "limit": 5 },
-          "model": "Event"
+          "model": "EventShow"
         }, {
           "path": "crews",
           "select": {
@@ -951,7 +951,7 @@
             "image": 1
           },
           "options": { "limit": 5 },
-          "model": "User"
+          "model": "UserShow"
         }, {
           "path": "categories",
           "select": {
@@ -987,7 +987,213 @@
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
           "options": { "limit": 5 },
-          "model": "Event"
+          "model": "EventShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "footage": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "footage",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media.file": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "Footage"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "playlists": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "playlists",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"}],
+          "options": { "limit": 5 },
+          "model": "Playlist"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "performances": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "performances",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 5 },
+          "model": "Performance"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "tvshows": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "tvshows",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media.file": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 5 },
+          "model": "TVShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "galleries": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image.file": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "Gallery"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "crews": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "crews",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 5 },
+          "model": "UserShow"
         }, {
           "path": "categories",
           "select": {
@@ -998,18 +1204,6 @@
         }]
       }
     },
-    "crews": {
-      "title": "Crews",
-      "limit": 20,
-      "basepath": "crews",
-      "coll": "users"
-    },
-    "members": {
-      "title": "Members",
-      "limit": 20,
-      "basepath": "members",
-      "coll": "users"
-    },
     "events": {
       "title": "Events",
       "limit": 20,
@@ -1017,18 +1211,18 @@
       "coll": "events",
       "view_list": "events/list",
       "list_fields": {
-        "title":1,
-        "users":1,
-        "slug":1,
-        "files":1,
-        "categories":1,
-        "stats":1,
-        "date_time_venue":1
+        "title": 1,
+        "slug": 1,
+        "categories": 1,
+        "image": 1,
+        "stats": 1,
+        "schedule": 1
       },
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
       "orders": [
         "mostrecent",
         "mostviewed",
-        "mostrated"
+        "mostliked"
       ],
       "categories": [
         "all",
@@ -1039,42 +1233,30 @@
         "television", 
         "workshops-learning"
       ],
-      "searchQ": {
+      "categoriesQueries": {
         "all":  {},
-        "clubbing": {
-          "categories.slug": "clubbing"
-        },
-        "corporate": {
-          "categories.slug": "corporate"
-        },
-        "festival": {
-          "categories.slug": "festival"
-        },
-        "one-night": {
-          "categories.slug": "one-night"
-        },
-        "television": {
-          "categories.slug": "television"
-        }, 
-        "workshops-learning": {
-          "categories.slug": "workshops-learning"
-        }
+        "clubbing": {"categories": "59fc65d6ff4bcb5a610001c7" },
+        "corporate": {"categories": "59fc65d6ff4bcb5a61000149" },
+        "festival": {"categories": "59fc65d6ff4bcb5a6100004e" },
+        "one-night": {"categories": "59fc65d6ff4bcb5a610000cc" },
+        "television": {"categories": "59fc65d6ff4bcb5a6100004f" },
+        "workshops-learning": {"categories": "59fc65d6ff4bcb5a61000244" }
       },
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "date_time_venue.0.date": -1
         },
         "mostviewed": {
           "stats.visits": -1
         },
-        "mostrated": {
-          "stats.tot_rate": -1
+        "mostliked": {
+          "stats.likes": -1
         }
       },
       "labels": {
         "mostrecent": "Most recent",
         "mostviewed": "Most viewed",
-        "mostrated": "Most rated",
+        "mostliked": "Most liked",
         "all":  "All",
         "individuals": "Individuals",
         "clubbing": "Clubbing",
@@ -1096,6 +1278,63 @@
         "administrator": "Administrator",
         "editor":  "Editor",
         "viewer":  "Viewer"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "image": 1,
+          "schedule": 1,
+          "program": { "$slice": 1 },
+          "tobescheduled": 1,
+          "partners": 1
+        },
+        "populate": [{
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "Performance"
+        }, {
+          "path": "program.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "partners.category",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "partners.users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "Gallery"
+        }]
       }
     },
     "performances": {
@@ -1108,14 +1347,15 @@
         "title":1,
         "users":1,
         "slug":1,
-        "files":1,
+        "image":1,
         "categories":1,
         "stats":1
       },
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
       "orders": [
         "mostrecent",
         "mostviewed",
-        "mostrated"
+        "mostliked"
       ],
       "categories": [
         "all",
@@ -1125,45 +1365,92 @@
         "project-showcase",
         "dj-set"
       ],
-      "searchQ": {
+      "categoriesQueries": {
         "all": {},
-        "av-performance": {
-          "categories.slug": "av-performance"
-        },
-        "vj-set": {
-          "categories.slug": "vj-set"
-        },
-        "workshop": {
-          "categories.slug": "workshop"
-        },
-      "project-showcase": {
-        "categories.slug": "project-showcase"
+        "av-performance": {"categories": "59fc65d6ff4bcb5a61000094" },
+        "vj-set": {"categories": "59fc65d6ff4bcb5a61000017" },
+        "workshop": {"categories": "59fc65d6ff4bcb5a61000015" },
+        "project-showcase": {"categories": "59fc65d6ff4bcb5a6100018d" },
+        "dj-set": {"categories": "59fc65d6ff4bcb5a6100018e" }
       },
-      "dj-set": {
-        "categories.slug": "dj-set"
-      }
-      },
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
         "mostviewed": {
           "stats.visits": -1
         },
-        "mostrated": {
-          "stats.tot_rate": -1
+        "mostliked": {
+          "stats.likes": -1
         }
       },
       "labels": {
         "mostrecent": "Most recent",
         "mostviewed": "Most viewed",
-        "mostrated": "Most rated",
+        "mostliked": "Most liked",
         "all": "All",
         "av-performance": "AV Performance",
         "vj-set": "VJ Set",
         "dj-set": "DJ Set",
-      "project-showcase": "Project Showcase",
+        "project-showcase": "Project Showcase",
         "workshop": "Workshop"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "image": 1,
+          "schedule": 1,
+          "program": { "$slice": 1 },
+          "tobescheduled": 1,
+          "partners": 1
+        },
+        "populate": [{
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "Performance"
+        }, {
+          "path": "program.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "partners.category",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "partners.users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "Gallery"
+        }]
       }
     },
     "tvshows": {
@@ -1176,15 +1463,14 @@
         "title":1,
         "users":1,
         "slug":1,
-        "files":1,
-        "categories":1,
-        "stats":1,
-        "palinsestodate":1
+        "media":1,
+        "stats":1
       },
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
       "orders": [
         "mostrecent",
         "mostviewed",
-        "mostrated"
+        "mostliked"
       ],
       "categories": [
         "all",
@@ -1193,7 +1479,7 @@
         "docs",
         "video"
       ],
-      "searchQ": {
+      "categoriesQueries": {
         "all": {},
         "performances": {
           "categories.slug": "performances"
@@ -1208,26 +1494,83 @@
           "categories.slug": "video"
         }
       },
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
         "mostviewed": {
           "stats.visits": -1
         },
-        "mostrated": {
-          "stats.tot_rate": -1
+        "mostliked": {
+          "stats.likes": -1
         }
       },
       "labels": {
         "mostrecent": "Most recent",
         "mostviewed": "Most viewed",
-        "mostrated": "Most rated",
+        "mostliked": "Most liked",
         "all":"All",
         "performances": "AV Performance",
         "vj-dj-sets": "VJ-DJ Sets",
         "docs": "Docs",
         "video": "Video"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "media": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "image": 1,
+          "schedule": 1,
+          "program": { "$slice": 1 },
+          "tobescheduled": 1,
+          "partners": 1
+        },
+        "populate": [{
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "Performance"
+        }, {
+          "path": "program.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "partners.category",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "partners.users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "Gallery"
+        }]
       }
     },
     "footage": {
@@ -1240,14 +1583,14 @@
         "title":1,
         "users":1,
         "slug":1,
-        "files":1,
-        "categories":1,
+        "media":1,
         "stats":1
       },
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
       "orders": [
         "mostrecent",
         "mostviewed",
-        "mostrated"
+        "mostliked"
       ],
       "categories": [
         "all",
@@ -1255,7 +1598,7 @@
         "no-hole",
         "koncept"
       ],
-      "searchQ": {
+      "categoriesQueries": {
         "all": {},
         "hole": {
           "tag.tag": "hole"
@@ -1267,25 +1610,35 @@
           "tag.tag": "koncept"
         }
       },
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
         "mostviewed": {
           "stats.visits": -1
         },
-        "mostrated": {
-          "stats.tot_rate": -1
+        "mostliked": {
+          "stats.likes": -1
         }
       },
       "labels": {
         "mostrecent": "Most recent",
         "mostviewed": "Most viewed",
-        "mostrated": "Most rated",
+        "mostliked": "Most liked",
         "all": "All",
         "hole": "Hole",
         "no-hole": "No Hole",
         "koncept": "Koncept"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "media": 1
+        },
+        "populate": []
       }
     },
     "playlists": {
@@ -1298,38 +1651,49 @@
         "title":1,
         "users":1,
         "slug":1,
-        "files":1,
+        "image":1,
         "categories":1,
         "stats":1
       },
+      "list_populate": [],
       "orders": [
         "mostrecent",
         "mostviewed",
-        "mostrated"
+        "mostliked"
       ],
       "categories": [
         "all"
       ],
-      "searchQ": {
+      "categoriesQueries": {
         "all": {}
       },
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
         "mostviewed": {
           "stats.visits": -1
         },
-        "mostrated": {
-          "stats.tot_rate": -1
+        "mostliked": {
+          "stats.likes": -1
         }
       },
       "labels": {
         "mostrecent": "Most recent",
         "mostviewed": "Most viewed",
-        "mostrated": "Most rated",
+        "mostliked": "Most liked",
         "all": "All"
-      }
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "footage": 1
+        },
+        "populate": []
+     }
     },
     "gallery": {
       "title": "Gallery",
@@ -1347,29 +1711,29 @@
       "orders": [
         "mostrecent",
         "mostviewed",
-        "mostrated"
+        "mostliked"
       ],
       "categories": [
         "all"
       ],
-      "searchQ": {
+      "categoriesQueries": {
         "all": {}
       },
-      "sortQ": {
+      "ordersQueries": {
         "mostrecent": {
           "creation_date": -1
         },
         "mostviewed": {
           "stats.visits": -1
         },
-        "mostrated": {
-          "stats.tot_rate": -1
+        "mostliked": {
+          "stats.likes": -1
         }
       },
       "labels": {
         "mostrecent": "Most recent",
         "mostviewed": "Most viewed",
-        "mostrated": "Most rated",
+        "mostliked": "Most liked",
         "all": "All"
       }
     }
