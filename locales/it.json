@@ -31,5 +31,11 @@
 	"example@foo.bar": "example@foo.bar",
 	"Password": "Password",
 	"Use at least eight characters": "Use at least eight characters",
-	"Forgot your password?": "Forgot your password?"
+	"Forgot your password?": "Forgot your password?",
+	"All": "All",
+	"Individuals": "Individuals",
+	"Most active": "Most active",
+	"Most recent": "Most recent",
+	"views": "views",
+	"likes": "likes"
 }
