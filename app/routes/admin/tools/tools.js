@@ -25,11 +25,11 @@ router.get('/files/userimages', (req, res) => {
   User.
   find({"image.file": {$exists: true}}).
   limit(1).
-  lean(1).
+  lean().
   select({image: 1, creation_date: 1}).
   exec((err, users) => {
     for (let user in users) {
-      users[user].image.exists = fs.existsSync(global.appRoot+'/public'+users[user].image.file);
+      users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file.replace('/warehouse/', '/warehouse_new/'));
       data.push(users[user].image);
     }
     console.log(req.path);
