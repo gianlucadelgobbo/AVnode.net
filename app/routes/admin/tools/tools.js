@@ -42,6 +42,38 @@ router.get('/files/userimages', (req, res) => {
   });
 });
 
+router.get('/files/filescopy', (req, res) => {
+  logger.debug('/admin/tools/files/filescopy');
+  let files = require("../../../../cp-all");
+  let data = {};
+  let mkdirs = [];
+  files.forEach(function(file) {
+    var folders = file.split(" ")[2].split("/");
+    if (folders[1] && !data[folders[1]]) data[folders[1]] = {};
+    if (folders[2] && !data[folders[1]][folders[2]])  data[folders[1]][folders[2]] = {};
+    if (folders[3] && !data[folders[1]][folders[2]][folders[3]])  data[folders[1]][folders[2]][folders[3]] = {};
+    if (folders[4] && !data[folders[1]][folders[2]][folders[3]][folders[4]])  data[folders[1]][folders[2]][folders[3]][folders[4]] = {};
+  });
+  for (var key in data) {
+    mkdirs.push("mkdir "+key);
+    for (var key2 in data[key]) {
+      mkdirs.push("mkdir "+key+"/"+key2);
+      for (var key3 in data[key][key2]) {
+        mkdirs.push("mkdir "+key+"/"+key2+"/"+key3);
+        for (var key4 in data[key][key2][key3]) {
+          mkdirs.push("mkdir "+key+"/"+key2+"/"+key3+"/"+key4);
+        }
+      }
+    }
+  }
+  res.render('admin/tools/files/filescopy', {
+    tit: 'User images',
+    currentUrl: req.path,
+    data: mkdirs,
+    script: false
+  });
+});
+
 router.get('/files/galleryfiles', (req, res) => {
   logger.debug('/admin/tools/files/galleryfiles');
   let data = [];
@@ -171,7 +203,7 @@ const setgeometry = (req, res, s, cb) => {
 const getgeometry = (req, res, cb) => {
   let allres = [];
   //AddressDB.find({country_new: {$exists: false}, locality_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
-  AddressDB.find({country_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  AddressDB.find({status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
   limit(50).
   sort({"country": 1, "locality": 1}).
   then(function(addressesA) {
