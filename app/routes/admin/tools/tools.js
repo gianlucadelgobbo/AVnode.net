@@ -24,7 +24,6 @@ router.get('/files/userimages', (req, res) => {
   let data = [];
   User.
   find({"image.file": {$exists: true}}).
-  limit(1).
   lean().
   select({image: 1, creation_date: 1}).
   exec((err, users) => {
