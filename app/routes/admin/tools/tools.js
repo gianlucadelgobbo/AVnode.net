@@ -1,7 +1,12 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Performance = mongoose.model('Performance');
+const Event = mongoose.model('Event');
+const Footage = mongoose.model('Footage');
+const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
+const Video = mongoose.model('Video');
 const AddressDB = mongoose.model('AddressDB');
 const request = require('request');
 const fs = require('fs');
@@ -33,7 +38,181 @@ router.get('/files/userimages', (req, res) => {
     }
     console.log(req.path);
     res.render('admin/tools/files/showall', {
-      tit: 'User images',
+      title: 'User images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/performanceimages', (req, res) => {
+  logger.debug('/admin/tools/files/performanceimages');
+  let data = [];
+  Performance.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, performances) => {
+    for (let performance in performances) {
+      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file.replace('/warehouse/', '/warehouse_new/'));
+      data.push(performances[performance].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Performance images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/eventimages', (req, res) => {
+  logger.debug('/admin/tools/files/eventimages');
+  let data = [];
+  Event.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, events) => {
+    for (let event in events) {
+      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file.replace('/warehouse/', '/warehouse_new/'));
+      data.push(events[event].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Performance images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+router.get('/files/playlistimages', (req, res) => {
+  logger.debug('/admin/tools/files/playlistimages');
+  let data = [];
+  Playlist.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, playlists) => {
+    for (let playlist in playlists) {
+      playlists[playlist].image.exists = fs.existsSync(global.appRoot+playlists[playlist].image.file.replace('/warehouse/', '/warehouse_new/'));
+      data.push(playlists[playlist].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Performance images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/footagefiles', (req, res) => {
+  logger.debug('/admin/tools/files/footagefiles');
+  let data = [];
+  Footage.
+  find({"media.file": {$exists: true}}).
+  lean().
+  select({media: 1, creation_date: 1}).
+  exec((err, footages) => {
+    for (let footage in footages) {
+      footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file.replace('/warehouse/', '/warehouse_new/'));
+      const serverPath = footages[footage].media.file;
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+      const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+      const localOriginalFileNameWithoutExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
+      const localOriginalFileNameExtension = localFileNameWithoutExtension.substring(localFileNameWithoutExtension.lastIndexOf('_') + 1);
+      if (footages[footage].media.preview) {
+        //delete footages[footage].media.preview;
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('/warehouse/', '/warehouse_new/'));
+      } else {
+        footages[footage].media.preview = localPath.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+localFileNameWithoutExtension+'.png';
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('/warehouse/', '/warehouse_new/'));
+      }
+      if (localFileNameExtension=="mp4") {
+        footages[footage].media.original = localPath.replace('/warehouse/footage/', '/warehouse/footage_original/')+'/'+localOriginalFileNameWithoutExtension+'.'+localOriginalFileNameExtension;
+        footages[footage].media.originalexists = fs.existsSync(global.appRoot+footages[footage].media.original.replace('/warehouse/', '/warehouse_new/'));
+      }
+      data.push(footages[footage].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Footage images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/videofiles', (req, res) => {
+  logger.debug('/admin/tools/files/videofiles');
+  let data = [];
+  Video.
+  find({"media.file": {$exists: true}}).
+  lean().
+  select({media: 1, creation_date: 1}).
+  exec((err, videos) => {
+    for (let video in videos) {
+      videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file.replace('/warehouse/', '/warehouse_new/'));
+      const serverPath = videos[video].media.file;
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+      const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+      const localOriginalFileNameWithoutExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
+      const localOriginalFileNameExtension = localFileNameWithoutExtension.substring(localFileNameWithoutExtension.lastIndexOf('_') + 1);
+      if (videos[video].media.preview) {
+        //delete videos[video].media.preview;
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview.replace('/warehouse/', '/warehouse_new/'));
+      } else {
+        videos[video].media.preview = localPath.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+localFileNameWithoutExtension+'.png';
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview.replace('/warehouse/', '/warehouse_new/'));
+      }
+      videos[video].media.original = localPath.replace('/warehouse/videos/', '/warehouse/videos_originals/')+'/'+localOriginalFileNameWithoutExtension+'.'+localOriginalFileNameExtension;
+      videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original.replace('/warehouse/', '/warehouse_new/'));
+      data.push(videos[video].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Video images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+
+router.get('/files/galleryimages', (req, res) => {
+  logger.debug('/admin/tools/files/galleryimages');
+  let data = [];
+  Gallery.
+  find({"medias.0": {$exists: true}}).
+  //limit(1).
+  lean().
+  select({medias:1, creation_date: 1}).
+  exec((err, galleries) => {
+    for (let gallery=0; gallery<galleries.length; gallery++) {
+      for (let media=0; media<galleries[gallery].medias.length; media++) {
+        console.log(galleries[gallery].medias[media].files);
+        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting_mov.png
+        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting.png
+        // https://flxer.net/warehouse/2017/10/55x55/dsu_shadowpainting_mov_mp4.jpg
+        // https://flxer.net/warehouse/2017/10/dsu_shadowpainting_mov.mp4
+        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file.replace('/warehouse/', '/warehouse_new/'));
+        data.push(galleries[gallery].medias[media]);
+      }
+     }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Gallery medias',
       currentUrl: req.path,
       data: data,
       script: false
@@ -66,42 +245,13 @@ router.get('/files/filescopy', (req, res) => {
     }
   }
   res.render('admin/tools/files/filescopy', {
-    tit: 'User images',
+    title: 'User images',
     currentUrl: req.path,
     data: mkdirs,
     script: false
   });
 });
 
-router.get('/files/galleryfiles', (req, res) => {
-  logger.debug('/admin/tools/files/galleryfiles');
-  let data = [];
-  Gallery.
-  find({"medias.0": {$exists: true}}).
-  limit(1).
-  //lean(1).
-  select({medias:1, creation_date: 1}).
-  exec((err, galleries) => {
-    for (let gallery=0; gallery<galleries.length; gallery++) {
-      for (let media=0; media<galleries[gallery].medias.length; media++) {
-        console.log(galleries[gallery].medias[media].files);
-        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting_mov.png
-        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting.png
-        // https://flxer.net/warehouse/2017/10/55x55/dsu_shadowpainting_mov_mp4.jpg
-        // https://flxer.net/warehouse/2017/10/dsu_shadowpainting_mov.mp4
-        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+'/public'+galleries[gallery].medias[media].file);
-        data.push(galleries[gallery].medias[media]);
-      }
-     }
-    console.log(req.path);
-    res.render('admin/tools/files/showall', {
-      title: 'Gallery medias',
-      currentUrl: req.path,
-      data: data,
-      script: false
-    });
-  });
-});
 
 router.get('/addresses/showall', (req, res) => {
   logger.debug('/admin/tools/addresses/showall');
