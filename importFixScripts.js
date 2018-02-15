@@ -2985,10 +2985,7 @@ db.galleries.find({}).forEach(function(e) {
   db.galleries.save(e);
 });
 
-db.galleries.find({}).forEach(function(e) {
-  e.image = {file: e.medias[0].file};
-  db.galleries.save(e);
-});
+
 
 db.galleries.find({}).forEach(function(gallery) {
   gallery.performances = [];
