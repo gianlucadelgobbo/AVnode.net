@@ -27,6 +27,8 @@
 	"Welcome to AVnode network": "Welcome to AVnode network",
 	"AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.": "AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.",
 	"Nexts": "Nexts",
+<<<<<<< HEAD
+=======
 	"Email": "Email",
 	"example@foo.bar": "example@foo.bar",
 	"Password": "Password",
@@ -36,6 +38,7 @@
 	"Individuals": "Individuals",
 	"Most active": "Most active",
 	"Most recent": "Most recent",
+>>>>>>> 8835c47452637f8060bc77351b71d76485945237
 	"views": "views",
 	"likes": "likes"
 }
