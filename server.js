@@ -45,6 +45,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(flash());
 app.use('/storage', express.static(path.join(__dirname, 'storage')));
 app.use('/warehouse', express.static(path.join(__dirname, 'warehouse')));
+app.use('/warehouse_new', express.static(path.join(__dirname, 'warehouse_new')));
 
 app.use(i18n.init);
 app.use(session({
