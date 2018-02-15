@@ -67,12 +67,13 @@ block content
     section.row.performer_events_wrapper
       .col-lg-12
         h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-        .row
+        .row.carousel
           each item in data.events
             .col-sm-4
               include ../partials/boxEvent
         //.text-right
-          a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')
+          a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')        
+          
   
   section.performer_performances_wrapper
     .content_wrapper
@@ -81,7 +82,7 @@ block content
           .col-lg-12
             h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
             .performance_divider.basic_divider
-            .row
+            .row.carousel
               each item in data.performances
                 .col-sm-4
                   include ../partials/boxPerformance
@@ -106,7 +107,7 @@ block content
         .row.performer_footage
           .col-lg-12
             h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
-            .row
+            .row.carousel
               each item in data.footage            
                 .col-sm-4
                   include ../partials/boxFootage  
@@ -122,7 +123,7 @@ block content
         .row.performer_playlist
           .col-lg-12
             h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
-            .row
+            .row.carousel
               each item in data.playlists
                 .col-sm-4
                   include ../partials/boxPlaylist
@@ -135,7 +136,7 @@ block content
           .col-lg-12
             h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
             .performance_divider.basic_divider
-            .row
+            .row.carousel
               each item in data.galleries
                 .col-sm-4
                   include ../partials/boxGallery
