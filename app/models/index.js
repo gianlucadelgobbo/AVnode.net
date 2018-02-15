@@ -8,5 +8,5 @@ require('./EventShow');
 require('./Gallery');
 require('./Footage');
 require('./Playlist');
-require('./TVShow');
+require('./Video');
 require('./AddressDB');

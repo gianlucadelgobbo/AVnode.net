@@ -29,7 +29,7 @@ const performanceSchema = new Schema({
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],
-  // videos: [{ type : Schema.ObjectId, ref : 'Videos' }],
+  videos: [{ type: Schema.ObjectId, ref: 'Video' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
 }, {
   timestamps: true,
