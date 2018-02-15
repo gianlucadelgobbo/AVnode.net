@@ -9,6 +9,7 @@
 
  $color1 : #0F8FCF;
  $color2 : #fff;
+ $color3: #A6A8AB;
 
 pre {
   background-color: $color2;
@@ -212,9 +213,18 @@ small, .small {
 }
 
 
+.performer_crew_wrapper .main_title {
+    color: $color1;
+    margin-bottom: 60px;
+}
 
+.performer_crew_wrapper .basic_divider {
+    background-color: $color1;
+}
 
-
+.performer_crew_wrapper {
+    padding: 60px 0;
+}
 
 
 // ITEM EVENT
@@ -223,7 +233,7 @@ small, .small {
     text-transform: inherit;
     font-weight: 300;
     font-size: 16px;
-    color: #A6A8AB;
+    color: $color3;
 }
 
 .event_item_info_wrapper {
@@ -292,9 +302,9 @@ small, .small {
 }
 
 .category_performance_item {
-    color: #A6A8AB;
+    color: $color3;
     font-size: 13px;
-    border-bottom: 1px solid #A6A8AB;
+    border-bottom: 1px solid $color3;
     padding-bottom: 10px;
 }
 
@@ -316,12 +326,51 @@ small, .small {
 }
 
 .users_performance_item_views {
-   color: #A6A8AB;
+   color: $color3;
    font-size: 14px; 
 }
 
 .users_performance_item_likes {
-    color: #A6A8AB;
+    color: $color3;
    font-size: 14px; 
    text-align: center;
+}
+
+
+// ITEM PERFORMER
+
+.performer_item_wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;    
+}
+
+.performer_item_wrapper img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 50%;
+    margin-right: 30px;
+}
+
+.performer_infos_list li:after {
+    content: "/";
+    color: $color2;
+    display: inline-block;
+    margin: 0 0px 0 5px;
+}
+
+.performer_infos_list li:last-child:after {
+    content: "";
+}
+
+.performer_infos_list {
+    color: $color1;
+    font-size: 14px;
+}
+
+.performer_item_title {
+    color: $color3;
+    font-weight: 300;
+    text-transform: none;
+    font-size: 18px;    
 }
