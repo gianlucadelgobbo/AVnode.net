@@ -1,14 +1,14 @@
-.performance_item_wrapper
+.performer_item_wrapper
   if item.imageFormats
-    a(href="/"+item.slug, stagename=item.stagename)
+    a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
       img.card-img-top.img-fluid(
         src=item.imageFormats.large
         alt=item.stagename
       )
-  .performance_item_info_wrapper
-    a(href="/"+item.slug, stagename=item.stagename)
-      h4.performance_item_title=item.stagename
-    if item.categories
-      ul.list-inline.category_performance_item
-        each category, index in item.stats
-          li.list-inline-item=index+": "+category
+  .performer_item_info_wrapper
+    a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
+      h4.performer_item_title=item.stagename
+    ul.list-inline.performer_infos_list
+      li.list-inline-item.miss="99 performances"
+      if item.stats.events      
+        li.list-inline-item!="<span>"+item.stats.events+"</span> "+__('Events')
