@@ -7,7 +7,7 @@ const events = require('./events');
 
 const footage = require('./footage');
 const playlists = require('./playlists');
-const tvshows = require('./tvshows');
+const videos = require('./videos');
 
 const login = require('./login');
 const logout = require('./logout');
@@ -30,7 +30,7 @@ router.use('/performances', performances);
 router.use('/events', events);
 router.use('/footage', footage);
 router.use('/playlists', playlists);
-router.use('/tvshows', tvshows);
+router.use('/videos', videos);
 
 router.use('/login', login);
 router.use('/logout', logout);

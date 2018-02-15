@@ -2777,7 +2777,7 @@ db.users.find({}).forEach(function(e) {
   if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
   if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
   if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
-  if (e.tvshows && e.tvshows.length) e.stats.tvshows = e.tvshows.length;
+  if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
   db.users.save(e);
 });
 
@@ -2884,7 +2884,7 @@ db.footage.find({}).forEach(function(e) {
   db.footage.save(e);
 });
 
-db.tvshows.find({}).forEach(function(e) {
+db.videos.find({}).forEach(function(e) {
   if (!e.slug) e.slug = e.permalink.toLowerCase();
   if (e.permalink) delete e.permalink;
   if (e.users && e.users.length) {
@@ -2903,7 +2903,7 @@ db.tvshows.find({}).forEach(function(e) {
   }
   e.media = e.file;
   delete e.file;
-  db.tvshows.save(e);
+  db.videos.save(e);
 });
 
 db.playlists.update({"users.0":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
@@ -2985,10 +2985,7 @@ db.galleries.find({}).forEach(function(e) {
   db.galleries.save(e);
 });
 
-db.galleries.find({}).forEach(function(e) {
-  e.image = {file: e.medias[0].file};
-  db.galleries.save(e);
-});
+
 
 db.galleries.find({}).forEach(function(gallery) {
   gallery.performances = [];
@@ -3007,76 +3004,13 @@ db.galleries.find({}).forEach(function(gallery) {
   });
 });
 
-db.galleries.find({"stats.video": "2", "stats.img": "4"}).limit(1).forEach(function(gallery) {
-  conta = 0;
-  var newMedias = [];
-  var newVideos = [];
-  gallery.medias.forEach(function(media) {
-    const serverPath = media.file;
-    const localFileNameExtension = serverPath.substring(serverPath.lastIndexOf('.') + 1);
-    if (localFileNameExtension == "mp4") {
-      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
-      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
-      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-      const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
-      const localFileNameWithoutOriginalExtension = localFileName.substring(0, localFileName.lastIndexOf('_'));
-      const files = {
-        file: media.file,
-        previewFile: `${localPath}/preview_files/${localFileNameWithoutExtension}.png`,
-        originalFile: `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`,
-        fileNew: media.file.replace('/warehouse/', '/warehouse/videos/'),
-        previewFileNew: `${localPath}/${localFileNameWithoutExtension}.png`.replace('/warehouse/','/warehouse/videos_previews/'),
-        originalFileNew: `${localPath}/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`.replace('/warehouse/','/warehouse/videos_originals/'),
-      };
-      if (conta == 0) gallery.image.file = files.fileNew;
-      media.file = files.fileNew;
-      var video = gallery;
-      video.media = media;
-      newVideos.push(video);
-    } else {
-      newMedias.push(media);
-      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
-      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
-      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-      const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
-      const localFileNameWithoutOriginalExtension = localFileName.substring(0, localFileName.lastIndexOf('_'));
-      const files = {
-        file: media.file,
-        previewFile: `${localPath}/preview_files/${localFileNameWithoutExtension}.png`,
-        originalFile: `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`,
-        fileNew: media.file.replace('/warehouse/', '/warehouse/videos/'),
-        previewFileNew: `${localPath}/${localFileNameWithoutExtension}.png`.replace('/warehouse/','/warehouse/videos_previews/'),
-        originalFileNew: `${localPath}/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`.replace('/warehouse/','/warehouse/videos_originals/'),
-      };
-      if (conta == 0) gallery.image.file = files.fileNew;
-      media.file = files.fileNew;      
-    }
-
-    conta++;
-    if (conta == gallery.medias.length) {
-      printjson('SAVEEEEEE');
-      delete gallery.stats.video;
-      gallery.stats.img = newMedias.length;
-      gallery.medias = newMedias;
-      printjson(gallery);
-      newVideos.forEach(function(video) {
-        delete video.medias;
-        delete video._id;
-        printjson('SAVEEEEEE VIDEO!!!');
-        printjson(video);
-      });
-      //db.galleries.save(gallery);
-    }
-  });
-});
-
 db.playlists.find({}).forEach(function(e) {
   e.image = {file: e.footage[0].file};
   db.playlists.save(e);
 });
 
 
-db.tvshows.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
+db.videos.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
 db.galleries.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
 db.footage.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
 db.performances.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
@@ -3446,13 +3380,13 @@ db.users.find({}).forEach(function(e) {
     e.events = tmpA;
   }
 
-  if (e.tvshow && e.tvshow.length) {
+  if (e.video && e.video.length) {
     var tmpA = [];
-    for(var a=0;a<e.tvshow.length;a++){
-      tmpA.push(e.tvshow[a]._id);
+    for(var a=0;a<e.video.length;a++){
+      tmpA.push(e.video[a]._id);
     }
-    e.tvshows = tmpA;
-    delete e.tvshow;
+    e.videos = tmpA;
+    delete e.video;
   }
 
   if (e.footage && e.footage.length) {
@@ -3491,7 +3425,7 @@ db.users.find({}).forEach(function(e) {
   e.stats = {};
   if (e.events && e.events.length) e.stats.events = new NumberInt(e.events.length);
   if (e.performances && e.performances.length) e.stats.performances = new NumberInt(e.performances.length);
-  if (e.tvshows && e.tvshows.length) e.stats.tvshows = new NumberInt(e.tvshows.length);
+  if (e.videos && e.videos.length) e.stats.videos = new NumberInt(e.videos.length);
   if (e.playlists && e.playlists.length) e.stats.playlists = new NumberInt(e.playlists.length);
   if (e.footage && e.footage.length) e.stats.footage = new NumberInt(e.footage.length);
   if (e.galleries && e.galleries.length) e.stats.galleries = new NumberInt(e.galleries.length);
@@ -3504,7 +3438,7 @@ db.users.find({}).forEach(function(e) {
   e.activity = 0;
   e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
   e.activity+= (e.stats.performances ? e.stats.performances * 3 : 0);
-  e.activity+= (e.stats.tvshows ? e.stats.tvshows           * 3 : 0);
+  e.activity+= (e.stats.videos ? e.stats.videos           * 3 : 0);
   e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
   e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
   e.activity+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);

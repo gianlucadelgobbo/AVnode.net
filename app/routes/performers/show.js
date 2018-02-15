@@ -51,14 +51,14 @@ router.get('/galleries/page/:page', (req, res) => {
   dataprovider.show(req, res, section, 'galleries', Model);
 });
 
-router.get('/tvshows', (req, res) => {
-  logger.debug('Show ' + section + ' tvshows');
-  dataprovider.show(req, res, section, 'tvshows', Model);
+router.get('/videos', (req, res) => {
+  logger.debug('Show ' + section + ' videos');
+  dataprovider.show(req, res, section, 'videos', Model);
 });
 
-router.get('/tvshows/page/:page', (req, res) => {
-  logger.debug('Show ' + section + ' tvshows');
-  dataprovider.show(req, res, section, 'tvshows', Model);
+router.get('/videos/page/:page', (req, res) => {
+  logger.debug('Show ' + section + ' videos');
+  dataprovider.show(req, res, section, 'videos', Model);
 });
 
 router.get('/performances', (req, res) => {
