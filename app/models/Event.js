@@ -142,6 +142,7 @@ const eventSchema = new Schema({
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   users:  [{ type: Schema.ObjectId, ref: 'UserShow' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
+  videos: [{ type: Schema.ObjectId, ref: 'Video' }],
   settings: {
     permissions: {
         administrator: [{ type: Schema.ObjectId, ref: 'UserShow' }]

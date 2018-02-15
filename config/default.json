@@ -721,7 +721,7 @@
         "mostactive":"Most active"
       }
     },
-    "tvshow": {
+    "video": {
       "media":{
         "image":{
           "fields": {
@@ -906,7 +906,7 @@
           "options": { "limit": 5 },
           "model": "Gallery"
         }, {
-          "path": "tvshows",
+          "path": "videos",
           "select": {
             "title": 1,
             "slug": 1,
@@ -916,7 +916,7 @@
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
-          "model": "TVShow"
+          "model": "Video"
         }, {
           "path": "performances",
           "select": {
@@ -1101,7 +1101,7 @@
           "model": "Category"
         }]
       },
-      "tvshows": {
+      "videos": {
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -1116,7 +1116,7 @@
           "image": 1
         },
         "populate": [{
-          "path": "tvshows",
+          "path": "videos",
           "select": {
             "title": 1,
             "slug": 1,
@@ -1126,7 +1126,7 @@
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
-          "model": "TVShow"
+          "model": "Video"
         }, {
           "path": "categories",
           "select": {
@@ -1324,6 +1324,18 @@
           },
           "model": "UserShow"
         }, {
+          "path": "videos",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media.file": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 5 },
+          "model": "Video"
+        }, {
           "path": "galleries",
           "select": {
             "title": 1,
@@ -1440,6 +1452,18 @@
           },
           "model": "UserShow"
         }, {
+          "path": "videos",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media.file": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 5 },
+          "model": "Video"
+        }, {
           "path": "galleries",
           "select": {
             "title": 1,
@@ -1453,12 +1477,12 @@
         }]
       }
     },
-    "tvshows": {
-      "title": "TV Shows",
+    "videos": {
+      "title": "Videos",
       "limit": 20,
-      "basepath": "tvshows",
-      "coll": "tvshow",
-      "view_list": "tvshows/list",
+      "basepath": "videos",
+      "coll": "video",
+      "view_list": "videos/list",
       "list_fields": {
         "title":1,
         "users":1,

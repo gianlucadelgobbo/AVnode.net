@@ -1,0 +1,4 @@
+mkdir: warehouse_new: File exists
+mkdir: warehouse_new/2017: File exists
+mkdir: warehouse_new/2017/10: File exists
+cp: warehouse/2017/10/fotonica2017-4.jpg: No such file or directory

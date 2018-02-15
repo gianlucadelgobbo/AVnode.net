@@ -12,7 +12,7 @@
 	"Events": "Events",
 	"Footage": "Footage",
 	"Playlists": "Playlists",
-	"TV Shows": "TV Shows",
+	"Videos": "Videos",
 	"Search": "Search",
 	"Members": "Members",
 	"AVnode.net": "AVnode.net",
@@ -69,10 +69,10 @@
 	"Video": "Video",
 	"To view this video please enable JavaScript, and consider upgrading to a web browser that": "To view this video please enable JavaScript, and consider upgrading to a web browser that",
 	"supports HTML5 video": "supports HTML5 video",
-	"Tvshows": "Tvshows",
 	"Gallery": "Gallery",
 	"Galleries": "Galleries",
 	"Search is currently unavailable…": "Search is currently unavailable…",
 	"Your Account": "Your Account",
-	"Nexts": "Nexts"
+	"Nexts": "Nexts",
+	"Schedule": "Schedule"
 }

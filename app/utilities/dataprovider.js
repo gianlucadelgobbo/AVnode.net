@@ -11,7 +11,7 @@ const Footage = mongoose.model('Footage');
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
 const Playlist = mongoose.model('Playlist');
-const TVShow = mongoose.model('TVShow');
+const Video = mongoose.model('Video');
 
 const logger = require('./logger');
 
@@ -71,7 +71,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (populate[item].model === 'UserShow') populate[item].model = UserShow;
     if (populate[item].model === 'Performance') populate[item].model = Performance;
     if (populate[item].model === 'Event') populate[item].model = Event;
-    if (populate[item].model === 'TVShow') populate[item].model = TVShow;
+    if (populate[item].model === 'Video') populate[item].model = Video;
     if (populate[item].model === 'Footage') populate[item].model = Footage;
     if (populate[item].model === 'Playlist') populate[item].model = Playlist;
     if (populate[item].model === 'Category') populate[item].model = Category;
@@ -79,7 +79,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
     if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
     if (populate[item].populate && populate[item].populate.model === 'Event') populate[item].populate.model = Event;
-    if (populate[item].populate && populate[item].populate.model === 'TVShow') populate[item].populate.model = TVShow;
+    if (populate[item].populate && populate[item].populate.model === 'Video') populate[item].populate.model = Video;
     if (populate[item].populate && populate[item].populate.model === 'Footage') populate[item].populate.model = Footage;
     if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
     if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
