@@ -1,11 +1,35 @@
-.card
+.footage_item_wrapper
   if item.imageFormats
-    a(href='/footage/'+item.slug)
+    a(href="/footage/"+item.slug, title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.large
         alt=item.title
       )
-  .card-block
-    h4.event_item_title=item.title
-  .card-block.pt-0
-    a.btn.btn-secondary(href='/footage/'+item.slug)=__('More')
+  .footage_item_info_wrapper
+    a(href="/footage/"+item.slug, title=item.title)
+      h4.footage_item_title=item.title
+    if item.categories
+      ul.list-inline.category_footage_item
+        each category in item.categories
+          li.list-inline-item=category.name
+    else
+      ul.list-inline.category_footage_item        
+        li.list-inline-item.miss="category1"
+        li.list-inline-item.miss="category2"
+        li.list-inline-item.miss="category3"
+              
+    
+      //if item.users
+      .users_footage_item_wrapper
+        .flex_left
+          //each user in item.users
+          div.miss
+            img(src="/images/logo_avnode_svg.svg")
+          div
+            p.miss.users_footage_item_name="user.stagename"
+            p.miss.users_footage_item_views="99"+" "+__("views")
+        .flex_right
+          .users_footage_item_likes
+            span.color2.lnr.lnr-heart
+            br
+            span.miss="99"+" "+__("likes")          
