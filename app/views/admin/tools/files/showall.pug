@@ -5,7 +5,7 @@ block content
     if data.length
       each item, index in data
         li
-          !=global.appRoot+item.file + " "+item.exists
+          !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
           if item.files
             !="<br />File: "+item.files.file
             !="<br />originalFile: "+item.files.originalFile
