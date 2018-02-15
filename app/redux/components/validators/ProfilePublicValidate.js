@@ -1,4 +1,3 @@
-import slugvalidate from '../../../utilities/slug.js';
 import validatorsObj from '../../../utilities/validators.js';
 
 const validators = validatorsObj.validators;

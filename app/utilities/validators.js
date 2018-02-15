@@ -33,4 +33,6 @@ validators.isDate = (aaaa, mm, gg) => {
   return res;
 }
 
-export default validators;
+if (typeof exports !== 'undefined') {
+  exports.validators = validators;
+}
