@@ -33,7 +33,7 @@ router.get('/files/userimages', (req, res) => {
   select({image: 1, creation_date: 1}).
   exec((err, users) => {
     for (let user in users) {
-      users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file.replace('/warehouse/', '/warehouse_new/'));
+      users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file);
       data.push(users[user].image);
     }
     console.log(req.path);
@@ -55,7 +55,7 @@ router.get('/files/performanceimages', (req, res) => {
   select({image: 1, creation_date: 1}).
   exec((err, performances) => {
     for (let performance in performances) {
-      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file.replace('/warehouse/', '/warehouse_new/'));
+      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
       data.push(performances[performance].image);
     }
     console.log(req.path);
@@ -77,7 +77,7 @@ router.get('/files/eventimages', (req, res) => {
   select({image: 1, creation_date: 1}).
   exec((err, events) => {
     for (let event in events) {
-      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file.replace('/warehouse/', '/warehouse_new/'));
+      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
       data.push(events[event].image);
     }
     console.log(req.path);
@@ -98,7 +98,7 @@ router.get('/files/playlistimages', (req, res) => {
   select({image: 1, creation_date: 1}).
   exec((err, playlists) => {
     for (let playlist in playlists) {
-      playlists[playlist].image.exists = fs.existsSync(global.appRoot+playlists[playlist].image.file.replace('/warehouse/', '/warehouse_new/'));
+      playlists[playlist].image.exists = fs.existsSync(global.appRoot+playlists[playlist].image.file);
       data.push(playlists[playlist].image);
     }
     console.log(req.path);
@@ -120,7 +120,7 @@ router.get('/files/footagefiles', (req, res) => {
   select({media: 1, creation_date: 1}).
   exec((err, footages) => {
     for (let footage in footages) {
-      footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file.replace('/warehouse/', '/warehouse_new/'));
+      footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
       const serverPath = footages[footage].media.file;
       const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
       const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
@@ -130,14 +130,14 @@ router.get('/files/footagefiles', (req, res) => {
       const localOriginalFileNameExtension = localFileNameWithoutExtension.substring(localFileNameWithoutExtension.lastIndexOf('_') + 1);
       if (footages[footage].media.preview) {
         //delete footages[footage].media.preview;
-        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('/warehouse/', '/warehouse_new/'));
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
       } else {
         footages[footage].media.preview = localPath.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+localFileNameWithoutExtension+'.png';
-        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('/warehouse/', '/warehouse_new/'));
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
       }
       if (localFileNameExtension=="mp4") {
         footages[footage].media.original = localPath.replace('/warehouse/footage/', '/warehouse/footage_original/')+'/'+localOriginalFileNameWithoutExtension+'.'+localOriginalFileNameExtension;
-        footages[footage].media.originalexists = fs.existsSync(global.appRoot+footages[footage].media.original.replace('/warehouse/', '/warehouse_new/'));
+        footages[footage].media.originalexists = fs.existsSync(global.appRoot+footages[footage].media.original);
       }
       data.push(footages[footage].media);
     }
@@ -160,7 +160,7 @@ router.get('/files/videofiles', (req, res) => {
   select({media: 1, creation_date: 1}).
   exec((err, videos) => {
     for (let video in videos) {
-      videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file.replace('/warehouse/', '/warehouse_new/'));
+      videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
       const serverPath = videos[video].media.file;
       const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
       const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
@@ -170,13 +170,13 @@ router.get('/files/videofiles', (req, res) => {
       const localOriginalFileNameExtension = localFileNameWithoutExtension.substring(localFileNameWithoutExtension.lastIndexOf('_') + 1);
       if (videos[video].media.preview) {
         //delete videos[video].media.preview;
-        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview.replace('/warehouse/', '/warehouse_new/'));
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
       } else {
         videos[video].media.preview = localPath.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+localFileNameWithoutExtension+'.png';
-        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview.replace('/warehouse/', '/warehouse_new/'));
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
       }
       videos[video].media.original = localPath.replace('/warehouse/videos/', '/warehouse/videos_originals/')+'/'+localOriginalFileNameWithoutExtension+'.'+localOriginalFileNameExtension;
-      videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original.replace('/warehouse/', '/warehouse_new/'));
+      videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
       data.push(videos[video].media);
     }
     console.log(req.path);
@@ -201,12 +201,12 @@ router.get('/files/galleryimages', (req, res) => {
   exec((err, galleries) => {
     for (let gallery=0; gallery<galleries.length; gallery++) {
       for (let media=0; media<galleries[gallery].medias.length; media++) {
-        console.log(galleries[gallery].medias[media].files);
+        console.log(galleries[gallery].medias[media].file);
         // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting_mov.png
         // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting.png
         // https://flxer.net/warehouse/2017/10/55x55/dsu_shadowpainting_mov_mp4.jpg
         // https://flxer.net/warehouse/2017/10/dsu_shadowpainting_mov.mp4
-        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file.replace('/warehouse/', '/warehouse_new/'));
+        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
         data.push(galleries[gallery].medias[media]);
       }
      }
