@@ -26,6 +26,10 @@ block content
         if item.exists
           li
             !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            if item.imageFormats
+              each image, format in item.imageFormats
+                !="<br />"
+                !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.preview
               !="<br />"
               !=global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )

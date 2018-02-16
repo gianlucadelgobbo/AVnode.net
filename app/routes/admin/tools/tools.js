@@ -10,6 +10,8 @@ const Video = mongoose.model('Video');
 const AddressDB = mongoose.model('AddressDB');
 const request = require('request');
 const fs = require('fs');
+const config = require('getconfig');
+const sharp = require('sharp');
 
 const logger = require('../../../utilities/logger');
 
@@ -27,13 +29,33 @@ router.get('/', (req, res) => {
 router.get('/files/userimages', (req, res) => {
   logger.debug('/admin/tools/files/userimages');
   let data = [];
+  let adminsez = "user";
   User.
   find({"image.file": {$exists: true}}).
+  //limit(1).
   lean().
   select({image: 1, creation_date: 1}).
   exec((err, users) => {
     for (let user in users) {
       users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file);
+      users[user].image.imageFormats = {};
+      users[user].image.imageFormatsExists = {};
+      logger.debug(users[user]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (users[user].image.exists) {
+        const serverPath = users[user].image.file;
+        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
+        }
+      }
       data.push(users[user].image);
     }
     console.log(req.path);
@@ -42,6 +64,64 @@ router.get('/files/userimages', (req, res) => {
       currentUrl: req.path,
       data: data,
       script: false
+    });
+  });
+});
+
+router.get('/files/userformatsgenerator', (req, res) => {
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  logger.debug('/admin/tools/files/userimages');
+  let data = [];
+  let adminsez = "user";
+  User.
+  find({"image.file": {$exists: true}}).
+  limit(50).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, users) => {
+    for (let user in users) {
+      users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file);
+      users[user].image.imageFormats = {};
+      users[user].image.imageFormatsExists = {};
+      logger.debug(users[user]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (users[user].image.exists) {
+        const serverPath = users[user].image.file;
+        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
+          if (!users[user].image.imageFormatsExists[format]) {
+            let folder = users[user].image.imageFormats[format].substring(0, users[user].image.imageFormats[format].lastIndexOf('/'))
+            logger.debug(folder);
+            if (!fs.existsSync(global.appRoot+folder)) {
+              fs.mkdirSync(global.appRoot+folder);
+            }
+            sharp(global.appRoot+users[user].image.file)
+            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+            .toFile(global.appRoot+users[user].image.imageFormats[format], (err, info) => {
+              logger.debug(err);
+              logger.debug(info);
+            });
+          }
+        }
+      }
+      data.push(users[user].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'User images',
+      currentUrl: req.path,
+      data: data,
+      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/userformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
     });
   });
 });

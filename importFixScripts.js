@@ -1,6 +1,9 @@
+//export LC_ALL="en_US.UTF-8"
 //mongorestore --drop -d avnode_bruce /data/dumps/avnode_bruce_fixed/avnode_bruce
 //mongodump -d avnode_bruce --out /data/dumps/avnode_bruce_fixed
 //rsync -a /space/PhpMysql2015/sites/flxer/warehouse/ /sites/avnode/warehouse
+//find '/sites/flxer/warehouse' -name "original_video"  | xargs du -sh
+//rsync -a /space_fisica/PhpMysql2015/sites/flxer/warehouse_new/ /space_fisica/MongoNodeJS/sites/avnode.net/warehouse_new
 
 
 // Deletecity
