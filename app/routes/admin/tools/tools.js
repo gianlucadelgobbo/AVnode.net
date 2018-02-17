@@ -76,7 +76,7 @@ router.get('/files/userformatsgenerator', (req, res) => {
   let adminsez = "user";
   User.
   find({"image.file": {$exists: true}}).
-  limit(50).
+  limit(limit).
   skip(skip).
   lean().
   select({image: 1, creation_date: 1}).
@@ -156,7 +156,7 @@ router.get('/files/performanceformatsgenerator', (req, res) => {
   let adminsez = "performance";
   Performance.
   find({"image.file": {$exists: true}}).
-  limit(50).
+  limit(limit).
   skip(skip).
   lean().
   select({image: 1, creation_date: 1}).
@@ -220,13 +220,76 @@ router.get('/files/eventimages', (req, res) => {
     }
     console.log(req.path);
     res.render('admin/tools/files/showall', {
-      title: 'Performance images',
+      title: 'Event images',
       currentUrl: req.path,
       data: data,
       script: false
     });
   });
 });
+
+router.get('/files/eventformatsgenerator?', (req, res) => {
+  logger.debug('/admin/tools/files/eventimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  let adminsez = "event";
+  Event.
+  find({"image.file": {$exists: true}}).
+  limit(limit).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, events) => {
+    for (let event in events) {
+      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
+      data.push(events[event].image);
+    }
+    for (let event in events) {
+      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
+      events[event].image.imageFormats = {};
+      events[event].image.imageFormatsExists = {};
+      logger.debug(events[event]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (events[event].image.exists) {
+        const serverPath = events[event].image.file;
+        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          events[event].image.imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          events[event].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+events[event].image.imageFormats[format]);
+          if (!events[event].image.imageFormatsExists[format]) {
+            let folder = events[event].image.imageFormats[format].substring(0, events[event].image.imageFormats[format].lastIndexOf('/'))
+            logger.debug(folder);
+            if (!fs.existsSync(global.appRoot+folder)) {
+              fs.mkdirSync(global.appRoot+folder);
+            }
+            sharp(global.appRoot+events[event].image.file)
+            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+            .toFile(global.appRoot+events[event].image.imageFormats[format], (err, info) => {
+              logger.debug(err);
+              logger.debug(info);
+            });
+          }
+        }
+      }
+      data.push(events[event].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Event images generator',
+      currentUrl: req.path,
+      data: data,
+      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/eventformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
+    });
+  });
+});
+
 router.get('/files/playlistimages', (req, res) => {
   logger.debug('/admin/tools/files/playlistimages');
   let data = [];
