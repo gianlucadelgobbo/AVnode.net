@@ -9,6 +9,15 @@
     a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
       h4.performer_item_title=item.stagename
     ul.list-inline.performer_infos_list
-      li.list-inline-item.miss="99 performances"
+      if item.stats.performances      
+        li.list-inline-item!="<span>"+item.stats.performances+"</span> "+__('Performances')
       if item.stats.events      
         li.list-inline-item!="<span>"+item.stats.events+"</span> "+__('Events')
+      if item.stats.videos      
+        li.list-inline-item!="<span>"+item.stats.videos+"</span> "+__('Videos')
+      if item.stats.galleries      
+        li.list-inline-item!="<span>"+item.stats.galleries+"</span> "+__('Galleries')
+      if item.stats.footage      
+        li.list-inline-item!="<span>"+item.stats.footage+"</span> "+__('Footage')
+      if item.stats.playlists      
+        li.list-inline-item!="<span>"+item.stats.playlists+"</span> "+__('Playlists')

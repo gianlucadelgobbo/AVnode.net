@@ -200,21 +200,15 @@
           "minheight": 1000,
           "sizes": {
             "small": {
-              "w": 55,
-              "h": 55,
-              "folder": "55x55",
-              "default": "/images/profile-default.svg"
-            },
-            "medium": {
-              "w": 280,
-              "h": 210,
-              "folder": "280x210",
+              "w": 400,
+              "h": 225,
+              "folder": "400x225",
               "default": "/images/profile-default.svg"
             },
             "large": {
-              "w": 400,
-              "h": 300,
-              "folder": "400x300",
+              "w": 1040,
+              "h": 585,
+              "folder": "1040x585",
               "default": "/images/profile-default.svg"
             }
           }
@@ -920,7 +914,7 @@
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
           "model": "Performance"
         }, {
