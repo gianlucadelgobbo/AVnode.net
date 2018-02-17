@@ -163,10 +163,6 @@ router.get('/files/performanceformatsgenerator', (req, res) => {
   exec((err, performances) => {
     for (let performance in performances) {
       performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
-      data.push(performances[performance].image);
-    }
-    for (let performance in performances) {
-      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
       performances[performance].image.imageFormats = {};
       performances[performance].image.imageFormatsExists = {};
       logger.debug(performances[performance]);
