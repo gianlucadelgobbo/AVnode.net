@@ -69,9 +69,9 @@ router.get('/files/userimages', (req, res) => {
 });
 
 router.get('/files/userformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/userimages');
   var limit = 50;
   var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
-  logger.debug('/admin/tools/files/userimages');
   let data = [];
   let adminsez = "user";
   User.
@@ -118,7 +118,7 @@ router.get('/files/userformatsgenerator', (req, res) => {
     }
     console.log(req.path);
     res.render('admin/tools/files/showall', {
-      title: 'User images',
+      title: 'User images generator',
       currentUrl: req.path,
       data: data,
       script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/userformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
@@ -144,6 +144,68 @@ router.get('/files/performanceimages', (req, res) => {
       currentUrl: req.path,
       data: data,
       script: false
+    });
+  });
+});
+
+router.get('/files/performanceformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/performanceimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  let adminsez = "performance";
+  Performance.
+  find({"image.file": {$exists: true}}).
+  limit(50).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, performances) => {
+    for (let performance in performances) {
+      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
+      data.push(performances[performance].image);
+    }
+    for (let performance in performances) {
+      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
+      performances[performance].image.imageFormats = {};
+      performances[performance].image.imageFormatsExists = {};
+      logger.debug(performances[performance]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (performances[performance].image.exists) {
+        const serverPath = performances[performance].image.file;
+        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          performances[performance].image.imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          performances[performance].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+performances[performance].image.imageFormats[format]);
+          if (!performances[performance].image.imageFormatsExists[format]) {
+            let folder = performances[performance].image.imageFormats[format].substring(0, performances[performance].image.imageFormats[format].lastIndexOf('/'))
+            logger.debug(folder);
+            if (!fs.existsSync(global.appRoot+folder)) {
+              fs.mkdirSync(global.appRoot+folder);
+            }
+            sharp(global.appRoot+performances[performance].image.file)
+            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+            .toFile(global.appRoot+performances[performance].image.imageFormats[format], (err, info) => {
+              logger.debug(err);
+              logger.debug(info);
+            });
+          }
+        }
+      }
+      data.push(performances[performance].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Performance images generator',
+      currentUrl: req.path,
+      data: data,
+      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/performanceformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
     });
   });
 });
