@@ -69,11 +69,11 @@ router.post('/:id/image/teaser', (req, res) => {
 });
 
 router.post('/:id/image/profile', (req, res) => {
-  router.uploader(req, res, 'image');
+  router.uploader(req, res, 'user', 'image');
 });
 
-router.uploader = (req, res, media) => {
-  upload.uploader(req, res, config.cpanel.user.media[media], (uploadererr, files) => {
+router.uploader = (req, res, sez, media) => {
+  upload.uploader(req, res, sez, media, (uploadererr, files) => {
     if (uploadererr) {
       logger.debug(uploadererr);
       req.flash('errors', { msg: `${JSON.stringify(uploadererr)}` });
