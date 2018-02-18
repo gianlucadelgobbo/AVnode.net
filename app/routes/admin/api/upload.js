@@ -1,3 +1,4 @@
+const config = require('getconfig');
 const multer = require('multer');
 const uuid = require('uuid');
 const mime = require('mime');
@@ -11,24 +12,26 @@ const logger = require('../../../utilities/logger');
 
 const upload = {};
 
-upload.uploader = (req, res, options, done) => {
+upload.uploader = (req, res, sez, media, done) => {
+  const options = config.cpanel[sez].media[media];
+
   logger.debug("uploader");
   logger.debug(options);
-
   // Set Folder and create it do not exist
   const d = new Date();
   let month = d.getMonth() + 1;
-  let serverpath = global.appRoot + '/' + process.env.STORAGE.replace('./', '') + d.getFullYear() + '/';
+  let serverpath = global.appRoot + options.storage + d.getFullYear() + '/';
 
   month = month < 10 ? '0' + month : month;
-  if (!fs.existsSync(serverpath)) {
-    fs.mkdirSync(serverpath);
-  }
-  serverpath+= month;
-  if (!fs.existsSync(serverpath)) {
-    fs.mkdirSync(serverpath);
-  }
   logger.debug(serverpath);
+
+  if (!fs.existsSync(serverpath)) {
+    logger.debug(fs.mkdirSync(serverpath));
+  }
+  serverpath += month;
+  if (!fs.existsSync(serverpath)) {
+    logger.debug(fs.mkdirSync(serverpath));
+  }
 
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -40,7 +43,7 @@ upload.uploader = (req, res, options, done) => {
   });
 
   const multerupload = multer({
-    dest: process.env.STORAGE,
+    dest: options.storage,
     storage: storage,
     limits: {
       fileSize: options.maxsize
@@ -71,6 +74,8 @@ upload.uploader = (req, res, options, done) => {
       logger.debug('upload err');
       logger.debug(err);
     }
+    let conta = 0;
+
     if (options.fields.name === 'image' && req.files[options.fields.name] && req.files[options.fields.name].length) {
       for (let a = 0; a < req.files[options.fields.name].length; a++) {
         const dimensions = sizeOf(req.files[options.fields.name][a].path);
@@ -79,28 +84,30 @@ upload.uploader = (req, res, options, done) => {
         req.files[options.fields.name][a].height = dimensions.height;
         logger.debug(req.files[options.fields.name][a]);
         if (dimensions.width > options.minwidth && dimensions.height > options.minheight) {
+          conta++;
           req.files[options.fields.name][a].err = __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight;
           logger.debug(__('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight);
+          if (conta === req.files[options.fields.name].length) {
+            done(resizeerr, req.files);
+          }
         } else {
           logger.debug('Images minimum size is ok');
           logger.debug(a + 1);
           logger.debug(req.files);
-          if (a + 1 === req.files[options.fields.name].length) {
-            logger.debug('RESIZZA');
-            imageUtil.resizer(req.files[options.fields.name], options, (resizeerr, info) => {
-              if (resizeerr || !info) {
-                if (resizeerr) {
-                  logger.debug(`Image resize ERROR: ${resizeerr}`);
-                }
-                if (!info) {
-                  logger.debug('Image resize ERROR: info undefined');
-                }
-                done(resizeerr, req.files);
-              } else {
-                done(resizeerr, req.files);
+          logger.debug('RESIZZA');
+          imageUtil.resizer(req.files[options.fields.name][a].path, options, (resizeerr, info) => {
+            conta++;
+            if (resizeerr || !info) {
+              if (resizeerr) {
+                logger.debug(`Image resize ERROR: ${resizeerr}`);
               }
-            });
-          }
+              if (!info) {
+                logger.debug('Image resize ERROR: info undefined');
+              }
+            } else {
+              done(resizeerr, req.files);
+            }
+          });
         }
       }
     } else {
