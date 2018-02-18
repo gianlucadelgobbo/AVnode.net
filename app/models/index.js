@@ -9,4 +9,5 @@ require('./Gallery');
 require('./Footage');
 require('./Playlist');
 require('./Video');
+require('./News');
 require('./AddressDB');

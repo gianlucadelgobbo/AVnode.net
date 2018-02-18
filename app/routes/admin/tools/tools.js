@@ -1,5 +1,7 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
 const Performance = mongoose.model('Performance');
 const Event = mongoose.model('Event');
@@ -7,6 +9,7 @@ const Footage = mongoose.model('Footage');
 const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
+const News = mongoose.model('News');
 const AddressDB = mongoose.model('AddressDB');
 const request = require('request');
 const fs = require('fs');
@@ -25,6 +28,112 @@ router.get('/', (req, res) => {
     data: 'LOAD DATA'
   });
 });
+
+router.get('/news/import', (req, res) => {
+  logger.debug('/admin/tools/news/import');
+  const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/news/";
+
+  request({
+      url: url,
+      json: true
+  }, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      let data = [];
+      let contapost = 0;
+      let contaposttotal = 0;
+      body.forEach((item, index) => {
+        item.date = new Date(item.date);
+        let month = item.date.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        const source = item.featured.full;
+        console.log(source);
+        let filename = '';
+        let dest = '';
+        if (source) {
+          contaposttotal++;
+          filename = source.substring(source.lastIndexOf('/') + 1);
+          dest = `${global.appRoot}/warehouse/news_originals/${item.date.getFullYear()}/`;
+          if (!fs.existsSync(dest)) {
+            logger.debug(fs.mkdirSync(dest));
+          }
+          dest += month;
+          if (!fs.existsSync(dest)) {
+            logger.debug(fs.mkdirSync(dest));
+          }
+          dest += `/${filename}`;
+          console.log(dest);
+          router.download(source, dest, (p1,p2,p3) => {
+            contapost++;
+            let tmp = {
+              old_id: item.id,
+              creation_date: item.date,
+              slug: item.slug,
+              title: item.title.rendered,
+              is_public: true,
+              abouts: [{
+                lang: 'en',
+                abouttext: item.content.rendered
+              }],
+              image :{
+                file: dest,
+                filename: filename,
+                originalname: source/*,
+                mimetype: String,
+                size: Number,
+                width: Number,
+                height: Number*/
+              },
+              users: []
+            };
+            let contausers = 0;
+            for (let user in item.capauthors) {
+              User.
+              findOne({slug: user.user_login}).
+              select('_id').
+              exec((err, person) => {
+                if (!person || !person._id) person = {'_id': '59fc739f7a6c2a5d6100283b'};
+                contausers++;
+                console.log('person');
+                console.log(person);
+                tmp.users.push(person);
+                console.log(tmp.slug);
+                console.log('contausers '+contausers);
+                console.log('capauthors '+item.capauthors.length);
+                console.log('contapost '+contapost);
+                console.log('body.length '+body.length);
+                data.push(tmp);
+                if (contausers == item.capauthors.length && contapost == contaposttotal) {
+                  News.
+                  create().
+                  exec((error, saveoutput) => {
+                    console.log('error '+error);
+                    console.log('saveoutput '+saveoutput);
+                    res.render('admin/tools', {
+                      title: 'News',
+                      currentUrl: req.path,
+                      data: data,
+                      script: false
+                    });
+                  });
+                }
+              });
+            }    
+          });
+        }
+
+        //router.download(source, dest, (p1, p2, p3) => {
+        //});
+      });
+    }
+  });
+});
+router.download = (source, dest, callback) => {
+  request.head(source, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+    request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
+  });
+};
 
 router.get('/files/userimages', (req, res) => {
   logger.debug('/admin/tools/files/userimages');
