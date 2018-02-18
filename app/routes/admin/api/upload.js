@@ -13,14 +13,15 @@ const logger = require('../../../utilities/logger');
 const upload = {};
 
 upload.uploader = (req, res, sez, media, done) => {
+  let error = false;
   const options = config.cpanel[sez].media[media];
 
   logger.debug("uploader");
   logger.debug(options);
-  // Set Folder and create it do not exist
+  // Set Folder and create if do not exist
   const d = new Date();
   let month = d.getMonth() + 1;
-  let serverpath = global.appRoot + options.storage + d.getFullYear() + '/';
+  let serverpath = `${global.appRoot}${options.storage}${d.getFullYear()}/`;
 
   month = month < 10 ? '0' + month : month;
   logger.debug(serverpath);
@@ -73,10 +74,10 @@ upload.uploader = (req, res, sez, media, done) => {
     if (err) {
       logger.debug('upload err');
       logger.debug(err);
-    }
-    let conta = 0;
+      done(`${__('Upload unknown error')}: ${err}`, req.files);
+    } else if (options.fields.name === 'image' && req.files[options.fields.name] && req.files[options.fields.name].length) {
+      let conta = 0;
 
-    if (options.fields.name === 'image' && req.files[options.fields.name] && req.files[options.fields.name].length) {
       for (let a = 0; a < req.files[options.fields.name].length; a++) {
         const dimensions = sizeOf(req.files[options.fields.name][a].path);
 
@@ -84,34 +85,45 @@ upload.uploader = (req, res, sez, media, done) => {
         req.files[options.fields.name][a].height = dimensions.height;
         logger.debug(req.files[options.fields.name][a]);
         if (dimensions.width > options.minwidth && dimensions.height > options.minheight) {
-          conta++;
+          error = true;
           req.files[options.fields.name][a].err = __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight;
           logger.debug(__('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight);
           if (conta === req.files[options.fields.name].length) {
-            done(resizeerr, req.files);
+            done(error ? __('There are some errors') : false, req.files);
           }
         } else {
-          logger.debug('Images minimum size is ok');
-          logger.debug(a + 1);
-          logger.debug(req.files);
-          logger.debug('RESIZZA');
-          imageUtil.resizer(req.files[options.fields.name][a].path, options, (resizeerr, info) => {
-            conta++;
-            if (resizeerr || !info) {
-              if (resizeerr) {
-                logger.debug(`Image resize ERROR: ${resizeerr}`);
-              }
-              if (!info) {
-                logger.debug('Image resize ERROR: info undefined');
-              }
-            } else {
-              done(resizeerr, req.files);
-            }
-          });
+          logger.debug('Image minimum size is ok');
+          logger.debug(a);
         }
       }
+      if (!error) {
+        imageUtil.resizer(req.files[options.fields.name], options, (resizeerr, info) => {
+          conta++;
+          if (resizeerr || !info) {
+            if (resizeerr) {
+              error = true;
+              logger.debug(`Image resize ERROR: ${resizeerr}`);
+              req.files[options.fields.name][a].err = `Image resize ERROR: ${resizeerr}`;
+            }
+            if (!info) {
+              error = true;
+              logger.debug('Image resize ERROR: info undefined');
+              req.files[options.fields.name][a].err = 'Image resize ERROR: info undefined';
+            }
+          }
+          if (conta === req.files[options.fields.name].length) {
+            if (error) {
+              done(__('There are some errors'), req.files);
+            } else {
+              done(error, req.files);
+            }
+          }
+        });
+      } else {
+        done(__('There are some errors'), req.files);
+      }
     } else {
-      done(err, req.files);
+      done(__('Missing upload config'), req.files);
     }
   });
 };
