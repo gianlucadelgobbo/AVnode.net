@@ -1,5 +1,11 @@
 .menu
   .p-3
+    h4.color1 News
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/news/import"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
     h4.color1 Performers
     ul.nav.flex-column.nav-pills
       li.nav-item
