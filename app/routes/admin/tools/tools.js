@@ -31,13 +31,15 @@ router.get('/', (req, res) => {
 
 router.get('/news/import', (req, res) => {
   logger.debug('/admin/tools/news/import');
-  const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/news/";
+  let page = (req.param.page ? req.param.page : 1);
+  const url = `https://flyer.dev.flyer.it/wp-json/wp/v2/news/?page=${page}`;
 
+  page++;
   request({
       url: url,
       json: true
   }, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
+    if (!error && response.statusCode === 200, body.length) {
       let data = [];
       let contapost = 0;
       let contaposttotal = 0;
@@ -49,10 +51,10 @@ router.get('/news/import', (req, res) => {
         console.log(source);
         let filename = '';
         let dest = '';
-        if (source) {
+        //if (source) {
           contaposttotal++;
           filename = source.substring(source.lastIndexOf('/') + 1);
-          dest = `${global.appRoot}/warehouse/news_originals/${item.date.getFullYear()}/`;
+          dest = `${global.appRoot}/glacier/news_originals/${item.date.getFullYear()}/`;
           if (!fs.existsSync(dest)) {
             logger.debug(fs.mkdirSync(dest));
           }
@@ -74,8 +76,14 @@ router.get('/news/import', (req, res) => {
                 lang: 'en',
                 abouttext: item.content.rendered
               }],
+              stats: {
+                views: 100+Math.floor((Math.random() * 1000) + 1),
+                likes: 100+Math.floor((Math.random() * 1000) + 1)
+              },
+              web: [],
+              social: [],
               image :{
-                file: dest,
+                file: dest.replace(global.appRoot, ''),
                 filename: filename,
                 originalname: source/*,
                 mimetype: String,
@@ -85,13 +93,36 @@ router.get('/news/import', (req, res) => {
               },
               users: []
             };
+            if (item.video_thumbnail && item.video_thumbnail !== '') {
+              tmp.media = {url: item.video_thumbnail};
+            }
+            for (let web_site in item.web_site) {
+              if (
+                item.web_site[web_site].indexOf("facebook.com")!==-1 ||
+                item.web_site[web_site].indexOf("fb.com")!==-1 ||
+                item.web_site[web_site].indexOf("twitter.com")!==-1 ||
+                item.web_site[web_site].indexOf("instagram.com")!==-1 ||      
+                item.web_site[web_site].indexOf("youtube.com")!==-1 ||      
+                item.web_site[web_site].indexOf("vimeo.com")!==-1      
+              ) {
+                tmp.social.push({
+                  url: item.web_site[web_site],
+                  type: 'social'
+                });
+              } else {
+                tmp.web.push({
+                  url: item.web_site[web_site],
+                  type: 'web'
+                });
+              }
+            }
             let contausers = 0;
             for (let user in item.capauthors) {
               User.
               findOne({slug: user.user_login}).
               select('_id').
               exec((err, person) => {
-                if (!person || !person._id) person = {'_id': '59fc739f7a6c2a5d6100283b'};
+                if (!person || !person._id) person = {'_id': '59fc8bb77a6c2a5d6100af39'};
                 contausers++;
                 console.log('person');
                 console.log(person);
@@ -100,29 +131,43 @@ router.get('/news/import', (req, res) => {
                 console.log('contausers '+contausers);
                 console.log('capauthors '+item.capauthors.length);
                 console.log('contapost '+contapost);
+                console.log('contaposttotal '+contaposttotal);
                 console.log('body.length '+body.length);
-                data.push(tmp);
-                if (contausers == item.capauthors.length && contapost == contaposttotal) {
-                  News.
-                  create().
-                  exec((error, saveoutput) => {
-                    console.log('error '+error);
-                    console.log('saveoutput '+saveoutput);
-                    res.render('admin/tools', {
-                      title: 'News',
-                      currentUrl: req.path,
-                      data: data,
-                      script: false
+                if (contausers == item.capauthors.length) {
+                  data.push(tmp);
+                  if (contapost == body.length) {
+                    console.log('saveoutput ');
+                    console.log(data.length);
+                    console.log(data);
+                    News.
+                    create(data, (err) => {
+                      let result;
+                      if (err) {
+                        console.log('error '+err);
+                        result = err;
+                      } else {
+                        result = data;
+                      }
+                      res.render('admin/tools', {
+                        title: 'News',
+                        currentUrl: req.path,
+                        data: result,
+                        script: false
+                        //script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/news/import?page=' + (page) + '"},1000);</script>'
+                      });
                     });
-                  });
+                  }
                 }
               });
-            }    
+            }
           });
-        }
-
-        //router.download(source, dest, (p1, p2, p3) => {
-        //});
+      });
+    } else {
+      res.render('admin/tools', {
+        title: 'News',
+        currentUrl: req.path,
+        data: {msg: ['End']},
+        script: false
       });
     }
   });
@@ -441,9 +486,26 @@ router.get('/files/footagefiles', (req, res) => {
       if (footages[footage].media.preview) {
         //delete footages[footage].media.preview;
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        if (!footages[footage].media.previewexists) {
+          let test = footages[footage].media.file.substring(0, footages[footage].media.file.lastIndexOf('.'))+".jpg";
+          if (fs.existsSync(global.appRoot+test)) {
+            footages[footage].media.fsfix = 'mv '+global.appRoot+footages[footage].media.preview+' '+global.appRoot+test;
+            footages[footage].media.previewexists = true;
+            footages[footage].media.preview = test;
+          }
+        }
+        if (!footages[footage].media.previewexists) {
+          let test = footages[footage].media.file.substring(0, footages[footage].media.file.lastIndexOf('.'))+".jpg";
+          test = test.replace('/warehouse/','/warehouse_old/');
+          if (!fs.existsSync(global.appRoot+test)) {
+            footages[footage].media.fsfix = 'mv '+global.appRoot+footages[footage].media.preview+' '+global.appRoot+test;
+            footages[footage].media.previewexists = true;
+            footages[footage].media.preview = test;
+          }
+        }
       } else {
-        footages[footage].media.preview = localPath.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+localFileNameWithoutExtension+'.png';
-        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        //footages[footage].media.preview = localPath.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+localFileNameWithoutExtension+'.png';
+        //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
       }
       if (localFileNameExtension=="mp4") {
         footages[footage].media.original = localPath.replace('/warehouse/footage/', '/warehouse/footage_original/')+'/'+localOriginalFileNameWithoutExtension+'.'+localOriginalFileNameExtension;

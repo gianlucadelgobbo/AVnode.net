@@ -84,6 +84,10 @@ upload.uploader = (req, res, sez, media, done) => {
         req.files[options.fields.name][a].width = dimensions.width;
         req.files[options.fields.name][a].height = dimensions.height;
         logger.debug(req.files[options.fields.name][a]);
+        logger.debug('dimensions.width '+ dimensions.width);
+        logger.debug('dimensions.height '+ dimensions.height);
+        logger.debug('options.minwidth '+ options.minwidth);
+        logger.debug('options.minheight '+ options.minheight);
         if (dimensions.width > options.minwidth && dimensions.height > options.minheight) {
           error = true;
           req.files[options.fields.name][a].err = __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight;

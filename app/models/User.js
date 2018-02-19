@@ -63,6 +63,7 @@ const userSchema = new Schema({
   partnerships : [{ type: Schema.ObjectId, ref: 'User' }],
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
+  news : [{ type: Schema.ObjectId, ref: 'News' }],
 
   /* A todo
   videos : [{ type: Schema.ObjectId, ref: 'Gallery' }],
@@ -147,7 +148,7 @@ userSchema.virtual('imageFormats').get(function () {
     }
     const serverPath = this.image.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/users_originals/', process.env.WAREHOUSE+'/warehouse/users/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);

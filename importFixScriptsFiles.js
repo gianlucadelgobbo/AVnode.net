@@ -311,6 +311,27 @@ db.users.find({}).forEach(function(user) {
   }
 });
 
+db.users.find({"image.file": {$exists: true}}).forEach(function(user) {
+  user.image.file = user.image.file.replace('/warehouse/users_originals/', '/glacier/users_originals/');
+  db.users.save(user);
+});
+db.events.find({"image.file": {$exists: true}}).forEach(function(user) {
+  user.image.file = user.image.file.replace('/warehouse/events/', '/glacier/events_originals/');
+  db.events.save(user);
+});
+db.performances.find({"image.file": {$exists: true}}).forEach(function(user) {
+  user.image.file = user.image.file.replace('/warehouse/performances/', '/glacier/performances_originals/');
+  db.performances.save(user);
+});
+db.footage.find({"media.preview": {$exists: true}}).forEach(function(user) {
+  user.media.preview = user.media.preview.replace('/warehouse/', '/glacier/footage_previews/').replace('/preview_files', '').replace('/glacier/footage_previews/footage_preview/', '/glacier/footage_previews/');
+  db.footage.save(user);
+});
+db.videos.find({"media.preview": {$exists: true}}).forEach(function(user) {
+  user.media.preview = user.media.preview.replace('/warehouse/', '/glacier/videos_previews/').replace('/preview_files', '').replace('/glacier/videos_previews/videos_previews/', '/glacier/videos_previews/');
+  db.videos.save(user);
+});
+
 
 function sanitizeOld(folder,defaultFolder) {
   return folder.

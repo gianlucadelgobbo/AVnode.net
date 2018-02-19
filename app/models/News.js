@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 //const indexPlugin = require('../utilities/elasticsearch/News');
 
 const About = require('./shared/About');
+const Link = require('./shared/Link');
 const MediaImage = require('./shared/MediaImage');
+const Media = require('./shared/Media');
 
 const adminsez = 'news';
 
@@ -16,8 +18,11 @@ const newsSchema = new Schema({
   title: String,
   is_public: { type: Boolean, default: false },
   image: MediaImage,
+  media: Media,
   abouts: [About],
   stats: {},
+  web: [Link],
+  social: [Link],
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
@@ -59,7 +64,7 @@ newsSchema.virtual('imageFormats').get(function () {
     }
     const serverPath = this.image.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/news_originals/', process.env.WAREHOUSE+'/warehouse/news/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);

@@ -1,0 +1,37 @@
+extends ../layout
+
+block teaser
+  if data.teaserImage
+    .d-flex.justify-content-center.align-items-start
+      img.card-img-top.img-fluid(
+        src=`${data.teaserImageFormats.large}`
+        alt=`${data.name}`
+      )
+
+block title
+  if data.title
+    .jumbotron.jumbotron-fluid
+      .container
+        h1.display-4=data.title
+
+block content
+  .container
+    .row
+      .col-lg-8
+        p!=data.about
+      .col-lg-4
+        if data.image
+          .mb-3
+            img.card-img-top.img-fluid(
+              src=data.imageFormats.medium
+              alt=data.title
+            )
+        if data.web
+          .mb-3
+            each url in data.web
+              a(href=url.url)=url.url
+        if data.social
+          .mb-3
+            each url in data.social
+              a(href=url.url)=url.url
+

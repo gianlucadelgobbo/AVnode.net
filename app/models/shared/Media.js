@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const adminsez = 'gallery';
 
 const Media = new Schema({
+  url: String,
   file: String,
   filename: String,
   preview: String,
@@ -18,7 +19,6 @@ const Media = new Schema({
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   stats: {},
   title: String,
-  slug: { type: String, unique: true }
 }, {
   timestamps: true,
   toObject: {
