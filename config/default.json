@@ -113,7 +113,7 @@
             "maxCount": 1
           },
           "filetypes": ["jpg","jpeg","png","gif","svg"],
-          "storage": "/warehouse/users/",
+          "storage": "/glacier/users_originals/",
           "maxsize": 2048000,
           "minwidth": 1000,
           "minheight": 1000,
@@ -791,6 +791,88 @@
         "mostrecent":"Most recent",
         "mostactive":"Most active"
       }
+    },
+    "news": {
+      "media":{
+        "image":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1000,
+          "minheight": 1000,
+          "sizes": {
+            "small": {
+              "w": 400,
+              "h": 225,
+              "folder": "400x225",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1040,
+              "h": 585,
+              "folder": "1040x585",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        },
+        "teaserImage":{
+          "fields": {
+            "name": "image",
+            "maxCount": 1
+          },
+          "filetypes": ["jpg","jpeg","png","gif","svg"],
+          "maxsize": 2048000,
+          "minwidth": 1920,
+          "minheight": 500,
+          "sizes": {
+            "medium": {
+              "w": 1280,
+              "h": 720,
+              "folder": "1280x720",
+              "default": "/images/profile-default.svg"
+            },
+            "large": {
+              "w": 1920,
+              "h": 1080,
+              "folder": "1920x1080",
+              "default": "/images/profile-default.svg"
+            }
+          }
+        }
+      },
+      "title": "Performers",
+      "limit": 20,
+      "basepath": "performers",
+      "coll": "users",
+      "view_list": "performers",
+      "view_edit": "user",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "files":1,
+        "categories":1,
+        "stats":1
+      },
+      "orders": [
+        "mostrecent",
+        "mostactive"
+      ],
+      "ordersQueries": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostactive": {
+          "stats.performances": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active"
+      }
     }
   },
   "sections": {
@@ -855,6 +937,18 @@
           "image": 1
         },
         "populate": [{
+          "path": "news",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media.file": 1
+          },
+          "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "News"
+        }, {
           "path": "footage",
           "select": {
             "title": 1,
@@ -1110,6 +1204,42 @@
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
           "model": "Video"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "news": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "news",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media.file": 1,
+            "image.file": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 5 },
+          "model": "News"
         }, {
           "path": "categories",
           "select": {
@@ -1578,6 +1708,63 @@
           "options": { "limit": 5 },
           "model": "Gallery"
         }]
+      }
+    },
+    "news": {
+      "title": "News",
+      "limit": 20,
+      "basepath": "news",
+      "coll": "news",
+      "view_list": "news/list",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "image":1,
+        "media":1,
+        "stats":1
+      },
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+      "orders": [
+        "mostrecent",
+        "mostviewed",
+        "mostliked"
+      ],
+      "categories": [
+        "all"
+      ],
+      "categoriesQueries": {
+        "all": {}
+      },
+      "ordersQueries": {
+        "mostrecent": {
+          "creation_date": -1
+        },
+        "mostviewed": {
+          "stats.visits": -1
+        },
+        "mostliked": {
+          "stats.likes": -1
+        }
+      },
+      "labels": {
+        "mostrecent": "Most recent",
+        "mostviewed": "Most viewed",
+        "mostliked": "Most liked",
+        "all":"All"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "media": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "image": 1
+        },
+        "populate": []
       }
     },
     "footage": {

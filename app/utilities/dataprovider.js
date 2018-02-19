@@ -12,6 +12,7 @@ const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
 const Playlist = mongoose.model('Playlist');
 const Video = mongoose.model('Video');
+const News = mongoose.model('News');
 
 const logger = require('./logger');
 
@@ -75,6 +76,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (populate[item].model === 'Footage') populate[item].model = Footage;
     if (populate[item].model === 'Playlist') populate[item].model = Playlist;
     if (populate[item].model === 'Category') populate[item].model = Category;
+    if (populate[item].model === 'News') populate[item].model = News;
 
     if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
     if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
@@ -83,6 +85,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (populate[item].populate && populate[item].populate.model === 'Footage') populate[item].populate.model = Footage;
     if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
     if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
+    if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News;
   }
   const select = config.sections[section][subsection].select;
 
@@ -155,13 +158,15 @@ dataprovider.list = (req, res, section, model) => {
 
     dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
       logger.debug('bella'+config.sections[section].title);
+      logger.debug(err);
+      logger.debug(data);
+      logger.debug(total);
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         if (process.env.DEBUG) {
           res.render('json', {total:total, skip:skip, data:data});
         } else {
           res.json({total:total, skip:skip, data:data});
         }
-        logger.debug(err);
         //return next(err);
       } else {
         const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];

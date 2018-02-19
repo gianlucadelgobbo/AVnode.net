@@ -9,40 +9,7 @@ block teaser
 
 block title
   .performer_header_wrapper
-    .container
-      .row
-        .col-lg-7
-          h1.main_title=data.stagename          
-          ul.performer_address.list-inline
-            each address in data.addresses
-              li.list-inline-item=address.locality + ", " + address.country
-          div.performer_stats_wrapper
-            ul.performer_stats_list.performer_stats_list_1.list-inline
-              if data.stats.events
-                li.list-inline-item!=__('Events')+" (<span>"+data.stats.events+"</span>)"
-              if data.stats.performances
-                li.list-inline-item!=__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
-              if data.stats.crews
-                li.list-inline-item!=__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
-            ul.performer_stats_list.performer_stats_list_2.list-inline
-              if data.stats.footage
-                li.list-inline-item!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"
-              if data.stats.playlists
-                li.list-inline-item!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
-              if data.stats.videos
-                li.list-inline-item!=__('Videos')+" (<span>"+data.stats.videos+"</span>)"    
-              li.list-inline-item!=__('Gallery')+" (<span>"+data.stats.galleries+"</span>)"    
-        .col-lg-5
-          .row
-            .col-sm-6
-              .performer_image_wrapper
-                .performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
-                //img.rounded-circle.img-fluid(
-                  src=data.imageFormats.medium
-                  alt=data.stagename
-                  )
-            .col-sm-6
-              img.img-fluid(src="/images/logo_avnode_svg.svg")
+    include header
 
 block content
   .container
@@ -54,5 +21,5 @@ block content
             .col-sm-4
               include ../partials/boxVideo
       .text-center
-        a.btn.btn-primary(href="/#{data.slug}/events/page/#{nextpage}/")=__("Nexts")+" >>"
+        a.btn.btn-primary(href="/#{data.slug}/videos/page/#{nextpage}/")=__("Nexts")+" >>"
                   

@@ -81,5 +81,15 @@ router.get('/crews/page/:page', (req, res) => {
   dataprovider.show(req, res, section, 'crews', Model);
 });
 
+router.get('/news', (req, res) => {
+  logger.debug('Show ' + section + ' news');
+  dataprovider.show(req, res, section, 'news', Model);
+});
+
+router.get('/news/page/:page', (req, res) => {
+  logger.debug('Show ' + section + ' news');
+  dataprovider.show(req, res, section, 'news', Model);
+});
+
 module.exports = router;
 

@@ -4,7 +4,10 @@
 //rsync -a /space/PhpMysql2015/sites/flxer/warehouse/ /sites/avnode/warehouse
 //find '/sites/flxer/warehouse' -name "original_video"  | xargs du -sh
 //rsync -a /space_fisica/PhpMysql2015/sites/flxer/warehouse_new/ /space_fisica/MongoNodeJS/sites/avnode.net/warehouse_new
+//find '/sites/avnode.net/warehouse/users_originals/' -name "100x100"  | xargs du -sh
 
+//find '/sites/avnode.net/warehouse/performances_originals/' -name "1040x585" -type d -exec rm -R "{}" \;
+//find '/sites/avnode.net/warehouse/performances' -maxdepth 5 -type f -exec rm "{}" \;
 
 // Deletecity
 
@@ -2772,7 +2775,7 @@ for(var b=0;b<e.delete.length;b++){
   
   
 
-db.users.find({}).forEach(function(e) {
+db.users.find({"slug": "gianlucadelgobbo"}).forEach(function(e) {
   if (e.crews && e.crews.length) e.stats.crews = e.crews.length;
   if (e.members && e.members.length) e.stats.members = e.members.length;
   if (e.performances && e.performances.length) e.stats.performances = e.performances.length;
@@ -2781,7 +2784,41 @@ db.users.find({}).forEach(function(e) {
   if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
   if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
   if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
+  if (e.news && e.news.length) e.stats.news = e.news.length;
   db.users.save(e);
+});
+db.users.find({"slug": "gianlucadelgobbo"}, {news: 1}).forEach(function(e) {
+  e.news = [];
+  printjson(e);
+  var res = db.news.find({"users": e._id}, {_id: 1}).toArray();
+  var conta = 0;
+  res.forEach(function(news) {
+    e.news.push(news._id);
+    conta++;
+    printjson(conta);
+    printjson(res.length);
+    if (conta == res.length) {
+      printjson(e.news);
+      db.users.update({_id: e._id}, {$set: {news: e.news}}, { upsert: true });
+    }
+  });  
+});
+
+db.users.find({"slug": "gianlucadelgobbo"}, {videos: 1}).forEach(function(e) {
+  e.videos = [];
+  printjson(e);
+  var res = db.videos.find({"users": e._id}, {_id: 1}).toArray();
+  var conta = 0;
+  res.forEach(function(videos) {
+    e.videos.push(videos._id);
+    conta++;
+    printjson(conta);
+    printjson(res.length);
+    if (conta == res.length) {
+      printjson(e.videos);
+      db.users.update({_id: e._id}, {$set: {videos: e.videos}}, { upsert: true });
+    }
+  });  
 });
 
 

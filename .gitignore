@@ -2,12 +2,10 @@ public/css/main.css
 .env*
 node_modules
 npm-debug.log
-storage/
-warehouse/
 .db
 .elasticsearch
 logs/*
-storage
+glacier
 warehouse
 warehouse_new
 .DS_Store
@@ -15,5 +13,3 @@ warehouse_new
 package-lock.json
 .eslintrc.json
 font-awesome.css
-.idea/*
-.idea

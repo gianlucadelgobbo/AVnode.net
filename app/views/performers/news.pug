@@ -13,13 +13,13 @@ block title
 
 block content
   .container
-    section.row.performer_events_wrapper
+    section.row.performer_news_wrapper
       .col-lg-12
-        h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+        h2.main_title.indented_title.color1!=__('News')+" <small>(<span>"+data.stats.news+"</span>)</small>"
         .row
-          each item in data.events
+          each item in data.news
             .col-sm-4
-              include ../partials/boxEvent
+              include ../partials/boxNews
       .text-center
-        a.btn.btn-primary(href="/#{data.slug}/events/page/#{nextpage}/")=__("Nexts")+" >>"
+        a.btn.btn-primary(href="/#{data.slug}/news/page/#{nextpage}/")=__("Nexts")+" >>"
                   
