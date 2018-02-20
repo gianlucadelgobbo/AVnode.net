@@ -1,16 +1,17 @@
 extends layout
 
 block content
-  form(method='post')
-    input(type='hidden', name='_csrf', value=_csrf)
-    input(type='hidden', name='next', value=redirect)
-    .form-group
-      label(for='email')=__('Email')
-      input.form-control(type='email', name='email', id='email', placeholder=__('example@foo.bar'), autofocus, required)
-    .form-group
-      label(for='password')=__('Password')
-      input.form-control(type='password', name='password', id='password', placeholder=__('Use at least eight characters'), required)
-    .form-group
-      button.btn.btn-primary.btn-success(type='submit')=__('Login')
-        i.fa.fa-sign-in.fa-fw
-      a.btn.btn-link(href='/password/forgot')=__('Forgot your password?')
+  .container
+    form(method='post')
+      input(type='hidden', name='_csrf', value=_csrf)
+      input(type='hidden', name='next', value=redirect)
+      .form-group
+        label(for='email')=__('Email')
+        input.form-control(type='email', name='email', id='email', placeholder=__('example@foo.bar'), autofocus, required)
+      .form-group
+        label(for='password')=__('Password')
+        input.form-control(type='password', name='password', id='password', placeholder=__('Use at least eight characters'), required)
+      .form-group
+        button.btn.btn-primary.btn-success(type='submit')=__('Login')
+          i.fa.fa-sign-in.fa-fw
+        a.btn.btn-link(href='/password/forgot')=__('Forgot your password?')
