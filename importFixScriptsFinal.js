@@ -21,8 +21,12 @@ var CATEGORIES = function() {
 
 var FOOTAGE = function() {
   //db.footage.findOne({"file.file": { $exists: false}});
-  db.footage.deleteMany({"file.file": { $exists: false}});
   //db.footage.findOne({"file.file": { $exists: true}, "file.preview": { $exists: true}, "playlists.0": { $exists: true}});
+
+  // 01
+  db.footage.deleteMany({"file.file": { $exists: false}});
+
+  // 02
   var folders = {};
   function sanitizeOld(folder,defaultFolder) {
     return folder.
@@ -728,9 +732,11 @@ var TVSHOWS = function() {
 }
 
 var GALLERIES = function() {
+  // 01
   //db.galleries.count({"medias.file": {$exists: false}});
   db.galleries.remove({"medias.0": {$exists: false}});
 
+  // 02
   db.galleries.find({}).forEach(function(gallery) {
     gallery.performances = [];
     var res = db.performances.find({"galleries": gallery._id}).toArray();
@@ -749,6 +755,7 @@ var GALLERIES = function() {
     }
   });
 
+  // 03
   db.galleries.find({}).forEach(function(gallery) {
     gallery.events = [];
     var res = db.events.find({"galleries": gallery._id}).toArray();
@@ -769,6 +776,7 @@ var GALLERIES = function() {
     
   //db.galleries.find({"performances.0":{$exists: true},"stats.video":{$exists: true}, "stats.img":{$exists: true}}).forEach(function(e) {
 
+  // 04
   var folders = {};
   var extoriginals = [];
   var valid = [
@@ -898,13 +906,16 @@ var GALLERIES = function() {
   printjson(extoriginals);
   printjson(folders);
 
+  // 05
   db.galleries.remove({"medias.0": {$exists: false}});
 
+  // 06
   db.galleries.find({media: {$exists: true}}).forEach(function(video) {
     delete video.media;
     db.galleries.save(video);
   });
 
+  // 07
   db.tvshows.find({}).forEach(function(tvshow) {
     //var res = db.performances.find({"galleries": gallery._id}).toArray();
     var conta = 0;
@@ -928,6 +939,7 @@ var GALLERIES = function() {
     }
   });
   
+  // 08
   db.videos.find({"events.0": {$exists: true}}).forEach(function(video) {
     //var res = db.performances.find({"galleries": gallery._id}).toArray();
     var conta = 0;
@@ -944,6 +956,7 @@ var GALLERIES = function() {
     }
   });
   
+  // 09
   db.videos.find({"performances.0": {$exists: true}}).forEach(function(video) {
     //var res = db.performances.find({"galleries": gallery._id}).toArray();
     var conta = 0;
@@ -960,6 +973,7 @@ var GALLERIES = function() {
     }
   });
   
+  // 10
   db.videos.find({}, {users: 1}).forEach(function(e) {
     e.users.forEach(function(user) {
       db.users.find({"_id": user}).forEach(function(user) {
@@ -973,7 +987,7 @@ var GALLERIES = function() {
 }
 
 var USERS_ADDRESSES = function() {
-  // countryfix
+  // 01 countryfix
   var fix = [
     {find: 'Cote D Ivoire (Ivory Coast)', replace: "Côte d'Ivoire"},
     {find: '00179', replace: 'Italy'},
@@ -1079,7 +1093,7 @@ var USERS_ADDRESSES = function() {
     });
   }
 
-
+  // 02 Sanitize
   var sanitize = function (str) {
     return str. 
     replace('\u0000', '').  
@@ -2216,7 +2230,7 @@ var USERS_ADDRESSES = function() {
   printjson(countries);
 
 
-  // cityfix #2
+  // 03 cityfix #2
   var fix = [
     {country: 'Austria', find: '8753 - Fohnsdorf', replace: 'Fohnsdorf'},
     {country: 'Austria', find: '9500 Villach', replace: 'Villach'},
@@ -3033,11 +3047,12 @@ var USERS_ADDRESSES = function() {
     });
   }
 
+  //04 Add geometry
   db.addressdbs.find({"country": {$exists: true}, "locality": {$exists: true}}).forEach(function(e) {
     db.users.find({"addresses.country": e.country, "addresses.locality": e.locality, "addresses.geometry": {$exists: false}},{addresses: 1}).forEach(function(user) {
       if (user.addresses && user.addresses.length) {
         for(var a=0;a<user.addresses.length;a++){
-          if (user.addresses[a].country == e.locality && user.addresses[a].locality == e.country) {
+          if (user.addresses[a].country == e.country && user.addresses[a].locality == e.locality) {
             user.addresses[a].geometry = e.geometry;
             printjson(user.addresses);
           }
@@ -3047,6 +3062,7 @@ var USERS_ADDRESSES = function() {
     });
   });
 
+  //05 Add geometry
   db.addressdbs.find({"country": {$exists: true}, "locality": {$exists: false}}).forEach(function(e) {
     db.users.find({"addresses.country": e.country, "addresses.locality": "", "addresses.geometry": {$exists: false}},{addresses: 1}).forEach(function(user) {
       if (user.addresses && user.addresses.length) {
@@ -3062,6 +3078,7 @@ var USERS_ADDRESSES = function() {
     });
   });
 
+  //06 Add geometry
   db.addressdbs.find({"locality": {$exists: true}}).forEach(function(e) {
     db.users.find({"addresses.locality": e.locality, "addresses.geometry": {$exists: false}},{_id: 1, addresses: 1}).forEach(function(user) {
       printjson("addresses.locality: " + e.locality);
