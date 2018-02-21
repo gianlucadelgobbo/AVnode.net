@@ -303,8 +303,8 @@ cp -n warehouse_old/_videos/babylon_promo_0.jpg glacier/videos_previews/2009/11/
 cp -n warehouse_old/_videos/babylon_promo_0.flv warehouse/videos/2009/11/babylon_promo_0.flv
 cp -n warehouse_old/2011/03/preview_files/vjin_banda_baader-meinhof_.png glacier/videos_previews/2011/03/vjin_banda_baader-meinhof_.png
 cp -n warehouse_old/2011/03/vjin_banda_baader-meinhof.mp4 warehouse/videos/2011/03/vjin_banda_baader-meinhof.mp4
-cp -n warehouse_old/2011/03/preview_files/datasheet-74s181(sample)_mp4.png glacier/videos_previews/2011/03/datasheet-74s181(sample)_mp4.png
-cp -n warehouse_old/2011/03/datasheet-74s181(sample).mp4 warehouse/videos/2011/03/datasheet-74s181(sample).mp4
+cp -n warehouse_old/2011/03/preview_files/datasheet-74s181/(sample/)_mp4.png glacier/videos_previews/2011/03/datasheet-74s181/(sample/)_mp4.png
+cp -n warehouse_old/2011/03/datasheet-74s181/(sample/).mp4 warehouse/videos/2011/03/datasheet-74s181/(sample/).mp4
 cp -n warehouse_old/_flxer/liveset/boysnoize1.jpg glacier/videos_previews/2009/11/boysnoize1.jpg
 cp -n warehouse_old/_flxer/liveset/boysnoize1.flv warehouse/videos/2009/11/boysnoize1.flv
 cp -n warehouse_old/_videos/boys_noize_1st_time_in_roma.jpg glacier/videos_previews/2009/11/boys_noize_1st_time_in_roma.jpg

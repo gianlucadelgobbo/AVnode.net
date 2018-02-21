@@ -582,7 +582,7 @@ cp -n warehouse_old/2011/03/preview_files/emedemac_vj_promo_2005.png glacier/foo
 cp -n warehouse_old/2011/03/emedemac_vj_promo_2005.flv warehouse/footage/2011/03/emedemac_vj_promo_2005.flv
 cp -n warehouse_old/2011/03/preview_files/da-small1.png glacier/footage_previews/2011/03/da-small1.png
 cp -n warehouse_old/2011/03/da-small1.mov warehouse/footage/2011/03/da-small1.mov
-cp -n warehouse_old/2011/03/the_wind(extract).mov warehouse/footage/2011/03/the_wind(extract).mov
+cp -n warehouse_old/2011/03/the_wind\(extract\).mov warehouse/footage/2011/03/the_wind\(extract\).mov
 cp -n warehouse_old/2011/03/preview_files/condensatore.png glacier/footage_previews/2011/03/condensatore.png
 cp -n warehouse_old/2011/03/condensatore.swf warehouse/footage/2011/03/condensatore.swf
 cp -n warehouse_old/2011/03/preview_files/showreel.png glacier/footage_previews/2011/03/showreel.png
