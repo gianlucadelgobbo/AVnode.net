@@ -30,8 +30,17 @@ function sanitizeOld(folder,defaultFolder) {
   replace("/_flxer/library/no_hole/", defaultFolder).
   replace("/_flxer/library/koncepts/", defaultFolder);
 }
-db.footage.find({}).forEach(function(e) {
+var extoriginals = [];
+var valid = [
+	"mov",
+	"avi",
+	"mp4",
+	"MOV",
+	"AVI",
+	"mpg"
+];
 //db.footage.find({"file.file": { $exists: true}, "file.preview": { $exists: true}, "playlists.0": { $exists: true}}).forEach(function(e) {
+db.footage.find({}).forEach(function(e) {
   if (!e.slug) e.slug = e.permalink.toLowerCase();
   if (e.permalink) delete e.permalink;
   if (e.users && e.users.length) {
@@ -58,7 +67,6 @@ db.footage.find({}).forEach(function(e) {
     }
     delete e.text;
   }
-
   e.media = e.file;
   delete e.file;
   e.media.fileflxer = e.media.file;
@@ -67,20 +75,21 @@ db.footage.find({}).forEach(function(e) {
   if (ext == "mp4") {
     e.media.originalflxer = e.media.file.substring(0, e.media.file.lastIndexOf('.'));
     var extoriginal = e.media.originalflxer.substring(e.media.file.lastIndexOf('_') + 1);
-    if (extoriginal == e.media.originalflxer) {
+    if (extoriginals.indexOf(extoriginal)===-1 && extoriginal.length<5 && extoriginal.length>1) extoriginals.push(extoriginal); 
+    if (extoriginal == e.media.originalflxer || valid.indexOf(extoriginal)===-1) {
       delete e.media.originalflxer;
     } else {
       e.media.originalflxer = e.media.originalflxer.substring(0, e.media.originalflxer.lastIndexOf('_')) + "." + extoriginal;
       e.media.original = e.media.originalflxer.replace('/warehouse/', '/glacier/footage_originals/').replace('/original_video/', '/');
       e.media.original = sanitizeOld(e.media.original, defaultFolder)
-      printjson("mv -n " + e.media.originalflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.media.original);
+      printjson("cp -n " + e.media.originalflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.media.original);
     }
   }
   if (e.media.preview) {
     e.media.previewflxer = e.media.preview;
     e.media.preview = e.media.previewflxer.replace('/warehouse/', '/glacier/footage_previews/').replace('/preview_files/', '/');
     e.media.preview = sanitizeOld(e.media.preview, defaultFolder)
-    printjson("mv -n " + e.media.previewflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.media.preview);
+    printjson("cp -n " + e.media.previewflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.media.preview);
   }
   e.media.file = e.media.file.replace('/warehouse/', '/warehouse/footage/');
   e.media.file = sanitizeOld(e.media.file, defaultFolder);
@@ -90,6 +99,7 @@ db.footage.find({}).forEach(function(e) {
   //printjson(e);
   db.footage.save(e);
 });
+printjson(extoriginals);
 printjson(folders);
 
 //db.footage.findOne({"media.file": { $exists: true}, "media.preview": { $exists: true}, "playlists.0": { $exists: true}})
@@ -623,6 +633,15 @@ db.playlists.find({}).forEach(function(e) {
 
 
 var folders = {};
+var extoriginals = [];
+var valid = [
+	"mov",
+	"avi",
+	"mp4",
+	"MOV",
+	"AVI",
+	"mpg"
+];
 function sanitizeOld(folder,defaultFolder) {
   return folder.
   replace("/_flxer/library/hole/", defaultFolder).
@@ -649,7 +668,6 @@ db.tvshows.find({}).forEach(function(e) {
     }
     e.categories = tmpA;
   }
-
   if (e.text) {
     e.abouts = [];
     for (var item in e.text) {
@@ -660,7 +678,6 @@ db.tvshows.find({}).forEach(function(e) {
     }
     delete e.text;
   }
-
   e.media = e.file;
   delete e.file;
   e.media.fileflxer = e.media.file;
@@ -669,20 +686,21 @@ db.tvshows.find({}).forEach(function(e) {
   if (ext == "mp4") {
     e.media.originalflxer = e.media.file.substring(0, e.media.file.lastIndexOf('.'));
     var extoriginal = e.media.originalflxer.substring(e.media.file.lastIndexOf('_') + 1);
-    if (extoriginal == e.media.originalflxer) {
+    if (extoriginals.indexOf(extoriginal)===-1 && extoriginal.length<5 && extoriginal.length>1) extoriginals.push(extoriginal); 
+    if (extoriginal == e.media.originalflxer || valid.indexOf(extoriginal)===-1) {
       delete e.media.originalflxer;
     } else {
       e.media.originalflxer = e.media.originalflxer.substring(0, e.media.originalflxer.lastIndexOf('_')) + "." + extoriginal;
       e.media.original = e.media.originalflxer.replace('/warehouse/', '/glacier/videos_originals/').replace('/original_video/', '/');
       e.media.original = sanitizeOld(e.media.original, defaultFolder)
-      printjson("mv -n " + e.media.originalflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.media.original.replace('/glacier/', 'glacier/'));
+      printjson("cp -n " + e.media.originalflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.media.original.replace('/glacier/', 'glacier/'));
     }
   }
   if (e.media.preview) {
     e.media.previewflxer = e.media.preview;
     e.media.preview = e.media.previewflxer.replace('/warehouse/', '/glacier/videos_previews/').replace('/preview_files/', '/');
     e.media.preview = sanitizeOld(e.media.preview, defaultFolder)
-    printjson("mv -n " + e.media.previewflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.media.preview.replace('/glacier/', 'glacier/'));
+    printjson("cp -n " + e.media.previewflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.media.preview.replace('/glacier/', 'glacier/'));
   }
   e.media.file = e.media.file.replace('/warehouse/', '/warehouse/videos/');
   e.media.file = sanitizeOld(e.media.file, defaultFolder);
@@ -692,6 +710,7 @@ db.tvshows.find({}).forEach(function(e) {
   //printjson(e);
   db.tvshows.save(e);
 });
+printjson(extoriginals);
 printjson(folders);
 
 
@@ -706,7 +725,7 @@ printjson(folders);
 db.galleries.count({"medias.file": {$exists: false}});
 db.galleries.remove({"medias.0": {$exists: false}});
 
-db.galleries.find({"performances.old_id"}).forEach(function(gallery) {
+db.galleries.find({}).forEach(function(gallery) {
   gallery.performances = [];
   var res = db.performances.find({"galleries": gallery._id}).toArray();
   var conta = 0;
@@ -745,6 +764,18 @@ db.galleries.find({}).forEach(function(gallery) {
 //db.galleries.find({"performances.0":{$exists: true},"stats.video":{$exists: true}, "stats.img":{$exists: true}}).forEach(function(e) {
 
 var folders = {};
+var extoriginals = [];
+var valid = [
+	"mp4",
+	"mov",
+	"MOV",
+	"m4v",
+	"MP4",
+	"AVI",
+	"flv",
+	"avi",
+	"mpg"
+];
 function sanitizeOld(folder,defaultFolder) {
   return folder.
   replace("/_flxer/photos/", defaultFolder).
@@ -788,9 +819,12 @@ db.galleries.find({}).forEach(function(e) {
       media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/warehouse/videos/');
       media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}.png`;
       //media.previewFileOld = `${localPath.replace('galleries/', '')}/preview_files/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-      media.originalflxer = `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`;
+      if (extoriginals.indexOf(localFileNameOriginalExtension)===-1 && localFileNameOriginalExtension.length<5 && localFileNameOriginalExtension.length>1) extoriginals.push(localFileNameOriginalExtension); 
+      if (valid.indexOf(localFileNameOriginalExtension)!==-1) {
+        media.originalflxer = `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`;
+        media.original = sanitizeOld(media.originalflxer, defaultFolder).replace('/warehouse/','/glacier/videos_originals/').replace('/original_video/','/');
+      }
       media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
-      media.original = sanitizeOld(media.originalflxer, defaultFolder).replace('/warehouse/','/glacier/videos_originals/').replace('/original_video/','/');
       /*
       media.folderNew = media.fileNew.substring(0, media.fileNew.lastIndexOf('/'));
       media.folderNew = media.folderNew.substring(media.folderNew.lastIndexOf('/'));
@@ -799,11 +833,11 @@ db.galleries.find({}).forEach(function(e) {
       */
       if (localFileNameExtension == "flv") {
         printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-        printjson("mv -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+        printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
       } else {
         printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-        printjson("mv -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
-        printjson("mv -n "+media.originalflxer.replace('/warehouse/','warehouse_old/')+" "+media.original.replace('/glacier/','glacier/'));
+        printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+        if (media.originalflxer) printjson("cp -n "+media.originalflxer.replace('/warehouse/','warehouse_old/')+" "+media.original.replace('/glacier/','glacier/'));
       }
       //if (conta == 0) e.image.file = media.fileNew;
       let video = e;
@@ -838,7 +872,7 @@ db.galleries.find({}).forEach(function(e) {
         e.image = newMedias[0];
         e.stats.img = newMedias.length;
         e.medias = newMedias;
-        printjson('SAVEEEEEE GALLERY');
+        //printjson('SAVEEEEEE GALLERY');
         //printjson(e);
         db.galleries.save(e);
       }
@@ -848,13 +882,14 @@ db.galleries.find({}).forEach(function(e) {
         delete video.medias;
         delete video.image;
         delete video._id;
-        printjson('SAVEEEEEE VIDEO!!!');
+        //printjson('SAVEEEEEE VIDEO!!!');
         //printjson(video);
         db.videos.save(video);
       });
     }
   });
 });
+printjson(extoriginals);
 printjson(folders);
 
 db.galleries.remove({"medias.0": {$exists: false}});
