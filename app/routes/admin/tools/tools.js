@@ -197,20 +197,21 @@ router.get('/files/userimages', (req, res) => {
       users[user].image.imageFormatsExists = {};
       logger.debug(users[user]);
       //console.log(config.cpanel[adminsez].sizes.image);
-      if (users[user].image.exists) {
+      //if (users[user].image.exists) {
         const serverPath = users[user].image.file;
         const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
         const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = localPath.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
         const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
         const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
         // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          users[user].image.imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
         }
-      }
+      //}
       data.push(users[user].image);
     }
     console.log(req.path);
@@ -246,11 +247,12 @@ router.get('/files/userformatsgenerator', (req, res) => {
         const serverPath = users[user].image.file;
         const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
         const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = localPath.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
         const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
         const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
         // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          users[user].image.imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
