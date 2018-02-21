@@ -18,7 +18,6 @@
 	"Crews": "Crews",
 	"Schedule": "Schedule",
 	"test": "test",
-	"Videos": "Videos",
 	"Gallery": "Gallery",
 	"Performer": "Performer",
 	"Text is missing": "Text is missing",
@@ -37,5 +36,6 @@
 	"Most active": "Most active",
 	"Most recent": "Most recent",
 	"views": "views",
-	"likes": "likes"
+	"likes": "likes",
+	"Playlist": "Playlist"
 }
