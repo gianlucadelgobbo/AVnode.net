@@ -2425,7 +2425,7 @@ cp -n warehouse_old/2011/07/umbrella97.png glacier/performances_originals/2011/0
 cp -n warehouse_old/2011/07/stevevaifestival2.jpg glacier/performances_originals/2011/07/stevevaifestival2.jpg
 cp -n warehouse_old/2011/07/filerenamed_13219791488980.png glacier/performances_originals/2011/07/filerenamed_13219791488980.png
 cp -n warehouse_old/2011/07/215351_126410497434260_100001959323837_187500_5549480_n.jpg glacier/performances_originals/2011/07/215351_126410497434260_100001959323837_187500_5549480_n.jpg
-cp -n warehouse_old/2011/07/cma_(0-00-00-00).jpg glacier/performances_originals/2011/07/cma_(0-00-00-00).jpg
+cp -n warehouse_old/2011/07/cma_\(0-00-00-00\).jpg glacier/performances_originals/2011/07/cma_\(0-00-00-00\).jpg
 cp -n warehouse_old/2011/07/back40.jpg glacier/performances_originals/2011/07/back40.jpg
 cp -n warehouse_old/2011/07/filerenamed_13219791488978.png glacier/performances_originals/2011/07/filerenamed_13219791488978.png
 cp -n warehouse_old/2011/07/living_room88.jpg glacier/performances_originals/2011/07/living_room88.jpg
@@ -2502,7 +2502,7 @@ cp -n warehouse_old/2011/07/-07-11_в_19.2289.jpg glacier/performances_originals
 cp -n warehouse_old/2011/07/guillaume-martial-imagescom0279.jpg glacier/performances_originals/2011/07/guillaume-martial-imagescom0279.jpg
 cp -n warehouse_old/2011/07/sdim0533.jpg glacier/performances_originals/2011/07/sdim0533.jpg
 cp -n warehouse_old/2011/07/beahero_300.jpg glacier/performances_originals/2011/07/beahero_300.jpg
-cp -n warehouse_old/2011/07/andy_phone(2).png glacier/performances_originals/2011/07/andy_phone(2).png
+cp -n warehouse_old/2011/07/andy_phone\(2\).png glacier/performances_originals/2011/07/andy_phone\(2\).png
 cp -n warehouse_old/2012/03/captura-de-pantalla-2011-06-27-a-las-220212_1.png glacier/performances_originals/2012/03/captura-de-pantalla-2011-06-27-a-las-220212_1.png
 cp -n warehouse_old/2011/07/press_livemoon_01_web42.jpg glacier/performances_originals/2011/07/press_livemoon_01_web42.jpg
 cp -n warehouse_old/2011/06/1_non_phenomena_still_198.jpg glacier/performances_originals/2011/06/1_non_phenomena_still_198.jpg
@@ -2704,7 +2704,7 @@ cp -n warehouse_old/2011/03/foto_representa_corisco.jpg glacier/performances_ori
 cp -n warehouse_old/2011/03/4659_88857198307_554393307_1837629_4463704_n.jpg glacier/performances_originals/2011/03/4659_88857198307_554393307_1837629_4463704_n.jpg
 cp -n warehouse_old/2011/03/logo-pikilipita-vj-hero_0.png glacier/performances_originals/2011/03/logo-pikilipita-vj-hero_0.png
 cp -n warehouse_old/2011/03/dada_110.jpg glacier/performances_originals/2011/03/dada_110.jpg
-cp -n warehouse_old/2011/03/comp_3_1_(0-00-14-03).jpg glacier/performances_originals/2011/03/comp_3_1_(0-00-14-03).jpg
+cp -n warehouse_old/2011/03/comp_3_1_\(0-00-14-03\).jpg glacier/performances_originals/2011/03/comp_3_1_\(0-00-14-03\).jpg
 cp -n warehouse_old/2011/03/147.jpg glacier/performances_originals/2011/03/147.jpg
 cp -n warehouse_old/2011/03/thetechnoroom5.jpg glacier/performances_originals/2011/03/thetechnoroom5.jpg
 cp -n warehouse_old/2011/03/vjsilverdave113.jpg glacier/performances_originals/2011/03/vjsilverdave113.jpg
@@ -2785,9 +2785,9 @@ cp -n warehouse_old/2011/02/field_abuse_soundscape_of_revolution14.jpg glacier/p
 cp -n warehouse_old/2011/02/picture_8.png glacier/performances_originals/2011/02/picture_8.png
 cp -n warehouse_old/2013/06/536366_547816135234486_1828481144_n-4_0.jpg glacier/performances_originals/2013/06/536366_547816135234486_1828481144_n-4_0.jpg
 cp -n warehouse_old/2011/02/killmunky_en_vivo_0376.png glacier/performances_originals/2011/02/killmunky_en_vivo_0376.png
-cp -n warehouse_old/2011/02/identity(videostill).jpg glacier/performances_originals/2011/02/identity(videostill).jpg
+cp -n warehouse_old/2011/02/identity\(videostill\).jpg glacier/performances_originals/2011/02/identity\(videostill\).jpg
 cp -n warehouse_old/2011/02/_dsc5879-1_piccola.jpg glacier/performances_originals/2011/02/_dsc5879-1_piccola.jpg
-cp -n warehouse_old/2011/03/mvi_7547_(0.01.20.15).jpg glacier/performances_originals/2011/03/mvi_7547_(0.01.20.15).jpg
+cp -n warehouse_old/2011/03/mvi_7547_\(0.01.20.15\).jpg glacier/performances_originals/2011/03/mvi_7547_\(0.01.20.15\).jpg
 cp -n warehouse_old/2011/02/interazionipure_800.jpg glacier/performances_originals/2011/02/interazionipure_800.jpg
 cp -n warehouse_old/2011/06/lpmminskmain33.jpg glacier/performances_originals/2011/06/lpmminskmain33.jpg
 cp -n warehouse_old/2011/03/cover400x30061.png glacier/performances_originals/2011/03/cover400x30061.png
@@ -2813,7 +2813,7 @@ cp -n warehouse_old/2011/02/parker_at_hob_w_disco_biscuits_1.jpg glacier/perform
 cp -n warehouse_old/2011/02/photo111.jpg glacier/performances_originals/2011/02/photo111.jpg
 cp -n warehouse_old/2011/02/1115.jpg glacier/performances_originals/2011/02/1115.jpg
 cp -n warehouse_old/2011/02/plaster_547.jpg glacier/performances_originals/2011/02/plaster_547.jpg
-cp -n warehouse_old/2011/02/vph12_(27)70.jpg glacier/performances_originals/2011/02/vph12_(27)70.jpg
+cp -n warehouse_old/2011/02/vph12_\(27\)70.jpg glacier/performances_originals/2011/02/vph12_\(27\)70.jpg
 cp -n warehouse_old/2011/02/immagine_388.png glacier/performances_originals/2011/02/immagine_388.png
 cp -n warehouse_old/2011/02/40717_436591008190_622163190_5225581_3069021_n64.jpg glacier/performances_originals/2011/02/40717_436591008190_622163190_5225581_3069021_n64.jpg
 cp -n warehouse_old/2011/02/50000.jpg glacier/performances_originals/2011/02/50000.jpg

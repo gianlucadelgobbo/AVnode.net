@@ -2480,7 +2480,7 @@ cp -n warehouse_old/2011/09/mee76.jpg glacier/users_originals/2011/09/mee76.jpg
 cp -n warehouse_old/2011/09/schermata_20110915_a_17.43.30.png glacier/users_originals/2011/09/schermata_20110915_a_17.43.30.png
 cp -n warehouse_old/2011/09/luca_pulvirenti.jpg glacier/users_originals/2011/09/luca_pulvirenti.jpg
 cp -n warehouse_old/2011/09/scendi_scendi_4657072848_b.jpg glacier/users_originals/2011/09/scendi_scendi_4657072848_b.jpg
-cp -n warehouse_old/2011/09/lunapic-124240502225056(3)92.gif glacier/users_originals/2011/09/lunapic-124240502225056(3)92.gif
+cp -n warehouse_old/2011/09/lunapic-124240502225056\(3\)92.gif glacier/users_originals/2011/09/lunapic-124240502225056\(3\)92.gif
 cp -n warehouse_old/2011/09/riga_tvtable_190.png glacier/users_originals/2011/09/riga_tvtable_190.png
 cp -n warehouse_old/2012/03/nic.jpg glacier/users_originals/2012/03/nic.jpg
 cp -n warehouse_old/2013/03/plumsfest2.jpg glacier/users_originals/2013/03/plumsfest2.jpg
@@ -2530,7 +2530,7 @@ cp -n warehouse_old/2011/07/mas_klang47.jpg glacier/users_originals/2011/07/mas_
 cp -n warehouse_old/2011/07/dna.jpg glacier/users_originals/2011/07/dna.jpg
 cp -n warehouse_old/2011/07/photo_louis_logodin2_1.jpg glacier/users_originals/2011/07/photo_louis_logodin2_1.jpg
 cp -n warehouse_old/2011/07/tvsuicide-logo50.jpg glacier/users_originals/2011/07/tvsuicide-logo50.jpg
-cp -n warehouse_old/2011/08/cma_(0-00-00-00).jpg glacier/users_originals/2011/08/cma_(0-00-00-00).jpg
+cp -n warehouse_old/2011/08/cma_\(0-00-00-00\).jpg glacier/users_originals/2011/08/cma_\(0-00-00-00\).jpg
 cp -n warehouse_old/2011/07/25470_1259939547875_1511262685_30653025_7677291_n88.jpg glacier/users_originals/2011/07/25470_1259939547875_1511262685_30653025_7677291_n88.jpg
 cp -n warehouse_old/2011/07/n108961096864_2123752_683024610.jpg glacier/users_originals/2011/07/n108961096864_2123752_683024610.jpg
 cp -n warehouse_old/2011/08/tenpoint.jpg glacier/users_originals/2011/08/tenpoint.jpg
@@ -2610,7 +2610,7 @@ cp -n warehouse_old/2011/06/dydic600.jpg glacier/users_originals/2011/06/dydic60
 cp -n warehouse_old/2011/06/picture_152.png glacier/users_originals/2011/06/picture_152.png
 cp -n warehouse_old/2011/06/03_americanflag.jpg glacier/users_originals/2011/06/03_americanflag.jpg
 cp -n warehouse_old/2011/06/parole-01-originale72dpi-smallsize17.jpg glacier/users_originals/2011/06/parole-01-originale72dpi-smallsize17.jpg
-cp -n warehouse_old/2011/06/mathreshka_logo_04-2_(640x640).jpg glacier/users_originals/2011/06/mathreshka_logo_04-2_(640x640).jpg
+cp -n warehouse_old/2011/06/mathreshka_logo_04-2_\(640x640\).jpg glacier/users_originals/2011/06/mathreshka_logo_04-2_\(640x640\).jpg
 cp -n warehouse_old/2011/07/av_.jpg glacier/users_originals/2011/07/av_.jpg
 cp -n warehouse_old/2011/06/sarah-a5341.jpg glacier/users_originals/2011/06/sarah-a5341.jpg
 cp -n warehouse_old/2011/06/v4w_logo_280x21019.png glacier/users_originals/2011/06/v4w_logo_280x21019.png
@@ -2930,7 +2930,7 @@ cp -n warehouse_old/2011/02/img_2040_lo_res.jpg glacier/users_originals/2011/02/
 cp -n warehouse_old/2011/03/spett.jpg glacier/users_originals/2011/03/spett.jpg
 cp -n warehouse_old/2011/04/140.jpg glacier/users_originals/2011/04/140.jpg
 cp -n warehouse_old/2011/02/txyz94.png glacier/users_originals/2011/02/txyz94.png
-cp -n warehouse_old/2011/02/dj_vid)47.jpg glacier/users_originals/2011/02/dj_vid)47.jpg
+cp -n warehouse_old/2011/02/dj_vid\)47.jpg glacier/users_originals/2011/02/dj_vid\)47.jpg
 cp -n warehouse_old/2011/02/peter_klip.jpg glacier/users_originals/2011/02/peter_klip.jpg
 cp -n warehouse_old/2011/02/france_en_greve_generale_bon.jpg glacier/users_originals/2011/02/france_en_greve_generale_bon.jpg
 cp -n warehouse_old/2011/04/266.jpg glacier/users_originals/2011/04/266.jpg
