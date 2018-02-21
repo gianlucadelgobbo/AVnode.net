@@ -1,5 +1,300 @@
 #!/bin/sh
 exec > warehousenew_galleries_log.txt 2>&1
+mkdir warehouse/videos/2018/02
+mkdir glacier/videos_previews/2018/02
+mkdir glacier/videos_originals/2018/02
+mkdir glacier/galleries/2018/02
+mkdir glacier/galleries/2018/01
+mkdir glacier/galleries/2017/12
+mkdir warehouse/videos/2018/01
+mkdir glacier/videos_previews/2018/01
+mkdir glacier/videos_originals/2018/01
+mkdir glacier/galleries/2017/09
+mkdir warehouse/videos/2017/09
+mkdir glacier/videos_previews/2017/09
+mkdir glacier/videos_originals/2017/09
+mkdir warehouse/videos/2017/07
+mkdir glacier/videos_previews/2017/07
+mkdir glacier/videos_originals/2017/07
+mkdir glacier/galleries/2017/11
+mkdir warehouse/videos/2017/11
+mkdir glacier/videos_previews/2017/11
+mkdir glacier/videos_originals/2017/11
+mkdir glacier/galleries/2017/08
+mkdir warehouse/videos/2017/10
+mkdir glacier/videos_previews/2017/10
+mkdir glacier/videos_originals/2017/10
+mkdir glacier/galleries/2017/07
+mkdir glacier/galleries/2017/06
+mkdir warehouse/videos/2017/06
+mkdir glacier/videos_previews/2017/06
+mkdir glacier/videos_originals/2017/06
+mkdir glacier/galleries/2017/05
+mkdir warehouse/videos/2017/05
+mkdir glacier/videos_previews/2017/05
+mkdir glacier/videos_originals/2017/05
+mkdir warehouse/videos/2017/04
+mkdir glacier/videos_previews/2017/04
+mkdir glacier/videos_originals/2017/04
+mkdir glacier/galleries/2017/04
+mkdir warehouse/videos/2017/03
+mkdir glacier/videos_previews/2017/03
+mkdir glacier/videos_originals/2017/03
+mkdir glacier/galleries/2017/03
+mkdir glacier/galleries/2017/02
+mkdir warehouse/videos/2017/02
+mkdir glacier/videos_previews/2017/02
+mkdir glacier/videos_originals/2017/02
+mkdir warehouse/videos/2017/01
+mkdir glacier/videos_previews/2017/01
+mkdir glacier/videos_originals/2017/01
+mkdir glacier/galleries/2017/01
+mkdir glacier/galleries/2016/09
+mkdir warehouse/videos/2016/10
+mkdir glacier/videos_previews/2016/10
+mkdir glacier/videos_originals/2016/10
+mkdir warehouse/videos/2016/11
+mkdir glacier/videos_previews/2016/11
+mkdir glacier/videos_originals/2016/11
+mkdir glacier/galleries/2016/06
+mkdir glacier/galleries/2016/05
+mkdir warehouse/videos/2016/09
+mkdir glacier/videos_previews/2016/09
+mkdir glacier/videos_originals/2016/09
+mkdir glacier/galleries/2016/04
+mkdir warehouse/videos/2016/04
+mkdir glacier/videos_previews/2016/04
+mkdir glacier/videos_originals/2016/04
+mkdir warehouse/videos/2016/03
+mkdir glacier/videos_previews/2016/03
+mkdir glacier/videos_originals/2016/03
+mkdir glacier/galleries/2016/03
+mkdir warehouse/videos/2016/02
+mkdir glacier/videos_previews/2016/02
+mkdir glacier/videos_originals/2016/02
+mkdir glacier/galleries/2016/02
+mkdir glacier/galleries/2016/01
+mkdir glacier/galleries/2015/12
+mkdir glacier/galleries/2015/11
+mkdir warehouse/videos/2015/11
+mkdir glacier/videos_previews/2015/11
+mkdir glacier/videos_originals/2015/11
+mkdir warehouse/videos/2015/10
+mkdir glacier/videos_previews/2015/10
+mkdir glacier/videos_originals/2015/10
+mkdir glacier/galleries/2015/10
+mkdir glacier/galleries/2015/09
+mkdir warehouse/videos/2015/09
+mkdir glacier/videos_previews/2015/09
+mkdir glacier/videos_originals/2015/09
+mkdir warehouse/videos/2015/08
+mkdir glacier/videos_previews/2015/08
+mkdir glacier/videos_originals/2015/08
+mkdir glacier/galleries/2015/08
+mkdir warehouse/videos/2015/07
+mkdir glacier/videos_previews/2015/07
+mkdir glacier/videos_originals/2015/07
+mkdir glacier/galleries/2015/07
+mkdir glacier/galleries/2015/06
+mkdir warehouse/videos/2015/06
+mkdir glacier/videos_previews/2015/06
+mkdir glacier/videos_originals/2015/06
+mkdir warehouse/videos/2015/05
+mkdir glacier/videos_previews/2015/05
+mkdir glacier/videos_originals/2015/05
+mkdir glacier/galleries/2015/05
+mkdir glacier/galleries/2015/04
+mkdir warehouse/videos/2015/04
+mkdir glacier/videos_previews/2015/04
+mkdir glacier/videos_originals/2015/04
+mkdir warehouse/videos/2015/03
+mkdir glacier/videos_previews/2015/03
+mkdir glacier/videos_originals/2015/03
+mkdir glacier/galleries/2015/03
+mkdir warehouse/videos/2015/02
+mkdir glacier/videos_previews/2015/02
+mkdir glacier/videos_originals/2015/02
+mkdir glacier/galleries/2015/02
+mkdir warehouse/videos/2014/10
+mkdir glacier/videos_previews/2014/10
+mkdir glacier/videos_originals/2014/10
+mkdir glacier/galleries/2014/10
+mkdir glacier/galleries/2014/09
+mkdir glacier/galleries/2014/08
+mkdir glacier/galleries/2014/11
+mkdir warehouse/videos/2014/08
+mkdir glacier/videos_previews/2014/08
+mkdir glacier/videos_originals/2014/08
+mkdir warehouse/videos/2015/01
+mkdir glacier/videos_previews/2015/01
+mkdir glacier/videos_originals/2015/01
+mkdir warehouse/videos/2014/09
+mkdir glacier/videos_previews/2014/09
+mkdir glacier/videos_originals/2014/09
+mkdir glacier/galleries/2014/07
+mkdir warehouse/videos/2014/07
+mkdir glacier/videos_previews/2014/07
+mkdir glacier/videos_originals/2014/07
+mkdir warehouse/videos/2014/06
+mkdir glacier/videos_previews/2014/06
+mkdir glacier/videos_originals/2014/06
+mkdir glacier/galleries/2014/05
+mkdir glacier/galleries/2014/06
+mkdir warehouse/videos/2014/05
+mkdir glacier/videos_previews/2014/05
+mkdir glacier/videos_originals/2014/05
+mkdir warehouse/videos/2014/04
+mkdir glacier/videos_previews/2014/04
+mkdir glacier/videos_originals/2014/04
+mkdir glacier/galleries/2014/04
+mkdir glacier/galleries/2014/03
+mkdir warehouse/videos/2014/03
+mkdir glacier/videos_previews/2014/03
+mkdir glacier/videos_originals/2014/03
+mkdir glacier/galleries/2014/02
+mkdir glacier/galleries/2013/12
+mkdir warehouse/videos/2014/02
+mkdir glacier/videos_previews/2014/02
+mkdir glacier/videos_originals/2014/02
+mkdir glacier/galleries/2014/01
+mkdir glacier/galleries/2013/11
+mkdir warehouse/videos/2013/11
+mkdir glacier/videos_previews/2013/11
+mkdir glacier/videos_originals/2013/11
+mkdir glacier/galleries/2013/09
+mkdir warehouse/videos/2013/10
+mkdir glacier/videos_previews/2013/10
+mkdir glacier/videos_originals/2013/10
+mkdir warehouse/videos/2013/09
+mkdir glacier/videos_previews/2013/09
+mkdir glacier/galleries/2013/10
+mkdir warehouse/videos/2013/08
+mkdir glacier/videos_previews/2013/08
+mkdir glacier/galleries/2013/08
+mkdir glacier/galleries/2013/07
+mkdir warehouse/videos/2013/07
+mkdir glacier/videos_previews/2013/07
+mkdir glacier/galleries/2013/06
+mkdir warehouse/videos/2013/06
+mkdir glacier/videos_previews/2013/06
+mkdir glacier/galleries/2013/05
+mkdir warehouse/videos/2013/05
+mkdir glacier/videos_previews/2013/05
+mkdir warehouse/videos/2013/04
+mkdir glacier/videos_previews/2013/04
+mkdir glacier/galleries/2013/04
+mkdir glacier/videos_originals/2013/04
+mkdir glacier/galleries/2013/03
+mkdir warehouse/videos/2013/03
+mkdir glacier/videos_previews/2013/03
+mkdir glacier/galleries/2013/02
+mkdir warehouse/videos/2013/02
+mkdir glacier/videos_previews/2013/02
+mkdir warehouse/videos/2013/01
+mkdir glacier/videos_previews/2013/01
+mkdir glacier/galleries/2013/01
+mkdir glacier/galleries/2012/12
+mkdir warehouse/videos/2012/12
+mkdir glacier/videos_previews/2012/12
+mkdir warehouse/videos/2012/11
+mkdir glacier/videos_previews/2012/11
+mkdir glacier/galleries/2012/11
+mkdir glacier/galleries/2010/07
+mkdir warehouse/videos/2012/10
+mkdir glacier/videos_previews/2012/10
+mkdir glacier/galleries/2012/10
+mkdir glacier/galleries/2012/07
+mkdir glacier/galleries/2012/09
+mkdir glacier/galleries/2012/06
+mkdir warehouse/videos/2012/06
+mkdir glacier/videos_previews/2012/06
+mkdir warehouse/videos/2012/05
+mkdir glacier/videos_previews/2012/05
+mkdir glacier/galleries/2012/05
+mkdir glacier/galleries/2012/04
+mkdir warehouse/videos/2012/04
+mkdir glacier/videos_previews/2012/04
+mkdir glacier/galleries/2012/03
+mkdir warehouse/videos/2012/03
+mkdir glacier/videos_previews/2012/03
+mkdir glacier/videos_originals/2012/03
+mkdir glacier/galleries/2012/02
+mkdir warehouse/videos/2012/02
+mkdir glacier/videos_previews/2012/02
+mkdir glacier/videos_originals/2012/02
+mkdir glacier/galleries/2012/01
+mkdir warehouse/videos/2012/01
+mkdir glacier/videos_previews/2012/01
+mkdir warehouse/videos/2011/10
+mkdir glacier/videos_previews/2011/10
+mkdir glacier/galleries/2011/11
+mkdir glacier/galleries/2011/12
+mkdir glacier/galleries/2011/10
+mkdir warehouse/videos/2011/11
+mkdir glacier/videos_previews/2011/11
+mkdir glacier/galleries/2011/07
+mkdir glacier/galleries/2011/09
+mkdir glacier/galleries/2011/08
+mkdir warehouse/videos/2011/09
+mkdir glacier/videos_previews/2011/09
+mkdir warehouse/videos/2011/08
+mkdir glacier/videos_previews/2011/08
+mkdir warehouse/videos/2011/07
+mkdir glacier/videos_previews/2011/07
+mkdir glacier/galleries/1970/01
+mkdir glacier/galleries/2011/06
+mkdir warehouse/videos/2011/06
+mkdir glacier/videos_previews/2011/06
+mkdir warehouse/videos/1970/01
+mkdir glacier/videos_previews/1970/01
+mkdir glacier/galleries/2010/03
+mkdir warehouse/videos/2010/02
+mkdir glacier/videos_previews/2010/02
+mkdir glacier/galleries/_audios
+mkdir glacier/galleries/2010/10
+mkdir glacier/galleries/2010/05
+mkdir glacier/galleries/2010/04
+mkdir glacier/galleries/2010/01
+mkdir warehouse/videos/2010/01
+mkdir glacier/videos_previews/2010/01
+mkdir glacier/videos_originals/2010/01
+mkdir glacier/galleries/_spot
+mkdir warehouse/videos/2010/03
+mkdir glacier/videos_previews/2010/03
+mkdir glacier/videos_originals/2010/03
+mkdir glacier/galleries/2011/02
+mkdir warehouse/videos/2010/04
+mkdir glacier/videos_previews/2010/04
+mkdir glacier/videos_originals/2010/04
+mkdir warehouse/videos/2010/05
+mkdir glacier/videos_previews/2010/05
+mkdir glacier/galleries/2010/06
+mkdir warehouse/videos/2010/06
+mkdir glacier/videos_previews/2010/06
+mkdir glacier/galleries/2010/09
+mkdir warehouse/videos/2010/09
+mkdir glacier/videos_previews/2010/09
+mkdir glacier/videos_originals/2010/09
+mkdir warehouse/videos/2010/10
+mkdir glacier/videos_previews/2010/10
+mkdir glacier/galleries/2011/01
+mkdir glacier/galleries/2010/11
+mkdir glacier/galleries/2010/12
+mkdir glacier/galleries/2011/05
+mkdir warehouse/videos/2011/01
+mkdir glacier/videos_previews/2011/01
+mkdir warehouse/videos/2011/02
+mkdir glacier/videos_previews/2011/02
+mkdir glacier/videos_originals/2011/02
+mkdir glacier/galleries/2011/03
+mkdir warehouse/videos/2011/03
+mkdir glacier/videos_previews/2011/03
+mkdir glacier/galleries/2011/04
+mkdir warehouse/videos/2011/04
+mkdir glacier/videos_previews/2011/04
+mkdir warehouse/videos/2011/05
+mkdir glacier/videos_previews/2011/05
+mkdir glacier/videos_originals/2011/06
 cp -n warehouse_old/2018/02/naciente-pruebass_mp4.mp4 warehouse/videos/2018/02/naciente-pruebass_mp4.mp4
 cp -n warehouse_old/2018/02/preview_files/naciente-pruebass_mp4.png glacier/videos_previews/2018/02/naciente-pruebass_mp4.png
 cp -n warehouse_old/2018/02/original_video/naciente-pruebass.mp4 glacier/videos_originals/2018/02/naciente-pruebass.mp4
@@ -25766,7 +26061,7 @@ cp -n warehouse_old/2011/07/vj512.mrmama.tv_demo_.mp4 warehouse/videos/2011/07/v
 cp -n warehouse_old/2011/07/preview_files/vj512.mrmama.tv_demo_.png glacier/videos_previews/2011/07/vj512.mrmama.tv_demo_.png
 cp -n warehouse_old/2011/07/vj512.mrmama.tv_demo_0_.mp4 warehouse/videos/2011/07/vj512.mrmama.tv_demo_0_.mp4
 cp -n warehouse_old/2011/07/preview_files/vj512.mrmama.tv_demo_0_.png glacier/videos_previews/2011/07/vj512.mrmama.tv_demo_0_.png
-cp -n warehouse_old/2011/07/l_/(3/).jpg glacier/galleries/2011/07/l_/(3/).jpg
+cp -n warehouse_old/2011/07/l_(3).jpg glacier/galleries/2011/07/l_3.jpg
 cp -n warehouse_old/2011/07/n108961096864_2123619_4844399.jpg glacier/galleries/2011/07/n108961096864_2123619_4844399.jpg
 cp -n warehouse_old/2011/07/n108961096864_2123751_3124257.jpg glacier/galleries/2011/07/n108961096864_2123751_3124257.jpg
 cp -n warehouse_old/2011/07/n108961096864_2123750_3603550.jpg glacier/galleries/2011/07/n108961096864_2123750_3603550.jpg
@@ -25970,7 +26265,7 @@ cp -n warehouse_old/2011/07/278481_224648717575288_164050963635064_683860_847906
 cp -n warehouse_old/2011/07/280181_224648784241948_164050963635064_683861_3250098_o81.jpg glacier/galleries/2011/07/280181_224648784241948_164050963635064_683861_3250098_o81.jpg
 cp -n warehouse_old/2011/07/5079_97851445137_695145137_1894197_105286_n.jpg glacier/galleries/2011/07/5079_97851445137_695145137_1894197_105286_n.jpg
 cp -n warehouse_old/2011/07/urban-spectrum-1.jpg glacier/galleries/2011/07/urban-spectrum-1.jpg
-cp -n warehouse_old/2011/07/eu-last2_/(0-01-20-07/).jpg glacier/galleries/2011/07/eu-last2_/(0-01-20-07/).jpg
+cp -n warehouse_old/2011/07/eu-last2_(0-01-20-07).jpg glacier/galleries/2011/07/eu-last2_0-01-20-07.jpg
 cp -n warehouse_old/2011/07/1.jpg glacier/galleries/2011/07/1.jpg
 cp -n warehouse_old/2011/07/synopsis-2.jpg glacier/galleries/2011/07/synopsis-2.jpg
 cp -n warehouse_old/2011/07/synopsis-3.jpg glacier/galleries/2011/07/synopsis-3.jpg
@@ -25979,7 +26274,7 @@ cp -n warehouse_old/2011/07/moby-5_0.jpg glacier/galleries/2011/07/moby-5_0.jpg
 cp -n warehouse_old/2011/07/moby-4.jpg glacier/galleries/2011/07/moby-4.jpg
 cp -n warehouse_old/2011/07/moby-6.jpg glacier/galleries/2011/07/moby-6.jpg
 cp -n warehouse_old/2011/07/urban-spectrum-92.jpg glacier/galleries/2011/07/urban-spectrum-92.jpg
-cp -n warehouse_old/2011/07/eu-last2_/(0-00-36-03/).jpg glacier/galleries/2011/07/eu-last2_/(0-00-36-03/).jpg
+cp -n warehouse_old/2011/07/eu-last2_(0-00-36-03).jpg glacier/galleries/2011/07/eu-last2_0-00-36-03.jpg
 cp -n warehouse_old/2011/07/10.jpg glacier/galleries/2011/07/10.jpg
 cp -n warehouse_old/2011/07/axsoma1.0_0_.mp4 warehouse/videos/2011/07/axsoma1.0_0_.mp4
 cp -n warehouse_old/2011/07/preview_files/axsoma1.0_0_.png glacier/videos_previews/2011/07/axsoma1.0_0_.png
@@ -40511,25 +40806,25 @@ cp -n warehouse_old/2011/03/feszek09_038.jpg glacier/galleries/2011/03/feszek09_
 cp -n warehouse_old/2011/03/un_uomoh264.mov glacier/galleries/2011/03/un_uomoh264.mov
 cp -n warehouse_old/2011/02/woofer-double-vjsuale.jpg glacier/galleries/2011/02/woofer-double-vjsuale.jpg
 cp -n warehouse_old/2011/03/12032011bbc78.jpg glacier/galleries/2011/03/12032011bbc78.jpg
-cp -n warehouse_old/2011/03/mvi_7547_/(0.01.20.15/)_0.jpg glacier/galleries/2011/03/mvi_7547_/(0.01.20.15/)_0.jpg
-cp -n warehouse_old/2011/03/mvi_7547_/(0.00.58.17/).jpg glacier/galleries/2011/03/mvi_7547_/(0.00.58.17/).jpg
+cp -n warehouse_old/2011/03/mvi_7547_(0.01.20.15)_0.jpg glacier/galleries/2011/03/mvi_7547_0.01.20.15_0.jpg
+cp -n warehouse_old/2011/03/mvi_7547_(0.00.58.17).jpg glacier/galleries/2011/03/mvi_7547_0.00.58.17.jpg
 cp -n warehouse_old/2011/02/img_0652.jpg glacier/galleries/2011/02/img_0652.jpg
 cp -n warehouse_old/2011/03/vlcsnap-2011-03-12-19h35m47s41.jpg glacier/galleries/2011/03/vlcsnap-2011-03-12-19h35m47s41.jpg
 cp -n warehouse_old/2011/03/vlcsnap-2011-03-12-19h37m03s102.jpg glacier/galleries/2011/03/vlcsnap-2011-03-12-19h37m03s102.jpg
 cp -n warehouse_old/2011/03/vlcsnap-2011-03-12-19h36m44s181.jpg glacier/galleries/2011/03/vlcsnap-2011-03-12-19h36m44s181.jpg
 cp -n warehouse_old/2011/03/vlcsnap-2011-03-12-19h37m30s123.jpg glacier/galleries/2011/03/vlcsnap-2011-03-12-19h37m30s123.jpg
 cp -n warehouse_old/2011/03/vlcsnap-2011-03-12-19h37m17s2.jpg glacier/galleries/2011/03/vlcsnap-2011-03-12-19h37m17s2.jpg
-cp -n warehouse_old/2011/03/mvi_7561_/(0.01.30.23/).jpg glacier/galleries/2011/03/mvi_7561_/(0.01.30.23/).jpg
-cp -n warehouse_old/2011/03/mvi_7547_/(0.00.54.02/).jpg glacier/galleries/2011/03/mvi_7547_/(0.00.54.02/).jpg
+cp -n warehouse_old/2011/03/mvi_7561_(0.01.30.23).jpg glacier/galleries/2011/03/mvi_7561_0.01.30.23.jpg
+cp -n warehouse_old/2011/03/mvi_7547_(0.00.54.02).jpg glacier/galleries/2011/03/mvi_7547_0.00.54.02.jpg
 cp -n warehouse_old/2011/03/screen_shot_2011-03-13_at_15.05.5558.png glacier/galleries/2011/03/screen_shot_2011-03-13_at_15.05.5558.png
 cp -n warehouse_old/2011/03/0-vcard-datasheet.png glacier/galleries/2011/03/0-vcard-datasheet.png
-cp -n warehouse_old/2011/03/datasheet-74s181/(sample/).mp4 warehouse/videos/2011/03/datasheet-74s181/(sample/).mp4
-cp -n warehouse_old/2011/03/preview_files/datasheet-74s181/(sample/).png glacier/videos_previews/2011/03/datasheet-74s181/(sample/).png
-cp -n warehouse_old/2011/03/mvi_7547_/(0.00.39.06/).jpg glacier/galleries/2011/03/mvi_7547_/(0.00.39.06/).jpg
-cp -n warehouse_old/2011/03/mvi_7547_/(0.00.54.02/).jpg glacier/galleries/2011/03/mvi_7547_/(0.00.54.02/).jpg
-cp -n warehouse_old/2011/03/mvi_7547_/(0.00.58.17/).jpg glacier/galleries/2011/03/mvi_7547_/(0.00.58.17/).jpg
-cp -n warehouse_old/2011/03/mvi_7561_/(0.01.30.23/).jpg glacier/galleries/2011/03/mvi_7561_/(0.01.30.23/).jpg
-cp -n warehouse_old/2011/03/mvi_7547_/(0.01.20.15/)_0.jpg glacier/galleries/2011/03/mvi_7547_/(0.01.20.15/)_0.jpg
+cp -n warehouse_old/2011/03/datasheet-74s181(sample).mp4 warehouse/videos/2011/03/datasheet-74s181sample.mp4
+cp -n warehouse_old/2011/03/preview_files/datasheet-74s181(sample).png glacier/videos_previews/2011/03/datasheet-74s181sample.png
+cp -n warehouse_old/2011/03/mvi_7547_(0.00.39.06).jpg glacier/galleries/2011/03/mvi_7547_0.00.39.06.jpg
+cp -n warehouse_old/2011/03/mvi_7547_(0.00.54.02).jpg glacier/galleries/2011/03/mvi_7547_0.00.54.02.jpg
+cp -n warehouse_old/2011/03/mvi_7547_(0.00.58.17).jpg glacier/galleries/2011/03/mvi_7547_0.00.58.17.jpg
+cp -n warehouse_old/2011/03/mvi_7561_(0.01.30.23).jpg glacier/galleries/2011/03/mvi_7561_0.01.30.23.jpg
+cp -n warehouse_old/2011/03/mvi_7547_(0.01.20.15)_0.jpg glacier/galleries/2011/03/mvi_7547_0.01.20.15_0.jpg
 cp -n warehouse_old/2011/03/164780_193520583996363_112208542127568_815539_4733797_n.jpg glacier/galleries/2011/03/164780_193520583996363_112208542127568_815539_4733797_n.jpg
 cp -n warehouse_old/2011/03/163758_193521180662970_112208542127568_815550_1734207_n.jpg glacier/galleries/2011/03/163758_193521180662970_112208542127568_815550_1734207_n.jpg
 cp -n warehouse_old/2011/03/167693_193520730663015_112208542127568_815546_4689667_n.jpg glacier/galleries/2011/03/167693_193520730663015_112208542127568_815546_4689667_n.jpg
@@ -40817,20 +41112,20 @@ cp -n warehouse_old/2011/03/img_1237.jpg glacier/galleries/2011/03/img_1237.jpg
 cp -n warehouse_old/2011/03/img_1254b.jpg glacier/galleries/2011/03/img_1254b.jpg
 cp -n warehouse_old/2011/03/img_1249b.jpg glacier/galleries/2011/03/img_1249b.jpg
 cp -n warehouse_old/2011/03/kronomorph01_logo_16005918.jpg glacier/galleries/2011/03/kronomorph01_logo_16005918.jpg
-cp -n warehouse_old/2011/03/allthethingsyouare_/(0-01-37-20/).jpg glacier/galleries/2011/03/allthethingsyouare_/(0-01-37-20/).jpg
+cp -n warehouse_old/2011/03/allthethingsyouare_(0-01-37-20).jpg glacier/galleries/2011/03/allthethingsyouare_0-01-37-20.jpg
 cp -n warehouse_old/2011/03/machinka005_-_interference.mp4 warehouse/videos/2011/03/machinka005_-_interference.mp4
 cp -n warehouse_old/2011/03/preview_files/machinka005_-_interference.png glacier/videos_previews/2011/03/machinka005_-_interference.png
-cp -n warehouse_old/2011/03/night_/(0-00-30-04/)_copy.jpg glacier/galleries/2011/03/night_/(0-00-30-04/)_copy.jpg
-cp -n warehouse_old/2011/03/night_/(0-00-55-00/)_copy.jpg glacier/galleries/2011/03/night_/(0-00-55-00/)_copy.jpg
-cp -n warehouse_old/2011/03/night_/(0-03-18-15/)_copy.jpg glacier/galleries/2011/03/night_/(0-03-18-15/)_copy.jpg
-cp -n warehouse_old/2011/03/night_/(0-01-12-20/)_copy.jpg glacier/galleries/2011/03/night_/(0-01-12-20/)_copy.jpg
-cp -n warehouse_old/2011/03/maanstanden_/(0-01-26-10/)_copy.jpg glacier/galleries/2011/03/maanstanden_/(0-01-26-10/)_copy.jpg
-cp -n warehouse_old/2011/03/day_/(0-00-10-02/)_copy.jpg glacier/galleries/2011/03/day_/(0-00-10-02/)_copy.jpg
-cp -n warehouse_old/2011/03/night_/(0-00-57-16/)_copy.jpg glacier/galleries/2011/03/night_/(0-00-57-16/)_copy.jpg
-cp -n warehouse_old/2011/03/interference_/(0-00-53-15/)_copy.jpg glacier/galleries/2011/03/interference_/(0-00-53-15/)_copy.jpg
-cp -n warehouse_old/2011/03/interference_/(0-00-36-22/)_copy.jpg glacier/galleries/2011/03/interference_/(0-00-36-22/)_copy.jpg
-cp -n warehouse_old/2011/03/allthethingsyouare_/(0-03-41-16/)_copy.jpg glacier/galleries/2011/03/allthethingsyouare_/(0-03-41-16/)_copy.jpg
-cp -n warehouse_old/2011/03/day_/(0-00-10-18/)_copy.jpg glacier/galleries/2011/03/day_/(0-00-10-18/)_copy.jpg
+cp -n warehouse_old/2011/03/night_(0-00-30-04)_copy.jpg glacier/galleries/2011/03/night_0-00-30-04_copy.jpg
+cp -n warehouse_old/2011/03/night_(0-00-55-00)_copy.jpg glacier/galleries/2011/03/night_0-00-55-00_copy.jpg
+cp -n warehouse_old/2011/03/night_(0-03-18-15)_copy.jpg glacier/galleries/2011/03/night_0-03-18-15_copy.jpg
+cp -n warehouse_old/2011/03/night_(0-01-12-20)_copy.jpg glacier/galleries/2011/03/night_0-01-12-20_copy.jpg
+cp -n warehouse_old/2011/03/maanstanden_(0-01-26-10)_copy.jpg glacier/galleries/2011/03/maanstanden_0-01-26-10_copy.jpg
+cp -n warehouse_old/2011/03/day_(0-00-10-02)_copy.jpg glacier/galleries/2011/03/day_0-00-10-02_copy.jpg
+cp -n warehouse_old/2011/03/night_(0-00-57-16)_copy.jpg glacier/galleries/2011/03/night_0-00-57-16_copy.jpg
+cp -n warehouse_old/2011/03/interference_(0-00-53-15)_copy.jpg glacier/galleries/2011/03/interference_0-00-53-15_copy.jpg
+cp -n warehouse_old/2011/03/interference_(0-00-36-22)_copy.jpg glacier/galleries/2011/03/interference_0-00-36-22_copy.jpg
+cp -n warehouse_old/2011/03/allthethingsyouare_(0-03-41-16)_copy.jpg glacier/galleries/2011/03/allthethingsyouare_0-03-41-16_copy.jpg
+cp -n warehouse_old/2011/03/day_(0-00-10-18)_copy.jpg glacier/galleries/2011/03/day_0-00-10-18_copy.jpg
 cp -n warehouse_old/2011/03/screen_shot_2011-03-06_at_4.45.12_pm26.png glacier/galleries/2011/03/screen_shot_2011-03-06_at_4.45.12_pm26.png
 cp -n warehouse_old/2011/03/5497878255_e7f0fc59dd_b[1].jpg glacier/galleries/2011/03/5497878255_e7f0fc59dd_b[1].jpg
 cp -n warehouse_old/2011/03/5498471856_d613935410_b[1].jpg glacier/galleries/2011/03/5498471856_d613935410_b[1].jpg
@@ -41399,7 +41694,7 @@ cp -n warehouse_old/2011/04/snapz_pro_x4drituals00538.jpg glacier/galleries/2011
 cp -n warehouse_old/2011/04/snapz_pro_x4drituals01090.jpg glacier/galleries/2011/04/snapz_pro_x4drituals01090.jpg
 cp -n warehouse_old/2011/04/snapz_pro_x4drituals009.jpg glacier/galleries/2011/04/snapz_pro_x4drituals009.jpg
 cp -n warehouse_old/2011/04/snapz_pro_x4drituals008.jpg glacier/galleries/2011/04/snapz_pro_x4drituals008.jpg
-cp -n warehouse_old/2011/05/demo_video_byzond_/(a.debronhe/).mpg glacier/galleries/2011/05/demo_video_byzond_/(a.debronhe/).mpg
+cp -n warehouse_old/2011/05/demo_video_byzond_(a.debronhe).mpg glacier/galleries/2011/05/demo_video_byzond_a.debronhe.mpg
 cp -n warehouse_old/2011/05/1minutes69_bodyscapes.mp4 warehouse/videos/2011/05/1minutes69_bodyscapes.mp4
 cp -n warehouse_old/2011/05/preview_files/1minutes69_bodyscapes.png glacier/videos_previews/2011/05/1minutes69_bodyscapes.png
 cp -n warehouse_old/2011/04/tapa2orig-1.mp4 warehouse/videos/2011/04/tapa2orig-1.mp4
@@ -42338,7 +42633,7 @@ cp -n warehouse_old/2011/06/p1010420.jpg glacier/galleries/2011/06/p1010420.jpg
 cp -n warehouse_old/2011/06/p1010433.jpg glacier/galleries/2011/06/p1010433.jpg
 cp -n warehouse_old/2011/06/p1010389.jpg glacier/galleries/2011/06/p1010389.jpg
 cp -n warehouse_old/2011/06/p1010388.jpg glacier/galleries/2011/06/p1010388.jpg
-cp -n warehouse_old/2011/06/225210_224271267583725_100000025606691_967482_640877_n_/(2/).jpg glacier/galleries/2011/06/225210_224271267583725_100000025606691_967482_640877_n_/(2/).jpg
+cp -n warehouse_old/2011/06/225210_224271267583725_100000025606691_967482_640877_n_(2).jpg glacier/galleries/2011/06/225210_224271267583725_100000025606691_967482_640877_n_2.jpg
 cp -n warehouse_old/2011/06/225565_187231864661897_167678186617265_522627_878471_n.jpg glacier/galleries/2011/06/225565_187231864661897_167678186617265_522627_878471_n.jpg
 cp -n warehouse_old/2011/06/242734_212838825413803_209380732426279_662675_5057704_o.jpg glacier/galleries/2011/06/242734_212838825413803_209380732426279_662675_5057704_o.jpg
 cp -n warehouse_old/2011/06/230170_186875714697512_167678186617265_520022_4889013_n.jpg glacier/galleries/2011/06/230170_186875714697512_167678186617265_520022_4889013_n.jpg
@@ -43262,3 +43557,4 @@ cp -n warehouse_old/2011/06/psth_raster.jpg glacier/galleries/2011/06/psth_raste
 cp -n warehouse_old/2011/06/lafull2_attractor65.jpg glacier/galleries/2011/06/lafull2_attractor65.jpg
 cp -n warehouse_old/2011/06/dmscomplete.jpg glacier/galleries/2011/06/dmscomplete.jpg
 cp -n warehouse_old/2011/06/ini-logo88.gif glacier/galleries/2011/06/ini-logo88.gif
+
