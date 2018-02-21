@@ -109,6 +109,12 @@ var PERFORMANCES = function() {
   //{permalink:'vector-vs-bitmap'}
   //db.performances.findOne({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}});
   //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}}).forEach(function(e) {
+  var folders = {};
+  function sanitizeOld(folder,defaultFolder) {
+    return folder.
+    replace("/mainImg/", defaultFolder).
+    replace("/_flxer/avatar/", defaultFolder);
+  }
   db.performances.find({}).forEach(function(e) {
     e.is_public = e.is_public===1;
     delete e.img_data_id;
@@ -120,10 +126,14 @@ var PERFORMANCES = function() {
     if (e.permalink) delete e.permalink;
 
     if (e.file) {
-      if (e.file.file) {
+      if (e.file.file && e.file.file.length>2) {
         e.image = e.file;
-        printjson("cp -n " + e.image.file.replace('/warehouse/', '/warehouse_old/') + " " + e.image.file.replace('/warehouse/', '/glacier/performances_originals/'));
+        e.image.fileflxer = e.image.file;
+        var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
         e.image.file = e.image.file.replace('/warehouse/', '/glacier/performances_originals/');
+        e.image.file = sanitizeOld(e.image.file, defaultFolder);
+        printjson("cp -n " + e.image.fileflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.image.file.replace('/warehouse/', '/glacier/performances_originals/'));
+        folders[e.image.file.substring(0, e.image.file.lastIndexOf('/'))] = 1;
       }
       delete e.file;
     }
