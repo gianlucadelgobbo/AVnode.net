@@ -122,7 +122,7 @@ router.get('/news/import', (req, res) => {
               findOne({slug: user.user_login}).
               select('_id').
               exec((err, person) => {
-                if (!person || !person._id) person = {'_id': '59fc8bb77a6c2a5d6100af39'};
+                if (!person || !person._id) person = {'_id': '5a8b7256a5755a000000d702'};
                 contausers++;
                 console.log('person');
                 console.log(person);
@@ -172,6 +172,7 @@ router.get('/news/import', (req, res) => {
     }
   });
 });
+
 router.download = (source, dest, callback) => {
   request.head(source, function(err, res, body){
     console.log('content-type:', res.headers['content-type']);
