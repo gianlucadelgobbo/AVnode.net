@@ -488,6 +488,110 @@ router.get('/files/eventformatsgenerator', (req, res) => {
   });
 });
 
+router.get('/files/newsimages', (req, res) => {
+  logger.debug('/admin/tools/files/newimages');
+  let data = [];
+  News.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, newss) => {
+    for (let news in newss) {
+      newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
+      newss[news].image.imageFormats = {};
+      newss[news].image.imageFormatsExists = {};
+      logger.debug(newss[news]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      //if (newss[news].image.exists) {
+        const serverPath = newss[news].image.file;
+        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = localPath.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
+        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
+        }
+      //}
+      data.push(newss[news].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Event images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/newsformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/newsimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  let adminsez = "news";
+  Event.
+  find({"image.file": {$exists: true}}).
+  limit(limit).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, newss) => {
+    for (let news in newss) {
+      newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
+      data.push(newss[news].image);
+    }
+    for (let news in newss) {
+      newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
+      newss[news].image.imageFormats = {};
+      newss[news].image.imageFormatsExists = {};
+      logger.debug(newss[news]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (newss[news].image.exists) {
+        const serverPath = newss[news].image.file;
+        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = localPath.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
+        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
+          if (!newss[news].image.imageFormatsExists[format]) {
+            let folder = newss[news].image.imageFormats[format].substring(0, newss[news].image.imageFormats[format].lastIndexOf('/'))
+            logger.debug(folder);
+            if (!fs.existsSync(global.appRoot+folder)) {
+              fs.mkdirSync(global.appRoot+folder);
+            }
+            sharp(global.appRoot+newss[news].image.file)
+            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+            .toFile(global.appRoot+newss[news].image.imageFormats[format], (err, info) => {
+              logger.debug(err);
+              logger.debug(info);
+            });
+          }
+        }
+      }
+      data.push(newss[news].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Event images generator',
+      currentUrl: req.path,
+      data: data,
+      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/newsformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
+    });
+  });
+});
+
 router.get('/files/playlistimages', (req, res) => {
   logger.debug('/admin/tools/files/playlistimages');
   let data = [];
