@@ -1,5 +1,5 @@
 #!/bin/sh
-exec > warehousenewuserspreview_log.txt 2>&1
+exec > warehousenew_users_log.txt 2>&1
 cp -n warehouse_old/2018/02/perfil-vj-infante_2.jpg glacier/users_originals/2018/02/perfil-vj-infante_2.jpg
 cp -n warehouse_old/2018/02/16142807_744552319044206_6144509398978714040_n.png glacier/users_originals/2018/02/16142807_744552319044206_6144509398978714040_n.png
 cp -n warehouse_old/2018/02/na.jpg glacier/users_originals/2018/02/na.jpg

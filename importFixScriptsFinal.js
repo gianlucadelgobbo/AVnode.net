@@ -83,18 +83,18 @@ var FOOTAGE = function() {
         e.media.originalflxer = e.media.originalflxer.substring(0, e.media.originalflxer.lastIndexOf('_')) + "." + extoriginal;
         e.media.original = e.media.originalflxer.replace('/warehouse/', '/glacier/footage_originals/').replace('/original_video/', '/');
         e.media.original = sanitizeOld(e.media.original, defaultFolder)
-        printjson("cp -n " + e.media.originalflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.media.original);
+        printjson("cp -n " + e.media.originalflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.media.original.replace('/glacier/', 'glacier/'));
       }
     }
     if (e.media.preview) {
       e.media.previewflxer = e.media.preview;
       e.media.preview = e.media.previewflxer.replace('/warehouse/', '/glacier/footage_previews/').replace('/preview_files/', '/');
       e.media.preview = sanitizeOld(e.media.preview, defaultFolder)
-      printjson("cp -n " + e.media.previewflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.media.preview);
+      printjson("cp -n " + e.media.previewflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.media.preview.replace('/glacier/', 'glacier/'));
     }
     e.media.file = e.media.file.replace('/warehouse/', '/warehouse/footage/');
     e.media.file = sanitizeOld(e.media.file, defaultFolder);
-    printjson("cp -n " + e.media.fileflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.media.file);
+    printjson("cp -n " + e.media.fileflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.media.file.replace('/glacier/', 'glacier/'));
 
     folders[e.media.file.substring(0, e.media.file.lastIndexOf('/'))] = 1;
     //printjson(e);
@@ -132,7 +132,7 @@ var PERFORMANCES = function() {
         var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
         e.image.file = e.image.file.replace('/warehouse/', '/glacier/performances_originals/');
         e.image.file = sanitizeOld(e.image.file, defaultFolder);
-        printjson("cp -n " + e.image.fileflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.image.file.replace('/warehouse/', '/glacier/performances_originals/'));
+        printjson("cp -n " + e.image.fileflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.image.file.replace('/warehouse/', 'glacier/performances_originals/'));
         folders[e.image.file.substring(0, e.image.file.lastIndexOf('/'))] = 1;
       }
       delete e.file;
@@ -307,7 +307,7 @@ var EVENTS = function() {
         var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
         e.image.file = e.image.file.replace('/warehouse/', '/glacier/events_originals/');
         e.image.file = sanitizeOld(e.image.file, defaultFolder);
-        printjson("cp -n " + e.image.fileflxer.replace('/warehouse/', '/warehouse_old/') + " " + e.image.file.replace('/warehouse/', '/glacier/events_originals/'));
+        printjson("cp -n " + e.image.fileflxer.replace('/warehouse/', 'warehouse_old/') + " " + e.image.file.replace('/warehouse/', 'glacier/events_originals/'));
         folders[e.image.file.substring(0, e.image.file.lastIndexOf('/'))] = 1;
       }
       delete e.file;
