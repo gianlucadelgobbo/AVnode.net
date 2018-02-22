@@ -29,6 +29,20 @@ router.get('/', (req, res) => {
   });
 });
 
+router.checkAndCreate = (folder, cb) => {
+  const folderA = folder.split('/');
+  let subfolder = '';
+
+  if (folderA.length) {
+    for (let a=1; a<folderA.length;a++) {
+      subfolder +=  `/${folderA[a]}`;
+      if (!fs.existsSync(global.appRoot + subfolder)) {
+        fs.mkdirSync(global.appRoot + subfolder);
+      }
+    }
+  }
+};
+
 router.get('/news/import', (req, res) => {
   logger.debug('/admin/tools/news/import');
   let page = (req.param.page ? req.param.page : 1);
@@ -258,16 +272,17 @@ router.get('/files/userformatsgenerator', (req, res) => {
           users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
           if (!users[user].image.imageFormatsExists[format]) {
             let folder = users[user].image.imageFormats[format].substring(0, users[user].image.imageFormats[format].lastIndexOf('/'))
-            logger.debug(folder);
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+users[user].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+users[user].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });  
+            });
             if (!fs.existsSync(global.appRoot+folder)) {
               fs.mkdirSync(global.appRoot+folder);
             }
-            sharp(global.appRoot+users[user].image.file)
-            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
-            .toFile(global.appRoot+users[user].image.imageFormats[format], (err, info) => {
-              logger.debug(err);
-              logger.debug(info);
-            });
           }
         }
       }
