@@ -214,15 +214,15 @@ router.get('/files/userimages', (req, res) => {
       logger.debug(users[user]);
       //console.log(config.cpanel[adminsez].sizes.image);
       //if (users[user].image.exists) {
-        const serverPath = users[user].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = users[user].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
@@ -260,15 +260,15 @@ router.get('/files/userformatsgenerator', (req, res) => {
       logger.debug(users[user]);
       //console.log(config.cpanel[adminsez].sizes.image);
       if (users[user].image.exists) {
-        const serverPath = users[user].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = users[user].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
@@ -316,15 +316,15 @@ router.get('/files/performanceimages', (req, res) => {
       logger.debug(performances[performance]);
       //console.log(config.cpanel[adminsez].sizes.image);
       //if (performances[performance].image.exists) {
-        const serverPath = performances[performance].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = performances[performance].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           performances[performance].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+performances[performance].image.imageFormats[format]);
@@ -362,15 +362,15 @@ router.get('/files/performanceformatsgenerator', (req, res) => {
       logger.debug(performances[performance]);
       //console.log(config.cpanel[adminsez].sizes.image);
       if (performances[performance].image.exists) {
-        const serverPath = performances[performance].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = performances[performance].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           performances[performance].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+performances[performance].image.imageFormats[format]);
@@ -415,15 +415,15 @@ router.get('/files/eventimages', (req, res) => {
       logger.debug(events[event]);
       //console.log(config.cpanel[adminsez].sizes.image);
       //if (events[event].image.exists) {
-        const serverPath = events[event].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = events[event].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           events[event].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+events[event].image.imageFormats[format]);
@@ -465,15 +465,15 @@ router.get('/files/eventformatsgenerator', (req, res) => {
       logger.debug(events[event]);
       //console.log(config.cpanel[adminsez].sizes.image);
       if (events[event].image.exists) {
-        const serverPath = events[event].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = events[event].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           events[event].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+events[event].image.imageFormats[format]);
@@ -518,15 +518,15 @@ router.get('/files/newsimages', (req, res) => {
       logger.debug(newss[news]);
       //console.log(config.cpanel[adminsez].sizes.image);
       //if (newss[news].image.exists) {
-        const serverPath = newss[news].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = newss[news].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
@@ -568,15 +568,15 @@ router.get('/files/newsformatsgenerator', (req, res) => {
       logger.debug(newss[news]);
       //console.log(config.cpanel[adminsez].sizes.image);
       if (newss[news].image.exists) {
-        const serverPath = newss[news].image.file;
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = localPath.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-        // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+        const file = newss[news].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].media.image.sizes) {
-          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
@@ -630,6 +630,18 @@ router.get('/files/playlistimages', (req, res) => {
 router.get('/files/footagefiles', (req, res) => {
   logger.debug('/admin/tools/files/footagefiles');
   let data = [];
+  const adminsez = 'footage';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
   Footage.
   find({"media.file": {$exists: true}}).
   lean().
@@ -637,16 +649,34 @@ router.get('/files/footagefiles', (req, res) => {
   exec((err, footages) => {
     for (let footage in footages) {
       footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
-      const serverPath = footages[footage].media.file;
-      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-      const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-      const localOriginalFileNameWithoutExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
-      const localOriginalFileNameExtension = localFileNameWithoutExtension.substring(localFileNameWithoutExtension.lastIndexOf('_') + 1);
+      footages[footage].media.imageFormats = {};
+      footages[footage].media.imageFormatsExists = {};
+      const file = footages[footage].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
+      } else {
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(footages[footage].media);
+        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
+      }
       if (footages[footage].media.preview) {
         //delete footages[footage].media.preview;
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        /*
         if (!footages[footage].media.previewexists) {
           let test = footages[footage].media.file.substring(0, footages[footage].media.file.lastIndexOf('.'))+".jpg";
           if (fs.existsSync(global.appRoot+test)) {
@@ -658,18 +688,19 @@ router.get('/files/footagefiles', (req, res) => {
         if (!footages[footage].media.previewexists) {
           let test = footages[footage].media.file.substring(0, footages[footage].media.file.lastIndexOf('.'))+".jpg";
           test = test.replace('/warehouse/','/warehouse_old/');
-          if (!fs.existsSync(global.appRoot+test)) {
+          if (fs.existsSync(global.appRoot+test)) {
             footages[footage].media.fsfix = 'mv '+global.appRoot+footages[footage].media.preview+' '+global.appRoot+test;
             footages[footage].media.previewexists = true;
             footages[footage].media.preview = test;
           }
         }
+        */
       } else {
-        //footages[footage].media.preview = localPath.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+localFileNameWithoutExtension+'.png';
+        //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
         //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
       }
-      if (localFileNameExtension=="mp4") {
-        footages[footage].media.original = localPath.replace('/warehouse/footage/', '/warehouse/footage_original/')+'/'+localOriginalFileNameWithoutExtension+'.'+localOriginalFileNameExtension;
+      if (fileExtension=="mp4") {
+        footages[footage].media.original = fileFolder.replace('/warehouse/footage/', '/glacier/footage_originals/')+'/'+originalFileName+'.'+originalFileExtension;
         footages[footage].media.originalexists = fs.existsSync(global.appRoot+footages[footage].media.original);
       }
       data.push(footages[footage].media);
@@ -694,21 +725,21 @@ router.get('/files/videofiles', (req, res) => {
   exec((err, videos) => {
     for (let video in videos) {
       videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
-      const serverPath = videos[video].media.file;
-      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')); // /warehouse/2017/03
-      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-      const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-      const localOriginalFileNameWithoutExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
-      const localOriginalFileNameExtension = localFileNameWithoutExtension.substring(localFileNameWithoutExtension.lastIndexOf('_') + 1);
+      const file = videos[video].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      const originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      const originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
       if (videos[video].media.preview) {
         //delete videos[video].media.preview;
         videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
       } else {
-        videos[video].media.preview = localPath.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+localFileNameWithoutExtension+'.png';
+        videos[video].media.preview = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+fileNameWithoutExtension+'.png';
         videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
       }
-      videos[video].media.original = localPath.replace('/warehouse/videos/', '/warehouse/videos_originals/')+'/'+localOriginalFileNameWithoutExtension+'.'+localOriginalFileNameExtension;
+      videos[video].media.original = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_originals/')+'/'+originalFileName+'.'+originalFileExtension;
       videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
       data.push(videos[video].media);
     }
