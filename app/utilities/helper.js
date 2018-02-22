@@ -39,7 +39,7 @@ const setIdentifier = () => {
 };
 
 const getStorageFolder = () => {
-  return `${process.cwd()}/${process.env.STORAGE}`;
+  //return `${process.cwd()}/${process.env.STORAGE}`;
 };
 const getPagination = (link, skip, limit, total) => {
   var pages = [];

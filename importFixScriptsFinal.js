@@ -630,15 +630,15 @@ var USERS = function() {
 
     delete e.stats;
     e.stats = {};
-    if (e.events && e.events.length) e.stats.events = new NumberInt(e.events.length);
-    if (e.performances && e.performances.length) e.stats.performances = new NumberInt(e.performances.length);
-    if (e.tvshows && e.tvshows.length) e.stats.tvshows = new NumberInt(e.tvshows.length);
-    if (e.playlists && e.playlists.length) e.stats.playlists = new NumberInt(e.playlists.length);
-    if (e.footage && e.footage.length) e.stats.footage = new NumberInt(e.footage.length);
-    if (e.galleries && e.galleries.length) e.stats.galleries = new NumberInt(e.galleries.length);
-    if (e.members && e.members.length) e.stats.members = new NumberInt(e.members.length);
+    if (e.events && e.events.length) e.stats.events = e.events.length;
+    if (e.performances && e.performances.length) e.stats.performances = e.performances.length;
+    if (e.tvshows && e.tvshows.length) e.stats.tvshows = e.tvshows.length;
+    if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
+    if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
+    if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
+    if (e.members && e.members.length) e.stats.members = e.members.length;
     if (e.crews && e.crews.length) {
-      e.stats.crews = new NumberInt(e.crews.length);
+      e.stats.crews = e.crews.length;
     } else if (e.crews && e.crews.length==0) {
       delete e.crews;
     }
@@ -1076,6 +1076,49 @@ var GALLERIES = function() {
       });  
     });  
   });
+}
+
+  // 11
+  db.news.find({}, {users: 1}).forEach(function(e) {
+    e.users.forEach(function(user) {
+      db.users.find({"_id": user}).forEach(function(user) {
+        if (!user.news) user.news = [];
+        user.news.push(e._id);
+        printjson(user.news);
+        db.users.save(user);
+      });  
+    });  
+  });
+
+  // GENERATE ALL NEWS!!!
+
+  // 12
+  db.users.find({}).forEach(function(e) {
+    e.stats = {};
+    if (e.events && e.events.length) e.stats.events = e.events.length;
+    if (e.performances && e.performances.length) e.stats.performances = e.performances.length;
+    if (e.news && e.news.length) e.stats.news = e.news.length;
+    if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
+    if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
+    if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
+    if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
+
+    if (e.is_crew && e.members && e.members.length) e.stats.members = e.members.length;
+    if (!e.is_crew && e.crews && e.crews.length) e.stats.crews = e.crews.length;
+
+    e.activity = 0;
+    e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
+    e.activity+= (e.stats.performances ? e.stats.performances * 3 : 0);
+    e.activity+= (e.stats.news ? e.stats.news                 * 1 : 0);
+    e.activity+= (e.stats.videos ? e.stats.videos             * 3 : 0);
+    e.activity+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
+    e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
+    e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
+
+    printjson(e.activity);
+    //printjson(e.stats);
+    db.users.save(e);
+  });  
 }
 
 var USERS_ADDRESSES = function() {
