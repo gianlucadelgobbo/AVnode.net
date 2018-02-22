@@ -1,5 +1,151 @@
 #!/bin/sh
 exec > warehousenew_tvshows_log.txt 2>&1
+mkdir glacier/videos_originals
+mkdir glacier/videos_originals/2011
+mkdir glacier/videos_originals/2011/07
+mkdir glacier/videos_originals/2011/08
+mkdir glacier/videos_originals/2012
+mkdir glacier/videos_originals/2012/07
+mkdir glacier/videos_previews
+mkdir glacier/videos_previews/1970
+mkdir glacier/videos_previews/1970/01
+mkdir glacier/videos_previews/2004
+mkdir glacier/videos_previews/2004/10
+mkdir glacier/videos_previews/2004/12
+mkdir glacier/videos_previews/2005
+mkdir glacier/videos_previews/2005/08
+mkdir glacier/videos_previews/2005/09
+mkdir glacier/videos_previews/2005/11
+mkdir glacier/videos_previews/2005/12
+mkdir glacier/videos_previews/2006
+mkdir glacier/videos_previews/2006/02
+mkdir glacier/videos_previews/2006/06
+mkdir glacier/videos_previews/2006/09
+mkdir glacier/videos_previews/2006/10
+mkdir glacier/videos_previews/2006/11
+mkdir glacier/videos_previews/2006/12
+mkdir glacier/videos_previews/2007
+mkdir glacier/videos_previews/2007/01
+mkdir glacier/videos_previews/2007/02
+mkdir glacier/videos_previews/2007/04
+mkdir glacier/videos_previews/2007/05
+mkdir glacier/videos_previews/2007/06
+mkdir glacier/videos_previews/2007/08
+mkdir glacier/videos_previews/2007/09
+mkdir glacier/videos_previews/2007/09/
+mkdir glacier/videos_previews/2007/10
+mkdir glacier/videos_previews/2007/11
+mkdir glacier/videos_previews/2007/12
+mkdir glacier/videos_previews/2008
+mkdir glacier/videos_previews/2008/01
+mkdir glacier/videos_previews/2008/02
+mkdir glacier/videos_previews/2008/03
+mkdir glacier/videos_previews/2008/04
+mkdir glacier/videos_previews/2008/05
+mkdir glacier/videos_previews/2008/06
+mkdir glacier/videos_previews/2008/07
+mkdir glacier/videos_previews/2008/08
+mkdir glacier/videos_previews/2008/09
+mkdir glacier/videos_previews/2008/09/
+mkdir glacier/videos_previews/2009
+mkdir glacier/videos_previews/2009/01
+mkdir glacier/videos_previews/2009/02
+mkdir glacier/videos_previews/2009/03
+mkdir glacier/videos_previews/2009/04
+mkdir glacier/videos_previews/2009/05
+mkdir glacier/videos_previews/2009/06
+mkdir glacier/videos_previews/2009/07
+mkdir glacier/videos_previews/2009/08
+mkdir glacier/videos_previews/2009/09
+mkdir glacier/videos_previews/2009/10
+mkdir glacier/videos_previews/2009/11
+mkdir glacier/videos_previews/2010
+mkdir glacier/videos_previews/2010/01
+mkdir glacier/videos_previews/2011
+mkdir glacier/videos_previews/2011/03
+mkdir glacier/videos_previews/2011/04
+mkdir glacier/videos_previews/2011/05
+mkdir glacier/videos_previews/2011/07
+mkdir glacier/videos_previews/2011/08
+mkdir glacier/videos_previews/2011/11
+mkdir glacier/videos_previews/2011/11/
+mkdir glacier/videos_previews/2012
+mkdir glacier/videos_previews/2012/03
+mkdir glacier/videos_previews/2012/03/
+mkdir glacier/videos_previews/2012/04
+mkdir glacier/videos_previews/2012/05
+mkdir glacier/videos_previews/2012/06
+mkdir glacier/videos_previews/2012/07
+mkdir glacier/videos_previews/2013
+mkdir glacier/videos_previews/2013/09
+mkdir warehouse/videos
+mkdir warehouse/videos/1970
+mkdir warehouse/videos/1970/01
+mkdir warehouse/videos/2004
+mkdir warehouse/videos/2004/10
+mkdir warehouse/videos/2004/12
+mkdir warehouse/videos/2005
+mkdir warehouse/videos/2005/08
+mkdir warehouse/videos/2005/09
+mkdir warehouse/videos/2005/11
+mkdir warehouse/videos/2005/12
+mkdir warehouse/videos/2006
+mkdir warehouse/videos/2006/02
+mkdir warehouse/videos/2006/06
+mkdir warehouse/videos/2006/09
+mkdir warehouse/videos/2006/10
+mkdir warehouse/videos/2006/11
+mkdir warehouse/videos/2006/12
+mkdir warehouse/videos/2007
+mkdir warehouse/videos/2007/01
+mkdir warehouse/videos/2007/02
+mkdir warehouse/videos/2007/04
+mkdir warehouse/videos/2007/05
+mkdir warehouse/videos/2007/06
+mkdir warehouse/videos/2007/08
+mkdir warehouse/videos/2007/09
+mkdir warehouse/videos/2007/10
+mkdir warehouse/videos/2007/11
+mkdir warehouse/videos/2007/12
+mkdir warehouse/videos/2008
+mkdir warehouse/videos/2008/01
+mkdir warehouse/videos/2008/02
+mkdir warehouse/videos/2008/03
+mkdir warehouse/videos/2008/04
+mkdir warehouse/videos/2008/05
+mkdir warehouse/videos/2008/06
+mkdir warehouse/videos/2008/07
+mkdir warehouse/videos/2008/08
+mkdir warehouse/videos/2008/09
+mkdir warehouse/videos/2009
+mkdir warehouse/videos/2009/01
+mkdir warehouse/videos/2009/02
+mkdir warehouse/videos/2009/03
+mkdir warehouse/videos/2009/04
+mkdir warehouse/videos/2009/05
+mkdir warehouse/videos/2009/06
+mkdir warehouse/videos/2009/07
+mkdir warehouse/videos/2009/08
+mkdir warehouse/videos/2009/09
+mkdir warehouse/videos/2009/10
+mkdir warehouse/videos/2009/11
+mkdir warehouse/videos/2010
+mkdir warehouse/videos/2010/01
+mkdir warehouse/videos/2011
+mkdir warehouse/videos/2011/03
+mkdir warehouse/videos/2011/04
+mkdir warehouse/videos/2011/05
+mkdir warehouse/videos/2011/07
+mkdir warehouse/videos/2011/08
+mkdir warehouse/videos/2011/11
+mkdir warehouse/videos/2012
+mkdir warehouse/videos/2012/03
+mkdir warehouse/videos/2012/04
+mkdir warehouse/videos/2012/05
+mkdir warehouse/videos/2012/06
+mkdir warehouse/videos/2012/07
+mkdir warehouse/videos/2013
+mkdir warehouse/videos/2013/09 
 cp -n warehouse_old/2013/09/preview_files/giaso_short_0_.png glacier/videos_previews/2013/09/giaso_short_0_.png
 cp -n warehouse_old/2013/09/giaso_short_0_.mp4 /warehouse/videos/2013/09/giaso_short_0_.mp4
 cp -n warehouse_old/2013/09/preview_files/be-here-master_.png glacier/videos_previews/2013/09/be-here-master_.png
@@ -303,8 +449,8 @@ cp -n warehouse_old/_videos/babylon_promo_0.jpg glacier/videos_previews/2009/11/
 cp -n warehouse_old/_videos/babylon_promo_0.flv /warehouse/videos/2009/11/babylon_promo_0.flv
 cp -n warehouse_old/2011/03/preview_files/vjin_banda_baader-meinhof_.png glacier/videos_previews/2011/03/vjin_banda_baader-meinhof_.png
 cp -n warehouse_old/2011/03/vjin_banda_baader-meinhof.mp4 /warehouse/videos/2011/03/vjin_banda_baader-meinhof.mp4
-cp -n warehouse_old/2011/03/preview_files/datasheet-74s181(sample)_mp4.png glacier/videos_previews/2011/03/datasheet-74s181(sample)_mp4.png
-cp -n warehouse_old/2011/03/datasheet-74s181(sample).mp4 /warehouse/videos/2011/03/datasheet-74s181(sample).mp4
+cp -n warehouse_old/2011/03/preview_files/datasheet-74s181\\(sample\\)_mp4.png glacier/videos_previews/2011/03/datasheet-74s181sample_mp4.png
+cp -n warehouse_old/2011/03/datasheet-74s181\\(sample\\).mp4 /warehouse/videos/2011/03/datasheet-74s181sample.mp4
 cp -n warehouse_old/_flxer/liveset/boysnoize1.jpg glacier/videos_previews/2009/11/boysnoize1.jpg
 cp -n warehouse_old/_flxer/liveset/boysnoize1.flv /warehouse/videos/2009/11/boysnoize1.flv
 cp -n warehouse_old/_videos/boys_noize_1st_time_in_roma.jpg glacier/videos_previews/2009/11/boys_noize_1st_time_in_roma.jpg
