@@ -13,6 +13,8 @@
             li.list-inline-item!=__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
           if data.stats.crews
             li.list-inline-item!=__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
+          if data.stats.members
+            li.list-inline-item!=__('Members')+" (<span>"+data.stats.members+"</span>)"    
         ul.performer_stats_list.performer_stats_list_2.list-inline
           if data.stats.footage
             li.list-inline-item!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"

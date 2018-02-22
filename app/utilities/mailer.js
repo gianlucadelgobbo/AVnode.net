@@ -110,7 +110,7 @@ module.exports.sendMsgEmail = (options, data, cb) => {
       to: options.to
     },
     locals: {
-      link: process.env.BASE,
+      link: "https://dev.avnode.net/",
       msg: data.msg
     }
   }).then(info => logger.info('sendMsgEmail sent', info)).catch(err => cb(err));
