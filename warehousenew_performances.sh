@@ -1,5 +1,125 @@
 #!/bin/sh
 exec > warehousenew_performances_log.txt 2>&1
+mkdir glacier/performances_originals
+mkdir glacier/performances_originals/2007
+mkdir glacier/performances_originals/2007/05
+mkdir glacier/performances_originals/2007/06
+mkdir glacier/performances_originals/2007/07
+mkdir glacier/performances_originals/2007/08
+mkdir glacier/performances_originals/2007/09
+mkdir glacier/performances_originals/2007/11
+mkdir glacier/performances_originals/2007/12
+mkdir glacier/performances_originals/2008
+mkdir glacier/performances_originals/2008/01
+mkdir glacier/performances_originals/2008/02
+mkdir glacier/performances_originals/2008/03
+mkdir glacier/performances_originals/2008/04
+mkdir glacier/performances_originals/2008/05
+mkdir glacier/performances_originals/2008/06
+mkdir glacier/performances_originals/2008/07
+mkdir glacier/performances_originals/2008/08
+mkdir glacier/performances_originals/2008/10
+mkdir glacier/performances_originals/2009
+mkdir glacier/performances_originals/2009/02
+mkdir glacier/performances_originals/2009/04
+mkdir glacier/performances_originals/2009/05
+mkdir glacier/performances_originals/2009/07
+mkdir glacier/performances_originals/2009/08
+mkdir glacier/performances_originals/2009/09
+mkdir glacier/performances_originals/2009/10
+mkdir glacier/performances_originals/2009/12
+mkdir glacier/performances_originals/2010
+mkdir glacier/performances_originals/2010/01
+mkdir glacier/performances_originals/2010/02
+mkdir glacier/performances_originals/2010/03
+mkdir glacier/performances_originals/2010/04
+mkdir glacier/performances_originals/2010/05
+mkdir glacier/performances_originals/2010/06
+mkdir glacier/performances_originals/2010/07
+mkdir glacier/performances_originals/2010/09
+mkdir glacier/performances_originals/2010/10
+mkdir glacier/performances_originals/2010/11
+mkdir glacier/performances_originals/2011
+mkdir glacier/performances_originals/2011/01
+mkdir glacier/performances_originals/2011/02
+mkdir glacier/performances_originals/2011/03
+mkdir glacier/performances_originals/2011/04
+mkdir glacier/performances_originals/2011/05
+mkdir glacier/performances_originals/2011/06
+mkdir glacier/performances_originals/2011/07
+mkdir glacier/performances_originals/2011/08
+mkdir glacier/performances_originals/2011/09
+mkdir glacier/performances_originals/2012
+mkdir glacier/performances_originals/2012/01
+mkdir glacier/performances_originals/2012/02
+mkdir glacier/performances_originals/2012/03
+mkdir glacier/performances_originals/2012/04
+mkdir glacier/performances_originals/2012/05
+mkdir glacier/performances_originals/2012/06
+mkdir glacier/performances_originals/2012/07
+mkdir glacier/performances_originals/2012/08
+mkdir glacier/performances_originals/2012/10
+mkdir glacier/performances_originals/2012/11
+mkdir glacier/performances_originals/2012/12
+mkdir glacier/performances_originals/2013
+mkdir glacier/performances_originals/2013/01
+mkdir glacier/performances_originals/2013/02
+mkdir glacier/performances_originals/2013/03
+mkdir glacier/performances_originals/2013/04
+mkdir glacier/performances_originals/2013/05
+mkdir glacier/performances_originals/2013/06
+mkdir glacier/performances_originals/2013/07
+mkdir glacier/performances_originals/2013/08
+mkdir glacier/performances_originals/2013/09
+mkdir glacier/performances_originals/2013/10
+mkdir glacier/performances_originals/2013/11
+mkdir glacier/performances_originals/2014
+mkdir glacier/performances_originals/2014/03
+mkdir glacier/performances_originals/2014/04
+mkdir glacier/performances_originals/2014/05
+mkdir glacier/performances_originals/2014/06
+mkdir glacier/performances_originals/2014/07
+mkdir glacier/performances_originals/2014/08
+mkdir glacier/performances_originals/2014/09
+mkdir glacier/performances_originals/2014/10
+mkdir glacier/performances_originals/2014/11
+mkdir glacier/performances_originals/2015
+mkdir glacier/performances_originals/2015/01
+mkdir glacier/performances_originals/2015/02
+mkdir glacier/performances_originals/2015/03
+mkdir glacier/performances_originals/2015/04
+mkdir glacier/performances_originals/2015/05
+mkdir glacier/performances_originals/2015/06
+mkdir glacier/performances_originals/2015/07
+mkdir glacier/performances_originals/2015/08
+mkdir glacier/performances_originals/2015/09
+mkdir glacier/performances_originals/2015/10
+mkdir glacier/performances_originals/2015/11
+mkdir glacier/performances_originals/2015/12
+mkdir glacier/performances_originals/2016
+mkdir glacier/performances_originals/2016/01
+mkdir glacier/performances_originals/2016/02
+mkdir glacier/performances_originals/2016/03
+mkdir glacier/performances_originals/2016/04
+mkdir glacier/performances_originals/2016/05
+mkdir glacier/performances_originals/2016/06
+mkdir glacier/performances_originals/2016/07
+mkdir glacier/performances_originals/2017
+mkdir glacier/performances_originals/2017/01
+mkdir glacier/performances_originals/2017/02
+mkdir glacier/performances_originals/2017/03
+mkdir glacier/performances_originals/2017/04
+mkdir glacier/performances_originals/2017/05
+mkdir glacier/performances_originals/2017/06
+mkdir glacier/performances_originals/2017/07
+mkdir glacier/performances_originals/2017/08
+mkdir glacier/performances_originals/2017/09
+mkdir glacier/performances_originals/2017/10
+mkdir glacier/performances_originals/2017/11
+mkdir glacier/performances_originals/2017/12
+mkdir glacier/performances_originals/2018
+mkdir glacier/performances_originals/2018/01
+mkdir glacier/performances_originals/2018/02
 cp -n warehouse_old/2018/02/if-project-baner.jpg /glacier/performances_originals/2018/02/if-project-baner.jpg
 cp -n warehouse_old/2018/01/captura-de-pantalla-2018-01-30-a-las-121912-pm_0.png /glacier/performances_originals/2018/01/captura-de-pantalla-2018-01-30-a-las-121912-pm_0.png
 cp -n warehouse_old/2018/01/catch-me.jpg /glacier/performances_originals/2018/01/catch-me.jpg
@@ -2425,7 +2545,7 @@ cp -n warehouse_old/2011/07/umbrella97.png /glacier/performances_originals/2011/
 cp -n warehouse_old/2011/07/stevevaifestival2.jpg /glacier/performances_originals/2011/07/stevevaifestival2.jpg
 cp -n warehouse_old/2011/07/filerenamed_13219791488980.png /glacier/performances_originals/2011/07/filerenamed_13219791488980.png
 cp -n warehouse_old/2011/07/215351_126410497434260_100001959323837_187500_5549480_n.jpg /glacier/performances_originals/2011/07/215351_126410497434260_100001959323837_187500_5549480_n.jpg
-cp -n warehouse_old/2011/07/cma_(0-00-00-00).jpg /glacier/performances_originals/2011/07/cma_(0-00-00-00).jpg
+cp -n warehouse_old/2011/07/cma_\\(0-00-00-00\\).jpg /glacier/performances_originals/2011/07/cma_0-00-00-00.jpg
 cp -n warehouse_old/2011/07/back40.jpg /glacier/performances_originals/2011/07/back40.jpg
 cp -n warehouse_old/2011/07/filerenamed_13219791488978.png /glacier/performances_originals/2011/07/filerenamed_13219791488978.png
 cp -n warehouse_old/2011/07/living_room88.jpg /glacier/performances_originals/2011/07/living_room88.jpg
@@ -2502,7 +2622,7 @@ cp -n warehouse_old/2011/07/-07-11_в_19.2289.jpg /glacier/performances_original
 cp -n warehouse_old/2011/07/guillaume-martial-imagescom0279.jpg /glacier/performances_originals/2011/07/guillaume-martial-imagescom0279.jpg
 cp -n warehouse_old/2011/07/sdim0533.jpg /glacier/performances_originals/2011/07/sdim0533.jpg
 cp -n warehouse_old/2011/07/beahero_300.jpg /glacier/performances_originals/2011/07/beahero_300.jpg
-cp -n warehouse_old/2011/07/andy_phone(2).png /glacier/performances_originals/2011/07/andy_phone(2).png
+cp -n warehouse_old/2011/07/andy_phone\\(2\\).png /glacier/performances_originals/2011/07/andy_phone2.png
 cp -n warehouse_old/2012/03/captura-de-pantalla-2011-06-27-a-las-220212_1.png /glacier/performances_originals/2012/03/captura-de-pantalla-2011-06-27-a-las-220212_1.png
 cp -n warehouse_old/2011/07/press_livemoon_01_web42.jpg /glacier/performances_originals/2011/07/press_livemoon_01_web42.jpg
 cp -n warehouse_old/2011/06/1_non_phenomena_still_198.jpg /glacier/performances_originals/2011/06/1_non_phenomena_still_198.jpg
@@ -2704,7 +2824,7 @@ cp -n warehouse_old/2011/03/foto_representa_corisco.jpg /glacier/performances_or
 cp -n warehouse_old/2011/03/4659_88857198307_554393307_1837629_4463704_n.jpg /glacier/performances_originals/2011/03/4659_88857198307_554393307_1837629_4463704_n.jpg
 cp -n warehouse_old/2011/03/logo-pikilipita-vj-hero_0.png /glacier/performances_originals/2011/03/logo-pikilipita-vj-hero_0.png
 cp -n warehouse_old/2011/03/dada_110.jpg /glacier/performances_originals/2011/03/dada_110.jpg
-cp -n warehouse_old/2011/03/comp_3_1_(0-00-14-03).jpg /glacier/performances_originals/2011/03/comp_3_1_(0-00-14-03).jpg
+cp -n warehouse_old/2011/03/comp_3_1_\\(0-00-14-03\\).jpg /glacier/performances_originals/2011/03/comp_3_1_0-00-14-03.jpg
 cp -n warehouse_old/2011/03/147.jpg /glacier/performances_originals/2011/03/147.jpg
 cp -n warehouse_old/2011/03/thetechnoroom5.jpg /glacier/performances_originals/2011/03/thetechnoroom5.jpg
 cp -n warehouse_old/2011/03/vjsilverdave113.jpg /glacier/performances_originals/2011/03/vjsilverdave113.jpg
@@ -2785,9 +2905,9 @@ cp -n warehouse_old/2011/02/field_abuse_soundscape_of_revolution14.jpg /glacier/
 cp -n warehouse_old/2011/02/picture_8.png /glacier/performances_originals/2011/02/picture_8.png
 cp -n warehouse_old/2013/06/536366_547816135234486_1828481144_n-4_0.jpg /glacier/performances_originals/2013/06/536366_547816135234486_1828481144_n-4_0.jpg
 cp -n warehouse_old/2011/02/killmunky_en_vivo_0376.png /glacier/performances_originals/2011/02/killmunky_en_vivo_0376.png
-cp -n warehouse_old/2011/02/identity(videostill).jpg /glacier/performances_originals/2011/02/identity(videostill).jpg
+cp -n warehouse_old/2011/02/identity\\(videostill\\).jpg /glacier/performances_originals/2011/02/identityvideostill.jpg
 cp -n warehouse_old/2011/02/_dsc5879-1_piccola.jpg /glacier/performances_originals/2011/02/_dsc5879-1_piccola.jpg
-cp -n warehouse_old/2011/03/mvi_7547_(0.01.20.15).jpg /glacier/performances_originals/2011/03/mvi_7547_(0.01.20.15).jpg
+cp -n warehouse_old/2011/03/mvi_7547_\\(0.01.20.15\\).jpg /glacier/performances_originals/2011/03/mvi_7547_0.01.20.15.jpg
 cp -n warehouse_old/2011/02/interazionipure_800.jpg /glacier/performances_originals/2011/02/interazionipure_800.jpg
 cp -n warehouse_old/2011/06/lpmminskmain33.jpg /glacier/performances_originals/2011/06/lpmminskmain33.jpg
 cp -n warehouse_old/2011/03/cover400x30061.png /glacier/performances_originals/2011/03/cover400x30061.png
@@ -2813,7 +2933,7 @@ cp -n warehouse_old/2011/02/parker_at_hob_w_disco_biscuits_1.jpg /glacier/perfor
 cp -n warehouse_old/2011/02/photo111.jpg /glacier/performances_originals/2011/02/photo111.jpg
 cp -n warehouse_old/2011/02/1115.jpg /glacier/performances_originals/2011/02/1115.jpg
 cp -n warehouse_old/2011/02/plaster_547.jpg /glacier/performances_originals/2011/02/plaster_547.jpg
-cp -n warehouse_old/2011/02/vph12_(27)70.jpg /glacier/performances_originals/2011/02/vph12_(27)70.jpg
+cp -n warehouse_old/2011/02/vph12_\\(27\\)70.jpg /glacier/performances_originals/2011/02/vph12_2770.jpg
 cp -n warehouse_old/2011/02/immagine_388.png /glacier/performances_originals/2011/02/immagine_388.png
 cp -n warehouse_old/2011/02/40717_436591008190_622163190_5225581_3069021_n64.jpg /glacier/performances_originals/2011/02/40717_436591008190_622163190_5225581_3069021_n64.jpg
 cp -n warehouse_old/2011/02/50000.jpg /glacier/performances_originals/2011/02/50000.jpg

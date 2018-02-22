@@ -29,6 +29,22 @@ router.get('/', (req, res) => {
   });
 });
 
+router.checkAndCreate = (folder, cb) => {
+  const folderA = folder.split('/');
+  let subfolder = '';
+
+  if (folderA.length) {
+    for (let a=1; a<folderA.length;a++) {
+      subfolder +=  `/${folderA[a]}`;
+      console.log(subfolder);
+      if (!fs.existsSync(global.appRoot + subfolder)) {
+        fs.mkdirSync(global.appRoot + subfolder);
+      }
+    }
+  }
+  cb();
+};
+
 router.get('/news/import', (req, res) => {
   logger.debug('/admin/tools/news/import');
   let page = (req.param.page ? req.param.page : 1);
@@ -257,17 +273,18 @@ router.get('/files/userformatsgenerator', (req, res) => {
         for(let format in config.cpanel[adminsez].media.image.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
           if (!users[user].image.imageFormatsExists[format]) {
-            let folder = users[user].image.imageFormats[format].substring(0, users[user].image.imageFormats[format].lastIndexOf('/'))
-            logger.debug(folder);
+            const folder = users[user].image.imageFormats[format].substring(0, users[user].image.imageFormats[format].lastIndexOf('/'))
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+users[user].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+users[user].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });  
+            });
             if (!fs.existsSync(global.appRoot+folder)) {
               fs.mkdirSync(global.appRoot+folder);
             }
-            sharp(global.appRoot+users[user].image.file)
-            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
-            .toFile(global.appRoot+users[user].image.imageFormats[format], (err, info) => {
-              logger.debug(err);
-              logger.debug(info);
-            });
           }
         }
       }
@@ -359,15 +376,13 @@ router.get('/files/performanceformatsgenerator', (req, res) => {
           performances[performance].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+performances[performance].image.imageFormats[format]);
           if (!performances[performance].image.imageFormatsExists[format]) {
             let folder = performances[performance].image.imageFormats[format].substring(0, performances[performance].image.imageFormats[format].lastIndexOf('/'))
-            logger.debug(folder);
-            if (!fs.existsSync(global.appRoot+folder)) {
-              fs.mkdirSync(global.appRoot+folder);
-            }
-            sharp(global.appRoot+performances[performance].image.file)
-            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
-            .toFile(global.appRoot+performances[performance].image.imageFormats[format], (err, info) => {
-              logger.debug(err);
-              logger.debug(info);
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+performances[performance].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+performances[performance].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });
             });
           }
         }
@@ -387,6 +402,7 @@ router.get('/files/performanceformatsgenerator', (req, res) => {
 router.get('/files/eventimages', (req, res) => {
   logger.debug('/admin/tools/files/eventimages');
   let data = [];
+  let adminsez = "event";
   Event.
   find({"image.file": {$exists: true}}).
   lean().
@@ -463,15 +479,13 @@ router.get('/files/eventformatsgenerator', (req, res) => {
           events[event].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+events[event].image.imageFormats[format]);
           if (!events[event].image.imageFormatsExists[format]) {
             let folder = events[event].image.imageFormats[format].substring(0, events[event].image.imageFormats[format].lastIndexOf('/'))
-            logger.debug(folder);
-            if (!fs.existsSync(global.appRoot+folder)) {
-              fs.mkdirSync(global.appRoot+folder);
-            }
-            sharp(global.appRoot+events[event].image.file)
-            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
-            .toFile(global.appRoot+events[event].image.imageFormats[format], (err, info) => {
-              logger.debug(err);
-              logger.debug(info);
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+events[event].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+events[event].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });
             });
           }
         }
@@ -491,6 +505,7 @@ router.get('/files/eventformatsgenerator', (req, res) => {
 router.get('/files/newsimages', (req, res) => {
   logger.debug('/admin/tools/files/newimages');
   let data = [];
+  let adminsez = "news";
   News.
   find({"image.file": {$exists: true}}).
   lean().
@@ -521,7 +536,7 @@ router.get('/files/newsimages', (req, res) => {
     }
     console.log(req.path);
     res.render('admin/tools/files/showall', {
-      title: 'Event images',
+      title: 'News images',
       currentUrl: req.path,
       data: data,
       script: false
@@ -535,7 +550,7 @@ router.get('/files/newsformatsgenerator', (req, res) => {
   var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
   let data = [];
   let adminsez = "news";
-  Event.
+  News.
   find({"image.file": {$exists: true}}).
   limit(limit).
   skip(skip).
@@ -567,15 +582,13 @@ router.get('/files/newsformatsgenerator', (req, res) => {
           newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
           if (!newss[news].image.imageFormatsExists[format]) {
             let folder = newss[news].image.imageFormats[format].substring(0, newss[news].image.imageFormats[format].lastIndexOf('/'))
-            logger.debug(folder);
-            if (!fs.existsSync(global.appRoot+folder)) {
-              fs.mkdirSync(global.appRoot+folder);
-            }
-            sharp(global.appRoot+newss[news].image.file)
-            .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
-            .toFile(global.appRoot+newss[news].image.imageFormats[format], (err, info) => {
-              logger.debug(err);
-              logger.debug(info);
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+newss[news].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+newss[news].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });
             });
           }
         }
@@ -584,10 +597,10 @@ router.get('/files/newsformatsgenerator', (req, res) => {
     }
     console.log(req.path);
     res.render('admin/tools/files/showall', {
-      title: 'Event images generator',
+      title: 'News images generator',
       currentUrl: req.path,
       data: data,
-      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/newsformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/newsformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
     });
   });
 });

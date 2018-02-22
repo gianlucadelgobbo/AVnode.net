@@ -1,5 +1,159 @@
 #!/bin/sh
 exec > warehousenew_users_log.txt 2>&1
+mkdir glacier/users_originals
+mkdir glacier/users_originals/2006
+mkdir glacier/users_originals/2006/05
+mkdir glacier/users_originals/2006/06
+mkdir glacier/users_originals/2006/07
+mkdir glacier/users_originals/2006/08
+mkdir glacier/users_originals/2006/09
+mkdir glacier/users_originals/2006/10
+mkdir glacier/users_originals/2006/11
+mkdir glacier/users_originals/2006/12
+mkdir glacier/users_originals/2007
+mkdir glacier/users_originals/2007/01
+mkdir glacier/users_originals/2007/02
+mkdir glacier/users_originals/2007/03
+mkdir glacier/users_originals/2007/04
+mkdir glacier/users_originals/2007/05
+mkdir glacier/users_originals/2007/06
+mkdir glacier/users_originals/2007/07
+mkdir glacier/users_originals/2007/08
+mkdir glacier/users_originals/2007/09
+mkdir glacier/users_originals/2007/10
+mkdir glacier/users_originals/2007/11
+mkdir glacier/users_originals/2007/12
+mkdir glacier/users_originals/2008
+mkdir glacier/users_originals/2008/01
+mkdir glacier/users_originals/2008/02
+mkdir glacier/users_originals/2008/03
+mkdir glacier/users_originals/2008/04
+mkdir glacier/users_originals/2008/05
+mkdir glacier/users_originals/2008/06
+mkdir glacier/users_originals/2008/07
+mkdir glacier/users_originals/2008/08
+mkdir glacier/users_originals/2008/09
+mkdir glacier/users_originals/2008/10
+mkdir glacier/users_originals/2008/11
+mkdir glacier/users_originals/2008/12
+mkdir glacier/users_originals/2009
+mkdir glacier/users_originals/2009/01
+mkdir glacier/users_originals/2009/02
+mkdir glacier/users_originals/2009/03
+mkdir glacier/users_originals/2009/04
+mkdir glacier/users_originals/2009/05
+mkdir glacier/users_originals/2009/06
+mkdir glacier/users_originals/2009/07
+mkdir glacier/users_originals/2009/08
+mkdir glacier/users_originals/2009/09
+mkdir glacier/users_originals/2009/10
+mkdir glacier/users_originals/2009/11
+mkdir glacier/users_originals/2009/12
+mkdir glacier/users_originals/2010
+mkdir glacier/users_originals/2010/01
+mkdir glacier/users_originals/2010/02
+mkdir glacier/users_originals/2010/03
+mkdir glacier/users_originals/2010/04
+mkdir glacier/users_originals/2010/05
+mkdir glacier/users_originals/2010/06
+mkdir glacier/users_originals/2010/07
+mkdir glacier/users_originals/2010/08
+mkdir glacier/users_originals/2010/09
+mkdir glacier/users_originals/2010/10
+mkdir glacier/users_originals/2010/11
+mkdir glacier/users_originals/2010/12
+mkdir glacier/users_originals/2011
+mkdir glacier/users_originals/2011/01
+mkdir glacier/users_originals/2011/02
+mkdir glacier/users_originals/2011/03
+mkdir glacier/users_originals/2011/04
+mkdir glacier/users_originals/2011/05
+mkdir glacier/users_originals/2011/06
+mkdir glacier/users_originals/2011/07
+mkdir glacier/users_originals/2011/08
+mkdir glacier/users_originals/2011/09
+mkdir glacier/users_originals/2011/10
+mkdir glacier/users_originals/2011/11
+mkdir glacier/users_originals/2011/12
+mkdir glacier/users_originals/2012
+mkdir glacier/users_originals/2012/01
+mkdir glacier/users_originals/2012/02
+mkdir glacier/users_originals/2012/03
+mkdir glacier/users_originals/2012/04
+mkdir glacier/users_originals/2012/05
+mkdir glacier/users_originals/2012/06
+mkdir glacier/users_originals/2012/07
+mkdir glacier/users_originals/2012/08
+mkdir glacier/users_originals/2012/09
+mkdir glacier/users_originals/2012/10
+mkdir glacier/users_originals/2012/11
+mkdir glacier/users_originals/2012/12
+mkdir glacier/users_originals/2013
+mkdir glacier/users_originals/2013/01
+mkdir glacier/users_originals/2013/02
+mkdir glacier/users_originals/2013/03
+mkdir glacier/users_originals/2013/04
+mkdir glacier/users_originals/2013/05
+mkdir glacier/users_originals/2013/06
+mkdir glacier/users_originals/2013/07
+mkdir glacier/users_originals/2013/08
+mkdir glacier/users_originals/2013/09
+mkdir glacier/users_originals/2013/10
+mkdir glacier/users_originals/2013/11
+mkdir glacier/users_originals/2013/12
+mkdir glacier/users_originals/2014
+mkdir glacier/users_originals/2014/01
+mkdir glacier/users_originals/2014/02
+mkdir glacier/users_originals/2014/03
+mkdir glacier/users_originals/2014/04
+mkdir glacier/users_originals/2014/05
+mkdir glacier/users_originals/2014/06
+mkdir glacier/users_originals/2014/07
+mkdir glacier/users_originals/2014/08
+mkdir glacier/users_originals/2014/09
+mkdir glacier/users_originals/2014/10
+mkdir glacier/users_originals/2014/11
+mkdir glacier/users_originals/2014/12
+mkdir glacier/users_originals/2015
+mkdir glacier/users_originals/2015/01
+mkdir glacier/users_originals/2015/02
+mkdir glacier/users_originals/2015/03
+mkdir glacier/users_originals/2015/04
+mkdir glacier/users_originals/2015/05
+mkdir glacier/users_originals/2015/06
+mkdir glacier/users_originals/2015/07
+mkdir glacier/users_originals/2015/08
+mkdir glacier/users_originals/2015/09
+mkdir glacier/users_originals/2015/10
+mkdir glacier/users_originals/2015/11
+mkdir glacier/users_originals/2015/12
+mkdir glacier/users_originals/2016
+mkdir glacier/users_originals/2016/01
+mkdir glacier/users_originals/2016/02
+mkdir glacier/users_originals/2016/03
+mkdir glacier/users_originals/2016/04
+mkdir glacier/users_originals/2016/05
+mkdir glacier/users_originals/2016/06
+mkdir glacier/users_originals/2016/07
+mkdir glacier/users_originals/2016/08
+mkdir glacier/users_originals/2016/11
+mkdir glacier/users_originals/2016/12
+mkdir glacier/users_originals/2017
+mkdir glacier/users_originals/2017/01
+mkdir glacier/users_originals/2017/02
+mkdir glacier/users_originals/2017/03
+mkdir glacier/users_originals/2017/04
+mkdir glacier/users_originals/2017/05
+mkdir glacier/users_originals/2017/06
+mkdir glacier/users_originals/2017/07
+mkdir glacier/users_originals/2017/08
+mkdir glacier/users_originals/2017/09
+mkdir glacier/users_originals/2017/10
+mkdir glacier/users_originals/2017/11
+mkdir glacier/users_originals/2017/12
+mkdir glacier/users_originals/2018
+mkdir glacier/users_originals/2018/01
+mkdir glacier/users_originals/2018/02
 cp -n warehouse_old/2018/02/perfil-vj-infante_2.jpg glacier/users_originals/2018/02/perfil-vj-infante_2.jpg
 cp -n warehouse_old/2018/02/16142807_744552319044206_6144509398978714040_n.png glacier/users_originals/2018/02/16142807_744552319044206_6144509398978714040_n.png
 cp -n warehouse_old/2018/02/na.jpg glacier/users_originals/2018/02/na.jpg
@@ -2480,7 +2634,7 @@ cp -n warehouse_old/2011/09/mee76.jpg glacier/users_originals/2011/09/mee76.jpg
 cp -n warehouse_old/2011/09/schermata_20110915_a_17.43.30.png glacier/users_originals/2011/09/schermata_20110915_a_17.43.30.png
 cp -n warehouse_old/2011/09/luca_pulvirenti.jpg glacier/users_originals/2011/09/luca_pulvirenti.jpg
 cp -n warehouse_old/2011/09/scendi_scendi_4657072848_b.jpg glacier/users_originals/2011/09/scendi_scendi_4657072848_b.jpg
-cp -n warehouse_old/2011/09/lunapic-124240502225056(3)92.gif glacier/users_originals/2011/09/lunapic-124240502225056(3)92.gif
+cp -n warehouse_old/2011/09/lunapic-124240502225056\\(3\\)92.gif glacier/users_originals/2011/09/lunapic-124240502225056392.gif
 cp -n warehouse_old/2011/09/riga_tvtable_190.png glacier/users_originals/2011/09/riga_tvtable_190.png
 cp -n warehouse_old/2012/03/nic.jpg glacier/users_originals/2012/03/nic.jpg
 cp -n warehouse_old/2013/03/plumsfest2.jpg glacier/users_originals/2013/03/plumsfest2.jpg
@@ -2530,7 +2684,7 @@ cp -n warehouse_old/2011/07/mas_klang47.jpg glacier/users_originals/2011/07/mas_
 cp -n warehouse_old/2011/07/dna.jpg glacier/users_originals/2011/07/dna.jpg
 cp -n warehouse_old/2011/07/photo_louis_logodin2_1.jpg glacier/users_originals/2011/07/photo_louis_logodin2_1.jpg
 cp -n warehouse_old/2011/07/tvsuicide-logo50.jpg glacier/users_originals/2011/07/tvsuicide-logo50.jpg
-cp -n warehouse_old/2011/08/cma_(0-00-00-00).jpg glacier/users_originals/2011/08/cma_(0-00-00-00).jpg
+cp -n warehouse_old/2011/08/cma_\\(0-00-00-00\\).jpg glacier/users_originals/2011/08/cma_0-00-00-00.jpg
 cp -n warehouse_old/2011/07/25470_1259939547875_1511262685_30653025_7677291_n88.jpg glacier/users_originals/2011/07/25470_1259939547875_1511262685_30653025_7677291_n88.jpg
 cp -n warehouse_old/2011/07/n108961096864_2123752_683024610.jpg glacier/users_originals/2011/07/n108961096864_2123752_683024610.jpg
 cp -n warehouse_old/2011/08/tenpoint.jpg glacier/users_originals/2011/08/tenpoint.jpg
@@ -2610,7 +2764,7 @@ cp -n warehouse_old/2011/06/dydic600.jpg glacier/users_originals/2011/06/dydic60
 cp -n warehouse_old/2011/06/picture_152.png glacier/users_originals/2011/06/picture_152.png
 cp -n warehouse_old/2011/06/03_americanflag.jpg glacier/users_originals/2011/06/03_americanflag.jpg
 cp -n warehouse_old/2011/06/parole-01-originale72dpi-smallsize17.jpg glacier/users_originals/2011/06/parole-01-originale72dpi-smallsize17.jpg
-cp -n warehouse_old/2011/06/mathreshka_logo_04-2_(640x640).jpg glacier/users_originals/2011/06/mathreshka_logo_04-2_(640x640).jpg
+cp -n warehouse_old/2011/06/mathreshka_logo_04-2_\\(640x640\\).jpg glacier/users_originals/2011/06/mathreshka_logo_04-2_640x640.jpg
 cp -n warehouse_old/2011/07/av_.jpg glacier/users_originals/2011/07/av_.jpg
 cp -n warehouse_old/2011/06/sarah-a5341.jpg glacier/users_originals/2011/06/sarah-a5341.jpg
 cp -n warehouse_old/2011/06/v4w_logo_280x21019.png glacier/users_originals/2011/06/v4w_logo_280x21019.png
@@ -2930,7 +3084,7 @@ cp -n warehouse_old/2011/02/img_2040_lo_res.jpg glacier/users_originals/2011/02/
 cp -n warehouse_old/2011/03/spett.jpg glacier/users_originals/2011/03/spett.jpg
 cp -n warehouse_old/2011/04/140.jpg glacier/users_originals/2011/04/140.jpg
 cp -n warehouse_old/2011/02/txyz94.png glacier/users_originals/2011/02/txyz94.png
-cp -n warehouse_old/2011/02/dj_vid)47.jpg glacier/users_originals/2011/02/dj_vid)47.jpg
+cp -n warehouse_old/2011/02/dj_vid\\)47.jpg glacier/users_originals/2011/02/dj_vid47.jpg
 cp -n warehouse_old/2011/02/peter_klip.jpg glacier/users_originals/2011/02/peter_klip.jpg
 cp -n warehouse_old/2011/02/france_en_greve_generale_bon.jpg glacier/users_originals/2011/02/france_en_greve_generale_bon.jpg
 cp -n warehouse_old/2011/04/266.jpg glacier/users_originals/2011/04/266.jpg
