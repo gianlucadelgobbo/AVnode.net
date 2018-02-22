@@ -36,6 +36,7 @@ router.checkAndCreate = (folder, cb) => {
   if (folderA.length) {
     for (let a=1; a<folderA.length;a++) {
       subfolder +=  `/${folderA[a]}`;
+      console.log(subfolder);
       if (!fs.existsSync(global.appRoot + subfolder)) {
         fs.mkdirSync(global.appRoot + subfolder);
       }
@@ -401,6 +402,7 @@ router.get('/files/performanceformatsgenerator', (req, res) => {
 router.get('/files/eventimages', (req, res) => {
   logger.debug('/admin/tools/files/eventimages');
   let data = [];
+  let adminsez = "event";
   Event.
   find({"image.file": {$exists: true}}).
   lean().
@@ -503,6 +505,7 @@ router.get('/files/eventformatsgenerator', (req, res) => {
 router.get('/files/newsimages', (req, res) => {
   logger.debug('/admin/tools/files/newimages');
   let data = [];
+  let adminsez = "news";
   News.
   find({"image.file": {$exists: true}}).
   lean().
@@ -533,7 +536,7 @@ router.get('/files/newsimages', (req, res) => {
     }
     console.log(req.path);
     res.render('admin/tools/files/showall', {
-      title: 'Event images',
+      title: 'News images',
       currentUrl: req.path,
       data: data,
       script: false
@@ -547,7 +550,7 @@ router.get('/files/newsformatsgenerator', (req, res) => {
   var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
   let data = [];
   let adminsez = "news";
-  Event.
+  News.
   find({"image.file": {$exists: true}}).
   limit(limit).
   skip(skip).
@@ -594,10 +597,10 @@ router.get('/files/newsformatsgenerator', (req, res) => {
     }
     console.log(req.path);
     res.render('admin/tools/files/showall', {
-      title: 'Event images generator',
+      title: 'News images generator',
       currentUrl: req.path,
       data: data,
-      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/newsformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/newsformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
     });
   });
 });
