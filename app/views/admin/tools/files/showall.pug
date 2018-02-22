@@ -13,10 +13,10 @@ block content
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.preview
               !="<br />"
-              !=global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.original
               !="<br />"
-              !=global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.files
               !="<br />File: "+item.files.file
               !="<br />originalFile: "+item.files.originalFile
@@ -36,10 +36,10 @@ block content
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.preview
               !="<br />"
-              !=global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.original
               !="<br />"
-              !=global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.files
               !="<br />File: "+item.files.file
               !="<br />originalFile: "+item.files.originalFile
