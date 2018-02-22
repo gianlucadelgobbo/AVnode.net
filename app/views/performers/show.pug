@@ -14,8 +14,11 @@ block title
   .container
     .row
       .col-sm-12
-        .performer_map_wrapper
-          .miss="lat and lng coordinates for each place"
+        .performer_map_wrapper         
+          h3.miss="Coordinates. Please place them in the google maps code (show.pug / line 399)" 
+          each address in data.addresses
+            p=address.geometry.lng
+            p=address.geometry.lat
           script(src='https://maps.googleapis.com/maps/api/js?key=&extension=.js')
           script(src='https://cdn.mapkit.io/v1/infobox.js')
           link(href='https://cdn.mapkit.io/v1/infobox.css', rel='stylesheet')
@@ -392,7 +395,7 @@ block title
               }
               var bounds = new google.maps.LatLngBounds();
               var mapElement = document.getElementById('performer_map');
-              var map = new google.maps.Map(mapElement, mapOptions);
+              var map = new google.maps.Map(mapElement, mapOptions);              
               var locations = [
               {"lat":41.90278349999999,
               "lng":12.496365500000024,
