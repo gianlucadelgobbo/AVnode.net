@@ -138,19 +138,20 @@ app.use(routes);
 // FIXME
 // Blocks pug exceptions, do we need it at all?
 //
+/*
 app.use(function (err, req, res, _next) {
   if (err.isBoom) {
     req.flash('errors', { msg: err.message });
     return res.redirect('back');
   }
 });
-
+*/
 // FIXME
 // What was this about?
 //
 // error middleware for errors that occurred in middleware
 // declared before this
-
+/*
 app.use(function onerror(err, req, res, next) {
   // happens on user not logged in  
   if (err) {
@@ -158,7 +159,7 @@ app.use(function onerror(err, req, res, next) {
     //throw err;
   }
 });
-
+*/
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const compiler = webpack(webpackConfig);
