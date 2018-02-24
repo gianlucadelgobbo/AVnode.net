@@ -4,7 +4,7 @@ block content
   .container
     form(method='post')
       input(type='hidden', name='_csrf', value=_csrf)
-      input(type='hidden', name='next', value=redirect)
+      input(type='hidden', name='returnTo', value=returnTo)
       .form-group
         label(for='email')=__('Email')
         input.form-control(type='email', name='email', id='email', placeholder=__('example@foo.bar'), autofocus, required)

@@ -208,25 +208,6 @@ dataprovider.list = (req, res, section, model) => {
           labels: config.sections[section].labels,
           data: data
         });
-        /* C
-        res.render(section + '/list', {
-          title: title,
-          info: info,
-          section: section,
-          total: total,
-          path: path,
-          sort: sorting,
-          filter: filter,
-          skip: skip,
-          page: page,
-          pages: pages,
-          result: events,
-          categories: config.sections[section].categories,
-          orderings: config.sections[section].orders,
-          user: req.user,
-          _h: _h
-        });
-        */
       }
     });
   }

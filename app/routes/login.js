@@ -7,21 +7,23 @@ const User = mongoose.model('User');
 
 
 router.get('/', (req, res) => {
-  logger.debug('passport.loginredirect req:' + req.query.next);
-  var redirect = req.query.next ? req.query.next : "/";
+  var returnTo = req.query.returnTo ? req.query.returnTo : req.session.returnTo ? req.session.returnTo : "/";
+  logger.debug('passport.loginredirect req:' + returnTo);
   if (req.user) {
-    return res.redirect(redirect);
+    return res.redirect (returnTo);
   }
   res.render('login', {
-    title: __('Login'), redirect: redirect
+    title: __('Login'),
+    returnTo: returnTo
   });
 });
 
 // FIXME: userController.postLoginSchema
 //validationConfig.validate()
 router.post('/', (req, res, next) => {
-  logger.debug('passport.loginredirect req:' + req.body.next);
-  var redirect = req.body.next ? req.body.next : "/";
+  const returnTo = req.session.returnTo ? req.session.returnTo : req.body.returnTo ? req.body.returnTo : "/";
+
+  logger.debug('passport.loginredirect req:' + req.body.returnTo);
   
   logger.debug('passport.authenticate req:' + JSON.stringify(req.body.email));
 
@@ -35,16 +37,17 @@ router.post('/', (req, res, next) => {
       logger.debug('trying on flxer with email:' + JSON.stringify(req.body.email));
 
       req.flash('errors', info);
-      return res.redirect(redirect);
+      return res.redirect(returnTo);
     }
     req.logIn(user, (err) => {
       if (err) {
         logger.debug('passport.authenticate req.logIn error:' + JSON.stringify(err));
         return next(err);
       }
+      delete req.session.returnTo;
       logger.info('passport.authenticate auth success');
       req.flash('success', { msg: __('You are logged in.') });
-      res.redirect(redirect);
+      res.redirect(returnTo);
     });
   })(req, res, next);
 });

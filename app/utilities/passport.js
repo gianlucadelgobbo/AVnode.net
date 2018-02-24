@@ -23,7 +23,7 @@ passport.deserializeUser((id, done) => {
 passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
   logger.debug('passport.use:' + email);
 
-  User.findOne({ email: email.toLowerCase() }, (err, user) => {
+  User.findOne({ email: email.toLowerCase() }, 'stagename slug', (err, user) => {
     if (err) {
       logger.debug('passport.use User.findOne error:' + email + ' ' +  JSON.stringify(err));
       return done(err);
