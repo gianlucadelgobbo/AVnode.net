@@ -115,6 +115,21 @@ dataprovider.show = (req, res, section, subsection, model) => {
       } else {
         logger.debug("nextpage");
         logger.debug(parseFloat(req.params.page)+1);
+        if (data.addresses) {
+          data.locations = data.addresses.map(obj =>{ 
+            var rObj = {
+              "marker":{
+                "url":"/images/avnode_marker.svg",
+                "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
+                "origin":{"x":0,"y":0},
+                "anchor":{"x":23,"y":78}
+              }
+            };
+            rObj.lat = obj.geometry.lat;
+            rObj.lng = obj.geometry.lng;
+            return rObj;
+         });
+        }
         res.render(section + '/' + subsection, {
           title: data.stagename,
           data: data,
