@@ -116,19 +116,27 @@ dataprovider.show = (req, res, section, subsection, model) => {
         logger.debug("nextpage");
         logger.debug(parseFloat(req.params.page)+1);
         if (data.addresses) {
-          data.locations = data.addresses.map(obj =>{ 
-            var rObj = {
-              "marker":{
-                "url":"/images/avnode_marker.svg",
-                "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
-                "origin":{"x":0,"y":0},
-                "anchor":{"x":23,"y":78}
-              }
-            };
-            rObj.lat = obj.geometry.lat;
-            rObj.lng = obj.geometry.lng;
-            return rObj;
-         });
+          const locations = data.addresses.map(obj =>{
+            if (obj.geometry && obj.geometry.lat && obj.geometry.lng) {
+              var rObj = {
+                "marker":{
+                  "url":"/images/avnode_marker.svg",
+                  "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
+                  "origin":{"x":0,"y":0},
+                  "anchor":{"x":23,"y":78}
+                }
+              };
+              rObj.lat = obj.geometry.lat;
+              rObj.lng = obj.geometry.lng;
+              return rObj;
+            }
+          });
+          if (locations && locations.length) {
+            data.locations = [];
+            for (let item in locations) {
+              if (locations[item]) data.locations.push(locations[item]);
+            }
+          }
         }
         res.render(section + '/' + subsection, {
           title: data.stagename,

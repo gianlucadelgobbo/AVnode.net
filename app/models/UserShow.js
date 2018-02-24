@@ -117,7 +117,7 @@ userSchema.virtual('publicEmails').get(function () {
   if (this.emails && this.emails.length) {
     this.emails.forEach((email) => {
       if (email.is_public) {
-        emails.push(email);
+        emails.push(email.email);
       }
     });
     if (emails.length) {
