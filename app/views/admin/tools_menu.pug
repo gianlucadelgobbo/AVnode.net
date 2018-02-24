@@ -51,12 +51,18 @@
         - var link = "/files/footagefiles"
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
       li.nav-item
-        - var link = "/files/playlistimages"
+        - var link = "/files/footagegenerator"
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
       li.nav-item
         - var link = "/files/videofiles"
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
       li.nav-item
+        - var link = "/files/videosgenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
         - var link = "/files/galleryimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/gallerygenerator"
         - console.log(currentUrl)
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
