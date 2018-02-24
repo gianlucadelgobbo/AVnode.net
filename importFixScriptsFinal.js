@@ -654,6 +654,30 @@ var USERS = function() {
     db.users.save(e);
   });
   Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
+
+  db.users.find({surname:"Del Gobbo"}).forEach(function(e) {
+    var tmp = {
+      country: "Netherlands",
+      locality: "Amsterdam",
+      geometry : {
+          lat : 52.3702157, 
+          lng : 4.895167900000001
+      }, 
+    };
+    e.addresses.push(tmp);
+    var tmp = {
+      url: "https://flyer.it"
+    };
+    e.web.push(tmp);
+    e.social = [{
+      url: "https://facebook.com/gianlucadelgobbo"
+    }, {
+      url: "https://twitter.com/flxer"
+    }];
+    e.emails[0].is_public = true;
+    db.users.save(e);
+  });
+  
 }
 
 var PLAYLISTS = function() {
