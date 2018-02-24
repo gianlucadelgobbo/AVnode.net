@@ -456,10 +456,6 @@ router.get('/files/eventformatsgenerator', (req, res) => {
   exec((err, events) => {
     for (let event in events) {
       events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
-      data.push(events[event].image);
-    }
-    for (let event in events) {
-      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
       events[event].image.imageFormats = {};
       events[event].image.imageFormatsExists = {};
       logger.debug(events[event]);
@@ -645,6 +641,7 @@ router.get('/files/footagefiles', (req, res) => {
   Footage.
   find({"media.file": {$exists: true}}).
   lean().
+
   select({media: 1, creation_date: 1}).
   exec((err, footages) => {
     for (let footage in footages) {
@@ -666,6 +663,7 @@ router.get('/files/footagefiles', (req, res) => {
       } else {
         originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
       }
+      /*
       for(let format in config.cpanel[adminsez].media.media.sizes) {
         console.log(footages[footage].media);
         footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
@@ -673,28 +671,27 @@ router.get('/files/footagefiles', (req, res) => {
       for(let format in config.cpanel[adminsez].media.media.sizes) {
         footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
       }
-      if (footages[footage].media.preview) {
-        //delete footages[footage].media.preview;
+      */
+     console.log("stocazzo1 "+footages[footage].media.preview);
+     if (footages[footage].media.preview) {
+        console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
-        /*
-        if (!footages[footage].media.previewexists) {
-          let test = footages[footage].media.file.substring(0, footages[footage].media.file.lastIndexOf('.'))+".jpg";
-          if (fs.existsSync(global.appRoot+test)) {
-            footages[footage].media.fsfix = 'mv '+global.appRoot+footages[footage].media.preview+' '+global.appRoot+test;
-            footages[footage].media.previewexists = true;
-            footages[footage].media.preview = test;
+        if (footages[footage].media.previewexists) {
+          console.log("stocazzo3 "+footages[footage].media.preview);
+          const previewFile = footages[footage].media.preview;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
           }
         }
-        if (!footages[footage].media.previewexists) {
-          let test = footages[footage].media.file.substring(0, footages[footage].media.file.lastIndexOf('.'))+".jpg";
-          test = test.replace('/warehouse/','/warehouse_old/');
-          if (fs.existsSync(global.appRoot+test)) {
-            footages[footage].media.fsfix = 'mv '+global.appRoot+footages[footage].media.preview+' '+global.appRoot+test;
-            footages[footage].media.previewexists = true;
-            footages[footage].media.preview = test;
-          }
-        }
-        */
       } else {
         //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
         //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
@@ -715,9 +712,125 @@ router.get('/files/footagefiles', (req, res) => {
   });
 });
 
+router.get('/files/footageformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/footageformatsgenerator');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  const adminsez = 'footage';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  Footage.
+  find({"media.file": {$exists: true}}).
+  lean().
+  limit(limit).
+  skip(skip).
+  select({media: 1, creation_date: 1}).
+  exec((err, footages) => {
+    for (let footage in footages) {
+      footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
+      footages[footage].media.imageFormats = {};
+      footages[footage].media.imageFormatsExists = {};
+      const file = footages[footage].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
+      } else {
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      }
+      /*
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(footages[footage].media);
+        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
+      }
+      */
+     console.log("stocazzo1 "+footages[footage].media.preview);
+     if (footages[footage].media.preview) {
+        console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        if (footages[footage].media.previewexists) {
+          console.log("stocazzo3 "+footages[footage].media.preview);
+          const previewFile = footages[footage].media.preview;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
+            if (!footages[footage].media.imageFormatsExists[format]) {
+              let folder = footages[footage].media.imageFormats[format].substring(0, footages[footage].media.imageFormats[format].lastIndexOf('/'))
+              router.checkAndCreate(folder, () => {
+                console.log("stocazzo "+global.appRoot+previewFile);
+                sharp(global.appRoot+previewFile)
+                .resize(config.cpanel[adminsez].media.media.sizes[format].w, config.cpanel[adminsez].media.media.sizes[format].h)
+                .toFile(global.appRoot+footages[footage].media.imageFormats[format], (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
+              });
+            }
+          }
+        }
+      } else {
+        //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
+        //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+      }
+      if (fileExtension=="mp4") {
+        footages[footage].media.original = fileFolder.replace('/warehouse/footage/', '/glacier/footage_originals/')+'/'+originalFileName+'.'+originalFileExtension;
+        footages[footage].media.originalexists = fs.existsSync(global.appRoot+footages[footage].media.original);
+      }
+      data.push(footages[footage].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Footage images generator',
+      currentUrl: req.path,
+      data: data,
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/footageformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+    });
+  });
+});
+
 router.get('/files/videofiles', (req, res) => {
   logger.debug('/admin/tools/files/videofiles');
   let data = [];
+  const adminsez = 'video';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
   Video.
   find({"media.file": {$exists: true}}).
   lean().
@@ -725,22 +838,60 @@ router.get('/files/videofiles', (req, res) => {
   exec((err, videos) => {
     for (let video in videos) {
       videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
+      videos[video].media.imageFormats = {};
+      videos[video].media.imageFormatsExists = {};
       const file = videos[video].media.file;
       const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
       const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/video_originals/", "/warehouse/videos/"); // /warehouse/2017/03
       const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
       const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-      const originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
-      const originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
-      if (videos[video].media.preview) {
-        //delete videos[video].media.preview;
-        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
       } else {
-        videos[video].media.preview = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+fileNameWithoutExtension+'.png';
-        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
       }
-      videos[video].media.original = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_originals/')+'/'+originalFileName+'.'+originalFileExtension;
-      videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
+      /*
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(videos[video].media);
+        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+      }
+      */
+     console.log("stocazzo1 "+videos[video].media.preview);
+     if (videos[video].media.preview) {
+        console.log("stocazzo2 "+global.appRoot+videos[video].media.preview);
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+        if (videos[video].media.previewexists) {
+          console.log("stocazzo3 "+videos[video].media.preview);
+          const previewFile = videos[video].media.preview;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+          }
+        }
+      } else {
+        //videos[video].media.preview = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+fileNameWithoutExtension+'.png';
+        //videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+      }
+      if (fileExtension=="mp4") {
+        videos[video].media.original = fileFolder.replace('/warehouse/videos/', '/glacier/videos_originals/')+'/'+originalFileName+'.'+originalFileExtension;
+        videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
+      }
       data.push(videos[video].media);
     }
     console.log(req.path);
@@ -753,34 +904,217 @@ router.get('/files/videofiles', (req, res) => {
   });
 });
 
+router.get('/files/videoformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/videoformatsgenerator');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  const adminsez = 'video';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  Video.
+  find({"media.file": {$exists: true}}).
+  lean().
+  limit(limit).
+  skip(skip).
+  select({media: 1, creation_date: 1}).
+  exec((err, videos) => {
+    for (let video in videos) {
+      videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
+      videos[video].media.imageFormats = {};
+      videos[video].media.imageFormatsExists = {};
+      const file = videos[video].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/video_originals/", "/warehouse/videos/"); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
+      } else {
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      }
+      /*
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(videos[video].media);
+        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+      }
+      */
+     if (videos[video].media.preview) {
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+        if (videos[video].media.previewexists) {
+          const previewFile = videos[video].media.preview;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+            if (!videos[video].media.imageFormatsExists[format]) {
+              let folder = videos[video].media.imageFormats[format].substring(0, videos[video].media.imageFormats[format].lastIndexOf('/'))
+              router.checkAndCreate(folder, () => {
+                sharp(global.appRoot+previewFile)
+                .resize(config.cpanel[adminsez].media.media.sizes[format].w, config.cpanel[adminsez].media.media.sizes[format].h)
+                .toFile(global.appRoot+videos[video].media.imageFormats[format], (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
+              });
+            }
+          }
+        }
+      } else {
+        //videos[video].media.preview = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+fileNameWithoutExtension+'.png';
+        //videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+      }
+      if (fileExtension=="mp4") {
+        videos[video].media.original = fileFolder.replace('/warehouse/videos/', '/glacier/videos_originals/')+'/'+originalFileName+'.'+originalFileExtension;
+        videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
+      }
+      data.push(videos[video].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Footage images generator',
+      currentUrl: req.path,
+      data: data,
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/videoformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+    });
+  });
+});
+
+
+
 
 router.get('/files/galleryimages', (req, res) => {
   logger.debug('/admin/tools/files/galleryimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
   let data = [];
+  const adminsez = 'gallery';
   Gallery.
   find({"medias.0": {$exists: true}}).
-  //limit(1).
   lean().
   select({medias:1, creation_date: 1}).
   exec((err, galleries) => {
     for (let gallery=0; gallery<galleries.length; gallery++) {
       for (let media=0; media<galleries[gallery].medias.length; media++) {
-        console.log(galleries[gallery].medias[media].file);
-        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting_mov.png
-        // https://flxer.net/warehouse/2017/10/preview_files/dsu_shadowpainting.png
-        // https://flxer.net/warehouse/2017/10/55x55/dsu_shadowpainting_mov_mp4.jpg
-        // https://flxer.net/warehouse/2017/10/dsu_shadowpainting_mov.mp4
+        //console.log(galleries[gallery].medias[media].file);
         galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
+        //if (galleries[gallery].medias[media].exists) {
+          galleries[gallery].medias[media].imageFormats = {};
+          galleries[gallery].medias[media].imageFormatsExists = {};
+          const previewFile = galleries[gallery].medias[media].file;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
+          }
+        //}
         data.push(galleries[gallery].medias[media]);
+        logger.debug("galleries.length "+ galleries.length+" "+ gallery);
+        logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
+        if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
+          console.log(req.path);
+          res.render('admin/tools/files/showall', {
+            title: 'Gallery images',
+            currentUrl: req.path,
+            data: data,
+            script: false
+          });          
+        }
       }
-     }
-    console.log(req.path);
-    res.render('admin/tools/files/showall', {
-      title: 'Gallery medias',
-      currentUrl: req.path,
-      data: data,
-      script: false
-    });
+    }
+  });
+});
+
+router.get('/files/gallerygenerator', (req, res) => {
+  logger.debug('/admin/tools/files/gallerygenerator');
+  var limit = 10;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  const adminsez = 'gallery';
+  Gallery.
+  find({"medias.0": {$exists: true}}).
+  lean().
+  limit(limit).
+  skip(skip).
+  select({medias:1, creation_date: 1}).
+  exec((err, galleries) => {
+    for (let gallery=0; gallery<galleries.length; gallery++) {
+      for (let media=0; media<galleries[gallery].medias.length; media++) {
+        //console.log(galleries[gallery].medias[media].file);
+        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
+        if (galleries[gallery].medias[media].exists) {
+          galleries[gallery].medias[media].imageFormats = {};
+          galleries[gallery].medias[media].imageFormatsExists = {};
+          const previewFile = galleries[gallery].medias[media].file;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
+            if (!galleries[gallery].medias[media].imageFormatsExists[format]) {
+              let folder = galleries[gallery].medias[media].imageFormats[format].substring(0, galleries[gallery].medias[media].imageFormats[format].lastIndexOf('/'))
+              router.checkAndCreate(folder, () => {
+                sharp(global.appRoot+previewFile)
+                .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+                .toFile(global.appRoot+galleries[gallery].medias[media].imageFormats[format], (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
+              });
+            }
+          }
+          data.push(galleries[gallery].medias[media]);
+        }
+        logger.debug("galleries.length "+ galleries.length+" "+ gallery);
+        logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
+        if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
+          console.log(req.path);
+          res.render('admin/tools/files/showall', {
+            title: 'Gallery images generator',
+            currentUrl: req.path,
+            data: data,
+            script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/gallerygenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+          });          
+        }
+      }
+    }
   });
 });
 

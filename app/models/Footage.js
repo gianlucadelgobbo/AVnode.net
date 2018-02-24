@@ -53,24 +53,19 @@ const footageSchema = new Schema({
 // Return thumbnail
 footageSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  console.log(this.media.file);
-  if (this.media && this.media.file) {
-    for(let format in config.cpanel[adminsez].media.media.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].media.media.sizes[format].default;
-    }
-    const serverPath = this.media.file;
+  console.log(this.media.preview);
+  for(let format in config.cpanel[adminsez].media.media.sizes) {
+    imageFormats[format] = config.cpanel[adminsez].media.media.sizes[format].default;
+  }
+  if (this.media && this.media.preview) {
+    const serverPath = this.media.preview;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    //const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/footage_originals/', process.env.WAREHOUSE+'/warehouse/footage/'); // /warehouse/2017/03
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/footage/', process.env.WAREHOUSE+'/warehouse/footage/'); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/footage_previews/', process.env.WAREHOUSE+'/warehouse/footage/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].media.media.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-    }
-  } else {
-    for(let format in config.cpanel[adminsez].media.media.sizes) {
-      imageFormats[format] = `${config.cpanel[adminsez].media.media.sizes[format].default}`;
     }
   }
   return imageFormats;
