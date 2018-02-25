@@ -677,7 +677,7 @@ var USERS = function() {
     e.emails[0].is_public = true;
     db.users.save(e);
   });
-  
+
 }
 
 var PLAYLISTS = function() {
@@ -1100,7 +1100,6 @@ var GALLERIES = function() {
       });  
     });  
   });
-}
 
   // 11
   db.news.find({}, {users: 1}).forEach(function(e) {
