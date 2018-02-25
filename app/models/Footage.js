@@ -16,6 +16,9 @@ const footageSchema = new Schema({
   title: String,
   is_public: { type: Boolean, default: false },
   media: Media,
+  abouts: [About],
+  stats: {},
+  users: [{ type : Schema.ObjectId, ref : 'UserShow' }],
   tags: [{
     old_id : String,
     tag : String,
@@ -26,15 +29,12 @@ const footageSchema = new Schema({
 /*
   teaserImage: MediaImage,
   //  file: {file: String},
-  abouts: [About],
-  stats: {},
   price: String,
   duration: String,
   tech_art: String, // what the artist brings
   tech_req: String, // what the artist need
   bookings:[Booking],
 
-  users: [{ type : Schema.ObjectId, ref : 'User' }],
   galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],
   // videos: [{ type : Schema.ObjectId, ref : 'Videos' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]

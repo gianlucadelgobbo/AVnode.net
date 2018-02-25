@@ -827,9 +827,8 @@
           "select": {
             "title": 1,
             "slug": 1,
-            "tags": 1,
             "stats": 1,
-            "media.file": 1
+            "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
           "options": { "limit": 5 },
@@ -841,9 +840,9 @@
             "slug": 1,
             "tags": 1,
             "stats": 1,
-            "media.file": 1
+            "media": 1
           },
-          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
           "options": { "limit": 5 },
           "model": "Footage"
         }, {
@@ -863,7 +862,7 @@
             "title": 1,
             "slug": 1,
             "stats": 1,
-            "image.file": 1
+            "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
           "options": { "limit": 5 },
@@ -875,7 +874,7 @@
             "slug": 1,
             "categories": 1,
             "stats": 1,
-            "media.file": 1
+            "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
