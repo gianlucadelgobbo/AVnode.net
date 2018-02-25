@@ -3,7 +3,7 @@
     //- console.log(item.imageFormats)
     a(href="/footage/"+item.slug, title=item.title)
       img.card-img-top.img-fluid(
-        src=item.imageFormats.large
+        src=item.imageFormats.small
         alt=item.title
       )
   .footage_item_info_wrapper
@@ -17,14 +17,15 @@
       //if item.users
       .users_footage_item_wrapper
         .flex_left
-          //each user in item.users
-          div.miss
-            img(src="/images/logo_avnode_svg.svg")
-          div
-            p.miss.users_footage_item_name="user.stagename"
-            p.miss.users_footage_item_views="99"+" "+__("views")
-        .flex_right
-          .users_footage_item_likes
-            span.color2.lnr.lnr-heart
-            br
-            span.miss="99"+" "+__("likes")          
+          if item.users && item.users.length
+            each user in item.users
+              div.miss
+                img(src=user.imageFormats.small, alt=user.stagename)
+              div
+                p.miss.users_footage_item_name=user.stagename
+                p.miss.users_footage_item_views=item.stats.visits+" "+__("views")
+            .flex_right
+              .users_footage_item_likes
+                span.color2.lnr.lnr-heart
+                br
+                span.miss=item.stats.likes+" "+__("likes")          
