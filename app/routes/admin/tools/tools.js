@@ -685,7 +685,7 @@ router.get('/files/footagefiles', (req, res) => {
         const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
         const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
         const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
-        const oldPath = previewFileFolder.replace("/warehouse/footage/", "/warehouse_old/"); // /warehouse/2017/03
+        const oldPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse_old/"); // /warehouse/2017/03
         const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
         const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
         if (footages[footage].media.previewexists) {
@@ -697,7 +697,7 @@ router.get('/files/footagefiles', (req, res) => {
             footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
           }
         } else {
-          footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \;`;
+          footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName.replace('.png','*.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
           //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
           //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         }
