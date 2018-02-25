@@ -1039,7 +1039,7 @@ router.get('/files/galleryimages', (req, res) => {
             galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
           }
           if (!galleries[gallery].medias[media].exists) {
-            galleries[gallery].medias[media].find = `find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName}' -exec cp {} ${previewFileFolder.replace("/glacier/", "glacier/")}`;
+            galleries[gallery].medias[media].find = `mkdir ${oldPath.replace("/warehouse_old/", "warehouse_old/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName}' | xargs cp -t ${previewFileFolder.replace("/glacier/", "glacier/")}`;
         }
         data.push(galleries[gallery].medias[media]);
         logger.debug("galleries.length "+ galleries.length+" "+ gallery);
