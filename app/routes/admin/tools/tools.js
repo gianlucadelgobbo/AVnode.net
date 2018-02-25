@@ -797,7 +797,7 @@ router.get('/files/footagerenamer', (req, res) => {
       }
     }
     console.log(req.path);
-    res.render('admin/tools/files/showall', {
+    res.render('admin/tools/files/renamer', {
       title: 'Footage renamer',
       currentUrl: req.path,
       data: data,
