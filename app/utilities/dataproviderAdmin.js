@@ -20,8 +20,6 @@ dataproviderAdmin.fetchUser = (id, cb) => {
   logger.debug(id);
   User.
   findById(id).
-  //.select({'-galleries': 1})
-  /*
   populate([{
     path: 'events',
     model: 'Event',
@@ -32,10 +30,10 @@ dataproviderAdmin.fetchUser = (id, cb) => {
   }, {
     path: 'performances',
     model: 'Performance',
-    populate: [{
+    /* populate: [{
       path: 'video',
       model: 'Asset'
-    }],
+    }], */
     select: {
       'slug': 1,
       'title': 1,
@@ -63,10 +61,10 @@ dataproviderAdmin.fetchUser = (id, cb) => {
     }, {
       path: 'performances',
       model: 'Performance',
-      populate: [{
+      /* populate: [{
         path: 'video',
         model: 'Asset'
-      }],
+      }], */
       select: {
         'slug': 1,
         'title': 1,
@@ -93,7 +91,6 @@ dataproviderAdmin.fetchUser = (id, cb) => {
       'file': 1
     }
   }]).
-  */
   exec(cb);
 };
 
