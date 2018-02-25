@@ -785,13 +785,13 @@ router.get('/files/footagerenamer', (req, res) => {
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         if (!footages[footage].media.previewexists) {
           footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
-          if (footages[footage].media.previewexists) footages[footage].media.findpreview = `db.footage.find('media.preview': '${footages[footage].media.preview}').forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','.jpg')}';db.footage.save(e)});`;
+          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find('media.preview': '${footages[footage].media.preview}').forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','.jpg')}';db.footage.save(e)});`;
         }
         if (!footages[footage].media.previewexists) {
           footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','_swf.jpg'));
-          if (footages[footage].media.previewexists) footages[footage].media.findpreview = `db.footage.find('media.preview': '${footages[footage].media.preview}').forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','_swf.jpg')}';db.footage.save(e)});`;
+          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find('media.preview': '${footages[footage].media.preview}').forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','_swf.jpg')}';db.footage.save(e)});`;
         }
-        if (footages[footage].media.previewexists) {
+        if (footages[footage].media.renamepreview) {
           data.push(footages[footage].media);
         }
       }
