@@ -623,7 +623,7 @@ router.get('/files/playlistimages', (req, res) => {
   });
 });
 
-router.get('/files/footagefilesOK', (req, res) => {
+router.get('/files/footagefiles', (req, res) => {
   logger.debug('/admin/tools/files/footagefiles');
   let data = [];
   const adminsez = 'footage';
@@ -703,7 +703,7 @@ router.get('/files/footagefilesOK', (req, res) => {
         } else {
           //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName.replace('.png','*.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
           //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse_old/ -name '${previewFileName.replace('.png','.jpg')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \;`;
-          footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse_old/ -name '${previewFileName.replace('.png','_flv.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
+          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse_old/ -name '${previewFileName.replace('.png','_flv.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
           //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
           //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         }
@@ -746,42 +746,7 @@ router.get('/files/footagerenamer', (req, res) => {
   select({media: 1, creation_date: 1}).
   exec((err, footages) => {
     for (let footage in footages) {
-      /*
-      footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
-      footages[footage].media.imageFormats = {};
-      footages[footage].media.imageFormatsExists = {};
-      const file = footages[footage].media.file;
-      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
-      const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
-      const oldPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse_old/"); // /warehouse/2017/03
-      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
-      let originalFileName = '';
-      if (!footages[footage].media.exists) {
-        footages[footage].media.find = `mkdir ${fileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${fileName}' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")} \;`;
-      }
-
-      if (valid.indexOf(originalFileExtension)===-1) {
-        originalFileName = fileNameWithoutExtension;
-        originalFileExtension = fileNameWithoutExtension;
-      } else {
-        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
-      }
-      */
-      /*
-      for(let format in config.cpanel[adminsez].media.media.sizes) {
-        console.log(footages[footage].media);
-        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
-      }
-      for(let format in config.cpanel[adminsez].media.media.sizes) {
-        footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
-      }
-      */
-     console.log("stocazzo1 "+footages[footage].media.preview);
      if (footages[footage].media.preview) {
-        console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         if (!footages[footage].media.previewexists) {
           footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
@@ -796,7 +761,6 @@ router.get('/files/footagerenamer', (req, res) => {
         }
       }
     }
-    console.log(req.path);
     res.render('admin/tools/files/renamer', {
       title: 'Footage renamer',
       currentUrl: req.path,
