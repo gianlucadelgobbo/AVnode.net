@@ -6,24 +6,27 @@ block content
       each item, index in data
         if !item.exists
           li
-            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.imageFormats
-              each image, format in item.imageFormats
+            if item.find
+              !=item.find
+            else 
+              !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              if item.imageFormats
+                each image, format in item.imageFormats
+                  !="<br />"
+                  !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              if item.preview
                 !="<br />"
-                !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.preview
-              !="<br />"
-              !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.original
-              !="<br />"
-              !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.files
-              !="<br />File: "+item.files.file
-              !="<br />originalFile: "+item.files.originalFile
-              !="<br />previewFile: "+item.files.previewFile
-              !="<br />FileNew: "+item.files.fileNew
-              !="<br />previewFileNew: "+item.files.previewFileNew
-              !="<br />originalFileNew: "+item.files.originalFileNew
+                !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              if item.original
+                !="<br />"
+                !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              if item.files
+                !="<br />File: "+item.files.file
+                !="<br />originalFile: "+item.files.originalFile
+                !="<br />previewFile: "+item.files.previewFile
+                !="<br />FileNew: "+item.files.fileNew
+                !="<br />previewFileNew: "+item.files.previewFileNew
+                !="<br />originalFileNew: "+item.files.originalFileNew
   ol
     if data.length
       each item, index in data
