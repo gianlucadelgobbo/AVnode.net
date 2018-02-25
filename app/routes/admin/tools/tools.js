@@ -680,6 +680,10 @@ router.get('/files/footagefiles', (req, res) => {
      if (footages[footage].media.preview) {
         console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        if (!footages[footage].media.previewexists) {
+          footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
+          if (footages[footage].media.previewexists) footages[footage].media.findpreview = "RENAME";
+        }
         console.log("stocazzo3 "+footages[footage].media.preview);
         const previewFile = footages[footage].media.preview;
         const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
