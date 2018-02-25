@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const indexPlugin = require('../utilities/elasticsearch/Footage');
 
 const About = require('./shared/About');
-const MediaImage = require('./shared/MediaImage');
+const Media = require('./shared/Media');
 const Booking = require('./shared/Booking');
 
 const adminsez = 'footage';
@@ -15,9 +15,16 @@ const footageSchema = new Schema({
   slug: { type: String, unique: true },
   title: String,
   is_public: { type: Boolean, default: false },
-  image: MediaImage,
-  teaserImage: MediaImage,
+  media: Media,
+  tags: [{
+    old_id : String,
+    tag : String,
+    tot : Number,
+    required : Boolean,
+    exclusive : Boolean
+  }]
 /*
+  teaserImage: MediaImage,
   //  file: {file: String},
   abouts: [About],
   stats: {},
@@ -46,24 +53,24 @@ const footageSchema = new Schema({
 // Return thumbnail
 footageSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.image);
-  if (this.image && this.image.file) {
-    for(let format in config.cpanel[adminsez].media.image.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].media.image.sizes[format].default;
-    }
-    const serverPath = this.image.file;
+  console.log(this.media.preview);
+  for(let format in config.cpanel[adminsez].media.media.sizes) {
+    imageFormats[format] = config.cpanel[adminsez].media.media.sizes[format].default;
+  }
+  if (this.media && this.media.preview) {
+    const serverPath = this.media.preview;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/footage_previews/', process.env.WAREHOUSE+'/warehouse/footage/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.image.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].media.media.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
   }
   return imageFormats;
 });
-
+/*
 footageSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -80,6 +87,10 @@ footageSchema.virtual('teaserImageFormats').get(function () {
     for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
       teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
+  } else {
+    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
+    }
   }
   return teaserImageFormats;
 });
@@ -91,6 +102,7 @@ footageSchema.virtual('editUrl').get(function () {
 footageSchema.virtual('publicUrl').get(function () {
   return `/footage/${this.slug}`;
 });
+*/
 
 footageSchema.pre('remove', function(next) {
   const footage = this;
@@ -151,8 +163,8 @@ footageSchema.virtual('cardUrl').get(function () {
 // return original image
 footageSchema.virtual('imageUrl').get(function () {
   let image = '/images/profile-default.svg';
-  if (this.image) {
-    image = `/storage/${this.image}/512/200`;
+  if (this.media) {
+    image = `/storage/${this.media}/512/200`;
   }
   if (this.file && this.file.file) {
     image = `${process.env.WAREHOUSE}${this.file.file}`;

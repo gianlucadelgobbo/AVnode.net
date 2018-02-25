@@ -39,6 +39,7 @@ import {
   REQUEST_USER_MAKEADDRESSPUBLIC,
   REQUEST_USER_DELETEADDRESS,
   REQUEST_ADD_USER_LINK,
+  RESPONSE_SLUG,
 
   EDIT_EVENT,
   REQUEST_DELETE_EVENT,
@@ -80,7 +81,9 @@ const initialValues = {
   active: window.location.pathname,
   events: [],
   performances: [],
-  crews: []
+  crews: [],
+  error:null, 
+  loading: false
 };
 const event = (state = {}, action) => {
   console.log('event action type: ' + action.type + ' action: ' + JSON.stringify(action));
@@ -237,7 +240,9 @@ const user = (state = initialValues, action) => {
     console.log('_______________ index redux REQUEST_EDIT_USER __________________________________');
     console.log('REQUEST_EDIT_USER state links: ' + JSON.stringify(state.links));
     console.log('REQUEST_EDIT_USER action: ' + JSON.stringify(action));
-    return state;
+    return Object.assign({}, state, action.json, {
+      _editUserActive:true
+    });
   case REQUEST_ADD_USERPROFILEIMAGE:
     return Object.assign({}, state, {
       imageUploadInProgress: true
@@ -394,6 +399,10 @@ const user = (state = initialValues, action) => {
   case RESPONSE_COUNTRIES:
     return Object.assign({}, state, {
       _countries: action.payload.countries
+    });
+  case RESPONSE_SLUG:
+    return Object.assign({}, state, {
+      slug:action.payload.slug
     });
     /*case REQUEST_USER_EDITABOUT:
     case REQUEST_USER_DELETEABOUT:

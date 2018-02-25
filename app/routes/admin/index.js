@@ -5,16 +5,19 @@ const crew = require('./api/crew');
 const performance = require('./api/performance');
 const event = require('./api/event');
 const search = require('./api/search');
+const tools = require('./tools/tools');
 
 router.use('/api/user', user);
 router.use('/api/crew', crew);
 router.use('/api/performance', performance);
 router.use('/api/event', event);
 router.use('/api/search', search);
+router.use('/tools', tools);
 
 router.get('/*', (req, res) => {
   res.render('admin/index', {
-    title: __('Your Account')
+    title: __('Your Account'),
+    is_admin: true
   });
 });
 

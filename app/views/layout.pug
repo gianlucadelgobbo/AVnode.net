@@ -13,19 +13,15 @@ html(lang='en')
     link(rel='shortcut, icon', href='/images/favicon.ico')
     meta(name='msapplication-config', content='/images/browserconfig.xml')
     meta(name='theme-color', content='#ffffff')
-    //link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css')
+
     link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
     link(rel='stylesheet', href='/css/main.css')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js')
-    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
-    //script(src='/js/ajax.js')
-    //script(src='/js/autocomplete.js')
+    link(rel='stylesheet', href='/css/video-js.min.css')
+    if is_admin
+      link(rel='stylesheet', href='/css/admin.css')
   body
-    .container
-      nav.navbar.navbar-toggleable-md.navbar-fixed-top.navbar-inverse.bg-inverse
+    nav.navbar.navbar-toggleable-md.navbar-fixed-top.navbar-inverse.bg-inverse
+      .container
         button.navbar-toggler.navbar-toggler-right(
           type="button"
           data-toggle="collapse"
@@ -49,7 +45,9 @@ html(lang='en')
             li.nav-item
               a.nav-link(href='/playlists')=__('Playlists')
             li.nav-item
-              a.nav-link(href='/tvshows')=__('TV Shows')
+              a.nav-link(href='/videos')=__('Videos')
+            li.nav-item
+              a.nav-link(href='/news')=__('News')
           ul.navbar-nav
             if user
               li.nav-item
@@ -73,6 +71,7 @@ html(lang='en')
                 =__('Search')
 
     include partials/flash
+
     main
       block teaser
       block title
@@ -82,12 +81,23 @@ html(lang='en')
               h1.display-4=title
               if subtitle
                 p.lead.mb-0=subtitle
-      .container
-        block content
+      block content
 
     footer
       .container
         .text-muted=__('AVnode.net')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js')
+    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
+    script(src='/js/video.min.js')
+    script(src="/js/slick.min.js")
+    script(src="/js/main.js")
+    link(rel='stylesheet', type='text/css', href='/css/slick/slick-theme.css')
+    link(rel='stylesheet', type='text/css', href='/css/slick/slick.css')
+    //script(src='/js/ajax.js')
+    //script(src='/js/autocomplete.js')
     //script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js')
     //script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js')
     //script(src='//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js')

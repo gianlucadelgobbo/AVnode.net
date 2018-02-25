@@ -6,26 +6,28 @@ import {
   editUserAbouts,
   userAboutEdit,
   userAboutDelete,
-  userAddressDelete,  
+  userAddressDelete,
+  openEdituserModal,
+  closeEdituserModal,
   editUser
 } from '../../reducers/actions';
 import ProfilePublic from './ProfilePublic';
 
 const mapStateToProps = ({user}) => ({
   user: user,
-  initialValues: user//, 
-  //submitting: submitting
+  initialValues: user
 });
 
 const mapDispatchToProps = (dispatch) => ({
   userLinkAdd: dispatch(userLinkAdd),
-  userLinkDelete: dispatch(userLinkDelete),
   editUserAbouts: dispatch(editUserAbouts),
   userAboutEdit: dispatch(userAboutEdit),
-  userAboutDelete: dispatch(userAboutDelete),
   userAddressDelete: dispatch(userAddressDelete),
   saveProfile: dispatch(editUser),
-  fetchCountries: dispatch(fetchCountries)
+  fetchCountries: dispatch(fetchCountries),
+  openEdituserModal:dispatch(openEdituserModal),
+  closeEdituserModal:dispatch(closeEdituserModal)
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePublic);

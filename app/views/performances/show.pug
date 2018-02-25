@@ -1,12 +1,6 @@
 extends ../layout
 
 block teaser
-  if data.teaserImage
-    .d-flex.justify-content-center.align-items-start
-      img.img-fluid(
-        src=data.teaserImageFormats.large
-        alt=data.name
-      )
 
 block title
   if data.title
@@ -17,40 +11,10 @@ block title
             h1.display-4=data.title
             if data.about
               p.lead=data.about
-          .col-lg-4
-            if data.image
-              img.card-img-top.img-fluid(
-                src=data.imageFormats.medium
-                alt=data.title
-              )
 
 block content
-  if data.video
-    if data.video.video.type === 'vimeo'
-      iframe(
-        src=`https://player.vimeo.com/video/${data.video.video.id}`
-        width="640"
-        height="360"
-        frameborder="0"
-        webkitallowfullscreen
-        mozallowfullscreen
-        allowfullscreen
-      )
-
   .row
     .col-lg-8
       h3=__('Performer')
-      .card-columns
-        each user in data.users
-          .card
-            if user.image
-              img.card-img-top.img-fluid(
-                src=user.imageFormats.medium
-                alt=user.name
-              )
-            .card-block
-              h6.text-muted.card-title=__('Performer')
-              h5.card-subtitle.mb-3=user.stagename
-              a.btn.btn-primary(href=user.publicUrl)=__('More')
     .col-lg-4
       .card-columns Bella

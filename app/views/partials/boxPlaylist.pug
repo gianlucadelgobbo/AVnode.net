@@ -1,0 +1,56 @@
+.playlist_item_wrapper
+  if item.imageFormats
+    a(href="/playlist/"+item.slug, title=item.title)
+      img.card-img-top.img-fluid(
+        src=item.imageFormats.large
+        alt=item.title
+      )
+  .playlist_item_info_wrapper
+    a(href="/playlist/"+item.slug, title=item.title)
+      h4.playlist_item_title=item.title
+    ul.list-inline.category_playlist_item        
+      li.list-inline-item.miss="category1"
+      li.list-inline-item.miss="category2"
+      li.list-inline-item.miss="category3"
+            
+  
+    if item.stats
+      .stats_playlist_item_wrapper
+        .flex_left          
+          if item.stats.footage
+            .playlist_item_videos
+              span.lnr.lnr-camera-video
+              br
+              span.value=item.stats.footage
+          
+          .playlist_item_images
+            span.lnr.lnr-picture
+            br
+            span.miss.value="99"
+        
+        .flex_right
+          if item.stats.visits
+            .playlist_item_visits
+              span.lnr.lnr-eye
+              br
+              span.value=item.stats.visits
+          if item.stats.downloads
+            .playlist_item_downloads
+              span.lnr.lnr-download
+              br
+              span.value=item.stats.downloads
+          if item.stats.likes
+            .playlist_item_likes
+              span.lnr.lnr-heart
+              br
+              span.value=item.stats.likes        
+              
+        //div.miss
+            img(src="/images/logo_avnode_svg.svg")
+          div
+            p.miss.users_playlist_item_name="user.stagename"
+            p.miss.users_playlist_item_views="99"+" "+__("views")
+          .users_playlist_item_likes
+            span.color2.lnr.lnr-heart
+            br
+            span.miss="99"+" "+__("likes")          

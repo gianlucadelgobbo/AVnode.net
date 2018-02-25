@@ -1,20 +1,20 @@
 import { h } from 'preact';
 import { Field } from 'redux-form';
 import { injectIntl, FormattedMessage } from 'preact-intl';
-import SocialLinkTypes from './SocialLinkTypes';
+import renderField from '../renderField';
 
 const LinksSocial = injectIntl(({
   fields,
-  meta: { error, submitFailed },
+  meta: { touched, error, submitFailed },
   intl
   }) => (
     <fieldset>
-      <legend>
+      <label>
         <FormattedMessage
           id="socials"
           defaultMessage="Social channels"
         />
-      </legend>
+      </label>
       {submitFailed && error && <span>{error}</span>}
 
       {fields.length == 0 ? fields.push() : ''}
@@ -25,13 +25,19 @@ const LinksSocial = injectIntl(({
             <Field
               className="form-control"
               name={`${link}.url`}
-              component="input"
+              type="text"
+              component={renderField}
               placeholder={intl.formatMessage({
                 id: 'url.placeholder',
                 defaultMessage: 'Url'
               })}
             />
-            {SocialLinkTypes ?
+             {/*<Field
+              name={`${link}.type`}
+              component={({ input, val }) => input.onChange(val)}
+              val="social"
+             />*/}
+            {/*SocialLinkTypes ?
               <Field
                 className="form-control custom-select"
                 name={`${link}.type`}
@@ -43,8 +49,8 @@ const LinksSocial = injectIntl(({
                 }
               </Field> :
               <p>Loading a link types…</p>
-            }
-
+              */}
+            <span className="input-group-btn">
             <button
               type="button"
               className="btn btn-danger"
@@ -61,6 +67,7 @@ const LinksSocial = injectIntl(({
               >
               </i>
             </button>
+            </span>        
           </div>
         </div>
       ))}

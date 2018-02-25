@@ -17,7 +17,7 @@ const passport = require('./app/utilities/passport');
 const routes = require('./app/routes');
 const logger = require('./app/utilities/logger');
 
-// config = require('getconfig');
+const config = require('getconfig');
 
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
@@ -29,6 +29,7 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'pug');
+app.set('view options', { debug: true });
 
 app.use(morgan('short'));
 app.use(expressStatusMonitor());
@@ -86,7 +87,7 @@ app.use((req, res, next) => {
   //logger.debug(req.session);
   if(!req.session.sessions) {
     //logger.debug('create sessions');
-    req.session.sessions = {current_lang: 'en'};
+    req.session.sessions = {current_lang: config.defaultLocale};
     //logger.debug(req.session.sessions);
   }
   //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
@@ -137,19 +138,20 @@ app.use(routes);
 // FIXME
 // Blocks pug exceptions, do we need it at all?
 //
+/*
 app.use(function (err, req, res, _next) {
   if (err.isBoom) {
     req.flash('errors', { msg: err.message });
     return res.redirect('back');
   }
 });
-
+*/
 // FIXME
 // What was this about?
 //
 // error middleware for errors that occurred in middleware
 // declared before this
-
+/*
 app.use(function onerror(err, req, res, next) {
   // happens on user not logged in  
   if (err) {
@@ -157,7 +159,7 @@ app.use(function onerror(err, req, res, next) {
     //throw err;
   }
 });
-
+*/
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const compiler = webpack(webpackConfig);

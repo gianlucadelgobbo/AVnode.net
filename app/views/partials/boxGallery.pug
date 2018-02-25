@@ -1,0 +1,29 @@
+.gallery_item_wrapper
+  a(href=item.publicUrl, title=item.title)
+    if item.imageFormats
+      //img.card-img-top.img-fluid(
+          src=item.imageFormats.large
+          alt=item.title
+        )
+      img.img-fluid.miss(src="/images/logo_avnode_svg.svg")  
+    .gallery_item_info_wrapper
+      .flex_left
+        h4=item.title
+      .flex_right.gallery_stats        
+        if item.stats.visits
+          .gallery_item_visits
+            span.lnr.lnr-eye
+            br
+            span.value=item.stats.visits
+        if item.stats.likes
+          .gallery_item_likes
+            span.lnr.lnr-heart
+            br
+            span.value=item.stats.likes 
+        if item.stats.img
+          .gallery_item_images
+              span.lnr.lnr-picture
+              br
+              span.value=item.stats.img
+            
+          

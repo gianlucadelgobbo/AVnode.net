@@ -1,89 +1,135 @@
 extends ../layout
 block teaser
-  if data.teaserImageFormats.large
+  //if data.teaserImageFormats.large
     .d-flex.justify-content-center.align-items-start
       img.img-fluid(
         src=data.teaserImageFormats.large
-        alt=data.name
+        alt=data.stagename
       )
 
 block title
-  if title
-    .jumbotron.jumbotron-fluid
+  .performer_header_wrapper
+    include header
+
+  .container
+    .row
+      .col-sm-12
+        .performer_map_wrapper         
+          script(src='https://maps.googleapis.com/maps/api/js?key=&extension=.js')
+          script(src='https://cdn.mapkit.io/v1/infobox.js')
+          link(href='https://cdn.mapkit.io/v1/infobox.css', rel='stylesheet')
+          script.
+            var locations = !{JSON.stringify(data.locations)}
+          script(src='/js/mymaps.js')
+          #performer_map
+
+    
+  if data.abouts
+    .abouts_wrapper
       .container
         .row
-          .col-lg-8
-            h1.display-4=data.stagename
-            if data.name
-              p.lead=data.name
-            if data.about
-              p=data.about
-            each email in data.publicEmails
-              i.fa.fa-fw.fa-envelope-o
-              span=email.email
-            if data.citizenship
-              p=data.citizenship
-
-          if data.image
-            .col-lg-4
-              img.card-img-top.img-fluid(
-                src=data.imageFormats.medium
-                alt=data.name
-              )
+          .col-sm-12
+              .about_wrapper
+                !=data.about        
+              .more_button
+                span.color1.lnr.lnr-plus-circle
+    .abouts_divider
 
 block content
-  .row
-    .col-lg-12
-      h3=__('Events')
-      .card-deck
-        each event in data.events
-          .card
-            if event.image
-              img.card-img-top.img-fluid(
-                src=event.imageFormats.medium
-                alt=event.title
-              )
-            .card-block
-              h4.card-title=event.title
-              h6.card-subtitle.text-muted=event.subtitle
-            .card-block.pt-0
-              p.card-text=event.dateFormatted
-              a.btn.btn-secondary(href=event.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Crews')
-      .card-deck
-        each crew in data.crews
-          .card
-            if crew.image
-              img.card-img-top.img-fluid(
-                src=crew.imageFormats.medium
-                alt=crew.title
-              )
-            .card-block
-              h4.card-title=crew.title
-              h6.card-subtitle.text-muted=crew.subtitle
-            .card-block.pt-0
-              p.card-text=crew.dateFormatted
-              a.btn.btn-secondary(href=crew.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Performances')
-      .card-deck
-        each performance in data.performances
-          .card
-            if performance.image
-              img.card-img-top.img-fluid(
-                src=performance.imageFormats.medium
-                alt=performance.title
-              )
-            .card-block
-              h4.card-title=performance.title
-              h6.card-subtitle.text-muted=performance.subtitle
-            .card-block.pt-0
-              p.card-text=performance.dateFormatted
-              a.btn.btn-secondary(href=performance.publicUrl)=__('More')
+  .container
+    section.row.performer_events_wrapper
+      .col-lg-12
+        h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+        .row.carousel
+          each item in data.events
+            .col-sm-4
+              include ../partials/boxEvent
+        //.text-right
+          a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')        
+          
+  
+  if data.performances.length
+    section.performer_performances_wrapper
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+              .performance_divider.basic_divider
+              .row.carousel
+                each item in data.performances
+                  .col-sm-4
+                    include ../partials/boxPerformance
+
+  if data.crews.length
+    section.performer_crew_wrapper
+      .container
+        .row
+          .col-lg-12
+            h2.main_title.indented_title!=__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
+            .performance_divider.basic_divider
+            .row
+              .col-sm-6
+                .row
+                  each item in data.crews
+                    .col-sm-12
+                      include ../partials/boxPerformer
+              .col-sm-6
+                img.img-fluid(src="/images/logo_avnode_symbol.svg")
+
+  if data.footage.length || data.videos.length || data.playlists.length
+    section.performer_videos_wrapper
+      .content_wrapper
+        .container
+          if data.footage.length
+            .row.performer_footage
+              .col-lg-12
+                h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
+                .row.carousel
+                  each item in data.footage            
+                    .col-sm-4
+                      include ../partials/boxFootage  
+
+          if data.videos.length
+            .row.performer_video
+              .col-lg-12
+                h2.main_title.indented_title!=__('Videos')+" <small>(<span class='miss'>"+data.stats.video+"</span>)</small>"  
+                .row
+                  each item in data.videos            
+                    .col-sm-4
+                      include ../partials/boxVideo
+
+          if data.playlists.length
+            .row.performer_playlist
+              .col-lg-12
+                h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+                .row.carousel
+                  each item in data.playlists
+                    .col-sm-4
+                      include ../partials/boxPlaylist
+  
+  if data.galleries.length
+    section.performer_galleries_wrapper
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+              .performance_divider.basic_divider
+              .row.carousel
+                each item in data.galleries
+                  .col-sm-4
+                    include ../partials/boxGallery
+
+  if data.news.length
+    section.performer_galleries_wrapper
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=__('News')+" <small>(<span>"+data.stats.news+"</span>)</small>"  
+              .performance_divider.basic_divider
+              .row.carousel
+                each item in data.news
+                  .col-sm-4
+                    include ../partials/boxNews

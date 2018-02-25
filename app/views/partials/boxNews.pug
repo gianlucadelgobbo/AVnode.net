@@ -1,0 +1,24 @@
+.news_item_wrapper
+  if item.imageFormats
+    a(href="/news/"+item.slug, title=item.title)
+      img.card-img-top.img-fluid(
+        src=item.imageFormats.large
+        alt=item.title
+      )
+  .news_item_info_wrapper
+    a(href="/news/"+item.slug, title=item.title)
+      h4.news_item_title=item.title    
+      if item.users
+        .users_news_item_wrapper
+          .flex_left
+            each user in item.users
+              div
+                img(src=user.imageFormats.small)
+              div
+                p.users_news_item_name=user.stagename
+                p.users_news_item_views=item.stats.views+" "+__("views")
+            .flex_right
+              .users_news_item_likes
+                span.color2.lnr.lnr-heart
+                br
+                span=item.stats.likes+" "+__("likes")          

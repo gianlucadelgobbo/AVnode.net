@@ -37,23 +37,29 @@ const gallerySchema = new Schema({
 gallerySchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
+  //if (this.medias && this.medias.length && this.medias[0].file) {
   if (this.image && this.image.file) {
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = config.cpanel[adminsez].media.image.sizes[format].default;
     }
+    //const serverPath = this.medias[0].file;
     const serverPath = this.image.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/galleries_originals/', process.env.WAREHOUSE+'/warehouse/galleries/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].media.image.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
+  } else {
+    for(let format in config.cpanel[adminsez].media.image.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].media.image.sizes[format].default}`;
+    }
   }
   return imageFormats;
 });
-
+/*
 gallerySchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -70,9 +76,23 @@ gallerySchema.virtual('teaserImageFormats').get(function () {
     for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
       teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
+  } else {
+    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
+      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
+    }
   }
   return teaserImageFormats;
 });
+
+
+gallerySchema.virtual('editUrl').get(function () {
+  return `/admin/galleries/public/${this.slug}`;
+});
+
+gallerySchema.virtual('publicUrl').get(function () {
+  return `/galleries/${this.slug}`;
+});
+*/
 
 gallerySchema.pre('remove', function (next) {
   const gallery = this;

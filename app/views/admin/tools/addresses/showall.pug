@@ -1,0 +1,68 @@
+extends ../../../layout_tools
+block content
+  - var strfullall = ""
+  - var strfullcountry = ""
+  - var strfulllocality = ""
+  table.table
+    tr
+      td status
+      td country
+      td locality
+      td status
+      td formatted_address
+      td lng;lat
+    if data
+      each add, index in data
+        tr
+          td=index
+          td
+            if !add.country 
+              span.badge.badge-danger MISSING
+            else
+              !=add.country+" "
+              if !add.status 
+                span.badge.badge-warning TO GET
+              else if add.status == "TO ADD"
+                span.badge.badge-warning TO ADD
+              else if add.country == add.country_new
+                span.badge.badge-success OK
+              else if add.country_new
+                span.badge.badge-danger="CHANGE C TO: "+add.country_new
+              else
+                span.badge.badge-danger="BIG PROBLEMS"
+          td
+            if !add.locality 
+              span.badge.badge-danger MISSING
+            else
+              !=add.locality+" "
+              if !add.status 
+                span.badge.badge-warning TO GET
+              else if add.status == "TO ADD"
+                span.badge.badge-warning TO ADD
+              else if add.locality == add.locality_new
+                span.badge.badge-success OK
+              else if add.locality_new
+                span.badge.badge-danger="CHANGE L TO: "+add.locality_new
+              else
+                span.badge.badge-danger="BIG PROBLEMS"
+          td=add.status
+          td=(add.formatted_address ? add.formatted_address : add.localityOld.join(', '))
+          td=(add.geometry && add.geometry.lng && add.geometry.lat ? add.geometry.lng+";"+add.geometry.lat : "EMPTY")
+          - var str ="  {country: '"+add.country+"', city: '"+add.locality+"'},"
+          - strfullall+=str+"\n"
+        if add.locality_new && add.locality != add.locality_new
+          tr
+            - var str ="  {country: '"+add.country+"', find: '"+add.locality+"', replace: '"+add.locality_new+"'},"
+            - strfullcountry+=str+"\n"
+            td(colspan="6")!=str
+        if add.country_new && add.country != add.country_new
+          tr
+            - var str ="  {find: '"+add.country+"', findlocality: '"+add.locality+"', replace: '"+add.country_new+"'},"
+            - strfulllocality+=str+"\n"
+            td(colspan="6")!=str
+  pre=strfullall
+  hr
+  pre=strfullcountry
+  hr
+  pre=strfulllocality
+  //pre=JSON.stringify(data, null, 2)

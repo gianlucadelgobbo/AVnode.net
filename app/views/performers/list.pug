@@ -1,21 +1,12 @@
 extends ../layout
 
 block content
-  include ../partials/filters-menu
-  hr
-  .card-columns
-    each item in data
-      .card
-        img.card-img-top.img-fluid(
-          src=item.imageFormats.medium
-          alt=item.name
-        )
-        .card-block
-          h4.card-title
-            =item.stagename
-          if item.citizenship
-            p.card-subtitle.mb-3.text-muted
-              =item.citizenship
-          a.btn.btn-primary(href=item.publicUrl)=__('More')
-  hr
-  include ../partials/pagination
+  .container
+    include ../partials/filters-menu
+    hr
+    .row
+      each item in data
+        .col-md-4
+          include ../partials/boxPerformer
+    hr
+    include ../partials/pagination

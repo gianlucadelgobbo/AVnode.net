@@ -15,12 +15,12 @@ const Abouts = injectIntl(({
     
   <fieldset>
     <div>
-      <legend>
+      <label>
         <FormattedMessage
           id="abouts"
           defaultMessage="About you..."
         />
-      </legend>
+      </label>
       {submitFailed && error && <span>{error}</span>}
 
       <Tab.Container id="left-tab-languages" defaultActiveKey={0}>
@@ -52,8 +52,7 @@ const Abouts = injectIntl(({
         <Field
           className="form-control"
           name={`${about}.abouttext`}
-          component="textarea"
-          
+          component="textarea"      
           rows="12"
           placeholder={intl.formatMessage({
             id: 'about.placeholder',
