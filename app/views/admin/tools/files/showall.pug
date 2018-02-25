@@ -9,8 +9,8 @@ block content
             if item.find
               !=item.find
             else 
-              //!=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-              //if item.imageFormats
+              !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              if item.imageFormats
                 each image, format in item.imageFormats
                   !="<br />"
                   !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
@@ -18,9 +18,9 @@ block content
               !="<br />"
               if item.findpreview
                 !=item.findpreview
-              //else 
+              else 
                 !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            //if item.original
+            if item.original
               !="<br />"
               !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.files
@@ -35,8 +35,8 @@ block content
       each item, index in data
         if item.exists
           li
-            //!=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            //if item.imageFormats
+            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            if item.imageFormats
               each image, format in item.imageFormats
                 !="<br />"
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
@@ -44,9 +44,9 @@ block content
               !="<br />"
               if item.findpreview
                 !=item.findpreview
-              //else 
+              else 
                 !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            //if item.original
+            if item.original
               !="<br />"
               !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.files
