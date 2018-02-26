@@ -866,6 +866,7 @@ var GALLERIES = function() {
   // 04
   var folders = {};
   var extoriginals = [];
+  var ext = [];
   var valid = [
     "mp4",
     "mov",
@@ -881,9 +882,11 @@ var GALLERIES = function() {
     return folder.
     replace("/_flxer/photos/", defaultFolder).
     replace("/_videos/", defaultFolder).
+    replace("/_spot/", defaultFolder).
     replace("/_flxer/liveset/", defaultFolder).
     replace("/_photos/", defaultFolder).
     replace("/_flxer/library/hole/", defaultFolder).
+    replace("/_audios/", defaultFolder).
     replace("/_flxer/library/no_hole/", defaultFolder).
     replace(/\(|\)/g, "");
   }
@@ -899,7 +902,17 @@ var GALLERIES = function() {
       }
       e.users = tmpA;
     }
-    e.image = e.file;
+    if (e.text) {
+      e.abouts = [];
+      for (var item in e.text) {
+        var tmp = {};
+        tmp.lang = item;
+        tmp.abouttext = e.text[item];
+        e.abouts.push(tmp);
+      }
+      delete e.text;
+    }
+   e.image = e.file;
     delete e.file;
     var conta = 0;
     var newMedias = [];
@@ -908,117 +921,169 @@ var GALLERIES = function() {
     e.medias.forEach(function(m) {
       let media = m.file;
       media.fileflxer = media.file;
-      //folders[media.file.substring(0, media.file.lastIndexOf('/'))] = 1;
-
       const serverPath = media.file;
       const localFileNameExtension = serverPath.substring(serverPath.lastIndexOf('.') + 1);
-      if (localFileNameExtension == "flv" || localFileNameExtension == "mp4") {
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
-        let localFileNameWithoutOriginalExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
-        media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/warehouse/videos/');
-        media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}.png`;
-        //media.previewFileOld = `${localPath.replace('galleries/', '')}/preview_files/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-        if (extoriginals.indexOf(localFileNameOriginalExtension)===-1 && localFileNameOriginalExtension.length<5 && localFileNameOriginalExtension.length>1) extoriginals.push(localFileNameOriginalExtension); 
-        if (valid.indexOf(localFileNameOriginalExtension)!==-1) {
-          media.originalflxer = `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`;
-          media.original = sanitizeOld(media.originalflxer, defaultFolder).replace('/warehouse/','/glacier/videos_originals/').replace('/original_video/','/');
-        }
-        media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
-        /*
-        media.folderNew = media.fileNew.substring(0, media.fileNew.lastIndexOf('/'));
-        media.folderNew = media.folderNew.substring(media.folderNew.lastIndexOf('/'));
-        folders[media.folderNew.replace('/warehouse/','/warehouse_new/')] = 1;
-        printjson(Object.keys(folders));
-        */
-        var folder = media.file.substring(0, media.file.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-        var folder = media.preview.substring(0, media.preview.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-       if (localFileNameExtension == "flv") {
-          printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-          printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
-        } else {
-          printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-          printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
-          if (media.originalflxer) {
-            printjson("cp -n "+media.originalflxer.replace('/warehouse/','warehouse_old/')+" "+media.original.replace('/glacier/','glacier/'));
-            var folder = media.original.substring(0, media.original.lastIndexOf('/'));
-            folders[folder] = 1;
-            folder = folder.substring(0, folder.lastIndexOf('/'));
-            folders[folder] = 1;
-            folder = folder.substring(0, folder.lastIndexOf('/'));
-            folders[folder] = 1;
-          }
-        }
-        
-        //if (conta == 0) e.image.file = media.fileNew;
-        let video = e;
-        video.media = media;
-        newVideos.push(video);
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
+      if (localFileName.substring(0,1)==='.') {
+        printjson("HIDDEN FILE "+localFileName);
       } else {
-        media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/glacier/galleries_originals/');
-        var folder = media.file.substring(0, media.file.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-        delete media.encoded;
-        /*
-        const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
-        const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
-        const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-        const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
-        const localFileNameWithoutOriginalExtension = localFileName.substring(0, localFileName.lastIndexOf('_'));
-        media.folderNew = media.fileNew.substring(0, media.fileNew.lastIndexOf('/'));
-        media.folderNew = media.folderNew.substring(media.folderNew.lastIndexOf('/'));
-        folders[media.folderNew.replace('/warehouse/','/warehouse_new/')] = 1;
-        printjson(Object.keys(folders));
-        */
-        printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/glacier/','glacier/'));
-        //if (conta == 0) e.image.file = media.fileNew;
-        newMedias.push(media);
-      }
-
-      conta++;
-      if (conta == e.medias.length) {
-        //if (!e.text || !Object.keys(e.text).length) delete e.text;
-        if (e.stats.video) delete e.stats.video;
-        //delete e.media;
-        e.image = newMedias[0];
-        e.stats.img = newMedias.length;
-        e.medias = newMedias;
-        //printjson('SAVEEEEEE GALLERY');
-        //printjson(e);
-        db.galleries.save(e);
-        if (newVideos.length) {
-          newVideos.forEach(function(video) {
-            if (video.stats.img) delete video.stats.img;
-            if (!video.text || !Object.keys(video.text).length) delete video.text;
-            delete video.medias;
-            delete video.image;
-            delete video._id;
-            //printjson('SAVEEEEEE VIDEO!!!');
-            //printjson(video);
-            db.videos.save(video);
-          });
+        if (localFileNameExtension == "flv" || localFileNameExtension == "mp4" || localFileNameExtension == "swf" || localFileNameExtension == "mp3" || localFileNameExtension == "mov") {
+          const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
+          const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+          const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
+          let localFileNameWithoutOriginalExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
+          media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/warehouse/videos/');
+          if (ext.indexOf(localFileNameExtension)===-1 && localFileNameExtension.length<5 && localFileNameExtension.length>1) ext.push(localFileNameExtension); 
+          if (localFileNameExtension == "flv" || localFileNameExtension == "mp4") {
+            media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}.png`;
+            //media.previewFileOld = `${localPath.replace('galleries/', '')}/preview_files/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+            if (extoriginals.indexOf(localFileNameOriginalExtension)===-1 && localFileNameOriginalExtension.length<5 && localFileNameOriginalExtension.length>1) extoriginals.push(localFileNameOriginalExtension); 
+            if (valid.indexOf(localFileNameOriginalExtension)!==-1) {
+              media.originalflxer = `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`;
+              media.original = sanitizeOld(media.originalflxer, defaultFolder).replace('/warehouse/','/glacier/videos_originals/').replace('/original_video/','/');
+            }
+            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
+            /*
+            media.folderNew = media.fileNew.substring(0, media.fileNew.lastIndexOf('/'));
+            media.folderNew = media.folderNew.substring(media.folderNew.lastIndexOf('/'));
+            folders[media.folderNew.replace('/warehouse/','/warehouse_new/')] = 1;
+            printjson(Object.keys(folders));
+            */
+            var folder = media.file.substring(0, media.file.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            var folder = media.preview.substring(0, media.preview.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            if (localFileNameExtension == "flv") {
+              //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+              //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+            } else {
+              //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+              //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+              if (media.originalflxer) {
+                //printjson("cp -n "+media.originalflxer.replace('/warehouse/','warehouse_old/')+" "+media.original.replace('/glacier/','glacier/'));
+                var folder = media.original.substring(0, media.original.lastIndexOf('/'));
+                folders[folder] = 1;
+                folder = folder.substring(0, folder.lastIndexOf('/'));
+                folders[folder] = 1;
+                folder = folder.substring(0, folder.lastIndexOf('/'));
+                folders[folder] = 1;
+              }
+            }
+          }
+          if (localFileNameExtension == "swf") {
+            media.previewflxer = media.fileflxer.replace('.swf', '.jpg');
+            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
+            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+            //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+          }
+          if (localFileNameExtension == "mov") {
+            media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}_mov.png`;
+            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
+            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+          }
+          if (localFileNameExtension == "mp3") {
+            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+          }
+          let video = e;
+          video.media = media;
+          newVideos.push(video);
+        } else {
+          media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/glacier/galleries_originals/');
+          var folder = media.file.substring(0, media.file.lastIndexOf('/'));
+          folders[folder] = 1;
+          folder = folder.substring(0, folder.lastIndexOf('/'));
+          folders[folder] = 1;
+          folder = folder.substring(0, folder.lastIndexOf('/'));
+          folders[folder] = 1;
+          delete media.encoded;
+          //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/glacier/','glacier/'));
+          newMedias.push(media);
+        }
+  
+        conta++;
+        if (conta == e.medias.length) {
+          //if (!e.text || !Object.keys(e.text).length) delete e.text;
+          if (e.stats.video) delete e.stats.video;
+          //delete e.media;
+          e.image = newMedias[0];
+          e.stats.img = newMedias.length;
+          e.medias = newMedias;
+          //printjson('SAVEEEEEE GALLERY');
+          //printjson(e);
+          db.galleries.save(e);
+          if (newVideos.length) {
+            newVideos.forEach(function(video) {
+              if (video.stats.img) delete video.stats.img;
+              if (!video.text || !Object.keys(video.text).length) delete video.text;
+              delete video.medias;
+              delete video.image;
+              delete video._id;
+              //printjson('SAVEEEEEE VIDEO!!!');
+              //printjson(video);
+              db.videos.save(video);
+            });
+          }
         }
       }
     });
   });
+  printjson(ext);
   Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
 
+  function sanitizeOld(folder,defaultFolder) {
+    return folder.
+    replace("/_flxer/photos/", defaultFolder).
+    replace("/_videos/", defaultFolder).
+    replace("/_flxer/liveset/", defaultFolder).
+    replace("/_photos/", defaultFolder).
+    replace("/_flxer/library/hole/", defaultFolder).
+    replace("/_audios/", defaultFolder).
+    replace("/_flxer/library/no_hole/", defaultFolder).
+    replace(/\(|\)/g, "");
+  }
+  db.galleries.find({"medias.file.file": {$exists: true}}).forEach(function(e) {
+    if (e.permalink) {
+      e.slug = e.permalink.toLowerCase();
+      delete e.permalink;
+    }
+    if (e.users && e.users.length) {
+      var tmpA = [];
+      for(var a=0;a<e.users.length;a++){
+        tmpA.push(e.users[a]._id);
+      }
+      e.users = tmpA;
+    }
+    e.image = e.file;
+    delete e.file;
+    var newMedias = [];
+    for(var a=0; a< e.medias.length;a++) {
+      if (e.medias[a].file.file) {
+        var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
+        const localFileName = e.medias[a].file.file.substring(e.medias[a].file.file.lastIndexOf('/') + 1);
+        if (localFileName.substring(0,1)==='.') {
+          printjson("HIDDEN FILE "+localFileName);
+        } else {
+          e.medias[a].file.file = sanitizeOld(e.medias[a].file.file, defaultFolder).replace('/warehouse/', '/glacier/galleries_originals/');
+          newMedias.push(e.medias[a].file);
+        }        
+      }
+    }
+    if (e.stats.video) delete e.stats.video;
+    //delete e.media;
+    e.image = newMedias[0];
+    e.stats.img = newMedias.length;
+    e.medias = newMedias;
+    //printjson(e);
+    db.galleries.save(e);
+  });
 
 
 
@@ -1108,7 +1173,7 @@ var GALLERIES = function() {
         if (!user.news) user.news = [];
         user.news.push(e._id);
         printjson(user.news);
-        db.users.save(user);
+        //db.users.save(user);
       });  
     });  
   });

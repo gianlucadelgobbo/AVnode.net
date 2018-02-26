@@ -750,11 +750,11 @@ router.get('/files/footagerenamer', (req, res) => {
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         if (!footages[footage].media.previewexists) {
           footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
-          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find('media.preview': '${footages[footage].media.preview}').forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','.jpg')}';db.footage.save(e)});`;
+          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find({'media.preview': '${footages[footage].media.preview}'}).forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','.jpg')}';db.footage.save(e)});`;
         }
         if (!footages[footage].media.previewexists) {
           footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','_swf.jpg'));
-          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find('media.preview': '${footages[footage].media.preview}').forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','_swf.jpg')}';db.footage.save(e)});`;
+          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find({'media.preview': '${footages[footage].media.preview}'}).forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','_swf.jpg')}';db.footage.save(e)});`;
         }
         if (footages[footage].media.renamepreview) {
           data.push(footages[footage].media);
@@ -1083,6 +1083,7 @@ router.get('/files/galleryimages', (req, res) => {
           galleries[gallery].medias[media].imageFormats = {};
           galleries[gallery].medias[media].imageFormatsExists = {};
           const previewFile = galleries[gallery].medias[media].file;
+          logger.debug(previewFile);
           const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
           const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
           const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03

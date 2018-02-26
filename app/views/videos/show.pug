@@ -25,7 +25,7 @@ block title
 
 block content
   video#my-video.video-js.vjs-fluid.vjs-16-9(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{}')
-    source(src='https://flxer.net'+data.media.file, type='video/mp4')
+    source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
     //source(src='MY_VIDEO.webm', type='video/webm')
     p.vjs-no-js
       !=__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
