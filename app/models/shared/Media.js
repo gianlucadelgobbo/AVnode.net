@@ -28,6 +28,7 @@ const Media = new Schema({
     virtuals: true
   }
 });
+/*
 Media.virtual('files').get(function () {
   console.log('filesfilesfilesfilesfilesfilesfilesfiles');
   if (this.file) {
@@ -58,7 +59,7 @@ Media.virtual('files').get(function () {
     }
   }
 });
-
+*/
 /*
 Media.virtual('imageFormats').get(function () {
   let imageFormats = {};

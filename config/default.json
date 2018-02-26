@@ -534,7 +534,7 @@
     },
     "playlist": {
       "media":{
-        "image":{
+        "media":{
           "fields": {
             "name": "image",
             "maxCount": 1
@@ -545,45 +545,15 @@
           "minheight": 1000,
           "sizes": {
             "small": {
-              "w": 55,
-              "h": 55,
-              "folder": "55x55",
-              "default": "/images/profile-default.svg"
-            },
-            "medium": {
-              "w": 280,
-              "h": 210,
-              "folder": "280x210",
-              "default": "/images/profile-default.svg"
-            },
-            "large": {
               "w": 400,
-              "h": 300,
-              "folder": "400x300",
-              "default": "/images/profile-default.svg"
-            }
-          }
-        },
-        "teaserImage":{
-          "fields": {
-            "name": "image",
-            "maxCount": 1
-          },
-          "filetypes": ["jpg","jpeg","png","gif","svg"],
-          "maxsize": 2048000,
-          "minwidth": 1920,
-          "minheight": 500,
-          "sizes": {
-            "medium": {
-              "w": 1280,
-              "h": 720,
-              "folder": "1280x720",
+              "h": 225,
+              "folder": "400x225",
               "default": "/images/profile-default.svg"
             },
             "large": {
-              "w": 1920,
-              "h": 1080,
-              "folder": "1920x1080",
+              "w": 1040,
+              "h": 585,
+              "folder": "1040x585",
               "default": "/images/profile-default.svg"
             }
           }
@@ -853,7 +823,7 @@
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"}],
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 5 },
           "model": "Playlist"
         }, {
@@ -971,7 +941,7 @@
           "social": 1,
           "events": 1,
           "emails": 1,
-          "image": 1
+          "media": 1
         },
         "populate": [{
           "path": "footage",
@@ -980,7 +950,7 @@
             "slug": 1,
             "tags": 1,
             "stats": 1,
-            "media.file": 1
+            "media": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
           "options": { "limit": 5 },
@@ -996,29 +966,24 @@
       },
       "playlists": {
         "select": {
-          "stagename": 1,
+          "title": 1,
           "abouts": 1,
-          "is_crew": 1,
           "slug": 1,
           "stats": 1,
-          "addresses": 1,
-          "web": 1,
-          "social": 1,
-          "events": 1,
-          "emails": 1,
-          "image": 1
+          "footage": 1
         },
         "populate": [{
-          "path": "playlists",
+          "path": "footage",
           "select": {
             "title": 1,
             "slug": 1,
+            "tags": 1,
             "stats": 1,
-            "image": 1
+            "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"}],
           "options": { "limit": 5 },
-          "model": "Playlist"
+          "model": "Footage"
         }, {
           "path": "categories",
           "select": {
@@ -1730,11 +1695,11 @@
         "title":1,
         "users":1,
         "slug":1,
-        "image":1,
+        "footage":1,
         "categories":1,
         "stats":1
       },
-      "list_populate": [],
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "footage", "select": "title slug media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
       "orders": [
         "mostrecent",
         "mostviewed",
