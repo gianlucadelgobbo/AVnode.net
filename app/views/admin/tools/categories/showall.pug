@@ -7,17 +7,17 @@ block content
         ol
           each item in group
             li
-              !=item.name
+              !=item.slug
               !=" "
-              span.badge.badge-primary=item.count
+              span.badge(class=item.count ? "badge-primary" : "badge-danger")=item.count
               !=" "
               span.badge.badge-primary=item.countstr
               if item.son
                 ol
                   each son in item.son
                     li
-                      !=son.name
+                      !=son.slug
                       !=" "
-                      span.badge.badge-primary=son.count
+                      span.badge(class=son.count ? "badge-primary" : "badge-danger")=son.count
                       !=" "
                       span.badge.badge-primary=son.countstr

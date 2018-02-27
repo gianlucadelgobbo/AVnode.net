@@ -67,24 +67,40 @@ var CATEGORIES = function() {
   });
 
   db.categories.find({}).forEach(function(e) {
-    var tmp = db[e.rel].count({"categories":e._id});
-    e.count = tmp;
-    //e.countstr = e.rel+": "+tmp;
+    e.count = 0;
     e.countstr = "";
-    if (e.rel == "events") {
-      var tmp = db[e.rel].count({"program.schedule.categories":e._id});
+    var tmp = db.users.count({"categories":e._id});
+    e.count += tmp;
+    if (tmp) e.countstr += " users "+tmp;
+    
+    var tmp = db.videos.count({"categories":e._id});
+    e.count += tmp;
+    if (tmp) e.countstr += " videos "+tmp;
+    
+    var tmp = db.performances.count({"categories":e._id});
+    e.count += tmp;
+    if (tmp) e.countstr += " performances "+tmp;
+    
+    var tmp = db.events.count({"categories":e._id});
+    e.count += tmp;
+    if (tmp) e.countstr += " events "+tmp;
+    
+    //e.countstr = e.rel+": "+tmp;
+    //if (e.rel == "events") {
+      var tmp = db.events.count({"program.schedule.categories":e._id});
       e.count += tmp;
-      if (tmp) e.countstr += " program.schedule.categories: "+tmp;
-      var tmp = db[e.rel].count({"partners.category":e._id});
+      if (tmp) e.countstr += " events program: "+tmp;
+
+      var tmp = db.events.count({"partners.category":e._id});
       e.count += tmp;
-      if (tmp) e.countstr += " partners.category: "+tmp;
-    }
-    if (e.rel == "performances") {
-      var tmp = db[e.rel].count({"bookings.schedule.categories":e._id});
+      if (tmp) e.countstr += " events partners: "+tmp;
+    //}
+    //if (e.rel == "performances") {
+      var tmp = db.performances.count({"bookings.schedule.categories":e._id});
       e.count += tmp;
-      if (tmp) e.countstr += " bookings.schedule.categories "+tmp;
-    }
-    printjson(e.rel+" "+e.slug+" "+ e.count);
+      if (tmp) e.countstr += " performances bookings: "+tmp;
+    //}
+    printjson(e.rel+" "+e.slug+" "+ e.count+" "+ e.countstr);
     db.categories.save(e);
     if (e.count) {
       //db.categories.save(e);
