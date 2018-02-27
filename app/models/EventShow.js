@@ -7,28 +7,27 @@ const indexPlugin = require('../utilities/elasticsearch/Event');
 const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
 const Link = require('./shared/Link');
-const Partnership = require('./shared/Partnership');
 const Venue = require('./shared/Venue');
-//const Schedule = require('./shared/Schedule');
+//const scheduleSchema = require('./shared/scheduleSchema');
 //const Package = require('./shared/Package');
 
 const adminsez = 'event';
 const logger = require('../utilities/logger');
 
-const Schedule = new Schema({
+const scheduleSchema = new Schema({
   date: Date,
   starttime: Date,
   endtime: Date,
   venue: Venue
 });
 
-Schedule.virtual('date_formatted').get(function () {
+scheduleSchema.virtual('date_formatted').get(function () {
   return moment(this.date).format('MMMM Do YYYY');
 });
-Schedule.virtual('starttime_formatted').get(function () {
+scheduleSchema.virtual('starttime_formatted').get(function () {
   return moment(this.starttime).format('h:mm');
 });
-Schedule.virtual('endtime_formatted').get(function () {
+scheduleSchema.virtual('endtime_formatted').get(function () {
   return moment(this.endtime).format('h:mm');
 });
 
@@ -54,6 +53,11 @@ const packageSchema = new Schema({
     virtuals: true,
     getters: true
   }
+});
+
+const partnershipSchema = new Schema({
+  category:  { type : Schema.ObjectId, ref : 'Category' },
+  users:  [{ type : Schema.ObjectId, ref : 'UserShow' }]
 });
 
 const programSchema = new Schema({
@@ -148,12 +152,14 @@ const eventSchema = new Schema({
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
   stats: {},
-  partners: [Partnership],
+  schedule: [scheduleSchema],
+  partners: [partnershipSchema],
   program: [programSchema],
-  schedule: [Schedule],
+  schedule: [scheduleSchema],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   users:  [{ type: Schema.ObjectId, ref: 'UserShow' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
+  videos: [{ type: Schema.ObjectId, ref: 'Video' }],
   settings: {
     permissions: {
         administrator: [{ type: Schema.ObjectId, ref: 'UserShow' }]

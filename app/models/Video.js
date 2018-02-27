@@ -5,7 +5,6 @@ const indexPlugin = require('../utilities/elasticsearch/Video');
 
 const About = require('./shared/About');
 const Media = require('./shared/Media');
-const Booking = require('./shared/Booking');
 
 const adminsez = 'video';
 

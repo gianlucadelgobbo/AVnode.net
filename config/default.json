@@ -1695,11 +1695,10 @@
         "title":1,
         "users":1,
         "slug":1,
-        "footage":1,
-        "categories":1,
+        "media":1,
         "stats":1
       },
-      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "footage", "select": "title slug media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"}],
       "orders": [
         "mostrecent",
         "mostviewed",
