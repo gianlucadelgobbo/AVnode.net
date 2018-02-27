@@ -1,0 +1,23 @@
+extends ../../../layout_tools
+block content
+  h2=title
+  ol
+    each group, index in data
+      li=index
+        ol
+          each item in group
+            li
+              !=item.name
+              !=" "
+              span.badge.badge-primary=item.count
+              !=" "
+              span.badge.badge-primary=item.countstr
+              if item.son
+                ol
+                  each son in item.son
+                    li
+                      !=son.name
+                      !=" "
+                      span.badge.badge-primary=son.count
+                      !=" "
+                      span.badge.badge-primary=son.countstr

@@ -5,7 +5,6 @@ const indexPlugin = require('../utilities/elasticsearch/Footage');
 
 const About = require('./shared/About');
 const Media = require('./shared/Media');
-const Booking = require('./shared/Booking');
 
 const adminsez = 'footage';
 
@@ -26,19 +25,6 @@ const footageSchema = new Schema({
     required : Boolean,
     exclusive : Boolean
   }]
-/*
-  teaserImage: MediaImage,
-  //  file: {file: String},
-  price: String,
-  duration: String,
-  tech_art: String, // what the artist brings
-  tech_req: String, // what the artist need
-  bookings:[Booking],
-
-  galleries: [{ type : Schema.ObjectId, ref : 'Gallery' }],
-  // videos: [{ type : Schema.ObjectId, ref : 'Videos' }],
-  categories: [{ type : Schema.ObjectId, ref : 'Category' }]
-  */
 }, {
   collection: 'footage',
   timestamps: true,

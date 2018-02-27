@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
 const Performance = mongoose.model('Performance');
+const Category = mongoose.model('Category');
 const Event = mongoose.model('Event');
 const Footage = mongoose.model('Footage');
 const Playlist = mongoose.model('Playlist');
@@ -44,6 +45,45 @@ router.checkAndCreate = (folder, cb) => {
   }
   cb();
 };
+router.get('/categories', (req, res) => {
+  Category.find({}).
+  lean().
+  exec((err, cat) => {
+    let catO = {};
+    cat.forEach(function(e) {
+      if (!e.ancestor) {
+        if (!catO[e.rel]) {
+          catO[e.rel] = {};
+        }
+        catO[e.rel][e._id] = e;
+        catO[e.rel][e._id].son = [];
+      }
+    });
+    catO.stocazzo = {}
+    catO.stocazzo.son = [];
+    cat.forEach(function(e) {
+      if (e.ancestor) {
+        if (catO[e.rel][e.ancestor]) {
+          catO[e.rel][e.ancestor].son.push(e);
+          catO[e.rel][e.ancestor].son.sort(function(a, b){
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+          });
+        } else {
+          catO.stocazzo.son.push(e);          
+        }
+      }
+    });
+    res.render('admin/tools/categories/showall', {
+      title: 'Categories',
+      currentUrl: req.path,
+      data: catO,
+      script: false
+    });
+  });
+});
+
 
 router.get('/news/import', (req, res) => {
   logger.debug('/admin/tools/news/import');
