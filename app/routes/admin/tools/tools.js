@@ -48,6 +48,7 @@ router.checkAndCreate = (folder, cb) => {
 router.get('/categories', (req, res) => {
   Category.find({}).
   lean().
+  sort('name').
   exec((err, cat) => {
     let catO = {};
     cat.forEach(function(e) {
