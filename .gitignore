@@ -15,3 +15,4 @@ package-lock.json
 font-awesome.css
 *.iml
 storage
+.idea/
