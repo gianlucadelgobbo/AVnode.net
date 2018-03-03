@@ -3,8 +3,12 @@ import Router from 'preact-router';
 // Navigation
 import Nav from './Nav';
 // Profile
-import Profile from './user/ProfilePublic';
-import ProfileImages from './user/ProfileImagesContainer';
+//import Profile from './user/ProfilePublic';
+import ProfilePublic from './profile/public'
+import ProfileImages from './profile/images';
+
+//import ProfileImages from './user/ProfileImagesContainer';
+
 import ProfileEmails from './user/ProfileEmails';
 import ProfilePrivate from './user/ProfilePrivate';
 import ProfilePassword from './user/ProfilePasswordContainer';
@@ -59,7 +63,7 @@ const App = () => {
       </div>
       <div className="container">
         <Router>
-          <Profile path="/admin/profile/public" />
+          <ProfilePublic path="/admin/profile/public" />
           <ProfileImages path="/admin/profile/images" />
           <ProfileEmails path="/admin/profile/emails" />
           <ProfilePrivate path="/admin/profile/private" />

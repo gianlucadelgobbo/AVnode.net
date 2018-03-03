@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import {h, Component} from 'preact';
 
 export default class FileInput extends Component {
     constructor(props) {

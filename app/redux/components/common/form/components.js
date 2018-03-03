@@ -1,4 +1,4 @@
-import React from 'react';
+import {h} from 'preact';
 import Textarea from 'react-textarea-autosize';
 
 export const inputText = ({input, meta, placeholder}) => {
