@@ -3,10 +3,11 @@ import Router from 'preact-router';
 // Navigation
 import Nav from './Nav';
 // Profile
-//import Profile from './user/ProfilePublic';
+
 import ProfilePublic from './profile/public'
 import ProfileImages from './profile/images';
 
+//import ProfilePublic from './user/ProfilePublic';
 //import ProfileImages from './user/ProfileImagesContainer';
 
 import ProfileEmails from './user/ProfileEmails';

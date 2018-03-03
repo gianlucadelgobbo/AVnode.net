@@ -1,5 +1,5 @@
 import {h, render, Component} from 'preact';
-import {reduxForm, Field} from "redux-form";
+import {reduxForm, Field, FieldArray} from "redux-form";
 
 // import renderField from "../../renderField";
 // import Abouts from "../../about/Abouts";
@@ -11,7 +11,8 @@ import {reduxForm, Field} from "redux-form";
 // import validate from "../../validators/ProfilePublicValidate";
 
 import {FORM_NAME} from './constants'
-import {inputText} from "../../common/form/components";
+import {inputText, textareaMultitab} from "../../common/form/components";
+
 
 class ProfilePublicForm extends Component {
 
@@ -20,22 +21,38 @@ class ProfilePublicForm extends Component {
         const {
             pristine,
             submitting,
-            handleSubmit
+            handleSubmit,
+            aboutsTabs,
+            aboutsLabels
         } = this.props;
 
         return (
             <form onSubmit={handleSubmit}>
 
                 <Field
-                    name="name"
+                    name="stagename"
                     component={inputText}
-                    placeholder="Name"
+                    placeholder="Stage name"
+                />
+
+                <Field
+                    name="slug"
+                    component={inputText}
+                    placeholder="Profile url"
+                />
+
+                <FieldArray
+                    name="abouts"
+                    component={textareaMultitab}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="About"
                 />
 
                 <button
                     type="submit"
                     disabled={pristine || submitting}
-                    className="btn btn-rounded blue btn-icon-right">
+                    className="btn btn-primary">
                     Save
                 </button>
 
