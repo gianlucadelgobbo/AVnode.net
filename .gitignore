@@ -7,7 +7,6 @@ warehouse/
 .db
 .elasticsearch
 logs/*
-storage
 warehouse
 .DS_Store
 .vscode/
