@@ -1,0 +1,31 @@
+.footage_item_wrapper
+  if item && item.imageFormats && item.imageFormats.large
+    //- console.log(item.imageFormats)
+    a(href="/footage/"+item.slug, title=item.title)
+      img.card-img-top.img-fluid(
+        src=item.imageFormats.small
+        alt=item.title
+      )
+  .footage_item_info_wrapper
+    a(href="/footage/"+item.slug, title=item.title)
+      h4.footage_item_title=item.title
+    if item.tags
+      ul.list-inline.category_footage_item
+        each tag in item.tags
+          li.list-inline-item=tag.tag              
+    
+      //if item.users
+      .users_footage_item_wrapper
+        .flex_left
+          if item.users && item.users.length
+            each user in item.users
+              div.miss
+                img(src=user.imageFormats.small, alt=user.stagename)
+              div
+                p.miss.users_footage_item_name=user.stagename
+                p.miss.users_footage_item_views=item.stats.visits+" "+__("views")
+            .flex_right
+              .users_footage_item_likes
+                span.color2.lnr.lnr-heart
+                br
+                span.miss=item.stats.likes+" "+__("likes")          

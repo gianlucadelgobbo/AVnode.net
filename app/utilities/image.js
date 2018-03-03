@@ -8,7 +8,6 @@ const image = {};
 
 image.resizer = (files, options, done) => {
   logger.debug('resizer');
-
   counter = 0;
   image.resizeAct(files, options, (resizeActErr, info) => {
     done(resizeActErr, info);
@@ -38,8 +37,18 @@ image.resizeAct = (files, options, done) => {
 
 image.resize = (file, sizesA, done) => {
   logger.debug('resize');
+  logger.debug(file);
   const localFileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-  const localPath = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+  const localPath = file.substring(0, file.lastIndexOf('/')).replace('/glacier/', '/warehouse/').replace('_originals/', '/'); // /warehouse/2017/03
+  const localPathA = localPath.split('/');
+  let checkPath = '/';
+  for (let a=1; a<localPathA.length; a++) {
+    checkPath += localPathA[a]+'/';
+    logger.debug(checkPath);
+    if (!fs.existsSync(checkPath)) {
+      fs.mkdirSync(checkPath);
+    }
+  }
   if (!fs.existsSync(`${localPath}/${sizesA[counterresizes].folder}`)) {
     fs.mkdirSync(`${localPath}/${sizesA[counterresizes].folder}`);
   }

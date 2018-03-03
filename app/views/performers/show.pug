@@ -9,49 +9,20 @@ block teaser
 
 block title
   .performer_header_wrapper
-    .container
-      .row
-        .col-lg-7
-          h1.main_title=data.stagename          
-          ul.performer_address.list-inline
-            each address in data.addresses
-              li.list-inline-item=address.locality + ", " + address.country
-          div.performer_stats_wrapper
-            ul.performer_stats_list.performer_stats_list_1.list-inline
-              if data.stats.events
-                li.list-inline-item!=__('Events')+" (<span>"+data.stats.events+"</span>)"
-              if data.stats.performances
-                li.list-inline-item!=__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
-              if data.stats.crews
-                li.list-inline-item!=__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
-            ul.performer_stats_list.performer_stats_list_2.list-inline
-              if data.stats.footage
-                li.list-inline-item!=__('Footage')+" (<span>"+data.stats.footage+"</span>)"
-              if data.stats.playlists
-                li.list-inline-item!=__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
-              if data.stats.tvshows
-                li.list-inline-item!=__('Tvshows')+" (<span>"+data.stats.tvshows+"</span>)"    
-              li.list-inline-item!=__('Gallery')+" (<span>"+data.stats.galleries+"</span>)"    
-              
-        
-        
-        .col-lg-5
-          .row
-            .col-sm-6
-              .performer_image_wrapper
-                .performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
-                //img.rounded-circle.img-fluid(
-                  src=data.imageFormats.medium
-                  alt=data.stagename
-                  )
-            .col-sm-6
-              img.img-fluid(src="/images/logo_avnode_svg.svg")
+    include header
 
   .container
     .row
       .col-sm-12
-        .performer_map_wrapper
-          h2="auto centred Google map: a marker for each performer's address"
+        .performer_map_wrapper         
+          script(src='https://maps.googleapis.com/maps/api/js?key=&extension=.js')
+          script(src='https://cdn.mapkit.io/v1/infobox.js')
+          link(href='https://cdn.mapkit.io/v1/infobox.css', rel='stylesheet')
+          script.
+            var locations = !{JSON.stringify(data.locations)}
+          script(src='/js/mymaps.js')
+          #performer_map
+
     
   if data.abouts
     .abouts_wrapper
@@ -64,172 +35,101 @@ block title
                 span.color1.lnr.lnr-plus-circle
     .abouts_divider
 
-
-
-
 block content
   .container
     section.row.performer_events_wrapper
       .col-lg-12
         h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-        .row
+        .row.carousel
           each item in data.events
             .col-sm-4
-              .event_item_wrapper
-                a(href=item.publicUrl, title=item.title)
-                  img.img-fluid(
-                    src=item.imageFormats.large
-                    alt=item.title
-                  )
-                .event_item_info_wrapper
-                  a(href=item.publicUrl, title=item.title)
-                    h4.event_item_title=item.title
-                  ul.event_item_date_and_locality.list-inline
-                    li.list-inline-item.event_item_date=item.boxDate
-                    li.list-inline-item.event_item_locality_paese.miss="Paese, Città"                  
+              include ../partials/boxEvent
         //.text-right
-          a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')
+          a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')        
+          
   
-  section.performer_performances_wrapper
-    .content_wrapper
+  if data.performances.length
+    section.performer_performances_wrapper
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+              .performance_divider.basic_divider
+              .row.carousel
+                each item in data.performances
+                  .col-sm-4
+                    include ../partials/boxPerformance
+
+  if data.crews.length
+    section.performer_crew_wrapper
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+            h2.main_title.indented_title!=__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
             .performance_divider.basic_divider
             .row
-              each item in data.performances
-                .col-sm-4                
-                  .performance_item_wrapper
-                    if item.imageFormats
-                      a(href=item.publicUrl, title=item.title)
-                        img.card-img-top.img-fluid(
-                          src=item.imageFormats.large
-                          alt=item.title
-                        )
-                    .performance_item_info_wrapper
-                      a(href=item.publicUrl, title=item.title)
-                        h4.performance_item_title=item.title
-                      if item.categories
-                        ul.list-inline.category_performance_item
-                          each category in item.categories
-                            li.list-inline-item=category.name
-                      if item.users
-                        .users_performance_item_wrapper
-                          each user in item.users
-                            div
-                              img(src=user.imageFormats.small, alt=user.stagename)
-                            div
-                              p.users_performance_item_name=user.stagename
-                              p.users_performance_item_views.miss="999 views"
-                          .users_performance_item_likes.miss
-                            span.color2.lnr.lnr-heart
-                            br
-                            span="999 likes"
-                        
+              .col-sm-6
+                .row
+                  each item in data.crews
+                    .col-sm-12
+                      include ../partials/boxPerformer
+              .col-sm-6
+                img.img-fluid(src="/images/logo_avnode_symbol.svg")
 
+  if data.footage.length || data.videos.length || data.playlists.length
+    section.performer_videos_wrapper
+      .content_wrapper
+        .container
+          if data.footage.length
+            .row.performer_footage
+              .col-lg-12
+                h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
+                .row.carousel
+                  each item in data.footage            
+                    .col-sm-4
+                      include ../partials/boxFootage  
 
-                  
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Crews')
-      .card-deck
-        each item in data.crews
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.medium
-                alt=item.stagename
-              )
-            .card-block
-              h4.event_item_title=item.stagename
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Performances')
-      .card-deck
-        each item in data.performances
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.medium
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('TV Shows')
-      .card-deck
-        each item in data.tvshows
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.large
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Footage')
-      .card-deck
-        each item in data.footage
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.large
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Playlists')
-      .card-deck
-        each item in data.playlists
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.large
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-              h6.card-subtitle.text-muted=item.subtitle
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
-  br
-  br
-  .row
-    .col-lg-12
-      h3=__('Galleries')
-      .card-deck
-        each item in data.galleries
-          .card
-            if item.imageFormats
-              img.card-img-top.img-fluid(
-                src=item.imageFormats.medium
-                alt=item.title
-              )
-            .card-block
-              h4.event_item_title=item.title
-            .card-block.pt-0
-              a.btn.btn-secondary(href=item.publicUrl)=__('More')
+          if data.videos.length
+            .row.performer_video
+              .col-lg-12
+                h2.main_title.indented_title!=__('Videos')+" <small>(<span class='miss'>"+data.stats.video+"</span>)</small>"  
+                .row
+                  each item in data.videos            
+                    .col-sm-4
+                      include ../partials/boxVideo
+
+          if data.playlists.length
+            .row.performer_playlist
+              .col-lg-12
+                h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+                .row.carousel
+                  each item in data.playlists
+                    .col-sm-4
+                      include ../partials/boxPlaylist
+  
+  if data.galleries.length
+    section.performer_galleries_wrapper
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+              .performance_divider.basic_divider
+              .row.carousel
+                each item in data.galleries
+                  .col-sm-4
+                    include ../partials/boxGallery
+
+  if data.news.length
+    section.performer_galleries_wrapper
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=__('News')+" <small>(<span>"+data.stats.news+"</span>)</small>"  
+              .performance_divider.basic_divider
+              .row.carousel
+                each item in data.news
+                  .col-sm-4
+                    include ../partials/boxNews

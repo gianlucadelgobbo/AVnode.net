@@ -16,7 +16,7 @@ const OrganizationData = require('./shared/OrganizationData');
 const adminsez = 'user';
 
 const userSchema = new Schema({
-  old_id : String,
+  old_id: String,
 
   slug: { type: String, unique: true },
   stagename: { type: String, unique: true },
@@ -59,10 +59,11 @@ const userSchema = new Schema({
   performances: [{ type: Schema.ObjectId, ref: 'Performance' }],
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
-  tvshows: [{ type: Schema.ObjectId, ref: 'TVShow' }],
+  videos: [{ type: Schema.ObjectId, ref: 'Video' }],
   partnerships : [{ type: Schema.ObjectId, ref: 'User' }],
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
+  news : [{ type: Schema.ObjectId, ref: 'News' }],
 
   /* A todo
   videos : [{ type: Schema.ObjectId, ref: 'Gallery' }],
@@ -89,13 +90,34 @@ const userSchema = new Schema({
   }
 });
 
-/* userSchema.virtual('crews', {
+/*
+userSchema.methods.toJSON = function() {
+  var obj = this.toObject();
+  delete obj.image;
+  return obj;
+}
+userSchema.virtual('crews', {
   ref: 'User',
   localField: '_id',
   foreignField: '_id'
 }); */
 
 // Crews only
+
+
+
+/* BL FIXME later for crews
+userSchema.pre('remove', function(next) {
+  const crew = this;
+  crew.model('User').update(
+    { $pull: { crews: crew._id } },
+    next
+  );
+});
+
+userSchema.virtual('publicUrl').get(function () {
+  if (this.slug) return `/${this.slug}`;
+});
 userSchema.virtual('editUrl').get(function () {
   if (this.slug) {
     if (this.is_crew) {
@@ -106,41 +128,7 @@ userSchema.virtual('editUrl').get(function () {
   } 
 });
 
-userSchema.virtual('publicEmails').get(function () {
-  let publicEmails = [];
-  for (let email in this.emails) {
-    if (this.emails[email].is_public) {
-      publicEmails.push(this.emails[email].email);
-    }
-  }
-  return publicEmails;
-});
-
-userSchema.virtual('about').get(function (req) {
-  let about = __('Text is missing');
-  let aboutA = [];
-  if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
-    if (aboutA.length && aboutA[0].abouttext) {
-      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-    } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
-      if (aboutA.length && aboutA[0].abouttext) {
-        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-      }
-    }
-  }
-  return about;
-});
-
-/* BL FIXME later for crews
-userSchema.pre('remove', function(next) {
-  const crew = this;
-  crew.model('User').update(
-    { $pull: { crews: crew._id } },
-    next
-  );
-});*/
+*/
 
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
@@ -148,22 +136,6 @@ userSchema.virtual('birthdayFormatted').get(function () {
     moment.locale(lang);
     return moment(this.birthday).format(config.dateFormat[lang].single);
   }
-});
-
-userSchema.virtual('publicEmails').get(function () {
-  let emails = [];
-  if (this.emails) {
-    this.emails.forEach((email) => {
-      if (email.is_public) {
-        emails.push(email);
-      }
-    });
-  }
-  if (emails.length) return emails;
-});
-
-userSchema.virtual('publicUrl').get(function () {
-  if (this.slug) return `/${this.slug}`;
 });
 
 // Return thumbnail
@@ -176,7 +148,7 @@ userSchema.virtual('imageFormats').get(function () {
     }
     const serverPath = this.image.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/users_originals/', process.env.WAREHOUSE+'/warehouse/users/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
@@ -190,7 +162,7 @@ userSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-
+/*
 userSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);
@@ -214,7 +186,7 @@ userSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-
+*/
 userSchema.pre('save', function save(next) {
   console.log('userSchema.pre(save) id:' + this._id);
   const user = this;

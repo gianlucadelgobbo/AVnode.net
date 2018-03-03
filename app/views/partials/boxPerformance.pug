@@ -1,0 +1,28 @@
+.performance_item_wrapper
+  if item.imageFormats
+    a(href="/performances/"+item.slug, title=item.title)
+      img.card-img-top.img-fluid(
+        src=item.imageFormats.large
+        alt=item.title
+      )
+  .performance_item_info_wrapper
+    a(href="/performances/"+item.slug, title=item.title)
+      h4.performance_item_title=item.title
+    if item.categories
+      ul.list-inline.category_performance_item
+        each category in item.categories
+          li.list-inline-item=category.name
+    if item.users
+      .users_performance_item_wrapper
+        .flex_left
+          each user in item.users
+            div
+              img(src=user.imageFormats.small, alt=user.stagename)
+            div
+              p.users_performance_item_name=user.stagename
+              p.users_performance_item_views=item.stats.visits+" "+__("views")
+        .flex_right      
+          .users_performance_item_likes
+            span.color2.lnr.lnr-heart
+            br
+            span=item.stats.likes+" "+__("likes")

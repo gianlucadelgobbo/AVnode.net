@@ -104,7 +104,7 @@ exports.post = function post(req, res) {
 				  		for(var item in o) {
 				  			newItem[item] = o[item];
 				  		}
-						var sections = ["events","footage","playlists","gallery","performances","tvshow"];
+						var sections = ["events","footage","playlists","gallery","performances","video"];
 						var miniuser = {_id:newItem._id,old_id:newItem.old_id,display_name:newItem.display_name,permalink:newItem.permalink,files:newItem.files,stats:newItem.stats,members:newItem.members};
 						for (var item in sections) {
 							if (newItem[sections[item]] && newItem[sections[item]].length) {

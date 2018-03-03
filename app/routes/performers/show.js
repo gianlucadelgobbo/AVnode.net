@@ -1,7 +1,7 @@
 const router = require('../router')();
 const dataprovider = require('../../utilities/dataprovider');
 
-const Model = require('mongoose').model('User');
+const Model = require('mongoose').model('UserShow');
 const section = 'performers';
 
 const logger = require('../../utilities/logger');
@@ -31,6 +31,16 @@ router.get('/footage/page/:page', (req, res) => {
   dataprovider.show(req, res, section, 'footage', Model);
 });
 
+router.get('/playlists', (req, res) => {
+  logger.debug('Show ' + section + ' playlists');
+  dataprovider.show(req, res, section, 'playlists', Model);
+});
+
+router.get('/footage/page/:page', (req, res) => {
+  logger.debug('Show ' + section + ' footage');
+  dataprovider.show(req, res, section, 'footage', Model);
+});
+
 router.get('/galleries', (req, res) => {
   logger.debug('Show ' + section + ' galleries');
   dataprovider.show(req, res, section, 'galleries', Model);
@@ -41,14 +51,14 @@ router.get('/galleries/page/:page', (req, res) => {
   dataprovider.show(req, res, section, 'galleries', Model);
 });
 
-router.get('/tvshows', (req, res) => {
-  logger.debug('Show ' + section + ' tvshows');
-  dataprovider.show(req, res, section, 'tvshows', Model);
+router.get('/videos', (req, res) => {
+  logger.debug('Show ' + section + ' videos');
+  dataprovider.show(req, res, section, 'videos', Model);
 });
 
-router.get('/tvshows/page/:page', (req, res) => {
-  logger.debug('Show ' + section + ' tvshows');
-  dataprovider.show(req, res, section, 'tvshows', Model);
+router.get('/videos/page/:page', (req, res) => {
+  logger.debug('Show ' + section + ' videos');
+  dataprovider.show(req, res, section, 'videos', Model);
 });
 
 router.get('/performances', (req, res) => {
@@ -69,6 +79,16 @@ router.get('/crews', (req, res) => {
 router.get('/crews/page/:page', (req, res) => {
   logger.debug('Show ' + section + ' crews');
   dataprovider.show(req, res, section, 'crews', Model);
+});
+
+router.get('/news', (req, res) => {
+  logger.debug('Show ' + section + ' news');
+  dataprovider.show(req, res, section, 'news', Model);
+});
+
+router.get('/news/page/:page', (req, res) => {
+  logger.debug('Show ' + section + ' news');
+  dataprovider.show(req, res, section, 'news', Model);
 });
 
 module.exports = router;

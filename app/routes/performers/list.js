@@ -2,7 +2,7 @@ const config = require('getconfig');
 const router = require('../router')();
 const dataprovider = require('../../utilities/dataprovider');
 
-const Model = require('mongoose').model('User');
+const Model = require('mongoose').model('UserShow');
 const section = 'performers';
 
 const logger = require('../../utilities/logger');

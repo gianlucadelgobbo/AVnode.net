@@ -1,0 +1,48 @@
+extends ../layout
+
+block teaser
+  if data.teaserImage
+    .d-flex.justify-content-center.align-items-start
+      img.card-img-top.img-fluid(
+        src=`${data.teaserImageFormats.large}`
+        alt=`${data.name}`
+      )
+
+block title
+  if data.title
+    .jumbotron.jumbotron-fluid
+      .container
+        .row
+          .col-lg-8
+            h1.display-4=data.title
+            p=data.about
+          .col-lg-4
+            if data.image
+              img.card-img-top.img-fluid(
+                src=data.imageFormats.medium
+                alt=data.title
+              )
+
+block content
+  video#my-video.video-js.vjs-fluid.vjs-16-9(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{}')
+    source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
+    //source(src='MY_VIDEO.webm', type='video/webm')
+    p.vjs-no-js
+      !=__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
+      a(href='http://videojs.com/html5-video-support/', target='_blank')=!__("supports HTML5 video")
+
+  .row
+    .col-lg-12
+      h3=__('Members')
+      .card-columns
+        //each member in data.members
+          .card
+            if member.image
+              img.card-img-top.img-fluid(
+                src=member.imageFormats.medium
+                alt=member.name
+              )
+            .card-block
+              h4.card-title
+                =member.stagename
+              a.btn.btn-primary(href=member.publicUrl)=__('More')

@@ -1,0 +1,36 @@
+.playlist_item_wrapper
+  if item.imageFormats
+    a(href="/playlists/"+item.slug, title=item.title)
+      img.card-img-top.img-fluid(
+        src=item.imageFormats.large
+        alt=item.title
+      )
+  .playlist_item_info_wrapper
+    a(href="/playlists/"+item.slug, title=item.title)
+      h4.playlist_item_title=item.title            
+  
+    if item.stats
+      .stats_playlist_item_wrapper
+        .flex_left          
+          if item.stats.footage
+            .playlist_item_videos
+              span.lnr.lnr-camera-video
+              br
+              span.value=item.stats.footage
+        
+        .flex_right
+          if item.stats.visits
+            .playlist_item_visits
+              span.lnr.lnr-eye
+              br
+              span.value=item.stats.visits
+          if item.stats.downloads
+            .playlist_item_downloads
+              span.lnr.lnr-download
+              br
+              span.value=item.stats.downloads
+          if item.stats.likes
+            .playlist_item_likes
+              span.lnr.lnr-heart
+              br
+              span.value=item.stats.likes        
