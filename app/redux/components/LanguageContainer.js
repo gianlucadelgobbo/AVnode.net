@@ -11,6 +11,7 @@ import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 import fr from 'react-intl/locale-data/fr';
 import it from 'react-intl/locale-data/it';
+
 addLocaleData([...en, ...de, ...fr, ...it]);
 
 const messages = {
