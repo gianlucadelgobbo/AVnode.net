@@ -16,8 +16,8 @@ class ProfilePublic extends Component {
 
     // Convert form values to API model
     createUserModel(values) {
-        //values.myCustomValue2 = "test";
 
+        //clone obj
         let model = Object.assign({}, values);
 
         //Convert abouts for API
@@ -70,6 +70,8 @@ class ProfilePublic extends Component {
 
     render() {
 
+        const {user} = this.props;
+
         return (
             <div class="row">
                 <div className="class-md-3">
@@ -82,6 +84,7 @@ class ProfilePublic extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
+                        user={user}
                     />
                 </div>
             </div>

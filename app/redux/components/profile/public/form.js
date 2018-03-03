@@ -12,7 +12,8 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 
 import {FORM_NAME} from './constants'
 import {inputText, textareaMultitab} from "../../common/form/components";
-
+import validate from './validate'
+import asyncValidate from './asyncValidate'
 
 class ProfilePublicForm extends Component {
 
@@ -66,7 +67,7 @@ export default reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    //validate,
-    //asyncValidate,
+    validate,
+    asyncValidate,
     asyncBlurFields: ['slug']
 })(ProfilePublicForm);
