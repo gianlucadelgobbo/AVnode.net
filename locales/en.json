@@ -46,5 +46,9 @@
 	"Account already exists.": "Account already exists.",
 	"Request a new password": "Request a new password",
 	"You are logged in.": "You are logged in.",
-	"Email %s not found.": "Email %s not found."
+	"Videos": "Videos",
+	"News": "News",
+	"views": "views",
+	"likes": "likes",
+	"Playlist": "Playlist"
 }
