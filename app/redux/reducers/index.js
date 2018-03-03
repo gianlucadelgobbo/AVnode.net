@@ -232,7 +232,6 @@ const user = (state = initialValues, action) => {
       eventId: action.active.substring(action.active.lastIndexOf('/') + 1)
     });
   case GOT_USER:
-    console.log('6 index redux GOT_USER');
     return Object.assign({}, state, action.json, {
         ajaxInProgress: false,
         imageUploadInProgress: false
