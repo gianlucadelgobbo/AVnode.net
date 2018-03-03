@@ -20,7 +20,6 @@ class ProfilePublicForm extends Component {
     render() {
 
         const {
-            pristine,
             submitting,
             handleSubmit,
             aboutsTabs,
@@ -52,7 +51,7 @@ class ProfilePublicForm extends Component {
 
                 <button
                     type="submit"
-                    disabled={pristine || submitting}
+                    disabled={submitting}
                     className="btn btn-primary">
                     Save
                 </button>

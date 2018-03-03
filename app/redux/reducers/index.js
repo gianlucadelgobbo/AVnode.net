@@ -76,6 +76,7 @@ import {
   REQUEST_SUGGEST_PERFORMANCE_PERFORMER,
   RESPONSE_SUGGEST_PERFORMANCE_PERFORMER
 } from './actions';
+import modal from '../components/modal/reducers';
 
 const initialValues = {
   active: window.location.pathname,
@@ -435,7 +436,8 @@ const user = (state = initialValues, action) => {
 
 const reducer = combineReducers({
   user,
-  form: formReducer
+  form: formReducer,
+    modal: modal
 });
 
 export default reducer;
