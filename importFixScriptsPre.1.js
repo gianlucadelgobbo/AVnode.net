@@ -31,42 +31,6 @@ var CATEGORIES = function() {
   //db.categories.findOne({"ancestors.0": {$exists: true}});
 
   db.categories.find({}).forEach(function(e) {
-    if (!e.slug) e.slug = e.permalink.toLowerCase();
-    if (e.permalink) delete e.permalink;
-    if (e.ancestors && e.ancestors.length) {
-      e.ancestor = e.ancestors[0]._id;
-      delete e.ancestors;
-    }
-    if (e.ancestors) delete e.ancestors;
-    db.categories.save(e);
-  });
-
-  var relfix = {
-    users: "users",
-    performances: "performances",
-    videos: "videos",
-    performances: "performances",
-    events: "events",
-    ana_aziende: "users",
-    file: "videos",
-    performance: "performances",
-    progetti: "events",
-    performance_rel: "performances",
-    protagonisti_rel: "users",
-    soggetti: "users",
-    ana_pers: "users"
-  };
-  db.categories.find({}).forEach(function(e) {
-    if (relfix[e.rel] !== undefined) {
-      e.rel = relfix[e.rel];
-      db.categories.save(e);
-    } else {
-      printjson(relfix[e.rel]);
-      db.categories.remove({_id:e._id});
-    }
-  });
-
-  db.categories.find({}).forEach(function(e) {
     e.count = 0;
     e.countstr = "";
     var tmp = db.users.count({"categories":e._id});
@@ -101,12 +65,7 @@ var CATEGORIES = function() {
       if (tmp) e.countstr += " performances bookings: "+tmp;
     //}
     printjson(e.rel+" "+e.slug+" "+ e.count+" "+ e.countstr);
-    db.categories.save(e);
-    if (e.count) {
-      //db.categories.save(e);
-    } else {
-      //db.categories.remove({_id:e._id});
-    }
+    //db.categories.save(e);
   });
 
 }
@@ -223,7 +182,6 @@ var PERFORMANCES = function() {
   //{permalink:'vector-vs-bitmap'}
   //db.performances.findOne({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}});
   //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}}).forEach(function(e) {
-  //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}}).forEach(function(e) {
   var folders = {};
   function sanitizeOld(folder,defaultFolder) {
     return folder.
@@ -319,7 +277,6 @@ var PERFORMANCES = function() {
         e.bookings[a].schedule.categories = tmpA;
         e.bookings[a].schedule.venue.location.locality = e.bookings[a].schedule.venue.location.city;
         delete e.bookings[a].schedule.venue.location.city;
-        if (!e.bookings[a].schedule.venue.room) delete e.bookings[a].schedule.venue.room;
       }
     }
     if (e.tags && !e.tags.length) delete e.tags
@@ -342,7 +299,7 @@ var EVENTS = function() {
     replace("/_flxer/avatar/", defaultFolder).
     replace(/\(|\)/g, "");
   }
-  db.events.find({permalink:'lpm-2017-amsterdam'}).forEach(function(e) {
+  db.events.find({}).forEach(function(e) {
     e.is_public = e.is_public===1;
     e.gallery_is_public = e.gallery_is_public===1;
     e.is_freezed = e.is_freezed===1;
@@ -485,8 +442,8 @@ var EVENTS = function() {
         delete e.schedule[a].venue.location.city;
       }
     }
-    printjson(e);
-    //db.events.save(e);
+    //printjson(e);
+    db.events.save(e);
   });
   Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
 }
@@ -902,46 +859,6 @@ var GALLERIES = function() {
   db.galleries.remove({"medias.0": {$exists: false}});
 
   // 02
-  db.galleries.find({}).forEach(function(gallery) {
-    gallery.performances = [];
-    var res = db.performances.find({"galleries": gallery._id}).toArray();
-    var conta = 0;
-    if (res.length) {
-      res.forEach(function(performance) {
-        conta++;
-        gallery.performances.push(performance._id);
-        printjson(gallery.title+' performance: '+performance.title+' conta: '+conta+' res.length: '+res.length);
-        if (conta == res.length) {
-          printjson('SAVEEEEEE');
-          //printjson(gallery);
-          db.galleries.save(gallery);
-        }
-      });
-    }
-  });
-
-  // 03
-  db.galleries.find({}).forEach(function(gallery) {
-    gallery.events = [];
-    var res = db.events.find({"galleries": gallery._id}).toArray();
-    var conta = 0;
-    if (res.length) {
-      res.forEach(function(event) {
-        conta++;
-        gallery.events.push(event._id);
-        printjson(gallery.title+' event: '+event.title+' conta: '+conta+' res.length: '+res.length);
-        if (conta == res.length) {
-          printjson('SAVEEEEEE');
-          //printjson(gallery);
-          db.galleries.save(gallery);
-        }
-      });
-    }
-  });
-    
-  //db.galleries.find({"performances.0":{$exists: true},"stats.video":{$exists: true}, "stats.img":{$exists: true}}).forEach(function(e) {
-
-  // 04
   var folders = {};
   var extoriginals = [];
   var ext = [];
@@ -968,18 +885,11 @@ var GALLERIES = function() {
     replace("/_flxer/library/no_hole/", defaultFolder).
     replace(/\(|\)/g, "");
   }
+  //db.galleries.find({"medias.0":{$exists:true},"events.0":{$exists:true},"performances.0":{$exists:true}}).forEach(function(e) {
   db.galleries.find({}).forEach(function(e) {
-    if (e.permalink) {
-      e.slug = e.permalink.toLowerCase();
-      delete e.permalink;
-    }
-    if (e.users && e.users.length) {
-      var tmpA = [];
-      for(var a=0;a<e.users.length;a++){
-        tmpA.push(e.users[a]._id);
-      }
-      e.users = tmpA;
-    }
+    e.slug = e.permalink;
+    delete e.permalink;
+
     if (e.text) {
       e.abouts = [];
       for (var item in e.text) {
@@ -990,14 +900,37 @@ var GALLERIES = function() {
       }
       delete e.text;
     }
-   e.image = e.file;
     delete e.file;
+
+    var perf = [];
+    for (var p in e.performances) perf.push(e.performances[p].id);
+    e.performances = db.performances.find({old_id:{$in:perf}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    
+    var evt = [];
+    for (var p in e.events) evt.push(e.events[p].id);
+    e.events = db.events.find({old_id:{$in:evt}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    
+    var users = [];
+    for (var p in e.users) users.push(e.users[p].old_id);
+    e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    
+    e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    
+    var medias = [];
+    for (var p in e.medias) {
+      var media = e.medias[p].file;
+      media.title = e.medias[p].title;
+      media.slug = e.medias[p].permalink;
+      medias.push(media);
+    }
+    e.medias = medias;
+    printjson(medias.length);
+
     var conta = 0;
     var newMedias = [];
     var newVideos = [];
     var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
-    e.medias.forEach(function(m) {
-      let media = m.file;
+    e.medias.forEach(function(media) {
       media.fileflxer = media.file;
       const serverPath = media.file;
       const localFileNameExtension = serverPath.substring(serverPath.lastIndexOf('.') + 1);
@@ -1040,11 +973,11 @@ var GALLERIES = function() {
             folder = folder.substring(0, folder.lastIndexOf('/'));
             folders[folder] = 1;
             if (localFileNameExtension == "flv") {
-              printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-              printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+              //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+              //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
             } else {
-              printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-              printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+              //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+              //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
               if (media.originalflxer) {
                 //printjson("cp -n "+media.originalflxer.replace('/warehouse/','warehouse_old/')+" "+media.original.replace('/glacier/','glacier/'));
                 var folder = media.original.substring(0, media.original.lastIndexOf('/'));
@@ -1059,16 +992,16 @@ var GALLERIES = function() {
           if (localFileNameExtension == "swf") {
             media.previewflxer = media.fileflxer.replace('.swf', '.jpg');
             media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
-            printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-            printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+            //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
           }
           if (localFileNameExtension == "mov") {
             media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}_mov.png`;
             media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
-            printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
           }
           if (localFileNameExtension == "mp3") {
-            printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
           }
           let video = e;
           video.media = media;
@@ -1082,7 +1015,7 @@ var GALLERIES = function() {
           folder = folder.substring(0, folder.lastIndexOf('/'));
           folders[folder] = 1;
           delete media.encoded;
-          printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/glacier/','glacier/'));
+          //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/glacier/','glacier/'));
           newMedias.push(media);
         }
       }
@@ -1090,23 +1023,30 @@ var GALLERIES = function() {
       if (conta == e.medias.length) {
         //if (!e.text || !Object.keys(e.text).length) delete e.text;
         if (e.stats.video) delete e.stats.video;
-        //delete e.media;
-        e.image = newMedias[0];
-        e.stats.img = newMedias.length;
-        e.medias = newMedias;
-        //printjson('SAVEEEEEE GALLERY');
-        //printjson(e);
-        db.galleries.save(e);
+        if (newMedias.length) {
+          //delete e.media;
+          e.image = newMedias[0];
+          e.stats.img = newMedias.length;
+          e.medias = newMedias;
+          printjson('SAVEEEEEE GALLERY');
+          printjson(e);
+          //db.galleries.save(e);
+        } else {
+          printjson('REMOVE GALLERY');
+          printjson(e);
+        }
         if (newVideos.length) {
           newVideos.forEach(function(video) {
             if (video.stats.img) delete video.stats.img;
             if (!video.text || !Object.keys(video.text).length) delete video.text;
+            delete video.stats.img;
+            delete video.stats.video;
             delete video.medias;
             delete video.image;
             delete video._id;
-            //printjson('SAVEEEEEE VIDEO!!!');
-            //printjson(video);
-            db.videos.save(video);
+            printjson('SAVEEEEEE VIDEO!!!');
+            printjson(video);
+            //db.videos.save(video);
           });
         }
       }
@@ -1114,55 +1054,43 @@ var GALLERIES = function() {
   });
   printjson(ext);
   Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
-/*
-  function sanitizeOld(folder,defaultFolder) {
-    return folder.
-    replace("/_flxer/photos/", defaultFolder).
-    replace("/_videos/", defaultFolder).
-    replace("/_flxer/liveset/", defaultFolder).
-    replace("/_photos/", defaultFolder).
-    replace("/_flxer/library/hole/", defaultFolder).
-    replace("/_audios/", defaultFolder).
-    replace("/_flxer/library/no_hole/", defaultFolder).
-    replace(/\(|\)/g, "");
-  }
-  db.galleries.find({"medias.file.file": {$exists: true}}).forEach(function(e) {
-    if (e.permalink) {
-      e.slug = e.permalink.toLowerCase();
-      delete e.permalink;
+
+  db.galleries.find({}).forEach(function(gallery) {
+    gallery.performances2 = [];
+    var res = db.performances.find({"galleries": gallery._id}).toArray();
+    var conta = 0;
+    if (res.length) {
+      res.forEach(function(performance) {
+        conta++;
+        gallery.performances2.push(performance._id);
+        printjson(gallery.title+' performance: '+performance.title+' conta: '+conta+' res.length: '+res.length);
+        if (conta == res.length) {
+          printjson('SAVEEEEEE');
+          printjson(gallery);
+          //db.galleries.save(gallery);
+        }
+      });
     }
-    if (e.users && e.users.length) {
-      var tmpA = [];
-      for(var a=0;a<e.users.length;a++){
-        tmpA.push(e.users[a]._id);
-      }
-      e.users = tmpA;
-    }
-    e.image = e.file;
-    delete e.file;
-    var newMedias = [];
-    for(var a=0; a< e.medias.length;a++) {
-      if (e.medias[a].file.file) {
-        var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
-        const localFileName = e.medias[a].file.file.substring(e.medias[a].file.file.lastIndexOf('/') + 1);
-        if (localFileName.substring(0,1)==='.') {
-          printjson("HIDDEN FILE "+localFileName);
-        } else {
-          e.medias[a].file.file = sanitizeOld(e.medias[a].file.file, defaultFolder).replace('/warehouse/', '/glacier/galleries_originals/');
-          newMedias.push(e.medias[a].file);
-        }        
-      }
-    }
-    if (e.stats.video) delete e.stats.video;
-    //delete e.media;
-    e.image = newMedias[0];
-    e.stats.img = newMedias.length;
-    e.medias = newMedias;
-    //printjson(e);
-    db.galleries.save(e);
   });
 
-*/
+  // 03
+  db.galleries.find({}).forEach(function(gallery) {
+    gallery.events2 = [];
+    var res = db.events.find({"galleries": gallery._id}).toArray();
+    var conta = 0;
+    if (res.length) {
+      res.forEach(function(event) {
+        conta++;
+        gallery.events2.push(event._id);
+        printjson(gallery.title+' event: '+event.title+' conta: '+conta+' res.length: '+res.length);
+        if (conta == res.length) {
+          printjson('SAVEEEEEE');
+          //printjson(gallery);
+          db.galleries.save(gallery);
+        }
+      });
+    }
+  });
 
   // 05
   db.galleries.remove({"medias.0": {$exists: false}});
@@ -1242,7 +1170,7 @@ var GALLERIES = function() {
       });  
     });  
   });
-
+}
   // GENERATE ALL NEWS!!!
 
   // 11
