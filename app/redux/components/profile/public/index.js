@@ -4,6 +4,9 @@ import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser} from './selectors'
 import {locales, locales_labels} from '../../../../../config/default.json'
+import {editUser} from "../../../reducers/actions";
+import {showModal} from "../../modal/actions";
+import {bindActionCreators} from "redux";
 
 /*
 * Responsabilita'
@@ -64,8 +67,16 @@ class ProfilePublic extends Component {
     }
 
     onSubmit(values) {
+        const {showModal, editUser} = this.props;
+        const model = this.createUserModel(values);
+
         //dispatch the action to save the model here
-        console.log("values", this.createUserModel(values))
+        editUser(model)
+            .then(() => {
+                showModal({
+                    type: "EXAMPLE"
+                });
+            });
     }
 
     render() {
@@ -97,8 +108,14 @@ const mapStateToProps = (state) => ({
     user: getUser(state)
 });
 
+const mapDispatchToProps = dispatch => bindActionCreators({
+    editUser: editUser,
+    showModal: showModal
+}, dispatch);
+
 ProfilePublic = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ProfilePublic);
 
 export default ProfilePublic;

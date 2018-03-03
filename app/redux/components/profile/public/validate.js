@@ -69,7 +69,7 @@ const profilePublicValidate = values => {
     //     }
     // }
 
-    return errors;
+    return Object.keys(errors).length === 0 ? true : errors;
 };
 
 export default profilePublicValidate;

@@ -50,5 +50,9 @@
 	"News": "News",
 	"views": "views",
 	"likes": "likes",
-	"Playlist": "Playlist"
+	"Playlist": "Playlist",
+	"All": "All",
+	"Individuals": "Individuals",
+	"Most active": "Most active",
+	"Most recent": "Most recent"
 }
