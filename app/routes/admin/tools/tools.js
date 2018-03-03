@@ -1,8 +1,21 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
+const Performance = mongoose.model('Performance');
+const Category = mongoose.model('Category');
+const Event = mongoose.model('Event');
+const Footage = mongoose.model('Footage');
+const Playlist = mongoose.model('Playlist');
+const Gallery = mongoose.model('Gallery');
+const Video = mongoose.model('Video');
+const News = mongoose.model('News');
 const AddressDB = mongoose.model('AddressDB');
 const request = require('request');
+const fs = require('fs');
+const config = require('getconfig');
+const sharp = require('sharp');
 
 const logger = require('../../../utilities/logger');
 
@@ -16,6 +29,1229 @@ router.get('/', (req, res) => {
     data: 'LOAD DATA'
   });
 });
+
+router.checkAndCreate = (folder, cb) => {
+  const folderA = folder.split('/');
+  let subfolder = '';
+
+  if (folderA.length) {
+    for (let a=1; a<folderA.length;a++) {
+      subfolder +=  `/${folderA[a]}`;
+      console.log(subfolder);
+      if (!fs.existsSync(global.appRoot + subfolder)) {
+        fs.mkdirSync(global.appRoot + subfolder);
+      }
+    }
+  }
+  cb();
+};
+router.get('/categories', (req, res) => {
+  Category.find({}).
+  lean().
+  sort('name').
+  exec((err, cat) => {
+    let catO = {};
+    cat.forEach(function(e) {
+      if (!e.ancestor) {
+        if (!catO[e.rel]) {
+          catO[e.rel] = {};
+        }
+        catO[e.rel][e._id] = e;
+        catO[e.rel][e._id].son = [];
+      }
+    });
+    catO.stocazzo = {}
+    catO.stocazzo.son = [];
+    cat.forEach(function(e) {
+      if (e.ancestor) {
+        if (catO[e.rel][e.ancestor]) {
+          catO[e.rel][e.ancestor].son.push(e);
+          catO[e.rel][e.ancestor].son.sort(function(a, b){
+            if(a.name < b.name) return -1;
+            if(a.name > b.name) return 1;
+            return 0;
+          });
+        } else {
+          catO.stocazzo.son.push(e);          
+        }
+      }
+    });
+    res.render('admin/tools/categories/showall', {
+      title: 'Categories',
+      currentUrl: req.path,
+      data: catO,
+      script: false
+    });
+  });
+});
+
+
+router.get('/news/import', (req, res) => {
+  logger.debug('/admin/tools/news/import');
+  let page = (req.param.page ? req.param.page : 1);
+  const url = `https://flyer.dev.flyer.it/wp-json/wp/v2/news/?page=${page}`;
+
+  page++;
+  request({
+      url: url,
+      json: true
+  }, function (error, response, body) {
+    if (!error && response.statusCode === 200, body.length) {
+      let data = [];
+      let contapost = 0;
+      let contaposttotal = 0;
+      body.forEach((item, index) => {
+        item.date = new Date(item.date);
+        let month = item.date.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        const source = item.featured.full;
+        console.log(source);
+        let filename = '';
+        let dest = '';
+        //if (source) {
+          contaposttotal++;
+          filename = source.substring(source.lastIndexOf('/') + 1);
+          dest = `${global.appRoot}/glacier/news_originals/${item.date.getFullYear()}/`;
+          if (!fs.existsSync(dest)) {
+            logger.debug(fs.mkdirSync(dest));
+          }
+          dest += month;
+          if (!fs.existsSync(dest)) {
+            logger.debug(fs.mkdirSync(dest));
+          }
+          dest += `/${filename}`;
+          console.log(dest);
+          router.download(source, dest, (p1,p2,p3) => {
+            contapost++;
+            let tmp = {
+              old_id: item.id,
+              creation_date: item.date,
+              slug: item.slug,
+              title: item.title.rendered,
+              is_public: true,
+              abouts: [{
+                lang: 'en',
+                abouttext: item.content.rendered
+              }],
+              stats: {
+                views: 100+Math.floor((Math.random() * 1000) + 1),
+                likes: 100+Math.floor((Math.random() * 1000) + 1)
+              },
+              web: [],
+              social: [],
+              image :{
+                file: dest.replace(global.appRoot, ''),
+                filename: filename,
+                originalname: source/*,
+                mimetype: String,
+                size: Number,
+                width: Number,
+                height: Number*/
+              },
+              users: []
+            };
+            if (item.video_thumbnail && item.video_thumbnail !== '') {
+              tmp.media = {url: item.video_thumbnail};
+            }
+            for (let web_site in item.web_site) {
+              if (
+                item.web_site[web_site].indexOf("facebook.com")!==-1 ||
+                item.web_site[web_site].indexOf("fb.com")!==-1 ||
+                item.web_site[web_site].indexOf("twitter.com")!==-1 ||
+                item.web_site[web_site].indexOf("instagram.com")!==-1 ||      
+                item.web_site[web_site].indexOf("youtube.com")!==-1 ||      
+                item.web_site[web_site].indexOf("vimeo.com")!==-1      
+              ) {
+                tmp.social.push({
+                  url: item.web_site[web_site],
+                  type: 'social'
+                });
+              } else {
+                tmp.web.push({
+                  url: item.web_site[web_site],
+                  type: 'web'
+                });
+              }
+            }
+            let contausers = 0;
+            for (let user in item.capauthors) {
+              User.
+              findOne({slug: user.user_login}).
+              select('_id').
+              exec((err, person) => {
+                if (!person || !person._id) person = {'_id': '5a8b7256a5755a000000d702'};
+                contausers++;
+                console.log('person');
+                console.log(person);
+                tmp.users.push(person);
+                console.log(tmp.slug);
+                console.log('contausers '+contausers);
+                console.log('capauthors '+item.capauthors.length);
+                console.log('contapost '+contapost);
+                console.log('contaposttotal '+contaposttotal);
+                console.log('body.length '+body.length);
+                if (contausers == item.capauthors.length) {
+                  data.push(tmp);
+                  if (contapost == body.length) {
+                    console.log('saveoutput ');
+                    console.log(data.length);
+                    console.log(data);
+                    News.
+                    create(data, (err) => {
+                      let result;
+                      if (err) {
+                        console.log('error '+err);
+                        result = err;
+                      } else {
+                        result = data;
+                      }
+                      res.render('admin/tools', {
+                        title: 'News',
+                        currentUrl: req.path,
+                        data: result,
+                        script: false
+                        //script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/news/import?page=' + (page) + '"},1000);</script>'
+                      });
+                    });
+                  }
+                }
+              });
+            }
+          });
+      });
+    } else {
+      res.render('admin/tools', {
+        title: 'News',
+        currentUrl: req.path,
+        data: {msg: ['End']},
+        script: false
+      });
+    }
+  });
+});
+
+router.download = (source, dest, callback) => {
+  request.head(source, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+    request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
+  });
+};
+
+router.get('/files/userimages', (req, res) => {
+  logger.debug('/admin/tools/files/userimages');
+  let data = [];
+  let adminsez = "user";
+  User.
+  find({"image.file": {$exists: true}}).
+  //limit(1).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, users) => {
+    for (let user in users) {
+      users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file);
+      users[user].image.imageFormats = {};
+      users[user].image.imageFormatsExists = {};
+      logger.debug(users[user]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      //if (users[user].image.exists) {
+        const file = users[user].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
+        }
+      //}
+      data.push(users[user].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'User images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/userformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/userimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  let adminsez = "user";
+  User.
+  find({"image.file": {$exists: true}}).
+  limit(limit).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, users) => {
+    for (let user in users) {
+      users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file);
+      users[user].image.imageFormats = {};
+      users[user].image.imageFormatsExists = {};
+      logger.debug(users[user]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (users[user].image.exists) {
+        const file = users[user].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
+          if (!users[user].image.imageFormatsExists[format]) {
+            const folder = users[user].image.imageFormats[format].substring(0, users[user].image.imageFormats[format].lastIndexOf('/'))
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+users[user].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+users[user].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });  
+            });
+            if (!fs.existsSync(global.appRoot+folder)) {
+              fs.mkdirSync(global.appRoot+folder);
+            }
+          }
+        }
+      }
+      data.push(users[user].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'User images generator',
+      currentUrl: req.path,
+      data: data,
+      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/userformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
+    });
+  });
+});
+
+router.get('/files/performanceimages', (req, res) => {
+  logger.debug('/admin/tools/files/performanceimages');
+  let data = [];
+  let adminsez = "performance";
+  Performance.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, performances) => {
+    for (let performance in performances) {
+      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
+      performances[performance].image.imageFormats = {};
+      performances[performance].image.imageFormatsExists = {};
+      logger.debug(performances[performance]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      //if (performances[performance].image.exists) {
+        const file = performances[performance].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          performances[performance].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+performances[performance].image.imageFormats[format]);
+        }
+      //}
+      data.push(performances[performance].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Performance images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/performanceformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/performanceimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  let adminsez = "performance";
+  Performance.
+  find({"image.file": {$exists: true}}).
+  limit(limit).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, performances) => {
+    for (let performance in performances) {
+      performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
+      performances[performance].image.imageFormats = {};
+      performances[performance].image.imageFormatsExists = {};
+      logger.debug(performances[performance]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (performances[performance].image.exists) {
+        const file = performances[performance].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          performances[performance].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+performances[performance].image.imageFormats[format]);
+          if (!performances[performance].image.imageFormatsExists[format]) {
+            let folder = performances[performance].image.imageFormats[format].substring(0, performances[performance].image.imageFormats[format].lastIndexOf('/'))
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+performances[performance].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+performances[performance].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });
+            });
+          }
+        }
+      }
+      data.push(performances[performance].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Performance images generator',
+      currentUrl: req.path,
+      data: data,
+      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/performanceformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
+    });
+  });
+});
+
+router.get('/files/eventimages', (req, res) => {
+  logger.debug('/admin/tools/files/eventimages');
+  let data = [];
+  let adminsez = "event";
+  Event.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, events) => {
+    for (let event in events) {
+      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
+      events[event].image.imageFormats = {};
+      events[event].image.imageFormatsExists = {};
+      logger.debug(events[event]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      //if (events[event].image.exists) {
+        const file = events[event].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          events[event].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+events[event].image.imageFormats[format]);
+        }
+      //}
+      data.push(events[event].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Event images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/eventformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/eventimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  let adminsez = "event";
+  Event.
+  find({"image.file": {$exists: true}}).
+  limit(limit).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, events) => {
+    for (let event in events) {
+      events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
+      events[event].image.imageFormats = {};
+      events[event].image.imageFormatsExists = {};
+      logger.debug(events[event]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (events[event].image.exists) {
+        const file = events[event].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          events[event].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+events[event].image.imageFormats[format]);
+          if (!events[event].image.imageFormatsExists[format]) {
+            let folder = events[event].image.imageFormats[format].substring(0, events[event].image.imageFormats[format].lastIndexOf('/'))
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+events[event].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+events[event].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });
+            });
+          }
+        }
+      }
+      data.push(events[event].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Event images generator',
+      currentUrl: req.path,
+      data: data,
+      script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/eventformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
+    });
+  });
+});
+
+router.get('/files/newsimages', (req, res) => {
+  logger.debug('/admin/tools/files/newimages');
+  let data = [];
+  let adminsez = "news";
+  News.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, newss) => {
+    for (let news in newss) {
+      newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
+      newss[news].image.imageFormats = {};
+      newss[news].image.imageFormatsExists = {};
+      logger.debug(newss[news]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      //if (newss[news].image.exists) {
+        const file = newss[news].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
+        }
+      //}
+      data.push(newss[news].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'News images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/newsformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/newsimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  let adminsez = "news";
+  News.
+  find({"image.file": {$exists: true}}).
+  limit(limit).
+  skip(skip).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, newss) => {
+    for (let news in newss) {
+      newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
+      data.push(newss[news].image);
+    }
+    for (let news in newss) {
+      newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
+      newss[news].image.imageFormats = {};
+      newss[news].image.imageFormatsExists = {};
+      logger.debug(newss[news]);
+      //console.log(config.cpanel[adminsez].sizes.image);
+      if (newss[news].image.exists) {
+        const file = newss[news].image.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].media.image.sizes) {
+          newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
+          if (!newss[news].image.imageFormatsExists[format]) {
+            let folder = newss[news].image.imageFormats[format].substring(0, newss[news].image.imageFormats[format].lastIndexOf('/'))
+            router.checkAndCreate(folder, () => {
+              sharp(global.appRoot+newss[news].image.file)
+              .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+              .toFile(global.appRoot+newss[news].image.imageFormats[format], (err, info) => {
+                logger.debug(err);
+                logger.debug(info);
+              });
+            });
+          }
+        }
+      }
+      data.push(newss[news].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'News images generator',
+      currentUrl: req.path,
+      data: data,
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/newsformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+    });
+  });
+});
+
+router.get('/files/playlistimages', (req, res) => {
+  logger.debug('/admin/tools/files/playlistimages');
+  let data = [];
+  Playlist.
+  find({"image.file": {$exists: true}}).
+  lean().
+  select({image: 1, creation_date: 1}).
+  exec((err, playlists) => {
+    for (let playlist in playlists) {
+      playlists[playlist].image.exists = fs.existsSync(global.appRoot+playlists[playlist].image.file);
+      data.push(playlists[playlist].image);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Performance images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/footagefiles', (req, res) => {
+  logger.debug('/admin/tools/files/footagefiles');
+  let data = [];
+  const adminsez = 'footage';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  Footage.
+  find({"media.file": {$exists: true}}).
+  lean().
+
+  select({media: 1, creation_date: 1}).
+  exec((err, footages) => {
+    for (let footage in footages) {
+      footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
+      footages[footage].media.imageFormats = {};
+      footages[footage].media.imageFormatsExists = {};
+      const file = footages[footage].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
+      const oldPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse_old/"); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+      if (!footages[footage].media.exists) {
+        footages[footage].media.find = `mkdir ${fileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${fileName}' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")} \;`;
+      }
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
+      } else {
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      }
+      /*
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(footages[footage].media);
+        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
+      }
+      */
+     console.log("stocazzo1 "+footages[footage].media.preview);
+     if (footages[footage].media.preview) {
+        console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        if (!footages[footage].media.previewexists) {
+          footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
+          if (footages[footage].media.previewexists) footages[footage].media.findpreview = "RENAME";
+        }
+        console.log("stocazzo3 "+footages[footage].media.preview);
+        const previewFile = footages[footage].media.preview;
+        const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+        const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
+        const oldPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse_old/"); // /warehouse/2017/03
+        const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+        const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+        if (footages[footage].media.previewexists) {
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
+          }
+        } else {
+          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName.replace('.png','*.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
+          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse_old/ -name '${previewFileName.replace('.png','.jpg')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \;`;
+          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse_old/ -name '${previewFileName.replace('.png','_flv.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
+          //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
+          //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        }
+      }
+      if (footages[footage].media.original) {
+        //footages[footage].media.original = fileFolder.replace('/warehouse/footage/', '/glacier/footage_originals/')+'/'+originalFileName+'.'+originalFileExtension;
+        footages[footage].media.originalexists = fs.existsSync(global.appRoot+footages[footage].media.original);
+      }
+      data.push(footages[footage].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Footage images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/footagerenamer', (req, res) => {
+  logger.debug('/admin/tools/files/footagefiles');
+  let data = [];
+  const adminsez = 'footage';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  Footage.
+  find({"media.file": {$exists: true}}).
+  lean().
+
+  select({media: 1, creation_date: 1}).
+  exec((err, footages) => {
+    for (let footage in footages) {
+     if (footages[footage].media.preview) {
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        if (!footages[footage].media.previewexists) {
+          footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','.jpg'));
+          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find({'media.preview': '${footages[footage].media.preview}'}).forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','.jpg')}';db.footage.save(e)});`;
+        }
+        if (!footages[footage].media.previewexists) {
+          footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview.replace('.png','_swf.jpg'));
+          if (footages[footage].media.previewexists) footages[footage].media.renamepreview = `db.footage.find({'media.preview': '${footages[footage].media.preview}'}).forEach(function(e){e.media.preview = '${footages[footage].media.preview.replace('.png','_swf.jpg')}';db.footage.save(e)});`;
+        }
+        if (footages[footage].media.renamepreview) {
+          data.push(footages[footage].media);
+        }
+      }
+    }
+    res.render('admin/tools/files/renamer', {
+      title: 'Footage renamer',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/footageformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/footageformatsgenerator');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  const adminsez = 'footage';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  Footage.
+  find({"media.file": {$exists: true}}).
+  lean().
+  limit(limit).
+  skip(skip).
+  select({media: 1, creation_date: 1}).
+  exec((err, footages) => {
+    for (let footage in footages) {
+      footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
+      footages[footage].media.imageFormats = {};
+      footages[footage].media.imageFormatsExists = {};
+      const file = footages[footage].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
+      } else {
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      }
+      /*
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(footages[footage].media);
+        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
+      }
+      */
+     console.log("stocazzo1 "+footages[footage].media.preview);
+     if (footages[footage].media.preview) {
+        console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
+        footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+        if (footages[footage].media.previewexists) {
+          console.log("stocazzo3 "+footages[footage].media.preview);
+          const previewFile = footages[footage].media.preview;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
+            if (!footages[footage].media.imageFormatsExists[format]) {
+              let folder = footages[footage].media.imageFormats[format].substring(0, footages[footage].media.imageFormats[format].lastIndexOf('/'))
+              router.checkAndCreate(folder, () => {
+                console.log("stocazzo "+global.appRoot+previewFile);
+                sharp(global.appRoot+previewFile)
+                .resize(config.cpanel[adminsez].media.media.sizes[format].w, config.cpanel[adminsez].media.media.sizes[format].h)
+                .toFile(global.appRoot+footages[footage].media.imageFormats[format], (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
+              });
+            }
+          }
+        }
+      } else {
+        //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
+        //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
+      }
+      if (fileExtension=="mp4") {
+        footages[footage].media.original = fileFolder.replace('/warehouse/footage/', '/glacier/footage_originals/')+'/'+originalFileName+'.'+originalFileExtension;
+        footages[footage].media.originalexists = fs.existsSync(global.appRoot+footages[footage].media.original);
+      }
+      data.push(footages[footage].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Footage images generator',
+      currentUrl: req.path,
+      data: data,
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/footageformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+    });
+  });
+});
+
+router.get('/files/videofiles', (req, res) => {
+  logger.debug('/admin/tools/files/videofiles');
+  let data = [];
+  const adminsez = 'video';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  Video.
+  find({"media.file": {$exists: true}}).
+  lean().
+  select({media: 1, creation_date: 1}).
+  exec((err, videos) => {
+    for (let video in videos) {
+      videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
+      videos[video].media.imageFormats = {};
+      videos[video].media.imageFormatsExists = {};
+      const file = videos[video].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/video_originals/", "/warehouse/videos/"); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
+      } else {
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      }
+      /*
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(videos[video].media);
+        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+      }
+      */
+     console.log("stocazzo1 "+videos[video].media.preview);
+     if (videos[video].media.preview) {
+        console.log("stocazzo2 "+global.appRoot+videos[video].media.preview);
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+        if (videos[video].media.previewexists) {
+          console.log("stocazzo3 "+videos[video].media.preview);
+          const previewFile = videos[video].media.preview;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+          }
+        }
+      } else {
+        //videos[video].media.preview = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+fileNameWithoutExtension+'.png';
+        //videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+      }
+      if (fileExtension=="mp4") {
+        videos[video].media.original = fileFolder.replace('/warehouse/videos/', '/glacier/videos_originals/')+'/'+originalFileName+'.'+originalFileExtension;
+        videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
+      }
+      data.push(videos[video].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Video images',
+      currentUrl: req.path,
+      data: data,
+      script: false
+    });
+  });
+});
+
+router.get('/files/videoformatsgenerator', (req, res) => {
+  logger.debug('/admin/tools/files/videoformatsgenerator');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  const adminsez = 'video';
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  Video.
+  find({"media.file": {$exists: true}}).
+  lean().
+  limit(limit).
+  skip(skip).
+  select({media: 1, creation_date: 1}).
+  exec((err, videos) => {
+    for (let video in videos) {
+      videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
+      videos[video].media.imageFormats = {};
+      videos[video].media.imageFormatsExists = {};
+      const file = videos[video].media.file;
+      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+      const publicPath = fileFolder.replace("/glacier/video_originals/", "/warehouse/videos/"); // /warehouse/2017/03
+      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+      let originalFileName = '';
+
+      if (valid.indexOf(originalFileExtension)===-1) {
+        originalFileName = fileNameWithoutExtension;
+        originalFileExtension = fileNameWithoutExtension;
+      } else {
+        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+      }
+      /*
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        console.log(videos[video].media);
+        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+      }
+      for(let format in config.cpanel[adminsez].media.media.sizes) {
+        videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+      }
+      */
+     if (videos[video].media.preview) {
+        videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+        if (videos[video].media.previewexists) {
+          const previewFile = videos[video].media.preview;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.media.sizes) {
+            videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
+            if (!videos[video].media.imageFormatsExists[format]) {
+              let folder = videos[video].media.imageFormats[format].substring(0, videos[video].media.imageFormats[format].lastIndexOf('/'))
+              router.checkAndCreate(folder, () => {
+                sharp(global.appRoot+previewFile)
+                .resize(config.cpanel[adminsez].media.media.sizes[format].w, config.cpanel[adminsez].media.media.sizes[format].h)
+                .toFile(global.appRoot+videos[video].media.imageFormats[format], (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
+              });
+            }
+          }
+        }
+      } else {
+        //videos[video].media.preview = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+fileNameWithoutExtension+'.png';
+        //videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
+      }
+      if (fileExtension=="mp4") {
+        videos[video].media.original = fileFolder.replace('/warehouse/videos/', '/glacier/videos_originals/')+'/'+originalFileName+'.'+originalFileExtension;
+        videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
+      }
+      data.push(videos[video].media);
+    }
+    console.log(req.path);
+    res.render('admin/tools/files/showall', {
+      title: 'Video images generator',
+      currentUrl: req.path,
+      data: data,
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/videoformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+    });
+  });
+});
+
+
+
+
+router.get('/files/galleryimages', (req, res) => {
+  logger.debug('/admin/tools/files/galleryimages');
+  var limit = 50;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  const adminsez = 'gallery';
+  Gallery.
+  find({"medias.0": {$exists: true}}).
+  lean().
+  select({medias:1, creation_date: 1}).
+  exec((err, galleries) => {
+    for (let gallery=0; gallery<galleries.length; gallery++) {
+      for (let media=0; media<galleries[gallery].medias.length; media++) {
+        //console.log(galleries[gallery].medias[media].file);
+        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
+          galleries[gallery].medias[media].imageFormats = {};
+          galleries[gallery].medias[media].imageFormatsExists = {};
+          const previewFile = galleries[gallery].medias[media].file;
+          logger.debug(previewFile);
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
+          const oldPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse_old/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
+          }
+          if (!galleries[gallery].medias[media].exists) {
+            galleries[gallery].medias[media].find = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \;`;
+          }
+        data.push(galleries[gallery].medias[media]);
+        logger.debug("galleries.length "+ galleries.length+" "+ gallery);
+        logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
+        if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
+          console.log(req.path);
+          res.render('admin/tools/files/showall', {
+            title: 'Gallery images',
+            currentUrl: req.path,
+            data: data,
+            script: false
+          });          
+        }
+      }
+    }
+  });
+});
+
+router.get('/files/gallerygenerator', (req, res) => {
+  logger.debug('/admin/tools/files/gallerygenerator');
+  var limit = 10;
+  var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
+  let data = [];
+  const adminsez = 'gallery';
+  Gallery.
+  find({"medias.0": {$exists: true}}).
+  lean().
+  limit(limit).
+  skip(skip).
+  select({medias:1, creation_date: 1}).
+  exec((err, galleries) => {
+    for (let gallery=0; gallery<galleries.length; gallery++) {
+      for (let media=0; media<galleries[gallery].medias.length; media++) {
+        //console.log(galleries[gallery].medias[media].file);
+        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
+        if (galleries[gallery].medias[media].exists) {
+          galleries[gallery].medias[media].imageFormats = {};
+          galleries[gallery].medias[media].imageFormatsExists = {};
+          const previewFile = galleries[gallery].medias[media].file;
+          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
+          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          }
+          for(let format in config.cpanel[adminsez].media.image.sizes) {
+            galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
+            if (!galleries[gallery].medias[media].imageFormatsExists[format]) {
+              let folder = galleries[gallery].medias[media].imageFormats[format].substring(0, galleries[gallery].medias[media].imageFormats[format].lastIndexOf('/'))
+              router.checkAndCreate(folder, () => {
+                sharp(global.appRoot+previewFile)
+                .resize(config.cpanel[adminsez].media.image.sizes[format].w, config.cpanel[adminsez].media.image.sizes[format].h)
+                .toFile(global.appRoot+galleries[gallery].medias[media].imageFormats[format], (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
+              });
+            }
+          }
+          data.push(galleries[gallery].medias[media]);
+        }
+        logger.debug("galleries.length "+ galleries.length+" "+ gallery);
+        logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
+        if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
+          console.log(req.path);
+          res.render('admin/tools/files/showall', {
+            title: 'Gallery images generator',
+            currentUrl: req.path,
+            data: data,
+            script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/files/gallerygenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+          });          
+        }
+      }
+    }
+  });
+});
+
+router.get('/files/filescopy', (req, res) => {
+  logger.debug('/admin/tools/files/filescopy');
+  let files = require("../../../../cp-all");
+  let data = {};
+  let mkdirs = [];
+  files.forEach(function(file) {
+    var folders = file.split(" ")[2].split("/");
+    if (folders[1] && !data[folders[1]]) data[folders[1]] = {};
+    if (folders[2] && !data[folders[1]][folders[2]])  data[folders[1]][folders[2]] = {};
+    if (folders[3] && !data[folders[1]][folders[2]][folders[3]])  data[folders[1]][folders[2]][folders[3]] = {};
+    if (folders[4] && !data[folders[1]][folders[2]][folders[3]][folders[4]])  data[folders[1]][folders[2]][folders[3]][folders[4]] = {};
+  });
+  for (var key in data) {
+    mkdirs.push("mkdir "+key);
+    for (var key2 in data[key]) {
+      mkdirs.push("mkdir "+key+"/"+key2);
+      for (var key3 in data[key][key2]) {
+        mkdirs.push("mkdir "+key+"/"+key2+"/"+key3);
+        for (var key4 in data[key][key2][key3]) {
+          mkdirs.push("mkdir "+key+"/"+key2+"/"+key3+"/"+key4);
+        }
+      }
+    }
+  }
+  res.render('admin/tools/files/filescopy', {
+    title: 'User images',
+    currentUrl: req.path,
+    data: mkdirs,
+    script: false
+  });
+});
+
 
 router.get('/addresses/showall', (req, res) => {
   logger.debug('/admin/tools/addresses/showall');
@@ -115,15 +1351,16 @@ const setgeometry = (req, res, s, cb) => {
 
 const getgeometry = (req, res, cb) => {
   let allres = [];
-  AddressDB.find({country_new: {$exists: false}, locality_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  //AddressDB.find({country_new: {$exists: false}, locality_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  AddressDB.find({status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
   limit(50).
   sort({"country": 1, "locality": 1}).
   then(function(addressesA) {
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
-        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+element.locality+','+element.country);
-        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent(element.locality+','+element.country), (error, response, body) => {
+        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
+        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country), (error, response, body) => {
           console.log("requestrequestrequestrequest");
           console.log(element);
           console.log(error);
@@ -159,17 +1396,18 @@ const getgeometry = (req, res, cb) => {
                     } else {
                       allres = allres.concat(resres);
                     }
-                    //console.log(JSON.parse(body));
+                    console.log("update end");
                     if (conta === addressesA.length) {
-                      console.log();
+                      console.log("update end");
                       cb(allres);
                     }
                 });
                 }
               });
             } catch(e) {
-              console.log("ADDRESS catch");
               const error = JSON.parse(body);
+              console.log("ADDRESS catch");
+              console.log(error);
 
               if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
                 addressesA[index].status = error.status;
@@ -184,6 +1422,9 @@ const getgeometry = (req, res, cb) => {
                       } else {
                         allres = allres.concat(resres);
                       }
+                      if (conta === addressesA.length) {
+                        cb(allres);
+                      }
                     });
                   }
                 });
@@ -191,7 +1432,6 @@ const getgeometry = (req, res, cb) => {
                 //console.log(JSON.parse(body));
                 allres = allres.concat([error]);
                 if (conta === addressesA.length) {
-                  console.log();
                   cb(allres);
                 }
               }

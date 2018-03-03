@@ -1,0 +1,25 @@
+extends ../layout
+block teaser
+  //if data.teaserImageFormats.large
+    .d-flex.justify-content-center.align-items-start
+      img.img-fluid(
+        src=data.teaserImageFormats.large
+        alt=data.stagename
+      )
+
+block title
+  .performer_header_wrapper
+    include header
+
+block content
+  .container
+    section.row.performer_videos_wrapper
+      .col-lg-12
+        h2.main_title.indented_title.color1!=__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"
+        .row
+          each item in data.videos
+            .col-sm-4
+              include ../partials/boxVideo
+      .text-center
+        a.btn.btn-primary(href="/#{data.slug}/videos/page/#{nextpage}/")=__("Nexts")+" >>"
+                  
