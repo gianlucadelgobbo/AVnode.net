@@ -45,5 +45,10 @@
 	"Create Account": "Create Account",
 	"Account already exists.": "Account already exists.",
 	"Request a new password": "Request a new password",
-	"You are logged in.": "You are logged in."
+	"You are logged in.": "You are logged in.",
+	"Videos": "Videos",
+	"News": "News",
+	"views": "views",
+	"likes": "likes",
+	"Playlist": "Playlist"
 }
