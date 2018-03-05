@@ -92,12 +92,22 @@ var FOOTAGE = function() {
     "AVI",
     "mpg"
   ];
-  db.footage.find({slug:{$exists:false}}).forEach(function(e) {
+  db.footage.find({}).forEach(function(e) {
     if (!e.slug) e.slug = e.permalink.toLowerCase();
     if (e.permalink) delete e.permalink;
 
     var users = [];
-    for (var p in e.users) users.push(e.users[p].old_id);
+    if (e.users && e.users.length) {
+      for (var p in e.users) {
+        if (e.users[p] && e.users[p].old_id) {
+          users.push(e.users[p].old_id);
+        } else {
+          users.push("39417");
+        }
+      }
+    } else {
+      users = ["39417"];
+    }
     e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
 
     e.playlists = db.playlists.find({"footage.old_id":e.old_id},{_id: 1}).toArray().map(function(item){ return item._id; });
@@ -165,29 +175,34 @@ var FOOTAGE = function() {
   //db.footage.findOne({"media.file": { $exists: true}, "media.preview": { $exists: true}, "playlists.0": { $exists: true}})
 }
 
-var PERFORMANCES = function() {
-  //{permalink:'vector-vs-bitmap'}
-  //db.performances.findOne({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}});
-  //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}}).forEach(function(e) {
-  var folders = {};
-  function sanitizeOld(folder,defaultFolder) {
-    return folder.
-    replace("/mainImg/", defaultFolder).
-    replace("/_flxer/avatar/", defaultFolder).
-    replace(/\(|\)/g, "");
-  }
-  //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true}}).forEach(function(e) {
-  //db.performances.find({'old_id': '1320'}).forEach(function(e) {
-  db.performances.find({}).forEach(function(e) {
-    e.is_public = e.is_public===1;
-    delete e.img_data_id;
-    delete e.img_data_type;
-    delete e.img_data_folder;
-    delete e.img_data_name;
-    delete e.img_data_est;
+var PLAYLISTS = function() {
+  db.playlists.find({slug:{$exists:false}}).forEach(function(e) {
     if (!e.slug) e.slug = e.permalink.toLowerCase();
     if (e.permalink) delete e.permalink;
+    var users = [];
+    if (e.users && e.users.length) {
+      for (var p in e.users) {
+        if (e.users[p] && e.users[p].old_id) {
+          users.push(e.users[p].old_id);
+        } else {
+          users.push("39417");
+        }
+      }
+    } else {
+      users = ["39417"];
+    }
+    e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
 
+    if (e.footage && e.footage.length) {
+      var footage = [];
+      for(var a=0;a<e.footage.length;a++){
+        footage.push(e.footage[a].old_id);
+      }
+      e.stats.footage = footage.length;
+      printjson(footage);
+      e.footage = db.footage.find({old_id:{$in:footage}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    }
+    
     if (e.text) {
       e.abouts = [];
       for (var item in e.text) {
@@ -197,6 +212,44 @@ var PERFORMANCES = function() {
         e.abouts.push(tmp);
       }
       delete e.text;
+    }
+  
+    if (e.footage[0]=== undefined) {
+      printjson(e);
+      printjson("removeremoveremoveremove");
+      db.playlists.remove({_id:e._id});
+    } else {
+      e.media = db.footage.findOne({_id:e.footage[0]},{media: 1}).media;
+      printjson("salvaaaaa");
+      db.playlists.save(e);
+    }
+  });
+
+}
+
+var TVSHOWS = function() {
+  var folders = {};
+  var extoriginals = [];
+  var valid = [
+    "mov",
+    "avi",
+    "mp4",
+    "MOV",
+    "AVI",
+    "mpg"
+  ];
+  function sanitizeOld(folder,defaultFolder) {
+    return folder.
+    replace("/_flxer/library/hole/", defaultFolder).
+    replace("/_flxer/liveset/", defaultFolder).
+    replace("/_videos/", defaultFolder).
+    replace("/_flxer/library/no_hole/", defaultFolder).
+    replace(/\(|\)/g, "");
+  }
+  db.tvshows.find({}).forEach(function(e) {
+    if (e.permalink) {
+      e.slug = e.permalink.toLowerCase();
+      delete e.permalink;
     }
     var users = [];
     if (e.users && e.users.length) {
@@ -210,81 +263,317 @@ var PERFORMANCES = function() {
     } else {
       users = ["39417"];
     }
-
     e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
-    if (e.chiavi) {
-      cat = e.chiavi.split(",");
-      for (item2 in cat) {
-        cat2 = cat[item2].split("|");
-        if (cat2.length > 3) {
-          var res = db.categories.findOne({"old_id":cat2[2].toString()});
-          if (res && res._id) e.categories.push(res._id);
-        } else {
-          var res = db.categories.findOne({"old_id":cat2[1].toString()});
-          if (res && res._id) e.categories.push(res._id);
-        }
-      }
-      delete e.chiavi;
-    }
-    if (e.gallery && e.gallery.length) {
-      var galleries = [];
-      for (var p in e.gallery) galleries.push(e.gallery[p].id);
-      e.galleries_old_ids = galleries;
-      delete e.gallery;
-    }
-    var categories = [];
-    if (e.categories && e.categories.length) {
-      for (var p in e.categories) {
-        if (e.categories[p]) {
-          categories.push(e.categories[p]);
-        }
-      }
-    }
 
-    if (categories && categories.length) {
-      var cat = db.categories.find({old_id:{$in:e.categories}},{_id: 1}).toArray().map(function(item){ return item._id; });
-      e.categories = cat;
-    } else {
-      //printjson("missing categories!!");
+    var catt = db.categories.find({old_id:{$in:e.categories}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    e.categories = catt;
+
+    if (e.text) {
+      e.abouts = [];
+      for (var item in e.text) {
+        var tmp = {};
+        tmp.lang = item;
+        tmp.abouttext = e.text[item];
+        e.abouts.push(tmp);
+      }
+      delete e.text;
     }
-    if (e.file) {
-      if (e.file.file && e.file.file.length>2) {
-        e.image = e.file;
-        e.image.fileflxer = e.image.file;
-        var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
-        e.image.file = e.image.file.replace('/warehouse/', '/glacier/performances_originals/');
-        e.image.file = sanitizeOld(e.image.file, defaultFolder);
-        printjson("cp -n " + e.image.fileflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.image.file.replace('/warehouse/', 'glacier/performances_originals/'));
-        var folder = e.image.file.substring(0, e.image.file.lastIndexOf('/'));
+    e.media = e.file;
+    delete e.file;
+    e.media.fileflxer = e.media.file;
+    var ext = e.media.file.substring(e.media.file.lastIndexOf('.') + 1);
+    var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
+    if (ext == "mp4") {
+      e.media.originalflxer = e.media.file.substring(0, e.media.file.lastIndexOf('.'));
+      var extoriginal = e.media.originalflxer.substring(e.media.file.lastIndexOf('_') + 1);
+      if (extoriginals.indexOf(extoriginal)===-1 && extoriginal.length<5 && extoriginal.length>1) extoriginals.push(extoriginal); 
+      if (extoriginal == e.media.originalflxer || valid.indexOf(extoriginal)===-1) {
+        delete e.media.originalflxer;
+      } else {
+        e.media.originalflxer = e.media.originalflxer.substring(0, e.media.originalflxer.lastIndexOf('_')) + "." + extoriginal;
+        e.media.original = e.media.originalflxer.replace('/warehouse/', '/glacier/videos_originals/').replace('/original_video/', '/');
+        e.media.original = sanitizeOld(e.media.original, defaultFolder)
+        var folder = e.media.original.substring(0, e.media.original.lastIndexOf('/'));
         folders[folder] = 1;
         folder = folder.substring(0, folder.lastIndexOf('/'));
         folders[folder] = 1;
         folder = folder.substring(0, folder.lastIndexOf('/'));
         folders[folder] = 1;
+        printjson("cp -n " + e.media.originalflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.media.original.replace('/glacier/', 'glacier/'));
       }
-      delete e.file;
     }
-
-    if (e.tech_req) {
-      var tech_req = e.tech_req["en"];
-      if (!tech_req) {
-        for (var item in e.tech_req) {
-          if (!tech_req) tech_req = e.tech_req[item];
-        }
-      }
-      e.tech_req = tech_req;
-    } else {
-      e.tech_req = "";
+    if (e.media.preview) {
+      e.media.previewflxer = e.media.preview;
+      e.media.preview = e.media.previewflxer.replace('/warehouse/', '/glacier/videos_previews/').replace('/preview_files/', '/');
+      e.media.preview = sanitizeOld(e.media.preview, defaultFolder)
+      var folder = e.media.preview.substring(0, e.media.preview.lastIndexOf('/'));
+      folders[folder] = 1;
+      folder = folder.substring(0, folder.lastIndexOf('/'));
+      folders[folder] = 1;
+      folder = folder.substring(0, folder.lastIndexOf('/'));
+      folders[folder] = 1;
+      printjson("cp -n " + e.media.previewflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.media.preview.replace('/glacier/', 'glacier/'));
     }
-    delete e.tech_art;
-    e.tech_art = "";
+    e.media.file = e.media.file.replace('/warehouse/', '/warehouse/videos/');
+    e.media.file = sanitizeOld(e.media.file, defaultFolder);
+    var folder = e.media.file.substring(0, e.media.file.lastIndexOf('/'));
+    folders[folder] = 1;
+    folder = folder.substring(0, folder.lastIndexOf('/'));
+    folders[folder] = 1;
+    folder = folder.substring(0, folder.lastIndexOf('/'));
+    folders[folder] = 1;
+    printjson("cp -n " + e.media.fileflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.media.file.replace('/glacier/', 'glacier/'));
 
+    if (e.tags && !e.tags.length) delete e.tags;
     //printjson(e);
-    db.performances.save(e);
+    db.tvshows.save(e);
   });
   Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
+}
 
-  //db.performances.findOne({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}});
+var GALLERIES = function() {
+  // 01
+  //db.galleries.count({"medias.file": {$exists: false}});
+  db.galleries.remove({"medias.0": {$exists: false}});
+
+  // 02
+  var folders = {};
+  var extoriginals = [];
+  var ext = [];
+  var valid = [
+    "mp4",
+    "mov",
+    "MOV",
+    "m4v",
+    "MP4",
+    "AVI",
+    "flv",
+    "avi",
+    "mpg"
+  ];
+  function sanitizeOld(folder,defaultFolder) {
+    return folder.
+    replace("/_flxer/photos/", defaultFolder).
+    replace("/_videos/", defaultFolder).
+    replace("/_spot/", defaultFolder).
+    replace("/_flxer/liveset/", defaultFolder).
+    replace("/_photos/", defaultFolder).
+    replace("/_flxer/library/hole/", defaultFolder).
+    replace("/_audios/", defaultFolder).
+    replace("/_flxer/library/no_hole/", defaultFolder).
+    replace(/\(|\)/g, "");
+  }
+  //db.galleries.find({"medias.0":{$exists:true},"events.0":{$exists:true},"performances.0":{$exists:true}}).forEach(function(e) {
+  db.galleries.find({}).forEach(function(e) {
+    e.slug = e.permalink;
+    delete e.permalink;
+
+    if (e.text) {
+      e.abouts = [];
+      for (var item in e.text) {
+        var tmp = {};
+        tmp.lang = item;
+        tmp.abouttext = e.text[item];
+        e.abouts.push(tmp);
+      }
+      delete e.text;
+    }
+    delete e.file;
+
+    var perf = [];
+    for (var p in e.performances) perf.push(e.performances[p].id);
+    e.performances = db.performances.find({old_id:{$in:perf}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    
+    var evt = [];
+    for (var p in e.events) evt.push(e.events[p].id);
+    e.events = db.events.find({old_id:{$in:evt}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    
+    var users = [];
+    if (e.users && e.users.length) {
+      for (var p in e.users) {
+        if (e.users[p] && e.users[p].old_id) {
+          users.push(e.users[p].old_id);
+        } else {
+          users.push("39417");
+        }
+      }
+    } else {
+      users = ["39417"];
+    }
+    e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    
+    var medias = [];
+    for (var p in e.medias) {
+      var media = e.medias[p].file;
+      media.title = e.medias[p].title;
+      media.slug = e.medias[p].permalink;
+      medias.push(media);
+    }
+    e.medias = medias;
+    //printjson(medias.length);
+
+    var conta = 0;
+    var newMedias = [];
+    var newVideos = [];
+    var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
+    e.medias.forEach(function(media) {
+      media.fileflxer = media.file;
+      const serverPath = media.file;
+      const localFileNameExtension = serverPath.substring(serverPath.lastIndexOf('.') + 1);
+      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
+      if (localFileName.substring(0,1)==='.') {
+        //printjson("HIDDEN FILE "+localFileName);
+      } else {
+        if (localFileNameExtension == "flv" || localFileNameExtension == "mp4" || localFileNameExtension == "swf" || localFileNameExtension == "mp3" || localFileNameExtension == "mov") {
+          const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
+          const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+          const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
+          let localFileNameWithoutOriginalExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
+          media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/warehouse/videos/');
+          if (ext.indexOf(localFileNameExtension)===-1 && localFileNameExtension.length<5 && localFileNameExtension.length>1) ext.push(localFileNameExtension); 
+          if (localFileNameExtension == "flv" || localFileNameExtension == "mp4") {
+            media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}.png`;
+            //media.previewFileOld = `${localPath.replace('galleries/', '')}/preview_files/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+            if (extoriginals.indexOf(localFileNameOriginalExtension)===-1 && localFileNameOriginalExtension.length<5 && localFileNameOriginalExtension.length>1) extoriginals.push(localFileNameOriginalExtension); 
+            if (valid.indexOf(localFileNameOriginalExtension)!==-1) {
+              media.originalflxer = `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`;
+              media.original = sanitizeOld(media.originalflxer, defaultFolder).replace('/warehouse/','/glacier/videos_originals/').replace('/original_video/','/');
+            }
+            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
+            /*
+            media.folderNew = media.fileNew.substring(0, media.fileNew.lastIndexOf('/'));
+            media.folderNew = media.folderNew.substring(media.folderNew.lastIndexOf('/'));
+            folders[media.folderNew.replace('/warehouse/','/warehouse_new/')] = 1;
+            printjson(Object.keys(folders));
+            */
+            var folder = media.file.substring(0, media.file.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            var folder = media.preview.substring(0, media.preview.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            folder = folder.substring(0, folder.lastIndexOf('/'));
+            folders[folder] = 1;
+            if (localFileNameExtension == "flv") {
+              printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+              printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+            } else {
+              printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+              printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+              if (media.originalflxer) {
+                printjson("cp -n "+media.originalflxer.replace('/warehouse/','warehouse_old/')+" "+media.original.replace('/glacier/','glacier/'));
+                var folder = media.original.substring(0, media.original.lastIndexOf('/'));
+                folders[folder] = 1;
+                folder = folder.substring(0, folder.lastIndexOf('/'));
+                folders[folder] = 1;
+                folder = folder.substring(0, folder.lastIndexOf('/'));
+                folders[folder] = 1;
+              }
+            }
+          }
+          if (localFileNameExtension == "swf") {
+            media.previewflxer = media.fileflxer.replace('.swf', '.jpg');
+            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
+            printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+            printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
+          }
+          if (localFileNameExtension == "mov") {
+            media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}_mov.png`;
+            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
+            printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+          }
+          if (localFileNameExtension == "mp3") {
+            printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
+          }
+          let video = e;
+          video.media = media;
+          newVideos.push(video);
+        } else {
+          media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/glacier/galleries_originals/');
+          var folder = media.file.substring(0, media.file.lastIndexOf('/'));
+          folders[folder] = 1;
+          folder = folder.substring(0, folder.lastIndexOf('/'));
+          folders[folder] = 1;
+          folder = folder.substring(0, folder.lastIndexOf('/'));
+          folders[folder] = 1;
+          delete media.encoded;
+          printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/glacier/','glacier/'));
+          newMedias.push(media);
+        }
+      }
+      conta++;
+      if (conta == e.medias.length) {
+        //if (!e.text || !Object.keys(e.text).length) delete e.text;
+        if (e.stats.video) delete e.stats.video;
+        if (newMedias.length) {
+          //delete e.media;
+          e.image = newMedias[0];
+          e.stats.img = newMedias.length;
+          e.medias = newMedias;
+          //printjson('SAVEEEEEE GALLERY');
+          //printjson(e);
+          db.galleries.save(e);
+        } else {
+          //printjson('REMOVE GALLERY');
+          //printjson(e);
+        }
+        if (newVideos.length) {
+          newVideos.forEach(function(video) {
+            if (video.stats.img) delete video.stats.img;
+            if (!video.text || !Object.keys(video.text).length) delete video.text;
+            delete video.stats.img;
+            delete video.stats.video;
+            delete video.medias;
+            delete video.image;
+            delete video._id;
+            //printjson('SAVEEEEEE VIDEO!!!');
+            //printjson(video);
+            db.videos.save(video);
+          });
+        }
+      }
+    });
+  });
+  //printjson(ext);
+  Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
+
+  // 05
+  db.galleries.count({"medias.0": {$exists: false}});
+
+  // 06
+  db.galleries.find({media: {$exists: true}}).forEach(function(gallery) {
+    delete gallery.media;
+    db.galleries.save(gallery);
+  });
+
+  // 07
+  db.tvshows.find({}).forEach(function(tvshow) {
+    //var res = db.performances.find({"galleries": gallery._id}).toArray();
+    var conta = 0;
+    var videos = db.videos.find({"media.file": tvshow.media.file}).toArray();
+    if (videos.length) {
+      videos.forEach(function(video) {
+        video.categories = tvshow.categories;
+        video.programming = tvshow.programming;
+        video.stats.visits += tvshow.stats.visits;
+        video.abouts = tvshow.abouts;
+        printjson("Update video");
+        printjson(video);
+        db.videos.save(video);
+      });
+    } else {
+      printjson("Insert video");
+      delete tvshow._id;
+      if (tvshow.tags && !tvshow.tags.length) delete tvshow.tags;
+      printjson(tvshow);
+      db.videos.save(tvshow);
+    }
+  });
+  
 }
 
 var EVENTS = function() {
@@ -308,6 +597,7 @@ var EVENTS = function() {
     replace("/_flxer/avatar/", defaultFolder).
     replace(/\(|\)/g, "");
   }
+  //permalink:"lpm-2013-rome"
   db.events.find({}).forEach(function(e) {
     var users = [];
     if (e.users && e.users.length) {
@@ -323,6 +613,11 @@ var EVENTS = function() {
     }
     e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
   
+    for(var a=0;a<e.schedule.length;a++) {
+      e.schedule[a].venue.location.locality = e.schedule[a].venue.location.city;
+      delete e.schedule[a].venue.location.city;
+    }
+
     var partners = {};
     if (e.partners) {
       for (var i in e.partners) {
@@ -342,25 +637,24 @@ var EVENTS = function() {
     var catt = db.categories.find({old_id:{$in:e.categories}},{_id: 1}).toArray().map(function(item){ return item._id; });
     e.categories = catt;
     
-    if (e.gallery) {
-      e.galleries = [];
-      for (item in e.gallery) {
-        var res = db.galleries.findOne({"old_id":e.gallery[item].id.toString()});
-        if (res && res._id) e.galleries.push(res._id);
-      }
+    if (e.gallery && e.gallery.length) {
+      var galleries = [];
+      for (var p in e.gallery) galleries.push(e.gallery[p].id);
+      e.galleries = db.galleries.find({old_id:{$in:galleries}},{_id: 1}).toArray().map(function(item){ return item._id; });
+      e.videos = db.videos.find({old_id:{$in:galleries}},{_id: 1}).toArray().map(function(item){ return item._id; });
       delete e.gallery;
     }
   
     delete e.tobescheduled;
+    var performances = [];
     e.program = [];
     if (e.performances) {
       for (i in e.performances) {
         if (i!="tobeconfirmed") {
           for (item in e.performances[i]) {
-            var slot = {};
-            var res = db.performances.findOne({"old_id":e.performances[i][item].id.toString()});
-            if (res && res._id) {
-              slot.performance = res._id;
+              var slot = {};
+              slot.performance = e.performances[i][item].id.toString();
+              performances.push(slot.performance);
               slot.schedule = {
                 "date": new Date(i+"T10:00:00Z"),
                 "starttime": new Date(e.performances[i][item].data_i.replace(" ","T")+"Z"),
@@ -376,7 +670,10 @@ var EVENTS = function() {
                 "venue": {
                   "name" : e.schedule[0].venue.name,
                   "room" : e.performances[i][item].room,
-                  "location" : e.schedule[0].venue.location
+                  "location" : {
+                    "country": e.schedule[0].venue.location.country,
+                    "locality": e.schedule[0].venue.location.locality,
+                  }
                 },
                 "categories": []
               };
@@ -395,16 +692,37 @@ var EVENTS = function() {
                   }
                 }
               }
+              /*
+             var booking = {};
+              booking.event = e._id;
+             booking.schedule = slot.schedule;
+              if (!res.booking) res.booking = []; 
+              res.booking.push(booking);
+              db.performances.save(res);
             } else {
               slot = e.performances[i];
               slot.broken = true;
-            }
+            }*/
             e.program.push(slot);
             //console.dir(e.performances[i][item]);
             //performances.push(e.performances[i][item].id);
           }
         }
       }
+      printjson(performances);
+      var res = db.performances.find({"old_id":{$in:performances}},{old_id: 1}).toArray();
+      printjson(res);
+      var ass = {}
+      for (var perf in res) {
+        printjson(res[perf]);
+        ass[res[perf].old_id] = res[perf]._id;
+      }
+      for (var a=0;a<e.program.length;a++) {
+        var perf = ass[e.program[a].performance];
+        e.program[a].performance = perf;
+      }
+      printjson(e.program);
+
     }
     delete e.performances;
   
@@ -540,6 +858,129 @@ var EVENTS = function() {
 
 }
 
+var PERFORMANCES = function() {
+  //{permalink:'vector-vs-bitmap'}
+  //db.performances.findOne({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}});
+  //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}}).forEach(function(e) {
+  var folders = {};
+  function sanitizeOld(folder,defaultFolder) {
+    return folder.
+    replace("/mainImg/", defaultFolder).
+    replace("/_flxer/avatar/", defaultFolder).
+    replace(/\(|\)/g, "");
+  }
+  //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true}}).forEach(function(e) {
+  //db.performances.find({'old_id': '1320'}).forEach(function(e) {
+  db.performances.find({}).forEach(function(e) {
+    e.is_public = e.is_public===1;
+    delete e.img_data_id;
+    delete e.img_data_type;
+    delete e.img_data_folder;
+    delete e.img_data_name;
+    delete e.img_data_est;
+    if (!e.slug) e.slug = e.permalink.toLowerCase();
+    if (e.permalink) delete e.permalink;
+
+    if (e.text) {
+      e.abouts = [];
+      for (var item in e.text) {
+        var tmp = {};
+        tmp.lang = item;
+        tmp.abouttext = e.text[item];
+        e.abouts.push(tmp);
+      }
+      delete e.text;
+    }
+    var users = [];
+    if (e.users && e.users.length) {
+      for (var p in e.users) {
+        if (e.users[p] && e.users[p].old_id) {
+          users.push(e.users[p].old_id);
+        } else {
+          users.push("39417");
+        }
+      }
+    } else {
+      users = ["39417"];
+    }
+    e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
+
+    if (e.chiavi) {
+      cat = e.chiavi.split(",");
+      for (item2 in cat) {
+        cat2 = cat[item2].split("|");
+        if (cat2.length > 3) {
+          var res = db.categories.findOne({"old_id":cat2[2].toString()});
+          if (res && res._id) e.categories.push(res._id);
+        } else {
+          var res = db.categories.findOne({"old_id":cat2[1].toString()});
+          if (res && res._id) e.categories.push(res._id);
+        }
+      }
+      delete e.chiavi;
+    }
+    if (e.gallery && e.gallery.length) {
+      var galleries = [];
+      for (var p in e.gallery) galleries.push(e.gallery[p].id);
+      e.galleries = db.galleries.find({old_id:{$in:galleries}},{_id: 1}).toArray().map(function(item){ return item._id; });
+      e.videos = db.videos.find({old_id:{$in:galleries}},{_id: 1}).toArray().map(function(item){ return item._id; });
+      delete e.gallery;
+    }
+    var categories = [];
+    if (e.categories && e.categories.length) {
+      for (var p in e.categories) {
+        if (e.categories[p]) {
+          categories.push(e.categories[p]);
+        }
+      }
+    }
+
+    if (categories && categories.length) {
+      var cat = db.categories.find({old_id:{$in:e.categories}},{_id: 1}).toArray().map(function(item){ return item._id; });
+      e.categories = cat;
+    } else {
+      //printjson("missing categories!!");
+    }
+    if (e.file) {
+      if (e.file.file && e.file.file.length>2) {
+        e.image = e.file;
+        e.image.fileflxer = e.image.file;
+        var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
+        e.image.file = e.image.file.replace('/warehouse/', '/glacier/performances_originals/');
+        e.image.file = sanitizeOld(e.image.file, defaultFolder);
+        printjson("cp -n " + e.image.fileflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.image.file.replace('/warehouse/', 'glacier/performances_originals/'));
+        var folder = e.image.file.substring(0, e.image.file.lastIndexOf('/'));
+        folders[folder] = 1;
+        folder = folder.substring(0, folder.lastIndexOf('/'));
+        folders[folder] = 1;
+        folder = folder.substring(0, folder.lastIndexOf('/'));
+        folders[folder] = 1;
+      }
+      delete e.file;
+    }
+
+    if (e.tech_req) {
+      var tech_req = e.tech_req["en"];
+      if (!tech_req) {
+        for (var item in e.tech_req) {
+          if (!tech_req) tech_req = e.tech_req[item];
+        }
+      }
+      e.tech_req = tech_req;
+    } else {
+      e.tech_req = "";
+    }
+    delete e.tech_art;
+    e.tech_art = "";
+
+    //printjson(e);
+    db.performances.save(e);
+  });
+  Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
+
+  //db.performances.findOne({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}});
+}
+
 var USERS = function() {
   //{surname:"Del Gobbo"}
   //db.users.findOne({"location.country":{$exists: true},"location.city":{$exists: false}});
@@ -554,7 +995,7 @@ var USERS = function() {
     replace("/_flxer/avatar/", defaultFolder).
     replace(/\(|\)/g, "");
   }
-  db.users.find({surname:"Del Gobbo"}).forEach(function(e) {
+  db.users.find({}).forEach(function(e) {
     e.is_crew = e.is_crew===1;
     e.is_public = e.is_public===1;
     delete e.public;
@@ -577,6 +1018,23 @@ var USERS = function() {
       e.slug = e.permalink.toLowerCase();
       e.username = e.slug;
       delete e.permalink;
+    }
+    
+    if (!e.is_crew && e.crews && e.crews.length) {
+      var crews = [];
+      for (var p in e.crews) crews.push(e.crews[p].old_id);
+      e.crews = db.users.find({old_id:{$in:crews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    }
+
+    if (e.is_crew && e.members && e.members.length) {
+      var members = [];
+      for (var p in e.members) members.push(e.members[p].old_id);
+      e.members = db.users.find({old_id:{$in:members}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    }
+
+    if (e.categories && e.categories.length) {
+      var categories = db.categories.find({old_id:{$in:e.categories}},{_id: 1}).toArray().map(function(item){ return item._id; });
+      e.categories = categories;
     }
 
     if (e.file) {
@@ -651,7 +1109,6 @@ var USERS = function() {
         }
       }
     }
-
     if (e.websites && e.websites.length) {
       var web = [];
       var social = [];
@@ -676,106 +1133,85 @@ var USERS = function() {
       if (web.length) e.web = web;
       delete e.websites;
     }
-    
-    if (!e.is_crew && e.crews && e.crews.length) {
-      var tmpA = [];
-      for(var a=0;a<e.crews.length;a++){
-        tmpA.push(e.crews[a]._id);
-      }
-      e.crews = tmpA;
+    if (e.crews) {
+      var meandcrews = e.crews.slice(0);
+      meandcrews.push(e._id);
+    } else {
+      var meandcrews = [e._id];
     }
+    e.performances = db.performances.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    e.events = db.events.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    e.footage = db.footage.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    e.playlists = db.playlists.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    e.videos = db.videos.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    e.galleries = db.galleries.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    e.news = db.news.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
 
-    if (e.categories && e.categories.length) {
-      var tmpA = [];
-      for(var a=0;a<e.categories.length;a++){
-        tmpA.push(e.categories[a]._id);
-      }
-      e.categories = tmpA;
-    }
-
-    if (e.performances && e.performances.length) {
-      var tmpA = [];
-      for(var a=0;a<e.performances.length;a++){
-        tmpA.push(e.performances[a]._id);
-      }
-      e.performances = tmpA;
-    }
-
-    if (e.events && e.events.length) {
-      var tmpA = [];
-      for(var a=0;a<e.events.length;a++){
-        tmpA.push(e.events[a]._id);
-      }
-      e.events = tmpA;
-    }
-
-    if (e.tvshow && e.tvshow.length) {
-      var tmpA = [];
-      for(var a=0;a<e.tvshow.length;a++){
-        tmpA.push(e.tvshow[a]._id);
-      }
-      e.tvshows = tmpA;
-      delete e.tvshow;
-    }
-
-    if (e.footage && e.footage.length) {
-      var tmpA = [];
-      for(var a=0;a<e.footage.length;a++){
-        tmpA.push(e.footage[a]._id);
-      }
-      e.footage = tmpA;
-    }
-
-    if (e.is_crew && e.members && e.members.length) {
-      var tmpA = [];
-      for(var a=0;a<e.members.length;a++){
-        tmpA.push(e.members[a]._id);
-      }
-      e.members = tmpA;
-    }
-
-    if (e.playlists && e.playlists.length) {
-      var tmpA = [];
-      for(var a=0;a<e.playlists.length;a++){
-        tmpA.push(e.playlists[a]._id);
-      }
-      e.playlists = tmpA;
-    }
-
-    if (e.galleries && e.galleries.length) {
-      var tmpA = [];
-      for(var a=0;a<e.galleries.length;a++){
-        tmpA.push(e.galleries[a]._id);
-      }
-      e.galleries = tmpA;
-    }
-
-    delete e.stats;
     e.stats = {};
-    if (e.events && e.events.length) e.stats.events = e.events.length;
     if (e.performances && e.performances.length) e.stats.performances = e.performances.length;
-    if (e.tvshows && e.tvshows.length) e.stats.tvshows = e.tvshows.length;
-    if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
+    if (e.events && e.events.length) e.stats.events = e.events.length;
     if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
+    if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
+    if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
     if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
-    if (e.members && e.members.length) e.stats.members = e.members.length;
-    if (e.crews && e.crews.length) {
-      e.stats.crews = e.crews.length;
-    } else if (e.crews && e.crews.length==0) {
-      delete e.crews;
-    }
+    if (e.news && e.news.length) e.stats.news = e.news.length;
+
+    if (e.is_crew && e.members && e.members.length) e.stats.members = e.members.length;
+    if (!e.is_crew && e.crews && e.crews.length) e.stats.crews = e.crews.length;
+
     e.activity = 0;
-    e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
     e.activity+= (e.stats.performances ? e.stats.performances * 3 : 0);
-    e.activity+= (e.stats.tvshows ? e.stats.tvshows           * 3 : 0);
+    e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
     e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
     e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
+    e.activity+= (e.stats.videos ? e.stats.videos             * 3 : 0);
     e.activity+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
+    e.activity+= (e.stats.news ? e.stats.news                 * 1 : 0);
 
-    printjson(e);
-    //db.users.save(e);
+    //printjson(e);
+    db.users.save(e);
   });
   Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
+
+}
+
+var NEWS = function() {
+  // GENERATE ALL NEWS!!!
+  // http://localhost:8006/admin/tools/news/import
+
+  db.news.find({}, {users: 1}).forEach(function(e) {
+    e.users.forEach(function(user) {
+      db.users.find({"_id": user}).forEach(function(user) {
+        if (!user.news) user.news = [];
+        user.news.push(e._id);
+        printjson(user.news);
+        db.users.save(user);
+      });  
+    });  
+  });
+
+}
+
+var USERS = function() {
+  
+  db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
+    for (i in e.program) {
+      var booking = {};
+      booking.event = e._id;
+      booking.schedule = e.program[i].schedule;
+      if (e.program[i].performance) {
+        var perf = db.performances.findOne({_id:e.program[i].performance});
+        if (!perf.bookings) perf.bookings = [];
+        perf.bookings.push(booking);
+        printjson(perf);
+        db.performances.save(perf);
+      }
+    }
+  });
+
+}
+
+var USERS = function() {
 
   db.users.find({surname:"Del Gobbo"}).forEach(function(e) {
     var tmp = {
@@ -802,508 +1238,33 @@ var USERS = function() {
 
 }
 
-var PLAYLISTS = function() {
-  db.playlists.find({}).forEach(function(e) {
-    if (!e.slug) e.slug = e.permalink.toLowerCase();
-    if (e.permalink) delete e.permalink;
-    if (e.users && e.users.length) {
-      var tmpA = [];
-      for(var a=0;a<e.users.length;a++){
-        tmpA.push(e.users[a]._id);
-      }
-      e.users = tmpA;
-    }
-    if (e.footage && e.footage.length) {
-      var tmpA = [];
-      for(var a=0;a<e.footage.length;a++){
-        tmpA.push(e.footage[a]._id);
-      }
-      e.footage = tmpA;
-      e.stats.footage = e.footage.length;
-    }
-    if (e.text) {
-      e.abouts = [];
-      for (var item in e.text) {
-        var tmp = {};
-        tmp.lang = item;
-        tmp.abouttext = e.text[item];
-        e.abouts.push(tmp);
-      }
-      delete e.text;
-    }
   
-    //e.image = e.file;
-    delete e.file;
-    if (e.footage[0]=== undefined) {
-      printjson(e.footage[0]);
-      db.playlists.remove(e);
-    } else {
-      var footage = db.footage.findOne({_id:e.footage[0]});
-      if (footage && footage.media) e.media = footage.media;
-      printjson(e);
-      db.playlists.save(e);
-    }
-  });  
-}
-
-var TVSHOWS = function() {
-  var folders = {};
-  var extoriginals = [];
-  var valid = [
-    "mov",
-    "avi",
-    "mp4",
-    "MOV",
-    "AVI",
-    "mpg"
-  ];
-  function sanitizeOld(folder,defaultFolder) {
-    return folder.
-    replace("/_flxer/library/hole/", defaultFolder).
-    replace("/_flxer/liveset/", defaultFolder).
-    replace("/_videos/", defaultFolder).
-    replace("/_flxer/library/no_hole/", defaultFolder).
-    replace(/\(|\)/g, "");
-  }
-  db.tvshows.find({}).forEach(function(e) {
-    if (e.permalink) {
-      e.slug = e.permalink.toLowerCase();
-      delete e.permalink;
-    }
-    if (e.users && e.users.length) {
-      var tmpA = [];
-      for(var a=0;a<e.users.length;a++){
-        tmpA.push(e.users[a]._id);
-      }
-      e.users = tmpA;
-    }
-    if (e.categories && e.categories.length) {
-      var tmpA = [];
-      for(var a=0;a<e.categories.length;a++){
-        tmpA.push(e.categories[a]._id);
-      }
-      e.categories = tmpA;
-    }
-    if (e.text) {
-      e.abouts = [];
-      for (var item in e.text) {
-        var tmp = {};
-        tmp.lang = item;
-        tmp.abouttext = e.text[item];
-        e.abouts.push(tmp);
-      }
-      delete e.text;
-    }
-    e.media = e.file;
-    delete e.file;
-    e.media.fileflxer = e.media.file;
-    var ext = e.media.file.substring(e.media.file.lastIndexOf('.') + 1);
-    var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
-    if (ext == "mp4") {
-      e.media.originalflxer = e.media.file.substring(0, e.media.file.lastIndexOf('.'));
-      var extoriginal = e.media.originalflxer.substring(e.media.file.lastIndexOf('_') + 1);
-      if (extoriginals.indexOf(extoriginal)===-1 && extoriginal.length<5 && extoriginal.length>1) extoriginals.push(extoriginal); 
-      if (extoriginal == e.media.originalflxer || valid.indexOf(extoriginal)===-1) {
-        delete e.media.originalflxer;
-      } else {
-        e.media.originalflxer = e.media.originalflxer.substring(0, e.media.originalflxer.lastIndexOf('_')) + "." + extoriginal;
-        e.media.original = e.media.originalflxer.replace('/warehouse/', '/glacier/videos_originals/').replace('/original_video/', '/');
-        e.media.original = sanitizeOld(e.media.original, defaultFolder)
-        var folder = e.media.original.substring(0, e.media.original.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-        folder = folder.substring(0, folder.lastIndexOf('/'));
-        folders[folder] = 1;
-        printjson("cp -n " + e.media.originalflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.media.original.replace('/glacier/', 'glacier/'));
-      }
-    }
-    if (e.media.preview) {
-      e.media.previewflxer = e.media.preview;
-      e.media.preview = e.media.previewflxer.replace('/warehouse/', '/glacier/videos_previews/').replace('/preview_files/', '/');
-      e.media.preview = sanitizeOld(e.media.preview, defaultFolder)
-      var folder = e.media.preview.substring(0, e.media.preview.lastIndexOf('/'));
-      folders[folder] = 1;
-      folder = folder.substring(0, folder.lastIndexOf('/'));
-      folders[folder] = 1;
-      folder = folder.substring(0, folder.lastIndexOf('/'));
-      folders[folder] = 1;
-      printjson("cp -n " + e.media.previewflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.media.preview.replace('/glacier/', 'glacier/'));
-    }
-    e.media.file = e.media.file.replace('/warehouse/', '/warehouse/videos/');
-    e.media.file = sanitizeOld(e.media.file, defaultFolder);
-    var folder = e.media.file.substring(0, e.media.file.lastIndexOf('/'));
-    folders[folder] = 1;
-    folder = folder.substring(0, folder.lastIndexOf('/'));
-    folders[folder] = 1;
-    folder = folder.substring(0, folder.lastIndexOf('/'));
-    folders[folder] = 1;
-    printjson("cp -n " + e.media.fileflxer.replace('/warehouse/', 'warehouse_old/').replace(/\(/g, "\\(").replace(/\)/g, "\\)") + " " + e.media.file.replace('/glacier/', 'glacier/'));
-
-    //printjson(e);
-    db.tvshows.save(e);
-  });
-  Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
-}
-
-var GALLERIES = function() {
-  // 01
-  //db.galleries.count({"medias.file": {$exists: false}});
-  db.galleries.remove({"medias.0": {$exists: false}});
-
-  // 02
-  var folders = {};
-  var extoriginals = [];
-  var ext = [];
-  var valid = [
-    "mp4",
-    "mov",
-    "MOV",
-    "m4v",
-    "MP4",
-    "AVI",
-    "flv",
-    "avi",
-    "mpg"
-  ];
-  function sanitizeOld(folder,defaultFolder) {
-    return folder.
-    replace("/_flxer/photos/", defaultFolder).
-    replace("/_videos/", defaultFolder).
-    replace("/_spot/", defaultFolder).
-    replace("/_flxer/liveset/", defaultFolder).
-    replace("/_photos/", defaultFolder).
-    replace("/_flxer/library/hole/", defaultFolder).
-    replace("/_audios/", defaultFolder).
-    replace("/_flxer/library/no_hole/", defaultFolder).
-    replace(/\(|\)/g, "");
-  }
-  //db.galleries.find({"medias.0":{$exists:true},"events.0":{$exists:true},"performances.0":{$exists:true}}).forEach(function(e) {
-  db.galleries.find({}).forEach(function(e) {
-    e.slug = e.permalink;
-    delete e.permalink;
-
-    if (e.text) {
-      e.abouts = [];
-      for (var item in e.text) {
-        var tmp = {};
-        tmp.lang = item;
-        tmp.abouttext = e.text[item];
-        e.abouts.push(tmp);
-      }
-      delete e.text;
-    }
-    delete e.file;
-
-    var perf = [];
-    for (var p in e.performances) perf.push(e.performances[p].id);
-    e.performances = db.performances.find({old_id:{$in:perf}},{_id: 1}).toArray().map(function(item){ return item._id; });
-    
-    var evt = [];
-    for (var p in e.events) evt.push(e.events[p].id);
-    e.events = db.events.find({old_id:{$in:evt}},{_id: 1}).toArray().map(function(item){ return item._id; });
-    
-    var users = [];
-    for (var p in e.users) users.push(e.users[p].old_id);
-    e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
-    
-    e.users = db.users.find({old_id:{$in:users}},{_id: 1}).toArray().map(function(item){ return item._id; });
-    
-    var medias = [];
-    for (var p in e.medias) {
-      var media = e.medias[p].file;
-      media.title = e.medias[p].title;
-      media.slug = e.medias[p].permalink;
-      medias.push(media);
-    }
-    e.medias = medias;
-    printjson(medias.length);
-
-    var conta = 0;
-    var newMedias = [];
-    var newVideos = [];
-    var defaultFolder = "/"+e.creation_date.getFullYear()+"/"+("0" + (e.creation_date.getMonth() + 1)).slice(-2)+"/";
-    e.medias.forEach(function(media) {
-      media.fileflxer = media.file;
-      const serverPath = media.file;
-      const localFileNameExtension = serverPath.substring(serverPath.lastIndexOf('.') + 1);
-      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1);
-      if (localFileName.substring(0,1)==='.') {
-        printjson("HIDDEN FILE "+localFileName);
-      } else {
-        if (localFileNameExtension == "flv" || localFileNameExtension == "mp4" || localFileNameExtension == "swf" || localFileNameExtension == "mp3" || localFileNameExtension == "mov") {
-          const localPath = serverPath.substring(0, serverPath.lastIndexOf('/'));
-          const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-          const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
-          let localFileNameWithoutOriginalExtension = localFileNameWithoutExtension.substring(0, localFileNameWithoutExtension.lastIndexOf('_'));
-          media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/warehouse/videos/');
-          if (ext.indexOf(localFileNameExtension)===-1 && localFileNameExtension.length<5 && localFileNameExtension.length>1) ext.push(localFileNameExtension); 
-          if (localFileNameExtension == "flv" || localFileNameExtension == "mp4") {
-            media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}.png`;
-            //media.previewFileOld = `${localPath.replace('galleries/', '')}/preview_files/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-            if (extoriginals.indexOf(localFileNameOriginalExtension)===-1 && localFileNameOriginalExtension.length<5 && localFileNameOriginalExtension.length>1) extoriginals.push(localFileNameOriginalExtension); 
-            if (valid.indexOf(localFileNameOriginalExtension)!==-1) {
-              media.originalflxer = `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`;
-              media.original = sanitizeOld(media.originalflxer, defaultFolder).replace('/warehouse/','/glacier/videos_originals/').replace('/original_video/','/');
-            }
-            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
-            /*
-            media.folderNew = media.fileNew.substring(0, media.fileNew.lastIndexOf('/'));
-            media.folderNew = media.folderNew.substring(media.folderNew.lastIndexOf('/'));
-            folders[media.folderNew.replace('/warehouse/','/warehouse_new/')] = 1;
-            printjson(Object.keys(folders));
-            */
-            var folder = media.file.substring(0, media.file.lastIndexOf('/'));
-            folders[folder] = 1;
-            folder = folder.substring(0, folder.lastIndexOf('/'));
-            folders[folder] = 1;
-            folder = folder.substring(0, folder.lastIndexOf('/'));
-            folders[folder] = 1;
-            var folder = media.preview.substring(0, media.preview.lastIndexOf('/'));
-            folders[folder] = 1;
-            folder = folder.substring(0, folder.lastIndexOf('/'));
-            folders[folder] = 1;
-            folder = folder.substring(0, folder.lastIndexOf('/'));
-            folders[folder] = 1;
-            if (localFileNameExtension == "flv") {
-              //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-              //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
-            } else {
-              //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-              //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
-              if (media.originalflxer) {
-                //printjson("cp -n "+media.originalflxer.replace('/warehouse/','warehouse_old/')+" "+media.original.replace('/glacier/','glacier/'));
-                var folder = media.original.substring(0, media.original.lastIndexOf('/'));
-                folders[folder] = 1;
-                folder = folder.substring(0, folder.lastIndexOf('/'));
-                folders[folder] = 1;
-                folder = folder.substring(0, folder.lastIndexOf('/'));
-                folders[folder] = 1;
-              }
-            }
-          }
-          if (localFileNameExtension == "swf") {
-            media.previewflxer = media.fileflxer.replace('.swf', '.jpg');
-            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
-            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-            //printjson("cp -n "+media.previewflxer.replace('/warehouse/','warehouse_old/')+" "+media.preview.replace('/glacier/','glacier/'));
-          }
-          if (localFileNameExtension == "mov") {
-            media.previewflxer = `${localPath}/preview_files/${localFileNameWithoutExtension}_mov.png`;
-            media.preview = sanitizeOld(media.previewflxer, defaultFolder).replace('/warehouse/','/glacier/videos_previews/').replace('/preview_files/','/');
-            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-          }
-          if (localFileNameExtension == "mp3") {
-            //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/warehouse/','warehouse/'));
-          }
-          let video = e;
-          video.media = media;
-          newVideos.push(video);
-        } else {
-          media.file = sanitizeOld(media.file, defaultFolder).replace('/warehouse/', '/glacier/galleries_originals/');
-          var folder = media.file.substring(0, media.file.lastIndexOf('/'));
-          folders[folder] = 1;
-          folder = folder.substring(0, folder.lastIndexOf('/'));
-          folders[folder] = 1;
-          folder = folder.substring(0, folder.lastIndexOf('/'));
-          folders[folder] = 1;
-          delete media.encoded;
-          //printjson("cp -n "+media.fileflxer.replace('/warehouse/','warehouse_old/')+" "+media.file.replace('/glacier/','glacier/'));
-          newMedias.push(media);
-        }
-      }
-      conta++;
-      if (conta == e.medias.length) {
-        //if (!e.text || !Object.keys(e.text).length) delete e.text;
-        if (e.stats.video) delete e.stats.video;
-        if (newMedias.length) {
-          //delete e.media;
-          e.image = newMedias[0];
-          e.stats.img = newMedias.length;
-          e.medias = newMedias;
-          printjson('SAVEEEEEE GALLERY');
-          printjson(e);
-          //db.galleries.save(e);
-        } else {
-          printjson('REMOVE GALLERY');
-          printjson(e);
-        }
-        if (newVideos.length) {
-          newVideos.forEach(function(video) {
-            if (video.stats.img) delete video.stats.img;
-            if (!video.text || !Object.keys(video.text).length) delete video.text;
-            delete video.stats.img;
-            delete video.stats.video;
-            delete video.medias;
-            delete video.image;
-            delete video._id;
-            printjson('SAVEEEEEE VIDEO!!!');
-            printjson(video);
-            //db.videos.save(video);
-          });
-        }
-      }
-    });
-  });
-  printjson(ext);
-  Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
-
-  db.galleries.find({}).forEach(function(gallery) {
-    gallery.performances2 = [];
-    var res = db.performances.find({"galleries": gallery._id}).toArray();
-    var conta = 0;
-    if (res.length) {
-      res.forEach(function(performance) {
-        conta++;
-        gallery.performances2.push(performance._id);
-        printjson(gallery.title+' performance: '+performance.title+' conta: '+conta+' res.length: '+res.length);
-        if (conta == res.length) {
-          printjson('SAVEEEEEE');
-          printjson(gallery);
-          //db.galleries.save(gallery);
-        }
-      });
-    }
-  });
-
-  // 03
-  db.galleries.find({}).forEach(function(gallery) {
-    gallery.events2 = [];
-    var res = db.events.find({"galleries": gallery._id}).toArray();
-    var conta = 0;
-    if (res.length) {
-      res.forEach(function(event) {
-        conta++;
-        gallery.events2.push(event._id);
-        printjson(gallery.title+' event: '+event.title+' conta: '+conta+' res.length: '+res.length);
-        if (conta == res.length) {
-          printjson('SAVEEEEEE');
-          //printjson(gallery);
-          db.galleries.save(gallery);
-        }
-      });
-    }
-  });
-
-  // 05
-  db.galleries.remove({"medias.0": {$exists: false}});
-
-  // 06
-  db.galleries.find({media: {$exists: true}}).forEach(function(video) {
-    delete video.media;
-    db.galleries.save(video);
-  });
-
-  // 07
-  db.tvshows.find({}).forEach(function(tvshow) {
-    //var res = db.performances.find({"galleries": gallery._id}).toArray();
-    var conta = 0;
-    var videos = db.videos.find({"media.file": tvshow.media.file}).toArray();
-    if (videos.length) {
-      videos.forEach(function(video) {
-        video.categories = tvshow.categories;
-        video.programming = tvshow.programming;
-        video.stats.visits += tvshow.stats.visits;
-        video.abouts = tvshow.abouts;
-        printjson("Update video");
-        printjson(video);
-        db.videos.save(video);
-      });
-    } else {
-      printjson("Insert video");
-      delete tvshow._id;
-      if (!tvshow.tags.length) delete tvshow.tags;
-      printjson(tvshow);
-      db.videos.save(tvshow);
-    }
-  });
-  
-  // 08
-  db.videos.find({"events.0": {$exists: true}}).forEach(function(video) {
-    //var res = db.performances.find({"galleries": gallery._id}).toArray();
-    var conta = 0;
-    if (video.events) {
-      video.events.forEach(function(event) {
-        db.events.find({_id: event}).forEach(function(e) {
-          if (!e.videos) e.videos = [];
-          e.videos.push(video._id);
-          printjson(e.title);
-          printjson(e.videos);
-          db.events.save(e);
-        });
-      });
-    }
-  });
-  
-  // 09
-  db.videos.find({"performances.0": {$exists: true}}).forEach(function(video) {
-    //var res = db.performances.find({"galleries": gallery._id}).toArray();
-    var conta = 0;
-    if (video.performances) {
-      video.performances.forEach(function(performance) {
-        db.performances.find({_id: performance}).forEach(function(e) {
-          if (!e.videos) e.videos = [];
-          e.videos.push(video._id);
-          printjson(e.title);
-          printjson(e.videos);
-          db.performances.save(e);
-        });
-      });
-    }
-  });
-  
-  // 10
-  db.videos.find({}, {users: 1}).forEach(function(e) {
-    e.users.forEach(function(user) {
-      db.users.find({"_id": user}).forEach(function(user) {
-        if (!user.videos) user.videos = [];
-        user.videos.push(e._id);
-        printjson(user.videos);
-        db.users.save(user);
-      });  
-    });  
-  });
-}
-  // GENERATE ALL NEWS!!!
-
-  // 11
-  db.news.find({}, {users: 1}).forEach(function(e) {
-    e.users.forEach(function(user) {
-      db.users.find({"_id": user}).forEach(function(user) {
-        if (!user.news) user.news = [];
-        user.news.push(e._id);
-        printjson(user.news);
-        db.users.save(user);
-      });  
-    });  
-  });
-
-
   // 12
-  db.users.find({}).forEach(function(e) {
+  db.users.find({surname:"Del Gobbo"}).forEach(function(e) {
+    //e.news = db.news.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+
     e.stats = {};
-    if (e.events && e.events.length) e.stats.events = e.events.length;
     if (e.performances && e.performances.length) e.stats.performances = e.performances.length;
-    if (e.news && e.news.length) e.stats.news = e.news.length;
+    if (e.events && e.events.length) e.stats.events = e.events.length;
+    if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
+    if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
     if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
     if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
-    if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
-    if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
+    if (e.news && e.news.length) e.stats.news = e.news.length;
 
     if (e.is_crew && e.members && e.members.length) e.stats.members = e.members.length;
     if (!e.is_crew && e.crews && e.crews.length) e.stats.crews = e.crews.length;
 
     e.activity = 0;
-    e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
     e.activity+= (e.stats.performances ? e.stats.performances * 3 : 0);
-    e.activity+= (e.stats.news ? e.stats.news                 * 1 : 0);
+    e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
+    e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
+    e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
     e.activity+= (e.stats.videos ? e.stats.videos             * 3 : 0);
     e.activity+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
-    e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
-    e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
+    e.activity+= (e.stats.news ? e.stats.news                 * 1 : 0);
 
-    printjson(e.activity);
-    //printjson(e.stats);
+    //printjson(e);
     db.users.save(e);
   });  
 }
