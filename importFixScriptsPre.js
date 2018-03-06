@@ -520,6 +520,7 @@ var GALLERIES = function() {
         } else {
           //printjson('REMOVE GALLERY');
           //printjson(e);
+          db.galleries.remove({_id:e._id});
         }
         if (newVideos.length) {
           newVideos.forEach(function(video) {
@@ -1192,8 +1193,8 @@ var NEWS = function() {
 
 }
 
-var USERS = function() {
-  
+var PERFORMANCES_BOOKINGS = function() {
+
   db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
     for (i in e.program) {
       var booking = {};
@@ -1274,6 +1275,7 @@ var USERS_ADDRESSES = function() {
   var fix = [
     {find: 'Cote D Ivoire (Ivory Coast)', replace: "Côte d'Ivoire"},
     {find: '00179', replace: 'Italy'},
+    {find: 'Cape Verde Islands', replace: 'Cape Verde'},
     {find: '3582 CC', replace: 'Netherlands'},
     {find: 'Be', replace: 'Belgium'},
     {find: 'Ca', replace: 'Canada'},
@@ -1376,7 +1378,45 @@ var USERS_ADDRESSES = function() {
     });
   }
 
-  // 02 Sanitize
+  db.users.find({"addresses.0": {$exists:true}},{addresses: 1}).forEach(function(e) {
+    if (e.addresses && e.addresses.length) {
+      var addresses = [];
+      for(var a=0;a<e.addresses.length;a++){
+        if (e.addresses[a] !== undefined) addresses.push(e.addresses[a]);
+      }
+      e.addresses = addresses;
+    }
+    db.users.update({_id: e._id}, {$set: {addresses: e.addresses}}, { upsert: true });
+  });
+
+  db.users.find({"addresses.0": {$exists:true}},{addresses: 1}).forEach(function(e) {
+      if (e.addresses && e.addresses.length) {
+      var addresses = {};
+      for(var a=0;a<e.addresses.length;a++){
+        if (!addresses[e.addresses[a].country]) addresses[e.addresses[a].country] = {};
+        if (e.addresses[a].locality && !addresses[e.addresses[a].country][e.addresses[a].locality]) addresses[e.addresses[a].country][e.addresses[a].locality] = e.addresses[a];
+      }
+      var addressesDef = [];
+      for(var country in addresses){
+        for(var locality in addresses[country]){
+          addressesDef.push(addresses[country][locality]);
+        }
+      }
+      e.addresses = addressesDef;
+    }
+    printjson(e.addresses);
+    db.users.update({_id: e._id}, {$set: {addresses: e.addresses}}, { upsert: true });
+  });
+
+  db.users.find({"addresses.country": 'Undefined'},{addresses: 1}).forEach(function(e) {
+    if (e.addresses && e.addresses.length) {
+      for(var a=0;a<e.addresses.length;a++){
+        if (e.addresses[a].country == 'Undefined') delete e.addresses[a];
+      }
+    }
+    db.users.update({_id: e._id}, {$set: {addresses: e.addresses}}, { upsert: true });
+  });
+// 02 Sanitize
   var sanitize = function (str) {
     return str. 
     replace('\u0000', '').  
@@ -2516,6 +2556,7 @@ var USERS_ADDRESSES = function() {
   // 03 cityfix #2
   var fix = [
     {country: 'Austria', find: '8753 - Fohnsdorf', replace: 'Fohnsdorf'},
+    {country: 'Taiwan', find: '#39640;雄市', replace: '高雄市'},
     {country: 'Austria', find: '9500 Villach', replace: 'Villach'},
     {country: 'Italy', find: 'Alghero-bologna', replace: 'Alghero'},
     {country: 'Latvia', find: ' Paesi Bassi  - Amsterdam', replace: 'Amsterdam'},
@@ -3319,6 +3360,59 @@ var USERS_ADDRESSES = function() {
     {country: 'China', find: '辽宁沈阳', replace: 'Shenyang'}
   ];
 
+  var fix = [
+    {country: 'Czech Republic', find: 'Praga', replace: "Prague"},
+    {country: 'Czech Republic', find: 'Prague, Budweis', replace: "Prague"},
+    {country: 'Czech Republic', find: 'Praha 10', replace: "Prague"},
+    {country: 'Czech Republic', find: 'Praha', replace: "Prague"},
+    {country: 'Austria', find: '8753 - Fohnsdorf', replace: 'Fohnsdorf'},
+    {country: 'Denmark', find: 'Aarhus-bologna', replace: 'Aarhus'},
+    {country: 'Taiwan', find: '#39640;&#38596;&#24066;', replace: '高雄市'},
+    {country: 'France', find: '60 Deglingos', replace: 'Deglingos'},
+    {country: 'France', find: 'Aix-en-provence', replace: 'Aix-en-Provence'},
+    {country: 'Netherlands', find: "'S-hertogenbosch", replace: "'s Hertogenbosch"},
+    {country: 'Australia', find: 'Abelane', replace: 'Borenore'},
+    {country: 'Argentina', find: 'Acasuso', replace: 'Acassuso'},
+    {country: 'Japan', find: 'Adachi-ku', replace: 'Adachi'},
+    {country: 'Maldives', find: 'Addu', replace: 'Addu City'},
+    {country: 'Italy', find: 'Adria (Rovigo)', replace: 'Adria'},
+    {country: 'Argentina', find: 'Adrogue', replace: 'Adrogué'},
+    {country: 'Egypt', find: 'Alex', replace: 'Alexandria'},
+    {country: 'Italy', find: 'Alfonsine (Ra)', replace: 'Alfonsine'},
+    {country: 'Portugal', find: 'Alges', replace: 'Algés'},
+    {country: 'Jordan', find: 'Alghazalya', replace: 'Madaba'},
+    {country: 'Algeria', find: 'Alger', replace: 'Algiers'},
+    {country: 'Jordan', find: 'Alghazalya', replace: 'Madaba'},
+    {country: 'Italy', find: 'Altofonte (Pa)', replace: 'Altofonte'},
+    {country: 'Italy', find: 'Ampezzo', replace: "Cortina d'Ampezzo"},
+    {country: 'Andorra', find: 'Andorra La Vella', replace: 'Andorra la Vella'},
+    {country: 'South Korea', find: 'Ansan', replace: 'Ansan-si'},
+    {country: 'Philippines', find: 'Antipolo City', replace: 'Antipolo'},
+    {country: 'Madagascar', find: 'Antsiranana', replace: 'Antisiranana'},
+    {country: 'Spain', find: 'Antsoain', replace: 'Ansoáin'},
+    {country: 'Belgium', find: 'Antwerpen', replace: 'Antwerp'},
+    {country: 'Italy', find: 'Anzio (Rm)', replace: 'Anzio'},
+    {country: 'Netherlands', find: 'Appeldoorn', replace: 'Apeldoorn'},
+    {country: 'Italy', find: 'Aprila', replace: 'Aprilia'},
+    {country: 'Italy', find: 'Aquila', replace: "L'Aquila"},
+    {country: 'Brazil', find: 'Ararangua', replace: 'Araranguá'},
+    {country: 'Italy', find: 'Arcade (Tv)', replace: 'Arcade'},
+    {country: 'Russia', find: 'Archangelsk', replace: 'Arkhangelsk'},
+    {country: 'Spain', find: 'Arenys D Mar', replace: 'Arenys de Mar'},
+    {country: 'Italy', find: 'Arese Milano', replace: 'Arese'},
+    {country: 'Italy', find: 'Ariccia Rm', replace: 'Ariccia'},
+    {country: 'Germany', find: 'Arschenberg', replace: 'Irschenberg'},
+    {country: 'Italy', find: 'Arzignano (Vi)', replace: 'Arzignano'},
+    {country: 'Austria', find: 'Arzl', replace: 'Arzl im Pitztal'},
+    {country: 'Germany', find: 'Aschau', replace: 'Aschau im Chiemgau'},
+    {country: 'Italy', find: 'Asciano Pisano (Pi)', replace: 'Asciano'},
+    {country: 'Paraguay', find: 'Asunción', replace: 'Asuncion'},
+    {country: 'Spain', find: 'Bcn', replace: 'Barcelona'},
+    {country: 'Egypt', find: 'Benha', replace: 'Banha'},
+    {country: 'Spain', find: 'Benicarlo', replace: 'Benicarló'},
+
+  ];
+
   for(var b=0;b<fix.length;b++){
     db.users.find({"addresses.country": fix[b].country, "addresses.locality": fix[b].find},{addresses: 1}).forEach(function(e) {
       if (e.addresses && e.addresses.length) {
@@ -3326,6 +3420,22 @@ var USERS_ADDRESSES = function() {
           if (e.addresses[a].country == fix[b].country && e.addresses[a].locality == fix[b].find) e.addresses[a].locality = fix[b].replace;
         }
       }
+      db.users.update({_id: e._id}, {$set: {addresses: e.addresses}}, { upsert: true });
+    });
+  }
+  
+  // 03 cityremove
+  var fix = ['Azz','As','Argentina','Anywhere','Any','An','Adsas','Adsdas','Ad','+34','&Gt;&gt;','...','13','Adsas','Aesis','Aezeaz','Affwfawf','Ahoritas','Albania','Alc','Asd','Asd','Asd','Asdas','Asdas','Asdasd','Asdasd','Asdasd','Asdasdasd','Asdds','Asdeeqq','Asdf','Asdf','Asdf','Asdfasdf','Asdfsdc','Asfasf','Asfsafas','Australia','Austria','Azz','B','B.a.','Ba','#146;alessio Siculo','≫&gt;','#324;','#337;r','Abbblkfio','Abc','Abcder','Acity','Adasd','*','-','--','- -','---','.','..','-1','071','/','1','11','12','123','1366','15','201301','2210','23','2312131','4','28','29','46','400','5722','9781','45455','80500','95013','___','?','???','A','A','A','A','A','A','A Spasso Per La Sicilia','Aa','Aa','Aa','Aaa','Aaa','Aaa','Aaaa','Aaaa','Aaaaaaaa'];
+  
+  for(var b=0;b<fix.length;b++){
+    db.users.find({"addresses.locality": fix[b]},{addresses: 1}).forEach(function(e) {
+      printjson(e.addresses);
+      if (e.addresses && e.addresses.length) {
+        for(var a=0;a<e.addresses.length;a++){
+          if (fix.indexOf(e.addresses[a].locality)!==-1) delete e.addresses[a].locality;
+        }
+      }
+      printjson(e.addresses);
       db.users.update({_id: e._id}, {$set: {addresses: e.addresses}}, { upsert: true });
     });
   }
