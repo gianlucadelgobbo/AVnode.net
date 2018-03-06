@@ -9,6 +9,7 @@ const async = require('async');
 
 const MediaImage = require('./shared/MediaImage');
 const Address = require('./shared/Address');
+const AddressPrivate = require('./shared/AddressPrivate');
 const About = require('./shared/About');
 const Link = require('./shared/Link');
 const OrganizationData = require('./shared/OrganizationData');
@@ -17,27 +18,34 @@ const adminsez = 'user';
 
 const userSchema = new Schema({
   old_id: String,
-
-  slug: { type: String, unique: true },
-  stagename: { type: String, unique: true },
-  username: { type: String, unique: true },
-  email: { type: String, unique: true },
   is_crew: Boolean,
   user_type : Number,
-  image: MediaImage,
-  teaserImage: MediaImage,
-  activity: Number, // BL TODO frontend, issue #5, added
-//  file: { file: String },
-  name: String,
-  surname: String,
-  gender: String,
-  lang: String, // BL TODO navigator or user.settings or subdomain language
+  activity: Number,
   is_public: Boolean,
   creation_date: Date,
   stats: {},
-  birthday: Date,
-  citizenship: [], // NEW
 
+  slug: { type: String, unique: true },
+  stagename: { type: String, unique: true },
+  addresses: [Address],
+  abouts: [About],
+  web: [Link],
+  social: [Link],
+
+  image: MediaImage,
+
+  name: String,
+  surname: String,
+  gender: String,
+  lang: String,
+  birthday: Date,
+  citizenship: [],
+  addresses_private: [AddressPrivate],
+  phone: [Link],
+  mobile: [Link],
+  skype: [Link],
+
+  email: { type: String, unique: true },
   emails: [{
     email: String,
     is_public: { type: Boolean, default: false },
@@ -46,13 +54,6 @@ const userSchema = new Schema({
     mailinglists: {},
     confirm: String
   }],
-  addresses: [Address],
-  abouts: [About],
-  web: [Link],
-  social: [Link],
-  phone: [Link],
-  mobile: [Link],
-  skype: [Link],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
@@ -65,12 +66,9 @@ const userSchema = new Schema({
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
   news : [{ type: Schema.ObjectId, ref: 'News' }],
 
-  /* A todo
-  videos : [{ type: Schema.ObjectId, ref: 'Gallery' }],
-  */
+  roles: [],
+  connections: [],
 
-  roles: [], // BL TODO frontend, issue #5, array of roles
-  connections: [], // BL TODO frontend, issue #5, added
   // Organization Extra Data
   organizationData: [OrganizationData],
 
@@ -78,12 +76,13 @@ const userSchema = new Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
   is_confirmed: { type: Boolean, default: false },
-  confirm: String,
-  tokens: Array
+  confirm: String, // DELETE ?
+  tokens: Array, // DELETE ?
+  username: { type: String, unique: true } // DELETE ?
 }, {
   timestamps: true,
   toObject: {
-    virtuals: false // BL FIXME check http://mongoosejs.com/docs/api.html#schema_Schema-virtual
+    virtuals: false
   },
   toJSON: {
     virtuals: true
