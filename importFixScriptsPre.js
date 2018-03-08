@@ -1356,8 +1356,25 @@ var USERS_ADDRESSES = function() {
     {find: 'Tonga', replace: 'South Africa'},
     {find: 'Tuvalu', replace: 'Israel'},
     {find: 'SG', replace: 'Singapore'},
-    {find: 'CUBA', replace: 'Cuba'}
+    {find: 'CUBA', replace: 'Cuba'},
+    {find: 'Azerbaijan Republic', replace: 'Azerbaijan'},
+    {find: 'Bosnia & Herzegovina', replace: 'Bosnia and Herzegovina'},
+    {find: 'Matera', replace: 'Italy'},
+    {find: 'RU', replace: 'Russia'},
+    {find: 'Ru', replace: 'Russia'},
+    {find: 'Bahamas', replace: 'The Bahamas'},
+    {find: 'Virgin Islands (U.S.)', replace: 'United States Virgin Islands'},
+    {find: 'U.S. Virgin Islands', replace: 'United States Virgin Islands'},
+    {find: 'Vatican City State', replace: 'Vatican City'},
+    {find: 'Saint Vincent And The Grenadines', replace: 'Saint Vincent and the Grenadines'}
   ];
+  for(var b=0;b<fix.length;b++){
+    db.addressdbs.find({"country": fix[b].find}).forEach(function(e) {
+      e.country = fix[b].replace;
+      printjson(db.addressdbs.update({_id: e._id}, {$set: {country: fix[b].replace}}, { upsert: true }));
+    });
+  }
+
   for(var b=0;b<fix.length;b++){
     printjson(fix[b]);
     db.users.find({"addresses.country": fix[b].find},{addresses: 1}).forEach(function(e) {
@@ -3441,12 +3458,13 @@ var USERS_ADDRESSES = function() {
   }
 
   //04 Add geometry
-  db.addressdbs.find({"country": {$exists: true}, "locality": {$exists: true}}).forEach(function(e) {
-    db.users.find({"addresses.country": e.country, "addresses.locality": e.locality, "addresses.geometry": {$exists: false}},{addresses: 1}).forEach(function(user) {
+  db.addressdbs.find({"country": {$exists: true}, "locality": {$exists: false}}).forEach(function(e) {
+    db.users.find({"addresses.country": e.country, "addresses.locality": "", "addresses.geometry": {$exists: false}},{addresses: 1}).forEach(function(user) {
       if (user.addresses && user.addresses.length) {
         for(var a=0;a<user.addresses.length;a++){
-          if (user.addresses[a].country == e.country && user.addresses[a].locality == e.locality) {
+          if (user.addresses[a].country == e.country) {
             user.addresses[a].geometry = e.geometry;
+            delete user.addresses[a].locality;
             printjson(user.addresses);
           }
           db.users.update({_id: user._id}, {$set: {addresses: user.addresses}}, { upsert: true });
@@ -3456,13 +3474,12 @@ var USERS_ADDRESSES = function() {
   });
 
   //05 Add geometry
-  db.addressdbs.find({"country": {$exists: true}, "locality": {$exists: false}}).forEach(function(e) {
-    db.users.find({"addresses.country": e.country, "addresses.locality": "", "addresses.geometry": {$exists: false}},{addresses: 1}).forEach(function(user) {
+  db.addressdbs.find({"country": {$exists: true}, "locality": {$exists: true}}).forEach(function(e) {
+    db.users.find({"addresses.country": e.country, "addresses.locality": e.locality, "addresses.geometry": {$exists: false}},{addresses: 1}).forEach(function(user) {
       if (user.addresses && user.addresses.length) {
         for(var a=0;a<user.addresses.length;a++){
-          if (user.addresses[a].country == e.country) {
+          if (user.addresses[a].country == e.country && user.addresses[a].locality == e.locality) {
             user.addresses[a].geometry = e.geometry;
-            delete user.addresses[a].locality;
             printjson(user.addresses);
           }
           db.users.update({_id: user._id}, {$set: {addresses: user.addresses}}, { upsert: true });
