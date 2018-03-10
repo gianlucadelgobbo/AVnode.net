@@ -5,13 +5,14 @@ import Nav from './Nav';
 // Profile
 
 import ProfilePublic from './profile/public'
+import ProfileEmails from './profile/emails';
 import ProfileImages from './profile/images';
+import ProfilePrivate from './profile/private';
 
 //import ProfilePublic from './user/ProfilePublic';
 //import ProfileImages from './user/ProfileImagesContainer';
-
-import ProfileEmails from './user/ProfileEmails';
-import ProfilePrivate from './user/ProfilePrivate';
+//import ProfileEmails from './user/ProfileEmails';
+//import ProfilePrivate from './user/ProfilePrivate';
 import ProfilePassword from './user/ProfilePasswordContainer';
 import ProfileConnections from './user/ProfileConnections';
 // Crews

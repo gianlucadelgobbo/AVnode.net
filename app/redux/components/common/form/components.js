@@ -7,6 +7,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options}) => {
     return <div className="form-group">
@@ -87,8 +88,55 @@ export const multiInputText = ({fields, title, meta: {error}}) => {
     return multiInput({fields, title, meta: {error}, render: inputText, key: "text"})
 };
 
+//Email [inputEmail], private[checkbox], primary[checkbox], confirmed[solo testo]
 export const multiInputEmail = ({fields, title, meta: {error}}) => {
-    return multiInput({fields, title, meta: {error}, render: inputEmail, key: "text"})
+    const renderSubField = (member, index, fields) => {
+        const {is_confirmed} = fields.get(index);
+        return <li key={index}>
+            <Row>
+                <Col sx={3}>
+                    <Field
+                        name={`${member}.email`}
+                        component={inputEmail}
+                    />
+                </Col>
+                <Col sx={3}>
+
+                    <Field
+                        name={`${member}.is_public`}
+                        component={checkboxField}
+                        placeholder="Is public"
+                    />
+
+                </Col>
+                <Col sx={3}>
+                    <Field
+                        disabled={!is_confirmed}
+                        name={`${member}.is_primary`}
+                        component={checkboxField}
+                        placeholder="Is primary"
+                    />
+                </Col>
+                <Col sx={3}>
+                    {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
+                    <Button bsStyle="danger"
+                            onClick={() => fields.remove(index)}>
+                        -
+                    </Button>
+                </Col>
+            </Row>
+        </li>
+    };
+    return <div>
+        <label>{title}</label>
+        {error && <span className="error-message">{error}</span>}
+        <Row>
+            <ul className="list-unstyled">
+                {fields.map(renderSubField)}
+                <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
+            </ul>
+        </Row>
+    </div>
 };
 
 export const multiInputTel = ({fields, title, meta: {error}}) => {
@@ -151,40 +199,40 @@ const multiInput = ({fields, title, meta: {error}, render, key}) => {
 };
 
 
-const renderList = ({input, meta, placeholder, hideResetButton, options, classNames, disabled, defaultValue}) => {
+export const renderList = ({input, meta, placeholder, hideResetButton, options, classNames, disabled, defaultValue}) => {
 
     return <div className="form-group">
         {placeholder && <label htmlFor={input.name}>{placeholder}</label>}
         <Select
             disabled={disabled}
-            defaultValue={defaultValue}
-            hideResetButton={!!hideResetButton}
-            value={options ? options.find((i) => i.value === input.value) : null}
-            onValueChange={(evt) => input.onChange(evt ? evt.value : defaultValue ? defaultValue : "")}
             options={options}
-            placeholder={placeholder}
+            {...input}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
 };
 
-const renderDatePicker = ({input, meta, placeholder, disabled}) =>
+export const renderDatePicker = ({input, meta, placeholder, disabled}) =>
     <div className="form-group">
         <label htmlFor="first_name">{placeholder}</label>
         <br/>
         <DatePicker
-            showClearButton={false}
-            value={input.value}
-            disabled={disabled}
             onChange={input.onChange}
-            dateFormat={"DD/MM/YYYY"}
+            selected={moment(input.value)}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
 
-const renderCheckbox = ({input, meta, id, placeholder, classNames, options}) =>
+export const checkboxField = ({input, meta, id, placeholder, disabled, classNames, options}) =>
     <div className={"form-group " + classNames}>
-        <input id={id} defaultChecked={input.value} className="form-control" type="checkbox" {...input}
-               placeholder={placeholder}/>
-        <label htmlFor={id}>{placeholder}</label>
+        <input
+            id={id}
+            defaultChecked={input.value}
+            className="form-control"
+            type="checkbox"
+            {...input}
+            placeholder={placeholder}
+            disabled={disabled}
+        />
+        {placeholder && <label htmlFor={id}>{placeholder}</label>}
     </div>;
