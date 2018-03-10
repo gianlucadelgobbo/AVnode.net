@@ -1,5 +1,6 @@
 import {h, Component} from 'preact';
 import Example from './example'
+import Saved from './saved'
 
 import ModalWrapper from './wrapper';
 import {connect} from 'preact-redux';
@@ -15,12 +16,14 @@ import {getModal} from './selectors';
 * */
 
 const MODAL_COMPONENTS = {
-    EXAMPLE: Example
+    EXAMPLE: Example,
+    SAVED: Saved,
     /* other modals */
 };
 
 const MODAL_TITLES = {
-    EXAMPLE: 'This is the title'
+    EXAMPLE: 'This is the title',
+    SAVED: 'Saved!',
 
     /* other modals */
 };
