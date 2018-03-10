@@ -1,6 +1,6 @@
 const PUBLIC = {
     slug: {
-        comp: 'simpletext'
+        comp: 'simpletext',
         label: 'Profile url',
         required: true,
         unique: true,
@@ -10,7 +10,7 @@ const PUBLIC = {
         }
     },
     stagename: {
-        comp: 'simpletext'
+        comp: 'simpletext',
         label: 'Stage name',
         required: true,
         unique: true,
@@ -20,16 +20,16 @@ const PUBLIC = {
         }
     },
     abouts: {
-        schema: 'shared/About'
-        comp: 'textarea_multilang'
+        schema: 'shared/About',
+        comp: 'textarea_multilang',
         label: 'About me',
         validators: {
             'String': {min: 0, max: 50000}
         }
     },
     addresses: {
-        schema: 'shared/Address'
-        comp: 'citycountry_multi_googleautocomplete'
+        schema: 'shared/Address',
+        comp: 'citycountry_multi_googleautocomplete',
         label: 'Where I\'m based',
         required: true,
         validators: {
@@ -37,15 +37,15 @@ const PUBLIC = {
         }
     },
     web: {
-        schema: 'shared/Link'
-        comp: 'multilink'
+        schema: 'shared/Link',
+        comp: 'multilink',
         label: 'Websites',
         validators: {
             'Url': {}
         }
     },
     social: {
-        comp: 'multilink'
+        comp: 'multilink',
         label: 'Websites',
         validators: {
             'Url': {}
@@ -55,7 +55,7 @@ const PUBLIC = {
 
 const IMAGE = {
     image: {
-        comp: 'uploader'
+        comp: 'uploader',
         label: 'Profile Image',
         validators: {
             'Mime': {},
@@ -67,7 +67,7 @@ const IMAGE = {
 
 const EMAILS = {
     emails: {
-        comp: 'emails'
+        comp: 'emails',
         label: 'Emails',
         validators: {
             'Email': {},
@@ -79,74 +79,74 @@ const EMAILS = {
 
 const PRIVATE = {
     name: {
-        comp: 'simpletext'
+        comp: 'simpletext',
         label: 'Name',
         validators: {
             'String': {min: 3, max: 50}
         }
     },
     surname: {
-        comp: 'simpletext'
+        comp: 'simpletext',
         label: 'Name',
         validators: {
             'String': {min: 3, max: 50}
         }
     },
     gender: {
-        comp: 'select'
+        comp: 'select',
         label: 'Gender',
         validators: {
             'String': [M,F,Other]
         }
     },
     lang: {
-        comp: 'select'
+        comp: 'select',
         label: 'Preferred language',
         validators: {
             'String': '' // Available languages in config
         }
     },
     birthday: {
-        comp: 'datepicker'
+        comp: 'datepicker',
         label: 'Birthday',
         validators: {
             'Date': '' // Available languages in config
         }
     },
     citizenship: {
-        comp: 'select'
+        comp: 'select',
         label: 'Citizenship',
         validators: {
             'String': '' // Available citizenship list
         }
     },
     addresses_private: {
-        schema: 'shared/AddressPrivate'
-        comp: 'fulladdress_multi_googleautocomplete'
+        schema: 'shared/AddressPrivate',
+        comp: 'fulladdress_multi_googleautocomplete',
         label: 'Private addresses',
         validators: {
             'geometry': true
         }
     },
     phone: {
-        schema: 'shared/Link'
-        comp: 'multilink'
+        schema: 'shared/Link',
+        comp: 'multilink',
         label: 'Websites',
         validators: {
             'Phone': {}
         }
     },
     mobile: {
-        schema: 'shared/Link'
-        comp: 'multilink'
+        schema: 'shared/Link',
+        comp: 'multilink',
         label: 'Mobile',
         validators: {
             'Phone': {}
         }
     },
     skype: {
-        schema: 'shared/Link'
-        comp: 'multilink'
+        schema: 'shared/Link',
+        comp: 'multilink',
         label: 'Skype',
         validators: {
             'Skype': {}
