@@ -1,4 +1,6 @@
 import isomorphicFetch from 'isomorphic-fetch';
+import {geocodeByAddress, getLatLng} from 'react-places-autocomplete'
+
 
 export const NAVIGATE = 'NAVIGATE';
 export const CREW_NAVIGATE = 'CREW_NAVIGATE';
@@ -1182,25 +1184,30 @@ export function userEmailDelete(dispatch) {
 
 export const editUser = (data) => (dispatch) => {
 
-    console.log("editUser")
-
-    let str = JSON.stringify(data);
-    console.log('_______________ ACTION editUser __________________________________');
-    console.log('editUser data length: ' + str.length);
-    console.log('editUser links: ' + JSON.stringify(data.links));
-
     dispatch({
         type: REQUEST_EDIT_USER,
         id: data._id
     });
-    return fetch(
-        `/admin/api/user/${data._id}`, {
-            method: 'PUT',
-            body: JSON.stringify(data)
-        })
-        .then(json => dispatch(gotUser(json)));
-};
 
+    const promises = [];
+    const addressesToConvert = data.addresses || [];
+
+    addressesToConvert.forEach(a => {
+        promises.push(geocodeByAddress(a.originalString)
+            .then(results => getLatLng(results[0]))
+            .then(latLng => a.latLng = latLng)
+            .catch(error => console.error('Error', error)))
+    });
+
+    return Promise.all(promises).then(() => {
+        return fetch(
+            `/admin/api/user/${data._id}`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
+            .then(json => dispatch(gotUser(json)));
+    });
+};
 
 export function editUserEmails(dispatch) {
     return data => {

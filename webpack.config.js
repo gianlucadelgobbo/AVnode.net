@@ -46,7 +46,11 @@ module.exports = {
     },{
       test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
       loader: ENV==='production' ? 'file?name=[path][name]_[hash:base64:5].[ext]' : 'url-loader'
-    }]
+    },
+        {
+            test: /\.css$/,
+            use: [ 'style-loader', 'css-loader' ]
+        }]
   },
   plugins: ([
     new webpack.NoEmitOnErrorsPlugin(),
