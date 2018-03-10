@@ -7,7 +7,6 @@ import {locales, locales_labels} from '../../../../../config/default.json'
 import {editUser} from "../../../reducers/actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 /*
 * Responsabilita'
@@ -42,7 +41,13 @@ class ProfilePublic extends Component {
         model.social = model.social.filter(w => w.url);
 
         // Convert addresses
-        model.addresses = model.addresses.map(a => a.text);
+        model.addresses = model.addresses.map(a => {
+            const originalString = a.text;
+            const split = originalString.split(",");
+            const country = split[split.length - 1].trim();
+            const city = split[0].trim();
+            return {originalString, city, country}
+        });
 
         return model;
     }
@@ -80,23 +85,19 @@ class ProfilePublic extends Component {
         // Web: Add one item if value empty
         v.addresses = (Array.isArray(user.addresses) && user.addresses.length > 0) ?
             user.addresses.map(a => ({
-                text: a
+                text: `${a.city}, ${a.country}`
             })) :
             [{text: ""}];
-
 
         return v;
     }
 
     onSubmit(values) {
-        const {showModal, editUser} = this.props;
+        const {showModal, editUser, user} = this.props;
         const model = this.createUserModel(values);
 
-        // geocodeByAddress(this.state.address)
-        //     .then(results => getLatLng(results[0]))
-        //     .then(latLng => console.log('Success', latLng))
-        //     .catch(error => console.error('Error', error))
-        // console.log("model to save", model)
+        // Add auth user _id
+        model._id = user._id;
 
         //dispatch the action to save the model here
         editUser(model)
@@ -112,7 +113,7 @@ class ProfilePublic extends Component {
         const {user} = this.props;
 
         return (
-            <div class="row">
+            <div className="row">
                 <div className="class-md-3">
                     <Navbar/>
                 </div>

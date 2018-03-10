@@ -1,7 +1,7 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, textareaMultiTab, multiInputUrl, multiAddress} from "../../common/form/components";
+import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
@@ -55,7 +55,7 @@ class ProfilePublicForm extends Component {
 
                 <FieldArray
                     name="addresses"
-                    component={multiAddress}
+                    component={multiGoogleCityCountry}
                     placeholder="Address"
                     title="Address"
                 />
@@ -79,5 +79,5 @@ export default reduxForm({
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
-    asyncBlurFields: ['slug']
+    asyncBlurFields: ['slug', 'addresses']
 })(ProfilePublicForm);
