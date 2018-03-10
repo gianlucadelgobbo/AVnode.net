@@ -200,7 +200,6 @@ const multiInput = ({fields, title, meta: {error}, render, key}) => {
 
 
 export const renderList = ({input, meta, placeholder, hideResetButton, options, classNames, disabled, defaultValue}) => {
-
     return <div className="form-group">
         {placeholder && <label htmlFor={input.name}>{placeholder}</label>}
         <Select
@@ -217,8 +216,9 @@ export const renderDatePicker = ({input, meta, placeholder, disabled}) =>
         <label htmlFor="first_name">{placeholder}</label>
         <br/>
         <DatePicker
-            onChange={input.onChange}
-            selected={moment(input.value)}
+        {...input} 
+        dateForm="MM/DD/YYYY" 
+        selected={input.value ? moment(input.value) : null}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
