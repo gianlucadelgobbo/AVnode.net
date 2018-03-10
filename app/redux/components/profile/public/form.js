@@ -1,7 +1,7 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, textareaMultiTab, multiInputUrl} from "../../common/form/components";
+import {inputText, textareaMultiTab, multiInputUrl, multiAddress} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
@@ -51,6 +51,13 @@ class ProfilePublicForm extends Component {
                     component={multiInputUrl}
                     placeholder="Web"
                     title="Web"
+                />
+
+                <FieldArray
+                    name="addresses"
+                    component={multiAddress}
+                    placeholder="Address"
+                    title="Address"
                 />
 
                 <button
