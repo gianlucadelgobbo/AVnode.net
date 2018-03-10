@@ -1482,7 +1482,7 @@ const showall = (req, res, save, cb) => {
       addressOKobj[addressOK[addressOKitem].country+"_"+addressOK[addressOKitem].locality] = addressOK[addressOKitem];
     }
     User.find({"addresses.country": {$exists: true}/*, "addresses.geometry": {$exists: false}*/}).
-    select({addresses: 1}).
+    select({addresses: 1, slug:1}).
     //limit(100).
     lean().
     exec((err, data) => {
@@ -1498,6 +1498,7 @@ const showall = (req, res, save, cb) => {
       let create = [];
 
       for (const item in data) {
+        console.log(data[item].slug);
         for (const address in data[item].addresses) {
           const country = data[item].addresses[address].country;
           const localityOld = data[item].addresses[address].locality;

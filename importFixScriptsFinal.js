@@ -223,6 +223,7 @@ var PERFORMANCES = function() {
   //{permalink:'vector-vs-bitmap'}
   //db.performances.findOne({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}});
   //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}}).forEach(function(e) {
+  //db.performances.find({'categories.0': {$exists:true},'gallery.0': {$exists:true},text: {$exists:true},tech_req: {$exists:true},'bookings.0': {$exists:true}}).forEach(function(e) {
   var folders = {};
   function sanitizeOld(folder,defaultFolder) {
     return folder.
@@ -318,6 +319,7 @@ var PERFORMANCES = function() {
         e.bookings[a].schedule.categories = tmpA;
         e.bookings[a].schedule.venue.location.locality = e.bookings[a].schedule.venue.location.city;
         delete e.bookings[a].schedule.venue.location.city;
+        if (!e.bookings[a].schedule.venue.room) delete e.bookings[a].schedule.venue.room;
       }
     }
     if (e.tags && !e.tags.length) delete e.tags
@@ -340,7 +342,7 @@ var EVENTS = function() {
     replace("/_flxer/avatar/", defaultFolder).
     replace(/\(|\)/g, "");
   }
-  db.events.find({}).forEach(function(e) {
+  db.events.find({permalink:'lpm-2017-amsterdam'}).forEach(function(e) {
     e.is_public = e.is_public===1;
     e.gallery_is_public = e.gallery_is_public===1;
     e.is_freezed = e.is_freezed===1;
@@ -483,8 +485,8 @@ var EVENTS = function() {
         delete e.schedule[a].venue.location.city;
       }
     }
-    //printjson(e);
-    db.events.save(e);
+    printjson(e);
+    //db.events.save(e);
   });
   Object.keys(folders).sort().forEach(function(folder) {printjson("mkdir " + folder.substring(1))});
 }
