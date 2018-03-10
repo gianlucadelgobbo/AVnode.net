@@ -61,12 +61,20 @@ class ProfilePublic extends Component {
             }));
         }
 
+        // Social: Add one item if value empty
+        v.social = (Array.isArray(user.social) && user.social.length > 0) ? user.social : [{url: ""}];
+
+        // Web: Add one item if value empty
+        v.web = (Array.isArray(user.web) && user.web.length > 0) ? user.web : [{url: ""}];
+
         return v;
     }
 
     onSubmit(values) {
         const {showModal, editUser} = this.props;
         const model = this.createUserModel(values);
+
+        console.log("About to save model:", model);
 
         //dispatch the action to save the model here
         editUser(model)
