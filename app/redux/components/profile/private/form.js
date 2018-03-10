@@ -1,7 +1,7 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {renderDatePicker, renderList, multiInputTel} from "../../common/form/components";
+import {inputText, renderDatePicker, renderList, multiInputTel} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
@@ -16,6 +16,29 @@ class ProfileEmailForm extends Component {
 
         return (
             <form onSubmit={handleSubmit}>
+
+                <Field
+                    name="name"
+                    component={inputText}
+                    placeholder="Name"
+                />
+
+                 <Field
+                    name="surname"
+                    component={inputText}
+                    placeholder="Surname"
+                />
+
+                <Field
+                    name="gender"
+                    component={renderList}
+                    placeholder="Gender"
+                    options={[
+                        {value: 'male', label: 'Male'},
+                        {value: 'female', label: 'Female'},
+                        {value: 'others', label: 'Others'}
+                    ]}
+                />
 
                 <Field
                     name="data"

@@ -1,4 +1,5 @@
 import {h, render, Component} from 'preact';
+import { injectIntl, FormattedMessage } from 'preact-intl';
 import Navbar from '../navbar'
 import Form from './form'
 import {connect} from 'preact-redux';
@@ -65,7 +66,12 @@ class ProfileEmail extends Component {
                     <Navbar/>
                 </div>
                 <div className="class-md-9">
-                    <h1>MY EMAIL</h1>
+                    <h1>
+                        <FormattedMessage
+                        id="myAccountPrivateData"
+                        defaultMessage="My Account Private data"
+                        />
+                    </h1>
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
