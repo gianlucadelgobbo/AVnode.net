@@ -5,7 +5,7 @@ import {inputText, renderDatePicker, renderList, multiInputTel} from "../../comm
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
-class ProfileEmailForm extends Component {
+class ProfilePrivateForm extends Component {
 
     render() {
 
@@ -41,13 +41,6 @@ class ProfileEmailForm extends Component {
                 />
 
                 <Field
-                    name="data"
-                    component={renderDatePicker}
-                    placeholder="Date"
-                />
-
-
-                <Field
                     name="list"
                     component={renderList}
                     placeholder="List"
@@ -55,6 +48,12 @@ class ProfileEmailForm extends Component {
                         {value: 'one', label: 'One'},
                         {value: 'two', label: 'Two'}
                     ]}
+                />
+
+                <Field
+                    name="data"
+                    component={renderDatePicker}
+                    placeholder="Date"
                 />
 
                 <button
@@ -77,4 +76,4 @@ export default reduxForm({
     validate,
     asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
-})(ProfileEmailForm);
+})(ProfilePrivateForm);

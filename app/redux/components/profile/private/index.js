@@ -5,7 +5,7 @@ import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser} from './selectors'
 import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "../../../reducers/actions";
+import {editUser, fetchCountries} from "../../../reducers/actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 
@@ -16,7 +16,7 @@ import {bindActionCreators} from "redux";
 * - dispatch the action to save the model
 * */
 
-class ProfileEmail extends Component {
+class ProfilePrivate extends Component {
 
     // Convert form values to API model
     createUserModel(values) {
@@ -41,7 +41,7 @@ class ProfileEmail extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
+        const {showModal, editUser, user, fetchCountries} = this.props;
         const model = this.createUserModel(values);
 
         // Add auth user _id
@@ -93,9 +93,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal: showModal
 }, dispatch);
 
-ProfileEmail = connect(
+ProfilePrivate = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileEmail);
+)(ProfilePrivate);
 
-export default ProfileEmail;
+export default ProfilePrivate;
