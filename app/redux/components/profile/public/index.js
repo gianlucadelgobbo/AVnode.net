@@ -61,8 +61,6 @@ class ProfilePublic extends Component {
             }));
         }
 
-        console.log("init", v);
-
         return v;
     }
 
