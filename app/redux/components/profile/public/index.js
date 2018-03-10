@@ -7,6 +7,7 @@ import {locales, locales_labels} from '../../../../../config/default.json'
 import {editUser} from "../../../reducers/actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 /*
 * Responsabilita'
@@ -33,6 +34,15 @@ class ProfilePublic extends Component {
                 }
             });
         }
+
+        // Convert web
+        model.web = model.web.filter(w => w.url);
+
+        // Convert social
+        model.social = model.social.filter(w => w.url);
+
+        // Convert addresses
+        model.addresses = model.addresses.map(a => a.text);
 
         return model;
     }
@@ -67,6 +77,14 @@ class ProfilePublic extends Component {
         // Web: Add one item if value empty
         v.web = (Array.isArray(user.web) && user.web.length > 0) ? user.web : [{url: ""}];
 
+        // Web: Add one item if value empty
+        v.addresses = (Array.isArray(user.addresses) && user.addresses.length > 0) ?
+            user.addresses.map(a => ({
+                text: a
+            })) :
+            [{text: ""}];
+
+
         return v;
     }
 
@@ -74,7 +92,11 @@ class ProfilePublic extends Component {
         const {showModal, editUser} = this.props;
         const model = this.createUserModel(values);
 
-        console.log("About to save model:", model);
+        // geocodeByAddress(this.state.address)
+        //     .then(results => getLatLng(results[0]))
+        //     .then(latLng => console.log('Success', latLng))
+        //     .catch(error => console.error('Error', error))
+        // console.log("model to save", model)
 
         //dispatch the action to save the model here
         editUser(model)

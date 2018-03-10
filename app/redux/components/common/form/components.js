@@ -2,10 +2,23 @@ import {h} from 'preact';
 import Textarea from 'react-textarea-autosize';
 import {Tab, Tabs, Row, Col, Nav, NavItem, Button} from 'react-bootstrap';
 import {Field} from "redux-form";
+import PlacesAutocomplete from "react-places-autocomplete";
+
+export const inputAddress = ({input, meta, placeholder}) => {
+    const options = {
+        types: []
+    };
+    return <div className="form-group">
+        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
+        <PlacesAutocomplete inputProps={input} options={options}/>
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>;
+
+};
 
 export const inputText = ({input, meta, placeholder}) => {
     return <div className="form-group">
-        <label htmlFor="first_name">{placeholder}</label>
+        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
         <input className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -14,7 +27,7 @@ export const inputText = ({input, meta, placeholder}) => {
 
 export const inputPassword = ({input, meta, placeholder}) =>
     <div className="form-group">
-        <label htmlFor="first_name">{placeholder}</label>
+        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
         <input type="password" className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -60,13 +73,25 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, fields}) => {
     </Tab.Container>;
 };
 
-export const multiInputUrl = ({fields, title}) => {
-    const renderSubField = (member, index, fields) => (<li key={index}>
+export const multiInputUrl = ({fields, title, meta: {error}}) => {
+    return multiInput({fields, title, meta: {error}, render: inputUrl, key: "url"})
+};
+
+export const multiInputText = ({fields, title, meta: {error}}) => {
+    return multiInput({fields, title, meta: {error}, render: inputText, key: "text"})
+};
+
+export const multiAddress = ({fields, title, meta: {error}}) => {
+    return multiInput({fields, title, meta: {error}, render: inputAddress, key: "text"})
+};
+
+const multiInput = ({fields, title, meta: {error}, render, key}) => {
+    const renderSubField = (member, index, fields, render, key = "text") => (<li key={index}>
         <Row>
             <Col sx={9}>
                 <Field
-                    name={`${member}.url`}
-                    component={inputUrl}
+                    name={`${member}.${key}`}
+                    component={render}
                 />
             </Col>
             <Col sx={3}>
@@ -79,9 +104,10 @@ export const multiInputUrl = ({fields, title}) => {
     </li>);
     return <div>
         <label>{title}</label>
+        {error && <span className="error-message">{error}</span>}
         <Row>
             <ul className="list-unstyled">
-                {fields.map(renderSubField)}
+                {fields.map((member, index, fields) => renderSubField(member, index, fields, render, key))}
                 <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
             </ul>
         </Row>
