@@ -8,6 +8,7 @@ import 'react-select/dist/react-select.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import StrongPassword from 'react-strongpassword';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options}) => {
     return <div className="form-group">
@@ -33,6 +34,15 @@ export const inputText = ({input, meta, placeholder}) => {
 
 export const inputPassword = ({input, meta, placeholder}) => {
     return inputField({input, type: "password", meta, placeholder})
+};
+
+export const inputPasswordMeter = ({input, meta, placeholder}) => {
+    return <div className="form-group">
+        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
+        <StrongPassword {...input}  className="form-control"/>
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>
+
 };
 
 export const inputUrl = ({input, meta, placeholder}) => {
@@ -216,9 +226,9 @@ export const renderDatePicker = ({input, meta, placeholder, disabled}) =>
         <label htmlFor="first_name">{placeholder}</label>
         <br/>
         <DatePicker
-        {...input} 
-        dateForm="MM/DD/YYYY" 
-        selected={input.value ? moment(input.value) : null}
+            {...input}
+            dateForm="MM/DD/YYYY"
+            selected={input.value ? moment(input.value) : null}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
