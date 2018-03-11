@@ -114,7 +114,7 @@ class ProfilePublic extends Component {
         model._id = user._id;
 
         //dispatch the action to save the model here
-        editUser(model)
+        return editUser(model)
             .then(() => {
                 showModal({
                     type: "EXAMPLE"
@@ -126,8 +126,6 @@ class ProfilePublic extends Component {
 
         const {user, showModal} = this.props;
 
-        console.log("this.getInitialValues()", this.getInitialValues().abouts)
-
         return (
             <div className="row">
                 <div className="col-md-2">
@@ -135,6 +133,7 @@ class ProfilePublic extends Component {
                 </div>
                 <div className="col-md-10">
                     <h1>MY ACCOUNT PUBLIC DATA</h1>
+                    <br/>
                     <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}

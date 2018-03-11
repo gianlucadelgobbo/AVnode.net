@@ -26,6 +26,7 @@ const MODAL_COMPONENTS = {
 const MODAL_TITLES = {
     EXAMPLE: 'This is the title',
     SAVED: 'Saved!',
+    REMOVE: 'Remove?',
 
     /* other modals */
 };

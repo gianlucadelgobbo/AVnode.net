@@ -70,6 +70,8 @@ class ProfileImage extends Component {
                 </div>
                 <div className="col-md-10">
                     <h1>MY IMAGE</h1>
+
+                    <br/>
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}

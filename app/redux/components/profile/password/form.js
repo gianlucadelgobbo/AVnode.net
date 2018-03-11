@@ -12,10 +12,11 @@ class ProfilePasswordForm extends Component {
         const {
             submitting,
             handleSubmit,
+            onSubmit
         } = this.props;
 
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
                     name="password"
@@ -29,11 +30,13 @@ class ProfilePasswordForm extends Component {
                     placeholder="Confirm Password"
                 />
 
+                <hr/>
+
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="btn btn-primary">
-                    Save
+                    className="btn btn-primary btn-lg btn-block">
+                    {submitting ? "Saving..." : "Save"}
                 </button>
 
             </form>

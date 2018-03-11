@@ -71,6 +71,9 @@ class ProfileEmails extends Component {
                 </div>
                 <div className="col-md-10">
                     <h1>MY EMAIL</h1>
+
+                    <br/>
+
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}

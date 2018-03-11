@@ -6,12 +6,12 @@ import {bindActionCreators} from "redux";
 
 class ModalWrapper extends Component {
     render() {
-        const {show, type, hideModal, children} = this.props;
+        const {show, type, hideModal, children, title} = this.props;
 
         return (<div className="static-modal">
             <Modal animation={false} type={type} show={show} onHide={hideModal} enforceFocus={false}>
                 <Modal.Header closeButton>
-                    {/*  <Modal.Title>{title}</Modal.Title>*/}
+                      <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
