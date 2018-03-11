@@ -61,10 +61,10 @@ class ProfileEmail extends Component {
 
         return (
             <div className="row">
-                <div className="class-md-3">
+                <div className="col-md-2">
                     <Navbar/>
                 </div>
-                <div className="class-md-9">
+                <div className="col-md-10">
                     <h1>MY EMAIL</h1>
                     <Form
                         initialValues={this.getInitialValues(this)}

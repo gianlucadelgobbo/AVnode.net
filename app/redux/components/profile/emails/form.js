@@ -12,6 +12,7 @@ class ProfileEmailsForm extends Component {
         const {
             submitting,
             handleSubmit,
+            showModal
         } = this.props;
 
         return (
@@ -21,7 +22,10 @@ class ProfileEmailsForm extends Component {
                     name="emails"
                     component={multiInputEmail}
                     placeholder="Emails"
+                    showModal={showModal}
                 />
+
+                <br/>
 
                 <button
                     type="submit"

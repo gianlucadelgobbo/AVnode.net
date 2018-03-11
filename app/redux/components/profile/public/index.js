@@ -77,14 +77,11 @@ class ProfilePublic extends Component {
         } else {
             v.abouts = [];
             locales.forEach(l => {
-                console.log("l", l)
                 v.abouts.push({
                     key: `abouts.${l}`,
                     value: ""
                 })
-            })
-            
-            console.log("DONE", locales)
+            });
         }
 
         // Social: Add one item if value empty
@@ -121,16 +118,14 @@ class ProfilePublic extends Component {
 
     render() {
 
-        const {user} = this.props;
-
-        console.log("this.getInitialValues(this)", this.getInitialValues())
+        const {user, showModal} = this.props;
 
         return (
             <div className="row">
-                <div className="class-md-3">
+                <div className="col-md-2">
                     <Navbar/>
                 </div>
-                <div className="class-md-9">
+                <div className="col-md-10">
                     <h1>MY ACCOUNT PUBLIC DATA</h1>
                     <Form
                         initialValues={this.getInitialValues()}
@@ -138,6 +133,7 @@ class ProfilePublic extends Component {
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
                         user={user}
+                        showModal={showModal}
                     />
                 </div>
             </div>
