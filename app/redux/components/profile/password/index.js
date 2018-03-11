@@ -15,13 +15,15 @@ import {bindActionCreators} from "redux";
 * - dispatch the action to save the model
 * */
 
-class ProfileImage extends Component {
+class ProfilePassword extends Component {
 
     // Convert form values to API model
     createUserModel(values) {
 
-        //clone obj
-        let model = Object.assign({}, values);
+        let model = {};
+
+        // Pass only 'password' to API
+        model.password = values.password;
 
         return model;
     }
@@ -45,10 +47,7 @@ class ProfileImage extends Component {
 
         // Add auth user _id
         model._id = user._id;
-
-        console.log("model", model)
-
-        return;
+        
 
         //dispatch the action to save the model here
         editUser(model)
@@ -69,7 +68,7 @@ class ProfileImage extends Component {
                     <Navbar/>
                 </div>
                 <div className="class-md-9">
-                    <h1>MY IMAGE</h1>
+                    <h1>MY Password</h1>
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
@@ -81,7 +80,6 @@ class ProfileImage extends Component {
     }
 }
 
-//Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     user: getUser(state)
 });
@@ -91,9 +89,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal: showModal
 }, dispatch);
 
-ProfileImage = connect(
+ProfilePassword = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileImage);
+)(ProfilePassword);
 
-export default ProfileImage;
+export default ProfilePassword;

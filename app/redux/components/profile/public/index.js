@@ -74,6 +74,17 @@ class ProfilePublic extends Component {
                 key: `abouts.${x.lang}`,
                 value: x.abouttext
             }));
+        } else {
+            v.abouts = [];
+            locales.forEach(l => {
+                console.log("l", l)
+                v.abouts.push({
+                    key: `abouts.${l}`,
+                    value: ""
+                })
+            })
+            
+            console.log("DONE", locales)
         }
 
         // Social: Add one item if value empty
@@ -112,6 +123,8 @@ class ProfilePublic extends Component {
 
         const {user} = this.props;
 
+        console.log("this.getInitialValues(this)", this.getInitialValues())
+
         return (
             <div className="row">
                 <div className="class-md-3">
@@ -120,7 +133,7 @@ class ProfilePublic extends Component {
                 <div className="class-md-9">
                     <h1>MY ACCOUNT PUBLIC DATA</h1>
                     <Form
-                        initialValues={this.getInitialValues(this)}
+                        initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
