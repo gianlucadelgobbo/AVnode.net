@@ -51,5 +51,8 @@
 	"Upload unknown error": "Upload unknown error",
 	"News": "News",
 	"Email %s not found.": "Email %s not found.",
-	"Videos": "Videos"
+	"Videos": "Videos",
+	"views": "views",
+	"likes": "likes",
+	"Playlist": "Playlist"
 }

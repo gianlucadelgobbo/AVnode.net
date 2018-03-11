@@ -2,19 +2,15 @@ import {h} from 'preact';
 import Router from 'preact-router';
 // Navigation
 import Nav from './Nav';
-// Profile
 
+// Profile
 import ProfilePublic from './profile/public'
 import ProfileEmails from './profile/emails';
 import ProfileImages from './profile/images';
 import ProfilePrivate from './profile/private';
-
-//import ProfilePublic from './user/ProfilePublic';
-//import ProfileImages from './user/ProfileImagesContainer';
-//import ProfileEmails from './user/ProfileEmails';
-//import ProfilePrivate from './user/ProfilePrivate';
-import ProfilePassword from './user/ProfilePasswordContainer';
+import ProfilePassword from './profile/password';
 import ProfileConnections from './user/ProfileConnections';
+
 // Crews
 import Crews from './Crews';
 import CrewOrganization from './crew/CrewOrganization';
