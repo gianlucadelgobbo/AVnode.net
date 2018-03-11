@@ -2,8 +2,8 @@ import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
 import {inputText, renderDatePicker, renderList, multiInputTel} from "../../common/form/components";
-import validate from './validate'
-import asyncValidate from './asyncValidate'
+import validate from './validate';
+import asyncValidate from './asyncValidate';
 
 class ProfilePrivateForm extends Component {
 
@@ -12,6 +12,7 @@ class ProfilePrivateForm extends Component {
         const {
             submitting,
             handleSubmit,
+            countries
         } = this.props;
 
         return (
@@ -41,12 +42,19 @@ class ProfilePrivateForm extends Component {
                 />
 
                 <Field
-                    name="list"
+                    name="lang"
                     component={renderList}
-                    placeholder="List"
+                    placeholder="Preferred language"
                     options={[
-                        {value: 'one', label: 'One'},
-                        {value: 'two', label: 'Two'}
+                        {value: 'en', label: 'English'},
+                        {value: 'it', label: 'Italiano'},
+                        {value: 'es', label: 'Español'},
+                        {value: 'fr', label: 'Français'},
+                        {value: 'pl', label: 'Polski'},
+                        {value: 'ru', label: 'Russian'},
+                        {value: 'hu', label: 'Hungarian'},
+                        {value: 'by', label: 'Belarusian'},
+                        {value: 'gr',label: 'Greek'}
                     ]}
                 />
 
@@ -62,6 +70,10 @@ class ProfilePrivateForm extends Component {
                     className="btn btn-primary">
                     Save
                 </button>
+                {/*countries.map((c) => (
+                    <h1 value={c.key.toLowerCase()}>{c.name}</h1>
+                  ))
+                */}
 
             </form>
         );

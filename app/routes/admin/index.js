@@ -6,6 +6,8 @@ const performance = require('./api/performance');
 const event = require('./api/event');
 const search = require('./api/search');
 const tools = require('./tools/tools');
+const allCountries = require('node-countries-list');
+const R = require('ramda');
 
 router.use('/api/user', user);
 router.use('/api/crew', crew);
@@ -20,7 +22,7 @@ router.get('/*', (req, res) => {
     is_admin: true
   });
 });
-
+/*
 router.get('/api/countries', (req, res) => {
   // FIXME: Later evaluate language param to return
   // localized list depending on the user settings.
@@ -38,5 +40,5 @@ router.get('/api/countries', (req, res) => {
     res.json(convert(countries));
   });
 });
-
+*/
 module.exports = router;
