@@ -12,6 +12,7 @@ class ProfileImageForm extends Component {
         const {
             submitting,
             handleSubmit,
+            showModal
         } = this.props;
 
         return (
@@ -21,7 +22,10 @@ class ProfileImageForm extends Component {
                     name="images"
                     component={renderDropzoneInput}
                     placeholder="Images"
+                    showModal={showModal}
                 />
+
+                <br/>
 
                 <button
                     type="submit"

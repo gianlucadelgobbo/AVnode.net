@@ -13,7 +13,8 @@ class ProfilePublicForm extends Component {
             submitting,
             handleSubmit,
             aboutsTabs,
-            aboutsLabels
+            aboutsLabels,
+            showModal
         } = this.props;
 
         return (
@@ -44,6 +45,7 @@ class ProfilePublicForm extends Component {
                     component={multiInputUrl}
                     placeholder="Socials"
                     title="Socials"
+                    showModal={showModal}
                 />
 
                 <FieldArray
@@ -51,6 +53,7 @@ class ProfilePublicForm extends Component {
                     component={multiInputUrl}
                     placeholder="Web"
                     title="Web"
+                    showModal={showModal}
                 />
 
                 <FieldArray
@@ -58,7 +61,10 @@ class ProfilePublicForm extends Component {
                     component={multiGoogleCityCountry}
                     placeholder="Address"
                     title="Address"
+                    showModal={showModal}
                 />
+
+                <br/>
 
                 <button
                     type="submit"
