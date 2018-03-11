@@ -120,22 +120,18 @@ const fetch = (path, options = {}, json = true) => {
 };
 
 export function navigate(active) {
-    console.log('navigate(active):' + JSON.stringify(active));
     return {type: NAVIGATE, active};
 }
 
 export function crewNavigate(active) {
-    console.log('crewNavigate(active):' + JSON.stringify(active));
     return {type: CREW_NAVIGATE, active};
 }
 
 export function performanceNavigate(active) {
-    console.log('performanceNavigate(active):' + JSON.stringify(active));
     return {type: PERFORMANCE_NAVIGATE, active};
 }
 
 export function eventNavigate(active) {
-    console.log('eventNavigate(active):' + JSON.stringify(active));
     return {type: EVENT_NAVIGATE, active};
 }
 
@@ -1335,13 +1331,13 @@ export function editUserAddresses(dispatch) {
         let addressFound = false;
         let primaryAddress = true;
         let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
-        console.log('_______________ ACTION editUserAddresses __________________________________');
-        console.log('editUserAddresses data id: ' + data._id);
-        console.log('editUserAddresses data street_number: ' + data.street_number);
-        console.log('editUserAddresses data route: ' + data.route);
-        console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
-        console.log('editUserAddresses data locality: ' + data.locality);
-        console.log('editUserAddresses data country: ' + data.country);
+        // console.log('_______________ ACTION editUserAddresses __________________________________');
+        // console.log('editUserAddresses data id: ' + data._id);
+        // console.log('editUserAddresses data street_number: ' + data.street_number);
+        // console.log('editUserAddresses data route: ' + data.route);
+        // console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
+        // console.log('editUserAddresses data locality: ' + data.locality);
+        // console.log('editUserAddresses data country: ' + data.country);
 
         // init if first address
         if (!data.addresses) data.addresses = [];
