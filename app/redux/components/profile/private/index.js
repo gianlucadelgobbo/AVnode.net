@@ -24,6 +24,9 @@ class ProfilePrivate extends Component {
         //clone obj
         let model = Object.assign({}, values);
 
+        //convert Gender
+        model.gender = values.gender.value;
+
         return model;
     }
 
@@ -37,12 +40,23 @@ class ProfilePrivate extends Component {
 
         let v = {};
 
+        v.name = user.name;
+
+        v.surname = user.surname;
+
+        v.gender = user.gender ? user.gender : "";
+
+        v.birthday = user.birthdayFormatted;
+
+        //console.log(v, user);
+
         return v;
     }
 
     onSubmit(values) {
         const {showModal, editUser, user, fetchCountries} = this.props;
         const model = this.createUserModel(values);
+        console.log(model);
 
         // Add auth user _id
         model._id = user._id;

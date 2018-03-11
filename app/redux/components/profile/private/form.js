@@ -34,9 +34,9 @@ class ProfilePrivateForm extends Component {
                     component={renderList}
                     placeholder="Gender"
                     options={[
-                        {value: 'male', label: 'Male'},
-                        {value: 'female', label: 'Female'},
-                        {value: 'others', label: 'Others'}
+                        {value: 'M', label: 'Male'},
+                        {value: 'F', label: 'Female'},
+                        {value: 'Others', label: 'Others'}
                     ]}
                 />
 
@@ -51,7 +51,7 @@ class ProfilePrivateForm extends Component {
                 />
 
                 <Field
-                    name="data"
+                    name="birthday"
                     component={renderDatePicker}
                     placeholder="Date"
                 />

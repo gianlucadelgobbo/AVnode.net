@@ -202,10 +202,11 @@ const multiInput = ({fields, title, meta: {error}, render, key}) => {
 export const renderList = ({input, meta, placeholder, hideResetButton, options, classNames, disabled, defaultValue}) => {
     return <div className="form-group">
         {placeholder && <label htmlFor={input.name}>{placeholder}</label>}
-        <Select
-            disabled={disabled}
+        <Select            
+            name={input.name}
+            value={input.value} 
             options={options}
-            {...input}
+            onChange={input.onChange}          
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
