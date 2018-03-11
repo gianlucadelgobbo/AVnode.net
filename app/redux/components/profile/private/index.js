@@ -88,6 +88,8 @@ class ProfilePrivate extends Component {
                             defaultMessage="My Account Private data"
                         />
                     </h1>
+
+                    <br/>
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}

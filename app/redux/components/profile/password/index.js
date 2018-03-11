@@ -69,6 +69,8 @@ class ProfilePassword extends Component {
                 </div>
                 <div className="col-md-10">
                     <h1>MY Password</h1>
+
+                    <br/>
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}

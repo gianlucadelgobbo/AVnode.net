@@ -14,11 +14,12 @@ class ProfilePublicForm extends Component {
             handleSubmit,
             aboutsTabs,
             aboutsLabels,
-            showModal
+            showModal,
+            onSubmit
         } = this.props;
 
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
                     name="stagename"
@@ -40,6 +41,8 @@ class ProfilePublicForm extends Component {
                     placeholder="About"
                 />
 
+                <br/>
+
                 <FieldArray
                     name="social"
                     component={multiInputUrl}
@@ -47,6 +50,8 @@ class ProfilePublicForm extends Component {
                     title="Socials"
                     showModal={showModal}
                 />
+
+                <br/>
 
                 <FieldArray
                     name="web"
@@ -56,21 +61,22 @@ class ProfilePublicForm extends Component {
                     showModal={showModal}
                 />
 
+                <br/>
+
                 <FieldArray
                     name="addresses"
                     component={multiGoogleCityCountry}
                     placeholder="Address"
-                    title="Address"
                     showModal={showModal}
                 />
 
-                <br/>
+                <hr/>
 
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="btn btn-primary">
-                    Save
+                    className="btn btn-primary btn-lg btn-block">
+                    {submitting ? "Saving..." : "Save"}
                 </button>
 
             </form>

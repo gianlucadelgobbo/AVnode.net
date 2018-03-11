@@ -12,11 +12,12 @@ class ProfileImageForm extends Component {
         const {
             submitting,
             handleSubmit,
-            showModal
+            showModal,
+            onSubmit
         } = this.props;
 
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
                     name="images"
@@ -25,13 +26,13 @@ class ProfileImageForm extends Component {
                     showModal={showModal}
                 />
 
-                <br/>
+                <hr/>
 
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="btn btn-primary">
-                    Save
+                    className="btn btn-primary btn-lg btn-block">
+                    {submitting ? "Saving..." : "Save"}
                 </button>
 
             </form>

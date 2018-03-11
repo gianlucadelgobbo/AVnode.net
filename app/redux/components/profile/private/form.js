@@ -1,7 +1,8 @@
 import {h, render, Component} from 'preact';
-import {reduxForm, Field, FieldArray} from "redux-form";
+import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, renderDatePicker, renderList, multiInputTel} from "../../common/form/components";
+import {inputText, renderDatePicker, renderList} from "../../common/form/components";
+import {locales, locales_labels} from '../../../../../config/default.json'
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 
@@ -12,11 +13,12 @@ class ProfilePrivateForm extends Component {
         const {
             submitting,
             handleSubmit,
-            countries
+            countries,
+            onSubmit
         } = this.props;
 
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
                     name="name"
@@ -24,7 +26,7 @@ class ProfilePrivateForm extends Component {
                     placeholder="Name"
                 />
 
-                 <Field
+                <Field
                     name="surname"
                     component={inputText}
                     placeholder="Surname"
@@ -37,7 +39,7 @@ class ProfilePrivateForm extends Component {
                     options={[
                         {value: 'M', label: 'Male'},
                         {value: 'F', label: 'Female'},
-                        {value: 'Others', label: 'Others'}
+                        {value: 'Others', label: 'Other'}
                     ]}
                 />
 
@@ -45,17 +47,10 @@ class ProfilePrivateForm extends Component {
                     name="lang"
                     component={renderList}
                     placeholder="Preferred language"
-                    options={[
-                        {value: 'en', label: 'English'},
-                        {value: 'it', label: 'Italiano'},
-                        {value: 'es', label: 'Español'},
-                        {value: 'fr', label: 'Français'},
-                        {value: 'pl', label: 'Polski'},
-                        {value: 'ru', label: 'Russian'},
-                        {value: 'hu', label: 'Hungarian'},
-                        {value: 'by', label: 'Belarusian'},
-                        {value: 'gr',label: 'Greek'}
-                    ]}
+                    options={locales.map(l => ({
+                        value: l,
+                        label: locales_labels[l]
+                    }))}
                 />
 
                 <Field
@@ -64,12 +59,15 @@ class ProfilePrivateForm extends Component {
                     placeholder="Date"
                 />
 
+                <hr/>
+
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="btn btn-primary">
-                    Save
+                    className="btn btn-primary btn-lg btn-block">
+                    {submitting ? "Saving..." : "Save"}
                 </button>
+
                 {/*countries.map((c) => (
                     <h1 value={c.key.toLowerCase()}>{c.name}</h1>
                   ))
