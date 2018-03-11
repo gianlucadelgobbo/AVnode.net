@@ -1,11 +1,12 @@
 import {h, Component} from 'preact';
 import Example from './example'
 import Saved from './saved'
+import Remove from './remove'
 
 import ModalWrapper from './wrapper';
 import {connect} from 'preact-redux';
 import {getModal} from './selectors';
-
+import * as actions from './actions';
 /*
 * Come creare una nuova modale:
 * - creare la cartella corrispondente dentro ./src/containers/modal come 'example'
@@ -18,6 +19,7 @@ import {getModal} from './selectors';
 const MODAL_COMPONENTS = {
     EXAMPLE: Example,
     SAVED: Saved,
+    REMOVE: Remove,
     /* other modals */
 };
 
@@ -37,7 +39,7 @@ const getAdditionalProps = (type) => {
 };
 
 
-const ModalRoot = ({modalType, modalProps}) => {
+const ModalRoot = ({modalType, modalProps, hideModal}) => {
 
     if (!modalType) {
 
@@ -53,7 +55,7 @@ const ModalRoot = ({modalType, modalProps}) => {
         }
 
         return (<ModalWrapper title={title} type={modalType} show={!!modalType}>
-            <SpecificModal {...additionalProps} {...modalProps} />
+            <SpecificModal {...additionalProps} {...modalProps} hideModal={hideModal}/>
         </ModalWrapper>);
     }
 };
@@ -61,5 +63,5 @@ const ModalRoot = ({modalType, modalProps}) => {
 
 export default connect(
     (state) => getModal(state),
-    {}
+    actions
 )(ModalRoot);

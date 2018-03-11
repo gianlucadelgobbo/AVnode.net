@@ -61,19 +61,20 @@ class ProfileImage extends Component {
 
     render() {
 
-        const {user} = this.props;
+        const {user, showModal} = this.props;
 
         return (
             <div className="row">
-                <div className="class-md-3">
+                <div className="col-md-2">
                     <Navbar/>
                 </div>
-                <div className="class-md-9">
+                <div className="col-md-10">
                     <h1>MY IMAGE</h1>
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={user}
+                        showModal={showModal}
                     />
                 </div>
             </div>

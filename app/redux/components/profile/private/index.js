@@ -1,5 +1,5 @@
 import {h, render, Component} from 'preact';
-import { injectIntl, FormattedMessage } from 'preact-intl';
+import {FormattedMessage} from 'preact-intl';
 import Navbar from '../navbar'
 import Form from './form'
 import {connect} from 'preact-redux';
@@ -78,14 +78,14 @@ class ProfilePrivate extends Component {
 
         return (
             <div className="row">
-                <div className="class-md-3">
+                <div className="col-md-2">
                     <Navbar/>
                 </div>
-                <div className="class-md-9">
+                <div className="col-md-10">
                     <h1>
                         <FormattedMessage
-                        id="myAccountPrivateData"
-                        defaultMessage="My Account Private data"
+                            id="myAccountPrivateData"
+                            defaultMessage="My Account Private data"
                         />
                     </h1>
                     <Form

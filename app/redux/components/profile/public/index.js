@@ -69,23 +69,26 @@ class ProfilePublic extends Component {
         v.slug = user.slug;
 
         // Convert about format for FieldArray redux-form
+        v.abouts = [];
         if (Array.isArray(user.abouts)) {
+
+            // convert current lang
             v.abouts = user.abouts.map(x => ({
                 key: `abouts.${x.lang}`,
                 value: x.abouttext
             }));
-        } else {
-            v.abouts = [];
-            locales.forEach(l => {
-                console.log("l", l)
+        }
+
+        locales.forEach(l => {
+            let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
+            if (!found) {
                 v.abouts.push({
                     key: `abouts.${l}`,
                     value: ""
                 })
-            })
-            
-            console.log("DONE", locales)
-        }
+            }
+        });
+
 
         // Social: Add one item if value empty
         v.social = (Array.isArray(user.social) && user.social.length > 0) ? user.social : [{url: ""}];
@@ -121,16 +124,16 @@ class ProfilePublic extends Component {
 
     render() {
 
-        const {user} = this.props;
+        const {user, showModal} = this.props;
 
-        console.log("this.getInitialValues(this)", this.getInitialValues())
+        console.log("this.getInitialValues()", this.getInitialValues().abouts)
 
         return (
             <div className="row">
-                <div className="class-md-3">
+                <div className="col-md-2">
                     <Navbar/>
                 </div>
-                <div className="class-md-9">
+                <div className="col-md-10">
                     <h1>MY ACCOUNT PUBLIC DATA</h1>
                     <Form
                         initialValues={this.getInitialValues()}
@@ -138,6 +141,7 @@ class ProfilePublic extends Component {
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
                         user={user}
+                        showModal={showModal}
                     />
                 </div>
             </div>
