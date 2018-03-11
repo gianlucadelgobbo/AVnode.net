@@ -69,20 +69,26 @@ class ProfilePublic extends Component {
         v.slug = user.slug;
 
         // Convert about format for FieldArray redux-form
+        v.abouts = [];
         if (Array.isArray(user.abouts)) {
+
+            // convert current lang
             v.abouts = user.abouts.map(x => ({
                 key: `abouts.${x.lang}`,
                 value: x.abouttext
             }));
-        } else {
-            v.abouts = [];
-            locales.forEach(l => {
+        }
+
+        locales.forEach(l => {
+            let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
+            if (!found) {
                 v.abouts.push({
                     key: `abouts.${l}`,
                     value: ""
                 })
-            });
-        }
+            }
+        });
+
 
         // Social: Add one item if value empty
         v.social = (Array.isArray(user.social) && user.social.length > 0) ? user.social : [{url: ""}];
@@ -119,6 +125,8 @@ class ProfilePublic extends Component {
     render() {
 
         const {user, showModal} = this.props;
+
+        console.log("this.getInitialValues()", this.getInitialValues().abouts)
 
         return (
             <div className="row">
