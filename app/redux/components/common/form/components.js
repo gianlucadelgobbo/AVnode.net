@@ -209,7 +209,6 @@ const multiInput = ({fields, title, meta: {error}, render, key}) => {
     </div>
 };
 
-
 export const renderList = ({input, meta, placeholder, hideResetButton, options, classNames, disabled, defaultValue}) => {
     return <div className="form-group">
         {placeholder && <label htmlFor={input.name}>{placeholder}</label>}

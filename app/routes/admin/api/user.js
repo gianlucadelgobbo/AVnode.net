@@ -7,6 +7,8 @@ const logger = require('../../../utilities/logger');
 
 const dataproviderAdmin = require('../../../utilities/dataproviderAdmin');
 const upload = require('./upload');
+const allCountries = require('node-countries-list');
+const R = require('ramda');
 
 const section = 'performers';
 
@@ -868,6 +870,7 @@ router.put('/:id', (req, res) => {
     name: req.body.name,
     surname: req.body.surname,
     gender: req.body.gender,
+    lang:req.body.lang,
     citizenship: req.body.citizenship,
     emails: req.body.emails,
     web: req.body.web,
@@ -895,6 +898,24 @@ router.put('/:id', (req, res) => {
   });
 });
 
+// countries
+router.get('/countries', (req, res) => {
+  // FIXME: Later evaluate language param to return
+  // localized list depending on the user settings.
+  const convert = R.compose(
+    R.map(
+      R.zipObj(['key', 'name'])
+    ),
+    R.toPairs
+  );
+
+  allCountries('en', (err, countries) => {
+    if (err) {
+      throw err;
+    }
+    res.json(convert(countries));
+  });
+});
 
 /*
 router.put('/:id', (req, res) => {

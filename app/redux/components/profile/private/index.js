@@ -3,8 +3,8 @@ import { injectIntl, FormattedMessage } from 'preact-intl';
 import Navbar from '../navbar'
 import Form from './form'
 import {connect} from 'preact-redux';
-import {getUser} from './selectors'
-import {locales, locales_labels} from '../../../../../config/default.json'
+import {getUser} from './selectors';
+import {locales_labels} from '../../../../../config/languages.json';
 import {editUser, fetchCountries} from "../../../reducers/actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
@@ -26,6 +26,8 @@ class ProfilePrivate extends Component {
 
         //convert Gender
         model.gender = values.gender.value;
+        //convert Lang
+        model.lang = values.lang.value;
 
         return model;
     }
@@ -46,15 +48,15 @@ class ProfilePrivate extends Component {
 
         v.gender = user.gender ? user.gender : "";
 
-        v.birthday = user.birthdayFormatted;
+        v.lang = user.lang ? user.lang : "";
 
-        //console.log(v, user);
+        v.birthday = user.birthdayFormatted;
 
         return v;
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user, fetchCountries} = this.props;
+        const {showModal, editUser, user} = this.props;
         const model = this.createUserModel(values);
         console.log(model);
 
@@ -99,7 +101,7 @@ class ProfilePrivate extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    user: getUser(state)
+    user: getUser(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
