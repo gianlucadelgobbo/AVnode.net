@@ -1,11 +1,11 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-import {renderDropzoneInput} from "../../common/form/components";
+import {inputPassword, inputPasswordMeter} from "../../common/form/components";
 import validate from './validate'
-import asyncValidate from './asyncValidate'
+//import asyncValidate from './asyncValidate'
 
-class ProfileImageForm extends Component {
+class ProfilePasswordForm extends Component {
 
     render() {
 
@@ -18,9 +18,15 @@ class ProfileImageForm extends Component {
             <form onSubmit={handleSubmit}>
 
                 <Field
-                    name="images"
-                    component={renderDropzoneInput}
-                    placeholder="Images"
+                    name="password"
+                    component={inputPasswordMeter}
+                    placeholder="Password"
+                />
+
+                <Field
+                    name="confirmPassword"
+                    component={inputPassword}
+                    placeholder="Confirm Password"
                 />
 
                 <button
@@ -41,6 +47,6 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    asyncValidate,
+    //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
-})(ProfileImageForm);
+})(ProfilePasswordForm);
