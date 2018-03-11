@@ -1,24 +1,46 @@
 import {h, render, Component} from 'preact';
-import {connect} from 'preact-redux';
+import {reduxForm, Field} from "redux-form";
+import {FORM_NAME} from './constants'
+import {renderDropzoneInput} from "../../common/form/components";
+import validate from './validate'
+import asyncValidate from './asyncValidate'
 
-class ProfilePublic extends Component {
+class ProfileImageForm extends Component {
 
     render() {
 
-        return (
-            <div >
-              FORM IMAGES
+        const {
+            submitting,
+            handleSubmit,
+        } = this.props;
 
-            </div>
+        return (
+            <form onSubmit={handleSubmit}>
+
+                <Field
+                    name="images"
+                    component={renderDropzoneInput}
+                    placeholder="Images"
+                />
+
+                <button
+                    type="submit"
+                    disabled={submitting}
+                    className="btn btn-primary">
+                    Save
+                </button>
+
+            </form>
         );
     }
 
 }
 
-const mapStateToProps = (state) => ({});
-
-ProfilePublic = connect(
-    mapStateToProps
-)(ProfilePublic);
-
-export default ProfilePublic;
+export default reduxForm({
+    form: FORM_NAME,
+    enableReinitialize: true,
+    keepDirtyOnReinitialize: true,
+    validate,
+    asyncValidate,
+    //asyncBlurFields: ['slug', 'addresses']
+})(ProfileImageForm);

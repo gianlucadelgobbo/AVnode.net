@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import StrongPassword from 'react-strongpassword';
+import Dropzone from 'react-dropzone';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options}) => {
     return <div className="form-group">
@@ -39,10 +40,9 @@ export const inputPassword = ({input, meta, placeholder}) => {
 export const inputPasswordMeter = ({input, meta, placeholder}) => {
     return <div className="form-group">
         {placeholder && <label htmlFor="first_name">{placeholder}</label>}
-        <StrongPassword {...input}  className="form-control"/>
+        <StrongPassword {...input} placeholder={placeholder} className="form-control"/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>
-
 };
 
 export const inputUrl = ({input, meta, placeholder}) => {
@@ -65,6 +65,7 @@ export const textarea = ({input, id, meta, placeholder, options}) =>
     </div>;
 
 export const textareaMultiTab = ({tabs = [], name, labels = {}, fields}) => {
+
     return <Tab.Container id="left-tab-languages" defaultActiveKey={0}>
         <Row className="clearfix">
             <Col sm={2} className="navabout">
@@ -76,14 +77,14 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, fields}) => {
             </Col>
             <Col sm={10}>
                 <Tab.Content animation>
-                    {fields.map((member, index) => (
-                        <Tab.Pane eventKey={index}>
+                    {fields.map((member, index) => {
+                        return <Tab.Pane eventKey={index}>
                             <Field
                                 name={`${member}.value`}
                                 component={textarea}
                             />
                         </Tab.Pane>
-                    ))}
+                    })}
                 </Tab.Content>
             </Col>
         </Row>
@@ -246,3 +247,73 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
         />
         {placeholder && <label htmlFor={id}>{placeholder}</label>}
     </div>;
+
+export const renderDropzoneInput = (field) => {
+    let files = field.input.value;
+
+    const getExtensionIcon = (name) => {
+        let extension = name.replace(/\s/g, '').slice((name.lastIndexOf(".") - 1 >>> 0) + 2) || 'Unknown';
+        extension = extension.toLocaleLowerCase();
+        switch (extension) {
+            case 'pdf':
+                return <span key={name} className="label label-default">PDF</span>;
+            case 'png':
+                return <span key={name} className="label label-default">PNG</span>;
+            default :
+                return <span key={name} className="label label-default">{extension}</span>;
+
+        }
+    };
+
+    function formatBytes(bytes, decimals) {
+        if (bytes === 0) return '0 Bytes';
+        let k = 1000,
+            dm = decimals + 1 || 3,
+            sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+            i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    return (
+        <div className="form-group">
+            <label htmlFor="first_name">{field.placeholder}</label>
+
+            <Dropzone
+                className="attachment-dropzone"
+                name={field.name}
+                maxSize={10485760}
+                onDropRejected={() => alert("Unable to upload the file: allowed file size exceeded (max 10 MB)")}
+                onDrop={(filesToUpload) => {
+                    let files = [...field.input.value, ...filesToUpload];
+                    files = files.filter((item, pos) => files.indexOf(item) === pos);
+                    files = files.filter(item => item !== "");
+                    field.input.onChange(files)
+                }}
+            >
+                <div>Drop files here, or click to select files to upload. (Max file size 10 MB)</div>
+            </Dropzone>
+
+            {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
+
+            {files && Array.isArray(files) && (
+                <ul className="list-unstyled attached-file">
+
+                    {files.map((file, i) => <li key={i}>
+                        {getExtensionIcon(file.name)} {file.name}
+                        <span
+                            className="file-size">({formatBytes(file.size)})
+                        </span>
+                        <button type="button" className="btn btn-default clear-attachment" onClick={() => {
+                            let result = [...files];
+                            result.splice(i, 1);
+                            field.input.onChange(result)
+                        }}>
+                            -
+                        </button>
+
+                    </li>)}
+                </ul>
+            )}
+        </div>
+    );
+};
