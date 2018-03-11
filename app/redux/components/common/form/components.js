@@ -1,6 +1,6 @@
 import {h} from 'preact';
 import Textarea from 'react-textarea-autosize';
-import {Tab, Tabs, Row, Col, Nav, NavItem, Button} from 'react-bootstrap';
+import {Tab, Tabs, Nav, NavItem, Button} from 'react-bootstrap';
 import {Field} from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select from 'react-select';
@@ -67,15 +67,15 @@ export const textarea = ({input, id, meta, placeholder, options}) =>
 export const textareaMultiTab = ({tabs = [], name, labels = {}, fields}) => {
 
     return <Tab.Container id="left-tab-languages" defaultActiveKey={0}>
-        <Row className="clearfix">
-            <Col sm={2} className="navabout">
+        <div className="row">
+            <div className="col-md-2 navabout">
                 <Nav bsStyle="pills" stacked>
                     {tabs.map((k, index) => (
                         <NavItem eventKey={index}>{labels[k]}</NavItem>
                     ))}
                 </Nav>
-            </Col>
-            <Col sm={10}>
+            </div>
+            <div className="col-md-10">
                 <Tab.Content animation>
                     {fields.map((member, index) => {
                         return <Tab.Pane eventKey={index}>
@@ -86,76 +86,91 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, fields}) => {
                         </Tab.Pane>
                     })}
                 </Tab.Content>
-            </Col>
-        </Row>
+            </div>
+        </div>
     </Tab.Container>;
 };
 
-export const multiInputUrl = ({fields, title, meta: {error}}) => {
-    return multiInput({fields, title, meta: {error}, render: inputUrl, key: "url"})
+export const multiInputUrl = ({fields, title, showModal, meta: {error}}) => {
+    return multiInput({fields, title, meta: {error}, showModal, render: inputUrl, key: "url"})
 };
 
-export const multiInputText = ({fields, title, meta: {error}}) => {
-    return multiInput({fields, title, meta: {error}, render: inputText, key: "text"})
+export const multiInputText = ({fields, title, showModal, meta: {error}}) => {
+    return multiInput({fields, title, meta: {error}, showModal, render: inputText, key: "text"})
 };
 
-//Email [inputEmail], private[checkbox], primary[checkbox], confirmed[solo testo]
-export const multiInputEmail = ({fields, title, meta: {error}}) => {
-    const renderSubField = (member, index, fields) => {
+
+export const multiInputEmail = ({fields, title, showModal, meta: {error}}) => {
+    const renderSubField = (member, index, fields, showModal) => {
         const {is_confirmed} = fields.get(index);
-        return <li key={index}>
-            <Row>
-                <Col sx={3}>
-                    <Field
-                        name={`${member}.email`}
-                        component={inputEmail}
-                    />
-                </Col>
-                <Col sx={3}>
 
-                    <Field
-                        name={`${member}.is_public`}
-                        component={checkboxField}
-                        placeholder="Is public"
-                    />
+        return <div className="row" key={index}>
+            <div className="col-md-6">
+                <Field
+                    name={`${member}.email`}
+                    component={inputEmail}
+                />
+            </div>
+            <div className="col-md-5">
 
-                </Col>
-                <Col sx={3}>
-                    <Field
-                        disabled={!is_confirmed}
-                        name={`${member}.is_primary`}
-                        component={checkboxField}
-                        placeholder="Is primary"
-                    />
-                </Col>
-                <Col sx={3}>
-                    {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
-                    <Button bsStyle="danger"
-                            onClick={() => fields.remove(index)}>
-                        -
-                    </Button>
-                </Col>
-            </Row>
-        </li>
+                <div className="row">
+                    <div className="col-md-4">
+                        <Field
+                            name={`${member}.is_public`}
+                            component={checkboxField}
+                            placeholder="Is public"
+                        />
+                    </div>
+                    <div className="col-md-4">
+                        <Field
+                            disabled={!is_confirmed}
+                            name={`${member}.is_primary`}
+                            component={checkboxField}
+                            placeholder="Is primary"
+                        />
+                    </div>
+                    <div className="col-md-4">
+                        {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <div className="col-md-1">
+                <Button bsStyle="danger"
+                        onClick={() =>
+                            showModal({
+                                type: "REMOVE",
+                                props: {
+                                    onRemove: () => fields.remove(index)
+                                }
+                            })}
+                >
+                    -
+                </Button>
+            </div>
+        </div>
+
     };
     return <div>
         <label>{title}</label>
         {error && <span className="error-message">{error}</span>}
-        <Row>
-            <ul className="list-unstyled">
-                {fields.map(renderSubField)}
-                <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
-            </ul>
-        </Row>
+
+        {fields.map((member, index, fields) => renderSubField(member, index, fields, showModal))}
+        <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
+
     </div>
 };
 
-export const multiInputTel = ({fields, title, meta: {error}}) => {
-    return multiInput({fields, title, meta: {error}, render: inputTel, key: "tel"})
+export const multiInputTel = ({fields, title, showModal, meta: {error}}) => {
+    return multiInput({fields, title, meta: {error}, showModal, render: inputTel, key: "tel"})
 };
 
-export const multiGoogleCityCountry = ({fields, title, meta: {error}}) => {
+export const multiGoogleCityCountry = ({fields, title, showModal, meta: {error}}) => {
     return multiInput({
+        showModal,
         fields,
         title,
         meta: {error},
@@ -167,8 +182,9 @@ export const multiGoogleCityCountry = ({fields, title, meta: {error}}) => {
     })
 };
 
-export const multiGoogleAddress = ({fields, title, meta: {error}}) => {
+export const multiGoogleAddress = ({fields, title, meta: {error}, showModal}) => {
     return multiInput({
+        showModal,
         fields,
         title,
         meta: {error},
@@ -180,35 +196,40 @@ export const multiGoogleAddress = ({fields, title, meta: {error}}) => {
     })
 };
 
-const multiInput = ({fields, title, meta: {error}, render, key}) => {
-    const renderSubField = (member, index, fields, render, key = "text") => (<li key={index}>
-        <Row>
-            <Col sx={9}>
+const multiInput = ({fields, title, meta: {error}, render, key, showModal}) => {
+    const renderSubField = (member, index, fields, render, key = "text") => (
+        <div className="row" key={index}>
+            <div className="col-md-10">
                 <Field
                     name={`${member}.${key}`}
                     component={render}
                 />
-            </Col>
-            <Col sx={3}>
-                <Button bsStyle="danger"
-                        onClick={() => fields.remove(index)}>
+            </div>
+            <div className="col-md-2">>
+                <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                        showModal({
+                            type: "REMOVE",
+                            props: {
+                                onRemove: () => fields.remove(index)
+                            }
+
+                        })}
+                >
                     -
                 </Button>
-            </Col>
-        </Row>
-    </li>);
+            </div>
+        </div>
+    )
+
     return <div>
         <label>{title}</label>
         {error && <span className="error-message">{error}</span>}
-        <Row>
-            <ul className="list-unstyled">
-                {fields.map((member, index, fields) => renderSubField(member, index, fields, render, key))}
-                <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
-            </ul>
-        </Row>
+        {fields.map((member, index, fields) => renderSubField(member, index, fields, render, key, showModal))}
+        <Button bsStyle="success" onClick={() => fields.push({})}>+</Button>
     </div>
 };
-
 
 export const renderList = ({input, meta, placeholder, hideResetButton, options, classNames, disabled, defaultValue}) => {
     return <div className="form-group">
@@ -305,9 +326,18 @@ export const renderDropzoneInput = (field) => {
                             className="file-size">({formatBytes(file.size)})
                         </span>
                         <button type="button" className="btn btn-default clear-attachment" onClick={() => {
-                            let result = [...files];
-                            result.splice(i, 1);
-                            field.input.onChange(result)
+
+                            field.showModal({
+                                type: "REMOVE",
+                                props: {
+                                    onRemove: () => {
+                                        let result = [...files];
+                                        result.splice(i, 1);
+                                        field.input.onChange(result)
+                                    }
+                                }
+                            })
+
                         }}>
                             -
                         </button>
