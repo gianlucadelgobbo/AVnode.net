@@ -1,4 +1,4 @@
-import {onlyFetchSlug} from '../../../reducers/actions';
+import {onlyFetchSlug} from './actions';
 import {getSlug} from './selectors'
 import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 

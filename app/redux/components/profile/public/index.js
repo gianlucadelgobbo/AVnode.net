@@ -4,7 +4,7 @@ import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser} from './selectors'
 import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "../../../reducers/actions";
+import {editUser} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 
