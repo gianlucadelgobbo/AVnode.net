@@ -5,6 +5,7 @@ const Link = new Schema({
   link: String,
   url: String,
   type: String,
+  tel:String,
   mailinglists: [],
   is_public: { type: Boolean, default: false },
   is_confirmed: { type: Boolean, default: false },

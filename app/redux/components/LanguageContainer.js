@@ -1,6 +1,6 @@
-import { connect } from 'preact-redux';
+import {connect} from 'preact-redux';
 import Language from './Language';
-import { addLocaleData } from 'preact-intl';
+import {addLocaleData} from 'preact-intl';
 
 import messagesEN from '../../../locales/en.json';
 import messagesDE from '../../../locales/de.json';
@@ -11,51 +11,72 @@ import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 import fr from 'react-intl/locale-data/fr';
 import it from 'react-intl/locale-data/it';
+
 addLocaleData([...en, ...de, ...fr, ...it]);
 
 const messages = {
-  en: messagesEN,
-  de: messagesDE,
-  fr: messagesFR,
-  it: messagesIT
+    en: messagesEN,
+    de: messagesDE,
+    fr: messagesFR,
+    it: messagesIT
 };
 
 const getLocale = (user) => {
-  const fallback = 'en';
+    const isValidLanguage = (l) => Object.keys(messages).indexOf(l) > -1;
 
-  // Try to get language from user settings
-  if (user.settings && user.settings.language && user.settings.language !== '') {
-    //console.log(' user.settings.language ' + user.settings.language);
-    return user.settings.language;
-  } else {
-    // try to get navigator language
-    if (navigator.language !== null) {
-      // console.log(' nav ' + navigator.language);
-      return navigator.language.replace(/\-.*$/, '');
-    } else {
-      return fallback;
+    const fallback = 'en';
+
+    /*
+    * priority
+    * - settings
+    * - URL
+    * - navigator
+    * - fallback
+    * */
+
+    // Try to get language from user settings
+    const settings = user.settings || {};
+    const {language} = settings;
+    if (isValidLanguage(language)) {
+        return language;
     }
-  }
+
+    // Try to get language from URL
+    const hostname = window.location.hostname;
+    const splitHostname = hostname.split(".");
+    const possibleLanguage = splitHostname[0];
+    if (isValidLanguage(possibleLanguage)) {
+        return possibleLanguage;
+    }
+
+    // Try to get language from navigator
+    if (isValidLanguage(navigator.language)) {
+        return navigator.language.replace(/\-.*$/, '');
+    }
+
+    //Return fallback
+    return fallback;
+
 };
 
 const getMessages = (user) => {
-  const fallback = 'en';
-  const locale = getLocale(user);
+    const fallback = 'en';
+    const locale = getLocale(user);
 
-  if (messages[locale] !== null) {
-    return messages[locale];
-  } else {
-    return messages[fallback];
-  }
+    if (messages[locale] !== null) {
+        return messages[locale];
+    } else {
+        return messages[fallback];
+    }
 };
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({user}) => {
 
-  return {
-    user,
-    messages: getMessages(user),
-    locale: getLocale(user)
-  };
+    return {
+        user,
+        messages: getMessages(user),
+        locale: getLocale(user)
+    };
 };
 
 export default connect(mapStateToProps)(Language);

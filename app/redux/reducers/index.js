@@ -76,6 +76,7 @@ import {
   REQUEST_SUGGEST_PERFORMANCE_PERFORMER,
   RESPONSE_SUGGEST_PERFORMANCE_PERFORMER
 } from './actions';
+import modal from '../components/modal/reducers';
 
 const initialValues = {
   active: window.location.pathname,
@@ -231,7 +232,6 @@ const user = (state = initialValues, action) => {
       eventId: action.active.substring(action.active.lastIndexOf('/') + 1)
     });
   case GOT_USER:
-    console.log('6 index redux GOT_USER');
     return Object.assign({}, state, action.json, {
         ajaxInProgress: false,
         imageUploadInProgress: false
@@ -435,7 +435,8 @@ const user = (state = initialValues, action) => {
 
 const reducer = combineReducers({
   user,
-  form: formReducer
+  form: formReducer,
+    modal: modal
 });
 
 export default reducer;
