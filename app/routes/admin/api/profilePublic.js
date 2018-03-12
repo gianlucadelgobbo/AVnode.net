@@ -10,23 +10,27 @@ const upload = require('./upload');
 
 const section = 'performers';
 
+const selectselect = {
+  stagename: 1,
+  slug: 1,
+  abouts: 1,
+  web: 1,
+  social: 1,
+  addresses: 1
+};
+
+const populate = [];
+
 router.get('/', (req, res) => {
-    dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
+  console.log("STOCAZZOOOOOOOOOO");
+  dataproviderAdmin.fetchUser(req.user.id, selectselect, populate, (err, user) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      req.flash('errors', { msg: `${JSON.stringify(err)}` });
+      res.status(500).json({ error: `${JSON.stringify(err)}` });
+    } else {
+      console.log(user);
+      res.json(user);
     }
-    res.json(user);
-  });
-});
-
-router.get('/slug/:slug', (req, res) => {
-  User.find({slug:req.params.slug}).
-  select({slug: 1}).
-  limit(1).
-  lean().
-  exec((err, data) => {
-    res.send(!data.length);
   });
 });
 
@@ -46,46 +50,11 @@ router.get('/slugs/:slug', (req, res, next)=>{
   });
 });
 
-router.post('/:id/public', (req, res) => {
-  logger.debug('VALIDATION PROCESS');
-  User.findById(req.params.id, (finderr, user) => {
-    if (finderr) {
-      logger.debug(`${JSON.stringify(finderr)}`);
-      req.flash('errors', { msg: `${JSON.stringify(finderr)}` });
-      res.json(user); // USER COULD BE NULL
-    } else {
-      logger.debug('SAVE PROCESS');
-      logger.debug(req.body);
-      user.save((saveerr) => {
-        if (saveerr) {
-          logger.debug('save error');
-          logger.debug(JSON.stringify(saveerr));
-          req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
-          res.json(user); // USER COULD BE NULL
-        } else {
-          dataproviderAdmin.fetchUser(req.params.id, (fetcherr, useredited) => {
-            if (fetcherr) {
-              logger.debug('fetch error');
-              logger.debug(JSON.stringify(fetcherr));
-              req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
-              res.json(useredited); // USER COULD BE NULL
-            } else {
-              res.json(useredited);
-            }
-          });
-        }
-      });
-    }
-  });
-});
-
-
-
-router.put('/:id', (req, res) => {
+router.put('/', (req, res) => {
   // FIXME: Find elegant way…
-  const apiCall = `api, router.put(/user/${JSON.stringify(req.user.id)}`;
-  logger.debug('________________API PUT user___________________');
-  logger.debug(`${apiCall} req.body.about: ${req.body.about}`);
+  const apiCall = `api, router.put(/admin/profile/public)`;
+  logger.debug('________________ API PUT PROFILE PUBLIC ________________');
+  console.log(req.body);
   logger.debug(`${apiCall} req.body.locality: ${req.body.locality}`);
   logger.debug(`${apiCall} req.body.country: ${req.body.country}`);
   logger.debug(`${apiCall} req.body.abouts: ${JSON.stringify(req.body.abouts)}`);
@@ -135,64 +104,7 @@ router.put('/:id', (req, res) => {
   }
   // linkSocial
   logger.debug(`${apiCall} linksSocial ${req.body.linksSocial}`);
-  /* AA
-  if (req.body.linksSocial && req.body.linkSocial.length > 2) {
-    let linkSocialFound = false;
-    if (req.body.links) {
-      // find the link
-      req.body.links.map((l) => {
-        // BL notice the == instead of ===
-        if (l.url == req.body.linkSocial) {
-          // link is found
-          logger.debug(`${apiCall} linkSocial found ${l.url}`);
-          linkSocialFound = true;
-        }
-      });
-    }
-    if (!linkSocialFound) {
-      logger.debug(`${apiCall} linkSocial create ${req.body.linkType} ${req.body.linkSocial}`);
-      let newLinkSocial = { type: req.body.linkType, url: req.body.linkSocial };
-      req.body.links.push(newLinkSocial);
-    }
-  }
-  */
-  /* BB
-  logger.debug(`${apiCall} linkSocial create ${req.body.linksSocial}`);
-  if(req.body.linksSocial){
-    req.body.linksSocial.map((l) => {
-    let newLinkSocial = l;
-      req.body.links.push(newLinkSocial);
-    });
-  }
-  logger.debug(`${apiCall} linkWeb create ${req.body.linksWeb}`);
-  if(req.body.linksWeb){
-    req.body.linksWeb.map((l) => {
-    let newLinkWeb = l;
-      req.body.links.push(newLinkWeb);
-    });
-  }
-  */
 
-  // linkTel
-  if (req.body.linkTel && req.body.linkTel.length > 2) {
-    let linkTelFound = false;
-    if (req.body.links) {
-      // find the link
-      req.body.links.map((l) => {
-        // BL notice the == instead of ===
-        if (l.url == req.body.linkTel) {
-          // link is found
-          logger.debug(`${apiCall} linkTel found ${l.url}`);
-          linkTelFound = true;
-        }
-      });
-    }
-    if (!linkTelFound) {
-      logger.debug(`${apiCall} linkTel create ${req.body.linkType} ${req.body.linkTel}`);
-      let newLinkTel = { type: req.body.linkType, url: req.body.linkTel };
-      req.body.links.push(newLinkTel);
-    }
-  }  
   //  public address fields
   if (req.body.locality && req.body.country && req.body.locality.length > 2) {
     let localityFound = false;
@@ -258,5 +170,49 @@ router.put('/:id', (req, res) => {
     }
   });
 });
+/*
+router.get('/slug/:slug', (req, res) => {
+  User.find({slug:req.params.slug}).
+  select({slug: 1}).
+  limit(1).
+  lean().
+  exec((err, data) => {
+    res.send(!data.length);
+  });
+});
+
+router.post('/:id/public', (req, res) => {
+  logger.debug('VALIDATION PROCESS');
+  User.findById(req.params.id, (finderr, user) => {
+    if (finderr) {
+      logger.debug(`${JSON.stringify(finderr)}`);
+      req.flash('errors', { msg: `${JSON.stringify(finderr)}` });
+      res.json(user); // USER COULD BE NULL
+    } else {
+      logger.debug('SAVE PROCESS');
+      logger.debug(req.body);
+      user.save((saveerr) => {
+        if (saveerr) {
+          logger.debug('save error');
+          logger.debug(JSON.stringify(saveerr));
+          req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
+          res.json(user); // USER COULD BE NULL
+        } else {
+          dataproviderAdmin.fetchUser(req.params.id, (fetcherr, useredited) => {
+            if (fetcherr) {
+              logger.debug('fetch error');
+              logger.debug(JSON.stringify(fetcherr));
+              req.flash('errors', { msg: `${JSON.stringify(saveerr)}` });
+              res.json(useredited); // USER COULD BE NULL
+            } else {
+              res.json(useredited);
+            }
+          });
+        }
+      });
+    }
+  });
+});
+*/
 
 module.exports = router;

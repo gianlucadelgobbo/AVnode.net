@@ -5,7 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 import Language from './components/LanguageContainer';
 
 import reducer from './reducers';
-import { fetchUser } from './reducers/actions';
+//import { fetchUser } from './reducers/actions';
 
 //import createLogger from 'redux-logger';
 //const loggerMiddleware = createLogger();
@@ -44,4 +44,4 @@ if (module.hot) {
 }
 
 init();
-store.dispatch(fetchUser());
+//store.dispatch(fetchUser());

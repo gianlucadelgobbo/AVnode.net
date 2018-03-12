@@ -8,7 +8,7 @@ const profileEmails = require('./api/profileEmails');
 const profilePrivate = require('./api/profilePrivate');
 const profilePassword = require('./api/profilePassword');
 
-const user = require('./api/user');
+//const user = require('./api/user');
 const crew = require('./api/crew');
 const performance = require('./api/performance');
 const event = require('./api/event');
@@ -16,7 +16,7 @@ const search = require('./api/search');
 const tools = require('./tools/tools');
 const toolsEmails = require('./tools/toolsEmails');
 
-router.use('/api/user', user);
+//router.use('/api/user', user);
 router.use('/api/profile/public', profilePublic);
 router.use('/api/profile/images', profileImages);
 router.use('/api/profile/emails', profileEmails);
