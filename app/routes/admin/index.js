@@ -12,6 +12,7 @@ const performance = require('./api/performance');
 const event = require('./api/event');
 const search = require('./api/search');
 const tools = require('./tools/tools');
+const toolsEmails = require('./tools/toolsEmails');
 
 router.use('/api/user', user);
 router.use('/api/profile/public', profilePublic);
@@ -23,6 +24,7 @@ router.use('/api/crew', crew);
 router.use('/api/performance', performance);
 router.use('/api/event', event);
 router.use('/api/search', search);
+router.use('/tools/emails', toolsEmails);
 router.use('/tools', tools);
 
 router.get('/*', (req, res) => {
