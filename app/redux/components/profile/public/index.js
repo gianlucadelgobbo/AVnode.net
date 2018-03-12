@@ -96,8 +96,8 @@ class ProfilePublic extends Component {
         // Web: Add one item if value empty
         v.web = (Array.isArray(user.web) && user.web.length > 0) ? user.web : [{url: ""}];
 
-        // Web: Add one item if value empty
-        v.addresses = (Array.isArray(user.addresses) && user.addresses.length > 0) ?
+        // Addresses: Add one item if value empty
+        v.addresses = (Array.isArray(user.addresses) && user.addresses.length > 0) ? 
             user.addresses.map(a => ({
                 text: `${a.city}, ${a.country}`
             })) :
@@ -132,7 +132,7 @@ class ProfilePublic extends Component {
                     <Navbar/>
                 </div>
                 <div className="col-md-10">
-                    <h1>MY ACCOUNT PUBLIC DATA</h1>
+                    <h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
                     <br/>
                     <Form
                         initialValues={this.getInitialValues()}

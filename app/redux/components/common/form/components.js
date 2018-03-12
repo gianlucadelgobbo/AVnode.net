@@ -30,10 +30,10 @@ const inputField = ({input, type, meta, placeholder, title, isChild}) => {
         <input type={type} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
-
+    const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{placeholder}</dt>
+            <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 };
@@ -51,10 +51,10 @@ export const inputPasswordMeter = ({input, meta, placeholder, isChild}) => {
         <StrongPassword {...input} placeholder={placeholder} className="form-control"/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
-
+    const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{placeholder}</dt>
+            <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 };
@@ -77,10 +77,10 @@ export const textarea = ({input, id, meta, placeholder, isChild}) => {
         <Textarea id={id} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span>{meta.error}</span>}
     </div>;
-
+    const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{placeholder}</dt>
+            <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 };
@@ -89,11 +89,11 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
 
     const id = `tabs-${Math.random()}`;
     const hasValue = (fields, index) => !!fields.get(index).value;
-
-
+    const label = <div className="labelField">{placeholder}</div>;
+    
     return <div className="card">
         <div className="card-header">
-            <h4>{placeholder}</h4>
+            <h4>{label}</h4>
         </div>
         <div className="card-body">
             <br/>
@@ -160,7 +160,6 @@ export const multiInputText = ({fields, title, showModal, placeholder, meta: {er
 export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         const {is_confirmed} = fields.get(index);
-
         return <div className="row" key={index}>
             <div className="col-md-5 offset-1">
                 <Field
@@ -212,14 +211,14 @@ export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {e
         </div>
 
     };
-
+    const label = <div className="labelField">{placeholder}</div>;
     return <div className="card">
         <div className="card-header">
-            <h4>{placeholder}
-                <Button bsStyle="success" className="pull-right"
-                        onClick={() => fields.unshift({})}>
-                    <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
-                </Button></h4>
+            <h4>{label}</h4>
+            <Button bsStyle="success" className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
         </div>
         <div className="card-body">
             <br/>
@@ -267,7 +266,7 @@ export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, s
         title,
         meta: {error},
         render: googleAutocompleteSelect,
-        key: "text",
+        key: "formatted_address",
         options: {
             types: ['address']
         }, isChild: true
@@ -275,6 +274,7 @@ export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, s
 };
 
 const multiInput = ({fields, title, meta: {error}, render, placeholder, key, showModal}) => {
+    const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields, render, key = "text"}) => (
         <div className="row" key={index}>
             <div className="col-md-9 offset-1">
@@ -304,10 +304,11 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
 
     return <div className="card">
         <div className="card-header">
-            <h4>{placeholder} <Button bsStyle="success" className="pull-right"
+            <h4>{label}</h4>
+            <Button bsStyle="success" className="pull-right"
                                       onClick={() => fields.unshift({})}>
                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
-            </Button></h4>
+            </Button>
         </div>
         <div className="card-body">
             <br/>
@@ -328,9 +329,10 @@ export const renderList = ({input, meta, placeholder, hideResetButton, options, 
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
+    const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{placeholder}</dt>
+            <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 };
@@ -344,9 +346,10 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
+    const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{placeholder}</dt>
+            <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 }
@@ -364,10 +367,10 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
             disabled={disabled}
         />
     </div>;
-
+    const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{placeholder}</dt>
+            <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 }
@@ -401,7 +404,7 @@ export const renderDropzoneInput = (field) => {
 
     return (
         <div className="form-group">
-            <h4>{field.placeholder}</h4>
+            <h4 className="labelField">{field.placeholder}</h4>
 
             <Dropzone
                 className="attachment-dropzone"
@@ -415,7 +418,7 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div>Drop files here, or click to select files to upload. (Max file size 10 MB)</div>
+                <div className="labelField">Drop files here, or click to select files to upload. (Max file size 10 MB)</div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}

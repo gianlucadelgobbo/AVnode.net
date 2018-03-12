@@ -69,7 +69,7 @@ class ProfileImage extends Component {
                     <Navbar/>
                 </div>
                 <div className="col-md-10">
-                    <h1>MY IMAGE</h1>
+                    <h1 className="labelField">MY IMAGE</h1>
 
                     <br/>
                     <Form

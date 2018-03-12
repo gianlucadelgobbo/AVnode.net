@@ -1,7 +1,7 @@
 import {h, render, Component} from 'preact';
-import {reduxForm, Field} from "redux-form";
+import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, renderDatePicker, renderList} from "../../common/form/components";
+import {inputText, renderDatePicker, renderList, multiGoogleAddress, multiInputTel} from "../../common/form/components";
 import {locales, locales_labels} from '../../../../../config/default.json'
 import validate from './validate';
 import asyncValidate from './asyncValidate';
@@ -14,7 +14,8 @@ class ProfilePrivateForm extends Component {
             submitting,
             handleSubmit,
             countries,
-            onSubmit
+            onSubmit,
+            showModal
         } = this.props;
 
         return (
@@ -56,8 +57,30 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="birthday"
                     component={renderDatePicker}
-                    placeholder="Date"
+                    placeholder="Birthday"
                 />
+
+                <Field
+                    name="citizenship"
+                    component={renderList}
+                    placeholder="Citizenship"
+                />
+
+                 <FieldArray
+                    name="addresses_private"
+                    component={multiGoogleAddress}
+                    placeholder="Private addresses"
+                    showModal={showModal}
+                />
+
+                <FieldArray
+                    name="phone"
+                    component={multiInputTel}
+                    placeholder="phone"
+                    title="Phone Number"
+                    showModal={showModal}
+                />
+
 
                 <hr/>
 

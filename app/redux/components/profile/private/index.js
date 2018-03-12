@@ -28,7 +28,13 @@ class ProfilePrivate extends Component {
         model.gender = values.gender.value;
         //convert Lang
         model.lang = values.lang.value;
-
+        // Convert Addresses_private
+        model.addresses_private = model.addresses_private.map(a => {
+            const originalString = a.formatted_address;
+            return {formatted_address:originalString};
+        });
+        // Convert Phone Number
+        //model.phone = model.phone.filter(p => p.tel);
         return model;
     }
 
@@ -41,17 +47,22 @@ class ProfilePrivate extends Component {
         }
 
         let v = {};
-
+        //Convert name for redux-form
         v.name = user.name;
-
+        //Convert surname for redux-form
         v.surname = user.surname;
-
+        //Convert gender for redux-form
         v.gender = user.gender ? user.gender : "";
-
+        //Convert language preferred for redux-form
         v.lang = user.lang ? user.lang : "";
-
+        //Convert birthday for redux-form
         v.birthday = user.birthdayFormatted;
-
+        // Addresses_private: Add one item if value empty
+        v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ? 
+        user.addresses_private : [{formatted_address: ""}];
+        // Phone: Add one item if value empty
+        v.phone =  (Array.isArray(user.phone) && user.phone.length > 0) ? 
+        user.phone : [{tel: ""}];
         return v;
     }
 
@@ -82,7 +93,7 @@ class ProfilePrivate extends Component {
                     <Navbar/>
                 </div>
                 <div className="col-md-10">
-                    <h1>
+                    <h1 className="labelField">
                         <FormattedMessage
                             id="myAccountPrivateData"
                             defaultMessage="My Account Private data"
@@ -94,6 +105,7 @@ class ProfilePrivate extends Component {
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={user}
+                        showModal={showModal}
                     />
                 </div>
             </div>
