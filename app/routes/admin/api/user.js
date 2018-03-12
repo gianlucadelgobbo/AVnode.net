@@ -7,6 +7,8 @@ const logger = require('../../../utilities/logger');
 
 const dataproviderAdmin = require('../../../utilities/dataproviderAdmin');
 const upload = require('./upload');
+const allCountries = require('node-countries-list');
+const R = require('ramda');
 
 const section = 'performers';
 
@@ -828,7 +830,8 @@ router.put('/:id', (req, res) => {
       let newLinkTel = { type: req.body.linkType, url: req.body.linkTel };
       req.body.links.push(newLinkTel);
     }
-  }  
+  }
+  /*  
   //  public address fields
   if (req.body.locality && req.body.country && req.body.locality.length > 2) {
     let localityFound = false;
@@ -850,17 +853,11 @@ router.put('/:id', (req, res) => {
       req.body.addresses.push(newAddress);
     }
   }
-
-  /*User.findOne({ $or: [{ slug: req.body.slug }] }, (err, existingUser) => {
-    if (err) {
-      return next(err);
-    }
-    if (existingUser) {
-      console.log(existingUser);
-      req.flash('errors', { msg: __('Slug already exists.') });
-    }
-  });
 */
+//  public address fields
+
+ console.log(req.body.phone);
+  
   const props = {
     birthday: req.body.birthday,
     about: req.body.about,
@@ -868,9 +865,12 @@ router.put('/:id', (req, res) => {
     name: req.body.name,
     surname: req.body.surname,
     gender: req.body.gender,
+    lang:req.body.lang,
     citizenship: req.body.citizenship,
+    addresses_private:req.body.addresses_private,
     emails: req.body.emails,
     web: req.body.web,
+    phone: req.body.phone,
     social:req.body.social,
     addresses: req.body.addresses,
     abouts: req.body.abouts,
@@ -895,6 +895,24 @@ router.put('/:id', (req, res) => {
   });
 });
 
+// countries
+router.get('/countries', (req, res) => {
+  // FIXME: Later evaluate language param to return
+  // localized list depending on the user settings.
+  const convert = R.compose(
+    R.map(
+      R.zipObj(['key', 'name'])
+    ),
+    R.toPairs
+  );
+
+  allCountries('en', (err, countries) => {
+    if (err) {
+      throw err;
+    }
+    res.json(convert(countries));
+  });
+});
 
 /*
 router.put('/:id', (req, res) => {

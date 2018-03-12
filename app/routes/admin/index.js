@@ -1,4 +1,6 @@
 const router = require('../router')();
+const allCountries = require('node-countries-list');
+const R = require('ramda');
 
 const profilePublic = require('./api/profilePublic');
 const profileImages = require('./api/profileImages');
@@ -33,7 +35,7 @@ router.get('/*', (req, res) => {
     is_admin: true
   });
 });
-
+/*
 router.get('/api/countries', (req, res) => {
   // FIXME: Later evaluate language param to return
   // localized list depending on the user settings.
@@ -51,5 +53,5 @@ router.get('/api/countries', (req, res) => {
     res.json(convert(countries));
   });
 });
-
+*/
 module.exports = router;
