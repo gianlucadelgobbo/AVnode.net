@@ -3,8 +3,10 @@ import {geocodeByAddress, getLatLng} from 'react-places-autocomplete'
 
 export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
 export const GOT_USER = 'GOT_USER';
+export const RESPONSE_SLUG = 'RESPONSE_SLUG';
 
 
+/*
 const fetch = (path, options = {}, json = true) => {
     const opts = Object.assign({}, {
         credentials: 'same-origin'
@@ -35,7 +37,7 @@ export const getUser = (data) => (dispatch) => {
             .then(json => dispatch(gotUser(json)));
     });
 };
-
+*/
 export const editUser = (data) => (dispatch) => {
 
     dispatch({
@@ -67,7 +69,6 @@ export function gotUser(json) {
     return {type: GOT_USER, json};
 }
 
-
 // slugs
 export function fetchSlug(slug, dispatch) {
     return onlyFetchSlug(slug)
@@ -80,7 +81,7 @@ export function fetchSlug(slug, dispatch) {
 };
 
 export const onlyFetchSlug = (slug) => fetch(`/admin/api/profile/public/slugs/${slug}`).then(json => {
-    console.log("jsonjsonjsonjsonjson", json)
+    console.log("jsonjsonjsonjsonjson", json);
     return json
 });
 

@@ -15,17 +15,9 @@ const Video = mongoose.model('Video');
 
 const logger = require('./logger');
 
-dataproviderAdmin.fetchUser = (id, s, populate, cb) => {
-  console.log(s);
+dataproviderAdmin.fetchUser = (id, cb) => {
   User.
   findById(id)
-  .select(s)
-  .populate(populate)
-  .exec(cb);
-};
-
-module.exports = dataproviderAdmin;
-
   /*
   populate([{
     path: 'events',
@@ -99,3 +91,18 @@ module.exports = dataproviderAdmin;
     }
   }]).
   */
+  .exec(cb);
+};
+
+dataproviderAdmin.getUser = (id, s, populate, cb) => {
+  console.log(s);
+  User.
+  findById(id)
+  .select(s)
+  .populate(populate)
+  .exec(cb);
+};
+
+module.exports = dataproviderAdmin;
+
+ 

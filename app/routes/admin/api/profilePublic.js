@@ -22,13 +22,12 @@ const selectselect = {
 const populate = [];
 
 router.get('/', (req, res) => {
-  console.log("STOCAZZOOOOOOOOOO");
-  dataproviderAdmin.fetchUser(req.user.id, selectselect, populate, (err, user) => {
+  dataproviderAdmin.getUser(req.user.id, selectselect, populate, (err, user) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(500).json({ error: `${JSON.stringify(err)}` });
     } else {
-      console.log(user);
+      logger.debug(user);
       res.json(user);
     }
   });
@@ -52,7 +51,7 @@ router.get('/slugs/:slug', (req, res, next)=>{
 
 router.put('/', (req, res) => {
   // FIXME: Find elegant way…
-  const apiCall = `api, router.put(/admin/profile/public)`;
+  const apiCall = `api, router.put(/admin/api/profile/public)`;
   logger.debug('________________ API PUT PROFILE PUBLIC ________________');
   console.log(req.body);
   logger.debug(`${apiCall} req.body.locality: ${req.body.locality}`);
