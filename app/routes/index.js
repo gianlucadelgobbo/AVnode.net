@@ -2,6 +2,8 @@ const router = require('./router')();
 
 const home = require('./home');
 const performers = require('./performers');
+const show = require('./performers/show');
+
 const performances = require('./performances');
 const events = require('./events');
 
@@ -44,7 +46,6 @@ router.get('/404', fourOhFour);
 */
 
 router.use('/admin', admin);
-const show = require('./performers/show');
 
 router.use('/:slug', show);
 

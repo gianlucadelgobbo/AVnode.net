@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
       logger.debug(`${JSON.stringify(err)}`);
       req.flash('errors', { msg: `${JSON.stringify(err)}` });
     }
+    logger.debug(user);
     res.json(user);
   });
 });
