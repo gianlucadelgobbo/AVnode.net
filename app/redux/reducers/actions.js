@@ -21,6 +21,7 @@ export function gotData(json) {
 }
 
 export function fetchData() {
+    alert('bella');
     return dispatch => {
         return fetch(window.location.pathname.replace('/admin/','/admin/api/'))
             .then(json => dispatch(gotData(json)));
