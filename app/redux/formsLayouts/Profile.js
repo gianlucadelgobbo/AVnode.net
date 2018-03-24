@@ -46,7 +46,7 @@ const PUBLIC = {
     },
     social: {
         comp: 'multilink',
-        label: 'Websites',
+        label: 'Social networks',
         validators: {
             'Url': {}
         }
