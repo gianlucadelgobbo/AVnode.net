@@ -1,1 +1,2 @@
 export const FORM_NAME = "PROFILE.EMAIL";
+export const RESPONSE_COUNTRIES = 'RESPONSE_COUNTRIES';
