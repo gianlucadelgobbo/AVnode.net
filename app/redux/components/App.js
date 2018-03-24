@@ -3,6 +3,7 @@ import Router from 'preact-router';
 // Navigation
 import Nav from './Nav';
 
+//////// ========== REFACTORED
 // Profile
 import ProfilePublic from './profile/public'
 import ProfileEmails from './profile/emails';
@@ -10,6 +11,22 @@ import ProfileImages from './profile/images';
 import ProfilePrivate from './profile/private';
 import ProfilePassword from './profile/password';
 import ProfileConnections from './user/ProfileConnections';
+
+// Events
+import Events from './events/index.js';
+import EventPublic from './events/public';
+
+import EventImages from './event/EventImages';
+import EventPerformances from './event/EventPerformances';
+import EventPartners from './event/EventPartners';
+import EventPhotoGallery from './event/EventPhotoGallery';
+import EventVideoGallery from './event/EventVideoGallery';
+import EventSettings from './event/EventSettings';
+
+
+
+//////// ========== END OF REFACTORED
+
 
 // Crews
 import Crews from './Crews';
@@ -28,16 +45,6 @@ import PerformanceAuthors from './performance/PerformanceAuthors';
 import PerformancePhotoGallery from './performance/PerformancePhotoGallery';
 import PerformanceVideoGallery from './performance/PerformanceVideoGallery';
 import PerformanceSettings from './performance/PerformanceSettings';
-// Events
-import Events from './Events';
-// import EventEdit from './event/Edit';
-import EventPublic from './event/EventPublic';
-import EventImages from './event/EventImages';
-import EventPerformances from './event/EventPerformances';
-import EventPartners from './event/EventPartners';
-import EventPhotoGallery from './event/EventPhotoGallery';
-import EventVideoGallery from './event/EventVideoGallery';
-import EventSettings from './event/EventSettings';
 // Preferences
 import Preferences from './PreferencesContainer';
 import {FormattedMessage} from 'preact-intl';

@@ -3,11 +3,12 @@ import {FormattedMessage} from 'preact-intl';
 import Navbar from '../navbar'
 import Form from './form'
 import {connect} from 'preact-redux';
-import {getUser} from './selectors';
+import {getUser, getCountries} from './selectors';
 import {locales_labels} from '../../../../../config/languages.json';
-import {editUser, fetchCountries} from "../../../reducers/actions";
+import {editUser} from "../../../reducers/actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
+import {fetchCountries} from './actions'
 
 /*
 * Responsabilita'
@@ -31,7 +32,7 @@ class ProfilePrivate extends Component {
         // Convert Addresses_private
         model.addresses_private = model.addresses_private.map(a => {
             const originalString = a.formatted_address;
-            return {formatted_address:originalString};
+            return {formatted_address: originalString};
         });
         // Convert Phone Number
         //model.phone = model.phone.filter(p => p.tel);
@@ -58,11 +59,11 @@ class ProfilePrivate extends Component {
         //Convert birthday for redux-form
         v.birthday = user.birthdayFormatted;
         // Addresses_private: Add one item if value empty
-        v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ? 
-        user.addresses_private : [{formatted_address: ""}];
+        v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ?
+            user.addresses_private : [{formatted_address: ""}];
         // Phone: Add one item if value empty
-        v.phone =  (Array.isArray(user.phone) && user.phone.length > 0) ? 
-        user.phone : [{tel: ""}];
+        v.phone = (Array.isArray(user.phone) && user.phone.length > 0) ?
+            user.phone : [{tel: ""}];
         return v;
     }
 
@@ -75,7 +76,7 @@ class ProfilePrivate extends Component {
         model._id = user._id;
 
         //dispatch the action to save the model here
-        editUser(model)
+        return editUser(model)
             .then(() => {
                 showModal({
                     type: "SAVED"
@@ -83,9 +84,15 @@ class ProfilePrivate extends Component {
             });
     }
 
+    componentDidMount() {
+        const {fetchCountries} = this.props;
+        fetchCountries();
+
+    }
+
     render() {
 
-        const {user} = this.props;
+        const {user, countries} = this.props;
 
         return (
             <div className="row">
@@ -106,6 +113,7 @@ class ProfilePrivate extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         user={user}
                         showModal={showModal}
+                        countries={countries}
                     />
                 </div>
             </div>
@@ -116,11 +124,13 @@ class ProfilePrivate extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     user: getUser(state),
+    coutries: getCountries(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser: editUser,
-    showModal: showModal
+    editUser,
+    showModal,
+    fetchCountries
 }, dispatch);
 
 ProfilePrivate = connect(

@@ -1,21 +1,11 @@
 import {h, render, Component} from 'preact';
-import Navbar from '../navbar'
 import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser} from './selectors'
-import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 
-/*
-* Responsabilita'
-* - Get form's initial values from redux state here
-* - pass initial values to form
-* - dispatch the action to save the model
-* */
-
-class ProfileEmail extends Component {
+class AddEvent extends Component {
 
     // Convert form values to API model
     createUserModel(values) {
@@ -57,21 +47,16 @@ class ProfileEmail extends Component {
 
     render() {
 
-        const {user} = this.props;
+        const {user, showModal} = this.props;
 
         return (
             <div className="row">
-                <div className="col-md-2">
-                    <Navbar/>
-                </div>
-                <div className="col-md-10">
-                    <h1>MY EMAIL</h1>
-
-                    <br/>
+                <div className="col-md-12">
                     <Form
-                        initialValues={this.getInitialValues(this)}
+                        initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         user={user}
+                        showModal={showModal}
                     />
                 </div>
             </div>
@@ -85,13 +70,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser: editUser,
     showModal: showModal
 }, dispatch);
 
-ProfileEmail = connect(
+AddEvent = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileEmail);
+)(AddEvent);
 
-export default ProfileEmail;
+export default AddEvent;
