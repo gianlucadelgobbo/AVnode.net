@@ -4,7 +4,7 @@ import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 
 const asyncValidate = (values, dispatch, state) => {
     
-    console.log("ASYNC", )
+   alert("ASYNC", )
 
     const promises = [];
     const result = {};
