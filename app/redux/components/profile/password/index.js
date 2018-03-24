@@ -47,10 +47,9 @@ class ProfilePassword extends Component {
 
         // Add auth user _id
         model._id = user._id;
-        
 
         //dispatch the action to save the model here
-        editUser(model)
+        return editUser(model)
             .then(() => {
                 showModal({
                     type: "SAVED"
