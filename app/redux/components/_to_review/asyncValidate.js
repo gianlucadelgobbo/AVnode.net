@@ -1,5 +1,5 @@
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-import { fetchSlug, fetchUser } from '../reducers/actions';
+import { fetchSlug, fetchUser } from '../../reducers/actions';
 const asyncValidate = (values, dispatch ) => {
     let slugCurrentUser = values.slug;
     return dispatch(fetchUser()).then((data) => {
