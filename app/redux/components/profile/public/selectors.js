@@ -1,3 +1,3 @@
-export const getUser = (state) => state.user;
+export const getModel = (state) => state.profile;
 
-export const getSlug = (state) => getUser(state).slug;
+export const getSlug = (state) => getModel(state).slug;

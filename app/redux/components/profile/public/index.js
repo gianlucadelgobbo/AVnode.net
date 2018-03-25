@@ -2,9 +2,9 @@ import {h, Component} from 'preact';
 import ProfileLateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
-import {getUser} from './selectors'
+import {getModel} from './selectors'
 import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "./actions";
+import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 
@@ -16,6 +16,11 @@ import {bindActionCreators} from "redux";
 * */
 
 class ProfilePublic extends Component {
+
+    componentDidMount(){
+        const {fetchModel} = this.props;
+        fetchModel();
+    }
 
     // Convert form values to API model
     createUserModel(values) {
@@ -54,26 +59,26 @@ class ProfilePublic extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
         let v = {};
 
         //Convert stagename for redux-form
-        v.stagename = user.stagename;
+        v.stagename = model.stagename;
 
         //Convert slug for redux-form
-        v.slug = user.slug;
+        v.slug = model.slug;
 
         // Convert about format for FieldArray redux-form
         v.abouts = [];
-        if (Array.isArray(user.abouts)) {
+        if (Array.isArray(model.abouts)) {
 
             // convert current lang
-            v.abouts = user.abouts.map(x => ({
+            v.abouts = model.abouts.map(x => ({
                 key: `abouts.${x.lang}`,
                 value: x.abouttext
             }));
@@ -91,14 +96,14 @@ class ProfilePublic extends Component {
 
 
         // Social: Add one item if value empty
-        v.social = (Array.isArray(user.social) && user.social.length > 0) ? user.social : [{url: ""}];
+        v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
 
         // Web: Add one item if value empty
-        v.web = (Array.isArray(user.web) && user.web.length > 0) ? user.web : [{url: ""}];
+        v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];
 
         // Addresses: Add one item if value empty
-        v.addresses = (Array.isArray(user.addresses) && user.addresses.length > 0) ? 
-            user.addresses.map(a => ({
+        v.addresses = (Array.isArray(model.addresses) && model.addresses.length > 0) ?
+            model.addresses.map(a => ({
                 text: `${a.city}, ${a.country}`
             })) :
             [{text: ""}];
@@ -107,14 +112,14 @@ class ProfilePublic extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createUserModel(values);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createUserModel(values);
 
         // Add auth user _id
-        model._id = user._id;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: "EXAMPLE"
@@ -124,7 +129,7 @@ class ProfilePublic extends Component {
 
     render() {
 
-        const {user, showModal} = this.props;
+        const {model, showModal} = this.props;
 
         return (
             <div className="row">
@@ -139,7 +144,7 @@ class ProfilePublic extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
-                        user={user}
+                        user={model}
                         showModal={showModal}
                     />
                 </div>
@@ -150,12 +155,13 @@ class ProfilePublic extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    user: getUser(state)
+    model: getModel(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser: editUser,
-    showModal: showModal
+    saveModel,
+    fetchModel,
+    showModal
 }, dispatch);
 
 ProfilePublic = connect(
