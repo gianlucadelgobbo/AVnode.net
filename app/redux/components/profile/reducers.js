@@ -15,39 +15,44 @@ const byId = (state = {}, action) => {
 
             // get the updated entities from actions {id_1: {...}, id_2: {...}}
             let models = action.response.entities[MODELS_NAME] || {};
-
             // get the entities ids
             let modelIds = Object.keys(models);
-
             // merge current entity with the updated, reset message and isFetching, and store the result in the state
-            modelIds.forEach(id => state[id] = Object.assign({}, state[id], models[id], {isFetching: false, error: null}));
+            modelIds.forEach(id => state[id] = Object.assign({}, state[id], models[id], {
+                isFetching: false,
+                error: null
+            }));
 
             return state;
         case SAVE_MODEL_SUCCESS :
-            id = action.result.id;
-            state[id] = Object.assign({}, state[id], action.result, {isFetching: false, error: null});
 
-            return state;
+            id = action.response.result;
+            state[id] = Object.assign({}, state[id], action.response.entities[MODELS_NAME][id], {
+                isFetching: false,
+                error: null
+            });
+
+            return {...state};
         case SAVE_MODEL_REQUEST :
         case FETCH_MODEL_REQUEST:
-            id = action.id;
+            id = action.id || (Object.keys(state).length > 0 ? Object.keys(state)[0] : null);
 
-            if (!id){
+            if (!id) {
                 return state;
             }
 
             if (!state[id]) {
-                state[id] = {}
+                state[id] = {};
             }
 
-            state[id] = Object.assign({}, state[id], {isFetching: true, error: null});
+            state[id] = {...state[id], isFetching: true, error: null};
 
-            return state;
+            return {...state};
         case SAVE_MODEL_ERROR :
         case FETCH_MODEL_ERROR:
-            id = action.id;
+            id = action.id || (Object.keys(state).length > 0 ? Object.keys(state)[0] : null);
 
-            if (!id){
+            if (!id) {
                 return state;
             }
 
@@ -55,9 +60,9 @@ const byId = (state = {}, action) => {
                 state[id] = {}
             }
 
-            state[id] = Object.assign({}, state[id], {isFetching: false, error: action.errorMessage});
+            state[id] = {...state[id], isFetching: false, error: action.errorMessage};
 
-            return state;
+            return {...state};
         default:
             return state;
     }
@@ -78,8 +83,7 @@ const createList = () => {
     const errorMessage = (state = null, action) => {
         switch (action.type) {
             case FETCH_LIST_ERROR :
-            case FETCH_MODEL_ERROR :
-                return action.message;
+                return action.errorMessage;
             case FETCH_LIST_REQUEST :
             case FETCH_LIST_SUCCESS :
                 return null;
@@ -91,7 +95,6 @@ const createList = () => {
     const isFetching = (state = false, action) => {
         switch (action.type) {
             case FETCH_LIST_REQUEST:
-            case FETCH_MODEL_REQUEST:
                 return true;
             case FETCH_LIST_ERROR:
             case FETCH_LIST_SUCCESS:
