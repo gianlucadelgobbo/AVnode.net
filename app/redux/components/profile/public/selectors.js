@@ -1,3 +1,3 @@
-export const getModel = (state) => state.profile;
+import {getModel} from "../selectors";
 
 export const getSlug = (state) => getModel(state).slug;

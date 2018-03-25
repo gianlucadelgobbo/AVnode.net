@@ -16,6 +16,12 @@ export const saveProfilePublic = (model) => {
         });
 };
 
+export const fetchSlug = (slug) => {
+    return axios.get(`rofile/public/slugs/${slug}`)
+        .then(result => {
+            return result.data;
+        });
+}
 
 
 

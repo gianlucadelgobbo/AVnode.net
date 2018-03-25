@@ -4,7 +4,7 @@ import {FETCH_MODEL_REQUEST, FETCH_MODEL_SUCCESS, FETCH_MODEL_ERROR} from '../co
 import {SAVE_MODEL_REQUEST, SAVE_MODEL_SUCCESS, SAVE_MODEL_ERROR} from '../constants'
 import {profile} from '../../../schemas/profile'
 
-export const fetchModel = ({id}) => (dispatch) => {
+export const fetchModel = ({id} = {}) => (dispatch) => {
 
     dispatch({
         type: FETCH_MODEL_REQUEST,
@@ -27,7 +27,7 @@ export const fetchModel = ({id}) => (dispatch) => {
             });
 };
 
-export const saveModel = ( model ) => (dispatch) => {
+export const saveModel = (model) => (dispatch) => {
 
     dispatch({
         type: SAVE_MODEL_REQUEST,

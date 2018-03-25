@@ -2,11 +2,12 @@ import {h, Component} from 'preact';
 import ProfileLateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
-import {getModel} from './selectors'
+import {getDefaultModel} from '../selectors'
 import {locales, locales_labels} from '../../../../../config/default.json'
 import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
+import Loading from '../../loading'
 
 /*
 * Responsabilita'
@@ -122,7 +123,7 @@ class ProfilePublic extends Component {
         return saveModel(modelToSave)
             .then(() => {
                 showModal({
-                    type: "EXAMPLE"
+                    type: "SAVED"
                 });
             });
     }
@@ -130,6 +131,10 @@ class ProfilePublic extends Component {
     render() {
 
         const {model, showModal} = this.props;
+
+        if (!model){
+            return <Loading/>
+        }
 
         return (
             <div className="row">
@@ -144,7 +149,6 @@ class ProfilePublic extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
-                        user={model}
                         showModal={showModal}
                     />
                 </div>
@@ -155,7 +159,7 @@ class ProfilePublic extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    model: getModel(state)
+    model: getDefaultModel(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
