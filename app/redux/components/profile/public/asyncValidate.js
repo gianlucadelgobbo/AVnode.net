@@ -1,5 +1,4 @@
 import {fetchSlug} from '../../../api';
-import {getSlug} from './selectors'
 import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 
 const asyncValidate = (values, dispatch, state) => {
