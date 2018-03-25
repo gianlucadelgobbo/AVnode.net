@@ -70,12 +70,12 @@ const getMessages = (user) => {
     }
 };
 
-const mapStateToProps = ({user}) => {
+const mapStateToProps = ({profile}) => {
 
     return {
-        user,
-        messages: getMessages(user),
-        locale: getLocale(user)
+        user: profile,
+        messages: getMessages(profile),
+        locale: getLocale(profile)
     };
 };
 
