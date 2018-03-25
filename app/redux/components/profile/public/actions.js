@@ -22,7 +22,7 @@ export const fetchModel = ({id} = {}) => (dispatch) => {
             (error) => {
                 dispatch({
                     type: FETCH_MODEL_ERROR,
-                    message: error.message || 'Something went wrong.'
+                    errorMessage: error.message || 'Something went wrong.'
                 });
             });
 };
@@ -45,7 +45,7 @@ export const saveModel = (model) => (dispatch) => {
             (error) => {
                 dispatch({
                     type: SAVE_MODEL_ERROR,
-                    message: error.message || 'Something went wrong.'
+                    errorMessage: error.message || 'Something went wrong.'
                 });
             });
 };

@@ -1,22 +1,31 @@
+/*
+* Selector for the whole section:
+* - each selector of the section should be placed here
+* - used to get model list and single model
+* - do not place selectors in the specific component
+* */
+
+const entity = "profile";
+
 export const getIds = (state) =>
-    state.profile.list.ids;
+    state[entity].list.ids;
 
 export const getIsFetching = (state) =>
-    state.profile.list.isFetching;
+    state[entity].list.isFetching;
 
 export const getErrorMessage = (state) =>
-    state.profile.list.errorMessage;
+    state[entity].list.errorMessage;
 
 export const getList = (state) =>
-    state.profile.list.ids && state.profile.list.ids.map((id) => getModel(state, id));
+    state[entity].list.ids && state[entity].list.ids.map((id) => getModel(state, id));
 
 export const getModel = (state, id) =>
-    state.profile.byId[id];
+    state[entity].byId[id];
 
 
 export const getDefaultModel = (state) => {
-    const firstId = Object.keys(state.profile.byId);
-    return firstId? state.profile.byId[firstId] : null;
+    const firstId = Object.keys(state[entity].byId);
+    return firstId? state[entity].byId[firstId] : null;
 };
 
 export const getModelErrorMessage = (state, id) =>
