@@ -1,19 +1,17 @@
-import {onlyFetchSlug} from './actions';
+import {fetchSlug} from '../../../api';
 import {getSlug} from './selectors'
 import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 
 const asyncValidate = (values, dispatch, state) => {
-    
-   alert("ASYNC", )
 
     const promises = [];
     const result = {};
 
     // slug
     let slugFromValues = values.slug;
-    let slugFromState = getSlug(state);
+    let slugFromState = state.initialValues.slug;
     if (slugFromValues !== slugFromState) {
-        promises.push(onlyFetchSlug(slugFromValues, dispatch)
+        promises.push(fetchSlug(slugFromValues)
             .then(response => {
                 if(response.exist) {
                     Object.assign(result, {slug: 'That slug is taken'})
@@ -22,7 +20,7 @@ const asyncValidate = (values, dispatch, state) => {
     }
 
     // addresses
-    console.log("async values", values.addresses)
+    console.log("async values", values.addresses);
     const addressesToCheck = values.addresses || [];
     const addressesErrorArray = [];
     addressesToCheck.forEach((a, index) => {
