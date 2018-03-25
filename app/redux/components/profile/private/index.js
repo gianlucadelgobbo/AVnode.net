@@ -1,6 +1,6 @@
 import {h, render, Component} from 'preact';
 import {FormattedMessage} from 'preact-intl';
-import Navbar from '../navbar'
+import ProfileLateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser, getCountries} from './selectors';
@@ -97,7 +97,7 @@ class ProfilePrivate extends Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <Navbar/>
+                    <ProfileLateralMenu/>
                 </div>
                 <div className="col-md-10">
                     <h1 className="labelField">

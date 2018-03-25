@@ -5,7 +5,7 @@ import {multiInputEmail} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
-class ProfileEmailForm extends Component {
+class ProfileConnectionsForm extends Component {
 
     render() {
 
@@ -40,4 +40,4 @@ export default reduxForm({
     validate,
     asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
-})(ProfileEmailForm);
+})(ProfileConnectionsForm);

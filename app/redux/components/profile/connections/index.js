@@ -1,5 +1,5 @@
 import {h, render, Component} from 'preact';
-import Navbar from '../navbar'
+import ProfileLateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser} from './selectors'
@@ -15,7 +15,7 @@ import {bindActionCreators} from "redux";
 * - dispatch the action to save the model
 * */
 
-class ProfileEmail extends Component {
+class ProfileConnections extends Component {
 
     // Convert form values to API model
     createUserModel(values) {
@@ -62,10 +62,10 @@ class ProfileEmail extends Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <Navbar/>
+                    <ProfileLateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h1>MY EMAIL</h1>
+                    <h1>MY CONNECTIONS</h1>
 
                     <br/>
                     <Form
@@ -89,9 +89,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal: showModal
 }, dispatch);
 
-ProfileEmail = connect(
+ProfileConnections = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileEmail);
+)(ProfileConnections);
 
-export default ProfileEmail;
+export default ProfileConnections;

@@ -1,6 +1,6 @@
 import { connect } from 'preact-redux';
 import Preferences from './Preferences';
-import { changeLanguage } from '../reducers/actions';
+import { changeLanguage } from '../../reducers/actions';
 
 const mapStateToProps = ({user}) => {
   return {

@@ -1,7 +1,7 @@
 import { connect } from 'preact-redux';
 import Venue from './Venue';
 
-import { addEventVenue, removeEventVenue } from '../reducers/actions';
+import { addEventVenue, removeEventVenue } from '../../reducers/actions';
 
 const mapStateToProps = ({user}) => {
   return {

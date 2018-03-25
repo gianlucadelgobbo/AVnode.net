@@ -1,11 +1,11 @@
 import {h, render, Component} from 'preact';
-import ProfileLateralMenu from '../lateralMenu'
+import Navbar from '../lateralMenu/index'
 import Form from './form'
 import {connect} from 'preact-redux';
 import {getUser} from './selectors'
-import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "../../../reducers/actions";
-import {showModal} from "../../modal/actions";
+import {locales, locales_labels} from '../../../../config/default.json'
+import {editUser} from "./actions";
+import {showModal} from "../modal/actions";
 import {bindActionCreators} from "redux";
 
 /*
@@ -15,15 +15,13 @@ import {bindActionCreators} from "redux";
 * - dispatch the action to save the model
 * */
 
-class ProfilePassword extends Component {
+class ProfileEmail extends Component {
 
     // Convert form values to API model
     createUserModel(values) {
 
-        let model = {};
-
-        // Pass only 'password' to API
-        model.password = values.password;
+        //clone obj
+        let model = Object.assign({}, values);
 
         return model;
     }
@@ -64,10 +62,10 @@ class ProfilePassword extends Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <ProfileLateralMenu/>
+                    <Navbar/>
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">MY Password</h1>
+                    <h1>MY EMAIL</h1>
 
                     <br/>
                     <Form
@@ -81,6 +79,7 @@ class ProfilePassword extends Component {
     }
 }
 
+//Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     user: getUser(state)
 });
@@ -90,9 +89,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal: showModal
 }, dispatch);
 
-ProfilePassword = connect(
+ProfileEmail = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfilePassword);
+)(ProfileEmail);
 
-export default ProfilePassword;
+export default ProfileEmail;
