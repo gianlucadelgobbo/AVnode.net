@@ -2,21 +2,21 @@ import {combineReducers} from 'redux';
 import {reducer as formReducer} from 'redux-form';
 
 import modal from '../components/modal/reducers';
-import profile from '../components/profile/reducers';
+import profiles from '../components/profile/reducers';
 import countries from '../components/countries/reducers';
+import events from '../components/events/reducers';
 
-import crews from './crews';
-import performances from './performances';
-import events from './events';
-import preferences from './preferences';
+// import crews from './crews';
+// import performances from './performances';
+// import preferences from './preferences';
 
 const reducer = combineReducers({
-    //events,
-    //performances,
-    //crews,
-    profile,
+    events,
+    profiles,
     countries,
     //preferences,
+    //performances,
+    //crews,
     form: formReducer,
     modal
 });
