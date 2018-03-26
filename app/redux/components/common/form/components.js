@@ -10,6 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
+import {MODAL_REMOVE} from "../../modal/constants";
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -199,7 +200,7 @@ export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {e
                 <Button bsStyle="danger"
                         onClick={() =>
                             showModal({
-                                type: "REMOVE",
+                                type: MODAL_REMOVE,
                                 props: {
                                     onRemove: () => fields.remove(index)
                                 }
@@ -289,7 +290,7 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
                     bsStyle="danger"
                     onClick={() =>
                         showModal({
-                            type: "REMOVE",
+                            type: MODAL_REMOVE,
                             props: {
                                 onRemove: () => fields.remove(index)
                             }
@@ -436,7 +437,7 @@ export const renderDropzoneInput = (field) => {
                         <button type="button" className="btn btn-default clear-attachment" onClick={() => {
 
                             field.showModal({
-                                type: "REMOVE",
+                                type: MODAL_REMOVE,
                                 props: {
                                     onRemove: () => {
                                         let result = [...files];

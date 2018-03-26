@@ -7,7 +7,7 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-
+import {MODAL_SAVED} from "../../modal/constants";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -60,7 +60,7 @@ class ProfileEmails extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                    type: "SAVED"
+                     type: MODAL_SAVED
                 });
             });
     }

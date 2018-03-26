@@ -1,4 +1,4 @@
-import {h, render, Component} from 'preact';
+import {h, Component} from 'preact';
 import Navbar from '../navbar'
 import Form from './form'
 import {connect} from 'preact-redux';
@@ -7,6 +7,7 @@ import {locales, locales_labels} from '../../../../../config/default.json'
 import {editUser} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
+import {MODAL_SAVED} from "../../modal/constants";
 
 /*
 * Responsabilita'
@@ -117,7 +118,7 @@ class EventPublic extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                    type: "EXAMPLE"
+                    type: MODAL_SAVED
                 });
             });
     }
