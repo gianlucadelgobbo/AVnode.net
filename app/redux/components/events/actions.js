@@ -1,6 +1,7 @@
 import * as api from '../../api';
 import {normalize} from 'normalizr';
 import {FETCH_LIST_SUCCESS, FETCH_LIST_REQUEST, FETCH_LIST_ERROR} from './constants'
+import {SAVE_MODEL_ERROR, SAVE_MODEL_REQUEST, SAVE_MODEL_SUCCESS} from './constants'
 import {arrayOfEvent} from '../../schemas/event'
 
 export const fetchList = () => (dispatch) => {
@@ -20,6 +21,31 @@ export const fetchList = () => (dispatch) => {
             (error) => {
                 dispatch({
                     type: FETCH_LIST_ERROR,
+                    errorMessage: error.message || 'Something went wrong.'
+                });
+            });
+};
+
+export const removeModel = ({id}) => (dispatch) => {
+
+    dispatch({
+        type: SAVE_MODEL_REQUEST,
+        id
+    });
+
+    return api.removeEvent({id})
+        .then(
+            (response) => {
+                dispatch({
+                    type: SAVE_MODEL_SUCCESS,
+                    id,
+                    response: normalize(response || [], arrayOfEvent)
+                });
+            },
+            (error) => {
+                dispatch({
+                    type: SAVE_MODEL_ERROR,
+                    id,
                     errorMessage: error.message || 'Something went wrong.'
                 });
             });

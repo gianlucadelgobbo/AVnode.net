@@ -17,7 +17,7 @@ import ProfilePassword from '../profile/password/index';
 import ProfileConnections from '../profile/connections/index';
 
 // Events
-// import Events from '../events/index.js';
+import Events from '../events/index.js';
 // import EventPublic from '../events/public/index';
 
 // import EventImages from './_to_review/event/EventImages';
@@ -90,7 +90,7 @@ const App = () => {
                     {/*<PerformanceVideoGallery path="/admin/performance/videogallery/:_id"/>*/}
                     {/*<PerformanceSettings path="/admin/performance/settings/:_id"/>*/}
 
-                    {/*<Events path="/admin/events"/>*/}
+                    <Events path="/admin/events"/>
                     {/*<EventPublic path="/admin/event/public/:_id"/>*/}
                     {/*<EventImages path="/admin/event/images/:_id"/>*/}
                     {/*<EventPerformances path="/admin/event/performances/:_id"/>*/}
