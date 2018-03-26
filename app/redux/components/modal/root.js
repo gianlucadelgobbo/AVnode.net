@@ -7,6 +7,7 @@ import ModalWrapper from './wrapper';
 import {connect} from 'preact-redux';
 import {getModal} from './selectors';
 import * as actions from './actions';
+import {MODAL_EXAMPLE, MODAL_REMOVE, MODAL_SAVED} from "./constants"
 /*
 * Come creare una nuova modale:
 * - creare la cartella corrispondente dentro ./src/containers/modal come 'example'
@@ -17,16 +18,16 @@ import * as actions from './actions';
 * */
 
 const MODAL_COMPONENTS = {
-    EXAMPLE: Example,
-    SAVED: Saved,
-    REMOVE: Remove,
+    [MODAL_EXAMPLE]: Example,
+    [MODAL_SAVED]: Saved,
+    [MODAL_REMOVE]: Remove,
     /* other modals */
 };
 
 const MODAL_TITLES = {
-    EXAMPLE: 'This is the title',
-    SAVED: 'Saved!',
-    REMOVE: 'Remove?',
+    [MODAL_EXAMPLE]: 'This is the title',
+    [MODAL_SAVED]: 'Saved!',
+    [MODAL_REMOVE]: 'Remove?',
 
     /* other modals */
 };

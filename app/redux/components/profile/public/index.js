@@ -8,7 +8,7 @@ import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import Loading from '../../loading'
-
+import {MODAL_SAVED} from "../../modal/constants";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -123,7 +123,7 @@ class ProfilePublic extends Component {
         return saveModel(modelToSave)
             .then(() => {
                 showModal({
-                    type: "SAVED"
+                     type: MODAL_SAVED
                 });
             });
     }

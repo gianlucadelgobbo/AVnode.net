@@ -6,6 +6,7 @@ import {showModal} from "../../modal/actions";
 import {fetchEvents, removeEvent} from "./actions";
 import {Button} from 'react-bootstrap';
 import {Link} from 'preact-router/match';
+import {MODAL_REMOVE} from "../../modal/constants";
 
 class EventList extends Component {
 
@@ -34,7 +35,7 @@ class EventList extends Component {
                         bsStyle="danger"
                         onClick={() =>
                             showModal({
-                                type: "REMOVE",
+                                type: MODAL_REMOVE,,
                                 props: {
                                     onRemove: () => removeEvent({id: event.id})
                                 }

@@ -10,7 +10,7 @@ import Loading from '../../loading'
 import {getDefaultModel} from "../selectors";
 import {fetchList as fetchCountries} from '../../countries/actions'
 import {getList as getCountries} from '../../countries/selectors'
-
+import {MODAL_SAVED} from "../../modal/constants";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -88,7 +88,7 @@ class ProfilePrivate extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                    type: "SAVED"
+                     type: MODAL_SAVED
                 });
             });
     }

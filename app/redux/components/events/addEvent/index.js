@@ -4,7 +4,7 @@ import {connect} from 'preact-redux';
 import {getUser} from './selectors'
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
-
+import {MODAL_SAVED} from "../../modal/constants";
 class AddEvent extends Component {
 
     // Convert form values to API model
@@ -40,7 +40,7 @@ class AddEvent extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                    type: "SAVED"
+                     type: MODAL_SAVED
                 });
             });
     }
