@@ -1,7 +1,9 @@
 import {fetchSlug} from '../../../api';
 import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 
-const asyncValidate = (values, dispatch, state) => {
+const asyncValidate = (values, dispatch, state, fieldName) => {
+
+    console.log("fieldName", fieldName)
 
     const promises = [];
     const result = {};
@@ -12,25 +14,33 @@ const asyncValidate = (values, dispatch, state) => {
     if (slugFromValues !== slugFromState) {
         promises.push(fetchSlug(slugFromValues)
             .then(response => {
-                if(response.exist) {
+                if (response.exist) {
                     Object.assign(result, {slug: 'That slug is taken'})
                 }
             }))
     }
 
     // addresses
-    console.log("async values", values.addresses);
     const addressesToCheck = values.addresses || [];
+
     const addressesErrorArray = [];
     addressesToCheck.forEach((a, index) => {
         promises.push(geocodeByAddress(a.text)
             .catch(error => {
-                console.error('Error', error);
-                addressesErrorArray[index] = {text: {_error: "Invalid city"}}
-            }))
+                addressesErrorArray[index] = {text: {_error: "Invalid city"}};
+                result.addresses = addressesErrorArray;
+            })
+        )
     });
 
-    return Promise.all(promises).then(() => result);
+    return Promise.all(promises)
+        .then(() => {
+            console.log("result OK", result)
+            return result;
+        }).catch(() => {
+            console.log("result error", result)
+            return result;
+        })
 
 };
 

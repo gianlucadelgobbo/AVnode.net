@@ -1,7 +1,9 @@
 /* Ajax requests go here */
 import axios from './conf/axios';
 
-// Profile
+// ============ Profile
+
+// - public
 export const fetchProfilePublic = () => {
     return axios.get("profile/public")
         .then(result => {
@@ -23,34 +25,89 @@ export const fetchSlug = (slug) => {
         });
 };
 
+// - private
 
+export const fetchCountries = () => {
+    return axios.get('/user/countries')
+        .then(result => {
+            return result.data;
+        });
+};
 
+export const fetchProfilePrivate = () => {
+    return axios.get("profile/private")
+        .then(result => {
+            return result.data;
+        });
+};
 
+export const saveProfilePrivate = (model) => {
+    return axios.get("profile/private", model)
+        .then(result => {
+            return result.data;
+        });
+};
 
+// - images
 
+export const fetchProfileImages = () => {
+    return axios.get("profile/images")
+        .then(result => {
+            return result.data;
+        });
+};
 
+export const saveProfileImages = (model) => {
+    return axios.get("profile/images", model)
+        .then(result => {
+            return result.data;
+        });
+};
 
-//
-// export const onlyFetchSlug = (slug) =>
-//     fetch(`/admin/api/profile/public/slugs/${slug}`)
-//         .then(json => {
-//             return json
-//         });
-//
-//
-// // SLUG
-// import {RESPONSE_SLUG} from "./components/profile/public/actions";
-//
-// export function fetchSlug(slug, dispatch) {
-//     return onlyFetchSlug(slug)
-//         .then(json => (
-//             dispatch({
-//                 type: RESPONSE_SLUG,
-//                 payload: json
-//             })
-//         ));
-// }
-//
-// export const onlyFetchSlug = (slug) => fetch(`/admin/api/profile/public/slugs/${slug}`).then(json => {
-//     return json
-// });
+// - emails
+
+export const fetchProfileEmails = () => {
+    return axios.get("profile/emails")
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveProfileEmails = (model) => {
+    return axios.get("profile/emails", model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - emails
+
+export const fetchProfileConnections = () => {
+    return axios.get("profile/connections")
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveProfileConnections = (model) => {
+    return axios.get("profile/connections", model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - password
+
+export const fetchProfilePassword = () => {
+    return axios.get("profile/password")
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveProfilePassword = (model) => {
+    return axios.get("profile/password", model)
+        .then(result => {
+            return result.data;
+        });
+};

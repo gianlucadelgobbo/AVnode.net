@@ -305,8 +305,9 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
     return <div className="card">
         <div className="card-header">
             <h4>{label}</h4>
-            <Button bsStyle="success" className="pull-right"
-                                      onClick={() => fields.unshift({})}>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift({})}>
                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
             </Button>
         </div>
@@ -342,6 +343,7 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
         <DatePicker
             {...input}
             dateForm="MM/DD/YYYY"
+            className="form-control"
             selected={input.value ? moment(input.value) : null}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}

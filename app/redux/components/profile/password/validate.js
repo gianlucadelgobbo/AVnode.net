@@ -5,7 +5,7 @@ const validate = values => {
 
     // password and confirmPassword must match
     if (password !== confirmPassword) {
-        errors.confirmPassword = "Passowrd don't match"
+        errors.confirmPassword = "Passwords don't match"
     }
 
 

@@ -11,7 +11,7 @@ export const fetchModel = ({id} = {}) => (dispatch) => {
         id
     });
 
-    return api.fetchProfileConnections({id})
+    return api.fetchProfileEmails({id})
         .then(
             (response) => {
                 dispatch({
@@ -34,7 +34,7 @@ export const saveModel = (model) => (dispatch) => {
         id: model.id
     });
 
-    return api.saveProfileConnections(model)
+    return api.saveProfileEmails(model)
         .then(
             (response) => {
                 dispatch({
