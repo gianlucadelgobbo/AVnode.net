@@ -1,12 +1,12 @@
 import {h, Component} from 'preact';
 import AddEventForm from './addEvent'
 import EventList from './list'
+import {bindActionCreators} from "redux";
+import {connect} from "preact-redux";
 
 class Events extends Component {
 
     render() {
-
-        const {} = this.props;
 
         return (
             <div>
@@ -21,5 +21,14 @@ class Events extends Component {
         );
     }
 }
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+Events = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Events);
 
 export default Events;

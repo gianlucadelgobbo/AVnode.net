@@ -1,25 +1,24 @@
-import {h, render, Component} from 'preact';
+import {h, Component} from 'preact';
 import {bindActionCreators} from "redux";
-import {getEvents, getIsFetching, getErrorMessage} from "./selectors";
+import {getList, getIsFetching, getErrorMessage} from "../selectors";
 import {connect} from "preact-redux";
 import {showModal} from "../../modal/actions";
-import {fetchEvents, removeEvent} from "./actions";
+import {fetchList, removeModel} from "../actions";
 import {Button} from 'react-bootstrap';
 import {Link} from 'preact-router/match';
 import {MODAL_REMOVE} from "../../modal/constants";
+import Loading from '../../loading'
 
 class EventList extends Component {
 
-
     componentDidMount() {
-        const {fetchEvents} = this.props;
-        fetchEvents();
+        const {fetchList} = this.props;
+        fetchList();
     }
 
     renderEvent(event, index) {
 
-        const {showModal, removeEvent} = this.props;
-
+        const {showModal, removeModel} = this.props;
 
         return <div className="col-md-12" key={index}>
             <div className="row">
@@ -35,9 +34,9 @@ class EventList extends Component {
                         bsStyle="danger"
                         onClick={() =>
                             showModal({
-                                type: MODAL_REMOVE,,
+                                type: MODAL_REMOVE,
                                 props: {
-                                    onRemove: () => removeEvent({id: event.id})
+                                    onRemove: () => removeModel({id: event.id})
                                 }
 
                             })}
@@ -59,7 +58,7 @@ class EventList extends Component {
 
                 {!events.length && <div>No events to display</div>}
 
-                {isFetching && <div>Loading..</div>}
+                {isFetching && <Loading/>}
 
                 {errorMessage && <div>{errorMessage}</div>}
 
@@ -70,17 +69,16 @@ class EventList extends Component {
     }
 }
 
-//Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    events: getEvents(state),
+    events: getList(state),
     isFetching: getIsFetching(state),
     errorMessage: getErrorMessage(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     showModal,
-    fetchEvents,
-    removeEvent
+    fetchList,
+    removeModel
 }, dispatch);
 
 EventList = connect(

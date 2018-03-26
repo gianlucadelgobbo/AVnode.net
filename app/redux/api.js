@@ -111,3 +111,20 @@ export const saveProfilePassword = (model) => {
             return result.data;
         });
 };
+
+
+// ============ Events
+
+export const fetchEvents = () => {
+    return axios.get("events")
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removeEvent = ({id}) => {
+    return axios.delete(`events/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
