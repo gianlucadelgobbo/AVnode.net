@@ -1,10 +1,12 @@
-import {h, render, Component} from 'preact';
+import {h, Component} from 'preact';
 import Form from './form'
 import {connect} from 'preact-redux';
-import {getUser} from './selectors'
+import {getModel} from '../selectors'
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../../modal/constants";
+import {saveModel} from '../actions'
+
 class AddEvent extends Component {
 
     // Convert form values to API model
@@ -18,9 +20,9 @@ class AddEvent extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
@@ -30,47 +32,46 @@ class AddEvent extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createUserModel(values);
-
-        // Add auth user _id
-        model._id = user._id;
+        const {showModal, saveModel} = this.props;
+        const modelToSave = this.createUserModel(values);
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
-                     type: MODAL_SAVED
+                    type: MODAL_SAVED
                 });
             });
     }
 
     render() {
 
-        const {user, showModal} = this.props;
+        const {showModal} = this.props;
 
         return (
+
             <div className="row">
                 <div className="col-md-12">
                     <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
-                        user={user}
                         showModal={showModal}
                     />
                 </div>
             </div>
+
         );
     }
 }
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    user: getUser(state)
+    model: getModel(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    showModal: showModal
+    showModal,
+    saveModel
 }, dispatch);
 
 AddEvent = connect(
