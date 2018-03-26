@@ -1,14 +1,15 @@
-import {h, render, Component} from 'preact';
+import {h, Component} from 'preact';
 import {FormattedMessage} from 'preact-intl';
+import {bindActionCreators} from "redux";
 import ProfileLateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
-import {getUser, getCountries} from './selectors';
-import {locales_labels} from '../../../../../config/languages.json';
-import {editUser} from "../../../reducers/actions";
+import {fetchModel, saveModel} from "./actions";
 import {showModal} from "../../modal/actions";
-import {bindActionCreators} from "redux";
-import {fetchCountries} from './actions'
+import Loading from '../../loading'
+import {getDefaultModel} from "../selectors";
+import {fetchList as fetchCountries} from '../../countries/actions'
+import {getList as getCountries} from '../../countries/selectors'
 
 /*
 * Responsabilita'
@@ -18,6 +19,14 @@ import {fetchCountries} from './actions'
 * */
 
 class ProfilePrivate extends Component {
+
+
+    componentDidMount() {
+        const {fetchModel, fetchCountries} = this.props;
+        fetchModel();
+        fetchCountries();
+    }
+
 
     // Convert form values to API model
     createUserModel(values) {
@@ -84,15 +93,13 @@ class ProfilePrivate extends Component {
             });
     }
 
-    componentDidMount() {
-        const {fetchCountries} = this.props;
-        fetchCountries();
-
-    }
-
     render() {
 
-        const {user, countries} = this.props;
+        const {model, countries, showModal} = this.props;
+
+        if (!model) {
+            return <Loading/>
+        }
 
         return (
             <div className="row">
@@ -111,7 +118,7 @@ class ProfilePrivate extends Component {
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
-                        user={user}
+                        user={model}
                         showModal={showModal}
                         countries={countries}
                     />
@@ -123,12 +130,13 @@ class ProfilePrivate extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    user: getUser(state),
-    coutries: getCountries(state)
+    model: getDefaultModel(state),
+    countries: getCountries(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser,
+    fetchModel,
+    saveModel,
     showModal,
     fetchCountries
 }, dispatch);

@@ -1,12 +1,12 @@
-import {h, render, Component} from 'preact';
+import {h, Component} from 'preact';
+import {connect} from 'preact-redux';
+import {bindActionCreators} from "redux";
 import ProfileLateralMenu from '../lateralMenu'
 import Form from './form'
-import {connect} from 'preact-redux';
-import {getUser} from './selectors'
-import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "../../../reducers/actions";
 import {showModal} from "../../modal/actions";
-import {bindActionCreators} from "redux";
+import Loading from '../../loading'
+import {getDefaultModel} from "../selectors";
+import {fetchModel, saveModel} from "./actions";
 
 /*
 * Responsabilita'
@@ -16,6 +16,11 @@ import {bindActionCreators} from "redux";
 * */
 
 class ProfileImage extends Component {
+
+    componentDidMount() {
+        const {fetchModel} = this.props;
+        fetchModel();
+    }
 
     // Convert form values to API model
     createUserModel(values) {
@@ -61,7 +66,11 @@ class ProfileImage extends Component {
 
     render() {
 
-        const {user, showModal} = this.props;
+        const {model, showModal} = this.props;
+
+        if (!model) {
+            return <Loading/>
+        }
 
         return (
             <div className="row">
@@ -75,7 +84,7 @@ class ProfileImage extends Component {
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
-                        user={user}
+                        user={model}
                         showModal={showModal}
                     />
                 </div>
@@ -86,12 +95,13 @@ class ProfileImage extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    user: getUser(state)
+    model: getDefaultModel(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser: editUser,
-    showModal: showModal
+    fetchModel,
+    saveModel,
+    showModal,
 }, dispatch);
 
 ProfileImage = connect(
