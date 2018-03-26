@@ -128,3 +128,10 @@ export const removeEvent = ({id}) => {
             return result.data;
         });
 };
+
+export const postEvent = (obj) => {
+    return axios.post(`events/`, obj)
+        .then(result => {
+            return result.data;
+        });
+};
