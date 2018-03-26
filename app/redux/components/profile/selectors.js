@@ -5,7 +5,7 @@
 * - do not place selectors in the specific component
 * */
 
-const entity = "profile";
+import {MODELS_NAME as entity} from './constants'
 
 export const getIds = (state) =>
     state[entity].list.ids;

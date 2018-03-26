@@ -1,4 +1,5 @@
 const PREFIX = 'PROFILE_';
+export const MODELS_NAME = "profiles";
 
 export const FETCH_LIST_SUCCESS = PREFIX + 'FETCH_LIST_SUCCESS';
 export const FETCH_LIST_ERROR = PREFIX + 'FETCH_LIST_ERROR';
