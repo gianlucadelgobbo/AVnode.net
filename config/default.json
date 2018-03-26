@@ -105,54 +105,44 @@
   "cp_basepath": "controlpanel",
   "usersListItems": 6,
   "cpanel": {
-    "user": {
-      "media":{
-        "image":{
-          "fields": {
-            "name": "image",
-            "maxCount": 1
+    "profile": {
+      "model" : "User",
+      "forms" : {
+        "public": {
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "abouts": 1,
+            "web": 1,
+            "social": 1,
+            "addresses": 1
           },
-          "filetypes": ["jpg","jpeg","png","gif","svg"],
-          "storage": "/glacier/users_originals/",
-          "maxsize": 2048000,
-          "minwidth": 1000,
-          "minheight": 1000,
-          "sizes": {
-            "small": {
-              "w": 100,
-              "h": 100,
-              "folder": "100x100",
-              "default": "/images/profile-default.svg"
-            },
-            "large": {
-              "w": 400,
-              "h": 400,
-              "folder": "400x400",
-              "default": "/images/profile-default.svg"
-            }
-          }
+          "populate": []
         },
-        "teaserImage":{
-          "fields": {
-            "name": "image",
-            "maxCount": 1
-          },
-          "filetypes": ["jpg","jpeg","png","gif","svg"],
-          "maxsize": 2048000,
-          "minwidth": 1920,
-          "minheight": 500,
-          "sizes": {
-            "medium": {
-              "w": 1280,
-              "h": 720,
-              "folder": "1280x720",
-              "default": "/images/profile-default.svg"
+        "image":{
+          "image":{
+            "fields": {
+              "name": "image",
+              "maxCount": 1
             },
-            "large": {
-              "w": 1920,
-              "h": 1080,
-              "folder": "1920x1080",
-              "default": "/images/profile-default.svg"
+            "filetypes": ["jpg","jpeg","png","gif","svg"],
+            "storage": "/glacier/users_originals/",
+            "maxsize": 2048000,
+            "minwidth": 1000,
+            "minheight": 1000,
+            "sizes": {
+              "small": {
+                "w": 100,
+                "h": 100,
+                "folder": "100x100",
+                "default": "/images/profile-default.svg"
+              },
+              "large": {
+                "w": 400,
+                "h": 400,
+                "folder": "400x400",
+                "default": "/images/profile-default.svg"
+              }
             }
           }
         }
@@ -163,14 +153,6 @@
       "coll": "users",
       "view_list": "performers",
       "view_edit": "user",
-      "list_fields": {
-        "title":1,
-        "users":1,
-        "slug":1,
-        "files":1,
-        "categories":1,
-        "stats":1
-      },
       "orders": [
         "mostrecent",
         "mostactive"
