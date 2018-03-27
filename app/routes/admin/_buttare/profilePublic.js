@@ -160,7 +160,7 @@ router.put('/', (req, res) => {
     if (user) {
       Object.assign(user, props);
       user.save(() => {
-        dataproviderAdmin.fetchUser(req.user.id, (err, user) => {
+        dataproviderAdmin.getUser(req.user.id, selectselect, populate, (err, user) => {
           res.json(user);
         });
       });

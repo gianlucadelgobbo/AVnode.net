@@ -6,7 +6,7 @@ const indexPlugin = require('../utilities/elasticsearch/Playlist');
 const About = require('./shared/About');
 const Media = require('./shared/Media');
 
-const adminsez = 'playlist';
+const adminsez = 'playlists';
 
 const playlistSchema = new Schema({
   old_id : String,
@@ -37,8 +37,8 @@ const playlistSchema = new Schema({
 playlistSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   console.log(this.media);
-  for(let format in config.cpanel[adminsez].media.media.sizes) {
-    imageFormats[format] = config.cpanel[adminsez].media.media.sizes[format].default;
+  for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+    imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
   }
   if (this.media && this.media.preview) {
     const serverPath = this.media.preview;
@@ -47,8 +47,8 @@ playlistSchema.virtual('imageFormats').get(function () {
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.media.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
   }
   return imageFormats;

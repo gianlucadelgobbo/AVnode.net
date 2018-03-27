@@ -7,7 +7,7 @@ const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
 const Venue = require('./shared/Venue');
 
-const adminsez = 'performance';
+const adminsez = 'performances';
 
 const Booking = new Schema({
   schedule: {
@@ -36,8 +36,6 @@ const performanceSchema = new Schema({
   title: String,
   is_public: { type: Boolean, default: false },
   image: MediaImage,
-  teaserImage: MediaImage,
-  //  file: {file: String},
   abouts: [About],
   stats: {},
   price: String,
@@ -83,8 +81,8 @@ performanceSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
-    for(let format in config.cpanel[adminsez].media.image.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].media.image.sizes[format].default;
+    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+      imageFormats[format] = config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
     }
     const serverPath = this.image.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -92,12 +90,12 @@ performanceSchema.virtual('imageFormats').get(function () {
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.image.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.image.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
   } else {
-    for(let format in config.cpanel[adminsez].media.image.sizes) {
-      imageFormats[format] = `${config.cpanel[adminsez].media.image.sizes[format].default}`;
+    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default}`;
     }
   }
   return imageFormats;

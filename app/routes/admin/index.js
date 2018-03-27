@@ -1,36 +1,53 @@
 const router = require('../router')();
-const allCountries = require('node-countries-list');
-const R = require('ramda');
+const get = require('./api/get');
 
-const profilePublic = require('./api/profilePublic');
-const profileImages = require('./api/profileImages');
-const profileEmails = require('./api/profileEmails');
-const profilePrivate = require('./api/profilePrivate');
-const profilePassword = require('./api/profilePassword');
+const logger = require('../../utilities/logger');
 
-// DELETE
-const user = require('./api/user');
-router.use('/api/user', user);
-//
+if (process.env.DEBUG) {
+  router.get('/api/config', (req, res) => {
+    res.render('json', {data: config.cpanel});
+  });
+}
 
-const crew = require('./api/crew');
-const performance = require('./api/performance');
-const event = require('./api/event');
-const search = require('./api/search');
-const tools = require('./tools/tools');
-const toolsEmails = require('./tools/toolsEmails');
+router.get('/api/profile/public/slugs/:slug', (req, res, next)=>{
+  req.params.id = req.user.id;
+  req.params.sez = 'profile';
+  get.getSlug(req, res);
+});
+router.get('/api/profile/:form/', (req, res) => {
+  req.params.id = req.user.id;
+  req.params.sez = 'profile';
+  get.getData(req, res);
+});
 
-router.use('/api/profile/public/', profilePublic);
-router.use('/api/profile/images', profileImages);
-router.use('/api/profile/emails', profileEmails);
-router.use('/api/profile/private', profilePrivate);
-router.use('/api/profile/password', profilePassword);
-router.use('/api/crew', crew);
-router.use('/api/performance', performance);
-router.use('/api/event', event);
-router.use('/api/search', search);
-router.use('/tools/emails', toolsEmails);
-router.use('/tools', tools);
+
+
+router.get('/api/:sez/:id/public/slugs/:slug', (req, res, next)=>{
+  get.getSlug(req, res);
+});
+
+
+router.get('/api/:sez/:id/:form/', (req, res) => {
+  get.getData(req, res);
+});
+
+router.get('/api/:sez/:id', (req, res) => {
+  req.params.form = 'public';
+  get.getData(req, res);
+});
+
+router.get('/api/:sez', (req, res) => {
+  get.getList(req, res);
+});
+
+
+router.get('/api/*', (req, res) => {
+  res.status(404).json({ error: `API_NOT_FOUND` });
+});
+
+router.get('/api', (req, res) => {
+  res.status(404).json({ error: `API_NOT_FOUND` });
+});
 
 router.get('/*', (req, res) => {
   res.render('admin/index', {
@@ -38,23 +55,5 @@ router.get('/*', (req, res) => {
     is_admin: true
   });
 });
-/*
-router.get('/api/countries', (req, res) => {
-  // FIXME: Later evaluate language param to return
-  // localized list depending on the user settings.
-  const convert = R.compose(
-    R.map(
-      R.zipObj(['key', 'name'])
-    ),
-    R.toPairs
-  );
 
-  allCountries('en', (err, countries) => {
-    if (err) {
-      throw err;
-    }
-    res.json(convert(countries));
-  });
-});
-*/
 module.exports = router;
