@@ -52,7 +52,7 @@ class ProfileEmails extends Component {
         model._id = user._id;
 
         //dispatch the action to save the model here
-        editUser(model)
+        return editUser(model)
             .then(() => {
                 showModal({
                     type: "SAVED"

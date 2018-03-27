@@ -51,7 +51,7 @@ class ProfileImage extends Component {
         return;
 
         //dispatch the action to save the model here
-        editUser(model)
+        return editUser(model)
             .then(() => {
                 showModal({
                     type: "SAVED"
