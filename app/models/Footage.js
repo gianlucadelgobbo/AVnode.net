@@ -35,13 +35,11 @@ const footageSchema = new Schema({
     virtuals: true
   }
 });
-
 // Return thumbnail
 footageSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  console.log(this.media.preview);
-  for(let format in config.cpanel[adminsez].media.media.sizes) {
-    imageFormats[format] = config.cpanel[adminsez].media.media.sizes[format].default;
+  for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+    imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
   }
   if (this.media && this.media.preview) {
     const serverPath = this.media.preview;
@@ -50,8 +48,8 @@ footageSchema.virtual('imageFormats').get(function () {
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.media.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.media.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
   }
   return imageFormats;
