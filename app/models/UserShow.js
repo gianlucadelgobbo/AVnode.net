@@ -13,7 +13,7 @@ const About = require('./shared/About');
 const Link = require('./shared/Link');
 const OrganizationData = require('./shared/OrganizationData');
 
-const adminsez = 'user';
+const adminsez = 'profile';
 
 const userSchema = new Schema({
   old_id: String,

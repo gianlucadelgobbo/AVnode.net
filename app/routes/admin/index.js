@@ -5,7 +5,7 @@ const logger = require('../../utilities/logger');
 
 if (process.env.DEBUG) {
   router.get('/api/config', (req, res) => {
-    res.render('json', {data: config.cpanel});
+    res.render('json', {data: require('getconfig').cpanel});
   });
 }
 
@@ -37,6 +37,7 @@ router.get('/api/:sez/:id', (req, res) => {
 });
 
 router.get('/api/:sez', (req, res) => {
+  req.params.id = req.user.id;
   get.getList(req, res);
 });
 
