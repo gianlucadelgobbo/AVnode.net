@@ -92,5 +92,5 @@ export default reduxForm({
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
-    asyncBlurFields: ['slug', 'addresses']
+    asyncBlurFields: ['slug', 'addresses[]']
 })(ProfilePublicForm);
