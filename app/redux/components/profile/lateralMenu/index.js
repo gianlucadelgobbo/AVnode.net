@@ -3,7 +3,6 @@ import LateralMenu from '../../lateralMenu'
 import {FormattedMessage} from 'preact-intl';
 import {bindActionCreators} from "redux";
 import {connect} from "preact-redux";
-import {Link} from 'preact-router/match';
 
 const items = [
     {

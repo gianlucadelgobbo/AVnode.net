@@ -27,7 +27,7 @@ class Events extends Component {
 
                     <hr/>
 
-                    {/*<EventList/>*/}
+                    <EventList/>
 
                 </div>
             </div>
