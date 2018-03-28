@@ -215,7 +215,7 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 
 eventSchema.virtual('imageFormats').get(function () {
-  logger.debug('imageFormats');
+  //logger.debug('imageFormats');
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {

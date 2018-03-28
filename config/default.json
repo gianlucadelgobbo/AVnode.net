@@ -183,6 +183,8 @@
             "web": 1,
             "social": 1
           },
+          "selectaddon": {
+          },
           "populate": []
         },
         "image": {
@@ -223,7 +225,11 @@
             }
           },
           "select": {
-            "image": 1,
+            "image": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1,
             "imageFormats": 1
           },
           "populate": []
@@ -242,6 +248,10 @@
           },
           "select": {
             "emails": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1
           },
           "populate": []
         },
@@ -344,6 +354,10 @@
             "mobile": 1,
             "skype": 1
           },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1
+          },
           "populate": []
         },
         "password": {
@@ -359,6 +373,10 @@
           },
           "select": {
             "connections": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1
           },
           "populate": []
         }
@@ -433,6 +451,8 @@
             "web": 1,
             "social": 1
           },
+          "selectaddon": {
+          },
           "populate": []
         },
         "image": {
@@ -475,6 +495,11 @@
           "select": {
             "image": 1
           },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1,
+            "imageFormats": 1
+          },
           "populate": []
         },
         "members": {
@@ -488,7 +513,11 @@
           "select": {
             "members": 1
           },
-          "populate": []
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1
+          },
+          "populate": [{ "path": "members", "select": "stagename image imageFormats", "model": "User"}]
         },
         "organization_data": {
           "components": {
@@ -557,11 +586,17 @@
             "introducedby2": 1,
             "activities": 1
           },
+          "selectaddon": {
+          },
           "populate": []
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "crews": 1
+        },
+        "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
@@ -755,6 +790,8 @@
             "emails": 1,
             "phones": 1
           },
+          "selectaddon": {
+          },
           "populate": [{ "path": "categories" , "select": "name" }]
         },
         "image": {
@@ -794,12 +831,16 @@
             }
           },
           "select": {
-            "image": 1,
+            "image": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1,
             "imageFormats": 1
           },
           "populate": []
         },
-        "users": {
+        "partners": {
           "components": {
             "partners": {
               "comp": "list_and_add_to_category",
@@ -833,10 +874,13 @@
             }
           },
           "select": {
-            "partners": 1,
-            "users": 1
+            "partners": 1
           },
-          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"},{ "path": "parners", "select": "stagename image imageFormats", "model": "User"}]
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
+          "populate": [{ "path": "partners", "select": "stagename image imageFormats", "model": "User"},{ "path": "parners", "select": "stagename image imageFormats", "model": "User"}]
         },
         "program": {
           "components": {
@@ -967,6 +1011,10 @@
           "select": {
             "program": 1
           },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
           "populate": [{ "path": "program.performance", "select": "title image imageFormats", "model": "Performance"},{ "path": "program.schedule.categories", "select": "name"}]
         },
         "galleries": {
@@ -1033,6 +1081,10 @@
           "select": {
             "galleries": 1
           },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
           "populate": [{ "path": "galleries", "select": "title image imageFormats users", "model": "Gallery", "populate": { "path": "users", "select": "stagename image imageFormats", "model": "User"}}]
         },
         "videos": {
@@ -1098,6 +1150,10 @@
           },
           "select": {
             "videos": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
           },
           "populate": [{ "path": "videos", "select": "title image imageFormats users", "model": "Video", "populate": { "path": "users", "select": "stagename image imageFormats", "model": "User"}}]
         },
@@ -1345,6 +1401,10 @@
           "select": {
             "calls": 1
           },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
           "populate": []
         },
         "settings": {
@@ -1420,14 +1480,23 @@
             }
           },
           "select": {
+            "users": 1,
             "settings": 1,
             "organizationsettings": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
           },
           "populate": []
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "events": 1
+        },
+        "select_addon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
@@ -1578,11 +1647,17 @@
             "users": 1,
             "tags": 1
           },
+          "selectaddon": {
+          },
           "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "footage": 1
+        },
+        "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
@@ -1730,11 +1805,17 @@
             "users": 1,
             "medias": 1
           },
+          "selectaddon": {
+          },
           "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "galleries": 1
+        },
+        "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
@@ -1887,11 +1968,17 @@
             "web": 1,
             "social": 1
           },
+          "selectaddon": {
+          },
           "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "news": 1
+        },
+        "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
@@ -2043,7 +2130,9 @@
             "tech_art": 1,
             "tech_req": 1
           },
-          "populate": []
+          "selectaddon": {
+          },
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}]
         },
         "image": {
           "components": {
@@ -2083,6 +2172,11 @@
           },
           "select": {
             "image": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1,
+            "imageFormats": 1
           },
           "populate": []
         },
@@ -2150,7 +2244,11 @@
           "select": {
             "galleries": 1
           },
-          "populate": []
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
+          "populate": [{ "path": "galleries", "select": "title image imageFormats", "model": "Gallery"}]
         },
         "videos": {
           "components": {
@@ -2216,11 +2314,19 @@
           "select": {
             "videos": 1
           },
-          "populate": []
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
+          "populate": [{ "path": "videos", "select": "title image imageFormats", "model": "Video"}]
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "performances": 1
+        },
+        "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
@@ -2383,11 +2489,17 @@
             "users": 1,
             "footage": 1
           },
+          "selectaddon": {
+          },
           "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "footage", "select": "title media imageFormats tags stats", "model": "Footage"}, { "path": "categories" , "select": "name" }]
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "playlists": 1
+        },
+        "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
@@ -2523,6 +2635,8 @@
             "categories": 1,
             "users": 1
           },
+          "selectaddon": {
+          },
           "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
         },
         "events": {
@@ -2557,7 +2671,11 @@
           "select": {
             "events": 1
           },
-          "populate": []
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
+          "populate": [{ "path": "events", "select": "title image imageFormats", "model": "Event"}]
         },
         "performances": {
           "components": {
@@ -2591,11 +2709,19 @@
           "select": {
             "performances": 1
           },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
           "populate": [{ "path": "performances", "select": "title image imageFormats", "model": "Performance"}, { "path": "categories" , "select": "name" }]
         }
       },
       "list": {
+        "model": "User",
         "select": {
+          "videos": 1
+        },
+        "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1

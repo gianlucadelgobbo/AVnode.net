@@ -1,8 +1,5 @@
 // SUCCESS
-{
-  errors: false,
-  res: RETURNED_RES // Probably null
-}
+{RETURNED_RES}
 
 // ERRORS 404
 {
