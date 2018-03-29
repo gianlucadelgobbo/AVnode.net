@@ -1,6 +1,8 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
+
 //const indexPlugin = require('../utilities/elasticsearch/News');
 
 const About = require('./shared/About');
@@ -54,6 +56,26 @@ newsSchema.virtual('about').get(function (req) {
 });
 
 
+newsSchema.virtual('excerpt').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+  }
+  let excerpt = '';
+  aboutA = about.replace(/<[^>]+>/g, '').split(' ');
+  for (const item in aboutA) if ((excerpt+" "+aboutA[item]).length<160) excerpt+= aboutA[item]+" ";
+  return excerpt.trim();
+});
+
 // Return thumbnail
 newsSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
@@ -77,6 +99,12 @@ newsSchema.virtual('imageFormats').get(function () {
     }
   }
   return imageFormats;
+});
+
+newsSchema.virtual('creation_dateFormatted').get(function () {
+  const lang = global.getLocale();
+  moment.locale(lang);
+  return moment(this.creation_date).format(config.dateFormat[lang].single);
 });
 /*
 newsSchema.virtual('teaserImageFormats').get(function () {
