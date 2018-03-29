@@ -1,6 +1,7 @@
 const express = require('express');
 const compression = require('compression');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
 const morgan = require('morgan');
@@ -40,8 +41,11 @@ app.use(sass({
   debug: true,
   outputStyle: 'compressed'
 }));
+
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 84600 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(flash());
 app.use('/storage', express.static(path.join(__dirname, 'storage')));
 app.use('/warehouse', express.static(path.join(__dirname, 'warehouse')));
@@ -117,13 +121,16 @@ app.use((req, res, next) => {
   //logger.debug('req.path: '+req.path);
 
   if (!req.user && req.path.indexOf('/admin') === 0) {
+    logger.debug('NON LOGGATO ');
+    //logger.debug(req);
     req.session.returnTo = req.path;
     res.redirect('/login');
   } else {
+    logger.debug('LOGGATO ');
+    //logger.debug(req.user);
     next();
   }
 });
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 84600 }));
 // not needed because in public/
 
 // FIXME

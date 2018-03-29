@@ -58,7 +58,7 @@ export const editUser = (data) => (dispatch) => {
     return Promise.all(promises).then(() => {
         return fetch(
             `/admin/api/profile/public/`, {
-                method: 'POST',
+                method: 'PUT',
                 body: JSON.stringify(data)
             })
             .then(json => dispatch(gotUser(json)));
