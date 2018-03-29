@@ -880,7 +880,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "partners", "select": "stagename image imageFormats", "model": "User"},{ "path": "parners", "select": "stagename image imageFormats", "model": "User"}]
+          "populate": [{ "path": "partners.users", "select": "stagename image imageFormats", "model": "User"},{ "path": "partners.category", "select": "name", "model": "Category"}]
         },
         "program": {
           "components": {

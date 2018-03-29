@@ -578,6 +578,43 @@ var GALLERIES = function() {
 }
 
 var EVENTS = function() {
+
+  db.events.find({"partners.category": {$exists:false}}).forEach(function(e) {
+    if (e.partners) {
+      var partners = [];
+      for (var i in e.partners) {
+        for (var ii in e.partners[i]) {
+          var res = db.categories.findOne({name:i});
+          var partner = {
+            category: res._id,
+            user: e.partners[i][ii]
+          };
+          partners.push(partner);
+        }
+      }
+      e.partners = partners;
+      printjson(e.partners);
+      db.events.save(e);
+    }
+  });
+  db.events.find({"partners.category": {$exists:true}}).forEach(function(e) {
+    if (e.partners) {
+      var partners = {};
+      for (var i in e.partners) {
+        if (!partners[e.partners[i].category]) partners[e.partners[i].category] = {category: (e.partners[i].category), users: []};
+        partners[e.partners[i].category].users.push((e.partners[i].user));
+      }
+      var partnersOK = [];
+      for (var i in partners) {
+        partnersOK.push(partners[i]);
+      }
+      e.partners = partnersOK;
+      printjson(e.partners);
+      db.events.save(e);
+    }
+  });
+
+
   //db.events.findOne({permalink:'lpm-2017-amsterdam'});
   //db.events.find({permalink:'lpm-2017-amsterdam'}).forEach(function(e) {
     var sizes = [];

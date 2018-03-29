@@ -12,11 +12,11 @@ const flxer = {};
 const mailer = require('../utilities/mailer');
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user._id);
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
+  User.findById(id, 'stagename slug', (err, user) => {
     done(err, user);
   });
 });
@@ -24,6 +24,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
   logger.debug('passport.use:' + email);
 
   User.findOne({ email: email.toLowerCase() }, 'stagename slug', (err, user) => {
+    logger.debug(user);
     if (err) {
       logger.debug('passport.use User.findOne error:' + email + ' ' +  JSON.stringify(err));
       return done(err);
@@ -73,13 +74,13 @@ flxer.flxerLogin = (existingUser, email, password, done) => {
     if (ress.login) {
       logger.debug('flxer.authenticate successful');
 
-      if (isNaN(existingUser.activity) ) existingUser.activity = 0;
+      //if (isNaN(existingUser.activity) ) existingUser.activity = 0;
       existingUser.password = password;
       existingUser.save((err) => {
         if (err) {
           logger.debug('existingUser.save error:' + err);
         }
-        mailer.sendMsgEmail({ to: existingUser.email }, { msg: 'Password migrated from flxer, please login again.' }, (err) => {
+        mailer.sendMsgEmail({ to: email }, { msg: 'Password migrated from flxer, please login again.' }, (err) => {
           if (err) {
             logger.debug('mailer.sendMsgEmail error:' + err);
           } else {
