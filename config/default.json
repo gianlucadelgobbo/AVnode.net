@@ -1983,7 +1983,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "news", "select": "title image imageFormats stats categories", "model": "News", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
+        "populate": [{ "path": "news", "select": "title creation_date image imageFormats stats categories", "model": "News", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2811,6 +2811,8 @@
           "path": "news",
           "select": {
             "title": 1,
+            "creation_date":1,
+            "abouts":1,
             "slug": 1,
             "stats": 1,
             "image": 1
@@ -3583,6 +3585,7 @@
       "view_list": "news/list",
       "list_fields": {
         "title":1,
+        "creation_date":1,
         "users":1,
         "slug":1,
         "image":1,

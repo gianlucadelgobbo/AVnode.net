@@ -1,5 +1,6 @@
 .news_item_wrapper
-  p.news_date.miss="31/12/1999"
+  p.news_date=item.creation_dateFormatted
   a(href="/news/"+item.slug, title=item.title)
     h4.news_item_title=item.title
-  p.news_excerpt.miss="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tuo vero id quidem, inquam, arbitratu. Scientiam pollicentur, quam non erat mirum sapientiae cupido patria esse cariorem"
+  p.news_excerpt=item.excerpt
+  
