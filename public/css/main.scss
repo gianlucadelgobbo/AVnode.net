@@ -64,6 +64,21 @@ small, .small {
  
  /* performer page */
  
+.performer_links_list {
+    background: $color1;
+    padding: 0 15px;
+    margin: 0;
+}
+
+.performer_links_list a {
+    color: $color2;
+}
+.performer_links_list li:after {
+    content: "/";
+    color: $color4;
+    display: inline-block;
+    margin: 0 0px 0 5px;    
+}
  .performer_header_wrapper {
     padding: 30px 0;
  }
