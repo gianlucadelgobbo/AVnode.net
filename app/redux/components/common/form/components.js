@@ -162,6 +162,19 @@ export const multiInputText = ({fields, title, showModal, placeholder, meta: {er
 };
 
 export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {error}}) => {
+    return multiInput({
+        fields,
+        title,
+        meta: {error},
+        showModal,
+        placeholder,
+        render: inputEmail,
+        key: "text",
+        isChild: true
+    })
+};
+
+export const multiInputEmailWithDetails = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         const {is_confirmed} = fields.get(index);
         return <div className="row" key={index}>
@@ -172,7 +185,7 @@ export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {e
                     isChild={true}
                 />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-4">
 
                 <div className="row">
                     <div className="col-md-4">

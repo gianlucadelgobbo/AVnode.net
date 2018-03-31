@@ -80,7 +80,7 @@ export const saveProfileEmails = (model) => {
         });
 };
 
-// - emails
+// - connections
 
 export const fetchProfileConnections = () => {
     return axios.get("profile/connections")
@@ -138,6 +138,7 @@ export const postEvent = (obj) => {
 
 
 // - public
+
 export const fetchEventPublic = ({id}) => {
     return axios.get(`events/${id}/public`)
         .then(result => {
@@ -152,5 +153,20 @@ export const saveEventPublic = (model) => {
         });
 };
 
+// - images
+
+export const fetchEventImages = ({id}) => {
+    return axios.get(`events/${id}/image`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventImages = (model) => {
+    return axios.get(`events/${model._id}/image`, model)
+        .then(result => {
+            return result.data;
+        });
+};
 
 

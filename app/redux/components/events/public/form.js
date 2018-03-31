@@ -7,10 +7,11 @@ import {
     inputText,
     textareaMultiTab,
     multiInputUrl,
-    multiGoogleCityCountry,
-
+    multiInputEmail,
+    multiInputTel,
 } from "../../common/form/components";
 import validate from './validate';
+
 //import asyncValidate from './asyncValidate';
 
 class EventPublicForm extends Component {
@@ -62,21 +63,21 @@ class EventPublicForm extends Component {
                 />
 
                 <FieldArray
-                    name="abouts"
+                    name="subtitles"
                     component={textareaMultiTab}
                     tabs={aboutsTabs}
                     labels={aboutsLabels}
-                    placeholder="About"
+                    placeholder="Subtitles"
                 />
 
                 <br/>
 
                 <FieldArray
-                    name="social"
-                    component={multiInputUrl}
-                    placeholder="Socials"
-                    title="Socials"
-                    showModal={showModal}
+                    name="abouts"
+                    component={textareaMultiTab}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="About"
                 />
 
                 <br/>
@@ -92,11 +93,32 @@ class EventPublicForm extends Component {
                 <br/>
 
                 <FieldArray
-                    name="addresses"
-                    component={multiGoogleCityCountry}
-                    placeholder="Address"
+                    name="social"
+                    component={multiInputUrl}
+                    placeholder="Socials"
+                    title="Socials"
                     showModal={showModal}
                 />
+
+                <br/>
+
+                <FieldArray
+                    name="emails"
+                    component={multiInputEmail}
+                    placeholder="Emails"
+                    showModal={showModal}
+                />
+
+                <br/>
+
+                <FieldArray
+                    name="phones"
+                    component={multiInputTel}
+                    placeholder="Phones"
+                    showModal={showModal}
+                />
+
+                <br/>
 
                 <hr/>
 

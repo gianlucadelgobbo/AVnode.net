@@ -10,19 +10,16 @@ import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
-/*
-* Responsabilita'
-* - Get form's initial values from redux state here
-* - pass initial values to form
-* - dispatch the action to save the model
-* */
+import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
 
-class ProfileImage extends Component {
+
+class EventImage extends Component {
 
     componentDidMount() {
-        const {fetchModel} = this.props;
-        fetchModel();
+        const {fetchModel, _id} = this.props;
+        fetchModel({
+            id: _id
+        });
     }
 
     // Convert form values to API model
@@ -62,22 +59,24 @@ class ProfileImage extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                     type: MODAL_SAVED
+                    type: MODAL_SAVED
                 });
             });
     }
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {model, showModal, isFetching, errorMessage, _id} = this.props;
 
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <LateralMenu/>
+                    <LateralMenu
+                        _id={_id}
+                    />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">MY IMAGE</h1>
+                    <h1 className="labelField">EVENT IMAGE</h1>
 
                     <br/>
                     {isFetching && !model && <Loading/>}
@@ -86,7 +85,7 @@ class ProfileImage extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && model &&  <Form
+                    {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
@@ -101,8 +100,8 @@ class ProfileImage extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+    isFetching: getModelIsFetching(state),
+    errorMessage: getModelErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -111,9 +110,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal,
 }, dispatch);
 
-ProfileImage = connect(
+EventImage = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileImage);
+)(EventImage);
 
-export default ProfileImage;
+export default EventImage;

@@ -1,11 +1,11 @@
 import {h, render, Component} from 'preact';
-import {reduxForm, Field, FieldArray} from "redux-form";
+import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-import {multiInputEmailWithDetails} from "../../common/form/components";
+import {renderDropzoneInput} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
-class ProfileEmailsForm extends Component {
+class ProfileImageForm extends Component {
 
     render() {
 
@@ -19,10 +19,10 @@ class ProfileEmailsForm extends Component {
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
-                <FieldArray
-                    name="emails"
-                    component={multiInputEmailWithDetails}
-                    placeholder="Emails"
+                <Field
+                    name="images"
+                    component={renderDropzoneInput}
+                    placeholder="Images"
                     showModal={showModal}
                 />
 
@@ -46,6 +46,6 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    //asyncValidate,
+    asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
-})(ProfileEmailsForm);
+})(ProfileImageForm);

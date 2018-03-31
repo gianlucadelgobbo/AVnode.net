@@ -19,8 +19,8 @@ import ProfileConnections from '../profile/connections/index';
 // Events
 import Events from '../events/index.js';
 import EventPublic from '../events/public/index';
+import EventImages from '../events/images/index';
 
-// import EventImages from './_to_review/event/EventImages';
 // import EventPerformances from './_to_review/event/EventPerformances';
 // import EventPartners from './_to_review/event/EventPartners';
 // import EventPhotoGallery from './_to_review/event/EventPhotoGallery';
@@ -93,7 +93,7 @@ const App = () => {
 
                     <Events path="/admin/events"/>
                     <EventPublic path="/admin/events/:_id/public/"/>
-                    {/*<EventImages path="/admin/events/images/:_id"/>*/}
+                    <EventImages path="/admin/events/:_id/images/"/>
                     {/*<EventPerformances path="/admin/events/performances/:_id"/>*/}
                     {/*<EventPartners path="/admin/event/partners/:_id"/>*/}
                     {/*<EventPhotoGallery path="/admin/event/photogallery/:_id"/>*/}

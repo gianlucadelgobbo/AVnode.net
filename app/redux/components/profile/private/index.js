@@ -1,7 +1,7 @@
 import {h, Component} from 'preact';
 import {FormattedMessage} from 'preact-intl';
 import {bindActionCreators} from "redux";
-import ProfileLateralMenu from '../lateralMenu'
+import LateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
 import {fetchModel, saveModel} from "./actions";
@@ -103,7 +103,7 @@ class ProfilePrivate extends Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <ProfileLateralMenu/>
+                    <LateralMenu/>
                 </div>
                 <div className="col-md-10">
                     <h1 className="labelField">
