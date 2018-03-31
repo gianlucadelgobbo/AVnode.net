@@ -32,7 +32,7 @@ class EventList extends Component {
                         accessor: 'title',
                         Cell: (props) => {
                             const {row, original} = props;
-                            return <Link href={`/admin/event/public/${original._id}`}>
+                            return <Link href={`/admin/events/${original._id}/public`}>
                                 {row.title}
                             </Link>
                         }

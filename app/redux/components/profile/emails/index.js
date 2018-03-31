@@ -5,9 +5,12 @@ import ProfileLateralMenu from '../lateralMenu'
 import Form from './form'
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
+import ErrorMessage from '../../errorMessage'
+import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
+import {getErrorMessage, getIsFetching} from "../../events/selectors";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -23,7 +26,7 @@ class ProfileEmails extends Component {
     }
 
     // Convert form values to API model
-    createUserModel(values) {
+    createModelToSave(values) {
 
         //clone obj
         let model = Object.assign({}, values);
@@ -51,7 +54,7 @@ class ProfileEmails extends Component {
 
     onSubmit(values) {
         const {showModal, editUser, user} = this.props;
-        const model = this.createUserModel(values);
+        const model = this.createModelToSave(values);
 
         // Add auth user _id
         model._id = user._id;
@@ -67,11 +70,8 @@ class ProfileEmails extends Component {
 
     render() {
 
-        const {model, showModal} = this.props;
+        const {model, showModal, isFetching, errorMessage} = this.props;
 
-        if (!model) {
-            return <Loading/>
-        }
         return (
             <div className="row">
                 <div className="col-md-2">
@@ -82,12 +82,18 @@ class ProfileEmails extends Component {
 
                     <br/>
 
-                    <Form
+                    {isFetching && !model && <Loading/>}
+
+                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+
+                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model &&  <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                    />
+                    />}}
                 </div>
             </div>
         );
@@ -96,7 +102,9 @@ class ProfileEmails extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    model: getDefaultModel(state)
+    model: getDefaultModel(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

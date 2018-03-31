@@ -11,7 +11,7 @@ const PUBLIC = {
     unique: true,
     validators: {
         'Array_max_length': 2
-    }]
+   }}]
   },
   schedule: [{
     date: {
@@ -62,7 +62,7 @@ const PUBLIC = {
         }
       },
     }
-  }],
+ }],
   slug: {
     comp: 'simpletext',
     label: 'Event url',
@@ -146,7 +146,7 @@ const IMAGE = {
 }
 
 const USERS = {
-  //users:  [{ type: Schema.ObjectId, ref: 'UserShow' }], TO DELETE
+  //users:  [{ type: Schema.ObjectId, ref: 'UserShow'}}], TO DELETE
   partners: {
     comp: 'list_and_add_to_category', // relation manager
     rel_obj: 'User',
@@ -238,7 +238,7 @@ const PROGRAM = {
         unique: true,
         validators: {
             'Array_max_length': 2
-      }],
+     }}],
     },
     performance: {
       comp: 'list_and_add', // relation manager
@@ -253,7 +253,7 @@ const PROGRAM = {
         'Confirm': {}
       }
     }
-  }]
+ }}]
 }
 
 const GALLERIES = {
@@ -345,7 +345,7 @@ const CALLS = {
         'is_date': {}
     }
   },
-  admitted: [{ type: Schema.ObjectId, ref: 'Category' }],
+  admitted: [{ type: Schema.ObjectId, ref: 'Category'}}],
   excerpt: {
     schema: 'shared/About',
     comp: 'textarea_multilang',
@@ -442,7 +442,7 @@ const CALLS = {
       validators: {
           'String': {min: 3, max: 50},
       }
-    }],
+   }}],
     daily: {
       comp: 'checkbox',
       label: 'Daily',
@@ -468,7 +468,7 @@ const CALLS = {
           'is_date': {}
       }
     }
-  }],
+ }],
   topics: [{
     name: {
       comp: 'simpletext',
@@ -487,7 +487,7 @@ const CALLS = {
           'String': {min: 0, max: 50000}
       }
     }
-  }]
+ }}]
 }]
 }
 

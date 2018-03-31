@@ -3,7 +3,7 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
 import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from "../../common/form/components";
 import validate from './validate';
-import asyncValidate from './asyncValidate';
+//import asyncValidate from './asyncValidate';
 
 class EventPublicForm extends Component {
 
@@ -21,55 +21,55 @@ class EventPublicForm extends Component {
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
-                <Field
-                    name="stagename"
-                    component={inputText}
-                    placeholder="Stage name"
-                />
+                {/*<Field*/}
+                    {/*name="stagename"*/}
+                    {/*component={inputText}*/}
+                    {/*placeholder="Stage name"*/}
+                {/*/>*/}
 
-                <Field
-                    name="slug"
-                    component={inputText}
-                    placeholder="Profile url"
-                />
+                {/*<Field*/}
+                    {/*name="slug"*/}
+                    {/*component={inputText}*/}
+                    {/*placeholder="Profile url"*/}
+                {/*/>*/}
 
-                <FieldArray
-                    name="abouts"
-                    component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
-                    placeholder="About"
-                />
+                {/*<FieldArray*/}
+                    {/*name="abouts"*/}
+                    {/*component={textareaMultiTab}*/}
+                    {/*tabs={aboutsTabs}*/}
+                    {/*labels={aboutsLabels}*/}
+                    {/*placeholder="About"*/}
+                {/*/>*/}
 
-                <br/>
+                {/*<br/>*/}
 
-                <FieldArray
-                    name="social"
-                    component={multiInputUrl}
-                    placeholder="Socials"
-                    title="Socials"
-                    showModal={showModal}
-                />
+                {/*<FieldArray*/}
+                    {/*name="social"*/}
+                    {/*component={multiInputUrl}*/}
+                    {/*placeholder="Socials"*/}
+                    {/*title="Socials"*/}
+                    {/*showModal={showModal}*/}
+                {/*/>*/}
 
-                <br/>
+                {/*<br/>*/}
 
-                <FieldArray
-                    name="web"
-                    component={multiInputUrl}
-                    placeholder="Web"
-                    title="Web"
-                    showModal={showModal}
-                />
+                {/*<FieldArray*/}
+                    {/*name="web"*/}
+                    {/*component={multiInputUrl}*/}
+                    {/*placeholder="Web"*/}
+                    {/*title="Web"*/}
+                    {/*showModal={showModal}*/}
+                {/*/>*/}
 
-                <br/>
+                {/*<br/>*/}
 
-                <FieldArray
-                    name="addresses"
-                    component={multiGoogleCityCountry}
-                    //component={multiInputText}
-                    placeholder="Address"
-                    showModal={showModal}
-                />
+                {/*<FieldArray*/}
+                    {/*name="addresses"*/}
+                    {/*component={multiGoogleCityCountry}*/}
+                    {/*//component={multiInputText}*/}
+                    {/*placeholder="Address"*/}
+                    {/*showModal={showModal}*/}
+                {/*/>*/}
 
                 <hr/>
 
@@ -91,6 +91,6 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    asyncValidate,
-    asyncBlurFields: ['slug', 'addresses[]']
+    //asyncValidate,
+    //asyncBlurFields: ['slug', 'addresses[]']
 })(EventPublicForm);

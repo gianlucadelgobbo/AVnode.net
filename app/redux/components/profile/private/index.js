@@ -7,10 +7,13 @@ import {connect} from 'preact-redux';
 import {fetchModel, saveModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
+import ErrorMessage from '../../errorMessage'
+import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchList as fetchCountries} from '../../countries/actions'
 import {getList as getCountries} from '../../countries/selectors'
 import {MODAL_SAVED} from "../../modal/constants";
+import {getErrorMessage, getIsFetching} from "../../events/selectors";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -29,7 +32,7 @@ class ProfilePrivate extends Component {
 
 
     // Convert form values to API model
-    createUserModel(values) {
+    createModelToSave(values) {
 
         //clone obj
         let model = Object.assign({}, values);
@@ -78,7 +81,7 @@ class ProfilePrivate extends Component {
 
     onSubmit(values) {
         const {showModal, editUser, user} = this.props;
-        const model = this.createUserModel(values);
+        const model = this.createModelToSave(values);
         console.log(model);
 
         // Add auth user _id
@@ -95,11 +98,7 @@ class ProfilePrivate extends Component {
 
     render() {
 
-        const {model, countries, showModal} = this.props;
-
-        if (!model) {
-            return <Loading/>
-        }
+        const {model, countries, showModal, errorMessage, isFetching} = this.props;
 
         return (
             <div className="row">
@@ -115,13 +114,20 @@ class ProfilePrivate extends Component {
                     </h1>
 
                     <br/>
-                    <Form
+
+                    {isFetching && !model && <Loading/>}
+
+                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+
+                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
                         countries={countries}
-                    />
+                    />}
                 </div>
             </div>
         );
@@ -131,7 +137,9 @@ class ProfilePrivate extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
-    countries: getCountries(state)
+    countries: getCountries(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
