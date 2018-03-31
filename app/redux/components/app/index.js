@@ -56,7 +56,7 @@ import CrewsPublic from '../crews/public';
 // import PerformanceVideoGallery from './_to_review/performance/PerformanceVideoGallery';
 // import PerformanceSettings from './_to_review/performance/PerformanceSettings';
 // // Preferences
-// import Preferences from './_to_review/PreferencesContainer';
+import Preferences from '../preferences/index';
 
 
 const App = () => {
@@ -111,7 +111,7 @@ const App = () => {
                     {/*<EventVideoGallery path="/admin/event/videogallery/:_id"/>*/}
                     <EventSettings path="/admin/events/:_id/settings/"/>
 
-                    {/*<Preferences path="/admin/preferences"/>*/}
+                    <Preferences path="/admin/preferences"/>
 
                     <PageNotFound type="404" default/>
                 </Router>
