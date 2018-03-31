@@ -135,3 +135,22 @@ export const postEvent = (obj) => {
             return result.data;
         });
 };
+
+
+// - public
+export const fetchEventPublic = ({id}) => {
+    return axios.get(`events/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventPublic = (model) => {
+    return axios.get(`events/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+

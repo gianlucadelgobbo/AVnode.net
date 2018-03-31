@@ -6,61 +6,76 @@ import {connect} from "preact-redux";
 
 const items = [
     {
-        href: "/admin/event/public",
+        href: "/admin/events/:_id/public",
         label: <FormattedMessage
             id="publicData"
             defaultMessage="Public data"
         />
     },
     {
-        href: "/admin/event/images",
+        href: "/admin/events/:_id/images",
         label: <FormattedMessage
             id="images"
             defaultMessage="Images"/>
 
     },
     {
-        href: "/admin/event/emails",
+        href: "/admin/events/:_id/users",
         label: <FormattedMessage
-            id="emails"
-            defaultMessage="Emails"
+            id="users"
+            defaultMessage="Users"
         />
 
     },
     {
-        href: "/admin/event/private",
+        href: "/admin/events/:_id/program",
         label: <FormattedMessage
-            id="privateData"
-            defaultMessage="Private data"
+            id="program"
+            defaultMessage="Program"
         />
-
 
     },
     {
-        href: "/admin/event/password",
+        href: "/admin/events/:_id/galleries",
         label: <FormattedMessage
-            id="password"
-            defaultMessage="Password"
+            id="galleries"
+            defaultMessage="Galleries"
         />
-
+    },
+    {
+        href: "/admin/events/:_id/videos",
+        label: <FormattedMessage
+            id="videos"
+            defaultMessage="Videos"
+        />
 
     },
     {
-        href: "/admin/event/connections",
+        href: "/admin/events/:_id/calls",
         label: <FormattedMessage
-            id="connections"
-            defaultMessage="Connections"
+            id="calls"
+            defaultMessage="Calls"
         />
 
+    },
+    {
+        href: "/admin/events/:_id/setting",
+        label: <FormattedMessage
+            id="setting"
+            defaultMessage="Setting"
+        />
 
     },
 ];
 
 class ProfileLateralMenu extends Component {
     render() {
+        const {_id} = this.props;
+
         return (
             <LateralMenu
                 items={items}
+                _id={_id}
             />
         )
     }

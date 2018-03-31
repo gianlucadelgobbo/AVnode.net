@@ -8,7 +8,11 @@ import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import Loading from '../../loading'
+import ErrorMessage from '../../errorMessage'
+import ItemNotFound from '../../itemNotFound'
 import {MODAL_SAVED} from "../../modal/constants";
+import {getErrorMessage, getIsFetching} from "../../events/selectors";
+
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -18,13 +22,13 @@ import {MODAL_SAVED} from "../../modal/constants";
 
 class ProfilePublic extends Component {
 
-    componentDidMount(){
+    componentDidMount() {
         const {fetchModel} = this.props;
         fetchModel();
     }
 
     // Convert form values to API model
-    createUserModel(values) {
+    createModelToSave(values) {
 
         //clone obj
         let model = Object.assign({}, values);
@@ -114,7 +118,7 @@ class ProfilePublic extends Component {
 
     onSubmit(values) {
         const {showModal, saveModel, model} = this.props;
-        const modelToSave = this.createUserModel(values);
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
         modelToSave._id = model._id;
@@ -123,18 +127,14 @@ class ProfilePublic extends Component {
         return saveModel(modelToSave)
             .then(() => {
                 showModal({
-                     type: MODAL_SAVED
+                    type: MODAL_SAVED
                 });
             });
     }
 
     render() {
 
-        const {model, showModal} = this.props;
-
-        if (!model){
-            return <Loading/>
-        }
+        const {model, showModal, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
@@ -144,13 +144,20 @@ class ProfilePublic extends Component {
                 <div className="col-md-10">
                     <h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
                     <br/>
-                    <Form
+
+                    {isFetching && !model && <Loading/>}
+
+                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+
+                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
                         showModal={showModal}
-                    />
+                    />}
                 </div>
             </div>
         );
@@ -159,7 +166,9 @@ class ProfilePublic extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    model: getDefaultModel(state)
+    model: getDefaultModel(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

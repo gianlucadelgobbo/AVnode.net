@@ -22,14 +22,13 @@ export const getList = (state) =>
 export const getModel = (state, id) =>
     state[entity].byId[id];
 
-
 export const getDefaultModel = (state) => {
     const firstId = Object.keys(state[entity].byId);
     return firstId? state[entity].byId[firstId] : null;
 };
 
 export const getModelErrorMessage = (state, id) =>
-    getModel(state, id).errorMessage;
+    getModel(state, id) && getModel(state, id).errorMessage;
 
-export const getModelisFetching = (state, id) =>
-    getModel(state, id).isFetching;
+export const getModelIsFetching = (state, id) =>
+    getModel(state, id) && getModel(state, id).isFetching;

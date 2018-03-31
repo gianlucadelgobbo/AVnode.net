@@ -10,7 +10,7 @@ import {saveModel} from '../actions'
 class AddEvent extends Component {
 
     // Convert form values to API model
-    createUserModel(values) {
+    createModelToSave(values) {
 
         //clone obj
         let model = Object.assign({}, values);
@@ -33,7 +33,7 @@ class AddEvent extends Component {
 
     onSubmit(values) {
         const {showModal, saveModel} = this.props;
-        const modelToSave = this.createUserModel(values);
+        const modelToSave = this.createModelToSave(values);
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)

@@ -22,17 +22,17 @@ const profilePublicValidate = values => {
     }
 
     //web
-    if (values.web.length < 1 || values.web.length > 5) {
+    if (!values.web || (values.web.length < 1 || values.web.length > 5)) {
         errors.web = {_error: "Invalid length: please insert 1 to 5 values"}
     }
 
     //social
-    if (values.social.length < 1 || values.social.length > 5) {
+    if (!values.social || (values.social.length < 1 || values.social.length > 5)) {
         errors.social = {_error: "Invalid length: please insert 1 to 5 values"}
     }
 
     //addresses
-    if (values.addresses.length < 1 || values.social.length > 5) {
+    if (!values.addresses || (values.addresses.length < 1 || values.social.length > 5)) {
         errors.addresses = {_error: "Invalid length: please insert 1 to 5 values"}
     }
 
