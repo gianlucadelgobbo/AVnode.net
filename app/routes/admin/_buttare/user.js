@@ -2,7 +2,6 @@ const config = require('getconfig');
 const router = require('../../router')();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
-
 const logger = require('../../../utilities/logger');
 
 const dataproviderAdmin = require('../../../utilities/dataproviderAdmin');
@@ -997,4 +996,24 @@ router.post('/:id/image/teaser', up, (req, res, next) => {
   });
 });
 */
+
+// countries
+router.get('/countries', (req, res) => {
+    // FIXME: Later evaluate language param to return
+    // localized list depending on the user settings.
+    const convert = R.compose(
+        R.map(
+            R.zipObj(['key', 'name'])
+        ),
+        R.toPairs
+    );
+
+    allCountries('en', (err, countries) => {
+        if (err) {
+            throw err;
+        }
+        res.json(convert(countries));
+    });
+});
+
 module.exports = router;
