@@ -20,6 +20,7 @@ import ProfileConnections from '../profile/connections/index';
 import Events from '../events/index.js';
 import EventPublic from '../events/public/';
 import EventImages from '../events/images/';
+import EventCalls from '../events/calls/';
 
 import EventSettings from '../events/settings/';
 
@@ -83,6 +84,7 @@ const App = () => {
                     {/*<CrewOrganization path="/admin/crew/organization/:_id"/>*/}
                     {/*<CrewImages path="/admin/crew/images/:_id"/>*/}
                     {/*<CrewMembers path="/admin/crew/members/:_id"/>*/}
+
                     {/*<Performances path="/admin/performances"/>*/}
                     {/*<PerformancePublic path="/admin/performance/public/:_id"/>*/}
                     {/*<PerformanceImages path="/admin/performance/images/:_id"/>*/}
@@ -96,6 +98,7 @@ const App = () => {
                     <Events path="/admin/events"/>
                     <EventPublic path="/admin/events/:_id/public/"/>
                     <EventImages path="/admin/events/:_id/images/"/>
+                    <EventCalls path="/admin/events/:_id/calls/"/>
                     {/*<EventPerformances path="/admin/events/performances/:_id"/>*/}
                     {/*<EventPartners path="/admin/event/partners/:_id"/>*/}
                     {/*<EventPhotoGallery path="/admin/event/photogallery/:_id"/>*/}

@@ -8,8 +8,7 @@ import {Button} from 'react-bootstrap';
 import {Link} from 'preact-router/match';
 import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading'
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import Table from '../../table'
 
 class EventList extends Component {
 
@@ -22,7 +21,7 @@ class EventList extends Component {
 
         const {showModal, removeModel, list} = this.props;
 
-        return <ReactTable
+        return <Table
             data={list}
             columns={
                 [
@@ -61,8 +60,6 @@ class EventList extends Component {
                     }
                 ]
             }
-            defaultPageSize={10}
-            className="-striped -highlight"
         />
 
     }
