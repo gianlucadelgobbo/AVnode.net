@@ -59,10 +59,10 @@ const items = [
 
     },
     {
-        href: "/admin/events/:_id/setting",
+        href: "/admin/events/:_id/settings",
         label: <FormattedMessage
             id="setting"
-            defaultMessage="Setting"
+            defaultMessage="Settings"
         />
 
     },

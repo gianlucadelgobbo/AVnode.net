@@ -170,3 +170,19 @@ export const saveEventImages = (model) => {
 };
 
 
+// - settings
+
+export const fetchEventSettings = ({id}) => {
+    return axios.get(`events/${id}/settings`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventSettings = (model) => {
+    return axios.get(`events/${model._id}/settings`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+

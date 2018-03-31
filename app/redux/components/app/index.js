@@ -18,14 +18,16 @@ import ProfileConnections from '../profile/connections/index';
 
 // Events
 import Events from '../events/index.js';
-import EventPublic from '../events/public/index';
-import EventImages from '../events/images/index';
+import EventPublic from '../events/public/';
+import EventImages from '../events/images/';
+
+import EventSettings from '../events/settings/';
 
 // import EventPerformances from './_to_review/event/EventPerformances';
 // import EventPartners from './_to_review/event/EventPartners';
 // import EventPhotoGallery from './_to_review/event/EventPhotoGallery';
 // import EventVideoGallery from './_to_review/event/EventVideoGallery';
-// import EventSettings from './_to_review/event/EventSettings';
+
 
 // // Crews
 // import Crews from './_to_review/Crews';
@@ -98,7 +100,7 @@ const App = () => {
                     {/*<EventPartners path="/admin/event/partners/:_id"/>*/}
                     {/*<EventPhotoGallery path="/admin/event/photogallery/:_id"/>*/}
                     {/*<EventVideoGallery path="/admin/event/videogallery/:_id"/>*/}
-                    {/*<EventSettings path="/admin/event/settings/:_id"/>*/}
+                    <EventSettings path="/admin/events/:_id/settings/"/>
 
                     {/*<Preferences path="/admin/preferences"/>*/}
 
