@@ -93,6 +93,27 @@ class EventPublic extends Component {
             }
         });
 
+        // Convert subtitles format for FieldArray redux-form
+        v.subtitles = [];
+        if (Array.isArray(model.subtitles)) {
+
+            // convert current lang
+            v.subtitles = model.subtitles.map(x => ({
+                key: `abouts.${x.lang}`,
+                value: x.text
+            }));
+        }
+
+        locales.forEach(l => {
+            let found = v.subtitles.filter(o => o.key === `subtitles.${l}`).length > 0;
+            if (!found) {
+                v.subtitles.push({
+                    key: `subtitles.${l}`,
+                    value: ""
+                })
+            }
+        });
+
         // Social: Add one item if value empty
         v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
 
@@ -162,10 +183,10 @@ class EventPublic extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state, {_id}) => ({
-        model: getModel(state, _id),
-        isFetching: getModelIsFetching(state, _id),
-        errorMessage: getModelErrorMessage(state, _id),
-    });
+    model: getModel(state, _id),
+    isFetching: getModelIsFetching(state, _id),
+    errorMessage: getModelErrorMessage(state, _id),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     saveModel,

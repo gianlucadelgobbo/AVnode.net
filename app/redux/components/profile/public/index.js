@@ -1,5 +1,5 @@
 import {h, Component} from 'preact';
-import ProfileLateralMenu from '../lateralMenu'
+import LateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
 import {getDefaultModel} from '../selectors'
@@ -139,7 +139,7 @@ class ProfilePublic extends Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <ProfileLateralMenu/>
+                    <LateralMenu/>
                 </div>
                 <div className="col-md-10">
                     <h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>

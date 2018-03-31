@@ -1,7 +1,7 @@
 import {h, Component} from 'preact';
 import {connect} from 'preact-redux';
 import {bindActionCreators} from "redux";
-import ProfileLateralMenu from '../lateralMenu'
+import LateralMenu from '../lateralMenu'
 import Form from './form'
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
@@ -72,7 +72,7 @@ class ProfilePassword extends Component {
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <ProfileLateralMenu/>
+                    <LateralMenu/>
                 </div>
                 <div className="col-md-10">
                     <h1 className="labelField">MY Password</h1>
