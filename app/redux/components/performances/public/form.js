@@ -3,18 +3,14 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
 import {
     renderList,
-    multiSchedule,
     inputText,
     textareaMultiTab,
-    multiInputUrl,
-    multiInputEmail,
-    multiInputTel,
+    checkboxField, multiInputText,
 } from "../../common/form/components";
 import validate from './validate';
-
 //import asyncValidate from './asyncValidate';
 
-class EventPublicForm extends Component {
+class PerformancePublicForm extends Component {
 
     render() {
 
@@ -32,42 +28,16 @@ class EventPublicForm extends Component {
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
-                    name="categories"
-                    component={renderList}
-                    placeholder="Category"
-                    options={categories}
-                />
-
-                <FieldArray
-                    name="schedule"
-                    component={multiSchedule}
-                    placeholder="Schedule"
-                    showModal={showModal}
-                />
-
-                <br/>
-
-                <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Event url"
+                    placeholder="Footage url"
                 />
 
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Title"
+                    placeholder="Footage name"
                 />
-
-                <FieldArray
-                    name="subtitles"
-                    component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
-                    placeholder="Subtitles"
-                />
-
-                <br/>
 
                 <FieldArray
                     name="abouts"
@@ -79,40 +49,56 @@ class EventPublicForm extends Component {
 
                 <br/>
 
+                <Field
+                    name="is_public"
+                    component={checkboxField}
+                    placeholder="Is public"
+                />
+
+                <Field
+                    name="categories"
+                    component={renderList}
+                    placeholder="Category"
+                    options={categories}
+                />
+
                 <FieldArray
-                    name="web"
-                    component={multiInputUrl}
-                    placeholder="Web"
-                    title="Web"
+                    name="users"
+                    component={multiInputText}
+                    placeholder="Authors"
                     showModal={showModal}
                 />
 
                 <br/>
 
+                <Field
+                    name="price"
+                    component={inputText}
+                    placeholder="Price"
+                />
+
+                <Field
+                    name="duration"
+                    component={inputText}
+                    placeholder="Duration"
+                />
+
                 <FieldArray
-                    name="social"
-                    component={multiInputUrl}
-                    placeholder="Socials"
-                    title="Socials"
-                    showModal={showModal}
+                    name="tech_art"
+                    component={textareaMultiTab}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="Technologies with the artists"
                 />
 
                 <br/>
 
                 <FieldArray
-                    name="emails"
-                    component={multiInputEmail}
-                    placeholder="Emails"
-                    showModal={showModal}
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="phones"
-                    component={multiInputTel}
-                    placeholder="Phones"
-                    showModal={showModal}
+                    name="tech_req"
+                    component={textareaMultiTab}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="Technical requirements"
                 />
 
                 <br/>
@@ -139,4 +125,4 @@ export default reduxForm({
     validate,
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
-})(EventPublicForm);
+})(PerformancePublicForm);

@@ -27,13 +27,6 @@ export const fetchSlug = (slug) => {
 
 // - private
 
-export const fetchCountries = () => {
-    return axios.get('/user/countries')
-        .then(result => {
-            return result.data;
-        });
-};
-
 export const fetchProfilePrivate = () => {
     return axios.get("profile/private")
         .then(result => {
@@ -201,3 +194,79 @@ export const saveEventCalls = (model) => {
             return result.data;
         });
 };
+
+
+
+// ============ Performances
+
+export const fetchPerformances = () => {
+    return axios.get("performances")
+        .then(result => {
+            return result.data.performances;
+        });
+};
+
+export const removePerformance = ({id}) => {
+    return axios.delete(`performances/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const postPerformance = (obj) => {
+    return axios.post(`performances/`, obj)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+// - public
+
+export const fetchPerformancePublic = ({id}) => {
+    return axios.get(`performances/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const savePerformancePublic = (model) => {
+    return axios.get(`performances/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+// ============ CODE LISTS
+
+// countries
+
+export const fetchCountries = () => {
+    return axios.get('/user/countries')
+        .then(result => {
+            return result.data;
+        });
+};
+
+// categories
+
+export const fetchCategories = () => {
+
+    return new Promise(fulfil => {
+        const items = [
+            {value: 'cat-1', label: 'Category #1'},
+            {value: 'cat-2', label: 'Category #2'},
+            {value: 'cat-3', label: 'Category #2'}
+        ];
+
+        fulfil(items);
+    })
+
+    // return axios.get('/user/categories')
+    //     .then(result => {
+    //         return result.data;
+    //     });
+};
+
+
