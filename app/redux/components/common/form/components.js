@@ -11,6 +11,9 @@ import moment from 'moment';
 import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
 import {MODAL_REMOVE} from "../../modal/constants";
+import 'rc-time-picker/assets/index.css';
+import TimePicker from 'react-bootstrap-time-picker';
+
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -91,7 +94,7 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
     const id = `tabs-${Math.random()}`;
     const hasValue = (fields, index) => !!fields.get(index).value;
     const label = <div className="labelField">{placeholder}</div>;
-    
+
     return <div className="card">
         <div className="card-header">
             <h4>{label}</h4>
@@ -343,6 +346,7 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         <DatePicker
             {...input}
+            value={null}
             dateForm="MM/DD/YYYY"
             className="form-control"
             selected={input.value ? moment(input.value) : null}
@@ -355,8 +359,24 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
             <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
-}
+};
 
+export const renderTimePicker = ({input, meta, format = "12", className, placeholder, isChild}) => {
+    const field = <div className="form-group">
+        <TimePicker
+            className={className}
+            {...input}
+            format={format}
+        />,
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
 
 export const checkboxField = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
     const field = <div className={"form-group " + classNames}>
@@ -421,7 +441,8 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div className="labelField">Drop files here, or click to select files to upload. (Max file size 10 MB)</div>
+                <div className="labelField">Drop files here, or click to select files to upload. (Max file size 10 MB)
+                </div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
@@ -448,7 +469,7 @@ export const renderDropzoneInput = (field) => {
                             })
 
                         }}>
-                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top" />
+                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
                         </button>
 
                     </li>)}

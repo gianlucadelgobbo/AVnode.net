@@ -1,7 +1,11 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from "../../common/form/components";
+import {
+    renderList,
+    renderDatePicker,
+    renderTimePicker
+} from "../../common/form/components";
 import validate from './validate';
 //import asyncValidate from './asyncValidate';
 
@@ -20,6 +24,35 @@ class EventPublicForm extends Component {
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
+
+                <Field
+                    name="categories"
+                    component={renderList}
+                    placeholder="Category"
+                    options={[
+                        {value: 'cat-1', label: 'Category #1'},
+                        {value: 'cat-2', label: 'Category #2'},
+                        {value: 'cat-3', label: 'Category #2'}
+                    ]}
+                />
+
+                <Field
+                    name="date"
+                    component={renderDatePicker}
+                    placeholder="Date"
+                />
+
+                <Field
+                    name="starttime"
+                    component={renderTimePicker}
+                    placeholder="Start time"
+                />
+
+                <Field
+                    name="endtime"
+                    component={renderTimePicker}
+                    placeholder="End time"
+                />
 
                 {/*<Field*/}
                     {/*name="stagename"*/}
