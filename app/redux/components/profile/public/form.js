@@ -65,8 +65,8 @@ class ProfilePublicForm extends Component {
 
                 <FieldArray
                     name="addresses"
-                    //component={multiGoogleCityCountry}
-                    component={multiInputText}
+                    component={multiGoogleCityCountry}
+                    //component={multiInputText}
                     placeholder="Address"
                     showModal={showModal}
                 />

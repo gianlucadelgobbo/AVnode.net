@@ -18,6 +18,8 @@ class ProfilePrivateForm extends Component {
             showModal
         } = this.props;
 
+        console.log("countries", countries)
+
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -60,18 +62,22 @@ class ProfilePrivateForm extends Component {
                     placeholder="Birthday"
                 />
 
+                <br/>
+
                 <Field
                     name="citizenship"
                     component={renderList}
                     placeholder="Citizenship"
                 />
 
-                 <FieldArray
+                <FieldArray
                     name="addresses_private"
                     component={multiGoogleAddress}
                     placeholder="Private addresses"
                     showModal={showModal}
                 />
+
+                <br/>
 
                 <FieldArray
                     name="phone"
@@ -81,7 +87,6 @@ class ProfilePrivateForm extends Component {
                     showModal={showModal}
                 />
 
-
                 <hr/>
 
                 <button
@@ -90,11 +95,6 @@ class ProfilePrivateForm extends Component {
                     className="btn btn-primary btn-lg btn-block">
                     {submitting ? "Saving..." : "Save"}
                 </button>
-
-                {/*countries.map((c) => (
-                    <h1 value={c.key.toLowerCase()}>{c.name}</h1>
-                  ))
-                */}
 
             </form>
         );

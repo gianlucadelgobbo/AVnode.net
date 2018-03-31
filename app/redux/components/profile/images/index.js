@@ -1,13 +1,13 @@
-import {h, render, Component} from 'preact';
-import Navbar from '../navbar'
-import Form from './form'
+import {h, Component} from 'preact';
 import {connect} from 'preact-redux';
-import {getUser} from './selectors'
-import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "../../../reducers/actions";
-import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
-
+import ProfileLateralMenu from '../lateralMenu'
+import Form from './form'
+import {showModal} from "../../modal/actions";
+import Loading from '../../loading'
+import {getDefaultModel} from "../selectors";
+import {fetchModel, saveModel} from "./actions";
+import {MODAL_SAVED} from "../../modal/constants";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -16,6 +16,11 @@ import {bindActionCreators} from "redux";
 * */
 
 class ProfileImage extends Component {
+
+    componentDidMount() {
+        const {fetchModel} = this.props;
+        fetchModel();
+    }
 
     // Convert form values to API model
     createUserModel(values) {
@@ -54,19 +59,23 @@ class ProfileImage extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                    type: "SAVED"
+                     type: MODAL_SAVED
                 });
             });
     }
 
     render() {
 
-        const {user, showModal} = this.props;
+        const {model, showModal} = this.props;
+
+        if (!model) {
+            return <Loading/>
+        }
 
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <Navbar/>
+                    <ProfileLateralMenu/>
                 </div>
                 <div className="col-md-10">
                     <h1 className="labelField">MY IMAGE</h1>
@@ -75,7 +84,7 @@ class ProfileImage extends Component {
                     <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
-                        user={user}
+                        user={model}
                         showModal={showModal}
                     />
                 </div>
@@ -86,12 +95,13 @@ class ProfileImage extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    user: getUser(state)
+    model: getDefaultModel(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser: editUser,
-    showModal: showModal
+    fetchModel,
+    saveModel,
+    showModal,
 }, dispatch);
 
 ProfileImage = connect(
