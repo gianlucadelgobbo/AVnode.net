@@ -6,8 +6,8 @@ import {connect} from "preact-redux";
 class LateralMenu extends Component {
 
     createHref({href}) {
-        const {id} = this.props;
-        return id ? href.replace(':id', id) : href;
+        const {_id} = this.props;
+        return _id ? href.replace(':_id', _id) : href;
     }
 
     createMenuItem = ({model, index}) => {

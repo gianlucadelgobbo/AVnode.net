@@ -18,8 +18,6 @@ class ProfilePrivateForm extends Component {
             showModal
         } = this.props;
 
-        console.log("countries", countries)
-
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 

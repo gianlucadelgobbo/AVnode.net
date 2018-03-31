@@ -8,10 +8,9 @@ import {Button} from 'react-bootstrap';
 import {Link} from 'preact-router/match';
 import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading'
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import Table from '../../table'
 
-class EventList extends Component {
+class ModelTable extends Component {
 
     componentDidMount() {
         const {fetchList} = this.props;
@@ -22,18 +21,18 @@ class EventList extends Component {
 
         const {showModal, removeModel, list} = this.props;
 
-        return <ReactTable
+        return <Table
             data={list}
             columns={
                 [
                     {
-                        Header: "Title",
-                        id: "title",
-                        accessor: 'title',
+                        Header: "Crew name",
+                        id: "stagename",
+                        accessor: 'stagename',
                         Cell: (props) => {
                             const {row, original} = props;
-                            return <Link href={`/admin/event/public/${original._id}`}>
-                                {row.title}
+                            return <Link href={`/admin/crews/${original._id}/public`}>
+                                {row.stagename}
                             </Link>
                         }
                     },
@@ -61,8 +60,6 @@ class EventList extends Component {
                     }
                 ]
             }
-            defaultPageSize={10}
-            className="-striped -highlight"
         />
 
     }
@@ -100,9 +97,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     removeModel
 }, dispatch);
 
-EventList = connect(
+ModelTable = connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventList);
+)(ModelTable);
 
-export default EventList;
+export default ModelTable;

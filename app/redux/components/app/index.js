@@ -18,14 +18,26 @@ import ProfileConnections from '../profile/connections/index';
 
 // Events
 import Events from '../events/index.js';
-// import EventPublic from '../events/public/index';
+import EventPublic from '../events/public/';
+import EventImages from '../events/images/';
+import EventCalls from '../events/calls/';
 
-// import EventImages from './_to_review/event/EventImages';
+import EventSettings from '../events/settings/';
+
+// // Performances
+import Performances from '../performances/index.js';
+import PerformancesPublic from '../performances/public';
+
+
+// // Crews
+import Crews from '../crews/index.js';
+import CrewsPublic from '../crews/public';
+
 // import EventPerformances from './_to_review/event/EventPerformances';
 // import EventPartners from './_to_review/event/EventPartners';
 // import EventPhotoGallery from './_to_review/event/EventPhotoGallery';
 // import EventVideoGallery from './_to_review/event/EventVideoGallery';
-// import EventSettings from './_to_review/event/EventSettings';
+
 
 // // Crews
 // import Crews from './_to_review/Crews';
@@ -33,8 +45,7 @@ import Events from '../events/index.js';
 // import CrewPublic from './_to_review/crew/CrewPublic';
 // import CrewImages from './_to_review/crew/CrewImages';
 // import CrewMembers from './_to_review/crew/CrewMembers';
-// // Performances
-// import Performances from './_to_review/performances';
+
 // // import PerformanceEdit from './_to_review/performance/Edit';
 // import PerformancePublic from './_to_review/performance/PerformancePublic';
 // //import PerformanceAbouts from './_to_review/performance/PerformanceAbouts';
@@ -74,15 +85,14 @@ const App = () => {
                     <ProfilePassword path="/admin/profile/password"/>
                     <ProfileConnections path="/admin/profile/connections"/>
 
-
-
-                    {/*<Crews path="/admin/crews"/>*/}
-                    {/*<CrewPublic path="/admin/crew/public/:_id"/>*/}
+                    <Crews path="/admin/crews"/>
+                    <CrewsPublic path="/admin/crews/:_id/public/"/>
                     {/*<CrewOrganization path="/admin/crew/organization/:_id"/>*/}
                     {/*<CrewImages path="/admin/crew/images/:_id"/>*/}
                     {/*<CrewMembers path="/admin/crew/members/:_id"/>*/}
-                    {/*<Performances path="/admin/performances"/>*/}
-                    {/*<PerformancePublic path="/admin/performance/public/:_id"/>*/}
+
+                    <Performances path="/admin/performances"/>
+                    <PerformancesPublic path="/admin/performances/:_id/public/"/>
                     {/*<PerformanceImages path="/admin/performance/images/:_id"/>*/}
                     {/*<PerformanceEvents path="/admin/performance/events/:_id"/>*/}
                     {/*<PerformanceAuthors path="/admin/performance/authors/:_id"/>*/}
@@ -90,14 +100,16 @@ const App = () => {
                     {/*<PerformanceVideoGallery path="/admin/performance/videogallery/:_id"/>*/}
                     {/*<PerformanceSettings path="/admin/performance/settings/:_id"/>*/}
 
+
                     <Events path="/admin/events"/>
-                    {/*<EventPublic path="/admin/event/public/:_id"/>*/}
-                    {/*<EventImages path="/admin/event/images/:_id"/>*/}
-                    {/*<EventPerformances path="/admin/event/performances/:_id"/>*/}
+                    <EventPublic path="/admin/events/:_id/public/"/>
+                    <EventImages path="/admin/events/:_id/images/"/>
+                    <EventCalls path="/admin/events/:_id/calls/"/>
+                    {/*<EventPerformances path="/admin/events/performances/:_id"/>*/}
                     {/*<EventPartners path="/admin/event/partners/:_id"/>*/}
                     {/*<EventPhotoGallery path="/admin/event/photogallery/:_id"/>*/}
                     {/*<EventVideoGallery path="/admin/event/videogallery/:_id"/>*/}
-                    {/*<EventSettings path="/admin/event/settings/:_id"/>*/}
+                    <EventSettings path="/admin/events/:_id/settings/"/>
 
                     <Preferences path="/admin/preferences"/>
 
