@@ -16,18 +16,27 @@ class Events extends Component {
             <div className="row">
                 <div className="col-md-12">
 
-                    <Button
-                        bsStyle="success"
-                        className="pull-right"
-                        onClick={() => showModal({
-                            type: MODAL_ADD_EVENT
-                        })}>
-                        <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
-                    </Button>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Button
+                                bsStyle="success"
+                                className="pull-right"
+                                onClick={() => showModal({
+                                    type: MODAL_ADD_EVENT
+                                })}>
+                                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+                            </Button>
+
+                        </div>
+                    </div>
 
                     <hr/>
 
-                    <EventList/>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <EventList/>
+                        </div>
+                    </div>
 
                 </div>
             </div>
