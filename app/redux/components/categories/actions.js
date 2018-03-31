@@ -1,7 +1,7 @@
 import * as api from '../../api';
 import {normalize} from 'normalizr';
 import {FETCH_LIST_SUCCESS, FETCH_LIST_REQUEST, FETCH_LIST_ERROR} from './constants'
-import {arrayOfCategories} from '../../schemas/category'
+import {arrayOfCategories} from './schema'
 
 export const fetchList = () => (dispatch) => {
 

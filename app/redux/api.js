@@ -195,8 +195,6 @@ export const saveEventCalls = (model) => {
         });
 };
 
-
-
 // ============ Performances
 
 export const fetchPerformances = () => {
@@ -237,6 +235,45 @@ export const savePerformancePublic = (model) => {
         });
 };
 
+// ============ Crews
+
+export const fetchCrews = () => {
+    return axios.get("crews")
+        .then(result => {
+            return result.data.crews;
+        });
+};
+
+export const removeCrew = ({id}) => {
+    return axios.delete(`crews/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const postCrew = (obj) => {
+    return axios.post(`crews/`, obj)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+// - public
+
+export const fetchCrewPublic = ({id}) => {
+    return axios.get(`crews/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveCrewPublic = (model) => {
+    return axios.get(`crews/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
 
 // ============ CODE LISTS
 
