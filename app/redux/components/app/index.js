@@ -28,6 +28,11 @@ import EventSettings from '../events/settings/';
 import Performances from '../performances/index.js';
 import PerformancesPublic from '../performances/public';
 
+
+// // Crews
+import Crews from '../crews/index.js';
+import CrewsPublic from '../crews/public';
+
 // import EventPerformances from './_to_review/event/EventPerformances';
 // import EventPartners from './_to_review/event/EventPartners';
 // import EventPhotoGallery from './_to_review/event/EventPhotoGallery';
@@ -80,17 +85,14 @@ const App = () => {
                     <ProfilePassword path="/admin/profile/password"/>
                     <ProfileConnections path="/admin/profile/connections"/>
 
-
-
-                    {/*<Crews path="/admin/crews"/>*/}
-                    {/*<CrewPublic path="/admin/crew/public/:_id"/>*/}
+                    <Crews path="/admin/crews"/>
+                    <CrewsPublic path="/admin/crews/:_id/public/"/>
                     {/*<CrewOrganization path="/admin/crew/organization/:_id"/>*/}
                     {/*<CrewImages path="/admin/crew/images/:_id"/>*/}
                     {/*<CrewMembers path="/admin/crew/members/:_id"/>*/}
 
                     <Performances path="/admin/performances"/>
                     <PerformancesPublic path="/admin/performances/:_id/public/"/>
-
                     {/*<PerformanceImages path="/admin/performance/images/:_id"/>*/}
                     {/*<PerformanceEvents path="/admin/performance/events/:_id"/>*/}
                     {/*<PerformanceAuthors path="/admin/performance/authors/:_id"/>*/}

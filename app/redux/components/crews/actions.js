@@ -2,7 +2,7 @@ import * as api from '../../api';
 import {normalize} from 'normalizr';
 import {FETCH_LIST_SUCCESS, FETCH_LIST_REQUEST, FETCH_LIST_ERROR} from './constants'
 import {SAVE_MODEL_ERROR, SAVE_MODEL_REQUEST, SAVE_MODEL_SUCCESS} from './constants'
-import {arrayOfEvent, event} from './schema'
+import {arrayOfCrew, crew} from './schema'
 
 export const fetchList = () => (dispatch) => {
 
@@ -10,12 +10,12 @@ export const fetchList = () => (dispatch) => {
         type: FETCH_LIST_REQUEST,
     });
 
-    return api.fetchEvents()
+    return api.fetchCrews()
         .then(
             (response) => {
                 dispatch({
                     type: FETCH_LIST_SUCCESS,
-                    response: normalize(response || [], arrayOfEvent)
+                    response: normalize(response || [], arrayOfCrew)
                 });
             },
             (error) => {
@@ -33,13 +33,13 @@ export const removeModel = ({id}) => (dispatch) => {
         id
     });
 
-    return api.removeEvent({id})
+    return api.removeCrew({id})
         .then(
             (response) => {
                 dispatch({
                     type: SAVE_MODEL_SUCCESS,
                     id,
-                    response: normalize(response || [], arrayOfEvent)
+                    response: normalize(response || [], arrayOfCrew)
                 });
             },
             (error) => {
@@ -58,12 +58,12 @@ export const saveModel = (model) => (dispatch) => {
         id: model.id
     });
 
-    return api.postEvent(model)
+    return api.postCrew(model)
         .then(
             (response) => {
                 dispatch({
                     type: SAVE_MODEL_SUCCESS,
-                    response: normalize(response || [], event)
+                    response: normalize(response || [], crew)
                 });
             },
             (error) => {

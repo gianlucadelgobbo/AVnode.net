@@ -7,9 +7,8 @@ import countries from '../components/countries/reducers';
 import categories from '../components/categories/reducers';
 import events from '../components/events/reducers';
 import performances from '../components/performances/reducers';
+import crews from '../components/crews/reducers';
 
-// import crews from './crews';
-// import performances from './performances';
 // import preferences from './preferences';
 
 const reducer = combineReducers({
@@ -19,7 +18,7 @@ const reducer = combineReducers({
     categories,
     //preferences,
     performances,
-    //crews,
+    crews,
     form: formReducer,
     modal
 });
