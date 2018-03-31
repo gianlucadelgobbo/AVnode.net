@@ -11,6 +11,9 @@ import moment from 'moment';
 import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
 import {MODAL_REMOVE} from "../../modal/constants";
+import 'rc-time-picker/assets/index.css';
+import TimePicker from 'react-bootstrap-time-picker';
+
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -18,12 +21,12 @@ export const googleAutocompleteSelect = ({input, meta, placeholder, options, isC
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
 
+    const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{placeholder}</dt>
+            <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
-
 };
 
 const inputField = ({input, type, meta, placeholder, title, isChild}) => {
@@ -91,7 +94,7 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
     const id = `tabs-${Math.random()}`;
     const hasValue = (fields, index) => !!fields.get(index).value;
     const label = <div className="labelField">{placeholder}</div>;
-    
+
     return <div className="card">
         <div className="card-header">
             <h4>{label}</h4>
@@ -159,6 +162,19 @@ export const multiInputText = ({fields, title, showModal, placeholder, meta: {er
 };
 
 export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {error}}) => {
+    return multiInput({
+        fields,
+        title,
+        meta: {error},
+        showModal,
+        placeholder,
+        render: inputEmail,
+        key: "text",
+        isChild: true
+    })
+};
+
+export const multiInputEmailWithDetails = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         const {is_confirmed} = fields.get(index);
         return <div className="row" key={index}>
@@ -169,7 +185,7 @@ export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {e
                     isChild={true}
                 />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-4">
 
                 <div className="row">
                     <div className="col-md-4">
@@ -343,6 +359,7 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         <DatePicker
             {...input}
+            value={null}
             dateForm="MM/DD/YYYY"
             className="form-control"
             selected={input.value ? moment(input.value) : null}
@@ -355,8 +372,24 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
             <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
-}
+};
 
+export const renderTimePicker = ({input, meta, format = "12", className, placeholder, isChild}) => {
+    const field = <div className="form-group">
+        <TimePicker
+            className={className}
+            {...input}
+            format={format}
+        />,
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
 
 export const checkboxField = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
     const field = <div className={"form-group " + classNames}>
@@ -377,7 +410,6 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 }
-
 
 export const renderDropzoneInput = (field) => {
     let files = field.input.value;
@@ -421,7 +453,8 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div className="labelField">Drop files here, or click to select files to upload. (Max file size 10 MB)</div>
+                <div className="labelField">Drop files here, or click to select files to upload. (Max file size 10 MB)
+                </div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
@@ -448,7 +481,7 @@ export const renderDropzoneInput = (field) => {
                             })
 
                         }}>
-                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top" />
+                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
                         </button>
 
                     </li>)}
@@ -456,4 +489,101 @@ export const renderDropzoneInput = (field) => {
             )}
         </div>
     );
+};
+
+export const multiSchedule = ({fields, title, meta: {error}, placeholder, showModal}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => (
+        <div className="row" key={index}>
+            <div className="col-md-9 offset-1">
+
+                <div className="row">
+                    <div className="col-md-4">
+                        <Field
+                            name="date"
+                            component={renderDatePicker}
+                            placeholder="Date"
+                            isChild={true}
+                        />
+                    </div>
+                    <div className="col-md-4">
+                        <Field
+                            name="starttime"
+                            component={renderTimePicker}
+                            placeholder="Start time"
+                            isChild={true}
+                        />
+                    </div>
+                    <div className="col-md-4">
+                        <Field
+                            name="endtime"
+                            component={renderTimePicker}
+                            placeholder="End time"
+                            isChild={true}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            name="venue"
+                            component={googleAutocompleteSelect}
+                            placeholder="Venue"
+                            options={{
+                                types: ['establishment']
+                            }}
+                            isChild={true}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <Field
+                            name="room"
+                            component={inputText}
+                            placeholder="Room"
+                            isChild={true}
+                        />
+                    </div>
+                </div>
+
+            </div>
+
+            <div className="col-md-2">>
+                <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                        showModal({
+                            type: MODAL_REMOVE,
+                            props: {
+                                onRemove: () => fields.remove(index)
+                            }
+
+                        })}
+                >
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                </Button>
+            </div>
+
+            <div className="col-md-12">
+                <hr/>
+            </div>
+        </div>
+    );
+
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+
+        </div>
+    </div>
 };

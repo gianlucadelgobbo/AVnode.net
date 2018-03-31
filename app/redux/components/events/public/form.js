@@ -1,9 +1,18 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from "../../common/form/components";
+import {
+    renderList,
+    multiSchedule,
+    inputText,
+    textareaMultiTab,
+    multiInputUrl,
+    multiInputEmail,
+    multiInputTel,
+} from "../../common/form/components";
 import validate from './validate';
-import asyncValidate from './asyncValidate';
+
+//import asyncValidate from './asyncValidate';
 
 class EventPublicForm extends Component {
 
@@ -15,23 +24,50 @@ class EventPublicForm extends Component {
             aboutsTabs,
             aboutsLabels,
             showModal,
-            onSubmit
+            onSubmit,
+            categories
         } = this.props;
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
-                    name="stagename"
-                    component={inputText}
-                    placeholder="Stage name"
+                    name="categories"
+                    component={renderList}
+                    placeholder="Category"
+                    options={categories}
                 />
+
+                <FieldArray
+                    name="schedule"
+                    component={multiSchedule}
+                    placeholder="Schedule"
+                    showModal={showModal}
+                />
+
+                <br/>
 
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Profile url"
+                    placeholder="Event url"
                 />
+
+                <Field
+                    name="title"
+                    component={inputText}
+                    placeholder="Title"
+                />
+
+                <FieldArray
+                    name="subtitles"
+                    component={textareaMultiTab}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="Subtitles"
+                />
+
+                <br/>
 
                 <FieldArray
                     name="abouts"
@@ -39,16 +75,6 @@ class EventPublicForm extends Component {
                     tabs={aboutsTabs}
                     labels={aboutsLabels}
                     placeholder="About"
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="social"
-                    component={multiInputUrl}
-                    placeholder="Socials"
-                    title="Socials"
-                    showModal={showModal}
                 />
 
                 <br/>
@@ -64,12 +90,32 @@ class EventPublicForm extends Component {
                 <br/>
 
                 <FieldArray
-                    name="addresses"
-                    component={multiGoogleCityCountry}
-                    //component={multiInputText}
-                    placeholder="Address"
+                    name="social"
+                    component={multiInputUrl}
+                    placeholder="Socials"
+                    title="Socials"
                     showModal={showModal}
                 />
+
+                <br/>
+
+                <FieldArray
+                    name="emails"
+                    component={multiInputEmail}
+                    placeholder="Emails"
+                    showModal={showModal}
+                />
+
+                <br/>
+
+                <FieldArray
+                    name="phones"
+                    component={multiInputTel}
+                    placeholder="Phones"
+                    showModal={showModal}
+                />
+
+                <br/>
 
                 <hr/>
 
@@ -91,6 +137,6 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    asyncValidate,
-    asyncBlurFields: ['slug', 'addresses[]']
+    //asyncValidate,
+    //asyncBlurFields: ['slug', 'addresses[]']
 })(EventPublicForm);

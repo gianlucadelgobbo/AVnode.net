@@ -27,13 +27,6 @@ export const fetchSlug = (slug) => {
 
 // - private
 
-export const fetchCountries = () => {
-    return axios.get('/user/countries')
-        .then(result => {
-            return result.data;
-        });
-};
-
 export const fetchProfilePrivate = () => {
     return axios.get("profile/private")
         .then(result => {
@@ -80,7 +73,7 @@ export const saveProfileEmails = (model) => {
         });
 };
 
-// - emails
+// - connections
 
 export const fetchProfileConnections = () => {
     return axios.get("profile/connections")
@@ -135,3 +128,182 @@ export const postEvent = (obj) => {
             return result.data;
         });
 };
+
+
+// - public
+
+export const fetchEventPublic = ({id}) => {
+    return axios.get(`events/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventPublic = (model) => {
+    return axios.get(`events/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - images
+
+export const fetchEventImages = ({id}) => {
+    return axios.get(`events/${id}/image`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventImages = (model) => {
+    return axios.get(`events/${model._id}/image`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+// - settings
+
+export const fetchEventSettings = ({id}) => {
+    return axios.get(`events/${id}/settings`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventSettings = (model) => {
+    return axios.get(`events/${model._id}/settings`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - calls
+
+export const fetchEventCalls = ({id}) => {
+    return axios.get(`events/${id}/calls`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventCalls = (model) => {
+    return axios.get(`events/${model._id}/calls`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// ============ Performances
+
+export const fetchPerformances = () => {
+    return axios.get("performances")
+        .then(result => {
+            return result.data.performances;
+        });
+};
+
+export const removePerformance = ({id}) => {
+    return axios.delete(`performances/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const postPerformance = (obj) => {
+    return axios.post(`performances/`, obj)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+// - public
+
+export const fetchPerformancePublic = ({id}) => {
+    return axios.get(`performances/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const savePerformancePublic = (model) => {
+    return axios.get(`performances/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// ============ Crews
+
+export const fetchCrews = () => {
+    return axios.get("crews")
+        .then(result => {
+            return result.data.crews;
+        });
+};
+
+export const removeCrew = ({id}) => {
+    return axios.delete(`crews/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const postCrew = (obj) => {
+    return axios.post(`crews/`, obj)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+// - public
+
+export const fetchCrewPublic = ({id}) => {
+    return axios.get(`crews/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveCrewPublic = (model) => {
+    return axios.get(`crews/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// ============ CODE LISTS
+
+// countries
+
+export const fetchCountries = () => {
+    return axios.get('/user/countries')
+        .then(result => {
+            return result.data;
+        });
+};
+
+// categories
+
+export const fetchCategories = () => {
+
+    return new Promise(fulfil => {
+        const items = [
+            {value: 'cat-1', label: 'Category #1'},
+            {value: 'cat-2', label: 'Category #2'},
+            {value: 'cat-3', label: 'Category #2'}
+        ];
+
+        fulfil(items);
+    })
+
+    // return axios.get('/user/categories')
+    //     .then(result => {
+    //         return result.data;
+    //     });
+};
+
+

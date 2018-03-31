@@ -1,6 +1,6 @@
 import {h, Component} from 'preact';
 import {Button} from 'react-bootstrap';
-import EventList from './list'
+import ModelTable from './table'
 import {bindActionCreators} from "redux";
 import {connect} from "preact-redux";
 import {MODAL_ADD_EVENT} from "../modal/constants";
@@ -34,7 +34,7 @@ class Events extends Component {
 
                     <div className="row">
                         <div className="col-md-12">
-                            <EventList/>
+                            <ModelTable/>
                         </div>
                     </div>
 

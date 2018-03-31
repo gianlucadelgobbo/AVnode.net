@@ -1,25 +1,31 @@
 import {h, Component} from 'preact';
-import Navbar from '../navbar'
+import LateralMenu from '../lateralMenu'
 import Form from './form'
 import {connect} from 'preact-redux';
-import {getUser} from './selectors'
-import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "./actions";
+import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../../modal/constants";
-
-/*
-* Responsabilita'
-* - Get form's initial values from redux state here
-* - pass initial values to form
-* - dispatch the action to save the model
-* */
+import Loading from '../../loading'
+import ErrorMessage from '../../errorMessage'
+import ItemNotFound from '../../itemNotFound'
+import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
+import {locales, locales_labels} from "../../../../../config/default";
+import {fetchList as fetchCategories} from "../../categories/actions";
+import {getList as getCategories} from "../../categories/selectors";
 
 class EventPublic extends Component {
 
+    componentDidMount() {
+        const {fetchModel, _id, fetchCategories} = this.props;
+        fetchModel({
+            id: _id
+        });
+        fetchCategories();
+    }
+
     // Convert form values to API model
-    createUserModel(values) {
+    createModelToSave(values) {
 
         //clone obj
         let model = Object.assign({}, values);
@@ -55,26 +61,26 @@ class EventPublic extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
         let v = {};
 
         //Convert stagename for redux-form
-        v.stagename = user.stagename;
+        v.stagename = model.stagename;
 
         //Convert slug for redux-form
-        v.slug = user.slug;
+        v.slug = model.slug;
 
         // Convert about format for FieldArray redux-form
         v.abouts = [];
-        if (Array.isArray(user.abouts)) {
+        if (Array.isArray(model.abouts)) {
 
             // convert current lang
-            v.abouts = user.abouts.map(x => ({
+            v.abouts = model.abouts.map(x => ({
                 key: `abouts.${x.lang}`,
                 value: x.abouttext
             }));
@@ -90,16 +96,36 @@ class EventPublic extends Component {
             }
         });
 
+        // Convert subtitles format for FieldArray redux-form
+        v.subtitles = [];
+        if (Array.isArray(model.subtitles)) {
+
+            // convert current lang
+            v.subtitles = model.subtitles.map(x => ({
+                key: `abouts.${x.lang}`,
+                value: x.text
+            }));
+        }
+
+        locales.forEach(l => {
+            let found = v.subtitles.filter(o => o.key === `subtitles.${l}`).length > 0;
+            if (!found) {
+                v.subtitles.push({
+                    key: `subtitles.${l}`,
+                    value: ""
+                })
+            }
+        });
 
         // Social: Add one item if value empty
-        v.social = (Array.isArray(user.social) && user.social.length > 0) ? user.social : [{url: ""}];
+        v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
 
         // Web: Add one item if value empty
-        v.web = (Array.isArray(user.web) && user.web.length > 0) ? user.web : [{url: ""}];
+        v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];
 
-        // Addresses: Add one item if value empty
-        v.addresses = (Array.isArray(user.addresses) && user.addresses.length > 0) ? 
-            user.addresses.map(a => ({
+        // Addresses: Add one item if model empty
+        v.addresses = (Array.isArray(model.addresses) && model.addresses.length > 0) ?
+            model.addresses.map(a => ({
                 text: `${a.city}, ${a.country}`
             })) :
             [{text: ""}];
@@ -108,14 +134,13 @@ class EventPublic extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createUserModel(values);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
-        // Add auth user _id
-        model._id = user._id;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(model)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
@@ -125,24 +150,35 @@ class EventPublic extends Component {
 
     render() {
 
-        const {user, showModal} = this.props;
+        const {model, showModal, _id, isFetching, errorMessage, categories} = this.props;
 
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <Navbar/>
+                    <LateralMenu
+                        _id={_id}
+                    />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
+                    <h1 className="labelField">EVENT PUBLIC DATA</h1>
+
                     <br/>
-                    <Form
+
+                    {isFetching && !model && <Loading/>}
+
+                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+
+                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
+                        model={model}
+                        showModal={showModal}
                         aboutsTabs={locales}
                         aboutsLabels={locales_labels}
-                        user={user}
-                        showModal={showModal}
-                    />
+                        categories={categories}
+                    />}
                 </div>
             </div>
         );
@@ -150,13 +186,18 @@ class EventPublic extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    user: getUser(state)
+const mapStateToProps = (state, {_id}) => ({
+    model: getModel(state, _id),
+    isFetching: getModelIsFetching(state, _id),
+    errorMessage: getModelErrorMessage(state, _id),
+    categories: getCategories(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser: editUser,
-    showModal: showModal
+    saveModel,
+    fetchModel,
+    showModal,
+    fetchCategories
 }, dispatch);
 
 EventPublic = connect(
