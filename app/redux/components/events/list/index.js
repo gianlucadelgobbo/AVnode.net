@@ -8,7 +8,6 @@ import {Button} from 'react-bootstrap';
 import {Link} from 'preact-router/match';
 import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading'
-// Import React Table
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
