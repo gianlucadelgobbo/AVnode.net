@@ -468,7 +468,7 @@ const CALLS = {
           'is_date': {}
       }
     }
- }],
+  }],
   topics: [{
     name: {
       comp: 'simpletext',

@@ -186,3 +186,18 @@ export const saveEventSettings = (model) => {
         });
 };
 
+// - calls
+
+export const fetchEventCalls = ({id}) => {
+    return axios.get(`events/${id}/calls`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventCalls = (model) => {
+    return axios.get(`events/${model._id}/calls`, model)
+        .then(result => {
+            return result.data;
+        });
+};
