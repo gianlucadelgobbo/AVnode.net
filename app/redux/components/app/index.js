@@ -24,6 +24,10 @@ import EventCalls from '../events/calls/';
 
 import EventSettings from '../events/settings/';
 
+// // Performances
+import Performances from '../performances/index.js';
+import PerformancesPublic from '../performances/public';
+
 // import EventPerformances from './_to_review/event/EventPerformances';
 // import EventPartners from './_to_review/event/EventPartners';
 // import EventPhotoGallery from './_to_review/event/EventPhotoGallery';
@@ -36,8 +40,7 @@ import EventSettings from '../events/settings/';
 // import CrewPublic from './_to_review/crew/CrewPublic';
 // import CrewImages from './_to_review/crew/CrewImages';
 // import CrewMembers from './_to_review/crew/CrewMembers';
-// // Performances
-// import Performances from './_to_review/performances';
+
 // // import PerformanceEdit from './_to_review/performance/Edit';
 // import PerformancePublic from './_to_review/performance/PerformancePublic';
 // //import PerformanceAbouts from './_to_review/performance/PerformanceAbouts';
@@ -85,8 +88,9 @@ const App = () => {
                     {/*<CrewImages path="/admin/crew/images/:_id"/>*/}
                     {/*<CrewMembers path="/admin/crew/members/:_id"/>*/}
 
-                    {/*<Performances path="/admin/performances"/>*/}
-                    {/*<PerformancePublic path="/admin/performance/public/:_id"/>*/}
+                    <Performances path="/admin/performances"/>
+                    <PerformancesPublic path="/admin/performances/:_id/public/"/>
+
                     {/*<PerformanceImages path="/admin/performance/images/:_id"/>*/}
                     {/*<PerformanceEvents path="/admin/performance/events/:_id"/>*/}
                     {/*<PerformanceAuthors path="/admin/performance/authors/:_id"/>*/}

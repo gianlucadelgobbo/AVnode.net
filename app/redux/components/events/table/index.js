@@ -10,7 +10,7 @@ import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading'
 import Table from '../../table'
 
-class EventList extends Component {
+class ModelTable extends Component {
 
     componentDidMount() {
         const {fetchList} = this.props;
@@ -97,9 +97,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     removeModel
 }, dispatch);
 
-EventList = connect(
+ModelTable = connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventList);
+)(ModelTable);
 
-export default EventList;
+export default ModelTable;

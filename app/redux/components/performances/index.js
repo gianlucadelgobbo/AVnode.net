@@ -3,10 +3,10 @@ import {Button} from 'react-bootstrap';
 import ModelTable from './table'
 import {bindActionCreators} from "redux";
 import {connect} from "preact-redux";
-import {MODAL_ADD_EVENT} from "../modal/constants";
+import {MODAL_ADD_PERFORMANCE} from "../modal/constants";
 import {showModal} from "../modal/actions";
 
-class Events extends Component {
+class Performances extends Component {
 
     render() {
 
@@ -22,7 +22,7 @@ class Events extends Component {
                                 bsStyle="success"
                                 className="pull-right"
                                 onClick={() => showModal({
-                                    type: MODAL_ADD_EVENT
+                                    type: MODAL_ADD_PERFORMANCE
                                 })}>
                                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
                             </Button>
@@ -50,9 +50,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal
 }, dispatch);
 
-Events = connect(
+Performances = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Events);
+)(Performances);
 
-export default Events;
+export default Performances;

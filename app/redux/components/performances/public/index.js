@@ -14,7 +14,7 @@ import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 
-class EventPublic extends Component {
+class PerformancePublic extends Component {
 
     componentDidMount() {
         const {fetchModel, _id, fetchCategories} = this.props;
@@ -69,9 +69,6 @@ class EventPublic extends Component {
 
         let v = {};
 
-        //Convert stagename for redux-form
-        v.stagename = model.stagename;
-
         //Convert slug for redux-form
         v.slug = model.slug;
 
@@ -96,39 +93,51 @@ class EventPublic extends Component {
             }
         });
 
-        // Convert subtitles format for FieldArray redux-form
-        v.subtitles = [];
-        if (Array.isArray(model.subtitles)) {
+        v.is_public = model.is_public;
+        v.categories = model.categories;
+        v.users = model.users || [];
+        v.price = model.price;
+        v.duration = model.duration;
+
+        // Convert about format for FieldArray redux-form
+        v.tech_art = [];
+        if (Array.isArray(model.tech_art)) {
 
             // convert current lang
-            v.subtitles = model.subtitles.map(x => ({
-                key: `abouts.${x.lang}`,
+            v.tech_art = model.tech_art.map(x => ({
+                key: `tech_art.${x.lang}`,
                 value: x.text
             }));
         }
 
         locales.forEach(l => {
-            let found = v.subtitles.filter(o => o.key === `subtitles.${l}`).length > 0;
+            let found = v.tech_art.filter(o => o.key === `tech_art.${l}`).length > 0;
             if (!found) {
-                v.subtitles.push({
-                    key: `subtitles.${l}`,
+                v.tech_art.push({
+                    key: `tech_art.${l}`,
                     value: ""
                 })
             }
         });
+        v.tech_req = [];
+        if (Array.isArray(model.tech_req)) {
 
-        // Social: Add one item if value empty
-        v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
+            // convert current lang
+            v.tech_req = model.tech_req.map(x => ({
+                key: `tech_req.${x.lang}`,
+                value: x.text
+            }));
+        }
 
-        // Web: Add one item if value empty
-        v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];
-
-        // Addresses: Add one item if model empty
-        v.addresses = (Array.isArray(model.addresses) && model.addresses.length > 0) ?
-            model.addresses.map(a => ({
-                text: `${a.city}, ${a.country}`
-            })) :
-            [{text: ""}];
+        locales.forEach(l => {
+            let found = v.tech_req.filter(o => o.key === `tech_req.${l}`).length > 0;
+            if (!found) {
+                v.tech_req.push({
+                    key: `tech_req.${l}`,
+                    value: ""
+                })
+            }
+        });
 
         return v;
     }
@@ -160,7 +169,7 @@ class EventPublic extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT PUBLIC DATA</h1>
+                    <h1 className="labelField">PERFORMANCE PUBLIC DATA</h1>
 
                     <br/>
 
@@ -200,9 +209,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchCategories
 }, dispatch);
 
-EventPublic = connect(
+PerformancePublic = connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventPublic);
+)(PerformancePublic);
 
-export default EventPublic;
+export default PerformancePublic;
