@@ -118,7 +118,7 @@ export const saveProfilePassword = (model) => {
 export const fetchEvents = () => {
     return axios.get("events")
         .then(result => {
-            return result.data;
+            return result.data.events;
         });
 };
 

@@ -8,6 +8,9 @@ import {Button} from 'react-bootstrap';
 import {Link} from 'preact-router/match';
 import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading'
+// Import React Table
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
 class EventList extends Component {
 
@@ -16,61 +19,78 @@ class EventList extends Component {
         fetchList();
     }
 
-    renderEvent(event, index) {
+    renderTable() {
 
-        const {showModal, removeModel} = this.props;
+        const {showModal, removeModel, list} = this.props;
 
-        return <div className="col-md-12" key={index}>
-            <div className="row">
+        return <ReactTable
+            data={list}
+            columns={
+                [
+                    {
+                        Header: "Title",
+                        id: "title",
+                        accessor: 'title',
+                        Cell: (props) => {
+                            const {row, original} = props;
+                            return <Link href={`/admin/event/public/${original._id}`}>
+                                {row.title}
+                            </Link>
+                        }
+                    },
+                    {
+                        Header: "Actions",
+                        id: "actions",
+                        width: 100,
+                        Cell: (props) => {
+                            const {original} = props;
+                            return <Button
+                                bsStyle="danger"
+                                className="btn-block"
+                                onClick={() =>
+                                    showModal({
+                                        type: MODAL_REMOVE,
+                                        props: {
+                                            onRemove: () => removeModel({id: original._id})
+                                        }
+                                    })}
+                            >
+                                <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                            </Button>
+                        }
 
-                <div className="col-md-10">
-                    <Link href={`/admin/event/public/${event.id}`}>
-                        {event.title}
-                    </Link>
-                </div>
+                    }
+                ]
+            }
+            defaultPageSize={10}
+            className="-striped -highlight"
+        />
 
-                <div className="col-md-2">
-                    <Button
-                        bsStyle="danger"
-                        onClick={() =>
-                            showModal({
-                                type: MODAL_REMOVE,
-                                props: {
-                                    onRemove: () => removeModel({id: event.id})
-                                }
-
-                            })}
-                    >
-                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                    </Button>
-                </div>
-
-            </div>
-        </div>
     }
 
     render() {
 
-        const {events, isFetching, errorMessage} = this.props;
+        const {list, isFetching, errorMessage} = this.props;
+
 
         return (
-            <div className="row">
-
-                {!events.length && <div>No events to display</div>}
+            <div>
+                {!list.length && <div>No events to display</div>}
 
                 {isFetching && <Loading/>}
 
                 {errorMessage && <div>{errorMessage}</div>}
 
-                {events && events.map(this.renderEvent.bind(this))}
+                {list && this.renderTable()}
 
             </div>
+
         );
     }
 }
 
 const mapStateToProps = (state) => ({
-    events: getList(state),
+    list: getList(state),
     isFetching: getIsFetching(state),
     errorMessage: getErrorMessage(state)
 });
