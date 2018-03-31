@@ -3,8 +3,12 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
 import {
     renderList,
-    renderDatePicker,
-    renderTimePicker
+    multiSchedule,
+    inputText,
+    textareaMultiTab,
+    multiInputUrl,
+    multiGoogleCityCountry,
+
 } from "../../common/form/components";
 import validate from './validate';
 //import asyncValidate from './asyncValidate';
@@ -36,73 +40,63 @@ class EventPublicForm extends Component {
                     ]}
                 />
 
+                <FieldArray
+                    name="schedule"
+                    component={multiSchedule}
+                    placeholder="Schedule"
+                    showModal={showModal}
+                />
+
+                <br/>
+
                 <Field
-                    name="date"
-                    component={renderDatePicker}
-                    placeholder="Date"
+                    name="slug"
+                    component={inputText}
+                    placeholder="Event url"
                 />
 
                 <Field
-                    name="starttime"
-                    component={renderTimePicker}
-                    placeholder="Start time"
+                    name="title"
+                    component={inputText}
+                    placeholder="Title"
                 />
 
-                <Field
-                    name="endtime"
-                    component={renderTimePicker}
-                    placeholder="End time"
+                <FieldArray
+                    name="abouts"
+                    component={textareaMultiTab}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="About"
                 />
 
-                {/*<Field*/}
-                    {/*name="stagename"*/}
-                    {/*component={inputText}*/}
-                    {/*placeholder="Stage name"*/}
-                {/*/>*/}
+                <br/>
 
-                {/*<Field*/}
-                    {/*name="slug"*/}
-                    {/*component={inputText}*/}
-                    {/*placeholder="Profile url"*/}
-                {/*/>*/}
+                <FieldArray
+                    name="social"
+                    component={multiInputUrl}
+                    placeholder="Socials"
+                    title="Socials"
+                    showModal={showModal}
+                />
 
-                {/*<FieldArray*/}
-                    {/*name="abouts"*/}
-                    {/*component={textareaMultiTab}*/}
-                    {/*tabs={aboutsTabs}*/}
-                    {/*labels={aboutsLabels}*/}
-                    {/*placeholder="About"*/}
-                {/*/>*/}
+                <br/>
 
-                {/*<br/>*/}
+                <FieldArray
+                    name="web"
+                    component={multiInputUrl}
+                    placeholder="Web"
+                    title="Web"
+                    showModal={showModal}
+                />
 
-                {/*<FieldArray*/}
-                    {/*name="social"*/}
-                    {/*component={multiInputUrl}*/}
-                    {/*placeholder="Socials"*/}
-                    {/*title="Socials"*/}
-                    {/*showModal={showModal}*/}
-                {/*/>*/}
+                <br/>
 
-                {/*<br/>*/}
-
-                {/*<FieldArray*/}
-                    {/*name="web"*/}
-                    {/*component={multiInputUrl}*/}
-                    {/*placeholder="Web"*/}
-                    {/*title="Web"*/}
-                    {/*showModal={showModal}*/}
-                {/*/>*/}
-
-                {/*<br/>*/}
-
-                {/*<FieldArray*/}
-                    {/*name="addresses"*/}
-                    {/*component={multiGoogleCityCountry}*/}
-                    {/*//component={multiInputText}*/}
-                    {/*placeholder="Address"*/}
-                    {/*showModal={showModal}*/}
-                {/*/>*/}
+                <FieldArray
+                    name="addresses"
+                    component={multiGoogleCityCountry}
+                    placeholder="Address"
+                    showModal={showModal}
+                />
 
                 <hr/>
 

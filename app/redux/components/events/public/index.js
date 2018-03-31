@@ -10,6 +10,7 @@ import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
+import {locales, locales_labels} from "../../../../../config/default";
 
 class EventPublic extends Component {
 
@@ -82,6 +83,16 @@ class EventPublic extends Component {
             }));
         }
 
+        locales.forEach(l => {
+            let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
+            if (!found) {
+                v.abouts.push({
+                    key: `abouts.${l}`,
+                    value: ""
+                })
+            }
+        });
+
         // Social: Add one item if value empty
         v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
 
@@ -140,6 +151,8 @@ class EventPublic extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         model={model}
                         showModal={showModal}
+                        aboutsTabs={locales}
+                        aboutsLabels={locales_labels}
                     />}
                 </div>
             </div>
