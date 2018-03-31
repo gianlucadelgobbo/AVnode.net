@@ -5,10 +5,15 @@ import {connect} from "preact-redux";
 
 class LateralMenu extends Component {
 
+    createHref({href}) {
+        const {id} = this.props;
+        return id ? href.replace(':id', id) : href;
+    }
+
     createMenuItem = ({model, index}) => {
 
         return (
-            <Link href={model.href} activeClassName="active" className="nav-link" key={index}>
+            <Link href={this.createHref({href: model.href})} activeClassName="active" className="nav-link" key={index}>
                 {model.label}
             </Link>);
     };
