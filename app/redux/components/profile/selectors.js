@@ -29,7 +29,7 @@ export const getDefaultModel = (state) => {
 };
 
 export const getModelErrorMessage = (state, id) =>
-    getModel(state, id).errorMessage;
+    getModel(state, id) && getModel(state, id).errorMessage;
 
-export const getModelisFetching = (state, id) =>
-    getModel(state, id).isFetching;
+export const getModelIsFetching = (state, id) =>
+    getModel(state, id) && getModel(state, id).isFetching;

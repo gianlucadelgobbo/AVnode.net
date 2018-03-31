@@ -1,1 +1,1 @@
-export const FORM_NAME = "PROFILE.PUBLIC";
+export const FORM_NAME = "EVENTS.PUBLIC";

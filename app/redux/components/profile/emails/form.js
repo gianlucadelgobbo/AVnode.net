@@ -1,7 +1,7 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {multiInputEmail} from "../../common/form/components";
+import {multiInputEmailWithDetails} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
@@ -21,7 +21,7 @@ class ProfileEmailsForm extends Component {
 
                 <FieldArray
                     name="emails"
-                    component={multiInputEmail}
+                    component={multiInputEmailWithDetails}
                     placeholder="Emails"
                     showModal={showModal}
                 />
