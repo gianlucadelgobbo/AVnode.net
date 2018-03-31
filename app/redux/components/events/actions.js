@@ -2,7 +2,7 @@ import * as api from '../../api';
 import {normalize} from 'normalizr';
 import {FETCH_LIST_SUCCESS, FETCH_LIST_REQUEST, FETCH_LIST_ERROR} from './constants'
 import {SAVE_MODEL_ERROR, SAVE_MODEL_REQUEST, SAVE_MODEL_SUCCESS} from './constants'
-import {arrayOfEvent, event} from '../../schemas/event'
+import {arrayOfEvent, event} from './schema'
 
 export const fetchList = () => (dispatch) => {
 

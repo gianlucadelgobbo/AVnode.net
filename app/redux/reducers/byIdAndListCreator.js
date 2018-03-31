@@ -28,7 +28,7 @@ export default ({
                 // merge current entity with the updated, reset message and isFetching, and store the result in the state
                 modelIds.forEach(id => state[id] = Object.assign({}, state[id], models[id], {
                     isFetching: false,
-                    error: null
+                    errorMessage: null
                 }));
 
                 return state;
@@ -37,7 +37,7 @@ export default ({
                 id = action.response.result;
                 state[id] = Object.assign({}, state[id], action.response.entities[MODELS_NAME][id], {
                     isFetching: false,
-                    error: null
+                    errorMessage: null
                 });
 
                 return {...state};
@@ -53,7 +53,7 @@ export default ({
                     state[id] = {};
                 }
 
-                state[id] = {...state[id], isFetching: true, error: null};
+                state[id] = {...state[id], isFetching: true, errorMessage: null};
 
                 return {...state};
             case SAVE_MODEL_ERROR :
@@ -68,7 +68,7 @@ export default ({
                     state[id] = {}
                 }
 
-                state[id] = {...state[id], isFetching: false, error: action.errorMessage};
+                state[id] = {...state[id], isFetching: false, errorMessage: action.errorMessage};
 
                 return {...state};
             default:

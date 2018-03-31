@@ -56,7 +56,7 @@ const items = [
     },
 ];
 
-class ProfileLateralMenu extends Component {
+class MyLateralMenu extends Component {
     render() {
         return (
             <LateralMenu
@@ -71,9 +71,9 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-ProfileLateralMenu = connect(
+MyLateralMenu = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ProfileLateralMenu);
+)(MyLateralMenu);
 
-export default ProfileLateralMenu;
+export default MyLateralMenu;
