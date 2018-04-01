@@ -1,75 +1,32 @@
 import * as api from '../../api';
-import {normalize} from 'normalizr';
-import {FETCH_LIST_SUCCESS, FETCH_LIST_REQUEST, FETCH_LIST_ERROR} from './constants'
-import {SAVE_MODEL_ERROR, SAVE_MODEL_REQUEST, SAVE_MODEL_SUCCESS} from './constants'
 import {arrayOfPerformance, performance} from './schema'
+import {
+    fetchList as generateFetchList,
+    saveModel as generateSaveModel,
+    removeModel as generateRemoveModel
+} from "../../actions";
+import * as constants from "./constants";
+import * as selectors from "./selectors";
 
-export const fetchList = () => (dispatch) => {
+export const fetchList = () => generateFetchList({
+    selectors,
+    constants,
+    schema: arrayOfPerformance,
+    request: api.fetchPerformances,
+});
 
-    dispatch({
-        type: FETCH_LIST_REQUEST,
-    });
+export const removeModel = ({id}) => () => generateRemoveModel({
+    selectors,
+    constants,
+    schema: performance,
+    request: api.removePerformance,
+    id
+});
 
-    return api.fetchPerformances()
-        .then(
-            (response) => {
-                dispatch({
-                    type: FETCH_LIST_SUCCESS,
-                    response: normalize(response || [], arrayOfPerformance)
-                });
-            },
-            (error) => {
-                dispatch({
-                    type: FETCH_LIST_ERROR,
-                    errorMessage: error.message || 'Something went wrong.'
-                });
-            });
-};
-
-export const removeModel = ({id}) => (dispatch) => {
-
-    dispatch({
-        type: SAVE_MODEL_REQUEST,
-        id
-    });
-
-    return api.removePerformance({id})
-        .then(
-            (response) => {
-                dispatch({
-                    type: SAVE_MODEL_SUCCESS,
-                    id,
-                    response: normalize(response || [], arrayOfPerformance)
-                });
-            },
-            (error) => {
-                dispatch({
-                    type: SAVE_MODEL_ERROR,
-                    id,
-                    errorMessage: error.message || 'Something went wrong.'
-                });
-            });
-};
-
-export const saveModel = (model) => (dispatch) => {
-
-    dispatch({
-        type: SAVE_MODEL_REQUEST,
-        id: model.id
-    });
-
-    return api.postPerformance(model)
-        .then(
-            (response) => {
-                dispatch({
-                    type: SAVE_MODEL_SUCCESS,
-                    response: normalize(response || [], performance)
-                });
-            },
-            (error) => {
-                dispatch({
-                    type: SAVE_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.'
-                });
-            });
-};
+export const saveModel = (model) => () => generateSaveModel({
+    selectors,
+    constants,
+    schema: performance,
+    request: api.postPerformance,
+    model
+});
