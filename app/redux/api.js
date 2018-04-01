@@ -305,5 +305,3 @@ export const fetchCategories = () => {
     //         return result.data;
     //     });
 };
-
-
