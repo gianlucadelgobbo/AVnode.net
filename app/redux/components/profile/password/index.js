@@ -1,13 +1,16 @@
-import {h, render, Component} from 'preact';
-import Navbar from '../navbar'
-import Form from './form'
+import {h, Component} from 'preact';
 import {connect} from 'preact-redux';
-import {getUser} from './selectors'
-import {locales, locales_labels} from '../../../../../config/default.json'
-import {editUser} from "../../../reducers/actions";
-import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
-
+import LateralMenu from '../lateralMenu'
+import Form from './form'
+import {showModal} from "../../modal/actions";
+import Loading from '../../loading'
+import ErrorMessage from '../../errorMessage'
+import ItemNotFound from '../../itemNotFound';
+import {getDefaultModel} from "../selectors";
+import {fetchModel, saveModel} from "./actions";
+import {MODAL_SAVED} from "../../modal/constants";
+import {getErrorMessage, getIsFetching} from "../../events/selectors";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -17,8 +20,13 @@ import {bindActionCreators} from "redux";
 
 class ProfilePassword extends Component {
 
+    // componentDidMount() {
+    //     const {fetchModel} = this.props;
+    //     fetchModel();
+    // }
+
     // Convert form values to API model
-    createUserModel(values) {
+    createModelToSave(values) {
 
         let model = {};
 
@@ -43,7 +51,7 @@ class ProfilePassword extends Component {
 
     onSubmit(values) {
         const {showModal, editUser, user} = this.props;
-        const model = this.createUserModel(values);
+        const model = this.createModelToSave(values);
 
         // Add auth user _id
         model._id = user._id;
@@ -52,29 +60,37 @@ class ProfilePassword extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                    type: "SAVED"
+                     type: MODAL_SAVED
                 });
             });
     }
 
     render() {
 
-        const {user} = this.props;
+        const {model, showModal,isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
                 <div className="col-md-2">
-                    <Navbar/>
+                    <LateralMenu/>
                 </div>
                 <div className="col-md-10">
                     <h1 className="labelField">MY Password</h1>
 
                     <br/>
-                    <Form
+
+                    {isFetching && !model && <Loading/>}
+
+                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+
+                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
-                        user={user}
-                    />
+                        user={model}
+                        showModal={showModal}
+                    />}
                 </div>
             </div>
         );
@@ -82,12 +98,15 @@ class ProfilePassword extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    user: getUser(state)
+    model: getDefaultModel(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    editUser: editUser,
-    showModal: showModal
+    fetchModel,
+    saveModel,
+    showModal,
 }, dispatch);
 
 ProfilePassword = connect(
