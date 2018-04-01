@@ -71,7 +71,7 @@ class ModelTable extends Component {
 
         return (
             <div>
-                {!list.length && <div>No events to display</div>}
+                {!list.length && <div>No PERFORMANCES to display</div>}
 
                 {isFetching && <Loading/>}
 

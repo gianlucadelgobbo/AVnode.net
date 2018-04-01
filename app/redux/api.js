@@ -162,22 +162,70 @@ export const saveEventImages = (model) => {
         });
 };
 
+// - users
 
-// - settings
-
-export const fetchEventSettings = ({id}) => {
-    return axios.get(`events/${id}/settings`)
+export const fetchEventUsers = ({id}) => {
+    return axios.get(`events/${id}/users`)
         .then(result => {
             return result.data;
         });
 };
 
-export const saveEventSettings = (model) => {
-    return axios.get(`events/${model._id}/settings`, model)
+export const saveEventUsers = (model) => {
+    return axios.get(`events/${model._id}/users`, model)
         .then(result => {
             return result.data;
         });
 };
+
+// - program
+
+export const fetchEventProgram = ({id}) => {
+    return axios.get(`events/${id}/program`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventProgram = (model) => {
+    return axios.get(`events/${model._id}/program`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - galleries
+
+export const fetchEventGalleries = ({id}) => {
+    return axios.get(`events/${id}/galleries`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventGalleries = (model) => {
+    return axios.get(`events/${model._id}/galleries`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - videos
+
+export const fetchEventVideos = ({id}) => {
+    return axios.get(`events/${id}/videos`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventVideso = (model) => {
+    return axios.get(`events/${model._id}/videos`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
 
 // - calls
 
@@ -190,6 +238,22 @@ export const fetchEventCalls = ({id}) => {
 
 export const saveEventCalls = (model) => {
     return axios.get(`events/${model._id}/calls`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - settings
+
+export const fetchEventSettings = ({id}) => {
+    return axios.get(`events/${id}/settings`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveEventSettings = (model) => {
+    return axios.get(`events/${model._id}/settings`, model)
         .then(result => {
             return result.data;
         });
@@ -235,6 +299,38 @@ export const savePerformancePublic = (model) => {
         });
 };
 
+// - galleries
+
+export const fetchPerformanceGalleries = ({id}) => {
+    return axios.get(`performances/${id}/galleries`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const savePerformanceGalleries = (model) => {
+    return axios.get(`performances/${model._id}/galleries`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - videos
+
+export const fetchPerformanceVideos = ({id}) => {
+    return axios.get(`performances/${id}/videos`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const savePerformanceVideos = (model) => {
+    return axios.get(`performances/${model._id}/videos`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
 // ============ Crews
 
 export const fetchCrews = () => {
@@ -274,6 +370,56 @@ export const saveCrewPublic = (model) => {
             return result.data;
         });
 };
+
+
+// - images
+
+export const fetchCrewImages = ({id}) => {
+    return axios.get(`crews/${id}/images`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveCrewImages = (model) => {
+    return axios.get(`crews/${model._id}/images`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - members
+
+export const fetchCrewMembers = ({id}) => {
+    return axios.get(`crews/${id}/members`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveCrewMembers = (model) => {
+    return axios.get(`crews/${model._id}/members`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - organization
+
+export const fetchCrewOrganization = ({id}) => {
+    return axios.get(`crews/${id}/organization`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveCrewOrganization = (model) => {
+    return axios.get(`crews/${model._id}/organization`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
 
 // ============ CODE LISTS
 
