@@ -1,87 +1,51 @@
-import isomorphicFetch from 'isomorphic-fetch';
-import {geocodeByAddress, getLatLng} from 'react-places-autocomplete'
+import * as api from '../../../api';
+import {normalize} from 'normalizr';
+import {FETCH_MODEL_REQUEST, FETCH_MODEL_SUCCESS, FETCH_MODEL_ERROR} from '../constants'
+import {SAVE_MODEL_REQUEST, SAVE_MODEL_SUCCESS, SAVE_MODEL_ERROR} from '../constants'
+import {profile} from '../schema'
 
-export const REQUEST_EDIT_USER = 'REQUEST_EDIT_USER';
-export const GOT_USER = 'GOT_USER';
-export const RESPONSE_SLUG = 'RESPONSE_SLUG';
-
-
-/*
-const fetch = (path, options = {}, json = true) => {
-    const opts = Object.assign({}, {
-        credentials: 'same-origin'
-    }, options);
-    if (json === true) {
-        opts.headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        };
-    }
-    return isomorphicFetch(path, opts)
-        .then(response => response.json());
-};
-
-export const getUser = (data) => (dispatch) => {
+export const fetchModel = ({id} = {}) => (dispatch) => {
 
     dispatch({
-        type: REQUEST_GET_USER,
-        id: data._id
+        type: FETCH_MODEL_REQUEST,
+        id
     });
 
-    return Promise.all(promises).then(() => {
-        return fetch(
-            `/admin/api/profile/public/`, {
-                method: 'GET',
-                body: JSON.stringify(data)
-            })
-            .then(json => dispatch(gotUser(json)));
-    });
+    return api.fetchProfilePublic({id})
+        .then(
+            (response) => {
+                dispatch({
+                    type: FETCH_MODEL_SUCCESS,
+                    response: normalize(response || [], profile)
+                });
+            },
+            (error) => {
+                dispatch({
+                    type: FETCH_MODEL_ERROR,
+                    errorMessage: error.message || 'Something went wrong.'
+                });
+            });
 };
-*/
-export const editUser = (data) => (dispatch) => {
+
+export const saveModel = (model) => (dispatch) => {
 
     dispatch({
-        type: REQUEST_EDIT_USER,
-        id: data._id
+        type: SAVE_MODEL_REQUEST,
+        id: model.id
     });
 
-    const promises = [];
-    const addressesToConvert = data.addresses || [];
-
-    addressesToConvert.forEach(a => {
-        promises.push(geocodeByAddress(a.originalString)
-            .then(results => getLatLng(results[0]))
-            .then(latLng => a.latLng = latLng)
-            .catch(error => console.error('Error', error)))
-    });
-
-    return Promise.all(promises).then(() => {
-        return fetch(
-            `/admin/api/profile/public/`, {
-                method: 'PUT',
-                body: JSON.stringify(data)
-            })
-            .then(json => dispatch(gotUser(json)));
-    });
+    return api.saveProfilePublic(model)
+        .then(
+            (response) => {
+                dispatch({
+                    type: SAVE_MODEL_SUCCESS,
+                    response: normalize(response || [], profile)
+                });
+            },
+            (error) => {
+                dispatch({
+                    type: SAVE_MODEL_ERROR,
+                    errorMessage: error.message || 'Something went wrong.'
+                });
+            });
 };
-
-export function gotUser(json) {
-    return {type: GOT_USER, json};
-}
-
-// slugs
-export function fetchSlug(slug, dispatch) {
-    return onlyFetchSlug(slug)
-        .then(json => (
-            dispatch({
-                type: RESPONSE_SLUG,
-                payload: json
-            })
-        ));
-};
-
-export const onlyFetchSlug = (slug) => fetch(`/admin/api/profile/public/slugs/${slug}`).then(json => {
-    console.log("jsonjsonjsonjsonjson", json);
-    return json
-});
-
