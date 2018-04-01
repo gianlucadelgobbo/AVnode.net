@@ -15,7 +15,10 @@ const Link = require('./shared/Link');
 const OrganizationData = require('./shared/OrganizationData');
 
 const adminsez = 'profile';
-
+var validateEmail = function(email) {
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email)
+};
 const userSchema = new Schema({
   old_id: String,
   is_crew: Boolean,
@@ -25,8 +28,8 @@ const userSchema = new Schema({
   creation_date: Date,
   stats: {},
 
-  slug: { type: String, unique: true },
-  stagename: { type: String, unique: true },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
+  stagename: { type: String, unique: true, minlength: 3, maxlength: 50 },
   addresses: [Address],
   abouts: [About],
   web: [Link],
@@ -34,11 +37,11 @@ const userSchema = new Schema({
 
   image: MediaImage,
 
-  name: String,
-  surname: String,
-  gender: String,
-  lang: String,
-  birthday: Date,
+  name: { type: String, trim: true, maxlength: 50 },
+  surname: { type: String, trim: true, maxlength: 50 },
+  gender: { type: String, trim: true, enum: ['M', 'F', 'Other'] },
+  lang: { type: String, trim: true, required: true},
+  birthday: { type: Date, required: true},
   citizenship: [],
   addresses_private: [AddressPrivate],
   phone: [Link],
@@ -46,14 +49,48 @@ const userSchema = new Schema({
   skype: [Link],
 
   email: { type: String, unique: true },
-  emails: [{
-    email: String,
-    is_public: { type: Boolean, default: false },
-    is_primary: { type: Boolean, default: false },
-    is_confirmed: { type: Boolean, default: false },
-    mailinglists: {},
-    confirm: String
-  }],
+  emails: {
+    type     : [{
+      email: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        unique: true,
+        required: 'EMAIL_IS_REQUIRED',
+        validate: [(email) => {
+          var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+          return re.test(email)
+        }, 'EMAIL_IS_NOT_VALID']
+      },
+      is_public: { type: Boolean, default: false },
+      is_primary: { type: Boolean, default: false },
+      is_confirmed: { type: Boolean, default: false },
+      mailinglists: {},
+      confirm: String
+    }],
+    required : true,
+    validate : [{
+      validator : function(array) {
+        let confirmed_exists = false;
+        for (let a=0; a<array.length ;a++) {
+          if (array[a].is_confirmed) confirmed_exists = array[a].is_confirmed;
+        }
+        return confirmed_exists;
+      }, msg: 'EMAILS_NO_CONFIRMED'
+    },{
+      validator : function(array) {
+        let primary_exists = false;
+        for (let a=0; a<array.length ;a++) {
+          if (array[a].is_primary) primary_exists = array[a].is_primary;
+        }
+        return primary_exists;
+      }, msg: 'EMAILS_NO_PRIMARY'
+    },{
+      validator : function(array) {
+        return true;
+      }, msg: 'uh oh'
+    }]
+  },
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   crews: [{ type: Schema.ObjectId, ref: 'Crew' }],
   members: [{ type: Schema.ObjectId, ref: 'User' }],
@@ -76,9 +113,7 @@ const userSchema = new Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
   is_confirmed: { type: Boolean, default: false },
-  confirm: String, // DELETE ?
-  tokens: Array, // DELETE ?
-  username: { type: String, unique: true } // DELETE ?
+  confirm: String
 }, {
   timestamps: true,
   toObject: {
@@ -126,7 +161,10 @@ userSchema.virtual('editUrl').get(function () {
     } 
   } 
 });
-
+userSchema.path('slug').validate(function(n) {
+  //return !!n && n.length >= 3 && n.length < 25;
+  return !n=='gianlucadelgobbo';
+}, 'Invalid Slug');
 */
 
 userSchema.virtual('birthdayFormatted').get(function () {
@@ -185,13 +223,12 @@ userSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-*/
 userSchema.pre('save', function save(next) {
+  if (!user.isModified('password')) { return next(); }
   console.log('userSchema.pre(save) id:' + this._id);
   const user = this;
   console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
   //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
-  if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
     bcrypt.hash(user.password, salt, null, (err, hash) => {
@@ -201,10 +238,11 @@ userSchema.pre('save', function save(next) {
     });
   });
 });
+*/
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  // console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.password);
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.password);
     cb(err, isMatch);
   });
 };
