@@ -15,22 +15,26 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.putData = (req, res) => {
+  logger.debug('putData');
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
     
     Models[config.cpanel[req.params.sez].model]
-    .findById(id, (err, data) => {
+    .findById(id, config.cpanel[req.params.sez].forms[req.params.form].select, (err, data) => {
       //, put, {new: true, runValidators: true, select: select}).
       if (!err) {
         if (data) {
           let select = config.cpanel[req.params.sez].forms[req.params.form].select;
           let put = {};
           for (const item in select) if(req.body[item]) put[item] = req.body[item];
+          logger.debug(req.body);
           Object.assign(data, put);
+          logger.debug(put);
 
           data.save((err) => {
             if (err) {
-              res.status(204).json(err);
+              console.log('err');
+              res.json(err);
             } else {
               select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
               let populate = config.cpanel[req.params.sez].forms[req.params.form].populate;

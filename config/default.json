@@ -2818,7 +2818,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "News"
         }, {
           "path": "footage",
