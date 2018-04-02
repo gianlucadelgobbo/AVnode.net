@@ -73,6 +73,7 @@
     "react-bootstrap-time-picker": "^1.0.3",
     "react-datepicker": "^1.2.2",
     "react-dropzone": "^3.13.4",
+    "react-formio": "^1.5.0",
     "react-intl": "^2.2.3",
     "react-modal": "^3.1.11",
     "react-places-autocomplete": "^6.1.3",
