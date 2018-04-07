@@ -15,7 +15,7 @@ block title
     .row
       .col-sm-12
         .performer_map_wrapper         
-          script(src='https://maps.googleapis.com/maps/api/js?key=&extension=.js')
+          script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js')
           script(src='https://cdn.mapkit.io/v1/infobox.js')
           link(href='https://cdn.mapkit.io/v1/infobox.css', rel='stylesheet')
           script.
@@ -82,7 +82,7 @@ block content
       .content_wrapper
         .container
           if data.footage.length
-            .row.performer_footage
+            .row.performer_footage.bottom60
               .col-lg-12
                 h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
                 .row.carousel
@@ -94,7 +94,7 @@ block content
             .row.performer_video
               .col-lg-12
                 h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
-                .row
+                .row.carousel.bottom60
                   each item in data.videos            
                     .col-sm-4
                       include ../partials/boxVideo
@@ -103,7 +103,7 @@ block content
             .row.performer_playlist
               .col-lg-12
                 h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
-                .row.carousel
+                .row.carousel.bottom60
                   each item in data.playlists
                     .col-sm-4
                       include ../partials/boxPlaylist
@@ -122,14 +122,20 @@ block content
                     include ../partials/boxGallery
 
   if data.news.length
-    section.performer_galleries_wrapper
+    section.performer_news_wrapper
       .content_wrapper
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=__('News')+" <small>(<span>"+data.stats.news+"</span>)</small>"  
-              .performance_divider.basic_divider
-              .row.carousel
-                each item in data.news
-                  .col-sm-4
+              h2.main_title.indented_title!=__('News')
+              .row.carousel_news
+                - var conta = 0
+                - for (var a = 0; a<data.news.length;a+2)
+                  - console.log(data.news[a]);
+                  //each item in data.news
+                  .col-sm-6
+                    - item = data.news[a]
                     include ../partials/boxNews
+                    if data.news[a+1]
+                      - item = data.news[a+1]
+                      include ../partials/boxNews

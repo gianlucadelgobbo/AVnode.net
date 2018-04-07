@@ -6,4 +6,11 @@ $(document).ready(function(){
       slidesToShow: 3,
       arrows: true
     });
+
+    $('.carousel_news').slick({
+      centerMode: true,
+      centerPadding: '80px',
+      slidesToShow: 2,
+      arrows: true
+    });    
   });  
