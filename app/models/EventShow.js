@@ -263,8 +263,6 @@ eventSchema.virtual('imageFormats').get(function () {
 
 eventSchema.virtual('boxDate').get(function () {
   let boxDate;
-  console.log('boxDate');
-  console.log(this.schedule);
   if (this.schedule && this.schedule.length) {
     const lang = global.getLocale();
     moment.locale(lang);

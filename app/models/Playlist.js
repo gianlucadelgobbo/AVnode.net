@@ -36,7 +36,7 @@ const playlistSchema = new Schema({
 // Return thumbnail
 playlistSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  console.log(this.media);
+  //console.log(this.media);
   for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
     imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
   }

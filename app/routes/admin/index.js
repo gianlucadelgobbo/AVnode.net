@@ -1,5 +1,6 @@
 const router = require('../router')();
 const get = require('./api/get');
+const put = require('./api/put');
 
 const logger = require('../../utilities/logger');
 
@@ -9,7 +10,7 @@ if (process.env.DEBUG) {
   });
 }
 
-router.get('/api/profile/public/slugs/:slug', (req, res, next)=>{
+router.get('/api/profile/public/slugs/:slug', (req, res)=>{
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   get.getSlug(req, res);
@@ -19,10 +20,15 @@ router.get('/api/profile/:form/', (req, res) => {
   req.params.sez = 'profile';
   get.getData(req, res);
 });
+router.put('/api/profile/:form/', (req, res) => {
+  req.params.id = req.user.id;
+  req.params.sez = 'profile';
+  put.putData(req, res);
+});
 
 
 
-router.get('/api/:sez/:id/public/slugs/:slug', (req, res, next)=>{
+router.get('/api/:sez/:id/public/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
 

@@ -57,7 +57,7 @@ const packageSchema = new Schema({
 
 const partnershipSchema = new Schema({
   category:  { type : Schema.ObjectId, ref : 'Category' },
-  users:  [{ type : Schema.ObjectId, ref : 'UserShow' }]
+  users:  [{ type : Schema.ObjectId, ref : 'User' }]
 });
 
 const programSchema = new Schema({
