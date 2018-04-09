@@ -29,7 +29,7 @@ router.putData = (req, res) => {
           for (const item in select) if(req.body[item]) put[item] = req.body[item];
           logger.debug(req.body);
           Object.assign(data, put);
-          logger.debug(put);
+          logger.debug(data);
 
           data.save((err) => {
             if (err) {
