@@ -4,8 +4,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
 const indexPlugin = require('../utilities/elasticsearch/User');
+const mailer = require('../utilities/mailer');
 const async = require('async');
 //const imageUtil = require('../utilities/image');
+const uid = require('uuid');
+const request = require('request');
 
 const MediaImage = require('./shared/MediaImage');
 const Address = require('./shared/Address');
@@ -223,10 +226,48 @@ userSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-userSchema.pre('save', function save(next) {
-  if (!user.isModified('password')) { return next(); }
+*/
+userSchema.pre('save', function (next) {
   console.log('userSchema.pre(save) id:' + this._id);
   const user = this;
+  console.log(process.env.BASE);
+  if (user.emails) {
+    for(let item=0;item<user.emails.length;item++) {
+      let mailinglists = [];
+      for (mailinglist in user.emails[item].mailinglists) if (user.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
+      request.post({
+        url: 'https://ml.avnode.net/subscribe',
+        formData:{
+          list: 'AXRGq2Ftn2Fiab3skb5E892g',
+          email: user.emails[item].email,
+          Topics: mailinglists.join(',')
+        }, function (error, response, body) {
+          console.log(error);
+          console.log(body);
+        }
+      });
+      console.log(mailinglists.join(','));
+
+      if (!user.emails[item].is_confirmed) {
+        console.log(user.emails[item].email);
+        user.emails[item].confirm = uid.v4();
+        mailer.sendEmail({
+          template: 'confirm-email',
+          message: {
+            to: user.emails[item].email
+          },
+          locals: {
+            link: process.env.BASE+'verify/email/' + user.emails[item].confirm,
+            stagename: user.stagename,
+            email: user.emails[item].email
+          }
+        }, next);
+      }
+    }
+    next();
+  }
+  if (!user.isModified('password')) { return next(); }
+  console.log('userSchema.pre(save) id:' + this._id);
   console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
   //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
   bcrypt.genSalt(10, (err, salt) => {
@@ -237,8 +278,9 @@ userSchema.pre('save', function save(next) {
       next();
     });
   });
+  next();
 });
-*/
+
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
