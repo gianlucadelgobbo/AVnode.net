@@ -204,6 +204,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
                             placeholder="Is primary"
                             isChild={true}
                         />
+                        {!is_confirmed && <label >Please confirm the email first</label>}
                     </div>
                     <div className="col-md-4">
                         {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
@@ -393,13 +394,13 @@ export const renderTimePicker = ({input, meta, format = "12", className, placeho
 
 export const checkboxField = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
     const field = <div className={"form-group " + classNames}>
+        {placeholder && <label htmlFor={id}>{placeholder}</label>}
         <input
             id={id}
             defaultChecked={input.value}
             className="form-control"
             type="checkbox"
             {...input}
-            placeholder={placeholder}
             disabled={disabled}
         />
     </div>;
@@ -409,7 +410,7 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
             <dt className="col-sm-2">{label}</dt>
             <dd className="col-sm-10"> {field} </dd>
         </dl>
-}
+};
 
 export const renderDropzoneInput = (field) => {
     let files = field.input.value;
@@ -439,12 +440,13 @@ export const renderDropzoneInput = (field) => {
 
     return (
         <div className="form-group">
-            <h4 className="labelField">{field.placeholder}</h4>
+            {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
 
             <Dropzone
                 className="attachment-dropzone"
                 name={field.name}
                 maxSize={10485760}
+                multiple={field.multiple || false}
                 onDropRejected={() => alert("Unable to upload the file: allowed file size exceeded (max 10 MB)")}
                 onDrop={(filesToUpload) => {
                     let files = [...field.input.value, ...filesToUpload];
@@ -453,8 +455,7 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div className="labelField">Drop files here, or click to select files to upload. (Max file size 10 MB)
-                </div>
+                <div className="labelField">Drop files here, or click to select files to upload.</div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}

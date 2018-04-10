@@ -44,14 +44,15 @@ export const saveProfilePrivate = (model) => {
 // - images
 
 export const fetchProfileImages = () => {
-    return axios.get("profile/images")
+    return axios.get("profile/image")
         .then(result => {
             return result.data;
         });
 };
 
 export const saveProfileImages = (model) => {
-    return axios.get("profile/images", model)
+    console.log(model)
+    return axios.put("profile/image", model)
         .then(result => {
             return result.data;
         });

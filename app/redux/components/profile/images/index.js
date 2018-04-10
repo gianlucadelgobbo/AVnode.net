@@ -6,11 +6,12 @@ import Form from './form'
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
-import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import UserPhotoNotFound from '../../../img/user_photo_not_found.png'
+
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -36,9 +37,9 @@ class ProfileImage extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
@@ -48,21 +49,17 @@ class ProfileImage extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
-        model._id = user._id;
-
-        console.log("model", model)
-
-        return;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
-                     type: MODAL_SAVED
+                    type: MODAL_SAVED
                 });
             });
     }
@@ -84,14 +81,20 @@ class ProfileImage extends Component {
 
                     {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
-                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+                    {!errorMessage && !isFetching && !model &&
+                    <img src={UserPhotoNotFound} class="rounded mx-auto d-block" alt="Photo not found"/>}
 
-                    {!errorMessage && !isFetching && model &&  <Form
-                        initialValues={this.getInitialValues(this)}
+                    {!errorMessage &&
+                    !isFetching &&
+                    model && model.image &&
+                    <img src={model.image.file} class="rounded mx-auto d-block" alt={model.stagename}/>}
+
+                    <Form
+                        initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                    />}
+                    />
                 </div>
             </div>
         );
