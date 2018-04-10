@@ -36,31 +36,31 @@ class ProfileEmails extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
         let v = {};
 
         // convert Emails for redux-form
-        v.emails = (Array.isArray(user.emails) && user.emails.length > 0) ?
-            user.emails :
+        v.emails = (Array.isArray(model.emails) && model.emails.length > 0) ?
+            model.emails :
             [{}];
 
         return v;
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
-        model._id = user._id;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                      type: MODAL_SAVED
@@ -89,11 +89,11 @@ class ProfileEmails extends Component {
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
                     {!errorMessage && !isFetching && model &&  <Form
-                        initialValues={this.getInitialValues(this)}
+                        initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                    />}}
+                    />}
                 </div>
             </div>
         );

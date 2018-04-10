@@ -14,6 +14,7 @@ import {fetchList as fetchCountries} from '../../countries/actions'
 import {getList as getCountries} from '../../countries/selectors'
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -29,7 +30,6 @@ class ProfilePrivate extends Component {
         fetchModel();
         fetchCountries();
     }
-
 
     // Convert form values to API model
     createModelToSave(values) {
@@ -80,18 +80,17 @@ class ProfilePrivate extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
-        console.log(model);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
-        model._id = user._id;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
-                     type: MODAL_SAVED
+                    type: MODAL_SAVED
                 });
             });
     }
@@ -99,6 +98,8 @@ class ProfilePrivate extends Component {
     render() {
 
         const {model, countries, showModal, errorMessage, isFetching} = this.props;
+
+        console.log(model)
 
         return (
             <div className="row">
