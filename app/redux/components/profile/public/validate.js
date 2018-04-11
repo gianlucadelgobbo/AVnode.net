@@ -31,8 +31,25 @@ const profilePublicValidate = values => {
 
     // ==== abouts
     // if exist
+    if (Array.isArray(abouts)) {
+        const aboutArrayErrors = [];
 
+        // Apply validation to each about
+        abouts.forEach((about, index) => {
+            const aboutErrors = {};
 
+            // length must be less than 5000 chars
+            if (!about || about.value.length > 5000) {
+                aboutErrors.value = 'Invalid string length (max 5000)';
+                aboutArrayErrors[index] = aboutErrors;
+            }
+        });
+
+        if (aboutArrayErrors.length) {
+            errors.abouts = aboutArrayErrors;
+        }
+
+    }
 
     // ==== web
     // Must exists and length must be min 1 max 5
