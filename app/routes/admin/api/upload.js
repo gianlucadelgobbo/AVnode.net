@@ -5,44 +5,45 @@ const mime = require('mime');
 const fs = require('fs');
 const path = require('path');
 const sizeOf = require('image-size');
-
 const imageUtil = require('../../../utilities/image');
-
+ 
+const mongoose = require('mongoose');
+const Models = {
+  'User': mongoose.model('User'),
+  'Performance': mongoose.model('Performance'),
+  'Event': mongoose.model('Event'),
+  'Footage': mongoose.model('Footage'),
+  'Gallery': mongoose.model('Gallery'),
+  'News': mongoose.model('News'),
+  'Playlist': mongoose.model('Playlist'),
+  'Video': mongoose.model('Video')
+}
 const logger = require('../../../utilities/logger');
 
 const upload = {};
 
-upload.uploader = (req, res, sez, media, done) => {
-  let error = false;
-  const options = config.cpanel[sez].media[media];
-
-  logger.debug("uploader");
-  logger.debug(options);
+upload.getServerpath = (storage) => {
   // Set Folder and create if do not exist
   const d = new Date();
   let month = d.getMonth() + 1;
-  let serverpath = `${global.appRoot}${options.storage}${d.getFullYear()}/`;
-
+  let serverpath = `${global.appRoot}${storage}${d.getFullYear()}/`;
   month = month < 10 ? '0' + month : month;
-  logger.debug(serverpath);
-
-  if (!fs.existsSync(serverpath)) {
-    logger.debug(fs.mkdirSync(serverpath));
-  }
+  if (!fs.existsSync(serverpath)) fs.mkdirSync(serverpath);
   serverpath += month;
-  if (!fs.existsSync(serverpath)) {
-    logger.debug(fs.mkdirSync(serverpath));
-  }
+  if (!fs.existsSync(serverpath)) fs.mkdirSync(serverpath);
+  return serverpath;
+}
 
+upload.uploader = (req, res, done) => {
+  const options = config.cpanel[req.params.sez].forms[req.params.form].components[req.params.form].config;
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, serverpath);
+      cb(null, upload.getServerpath(options.storage));
     },
     filename: (req, file, cb) => {
       cb(null, `${uuid.v4()}.${mime.extension(file.mimetype)}`);
     }
   });
-
   const multerupload = multer({
     dest: options.storage,
     storage: storage,
@@ -52,13 +53,9 @@ upload.uploader = (req, res, sez, media, done) => {
     fileFilter: function (req, file, cb) {
       const extnameok = options.filetypes.indexOf(path.extname(file.originalname).toLowerCase().replace('.','')) !== -1;
       let mimetypeok = false;
-
-      for (let filetype in options.filetypes) {
-        if (file.mimetype.indexOf(options.filetypes[filetype]) !== -1) {
+      for (let filetype in options.filetypes)
+        if (file.mimetype.indexOf(options.filetypes[filetype]) !== -1)
           mimetypeok = true;
-        }
-      }
-
       if (mimetypeok && extnameok) {
         logger.debug('mime ok');
         cb(null, true);
@@ -68,14 +65,16 @@ upload.uploader = (req, res, sez, media, done) => {
       }
     }
   });
+
   const up = multerupload.fields([options.fields]);
 
   up(req, res, (err, r) => {
+    error = false;
     if (err) {
       logger.debug('upload err');
       logger.debug(err);
-      done(`${__('Upload unknown error')}: ${err}`, req.files);
-    } else if (options.fields.name === 'image' && req.files[options.fields.name] && req.files[options.fields.name].length) {
+      res.status(404).json({ error: `${JSON.stringify(err)}` });
+    } else if (req.files[options.fields.name] && req.files[options.fields.name].length) { // MANCA ELSE
       let conta = 0;
 
       for (let a = 0; a < req.files[options.fields.name].length; a++) {
@@ -88,19 +87,17 @@ upload.uploader = (req, res, sez, media, done) => {
         logger.debug('dimensions.height '+ dimensions.height);
         logger.debug('options.minwidth '+ options.minwidth);
         logger.debug('options.minheight '+ options.minheight);
-        if (dimensions.width > options.minwidth && dimensions.height > options.minheight) {
+        if (dimensions.width < options.minwidth || dimensions.height < options.minheight) {
           error = true;
           req.files[options.fields.name][a].err = __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight;
           logger.debug(__('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight);
-          if (conta === req.files[options.fields.name].length) {
-            done(error ? __('There are some errors') : false, req.files);
-          }
         } else {
           logger.debug('Image minimum size is ok');
-          logger.debug(a);
         }
       }
-      if (!error) {
+      if (error) {
+        done({ errors: req.files }, null);
+      } else {
         imageUtil.resizer(req.files[options.fields.name], options, (resizeerr, info) => {
           conta++;
           if (resizeerr || !info) {
@@ -117,17 +114,30 @@ upload.uploader = (req, res, sez, media, done) => {
           }
           if (conta === req.files[options.fields.name].length) {
             if (error) {
-              done(__('There are some errors'), req.files);
+              done({ errors: req.files }, null);
             } else {
-              done(error, req.files);
+              let put = {};
+              if (options.fields.name === 'image') {
+                put[options.fields.name] = {
+                  file: req.files[options.fields.name][0].path.replace(global.appRoot, ''),
+                  originalname: req.files[options.fields.name][0].originalname,
+                  encoding: req.files[options.fields.name][0].encoding,
+                  mimetype: req.files[options.fields.name][0].mimetype,
+                  folder: req.files[options.fields.name][0].destination,
+                  filename: req.files[options.fields.name][0].filename,
+                  size: req.files[options.fields.name][0].size,
+                  width: req.files[options.fields.name][0].width,
+                  height: req.files[options.fields.name][0].height
+                };
+              }
+              logger.debug('SALVAAAAAAAAA');
+              done(null, put);          
             }
           }
         });
-      } else {
-        done(__('There are some errors'), req.files);
       }
     } else {
-      done(__('Missing upload config'), req.files);
+      done({ errors: 'UPLOAD_CONFIG_ERROR' }, null);
     }
   });
 };

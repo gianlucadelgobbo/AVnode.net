@@ -26,7 +26,18 @@ nano warehousenew_users_log.txt
 */
 //db.playlists.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
 //db.footage.update({"users._id":{$exists:false}}, {$set: {"users":[{"old_id":"39417"}]}},false,true);
-
+db.users.aggregate([{  
+  $group: { 
+      _id: {slug: "$slug"},
+      uniqueIds: {$addToSet: "$_id"},
+      count: {$sum: 1}
+    } 
+  },
+  {$match: { 
+      count: {"$gt": 1}
+      }
+  }
+]);
 var CATEGORIES = function() {
 
   var relfix = {

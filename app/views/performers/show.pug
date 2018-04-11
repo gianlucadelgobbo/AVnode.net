@@ -130,12 +130,11 @@ block content
               h2.main_title.indented_title!=__('News')
               .row.carousel_news
                 - var conta = 0
-                - for (var a = 0; a<data.news.length;a+2)
-                  - console.log(data.news[a]);
-                  //each item in data.news
-                  .col-sm-6
-                    - item = data.news[a]
-                    include ../partials/boxNews
-                    if data.news[a+1]
-                      - item = data.news[a+1]
+                - for (var a = 0; a<data.news.length;a++)
+                  if a/2 === parseInt(a/2)
+                    .col-sm-6
+                      - item = data.news[a]
                       include ../partials/boxNews
+                      if data.news[a+1]
+                        - item = data.news[a+1]
+                        include ../partials/boxNews
