@@ -294,7 +294,7 @@ export const fetchPerformancePublic = ({id}) => {
 };
 
 export const savePerformancePublic = (model) => {
-    return axios.get(`performances/${model._id}/public`, model)
+    return axios.put(`performances/${model._id}/public`, model)
         .then(result => {
             return result.data;
         });

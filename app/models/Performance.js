@@ -28,6 +28,11 @@ const Booking = new Schema({
   event: [{ type: Schema.ObjectId, ref: 'Event' }]
 });
 
+const Techreq = new Schema({
+  lang: String,
+  text: String
+})
+
 const performanceSchema = new Schema({
   old_id : String,
 
@@ -41,7 +46,7 @@ const performanceSchema = new Schema({
   price: String,
   duration: String,
   tech_art: String, // what the artist brings
-  tech_req: String, // what the artist need
+  tech_req: [], // what the artist need
   bookings:[Booking],
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],

@@ -1,13 +1,17 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
+import {connect} from 'preact-redux';
+import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants'
 import {
     renderList,
     inputText,
     textareaMultiTab,
-    checkboxField, multiInputText,
+    checkboxField, 
+    multiInputText,
 } from "../../common/form/components";
 import validate from './validate';
+import {getFormSyncErrors} from 'redux-form';
 //import asyncValidate from './asyncValidate';
 
 class PerformancePublicForm extends Component {
@@ -21,8 +25,11 @@ class PerformancePublicForm extends Component {
             aboutsLabels,
             showModal,
             onSubmit,
+            errors,
             categories
         } = this.props;
+
+        console.log(errors)
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -44,6 +51,7 @@ class PerformancePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={aboutsTabs}
                     labels={aboutsLabels}
+                    errors={errors}
                     placeholder="About"
                 />
 
@@ -89,6 +97,7 @@ class PerformancePublicForm extends Component {
                     tabs={aboutsTabs}
                     labels={aboutsLabels}
                     placeholder="Technologies with the artists"
+                    errors={errors}
                 />
 
                 <br/>
@@ -99,6 +108,7 @@ class PerformancePublicForm extends Component {
                     tabs={aboutsTabs}
                     labels={aboutsLabels}
                     placeholder="Technical requirements"
+                    errors={errors}
                 />
 
                 <br/>
@@ -118,7 +128,7 @@ class PerformancePublicForm extends Component {
 
 }
 
-export default reduxForm({
+PerformancePublicForm =  reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
@@ -126,3 +136,17 @@ export default reduxForm({
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
 })(PerformancePublicForm);
+
+//Get form's initial values from redux state here
+const mapStateToProps = (state) => ({
+    errors: getFormSyncErrors(FORM_NAME)(state)
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+PerformancePublicForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PerformancePublicForm);
+
+export default PerformancePublicForm;
