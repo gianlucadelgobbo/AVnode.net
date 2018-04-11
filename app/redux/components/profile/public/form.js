@@ -1,9 +1,12 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
+import {connect} from 'preact-redux';
+import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants'
-import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry, multiInputText} from "../../common/form/components";
+import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
+import {getFormSyncErrors} from 'redux-form';
 
 class ProfilePublicForm extends Component {
 
@@ -15,8 +18,11 @@ class ProfilePublicForm extends Component {
             aboutsTabs,
             aboutsLabels,
             showModal,
-            onSubmit
+            onSubmit,
+            errors
         } = this.props;
+
+        console.log(errors)
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -39,6 +45,7 @@ class ProfilePublicForm extends Component {
                     tabs={aboutsTabs}
                     labels={aboutsLabels}
                     placeholder="About"
+                    errors={errors}
                 />
 
                 <br/>
@@ -86,7 +93,8 @@ class ProfilePublicForm extends Component {
 
 }
 
-export default reduxForm({
+
+ProfilePublicForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
@@ -94,3 +102,17 @@ export default reduxForm({
     asyncValidate,
     asyncBlurFields: ['slug', 'addresses[].text']
 })(ProfilePublicForm);
+
+//Get form's initial values from redux state here
+const mapStateToProps = (state) => ({
+    errors: getFormSyncErrors(FORM_NAME)(state)
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+ProfilePublicForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProfilePublicForm);
+
+export default ProfilePublicForm;

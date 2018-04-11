@@ -89,10 +89,11 @@ export const textarea = ({input, id, meta, placeholder, isChild}) => {
         </dl>
 };
 
-export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fields}) => {
+export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fields, errors}) => {
 
     const id = `tabs-${Math.random()}`;
     const hasValue = (fields, index) => !!fields.get(index).value;
+    const hasError = (errors, index, name) => errors[name] && errors[name][index] && !!errors[name][index].value;
     const label = <div className="labelField">{placeholder}</div>;
 
     return <div className="card">
@@ -109,7 +110,7 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
                             className={"nav-link " + (index === 0 ? "active" : "")}
                             data-toggle="pill"
                             href={`#${id}${index}`}>
-                            {labels[k]}{hasValue(fields, index) ? "" : "*"}
+                            {hasError(errors, index, fields.name) ? "! " : ""}{labels[k]}{hasValue(fields, index) ? "" : "*"}
                         </a>
                     </li>
                 ))}
@@ -204,7 +205,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
                             placeholder="Is primary"
                             isChild={true}
                         />
-                        {!is_confirmed && <label >Please confirm the email first</label>}
+                        {!is_confirmed && <label>Please confirm the email first</label>}
                     </div>
                     <div className="col-md-4">
                         {is_confirmed ? "Is confirmed" : "Not yet confirmed"}

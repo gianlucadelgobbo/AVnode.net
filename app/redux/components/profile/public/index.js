@@ -99,7 +99,6 @@ class ProfilePublic extends Component {
             }
         });
 
-
         // Social: Add one item if value empty
         v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
 
