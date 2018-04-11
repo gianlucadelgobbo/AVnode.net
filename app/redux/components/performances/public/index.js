@@ -40,22 +40,10 @@ class PerformancePublic extends Component {
                 }
             });
         }
+        // Convert tech_req for API
+        model.tech_req = model.tech_req.filter(w => w.value);
 
-        // Convert web
-        model.web = model.web.filter(w => w.url);
-
-        // Convert social
-        model.social = model.social.filter(w => w.url);
-
-        // Convert addresses
-        model.addresses = model.addresses.map(a => {
-            const originalString = a.text;
-            const split = originalString.split(",");
-            const country = split[split.length - 1].trim();
-            const city = split[0].trim();
-            return {originalString, city, country}
-        });
-
+        
         return model;
     }
 
@@ -71,6 +59,9 @@ class PerformancePublic extends Component {
 
         //Convert slug for redux-form
         v.slug = model.slug;
+
+        //Convert title for redux-form
+        v.title = model.title;
 
         // Convert about format for FieldArray redux-form
         v.abouts = [];
@@ -99,7 +90,7 @@ class PerformancePublic extends Component {
         v.price = model.price;
         v.duration = model.duration;
 
-        // Convert about format for FieldArray redux-form
+        // Convert tech_art format for FieldArray redux-form
         v.tech_art = [];
         if (Array.isArray(model.tech_art)) {
 
@@ -124,8 +115,8 @@ class PerformancePublic extends Component {
 
             // convert current lang
             v.tech_req = model.tech_req.map(x => ({
-                key: `tech_req.${x.lang}`,
-                value: x.text
+                key: `tech_req.it`,
+                value: x
             }));
         }
 
@@ -149,7 +140,7 @@ class PerformancePublic extends Component {
         modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return saveModel(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
