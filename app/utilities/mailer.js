@@ -17,6 +17,22 @@ const getTransporter = () => {
   }));
 };
 
+module.exports.sendEmail = (data, cb) => {
+  logger.info('Sending Email');
+  logger.info(data);
+  const email = new Email({
+    message: {
+      from: 'info@avnode.net',
+      name: 'AVnode.net'
+    },
+    views: { root: 'app/views/emails' },
+    transport: getTransporter()
+  });
+  email.send(data)
+  .then(info => logger.info('Email sent', info))
+  .catch(err => cb(err));
+}
+
 module.exports.signup = (options, data, cb) => {
 
   const email = new Email({

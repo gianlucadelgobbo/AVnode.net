@@ -8,6 +8,7 @@ warehouse/
 .elasticsearch
 logs/*
 warehouse
+glacier
 .DS_Store
 .vscode/
 package-lock.json
