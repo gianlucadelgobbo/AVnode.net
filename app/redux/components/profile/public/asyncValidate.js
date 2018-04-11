@@ -4,6 +4,8 @@ import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 const asyncValidate = (values, dispatch, state, fieldName) => {
     const promises = [];
     const result = {};
+    
+    console.log("ASYNC", )
 
     // slug
     let slugFromValues = values.slug;
