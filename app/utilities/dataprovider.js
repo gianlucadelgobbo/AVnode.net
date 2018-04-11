@@ -65,6 +65,8 @@ dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting,
 dataprovider.show = (req, res, section, subsection, model) => {
   logger.debug("req.params.page");
   logger.debug(req.params.page);
+  logger.debug(section);
+  logger.debug(subsection);
   let populate = config.sections[section][subsection].populate;
   logger.debug(populate);
   for(let item in populate) {
@@ -90,9 +92,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
   const select = config.sections[section][subsection].select;
 
   dataprovider.fetchShow(req, model, populate, select, (err, data) => {
-    logger.debug('fetchShow');
-    logger.debug(err);
-    //logger.debug(data);
+    logger.debug('fetchShowaaaa');
     if (err || data === null) {
       res.status(404).render('404', {});
     } else {
@@ -113,8 +113,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
-        logger.debug("nextpage");
-        logger.debug(parseFloat(req.params.page)+1);
+        logger.debug("res.render");
         if (data.addresses) {
           const locations = data.addresses.map(obj =>{
             if (obj.geometry && obj.geometry.lat && obj.geometry.lng) {

@@ -53,7 +53,7 @@ router.getData = (req, res) => {
       } 
     }
   }
-    if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
+  if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].forms[req.params.form].populate;

@@ -40,8 +40,8 @@ playlistSchema.virtual('imageFormats').get(function () {
   for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
     imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
   }
-  if (this.media && this.media.preview) {
-    const serverPath = this.media.preview;
+  if (this.footage && this.footage.length && this.footage[0].media && this.footage[0].media.preview) {
+    const serverPath = this.footage[0].media.preview;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/footage_previews/', process.env.WAREHOUSE+'/warehouse/footage/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
