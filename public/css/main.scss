@@ -26,6 +26,10 @@ pre {
   color: $color4;
 }
 
+nav.navbar {
+    z-index: 1;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700');
 
 @import url('https://cdn.linearicons.com/free/1.0.0/icon-font.min.css'); 
@@ -69,6 +73,43 @@ small, .small {
      background-color: transparent;
  }
  
+
+// EVENT PAGE
+.subtitle {
+    color: $color1;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+header.header_event {
+    border-bottom: 1px solid $color1;
+    margin-bottom: 30px;
+}
+
+.expand_image_event {
+    width: 130px;
+    margin: 0 auto;
+    display: block;
+}
+
+.event_main_image_wrapper {
+    position: relative;
+    top: -400px;
+    margin-bottom: -400px;
+    transition: all 0.5s ease-in-out;    
+}
+
+.event_main_image_wrapper.expanded {
+    position: relative;
+    top: 0px;
+    margin-bottom: 0px;
+    transition: all 0.5s ease-in-out;    
+}
+
+.expand_image_event:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
  /* performer page */
  
 .performer_links_list {
@@ -165,6 +206,10 @@ small, .small {
 .abouts_wrapper {
     background-color: #232323;
     padding: 60px 0;
+    background-size: 700px;
+    background-repeat: no-repeat;
+    background-position: top center;
+    padding-top: 60px;
 }
 
 .more_button {
@@ -186,6 +231,59 @@ small, .small {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);    
     font-size: 40px;
+    transition: all 0.5s ease-in-out;        
+}
+
+.event_social_list {
+    border-left: 1px solid $color3;
+    padding-left: 15px;
+}
+
+.about_button {
+    font-size: 40px;
+    border: 1px solid $color1;
+    padding: 15px;
+    border-radius: 50%;
+    display: inline-block;
+    height: 72px;
+    width: 72px;    
+    text-align: center;    
+}
+
+i.fa.about_button {
+    position: relative;
+    top: -4px;
+}
+
+.event_social_list li {
+    margin-right: 15px !important;
+}
+
+.share_button {
+    height: 50px;
+    width: 50px;
+}
+.share_button {
+    border: 1px solid $color1;
+    padding: 15px;
+    border-radius: 50%;
+    display: inline-block;
+    height: 72px;
+    width: 72px;    
+    text-align: center;    
+}
+
+.partecipate.button {
+    font-weight: 700;
+    text-transform: uppercase;
+    background-color: $color1;
+    color: #fff;
+    padding: 17px 50px;
+    font-size: 30px;
+    position: relative;
+    top: 7px;
+    margin-right: 30px;
+    border-radius: 3px;
 }
 
 
