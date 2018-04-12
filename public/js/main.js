@@ -12,5 +12,7 @@ $(document).ready(function(){
       centerPadding: '80px',
       slidesToShow: 2,
       arrows: true
-    });    
+    });
+    
+    
   });  
