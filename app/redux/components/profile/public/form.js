@@ -22,8 +22,6 @@ class ProfilePublicForm extends Component {
             errors
         } = this.props;
 
-        console.log(errors)
-
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
