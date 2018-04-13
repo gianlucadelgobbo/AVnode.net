@@ -18,7 +18,8 @@ import TimePicker from 'react-bootstrap-time-picker';
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
         <PlacesAutocomplete className="form-control" inputProps={input} options={options}/>
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched &&
+        <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
     </div>;
 
     const label = <div className="labelField">{placeholder}</div>;
