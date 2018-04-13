@@ -75,6 +75,10 @@ export const inputEmail = ({input, meta, placeholder, isChild}) => {
     return inputField({input, type: "email", meta, placeholder, isChild})
 };
 
+export const inputCheckbox = ({input, meta, placeholder, isChild}) => {
+    return inputField({input, type: "checkbox", meta, placeholder, isChild})
+};
+
 export const textarea = ({input, id, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         {placeholder && <label htmlFor="first_name">{placeholder}</label>}
@@ -174,6 +178,65 @@ export const multiInputEmail = ({fields, title, showModal, placeholder, meta: {e
         isChild: true
     })
 };
+
+export const multiInputCheckbox = ({fields, title, showModal, placeholder, meta: {error}}) => {
+    return multiInput({
+        fields,
+        title,
+        meta: {error},
+        showModal,
+        placeholder,
+        render: checkboxField,
+        key: "checkbox",
+        isChild: true
+    })
+};
+
+// multiInputCheckboxes // Refactoring // Users in Performances
+
+export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, meta:{error}}) => {
+    const renderSubField = (member, index, fields, showModal) => {
+        return <div className="row" key={index}>
+                    <div className="col-md-10">
+                        <Field
+                            name={`${member}.stagename`}
+                            component={checkboxFieldInColumn}
+                            placeholder={placeholder}
+                            isChild={true}
+                        />
+                    </div>
+                    <div className="col-md-2 pull-right">
+                        <Button bsStyle="danger"
+                                onClick={() =>
+                                    showModal({
+                                        type: MODAL_REMOVE,
+                                        props: {
+                                            onRemove: () => fields.remove(index)
+                                        }
+                                    })}
+                        >
+                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                        </Button>
+                    </div>
+                </div>
+        }
+    const label = <div className="labelField">{placeholder}</div>;
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success" className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField(member, index, fields, showModal))}
+
+        </div>
+    </div>;
+}
 
 export const multiInputEmailWithDetails = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
@@ -404,6 +467,27 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
             {...input}
             disabled={disabled}
         />
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
+
+//Refactoring//
+export const checkboxFieldInColumn = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
+    const field = <div className="form-group checkbox-list">
+        <input
+            id={id}
+            defaultChecked={input.value}
+            className=""
+            type="checkbox"
+            {...input}
+            disabled={disabled}
+        />
+        <label className="checkbox-inline" htmlFor={id}>{input.value}</label>
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
