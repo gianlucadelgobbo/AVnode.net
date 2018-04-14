@@ -51,10 +51,15 @@ export const fetchProfileImages = () => {
 };
 
 export const saveProfileImages = (model) => {
+
+    // convert image to Form Data
+    let formBox = new FormData();
+    formBox.append('image', model.image);
+
+    // define request headers
     const config = {headers: {'Content-Type': 'multipart/form-data'}};
 
-    console.log(model)
-    return axios.put("profile/image", model, config)
+    return axios.put("profile/image", formBox, config)
         .then(result => {
             return result.data;
         });

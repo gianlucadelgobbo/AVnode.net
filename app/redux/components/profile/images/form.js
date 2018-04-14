@@ -11,12 +11,12 @@ import {formValueSelector} from 'redux-form';
 class ProfileImageForm extends Component {
 
     submitForm(data) {
-        const {onSubmit, resetForm} = this.props;
+        const {onSubmit, reset} = this.props;
 
         // reset form after submit
         return onSubmit(data)
             .then(() => {
-                resetForm();
+                reset();
             });
     }
 
