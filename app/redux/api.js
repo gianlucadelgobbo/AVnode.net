@@ -12,7 +12,7 @@ export const fetchProfilePublic = () => {
 };
 
 export const saveProfilePublic = (model) => {
-    return axios.get("profile/public", model)
+    return axios.put("profile/public", model)
         .then(result => {
             return result.data;
         });
@@ -51,8 +51,10 @@ export const fetchProfileImages = () => {
 };
 
 export const saveProfileImages = (model) => {
+    const config = {headers: {'Content-Type': 'multipart/form-data'}};
+
     console.log(model)
-    return axios.put("profile/image", model)
+    return axios.put("profile/image", model, config)
         .then(result => {
             return result.data;
         });

@@ -1,7 +1,7 @@
 import {fetchSlug} from '../../../api';
 import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 
-const asyncValidate = (values, dispatch, state, fieldName) => {
+const asyncValidate = (values, dispatch, state) => {
     const promises = [];
     const result = {};
 
@@ -24,7 +24,6 @@ const asyncValidate = (values, dispatch, state, fieldName) => {
     addressesToCheck.forEach((a, index) => {
         promises.push(geocodeByAddress(a.text)
             .catch(error => {
-                console.log(error)
                 addressesErrorArray[index] = {text: {_error: "Invalid city"}};
                 result.addresses = addressesErrorArray;
             })
@@ -34,24 +33,19 @@ const asyncValidate = (values, dispatch, state, fieldName) => {
 
     return Promise.all(promises)
         .then(() => {
-
             return checkIfError(result)
-
         }).catch(() => {
-            console.log("Error", result)
             return checkIfError(result)
         })
-
 };
 
 const checkIfError = (result) => {
     const keys = Object.keys(result);
-    if (!!key.length) {
+    if (!!keys.length) {
         throw result;
     } else {
         return true
     }
-
-}
+};
 
 export default asyncValidate

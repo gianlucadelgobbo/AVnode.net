@@ -55,8 +55,8 @@ class ProfilePublic extends Component {
             const originalString = a.text;
             const split = originalString.split(",");
             const country = split[split.length - 1].trim();
-            const city = split[0].trim();
-            return {originalString, city, country}
+            const locality = split[0].trim();
+            return {originalString, locality, country}
         });
 
         return model;
