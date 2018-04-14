@@ -1,29 +1,77 @@
 extends ../layout
 
-block teaser
-  if data.teaserImage
-    .d-flex.justify-content-center.align-items-start
-      img.card-img-top.img-fluid(
-        src=`${data.teaserImageFormats.large}`
-        alt=`${data.name}`
-      )
+
+//- block teaser
+//-   if data.teaserImage
+//-     .d-flex.justify-content-center.align-items-start
+//-       img.card-img-top.img-fluid(
+//-         src=`${data.teaserImageFormats.large}`
+//-         alt=`${data.name}`
+//-       )
 
 block title
-  if data.title
-    .jumbotron.jumbotron-fluid
-      .container
+  if data.imageFormats
+    .container
+      .event_main_image_wrapper
+        img.img-fluid.event_main_image(src=data.imageFormats.large, alt=data.title)
+        img.expand_image_event(src="/images/expand_image_event.svg")
+
+  
+  .wrapper_header_evento
+    .container
+      .row
+        .col-lg-12
+          header.header_event
+            if data.title
+              h1.main_title=data.title
+            if data.dateFormatted
+              p.subtitle=data.dateFormatted
+            if data.subtitle  
+              p.subtitle=data.subtitle
+            if data.boxDate
+              p.boxDate=data.boxDate
+            if data.boxVenue
+              p.boxVenue=data.boxVenue
+          #mappa_evento.miss
+            h1="Mappa"
+            p="mancano lat/long della venue"
+  .wrapper_about_partecipate_evento
+    .abouts_wrapper(style='background-image: url(/images/logo_avnode_svg_grey.svg)') 
+      .container 
         .row
-          .col-lg-8
-            h1.display-4=data.title
-            p.lead=data.dateFormatted
-            p.lead=data.subtitle
-            p=data.about
-          .col-lg-4
-            if data.image
-              img.card-img-top.img-fluid(
-                src=data.imageFormats.medium
-                alt=data.title
-              )
+          .col-sm-6
+            ul.event_social_list.list-inline.miss
+              li.list-inline-item
+                a(href='#')
+                  span.lnr.lnr-link.about_button
+              li.list-inline-item
+                a(href='#')
+                  i.fa.fa-twitter.about_button
+              li.list-inline-item
+                a(href='#')
+                  i.fa.fa-facebook.about_button
+              li.list-inline-item
+                a(href='#')
+                  i.fa.fa-instagram.about_button                                    
+          .col-sm-6            
+            ul.list-inline
+              li.list-inline-item
+                a.miss.partecipate.button(href="#")=__('Partecipate')
+              li.list-inline-item
+                a(href='#')
+                  .share_button
+                    img(src="/images/share_icon.svg")
+
+        if data.abouts      
+            .row
+              .col-sm-12
+                  .about_wrapper
+                    !=data.about
+                    br
+                    span#about_collapse.about_more.collapse="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"        
+                  .more_button
+                    span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
+      
 
 block content
   .row
