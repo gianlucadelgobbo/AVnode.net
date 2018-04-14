@@ -40,8 +40,8 @@ const performanceSchema = new Schema({
   stats: {},
   price: String,
   duration: String,
-  tech_art: String, // what the artist brings
-  tech_req: String, // what the artist need
+  tech_art: [About], // what the artist brings
+  tech_req: [About], // what the artist need
   bookings:[Booking],
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],
