@@ -107,7 +107,7 @@ export const fetchProfilePassword = () => {
 };
 
 export const saveProfilePassword = (model) => {
-    return axios.get("profile/password", model)
+    return axios.put("profile/password", model)
         .then(result => {
             return result.data;
         });
