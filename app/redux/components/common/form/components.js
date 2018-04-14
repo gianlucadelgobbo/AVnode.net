@@ -13,7 +13,7 @@ import Dropzone from 'react-dropzone';
 import {MODAL_REMOVE} from "../../modal/constants";
 import 'rc-time-picker/assets/index.css';
 import TimePicker from 'react-bootstrap-time-picker';
-
+import ReactTooltip from 'react-tooltip';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -195,32 +195,32 @@ export const multiInputCheckbox = ({fields, title, showModal, placeholder, meta:
 
 // multiInputCheckboxes // Refactoring // Users in Performances
 
-export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, meta:{error}}) => {
+export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         return <div className="row" key={index}>
-                    <div className="col-md-10">
-                        <Field
-                            name={`${member}.stagename`}
-                            component={checkboxFieldInColumn}
-                            placeholder={placeholder}
-                            isChild={true}
-                        />
-                    </div>
-                    <div className="col-md-2 pull-right">
-                        <Button bsStyle="danger"
-                                onClick={() =>
-                                    showModal({
-                                        type: MODAL_REMOVE,
-                                        props: {
-                                            onRemove: () => fields.remove(index)
-                                        }
-                                    })}
-                        >
-                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                        </Button>
-                    </div>
-                </div>
-        }
+            <div className="col-md-10">
+                <Field
+                    name={`${member}.stagename`}
+                    component={checkboxFieldInColumn}
+                    placeholder={placeholder}
+                    isChild={true}
+                />
+            </div>
+            <div className="col-md-2 pull-right">
+                <Button bsStyle="danger"
+                        onClick={() =>
+                            showModal({
+                                type: MODAL_REMOVE,
+                                props: {
+                                    onRemove: () => fields.remove(index)
+                                }
+                            })}
+                >
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                </Button>
+            </div>
+        </div>
+    }
     const label = <div className="labelField">{placeholder}</div>;
     return <div className="card">
         <div className="card-header">
@@ -266,10 +266,9 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
                             disabled={!is_confirmed}
                             name={`${member}.is_primary`}
                             component={checkboxField}
-                            placeholder="Is primary"
+                            placeholder={<p data-tip="To set as primary, confirm the email first">Is primary<ReactTooltip/></p> }
                             isChild={true}
                         />
-                        {!is_confirmed && <label>Please confirm the email first</label>}
                     </div>
                     <div className="col-md-4">
                         {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
