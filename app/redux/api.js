@@ -75,7 +75,7 @@ export const fetchProfileEmails = () => {
 };
 
 export const saveProfileEmails = (model) => {
-    return axios.get("profile/emails", model)
+    return axios.put("profile/emails", model)
         .then(result => {
             return result.data;
         });

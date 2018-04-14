@@ -3,34 +3,44 @@ import validatorsObj from '../../../../utilities/validators.js';
 const validate = values => {
     const errors = {};
 
+    // If no email is defined
     if (!values.emails) {
         errors.emails = {_error: "Define at least one email"};
-    } else {
-        // check only one email is primary
-        const isMultiplePrimary = values.emails.filter(e => e.is_primary).length > 1;
-        if (isMultiplePrimary) {
-            errors.emails = {_error: "Multiple primary"};
-        }
-
-        // check that are all valid emails
-        const emailArrayErrors = [];
-        values.emails.forEach((email, index) => {
-            const emailErrors = {};
-            if (!email || !email.email) {
-                emailErrors.email = 'Required';
-                emailArrayErrors[index] = emailErrors
-            }
-
-            if (!email || !validatorsObj.validators.isEmail(email.email)) {
-                emailErrors.email = 'Invalid email';
-                emailArrayErrors[index] = emailErrors
-            }
-        });
-
-        if (emailArrayErrors.length) {
-            errors.emails = emailArrayErrors
-        }
+        return errors;
     }
+
+    // check that are all valid emails
+    const emailArrayErrors = [];
+    values.emails.forEach((email, index) => {
+        const emailErrors = {};
+        if (!email || !email.email) {
+            emailErrors.email = 'Required';
+            emailArrayErrors[index] = emailErrors
+        }
+
+        if (!email || !validatorsObj.validators.isEmail(email.email)) {
+            emailErrors.email = 'Invalid email';
+            emailArrayErrors[index] = emailErrors
+        }
+    });
+    if (emailArrayErrors.length) {
+        errors.emails = emailArrayErrors
+    }
+
+    // check that only one and only one email is primary
+    const primaryEmailAmount = values.emails.filter(e => e.is_primary).length;
+    const isMultiplePrimary = primaryEmailAmount > 1;
+    const noMultiplePrimary = primaryEmailAmount === 0;
+
+    if (isMultiplePrimary) {
+        errors.emails = {_error: "Multiple primary email"};
+    }
+    if (noMultiplePrimary) {
+        errors.emails = {_error: "No primary email"};
+    }
+
+    // Selector already implement the check that if an email is not confirmed
+    // it cannot be set as primary email
 
     return errors
 };
