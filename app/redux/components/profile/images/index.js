@@ -29,8 +29,10 @@ class ProfileImage extends Component {
     // Convert form values to API model
     createModelToSave(values) {
 
-        //clone obj
-        let model = Object.assign({}, values);
+        const {images} = values;
+
+        let model = {};
+        model.image = images[0];
 
         return model;
     }
@@ -82,12 +84,12 @@ class ProfileImage extends Component {
                     {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
                     {!errorMessage && !isFetching && !model &&
-                    <img src={UserPhotoNotFound} class="rounded mx-auto d-block" alt="Photo not found"/>}
+                    <img src={UserPhotoNotFound} className="rounded mx-auto d-block" alt="Photo not found"/>}
 
                     {!errorMessage &&
                     !isFetching &&
                     model && model.image &&
-                    <img src={model.image.file} class="rounded mx-auto d-block" alt={model.stagename}/>}
+                    <img src={model.image.file} className="rounded mx-auto d-block" alt={model.stagename}/>}
 
                     <Form
                         initialValues={this.getInitialValues()}
