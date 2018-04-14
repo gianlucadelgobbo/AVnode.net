@@ -110,7 +110,7 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
 
     const id = `tabs-${Math.random()}`;
     const hasValue = (fields, index) => !!fields.get(index).value;
-    const hasError = (errors, index, name) => errors[name] && errors[name][index] && !!errors[name][index].value;
+    const hasError = (errors = {}, index, name) => errors[name] && errors[name][index] && !!errors[name][index].value;
     const label = <div className="labelField">{placeholder}</div>;
 
     return <div className="card">
@@ -269,7 +269,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
                         <Field
                             name={`${member}.is_public`}
                             component={checkboxField}
-                            placeholder="Is public"
+                            placeholder={<p>Is public</p>}
                             isChild={true}
                         />
                     </div>
