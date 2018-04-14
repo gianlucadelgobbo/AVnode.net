@@ -14,6 +14,7 @@ import {fetchList as fetchCountries} from '../../countries/actions'
 import {getList as getCountries} from '../../countries/selectors'
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import moment from 'moment';
 
 /*
 * Responsabilita'
@@ -41,41 +42,65 @@ class ProfilePrivate extends Component {
         model.gender = values.gender.value;
         //convert Lang
         model.lang = values.lang.value;
-        // Convert Addresses_private
+        //convert Birthday
+        model.birthday = moment(values.birthday).utc();
+        // Convert citizenship
+        model.citizenship = model.citizenship.filter(a => a).map(a => a.value);
+        // Convert addresses_private
         model.addresses_private = model.addresses_private.map(a => {
-            const originalString = a.formatted_address;
-            return {formatted_address: originalString};
+            const originalString = a.text;
+            const split = originalString.split(",");
+            const country = split[split.length - 1].trim();
+            const street = split[0].trim();
+            const locality = split[1].trim();
+            return {originalString, street, locality, country}
         });
         // Convert Phone Number
-        //model.phone = model.phone.filter(p => p.tel);
+        model.phone = model.phone.filter(a => a).map(p => p.tel);
+        // Convert mobile Number
+        model.mobile = model.mobile.filter(a => a).map(p => p.tel);
+        // Convert skype
+        model.skype = model.skype.filter(a => a).map(p => ({
+            skype: p.text
+        }));
+
         return model;
     }
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
         let v = {};
         //Convert name for redux-form
-        v.name = user.name;
+        v.name = model.name;
         //Convert surname for redux-form
-        v.surname = user.surname;
+        v.surname = model.surname;
         //Convert gender for redux-form
-        v.gender = user.gender ? user.gender : "";
+        v.gender = model.gender ? model.gender : "";
         //Convert language preferred for redux-form
-        v.lang = user.lang ? user.lang : "";
+        v.lang = model.lang ? model.lang : "";
         //Convert birthday for redux-form
-        v.birthday = user.birthdayFormatted;
+        v.birthday = model.birthday;
+        //Convert citizenship for redux-form
+        v.citizenship = model.citizenship ? model.citizenship : "";
         // Addresses_private: Add one item if value empty
-        v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ?
-            user.addresses_private : [{formatted_address: ""}];
+        v.addresses_private = (Array.isArray(model.addresses_private) && model.addresses_private.length > 0) ?
+            model.addresses_private : [{text: ""}];
         // Phone: Add one item if value empty
-        v.phone = (Array.isArray(user.phone) && user.phone.length > 0) ?
-            user.phone : [{tel: ""}];
+        v.phone = (Array.isArray(model.phone) && model.phone.length > 0) ?
+            model.phone : [{tel: ""}];
+        // Mobile: Add one item if value empty
+        v.mobile = (Array.isArray(model.mobile) && model.mobile.length > 0) ?
+            model.phone : [{}];
+        //Convert skype for redux-form
+        v.skype = (Array.isArray(model.skype) && model.skype.length > 0) ?
+            model.skype : [""];
+
         return v;
     }
 
@@ -96,10 +121,7 @@ class ProfilePrivate extends Component {
     }
 
     render() {
-
         const {model, countries, showModal, errorMessage, isFetching} = this.props;
-
-        console.log(model)
 
         return (
             <div className="row">

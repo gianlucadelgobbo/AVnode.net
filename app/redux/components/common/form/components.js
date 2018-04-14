@@ -14,6 +14,9 @@ import {MODAL_REMOVE} from "../../modal/constants";
 import 'rc-time-picker/assets/index.css';
 import TimePicker from 'react-bootstrap-time-picker';
 import ReactTooltip from 'react-tooltip';
+import 'react-phone-number-input/rrui.css'
+import 'react-phone-number-input/style.css'
+import Phone from 'react-phone-number-input'
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -69,7 +72,16 @@ export const inputUrl = ({input, meta, placeholder, isChild}) => {
 };
 
 export const inputTel = ({input, meta, placeholder, isChild}) => {
-    return inputField({input, type: "tel", meta, placeholder, isChild})
+    const field = <div className="form-group">
+        <Phone {...input} placeholder={placeholder} className="form-control"/>
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
 };
 
 export const inputEmail = ({input, meta, placeholder, isChild}) => {
@@ -266,7 +278,8 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
                             disabled={!is_confirmed}
                             name={`${member}.is_primary`}
                             component={checkboxField}
-                            placeholder={<p data-tip="To set as primary, confirm the email first">Is primary<ReactTooltip/></p> }
+                            placeholder={<p data-tip="To set as primary, confirm the email first">Is
+                                primary<ReactTooltip/></p>}
                             isChild={true}
                         />
                     </div>
@@ -348,7 +361,7 @@ export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, s
         title,
         meta: {error},
         render: googleAutocompleteSelect,
-        key: "formatted_address",
+        key: "text",
         options: {
             types: ['address']
         }, isChild: true
@@ -402,12 +415,13 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
     </div>
 };
 
-export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild}) => {
+export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
     const field = <div className="form-group">
         <Select
             name={input.name}
             value={input.value}
             options={options}
+            multi={multiple}
             onChange={input.onChange}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}

@@ -27,6 +27,12 @@ const asyncValidate = (values, dispatch, state) => {
                 addressesErrorArray[index] = {text: {_error: "Invalid city"}};
                 result.addresses = addressesErrorArray;
             })
+            .then(result => {
+                if (Array.isArray(result) && result.length !== 1) {
+                    addressesErrorArray[index] = {text: {_error: "Invalid address"}};
+                    result.addresses_private = addressesErrorArray;
+                }
+            })
         )
     });
 
