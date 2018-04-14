@@ -151,7 +151,7 @@ class EventPublic extends Component {
     render() {
 
         const {model, showModal, _id, isFetching, errorMessage, categories} = this.props;
-
+        
         return (
             <div className="row">
                 <div className="col-md-2">

@@ -1,17 +1,18 @@
 import {h, render, Component} from 'preact';
-import {reduxForm, Field, FieldArray} from "redux-form";
+import {reduxForm, Field, FieldArray, getFormSyncErrors} from "redux-form";
+import {bindActionCreators} from "redux";
+import {connect} from "preact-redux";
 import {FORM_NAME} from './constants'
 import {
-    renderList,
-    multiSchedule,
-    inputText,
-    textareaMultiTab,
-    multiInputUrl,
-    multiInputEmail,
-    multiInputTel,
+renderList,
+multiSchedule,
+inputText,
+textareaMultiTab,
+multiInputUrl,
+multiInputEmail,
+multiInputTel,
 } from "../../common/form/components";
 import validate from './validate';
-
 //import asyncValidate from './asyncValidate';
 
 class EventPublicForm extends Component {
@@ -25,7 +26,8 @@ class EventPublicForm extends Component {
             aboutsLabels,
             showModal,
             onSubmit,
-            categories
+            categories,
+            errors
         } = this.props;
 
         return (
@@ -65,6 +67,7 @@ class EventPublicForm extends Component {
                     tabs={aboutsTabs}
                     labels={aboutsLabels}
                     placeholder="Subtitles"
+                    errors={errors}
                 />
 
                 <br/>
@@ -132,7 +135,8 @@ class EventPublicForm extends Component {
 
 }
 
-export default reduxForm({
+
+EventPublicForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
@@ -140,3 +144,17 @@ export default reduxForm({
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
 })(EventPublicForm);
+
+//Get form's initial values from redux state here
+const mapStateToProps = (state) => ({
+    errors: getFormSyncErrors(FORM_NAME)(state)
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+EventPublicForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EventPublicForm);
+
+export default EventPublicForm;
