@@ -4,7 +4,7 @@ const Address = new Schema({
   locality: String,
   country: String,
   geometry: Object,
-});
+},{ _id : false });
 
 Address.virtual('mapUrl').get(function () {
   let url = '';

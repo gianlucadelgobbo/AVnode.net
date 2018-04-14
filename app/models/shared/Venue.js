@@ -6,7 +6,7 @@ const Venue = new Schema({
   name: String,
   room: String,
   location: Address
-});
+},{ _id : false });
 
 Venue.virtual('mapUrl').get(function () {
   let url = '';

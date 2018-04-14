@@ -1009,18 +1009,16 @@ var PERFORMANCES = function() {
     }
 
     if (e.tech_req) {
-      var tech_req = e.tech_req["en"];
-      if (!tech_req) {
-        for (var item in e.tech_req) {
-          if (!tech_req) tech_req = e.tech_req[item];
-        }
+      let tech_req = [];
+      for (var item in e.tech_req) {
+        var tmp = {};
+        tmp.lang = item;
+        tmp.abouttext = e.tech_req[item];
+        e.abouts.push(tmp);
       }
       e.tech_req = tech_req;
-    } else {
-      e.tech_req = "";
     }
-    delete e.tech_art;
-    e.tech_art = "";
+    e.tech_art = [];
 
     //printjson(e);
     db.performances.save(e);
