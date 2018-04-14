@@ -11,6 +11,7 @@ import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -20,10 +21,10 @@ import {getErrorMessage, getIsFetching} from "../../events/selectors";
 
 class ProfilePassword extends Component {
 
-    // componentDidMount() {
-    //     const {fetchModel} = this.props;
-    //     fetchModel();
-    // }
+    componentDidMount() {
+        const {fetchModel} = this.props;
+        fetchModel();
+    }
 
     // Convert form values to API model
     createModelToSave(values) {
@@ -38,9 +39,9 @@ class ProfilePassword extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
@@ -50,24 +51,24 @@ class ProfilePassword extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
-        model._id = user._id;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(model)
             .then(() => {
                 showModal({
-                     type: MODAL_SAVED
+                    type: MODAL_SAVED
                 });
             });
     }
 
     render() {
 
-        const {model, showModal,isFetching, errorMessage} = this.props;
+        const {model, showModal, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
