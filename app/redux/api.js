@@ -35,7 +35,7 @@ export const fetchProfilePrivate = () => {
 };
 
 export const saveProfilePrivate = (model) => {
-    return axios.get("profile/private", model)
+    return axios.put("profile/private", model)
         .then(result => {
             return result.data;
         });

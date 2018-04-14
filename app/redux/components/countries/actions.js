@@ -8,5 +8,5 @@ export const fetchList = () => generateFetchList({
     selectors,
     constants,
     schema: arrayOfCountry,
-    request: api.fetchCategories,
+    request: api.fetchCountries,
 });

@@ -1,7 +1,14 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, renderDatePicker, renderList, multiGoogleAddress, multiInputTel} from "../../common/form/components";
+import {
+    inputText,
+    renderDatePicker,
+    renderList,
+    multiGoogleAddress,
+    multiInputTel,
+    multiInputText, multiGoogleCityCountry
+} from "../../common/form/components";
 import {locales, locales_labels} from '../../../../../config/default.json'
 import validate from './validate';
 import asyncValidate from './asyncValidate';
@@ -66,6 +73,8 @@ class ProfilePrivateForm extends Component {
                     name="citizenship"
                     component={renderList}
                     placeholder="Citizenship"
+                    multiple={true}
+                    options={countries}
                 />
 
                 <FieldArray
@@ -83,6 +92,24 @@ class ProfilePrivateForm extends Component {
                     placeholder="phone"
                     title="Phone Number"
                     showModal={showModal}
+                />
+
+                <br/>
+
+                <FieldArray
+                    name="mobile"
+                    component={multiInputTel}
+                    placeholder="mobile"
+                    title="Mobile Number"
+                    showModal={showModal}
+                />
+
+                <br/>
+
+                <FieldArray
+                    name="skype"
+                    component={multiInputText}
+                    placeholder="Skype"
                 />
 
                 <hr/>
@@ -106,5 +133,5 @@ export default reduxForm({
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses']
+    asyncBlurFields: ["name", 'addresses_private[].text']
 })(ProfilePrivateForm);
