@@ -30,10 +30,12 @@ block title
         .row
           .col-sm-12
               .about_wrapper
-                !=data.about        
+                !=data.about
+                br
+                span#about_collapse.about_more.collapse="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"        
               .more_button
-                span.color1.lnr.lnr-plus-circle
-    .abouts_divider
+                span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
+    
 
 block content
   .container
