@@ -5,37 +5,50 @@ const validators = validatorsObj.validators;
 const validate = values => {
 
     const errors = {};
+    const {title, slug, abouts, price, duration} = values;
 
-    if (!values.stagename || values.stagename.trim() === "") {
-        errors.stagename = 'Stage Name Required';
+    if (!title || title.trim() === "") {
+        errors.title = 'Title Required';
     }
-    else if (!validators.validateStringLength(values.stagename, 2, 30)) {
-        errors.stagename = 'Must be more or equal 2 and less or equal 30 characters';
+    else if (!validators.validateStringLength(title, 2, 30)) {
+        errors.title = 'Must be more or equal 2 and less or equal 30 characters';
     }
-    if (!values.slug || values.slug.trim() === "") {
+    if (!slug || slug.trim() === "") {
         errors.slug = 'Slug Required';
     }
-    if (values.slug) {
-        if (!validators.isSlug(values.slug)) {
+    if (slug) {
+        if (!validators.isSlug(slug)) {
             errors.slug = 'Characters Not Allowed';
         }
     }
+    // if exist
+    if (Array.isArray(abouts)) {
+        const aboutArrayErrors = [];
 
-    //web
-    if (!values.web || (values.web.length < 1 || values.web.length > 5)) {
-        errors.web = {_error: "Invalid length: please insert 1 to 5 values"}
+        // Apply validation to each about
+        abouts.forEach((about, index) => {
+            const aboutErrors = {};
+
+            // length must be less than 5000 chars
+            if (!about || about.value.length > 5000) {
+                aboutErrors.value = 'Invalid string length (max 5000)';
+                aboutArrayErrors[index] = aboutErrors;
+            }
+        });
+
+        if (aboutArrayErrors.length) {
+            errors.abouts = aboutArrayErrors;
+        }
     }
 
-    //social
-    if (!values.social || (values.social.length < 1 || values.social.length > 5)) {
-        errors.social = {_error: "Invalid length: please insert 1 to 5 values"}
+    if (!price|| price.trim() === "") {
+        errors.price = 'Price Required';
     }
 
-    //addresses
-    if (!values.addresses || (values.addresses.length < 1 || values.social.length > 5)) {
-        errors.addresses = {_error: "Invalid length: please insert 1 to 5 values"}
+    if (!duration|| duration.trim() === "") {
+        errors.duration = 'Duration Required';
     }
-
+       
     return errors
 };
 

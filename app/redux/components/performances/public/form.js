@@ -76,7 +76,7 @@ class PerformancePublicForm extends Component {
                     component={multiCheckboxWithLabel}
                     placeholder="Authors"
                     showModal={showModal}
-                    className="pippo"
+                    className=""
                 />
 
                 <br/>
