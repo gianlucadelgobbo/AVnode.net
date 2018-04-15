@@ -10,7 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
-import {MODAL_REMOVE} from "../../modal/constants";
+import {MODAL_REMOVE, MODAL_ADD_PERFORMANCE, MODAL_SAVED} from "../../modal/constants";
 import 'rc-time-picker/assets/index.css';
 import TimePicker from 'react-bootstrap-time-picker';
 import ReactTooltip from 'react-tooltip';
@@ -218,7 +218,7 @@ export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, m
                     isChild={true}
                 />
             </div>
-            <div className="col-md-2 pull-right">
+            <div className="col-md-2">
                 <Button bsStyle="danger"
                         onClick={() =>
                             showModal({
@@ -238,7 +238,8 @@ export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, m
         <div className="card-header">
             <h4>{label}</h4>
             <Button bsStyle="success" className="pull-right"
-                    onClick={() => fields.unshift({})}>
+                    onClick={() => fields.unshift({})}
+                    >
                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
             </Button>
         </div>
