@@ -10,8 +10,8 @@ const validate = values => {
     if (!title || title.trim() === "") {
         errors.title = 'Title Required';
     }
-    else if (!validators.validateStringLength(title, 2, 30)) {
-        errors.title = 'Must be more or equal 2 and less or equal 30 characters';
+    else if (!validators.validateStringLength(title, 2, 50)) {
+        errors.title = 'Must be more or equal 2 and less or equal 50 characters';
     }
     if (!slug || slug.trim() === "") {
         errors.slug = 'Slug Required';

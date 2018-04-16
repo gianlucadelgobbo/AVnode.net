@@ -18,9 +18,9 @@ class AddPerformanceForm extends Component {
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
-                    name="name"
+                    name="title"
                     component={inputText}
-                    placeholder="Name"
+                    placeholder="Title"
                 />
 
                 <hr/>

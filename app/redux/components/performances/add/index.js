@@ -37,11 +37,11 @@ class AddPerformance extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
+            /*.then(() => {
                 showModal({
                     type: MODAL_SAVED
                 });
-            });
+            });*/
     }
 
     render() {
