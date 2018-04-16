@@ -96,7 +96,7 @@ export const textarea = ({input, id, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         {placeholder && <label htmlFor="first_name">{placeholder}</label>}
         <Textarea id={id} className="form-control" {...input} placeholder={placeholder}/>
-        {meta.error && meta.touched && <span>{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :

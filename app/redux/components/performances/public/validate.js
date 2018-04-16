@@ -5,7 +5,7 @@ const validators = validatorsObj.validators;
 const validate = values => {
 
     const errors = {};
-    const {title, slug, abouts, price, duration} = values;
+    const {title, slug, abouts, price, duration, tech_art, tech_req} = values;
 
     if (!title || title.trim() === "") {
         errors.title = 'Title Required';
@@ -47,6 +47,44 @@ const validate = values => {
 
     if (!duration|| duration.trim() === "") {
         errors.duration = 'Duration Required';
+    }
+    //tech_art
+    if (Array.isArray(tech_art)) {
+        const techArrayErrors = [];
+
+        // Apply validation to each tech_art
+        tech_art.forEach((tech, index) => {
+            const techErrors = {};
+
+            // length must be less than 5000 chars
+            if (!tech || tech.value.length > 5000) {
+                techErrors.value = 'Invalid string length (max 500)';
+                techArrayErrors[index] = techErrors;
+            }
+        });
+
+        if (techArrayErrors.length) {
+            errors.tech_art = techArrayErrors;
+        }
+    }
+    //tech_req
+    if (Array.isArray(tech_req)) {
+        const techArrayErrors = [];
+
+        // Apply validation to each tech_req
+        tech_req.forEach((tech, index) => {
+            const techErrors = {};
+
+            // length must be less than 5000 chars
+            if (!tech || tech.value.length > 5000) {
+                techErrors.value = 'Invalid string length (max 500)';
+                techArrayErrors[index] = techErrors;
+            }
+        });
+
+        if (techArrayErrors.length) {
+            errors.tech_req = techArrayErrors;
+        }
     }
        
     return errors
