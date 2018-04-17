@@ -53,6 +53,10 @@ router.put('/api/:sez/:id/:form/', (req, res) => {
   }
 });
 
+router.get('/api/countries', (req, res) => {
+  get.getCountries(req, res);
+});
+
 router.get('/api/:sez', (req, res) => {
   req.params.id = req.user.id;
   get.getList(req, res);
