@@ -1,27 +1,23 @@
 const config = require('getconfig');
-const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
 const indexPlugin = require('../utilities/elasticsearch/User');
-const mailer = require('../utilities/mailer');
-const async = require('async');
-//const imageUtil = require('../utilities/image');
-const uid = require('uuid');
-const request = require('request');
 
 const MediaImage = require('./shared/MediaImage');
+const About = require('./shared/About');
 const Address = require('./shared/Address');
 const AddressPrivate = require('./shared/AddressPrivate');
-const About = require('./shared/About');
 const Link = require('./shared/Link');
 const OrganizationData = require('./shared/OrganizationData');
 
+const bcrypt = require('bcrypt-nodejs');
+const mailer = require('../utilities/mailer');
+const uid = require('uuid');
+const request = require('request');
+
 const adminsez = 'profile';
-var validateEmail = function(email) {
-  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return re.test(email)
-};
+
 const userSchema = new Schema({
   old_id: String,
   is_crew: Boolean,

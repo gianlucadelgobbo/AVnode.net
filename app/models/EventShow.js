@@ -190,7 +190,7 @@ const eventSchema = new Schema({
     transform: (doc, ret, options) => {
       delete ret.id;
       delete ret.image;
-      delete ret.schedule;
+      //delete ret.schedule;
       delete ret.abouts;
       delete ret.subtitles;
       delete ret.__v;

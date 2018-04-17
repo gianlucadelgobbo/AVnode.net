@@ -86,12 +86,29 @@ router.getSlug = (req, res) => {
   });
 }
 
+router.getCountries = (req, res) => {
+  const allCountries = require('node-countries-list');
+  const R = require('ramda');
+  // FIXME: Later evaluate language param to return
+  // localized list depending on the user settings.
+  const convert = R.compose(
+    R.map(
+      R.zipObj(['key', 'name'])
+    ),
+    R.toPairs
+  );
+
+  allCountries('en', (err, countries) => {
+    if (err) {
+      throw err;
+    }
+    res.json(convert(countries));
+  });
+}
 
 /**/
 
 /*
-const allCountries = require('node-countries-list');
-const R = require('ramda');
 
 const profilePublic = require('./api/profilePublic');
 const profileImages = require('./api/profileImages');
