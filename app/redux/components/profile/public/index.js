@@ -108,7 +108,7 @@ class ProfilePublic extends Component {
         // Addresses: Add one item if value empty
         v.addresses = (Array.isArray(model.addresses) && model.addresses.length > 0) ?
             model.addresses.map(a => ({
-                text: `${a.city}, ${a.country}`
+                text: `${a.locality}, ${a.country}`
             })) :
             [{text: ""}];
 
