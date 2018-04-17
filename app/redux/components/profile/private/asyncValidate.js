@@ -4,17 +4,13 @@ const asyncValidate = (values, dispatch, state) => {
     const promises = [];
     const result = {};
 
-    console.log("ASYNC")
-
     // addresses
     const addressesToCheck = values.addresses_private || [];
 
     const addressesErrorArray = [];
     addressesToCheck.forEach((a, index) => {
-        console.log("check ", a.text)
         promises.push(geocodeByAddress(a.text)
             .catch(error => {
-                console.log("error", error)
                 addressesErrorArray[index] = {text: {_error: "Invalid address"}};
                 result.addresses_private = addressesErrorArray;
             })
@@ -38,8 +34,6 @@ const asyncValidate = (values, dispatch, state) => {
 
 const checkIfError = (result) => {
     const keys = Object.keys(result);
-
-    console.log("result", result)
     if (!!keys.length) {
         throw result;
     } else {
