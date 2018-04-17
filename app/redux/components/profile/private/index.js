@@ -56,12 +56,16 @@ class ProfilePrivate extends Component {
             return {originalString, street, locality, country}
         });
         // Convert Phone Number
-        model.phone = model.phone.filter(a => a).map(p => p.tel);
+        model.phone = model.phone.filter(a => a).map(p => ({
+            url: p.tel
+        }));
         // Convert mobile Number
-        model.mobile = model.mobile.filter(a => a).map(p => p.tel);
+        model.mobile = model.mobile.filter(a => a).map(p => ({
+            url: p.tel
+        }));
         // Convert skype
         model.skype = model.skype.filter(a => a).map(p => ({
-            skype: p.text
+            url: p.text
         }));
 
         return model;
@@ -90,16 +94,19 @@ class ProfilePrivate extends Component {
         v.citizenship = model.citizenship ? model.citizenship : "";
         // Addresses_private: Add one item if value empty
         v.addresses_private = (Array.isArray(model.addresses_private) && model.addresses_private.length > 0) ?
-            model.addresses_private : [{text: ""}];
+            model.addresses_private.map(a => ({
+                text: `${a.locality}, ${a.country}`
+            })) :
+            [{text: ""}];
         // Phone: Add one item if value empty
         v.phone = (Array.isArray(model.phone) && model.phone.length > 0) ?
-            model.phone : [{tel: ""}];
+            model.phone.filter(a => a).map(p => ({tel: p.url})) : [""];
         // Mobile: Add one item if value empty
         v.mobile = (Array.isArray(model.mobile) && model.mobile.length > 0) ?
-            model.phone : [{}];
+            model.phone.filter(a => a).map(p => ({tel: p.url})) : [""];
         //Convert skype for redux-form
         v.skype = (Array.isArray(model.skype) && model.skype.length > 0) ?
-            model.skype : [""];
+            model.skype.filter(a => a).map(p => ({text: p.url})) : [""];
 
         return v;
     }

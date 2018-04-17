@@ -434,7 +434,7 @@ export const saveCrewOrganization = (model) => {
 // countries
 
 export const fetchCountries = () => {
-    return axios.get('/user/countries')
+    return axios.get('/countries')
         .then(result => {
             return result.data;
         });
