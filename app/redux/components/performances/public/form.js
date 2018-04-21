@@ -30,8 +30,6 @@ class PerformancePublicForm extends Component {
             categories
         } = this.props;
 
-        console.log(errors)
-
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -134,7 +132,7 @@ PerformancePublicForm =  reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    validate,
+    //validate,
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
 })(PerformancePublicForm);

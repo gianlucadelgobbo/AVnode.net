@@ -2,7 +2,7 @@ import validatorsObj from '../../../../utilities/validators.js';
 
 const validators = validatorsObj.validators;
 
-const validate = values => {
+const profilePublicValidate = values => {
 
     const errors = {};
     const {title, slug, abouts, price, duration, tech_art, tech_req} = values;
@@ -90,4 +90,4 @@ const validate = values => {
     return errors
 };
 
-export default validate;
+export default profilePublicValidate;
