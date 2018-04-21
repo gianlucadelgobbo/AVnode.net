@@ -28,7 +28,7 @@ class CrewPublic extends Component {
         let model = Object.assign({}, values);
 
         //Convert abouts for API
-        /*if (Array.isArray(model.abouts)) {
+        if (Array.isArray(model.abouts)) {
             model.abouts = model.abouts.map(x => {
                 const splitted = x.key.split(".");
                 return {
@@ -36,22 +36,13 @@ class CrewPublic extends Component {
                     abouttext: x.value
                 }
             });
-        }*/
+        }
 
         // Convert web
-        //model.web = model.web.filter(w => w.url);
+        model.web = model.web.filter(w => w.url);
 
         // Convert social
-        //model.social = model.social.filter(w => w.url);
-
-        // Convert addresses
-        /*model.addresses = model.addresses.map(a => {
-            const originalString = a.text;
-            const split = originalString.split(",");
-            const country = split[split.length - 1].trim();
-            const city = split[0].trim();
-            return {originalString, city, country}
-        });*/
+        model.social = model.social.filter(w => w.url);
 
         return model;
     }
