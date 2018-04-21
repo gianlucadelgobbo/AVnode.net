@@ -28,7 +28,7 @@ class CrewPublic extends Component {
         let model = Object.assign({}, values);
 
         //Convert abouts for API
-        if (Array.isArray(model.abouts)) {
+        /*if (Array.isArray(model.abouts)) {
             model.abouts = model.abouts.map(x => {
                 const splitted = x.key.split(".");
                 return {
@@ -36,22 +36,22 @@ class CrewPublic extends Component {
                     abouttext: x.value
                 }
             });
-        }
+        }*/
 
         // Convert web
-        model.web = model.web.filter(w => w.url);
+        //model.web = model.web.filter(w => w.url);
 
         // Convert social
-        model.social = model.social.filter(w => w.url);
+        //model.social = model.social.filter(w => w.url);
 
         // Convert addresses
-        model.addresses = model.addresses.map(a => {
+        /*model.addresses = model.addresses.map(a => {
             const originalString = a.text;
             const split = originalString.split(",");
             const country = split[split.length - 1].trim();
             const city = split[0].trim();
             return {originalString, city, country}
-        });
+        });*/
 
         return model;
     }
@@ -68,6 +68,7 @@ class CrewPublic extends Component {
 
         //Convert slug for redux-form
         v.slug = model.slug;
+        //Convert stagename
         v.stagename = model.stagename;
 
         // Convert about format for FieldArray redux-form
@@ -91,12 +92,13 @@ class CrewPublic extends Component {
             }
         });
 
-        // Convert web
-        model.web = model.web.filter(w => w.url);
+        // Social: Add one item if value empty
+        v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
 
-        // Convert social
-        model.social = model.social.filter(w => w.url);
-
+        // Web: Add one item if value empty
+        v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];
+  
+        
         return v;
     }
 
@@ -127,7 +129,7 @@ class CrewPublic extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">PERFORMANCE PUBLIC DATA</h1>
+                    <h1 className="labelField">CREW PUBLIC DATA</h1>
 
                     <br/>
 
