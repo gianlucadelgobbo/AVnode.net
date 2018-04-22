@@ -284,6 +284,7 @@ export const removePerformance = ({id}) => {
 };
 
 export const postPerformance = (obj) => {
+    console.log("aaaa")
     return axios.post(`performances/`, obj)
         .then(result => {
             return result.data;
