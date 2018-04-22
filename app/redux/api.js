@@ -379,6 +379,19 @@ export const saveCrewPublic = (model) => {
         });
 };
 
+/*
+export const fetchSlugCrew = () => {
+    return new Promise(fulfil => {
+
+        const obj = {
+                        slug: 'slug-1', 
+                        exist: true
+                    };
+
+        fulfil(obj);
+    })
+}
+*/
 
 // - images
 
