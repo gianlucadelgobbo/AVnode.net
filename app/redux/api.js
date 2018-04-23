@@ -467,9 +467,25 @@ export const fetchCategories = () => {
 
         fulfil(items);
     })
-
     // return axios.get('/user/categories')
     //     .then(result => {
     //         return result.data;
     //     });
+};
+
+export const fetchUsers = () => {
+
+    return new Promise(fulfil => {
+        const items = [
+            {value: 'user-1', label: 'User #1'},
+            {value: 'user-2', label: 'User #2'},
+            {value: 'user-3', label: 'User #3'},
+            {value: 'user-4', label: 'User #4'},
+            {value: 'user-5', label: 'User #5'},
+            {value: 'user-6', label: 'User #6'},
+            {value: 'user-7', label: 'User #7'}
+        ];
+
+        fulfil(items);
+    })
 };
