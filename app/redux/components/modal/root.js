@@ -4,12 +4,13 @@ import Saved from './saved'
 import Remove from './remove'
 import AddEvent from '../events/add'
 import AddPerformance from '../performances/add'
+import AddUserPerformance from '../performances/users'
 
 import ModalWrapper from './wrapper';
 import {connect} from 'preact-redux';
 import {getModal} from './selectors';
 import * as actions from './actions';
-import {MODAL_EXAMPLE, MODAL_REMOVE, MODAL_SAVED, MODAL_ADD_EVENT, MODAL_ADD_PERFORMANCE} from "./constants"
+import {MODAL_EXAMPLE, MODAL_REMOVE, MODAL_SAVED, MODAL_ADD_EVENT, MODAL_ADD_PERFORMANCE, MODAL_ADD_USER_PERFORMANCE} from "./constants"
 
 /*
 * Come creare una nuova modale:
@@ -26,6 +27,7 @@ const MODAL_COMPONENTS = {
     [MODAL_REMOVE]: Remove,
     [MODAL_ADD_EVENT]: AddEvent,
     [MODAL_ADD_PERFORMANCE]: AddPerformance,
+    [MODAL_ADD_USER_PERFORMANCE]:AddUserPerformance
     /* other modals */
 };
 
@@ -35,6 +37,7 @@ const MODAL_TITLES = {
     [MODAL_REMOVE]: 'Remove?',
     [MODAL_ADD_EVENT]: "Add event",
     [MODAL_ADD_PERFORMANCE]: "Add Performance",
+    [MODAL_ADD_USER_PERFORMANCE]:"Add Users"
     /* other modals */
 };
 
