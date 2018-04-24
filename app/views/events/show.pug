@@ -74,10 +74,17 @@ block title
       
 
 block content
-  .row
-    .col-lg-8
-      h3=__('Schedule')
-      p tbd.
+  .container
+    section.row.program_event_wrapper
+      .col-lg-12
+        h2.main_title.indented_title.color1!=__('Program')+" <small>(<span class='miss'>99</span>)</small>"
+        .row.carousel
+          each item in data.program
+            .col-sm-4
+              ="test"
+      //.text-right
+        a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')        
+  
       //if data.performances.length > 0
         h3=__('Performances')
         .card-columns
