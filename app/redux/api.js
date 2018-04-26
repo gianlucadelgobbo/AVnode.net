@@ -180,7 +180,7 @@ export const fetchEventUsers = ({id}) => {
 };
 
 export const saveEventUsers = (model) => {
-    return axios.get(`events/${model._id}/users`, model)
+    return axios.post(`events/${model._id}/users`, model)
         .then(result => {
             return result.data;
         });
@@ -284,7 +284,6 @@ export const removePerformance = ({id}) => {
 };
 
 export const postPerformance = (obj) => {
-    console.log("aaaa")
     return axios.post(`performances/`, obj)
         .then(result => {
             return result.data;
@@ -335,6 +334,39 @@ export const fetchPerformanceVideos = ({id}) => {
 
 export const savePerformanceVideos = (model) => {
     return axios.get(`performances/${model._id}/videos`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - users
+
+export const fetchPerformanceUsers = () => {
+
+    return new Promise(fulfil => {
+        const items = [
+            {value: 'user-1', label: 'User #1'},
+            {value: 'user-2', label: 'User #2'},
+            {value: 'user-3', label: 'User #3'},
+            {value: 'user-4', label: 'User #4'},
+            {value: 'user-5', label: 'User #5'},
+            {value: 'user-6', label: 'User #6'},
+            {value: 'user-7', label: 'User #7'}
+        ];
+
+        fulfil(items);
+    })
+
+    /*
+    return axios.get(`performances/${id}/users`)
+        .then(result => {
+            return result.data;
+        });
+    */
+};
+
+export const savePerformanceUsers = (model) => {
+    return axios.post(`performances/${model._id}/users`, model)
         .then(result => {
             return result.data;
         });
@@ -473,19 +505,3 @@ export const fetchCategories = () => {
     //     });
 };
 
-export const fetchUsers = () => {
-
-    return new Promise(fulfil => {
-        const items = [
-            {value: 'user-1', label: 'User #1'},
-            {value: 'user-2', label: 'User #2'},
-            {value: 'user-3', label: 'User #3'},
-            {value: 'user-4', label: 'User #4'},
-            {value: 'user-5', label: 'User #5'},
-            {value: 'user-6', label: 'User #6'},
-            {value: 'user-7', label: 'User #7'}
-        ];
-
-        fulfil(items);
-    })
-};

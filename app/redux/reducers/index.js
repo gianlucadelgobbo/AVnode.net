@@ -8,6 +8,7 @@ import categories from '../components/categories/reducers';
 import events from '../components/events/reducers';
 import performances from '../components/performances/reducers';
 import crews from '../components/crews/reducers';
+import users from '../components/performances/users/reducers';
 
 // import preferences from './preferences';
 
@@ -16,6 +17,7 @@ const reducer = combineReducers({
     profiles,
     countries,
     categories,
+    users,
     //preferences,
     performances,
     crews,
