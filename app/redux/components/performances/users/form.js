@@ -12,7 +12,7 @@ class AddUsersForm extends Component {
             submitting,
             handleSubmit,
             onSubmit,
-            //users
+            users
         } = this.props;
 
         return (
@@ -22,7 +22,7 @@ class AddUsersForm extends Component {
                     name="Users"
                     component={renderList}
                     placeholder="Users"
-                    //options={users}
+                    options={users}
                 />
 
                 <hr/>

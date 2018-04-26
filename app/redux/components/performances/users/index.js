@@ -5,9 +5,9 @@ import {getModel} from '../selectors'
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../../modal/constants";
-//import {saveModel} from '../actions';
+import {saveModel} from './actions';
 import {fetchList as fetchUsers} from "./actions";
-import {getList as getUsers} from "../selectors";
+import {getList as getUsers} from "./selectors";
 
 
 class AddUsersPerformance extends Component {
@@ -44,7 +44,7 @@ class AddUsersPerformance extends Component {
         const modelToSave = this.createModelToSave(values);
 
         //dispatch the action to save the model here
-        //return saveModel(modelToSave)
+        return saveModel(modelToSave)();
             /*.then(() => {
                 showModal({
                     type: MODAL_SAVED
@@ -54,7 +54,7 @@ class AddUsersPerformance extends Component {
 
     render() {
 
-        const {showModal} = this.props;
+        const {showModal, users} = this.props;
 
         return (
 
@@ -64,7 +64,7 @@ class AddUsersPerformance extends Component {
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         showModal={showModal}
-                        //users={users}
+                        users={users}
                     />
                 </div>
             </div>
