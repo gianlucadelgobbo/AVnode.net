@@ -10,7 +10,7 @@ import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 
 /*
 * Responsabilita'
@@ -22,8 +22,8 @@ import {getErrorMessage, getIsFetching} from "../../events/selectors";
 class CrewImage extends Component {
 
     componentDidMount() {
-        const {fetchModel} = this.props;
-        fetchModel();
+        const {fetchModel, _id} = this.props;
+        fetchModel({id:_id});
     }
 
     // Convert form values to API model
@@ -102,10 +102,10 @@ class CrewImage extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+const mapStateToProps = (state, {_id}) => ({
+    model: getModel(state, _id),
+    isFetching: getModelIsFetching(state, _id),
+    errorMessage: getModelErrorMessage(state, _id),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

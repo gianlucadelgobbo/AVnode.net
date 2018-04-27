@@ -9,7 +9,7 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
+import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {fetchList as fetchCountries} from '../../countries/actions'
 import {getList as getCountries} from '../../countries/selectors'
 import {MODAL_SAVED} from "../../modal/constants";
@@ -25,9 +25,8 @@ class CrewMembers extends Component {
 
 
     componentDidMount() {
-        const {fetchModel, fetchCountries} = this.props;
-        fetchModel();
-        fetchCountries();
+        const {fetchModel, _id} = this.props;
+        fetchModel({id:_id});
     }
 
 
@@ -37,17 +36,11 @@ class CrewMembers extends Component {
         //clone obj
         let model = Object.assign({}, values);
 
-        //convert Gender
-        model.gender = values.gender.value;
-        //convert Lang
-        model.lang = values.lang.value;
         // Convert Addresses_private
         model.addresses_private = model.addresses_private.map(a => {
             const originalString = a.formatted_address;
             return {formatted_address: originalString};
         });
-        // Convert Phone Number
-        //model.phone = model.phone.filter(p => p.tel);
         return model;
     }
 
@@ -61,21 +54,11 @@ class CrewMembers extends Component {
 
         let v = {};
         //Convert name for redux-form
-        v.name = user.name;
-        //Convert surname for redux-form
-        v.surname = user.surname;
-        //Convert gender for redux-form
-        v.gender = user.gender ? user.gender : "";
-        //Convert language preferred for redux-form
-        v.lang = user.lang ? user.lang : "";
-        //Convert birthday for redux-form
-        v.birthday = user.birthdayFormatted;
+        v.member = user.member;
         // Addresses_private: Add one item if value empty
         v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ?
             user.addresses_private : [{formatted_address: ""}];
-        // Phone: Add one item if value empty
-        v.phone = (Array.isArray(user.phone) && user.phone.length > 0) ?
-            user.phone : [{tel: ""}];
+    
         return v;
     }
 
@@ -98,7 +81,7 @@ class CrewMembers extends Component {
 
     render() {
 
-        const {model, countries, showModal, errorMessage, isFetching, _id} = this.props;
+        const {model, showModal, errorMessage, isFetching, _id} = this.props;
 
         return (
             <div className="row">
@@ -128,7 +111,6 @@ class CrewMembers extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                        countries={countries}
                     />}
                 </div>
             </div>
@@ -137,18 +119,16 @@ class CrewMembers extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
-    countries: getCountries(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+const mapStateToProps = (state, {_id}) => ({
+    model: getModel(state, _id),
+    isFetching: getModelIsFetching(state, _id),
+    errorMessage: getModelErrorMessage(state, _id),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
     saveModel,
-    showModal,
-    fetchCountries
+    showModal
 }, dispatch);
 
 CrewMembers = connect(

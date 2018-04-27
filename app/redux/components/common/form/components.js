@@ -1,6 +1,6 @@
 import {h} from 'preact';
 import Textarea from 'react-textarea-autosize';
-import {Tab, Tabs, Nav, NavItem, Button} from 'react-bootstrap';
+import {Tab, Tabs, Nav, NavItem, Button, ButtonGroup} from 'react-bootstrap';
 import {Field} from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select from 'react-select';
@@ -14,9 +14,9 @@ import {MODAL_REMOVE, MODAL_ADD_USER_PERFORMANCE, MODAL_SAVED} from "../../modal
 import 'rc-time-picker/assets/index.css';
 import TimePicker from 'react-bootstrap-time-picker';
 import ReactTooltip from 'react-tooltip';
-import 'react-phone-number-input/rrui.css'
-import 'react-phone-number-input/style.css'
-import Phone from 'react-phone-number-input'
+import 'react-phone-number-input/rrui.css';
+import 'react-phone-number-input/style.css';
+import Phone from 'react-phone-number-input';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -428,6 +428,30 @@ export const renderList = ({input, meta, placeholder, hideResetButton, options, 
             multi={multiple}
             onChange={input.onChange}
         />
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
+
+export const renderListRadio = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
+    const field = <div className="form-group">
+         <ButtonGroup>
+         {options.map(option =>
+           <Button
+             key={option[0]}
+             bsStyle={option[0] === input.value ? 'primary' : 'default'}
+             children={option[1]}
+             name={input.name}
+             onClick={input.onChange}
+             value={option[0]}
+           />
+        )}
+        </ButtonGroup>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;

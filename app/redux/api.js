@@ -429,14 +429,14 @@ export const fetchSlugCrew = () => {
 // - images
 
 export const fetchCrewImages = ({id}) => {
-    return axios.get(`crews/${id}/images`)
+    return axios.get(`crews/${id}/image`)
         .then(result => {
             return result.data;
         });
 };
 
 export const saveCrewImages = (model) => {
-    return axios.get(`crews/${model._id}/images`, model)
+    return axios.get(`crews/${model._id}/image`, model)
         .then(result => {
             return result.data;
         });
