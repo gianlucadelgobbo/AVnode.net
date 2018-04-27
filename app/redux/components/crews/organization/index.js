@@ -9,11 +9,10 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
-import {fetchList as fetchCountries} from '../../countries/actions'
-import {getList as getCountries} from '../../countries/selectors'
+import {getModel, getErrorMessage, getIsFetching} from "../selectors";
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {fetchList as fetchCategories} from "../../categories/actions";
+import {getList as getCategories} from "../../categories/selectors";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -25,9 +24,9 @@ class CrewOrganization extends Component {
 
 
     componentDidMount() {
-        const {fetchModel, fetchCountries} = this.props;
-        fetchModel();
-        fetchCountries();
+        const {fetchModel, fetchCategories, _id} = this.props;
+        fetchModel({id: _id});
+        fetchCategories();
     }
 
 
@@ -98,7 +97,7 @@ class CrewOrganization extends Component {
 
     render() {
 
-        const {model, countries, showModal, errorMessage, isFetching, _id} = this.props;
+        const {model, categories, showModal, errorMessage, isFetching, _id} = this.props;
 
         return (
             <div className="row">
@@ -128,7 +127,7 @@ class CrewOrganization extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                        countries={countries}
+                        categories={categories}
                     />}
                 </div>
             </div>
@@ -137,18 +136,18 @@ class CrewOrganization extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
-    countries: getCountries(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+const mapStateToProps = (state, {_id}) => ({
+    model: getModel(state, _id),
+    categories: getCategories(state),
+    isFetching: getIsFetching(state,_id),
+    errorMessage: getErrorMessage(state,_id),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
     saveModel,
     showModal,
-    fetchCountries
+    fetchCategories
 }, dispatch);
 
 CrewOrganization = connect(

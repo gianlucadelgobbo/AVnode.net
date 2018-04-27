@@ -22,66 +22,15 @@ class CrewMembersForm extends Component {
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
-                    name="name"
+                    name="member"
                     component={inputText}
-                    placeholder="Name"
-                />
-
-                <Field
-                    name="surname"
-                    component={inputText}
-                    placeholder="Surname"
-                />
-
-                <Field
-                    name="gender"
-                    component={renderList}
-                    placeholder="Gender"
-                    options={[
-                        {value: 'M', label: 'Male'},
-                        {value: 'F', label: 'Female'},
-                        {value: 'Others', label: 'Other'}
-                    ]}
-                />
-
-                <Field
-                    name="lang"
-                    component={renderList}
-                    placeholder="Preferred language"
-                    options={locales.map(l => ({
-                        value: l,
-                        label: locales_labels[l]
-                    }))}
-                />
-
-                <Field
-                    name="birthday"
-                    component={renderDatePicker}
-                    placeholder="Birthday"
-                />
-
-                <br/>
-
-                <Field
-                    name="citizenship"
-                    component={renderList}
-                    placeholder="Citizenship"
+                    placeholder="Member"
                 />
 
                 <FieldArray
                     name="addresses_private"
                     component={multiGoogleAddress}
                     placeholder="Members addresses"
-                    showModal={showModal}
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="phone"
-                    component={multiInputTel}
-                    placeholder="phone"
-                    title="Phone Number"
                     showModal={showModal}
                 />
 
