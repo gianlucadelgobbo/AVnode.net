@@ -60,8 +60,6 @@ class ProfileEmails extends Component {
         // Add auth user _id
         modelToSave._id = model._id;
 
-        console.log("modelToSave", modelToSave)
-
         //dispatch the action to save the model here
         return saveModel(modelToSave)
             .then(() => {

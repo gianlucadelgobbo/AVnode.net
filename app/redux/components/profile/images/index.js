@@ -11,6 +11,7 @@ import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import UserPhotoNotFound from '../../../img/user_photo_not_found.png'
+import LightBox from '../../lightboxGallery'
 
 /*
 * Responsabilita'
@@ -91,7 +92,7 @@ class ProfileImage extends Component {
                             {!errorMessage &&
                             !isFetching &&
                             model && model.image &&
-                            <img src={model.image.file} className="rounded mx-auto d-block" alt={model.stagename}/>}
+                            <LightBox images={[model.image.file]} alt={model.stagename}/>}
 
                         </div>
                         <div className="col-md-6">

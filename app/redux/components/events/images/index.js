@@ -6,36 +6,36 @@ import Form from './form'
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
-import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
-import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
+import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import UserPhotoNotFound from '../../../img/user_photo_not_found.png'
+import LightBox from '../../lightboxGallery/index'
 
-
-class EventImage extends Component {
+class EventImages extends Component {
 
     componentDidMount() {
         const {fetchModel, _id} = this.props;
-        fetchModel({
-            id: _id
-        });
+        fetchModel({id: _id});
     }
 
     // Convert form values to API model
     createModelToSave(values) {
 
-        //clone obj
-        let model = Object.assign({}, values);
+        const {images} = values;
+
+        let model = {};
+        model.image = images[0];
 
         return model;
     }
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
@@ -45,18 +45,14 @@ class EventImage extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
-        model._id = user._id;
-
-        console.log("model", model)
-
-        return;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
@@ -76,21 +72,34 @@ class EventImage extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT IMAGE</h1>
+                    <h1 className="labelField">MY IMAGE</h1>
 
                     <br/>
                     {isFetching && !model && <Loading/>}
 
-                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+                    <div className="row">
+                        <div className="col-md-6">
+                            {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
-                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+                            {!errorMessage && !isFetching && !model &&
+                            <img src={UserPhotoNotFound} className="rounded mx-auto d-block" alt="Photo not found"/>}
 
-                    {!errorMessage && !isFetching && model && <Form
-                        initialValues={this.getInitialValues(this)}
-                        onSubmit={this.onSubmit.bind(this)}
-                        user={model}
-                        showModal={showModal}
-                    />}
+                            {!errorMessage &&
+                            !isFetching &&
+                            model && model.image &&
+                            <LightBox images={[model.image.file]} alt={model.stagename}/>}
+
+                        </div>
+                        <div className="col-md-6">
+                            <Form
+                                initialValues={this.getInitialValues()}
+                                onSubmit={this.onSubmit.bind(this)}
+                                user={model}
+                                showModal={showModal}
+                            />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         );
@@ -100,8 +109,8 @@ class EventImage extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
-    isFetching: getModelIsFetching(state),
-    errorMessage: getModelErrorMessage(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -110,9 +119,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal,
 }, dispatch);
 
-EventImage = connect(
+EventImages = connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventImage);
+)(EventImages);
 
-export default EventImage;
+export default EventImages;
