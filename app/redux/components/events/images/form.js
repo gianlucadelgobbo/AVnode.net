@@ -1,11 +1,24 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field} from "redux-form";
+import {connect} from "preact-redux";
+import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants'
 import {renderDropzoneInput} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
+import {formValueSelector} from 'redux-form';
 
-class ProfileImageForm extends Component {
+class EventImageForm extends Component {
+
+    submitForm(data) {
+        const {onSubmit, reset} = this.props;
+
+        // reset form after submit
+        return onSubmit(data)
+            .then(() => {
+                reset();
+            });
+    }
 
     render() {
 
@@ -13,16 +26,15 @@ class ProfileImageForm extends Component {
             submitting,
             handleSubmit,
             showModal,
-            onSubmit
+            images
         } = this.props;
 
         return (
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
 
                 <Field
                     name="images"
                     component={renderDropzoneInput}
-                    placeholder="Images"
                     showModal={showModal}
                 />
 
@@ -30,7 +42,7 @@ class ProfileImageForm extends Component {
 
                 <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || !images || (images && !images.length)}
                     className="btn btn-primary btn-lg btn-block">
                     {submitting ? "Saving..." : "Save"}
                 </button>
@@ -41,11 +53,31 @@ class ProfileImageForm extends Component {
 
 }
 
-export default reduxForm({
+/*
+* formValueSelector is a "selector" API to make it easier to connect() to form values.
+* It creates a selector function that accepts field names and returns corresponding values from the named form.
+* */
+const valueSelector = formValueSelector(FORM_NAME);
+
+//Get form's initial values from redux state here
+const mapStateToProps = (state) => ({
+    images: valueSelector(state, 'images')
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+EventImageForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(EventImageForm);
+
+EventImageForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
-})(ProfileImageForm);
+})(EventImageForm);
+
+export default EventImageForm;
