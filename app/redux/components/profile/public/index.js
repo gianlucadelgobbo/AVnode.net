@@ -12,6 +12,7 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {sortByLanguage} from "../../common/form";
 
 /*
 * Responsabilita'
@@ -85,19 +86,21 @@ class ProfilePublic extends Component {
             // convert current lang
             v.abouts = model.abouts.map(x => ({
                 key: `abouts.${x.lang}`,
-                value: x.abouttext
+                value: x.abouttext,
+                lang: x.lang
             }));
         }
-
         locales.forEach(l => {
             let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
             if (!found) {
                 v.abouts.push({
                     key: `abouts.${l}`,
-                    value: ""
+                    value: "",
+                    lang : l
                 })
             }
         });
+        v.abouts = sortByLanguage(v.abouts);
 
         // Social: Add one item if value empty
         v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];

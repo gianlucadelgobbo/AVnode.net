@@ -492,9 +492,9 @@ export const fetchCategories = () => {
 
     return new Promise(fulfil => {
         const items = [
-            {value: 'cat-1', label: 'Category #1'},
-            {value: 'cat-2', label: 'Category #2'},
-            {value: 'cat-3', label: 'Category #2'}
+            {_id: "5a9bba1760662400000000ce", name: "Festival"},
+            {_id: "5a9bba176066240000000144", name: "CallOpen"},
+            {_id: "5a9bba1760662400000001c3", name: "Gallery open"}
         ];
 
         fulfil(items);

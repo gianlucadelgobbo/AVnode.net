@@ -83,6 +83,8 @@
     "react-strongpassword": "^1.0.1",
     "react-table": "^6.8.0",
     "react-textarea-autosize": "^5.2.1",
+    "react-time-picker": "^2.3.2",
+    "react-times": "^3.0.0",
     "react-tooltip": "^3.5.0",
     "react-widgets": "^4.1.1",
     "react-widgets-moment": "^4.0.4",
