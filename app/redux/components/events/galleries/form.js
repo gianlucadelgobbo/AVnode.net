@@ -14,7 +14,7 @@ class EventGalleryForm extends Component {
             handleSubmit,
             showModal,
             onSubmit,
-            initialValues
+            onRemove
         } = this.props;
 
         return (
@@ -24,6 +24,7 @@ class EventGalleryForm extends Component {
                     name="galleries"
                     component={sort}
                     showModal={showModal}
+                    onRemove={onRemove}
                 />
 
                 <hr/>

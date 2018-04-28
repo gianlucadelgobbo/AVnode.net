@@ -719,12 +719,14 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
     </div>
 };
 
-export const sort = ({input, meta, placeholder, isChild}) => {
+export const sort = ({input, meta, placeholder, isChild, showModal, onRemove}) => {
     const {onChange, value} = input;
     const items = value || [];
 
     return <Reorder
         onChange={onChange}
         items={items}
+        showModal={showModal}
+        onRemove={onRemove}
     />
 };
