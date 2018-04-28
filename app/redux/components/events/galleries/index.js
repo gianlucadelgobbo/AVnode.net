@@ -9,9 +9,10 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-import {MODAL_SAVED} from "../../modal/constants";
+import {MODAL_ADD_MEDIA, MODAL_SAVED} from "../../modal/constants";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
-
+import {Button} from 'react-bootstrap'
+import LightBox from '../../lightboxGallery'
 
 class EventsImage extends Component {
 
@@ -33,30 +34,29 @@ class EventsImage extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {user} = this.props;
+        const {model} = this.props;
 
-        if (!user) {
+        if (!model) {
             return {};
         }
 
         let v = {};
 
+        v.galleries = model.galleries;
+
         return v;
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
+
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
-        model._id = user._id;
-
-        console.log("model", model)
-
-        return;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
@@ -67,6 +67,7 @@ class EventsImage extends Component {
     render() {
 
         const {model, showModal, isFetching, errorMessage, _id} = this.props;
+        const initialValues = this.getInitialValues();
 
         return (
             <div className="row">
@@ -78,19 +79,54 @@ class EventsImage extends Component {
                 <div className="col-md-10">
                     <h1 className="labelField">EVENT IMAGE</h1>
 
-                    <br/>
-                    {isFetching && !model && <Loading/>}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Button
+                                bsStyle="success"
+                                className="pull-right"
+                                onClick={() => showModal({
+                                    type: MODAL_ADD_MEDIA,
+                                    props: {
+                                        onSubmit: this.onSubmit.bind()
+                                    }
+                                })}>
+                                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+                            </Button>
 
-                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+                            {!errorMessage && !isFetching && model && Array.isArray(model.galleries) && <LightBox
+                                images={model.galleries.map(x => x.image.file)}
+                                Button={<Button
+                                    bsStyle="primary"
+                                    className="pull-right"
+                                >
+                                    <i className="fa fa-image" data-toggle="tooltip" data-placement="top"/>
+                                </Button>}
+                            />}
 
-                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+                        </div>
+                    </div>
 
-                    {!errorMessage && !isFetching && model && <Form
-                        initialValues={this.getInitialValues(this)}
-                        onSubmit={this.onSubmit.bind(this)}
-                        user={model}
-                        showModal={showModal}
-                    />}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <br/>
+                            {isFetching && !model && <Loading/>}
+
+                            {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+
+                            {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                            {!errorMessage && !isFetching && model && initialValues && Array.isArray(initialValues.galleries) &&
+                            <Form
+                                initialValues={initialValues}
+                                onSubmit={this.onSubmit.bind(this)}
+                                user={model}
+                                showModal={showModal}
+                            />}
+
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         );

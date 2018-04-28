@@ -1,11 +1,11 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-import {renderDropzoneInput} from "../../common/form/components";
+import {sort} from "../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
-class ProfileImageForm extends Component {
+class EventGalleryForm extends Component {
 
     render() {
 
@@ -13,16 +13,16 @@ class ProfileImageForm extends Component {
             submitting,
             handleSubmit,
             showModal,
-            onSubmit
+            onSubmit,
+            initialValues
         } = this.props;
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
-                    name="images"
-                    component={renderDropzoneInput}
-                    placeholder="Galleries"
+                    name="galleries"
+                    component={sort}
                     showModal={showModal}
                 />
 
@@ -47,5 +47,4 @@ export default reduxForm({
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses']
-})(ProfileImageForm);
+})(EventGalleryForm);

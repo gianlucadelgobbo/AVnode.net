@@ -9,9 +9,11 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-import {MODAL_SAVED} from "../../modal/constants";
+import {MODAL_ADD_MEDIA, MODAL_SAVED} from "../../modal/constants";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
-
+import {Player} from 'video-react';
+import "video-react/dist/video-react.css"; // import css
+import {Button} from 'react-bootstrap';
 
 class EventsImage extends Component {
 
@@ -64,6 +66,16 @@ class EventsImage extends Component {
             });
     }
 
+    renderVideo(v, i) {
+        return <div className="col-md-6" key={i}>
+            <Player
+                playsInline
+                src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+            />
+            <br/>
+        </div>
+    }
+
     render() {
 
         const {model, showModal, isFetching, errorMessage, _id} = this.props;
@@ -76,21 +88,54 @@ class EventsImage extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT IMAGE</h1>
+                    <h1 className="labelField">EVENT VIDEOS</h1>
 
-                    <br/>
-                    {isFetching && !model && <Loading/>}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <Button
+                                bsStyle="success"
+                                className="pull-right"
+                                onClick={() => showModal({
+                                    type: MODAL_ADD_MEDIA,
+                                    props: {
+                                        onSubmit: this.onSubmit.bind()
+                                    }
+                                })}>
+                                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+                            </Button>
 
-                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+                        </div>
+                    </div>
 
-                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+                    <div className="row">
+                        <div className="col-md-12">
+                            <br/>
+                            {isFetching && !model && <Loading/>}
 
-                    {!errorMessage && !isFetching && model && <Form
-                        initialValues={this.getInitialValues(this)}
-                        onSubmit={this.onSubmit.bind(this)}
-                        user={model}
-                        showModal={showModal}
-                    />}
+                            {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+
+                            {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                            {!errorMessage &&
+                            !isFetching &&
+                            model &&
+                            Array.isArray(model.videos) &&
+                            model.videos.length > 0 &&
+                            <div className="row">
+                                {model.videos.map(this.renderVideo.bind(this))}
+                            </div>}
+
+                            {!errorMessage &&
+                            !isFetching &&
+                            model &&
+                            Array.isArray(model.videos) &&
+                            model.videos.length === 0 &&
+                            <div>
+                                No video to show
+                            </div>}
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         );

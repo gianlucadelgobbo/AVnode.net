@@ -70,6 +70,7 @@
     "pug": "^2.0.0-beta6",
     "ramda": "^0.25.0",
     "rc-time-picker": "^3.3.1",
+    "react-beautiful-dnd": "^7.1.0",
     "react-bootstrap": "^0.32.0",
     "react-bootstrap-time-picker": "^1.0.3",
     "react-datepicker": "^1.2.2",
@@ -95,6 +96,7 @@
     "to": "^0.2.9",
     "update": "^0.7.4",
     "uuid": "^3.2.1",
+    "video-react": "^0.10.4",
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2",
     "zxcvbn": "^4.4.2"
