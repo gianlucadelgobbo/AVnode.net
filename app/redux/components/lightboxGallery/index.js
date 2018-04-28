@@ -26,16 +26,26 @@ export default class LightboxGallery extends Component {
             isOpen,
         } = this.state;
 
-        const {images, index, alt} = this.props;
+        const {images, index, alt, Button} = this.props;
 
         const currentIndex = (photoIndex + index) % images.length;
         const nextIndex = (currentIndex + 1) % images.length;
         const prevIndex = (currentIndex + images.length - 1) % images.length;
 
+        let Trigger = <img
+            src={images[0]}
+            className="img-responsive"
+            alt={alt}/>;
+
+        if (Button) {
+            Trigger = Button;
+        }
 
         return (
             <div>
-                <img src={images[0]} onClick={() => this.setState({isOpen: true})} className="img-responsive" alt={alt}/>
+                <span onClick={() => this.setState({isOpen: true})}>
+                    {Trigger}
+                </span>
 
                 {isOpen &&
                 <Lightbox

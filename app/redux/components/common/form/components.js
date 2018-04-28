@@ -17,6 +17,7 @@ import ReactTooltip from 'react-tooltip';
 import 'react-phone-number-input/rrui.css';
 import 'react-phone-number-input/style.css';
 import Phone from 'react-phone-number-input';
+import Reorder from '../../reorder';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -716,4 +717,14 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
 
         </div>
     </div>
+};
+
+export const sort = ({input, meta, placeholder, isChild}) => {
+    const {onChange, value} = input;
+    const items = value || [];
+
+    return <Reorder
+        onChange={onChange}
+        items={items}
+    />
 };
