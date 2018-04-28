@@ -11,8 +11,8 @@ import moment from 'moment';
 import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
 import {MODAL_REMOVE, MODAL_ADD_USER_PERFORMANCE, MODAL_SAVED} from "../../modal/constants";
-import 'rc-time-picker/assets/index.css';
-import TimePicker from 'react-bootstrap-time-picker';
+import TimePicker from 'react-times';
+import 'react-times/css/classic/default.css';
 import ReactTooltip from 'react-tooltip';
 import 'react-phone-number-input/rrui.css';
 import 'react-phone-number-input/style.css';
@@ -237,12 +237,12 @@ export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, m
         <div className="card-header">
             <h4>{label}</h4>
             <Button bsStyle="success" className="pull-right"
-                    //onClick={() => fields.unshift({})}
+                //onClick={() => fields.unshift({})}
                     onClick={() =>
                         showModal({
                             type: MODAL_ADD_USER_PERFORMANCE
                         })}
-                    >
+            >
                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
             </Button>
         </div>
@@ -440,17 +440,17 @@ export const renderList = ({input, meta, placeholder, hideResetButton, options, 
 
 export const renderListRadio = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
     const field = <div className="form-group">
-         <ButtonGroup>
-         {options.map(option =>
-           <Button
-             key={option[0]}
-             bsStyle={option[0] === input.value ? 'primary' : 'default'}
-             children={option[1]}
-             name={input.name}
-             onClick={input.onChange}
-             value={option[0]}
-           />
-        )}
+        <ButtonGroup>
+            {options.map(option =>
+                <Button
+                    key={option[0]}
+                    bsStyle={option[0] === input.value ? 'primary' : 'default'}
+                    children={option[1]}
+                    name={input.name}
+                    onClick={input.onChange}
+                    value={option[0]}
+                />
+            )}
         </ButtonGroup>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -481,12 +481,14 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
         </dl>
 };
 
-export const renderTimePicker = ({input, meta, format = "12", className, placeholder, isChild}) => {
+export const renderTimePicker = ({input, meta, timeMode = "24", className, placeholder, isChild}) => {
     const field = <div className="form-group">
         <TimePicker
             className={className}
-            {...input}
-            format={format}
+            onTimeChange={input.onChange}
+            time={input.value}
+            timeMode={timeMode}
+            theme="classic"
         />,
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -621,14 +623,14 @@ export const renderDropzoneInput = (field) => {
 
 export const multiSchedule = ({fields, title, meta: {error}, placeholder, showModal}) => {
     const label = <div className="labelField">{placeholder}</div>;
-    const renderSubField = ({member, index, fields}) => (
-        <div className="row" key={index}>
+    const renderSubField = ({member, index, fields}) => {
+        return <div className="row" key={index}>
             <div className="col-md-9 offset-1">
 
                 <div className="row">
                     <div className="col-md-4">
                         <Field
-                            name="date"
+                            name={`${member}.date`}
                             component={renderDatePicker}
                             placeholder="Date"
                             isChild={true}
@@ -636,7 +638,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
                     </div>
                     <div className="col-md-4">
                         <Field
-                            name="starttime"
+                            name={`${member}.starttime`}
                             component={renderTimePicker}
                             placeholder="Start time"
                             isChild={true}
@@ -644,7 +646,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
                     </div>
                     <div className="col-md-4">
                         <Field
-                            name="endtime"
+                            name={`${member}.endtime`}
                             component={renderTimePicker}
                             placeholder="End time"
                             isChild={true}
@@ -655,7 +657,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
                 <div className="row">
                     <div className="col-md-6">
                         <Field
-                            name="venue"
+                            name={`${member}.venue`}
                             component={googleAutocompleteSelect}
                             placeholder="Venue"
                             options={{
@@ -696,7 +698,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
                 <hr/>
             </div>
         </div>
-    );
+    }
 
     return <div className="card">
         <div className="card-header">

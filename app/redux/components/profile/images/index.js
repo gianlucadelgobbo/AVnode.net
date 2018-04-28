@@ -81,22 +81,29 @@ class ProfileImage extends Component {
                     <br/>
                     {isFetching && !model && <Loading/>}
 
-                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+                    <div className="row">
+                        <div className="col-md-6">
+                            {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
-                    {!errorMessage && !isFetching && !model &&
-                    <img src={UserPhotoNotFound} className="rounded mx-auto d-block" alt="Photo not found"/>}
+                            {!errorMessage && !isFetching && !model &&
+                            <img src={UserPhotoNotFound} className="rounded mx-auto d-block" alt="Photo not found"/>}
 
-                    {!errorMessage &&
-                    !isFetching &&
-                    model && model.image &&
-                    <img src={model.image.file} className="rounded mx-auto d-block" alt={model.stagename}/>}
+                            {!errorMessage &&
+                            !isFetching &&
+                            model && model.image &&
+                            <img src={model.image.file} className="rounded mx-auto d-block" alt={model.stagename}/>}
 
-                    <Form
-                        initialValues={this.getInitialValues()}
-                        onSubmit={this.onSubmit.bind(this)}
-                        user={model}
-                        showModal={showModal}
-                    />
+                        </div>
+                        <div className="col-md-6">
+                            <Form
+                                initialValues={this.getInitialValues()}
+                                onSubmit={this.onSubmit.bind(this)}
+                                user={model}
+                                showModal={showModal}
+                            />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         );

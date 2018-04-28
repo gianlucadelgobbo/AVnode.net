@@ -13,6 +13,8 @@ import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
+import moment from 'moment';
+import {sortByLanguage} from "../../common/form";
 
 class EventPublic extends Component {
 
@@ -29,6 +31,9 @@ class EventPublic extends Component {
 
         //clone obj
         let model = Object.assign({}, values);
+
+        // Convert web
+        model.categories = model.categories.filter(w => w.url).map(w => ({_id: w.value, name: w.label}));
 
         //Convert abouts for API
         if (Array.isArray(model.abouts)) {
@@ -47,14 +52,10 @@ class EventPublic extends Component {
         // Convert social
         model.social = model.social.filter(w => w.url);
 
-        // Convert addresses
-        model.addresses = model.addresses.map(a => {
-            const originalString = a.text;
-            const split = originalString.split(",");
-            const country = split[split.length - 1].trim();
-            const city = split[0].trim();
-            return {originalString, city, country}
-        });
+        // Convert Phone Number
+        model.phones = model.phones.filter(a => a).map(p => ({
+            url: p.tel
+        }));
 
         return model;
     }
@@ -69,11 +70,73 @@ class EventPublic extends Component {
 
         let v = {};
 
-        //Convert stagename for redux-form
-        v.stagename = model.stagename;
+        // Convert categories
+        v.categories = [];
+        if (Array.isArray(model.categories)) {
+            v.categories = model.categories.map(x => x._id);
+        }
+
+        // Convert categories
+        v.schedule = [];
+        if (Array.isArray(model.schedule)) {
+
+            const createVenue = (v) => {
+
+                const {location = {}, name} = v;
+                const {locality, country} = location;
+                let venue = "";
+
+                if (name) {
+                    venue += name;
+                }
+
+                if (locality) {
+                    venue += `, ${locality}`;
+                }
+
+                if (country) {
+                    venue += `, ${country}`;
+                }
+
+                return venue;
+            };
+
+            v.schedule = model.schedule.map(x => ({
+                date: x.date,
+                endtime: moment(x.endtime).format('HH:mm'),
+                starttime: moment(x.starttime).format('HH:mm'),
+                venue: x.venue ? createVenue(x.venue) : "",
+                room: x.venue ? x.venue.room : ""
+            }));
+        }
 
         //Convert slug for redux-form
         v.slug = model.slug;
+
+        //Convert title for redux-form
+        v.title = model.title;
+
+        // Convert subtitles format for FieldArray redux-form
+        v.subtitles = [];
+        if (Array.isArray(model.subtitles)) {
+            // convert current lang
+            v.subtitles = model.subtitles.map(x => ({
+                key: `subtitles.${x.lang}`,
+                value: x.abouttext,
+                lang: x.lang,
+            }));
+        }
+        locales.forEach(l => {
+            let found = v.subtitles.filter(o => o.key === `subtitles.${l}`).length > 0;
+            if (!found) {
+                v.subtitles.push({
+                    key: `subtitles.${l}`,
+                    lang: l,
+                    value: ""
+                })
+            }
+        });
+        v.subtitles = sortByLanguage(v.subtitles);
 
         // Convert about format for FieldArray redux-form
         v.abouts = [];
@@ -82,58 +145,39 @@ class EventPublic extends Component {
             // convert current lang
             v.abouts = model.abouts.map(x => ({
                 key: `abouts.${x.lang}`,
-                value: x.abouttext
+                value: x.abouttext,
+                lang: x.lang,
             }));
         }
-
         locales.forEach(l => {
             let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
             if (!found) {
                 v.abouts.push({
                     key: `abouts.${l}`,
-                    value: ""
+                    value: "",
+                    lang: l
                 })
             }
         });
-
-        // Convert subtitles format for FieldArray redux-form
-        v.subtitles = [];
-        if (Array.isArray(model.subtitles)) {
-
-            // convert current lang
-            v.subtitles = model.subtitles.map(x => ({
-                key: `abouts.${x.lang}`,
-                value: x.text
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = v.subtitles.filter(o => o.key === `subtitles.${l}`).length > 0;
-            if (!found) {
-                v.subtitles.push({
-                    key: `subtitles.${l}`,
-                    value: ""
-                })
-            }
-        });
-
-        // Social: Add one item if value empty
-        v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
+        v.abouts = sortByLanguage(v.abouts);
 
         // Web: Add one item if value empty
         v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];
 
-        // Addresses: Add one item if model empty
-        v.addresses = (Array.isArray(model.addresses) && model.addresses.length > 0) ?
-            model.addresses.map(a => ({
-                text: `${a.city}, ${a.country}`
-            })) :
-            [{text: ""}];
+        // Social: Add one item if value empty
+        v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
+
+        // Emails: Add one item if value empty
+        v.emails = (Array.isArray(model.emails) && model.emails.length > 0) ? model.emails : [{text: ""}];
+
+        v.phones = (Array.isArray(model.phones) && model.phones.length > 0) ?
+            model.phones.filter(a => a).map(p => ({tel: p.url})) : [""];
 
         return v;
     }
 
     onSubmit(values) {
+        console.log("values", values)
         const {showModal, saveModel, model} = this.props;
         const modelToSave = this.createModelToSave(values);
 
@@ -151,7 +195,10 @@ class EventPublic extends Component {
     render() {
 
         const {model, showModal, _id, isFetching, errorMessage, categories} = this.props;
-        
+
+        // console.log("model", model)
+        //console.log("this.getInitialValues()", this.getInitialValues())
+
         return (
             <div className="row">
                 <div className="col-md-2">
@@ -190,7 +237,7 @@ const mapStateToProps = (state, {_id}) => ({
     model: getModel(state, _id),
     isFetching: getModelIsFetching(state, _id),
     errorMessage: getModelErrorMessage(state, _id),
-    categories: getCategories(state)
+    categories: getCategories(state).map(c => ({value: c._id, label: c.name}))
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

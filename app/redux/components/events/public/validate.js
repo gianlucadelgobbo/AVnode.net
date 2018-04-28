@@ -6,6 +6,19 @@ const profilePublicValidate = values => {
 
     const errors = {};
 
+    //categories
+    if (!values.categories || (values.categories.length < 1 || values.categories.length > 2)) {
+        errors.categories = {_error: "Invalid length: please insert 1 to 2 values"}
+    }
+
+    //schedule
+
+
+
+
+
+
+
     if (!values.stagename || values.stagename.trim() === "") {
         errors.stagename = 'Stage Name Required';
     }
@@ -20,6 +33,8 @@ const profilePublicValidate = values => {
             errors.slug = 'Characters Not Allowed';
         }
     }
+
+
 
     //web
     if (!values.web || (values.web.length < 1 || values.web.length > 5)) {
