@@ -9,7 +9,7 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-import {MODAL_ADD_MEDIA, MODAL_SAVED} from "../../modal/constants";
+import {MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED} from "../../modal/constants";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
 import {Player} from 'video-react';
 import "video-react/dist/video-react.css"; // import css
@@ -53,10 +53,6 @@ class EventsImage extends Component {
         // Add auth user _id
         model._id = user._id;
 
-        console.log("model", model)
-
-        return;
-
         //dispatch the action to save the model here
         return editUser(model)
             .then(() => {
@@ -66,12 +62,38 @@ class EventsImage extends Component {
             });
     }
 
+    onRemove(video) {
+        console.log("video", video)
+    }
+
     renderVideo(v, i) {
+
+        const {showModal} = this.props;
+
         return <div className="col-md-6" key={i}>
-            <Player
-                playsInline
-                src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-            />
+            <div className="row">
+                <div className="col-sm-11">
+                    <Player
+                        playsInline
+                        src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                    />
+                </div>
+                <div className="col-sm-1">
+                    <Button bsStyle="danger"
+                            onClick={() =>
+                                showModal({
+                                    type: MODAL_REMOVE,
+                                    props: {
+                                        onRemove: () => this.onRemove(v)
+                                    }
+                                })}
+                    >
+                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                    </Button>
+                </div>
+            </div>
+
+
             <br/>
         </div>
     }
@@ -133,7 +155,7 @@ class EventsImage extends Component {
                             <div>
                                 No video to show
                             </div>}
-                            
+
                         </div>
                     </div>
                 </div>

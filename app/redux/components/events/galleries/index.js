@@ -64,6 +64,11 @@ class EventsImage extends Component {
             });
     }
 
+    onRemove(photo) {
+
+        console.log("photo", photo)
+    }
+
     render() {
 
         const {model, showModal, isFetching, errorMessage, _id} = this.props;
@@ -121,6 +126,7 @@ class EventsImage extends Component {
                                 onSubmit={this.onSubmit.bind(this)}
                                 user={model}
                                 showModal={showModal}
+                                onRemove={this.onRemove.bind(this)}
                             />}
 
 

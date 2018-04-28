@@ -1,6 +1,7 @@
 import {h, Component} from 'preact';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import {MODAL_REMOVE} from "../modal/constants";
+import {Button} from 'react-bootstrap';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -62,7 +63,7 @@ class Reorder extends Component {
     // But in this example everything is just done in one place for simplicity
     render() {
 
-        const {items} = this.props;
+        const {items, showModal, onRemove} = this.props;
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
@@ -86,6 +87,19 @@ class Reorder extends Component {
                                             )}
                                         >
                                             {item.content}
+
+                                            <Button bsStyle="danger"
+                                                    onClick={() =>
+                                                        showModal({
+                                                            type: MODAL_REMOVE,
+                                                            props: {
+                                                                onRemove: () => onRemove(item)
+                                                    }
+                                                    })}
+                                            >
+                                                <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                                            </Button>
+
                                         </div>
                                     )}
                                 </Draggable>
