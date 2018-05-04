@@ -210,7 +210,13 @@ textarea#styled {
 .labelField{
   color: #636c72;
   font-weight: 400;
+}
+.labelFieldUpload{
+  color: #636c72;
+  font-weight: 400;
   padding-top: 5px;
+  cursor:pointer;
+  font-style: italic;
 }
 .card-header h4{
   display:inline-block;
@@ -229,4 +235,10 @@ textarea#styled {
   font-style: italic;
   font-size: 14px;
   padding-left: 10px;
+}
+#PlacesAutocomplete__autocomplete-container{
+  z-index:999;
+}
+.attached-file > li{
+  color:#636c72;
 }

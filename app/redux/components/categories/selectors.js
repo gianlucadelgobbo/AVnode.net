@@ -22,7 +22,6 @@ export const getList = (state) =>
 export const getModel = (state, id) =>
     state[entity].byId[id];
 
-
 export const getDefaultModel = (state) => {
     const firstId = Object.keys(state[entity].byId);
     return firstId? state[entity].byId[firstId] : null;
