@@ -21,7 +21,7 @@ import Reorder from '../../reorder';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
-        <PlacesAutocomplete className="form-control" inputProps={input} options={options}/>
+        <PlacesAutocomplete inputProps={input} options={options}/>
         {meta.error && meta.touched &&
         <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
     </div>;
@@ -585,7 +585,7 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div className="labelField">Drop files here, or click to select files to upload.</div>
+                <div className="labelFieldUpload">Drop files here, or click to select files to upload.</div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
@@ -595,8 +595,8 @@ export const renderDropzoneInput = (field) => {
 
                     {files.map((file, i) => <li key={i}>
                         {getExtensionIcon(file.name)} {file.name}
-                        <span
-                            className="file-size">({formatBytes(file.size)})
+                        <span className="file-size">
+                            ({formatBytes(file.size)})
                         </span>
                         <button type="button" className="btn btn-default clear-attachment" onClick={() => {
 
@@ -679,7 +679,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
 
             </div>
 
-            <div className="col-md-2">>
+            <div className="col-md-2">
                 <Button
                     bsStyle="danger"
                     onClick={() =>
@@ -729,4 +729,96 @@ export const sort = ({input, meta, placeholder, isChild, showModal, onRemove}) =
         showModal={showModal}
         onRemove={onRemove}
     />
+};
+
+export const multiScheduleContacts = ({fields, title, meta: {error}, placeholder, showModal}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return <div className="row" key={index}>
+            <div className="col-md-10 offset-1">
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            name={`${member}.value`}
+                            component={renderList}
+                            placeholder="Organization contact title "
+                            options={[
+                                        {value: 'Mr', label: 'Mr'},
+                                        {value: 'Miss', label: 'Miss'},
+                                    ]}
+                            isChild={true}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <Field
+                            name={`${member}.role`}
+                            component={inputText}
+                            placeholder="Organization contact role"
+                            isChild={true}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            name={`${member}.value`}
+                            component={inputText}
+                            placeholder="Organization contact name"
+                            isChild={true}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <Field
+                            name={`${member}.value`}
+                            component={inputText}
+                            placeholder="Organization contact surname"
+                            isChild={true}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name="contact_email"
+                            component={inputEmail}
+                            placeholder="Organisation contact email"
+                            isChild={true}
+                        />
+                    </div>
+                </div>
+                <div className="col-md-2 offset-11">
+                <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                        showModal({
+                            type: MODAL_REMOVE,
+                            props: {
+                                onRemove: () => fields.remove(index)
+                            }
+
+                        })}
+                >
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                </Button>
+            </div>
+        </div>
+    </div>
+}
+return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+
+        </div>
+    </div>
 };

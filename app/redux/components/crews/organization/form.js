@@ -1,8 +1,10 @@
 import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, renderDatePicker, renderList, multiGoogleAddress, multiInputTel, multiInputEmailWithDetails, renderListRadio} from "../../common/form/components";
-import {locales, locales_labels} from '../../../../../config/default.json'
+import {inputText, renderDatePicker, renderList, multiGoogleAddress, 
+        multiInputTel, multiInputEmailWithDetails, 
+        renderListRadio, renderDropzoneInput, 
+        textareaMultiTab, textarea, multiScheduleContacts} from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 
@@ -14,13 +16,11 @@ class CrewOrganizationForm extends Component {
             submitting,
             handleSubmit,
             categories,
+            aboutsTabs,
+            aboutsLabels,
             onSubmit,
             showModal
         } = this.props;
-
-        const pippo = {
-            test: ''
-          }
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -67,7 +67,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="pic_code"
                     component={inputText}
-                    placeholder="Organisation PIC Code"
+                    placeholder="Organization PIC Code"
                 />
 
                 <br/>
@@ -75,7 +75,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="vat_number"
                     component={inputText}
-                    placeholder="Organisation vat number"
+                    placeholder="Organization vat number"
                 />
 
                 <br/>
@@ -96,7 +96,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="official_registration_number"
                     component={inputText}
-                    placeholder="Organisation official registration number"
+                    placeholder="Organization official registration number"
                 /> 
 
                 <br/>
@@ -104,7 +104,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="legal_representative_title"
                     component={renderList}
-                    placeholder="Organisation legal representative title"
+                    placeholder="Organization legal representative title"
                     options={[
                                 {value: 'Mr', label: 'Mr'},
                                 {value: 'Miss', label: 'Miss'},
@@ -116,7 +116,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="legal_representative_role"
                     component={inputText}
-                    placeholder="Organisation legal representative role"
+                    placeholder="Organization legal representative role"
                 />
 
                 <br/>
@@ -124,7 +124,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="legal_representative_name"
                     component={inputText}
-                    placeholder="Organisation legal representative name"
+                    placeholder="Organization legal representative name"
                 />
 
                 <br/>
@@ -132,7 +132,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="legal_representative_surname"
                     component={inputText}
-                    placeholder="Organisation legal representative surname"
+                    placeholder="Organization legal representative surname"
                 /> 
 
                 <br/>
@@ -140,9 +140,115 @@ class CrewOrganizationForm extends Component {
                 <FieldArray
                     name="email"
                     component={multiInputEmailWithDetails}
-                    placeholder="Organisation legal representative email"
-                />                             
-                            
+                    placeholder="Organization legal representative email"
+                    showModal={showModal}
+                />
+
+                <br/>
+
+                 <Field
+                    name="pdf_statute"
+                    component={renderDropzoneInput}
+                    showModal={showModal}
+                    placeholder="Organization statute (pdf only)"
+                />  
+
+                <br/>
+
+                 <Field
+                    name="pdf_members"
+                    component={renderDropzoneInput}
+                    showModal={showModal}
+                    placeholder="Organization members cv (pdf only)"
+                /> 
+
+                <br/>
+
+                 <Field
+                    name="pdf_activity_report"
+                    component={renderDropzoneInput}
+                    showModal={showModal}
+                    placeholder="Organization Activity Report (pdf only)"
+                />  
+                                
+                <br/> 
+
+                <Field
+                    name="permanent_employees"
+                    component={inputText}
+                    placeholder="Organization permanent employees"
+                />     
+
+                <br/> 
+
+                <Field
+                    name="permanent_employees_avnode"
+                    component={inputText}
+                    placeholder="Organization permanent employees AVnode"
+                />      
+
+                <br/> 
+
+                <Field
+                    name="temporary_employees"
+                    component={inputText}
+                    placeholder="Organization temporary employees"
+                />      
+
+                <br/> 
+
+                <Field
+                    name="temporary_employees_avnode"
+                    component={inputText}
+                    placeholder="Organization temporary employees AVnode"
+                />
+                
+                <br/>    
+            
+                <Field
+                    name="relevance_in_the_project"
+                    component={textarea}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="Organization relevance in the project"
+                />
+
+                <br/>    
+
+                <Field
+                    name="emerging_artists_definition"
+                    component={textarea}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="Organization emerging artists definition"
+                />
+
+                <br/>    
+
+                <Field
+                    name="eu_grants_received_in_the_last_3_years"
+                    component={textarea}
+                    tabs={aboutsTabs}
+                    labels={aboutsLabels}
+                    placeholder="EU grants received in the last 3 years"
+                /> 
+
+                <br/>    
+
+                <Field
+                    name="annual_turnover_in_euro"
+                    component={inputText}
+                    placeholder="Organization annual turnover in euro"
+                />    
+
+                <br/>    
+
+                <FieldArray
+                    name="contacts"
+                    component={multiScheduleContacts}
+                    placeholder="Organisation contacts (multiple)"
+                    showModal={showModal}
+                />            
 
                 <hr/>
 

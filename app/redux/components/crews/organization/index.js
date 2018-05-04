@@ -13,6 +13,7 @@ import {getModel, getErrorMessage, getIsFetching} from "../selectors";
 import {MODAL_SAVED} from "../../modal/constants";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
+import {locales, locales_labels} from "../../../../../config/default";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -99,6 +100,8 @@ class CrewOrganization extends Component {
 
         const {model, categories, showModal, errorMessage, isFetching, _id} = this.props;
 
+        console.log(categories)
+
         return (
             <div className="row">
                 <div className="col-md-2">
@@ -128,6 +131,8 @@ class CrewOrganization extends Component {
                         user={model}
                         showModal={showModal}
                         categories={categories}
+                        aboutsTabs={locales}
+                        aboutsLabels={locales_labels}
                     />}
                 </div>
             </div>
@@ -138,7 +143,7 @@ class CrewOrganization extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state, {_id}) => ({
     model: getModel(state, _id),
-    categories: getCategories(state),
+    categories: getCategories(state).map(c => ({label:c.name, value:c._id})),
     isFetching: getIsFetching(state,_id),
     errorMessage: getErrorMessage(state,_id),
 });
