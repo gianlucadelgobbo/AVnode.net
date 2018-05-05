@@ -172,15 +172,15 @@ export const saveEventImages = (model) => {
 
 // - users
 
-export const fetchEventUsers = ({id}) => {
-    return axios.get(`events/${id}/users`)
+export const fetchEventPartners = ({id}) => {
+    return axios.get(`events/${id}/partners`)
         .then(result => {
             return result.data;
         });
 };
 
-export const saveEventUsers = (model) => {
-    return axios.post(`events/${model._id}/users`, model)
+export const saveEventPartners = (model) => {
+    return axios.post(`events/${model._id}/partners`, model)
         .then(result => {
             return result.data;
         });
@@ -286,7 +286,7 @@ export const fetchPerformances = () => {
 export const fetchPerformancesForSelect = () => {
     return axios.get("performances")
         .then(result => {
-            return { options: result.data.performances };
+            return {options: result.data.performances};
         });
 };
 

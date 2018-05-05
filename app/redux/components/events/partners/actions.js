@@ -7,7 +7,7 @@ import * as constants from '../constants'
 export const fetchModel = ({id} = {}) => generateFetchModel({
     selectors,
     constants,
-    request: api.fetchEventUsers,
+    request: api.fetchEventPartners,
     schema: event,
     id
 });
@@ -15,7 +15,7 @@ export const fetchModel = ({id} = {}) => generateFetchModel({
 export const saveModel = (model) => generateSaveModel({
     selectors,
     constants,
-    request: api.saveEventUsers,
+    request: api.saveEventPartners,
     schema: event,
     model,
 });
