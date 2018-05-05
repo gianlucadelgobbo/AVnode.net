@@ -240,7 +240,7 @@ export const multiInputCheckbox = ({fields, title, showModal, placeholder, meta:
 
 export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-10">
                 <Field
                     name={`${member}.stagename`}
@@ -290,7 +290,7 @@ export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, m
 export const multiInputEmailWithDetails = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         const {is_confirmed} = fields.get(index);
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-5 offset-1">
                 <Field
                     name={`${member}.email`}
@@ -657,7 +657,7 @@ export const renderDropzoneInput = (field) => {
 export const multiSchedule = ({fields, title, meta: {error}, placeholder, showModal}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
 
                 <div className="row">
@@ -754,7 +754,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
 export const multiProgram = ({fields, title, meta: {error}, placeholder, showModal, categories}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
 
                 <div className="row">
@@ -882,7 +882,7 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
 export const multiPackages = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
 
                 <Field
@@ -1009,7 +1009,7 @@ export const multiPackages = ({fields, title, meta: {error}, placeholder, showMo
 export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
 
                 <Field
@@ -1075,7 +1075,7 @@ export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal
 export const multiCall = ({fields, title, meta: {error}, placeholder, showModal, categories, tabs, labels}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
 
                 <Field
@@ -1222,7 +1222,7 @@ export const sort = ({input, meta, placeholder, isChild, showModal, onRemove}) =
 export const multiScheduleContacts = ({fields, title, meta: {error}, placeholder, showModal}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
-        return <div className="row" key={index}>
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-10 offset-1">
 
                 <div className="row">

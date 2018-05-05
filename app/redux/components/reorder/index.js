@@ -63,7 +63,9 @@ class Reorder extends Component {
     // But in this example everything is just done in one place for simplicity
     render() {
 
-        const {items, showModal, onRemove} = this.props;
+        let {items, showModal, onRemove} = this.props;
+
+        items = [{id: "1"}, {id: 2}]
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>

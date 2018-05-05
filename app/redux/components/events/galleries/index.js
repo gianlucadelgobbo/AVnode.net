@@ -2,16 +2,16 @@ import {h, Component} from 'preact';
 import {connect} from 'preact-redux';
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
-import Form from './form'
+//import Form from './form'
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
 import {getDefaultModel} from "../selectors";
-import {fetchModel, saveModel} from "./actions";
-import {MODAL_ADD_MEDIA, MODAL_SAVED} from "../../modal/constants";
+import {fetchModel, saveModel, removeModel} from "./actions";
+import {MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED} from "../../modal/constants";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
-import {Button} from 'react-bootstrap'
+import {Button, Image} from 'react-bootstrap'
 import LightBox from '../../lightboxGallery'
 
 class EventsImage extends Component {
@@ -48,7 +48,6 @@ class EventsImage extends Component {
     }
 
     onSubmit(values) {
-
         const {showModal, saveModel, model} = this.props;
         const modelToSave = this.createModelToSave(values);
 
@@ -65,14 +64,54 @@ class EventsImage extends Component {
     }
 
     onRemove(photo) {
+        const {removeModel} = this.props;
+
+        //dispatch the action to save the model here
+        return removeModel(photo)
+            .then(() => {
+                showModal({
+                    type: MODAL_SAVED
+                });
+            });
 
         console.log("photo", photo)
+    }
+
+    renderImage(img, i) {
+
+        const {showModal} = this.props;
+        const {image} = img || {};
+        const {file} = image;
+
+        return <div className="col-md-6" key={i}>
+            <div className="row">
+                <div className="col-sm-11">
+                    <Image src={file} responsive rounded/>
+                </div>
+                <div className="col-sm-1">
+                    <Button bsStyle="danger"
+                            onClick={() =>
+                                showModal({
+                                    type: MODAL_REMOVE,
+                                    props: {
+                                        onRemove: () => this.onRemove(img)
+                                    }
+                                })}
+                    >
+                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                    </Button>
+                </div>
+            </div>
+
+
+            <br/>
+        </div>
     }
 
     render() {
 
         const {model, showModal, isFetching, errorMessage, _id} = this.props;
-        const initialValues = this.getInitialValues();
+        //const initialValues = this.getInitialValues();
 
         return (
             <div className="row">
@@ -92,7 +131,7 @@ class EventsImage extends Component {
                                 onClick={() => showModal({
                                     type: MODAL_ADD_MEDIA,
                                     props: {
-                                        onSubmit: this.onSubmit.bind()
+                                        onSubmit: this.onSubmit.bind(this)
                                     }
                                 })}>
                                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
@@ -120,15 +159,21 @@ class EventsImage extends Component {
 
                             {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                            {!errorMessage && !isFetching && model && initialValues && Array.isArray(initialValues.galleries) &&
-                            <Form
-                                initialValues={initialValues}
-                                onSubmit={this.onSubmit.bind(this)}
-                                user={model}
-                                showModal={showModal}
-                                onRemove={this.onRemove.bind(this)}
-                            />}
+                            {/*{!errorMessage && !isFetching && model && initialValues && Array.isArray(initialValues.galleries) &&*/}
+                            {/*<Form*/}
+                            {/*initialValues={initialValues}*/}
+                            {/*onSubmit={this.onSubmit.bind(this)}*/}
+                            {/*user={model}*/}
+                            {/*showModal={showModal}*/}
+                            {/*onRemove={this.onRemove.bind(this)}*/}
+                            {/*/>}*/}
 
+                            {!errorMessage &&
+                            !isFetching && model
+                            && Array.isArray(model.galleries) &&
+                            <div className="row">
+                                {model.galleries.map(this.renderImage.bind(this))}
+                            </div>}
 
                         </div>
                     </div>
@@ -150,6 +195,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
     saveModel,
     showModal,
+    removeModel
 }, dispatch);
 
 EventsImage = connect(
