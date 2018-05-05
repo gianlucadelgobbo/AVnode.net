@@ -218,6 +218,13 @@ export const saveEventGalleries = (model) => {
         });
 };
 
+export const removeEventGalleries = (model) => {
+    return axios.delete(`events/${model._id}/galleries`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
 // - videos
 
 export const fetchEventVideos = ({id}) => {

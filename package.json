@@ -70,7 +70,7 @@
     "pug": "^2.0.0-beta6",
     "ramda": "^0.25.0",
     "rc-time-picker": "^3.3.1",
-    "react-beautiful-dnd": "^7.1.0",
+    "react-beautiful-dnd": "^7.1.2",
     "react-bootstrap": "^0.32.0",
     "react-bootstrap-time-picker": "^1.0.3",
     "react-datepicker": "^1.2.2",

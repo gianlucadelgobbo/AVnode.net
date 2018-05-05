@@ -86,7 +86,8 @@ class EventImages extends Component {
 
                             {!errorMessage &&
                             !isFetching &&
-                            model && model.image &&
+                            model &&
+                            model.image &&
                             <LightBox images={[model.image.file]} alt={model.stagename}/>}
 
                         </div>
