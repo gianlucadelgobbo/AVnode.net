@@ -15,8 +15,8 @@ class ProfilePublicForm extends Component {
         const {
             submitting,
             handleSubmit,
-            aboutsTabs,
-            aboutsLabels,
+            tabs,
+            labels,
             showModal,
             onSubmit,
             errors
@@ -40,8 +40,8 @@ class ProfilePublicForm extends Component {
                 <FieldArray
                     name="abouts"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="About"
                     errors={errors}
                 />

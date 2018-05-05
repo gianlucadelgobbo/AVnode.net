@@ -11,14 +11,18 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
+import {fetchList as fetchCategories} from "../../categories/actions";
+import {getList as getCategories} from "../../categories/selectors";
+import {createMultiLanguageInitialObject} from "../../common/form";
 
 class EventCalls extends Component {
 
     componentDidMount() {
-        const {fetchModel, _id} = this.props;
+        const {fetchModel, _id, fetchCategories} = this.props;
         fetchModel({
             id: _id
         });
+        fetchCategories();
     }
 
     // Convert form values to API model
@@ -27,33 +31,27 @@ class EventCalls extends Component {
         //clone obj
         let model = Object.assign({}, values);
 
-        //Convert abouts for API
-        if (Array.isArray(model.abouts)) {
-            model.abouts = model.abouts.map(x => {
-                const splitted = x.key.split(".");
-                return {
-                    lang: splitted[splitted.length - 1],
-                    abouttext: x.value
-                }
-            });
-        }
-
-        // Convert web
-        model.web = model.web.filter(w => w.url);
-
-        // Convert social
-        model.social = model.social.filter(w => w.url);
-
-        // Convert addresses
-        model.addresses = model.addresses.map(a => {
-            const originalString = a.text;
-            const split = originalString.split(",");
-            const country = split[split.length - 1].trim();
-            const city = split[0].trim();
-            return {originalString, city, country}
-        });
-
         return model;
+    }
+
+   
+    getInitialModel() {
+
+        let v = {};
+        v.excerpt = createMultiLanguageInitialObject("excerpt");
+        v.terms = createMultiLanguageInitialObject("terms");
+        v.closedcalltext = createMultiLanguageInitialObject("closedcalltext");
+
+        let p = {};
+        p.description = createMultiLanguageInitialObject("description");
+        v.packages = [p];
+
+        let t = {};
+        t.description = createMultiLanguageInitialObject("description");
+        v.topics = [t];
+
+        return v;
+
     }
 
     // Modify model from API to create form initial values
@@ -66,66 +64,8 @@ class EventCalls extends Component {
 
         let v = {};
 
-        //Convert stagename for redux-form
-        v.stagename = model.stagename;
-
-        //Convert slug for redux-form
-        v.slug = model.slug;
-
-        // Convert about format for FieldArray redux-form
-        v.abouts = [];
-        if (Array.isArray(model.abouts)) {
-
-            // convert current lang
-            v.abouts = model.abouts.map(x => ({
-                key: `abouts.${x.lang}`,
-                value: x.abouttext
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
-            if (!found) {
-                v.abouts.push({
-                    key: `abouts.${l}`,
-                    value: ""
-                })
-            }
-        });
-
-        // Convert subtitles format for FieldArray redux-form
-        v.subtitles = [];
-        if (Array.isArray(model.subtitles)) {
-
-            // convert current lang
-            v.subtitles = model.subtitles.map(x => ({
-                key: `abouts.${x.lang}`,
-                value: x.text
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = v.subtitles.filter(o => o.key === `subtitles.${l}`).length > 0;
-            if (!found) {
-                v.subtitles.push({
-                    key: `subtitles.${l}`,
-                    value: ""
-                })
-            }
-        });
-
-        // Social: Add one item if value empty
-        v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
-
-        // Web: Add one item if value empty
-        v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];
-
-        // Addresses: Add one item if model empty
-        v.addresses = (Array.isArray(model.addresses) && model.addresses.length > 0) ?
-            model.addresses.map(a => ({
-                text: `${a.city}, ${a.country}`
-            })) :
-            [{text: ""}];
+        v.calls = (Array.isArray(model.calls) && model.calls.length > 0) ?
+            model.calls.filter(a => a).map(p => ({text: p.url})) : [this.getInitialModel()];
 
         return v;
     }
@@ -147,7 +87,7 @@ class EventCalls extends Component {
 
     render() {
 
-        const {model, showModal, _id, isFetching, errorMessage} = this.props;
+        const {model, showModal, _id, isFetching, errorMessage, categories} = this.props;
 
         return (
             <div className="row">
@@ -172,8 +112,9 @@ class EventCalls extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         model={model}
                         showModal={showModal}
-                        aboutsTabs={locales}
-                        aboutsLabels={locales_labels}
+                        tabs={locales}
+                        labels={locales_labels}
+                        categories={categories}
                     />}
                 </div>
             </div>
@@ -186,12 +127,14 @@ const mapStateToProps = (state, {_id}) => ({
     model: getModel(state, _id),
     isFetching: getModelIsFetching(state, _id),
     errorMessage: getModelErrorMessage(state, _id),
+    categories: getCategories(state).map(c => ({value: c._id, label: c.name})),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     saveModel,
     fetchModel,
-    showModal
+    showModal,
+    fetchCategories
 }, dispatch);
 
 EventCalls = connect(

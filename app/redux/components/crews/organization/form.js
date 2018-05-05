@@ -16,8 +16,8 @@ class CrewOrganizationForm extends Component {
             submitting,
             handleSubmit,
             categories,
-            aboutsTabs,
-            aboutsLabels,
+            tabs,
+            labels,
             onSubmit,
             showModal
         } = this.props;
@@ -208,8 +208,8 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="relevance_in_the_project"
                     component={textarea}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="Organization relevance in the project"
                 />
 
@@ -218,8 +218,8 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="emerging_artists_definition"
                     component={textarea}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="Organization emerging artists definition"
                 />
 
@@ -228,8 +228,8 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="eu_grants_received_in_the_last_3_years"
                     component={textarea}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="EU grants received in the last 3 years"
                 /> 
 

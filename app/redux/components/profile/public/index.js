@@ -156,8 +156,8 @@ class ProfilePublic extends Component {
                     {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
-                        aboutsTabs={locales}
-                        aboutsLabels={locales_labels}
+                        tabs={locales}
+                        labels={locales_labels}
                         showModal={showModal}
                     />}
                 </div>

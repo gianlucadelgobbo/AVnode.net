@@ -19,8 +19,8 @@ class EventUsersForm extends Component {
         const {
             submitting,
             handleSubmit,
-            aboutsTabs,
-            aboutsLabels,
+            tabs,
+            labels,
             showModal,
             onSubmit
         } = this.props;
@@ -63,8 +63,8 @@ class EventUsersForm extends Component {
                 <FieldArray
                     name="subtitles"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="Subtitles"
                 />
 
@@ -73,8 +73,8 @@ class EventUsersForm extends Component {
                 <FieldArray
                     name="abouts"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="About"
                 />
 

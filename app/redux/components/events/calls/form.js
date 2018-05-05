@@ -2,13 +2,7 @@ import {h, render, Component} from 'preact';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
 import {
-    renderList,
-    multiSchedule,
-    inputText,
-    textareaMultiTab,
-    multiInputUrl,
-    multiInputEmail,
-    multiInputTel,
+    multiCall,
 } from "../../common/form/components";
 import validate from './validate';
 
@@ -19,104 +13,25 @@ class EventCallsForm extends Component {
         const {
             submitting,
             handleSubmit,
-            aboutsTabs,
-            aboutsLabels,
+            onSubmit,
+            categories,
             showModal,
-            onSubmit
+            tabs,
+            labels
         } = this.props;
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
-               {/* <Field
-                    name="categories"
-                    component={renderList}
-                    placeholder="Category"
-                    options={[
-                        {value: 'cat-1', label: 'Category #1'},
-                        {value: 'cat-2', label: 'Category #2'},
-                        {value: 'cat-3', label: 'Category #2'}
-                    ]}
-                />
-
                 <FieldArray
-                    name="schedule"
-                    component={multiSchedule}
-                    placeholder="Schedule"
+                    name="calls"
+                    component={multiCall}
+                    placeholder="Calls"
                     showModal={showModal}
+                    categories={categories}
+                    tabs={tabs}
+                    labels={labels}
                 />
-
-                <br/>
-
-                <Field
-                    name="slug"
-                    component={inputText}
-                    placeholder="Event url"
-                />
-
-                <Field
-                    name="title"
-                    component={inputText}
-                    placeholder="Title"
-                />
-
-                <FieldArray
-                    name="subtitles"
-                    component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
-                    placeholder="Subtitles"
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="abouts"
-                    component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
-                    placeholder="About"
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="web"
-                    component={multiInputUrl}
-                    placeholder="Web"
-                    title="Web"
-                    showModal={showModal}
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="social"
-                    component={multiInputUrl}
-                    placeholder="Socials"
-                    title="Socials"
-                    showModal={showModal}
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="emails"
-                    component={multiInputEmail}
-                    placeholder="Emails"
-                    showModal={showModal}
-                />
-
-                <br/>
-
-                <FieldArray
-                    name="phones"
-                    component={multiInputTel}
-                    placeholder="Phones"
-                    showModal={showModal}
-                />
-
-                <br/>*/}
 
                 <hr/>
 
@@ -138,6 +53,4 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[]']
 })(EventCallsForm);

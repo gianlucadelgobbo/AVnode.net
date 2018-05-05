@@ -1,9 +1,9 @@
 import {h} from 'preact';
 import Textarea from 'react-textarea-autosize';
 import {Tab, Tabs, Nav, NavItem, Button, ButtonGroup} from 'react-bootstrap';
-import {Field} from "redux-form";
+import {Field, FieldArray} from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
-import Select from 'react-select';
+import Select, {Async} from 'react-select';
 import 'react-select/dist/react-select.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -18,6 +18,8 @@ import 'react-phone-number-input/rrui.css';
 import 'react-phone-number-input/style.css';
 import Phone from 'react-phone-number-input';
 import Reorder from '../../reorder';
+import {fetchPerformancesForSelect} from "../../../api";
+import {createMultiLanguageInitialObject} from "../../common/form";
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -27,6 +29,35 @@ export const googleAutocompleteSelect = ({input, meta, placeholder, options, isC
     </div>;
 
     const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
+
+export const performanceAutocompleteSelect = ({input, meta, multi = false, placeholder, options, isChild}) => {
+    const field = <div className="form-group">
+        <Async
+            multi={multi}
+            className="form-control"
+            {...input}
+            onBlurResetsInput={false}
+            onCloseResetsInput={false}
+            onSelectResetsInput={false}
+            onBlur={() => {
+                input.onChange(input.value)
+            }}
+            valueKey="_id"
+            labelKey="title"
+            loadOptions={fetchPerformancesForSelect}
+        />
+        {meta.error && meta.touched &&
+        <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
+    </div>;
+
+    const label = <div className="labelField">{placeholder}</div>;
+
     return !!isChild ? field :
         <dl className="row">
             <dt className="col-sm-2">{label}</dt>
@@ -106,10 +137,9 @@ export const textarea = ({input, id, meta, placeholder, isChild}) => {
             <dd className="col-sm-10"> {field} </dd>
         </dl>
 };
-export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fields, errors}) => {
-
+export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fields, errors = {}}) => {
     const id = `tabs-${Math.random()}`;
-    const hasValue = (fields, index) => !!fields.get(index).value;
+    const hasValue = (fields, index) => fields && !!fields.get(index) && !!fields.get(index).value;
     const hasError = (errors = {}, index, name) => errors[name] && errors[name][index] && !!errors[name][index].value;
     const label = <div className="labelField">{placeholder}</div>;
 
@@ -147,6 +177,7 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
                     </div>
 
                 })}
+
             </div>
         </div>
     </div>
@@ -482,7 +513,7 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
         </dl>
 };
 
-export const renderTimePicker = ({input, meta, timeMode = "24", className, placeholder, isChild}) => {
+export const renderTimePicker = ({input, meta, withoutIcon, timeMode = "24", className, placeholder, isChild}) => {
     const field = <div className="form-group">
         <TimePicker
             className={className}
@@ -490,6 +521,7 @@ export const renderTimePicker = ({input, meta, timeMode = "24", className, place
             time={input.value}
             timeMode={timeMode}
             theme="classic"
+            withoutIcon={withoutIcon}
         />,
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -503,7 +535,7 @@ export const renderTimePicker = ({input, meta, timeMode = "24", className, place
 
 export const checkboxField = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
     const field = <div className={"form-group " + classNames}>
-        {placeholder && <label htmlFor={id}>{placeholder}</label>}
+        {isChild && placeholder && <label htmlFor={id}>{placeholder}</label>}
         <input
             id={id}
             defaultChecked={input.value}
@@ -719,6 +751,462 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
     </div>
 };
 
+export const multiProgram = ({fields, title, meta: {error}, placeholder, showModal, categories}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return <div className="row" key={index}>
+            <div className="col-md-9 offset-1">
+
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.performance`}
+                            component={performanceAutocompleteSelect}
+                            placeholder="Performance"
+                        />
+                    </div>
+                    <div className="col-md-12">
+                        <Field
+                            name="categories"
+                            component={renderList}
+                            placeholder="Category"
+                            multiple={true}
+                            options={categories}
+                        />
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.startdate`}
+                            component={renderDatePicker}
+                            placeholder="Start Date"
+                        />
+                    </div>
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.starttime`}
+                            component={renderTimePicker}
+                            placeholder="Start time"
+                        />
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div className="row">
+
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.enddate`}
+                            component={renderDatePicker}
+                            placeholder="End date"
+                        />
+                    </div>
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.endtime`}
+                            component={renderTimePicker}
+                            placeholder="End time"
+                        />
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.venue`}
+                            component={googleAutocompleteSelect}
+                            placeholder="Venue"
+                            options={{
+                                types: ['establishment']
+                            }}
+                        />
+                    </div>
+                    <div className="col-md-12">
+                        <Field
+                            name="room"
+                            component={inputText}
+                            placeholder="Room"
+                        />
+                    </div>
+                </div>
+
+            </div>
+
+            <div className="col-md-2">>
+                <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                        showModal({
+                            type: MODAL_REMOVE,
+                            props: {
+                                onRemove: () => fields.remove(index)
+                            }
+
+                        })}
+                >
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                </Button>
+            </div>
+
+            <div className="col-md-12">
+                <hr/>
+            </div>
+        </div>
+    }
+
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+
+        </div>
+    </div>
+};
+
+export const multiPackages = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return <div className="row" key={index}>
+            <div className="col-md-9 offset-1">
+
+                <Field
+                    name={`${member}.name`}
+                    component={inputText}
+                    placeholder="Name"
+                />
+
+                <Field
+                    name={`${member}.price`}
+                    component={inputText}
+                    placeholder="Price"
+                />
+
+                <FieldArray
+                    name={`${member}.description`}
+                    component={textareaMultiTab}
+                    tabs={tabs}
+                    labels={labels}
+                    placeholder="Description"
+                />
+
+                <br/>
+
+                <Field
+                    name={`${member}.personal`}
+                    component={checkboxField}
+                    placeholder="Personal"
+                />
+
+                <Field
+                    name={`${member}.requested`}
+                    component={checkboxField}
+                    placeholder="Requested"
+                />
+
+                <Field
+                    name={`${member}.allow_multiple`}
+                    component={checkboxField}
+                    placeholder="Allow multiple"
+                />
+
+                <Field
+                    name={`${member}.allow_options`}
+                    component={checkboxField}
+                    placeholder={<p>Allow options</p>}
+                />
+
+                <Field
+                    name={`${member}.options_name`}
+                    component={inputText}
+                    placeholder="options name"
+                />
+
+                <Field
+                    name={`${member}.options`}
+                    component={inputText}
+                    placeholder="options"
+                />
+
+                <Field
+                    name={`${member}.daily`}
+                    component={checkboxField}
+                    placeholder="Daily"
+                />
+
+                <Field
+                    name={`${member}.start_date`}
+                    component={renderDatePicker}
+                    placeholder="Start Date"
+                />
+
+                <Field
+                    name={`${member}.end_date`}
+                    component={renderDatePicker}
+                    placeholder="End Date"
+                />
+
+            </div>
+
+            <div className="col-md-2">>
+                <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                        showModal({
+                            type: MODAL_REMOVE,
+                            props: {
+                                onRemove: () => fields.remove(index)
+                            }
+
+                        })}
+                >
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                </Button>
+            </div>
+
+            <div className="col-md-12">
+                <hr/>
+            </div>
+        </div>
+    };
+
+    //Initial obj
+    const v = {};
+    v.description = createMultiLanguageInitialObject("description");
+
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift(v)}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+        </div>
+    </div>
+};
+
+export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return <div className="row" key={index}>
+            <div className="col-md-9 offset-1">
+
+                <Field
+                    name={`${member}.title`}
+                    component={inputText}
+                    placeholder="Call name"
+                />
+
+                <FieldArray
+                    name={`${member}.description`}
+                    component={textareaMultiTab}
+                    tabs={tabs}
+                    labels={labels}
+                    placeholder="Description"
+                />
+
+                <br/>
+
+            </div>
+
+            <div className="col-md-2">>
+                <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                        showModal({
+                            type: MODAL_REMOVE,
+                            props: {
+                                onRemove: () => fields.remove(index)
+                            }
+
+                        })}
+                >
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                </Button>
+            </div>
+
+            <div className="col-md-12">
+                <hr/>
+            </div>
+        </div>
+    };
+    //Initial obj
+    const v = {};
+    v.description = createMultiLanguageInitialObject("description");
+
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift(v)}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+        </div>
+    </div>
+};
+
+export const multiCall = ({fields, title, meta: {error}, placeholder, showModal, categories, tabs, labels}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return <div className="row" key={index}>
+            <div className="col-md-9 offset-1">
+
+                <Field
+                    name={`${member}.title`}
+                    component={inputText}
+                    placeholder="Call name"
+                />
+
+                <Field
+                    name={`${member}.email`}
+                    component={inputEmail}
+                    placeholder="Email contact"
+                />
+
+                <Field
+                    name={`${member}.slug`}
+                    component={inputText}
+                    placeholder="Event URL"
+                />
+
+                <Field
+                    name={`${member}.start_date`}
+                    component={renderDatePicker}
+                    placeholder="Start Date"
+                />
+
+                <Field
+                    name={`${member}.end_date`}
+                    component={renderDatePicker}
+                    placeholder="End Date"
+                />
+
+                <Field
+                    name={`${member}.categories`}
+                    component={renderList}
+                    placeholder="Category"
+                    multiple={true}
+                    options={categories}
+                />
+
+                <FieldArray
+                    name={`${member}.excerpt`}
+                    component={textareaMultiTab}
+                    tabs={tabs}
+                    labels={labels}
+                    placeholder="Event description"
+                />
+
+                <br/>
+
+                <FieldArray
+                    name={`${member}.terms`}
+                    component={textareaMultiTab}
+                    tabs={tabs}
+                    labels={labels}
+                    placeholder="Event terms"
+                />
+
+                <br/>
+
+                <FieldArray
+                    name={`${member}.closedcalltext`}
+                    component={textareaMultiTab}
+                    tabs={tabs}
+                    labels={labels}
+                    placeholder="Event Closed Call text"
+                />
+
+                <br/>
+
+                <FieldArray
+                    name={`${member}.packages`}
+                    component={multiPackages}
+                    placeholder="Packages"
+                    tabs={tabs}
+                    labels={labels}
+                />
+
+                <br/>
+
+                <FieldArray
+                    name={`${member}.topics`}
+                    component={multiTopic}
+                    placeholder="Topics"
+                    tabs={tabs}
+                    labels={labels}
+                />
+
+                <br/>
+
+            </div>
+
+            <div className="col-md-2">>
+                <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                        showModal({
+                            type: MODAL_REMOVE,
+                            props: {
+                                onRemove: () => fields.remove(index)
+                            }
+
+                        })}
+                >
+                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                </Button>
+            </div>
+
+            <div className="col-md-12">
+                <hr/>
+            </div>
+        </div>
+    }
+
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+        </div>
+    </div>
+};
+
 export const sort = ({input, meta, placeholder, isChild, showModal, onRemove}) => {
     const {onChange, value} = input;
     const items = value || [];
@@ -744,9 +1232,9 @@ export const multiScheduleContacts = ({fields, title, meta: {error}, placeholder
                             component={renderList}
                             placeholder="Organization contact title "
                             options={[
-                                        {value: 'Mr', label: 'Mr'},
-                                        {value: 'Miss', label: 'Miss'},
-                                    ]}
+                                {value: 'Mr', label: 'Mr'},
+                                {value: 'Miss', label: 'Miss'},
+                            ]}
                             isChild={true}
                         />
                     </div>
@@ -788,24 +1276,24 @@ export const multiScheduleContacts = ({fields, title, meta: {error}, placeholder
                     </div>
                 </div>
                 <div className="col-md-2 offset-11">
-                <Button
-                    bsStyle="danger"
-                    onClick={() =>
-                        showModal({
-                            type: MODAL_REMOVE,
-                            props: {
-                                onRemove: () => fields.remove(index)
-                            }
+                    <Button
+                        bsStyle="danger"
+                        onClick={() =>
+                            showModal({
+                                type: MODAL_REMOVE,
+                                props: {
+                                    onRemove: () => fields.remove(index)
+                                }
 
-                        })}
-                >
-                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                </Button>
+                            })}
+                    >
+                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                    </Button>
+                </div>
             </div>
         </div>
-    </div>
-}
-return <div className="card">
+    }
+    return <div className="card">
         <div className="card-header">
             <h4>{label}</h4>
             <Button bsStyle="success"
