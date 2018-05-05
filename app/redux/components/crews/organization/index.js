@@ -131,8 +131,8 @@ class CrewOrganization extends Component {
                         user={model}
                         showModal={showModal}
                         categories={categories}
-                        aboutsTabs={locales}
-                        aboutsLabels={locales_labels}
+                        tabs={locales}
+                        labels={locales_labels}
                     />}
                 </div>
             </div>

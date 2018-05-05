@@ -17,8 +17,8 @@ class CrewPublicForm extends Component {
         const {
             submitting,
             handleSubmit,
-            aboutsTabs,
-            aboutsLabels,
+            tabs,
+            labels,
             showModal,
             onSubmit,
         } = this.props;
@@ -41,8 +41,8 @@ class CrewPublicForm extends Component {
                 <FieldArray
                     name="abouts"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="About"
                 />
 

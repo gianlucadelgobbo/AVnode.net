@@ -10,3 +10,21 @@ export const sortByLanguage = (languages) => {
 
     return result;
 };
+
+export const  createMultiLanguageInitialObject = (c) => {
+
+    let v = [];
+    locales.forEach(l => {
+        let found = v.filter(o => o.key === `${c}.${l}`).length > 0;
+        if (!found) {
+            v.push({
+                key: `${c}.${l}`,
+                value: "",
+                lang: l
+            })
+        }
+    });
+    v = sortByLanguage(v);
+
+    return v;
+};

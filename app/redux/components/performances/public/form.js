@@ -22,8 +22,8 @@ class PerformancePublicForm extends Component {
         const {
             submitting,
             handleSubmit,
-            aboutsTabs,
-            aboutsLabels,
+            tabs,
+            labels,
             showModal,
             onSubmit,
             errors,
@@ -48,8 +48,8 @@ class PerformancePublicForm extends Component {
                 <FieldArray
                     name="abouts"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     errors={errors}
                     placeholder="About"
                 />
@@ -94,8 +94,8 @@ class PerformancePublicForm extends Component {
                 <FieldArray
                     name="tech_art"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="Technologies with the artists"
                     errors={errors}
                 />
@@ -105,8 +105,8 @@ class PerformancePublicForm extends Component {
                 <FieldArray
                     name="tech_req"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="Technical requirements"
                     errors={errors}
                 />

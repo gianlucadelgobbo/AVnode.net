@@ -177,7 +177,6 @@ class EventPublic extends Component {
     }
 
     onSubmit(values) {
-        console.log("values", values)
         const {showModal, saveModel, model} = this.props;
         const modelToSave = this.createModelToSave(values);
 
@@ -222,8 +221,8 @@ class EventPublic extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         model={model}
                         showModal={showModal}
-                        aboutsTabs={locales}
-                        aboutsLabels={locales_labels}
+                        tabs={locales}
+                        labels={locales_labels}
                         categories={categories}
                     />}
                 </div>

@@ -22,8 +22,8 @@ class EventPublicForm extends Component {
         const {
             submitting,
             handleSubmit,
-            aboutsTabs,
-            aboutsLabels,
+            tabs,
+            labels,
             showModal,
             onSubmit,
             categories,
@@ -65,8 +65,8 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="subtitles"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="Subtitles"
                     errors={errors}
                 />
@@ -76,8 +76,8 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="abouts"
                     component={textareaMultiTab}
-                    tabs={aboutsTabs}
-                    labels={aboutsLabels}
+                    tabs={tabs}
+                    labels={labels}
                     placeholder="About"
                 />
 

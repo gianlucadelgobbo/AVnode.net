@@ -276,6 +276,13 @@ export const fetchPerformances = () => {
         });
 };
 
+export const fetchPerformancesForSelect = () => {
+    return axios.get("performances")
+        .then(result => {
+            return { options: result.data.performances };
+        });
+};
+
 export const removePerformance = ({id}) => {
     return axios.delete(`performances/${id}`)
         .then(result => {
