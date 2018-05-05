@@ -12,7 +12,7 @@ import {
 } from "../../common/form/components";
 import validate from './validate';
 
-class EventUsersForm extends Component {
+class EventPartnersForm extends Component {
 
     render() {
 
@@ -140,4 +140,4 @@ export default reduxForm({
     validate,
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
-})(EventUsersForm);
+})(EventPartnersForm);

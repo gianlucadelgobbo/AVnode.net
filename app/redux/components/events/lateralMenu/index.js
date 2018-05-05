@@ -20,10 +20,10 @@ const items = [
 
     },
     {
-        href: "/admin/events/:_id/users",
+        href: "/admin/events/:_id/partners",
         label: <FormattedMessage
-            id="users"
-            defaultMessage="Users"
+            id="partners"
+            defaultMessage="Partners"
         />
 
     },
