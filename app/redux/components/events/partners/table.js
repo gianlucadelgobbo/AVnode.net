@@ -12,7 +12,7 @@ class ModelTable extends Component {
 
     normalizeData() {
 
-        const {list} = this.props;
+        const {list = []} = this.props;
 
         return list;
 
@@ -70,7 +70,7 @@ class ModelTable extends Component {
 
     render() {
 
-        const {list, isFetching, errorMessage} = this.props;
+        const {list = [], isFetching, errorMessage} = this.props;
 
         return (
             <div>

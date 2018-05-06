@@ -3,6 +3,7 @@ import {geocodeByAddress} from "react-places-autocomplete";
 import moment from 'moment';
 import validatorsObj from '../../../../utilities/validators.js';
 import {UPLOAD_IMAGE_MAX_SIZE} from "../../../conf";
+import {DATE_FORMAT} from '../../../conf'
 
 const validators = validatorsObj.validators;
 
@@ -44,21 +45,27 @@ export const validateAddress = ({values, promises, result}) => {
 
 };
 
-export const isValidDate = (date) => moment(date).isValid();
+export const isValidDate = (date) => {
+    if (!date) {
+        return false;
+    }
+    const wrapper = (typeof date === "string" ? moment(date, DATE_FORMAT) : date);
+    return wrapper.isValid();
+};
 
 export const validateLength = ({values, name, min, max, errors, index, errorArray}) => {
     let value = values[name];
 
-    if (!!value.trim) {
+    if (value && !!value.trim) {
         value = value.trim();
     }
 
     if (!value || (value.length < min || value.length > max)) {
         errors[name] = {_error: `Invalid length: please insert ${min} to ${max} values`};
+    }
 
-        if (Array.isArray(errorArray)) {
-            errorArray[index] = errors;
-        }
+    if (Array.isArray(errorArray)) {
+        errorArray[index] = errors;
     }
 };
 
@@ -112,18 +119,19 @@ export const validateImageSize = ({image, name, errors}) => {
 
 export const validateSchedule = ({values, name, errors, date = "date"}) => {
     const schedule = values[name];
+    console.log("values ->", values, name, schedule)
     if (Array.isArray(schedule)) {
         const scheduleErrors = [];
+        const fields = Array.isArray(date) ? date : [date];
+        console.log("fields", fields)
         schedule.forEach((s, i) => {
-
-            const {date} = s;
             const modelErrors = {};
-
-            if (!date || isValidDate(date)) {
-                modelErrors[date] = 'Required';
-                scheduleErrors[i] = modelErrors;
-            }
-
+            fields.forEach(f => {
+                if (!s[f] || !isValidDate(s[f])) {
+                    modelErrors[s[f]] = 'Required';
+                    scheduleErrors[i] = modelErrors;
+                }
+            })
 
         });
 

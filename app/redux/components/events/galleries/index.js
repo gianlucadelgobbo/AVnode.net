@@ -2,7 +2,7 @@ import {h, Component} from 'preact';
 import {connect} from 'preact-redux';
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
-//import Form from './form'
+import Form from './form'
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
@@ -53,6 +53,8 @@ class EventsImage extends Component {
 
         // Add auth user _id
         modelToSave._id = model._id;
+
+        console.log("model", model)
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
@@ -111,7 +113,7 @@ class EventsImage extends Component {
     render() {
 
         const {model, showModal, isFetching, errorMessage, _id} = this.props;
-        //const initialValues = this.getInitialValues();
+        const initialValues = this.getInitialValues();
 
         return (
             <div className="row">
@@ -159,21 +161,22 @@ class EventsImage extends Component {
 
                             {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                            {/*{!errorMessage && !isFetching && model && initialValues && Array.isArray(initialValues.galleries) &&*/}
-                            {/*<Form*/}
-                            {/*initialValues={initialValues}*/}
-                            {/*onSubmit={this.onSubmit.bind(this)}*/}
-                            {/*user={model}*/}
-                            {/*showModal={showModal}*/}
-                            {/*onRemove={this.onRemove.bind(this)}*/}
-                            {/*/>}*/}
+                            {!errorMessage && !isFetching && model && initialValues && Array.isArray(initialValues.galleries) &&
+                            <Form
+                                initialValues={initialValues}
+                                onSubmit={this.onSubmit.bind(this)}
+                                user={model}
+                                showModal={showModal}
+                                onRemove={this.onRemove.bind(this)}
+                            />}
 
+                            {/*
                             {!errorMessage &&
                             !isFetching && model
                             && Array.isArray(model.galleries) &&
                             <div className="row">
                                 {model.galleries.map(this.renderImage.bind(this))}
-                            </div>}
+                            </div>}*/}
 
                         </div>
                     </div>

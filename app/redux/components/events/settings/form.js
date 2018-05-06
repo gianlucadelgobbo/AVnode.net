@@ -1,8 +1,9 @@
 import {h, render, Component} from 'preact';
-import {reduxForm, Field, FieldArray} from "redux-form";
+import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {
     checkboxField,
+    userAutocompleteSelect
 } from "../../common/form/components";
 import validate from './validate';
 
@@ -45,8 +46,9 @@ class EventPublicForm extends Component {
 
                 <Field
                     name="users"
-                    component={checkboxField}
-                    placeholder='USERS TO DO'
+                    component={userAutocompleteSelect}
+                    placeholder='Users'
+                    multi={true}
                 />
 
                 <h4>Organization</h4>
