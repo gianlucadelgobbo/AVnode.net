@@ -20,7 +20,7 @@ import ProfileConnections from '../profile/connections/index';
 import Events from '../events/index.js';
 import EventPublic from '../events/public/';
 import EventImages from '../events/images/';
-import EventUsers from '../events/users/';
+import EventPartners from '../events/partners/';
 import EventProgram from '../events/program/';
 import EventGalleries from '../events/galleries/';
 import EventVideos from '../events/videos/';
@@ -84,7 +84,7 @@ const App = () => {
                     <Events path="/admin/events"/>
                     <EventPublic path="/admin/events/:_id/public/"/>
                     <EventImages path="/admin/events/:_id/images/"/>
-                    <EventUsers path="/admin/events/:_id/users/"/>
+                    <EventPartners path="/admin/events/:_id/partners/"/>
                     <EventProgram path="/admin/events/:_id/program/"/>
                     <EventGalleries path="/admin/events/:_id/galleries/"/>
                     <EventVideos path="/admin/events/:_id/videos/"/>
