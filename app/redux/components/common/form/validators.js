@@ -119,11 +119,9 @@ export const validateImageSize = ({image, name, errors}) => {
 
 export const validateSchedule = ({values, name, errors, date = "date"}) => {
     const schedule = values[name];
-    console.log("values ->", values, name, schedule)
     if (Array.isArray(schedule)) {
         const scheduleErrors = [];
         const fields = Array.isArray(date) ? date : [date];
-        console.log("fields", fields)
         schedule.forEach((s, i) => {
             const modelErrors = {};
             fields.forEach(f => {
