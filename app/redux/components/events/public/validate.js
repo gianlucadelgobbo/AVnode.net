@@ -1,29 +1,17 @@
-import {isValidDate, validateLength, isValidSlug, validateMultiLang} from "../../common/form/validators";
+import {validateSchedule, validateLength, isValidSlug, validateMultiLang} from "../../common/form/validators";
 
 const profilePublicValidate = values => {
 
     const errors = {};
-    const {schedule} = values;
 
     //categories
     validateLength({values, name: "categories", min: 1, max: 2, errors});
 
     //schedule
-    if (Array.isArray(schedule)) {
-        const scheduleErrors = [];
-        schedule.forEach((s, i) => {
+    validateSchedule({values, name:"schedule", errors});
 
-            const {date} = s;
-            const modelErrors = {};
-
-            if (!date || isValidDate(date)) {
-                modelErrors.date = 'Required';
-                scheduleErrors[i] = modelErrors;
-            }
-
-
-        })
-    }
+    // Slug
+    isValidSlug({values,  name: "slug",  errors});
 
     //title
     validateLength({values, name: "title", min: 3, max: 50, errors});
@@ -40,15 +28,11 @@ const profilePublicValidate = values => {
     // social
     validateLength({values, name: "social", min: 1, max: 5, errors});
 
-    // addresses
-    validateLength({values, name: "addresses", min: 1, max: 5, errors});
+    // emails
+    validateLength({values, name: "emails", min: 1, max: 5, errors});
 
-    // addresses
-    validateLength({values, name: "stagename", min: 2, max: 30, errors});
-
-    // Slug
-    isValidSlug({slug: values.slug, errors});
-
+    // phones
+    validateLength({values, name: "phones", min: 2, max: 30, errors});
 
     return errors
 };

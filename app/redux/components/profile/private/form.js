@@ -7,7 +7,7 @@ import {
     renderList,
     multiGoogleAddress,
     multiInputTel,
-    multiInputText, multiGoogleCityCountry
+    multiInputText
 } from "../../common/form/components";
 import {locales, locales_labels} from '../../../../../config/default.json'
 import validate from './validate';
