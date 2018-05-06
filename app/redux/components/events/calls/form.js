@@ -5,6 +5,7 @@ import {
     multiCall,
 } from "../../common/form/components";
 import validate from './validate';
+import asyncValidate from "./asyncValidate";
 
 class EventCallsForm extends Component {
 
@@ -53,4 +54,6 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
+    asyncValidate,
+    asyncBlurFields: ['calls[].slug']
 })(EventCallsForm);

@@ -3,6 +3,7 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
 import {multiProgram} from "../../common/form/components";
 import validate from './validate';
+import asyncValidate from './asyncValidate'
 
 class EventProgramForm extends Component {
 
@@ -47,6 +48,6 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[]']
+    asyncValidate,
+    asyncBlurFields: ['slug', 'program[].venue']
 })(EventProgramForm);
