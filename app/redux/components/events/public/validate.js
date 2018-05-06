@@ -1,55 +1,54 @@
-import validatorsObj from '../../../../utilities/validators.js';
-
-const validators = validatorsObj.validators;
+import {isValidDate, validateLength, isValidSlug, validateMultiLang} from "../../common/form/validators";
 
 const profilePublicValidate = values => {
 
     const errors = {};
+    const {schedule} = values;
 
     //categories
-    if (!values.categories || (values.categories.length < 1 || values.categories.length > 2)) {
-        errors.categories = {_error: "Invalid length: please insert 1 to 2 values"}
-    }
+    validateLength({values, name: "categories", min: 1, max: 2, errors});
 
     //schedule
+    if (Array.isArray(schedule)) {
+        const scheduleErrors = [];
+        schedule.forEach((s, i) => {
+
+            const {date} = s;
+            const modelErrors = {};
+
+            if (!date || isValidDate(date)) {
+                modelErrors.date = 'Required';
+                scheduleErrors[i] = modelErrors;
+            }
 
 
-
-
-
-
-
-    if (!values.stagename || values.stagename.trim() === "") {
-        errors.stagename = 'Stage Name Required';
-    }
-    else if (!validators.validateStringLength(values.stagename, 2, 30)) {
-        errors.stagename = 'Must be more or equal 2 and less or equal 30 characters';
-    }
-    if (!values.slug || values.slug.trim() === "") {
-        errors.slug = 'Slug Required';
-    }
-    if (values.slug) {
-        if (!validators.isSlug(values.slug)) {
-            errors.slug = 'Characters Not Allowed';
-        }
+        })
     }
 
+    //title
+    validateLength({values, name: "title", min: 3, max: 50, errors});
 
+    //subtitles
+    validateMultiLang({values, name: "subtitles", value: "value", errors, max: 5000});
 
-    //web
-    if (!values.web || (values.web.length < 1 || values.web.length > 5)) {
-        errors.web = {_error: "Invalid length: please insert 1 to 5 values"}
-    }
+    //abouts
+    validateMultiLang({values, name: "abouts", value: "value", errors, max: 5000});
 
-    //social
-    if (!values.social || (values.social.length < 1 || values.social.length > 5)) {
-        errors.social = {_error: "Invalid length: please insert 1 to 5 values"}
-    }
+    // web
+    validateLength({values, name: "web", min: 1, max: 5, errors});
 
-    //addresses
-    if (!values.addresses || (values.addresses.length < 1 || values.social.length > 5)) {
-        errors.addresses = {_error: "Invalid length: please insert 1 to 5 values"}
-    }
+    // social
+    validateLength({values, name: "social", min: 1, max: 5, errors});
+
+    // addresses
+    validateLength({values, name: "addresses", min: 1, max: 5, errors});
+
+    // addresses
+    validateLength({values, name: "stagename", min: 2, max: 30, errors});
+
+    // Slug
+    isValidSlug({slug: values.slug, errors});
+
 
     return errors
 };

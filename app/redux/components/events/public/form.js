@@ -13,7 +13,7 @@ multiInputEmail,
 multiInputTel,
 } from "../../common/form/components";
 import validate from './validate';
-//import asyncValidate from './asyncValidate';
+import asyncValidate from './asyncValidate';
 
 class EventPublicForm extends Component {
 
@@ -142,8 +142,8 @@ EventPublicForm = reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[]']
+    asyncValidate,
+    asyncBlurFields: ['slug', 'schedule[].venue']
 })(EventPublicForm);
 
 //Get form's initial values from redux state here

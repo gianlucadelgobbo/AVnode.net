@@ -65,7 +65,7 @@ const profilePublicValidate = values => {
 
     // ==== addresses
     // Must exists and length must be min 1 max 5
-    if (!addresses || (addresses.length < 1 || social.length > 5)) {
+    if (!addresses || (addresses.length < 1 || addresses.length > 5)) {
         errors.addresses = {_error: "Invalid length: please insert 1 to 5 values"}
     }
 
