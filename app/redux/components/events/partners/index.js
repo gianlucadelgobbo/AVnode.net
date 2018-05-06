@@ -108,6 +108,8 @@ class EventPartners extends Component {
                         </div>
                     </div>
 
+                    <br/>
+
                     <div className="row">
                         <div className="col-md-12">
 
