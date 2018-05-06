@@ -702,7 +702,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
                     </div>
                     <div className="col-md-6">
                         <Field
-                            name="room"
+                            name={`${member}.room`}
                             component={inputText}
                             placeholder="Room"
                             isChild={true}

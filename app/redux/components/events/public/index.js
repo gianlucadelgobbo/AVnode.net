@@ -14,7 +14,7 @@ import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import moment from 'moment';
-import {sortByLanguage} from "../../common/form";
+import {createMultiLanguageInitialObject} from "../../common/form";
 
 class EventPublic extends Component {
 
@@ -116,50 +116,11 @@ class EventPublic extends Component {
         //Convert title for redux-form
         v.title = model.title;
 
+        // Convert about
+        v.abouts = createMultiLanguageInitialObject("abouts");
+
         // Convert subtitles format for FieldArray redux-form
-        v.subtitles = [];
-        if (Array.isArray(model.subtitles)) {
-            // convert current lang
-            v.subtitles = model.subtitles.map(x => ({
-                key: `subtitles.${x.lang}`,
-                value: x.abouttext,
-                lang: x.lang,
-            }));
-        }
-        locales.forEach(l => {
-            let found = v.subtitles.filter(o => o.key === `subtitles.${l}`).length > 0;
-            if (!found) {
-                v.subtitles.push({
-                    key: `subtitles.${l}`,
-                    lang: l,
-                    value: ""
-                })
-            }
-        });
-        v.subtitles = sortByLanguage(v.subtitles);
-
-        // Convert about format for FieldArray redux-form
-        v.abouts = [];
-        if (Array.isArray(model.abouts)) {
-
-            // convert current lang
-            v.abouts = model.abouts.map(x => ({
-                key: `abouts.${x.lang}`,
-                value: x.abouttext,
-                lang: x.lang,
-            }));
-        }
-        locales.forEach(l => {
-            let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
-            if (!found) {
-                v.abouts.push({
-                    key: `abouts.${l}`,
-                    value: "",
-                    lang: l
-                })
-            }
-        });
-        v.abouts = sortByLanguage(v.abouts);
+        v.subtitles = createMultiLanguageInitialObject("subtitles");
 
         // Web: Add one item if value empty
         v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];

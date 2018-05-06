@@ -28,3 +28,12 @@ export const  createMultiLanguageInitialObject = (c) => {
 
     return v;
 };
+
+export const checkIfError = (result) => {
+    const keys = Object.keys(result);
+    if (!!keys.length) {
+        throw result;
+    } else {
+        return true
+    }
+};
