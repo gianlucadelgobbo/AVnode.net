@@ -120,7 +120,7 @@ class EventsImage extends Component {
                                 onClick={() => showModal({
                                     type: MODAL_ADD_MEDIA,
                                     props: {
-                                        onSubmit: this.onSubmit.bind()
+                                        onSubmit: this.onSubmit.bind(this)
                                     }
                                 })}>
                                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
