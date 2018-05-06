@@ -4,13 +4,13 @@ import {bindActionCreators} from "redux";
 import {connect} from "preact-redux";
 import {FORM_NAME} from './constants'
 import {
-renderList,
-multiSchedule,
-inputText,
-textareaMultiTab,
-multiInputUrl,
-multiInputEmail,
-multiInputTel,
+    renderList,
+    multiSchedule,
+    inputText,
+    textareaMultiTab,
+    multiInputUrl,
+    multiInputEmail,
+    multiInputTel,
 } from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
@@ -79,6 +79,7 @@ class EventPublicForm extends Component {
                     tabs={tabs}
                     labels={labels}
                     placeholder="About"
+                    errors={errors}
                 />
 
                 <br/>
@@ -89,6 +90,7 @@ class EventPublicForm extends Component {
                     placeholder="Web"
                     title="Web"
                     showModal={showModal}
+                    errors={errors}
                 />
 
                 <br/>

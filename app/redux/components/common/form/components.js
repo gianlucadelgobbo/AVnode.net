@@ -18,8 +18,9 @@ import 'react-phone-number-input/rrui.css';
 import 'react-phone-number-input/style.css';
 import Phone from 'react-phone-number-input';
 import Reorder from '../../reorder';
-import {fetchPerformancesForSelect} from "../../../api";
+import {fetchPerformancesForSelect, fetchUserForSelect} from "../../../api";
 import {createMultiLanguageInitialObject} from "../../common/form";
+import {DATE_FORMAT} from '../../../conf'
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
@@ -51,6 +52,35 @@ export const performanceAutocompleteSelect = ({input, meta, multi = false, place
             valueKey="_id"
             labelKey="title"
             loadOptions={fetchPerformancesForSelect}
+        />
+        {meta.error && meta.touched &&
+        <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
+    </div>;
+
+    const label = <div className="labelField">{placeholder}</div>;
+
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
+
+export const userAutocompleteSelect = ({input, meta, multi = false, placeholder, options, isChild}) => {
+    const field = <div className="form-group">
+        <Async
+            multi={multi}
+            className="form-control"
+            {...input}
+            onBlurResetsInput={false}
+            onCloseResetsInput={false}
+            onSelectResetsInput={false}
+            onBlur={() => {
+                input.onChange(input.value)
+            }}
+            valueKey="_id"
+            labelKey="title"
+            loadOptions={fetchUserForSelect}
         />
         {meta.error && meta.touched &&
         <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
@@ -142,6 +172,7 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
     const hasValue = (fields, index) => fields && !!fields.get(index) && !!fields.get(index).value;
     const hasError = (errors = {}, index, name) => errors[name] && errors[name][index] && !!errors[name][index].value;
     const label = <div className="labelField">{placeholder}</div>;
+
 
     return <div className="card">
         <div className="card-header">
@@ -454,6 +485,7 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
 export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
     const field = <div className="form-group">
         <Select
+            {...input}
             name={input.name}
             value={input.value}
             options={options}
@@ -500,9 +532,9 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
         <DatePicker
             {...input}
             value={null}
-            dateForm="MM/DD/YYYY"
+            dateFormat={DATE_FORMAT}
             className="form-control"
-            selected={input.value ? moment(input.value) : null}
+            selected={input.value ? moment(input.value, DATE_FORMAT) : null}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -768,7 +800,7 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
                     </div>
                     <div className="col-md-12">
                         <Field
-                            name="categories"
+                            name={`${member}.categories`}
                             component={renderList}
                             placeholder="Category"
                             multiple={true}
@@ -831,7 +863,7 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
                     </div>
                     <div className="col-md-12">
                         <Field
-                            name="room"
+                            name={`${member}.room`}
                             component={inputText}
                             placeholder="Room"
                         />
@@ -1251,7 +1283,7 @@ export const multiContacts = ({fields, title, meta: {error}, placeholder, showMo
                 <div className="row">
                     <div className="col-md-6">
                         <Field
-                            name={`${member}.value`}
+                            name={`${member}.contact_name`}
                             component={inputText}
                             placeholder="Organization contact name"
                             isChild={true}
@@ -1259,7 +1291,7 @@ export const multiContacts = ({fields, title, meta: {error}, placeholder, showMo
                     </div>
                     <div className="col-md-6">
                         <Field
-                            name={`${member}.value`}
+                            name={`${member}.contact_surname`}
                             component={inputText}
                             placeholder="Organization contact surname"
                             isChild={true}

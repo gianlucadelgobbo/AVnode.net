@@ -65,8 +65,6 @@ class Reorder extends Component {
 
         let {items, showModal, onRemove} = this.props;
 
-        items = [{id: "1"}, {id: 2}]
-
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable" direction="horizontal">

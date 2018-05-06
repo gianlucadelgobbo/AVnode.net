@@ -32,7 +32,7 @@ const profilePublicValidate = values => {
     validateLength({values, name: "emails", min: 1, max: 5, errors});
 
     // phones
-    validateLength({values, name: "phones", min: 2, max: 30, errors});
+    validateLength({values, name: "phones", min: 1, max: 5, errors});
 
     return errors
 };

@@ -2,6 +2,8 @@ import {isValidDate, isValidSlug, validateLength, validateMultiLang} from "../..
 
 const validate = values => {
 
+    console.log("values", values)
+
     const errors = {};
     const {calls} = values;
 
@@ -11,6 +13,7 @@ const validate = values => {
             let modelErrors = {};
             const {start_date, end_date, packages, topics} = s;
 
+            //title
             validateLength({
                 values: s,
                 name: "title",
@@ -18,31 +21,48 @@ const validate = values => {
                 max: 50,
                 errors: modelErrors,
                 index: i,
-                errorArray: modelErrors
+                errorArray: callsErrors
             });
 
             // Slug
-            isValidSlug({values: s, name: "slug", errors, index: i, errorArray: modelErrors});
+            isValidSlug({
+                values: s,
+                name: "slug",
+                errors: modelErrors,
+                index: i,
+                errorArray: callsErrors
+            });
 
-            if (!start_date || isValidDate(start_date)) {
+            if (!start_date || !isValidDate(start_date)) {
                 modelErrors.start_date = 'Required';
                 callsErrors[i] = modelErrors;
             }
 
-            if (!end_date || isValidDate(end_date)) {
+            if (!end_date || !isValidDate(end_date)) {
                 modelErrors.end_date = 'Required';
                 callsErrors[i] = modelErrors;
             }
+
+            //categories
+            validateLength({
+                values: s,
+                name: "categories",
+                min: 1,
+                max: 2,
+                index: i,
+                errors: modelErrors,
+                errorArray: callsErrors
+            });
 
             //excerpt
             validateMultiLang({
                 values,
                 name: "excerpt",
                 value: "value",
-                errors,
                 max: 5000,
                 index: i,
-                errorArray: modelErrors
+                errors: modelErrors,
+                errorArray: callsErrors
             });
 
             //terms
@@ -50,10 +70,10 @@ const validate = values => {
                 values,
                 name: "terms",
                 value: "value",
-                errors,
                 max: 5000,
                 index: i,
-                errorArray: modelErrors
+                errors: modelErrors,
+                errorArray: callsErrors
             });
 
             //closedcalltext
@@ -61,10 +81,10 @@ const validate = values => {
                 values,
                 name: "closedcalltext",
                 value: "value",
-                errors,
                 max: 5000,
                 index: i,
-                errorArray: modelErrors
+                errors: modelErrors,
+                errorArray: callsErrors
             });
 
             //package
@@ -121,7 +141,7 @@ const validate = values => {
                 });
 
                 if (packageErrors.length) {
-                    errors.packages = packageErrors;
+                    modelErrors.packages = packageErrors;
                 }
 
             }
@@ -160,18 +180,21 @@ const validate = values => {
                 });
 
                 if (topicsErrors.length) {
-                    errors.topics = topicsErrors;
+                    modelErrors.topics = topicsErrors;
                 }
 
             }
 
+            console.log("modelErrors", modelErrors)
+
         });
 
         if (callsErrors.length) {
-            errors[name] = callsErrors;
+            errors.calls = callsErrors;
         }
     }
 
+    console.log("errrrrrr", errors)
 
     return errors
 };

@@ -274,6 +274,13 @@ export const saveEventSettings = (model) => {
         });
 };
 
+export const fetchUserForSelect = () => {
+    return axios.get("performances")
+        .then(result => {
+            return {options: result.data.performances};
+        });
+};
+
 // ============ Performances
 
 export const fetchPerformances = () => {
