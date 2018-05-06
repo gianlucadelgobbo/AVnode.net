@@ -100,8 +100,6 @@ class CrewOrganization extends Component {
 
         const {model, categories, showModal, errorMessage, isFetching, _id} = this.props;
 
-        console.log(categories)
-
         return (
             <div className="row">
                 <div className="col-md-2">

@@ -4,7 +4,7 @@ import {FORM_NAME} from './constants'
 import {inputText, renderDatePicker, renderList, multiGoogleAddress, 
         multiInputTel, multiInputEmailWithDetails, 
         renderListRadio, renderDropzoneInput, 
-        textareaMultiTab, textarea, multiScheduleContacts} from "../../common/form/components";
+        textareaMultiTab, textarea, multiContacts, multiActivities} from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 
@@ -151,6 +151,7 @@ class CrewOrganizationForm extends Component {
                     component={renderDropzoneInput}
                     showModal={showModal}
                     placeholder="Organization statute (pdf only)"
+                    className="enableBorder"
                 />  
 
                 <br/>
@@ -160,6 +161,7 @@ class CrewOrganizationForm extends Component {
                     component={renderDropzoneInput}
                     showModal={showModal}
                     placeholder="Organization members cv (pdf only)"
+                    className="enableBorder"
                 /> 
 
                 <br/>
@@ -169,6 +171,7 @@ class CrewOrganizationForm extends Component {
                     component={renderDropzoneInput}
                     showModal={showModal}
                     placeholder="Organization Activity Report (pdf only)"
+                    className="enableBorder"
                 />  
                                 
                 <br/> 
@@ -205,9 +208,9 @@ class CrewOrganizationForm extends Component {
                 
                 <br/>    
             
-                <Field
+                <FieldArray
                     name="relevance_in_the_project"
-                    component={textarea}
+                    component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
                     placeholder="Organization relevance in the project"
@@ -215,9 +218,9 @@ class CrewOrganizationForm extends Component {
 
                 <br/>    
 
-                <Field
+                <FieldArray
                     name="emerging_artists_definition"
-                    component={textarea}
+                    component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
                     placeholder="Organization emerging artists definition"
@@ -225,9 +228,9 @@ class CrewOrganizationForm extends Component {
 
                 <br/>    
 
-                <Field
+                <FieldArray
                     name="eu_grants_received_in_the_last_3_years"
-                    component={textarea}
+                    component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
                     placeholder="EU grants received in the last 3 years"
@@ -245,9 +248,22 @@ class CrewOrganizationForm extends Component {
 
                 <FieldArray
                     name="contacts"
-                    component={multiScheduleContacts}
+                    component={multiContacts}
                     placeholder="Organisation contacts (multiple)"
                     showModal={showModal}
+                    tabs={tabs}
+                    labels={labels}
+                />  
+
+                <br/> 
+
+                <FieldArray
+                    name="activities"
+                    component={multiActivities}
+                    placeholder="Organisation activities (multiple)"
+                    showModal={showModal}
+                    tabs={tabs}
+                    labels={labels}
                 />            
 
                 <hr/>

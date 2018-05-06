@@ -126,7 +126,7 @@ export const inputCheckbox = ({input, meta, placeholder, isChild}) => {
 
 export const textarea = ({input, id, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
-        {placeholder && <label htmlFor="first_name">{placeholder}</label>}
+        {/*placeholder && <label htmlFor="first_name">{placeholder}</label>*/}
         <Textarea id={id} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -459,6 +459,7 @@ export const renderList = ({input, meta, placeholder, hideResetButton, options, 
             options={options}
             multi={multiple}
             onChange={input.onChange}
+            placeholder={placeholder}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -489,8 +490,8 @@ export const renderListRadio = ({input, meta, placeholder, hideResetButton, opti
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{label}</dt>
-            <dd className="col-sm-10"> {field} </dd>
+            <dt className="col-sm-3">{label}</dt>
+            <dd className="col-sm-9"> {field} </dd>
         </dl>
 };
 
@@ -576,7 +577,7 @@ export const checkboxFieldInColumn = ({input, meta, id, placeholder, disabled, c
 
 export const renderDropzoneInput = (field) => {
     let files = field.input.value;
-
+    let myClassName = field.className===undefined?"":field.className;
     const getExtensionIcon = (name) => {
         let extension = name.replace(/\s/g, '').slice((name.lastIndexOf(".") - 1 >>> 0) + 2) || 'Unknown';
         extension = extension.toLocaleLowerCase();
@@ -601,7 +602,7 @@ export const renderDropzoneInput = (field) => {
     }
 
     return (
-        <div className="form-group">
+        <div className={`${myClassName} form-group`}>
             {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
 
             <Dropzone
@@ -1219,7 +1220,7 @@ export const sort = ({input, meta, placeholder, isChild, showModal, onRemove}) =
     />
 };
 
-export const multiScheduleContacts = ({fields, title, meta: {error}, placeholder, showModal}) => {
+export const multiContacts = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
         return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
@@ -1228,14 +1229,14 @@ export const multiScheduleContacts = ({fields, title, meta: {error}, placeholder
                 <div className="row">
                     <div className="col-md-6">
                         <Field
-                            name={`${member}.value`}
+                            name={`${member}.contact_title`}
                             component={renderList}
                             placeholder="Organization contact title "
+                            isChild={true}
                             options={[
                                 {value: 'Mr', label: 'Mr'},
                                 {value: 'Miss', label: 'Miss'},
                             ]}
-                            isChild={true}
                         />
                     </div>
                     <div className="col-md-6">
@@ -1268,10 +1269,162 @@ export const multiScheduleContacts = ({fields, title, meta: {error}, placeholder
                 <div className="row">
                     <div className="col-md-12">
                         <Field
-                            name="contact_email"
-                            component={inputEmail}
-                            placeholder="Organisation contact email"
+                            name={`${member}.contact_name`}
+                            component={renderList}
+                            placeholder="Organization contact language"
                             isChild={true}
+                            options={tabs.map(l=>({
+                                value: l,
+                                label: labels[l]
+                            }))}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12 form-group">
+                        <FieldArray
+                            name={`${member}.contact_email`}
+                            component={multiInputEmailWithDetails}
+                            placeholder="Organisation contact email"
+                            showModal={showModal}
+                            isChild={true}
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <div className="col-md-12 form-group">
+                        <FieldArray
+                            name="mobile"
+                            component={multiInputTel}
+                            placeholder="mobile"
+                            title="Your Mobile Number"
+                            showModal={showModal}
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <div className="col-md-12 form-group">
+                        <FieldArray
+                            name="skype"
+                            component={multiInputText}
+                            placeholder="Skype"
+                            showModal={showModal}
+                        />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <FieldArray
+                            name="social"
+                            component={multiInputUrl}
+                            placeholder="Social channels"
+                            title="Socials"
+                            showModal={showModal}
+                        />
+                    </div>
+                </div>
+                <div className="col-md-2 offset-11">
+                    <Button
+                        bsStyle="danger"
+                        onClick={() =>
+                            showModal({
+                                type: MODAL_REMOVE,
+                                props: {
+                                    onRemove: () => fields.remove(index)
+                                }
+
+                            })}
+                    >
+                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                    </Button>
+                </div>
+            </div>
+        </div>
+    }
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+
+        </div>
+    </div>
+};
+
+
+export const multiActivities = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
+            <div className="col-md-10 offset-1">
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            name={`${member}.activity_name`}
+                            component={inputText}
+                            placeholder="Activity Name"
+                            isChild={true}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <Field
+                            name={`${member}.activity_description`}
+                            component={textarea}
+                            placeholder="Activity description"
+                            isChild={true}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name="logo"
+                            component={renderDropzoneInput}
+                            placeholder="Activity logo (.svg only)"
+                            isChild={true}
+                            showModal={showModal}
+                            className="enableBorder"
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.activity_start_date`}
+                            component={renderDatePicker}
+                            placeholder="Activity start date"
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.activity_running`}
+                            component={renderListRadio}
+                            placeholder="Activity is running?"
+                            options={[
+                                        ['act-yes', 'Yes'],
+                                        ['act-no', 'No']
+                                    ]}
+                            value=""
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.activity_end_date`}
+                            component={renderDatePicker}
+                            placeholder="Activity end date (only if it is not running)"
                         />
                     </div>
                 </div>
