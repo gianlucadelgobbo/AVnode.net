@@ -2,8 +2,6 @@ import {isValidDate, isValidSlug, validateLength, validateMultiLang} from "../..
 
 const validate = values => {
 
-    console.log("values", values)
-
     const errors = {};
     const {calls} = values;
 
@@ -185,16 +183,12 @@ const validate = values => {
 
             }
 
-            console.log("modelErrors", modelErrors)
-
         });
 
         if (callsErrors.length) {
             errors.calls = callsErrors;
         }
     }
-
-    console.log("errrrrrr", errors)
 
     return errors
 };
