@@ -54,8 +54,6 @@ class EventsImage extends Component {
         // Add auth user _id
         modelToSave._id = model._id;
 
-        console.log("model", model)
-
         //dispatch the action to save the model here
         return saveModel(modelToSave)
             .then(() => {
@@ -75,8 +73,6 @@ class EventsImage extends Component {
                     type: MODAL_SAVED
                 });
             });
-
-        console.log("photo", photo)
     }
 
     renderImage(img, i) {
