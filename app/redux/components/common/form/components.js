@@ -95,6 +95,31 @@ export const userAutocompleteSelect = ({input, meta, multi = false, placeholder,
         </dl>
 };
 
+export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
+    const field = <div className="form-group">
+        <Select
+            {...input}
+            name={input.name}
+            value={input.value}
+            onBlur={() => {
+                input.onChange(input.value);
+                input.onBlur();
+            }}
+            options={options}
+            multi={multiple}
+            onChange={input.onChange}
+            placeholder={placeholder}
+        />
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};
+
 const inputField = ({input, type, meta, placeholder, title, isChild}) => {
     const field = <div className="form-group">
         <input type={type} className="form-control" {...input} placeholder={placeholder}/>
@@ -482,27 +507,6 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
     </div>
 };
 
-export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
-    const field = <div className="form-group">
-        <Select
-            {...input}
-            name={input.name}
-            value={input.value}
-            options={options}
-            multi={multiple}
-            onChange={input.onChange}
-            placeholder={placeholder}
-        />
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
-    </div>;
-    const label = <div className="labelField">{placeholder}</div>;
-    return !!isChild ? field :
-        <dl className="row">
-            <dt className="col-sm-2">{label}</dt>
-            <dd className="col-sm-10"> {field} </dd>
-        </dl>
-};
-
 export const renderListRadio = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
     const field = <div className="form-group">
         <ButtonGroup>
@@ -609,7 +613,7 @@ export const checkboxFieldInColumn = ({input, meta, id, placeholder, disabled, c
 
 export const renderDropzoneInput = (field) => {
     let files = field.input.value;
-    let myClassName = field.className===undefined?"":field.className;
+    let myClassName = field.className === undefined ? "" : field.className;
     const getExtensionIcon = (name) => {
         let extension = name.replace(/\s/g, '').slice((name.lastIndexOf(".") - 1 >>> 0) + 2) || 'Unknown';
         extension = extension.toLocaleLowerCase();
@@ -1305,7 +1309,7 @@ export const multiContacts = ({fields, title, meta: {error}, placeholder, showMo
                             component={renderList}
                             placeholder="Organization contact language"
                             isChild={true}
-                            options={tabs.map(l=>({
+                            options={tabs.map(l => ({
                                 value: l,
                                 label: labels[l]
                             }))}
@@ -1444,9 +1448,9 @@ export const multiActivities = ({fields, title, meta: {error}, placeholder, show
                             component={renderListRadio}
                             placeholder="Activity is running?"
                             options={[
-                                        ['act-yes', 'Yes'],
-                                        ['act-no', 'No']
-                                    ]}
+                                ['act-yes', 'Yes'],
+                                ['act-no', 'No']
+                            ]}
                             value=""
                         />
                     </div>
