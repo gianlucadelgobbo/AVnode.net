@@ -20,7 +20,7 @@ import Phone from 'react-phone-number-input';
 import Reorder from '../../reorder';
 import {fetchPerformancesForSelect, fetchUserForSelect} from "../../../api";
 import {createMultiLanguageInitialObject} from "../../common/form";
-import {DATE_FORMAT} from '../../../conf'
+import {DATE_FORMAT} from '../../../conf';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
