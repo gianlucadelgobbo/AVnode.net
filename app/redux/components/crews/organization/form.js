@@ -18,6 +18,7 @@ class CrewOrganizationForm extends Component {
             categories,
             tabs,
             labels,
+            seasons,
             onSubmit,
             showModal
         } = this.props;
@@ -249,7 +250,7 @@ class CrewOrganizationForm extends Component {
                 <FieldArray
                     name="contacts"
                     component={multiContacts}
-                    placeholder="Organisation contacts (multiple)"
+                    placeholder="Organization contacts (multiple)"
                     showModal={showModal}
                     tabs={tabs}
                     labels={labels}
@@ -260,10 +261,11 @@ class CrewOrganizationForm extends Component {
                 <FieldArray
                     name="activities"
                     component={multiActivities}
-                    placeholder="Organisation activities (multiple)"
+                    placeholder="Organization activities (multiple)"
                     showModal={showModal}
                     tabs={tabs}
                     labels={labels}
+                    seasons={seasons}
                 />            
 
                 <hr/>

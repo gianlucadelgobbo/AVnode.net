@@ -1396,7 +1396,7 @@ export const multiContacts = ({fields, title, meta: {error}, placeholder, showMo
 };
 
 
-export const multiActivities = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels}) => {
+export const multiActivities = ({fields, title, meta: {error}, placeholder, showModal, tabs, labels, seasons}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
         return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
@@ -1461,6 +1461,28 @@ export const multiActivities = ({fields, title, meta: {error}, placeholder, show
                             name={`${member}.activity_end_date`}
                             component={renderDatePicker}
                             placeholder="Activity end date (only if it is not running)"
+                        />
+                    </div>
+                </div>
+                  <div className="row">
+                    <div className="col-md-12">
+                        <Field
+                            name={`${member}.activity_main_season`}
+                            component={renderList}
+                            placeholder="Activity main season"
+                            
+                            options={seasons.map(s => ({label:s, value:s}))}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12 form-group">
+                        <FieldArray
+                            name={`${member}.activity_city`}
+                            component={multiGoogleCityCountry}
+                            placeholder="Activity cities"
+                            showModal={showModal}
+                            
                         />
                     </div>
                 </div>
