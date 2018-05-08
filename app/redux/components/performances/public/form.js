@@ -66,6 +66,7 @@ class PerformancePublicForm extends Component {
                     name="categories"
                     component={renderList}
                     placeholder="Category"
+                    multiple={true}
                     options={categories}
                 />
 

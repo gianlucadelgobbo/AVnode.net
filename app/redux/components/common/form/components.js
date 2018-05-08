@@ -1521,3 +1521,97 @@ export const multiActivities = ({fields, title, meta: {error}, placeholder, show
         </div>
     </div>
 };
+
+
+export const multiLegalOrganization = ({fields, title, meta: {error}, placeholder, showModal}) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
+            <div className="col-md-10 offset-1">
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            name="legal_representative_title"
+                            component={renderList}
+                            isChild={true}
+                            placeholder="Organization legal representative title"
+                            options={[
+                                        {value: 'Mr', label: 'Mr'},
+                                        {value: 'Miss', label: 'Miss'},
+                                    ]}
+                        />  
+                    </div>
+                    <div className="col-md-6">
+                         <Field
+                            name="legal_representative_role"
+                            component={inputText}
+                            isChild={true}
+                            placeholder="Organization legal representative role"
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            name="legal_representative_name"
+                            component={inputText}
+                            isChild={true}
+                            placeholder="Organization legal representative name"
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <Field
+                            name="legal_representative_surname"
+                            component={inputText}
+                            isChild={true}
+                            placeholder="Organization legal representative surname"
+                        /> 
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12 form-group">
+                        <FieldArray
+                            name="email"
+                            component={multiInputEmailWithDetails}
+                            isChild={true}
+                            placeholder="Organization legal representative email"
+                            showModal={showModal}
+                        />
+                    </div>
+                </div>
+                <div className="col-md-2 offset-11">
+                    <Button
+                        bsStyle="danger"
+                        onClick={() =>
+                            showModal({
+                                type: MODAL_REMOVE,
+                                props: {
+                                    onRemove: () => fields.remove(index)
+                                }
+
+                            })}
+                    >
+                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                    </Button>
+                </div>
+            </div>
+        </div>
+    }
+    return <div className="card">
+        <div className="card-header">
+            <h4>{label}</h4>
+            <Button bsStyle="success"
+                    className="pull-right"
+                    onClick={() => fields.unshift({})}>
+                <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+            </Button>
+        </div>
+        <div className="card-body">
+            <br/>
+            {error && <span className="error-message">{error}</span>}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
+
+        </div>
+    </div>
+};
