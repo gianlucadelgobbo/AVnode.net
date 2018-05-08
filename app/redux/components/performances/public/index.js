@@ -190,7 +190,7 @@ const mapStateToProps = (state, {_id}) => ({
     model: getModel(state, _id),
     isFetching: getModelIsFetching(state, _id),
     errorMessage: getModelErrorMessage(state, _id),
-    categories: getCategories(state)
+    categories: getCategories(state).map(c => ({value:c._id, label:c.name}))
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
