@@ -92,7 +92,7 @@ class ProfileImage extends Component {
                             {!errorMessage &&
                             !isFetching &&
                             model && model.image &&
-                            <LightBox images={[model.image.file]} alt={model.stagename}/>}
+                            <LightBox images={[model.imageFormats.large]} alt={model.stagename}/>}
 
                         </div>
                         <div className="col-md-6">
