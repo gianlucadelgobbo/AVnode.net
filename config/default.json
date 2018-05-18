@@ -95,6 +95,25 @@
     "by":"Belarusian",
     "gr":"Greek"
   },
+  "main_season":[
+    "Full Year",
+    "Winter",
+    "Spring",
+    "Summer",
+    "Autumn",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
   "thumbnails": [{
     "width": 400,
     "height": 300
