@@ -4,7 +4,7 @@ import {FORM_NAME} from './constants'
 import {inputText, renderDatePicker, renderList, multiGoogleAddress, 
         multiInputTel, multiInputEmailWithDetails, 
         renderListRadio, renderDropzoneInput, 
-        textareaMultiTab, textarea, multiContacts, multiActivities} from "../../common/form/components";
+        textareaMultiTab, textarea, multiContacts, multiActivities, multiLegalOrganization} from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 
@@ -18,6 +18,7 @@ class CrewOrganizationForm extends Component {
             categories,
             tabs,
             labels,
+            seasons,
             onSubmit,
             showModal
         } = this.props;
@@ -28,7 +29,7 @@ class CrewOrganizationForm extends Component {
                 <Field
                     name="name"
                     component={inputText}
-                    placeholder="Name"
+                    placeholder="Organization Name"
                 />
 
                 <Field
@@ -101,48 +102,12 @@ class CrewOrganizationForm extends Component {
 
                 <br/>
 
-                <Field
-                    name="legal_representative_title"
-                    component={renderList}
-                    placeholder="Organization legal representative title"
-                    options={[
-                                {value: 'Mr', label: 'Mr'},
-                                {value: 'Miss', label: 'Miss'},
-                            ]}
-                />  
-
-                 <br/>
-
-                <Field
-                    name="legal_representative_role"
-                    component={inputText}
-                    placeholder="Organization legal representative role"
-                />
-
-                <br/>
-
-                <Field
-                    name="legal_representative_name"
-                    component={inputText}
-                    placeholder="Organization legal representative name"
-                />
-
-                <br/>
-
-                <Field
-                    name="legal_representative_surname"
-                    component={inputText}
-                    placeholder="Organization legal representative surname"
-                /> 
-
-                <br/>
-
                 <FieldArray
-                    name="email"
-                    component={multiInputEmailWithDetails}
-                    placeholder="Organization legal representative email"
+                    name="legal_representative_organization"
+                    component={multiLegalOrganization}
+                    placeholder="Organization legal representative"
                     showModal={showModal}
-                />
+                />  
 
                 <br/>
 
@@ -249,7 +214,7 @@ class CrewOrganizationForm extends Component {
                 <FieldArray
                     name="contacts"
                     component={multiContacts}
-                    placeholder="Organisation contacts (multiple)"
+                    placeholder="Organization contacts (multiple)"
                     showModal={showModal}
                     tabs={tabs}
                     labels={labels}
@@ -260,10 +225,11 @@ class CrewOrganizationForm extends Component {
                 <FieldArray
                     name="activities"
                     component={multiActivities}
-                    placeholder="Organisation activities (multiple)"
+                    placeholder="Organization activities (multiple)"
                     showModal={showModal}
                     tabs={tabs}
                     labels={labels}
+                    seasons={seasons}
                 />            
 
                 <hr/>
@@ -285,7 +251,7 @@ export default reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    //validate,
+    validate,
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
 })(CrewOrganizationForm);

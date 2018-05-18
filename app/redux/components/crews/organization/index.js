@@ -13,7 +13,7 @@ import {getModel, getErrorMessage, getIsFetching} from "../selectors";
 import {MODAL_SAVED} from "../../modal/constants";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
-import {locales, locales_labels} from "../../../../../config/default";
+import {locales, locales_labels, main_season} from "../../../../../config/default";
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -63,19 +63,8 @@ class CrewOrganization extends Component {
         //Convert name for redux-form
         v.name = user.name;
         //Convert surname for redux-form
-        v.surname = user.surname;
-        //Convert gender for redux-form
-        v.gender = user.gender ? user.gender : "";
-        //Convert language preferred for redux-form
-        v.lang = user.lang ? user.lang : "";
-        //Convert birthday for redux-form
-        v.birthday = user.birthdayFormatted;
-        // Addresses_private: Add one item if value empty
-        v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ?
-            user.addresses_private : [{formatted_address: ""}];
-        // Phone: Add one item if value empty
-        v.phone = (Array.isArray(user.phone) && user.phone.length > 0) ?
-            user.phone : [{tel: ""}];
+        v.able_to_recuperate_vat = user.able_to_recuperate_vat;
+
         return v;
     }
 
@@ -131,6 +120,7 @@ class CrewOrganization extends Component {
                         categories={categories}
                         tabs={locales}
                         labels={locales_labels}
+                        seasons={main_season}
                     />}
                 </div>
             </div>
