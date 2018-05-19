@@ -3,7 +3,7 @@ import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants'
-import {renderDropzoneInput} from "../../common/form/components";
+import {renderDropzoneInput} from "../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 import {formValueSelector} from 'redux-form';

@@ -1,4 +1,4 @@
-import {validateImageSize, validateLength} from "../../common/form/validators";
+import {validateImageSize, validateLength} from "../common/form/validators";
 
 const validate = values => {
 

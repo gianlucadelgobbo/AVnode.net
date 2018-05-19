@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 
 export default class LightboxGallery extends Component {
 
@@ -26,7 +27,7 @@ export default class LightboxGallery extends Component {
             isOpen,
         } = this.state;
 
-        const {images, index, alt, Button} = this.props;
+        const {images, index = 0, alt, Button} = this.props;
 
         const currentIndex = (photoIndex + index) % images.length;
         const nextIndex = (currentIndex + 1) % images.length;
