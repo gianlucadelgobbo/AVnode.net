@@ -23,8 +23,23 @@ import {createMultiLanguageInitialObject} from "../../common/form";
 import {DATE_FORMAT} from '../../../conf';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
+    const renderFunc = ({ getInputProps, getSuggestionItemProps, suggestions }) => (
+        <div className="autocomplete-root">
+            <input {...getInputProps()} />
+            <div className="autocomplete-dropdown-container">
+                {suggestions.map(suggestion => (
+                    <div {...getSuggestionItemProps(suggestion)}>
+                        <span>{suggestion.description}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
     const field = <div className="form-group">
-        <PlacesAutocomplete inputProps={input} options={options}/>
+        <PlacesAutocomplete {...input} options={options}>
+            {renderFunc}
+        </PlacesAutocomplete>
         {meta.error && meta.touched &&
         <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
     </div>;

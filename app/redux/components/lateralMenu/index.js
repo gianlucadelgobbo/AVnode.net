@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
@@ -13,9 +13,9 @@ class LateralMenu extends Component {
     createMenuItem = ({model, index}) => {
 
         return (
-            <Link href={this.createHref({href: model.href})} activeClassName="active" className="nav-link" key={index}>
+            <NavLink to={this.createHref({href: model.href})} activeClassName="active" className="nav-link" key={index}>
                 {model.label}
-            </Link>);
+            </NavLink>);
     };
 
     render() {
