@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import LateralMenu from '../../lateralMenu'
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
@@ -91,4 +91,4 @@ MyLateralMenu = connect(
     mapDispatchToProps
 )(MyLateralMenu);
 
-export default MyLateralMenu;
+export default injectIntl(MyLateralMenu);

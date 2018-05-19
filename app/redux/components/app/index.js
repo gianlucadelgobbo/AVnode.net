@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router} from 'react-router-dom';
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {FormattedMessage, injectIntl} from 'react-intl';
 
 
@@ -45,9 +45,9 @@ import CrewsOrganization from '../crews/organization';
 import Preferences from '../preferences/index';
 
 
-const App = () => {
-    return (
-        <div>
+class App extends Component {
+    render() {
+        return (<div>
             <div className="jumbotron jumbotron-fluid">
                 <div className="container">
                     <h1 className="display-4">
@@ -57,51 +57,59 @@ const App = () => {
                         /></h1>
                 </div>
             </div>
-            <div className="container-fluid account-nav-wrap">
-                <div className="container">
-                    <TopMenu/>
+
+            <Router>
+
+                <div>
+                    <div className="container-fluid account-nav-wrap">
+                        <div className="container">
+                            <TopMenu/>
+                        </div>
+                    </div>
+
+                    <div className="container">
+                        <Route exact path="/admin/profile/public" component={ProfilePublic}/>
+                        <Route exact path="/admin/profile/images" component={ProfileImages}/>
+                        <Route exact path="/admin/profile/emails" component={ProfileEmails}/>
+                        <Route exact path="/admin/profile/private" component={ProfilePrivate}/>
+                        <Route exact path="/admin/profile/password" component={ProfilePassword}/>
+                        <Route exact path="/admin/profile/connections" component={ProfileConnections}/>
+
+                        <Route exact path="/admin/crews" component={Crews}/>
+                        <Route exact path="/admin/crews/:_id/public/" component={CrewsPublic}/>
+                        <Route exact path="/admin/crews/:_id/images/" component={CrewsImages}/>
+                        <Route exact path="/admin/crews/:_id/members/" component={CrewsMembers}/>
+                        <Route exact path="/admin/crews/:_id/organization/" component={CrewsOrganization}/>
+
+                        <Route exact path="/admin/performances" component={Performances}/>
+                        <Route exact path="/admin/performances/:_id/public/" component={PerformancesPublic}/>
+                        <Route exact path="/admin/performances/:_id/galleries/" component={PerformancesGalleries}/>
+                        <Route exact path="/admin/performances/:_id/videos/" component={PerformancesVideos}/>
+
+
+                        <Route exact path="/admin/events" component={Events}/>
+                        <Route exact path="/admin/events/:_id/public/" component={EventPublic}/>
+                        <Route exact path="/admin/events/:_id/images/" component={EventImages}/>
+                        <Route exact path="/admin/events/:_id/partners/" component={EventPartners}/>
+                        <Route exact path="/admin/events/:_id/program/" component={EventProgram}/>
+                        <Route exact path="/admin/events/:_id/galleries/" component={EventGalleries}/>
+                        <Route exact path="/admin/events/:_id/videos/" component={EventVideos}/>
+                        <Route exact path="/admin/events/:_id/calls/" component={EventCalls}/>
+                        <Route exact path="/admin/events/:_id/settings/" component={EventSettings}/>
+
+                        <Route exact path="/admin/preferences" component={Preferences}/>
+                        <Route component={PageNotFound}/>
+
+                    </div>
                 </div>
-            </div>
-            <div className="container">
-                <Router>
-                    <ProfilePublic path="/admin/profile/public"/>
-                    <ProfileImages path="/admin/profile/images"/>
-                    <ProfileEmails path="/admin/profile/emails"/>
-                    <ProfilePrivate path="/admin/profile/private"/>
-                    <ProfilePassword path="/admin/profile/password"/>
-                    <ProfileConnections path="/admin/profile/connections"/>
 
-                    <Crews path="/admin/crews"/>
-                    <CrewsPublic path="/admin/crews/:_id/public/"/>
-                    <CrewsImages path="/admin/crews/:_id/images/"/>
-                    <CrewsMembers path="/admin/crews/:_id/members/"/>
-                    <CrewsOrganization path="/admin/crews/:_id/organization/"/>
+            </Router>
 
-                    <Performances path="/admin/performances"/>
-                    <PerformancesPublic path="/admin/performances/:_id/public/"/>
-                    <PerformancesGalleries path="/admin/performances/:_id/galleries/"/>
-                    <PerformancesVideos path="/admin/performances/:_id/videos/"/>
+            <ModalRoot/>
 
-                    <Events path="/admin/events"/>
-                    <EventPublic path="/admin/events/:_id/public/"/>
-                    <EventImages path="/admin/events/:_id/images/"/>
-                    <EventPartners path="/admin/events/:_id/partners/"/>
-                    <EventProgram path="/admin/events/:_id/program/"/>
-                    <EventGalleries path="/admin/events/:_id/galleries/"/>
-                    <EventVideos path="/admin/events/:_id/videos/"/>
-                    <EventCalls path="/admin/events/:_id/calls/"/>
-                    <EventSettings path="/admin/events/:_id/settings/"/>
-
-                    <Preferences path="/admin/preferences"/>
-
-                    <PageNotFound type="404" default/>
-                </Router>
-
-                <ModalRoot/>
-
-            </div>
-        </div>
-    );
+        </div>);
+    }
 };
+
 
 export default injectIntl(App);

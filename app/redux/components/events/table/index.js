@@ -31,7 +31,7 @@ class ModelTable extends Component {
                         accessor: 'title',
                         Cell: (props) => {
                             const {row, original} = props;
-                            return <Link href={`/admin/events/${original._id}/public`}>
+                            return <Link to={`/admin/events/${original._id}/public`}>
                                 {row.title}
                             </Link>
                         }

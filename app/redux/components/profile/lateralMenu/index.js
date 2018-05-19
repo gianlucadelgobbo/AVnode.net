@@ -1,56 +1,57 @@
 import React, {Component} from 'react';
 import LateralMenu from '../../lateralMenu'
-import {defineMessages, injectIntl} from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
 const items = [
     {
         href: "/admin/profile/public",
-        label: defineMessages({
-            id: "publicData",
-            defaultMessage: "Public data"
-        })
-
+        label: <FormattedMessage
+            id="publicData"
+            defaultMessage="Public data"
+        />
     },
     {
         href: "/admin/profile/images",
-        label: defineMessages({
-            id: "images",
-            defaultMessage: "Images"
-        })
+        label: <FormattedMessage
+            id="images"
+            defaultMessage="Images"/>
 
     },
     {
-        href: " /admin/profile/emails",
-        label: defineMessages({
-            id: "emails",
-            defaultMessage: "Emails"
-        })
+        href: "/admin/profile/emails",
+        label: <FormattedMessage
+            id="emails"
+            defaultMessage="Emails"
+        />
 
     },
     {
         href: "/admin/profile/private",
-        label: defineMessages({
-            id: "privateData",
-            defaultMessage: "Private data"
-        })
+        label: <FormattedMessage
+            id="privateData"
+            defaultMessage="Private data"
+        />
+
 
     },
     {
         href: "/admin/profile/password",
-        label: defineMessages({
-            id: "password",
-            defaultMessage: "Password"
-        })
+        label: <FormattedMessage
+            id="password"
+            defaultMessage="Password"
+        />
+
 
     },
     {
         href: "/admin/profile/connections",
-        label: defineMessages({
-            id: "connections",
-            defaultMessage: "Connections"
-        })
+        label: <FormattedMessage
+            id="connections"
+            defaultMessage="Connections"
+        />
+
 
     },
 ];

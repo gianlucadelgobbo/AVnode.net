@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import LateralMenu from '../../lateralMenu'
-import {defineMessages, injectIntl} from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 
 const items = [
     {
         href: "/admin/crews/:_id/public",
-        label: defineMessages({
-            id: "publicData",
-            defaultMessage: "Public data"
-        })
+        label: <FormattedMessage
+            id="publicData"
+            defaultMessage="Public data"
+        />
     },
     {
         href: "/admin/crews/:_id/images",
@@ -36,6 +36,7 @@ const items = [
 
     }
 ];
+
 
 class MyLateralMenu extends Component {
     render() {

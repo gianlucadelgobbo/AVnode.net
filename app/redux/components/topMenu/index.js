@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {bindActionCreators} from "redux";
-import { Link } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {connect} from 'react-redux'
 import {fetchList as fetchCrews} from "../crews/actions";
 import {fetchList as fetchPerformances} from "../performances/actions";
@@ -23,9 +23,9 @@ class TopMenu extends Component {
     createMenuItem = ({model, index}) => {
 
         return (
-            <Link href={model.href} activeClassName="active" className="nav-link" key={index}>
+            <NavLink to={model.href} activeClassName="active" className="nav-link" key={index}>
                 {model.label} <span className="badge badge-pill badge-info">{model.counter}</span>
-            </Link>);
+            </NavLink>);
     };
 
     render() {
@@ -33,45 +33,45 @@ class TopMenu extends Component {
         const {crews, performances, events} = this.props;
 
         const items = [
-    {
-        href : "/admin/profile/public",
-        label : <FormattedMessage
-            id="profile"
-            defaultMessage="Profile"
-        />
-    },
-    {
-        href : "/admin/crews",
-        counter : crews.length,
-        label : <FormattedMessage
-            id="crews"
-            defaultMessage="Crews"
-        />
-    },
-    {
-        href : "/admin/performances",
-        counter : performances.length,
-        label : <FormattedMessage
-            id="performances"
-            defaultMessage="Performances"
-        />
-    }, {
-        href : "/admin/events",
-        counter : events.length,
-        label : <FormattedMessage
-            id="events"
-            defaultMessage="Events"
-        />
-    },
-    {
-        href: "/admin/preferences",
-        label: <FormattedMessage
-            id="preferences"
-            defaultMessage="Preferences"
-        />
-    },
+            {
+                href: "/admin/profile/public",
+                label: <FormattedMessage
+                    id="profile"
+                    defaultMessage="Profile"
+                />
+            },
+            {
+                href: "/admin/crews",
+                counter: crews.length,
+                label: <FormattedMessage
+                    id="crews"
+                    defaultMessage="Crews"
+                />
+            },
+            {
+                href: "/admin/performances",
+                counter: performances.length,
+                label: <FormattedMessage
+                    id="performances"
+                    defaultMessage="Performances"
+                />
+            }, {
+                href: "/admin/events",
+                counter: events.length,
+                label: <FormattedMessage
+                    id="events"
+                    defaultMessage="Events"
+                />
+            },
+            {
+                href: "/admin/preferences",
+                label: <FormattedMessage
+                    id="preferences"
+                    defaultMessage="Preferences"
+                />
+            },
 
-];
+        ];
 
         return (
             <nav id="account-nav" className="nav nav-pills nav-justified">
@@ -82,9 +82,9 @@ class TopMenu extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    crews:getCrews(state),
+    crews: getCrews(state),
     performances: getPerformances(state),
-    events:getEvents(state)
+    events: getEvents(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -99,9 +99,3 @@ TopMenu = connect(
 )(TopMenu);
 
 export default TopMenu;
-
-
-//connect(mapStateToProps)(TopMenu);
-
-//export default TopMenu;
-
