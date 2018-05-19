@@ -9,9 +9,17 @@ import Galleries from '../../galleries'
 
 class EventsImage extends Component {
 
+    componentDidMount() {
+        const {fetchModel, match: {params: {_id}}} = this.props;
+        fetchModel({
+            id: _id
+        });
+    }
+
+
     render() {
 
-        const {model, isFetching, errorMessage, match: {params: {_id}}, fetchModel, saveModel, removeModel} = this.props;
+        const {model, isFetching, errorMessage, match: {params: {_id}}, saveModel, removeModel} = this.props;
 
         return (
             <div className="row">
@@ -28,7 +36,6 @@ class EventsImage extends Component {
                         isFetching={isFetching}
                         errorMessage={errorMessage}
                         removeModel={removeModel}
-                        fetchModel={fetchModel}
                         saveModel={saveModel}
                     />
 

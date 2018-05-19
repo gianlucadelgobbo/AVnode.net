@@ -1,16 +1,23 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
-import Form from './form'
 import {showModal} from "../modal/actions";
 import Loading from '../loading'
 import ErrorMessage from '../errorMessage'
 import ItemNotFound from '../itemNotFound';
 import {MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED} from "../modal/constants";
-import {Button, Image} from 'react-bootstrap'
-import LightBox from '../lightboxGallery'
+import {Player} from 'video-react';
+import "video-react/dist/video-react.css"; // import css
+import {Button} from 'react-bootstrap';
 
-class Galleries extends Component {
+class Videos extends Component {
+
+    componentDidMount() {
+        const {fetchModel, match: {params: {_id}}} = this.props;
+        fetchModel({
+            id: _id
+        });
+    }
 
     // Convert form values to API model
     createModelToSave(values) {
@@ -23,28 +30,26 @@ class Galleries extends Component {
 
     // Modify model from API to create form initial values
     getInitialValues() {
-        const {model} = this.props;
+        const {user} = this.props;
 
-        if (!model) {
+        if (!user) {
             return {};
         }
 
         let v = {};
 
-        v.galleries = model.galleries;
-
         return v;
     }
 
     onSubmit(values) {
-        const {showModal, saveModel, model} = this.props;
-        const modelToSave = this.createModelToSave(values);
+        const {showModal, editUser, user} = this.props;
+        const model = this.createModelToSave(values);
 
         // Add auth user _id
-        modelToSave._id = model._id;
+        model._id = user._id;
 
         //dispatch the action to save the model here
-        return saveModel(modelToSave)
+        return editUser(model)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
@@ -52,28 +57,21 @@ class Galleries extends Component {
             });
     }
 
-    onRemove(photo) {
-        const {removeModel} = this.props;
-
-        //dispatch the action to save the model here
-        return removeModel(photo)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
-            });
+    onRemove(video) {
+        console.log("video", video)
     }
 
-    renderImage(img, i) {
+    renderVideo(v, i) {
 
         const {showModal} = this.props;
-        const {image} = img || {};
-        const {file} = image;
 
         return <div className="col-md-6" key={i}>
             <div className="row">
                 <div className="col-sm-11">
-                    <Image src={file} responsive rounded/>
+                    <Player
+                        playsInline
+                        src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                    />
                 </div>
                 <div className="col-sm-1">
                     <Button bsStyle="danger"
@@ -81,7 +79,7 @@ class Galleries extends Component {
                                 showModal({
                                     type: MODAL_REMOVE,
                                     props: {
-                                        onRemove: () => this.onRemove(img)
+                                        onRemove: () => this.onRemove(v)
                                     }
                                 })}
                     >
@@ -98,10 +96,9 @@ class Galleries extends Component {
     render() {
 
         const {model, showModal, isFetching, errorMessage} = this.props;
-        const initialValues = this.getInitialValues();
 
         return (
-            <div>
+            <div >
                 <div className="row">
                     <div className="col-md-12">
                         <Button
@@ -116,16 +113,6 @@ class Galleries extends Component {
                             <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
                         </Button>
 
-                        {!errorMessage && !isFetching && model && Array.isArray(model.galleries) && <LightBox
-                            images={model.galleries.map(x => x.image.file)}
-                            Button={<Button
-                                bsStyle="primary"
-                                className="pull-right"
-                            >
-                                <i className="fa fa-image" data-toggle="tooltip" data-placement="top"/>
-                            </Button>}
-                        />}
-
                     </div>
                 </div>
 
@@ -138,22 +125,23 @@ class Galleries extends Component {
 
                         {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                        {!errorMessage && !isFetching && model && initialValues && Array.isArray(initialValues.galleries) &&
-                        <Form
-                            initialValues={initialValues}
-                            onSubmit={this.onSubmit.bind(this)}
-                            user={model}
-                            showModal={showModal}
-                            onRemove={this.onRemove.bind(this)}
-                        />}
+                        {!errorMessage &&
+                        !isFetching &&
+                        model &&
+                        Array.isArray(model.videos) &&
+                        model.videos.length > 0 &&
+                        <div className="row">
+                            {model.videos.map(this.renderVideo.bind(this))}
+                        </div>}
 
-                        {/*
-                            {!errorMessage &&
-                            !isFetching && model
-                            && Array.isArray(model.galleries) &&
-                            <div className="row">
-                                {model.galleries.map(this.renderImage.bind(this))}
-                            </div>}*/}
+                        {!errorMessage &&
+                        !isFetching &&
+                        model &&
+                        Array.isArray(model.videos) &&
+                        model.videos.length === 0 &&
+                        <div>
+                            No video to show
+                        </div>}
 
                     </div>
                 </div>
@@ -169,9 +157,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal,
 }, dispatch);
 
-Galleries = connect(
+Videos = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Galleries);
+)(Videos);
 
-export default Galleries;
+export default Videos;
