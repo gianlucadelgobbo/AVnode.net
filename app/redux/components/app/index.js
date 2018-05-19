@@ -11,7 +11,7 @@ import PageNotFound from '../pageNotFound'
 // Profile
 import ProfilePublic from '../profile/public/index'
 import ProfileEmails from '../profile/emails/index';
-import ProfileImages from '../profile/images/index';
+import ProfileImages from '../profile/image/index';
 import ProfilePrivate from '../profile/private/index';
 import ProfilePassword from '../profile/password/index';
 import ProfileConnections from '../profile/connections/index';
