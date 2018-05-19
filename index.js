@@ -3,7 +3,7 @@ const app = require('./server');
 const mongoose = require('./app/utilities/mongoose');
 
 const options = {
-  useMongoClient: true
+  //useMongoClient: true
 };
 
 mongoose.connect(process.env.MONGODB_URI, options, () => {
