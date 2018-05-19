@@ -1,4 +1,4 @@
-import {h, render, Component} from 'preact';
+import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {sort} from "../../common/form/components";

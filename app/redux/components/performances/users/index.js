@@ -1,6 +1,6 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import Form from './form'
-import {connect} from 'preact-redux';
+import {connect} from 'react-redux'
 import {getModel} from '../selectors'
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";

@@ -1,9 +1,9 @@
-import {h, Component} from 'preact';
-import {FormattedMessage} from 'preact-intl';
+import React, { Component } from 'react';
+import {FormattedMessage} from 'react-intl';
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
 import Form from './form'
-import {connect} from 'preact-redux';
+import {connect} from 'react-redux'
 import {fetchModel, saveModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'

@@ -15,7 +15,9 @@
     "dev": "DEBUG=avnode.debug,avnode nodemon index.js",
     "devwin": "set DEBUG=avnode.debug,avnode && nodemon -i tests -i app -i locales -i storage -i .db -i .elasticsearch -i app index.js",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack",
-    "buildwin": "set NODE_ENV=production && webpack"
+    "buildwin": "set NODE_ENV=production && webpack",
+    "extract:messages": "react-intl-cra 'src/**/*.{js,jsx}' -o 'src/i18n/messages/messages.json'",
+    "manage:translations": "node ./translationRunner.js"
   },
   "repository": {
     "type": "git",
@@ -67,7 +69,6 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "popper.js": "^1.14.3",
-    "preact-intl": "^1.0.0",
     "pug": "^2.0.3",
     "ramda": "^0.25.0",
     "rc-time-picker": "^3.3.1",
@@ -79,6 +80,7 @@
     "react-dropzone": "^4.2.9",
     "react-image-lightbox": "^5.0.0",
     "react-intl": "^2.4.0",
+    "react-intl-translations-manager": "^5.0.3",
     "react-modal": "^3.4.4",
     "react-phone-number-input": "^1.0.11",
     "react-places-autocomplete": "^7.1.1",
@@ -136,10 +138,6 @@
     "node-sass": "^4.9.0",
     "nodemon": "^1.17.4",
     "offline-plugin": "^5.0.3",
-    "preact": "^8.2.9",
-    "preact-compat": "^3.18.0",
-    "preact-redux": "^2.0.3",
-    "preact-router": "^2.6.0",
     "promise-polyfill": "^7.1.2",
     "proxyquire": "^2.0.1",
     "raw-loader": "^0.5.1",

@@ -1,4 +1,4 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import {Button} from 'react-bootstrap';
 
 class RemoveModal extends Component {

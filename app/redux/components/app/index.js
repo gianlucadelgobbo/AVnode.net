@@ -1,6 +1,7 @@
-import {h} from 'preact';
-import Router from 'preact-router';
-import {FormattedMessage} from 'preact-intl';
+import React, { Component } from 'react';
+import { BrowserRouter as Router} from 'react-router-dom';
+import {FormattedMessage, injectIntl} from 'react-intl';
+
 
 import TopMenu from '../topMenu/index';
 import ModalRoot from '../modal/root'
@@ -103,4 +104,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default injectIntl(App);

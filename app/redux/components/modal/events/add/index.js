@@ -1,6 +1,6 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import {bindActionCreators} from "redux";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 import Form from '../../events/add'
 
 class AddEventModal extends Component {

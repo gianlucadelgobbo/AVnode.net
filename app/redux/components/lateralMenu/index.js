@@ -1,7 +1,7 @@
-import {h, Component} from 'preact';
-import {Link} from 'preact-router/match';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {bindActionCreators} from "redux";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 
 class LateralMenu extends Component {
 

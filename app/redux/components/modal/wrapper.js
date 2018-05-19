@@ -1,5 +1,5 @@
-import {h, Component} from 'preact';
-import {connect} from 'preact-redux';
+import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import {Modal} from 'react-bootstrap';
 import {hideModal} from "./actions";
 import {bindActionCreators} from "redux";

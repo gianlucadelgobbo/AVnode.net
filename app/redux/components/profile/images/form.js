@@ -1,6 +1,6 @@
-import {h, render, Component} from 'preact';
+import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants'
 import {renderDropzoneInput} from "../../common/form/components";

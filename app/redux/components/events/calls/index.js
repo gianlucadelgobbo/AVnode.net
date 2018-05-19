@@ -1,7 +1,7 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import LateralMenu from '../lateralMenu'
 import Form from './form'
-import {connect} from 'preact-redux';
+import {connect} from 'react-redux'
 import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";

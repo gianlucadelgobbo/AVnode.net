@@ -1,16 +1,16 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import LateralMenu from '../../lateralMenu'
-import {FormattedMessage} from 'preact-intl';
+import {defineMessages, injectIntl} from 'react-intl';
 import {bindActionCreators} from "redux";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 
 const items = [
     {
         href: "/admin/crews/:_id/public",
-        label: <FormattedMessage
-            id="publicData"
-            defaultMessage="Public data"
-        />
+        label: defineMessages({
+            id: "publicData",
+            defaultMessage: "Public data"
+        })
     },
     {
         href: "/admin/crews/:_id/images",
@@ -60,4 +60,4 @@ MyLateralMenu = connect(
     mapDispatchToProps
 )(MyLateralMenu);
 
-export default MyLateralMenu;
+export default injectIntl(MyLateralMenu);
