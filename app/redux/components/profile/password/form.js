@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-//import {inputPassword, inputPasswordMeter} from "../../common/form/components";
+import {inputPassword, inputPasswordMeter} from "../../common/form/components";
 import validate from './validate'
 //import asyncValidate from './asyncValidate'
 
@@ -18,17 +18,25 @@ class ProfilePasswordForm extends Component {
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
-                {/*<Field*/}
-                    {/*name="password"*/}
-                    {/*component={inputPasswordMeter}*/}
-                    {/*placeholder="Password"*/}
-                {/*/>*/}
+                <Field
+                    name="oldpassword"
+                    component={inputPassword}
+                    placeholder="Old password"
+                />
 
-                {/*<Field*/}
-                    {/*name="confirmPassword"*/}
-                    {/*component={inputPassword}*/}
-                    {/*placeholder="Confirm Password"*/}
-                {/*/>*/}
+                <hr/>
+
+                <Field
+                    name="password"
+                    component={inputPassword}
+                    placeholder="New Password"
+                />
+
+                <Field
+                    name="confirmPassword"
+                    component={inputPassword}
+                    placeholder="Confirm Password"
+                />
 
                 <hr/>
 

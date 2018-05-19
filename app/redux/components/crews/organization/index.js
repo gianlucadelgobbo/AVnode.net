@@ -25,7 +25,7 @@ class CrewOrganization extends Component {
 
 
     componentDidMount() {
-        const {fetchModel, fetchCategories, _id} = this.props;
+        const {fetchModel, fetchCategories, match: {params: {_id}}} = this.props;
         fetchModel({id: _id});
         fetchCategories();
     }
@@ -87,7 +87,7 @@ class CrewOrganization extends Component {
 
     render() {
 
-        const {model, categories, showModal, errorMessage, isFetching, _id} = this.props;
+        const {model, categories, showModal, errorMessage, isFetching, match: {params: {_id}}} = this.props;
 
         return (
             <div className="row">
@@ -129,7 +129,7 @@ class CrewOrganization extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state, {_id}) => ({
+const mapStateToProps = (state, {match: {params: {_id}}}) => ({
     model: getModel(state, _id),
     categories: getCategories(state).map(c => ({label:c.name, value:c._id})),
     isFetching: getIsFetching(state,_id),

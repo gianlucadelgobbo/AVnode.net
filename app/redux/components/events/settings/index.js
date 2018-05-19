@@ -15,7 +15,7 @@ import {checkboxField} from "../../common/form/components";
 class EventPublic extends Component {
 
     componentDidMount() {
-        const {fetchModel, _id} = this.props;
+        const {fetchModel, match: {params: {_id}}} = this.props;
         fetchModel({
             id: _id
         });
@@ -71,7 +71,7 @@ class EventPublic extends Component {
 
     render() {
 
-        const {model, showModal, _id, isFetching, errorMessage} = this.props;
+        const {model, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
@@ -104,7 +104,7 @@ class EventPublic extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state, {_id}) => ({
+const mapStateToProps = (state, {match: {params: {_id}}}) => ({
     model: getModel(state, _id),
     isFetching: getModelIsFetching(state, _id),
     errorMessage: getModelErrorMessage(state, _id),

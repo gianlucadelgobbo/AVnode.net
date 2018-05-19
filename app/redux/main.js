@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux'
 import {Provider} from 'react-redux'
 import App from './components/app/index';
 import store from './store'
