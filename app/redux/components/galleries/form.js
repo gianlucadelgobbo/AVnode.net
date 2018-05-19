@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-import {sort} from "../../common/form/components";
+import {sort} from "../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
-class EventGalleryForm extends Component {
+class GalleriesForm extends Component {
 
     render() {
 
@@ -48,4 +48,4 @@ export default reduxForm({
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
-})(EventGalleryForm);
+})(GalleriesForm);
