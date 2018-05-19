@@ -1,7 +1,7 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import LateralMenu from '../lateralMenu'
 import Form from './form'
-import {connect} from 'preact-redux';
+import {connect} from 'react-redux'
 import {getDefaultModel} from '../selectors'
 import {locales, locales_labels} from '../../../../../config/default.json'
 import {saveModel, fetchModel} from "./actions";

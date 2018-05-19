@@ -1,8 +1,8 @@
-import {h, Component} from 'preact';
-import {FormattedMessage} from 'preact-intl';
+import React, { Component } from 'react';
+import {FormattedMessage} from 'react-intl';
 import {bindActionCreators} from "redux";
-import {Link} from 'preact-router/match';
-import {connect} from 'preact-redux';
+import { Link } from 'react-router-dom';
+import {connect} from 'react-redux'
 import {fetchList as fetchCrews} from "../crews/actions";
 import {fetchList as fetchPerformances} from "../performances/actions";
 import {fetchList as fetchEvents} from "../events/actions";

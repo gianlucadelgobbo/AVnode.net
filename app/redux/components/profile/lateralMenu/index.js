@@ -1,57 +1,56 @@
-import {h, Component} from 'preact';
+import React, {Component} from 'react';
 import LateralMenu from '../../lateralMenu'
-import {FormattedMessage} from 'preact-intl';
+import {defineMessages, injectIntl} from 'react-intl';
 import {bindActionCreators} from "redux";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 
 const items = [
     {
         href: "/admin/profile/public",
-        label: <FormattedMessage
-            id="publicData"
-            defaultMessage="Public data"
-        />
-    },
-    {
-        href: "/admin/profile/images",
-        label: <FormattedMessage
-            id="images"
-            defaultMessage="Images"/>
+        label: defineMessages({
+            id: "publicData",
+            defaultMessage: "Public data"
+        })
 
     },
     {
-        href: "/admin/profile/emails",
-        label: <FormattedMessage
-            id="emails"
-            defaultMessage="Emails"
-        />
+        href: "/admin/profile/images",
+        label: defineMessages({
+            id: "images",
+            defaultMessage: "Images"
+        })
+
+    },
+    {
+        href: " /admin/profile/emails",
+        label: defineMessages({
+            id: "emails",
+            defaultMessage: "Emails"
+        })
 
     },
     {
         href: "/admin/profile/private",
-        label: <FormattedMessage
-            id="privateData"
-            defaultMessage="Private data"
-        />
-
+        label: defineMessages({
+            id: "privateData",
+            defaultMessage: "Private data"
+        })
 
     },
     {
         href: "/admin/profile/password",
-        label: <FormattedMessage
-            id="password"
-            defaultMessage="Password"
-        />
-
+        label: defineMessages({
+            id: "password",
+            defaultMessage: "Password"
+        })
 
     },
     {
         href: "/admin/profile/connections",
-        label: <FormattedMessage
-            id="connections"
-            defaultMessage="Connections"
-        />
-
+        label: defineMessages({
+            id: "connections",
+            defaultMessage: "Connections"
+        })
 
     },
 ];
@@ -76,4 +75,4 @@ MyLateralMenu = connect(
     mapDispatchToProps
 )(MyLateralMenu);
 
-export default MyLateralMenu;
+export default injectIntl(MyLateralMenu);

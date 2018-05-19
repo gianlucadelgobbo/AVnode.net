@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import React, { Component } from 'react';
 import Example from './example'
 import Saved from './saved'
 import Remove from './remove'
@@ -8,7 +8,7 @@ import AddUserPerformance from '../performances/users'
 import AddMediaModal from './media/add'
 
 import ModalWrapper from './wrapper';
-import {connect} from 'preact-redux';
+import {connect} from 'react-redux'
 import {getModal} from './selectors';
 import * as actions from './actions';
 import {MODAL_EXAMPLE, MODAL_REMOVE, MODAL_SAVED, MODAL_ADD_EVENT, MODAL_ADD_PERFORMANCE, MODAL_ADD_USER_PERFORMANCE, MODAL_ADD_MEDIA} from "./constants"

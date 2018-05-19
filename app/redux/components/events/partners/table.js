@@ -1,9 +1,9 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import {bindActionCreators} from "redux";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 import {showModal} from "../../modal/actions";
 import {Button} from 'react-bootstrap';
-import {Link} from 'preact-router/match';
+import { Link } from 'react-router-dom';
 import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading'
 import Table from '../../table'

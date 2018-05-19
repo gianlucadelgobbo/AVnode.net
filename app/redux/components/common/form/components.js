@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import {Tab, Tabs, Nav, NavItem, Button, ButtonGroup} from 'react-bootstrap';
 import {Field, FieldArray} from "redux-form";
@@ -8,7 +8,7 @@ import 'react-select/dist/react-select.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import StrongPassword from 'react-strongpassword';
+//import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
 import {MODAL_REMOVE, MODAL_ADD_USER_PERFORMANCE, MODAL_SAVED} from "../../modal/constants";
 import TimePicker from 'react-times';
@@ -143,7 +143,7 @@ export const inputPassword = ({input, meta, placeholder, isChild}) => {
 
 export const inputPasswordMeter = ({input, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
-        <StrongPassword {...input} placeholder={placeholder} className="form-control"/>
+        {/*<StrongPassword {...input} placeholder={placeholder} className="form-control"/>*/}
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;

@@ -1,4 +1,4 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {MODAL_REMOVE} from "../modal/constants";
 import {Button} from 'react-bootstrap';

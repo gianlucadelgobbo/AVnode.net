@@ -1,4 +1,4 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import Lightbox from 'react-image-lightbox';
 
 export default class LightboxGallery extends Component {
