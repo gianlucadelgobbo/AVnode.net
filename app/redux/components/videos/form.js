@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-import {renderDropzoneInput} from "../../common/form/components";
+import {renderDropzoneInput} from "../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
