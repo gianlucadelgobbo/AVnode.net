@@ -11,6 +11,7 @@ import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import ComingSoon from '../../comingSoon'
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -73,7 +74,7 @@ class ProfileConnections extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h1>MY CONNECTIONS</h1>
+                   {/* <h1>MY CONNECTIONS</h1>
 
                     <br/>
                     {isFetching && !model && <Loading/>}
@@ -87,8 +88,12 @@ class ProfileConnections extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                    />}
+                    />}*/}
+
+                    <ComingSoon/>
                 </div>
+
+
             </div>
         );
     }

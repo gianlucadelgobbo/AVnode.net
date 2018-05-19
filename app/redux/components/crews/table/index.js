@@ -20,7 +20,6 @@ class ModelTable extends Component {
     renderTable() {
 
         const {showModal, removeModel, list} = this.props;
-        console.log(list)
         return <Table
             data={list}
             columns={

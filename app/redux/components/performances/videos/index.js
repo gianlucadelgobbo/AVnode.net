@@ -7,7 +7,7 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
+import {getModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getModelIsFetching, getModelErrorMessage} from "../../performances/selectors";
@@ -16,7 +16,7 @@ import {getModelIsFetching, getModelErrorMessage} from "../../performances/selec
 class PerformancesImage extends Component {
 
     componentDidMount() {
-        const {fetchModel, _id} = this.props;
+        const {fetchModel,match: {params: {_id}}} = this.props;
         fetchModel({
             id: _id
         });
@@ -66,7 +66,7 @@ class PerformancesImage extends Component {
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage, _id} = this.props;
+        const {model, showModal, isFetching, errorMessage, match: {params: {_id}}} = this.props;
 
         return (
             <div className="row">
@@ -99,7 +99,7 @@ class PerformancesImage extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
+    model: gettModel(state),
     isFetching: getModelIsFetching(state),
     errorMessage: getModelErrorMessage(state),
 });

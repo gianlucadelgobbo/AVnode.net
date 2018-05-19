@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
@@ -22,8 +22,8 @@ import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 class CrewImage extends Component {
 
     componentDidMount() {
-        const {fetchModel, _id} = this.props;
-        fetchModel({id:_id});
+        const {fetchModel, match: {params: {_id}}} = this.props;
+        fetchModel({id: _id});
     }
 
     // Convert form values to API model
@@ -55,7 +55,7 @@ class CrewImage extends Component {
         // Add auth user _id
         model._id = user._id;
 
-        console.log("model", model)
+
 
         return;
 
@@ -70,7 +70,7 @@ class CrewImage extends Component {
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage, _id} = this.props;
+        const {model, showModal, isFetching, errorMessage, match: {params: {_id}}} = this.props;
 
         return (
             <div className="row">
@@ -102,7 +102,7 @@ class CrewImage extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state, {_id}) => ({
+const mapStateToProps = (state, {match: {params: {_id}}}) => ({
     model: getModel(state, _id),
     isFetching: getModelIsFetching(state, _id),
     errorMessage: getModelErrorMessage(state, _id),

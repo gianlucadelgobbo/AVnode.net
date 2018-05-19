@@ -6,7 +6,7 @@ import Form from './form'
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
-import {getDefaultModel} from "../selectors";
+import {getModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
@@ -16,7 +16,7 @@ import LightBox from '../../lightboxGallery/index'
 class EventImages extends Component {
 
     componentDidMount() {
-        const {fetchModel, _id} = this.props;
+        const {fetchModel, match: {params: {_id}}} = this.props;
         fetchModel({id: _id});
     }
 
@@ -62,7 +62,7 @@ class EventImages extends Component {
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage, _id} = this.props;
+        const {model, showModal, isFetching, errorMessage, match: {params: {_id}}} = this.props;
 
         return (
             <div className="row">
@@ -108,8 +108,8 @@ class EventImages extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
+const mapStateToProps = (state, {match: {params: {_id}}}) => ({
+    model: getModel(state, _id),
     isFetching: getIsFetching(state),
     errorMessage: getErrorMessage(state),
 });

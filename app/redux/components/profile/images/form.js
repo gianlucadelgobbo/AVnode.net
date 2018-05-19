@@ -36,6 +36,7 @@ class ProfileImageForm extends Component {
                     name="images"
                     component={renderDropzoneInput}
                     showModal={showModal}
+                    accept="image/jpeg, image/png"
                 />
 
                 <hr/>
