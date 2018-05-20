@@ -2,7 +2,7 @@ extends ../layout
 block content
   .user_dett.single_event_page
     - var perc = parseInt((100/participateMenu.length)*(call.step+1))
-    h1=__("Participate") + ": " + __("Step")+ " " + (call.step+1)
+    h1=global.__("Participate") + ": " + global.__("Step")+ " " + (call.step+1)
     hr
     .progress
       .progress-bar(role="progressbar" style='width: '+perc+'%;', aria-valuenow=perc, aria-valuemin='0', aria-valuemax='100')=perc+"%"
@@ -27,11 +27,11 @@ block content
     - if (dett.subtitle)
       //h3=Fnc.getTextFormat(dett.subtitle, config.lang, true)
     - if (!dett.organizationsettings.call_is_active)
-      p=__("No call for proposals is active")
+      p=global.__("No call for proposals is active")
     - else if (!user || !user._id)
-      p=__("To participate to the call for proposal you have to be logged in")
-      a.btn.btn-primary(href="/login/?from=/events/"+dett.slug+"/participate/")=__("LOGIN")
-      a.btn.btn-default(href="/signup/?from=/events/"+dett.slug+"/participate/")=__("REGISTER")
+      p=global.__("To participate to the call for proposal you have to be logged in")
+      a.btn.btn-primary(href="/login/?from=/events/"+dett.slug+"/participate/")=global.__("LOGIN")
+      a.btn.btn-default(href="/signup/?from=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
     - else
       form(method="post")
         h2.mb-3=participateMenu[call.step]
@@ -52,5 +52,5 @@ block content
             //include participate/step_6
           default
             include participate/step_0
-        input.btn.btn-primary(type="submit" value=__("NEXT >>"))
+        input.btn.btn-primary(type="submit" value=global.__("NEXT >>"))
         input(type="hidden" name="step" value=call.step)

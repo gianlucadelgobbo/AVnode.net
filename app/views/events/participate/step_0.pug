@@ -13,10 +13,10 @@
     .col-md-11
       label
         h4=dett.organizationsettings.call.calls[a].title
-        p=__("Start date")+": "+dett.organizationsettings.call.calls[a].start_date_formatted+" | "+__("End date")+": "+dett.organizationsettings.call.calls[a].end_date+" | "+__("Email")+": "+dett.organizationsettings.call.calls[a].email
-        p=__("Admitted projects") + ": "
+        p=global.__("Start date")+": "+dett.organizationsettings.call.calls[a].start_date_formatted+" | "+global.__("End date")+": "+dett.organizationsettings.call.calls[a].end_date+" | "+global.__("Email")+": "+dett.organizationsettings.call.calls[a].email
+        p=global.__("Admitted projects") + ": "
         ul
           each cat in admitted
             li=cat.name
-        p=__("Topics") + ": " + topics.join(", ")
+        p=global.__("Topics") + ": " + topics.join(", ")
         p!=dett.organizationsettings.call.calls[a].excerpt

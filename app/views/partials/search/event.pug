@@ -1,6 +1,6 @@
 .card.mb-2
   .card-block
-    .badge.badge-default= __('Event')
+    .badge.badge-default= global.__('Event')
     .media
       if item.image
         img.card-img-top.img-fluid(
@@ -14,4 +14,4 @@
           =item.title
         h5= item.subtitle
         p= item.about
-        a.btn.btn-primary(href=item.publicUrl)=__('More')
+        a.btn.btn-primary(href=item.publicUrl)=global.__('More')

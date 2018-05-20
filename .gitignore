@@ -2,18 +2,18 @@ public/css/main.css
 .env*
 node_modules
 npm-debug.log
-storage/
-warehouse/
-.db
-.elasticsearch
+warehouse_old/*
+warehouse/*
+glacier/*
 logs/*
-warehouse
-glacier
 .DS_Store
 .vscode/
 package-lock.json
 .eslintrc.json
 font-awesome.css
 *.iml
-storage
 .idea/
+AVnode.net.code-workspace
+__BUTTARE
+__IMPORT SCRIPTS
+

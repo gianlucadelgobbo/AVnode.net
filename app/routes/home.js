@@ -14,8 +14,6 @@ const logger = require('../utilities/logger');
 
 router.get('/', (req, res) => {
   let homedata = {stats:{}};
-
-  logger.debug('fetchevents');
   const section = 'events';
   const model = Event;
   const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
@@ -28,8 +26,6 @@ router.get('/', (req, res) => {
   dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
     homedata.events = data;
     homedata.stats.events = total;
-
-    logger.debug('fetchperformances');
     const section = 'performances';
     const model = Performance;
     const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
@@ -42,7 +38,6 @@ router.get('/', (req, res) => {
       homedata.performances = data;
       homedata.stats.performances = total;
   
-      logger.debug('fetchvideos');
       const section = 'videos';
       const model = Video;
       const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
@@ -56,7 +51,6 @@ router.get('/', (req, res) => {
         homedata.videos = data;
         homedata.stats.videos = total;
     
-        logger.debug('fetchgalleries');
         const section = 'gallery';
         const model = Gallery;
         const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
@@ -70,7 +64,6 @@ router.get('/', (req, res) => {
           homedata.galleries = data;
           homedata.stats.galleries = total;
       
-          logger.debug('fetchfootage');
           const section = 'footage';
           const model = Footage;
           const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
@@ -84,7 +77,6 @@ router.get('/', (req, res) => {
             homedata.footage = data;
             homedata.stats.footage = total;
         
-            logger.debug('fetchplaylists');
             const section = 'playlists';
             const model = Playlist;
             const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
@@ -104,7 +96,6 @@ router.get('/', (req, res) => {
                 } else {
                   res.json({data:homedata});
                 }
-                logger.debug(err);
                 //return next(err);
               } else {
                 res.render('home', {

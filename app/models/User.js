@@ -47,14 +47,15 @@ const userSchema = new Schema({
   mobile: [Link],
   skype: [Link],
 
-  email: { type: String, /*unique: true TODO TO CHECK*/ },
+  email: { type: String, trim: true, index: true, unique: true, sparse: true },
   emails: {
     type     : [{
       email: {
         type: String,
-        trim: true,
-        lowercase: true,
-       /* unique: true, TODO TO CHECK*/
+        trim: true, 
+        index: true, 
+        unique: true, 
+        sparse: true,
         required: 'EMAIL_IS_REQUIRED',
         validate: [(email) => {
           var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -67,7 +68,8 @@ const userSchema = new Schema({
       mailinglists: {},
       confirm: String
     }],
-    /*required : true, TODO TO CHECK*/
+    required : true,
+    sparse: true,
     validate : [{
       validator : function(array) {
         let confirmed_exists = false;

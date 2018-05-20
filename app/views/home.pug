@@ -8,7 +8,7 @@ block teaser
           .display-6.badge.badge-success Upcoming Event
           h1.display-3=event.title
           p.lead=event.dateFormatted
-          a.btn.btn-primary(href=event.publicUrl)=__('More')
+          a.btn.btn-primary(href=event.publicUrl)=global.__('More')
 
 block content
   section.home_events_wrapper
@@ -16,79 +16,79 @@ block content
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+            h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
             .row.carousel
               each item in data.events
                 .col-sm-4
                   include partials/boxEvent
             .text-right
-              a.btn.btn-secondary(href="/events/")=__('View all')        
+              a.btn.btn-secondary(href="/events/")=global.__('View all')        
           
   section.home_performances_wrapper
     .content_wrapper
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+            h2.main_title.indented_title!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
             .performance_divider.basic_divider
             .row.carousel
               each item in data.performances
                 .col-sm-4
                   include partials/boxPerformance
             .text-right
-              a.btn.btn-secondary(href="/events/")=__('View all')        
+              a.btn.btn-secondary(href="/events/")=global.__('View all')        
 
   section.home_videos_wrapper
     .content_wrapper
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
+            h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
             .row.carousel
               each item in data.videos            
                 .col-sm-4
                   include partials/boxVideo  
             .text-right
-              a.btn.btn-secondary(href="/videos/")=__('View all')        
+              a.btn.btn-secondary(href="/videos/")=global.__('View all')        
 
   section.home_galleries_wrapper
     .content_wrapper
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+            h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
             .performance_divider.basic_divider
             .row.carousel
               each item in data.galleries
                 .col-sm-4
                   include partials/boxGallery
             .text-right
-              a.btn.btn-secondary(href="/events/")=__('View all')        
+              a.btn.btn-secondary(href="/events/")=global.__('View all')        
                   
   section.home_footage_wrapper
     .content_wrapper
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
+            h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
             .row.carousel
               each item in data.footage            
                 .col-sm-4
                   include partials/boxFootage  
             .text-right
-              a.btn.btn-secondary(href="/events/")=__('View all')        
+              a.btn.btn-secondary(href="/events/")=global.__('View all')        
 
   section.home_playlists_wrapper
     .content_wrapper
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+            h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
             .row.carousel
               each item in data.playlists
                 .col-sm-4
                   include partials/boxPlaylist
             .text-right
-              a.btn.btn-secondary(href="/events/")=__('View all')        
+              a.btn.btn-secondary(href="/events/")=global.__('View all')        
   
   

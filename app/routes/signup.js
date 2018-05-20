@@ -21,14 +21,11 @@ const logger = require('../utilities/logger');
 
 
 router.post('/', (req, res) => {
-  logger.debug('putData');
   let data = new UserTemp();
   let select = config.cpanel.signup.forms.signup.select;
   let put = {};
   for (const item in select) if(req.body[item]) put[item] = req.body[item];
-  logger.debug(req.body);
   Object.assign(data, put);
-  logger.debug(data);
 
   UserTemp.deleteMany({ email: data.email }, function (err) {
     data.save((err) => {

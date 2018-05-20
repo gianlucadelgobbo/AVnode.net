@@ -19,6 +19,7 @@ const routes = require('./app/routes');
 const logger = require('./app/utilities/logger');
 
 const config = require('getconfig');
+global.config = config;
 
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
@@ -51,6 +52,15 @@ app.use('/storage', express.static(path.join(__dirname, 'storage')));
 app.use('/warehouse', express.static(path.join(__dirname, 'warehouse')));
 
 app.use(i18n.init);
+app.use( function ( req, res, next ) {
+    // ADD VARS TO JADE
+    res.locals.current_url = req.url;
+    res.locals.protocol = req.protocol;
+    let hostA = req.headers.host.split('.');
+    if (config.locales.indexOf(hostA[0])>=0) hostA.shift();
+    res.locals.basehost = hostA.join('.');
+    next();
+} );
 app.use(session({
     resave: true,
     saveUninitialized: true,
@@ -60,7 +70,10 @@ app.use(session({
         autoReconnect: true
     })
 }));
-
+app.use(function(req,res,next){
+    res.locals.session = req.session;
+    next();
+});
 // FIXME
 // This blocks mocha testing, so we disable it
 // in this context…
@@ -81,28 +94,18 @@ app.use((req, res, next) => {
     res.locals.user = req.user;
     next();
 });
-
+logger.debug('global.getLocale: '+global.getLocale());
 app.use((req, res, next) => {
     const path = req.path.split('/')[1];
-    const lang = req.headers.host.split('.')[0] != 'avnode' || req.headers.host.split('.')[0] != 'dev' || req.headers.host.split('.')[0] != 'api' ? req.headers.host.split('.')[0] : 'en';
-    //logger.debug('req.headers.host: '+req.headers.host);
-    //logger.debug('lang: '+lang);
-    //delete req.session.sessions;
-    //logger.debug(req.session);
+    const lang = req.headers.host.split('.')[0] != req.headers.host && req.headers.host.split('.')[0] != 'avnode' && req.headers.host.split('.')[0] != 'dev' && req.headers.host.split('.')[0] != 'api' ? req.headers.host.split('.')[0] : 'en';
+    //logger.debug('req.headers.host: '+req.headers.host.split('.')[0]);
     if (!req.session.sessions) {
-        //logger.debug('create sessions');
         req.session.sessions = {current_lang: config.defaultLocale};
-        //logger.debug(req.session.sessions);
     }
-    //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
     if (req.session.sessions.current_lang != lang) {
-        //logger.debug('changelang');
         req.session.sessions.current_lang = lang;
-        //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
-        //logger.debug('global.getLocale: '+global.getLocale());
     }
     global.setLocale(req.session.sessions.current_lang);
-    //logger.debug('global.getLocale: '+global.getLocale());
 
     if (/auth|login|logout|signup|images|fonts/i.test(path)) {
         return next();
@@ -131,6 +134,7 @@ app.use((req, res, next) => {
         next();
     }
 });
+
 // not needed because in public/
 
 // FIXME

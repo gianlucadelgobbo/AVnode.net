@@ -9,12 +9,12 @@ block content
       form(method='post')
         input(type='hidden', name='_csrf', value=_csrf)
         .card
-          .card-header=__('New Video')
+          .card-header=global.__('New Video')
           .card-block
             .form-group
-              label(for='video')=__('Video')
+              label(for='video')=global.__('Video')
               input.form-control(type='text', name='url', id='video', placeholder='', autofocus, required)
               span.help
                 | YouTube or Vimeo link
             .form-group
-              button.btn.btn-primary(type='submit')=__('Save')
+              button.btn.btn-primary(type='submit')=global.__('Save')

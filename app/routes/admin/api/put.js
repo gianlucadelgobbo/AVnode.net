@@ -27,10 +27,7 @@ router.putData = (req, res) => {
           let select = config.cpanel[req.params.sez].forms[req.params.form].select;
           let put = {};
           for (const item in select) if(req.body[item]) put[item] = req.body[item];
-          logger.debug(req.body);
           Object.assign(data, put);
-          logger.debug(data);
-
           data.save((err) => {
             if (err) {
               console.log('err');
