@@ -19,7 +19,7 @@ import ProfileConnections from '../profile/connections/index';
 // Events
 import Events from '../events/index.js';
 import EventPublic from '../events/public/';
-import EventImages from '../events/images/';
+import EventImages from '../events/image/';
 import EventPartners from '../events/partners/';
 import EventProgram from '../events/program/';
 import EventGalleries from '../events/galleries/';

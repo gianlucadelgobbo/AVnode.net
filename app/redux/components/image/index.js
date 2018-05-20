@@ -12,8 +12,8 @@ import {bindActionCreators} from "redux";
 class Image extends Component {
 
     componentDidMount() {
-        const {fetchModel} = this.props;
-        fetchModel();
+        const {fetchModel, id} = this.props;
+        fetchModel(id);
     }
 
     // Convert form values to API model
@@ -63,7 +63,6 @@ class Image extends Component {
         return (
 
             <div>
-
 
                 <br/>
                 {isFetching && !model && <Loading/>}

@@ -24,5 +24,13 @@
 	"likes": "likes",
 	"Galleries": "Galleries",
 	"Playlist": "Playlist",
-	"Text is missing": "Text is missing"
+	"Text is missing": "Text is missing",
+	"Login": "Login",
+	"Sign up": "Sign up",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?",
+	"You are logged in.": "You are logged in."
 }
