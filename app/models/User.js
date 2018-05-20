@@ -28,7 +28,7 @@ const userSchema = new Schema({
   stats: {},
 
   slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
-  stagename: { type: String, unique: true, minlength: 3, maxlength: 50 },
+  stagename: { type: String, /*unique: true, TODO TO CHECK*/ minlength: 3, maxlength: 50 },
   addresses: [Address],
   abouts: [About],
   web: [Link],
@@ -47,14 +47,14 @@ const userSchema = new Schema({
   mobile: [Link],
   skype: [Link],
 
-  email: { type: String, unique: true },
+  email: { type: String, /*unique: true TODO TO CHECK*/ },
   emails: {
     type     : [{
       email: {
         type: String,
         trim: true,
         lowercase: true,
-        unique: true,
+       /* unique: true, TODO TO CHECK*/
         required: 'EMAIL_IS_REQUIRED',
         validate: [(email) => {
           var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -67,7 +67,7 @@ const userSchema = new Schema({
       mailinglists: {},
       confirm: String
     }],
-    required : true,
+    /*required : true, TODO TO CHECK*/
     validate : [{
       validator : function(array) {
         let confirmed_exists = false;

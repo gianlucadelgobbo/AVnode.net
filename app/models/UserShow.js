@@ -19,9 +19,9 @@ const userSchema = new Schema({
   old_id: String,
 
   slug: { type: String, unique: true },
-  stagename: { type: String, unique: true },
-  username: { type: String, unique: true },
-  email: { type: String, unique: true },
+  stagename: { type: String, /*unique: true TODO TO CHECK*/},
+  username: { type: String, /*unique: true TODO TO CHECK*/},
+  email: { type: String, /*unique: true TODO TO CHECK*/ },
   is_crew: Boolean,
   user_type : Number,
   image: MediaImage,

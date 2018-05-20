@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import React, { Component } from 'react';
 
 const LoadingIndicator = () => (
     <div className="loading-holder">

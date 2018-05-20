@@ -1,4 +1,4 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import ProfileLateralMenu from '../lateralMenu';
 import Form from './form';
 

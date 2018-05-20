@@ -1,0 +1,152 @@
+[
+  {
+    "id": "admin",
+    "defaultMessage": "Control panel",
+    "filepath": "./app/redux/components/app/index.js"
+  },
+  {
+    "id": "publicData",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/crews/lateralMenu/index.js"
+  },
+  {
+    "id": "images",
+    "defaultMessage": "Images",
+    "filepath": "./app/redux/components/crews/lateralMenu/index.js"
+  },
+  {
+    "id": "members",
+    "defaultMessage": "Members",
+    "filepath": "./app/redux/components/crews/lateralMenu/index.js"
+  },
+  {
+    "id": "organization",
+    "defaultMessage": "Organization",
+    "filepath": "./app/redux/components/crews/lateralMenu/index.js"
+  },
+  {
+    "id": "myAccountMembersData",
+    "defaultMessage": "My Account Members data",
+    "filepath": "./app/redux/components/crews/members/index.js"
+  },
+  {
+    "id": "myAccountOrganizationData",
+    "defaultMessage": "My Account Organization data",
+    "filepath": "./app/redux/components/crews/organization/index.js"
+  },
+  {
+    "id": "publicData",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "images",
+    "defaultMessage": "Images",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "partners",
+    "defaultMessage": "Partners",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "program",
+    "defaultMessage": "Program",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "galleries",
+    "defaultMessage": "Galleries",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "videos",
+    "defaultMessage": "Videos",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "calls",
+    "defaultMessage": "Calls",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "setting",
+    "defaultMessage": "Settings",
+    "filepath": "./app/redux/components/events/lateralMenu/index.js"
+  },
+  {
+    "id": "publicData",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/performances/lateralMenu/index.js"
+  },
+  {
+    "id": "galleries",
+    "defaultMessage": "Galleries",
+    "filepath": "./app/redux/components/performances/lateralMenu/index.js"
+  },
+  {
+    "id": "videos",
+    "defaultMessage": "Videos",
+    "filepath": "./app/redux/components/performances/lateralMenu/index.js"
+  },
+  {
+    "id": "publicData",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  {
+    "id": "images",
+    "defaultMessage": "Images",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  {
+    "id": "emails",
+    "defaultMessage": "Emails",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  {
+    "id": "privateData",
+    "defaultMessage": "Private data",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  {
+    "id": "password",
+    "defaultMessage": "Password",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  {
+    "id": "connections",
+    "defaultMessage": "Connections",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  {
+    "id": "myAccountPrivateData",
+    "defaultMessage": "My Account Private data",
+    "filepath": "./app/redux/components/profile/private/index.js"
+  },
+  {
+    "id": "profile",
+    "defaultMessage": "Profile",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "crews",
+    "defaultMessage": "Crews",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "performances",
+    "defaultMessage": "Performances",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "events",
+    "defaultMessage": "Events",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "preferences",
+    "defaultMessage": "Preferences",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  }
+]

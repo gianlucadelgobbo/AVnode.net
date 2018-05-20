@@ -1,4 +1,4 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 
 class ExampleModal extends Component {
 

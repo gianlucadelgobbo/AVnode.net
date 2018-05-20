@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import React, {Component} from 'react';
 import Textarea from 'react-textarea-autosize';
 import {Tab, Tabs, Nav, NavItem, Button, ButtonGroup} from 'react-bootstrap';
 import {Field, FieldArray} from "redux-form";
@@ -8,7 +8,6 @@ import 'react-select/dist/react-select.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import StrongPassword from 'react-strongpassword';
 import Dropzone from 'react-dropzone';
 import {MODAL_REMOVE, MODAL_ADD_USER_PERFORMANCE, MODAL_SAVED} from "../../modal/constants";
 import TimePicker from 'react-times';
@@ -23,8 +22,23 @@ import {createMultiLanguageInitialObject} from "../../common/form";
 import {DATE_FORMAT} from '../../../conf';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
+    const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
+        <div className="autocomplete-root">
+            <input {...getInputProps()} />
+            <div className="autocomplete-dropdown-container">
+                {suggestions.map(suggestion => (
+                    <div {...getSuggestionItemProps(suggestion)}>
+                        <span>{suggestion.description}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
     const field = <div className="form-group">
-        <PlacesAutocomplete inputProps={input} options={options}/>
+        <PlacesAutocomplete {...input} options={options}>
+            {renderFunc}
+        </PlacesAutocomplete>
         {meta.error && meta.touched &&
         <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
     </div>;
@@ -139,19 +153,6 @@ export const inputText = ({input, meta, placeholder, isChild}) => {
 
 export const inputPassword = ({input, meta, placeholder, isChild}) => {
     return inputField({input, type: "password", meta, placeholder, isChild})
-};
-
-export const inputPasswordMeter = ({input, meta, placeholder, isChild}) => {
-    const field = <div className="form-group">
-        <StrongPassword {...input} placeholder={placeholder} className="form-control"/>
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
-    </div>;
-    const label = <div className="labelField">{placeholder}</div>;
-    return !!isChild ? field :
-        <dl className="row">
-            <dt className="col-sm-2">{label}</dt>
-            <dd className="col-sm-10"> {field} </dd>
-        </dl>
 };
 
 export const inputUrl = ({input, meta, placeholder, isChild}) => {
@@ -346,55 +347,103 @@ export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, m
 export const multiInputEmailWithDetails = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         const {is_confirmed} = fields.get(index);
-        return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
-            <div className="col-md-5 offset-1">
-                <Field
-                    name={`${member}.email`}
-                    component={inputEmail}
-                    isChild={true}
-                />
-            </div>
-            <div className="col-md-4">
+        return <div className={"container-fluid " + (index % 2 === 0 ? "even" : "odd")} key={index}>
+            <div className="row ">
+                <div className="col-md-5 offset-1">
+                    <Field
+                        name={`${member}.email`}
+                        component={inputEmail}
+                        isChild={true}
+                    />
+                </div>
+                <div className="col-md-4">
 
-                <div className="row">
-                    <div className="col-md-4">
-                        <Field
-                            name={`${member}.is_public`}
-                            component={checkboxField}
-                            placeholder={<p>Is public</p>}
-                            isChild={true}
-                        />
-                    </div>
-                    <div className="col-md-4">
-                        <Field
-                            disabled={!is_confirmed}
-                            name={`${member}.is_primary`}
-                            component={checkboxField}
-                            placeholder={<p data-tip="To set as primary, confirm the email first">Is
-                                primary<ReactTooltip/></p>}
-                            isChild={true}
-                        />
-                    </div>
-                    <div className="col-md-4">
-                        {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
+                    <div className="row">
+                        <div className="col-md-4">
+                            <Field
+                                name={`${member}.is_public`}
+                                component={checkboxField}
+                                placeholder={<div>Is public</div>}
+                                isChild={true}
+                            />
+                        </div>
+                        <div className="col-md-4">
+                            <Field
+                                disabled={!is_confirmed}
+                                name={`${member}.is_primary`}
+                                component={checkboxField}
+                                placeholder={<div data-tip="To set as primary, confirm the email first">Is
+                                    primary<ReactTooltip/></div>}
+                                isChild={true}
+                            />
+                        </div>
+                        <div className="col-md-4">
+                            {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
+                        </div>
+
                     </div>
 
                 </div>
+                <div className="col-md-1">
+                    <Button bsStyle="danger"
+                            onClick={() =>
+                                showModal({
+                                    type: MODAL_REMOVE,
+                                    props: {
+                                        onRemove: () => fields.remove(index)
+                                    }
+                                })}
+                    >
+                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                    </Button>
+                </div>
+            </div>
 
+            <div className="row ">
+                <div className="col-md-5 offset-1">
+                    Subscriptions:
+                </div>
+                <div className="col-md-4">
+
+                    <div className="row">
+                        <div className="col-md-3">
+                            <Field
+                                name={`${member}.mailinglists.flxer`}
+                                component={checkboxField}
+                                placeholder={<div>FLxER</div>}
+                                isChild={true}
+                            />
+                        </div>
+                        <div className="col-md-3">
+                            <Field
+                                name={`${member}.mailinglists.flyer`}
+                                component={checkboxField}
+                                placeholder={<div>Flyer</div>}
+                                isChild={true}
+                            />
+                        </div>
+                        <div className="col-md-3">
+                            <Field
+                                name={`${member}.mailinglists.livevisuals`}
+                                component={checkboxField}
+                                placeholder={<div>Live Visuals</div>}
+                                isChild={true}
+                            />
+                        </div>
+                        <div className="col-md-3">
+                            <Field
+                                name={`${member}.mailinglists.updates`}
+                                component={checkboxField}
+                                placeholder={<div>Updates</div>}
+                                isChild={true}
+                            />
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
-            <div className="col-md-1">
-                <Button bsStyle="danger"
-                        onClick={() =>
-                            showModal({
-                                type: MODAL_REMOVE,
-                                props: {
-                                    onRemove: () => fields.remove(index)
-                                }
-                            })}
-                >
-                    <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                </Button>
-            </div>
+            <hr/>
         </div>
 
     };
@@ -644,6 +693,7 @@ export const renderDropzoneInput = (field) => {
             <Dropzone
                 className="attachment-dropzone"
                 name={field.name}
+                accept={field.accept}
                 maxSize={10485760}
                 multiple={field.multiple || false}
                 onDropRejected={() => alert("Unable to upload the file: allowed file size exceeded (max 10 MB)")}
@@ -802,7 +852,7 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
                             placeholder="Performance"
                         />
                     </div>
-                    <div className="col-md-12">
+                    {/* <div className="col-md-12">
                         <Field
                             name={`${member}.categories`}
                             component={renderList}
@@ -810,10 +860,10 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
                             multiple={true}
                             options={categories}
                         />
-                    </div>
+                    </div>*/}
                 </div>
 
-                <hr/>
+                {/*                <hr/>
 
                 <div className="row">
                     <div className="col-md-12">
@@ -872,7 +922,7 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
                             placeholder="Room"
                         />
                     </div>
-                </div>
+                </div>*/}
 
             </div>
 
@@ -892,9 +942,9 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
                 </Button>
             </div>
 
-            <div className="col-md-12">
-                <hr/>
-            </div>
+            {/*<div className="col-md-12">*/}
+            {/*<hr/>*/}
+            {/*</div>*/}
         </div>
     }
 
@@ -1464,14 +1514,14 @@ export const multiActivities = ({fields, title, meta: {error}, placeholder, show
                         />
                     </div>
                 </div>
-                  <div className="row">
+                <div className="row">
                     <div className="col-md-12">
                         <Field
                             name={`${member}.activity_main_season`}
                             component={renderList}
                             placeholder="Activity main season"
-                            
-                            options={seasons.map(s => ({label:s, value:s}))}
+
+                            options={seasons.map(s => ({label: s, value: s}))}
                         />
                     </div>
                 </div>
@@ -1482,7 +1532,7 @@ export const multiActivities = ({fields, title, meta: {error}, placeholder, show
                             component={multiGoogleCityCountry}
                             placeholder="Activity cities"
                             showModal={showModal}
-                            
+
                         />
                     </div>
                 </div>
@@ -1537,13 +1587,13 @@ export const multiLegalOrganization = ({fields, title, meta: {error}, placeholde
                             isChild={true}
                             placeholder="Organization legal representative title"
                             options={[
-                                        {value: 'Mr', label: 'Mr'},
-                                        {value: 'Miss', label: 'Miss'},
-                                    ]}
-                        />  
+                                {value: 'Mr', label: 'Mr'},
+                                {value: 'Miss', label: 'Miss'},
+                            ]}
+                        />
                     </div>
                     <div className="col-md-6">
-                         <Field
+                        <Field
                             name="legal_representative_role"
                             component={inputText}
                             isChild={true}
@@ -1566,7 +1616,7 @@ export const multiLegalOrganization = ({fields, title, meta: {error}, placeholde
                             component={inputText}
                             isChild={true}
                             placeholder="Organization legal representative surname"
-                        /> 
+                        />
                     </div>
                 </div>
                 <div className="row">
