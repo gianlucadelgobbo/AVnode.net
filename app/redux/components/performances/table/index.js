@@ -7,8 +7,9 @@ import {fetchList, removeModel} from "../actions";
 import {Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {MODAL_REMOVE} from "../../modal/constants";
-import Loading from '../../loading'
-import Table from '../../table'
+import Loading from '../../loading';
+import Table from '../../table';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 class ModelTable extends Component {
 
@@ -21,19 +22,30 @@ class ModelTable extends Component {
 
         const {showModal, removeModel, list} = this.props;
 
+        const PerformanceItem = 
+                        {
+                            label: <FormattedMessage
+                                    id="PerformancesTitle"
+                                    defaultMessage="Performances Name"
+                                    />
+                        }
+
         return <Table
             data={list}
             columns={
                 [
                     {
-                        Header: "Title",
-                        id: "title",
-                        accessor: 'title',
+                        Header: () => {
+                            return <span>{PerformanceItem.label}<i className="fa fa-sort"></i></span>
+                        },
+                        //id: "PerformancesTitle",
+                        className:'PerformanceTable',
                         Cell: (props) => {
                             const {row, original} = props;
                             return <Link to={`/admin/performances/${original._id}/public`}>
-                                {row.title}
-                            </Link>
+                                        <img height={140} className="image-responsive" src={original.imageFormats.small}/>
+                                        <p>{original.title}</p>
+                                    </Link>
                         }
                     },
                     {
@@ -102,4 +114,4 @@ ModelTable = connect(
     mapDispatchToProps
 )(ModelTable);
 
-export default ModelTable;
+export default injectIntl(ModelTable);
