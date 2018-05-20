@@ -7,8 +7,9 @@ import {fetchList, removeModel} from "../actions";
 import {Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {MODAL_REMOVE} from "../../modal/constants";
-import Loading from '../../loading'
-import Table from '../../table'
+import Loading from '../../loading';
+import Table from '../../table';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
 class ModelTable extends Component {
 
@@ -20,19 +21,31 @@ class ModelTable extends Component {
     renderTable() {
 
         const {showModal, removeModel, list} = this.props;
+        const CrewItem = 
+                        {
+                            label: <FormattedMessage
+                                    id="CrewTitle"
+                                    defaultMessage="Crew Name"
+                                    />
+                        }
         return <Table
             data={list}
             columns={
                 [
+                
                     {
-                        Header: "Crew name",
+                        Header: () => {
+                            return <span>{CrewItem.label}<i className="fa fa-sort"></i></span>
+                        },
                         id: "stagename",
                         accessor: 'stagename',
+                        className:'CrewTable',
                         Cell: (props) => {
                             const {row, original} = props;
                             return <Link to={`/admin/crews/${original._id}/public`}>
-                                {row.stagename}
-                            </Link>
+                                        <img src={original.imageFormats.small}/>
+                                        <p>{row.stagename}</p>
+                                    </Link>
                         }
                     },
                     {
@@ -101,4 +114,4 @@ ModelTable = connect(
     mapDispatchToProps
 )(ModelTable);
 
-export default ModelTable;
+export default injectIntl(ModelTable);
