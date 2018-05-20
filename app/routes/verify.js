@@ -3,18 +3,73 @@ const uuid = require('uuid');
 
 const mongoose = require('mongoose');
 const UserTemp = mongoose.model('UserTemp');
+const User = mongoose.model('User');
 //const mailer = require('../utilities/mailer');
 //const _slug = require('../utilities/slug');
 
 let config = require('getconfig');
 
-router.get('/', (req, res) => {
+router.get('/:sez/:code', (req, res) => {
   if (req.user) {
     return res.redirect('/admin/profile/public');
   }
-  res.render('signup', {
-    title: __('Create Account')
-  });
+  if (req.params.sez == 'signup' && req.params.code) {
+    UserTemp
+    .findOne({confirm:req.params.code})
+    .exec((err, data) => {
+      console.log(data);
+      if(data && data.id) {
+        let user = new User();
+        user.stagename = data.stagename;
+        user.password = data.password;
+        user.email = data.email;
+        user.emails = [{
+          email: data.email,
+          is_public: false,
+          is_primary: true,
+          is_confirmed: true,
+          mailinglists: {livevisuals: 1}
+        }];
+        is_crew = false;
+        data.save((err) => {
+          if (err) {
+            console.log('err');
+            res.render('signup_verify', {
+              title: __('Signup verify'),
+              err: err,
+              data: data
+            });
+          } else {
+            if (!data.crevname) {
+              res.render('signup_verify', {
+                title: __('Signup verify'),
+                data: data
+              });
+            } else {
+              let user = new User();
+              user.stagename = data.crewname;
+              is_crew = true;
+              data.save((err) => {
+                if (err) {
+                  console.log('err');
+                  res.render('signup_verify', {
+                    title: __('Signup verify'),
+                    err: err,
+                    data: data
+                  });
+                } else {
+                  res.render('signup_verify', {
+                    title: __('Signup verify'),
+                    data: data
+                  });
+                }
+              });
+            }
+          }
+        });
+      }          
+    });
+  }
 });
 
 const logger = require('../utilities/logger');

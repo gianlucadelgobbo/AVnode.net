@@ -2,6 +2,7 @@ require('./shared/Category');
 
 require('./User');
 require('./UserShow');
+require('./UserTemp');
 require('./Performance');
 require('./Event');
 require('./EventShow');

@@ -17,6 +17,7 @@ const logout = require('./logout');
 const password = require('./password');
 const search = require('./search');
 const signup = require('./signup');
+const verify = require('./verify');
 
 const admin = require('./admin');
 /*
@@ -41,6 +42,9 @@ router.use('/logout', logout);
 router.use('/password', password);
 router.use('/search', search);
 router.use('/signup', signup);
+
+router.use('/verify', verify);
+
 /*
 router.get('/404', fourOhFour);
 */
