@@ -2,6 +2,8 @@ extends layout
 
 block content
   .container
+    pre=data
+    pre=err
     form(method='post')
       input(type='hidden', name='_csrf', value=_csrf)
       fieldset.form-group
@@ -29,10 +31,6 @@ block content
           .col-md-9
             input.form-control(type='text', name='crewname', id='crewname', placeholder=__('Crew/group/organisation name'), autocomplete='off', autofocus)
         .form-group.row
-          label.col-form-label.col-sm-3(for='crewslug')=__('Crew profile URL')
-          .col-md-9
-            input.form-control(type='text', name='crewslug', id='crewslug', placeholder=__('Crew/group/organisation profile URL'), autocomplete='off', autofocus)
-        .form-group.row
           .col-form-label.col-sm-12
             h5=__('You as member of the crew')
             div=__("You will be able to add more once you confirmed your account")
@@ -40,14 +38,6 @@ block content
         label.col-form-label.col-sm-3(for='stagename')=__('Stage Name')
         .col-md-9
           input.form-control(type='text', name='stagename', id='stagename', placeholder=__('Name as artist or nickname'), autocomplete='off', autofocus, required)
-      .form-group.row
-        label.col-form-label.col-sm-3(for='crewslug')=__('Profile URL')
-        .col-md-9
-          input.form-control(type='text', name='slug', id='slug', placeholder=__('Profile URL'), autocomplete='off', autofocus, required)
-      .form-group.row
-        label.col-form-label.col-sm-3(for='birthdate')=__('Birthdate')
-        .col-md-9
-          input.form-control(type='text', name='birthdate', id='birthdate', placeholder=__('Birthdate'), autocomplete='off', autofocus, required)
       .form-group.row
         label.col-form-label.col-sm-3(for='email')=__('Email')
         .col-md-9
