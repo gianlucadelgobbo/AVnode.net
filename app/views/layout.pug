@@ -1,22 +1,17 @@
 doctype html
-html(lang='en')
+html(lang=session.sessions.current_lang)
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title #{title} - AVnode.net
-    link(rel='apple-touch-icon', sizes='180x180', href='/images/apple-touch-icon.png')
-    link(rel='icon', type='image/png', href='/images/favicon-32x32.png', sizes='32x32')
-    link(rel='icon', type='image/png', href='/images/favicon-16x16.png', sizes='16x16')
-    link(rel='manifest', href='/images/manifest.json')
-    link(rel='mask-icon', href='/images/safari-pinned-tab.svg', color='#ffffff')
-    link(rel='shortcut, icon', href='/images/favicon.ico')
-    meta(name='msapplication-config', content='/images/browserconfig.xml')
-    meta(name='theme-color', content='#ffffff')
 
-    link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
-    link(rel='stylesheet', href='/css/main.css')
-    link(rel='stylesheet', href='/css/video-js.min.css')
+    title #{title} - AVnode.net
+
+    link(rel='stylesheet', type='text/css', href='/css/font-awesome/font-awesome.css')
+    link(rel='stylesheet', type='text/css', href='/css/main.css')
+    link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
+    link(rel='stylesheet', type='text/css', href='/css/slick/slick-theme.css')
+    link(rel='stylesheet', type='text/css', href='/css/slick/slick.css')
     if is_admin
       link(rel='stylesheet', href='/css/admin.css')
   body
@@ -35,19 +30,19 @@ html(lang='en')
         )
           ul.navbar-nav.mr-auto
             li.nav-item
-              a.nav-link(href='/performers')=__('Performers')
+              a.nav-link(href='/performers')=global.__('Performers')
             li.nav-item
-              a.nav-link(href='/performances')=__('Performances')
+              a.nav-link(href='/performances')=global.__('Performances')
             li.nav-item
-              a.nav-link(href='/events')=__('Events')
+              a.nav-link(href='/events')=global.__('Events')
             li.nav-item
-              a.nav-link(href='/footage')=__('Footage')
+              a.nav-link(href='/footage')=global.__('Footage')
             li.nav-item
-              a.nav-link(href='/playlists')=__('Playlists')
+              a.nav-link(href='/playlists')=global.__('Playlists')
             li.nav-item
-              a.nav-link(href='/videos')=__('Videos')
+              a.nav-link(href='/videos')=global.__('Videos')
             li.nav-item
-              a.nav-link(href='/news')=__('News')
+              a.nav-link(href='/news')=global.__('News')
           ul.navbar-nav
             if user
               li.nav-item
@@ -62,13 +57,20 @@ html(lang='en')
                     i.fa.fa-power-off.fa-lg.fa-fw
             else
               li.nav-item
-                a.btn.btn-outline-secondary(href='/login')=__('Login')
+                a.btn.btn-outline-secondary(href='/login')=global.__('Login')
               li.nav-item
-                a.btn.btn-outline-success.ml-3(href='/signup')=__('Sign up')
+                a.btn.btn-outline-success.ml-3(href='/signup')=global.__('Sign up')
             li.nav-item
               a.nav-link.ml-3(href='/search?q=*')
                 i.fa.fa-search.fa-lg.fa-fw
-                =__('Search')
+                =global.__('Search')
+            li.nav-item.dropdown
+              a#langDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                b=session.sessions.current_lang.toUpperCase()
+              .dropdown-menu(aria-labelledby='langDropdown')
+                each lang,slug in config.locales_labels
+                  a.dropdown-item(href=protocol+'://'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
+
 
     include partials/flash
 
@@ -85,19 +87,12 @@ html(lang='en')
 
     footer
       .container
-        .text-muted=__('AVnode.net')
+        .text-muted='AVnode.net'
     script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js')
-    //script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOMLSxSmylntKBKxgy6WN5n7FYzvsgR8Q&libraries=places")
+
     script(src='/js/video.min.js')
     script(src="/js/slick.min.js")
     script(src="/js/main.js")
-    link(rel='stylesheet', type='text/css', href='/css/slick/slick-theme.css')
-    link(rel='stylesheet', type='text/css', href='/css/slick/slick.css')
-    //script(src='/js/ajax.js')
-    //script(src='/js/autocomplete.js')
-    //script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js')
-    //script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js')
-    //script(src='//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js')

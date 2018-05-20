@@ -26,17 +26,17 @@ html(lang='en')
       .collapse.navbar-collapse(id="navbar-collapse")
         ul.navbar-nav.mr-auto
           li.nav-item
-            a.nav-link(href='/performers')=__('Performers')
+            a.nav-link(href='/performers')=global.__('Performers')
           li.nav-item
-            a.nav-link(href='/performances')=__('Performances')
+            a.nav-link(href='/performances')=global.__('Performances')
           li.nav-item
-            a.nav-link(href='/events')=__('Events')
+            a.nav-link(href='/events')=global.__('Events')
           li.nav-item
-            a.nav-link(href='/footage')=__('Footage')
+            a.nav-link(href='/footage')=global.__('Footage')
           li.nav-item
-            a.nav-link(href='/playlists')=__('Playlists')
+            a.nav-link(href='/playlists')=global.__('Playlists')
           li.nav-item
-            a.nav-link(href='/videos')=__('Videos')
+            a.nav-link(href='/videos')=global.__('Videos')
         ul.navbar-nav
           if user
             li.nav-item
@@ -51,13 +51,13 @@ html(lang='en')
                   i.fa.fa-power-off.fa-lg.fa-fw
           else
             li.nav-item
-              a.btn.btn-outline-secondary(href='/login')=__('Login')
+              a.btn.btn-outline-secondary(href='/login')=global.__('Login')
             li.nav-item
-              a.btn.btn-outline-success.ml-3(href='/signup')=__('Sign up')
+              a.btn.btn-outline-success.ml-3(href='/signup')=global.__('Sign up')
           li.nav-item
             a.nav-link.ml-3(href='/search?q=*')
               i.fa.fa-search.fa-lg.fa-fw
-              =__('Search')
+              =global.__('Search')
 
     include partials/flash
     main.container-fluid
@@ -72,7 +72,7 @@ html(lang='en')
 
     footer
       .container-fluid
-        .text-muted=__('AVnode.net')
+        .text-muted=global.__('AVnode.net')
     script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')

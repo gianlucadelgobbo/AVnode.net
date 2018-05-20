@@ -41,13 +41,13 @@ block content
   .container
     section.row.performer_events_wrapper
       .col-lg-12
-        h2.main_title.indented_title.color1!=__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+        h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
         .row.carousel
           each item in data.events
             .col-sm-4
               include ../partials/boxEvent
         //.text-right
-          a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')        
+          a.btn.btn-secondary(href=data.publicUrl+"/events/")=global.__('View all')        
           
   
   if data.performances.length
@@ -56,7 +56,7 @@ block content
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+              h2.main_title.indented_title!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
               .performance_divider.basic_divider
               .row.carousel
                 each item in data.performances
@@ -68,7 +68,7 @@ block content
       .container
         .row
           .col-lg-12
-            h2.main_title.indented_title!=__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
+            h2.main_title.indented_title!=global.__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
             .performance_divider.basic_divider
             .row
               .col-sm-6
@@ -86,7 +86,7 @@ block content
           if data.footage.length
             .row.performer_footage.bottom60
               .col-lg-12
-                h2.main_title.indented_title!=__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
+                h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
                 .row.carousel
                   each item in data.footage            
                     .col-sm-4
@@ -95,7 +95,7 @@ block content
           if data.videos.length
             .row.performer_video
               .col-lg-12
-                h2.main_title.indented_title!=__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
                 .row.carousel.bottom60
                   each item in data.videos            
                     .col-sm-4
@@ -104,7 +104,7 @@ block content
           if data.playlists.length
             .row.performer_playlist
               .col-lg-12
-                h2.main_title.indented_title!=__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+                h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
                 .row.carousel.bottom60
                   each item in data.playlists
                     .col-sm-4
@@ -116,7 +116,7 @@ block content
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+              h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
               .performance_divider.basic_divider
               .row.carousel
                 each item in data.galleries
@@ -129,7 +129,7 @@ block content
         .container
           .row
             .col-lg-12
-              h2.main_title.indented_title!=__('News')
+              h2.main_title.indented_title!=global.__('News')
               .row.carousel_news
                 - var conta = 0
                 - for (var a = 0; a<data.news.length;a++)

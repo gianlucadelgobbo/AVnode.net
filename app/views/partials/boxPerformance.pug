@@ -20,9 +20,9 @@
               img(src=user.imageFormats.small, alt=user.stagename)
             div
               p.users_performance_item_name=user.stagename
-              p.users_performance_item_views=item.stats.visits+" "+__("views")
+              p.users_performance_item_views=item.stats.visits+" "+global.__("views")
         .flex_right      
           .users_performance_item_likes
             span.color2.lnr.lnr-heart
             br
-            span=item.stats.likes+" "+__("likes")
+            span=item.stats.likes+" "+global.__("likes")

@@ -56,7 +56,7 @@ block title
           .col-sm-6            
             ul.list-inline
               li.list-inline-item
-                a.miss.partecipate.button(href="#")=__('Partecipate')
+                a.miss.partecipate.button(href="#")=global.__('Partecipate')
               li.list-inline-item
                 a(href='#')
                   .share_button
@@ -77,16 +77,16 @@ block content
   .container
     section.row.program_event_wrapper
       .col-lg-12
-        h2.main_title.indented_title.color1!=__('Program')+" <small>(<span class='miss'>99</span>)</small>"
+        h2.main_title.indented_title.color1!=global.__('Program')+" <small>(<span class='miss'>99</span>)</small>"
         .row.carousel
           each item in data.program
             .col-sm-4
               ="test"
       //.text-right
-        a.btn.btn-secondary(href=data.publicUrl+"/events/")=__('View all')        
+        a.btn.btn-secondary(href=data.publicUrl+"/events/")=global.__('View all')        
   
       //if data.performances.length > 0
-        h3=__('Performances')
+        h3=global.__('Performances')
         .card-columns
           each performance in data.performances
             .card
@@ -96,13 +96,13 @@ block content
                   alt=performance.title
                 )
               .card-block
-                h6.text-muted.card-title=__('Performance')
+                h6.text-muted.card-title=global.__('Performance')
                 h5.card-subtitle.mb-3=performance.stagename
-                a.btn.btn-primary(href=performance.publicUrl)=__('More')
+                a.btn.btn-primary(href=performance.publicUrl)=global.__('More')
 
       //if data.performances.length > 0
         if data.performances[0].performers.length > 0
-          h4=__('Performers')
+          h4=global.__('Performers')
           .card-columns
             each performance in data.performances
               each performer in performance.performers
@@ -113,13 +113,13 @@ block content
                       alt=performer.name
                     )
                   .card-block
-                    h6.text-muted.card-title=__('Performer')
+                    h6.text-muted.card-title=global.__('Performer')
                     h5.card-subtitle.mb-3=performer.stagename
-                    a.btn.btn-primary(href=performer.publicUrl)=__('More')
+                    a.btn.btn-primary(href=performer.publicUrl)=global.__('More')
 
     //.col-lg-4
       if data.venues.length > 0
-        h5=__('Venues')
+        h5=global.__('Venues')
         hr
 
         each venue in data.venues
@@ -133,14 +133,14 @@ block content
               allowfullscreen
             )
             .card-block
-              h6.text-muted.card-title=__('Venue')
+              h6.text-muted.card-title=global.__('Venue')
               h5.card-subtitle.mb-3=venue.address.placename + ' : ' + venue.address.formatted_address
-              a.btn.btn-primary(target="_blank", href='https://maps.google.com?q=' + encodeURIComponent(venue.address.formatted_address))=__('directions')
+              a.btn.btn-primary(target="_blank", href='https://maps.google.com?q=' + encodeURIComponent(venue.address.formatted_address))=global.__('directions')
 
 
       if data.organizers.length > 0
         br
-        h5=__('Organizers')
+        h5=global.__('Organizers')
         hr
         each user in data.organizers
           .card
@@ -152,11 +152,11 @@ block content
             .card-block
               h6.text-muted.card-title=user.stagename
               h5.card-subtitle.mb-3=user.name
-              a.btn.btn-primary(href=user.publicUrl)=__('More')
+              a.btn.btn-primary(href=user.publicUrl)=global.__('More')
 
       if data.organizing_crews.length > 0
         br
-        h5=__('Organizing Crews')
+        h5=global.__('Organizing Crews')
         hr
         each crew in data.organizing_crews
           .card
@@ -167,4 +167,4 @@ block content
               )
             .card-block
               h5.card-subtitle.mb-3=crew.name
-              a.btn.btn-primary(href=crew.publicUrl)=__('More')
+              a.btn.btn-primary(href=crew.publicUrl)=global.__('More')

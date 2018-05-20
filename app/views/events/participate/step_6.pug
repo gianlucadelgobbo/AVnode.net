@@ -3,7 +3,7 @@ div
   .row
     .col-md-3
       .text-right
-        b=__('Call')
+        b=global.__('Call')
     .col-md-9
       - var admitted = []
       - for(var b=0;b<dett.organizationsettings.call.calls[call.index].admitted.length;b++)
@@ -12,26 +12,26 @@ div
       - for(var b=0;b<dett.organizationsettings.call.calls[call.index].topics.length;b++)
         - topics.push(dett.organizationsettings.call.calls[call.index].topics[b].name)
       h4=dett.organizationsettings.call.calls[call.index].title
-      p=__("Start date")+": "+dett.organizationsettings.call.calls[call.index].start_date_formatted+" | "+__("End date")+": "+dett.organizationsettings.call.calls[call.index].end_date+" | "+__("Email")+": "+dett.organizationsettings.call.calls[call.index].email
-      p=__("Admitted projects") + ": "
+      p=global.__("Start date")+": "+dett.organizationsettings.call.calls[call.index].start_date_formatted+" | "+global.__("End date")+": "+dett.organizationsettings.call.calls[call.index].end_date+" | "+global.__("Email")+": "+dett.organizationsettings.call.calls[call.index].email
+      p=global.__("Admitted projects") + ": "
       ul
         each cat in admitted
           li=cat.name
-      p=__("Topics") + ": " + topics.join(", ")
+      p=global.__("Topics") + ": " + topics.join(", ")
       p=dett.organizationsettings.call.calls[call.index].excerpt
 
   .row
     .col-md-3
       .text-right
-        b=__('Performance Name')
+        b=global.__('Performance Name')
     .col-md-9=call.admitted[call.performance].title
   .row
     .col-md-3
       .text-right
         if call.admitted[call.performance].users.lenght>1
-          b=__('Performers')
+          b=global.__('Performers')
         else
-          b=__('Performer')
+          b=global.__('Performer')
     .col-md-9
       ul
         each performer in call.admitted[call.performance].users
@@ -39,12 +39,12 @@ div
   .row
     .col-md-3
       .text-right
-        b=__('Reference')
+        b=global.__('Reference')
     .col-md-9=user.stagename
   .row
     .col-md-3
       .text-right
-        b=__('Availability')
+        b=global.__('Availability')
     .col-md-9
       each subscription in call.subscriptions
         li
@@ -55,7 +55,7 @@ div
   .row
     .col-md-3
       .text-right
-        b=__('Packages')
+        b=global.__('Packages')
     .col-md-9
       each subscription in call.subscriptions
         li

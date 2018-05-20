@@ -14,7 +14,7 @@
                   input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "]", value=dett.organizationsettings.call.calls[call.index].packages[b].name,    type="checkbox",checked=(call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b]==dett.organizationsettings.call.calls[call.index].packages[b].name) || dett.organizationsettings.call.calls[call.index].packages[b].requested ? "checked" : undefined)
           .col-md-8
               label(for="package"+c+"_"+b)
-                h3!="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + __("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+__("requested")+")" : "")
+                h3!="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + global.__("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+global.__("requested")+")" : "")
                 !=dett.organizationsettings.call.calls[call.index].packages[b].description
                 - if (dett.organizationsettings.call.calls[call.index].packages[b].allow_options)
                   h3=dett.organizationsettings.call.calls[call.index].packages[b].options_name
@@ -26,5 +26,5 @@
                         !=options[d]
           .col-md-3
             .text-right
-              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price
-              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price_formattednpm
+              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+global.__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price
+              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+global.__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price_formattednpm

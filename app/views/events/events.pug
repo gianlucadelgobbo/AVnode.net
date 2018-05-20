@@ -8,7 +8,7 @@ block content
 					.col-md-12
 						.single_event_thumb_container
 							.image
-								img.img-responsive(alt=__("Thumbnail of")+": "+dett.title, src=Fnc.getFileFormat(dett.files, 400, 300))
+								img.img-responsive(alt=global.__("Thumbnail of")+": "+dett.title, src=Fnc.getFileFormat(dett.files, 400, 300))
 							.row
 								.overlay_container
 									h1.title=dett.title
@@ -70,7 +70,7 @@ block content
 			.container
 				- if (result.text)
 				.about_performer
-					h2=__("About")
+					h2=global.__("About")
 					!=Fnc.getTextFormat(dett.text, config.lang, true)
 
 		.tabs-bkg
@@ -78,13 +78,13 @@ block content
 					// TABS
 					ul.nav.nav-tabs.event_tabs
 						//li(class=sez=="events" ? "active" : undefined)
-						//	a(href="#about",data-toggle="tab")=__("About")
+						//	a(href="#about",data-toggle="tab")=global.__("About")
 						- if(dett.performances)
 							li.active
 								a(href="#performances",data-toggle="tab")=config.sections["performances"].title+" ["+dett.performances.length+"]"
 						- if(dett.partners)
 							li
-								a(href="#partners",data-toggle="tab")=__("Partners")+" ["+dett.partners.length+"]"
+								a(href="#partners",data-toggle="tab")=global.__("Partners")+" ["+dett.partners.length+"]"
 						- if(dett.gallery)
 							li
 								a(href="#gallery",data-toggle="tab")=config.sections["gallery"].title+" ["+dett.gallery.length+"]"

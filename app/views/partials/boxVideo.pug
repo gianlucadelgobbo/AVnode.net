@@ -19,8 +19,8 @@
             img(src=user.imageFormats.small, alt=user.stagename)
           div
             p.users_video_item_name=user.stagename
-            p.users_video_item_views=item.stats.visits+" "+__("views")
+            p.users_video_item_views=item.stats.visits+" "+global.__("views")
         .users_video_item_likes
           span.color2.lnr.lnr-heart
           br
-          span=item.stats.likes+" "+__("likes")
+          span=item.stats.likes+" "+global.__("likes")

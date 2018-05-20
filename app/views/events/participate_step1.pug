@@ -7,11 +7,11 @@ block content
 			- if (dett.subtitle)
 				h3=Fnc.getTextFormat(dett.subtitle, config.lang, true)
 			- if (!dett.settings.call_is_active)
-				p=__("No call for proposals is active")
+				p=global.__("No call for proposals is active")
 			- else if (!user || !user.login)
-				p=__("To participate to the call for proposal you have to be logged in")
-				a.btn.btn-primary(href="/controlpanel/login/?from=/"+dett.users[0].permalink+"/events/"+dett.permalink+"/participate/")=__("LOGIN")
-				a.btn.btn-default(href="/controlpanel/register/?from=/"+dett.users[0].permalink+"/events/"+dett.permalink+"/participate/")=__("REGISTER")
+				p=global.__("To participate to the call for proposal you have to be logged in")
+				a.btn.btn-primary(href="/controlpanel/login/?from=/"+dett.users[0].permalink+"/events/"+dett.permalink+"/participate/")=global.__("LOGIN")
+				a.btn.btn-default(href="/controlpanel/register/?from=/"+dett.users[0].permalink+"/events/"+dett.permalink+"/participate/")=global.__("REGISTER")
 			- else
 				h1="Step 1"
 				- for(var a=0;a<user.performances.length;a++)

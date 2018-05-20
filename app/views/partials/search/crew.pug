@@ -1,6 +1,6 @@
 .card.mb-2
   .card-block
-    .badge.badge-default= __('Crew')
+    .badge.badge-default= global.__('Crew')
     .media
       if item.image
         img.card-img-top.img-fluid(
@@ -13,4 +13,4 @@
         h4.card-title
           =item.stagename
         p= item.about
-        a.btn.btn-primary(href=item.publicUrl)=__('More')
+        a.btn.btn-primary(href=item.publicUrl)=global.__('More')

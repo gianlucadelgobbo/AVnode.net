@@ -5,13 +5,13 @@ block content
     form.mb-3(method='get')
       .input-group.input-group-lg
         input.form-control(
-          placeholder=__('What are you searching for?')
+          placeholder=global.__('What are you searching for?')
           type='text'
           name='q'
           value=q
         )   
         span.input-group-btn
-          button.btn.btn-primary=__('Search')
+          button.btn.btn-primary=global.__('Search')
 
     if resultCount
       each hit in data
@@ -26,4 +26,4 @@ block content
             - var item = hit._source
             include partials/search/crew
     else
-      p=__('No results found…')
+      p=global.__('No results found…')

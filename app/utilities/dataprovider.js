@@ -17,7 +17,6 @@ const News = mongoose.model('News');
 const logger = require('./logger');
 
 dataprovider.fetchShow = (req, model, populate, select, cb) => {
-  logger.debug('fetchShow '+req.params.slug);  
   model.
   findOne({slug: req.params.slug}).
   // lean({ virtuals: true }).
@@ -30,24 +29,17 @@ dataprovider.fetchShow = (req, model, populate, select, cb) => {
 };
 
 dataprovider.getPerformanceByIds = (req, ids, cb) => {
-  logger.debug('getPerformanceByIds ');
-  logger.debug(ids);
-
   Performance.find({'users':{$in: ids}}).
   populate({path: 'categories', select: 'name'}).
   populate({path: 'users', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
   select({ title: 1, categories: 1 }).
   exec((err, data) => {
-    logger.debug('getPerformanceByIds Res');  
-    logger.debug(err);  
-    //logger.debug(data);  
-    for (var item in data) logger.debug(data[item].users);  
+    //for (var item in data) logger.debug(data[item].users);  
     cb(err, data);
   });
 };
 
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
-  logger.debug('fetchLists');  
   model.count(query, function(error, total) {
     model.find(query)
     .populate(populate)
@@ -63,12 +55,7 @@ dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting,
 };
 
 dataprovider.show = (req, res, section, subsection, model) => {
-  logger.debug("req.params.page");
-  logger.debug(req.params.page);
-  logger.debug(section);
-  logger.debug(subsection);
   let populate = config.sections[section][subsection].populate;
-  logger.debug(populate);
   for(let item in populate) {
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
     if (populate[item].model === 'UserShow') populate[item].model = UserShow;
@@ -92,7 +79,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
   const select = config.sections[section][subsection].select;
 
   dataprovider.fetchShow(req, model, populate, select, (err, data) => {
-    logger.debug('fetchShowaaaa');
     if (err || data === null) {
       res.status(404).render('404', {});
     } else {
@@ -102,18 +88,14 @@ dataprovider.show = (req, res, section, subsection, model) => {
         } else {
           res.json(data);
         }
-        logger.debug(err);
         //res.send(JSON.stringify(data, null, '\t'));
       } else if (req.query.xml) {
-        logger.debug("nextpage");
-        logger.debug(parseFloat(req.params.page)+1);
         res.render(section + '/fpData', {
           title: data.stagename,
           data: data,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
-        logger.debug("res.render");
         if (data.addresses) {
           const locations = data.addresses.map(obj =>{
             if (obj.geometry && obj.geometry.lat && obj.geometry.lng) {
@@ -149,7 +131,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
 };
 
 dataprovider.list = (req, res, section, model) => {
-  logger.debug('LIST dataprovider.list');
 
   const page = req.params.page;
   const filter = req.params.filter;
@@ -164,7 +145,6 @@ dataprovider.list = (req, res, section, model) => {
   const skip = (page - 1) * config.sections[section].limit;
   const select = config.sections[section].list_fields;
   const populate = config.sections[section].list_populate;
-  logger.debug(notfound);
 
   if (notfound) {
     res.status(404).render('404', {
@@ -175,27 +155,18 @@ dataprovider.list = (req, res, section, model) => {
   } else {
     //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
     const query = config.sections[section].categoriesQueries[filter];
-    logger.debug('query: '+query.toString());
-    logger.debug(query);
-
     dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
-      logger.debug('bella'+config.sections[section].title);
-      logger.debug(err);
-      logger.debug(data);
-      logger.debug(total);
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         if (process.env.DEBUG) {
           res.render('json', {total:total, skip:skip, data:data});
         } else {
           res.json({total:total, skip:skip, data:data});
         }
-        //return next(err);
       } else {
         const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
         let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
         let link = '/' + section + '/' + filter + '/' + sorting + '/';
         let pages = helper.getPagination(link, skip, config.sections[section].limit, total);
-        logger.debug(config.sections[section].view_list);
         res.render(config.sections[section].view_list, {
           title: title,
           section: section,

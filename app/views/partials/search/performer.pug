@@ -1,6 +1,6 @@
 .card.mb-2
   .card-block
-    .badge.badge-default= __('Performer')
+    .badge.badge-default= global.__('Performer')
     .media
       if item.image
         img.card-img-top.img-fluid(
@@ -14,4 +14,4 @@
           = item.stagename
         h5= item.name
         p= item.about
-        a.btn.btn-primary(href=item.publicUrl)=__('More')
+        a.btn.btn-primary(href=item.publicUrl)=global.__('More')

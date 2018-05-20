@@ -28,12 +28,12 @@ block content
     source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
     //source(src='MY_VIDEO.webm', type='video/webm')
     p.vjs-no-js
-      !=__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
-      a(href='http://videojs.com/html5-video-support/', target='_blank')=!__("supports HTML5 video")
+      !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
+      a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
 
   .row
     .col-lg-12
-      h3=__('Members')
+      h3=global.__('Members')
       .card-columns
         //each member in data.members
           .card
@@ -45,4 +45,4 @@ block content
             .card-block
               h4.card-title
                 =member.stagename
-              a.btn.btn-primary(href=member.publicUrl)=__('More')
+              a.btn.btn-primary(href=member.publicUrl)=global.__('More')

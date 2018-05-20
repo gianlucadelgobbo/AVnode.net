@@ -4,8 +4,8 @@ block content
   form(method='post')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
-      label(for='email')=__('Email')
-      input.form-control(type='email', name='email', id='email', placeholder=__('example@foo.bar'), autofocus, required)
+      label(for='email')=global.__('Email')
+      input.form-control(type='email', name='email', id='email', placeholder=global.__('example@foo.bar'), autofocus, required)
     .form-group
-      button.btn.btn-primary.btn-success(type='submit')=__('reset password')
+      button.btn.btn-primary.btn-success(type='submit')=global.__('reset password')
         i.fa.fa-angle-right.fa-fw

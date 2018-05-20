@@ -15,11 +15,11 @@ block content
   .container
     section.row.performer_galleries_wrapper
       .col-lg-12
-        h2.main_title.indented_title.color1!=__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"
+        h2.main_title.indented_title.color1!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"
         .row
           each item in data.galleries
             .col-sm-4
               include ../partials/boxGallery
       .text-center
-        a.btn.btn-primary(href="/#{data.slug}/galleries/page/#{nextpage}/")=__("Nexts")+" >>"
+        a.btn.btn-primary(href="/#{data.slug}/galleries/page/#{nextpage}/")=global.__("Nexts")+" >>"
                   

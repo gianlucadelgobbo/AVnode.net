@@ -15,11 +15,11 @@ block content
   .container
     section.row.performer_performances_wrapper
       .col-lg-12
-        h2.main_title.indented_title.color1!=__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"
+        h2.main_title.indented_title.color1!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"
         .row
           each item in data.performances
             .col-sm-4
               include ../partials/boxPerformance
       .text-center
-        a.btn.btn-primary(href="/#{data.slug}/performances/page/#{nextpage}/")=__("Nexts")+" >>"
+        a.btn.btn-primary(href="/#{data.slug}/performances/page/#{nextpage}/")=global.__("Nexts")+" >>"
                   
