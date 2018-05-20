@@ -12,6 +12,11 @@ import LightBox from '../lightboxGallery'
 
 class Galleries extends Component {
 
+    componentDidMount() {
+        const {fetchModel, id} = this.props;
+        fetchModel({id});
+    }
+
     // Convert form values to API model
     createModelToSave(values) {
 

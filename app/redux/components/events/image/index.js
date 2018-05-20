@@ -4,14 +4,14 @@ import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
 import {getModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
-import Videos from '../../videos'
+import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import ImageForm from '../image'
 
-class EventsImage extends Component {
+class EventImages extends Component {
 
     render() {
 
-        const {model, isFetching, errorMessage, fetchModel, match: {params: {_id}}} = this.props;
+        const {model, isFetching, errorMessage, match: {params: {_id}}, fetchModel, saveModel} = this.props;
 
         return (
             <div className="row">
@@ -21,14 +21,17 @@ class EventsImage extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT VIDEOS</h1>
+                    <h1 className="labelField">MY IMAGE</h1>
 
-                    <Videos
+                    <br/>
+
+                    <ImageForm
                         model={model}
                         isFetching={isFetching}
                         errorMessage={errorMessage}
-                        id={_id}
                         fetchModel={fetchModel}
+                        saveModel={saveModel}
+                        id={_id}
                     />
 
                 </div>
@@ -40,8 +43,8 @@ class EventsImage extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state, {match: {params: {_id}}}) => ({
     model: getModel(state, _id),
-    isFetching: getModelIsFetching(state),
-    errorMessage: getModelErrorMessage(state),
+    isFetching: getIsFetching(state),
+    errorMessage: getErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -49,9 +52,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     saveModel
 }, dispatch);
 
-EventsImage = connect(
+EventImages = connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventsImage);
+)(EventImages);
 
-export default EventsImage;
+export default EventImages;

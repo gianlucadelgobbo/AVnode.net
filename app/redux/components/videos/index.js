@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import {showModal} from "../modal/actions";
@@ -13,10 +13,8 @@ import {Button} from 'react-bootstrap';
 class Videos extends Component {
 
     componentDidMount() {
-        const {fetchModel, match: {params: {_id}}} = this.props;
-        fetchModel({
-            id: _id
-        });
+        const {fetchModel, id} = this.props;
+        fetchModel({id});
     }
 
     // Convert form values to API model
@@ -93,12 +91,13 @@ class Videos extends Component {
         </div>
     }
 
+
     render() {
 
         const {model, showModal, isFetching, errorMessage} = this.props;
 
         return (
-            <div >
+            <div>
                 <div className="row">
                     <div className="col-md-12">
                         <Button
