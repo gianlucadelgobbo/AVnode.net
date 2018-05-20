@@ -1,8 +1,8 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import {Button} from 'react-bootstrap';
 import ModelTable from './table'
 import {bindActionCreators} from "redux";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 import {MODAL_ADD_EVENT} from "../modal/constants";
 import {showModal} from "../modal/actions";
 

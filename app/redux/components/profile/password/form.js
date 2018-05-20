@@ -1,4 +1,4 @@
-import {h, render, Component} from 'preact';
+import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {inputPassword, inputPasswordMeter} from "../../common/form/components";
@@ -19,9 +19,17 @@ class ProfilePasswordForm extends Component {
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
+                    name="oldpassword"
+                    component={inputPassword}
+                    placeholder="Old password"
+                />
+
+                <hr/>
+
+                <Field
                     name="password"
-                    component={inputPasswordMeter}
-                    placeholder="Password"
+                    component={inputPassword}
+                    placeholder="New Password"
                 />
 
                 <Field

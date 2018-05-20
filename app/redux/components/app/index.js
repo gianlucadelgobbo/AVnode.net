@@ -1,6 +1,6 @@
-import {h} from 'preact';
-import Router from 'preact-router';
-import {FormattedMessage} from 'preact-intl';
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {FormattedMessage, injectIntl} from 'react-intl';
 
 import TopMenu from '../topMenu/index';
 import ModalRoot from '../modal/root'
@@ -11,7 +11,7 @@ import PageNotFound from '../pageNotFound'
 // Profile
 import ProfilePublic from '../profile/public/index'
 import ProfileEmails from '../profile/emails/index';
-import ProfileImages from '../profile/images/index';
+import ProfileImages from '../profile/image/index';
 import ProfilePrivate from '../profile/private/index';
 import ProfilePassword from '../profile/password/index';
 import ProfileConnections from '../profile/connections/index';
@@ -19,7 +19,7 @@ import ProfileConnections from '../profile/connections/index';
 // Events
 import Events from '../events/index.js';
 import EventPublic from '../events/public/';
-import EventImages from '../events/images/';
+import EventImages from '../events/image/';
 import EventPartners from '../events/partners/';
 import EventProgram from '../events/program/';
 import EventGalleries from '../events/galleries/';
@@ -43,10 +43,9 @@ import CrewsOrganization from '../crews/organization';
 // // Preferences
 import Preferences from '../preferences/index';
 
-
-const App = () => {
-    return (
-        <div>
+class App extends Component {
+    render() {
+        return (<div>
             <div className="jumbotron jumbotron-fluid">
                 <div className="container">
                     <h1 className="display-4">
@@ -56,51 +55,59 @@ const App = () => {
                         /></h1>
                 </div>
             </div>
-            <div className="container-fluid account-nav-wrap">
-                <div className="container">
-                    <TopMenu/>
+
+            <Router>
+
+                <div>
+                    <div className="container-fluid account-nav-wrap">
+                        <div className="container">
+                            <TopMenu/>
+                        </div>
+                    </div>
+
+                    <div className="container">
+                        <Switch>
+                            <Route path="/admin/profile/public" component={ProfilePublic}/>
+                            <Route path="/admin/profile/images" component={ProfileImages}/>
+                            <Route path="/admin/profile/emails" component={ProfileEmails}/>
+                            <Route path="/admin/profile/private" component={ProfilePrivate}/>
+                            <Route path="/admin/profile/password" component={ProfilePassword}/>
+                            <Route path="/admin/profile/connections" component={ProfileConnections}/>
+
+                            <Route path="/admin/crews/:_id/public/" component={CrewsPublic}/>
+                            <Route path="/admin/crews/:_id/images/" component={CrewsImages}/>
+                            <Route path="/admin/crews/:_id/members/" component={CrewsMembers}/>
+                            <Route path="/admin/crews/:_id/organization/" component={CrewsOrganization}/>
+                            <Route path="/admin/crews" component={Crews}/>
+
+                            <Route path="/admin/performances/:_id/public/" component={PerformancesPublic}/>
+                            <Route path="/admin/performances/:_id/galleries/" component={PerformancesGalleries}/>
+                            <Route path="/admin/performances/:_id/videos/" component={PerformancesVideos}/>
+                            <Route path="/admin/performances" component={Performances}/>
+
+                            <Route path="/admin/events/:_id/public/" component={EventPublic}/>
+                            <Route path="/admin/events/:_id/images/" component={EventImages}/>
+                            <Route path="/admin/events/:_id/partners/" component={EventPartners}/>
+                            <Route path="/admin/events/:_id/program/" component={EventProgram}/>
+                            <Route path="/admin/events/:_id/galleries/" component={EventGalleries}/>
+                            <Route path="/admin/events/:_id/videos/" component={EventVideos}/>
+                            <Route path="/admin/events/:_id/calls/" component={EventCalls}/>
+                            <Route path="/admin/events/:_id/settings/" component={EventSettings}/>
+                            <Route path="/admin/events" component={Events}/>
+
+                            <Route path="/admin/preferences" component={Preferences}/>
+                            <Route path="*" component={PageNotFound}/>
+                        </Switch>
+
+                    </div>
                 </div>
-            </div>
-            <div className="container">
-                <Router>
-                    <ProfilePublic path="/admin/profile/public"/>
-                    <ProfileImages path="/admin/profile/images"/>
-                    <ProfileEmails path="/admin/profile/emails"/>
-                    <ProfilePrivate path="/admin/profile/private"/>
-                    <ProfilePassword path="/admin/profile/password"/>
-                    <ProfileConnections path="/admin/profile/connections"/>
 
-                    <Crews path="/admin/crews"/>
-                    <CrewsPublic path="/admin/crews/:_id/public/"/>
-                    <CrewsImages path="/admin/crews/:_id/images/"/>
-                    <CrewsMembers path="/admin/crews/:_id/members/"/>
-                    <CrewsOrganization path="/admin/crews/:_id/organization/"/>
+            </Router>
 
-                    <Performances path="/admin/performances"/>
-                    <PerformancesPublic path="/admin/performances/:_id/public/"/>
-                    <PerformancesGalleries path="/admin/performances/:_id/galleries/"/>
-                    <PerformancesVideos path="/admin/performances/:_id/videos/"/>
+            <ModalRoot/>
 
-                    <Events path="/admin/events"/>
-                    <EventPublic path="/admin/events/:_id/public/"/>
-                    <EventImages path="/admin/events/:_id/images/"/>
-                    <EventPartners path="/admin/events/:_id/partners/"/>
-                    <EventProgram path="/admin/events/:_id/program/"/>
-                    <EventGalleries path="/admin/events/:_id/galleries/"/>
-                    <EventVideos path="/admin/events/:_id/videos/"/>
-                    <EventCalls path="/admin/events/:_id/calls/"/>
-                    <EventSettings path="/admin/events/:_id/settings/"/>
+        </div>);
+    }
+}
 
-                    <Preferences path="/admin/preferences"/>
-
-                    <PageNotFound type="404" default/>
-                </Router>
-
-                <ModalRoot/>
-
-            </div>
-        </div>
-    );
-};
-
-export default App;
+export default injectIntl(App);

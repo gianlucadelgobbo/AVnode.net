@@ -1,9 +1,9 @@
-import {h, Component} from 'preact';
-import {FormattedMessage} from 'preact-intl';
+import React, {Component} from 'react';
+import {FormattedMessage} from 'react-intl';
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
 import Form from './form'
-import {connect} from 'preact-redux';
+import {connect} from 'react-redux'
 import {fetchModel, saveModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
@@ -14,6 +14,7 @@ import {fetchList as fetchCountries} from '../../countries/actions'
 import {getList as getCountries} from '../../countries/selectors'
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -25,8 +26,8 @@ class CrewMembers extends Component {
 
 
     componentDidMount() {
-        const {fetchModel, _id} = this.props;
-        fetchModel({id:_id});
+        const {fetchModel, match: {params: {_id}}} = this.props;
+        fetchModel({id: _id});
     }
 
 
@@ -58,7 +59,7 @@ class CrewMembers extends Component {
         // Addresses_private: Add one item if value empty
         v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ?
             user.addresses_private : [{formatted_address: ""}];
-    
+
         return v;
     }
 
@@ -74,14 +75,14 @@ class CrewMembers extends Component {
         return editUser(model)
             .then(() => {
                 showModal({
-                     type: MODAL_SAVED
+                    type: MODAL_SAVED
                 });
             });
     }
 
     render() {
 
-        const {model, showModal, errorMessage, isFetching, _id} = this.props;
+        const {model, showModal, errorMessage, isFetching, match: {params: {_id}}} = this.props;
 
         return (
             <div className="row">
@@ -119,7 +120,7 @@ class CrewMembers extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state, {_id}) => ({
+const mapStateToProps = (state, {match: {params: {_id}}}) => ({
     model: getModel(state, _id),
     isFetching: getModelIsFetching(state, _id),
     errorMessage: getModelErrorMessage(state, _id),

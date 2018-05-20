@@ -1,11 +1,11 @@
-import {h, Component} from 'preact';
+import React, { Component } from 'react';
 import {bindActionCreators} from "redux";
 import {getList, getIsFetching, getErrorMessage} from "../selectors";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 import {showModal} from "../../modal/actions";
 import {fetchList, removeModel} from "../actions";
 import {Button} from 'react-bootstrap';
-import {Link} from 'preact-router/match';
+import { Link } from 'react-router-dom';
 import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading'
 import Table from '../../table'
@@ -20,7 +20,6 @@ class ModelTable extends Component {
     renderTable() {
 
         const {showModal, removeModel, list} = this.props;
-        console.log(list)
         return <Table
             data={list}
             columns={
@@ -31,7 +30,7 @@ class ModelTable extends Component {
                         accessor: 'stagename',
                         Cell: (props) => {
                             const {row, original} = props;
-                            return <Link href={`/admin/crews/${original._id}/public`}>
+                            return <Link to={`/admin/crews/${original._id}/public`}>
                                 {row.stagename}
                             </Link>
                         }

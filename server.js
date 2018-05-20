@@ -22,7 +22,7 @@ const config = require('getconfig');
 
 // FIXME Kids say not cool
 const dotenv = require('dotenv');
-dotenv.load({ path: '.env.local' });
+dotenv.load({path: '.env.local'});
 global.appRoot = path.resolve(__dirname);
 
 const app = express();
@@ -30,21 +30,21 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'pug');
-app.set('view options', { debug: true });
+app.set('view options', {debug: true});
 
 app.use(morgan('short'));
 app.use(expressStatusMonitor());
 app.use(compression());
 app.use(sass({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  debug: true,
-  outputStyle: 'compressed'
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public'),
+    debug: true,
+    outputStyle: 'compressed'
 }));
 
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 84600 }));
+app.use(express.static(path.join(__dirname, 'public'), {maxAge: 84600}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(flash());
 app.use('/storage', express.static(path.join(__dirname, 'storage')));
@@ -52,84 +52,84 @@ app.use('/warehouse', express.static(path.join(__dirname, 'warehouse')));
 
 app.use(i18n.init);
 app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  store: new MongoStore({
-    url: process.env.MONGODB_URI,
-    autoReconnect: true
-  })
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+        url: process.env.MONGODB_URI,
+        autoReconnect: true
+    })
 }));
 
 // FIXME
 // This blocks mocha testing, so we disable it
 // in this context…
 /**
-const lusca = require('lusca');
-if(process.env.NODE_ENV !== 'testing') {
+ const lusca = require('lusca');
+ if(process.env.NODE_ENV !== 'testing') {
   app.use((req, res, next) => {
     lusca.csrf()(req, res, next);
   });
 }
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
-*/
+ app.use(lusca.xframe('SAMEORIGIN'));
+ app.use(lusca.xssProtection(true));
+ */
 
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
-  res.locals.user = req.user;
-  next();
+    res.locals.user = req.user;
+    next();
 });
 
 app.use((req, res, next) => {
-  const path = req.path.split('/')[1];
-  const lang = req.headers.host.split('.')[0]!='avnode' || req.headers.host.split('.')[0]!='dev' || req.headers.host.split('.')[0]!='api' ? req.headers.host.split('.')[0] : 'en';
-  //logger.debug('req.headers.host: '+req.headers.host);
-  //logger.debug('lang: '+lang);
-  //delete req.session.sessions;
-  //logger.debug(req.session);
-  if(!req.session.sessions) {
-    //logger.debug('create sessions');
-    req.session.sessions = {current_lang: config.defaultLocale};
-    //logger.debug(req.session.sessions);
-  }
-  //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
-  if(req.session.sessions.current_lang != lang) {
-    //logger.debug('changelang');
-    req.session.sessions.current_lang = lang;
+    const path = req.path.split('/')[1];
+    const lang = req.headers.host.split('.')[0] != 'avnode' || req.headers.host.split('.')[0] != 'dev' || req.headers.host.split('.')[0] != 'api' ? req.headers.host.split('.')[0] : 'en';
+    //logger.debug('req.headers.host: '+req.headers.host);
+    //logger.debug('lang: '+lang);
+    //delete req.session.sessions;
+    //logger.debug(req.session);
+    if (!req.session.sessions) {
+        //logger.debug('create sessions');
+        req.session.sessions = {current_lang: config.defaultLocale};
+        //logger.debug(req.session.sessions);
+    }
     //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+    if (req.session.sessions.current_lang != lang) {
+        //logger.debug('changelang');
+        req.session.sessions.current_lang = lang;
+        //logger.debug('req.session.sessions.current_lang: '+req.session.sessions.current_lang);
+        //logger.debug('global.getLocale: '+global.getLocale());
+    }
+    global.setLocale(req.session.sessions.current_lang);
     //logger.debug('global.getLocale: '+global.getLocale());
-  }
-  global.setLocale(req.session.sessions.current_lang);
-  //logger.debug('global.getLocale: '+global.getLocale());
 
-  if (/auth|login|logout|signup|images|fonts/i.test(path)) {
-    return next();
-  }
-  /*if (!req.user &&
-    req.path !== '/login' &&
-    req.path !== '/signup' &&
-    !req.path.match(/^\/auth/) &&
-    !req.path.match(/\./)) {
-      if (req.path.match(/^\/admin/)) {
-        res.redirect('/login');
-      } else {
+    if (/auth|login|logout|signup|images|fonts/i.test(path)) {
+        return next();
+    }
+    /*if (!req.user &&
+      req.path !== '/login' &&
+      req.path !== '/signup' &&
+      !req.path.match(/^\/auth/) &&
+      !req.path.match(/\./)) {
+        if (req.path.match(/^\/admin/)) {
+          res.redirect('/login');
+        } else {
+          req.session.returnTo = req.path;
+        }
+    } else */
+    //logger.debug('req.path: '+req.path);
+
+    if (!req.user && req.path.indexOf('/admin') === 0) {
+        logger.debug('NON LOGGATO ');
+        //logger.debug(req);
         req.session.returnTo = req.path;
-      }
-  } else */
-  //logger.debug('req.path: '+req.path);
-
-  if (!req.user && req.path.indexOf('/admin') === 0) {
-    logger.debug('NON LOGGATO ');
-    //logger.debug(req);
-    req.session.returnTo = req.path;
-    res.redirect('/login');
-  } else {
-    logger.debug('LOGGATO ');
-    //logger.debug(req.user);
-    next();
-  }
+        res.redirect('/login');
+    } else {
+        logger.debug('LOGGATO ');
+        //logger.debug(req.user);
+        next();
+    }
 });
 // not needed because in public/
 
@@ -171,10 +171,12 @@ const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const compiler = webpack(webpackConfig);
 app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true, publicPath: webpackConfig.output.publicPath
+    noInfo: true,
+    publicPath:
+    webpackConfig.output.publicPath
 }));
 app.use(require('webpack-hot-middleware')(compiler, {
-  log: console.log
+    log: console.log
 }));
 
 module.exports = app;

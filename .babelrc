@@ -6,9 +6,6 @@
   ],
   "plugins": [
     ["transform-decorators-legacy"],
-    ["transform-react-jsx", { "pragma": "h" }],
-    ["react-intl", {
-	"moduleSourceName": "preact-intl"
-    }]
+    ["transform-react-jsx"]
   ]
 }

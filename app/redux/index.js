@@ -1,21 +1,8 @@
-import {Provider} from 'preact-redux';
-import {h, render} from 'preact';
-import Language from './components/languageContainer/index';
-import App from './components/app/index';
-import store from './store'
+import React from 'react';
+import {render} from 'react-dom';
 
-let root = document.getElementById('app');
+import Main from './main'
 
-const init = () => {
+const root = document.getElementById('app');
 
-    render(
-        <Provider store={store}>
-            <Language>
-                <App/>
-            </Language>
-        </Provider>,
-        root
-    );
-};
-
-init();
+render(<Main/>, root);

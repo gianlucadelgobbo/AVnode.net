@@ -1,8 +1,8 @@
-import {h, Component} from 'preact';
+import React, {Component} from 'react';
 import LateralMenu from '../../lateralMenu'
-import {FormattedMessage} from 'preact-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import {bindActionCreators} from "redux";
-import {connect} from "preact-redux";
+import {connect} from "react-redux";
 
 const items = [
     {
@@ -91,4 +91,4 @@ MyLateralMenu = connect(
     mapDispatchToProps
 )(MyLateralMenu);
 
-export default MyLateralMenu;
+export default injectIntl(MyLateralMenu);

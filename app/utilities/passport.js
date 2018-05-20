@@ -66,9 +66,10 @@ flxer.flxerLogin = (existingUser, email, password, done) => {
     body: querystring.stringify({ email: email, password: password })
   }, function (err, res, body) {
     if (err) {
-      return next(err);
+      return done(err);
       logger.debug('flxer.authenticate error:' + JSON.stringify(err));
     }
+
     logger.debug('passport.authenticate flxer:' + JSON.stringify(body));
     let ress = JSON.parse(body);
     if (ress.login) {

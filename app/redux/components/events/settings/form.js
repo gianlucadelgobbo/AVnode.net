@@ -1,4 +1,4 @@
-import {h, render, Component} from 'preact';
+import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {
@@ -32,7 +32,7 @@ class EventPublicForm extends Component {
                     placeholder="Is public"
                 />
 
-                <Field
+              {/*  <Field
                     name="gallery_is_public"
                     component={checkboxField}
                     placeholder='Galleries upload is open to all AVnode users'
@@ -72,7 +72,7 @@ class EventPublicForm extends Component {
                     placeholder='Use Call to participate'
                 />
 
-                <hr/>
+                <hr/>*/}
 
                 <button
                     type="submit"
