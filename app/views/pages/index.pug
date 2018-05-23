@@ -1,0 +1,37 @@
+extends ../layout
+
+block teaser
+  if data.teaserImage
+    .d-flex.justify-content-center.align-items-start
+      img.card-img-top.img-fluid(
+        src=`${data.teaserImageFormats.large}`
+        alt=`${data.name}`
+      )
+
+block title
+  if data.post_name
+    .jumbotron.jumbotron-fluid
+      .container
+        h1.display-4=data.post_name
+
+block content
+  .container
+    .row
+      .col-lg-8
+        !=data.post_content
+      .col-lg-4
+        if data.featured.thumbnail
+          .mb-3
+            img.card-img-top.img-fluid(
+              src=data.featured.thumbnail
+              alt=data.post_name
+            )
+        //if data.web
+          .mb-3
+            each url in data.web
+              a(href=url.url)=url.url
+          if data.social
+            .mb-3
+              each url in data.social
+                a(href=url.url)=url.url
+

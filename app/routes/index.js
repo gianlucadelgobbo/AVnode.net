@@ -20,6 +20,8 @@ const signup = require('./signup');
 const verify = require('./verify');
 
 const admin = require('./admin');
+
+const pages = require('./pages');
 /*
 const user = require('./user');
 const storage = require('./storage');
@@ -27,6 +29,8 @@ const crews = require('./crews');
 const fourOhFour = require('./404');
 */
 router.get('/__webpack_hmr', function(){});
+
+router.use('/contacts', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
