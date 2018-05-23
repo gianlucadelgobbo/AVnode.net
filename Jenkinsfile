@@ -1,6 +1,6 @@
 #!groovy
 node {
-	def livePath = '/sites/avnode.net.bruce'
+	def livePath = '/sites/avnode.net'
 	def node = 'node:boron'
 	stage('ls') {
 		sh "cd ${livePath} && ls && pwd"

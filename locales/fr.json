@@ -28,5 +28,10 @@
 	"Television": "Television",
 	"Workshops & learning": "Workshops & learning",
 	"Partecipate": "Partecipate",
-	"Program": "Program"
+	"Program": "Program",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?"
 }
