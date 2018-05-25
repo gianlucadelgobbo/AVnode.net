@@ -85,9 +85,75 @@ html(lang=session.sessions.current_lang)
                 p.lead.mb-0=subtitle
       block content
 
-    footer
+    footer.footer_site
       .container
-        .text-muted='AVnode.net'
+        .row
+          .col-sm-4
+            div(itemprop='organizer', itemscope='', itemtype='http://schema.org/Organization')
+              a(href='/', title='AVnode')
+                img.media-object(src='/avnode/images/LogoAVnode-bar.svg', alt='AVnode.net', itemprop='logo')
+              br
+              strong.sr-only(itemprop='name') AVnode
+              br
+              | a project of Stichting AVnode
+              br
+              span(itemprop='location', itemscope='', itemtype='http://schema.org/Place')
+                span(itemprop='address', itemscope='', itemtype='http://schema.org/PostalAddress')
+                  span(itemprop='streetAddress') Arondeusstraat 7
+                  span(itemprop='postalCode') 1063GB
+                  br
+                  span(itemprop='addressLocality') Amsterdam
+                  | &nbsp;
+                  span(itemprop='addressCountry') Netherlands
+                span.hide(itemprop='geo', itemscope='', itemtype='http://schema.org/GeoCoordinates')
+                  span(itemprop='latitude') 52.3823559
+                  | ,
+                  span(itemprop='longitude') 4.8237471
+                br
+                a(itemprop='url', title='map', href='https://www.google.it/maps/place/Arondeusstraat+7,+1063+GB+Amsterdam,+Netherlands/@52.3823559,4.8237471,17z/data=!3m1!4b1!4m5!3m4!1s0x47c5e251a2807e6b:0xf143ebca2731e3fb!8m2!3d52.3823559!4d4.8259358!10m1!1e1', target='_blank') map
+                br
+              | VAT N° 
+              span(itemprop='vatID') NL856555253B01
+              br
+              a(itemprop='email', title='Write to AVnode', href='mailto:info@avnode.net') info@avnode.net
+              br.sr-only
+              a.sr-only(itemprop='url', title='AVnode Web Site', href='https://avnode.net') https://avnode.net
+          .col-sm-4.hidden-print
+            p Corporate
+            nav
+              ul.footer-nav.corporate
+                li
+                  a(href='https://avnode.net', title='Stichting AVnode') Stichting AVnode
+                li
+                  a(href='/terms-conditions/', title='Terms & Conditions') Terms &amp; Conditions
+                li
+                  a(href='/privacy/', title='Privacy') Privacy
+                li
+                  a(href='/contacts/', title='Contacts') Contacts
+          .col-sm-4.hidden-print
+            p Social Networks
+            ul.footer-nav.footer-nav-inline.socials
+              li
+                a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://www.facebook.com/avnode.net/', title='', data-original-title='AVnode on Facebook')
+                  i.icon-facebook-squared
+                  .sr-only Facebook
+              li
+                a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://www.instagram.com/avnodenet/', title='', data-original-title='AVnode on Instagram')
+                  i.icon-instagram
+                  .sr-only Instagram
+              li
+                a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://twitter.com/avnodenet', title='', data-original-title='AVnode on Twitter')
+                  i.icon-twitter
+                  .sr-only Twitter
+              li
+                a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://plus.google.com/+AvnodeNet', title='', data-original-title='AVnode on Google Plus')
+                  i.icon-gplus-squared
+                  .sr-only Google+
+              li
+                a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://t.me/avnode', title='', data-original-title='AVnode Channel on Telegram ')
+                  i.icon-telegram
+                  .sr-only Telegram Channel
+
     script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js')
