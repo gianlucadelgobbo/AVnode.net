@@ -110,7 +110,32 @@ header.header_event {
     cursor: pointer;
     opacity: 0.9;
 }
- /* performer page */
+
+section.row.program_event_wrapper {
+    padding: 60px 0;
+}
+
+.date_schedule_title {
+    text-transform: inherit;
+    font-weight: 300;
+    font-size: 18px;
+    margin-bottom: 80px;
+}
+
+.date_schedule_title_border {
+    height: 10px;
+    width: 100%;
+    position: absolute;
+    left: -50%;
+    background: $color4;
+    margin-top: -70px;
+
+}
+
+.program_event_wrapper .main_title {
+    margin-bottom: 60px;
+}
+/* performer page */
  
 .performer_links_list {
     background: $color1;
@@ -812,4 +837,10 @@ section.performer_news_wrapper {
 .gallery_item_likes,
 .gallery_item_visits {
     color: $color1;
+}
+
+// FOOTER 
+.footer_site {
+    background: $color4;
+    padding: 80px 0;
 }
