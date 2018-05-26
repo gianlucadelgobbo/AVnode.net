@@ -54,7 +54,7 @@ const userSchema = new Schema({
         type: String,
         trim: true, 
         index: true, 
-        unique: true, 
+      /*  unique: true, */
         sparse: true,
         required: 'EMAIL_IS_REQUIRED',
         validate: [(email) => {
