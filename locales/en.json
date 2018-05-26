@@ -54,5 +54,10 @@
 	"views": "views",
 	"likes": "likes",
 	"Galleries": "Galleries",
-	"Playlist": "Playlist"
+	"Playlist": "Playlist",
+	"example@foo.bar": "example@foo.bar",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?",
+	"You are logged in.": "You are logged in.",
+	"Your Account": "Your Account"
 }

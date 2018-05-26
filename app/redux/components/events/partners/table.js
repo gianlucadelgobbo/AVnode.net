@@ -30,9 +30,20 @@ class ModelTable extends Component {
             columns={
                 [
                     {
-                        Header: "Title",
-                        id: "title",
+                        Header: "Partner",
+                        id: "Partner",
                         accessor: 'title',
+                        Cell: (props) => {
+                            const {row, original} = props;
+                            return <Link to={`/admin/performances/${original._id}/public`}>
+                                {row.title}
+                            </Link>
+                        }
+                    },
+                    {
+                        Header: "Category",
+                        id: "category",
+                        accessor: 'category',
                         Cell: (props) => {
                             const {row, original} = props;
                             return <Link to={`/admin/performances/${original._id}/public`}>
