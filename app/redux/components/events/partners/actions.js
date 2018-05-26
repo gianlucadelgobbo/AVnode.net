@@ -19,3 +19,11 @@ export const saveModel = (model) => generateSaveModel({
     schema: event,
     model,
 });
+
+export const removeModel = (model) => generateSaveModel({
+    selectors,
+    constants,
+    request: api.removeEventPartners,
+    schema: event,
+    model,
+});

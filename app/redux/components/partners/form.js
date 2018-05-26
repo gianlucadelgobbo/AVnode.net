@@ -9,7 +9,7 @@ import {
     multiInputUrl,
     multiInputEmail,
     multiInputTel,
-} from "../../common/form/components";
+} from "../common/form/components";
 import validate from './validate';
 
 class EventPartnersForm extends Component {
