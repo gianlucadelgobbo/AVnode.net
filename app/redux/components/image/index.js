@@ -13,7 +13,7 @@ class Image extends Component {
 
     componentDidMount() {
         const {fetchModel, id} = this.props;
-        fetchModel(id);
+        fetchModel({id});
     }
 
     // Convert form values to API model
