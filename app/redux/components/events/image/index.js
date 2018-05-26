@@ -4,8 +4,8 @@ import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
 import {getModel, getErrorMessage, getIsFetching} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-import ImageForm from '../../image'
-import {withRouter} from 'react-router'
+import ImageForm from '../../image';
+import {withRouter} from 'react-router';
 
 class EventImages extends Component {
 
