@@ -533,3 +533,27 @@ export const fetchCategories = () => {
     //     });
 };
 
+export const fetchPartnerCategories = () => {
+    return new Promise(fulfil => {
+        const items = [{"_id": "5a9bba1760662400000000f5", "name": "PRODUCTION"}, {
+            "_id": "5a9bba1760662400000000d8",
+            "name": "CO-ORGANIZER"
+        }, {"_id": "5a9bba17606624000000005a", "name": "NETWORK EVENTS"}, {
+            "_id": "5a9bba176066240000000076",
+            "name": "SUPPORTED BY"
+        }, {"_id": "5a9bba176066240000000059", "name": "APPROVED BY"}, {
+            "_id": "5a9bba1760662400000000d7",
+            "name": "TECHNICAL PARTNERS"
+        }, {"_id": "5a9bba176066240000000156", "name": "LPM NETWORK"}, {
+            "_id": "5a9bba176066240000000058",
+            "name": "TOP MEDIA PARTNERS"
+        }, {"_id": "5a9bba1760662400000000d6", "name": "Partner"}];
+
+        fulfil(items);
+    })
+    // return axios.get('/user/categories')
+    //     .then(result => {
+    //         return result.data;
+    //     });
+};
+
