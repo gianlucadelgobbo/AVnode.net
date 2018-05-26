@@ -3,7 +3,7 @@ import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants'
-import {userAutocompleteSelect} from "../../../common/form/components";
+import {userAutocompleteSelect, renderList} from "../../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 
@@ -23,16 +23,24 @@ class AddPartnerForm extends Component {
 
         const {
             submitting,
-            handleSubmit
+            handleSubmit,
+            categories
         } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
 
                 <Field
-                    name="images"
+                    name="partner"
                     component={userAutocompleteSelect}
                     placeholder="Partner"
+                />
+
+                <Field
+                    name="category"
+                    component={renderList}
+                    placeholder="Category"
+                    options={categories}
                 />
 
                 <hr/>
