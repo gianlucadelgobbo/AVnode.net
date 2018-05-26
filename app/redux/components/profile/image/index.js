@@ -6,7 +6,7 @@ import {showModal} from "../../modal/actions";
 import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
-import ImageForm from '../../image'
+import ImageForm from '../../image';
 
 class ProfileImage extends Component {
 
