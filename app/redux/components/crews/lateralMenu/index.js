@@ -27,14 +27,14 @@ const items = [
         />
 
     },
-    {
+    /*{
         href: "/admin/crews/:_id/organization",
         label: <FormattedMessage
             id="organization"
             defaultMessage="Organization"
         />
 
-    }
+    }*/
 ];
 
 
