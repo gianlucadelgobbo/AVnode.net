@@ -34,7 +34,7 @@ class CrewImage extends Component {
                         errorMessage={errorMessage}
                         fetchModel={fetchModel}
                         saveModel={saveModel}
-                        _id={_id}
+                        id={_id}
                     />
 
                 </div>
@@ -43,8 +43,8 @@ class CrewImage extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
+const mapStateToProps = (state, {match: {params: {_id}}}) => ({
+    model: getDefaultModel(state, _id),
     isFetching: getIsFetching(state),
     errorMessage: getErrorMessage(state),
 });
