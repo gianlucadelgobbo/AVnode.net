@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {showModal} from "../modal/actions";
 import {bindActionCreators} from "redux";
-import {MODAL_ADD_MEDIA, MODAL_SAVED} from "../modal/constants";
+import {MODAL_ADD_PARTNER, MODAL_SAVED} from "../modal/constants";
 import Loading from '../loading'
 import ErrorMessage from '../errorMessage'
 import ItemNotFound from '../itemNotFound'
@@ -66,23 +66,23 @@ class EventPartners extends Component {
                 <div className="row">
                     <div className="col-md-12">
 
-                        <Button
-                            bsStyle="primary"
-                            className="pull-right"
-                            onClick={() => showModal({
-                                type: MODAL_ADD_MEDIA,
-                                props: {
-                                    onSubmit: this.onSubmit.bind(this)
-                                }
-                            })}>
-                            <i className="fa fa-cogs" data-toggle="tooltip" data-placement="top"/>
-                        </Button>
+                        {/*<Button*/}
+                            {/*bsStyle="primary"*/}
+                            {/*className="pull-right"*/}
+                            {/*onClick={() => showModal({*/}
+                                {/*type: MODAL_ADD_MEDIA,*/}
+                                {/*props: {*/}
+                                    {/*onSubmit: this.onSubmit.bind(this)*/}
+                                {/*}*/}
+                            {/*})}>*/}
+                            {/*<i className="fa fa-cogs" data-toggle="tooltip" data-placement="top"/>*/}
+                        {/*</Button>*/}
 
                         <Button
                             bsStyle="success"
                             className="pull-right"
                             onClick={() => showModal({
-                                type: MODAL_ADD_MEDIA,
+                                type: MODAL_ADD_PARTNER,
                                 props: {
                                     onSubmit: this.onSubmit.bind(this)
                                 }

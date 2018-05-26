@@ -13,8 +13,18 @@ class ModelTable extends Component {
     normalizeData() {
 
         const {list = []} = this.props;
+        let result = [];
 
-        return list;
+        list.forEach(item => {
+            let {users, category} = item;
+            users.forEach( u => {
+                u.category= category;
+                result.push(u)
+            })
+
+        });
+
+        return result;
 
     }
 
@@ -35,20 +45,19 @@ class ModelTable extends Component {
                         accessor: 'title',
                         Cell: (props) => {
                             const {row, original} = props;
-                            return <Link to={`/admin/performances/${original._id}/public`}>
-                                {row.title}
-                            </Link>
+                            return <div >
+                                {original.stagename}
+                            </div>
                         }
                     },
                     {
                         Header: "Category",
-                        id: "category",
-                        accessor: 'category',
+                        accessor: 'category.name',
                         Cell: (props) => {
-                            const {row, original} = props;
-                            return <Link to={`/admin/performances/${original._id}/public`}>
-                                {row.title}
-                            </Link>
+                            const { original} = props;
+                            return <div >
+                                {original.category.name}
+                            </div>
                         }
                     },
                     {
