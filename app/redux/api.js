@@ -186,6 +186,13 @@ export const saveEventPartners = (model) => {
         });
 };
 
+export const removeEventPartners = (model) => {
+    return axios.delete(`events/${model._id}/partners`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
 // - program
 
 export const fetchEventProgram = ({id}) => {

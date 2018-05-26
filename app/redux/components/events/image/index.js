@@ -9,14 +9,9 @@ import {withRouter} from 'react-router';
 
 class EventImages extends Component {
 
-    shouldComponentUpdate(){
-        return false;
-    }
-
     render() {
 
         const {model, isFetching, errorMessage, match: {params: {_id}}, fetchModel, saveModel} = this.props;
-
 
         return (
             <div className="row">

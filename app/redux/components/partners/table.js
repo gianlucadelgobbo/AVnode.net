@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {showModal} from "../../modal/actions";
+import {showModal} from "../modal/actions";
 import {Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import {MODAL_REMOVE} from "../../modal/constants";
-import Loading from '../../loading'
-import Table from '../../table'
+import {MODAL_REMOVE} from "../modal/constants";
+import Loading from '../loading/index'
+import Table from '../table/index'
 
 class ModelTable extends Component {
 
