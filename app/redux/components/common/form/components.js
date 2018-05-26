@@ -109,7 +109,7 @@ export const userAutocompleteSelect = ({input, meta, multi = false, placeholder,
         </dl>
 };
 
-export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
+export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild, multiple, clearable}) => {
     const field = <div className="form-group">
         <Select
             {...input}
@@ -121,6 +121,7 @@ export const renderList = ({input, meta, placeholder, hideResetButton, options, 
             }}
             options={options}
             multi={multiple}
+            clearable={clearable}
             onChange={input.onChange}
             placeholder={placeholder}
         />
@@ -460,7 +461,6 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
             <br/>
             {error && <span className="error-message">{error}</span>}
             {fields.map((member, index, fields) => renderSubField(member, index, fields, showModal))}
-
         </div>
     </div>;
 };
