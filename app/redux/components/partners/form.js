@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {showModal} from "../modal/actions";
 import {Button} from 'react-bootstrap';
 import {MODAL_REMOVE} from "../modal/constants";
-import Loading from '../loading/index'
 import Table from '../table/index'
 import {reduxForm, FieldArray, Field} from "redux-form";
 import {renderList} from "../common/form/components";
@@ -86,49 +85,29 @@ class ModelTable extends Component {
         console.log(values)
     }
 
-    renderForm() {
+    render() {
 
         const {
             submitting,
-            handleSubmit,
+            handleSubmit
         } = this.props;
 
         return (<form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-            <FieldArray
-                name="partners"
-                component={this.renderTable.bind(this)}
-            />
+                    <FieldArray
+                        name="partners"
+                        component={this.renderTable.bind(this)}
+                    />
 
-            <hr/>
+                    <hr/>
 
-            <button
-                type="submit"
-                disabled={submitting}
-                className="btn btn-primary btn-lg btn-block">
-                {submitting ? "Saving..." : "Save"}
-            </button>
-        </form>)
-
-    }
-
-    render() {
-
-        const {list = [], isFetching, errorMessage} = this.props;
-
-        return (
-            <div>
-                {!list.length && <div>No Partners to display</div>}
-
-                {isFetching && <Loading/>}
-
-                {errorMessage && <div>{errorMessage}</div>}
-
-                {list && this.renderForm()}
-
-            </div>
-
-        );
+                    <button
+                        type="submit"
+                        disabled={submitting}
+                        className="btn btn-primary btn-lg btn-block">
+                        {submitting ? "Saving..." : "Save"}
+                    </button>
+                </form>);
     }
 }
 

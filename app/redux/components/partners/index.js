@@ -6,8 +6,7 @@ import {MODAL_ADD_PARTNER, MODAL_SAVED} from "../modal/constants";
 import Loading from '../loading'
 import ErrorMessage from '../errorMessage'
 import ItemNotFound from '../itemNotFound'
-import {locales, locales_labels} from "../../../../config/default";
-import Table from './table'
+import Form from './form'
 import {Button} from 'react-bootstrap';
 import {fetchList as fetchCategories} from "../partnerCategories/actions";
 import {getList as getCategories} from "../partnerCategories/selectors";
@@ -91,13 +90,13 @@ class Partners extends Component {
     render() {
 
         const {model, showModal, isFetching, errorMessage, categories} = this.props;
+        const data =  this.normalizeData();
 
         return (
             <div>
-
                 <div className="row">
                     <div className="col-md-12">
-                        
+
                         <Button
                             bsStyle="success"
                             className="pull-right"
@@ -122,13 +121,12 @@ class Partners extends Component {
 
                         {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
-                        {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+                        {!errorMessage && !isFetching && !data.length && <ItemNotFound/>}
 
-                        {!errorMessage && !isFetching && model && <Table
-                            list={model.partners}
+                        {!errorMessage && !isFetching && model && <Form
                             showModal={showModal}
                             initialValues={this.getInitialValues()}
-                            data={this.normalizeData()}
+                            data={data}
                             categories={categories}
                         />}
                     </div>
@@ -141,7 +139,7 @@ class Partners extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    categories: getCategories(state).map(c => ({label:c.name, value:c._id}))
+    categories: getCategories(state).map(c => ({label: c.name, value: c._id}))
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
