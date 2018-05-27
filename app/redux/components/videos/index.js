@@ -17,15 +17,6 @@ class Videos extends Component {
         fetchModel({id});
     }
 
-    // Convert form values to API model
-    createModelToSave(values) {
-
-        //clone obj
-        let model = Object.assign({}, values);
-
-        return model;
-    }
-
     // Modify model from API to create form initial values
     getInitialValues() {
         const {user} = this.props;
@@ -39,15 +30,24 @@ class Videos extends Component {
         return v;
     }
 
+    // Add video
+    createModelToSave(values) {
+
+        //clone obj
+        let model = Object.assign({}, values);
+
+        return model;
+    }
+
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
+        const {showModal, saveModel, model} = this.props;
+        const modelToSave = this.createModelToSave(values);
 
         // Add auth user _id
-        model._id = user._id;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
@@ -55,17 +55,33 @@ class Videos extends Component {
             });
     }
 
-    onRemove(video) {
-        console.log("video", video)
+    // Remove video
+    createModelToRemove(values) {
+
+        //clone obj
+        let model = Object.assign({}, values);
+
+        return model;
+    }
+
+    onRemove(values) {
+        const {removeModel, model} = this.props;
+        const modelToRemove = this.createModelToRemove(values);
+        // Add auth user _id
+        modelToRemove._id = model._id;
+
+        return removeModel(modelToRemove);
     }
 
     renderVideo(v, i) {
 
         const {showModal} = this.props;
 
+
         return <div className="col-md-6" key={i}>
             <div className="row">
                 <div className="col-sm-11">
+                    <h3>{v.title}</h3>
                     <Player
                         playsInline
                         src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
@@ -90,7 +106,6 @@ class Videos extends Component {
             <br/>
         </div>
     }
-
 
     render() {
 

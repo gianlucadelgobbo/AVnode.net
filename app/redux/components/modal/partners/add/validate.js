@@ -1,4 +1,4 @@
-const validate = values => {
+const validate = (values, {hideCategory}) => {
 
     const errors = {};
     const {partner, category} = values;
@@ -7,7 +7,7 @@ const validate = values => {
         errors.partner = "Mandatory"
     }
 
-    if (!category || !category.value) {
+    if (!hideCategory && (!category || !category.value)) {
         errors.category = "Mandatory"
     }
 

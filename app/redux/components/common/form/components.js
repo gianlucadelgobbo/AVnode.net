@@ -200,7 +200,6 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
     const hasError = (errors = {}, index, name) => errors[name] && errors[name][index] && !!errors[name][index].value;
     const label = <div className="labelField">{placeholder}</div>;
 
-
     return <div className="card">
         <div className="card-header">
             <h4>{label}</h4>
@@ -237,6 +236,8 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
                 })}
 
             </div>
+
+            {Object.keys(errors[fields.name] || {}).length && <span className="error-message">Check tabs marked with "!"</span>}
         </div>
     </div>
 
@@ -1103,6 +1104,7 @@ export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal
                     name={`${member}.title`}
                     component={inputText}
                     placeholder="Call name"
+                    showModal={showModal}
                 />
 
                 <FieldArray
@@ -1111,6 +1113,7 @@ export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal
                     tabs={tabs}
                     labels={labels}
                     placeholder="Description"
+                    showModal={showModal}
                 />
 
                 <br/>
@@ -1161,7 +1164,7 @@ export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal
 
 export const multiCall = ({fields, title, meta: {error}, placeholder, showModal, categories, tabs, labels}) => {
     const label = <div className="labelField">{placeholder}</div>;
-    const renderSubField = ({member, index, fields}) => {
+    const renderSubField = ({member, index, fields, showModal}) => {
         return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
 
@@ -1209,6 +1212,7 @@ export const multiCall = ({fields, title, meta: {error}, placeholder, showModal,
                     tabs={tabs}
                     labels={labels}
                     placeholder="Event description"
+                    showModal={showModal}
                 />
 
                 <br/>
@@ -1219,6 +1223,7 @@ export const multiCall = ({fields, title, meta: {error}, placeholder, showModal,
                     tabs={tabs}
                     labels={labels}
                     placeholder="Event terms"
+                    showModal={showModal}
                 />
 
                 <br/>
@@ -1229,6 +1234,7 @@ export const multiCall = ({fields, title, meta: {error}, placeholder, showModal,
                     tabs={tabs}
                     labels={labels}
                     placeholder="Event Closed Call text"
+                    showModal={showModal}
                 />
 
                 <br/>
@@ -1239,6 +1245,7 @@ export const multiCall = ({fields, title, meta: {error}, placeholder, showModal,
                     placeholder="Packages"
                     tabs={tabs}
                     labels={labels}
+                    showModal={showModal}
                 />
 
                 <br/>
@@ -1249,6 +1256,7 @@ export const multiCall = ({fields, title, meta: {error}, placeholder, showModal,
                     placeholder="Topics"
                     tabs={tabs}
                     labels={labels}
+                    showModal={showModal}
                 />
 
                 <br/>
@@ -1275,7 +1283,7 @@ export const multiCall = ({fields, title, meta: {error}, placeholder, showModal,
                 <hr/>
             </div>
         </div>
-    }
+    };
 
     return <div className="card">
         <div className="card-header">
