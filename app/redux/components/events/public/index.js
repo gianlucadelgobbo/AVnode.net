@@ -6,9 +6,11 @@ import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../../modal/constants";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
-import ItemNotFound from '../../itemNotFound'
+import Loading from '../../loading';
+import ErrorMessage from '../../errorMessage';
+import ItemNotFound from '../../itemNotFound';
+import TitleComponent from '../../titleComponent';
+import {EVENT_NAME} from './constants';
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
@@ -170,15 +172,17 @@ class EventPublic extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT PUBLIC DATA</h1>
-
-                    <br/>
-
+            
                     {isFetching && !model && <Loading/>}
 
                     {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model && <TitleComponent
+                        title={model.title}
+                        type={EVENT_NAME}
+                    />}
 
                     {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues()}

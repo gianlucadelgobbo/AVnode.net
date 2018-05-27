@@ -1,1 +1,17 @@
-{}
+{
+	"Login": "Login",
+	"Performers": "Performers",
+	"Performances": "Performances",
+	"Events": "Events",
+	"Footage": "Footage",
+	"Playlists": "Playlists",
+	"Videos": "Videos",
+	"News": "News",
+	"Sign up": "Sign up",
+	"Search": "Search",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?"
+}
