@@ -1,1 +1,2 @@
 export const FORM_NAME = "PROFILE.PUBLIC";
+export const PROFILE_NAME = "MY ACCOUNT PUBLIC DATA";

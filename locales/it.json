@@ -27,5 +27,10 @@
 	"Project Showcase": "Project Showcase",
 	"DJ Set": "DJ Set",
 	"views": "views",
-	"likes": "likes"
+	"likes": "likes",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?"
 }
