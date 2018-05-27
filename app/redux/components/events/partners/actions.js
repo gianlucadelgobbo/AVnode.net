@@ -12,6 +12,14 @@ export const fetchModel = ({id} = {}) => generateFetchModel({
     id
 });
 
+export const addModel = (model) => generateSaveModel({
+    selectors,
+    constants,
+    request: api.saveEventPartners,
+    schema: event,
+    model,
+});
+
 export const saveModel = (model) => generateSaveModel({
     selectors,
     constants,

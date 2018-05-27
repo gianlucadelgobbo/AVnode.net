@@ -3,7 +3,7 @@ import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants'
-import {renderDropzoneInput} from "../../../common/form/components";
+import {renderDropzoneInput, inputText} from "../../../common/form/components";
 import validate from './validate'
 import asyncValidate from './asyncValidate'
 import {formValueSelector} from 'redux-form';
@@ -25,7 +25,6 @@ class AddMediaForm extends Component {
         const {
             submitting,
             handleSubmit,
-            showModal,
             images
         } = this.props;
 
@@ -33,9 +32,14 @@ class AddMediaForm extends Component {
             <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
 
                 <Field
+                    name="title"
+                    component={inputText}
+                    placeholder="Title"
+                />
+
+                <Field
                     name="images"
                     component={renderDropzoneInput}
-                    showModal={showModal}
                 />
 
                 <hr/>

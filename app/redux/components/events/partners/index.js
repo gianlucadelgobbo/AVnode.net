@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import LateralMenu from '../lateralMenu'
 import {connect} from 'react-redux'
-import {saveModel, fetchModel, removeModel} from "./actions";
+import {saveModel, fetchModel, removeModel, addModel} from "./actions";
 import {bindActionCreators} from "redux";
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
-import {locales, locales_labels} from "../../../../../config/default";
 import Partners from '../../partners'
 
 class EventPartners extends Component {
 
     render() {
 
-        const {model,  match: {params: {_id}}, isFetching, errorMessage,saveModel,removeModel, fetchModel} = this.props;
+        const {model, match: {params: {_id}}, isFetching, errorMessage, saveModel, removeModel, fetchModel, addModel} = this.props;
 
         return (
             <div className="row">
@@ -29,8 +28,10 @@ class EventPartners extends Component {
                         errorMessage={errorMessage}
                         removeModel={removeModel}
                         saveModel={saveModel}
+                        addModel={addModel}
                         id={_id}
                         fetchModel={fetchModel}
+                        //hideCategory={true}
                     />
 
                 </div>
@@ -50,6 +51,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     saveModel,
     fetchModel,
     removeModel,
+    addModel
 }, dispatch);
 
 EventPartners = connect(
