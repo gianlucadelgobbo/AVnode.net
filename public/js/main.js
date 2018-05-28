@@ -1,21 +1,55 @@
 $(document).ready(function(){
- //http://kenwheeler.github.io/slick/ 
-    $('.carousel').slick({
-      centerMode: true,
-      centerPadding: '80px',
-      slidesToShow: 3,
-      arrows: true
-    });
-
-    $('.carousel_news').slick({
-      centerMode: true,
-      centerPadding: '80px',
-      slidesToShow: 2,
-      arrows: true
-    });
-    
+ 
     $( ".event_main_image_wrapper" ).click(function() {
       $( ".event_main_image_wrapper" ).toggleClass("expanded");
+    });
+
+    $('.loop_2').owlCarousel({
+      center: true,
+      items:2,
+      loop:false,
+      margin:30,
+      dots: false,
+      nav: true,
+      //autoplay: true,
+      navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+      responsive:{
+          600:{
+              items:2
+          }
+        }
+    });
+
+    $('.loop_3').owlCarousel({
+      center: true,
+      items:2,
+      loop:false,
+      margin:30,
+      dots: false,
+      nav: true,
+      //autoplay: true,
+      navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+      responsive:{
+          600:{
+              items:3
+          }
+        }
+    });
+
+    $('.loop').owlCarousel({
+      center: true,
+      items:2,
+      loop:false,
+      margin:30,
+      dots: false,
+      nav: true,
+      //autoplay: true,
+      navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+      responsive:{
+          600:{
+              items:4
+          }
+        }
     });
     
   });  

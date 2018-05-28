@@ -42,10 +42,9 @@ block content
     section.row.performer_events_wrapper
       .col-lg-12
         h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-        .row.carousel
+        .owl-carousel.loop.owl-theme
           each item in data.events
-            .col-sm-4
-              include ../partials/boxEvent
+            include ../partials/boxEvent
         //.text-right
           a.btn.btn-secondary(href=data.publicUrl+"/events/")=global.__('View all')        
           
@@ -58,10 +57,9 @@ block content
             .col-lg-12
               h2.main_title.indented_title!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
               .performance_divider.basic_divider
-              .row.carousel
-                each item in data.performances
-                  .col-sm-4
-                    include ../partials/boxPerformance
+              .owl-carousel.loop.owl-theme
+                each item in data.performances                
+                  include ../partials/boxPerformance
 
   if data.crews.length
     section.performer_crew_wrapper
@@ -87,28 +85,25 @@ block content
             .row.performer_footage.bottom60
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
-                .row.carousel
+                .owl-carousel.loop.owl-theme
                   each item in data.footage            
-                    .col-sm-4
-                      include ../partials/boxFootage  
+                    include ../partials/boxFootage  
 
           if data.videos.length
             .row.performer_video
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
-                .row.carousel.bottom60
+                .owl-carousel.loop.owl-theme.bottom60
                   each item in data.videos            
-                    .col-sm-4
-                      include ../partials/boxVideo
+                    include ../partials/boxVideo
 
           if data.playlists.length
             .row.performer_playlist
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
-                .row.carousel.bottom60
+                .owl-carousel.loop.owl-theme.bottom60
                   each item in data.playlists
-                    .col-sm-4
-                      include ../partials/boxPlaylist
+                    include ../partials/boxPlaylist
   
   if data.galleries.length
     section.performer_galleries_wrapper
@@ -118,10 +113,9 @@ block content
             .col-lg-12
               h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
               .performance_divider.basic_divider
-              .row.carousel
+              .owl-carousel.loop_3.owl-theme
                 each item in data.galleries
-                  .col-sm-4
-                    include ../partials/boxGallery
+                  include ../partials/boxGallery
 
   if data.news.length
     section.performer_news_wrapper
@@ -130,11 +124,11 @@ block content
           .row
             .col-lg-12
               h2.main_title.indented_title!=global.__('News')
-              .row.carousel_news
+              .owl-carousel.loop_2.owl-theme
                 - var conta = 0
                 - for (var a = 0; a<data.news.length;a++)
                   if a/2 === parseInt(a/2)
-                    .col-sm-6
+                    .item
                       - item = data.news[a]
                       include ../partials/boxNews
                       if data.news[a+1]

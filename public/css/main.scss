@@ -122,19 +122,64 @@ section.row.program_event_wrapper {
     margin-bottom: 80px;
 }
 
-.date_schedule_title_border {
-    height: 10px;
-    width: 100%;
-    position: absolute;
-    left: -50%;
+.program_event_wrapper .basic_divider {    
     background: $color4;
-    margin-top: -70px;
-
 }
 
 .program_event_wrapper .main_title {
     margin-bottom: 60px;
 }
+
+.performers_event_wrapper_bkg {
+    background-color: #232323;
+}
+
+.performers_event_wrapper {
+    padding: 80px 0;
+}
+
+.performers_infos {
+    text-transform: inherit;
+    font-weight: 300;
+    font-size: 18px;
+    margin-bottom: 80px;
+}
+
+.partners_event_wrapper {
+    padding: 80px 0;
+}
+
+.partners_event_wrapper .basic_divider {    
+    background: $color4;
+    top: 140px;
+}
+
+.partners_event_wrapper .partners_block h4 {
+    font-size: 18px;
+    font-weight: normal;
+    text-transform: inherit;
+    margin-bottom: 60px;
+    margin-top: 100px;
+}
+
+.partners_event_wrapper .partners_list_wrapper img {
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.partners_event_wrapper .partner_stagename {
+    background-color: $color1;
+    color: $color2;
+
+    font-size: 12px;
+    text-align: center;
+    padding: 5px;
+}
+
+.gallery_event_wrapper_bkg {
+    background-color: #232323;
+}
+
 /* performer page */
  
 .performer_links_list {
@@ -810,6 +855,9 @@ section.performer_news_wrapper {
 
 // ITEM GALLERY
 
+.gallery_item_wrapper a {
+    color: $color2;
+}
 .gallery_item_info_wrapper h4 {
     font-size: 14px;
     font-weight: 300;
@@ -819,11 +867,11 @@ section.performer_news_wrapper {
 .gallery_item_info_wrapper {
     display: flex;
     justify-content: space-between;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.75);
     padding: 10px;
     position: absolute;
     bottom: 0;
-    width: calc(100% - 30px);
+    width: 100%;
 }
 
 .gallery_stats {
@@ -837,6 +885,51 @@ section.performer_news_wrapper {
 .gallery_item_likes,
 .gallery_item_visits {
     color: $color1;
+}
+
+
+
+// ITEM EXTENDED PERFORMER EVENT PAGE
+
+.performer_extended_item_wrapper {
+    border-top: 1px solid $color1;
+    margin: 0 0px 30px 0px; 
+}
+
+.performer_extended_item_wrapper img {
+    width: 100%;
+    height: auto;
+
+}
+
+.performer_extended_item_wrapper .performer_info {
+    background-color: #282828;
+    padding: 10px;
+}
+
+.performer_extended_item_wrapper p {
+    margin-bottom: 0px;
+}
+
+.performer_extended_item_wrapper .performer_name {
+    color: $color1;
+    font-size: 16px;
+}
+
+.performer_extended_item_wrapper .performer_city_country {
+    color: $color3;
+    font-size: 12px;
+}
+
+.performer_city_country span::after {
+    content: "/";
+    color: $color1;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.performer_city_country span:last-child::after {
+    content: "";
 }
 
 // FOOTER 
