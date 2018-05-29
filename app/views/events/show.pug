@@ -71,7 +71,13 @@ block title
                     span#about_collapse.about_more.collapse.miss="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"
                   .more_button
                     span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
-      
+    .polygon_divider_bottom
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
 
 block content
   .program_event_wrapper_bkg
@@ -95,7 +101,17 @@ block content
             .item
               .miss="I will be an 'include ../partials/boxPerformance' someday..."
             .item
-              .miss="I will be an 'include ../partials/boxPerformance' someday..."              
+              .miss="I will be an 'include ../partials/boxPerformance' someday..."
+        .button_more.button_more_program
+          span.button_more_label!=global.__('+ All the program')
+          span.button_more_bkg
+  .polygon_divider_top
+    svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+      g#layer2
+      g#Layer_1
+        g
+          polygon(fill='#232323' points='1927.4,99.5 0,99.5 0,-1 		')
+          polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
   .performers_event_wrapper_bkg
     .container
       section.row.performers_event_wrapper
@@ -190,44 +206,15 @@ block content
                     p.performer_city_country
                       span="city name"
                       span="country name"
-
-            
-
-        //.text-right
-          a.btn.btn-secondary(href=data.publicUrl+"/events/")=global.__('View all')        
+  .polygon_divider_bottom
+    svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+      g#layer2
+      g#Layer_1
+        g
+          polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
+          polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
     
-        //if data.performances.length > 0
-          h3=global.__('Performances')
-          .card-columns
-            each performance in data.performances
-              .card
-                if performance.image
-                  img.card-img-top.img-fluid(
-                    src=performance.imageFormats.medium
-                    alt=performance.title
-                  )
-                .card-block
-                  h6.text-muted.card-title=global.__('Performance')
-                  h5.card-subtitle.mb-3=performance.stagename
-                  a.btn.btn-primary(href=performance.publicUrl)=global.__('More')
-
-        //if data.performances.length > 0
-          if data.performances[0].performers.length > 0
-            h4=global.__('Performers')
-            .card-columns
-              each performance in data.performances
-                each performer in performance.performers
-                  .card
-                    if performer.image
-                      img.card-img-top.img-fluid(
-                        src=performer.imageFormats.medium
-                        alt=performer.name
-                      )
-                    .card-block
-                      h6.text-muted.card-title=global.__('Performer')
-                      h5.card-subtitle.mb-3=performer.stagename
-                      a.btn.btn-primary(href=performer.publicUrl)=global.__('More')
-
+  
   .partners_event_wrapper_bkg
     .container
       section.row.partners_event_wrapper
@@ -255,6 +242,9 @@ block content
   
   
   if data.galleries.length
+    .divider_gallery
+      svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
+        polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
     .gallery_event_wrapper_bkg
       section.performer_galleries_wrapper
         .content_wrapper
