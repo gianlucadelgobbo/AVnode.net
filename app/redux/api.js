@@ -359,7 +359,14 @@ export const fetchPerformanceGalleries = ({id}) => {
 };
 
 export const savePerformanceGalleries = (model) => {
-    return axios.get(`performances/${model._id}/galleries`, model)
+    return axios.post(`performances/${model._id}/galleries`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removePerformanceGalleries = (model) => {
+    return axios.delete(`performances/${model._id}/galleries`, model)
         .then(result => {
             return result.data;
         });
@@ -375,7 +382,14 @@ export const fetchPerformanceVideos = ({id}) => {
 };
 
 export const savePerformanceVideos = (model) => {
-    return axios.get(`performances/${model._id}/videos`, model)
+    return axios.post(`performances/${model._id}/videos`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removePerformanceVideos = (model) => {
+    return axios.delete(`performances/${model._id}/videos`, model)
         .then(result => {
             return result.data;
         });

@@ -153,7 +153,7 @@ class Videos extends Component {
                         model &&
                         Array.isArray(model.videos) &&
                         model.videos.length === 0 &&
-                        <div>
+                        <div className="Novideo">
                             No video to show
                         </div>}
 

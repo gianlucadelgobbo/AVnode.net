@@ -282,3 +282,43 @@ footer{
 .titleComponent{
   margin-bottom: 20px;
 }
+.PerformanceTable a p {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+  padding: 5px;
+}
+.PerformanceTable a p:hover {
+  text-decoration: underline;
+  color:#0f8fcf;
+}
+.CrewTable a p {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+  padding: 5px;
+}
+.CrewTable a p:hover {
+  text-decoration: underline;
+  color:#0f8fcf;
+}
+.EventTable a p {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+  padding: 5px;
+}
+.EventTable a p:hover {
+  text-decoration: underline;
+  color:#0f8fcf;
+}
+.Novideo {
+  font-size: 24px;
+  color: #333;
+}
