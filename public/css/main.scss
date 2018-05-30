@@ -30,6 +30,44 @@ nav.navbar {
     z-index: 1;
 }
 
+.polygon_divider_top {
+    display: inline-block;
+    bottom: -10px;
+    position: relative;
+    width: 100%;
+}
+
+.divider_gallery {
+    display: inline-block;
+    bottom: -10px;
+    position: relative;
+    width: 100%;   
+}
+
+.button_more {
+    text-align: center;
+    width: 100%;
+}
+
+.button_more_label {
+    position: relative;
+    z-index: 1;
+}
+span.button_more_bkg {
+    display: block;
+    background: $color1;
+    height: 40px;
+    width: 100px;
+    margin: 0 auto;
+    position: relative;
+    bottom: 33px;
+    z-index: 0;
+}
+
+.owl-carousel {
+    margin-bottom: 30px;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700');
 
 @import url('https://cdn.linearicons.com/free/1.0.0/icon-font.min.css'); 
