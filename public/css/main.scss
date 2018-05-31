@@ -7,11 +7,14 @@
 
  /* style donostia */
 
- $color1 : #0f8fcf;
+ $color1 : #148dd4;
  $color2 : #fff;
  $color3: #A6A8AB;
  $color4: #282828;
 
+ a {
+     color: $color1;
+ }
  .bottom60 {
      margin-bottom: 60px;
  }
@@ -974,4 +977,36 @@ section.performer_news_wrapper {
 .footer_site {
     background: $color4;
     padding: 80px 0;
+}
+
+.logo_footer {
+    width: 100px;
+}
+
+ul.footer-nav.footer-nav-inline.socials {
+    margin: 15px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.footer-nav.footer-nav-inline.socials li {
+    display: inline-block;
+}
+
+ul.footer-nav.footer-nav-inline.socials .about_button {
+    font-size: 20px;
+    border: 1px solid #0f8fcf;
+    padding: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+ul.footer-nav.corporate {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
