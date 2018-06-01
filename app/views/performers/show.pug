@@ -35,22 +35,34 @@ block title
                 span#about_collapse.about_more.collapse="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"        
               .more_button
                 span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
-    
+  .polygon_divider_bottom
+    svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+      g#layer2
+      g#Layer_1
+        g
+          polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
+          polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')    
 
 block content
   .container
     section.row.performer_events_wrapper
       .col-lg-12
         h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-        .row.carousel
+        .owl-carousel.loop.owl-theme
           each item in data.events
-            .col-sm-4
-              include ../partials/boxEvent
+            include ../partials/boxEvent
         //.text-right
           a.btn.btn-secondary(href=data.publicUrl+"/events/")=global.__('View all')        
           
   
   if data.performances.length
+    .polygon_divider_top
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='#0f8fcf' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
     section.performer_performances_wrapper
       .content_wrapper
         .container
@@ -58,10 +70,16 @@ block content
             .col-lg-12
               h2.main_title.indented_title!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
               .performance_divider.basic_divider
-              .row.carousel
-                each item in data.performances
-                  .col-sm-4
-                    include ../partials/boxPerformance
+              .owl-carousel.loop.owl-theme
+                each item in data.performances                
+                  include ../partials/boxPerformance
+    .polygon_divider_bottom
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='#0f8fcf' points='0,0 1920,0 1920,100.5 		')                  
 
   if data.crews.length
     section.performer_crew_wrapper
@@ -80,6 +98,13 @@ block content
                 img.img-fluid(src="/images/logo_avnode_symbol.svg")
 
   if data.footage.length || data.videos.length || data.playlists.length
+    .polygon_divider_top
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='#0f8fcf' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')  
     section.performer_videos_wrapper
       .content_wrapper
         .container
@@ -87,30 +112,28 @@ block content
             .row.performer_footage.bottom60
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
-                .row.carousel
+                .owl-carousel.loop.owl-theme
                   each item in data.footage            
-                    .col-sm-4
-                      include ../partials/boxFootage  
+                    include ../partials/boxFootage  
 
           if data.videos.length
             .row.performer_video
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
-                .row.carousel.bottom60
+                .owl-carousel.loop.owl-theme.bottom60
                   each item in data.videos            
-                    .col-sm-4
-                      include ../partials/boxVideo
+                    include ../partials/boxVideo
 
           if data.playlists.length
             .row.performer_playlist
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
-                .row.carousel.bottom60
+                .owl-carousel.loop.owl-theme.bottom60
                   each item in data.playlists
-                    .col-sm-4
-                      include ../partials/boxPlaylist
+                    include ../partials/boxPlaylist
+
   
-  if data.galleries.length
+  if data.galleries.length    
     section.performer_galleries_wrapper
       .content_wrapper
         .container
@@ -118,10 +141,9 @@ block content
             .col-lg-12
               h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
               .performance_divider.basic_divider
-              .row.carousel
+              .owl-carousel.loop_3.owl-theme
                 each item in data.galleries
-                  .col-sm-4
-                    include ../partials/boxGallery
+                  include ../partials/boxGallery    
 
   if data.news.length
     section.performer_news_wrapper
@@ -130,11 +152,11 @@ block content
           .row
             .col-lg-12
               h2.main_title.indented_title!=global.__('News')
-              .row.carousel_news
+              .owl-carousel.loop_2.owl-theme
                 - var conta = 0
                 - for (var a = 0; a<data.news.length;a++)
                   if a/2 === parseInt(a/2)
-                    .col-sm-6
+                    .item
                       - item = data.news[a]
                       include ../partials/boxNews
                       if data.news[a+1]

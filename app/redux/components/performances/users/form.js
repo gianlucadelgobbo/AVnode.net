@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText, renderList} from "../../common/form/components";
+import {userAutocompleteSelect} from "../../common/form/components";
 //import validate from './validate';
 
 class AddUsersForm extends Component {
@@ -20,7 +20,7 @@ class AddUsersForm extends Component {
 
                 <Field
                     name="Users"
-                    component={renderList}
+                    component={userAutocompleteSelect}
                     placeholder="Users"
                     options={users}
                 />

@@ -9,6 +9,7 @@ import events from '../components/events/reducers';
 import performances from '../components/performances/reducers';
 import crews from '../components/crews/reducers';
 import users from '../components/performances/users/reducers';
+import partnerCategories from '../components/partnerCategories/reducers';
 
 // import preferences from './preferences';
 
@@ -22,7 +23,8 @@ const reducer = combineReducers({
     performances,
     crews,
     form: formReducer,
-    modal
+    modal,
+    partnerCategories
 });
 
 export default reducer;
