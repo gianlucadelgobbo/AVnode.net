@@ -395,6 +395,54 @@ export const removePerformanceVideos = (model) => {
         });
 };
 
+// ============ Footage
+
+export const fetchFootage = () => {
+    return axios.get("footage")
+        .then(result => {
+            return result.data.footage;
+        });
+};
+
+export const removeFootage = ({id}) => {
+    return axios.delete(`footage/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const postFootage = (obj) => {
+    return axios.post(`footage/`, obj)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - public
+
+export const fetchFootagePublic = ({id}) => {
+    return axios.get(`footage/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveFootagePublic = (model) => {
+    return axios.put(`footage/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removeFootagePublic = (model) => {
+    return axios.delete(`footage/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
+
 // - users
 
 export const fetchPerformanceUsers = () => {
