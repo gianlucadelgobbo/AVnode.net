@@ -6,13 +6,15 @@ import {getModel} from "../selectors";
 import {fetchModel, saveModel, removeModel} from "./actions";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
 import Galleries from '../../galleries';
+import {PERFORMANCE_NAME} from '../constants';
+import TitleComponent from '../../titleComponent';
 
 class PerformanceGallery extends Component {
 
     render() {
 
         const {model, isFetching, errorMessage, match: {params: {_id}}, saveModel, removeModel, fetchModel} = this.props;
-
+        console.log(model);
         return (
             <div className="row">
                 <div className="col-md-2">
@@ -21,6 +23,7 @@ class PerformanceGallery extends Component {
                     />
                 </div>
                 <div className="col-md-10">
+                   
                     <h1 className="labelField">PERFORMANCE GALLERY</h1>
 
                     <Galleries

@@ -96,7 +96,7 @@ class MembersTable extends Component {
 
     render() {
 
-        const {list, model, isFetching, errorMessage} = this.props;
+        const {list, showModal, isFetching, errorMessage} = this.props;
 
         return (
 
