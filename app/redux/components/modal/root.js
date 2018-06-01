@@ -8,6 +8,7 @@ import AddUserPerformance from '../performances/users';
 import AddMediaModal from './media/add';
 import AddPartnerModal from './partners/add';
 import AddCrewModal from './crews/add';
+import AddMembersModal from './members/add';
 
 import ModalWrapper from './wrapper';
 import {connect} from 'react-redux';
@@ -22,7 +23,8 @@ import {
     MODAL_ADD_USER_PERFORMANCE,
     MODAL_ADD_MEDIA,
     MODAL_ADD_PARTNER,
-    MODAL_ADD_CREW
+    MODAL_ADD_CREW,
+    MODAL_ADD_MEMBERS
 } from "./constants"
 
 /*
@@ -43,7 +45,8 @@ const MODAL_COMPONENTS = {
     [MODAL_ADD_USER_PERFORMANCE]: AddUserPerformance,
     [MODAL_ADD_MEDIA]: AddMediaModal,
     [MODAL_ADD_PARTNER]: AddPartnerModal,
-    [MODAL_ADD_CREW]:AddCrewModal
+    [MODAL_ADD_CREW]:AddCrewModal,
+    [MODAL_ADD_MEMBERS]:AddMembersModal
     /* other modals */
 };
 
@@ -56,7 +59,8 @@ const MODAL_TITLES = {
     [MODAL_ADD_USER_PERFORMANCE]: "Add Users",
     [MODAL_ADD_MEDIA]: "Add Media",
     [MODAL_ADD_PARTNER]: "Add Partner",
-    [MODAL_ADD_CREW]:"Add Crew"
+    [MODAL_ADD_CREW]:"Add Crew",
+    [MODAL_ADD_MEMBERS]:"Add Members"
     /* other modals */
 };
 

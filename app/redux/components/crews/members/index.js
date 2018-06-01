@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from "redux";
-import {getList, getIsFetching, getErrorMessage} from "../selectors";
-import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
+import {getModel, getIsFetching, getErrorMessage} from "../selectors";
 import {connect} from "react-redux";
 import {showModal} from "../../modal/actions";
 import {fetchModel, removeModel} from "./actions";
 import {Button} from 'react-bootstrap';
-import {MODAL_REMOVE} from "../../modal/constants";
+import {MODAL_ADD_MEMBERS, MODAL_SAVED, MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading';
 import Table from '../../table';
 import {injectIntl, FormattedMessage} from 'react-intl';
@@ -20,33 +19,26 @@ class MembersTable extends Component {
         });
     }
 
-    normalizeData(list){  
-        
-    if (!list || !Array.isArray(list)) {
-        return [];
+
+    onAddModel(values) {
+        const {showModal, addModel, model} = this.props;
+        const modelToSave = this.createAddModelToSave(values);
+
+        modelToSave._id = model._id;
+
+        //dispatch the action to save the model here
+        return addModel(model)
+            .then(() => {
+                showModal({
+                    type: MODAL_SAVED
+                });
+            });
     }
 
-    let result = [];
-
-    list.forEach(item => {
-        let {members} = item;
-        members.forEach(m => {
-            result.push(m)
-        })
-
-    });
-
-    return result;
-        
-    };
 
     renderTable() {
 
-        const {showModal, removeModel, list} = this.props;
-
-        const listMembers = this.normalizeData(list);
-
-        console.log(listMembers);
+        const {showModal, removeModel,  list: {members} } = this.props;
         
         const MemberItem = 
                         {
@@ -56,7 +48,7 @@ class MembersTable extends Component {
                                     />
                         }
         return <Table
-            data={listMembers}
+            data={members}
             columns={
                 [
                 
@@ -68,7 +60,7 @@ class MembersTable extends Component {
                         accessor: 'stagename',
                         className:'MembersTable',
                         Cell: (props) => {
-                            const {row, original} = props;
+                            const {row} = props;
                             return  <div className="memberTitle">
                                         <p>{row.stagename}</p>
                                     </div>
@@ -104,26 +96,48 @@ class MembersTable extends Component {
 
     render() {
 
-        const {list, isFetching, errorMessage} = this.props;
+        const {list, model, isFetching, errorMessage} = this.props;
 
         return (
-            <div>
-                {!list.length && <div>No Crew to display</div>}
 
-                {isFetching && <Loading/>}
+        <div>
+            <div className="row">
+                <div className="col-md-12">
 
-                {errorMessage && <div>{errorMessage}</div>}
+                <Button
+                    bsStyle="success"
+                    className="pull-right"
+                    onClick={() => showModal({
+                        type: MODAL_ADD_MEMBERS
+                    })}>
+                    <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+                </Button>
 
-                {list && this.renderTable()}
-
+                </div>
             </div>
+
+            <br/>
+    
+
+            <div className="row">
+                <div className="col-md-12">
+                    {!list.length && <div>No Crew to display</div>}
+
+                    {isFetching && <Loading/>}
+
+                    {errorMessage && <div>{errorMessage}</div>}
+
+                    {list && this.renderTable()}
+                </div>
+            </div>
+        </div>
 
         );
     }
 }
 
 const mapStateToProps = (state, {match: {params: {_id}}}) => ({
-    list: getList(state, _id),
+    list: getModel(state, _id),
     isFetching: getIsFetching(state, _id),
     errorMessage: getErrorMessage(state, _id)
 });
