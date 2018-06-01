@@ -19,3 +19,13 @@ export const saveModel = (model) => generateSaveModel({
     schema: performance,
     model,
 });
+
+export const removeModel = (model) => generateSaveModel({
+    selectors,
+    constants,
+    request: api.removePerformanceGalleries,
+    schema: event,
+    model,
+});
+
+

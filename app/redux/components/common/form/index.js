@@ -11,7 +11,7 @@ export const sortByLanguage = (languages) => {
     return result;
 };
 
-export const  createMultiLanguageInitialObject = (c) => {
+export const createMultiLanguageInitialObject = (c) => {
 
     let v = [];
     locales.forEach(l => {
@@ -27,6 +27,24 @@ export const  createMultiLanguageInitialObject = (c) => {
     v = sortByLanguage(v);
 
     return v;
+};
+
+export const populateMultiLanguageObject = (c, valuesFromApi, joinField = "lang", valueField = "value", valueFieldFromApi = "abouttext") => {
+
+    let result = createMultiLanguageInitialObject(c);
+
+    if (Array.isArray(valuesFromApi)) {
+        valuesFromApi.forEach(l => {
+            if (l[joinField]) {
+                let found = result.find(o => o[joinField] === l[joinField]);
+                if (found) {
+                    found[valueField] = l[valueFieldFromApi]
+                }
+            }
+        });
+    }
+
+    return result;
 };
 
 export const checkIfError = (result) => {

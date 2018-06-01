@@ -3,7 +3,11 @@ import {UPLOAD_IMAGE_MAX_SIZE} from '../../../../conf'
 const validate = values => {
 
     const errors = {};
-    const {images} = values;
+    const {images, title} = values;
+
+    if (!title){
+        errors.title = "Mandatory";
+    }
 
     if (!images || (Array.isArray(images) && !images.length)) {
         errors.images = "Invalid amount of images (only 1)";
