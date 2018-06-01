@@ -10,6 +10,7 @@ import performances from '../components/performances/reducers';
 import crews from '../components/crews/reducers';
 import users from '../components/performances/users/reducers';
 import partnerCategories from '../components/partnerCategories/reducers';
+import footage from '../components/footage/reducers';
 
 // import preferences from './preferences';
 
@@ -24,7 +25,8 @@ const reducer = combineReducers({
     crews,
     form: formReducer,
     modal,
-    partnerCategories
+    partnerCategories,
+    footage
 });
 
 export default reducer;

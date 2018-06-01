@@ -40,6 +40,10 @@ import CrewsImages from '../crews/images';
 import CrewsMembers from '../crews/members';
 import CrewsOrganization from '../crews/organization';
 
+// // Footage
+import Footage from '../footage/index.js';
+import FootagePublic from '../footage/public';
+
 // // Preferences
 import Preferences from '../preferences/index';
 
@@ -94,6 +98,10 @@ class App extends Component {
                             <Route path="/admin/events/:_id/calls/" component={EventCalls}/>
                             <Route path="/admin/events/:_id/settings/" component={EventSettings}/>
                             <Route path="/admin/events" component={Events}/>
+
+                            <Route path="/admin/footage/:_id/public/" component={FootagePublic}/>
+                            <Route path="/admin/footage" component={Footage}/>
+
 
                             <Route path="/admin/preferences" component={Preferences}/>
                             <Route path="*" component={PageNotFound}/>

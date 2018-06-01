@@ -6,18 +6,21 @@ import {connect} from 'react-redux'
 import {fetchList as fetchCrews} from "../crews/actions";
 import {fetchList as fetchPerformances} from "../performances/actions";
 import {fetchList as fetchEvents} from "../events/actions";
+import {fetchList as fetchFootage} from "../footage/actions";
 import {getList as getCrews} from "../crews/selectors";
 import {getList as getPerformances} from "../performances/selectors";
 import {getList as getEvents} from "../events/selectors";
+import {getList as getFootage} from "../footage/selectors";
 
 
 class TopMenu extends Component {
 
     componentDidMount() {
-        const {fetchCrews, fetchPerformances, fetchEvents} = this.props;
+        const {fetchCrews, fetchPerformances, fetchEvents, fetchFootage} = this.props;
         fetchCrews();
         fetchPerformances();
         fetchEvents();
+        fetchFootage();
     }
 
     createMenuItem = ({model, index}) => {
@@ -30,7 +33,7 @@ class TopMenu extends Component {
 
     render() {
 
-        const {crews, performances, events} = this.props;
+        const {crews, performances, events, footage} = this.props;
 
         const items = [
             {
@@ -64,6 +67,14 @@ class TopMenu extends Component {
                 />
             },
             {
+                href: "/admin/footage",
+                counter: footage.length,
+                label: <FormattedMessage
+                    id="footage"
+                    defaultMessage="Footage"
+                />
+            },
+            {
                 href: "/admin/preferences",
                 label: <FormattedMessage
                     id="preferences"
@@ -84,13 +95,15 @@ class TopMenu extends Component {
 const mapStateToProps = (state) => ({
     crews: getCrews(state),
     performances: getPerformances(state),
-    events: getEvents(state)
+    events: getEvents(state),
+    footage:getFootage(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchCrews,
     fetchPerformances,
-    fetchEvents
+    fetchEvents,
+    fetchFootage
 }, dispatch);
 
 TopMenu = connect(
