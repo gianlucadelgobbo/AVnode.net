@@ -13,4 +13,6 @@ export const MODAL_ADD_MEDIA = "MODAL_ADD_MEDIA";
 
 export const MODAL_ADD_PARTNER = "MODAL_ADD_PARTNER";
 
-export const MODAL_ADD_CREW = "MODEL_ADD_CREW";
+export const MODAL_ADD_CREW = "MODAL_ADD_CREW";
+
+export const MODAL_ADD_MEMBERS = "MODAL_ADD_MEMBERS";
