@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
-import {getModel} from "../selectors";
+import {getModel, getErrorMessage, getIsFetching} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
-import ImageForm from '../image'
+import ImageForm from '../../image';
+import {withRouter} from 'react-router';
 
 class EventImages extends Component {
 
@@ -52,9 +52,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     saveModel
 }, dispatch);
 
-EventImages = connect(
+
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(EventImages);
-
-export default EventImages;
+)(EventImages));

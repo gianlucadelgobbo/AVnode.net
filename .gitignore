@@ -17,3 +17,5 @@ AVnode.net.code-workspace
 __BUTTARE
 __IMPORT SCRIPTS
 
+/.db/
+/.elasticsearch/
