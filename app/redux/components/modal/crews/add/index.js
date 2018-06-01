@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import Form from './form'
+import Form from '../../../crews/add';
 
-class AddMediaModal extends Component {
+class AddCrewModal extends Component {
 
     render() {
 
-        const {onSubmit, model} = this.props;
-
         return (
-            <Form
-                onSubmit={onSubmit}
-                model={model}
-            />
+            <Form/>
         );
     }
 }
@@ -22,9 +17,9 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-AddMediaModal = connect(
+AddCrewModal = connect(
     mapStateToProps,
     mapDispatchToProps
-)(AddMediaModal);
+)(AddCrewModal);
 
-export default AddMediaModal;
+export default AddCrewModal;

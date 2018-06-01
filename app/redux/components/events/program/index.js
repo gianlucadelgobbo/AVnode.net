@@ -31,7 +31,6 @@ class EventProgram extends Component {
         //clone obj
         let model = Object.assign({}, values);
 
-
         return model;
     }
 
@@ -52,13 +51,10 @@ class EventProgram extends Component {
     }
 
     onSubmit(values) {
-        console.log("values", values)
         const {showModal, saveModel, model} = this.props;
         const modelToSave = this.createModelToSave(values);
 
         modelToSave._id = model._id;
-
-        return
 
         //dispatch the action to save the model here
         return saveModel(model)

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
 import {getModel} from "../selectors";
-import {fetchModel, saveModel} from "./actions";
+import {fetchModel, saveModel, removeModel} from "./actions";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
 import Videos from '../../videos'
 
@@ -11,7 +11,7 @@ class EventsImage extends Component {
 
     render() {
 
-        const {model, isFetching, errorMessage, fetchModel, match: {params: {_id}}} = this.props;
+        const {model, isFetching, errorMessage, fetchModel, match: {params: {_id}}, saveModel, removeModel} = this.props;
 
         return (
             <div className="row">
@@ -29,6 +29,8 @@ class EventsImage extends Component {
                         errorMessage={errorMessage}
                         id={_id}
                         fetchModel={fetchModel}
+                        saveModel={saveModel}
+                        removeModel={removeModel}
                     />
 
                 </div>
@@ -46,7 +48,8 @@ const mapStateToProps = (state, {match: {params: {_id}}}) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
-    saveModel
+    saveModel,
+    removeModel
 }, dispatch);
 
 EventsImage = connect(
