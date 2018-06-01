@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {FORM_NAME} from './constants'
-import {renderDropzoneInput, inputText} from "../../../common/form/components";
-import validate from './validate'
-import asyncValidate from './asyncValidate'
-import {formValueSelector} from 'redux-form';
+import {FORM_NAME} from './constants';
+import {userAutocompleteSelect, renderList} from "../../../common/form/components";
+import validate from './validate';
+import asyncValidate from './asyncValidate';
 
-class AddMediaForm extends Component {
+class AddPartnerForm extends Component {
 
     submitForm(data) {
         const {onSubmit, reset} = this.props;
@@ -24,29 +23,23 @@ class AddMediaForm extends Component {
 
         const {
             submitting,
-            handleSubmit,
-            images
+            handleSubmit
         } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
 
                 <Field
-                    name="title"
-                    component={inputText}
-                    placeholder="Title"
-                />
-
-                <Field
-                    name="images"
-                    component={renderDropzoneInput}
+                    name="members"
+                    component={userAutocompleteSelect}
+                    placeholder="Members"
                 />
 
                 <hr/>
 
                 <button
                     type="submit"
-                    disabled={submitting || !images || (images && !images.length)}
+                    disabled={submitting}
                     className="btn btn-primary btn-lg btn-block">
                     {submitting ? "Saving..." : "Save"}
                 </button>
@@ -57,31 +50,24 @@ class AddMediaForm extends Component {
 
 }
 
-/*
-* formValueSelector is a "selector" API to make it easier to connect() to form values.
-* It creates a selector function that accepts field names and returns corresponding values from the named form.
-* */
-const valueSelector = formValueSelector(FORM_NAME);
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    images: valueSelector(state, 'images')
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-AddMediaForm = connect(
+AddPartnerForm = connect(
     mapStateToProps,
     mapDispatchToProps
-)(AddMediaForm);
+)(AddPartnerForm);
 
-AddMediaForm = reduxForm({
+AddPartnerForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
-})(AddMediaForm);
+})(AddPartnerForm);
 
-export default AddMediaForm;
+export default AddPartnerForm;

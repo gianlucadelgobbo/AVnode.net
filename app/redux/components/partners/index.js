@@ -43,15 +43,6 @@ class Partners extends Component {
         fetchCategories()
     }
 
-    // Convert form values to API model
-    createModelToSave(values) {
-
-        //clone obj
-        let model = Object.assign({}, values);
-
-        return model;
-    }
-
     // Modify model from API to create form initial values
     getInitialValues() {
 
@@ -72,6 +63,16 @@ class Partners extends Component {
         return v;
     }
 
+    // Save model
+
+    createModelToSave(values) {
+
+        //clone obj
+        let model = Object.assign({}, values);
+
+        return model;
+    }
+
     onSubmit(values) {
         const {showModal, saveModel, model} = this.props;
         const modelToSave = this.createModelToSave(values);
@@ -87,10 +88,35 @@ class Partners extends Component {
             });
     }
 
+    // Add partner
+
+    createAddModelToSave(values) {
+
+        //clone obj
+        let model = Object.assign({}, values);
+
+        return model;
+    }
+
+    onAddModel(values) {
+        const {showModal, addModel, model} = this.props;
+        const modelToSave = this.createAddModelToSave(values);
+
+        modelToSave._id = model._id;
+
+        //dispatch the action to save the model here
+        return addModel(model)
+            .then(() => {
+                showModal({
+                    type: MODAL_SAVED
+                });
+            });
+    }
+
     render() {
 
-        const {model, showModal, isFetching, errorMessage, categories} = this.props;
-        const data =  this.normalizeData();
+        const {model, showModal, isFetching, errorMessage, categories, hideCategory} = this.props;
+        const data = this.normalizeData();
 
         return (
             <div>
@@ -103,7 +129,10 @@ class Partners extends Component {
                             onClick={() => showModal({
                                 type: MODAL_ADD_PARTNER,
                                 props: {
-                                    onSubmit: this.onSubmit.bind(this)
+                                    onSubmit: this.onAddModel.bind(this),
+                                    hideCategory: hideCategory,
+                                    model: model,
+                                    showModal: showModal
                                 }
                             })}>
                             <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
@@ -128,6 +157,7 @@ class Partners extends Component {
                             initialValues={this.getInitialValues()}
                             data={data}
                             categories={categories}
+                            hideCategory={hideCategory}
                         />}
                     </div>
                 </div>
