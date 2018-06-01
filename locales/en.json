@@ -48,5 +48,22 @@
 	"DJ Set": "DJ Set",
 	"Performer": "Performer",
 	"Individuals": "Individuals",
-	"Most active": "Most active"
+	"Most active": "Most active",
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?",
+	"You are logged in.": "You are logged in.",
+	"Search is currently unavailable…": "Search is currently unavailable…",
+	"Nexts": "Nexts",
+	"Video": "Video",
+	"users": "users",
+	"+ All the events": "+ All the events",
+	"+ All the performances": "+ All the performances",
+	"+ All the footages": "+ All the footages",
+	"+ All the videos": "+ All the videos",
+	"+ All the playlists": "+ All the playlists",
+	"+ All the galleries": "+ All the galleries",
+	"+ All the news": "+ All the news"
 }

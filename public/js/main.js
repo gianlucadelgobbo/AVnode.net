@@ -20,11 +20,11 @@ $(document).ready(function(){
         }
     });
 
-    $('.loop_3').owlCarousel({
-      center: true,
-      items:2,
+    $('.loop_3items').owlCarousel({      
+      items:3,
       loop:false,
       margin:30,
+      stagePadding: 50,
       dots: false,
       nav: true,
       //autoplay: true,
@@ -37,9 +37,10 @@ $(document).ready(function(){
     });
 
     $('.loop').owlCarousel({
-      center: true,
+      //center: true,
+      stagePadding: 50,
       items:2,
-      loop:false,
+      loop: false,
       margin:30,
       dots: false,
       nav: true,
