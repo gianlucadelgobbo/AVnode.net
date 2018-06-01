@@ -13,62 +13,69 @@ import validate from "./validate";
 class ModelTable extends Component {
 
     getColumns(fields) {
-        const {showModal, removeModel, categories} = this.props;
-
-        return [
-            {
-                Header: "Partner",
-                id: "Partner",
-                accessor: 'title',
-                Cell: (props) => {
-                    const {original} = props;
-                    return <div>
-                        {original.stagename}
-                    </div>
-                }
-            },
-            {
-                Header: "Category",
-                accessor: 'category.name',
-                Cell: (props) => {
-                    const {index} = props;
-                    return <div>
-
-                        {fields.get(index) && <Field
-                            name={`partners[${index}].category`}
-                            component={renderList}
-                            options={categories}
-                            clearable={false}
-                        />}
-
-                    </div>
-                }
-            },
-            {
-                Header: "Actions",
-                id: "actions",
-                width: 100,
-                Cell: (props) => {
-                    const {original, index} = props;
-                    return <div>
-                        {fields.get(index) && <Button
-                            bsStyle="danger"
-                            className="btn-block"
-                            onClick={() =>
-                                showModal({
-                                    type: MODAL_REMOVE,
-                                    props: {
-                                        onRemove: () => removeModel({id: original._id})
-                                    }
-                                })}
-                        >
-                            <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                        </Button>}
-                    </div>
-                }
-
+        const {showModal, removeModel, categories, hideCategory} = this.props;
+        let columns = [];
+        let nameColumn = {
+            Header: "Name",
+            id: "name",
+            accessor: 'stagename',
+            Cell: (props) => {
+                const {original} = props;
+                return <div>
+                    {original.stagename}
+                </div>
             }
-        ]
+        };
+        let categoryColumn = {
+            Header: "Category",
+            accessor: 'category.name',
+            Cell: (props) => {
+                const {index} = props;
+                return <div>
+
+                    {fields.get(index) && <Field
+                        name={`partners[${index}].category`}
+                        component={renderList}
+                        options={categories}
+                        clearable={false}
+                    />}
+
+                </div>
+            }
+        };
+        let actionColumn = {
+            Header: "Actions",
+            id: "actions",
+            width: 100,
+            Cell: (props) => {
+                const {original, index} = props;
+                return <div>
+                    {fields.get(index) && <Button
+                        bsStyle="danger"
+                        className="btn-block"
+                        onClick={() =>
+                            showModal({
+                                type: MODAL_REMOVE,
+                                props: {
+                                    onRemove: () => removeModel({id: original._id})
+                                }
+                            })}
+                    >
+                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                    </Button>}
+                </div>
+            }
+
+        };
+
+        columns.push(nameColumn);
+
+        if (!hideCategory) {
+            columns.push(categoryColumn);
+        }
+        columns.push(actionColumn);
+
+        return columns
     }
 
     renderTable({fields}) {
@@ -94,20 +101,20 @@ class ModelTable extends Component {
 
         return (<form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-                    <FieldArray
-                        name="partners"
-                        component={this.renderTable.bind(this)}
-                    />
+            <FieldArray
+                name="partners"
+                component={this.renderTable.bind(this)}
+            />
 
-                    <hr/>
+            <hr/>
 
-                    <button
-                        type="submit"
-                        disabled={submitting}
-                        className="btn btn-primary btn-lg btn-block">
-                        {submitting ? "Saving..." : "Save"}
-                    </button>
-                </form>);
+            <button
+                type="submit"
+                disabled={submitting}
+                className="btn btn-primary btn-lg btn-block">
+                {submitting ? "Saving..." : "Save"}
+            </button>
+        </form>);
     }
 }
 

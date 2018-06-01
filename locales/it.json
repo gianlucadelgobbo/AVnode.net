@@ -28,5 +28,13 @@
 	"DJ Set": "DJ Set",
 	"views": "views",
 	"likes": "likes",
+<<<<<<< HEAD
+	"Email": "Email",
+	"example@foo.bar": "example@foo.bar",
+	"Password": "Password",
+	"Use at least eight characters": "Use at least eight characters",
+	"Forgot your password?": "Forgot your password?"
+=======
 	"Production": "Production"
+>>>>>>> origin/master
 }

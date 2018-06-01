@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -24,7 +24,8 @@ class AddPartnerForm extends Component {
         const {
             submitting,
             handleSubmit,
-            categories
+            categories,
+            hideCategory
         } = this.props;
 
         return (
@@ -36,12 +37,12 @@ class AddPartnerForm extends Component {
                     placeholder="Partner"
                 />
 
-                <Field
+                {!hideCategory && <Field
                     name="category"
                     component={renderList}
                     placeholder="Category"
                     options={categories}
-                />
+                />}
 
                 <hr/>
 

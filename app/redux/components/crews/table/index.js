@@ -83,7 +83,7 @@ class ModelTable extends Component {
 
         return (
             <div>
-                {!list.length && <div>No events to display</div>}
+                {!list.length && <div>No Crew to display</div>}
 
                 {isFetching && <Loading/>}
 
