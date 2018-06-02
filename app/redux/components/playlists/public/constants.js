@@ -1,0 +1,3 @@
+export const FORM_NAME = "PLAYLISTS.PUBLIC";
+export const PLAYLISTS_NAME = "PLAYLISTS PUBLIC DATA";
+
