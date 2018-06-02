@@ -209,7 +209,7 @@ textarea#styled {
 }
 .labelField{
   color: #636c72;
-  font-weight: 400;
+  font-weight: 600;
 }
 .labelFieldUpload{
   color: #636c72;
@@ -227,9 +227,7 @@ textarea#styled {
 .checkbox-list label {
   padding-left: 10px;
 }
-.card-body button {
-  margin-bottom: 10px;
-}
+
 .error-message {
   color: #ff0000;
   font-style: italic;
@@ -330,4 +328,15 @@ footer{
 
 .rt-resizable-header-content{
   font-size: 18px;
+}
+.user-list{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  //box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2), 0 4px 20px 0 rgba(0,0,0,0.19);
+}
+.user-list li {
+  padding: 8px 16px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
 }

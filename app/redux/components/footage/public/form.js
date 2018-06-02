@@ -5,7 +5,7 @@ import {
     renderList,
     inputText,
     textareaMultiTab,
-    checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl,
+    checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl, fieldWithLabel
 } from "../../common/form/components";
 import validate from './validate';
 //import asyncValidate from './asyncValidate';
@@ -45,6 +45,16 @@ class FootagePublicForm extends Component {
                     tabs={tabs}
                     labels={labels}
                     placeholder="About"
+                />
+
+                <br/>
+
+                <FieldArray
+                    name="users"
+                    component={fieldWithLabel}
+                    placeholder="Authors"
+                    showModal={showModal}
+                    className=""
                 />
 
                 <br/>

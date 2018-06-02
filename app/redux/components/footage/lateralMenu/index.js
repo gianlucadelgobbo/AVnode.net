@@ -12,6 +12,7 @@ const items = [
             defaultMessage="Public data"
         />
     }
+
 ];
 
 class MyLateralMenu extends Component {
