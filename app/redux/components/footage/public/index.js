@@ -28,6 +28,17 @@ class FootagePublic extends Component {
 
         //clone obj
         let model = Object.assign({}, values);
+        
+        //Convert abouts for API
+        if (Array.isArray(model.abouts)) {
+            model.abouts = model.abouts.map(x => {
+                const splitted = x.key.split(".");
+                return {
+                    lang: splitted[splitted.length - 1],
+                    abouttext: x.value
+                }
+            });
+        }
        
         return model;
     }
@@ -68,6 +79,8 @@ class FootagePublic extends Component {
                 })
             }
         });
+
+        f.users = model.users || [];
 
         return f;
     }
