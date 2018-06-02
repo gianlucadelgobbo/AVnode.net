@@ -10,7 +10,7 @@ import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
-import {checkboxField} from "../../common/form/components";
+//import {checkboxField} from "../../common/form/components";
 
 class EventPublic extends Component {
 
@@ -42,14 +42,14 @@ class EventPublic extends Component {
 
         //Convert stagename for redux-form
         v.is_public = model.is_public;
-        v.gallery_is_public = model.gallery_is_public;
-        v.is_freezed = model.is_freezed;
-
-        v.users = model.users; //TO DO
-
-        v.program_builder = model.program_builder;
-        v.advanced_proposals_manager = model.advanced_proposals_manager;
-        v.call_manager = model.call_manager;
+        // v.gallery_is_public = model.gallery_is_public;
+        // v.is_freezed = model.is_freezed;
+        //
+        // v.users = model.users; //TO DO
+        //
+        // v.program_builder = model.program_builder;
+        // v.advanced_proposals_manager = model.advanced_proposals_manager;
+        // v.call_manager = model.call_manager;
 
         return v;
     }

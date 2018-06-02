@@ -21,7 +21,7 @@ class PerformaceVideo extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT VIDEOS</h1>
+                    <h1 className="labelField">PERFORMANCE VIDEOS</h1>
 
                     <Videos
                         model={model}

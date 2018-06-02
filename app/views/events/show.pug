@@ -218,9 +218,9 @@ block content
   .partners_event_wrapper_bkg
     .container
       section.row.partners_event_wrapper
-        .col-lg-6
+        .col-lg-8
           h2.main_title.indented_title.color1!=global.__('Partners')+" <small>(<span class='miss'>99</span>)</small>"
-        .col-lg-6
+        .col-lg-4
           img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
         .col-sm-12
           .row
@@ -232,27 +232,43 @@ block content
                   .row.partners_list_wrapper
                     each partner in partners_block.users
                       .col-sm-2
-                        a(href="/"+partner.slug, title=partner.stagename)
-                          if partner.imageFormats                          
-                            img.card-img-top.img-fluid(
-                              src=partner.imageFormats.large
-                              alt=partner.title
-                            )
-                          p.partner_stagename=partner.stagename
+                        .partner_box_wrapper
+                          a(href="/"+partner.slug, title=partner.stagename)
+                            if partner.imageFormats                          
+                              img.card-img-top.img-fluid(
+                                src=partner.imageFormats.large
+                                alt=partner.title
+                              )
+                          p.partner_stagename
+                            a(href="/"+partner.slug, title=partner.stagename)
+                              span=partner.stagename
+    
   
-  
-  if data.galleries.length
+  if data.galleries.length || data.videos.length
     .divider_gallery
       svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
         polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
+  if data.galleries.length  
     .gallery_event_wrapper_bkg
-      section.performer_galleries_wrapper
+      section.event_galleries_wrapper
         .content_wrapper
           .container
             .row
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Galleries')+" <small class='miss'>(<span>99</span>)</small>"  
                 .performance_divider.basic_divider
-                .owl-carousel.loop_3.owl-theme
+                .owl-carousel.loop_3items.owl-theme
                   each item in data.galleries                    
                     include ../partials/boxGallery
+  if data.videos.length  
+    .video_event_wrapper_bkg
+      section.event_video_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Video')+" <small class='miss'>(<span>99</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.videos            
+                    include ../partials/boxVideo

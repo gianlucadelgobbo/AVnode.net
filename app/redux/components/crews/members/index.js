@@ -1,78 +1,33 @@
-import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
+import React, { Component } from 'react';
 import {bindActionCreators} from "redux";
-import LateralMenu from '../lateralMenu'
-import Form from './form'
-import {connect} from 'react-redux'
-import {fetchModel, saveModel} from "./actions";
+import {getModel, getIsFetching, getErrorMessage} from "../selectors";
+import {connect} from "react-redux";
 import {showModal} from "../../modal/actions";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
-import ItemNotFound from '../../itemNotFound';
-import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
-import {fetchList as fetchCountries} from '../../countries/actions'
-import {getList as getCountries} from '../../countries/selectors'
-import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {fetchModel, removeModel} from "./actions";
+import {Button} from 'react-bootstrap';
+import {MODAL_ADD_MEMBERS, MODAL_SAVED, MODAL_REMOVE} from "../../modal/constants";
+import Loading from '../../loading';
+import Table from '../../table';
+import {injectIntl, FormattedMessage} from 'react-intl';
 
-/*
-* Responsabilita'
-* - Get form's initial values from redux state here
-* - pass initial values to form
-* - dispatch the action to save the model
-* */
-
-class CrewMembers extends Component {
-
+class MembersTable extends Component {
 
     componentDidMount() {
         const {fetchModel, match: {params: {_id}}} = this.props;
-        fetchModel({id: _id});
-    }
-
-
-    // Convert form values to API model
-    createModelToSave(values) {
-
-        //clone obj
-        let model = Object.assign({}, values);
-
-        // Convert Addresses_private
-        model.addresses_private = model.addresses_private.map(a => {
-            const originalString = a.formatted_address;
-            return {formatted_address: originalString};
+        fetchModel({
+            id: _id
         });
-        return model;
     }
 
-    // Modify model from API to create form initial values
-    getInitialValues() {
-        const {user} = this.props;
 
-        if (!user) {
-            return {};
-        }
+    onAddModel(values) {
+        const {showModal, addModel, model} = this.props;
+        const modelToSave = this.createAddModelToSave(values);
 
-        let v = {};
-        //Convert name for redux-form
-        v.member = user.member;
-        // Addresses_private: Add one item if value empty
-        v.addresses_private = (Array.isArray(user.addresses_private) && user.addresses_private.length > 0) ?
-            user.addresses_private : [{formatted_address: ""}];
-
-        return v;
-    }
-
-    onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
-        const model = this.createModelToSave(values);
-        console.log(model);
-
-        // Add auth user _id
-        model._id = user._id;
+        modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
+        return addModel(model)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
@@ -80,61 +35,122 @@ class CrewMembers extends Component {
             });
     }
 
+
+    renderTable() {
+
+        const {showModal, removeModel,  list: {members} } = this.props;
+        
+        const MemberItem = 
+                        {
+                            label: <FormattedMessage
+                                    id="MembersTitle"
+                                    defaultMessage="Members Name"
+                                    />
+                        }
+        return <Table
+            data={members}
+            columns={
+                [
+                
+                    {
+                        Header: () => {
+                            return <span>{MemberItem.label}<i className="fa fa-sort"></i></span>
+                        },
+                        id: "stagename",
+                        accessor: 'stagename',
+                        className:'MembersTable',
+                        Cell: (props) => {
+                            const {row} = props;
+                            return  <div className="memberTitle">
+                                        <p>{row.stagename}</p>
+                                    </div>
+                        }
+                    },
+                    {
+                        Header: "Actions",
+                        id: "actions",
+                        width: 100,
+                        Cell: (props) => {
+                            const {original} = props;
+                            return <Button
+                                bsStyle="danger"
+                                className="btn-block"
+                                onClick={() =>
+                                    showModal({
+                                        type: MODAL_REMOVE,
+                                        props: {
+                                            onRemove: () => removeModel({id: original._id})
+                                        }
+                                    })}
+                            >
+                                <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                            </Button>
+                        }
+
+                    }
+                ]
+            }
+        />
+
+    }
+
     render() {
 
-        const {model, showModal, errorMessage, isFetching, match: {params: {_id}}} = this.props;
+        const {list, showModal, isFetching, errorMessage} = this.props;
 
         return (
+
+        <div>
             <div className="row">
-                <div className="col-md-2">
-                    <LateralMenu
-                        _id={_id}
-                    />
-                </div>
-                <div className="col-md-10">
-                    <h1 className="labelField">
-                        <FormattedMessage
-                            id="myAccountMembersData"
-                            defaultMessage="My Account Members data"
-                        />
-                    </h1>
+                <div className="col-md-12">
 
-                    <br/>
+                <Button
+                    bsStyle="success"
+                    className="pull-right"
+                    onClick={() => showModal({
+                        type: MODAL_ADD_MEMBERS
+                    })}>
+                    <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+                </Button>
 
-                    {isFetching && !model && <Loading/>}
-
-                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
-
-                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
-
-                    {!errorMessage && !isFetching && model && <Form
-                        initialValues={this.getInitialValues(this)}
-                        onSubmit={this.onSubmit.bind(this)}
-                        user={model}
-                        showModal={showModal}
-                    />}
                 </div>
             </div>
+
+            <br/>
+    
+
+            <div className="row">
+                <div className="col-md-12">
+                    {!list.length && <div>No Crew to display</div>}
+
+                    {isFetching && <Loading/>}
+
+                    {errorMessage && <div>{errorMessage}</div>}
+
+                    {list && this.renderTable()}
+                </div>
+            </div>
+        </div>
+
         );
     }
 }
 
-//Get form's initial values from redux state here
 const mapStateToProps = (state, {match: {params: {_id}}}) => ({
-    model: getModel(state, _id),
-    isFetching: getModelIsFetching(state, _id),
-    errorMessage: getModelErrorMessage(state, _id),
+    list: getModel(state, _id),
+    isFetching: getIsFetching(state, _id),
+    errorMessage: getErrorMessage(state, _id)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    showModal,
     fetchModel,
-    saveModel,
-    showModal
+    removeModel
 }, dispatch);
 
-CrewMembers = connect(
+MembersTable = connect(
     mapStateToProps,
     mapDispatchToProps
-)(CrewMembers);
+)(MembersTable);
 
-export default CrewMembers;
+export default injectIntl(MembersTable);

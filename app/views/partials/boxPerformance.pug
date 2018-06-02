@@ -14,13 +14,19 @@
           li.list-inline-item=category.name
     if item.users
       .users_performance_item_wrapper
-        .flex_left
-          each user in item.users
+        .flex_left      
+          if (item.users.length > 1)
             div
-              img(src=user.imageFormats.small, alt=user.stagename)
+              img.img-fluid(src="/images/more_users.svg")
             div
-              p.users_performance_item_name=user.stagename
-              p.users_performance_item_views=item.stats.visits+" "+global.__("views")
+              p.users_performance_item_name=item.users.length+" "+global.__("users")
+          else              
+            each user in item.users
+              div
+                img(src=user.imageFormats.small, alt=user.stagename)
+              div
+                p.users_performance_item_name=user.stagename
+                p.users_performance_item_views=item.stats.visits+" "+global.__("views")
         .flex_right      
           .users_performance_item_likes
             span.color2.lnr.lnr-heart

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {MODAL_REMOVE} from "../modal/constants";
-import {Button} from 'react-bootstrap';
+import {Button, Image} from 'react-bootstrap';
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -59,14 +59,49 @@ class Reorder extends Component {
         onChange(orderedItems)
     }
 
-    // Normally you would want to split things out into separate components.
-    // But in this example everything is just done in one place for simplicity
+    renderImage(item, index) {
+        let {showModal, onRemove} = this.props;
+        return <Draggable key={item.id} draggableId={item.id} index={index}>
+            {(provided, snapshot) => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )}
+                    className="Row"
+                >
+                    <div className="col-sm-12">
+                        <h3>{item.title} <Button bsStyle="danger"
+                                                 onClick={() =>
+                                                     showModal({
+                                                         type: MODAL_REMOVE,
+                                                         props: {
+                                                             onRemove: () => onRemove(item)
+                                                         }
+                                                     })}
+                        >
+                            <i className="fa fa-trash" data-toggle="tooltip"
+                               data-placement="top"/>
+                        </Button>
+                        </h3>
+                        <Image src={item.image ? item.image.file : ""} responsive/>;
+                    </div>
+
+                </div>
+            )}
+        </Draggable>
+    }
+
     render() {
 
-        let {items, showModal, onRemove} = this.props;
+        let {items} = this.props;
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
+
                 <Droppable droppableId="droppable" direction="horizontal">
                     {(provided, snapshot) => (
                         <div
@@ -74,40 +109,13 @@ class Reorder extends Component {
                             style={getListStyle(snapshot.isDraggingOver)}
                             {...provided.droppableProps}
                         >
-                            {items.map((item, index) => (
-                                <Draggable key={item.id} draggableId={item.id} index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                            )}
-                                        >
-                                            {item.content}
+                            {items.map(this.renderImage.bind(this))}
 
-                                            <Button bsStyle="danger"
-                                                    onClick={() =>
-                                                        showModal({
-                                                            type: MODAL_REMOVE,
-                                                            props: {
-                                                                onRemove: () => onRemove(item)
-                                                    }
-                                                    })}
-                                            >
-                                                <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                                            </Button>
-
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
                             {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
+
             </DragDropContext>
         );
     }

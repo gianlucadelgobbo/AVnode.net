@@ -164,7 +164,7 @@ export const fetchEventImages = ({id}) => {
 };
 
 export const saveEventImages = (model) => {
-    return axios.get(`events/${model._id}/image`, model)
+    return axios.post(`events/${model._id}/image`, model)
         .then(result => {
             return result.data;
         });
@@ -174,6 +174,13 @@ export const saveEventImages = (model) => {
 
 export const fetchEventPartners = ({id}) => {
     return axios.get(`events/${id}/partners`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const addEventPartners = (model) => {
+    return axios.post(`events/${model._id}/partners`, model)
         .then(result => {
             return result.data;
         });
@@ -203,7 +210,7 @@ export const fetchEventProgram = ({id}) => {
 };
 
 export const saveEventProgram = (model) => {
-    return axios.get(`events/${model._id}/program`, model)
+    return axios.post(`events/${model._id}/program`, model)
         .then(result => {
             return result.data;
         });
@@ -241,8 +248,15 @@ export const fetchEventVideos = ({id}) => {
         });
 };
 
-export const saveEventVideso = (model) => {
+export const saveEventVideos = (model) => {
     return axios.get(`events/${model._id}/videos`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removeEventVideos = (model) => {
+    return axios.delete(`events/${model._id}/videos`, model)
         .then(result => {
             return result.data;
         });
@@ -259,7 +273,7 @@ export const fetchEventCalls = ({id}) => {
 };
 
 export const saveEventCalls = (model) => {
-    return axios.get(`events/${model._id}/calls`, model)
+    return axios.post(`events/${model._id}/calls`, model)
         .then(result => {
             return result.data;
         });
@@ -275,7 +289,7 @@ export const fetchEventSettings = ({id}) => {
 };
 
 export const saveEventSettings = (model) => {
-    return axios.get(`events/${model._id}/settings`, model)
+    return axios.post(`events/${model._id}/settings`, model)
         .then(result => {
             return result.data;
         });
@@ -345,7 +359,14 @@ export const fetchPerformanceGalleries = ({id}) => {
 };
 
 export const savePerformanceGalleries = (model) => {
-    return axios.get(`performances/${model._id}/galleries`, model)
+    return axios.post(`performances/${model._id}/galleries`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removePerformanceGalleries = (model) => {
+    return axios.delete(`performances/${model._id}/galleries`, model)
         .then(result => {
             return result.data;
         });
@@ -361,11 +382,66 @@ export const fetchPerformanceVideos = ({id}) => {
 };
 
 export const savePerformanceVideos = (model) => {
-    return axios.get(`performances/${model._id}/videos`, model)
+    return axios.post(`performances/${model._id}/videos`, model)
         .then(result => {
             return result.data;
         });
 };
+
+export const removePerformanceVideos = (model) => {
+    return axios.delete(`performances/${model._id}/videos`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// ============ Footage
+
+export const fetchFootage = () => {
+    return axios.get("footage")
+        .then(result => {
+            return result.data.footage;
+        });
+};
+
+export const removeFootage = ({id}) => {
+    return axios.delete(`footage/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const postFootage = (obj) => {
+    return axios.post(`footage/`, obj)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - public
+
+export const fetchFootagePublic = ({id}) => {
+    return axios.get(`footage/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const saveFootagePublic = (model) => {
+    return axios.put(`footage/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removeFootagePublic = (model) => {
+    return axios.delete(`footage/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+
 
 // - users
 
