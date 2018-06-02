@@ -4,7 +4,7 @@ import {FORM_NAME} from './constants';
 import {
     renderList,
     inputText,
-    textareaMultiTab,
+    textareaMultiTab, tagsInput,
     checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl, fieldWithLabel
 } from "../../common/form/components";
 import validate from './validate';
@@ -21,6 +21,9 @@ class FootagePublicForm extends Component {
             labels,
             showModal,
             onSubmit,
+            delimiters,
+            //handleDelete,
+            tags
         } = this.props;
 
         return (
@@ -55,6 +58,17 @@ class FootagePublicForm extends Component {
                     placeholder="Authors"
                     showModal={showModal}
                     className=""
+                />
+
+                <br/>
+
+                <Field
+                    name="tags"
+                    component={tagsInput}
+                    tags={tags}
+                    delimiters={delimiters}
+                    //handleDelete={handleDelete}
+                    placeholder="Tags"
                 />
 
                 <br/>
