@@ -7,9 +7,11 @@ import {locales, locales_labels} from '../../../../../config/default.json'
 import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
-import ItemNotFound from '../../itemNotFound'
+import Loading from '../../loading';
+import ErrorMessage from '../../errorMessage';
+import ItemNotFound from '../../itemNotFound';
+import TitleComponent from '../../titleComponent';
+import {PROFILE_NAME} from './constants';
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import {sortByLanguage} from "../../common/form";
@@ -144,14 +146,20 @@ class ProfilePublic extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
-                    <br/>
+                    {/*<h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
+                    <br/>*/}
 
                     {isFetching && !model && <Loading/>}
 
                     {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model && <TitleComponent
+                        title={model.stagename}
+                        type={PROFILE_NAME}
+                    />
+                    }  
 
                     {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues()}

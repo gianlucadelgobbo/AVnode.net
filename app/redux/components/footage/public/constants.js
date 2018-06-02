@@ -1,0 +1,2 @@
+export const FORM_NAME = "FOOTAGE.PUBLIC";
+export const FOOTAGE_NAME = "FOOTAGE PUBLIC DATA";

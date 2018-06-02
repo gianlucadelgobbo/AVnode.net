@@ -6,15 +6,17 @@ import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../../modal/constants";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
-import ItemNotFound from '../../itemNotFound'
+import Loading from '../../loading';
+import ErrorMessage from '../../errorMessage';
+import ItemNotFound from '../../itemNotFound';
+import TitleComponent from '../../titleComponent';
+import {EVENT_NAME} from './constants';
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import moment from 'moment';
-import {createMultiLanguageInitialObject} from "../../common/form";
+import {createMultiLanguageInitialObject, populateMultiLanguageObject} from "../../common/form";
 
 class EventPublic extends Component {
 
@@ -33,7 +35,7 @@ class EventPublic extends Component {
         let model = Object.assign({}, values);
 
         // Convert web
-        model.categories = model.categories.filter(w => w.url).map(w => ({_id: w.value, name: w.label}));
+        model.categories = model.categories.map(w => ({_id: w.value, name: w.label}));
 
         //Convert abouts for API
         if (Array.isArray(model.abouts)) {
@@ -69,6 +71,7 @@ class EventPublic extends Component {
         }
 
         let v = {};
+        const {abouts, subtitles} = model;
 
         // Convert categories
         v.categories = [];
@@ -117,10 +120,10 @@ class EventPublic extends Component {
         v.title = model.title;
 
         // Convert about
-        v.abouts = createMultiLanguageInitialObject("abouts");
+        v.abouts = populateMultiLanguageObject("abouts", abouts);
 
         // Convert subtitles format for FieldArray redux-form
-        v.subtitles = createMultiLanguageInitialObject("subtitles");
+        v.subtitles = populateMultiLanguageObject("subtitles", subtitles);
 
         // Web: Add one item if value empty
         v.web = (Array.isArray(model.web) && model.web.length > 0) ? model.web : [{url: ""}];
@@ -142,6 +145,8 @@ class EventPublic extends Component {
         const modelToSave = this.createModelToSave(values);
 
         modelToSave._id = model._id;
+
+        console.log(modelToSave)
 
         //dispatch the action to save the model here
         return saveModel(model)
@@ -167,15 +172,17 @@ class EventPublic extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT PUBLIC DATA</h1>
-
-                    <br/>
-
+            
                     {isFetching && !model && <Loading/>}
 
                     {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    {!errorMessage && !isFetching && model && <TitleComponent
+                        title={model.title}
+                        type={EVENT_NAME}
+                    />}
 
                     {!errorMessage && !isFetching && model && <Form
                         initialValues={this.getInitialValues()}

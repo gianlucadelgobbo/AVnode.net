@@ -276,3 +276,58 @@ textarea#styled {
 .rt-resizable-header-content span i{
   padding-left: 10px;
 }
+footer{
+  margin-top: 40px;
+}
+.titleComponent{
+  margin-bottom: 20px;
+}
+.PerformanceTable a p {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: #333;
+  padding: 5px;
+}
+.PerformanceTable a p:hover {
+  text-decoration: underline;
+  color:#0f8fcf;
+}
+.CrewTable a p {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: #333;
+  padding: 5px;
+}
+.CrewTable a p:hover {
+  text-decoration: underline;
+  color:#0f8fcf;
+}
+.EventTable a p {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: #333;
+  padding: 5px;
+}
+.EventTable a p:hover {
+  text-decoration: underline;
+  color:#0f8fcf;
+}
+.Novideo {
+  font-size: 24px;
+  color: #333;
+}
+.memberTitle p{
+  color: #333;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  padding-top: 5px;
+  margin-left: 10px;
+}
+
+.rt-resizable-header-content{
+  font-size: 18px;
+}

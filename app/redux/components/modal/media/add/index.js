@@ -7,11 +7,12 @@ class AddMediaModal extends Component {
 
     render() {
 
-        const {onSubmit} = this.props;
+        const {onSubmit, model} = this.props;
 
         return (
             <Form
                 onSubmit={onSubmit}
+                model={model}
             />
         );
     }
