@@ -10,7 +10,7 @@ import Loading from '../../loading';
 import ErrorMessage from '../../errorMessage';
 import ItemNotFound from '../../itemNotFound';
 import TitleComponent from '../../titleComponent';
-import {FOOTAGE_NAME} from './constants';
+import {FOOTAGE_NAME, FOOTAGE_CODES_TAGS} from './constants';
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 
@@ -82,7 +82,35 @@ class FootagePublic extends Component {
 
         f.users = model.users || [];
 
+        f.tags = model.tags || [];
+        f.tags = [];
+        if (Array.isArray(model.tags)) {
+            // convert tags obj
+            f.tags = model.tags.map(t => ({
+                id: t.old_id,
+                text: t.tag
+            }));
+        }
+
         return f;
+    }
+
+    getFormattedTags(){
+        const {model} = this.props;
+        if (!model) {
+            return {};
+        }
+        let tags = [];
+        if (Array.isArray(model.tags)) {
+            tags = model.tags.map(t => ({
+                id: t.old_id,
+                text: t.tag
+            }));
+        }
+        return tags;
+    }
+    handleDelete(tag){
+     console.log(tag)
     }
 
     onSubmit(values) {
@@ -103,6 +131,7 @@ class FootagePublic extends Component {
     render() {
 
         const {model, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
+        const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
 
         return (
             <div className="row">
@@ -132,6 +161,10 @@ class FootagePublic extends Component {
                          showModal={showModal}
                          tabs={locales}
                          labels={locales_labels}
+                         tags={this.getFormattedTags()}
+                         delimiters={delimiters}
+                         handleDelete={this.handleDelete()}
+                         //suggestions={suggestions}
                     />}
                 </div>
             </div>
