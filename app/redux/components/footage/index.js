@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import ModelTable from './table'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {MODAL_ADD_CREW} from "../modal/constants";
+import {MODAL_ADD_FOOTAGE} from "../modal/constants";
 import {showModal} from "../modal/actions";
 
 class Footage extends Component {
@@ -22,7 +22,7 @@ class Footage extends Component {
                                 bsStyle="success"
                                 className="pull-right"
                                 onClick={() => showModal({
-                                    type: MODAL_ADD_CREW
+                                    type: MODAL_ADD_FOOTAGE
                                 })}>
                                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
                             </Button>
