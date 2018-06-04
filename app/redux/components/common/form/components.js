@@ -582,13 +582,14 @@ export const renderListRadio = ({input, meta, placeholder, hideResetButton, opti
         </dl>
 };
 
-export const tagsInput = ({input, meta, id, placeholder, disabled, classNames, isChild, tags, delimiters}) => {
+export const tagsInput = ({input, meta, id, placeholder, disabled, classNames, isChild, tags, delimiters, handleTagClick, handleDelete, handleAddition}) => {
     const field = <div className="form-group">
                     <ReactTags tags={tags}
                         //suggestions={suggestions}
-                        //handleDelete={this.handleDelete}
-                        //handleAddition={this.handleAddition}
                         //handleDrag={this.handleDrag}
+                        handleAddition={handleAddition}
+                        handleDelete={handleDelete}
+                        handleTagClick={handleTagClick}
                         delimiters={delimiters} />
                     {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
                     </div>;

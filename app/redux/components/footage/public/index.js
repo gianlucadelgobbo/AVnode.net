@@ -109,8 +109,18 @@ class FootagePublic extends Component {
         }
         return tags;
     }
-    handleDelete(tag){
-     console.log(tag)
+    handleDelete(i){
+        let tags = this.tags;
+        tags = tags.filter((tag, index) => index !== i);
+        return tags;
+    }
+    handleTagClick(index) {
+        console.log('The tag at index ' + index + ' was clicked');
+    }
+    handleAddition(tag){
+       let tags = this.tags;
+       tags.push(tag);
+       return tags;
     }
 
     onSubmit(values) {
@@ -163,8 +173,9 @@ class FootagePublic extends Component {
                          labels={locales_labels}
                          tags={this.getFormattedTags()}
                          delimiters={delimiters}
-                         handleDelete={this.handleDelete()}
-                         //suggestions={suggestions}
+                         handleDelete={this.handleDelete}
+                         handleTagClick={this.handleTagClick}
+                         handleAddition={this.handleAddition}
                     />}
                 </div>
             </div>

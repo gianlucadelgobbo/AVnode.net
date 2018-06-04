@@ -22,7 +22,9 @@ class FootagePublicForm extends Component {
             showModal,
             onSubmit,
             delimiters,
-            //handleDelete,
+            handleDelete,
+            handleTagClick,
+            handleAddition,
             tags
         } = this.props;
 
@@ -67,7 +69,9 @@ class FootagePublicForm extends Component {
                     component={tagsInput}
                     tags={tags}
                     delimiters={delimiters}
-                    //handleDelete={handleDelete}
+                    handleDelete={handleDelete}
+                    handleTagClick={handleTagClick}
+                    handleAddition={handleAddition}
                     placeholder="Tags"
                 />
 
