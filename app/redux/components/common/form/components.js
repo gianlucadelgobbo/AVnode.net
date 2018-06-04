@@ -586,7 +586,6 @@ export const tagsInput = ({input, meta, id, placeholder, disabled, classNames, i
     const field = <div className="form-group">
                     <ReactTags tags={tags}
                         //suggestions={suggestions}
-                        //handleDrag={this.handleDrag}
                         handleAddition={handleAddition}
                         handleDelete={handleDelete}
                         handleTagClick={handleTagClick}
