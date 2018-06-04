@@ -44,6 +44,10 @@ import CrewsOrganization from '../crews/organization';
 import Footage from '../footage/index.js';
 import FootagePublic from '../footage/public';
 
+// // Playlists
+import Playlist from '../playlists/index.js';
+import PlaylistPublic from '../playlists/public';
+
 // // Preferences
 import Preferences from '../preferences/index';
 
@@ -101,6 +105,9 @@ class App extends Component {
 
                             <Route path="/admin/footage/:_id/public/" component={FootagePublic}/>
                             <Route path="/admin/footage" component={Footage}/>
+
+                            <Route path="/admin/playlists/:_id/public/" component={PlaylistPublic}/>
+                            <Route path="/admin/playlists" component={Playlist}/>
 
 
                             <Route path="/admin/preferences" component={Preferences}/>

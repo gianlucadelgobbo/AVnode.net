@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {MODAL_ADD_FOOTAGE} from "../modal/constants";
 import {showModal} from "../modal/actions";
 
-class Footage extends Component {
+class Playlist extends Component {
 
     render() {
 
@@ -50,9 +50,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal
 }, dispatch);
 
-Footage = connect(
+Playlist = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Footage);
+)(Playlist);
 
-export default Footage;
+export default Playlist;

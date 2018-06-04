@@ -209,7 +209,7 @@ textarea#styled {
 }
 .labelField{
   color: #636c72;
-  font-weight: 400;
+  font-weight: 600;
 }
 .labelFieldUpload{
   color: #636c72;
@@ -227,9 +227,7 @@ textarea#styled {
 .checkbox-list label {
   padding-left: 10px;
 }
-.card-body button {
-  margin-bottom: 10px;
-}
+
 .error-message {
   color: #ff0000;
   font-style: italic;
@@ -315,6 +313,17 @@ footer{
   text-decoration: underline;
   color:#0f8fcf;
 }
+.FootageTable a p {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: #333;
+  padding: 5px;
+}
+.FootageTable a p:hover {
+  text-decoration: underline;
+  color:#0f8fcf;
+}
 .Novideo {
   font-size: 24px;
   color: #333;
@@ -330,4 +339,48 @@ footer{
 
 .rt-resizable-header-content{
   font-size: 18px;
+}
+.user-list{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  //box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2), 0 4px 20px 0 rgba(0,0,0,0.19);
+}
+.user-list li {
+  padding: 8px 16px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+}
+
+div.ReactTags__selected span.ReactTags__tag{
+  border: 1px solid #ddd;
+  background: #eee;
+  font-size: 12px;
+  display: inline-block;
+  padding: 5px;
+  margin: 0 5px;
+  cursor: move;
+  border-radius: 2px;
+  color:#333;
+}
+div.ReactTags__tagInput {
+  width: 200px;
+  border-radius: 2px;
+  display: inline-block;
+}
+div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  height: 31px;
+  margin: 0;
+  font-size: 12px;
+  width: 100%;
+  border: 1px solid #eee;
+  padding: 0 4px;
+  border-bottom: 1px solid #26a69a;
+  -webkit-box-shadow: 0 1px 0 0 #26a69a;
+  box-shadow: 0 1px 0 0 #26a69a;
+}
+div.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
 }

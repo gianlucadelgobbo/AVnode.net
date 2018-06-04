@@ -21,11 +21,12 @@ class ModelTable extends Component {
     renderTable() {
 
         const {showModal, removeModel, list} = this.props;
-        const FootageItem = 
+        console.log(list);
+        const PlaylistItem = 
                         {
                             label: <FormattedMessage
-                                    id="CrewTitle"
-                                    defaultMessage="Footage Name"
+                                    id="PlaylistItem"
+                                    defaultMessage="Playlist Name"
                                     />
                         }
         return <Table
@@ -35,14 +36,15 @@ class ModelTable extends Component {
                 
                     {
                         Header: () => {
-                            return <span>{FootageItem.label}<i className="fa fa-sort"></i></span>
+                            return <span>{PlaylistItem.label}<i className="fa fa-sort"></i></span>
                         },
                         id: "title",
                         accessor: 'title',
-                        className:'FootageTable',
+                        className:'PlaylistTable',
                         Cell: (props) => {
                             const {row, original} = props;
-                            return <Link to={`/admin/footage/${original._id}/public`}>
+                            console.log(row)
+                            return <Link to={`/admin/playlists/${original._id}/public`}>
                                         <img height={140} className="image-responsive" src={original.imageFormats.small}/>
                                         <p>{row.title}</p>
                                     </Link>
@@ -83,7 +85,7 @@ class ModelTable extends Component {
 
         return (
             <div>
-                {!list.length && <div>No Footage to display</div>}
+                {!list.length && <div>No Playlist to display</div>}
 
                 {isFetching && <Loading/>}
 
