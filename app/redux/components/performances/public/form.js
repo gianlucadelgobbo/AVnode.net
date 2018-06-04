@@ -9,7 +9,7 @@ import {
     textareaMultiTab,
     checkboxField, 
     multiInputText,
-    multiCheckboxWithLabel
+    fieldWithLabel
 } from "../../common/form/components";
 import validate from './validate';
 import {getFormSyncErrors} from 'redux-form';
@@ -72,7 +72,7 @@ class PerformancePublicForm extends Component {
 
                 <FieldArray
                     name="users"
-                    component={multiCheckboxWithLabel}
+                    component={fieldWithLabel}
                     placeholder="Authors"
                     showModal={showModal}
                     className=""

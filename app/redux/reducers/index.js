@@ -11,6 +11,7 @@ import crews from '../components/crews/reducers';
 import users from '../components/performances/users/reducers';
 import partnerCategories from '../components/partnerCategories/reducers';
 import footage from '../components/footage/reducers';
+import playlists from '../components/playlists/reducers';
 
 // import preferences from './preferences';
 
@@ -26,7 +27,8 @@ const reducer = combineReducers({
     form: formReducer,
     modal,
     partnerCategories,
-    footage
+    footage,
+    playlists
 });
 
 export default reducer;
