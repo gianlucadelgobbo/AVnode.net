@@ -111,7 +111,7 @@ class FootagePublic extends Component {
     }
     handleDelete(i){
         let tags = this.tags;
-        tags = tags.filter((tag, index) => index !== i);
+        tags.splice(i, 1);
         return tags;
     }
     handleTagClick(index) {
