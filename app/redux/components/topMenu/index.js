@@ -7,20 +7,22 @@ import {fetchList as fetchCrews} from "../crews/actions";
 import {fetchList as fetchPerformances} from "../performances/actions";
 import {fetchList as fetchEvents} from "../events/actions";
 import {fetchList as fetchFootage} from "../footage/actions";
+import {fetchList as fetchPlaylists} from "../playlists/actions";
 import {getList as getCrews} from "../crews/selectors";
 import {getList as getPerformances} from "../performances/selectors";
 import {getList as getEvents} from "../events/selectors";
 import {getList as getFootage} from "../footage/selectors";
-
+import {getList as getPlaylists} from "../playlists/selectors";
 
 class TopMenu extends Component {
 
     componentDidMount() {
-        const {fetchCrews, fetchPerformances, fetchEvents, fetchFootage} = this.props;
+        const {fetchCrews, fetchPerformances, fetchEvents, fetchFootage, fetchPlaylists} = this.props;
         fetchCrews();
         fetchPerformances();
         fetchEvents();
         fetchFootage();
+        fetchPlaylists();
     }
 
     createMenuItem = ({model, index}) => {
@@ -33,7 +35,9 @@ class TopMenu extends Component {
 
     render() {
 
-        const {crews, performances, events, footage} = this.props;
+        const {crews, performances, events, footage, playlists} = this.props;
+
+        console.log(playlists);
 
         const items = [
             {
@@ -75,6 +79,14 @@ class TopMenu extends Component {
                 />
             },
             {
+                href: "/admin/playlists",
+                counter: playlists.length,
+                label: <FormattedMessage
+                    id="playlists"
+                    defaultMessage="Playlists"
+                />
+            },
+            {
                 href: "/admin/preferences",
                 label: <FormattedMessage
                     id="preferences"
@@ -96,14 +108,16 @@ const mapStateToProps = (state) => ({
     crews: getCrews(state),
     performances: getPerformances(state),
     events: getEvents(state),
-    footage:getFootage(state)
+    footage:getFootage(state),
+    playlists:getPlaylists(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchCrews,
     fetchPerformances,
     fetchEvents,
-    fetchFootage
+    fetchFootage,
+    fetchPlaylists
 }, dispatch);
 
 TopMenu = connect(

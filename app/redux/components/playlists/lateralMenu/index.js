@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 
 const items = [
     {
-        href: "/admin/footage/:_id/public",
+        href: "/admin/playlists/:_id/public",
         label: <FormattedMessage
             id="publicData"
             defaultMessage="Public data"
