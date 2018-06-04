@@ -20,6 +20,7 @@ import Reorder from '../../reorder';
 import {fetchPerformancesForSelect, fetchUserForSelect} from "../../../api";
 import {createMultiLanguageInitialObject} from "../../common/form";
 import {DATE_FORMAT} from '../../../conf';
+import { WithContext as ReactTags } from 'react-tag-input';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
@@ -297,13 +298,13 @@ export const multiInputCheckbox = ({fields, title, showModal, placeholder, meta:
 
 // multiInputCheckboxes // Refactoring // Users in Performances
 
-export const multiCheckboxWithLabel = ({fields, title, showModal, placeholder, meta: {error}}) => {
+export const fieldWithLabel = ({fields, title, showModal, placeholder, meta: {error}}) => {
     const renderSubField = (member, index, fields, showModal) => {
         return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-10">
                 <Field
                     name={`${member}.stagename`}
-                    component={checkboxFieldInColumn}
+                    component={fieldInColumn}
                     placeholder={placeholder}
                     isChild={true}
                 />
@@ -581,6 +582,25 @@ export const renderListRadio = ({input, meta, placeholder, hideResetButton, opti
         </dl>
 };
 
+export const tagsInput = ({input, meta, id, placeholder, disabled, classNames, isChild, tags, delimiters, handleTagClick, handleDelete, handleAddition}) => {
+    const field = <div className="form-group">
+                    <ReactTags tags={tags}
+                        //suggestions={suggestions}
+                        //handleDrag={this.handleDrag}
+                        handleAddition={handleAddition}
+                        handleDelete={handleDelete}
+                        handleTagClick={handleTagClick}
+                        delimiters={delimiters} />
+                    {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+                    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+}
+
 export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         <DatePicker
@@ -641,23 +661,24 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
 };
 
 //Refactoring//
-export const checkboxFieldInColumn = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
-    const field = <div className="form-group checkbox-list">
-        <input
+export const fieldInColumn = ({input, meta, id, placeholder, disabled, classNames, isChild}) => {
+    const field = <div className="form-group">
+    <ul className="user-list">
+        <li id={id}>{input.value}</li>
+    </ul>
+        {/*<input
             id={id}
             defaultChecked={input.value}
             className=""
             type="checkbox"
             {...input}
             disabled={disabled}
-        />
-        <label className="checkbox-inline" htmlFor={id}>{input.value}</label>
-    </div>;
-    const label = <div className="labelField">{placeholder}</div>;
+        />*/}
+        </div>;
+    const list = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-2">{label}</dt>
-            <dd className="col-sm-10"> {field} </dd>
+            <dd className="col-sm-12"> {field} </dd>
         </dl>
 };
 

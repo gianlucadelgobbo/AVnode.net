@@ -10,7 +10,7 @@ import {
 import validate from './validate';
 //import asyncValidate from './asyncValidate';
 
-class FootagePublicForm extends Component {
+class PlaylistPublicForm extends Component {
 
     render() {
 
@@ -21,11 +21,6 @@ class FootagePublicForm extends Component {
             labels,
             showModal,
             onSubmit,
-            delimiters,
-            handleDelete,
-            handleTagClick,
-            handleAddition,
-            tags
         } = this.props;
 
         return (
@@ -35,7 +30,7 @@ class FootagePublicForm extends Component {
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Footage name"
+                    placeholder="Playlist name"
                 />
 
                 <Field
@@ -64,19 +59,6 @@ class FootagePublicForm extends Component {
 
                 <br/>
 
-                <Field
-                    name="tags"
-                    component={tagsInput}
-                    tags={tags}
-                    delimiters={delimiters}
-                    handleDelete={handleDelete}
-                    handleTagClick={handleTagClick}
-                    handleAddition={handleAddition}
-                    placeholder="Tags"
-                />
-
-                <br/>
-
                 <hr/>
 
                 <button
@@ -99,4 +81,4 @@ export default reduxForm({
     validate,
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
-})(FootagePublicForm);
+})(PlaylistPublicForm);

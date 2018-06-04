@@ -441,7 +441,44 @@ export const removeFootagePublic = (model) => {
         });
 };
 
+// ============ Playlist
 
+export const fetchPlaylists = () => {
+    return axios.get("playlists")
+        .then(result => {
+            return result.data.playlists;
+        });
+};
+
+export const removePlaylists = ({id}) => {
+    return axios.delete(`playlist/${id}`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+// - public
+
+export const fetchPlaylistsPublic = ({id}) => {
+    return axios.get(`playlists/${id}/public`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const savePlaylistsPublic = (model) => {
+    return axios.put(`playlists/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const removePlaylistsPublic = (model) => {
+    return axios.delete(`playlists/${model._id}/public`, model)
+        .then(result => {
+            return result.data;
+        });
+};
 
 // - users
 
