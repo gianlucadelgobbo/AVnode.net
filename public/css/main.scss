@@ -1203,3 +1203,31 @@ ul.user_navbar {
 .navbar-toggler {
     padding: 0;
 }
+
+
+@media screen and (max-width: 991px)  { /* col-md*/
+    .navbar_extended_template ul.user_navbar {
+        float: left;
+    }
+
+    .navbar_extended_template ul.user_navbar li {
+        display: block;
+        width: 100%;
+    }
+
+    .navbar_extended_template .user_menu ul {
+        padding: 0;
+    }
+
+    .navbar_extended_template .user_navbar .dropdown a {
+        padding: 0;
+    }
+
+    .navbar_extended_template .user_menu li:after {
+        display: none;
+    }
+
+    .navbar_extended_template .user_menu a {
+        margin: 0px;
+    }
+}
