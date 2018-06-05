@@ -24,7 +24,7 @@ class PerformanceGallery extends Component {
                 </div>
                 <div className="col-md-10">
                    
-                    <h1 className="labelField">PERFORMANCE GALLERY</h1>
+                    <h2 className="labelField">PERFORMANCE GALLERY</h2>
 
                     <Galleries
                         model={model}

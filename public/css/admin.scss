@@ -14,6 +14,10 @@ $gray-lightest: #f8f8f8;
 
 $input-color-placeholder: $gray-light;
 
+.marginBottom{
+  margin-bottom:5px;
+}
+
 #app {
   background-color: $gray-lightest;
   padding-bottom: 1rem;
@@ -389,4 +393,15 @@ div.ReactTags__selected a.ReactTags__remove {
 }
 .ReactTags__remove:hover{
   color: #333;
+}
+.image-preview{
+  cursor:pointer;
+  -webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+.image-preview:hover{
+ -webkit-filter: grayscale(0);
+	filter: grayscale(0);
 }

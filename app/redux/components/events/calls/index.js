@@ -97,7 +97,7 @@ class EventCalls extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT CALLS</h1>
+                    <h2 className="labelField">EVENT CALLS</h2>
 
                     <br/>
 

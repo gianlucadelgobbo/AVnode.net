@@ -81,7 +81,7 @@ class EventPublic extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT SETTINGS</h1>
+                    <h2 className="labelField">EVENT SETTINGS</h2>
 
                     <br/>
 

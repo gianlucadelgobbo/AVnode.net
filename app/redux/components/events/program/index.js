@@ -77,7 +77,7 @@ class EventProgram extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT PROGRAM</h1>
+                    <h2 className="labelField">EVENT PROGRAM</h2>
 
                     <br/>
 

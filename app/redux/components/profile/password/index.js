@@ -76,7 +76,7 @@ class ProfilePassword extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">MY Password</h1>
+                    <h2 className="labelField">MY Password</h2>
 
                     <br/>
 
