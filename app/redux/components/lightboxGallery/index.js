@@ -35,7 +35,7 @@ export default class LightboxGallery extends Component {
 
         let Trigger = <img
             src={images[0]}
-            className="img-responsive"
+            className="img-fluid"
             alt={alt}/>;
 
         if (Button) {

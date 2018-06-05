@@ -30,6 +30,7 @@ import EventSettings from '../events/settings/';
 // // Performances
 import Performances from '../performances/index.js';
 import PerformancesPublic from '../performances/public';
+import PerformancesImages from '../performances/image';
 import PerformancesGalleries from '../performances/galleries';
 import PerformancesVideos from '../performances/videos';
 
@@ -89,6 +90,7 @@ class App extends Component {
                             <Route path="/admin/crews" component={Crews}/>
 
                             <Route path="/admin/performances/:_id/public/" component={PerformancesPublic}/>
+                            <Route path="/admin/performances/:_id/image/" component={PerformancesImages}/>
                             <Route path="/admin/performances/:_id/galleries/" component={PerformancesGalleries}/>
                             <Route path="/admin/performances/:_id/videos/" component={PerformancesVideos}/>
                             <Route path="/admin/performances" component={Performances}/>

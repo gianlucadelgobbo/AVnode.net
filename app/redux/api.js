@@ -349,6 +349,22 @@ export const savePerformancePublic = (model) => {
         });
 };
 
+// - images
+
+export const fetchPerformanceImages = ({id}) => {
+    return axios.get(`performances/${id}/image`)
+        .then(result => {
+            return result.data;
+        });
+};
+
+export const savePerformanceImages = (model) => {
+    return axios.post(`performances/${model._id}/image`, model)
+        .then(result => {
+            return result.data;
+        });
+};
+
 // - galleries
 
 export const fetchPerformanceGalleries = ({id}) => {
