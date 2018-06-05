@@ -3,7 +3,7 @@ import {Button} from 'react-bootstrap';
 import ModelTable from './table'
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {MODAL_ADD_FOOTAGE} from "../modal/constants";
+import {MODAL_ADD_PLAYLIST} from "../modal/constants";
 import {showModal} from "../modal/actions";
 
 class Playlist extends Component {
@@ -22,7 +22,7 @@ class Playlist extends Component {
                                 bsStyle="success"
                                 className="pull-right"
                                 onClick={() => showModal({
-                                    type: MODAL_ADD_FOOTAGE
+                                    type: MODAL_ADD_PLAYLIST
                                 })}>
                                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
                             </Button>
