@@ -8,8 +8,8 @@ class TitleComponent extends Component {
         <div className="titleComponent">
             <div className="jumbotron jumbotron-fluid">
                 <div className="container">
-                    <h4>{title}</h4>
-                    <div>{type}</div>
+                    <h2>{title}</h2>
+                    <h6>{type}</h6>
                 </div> 
             </div>
         </div>);
