@@ -129,10 +129,22 @@ small, .small {
     color: $color2;
 }
 
- main {
+main {
      background-color: transparent;
  }
  
+ a#to_top {
+    position: fixed;
+    z-index: 1;
+    bottom: 10px;
+    left: 10px;
+    font-size: 40px;
+    text-shadow: 1px 1px 0px $color4;
+    display: none;
+}
+a#to_top.to_top_visibile {
+    display: block;
+}
 
 // EVENT PAGE
 .subtitle {
