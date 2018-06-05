@@ -21,7 +21,7 @@ class EventImages extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">MY IMAGE</h1>
+                    <h2 className="labelField">MY IMAGE</h2>
 
                     <br/>
 

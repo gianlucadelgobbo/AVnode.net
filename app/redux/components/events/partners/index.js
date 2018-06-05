@@ -20,7 +20,7 @@ class EventPartners extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">EVENT PARTNERS</h1>
+                    <h2 className="labelField">EVENT PARTNERS</h2>
 
                     <Partners
                         model={model}

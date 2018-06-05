@@ -43,7 +43,7 @@ export default class LightboxGallery extends Component {
         }
 
         return (
-            <div>
+            <div className="image-preview">
                 <span onClick={() => this.setState({isOpen: true})}>
                     {Trigger}
                 </span>

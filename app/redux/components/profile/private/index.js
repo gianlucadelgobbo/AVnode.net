@@ -136,12 +136,12 @@ class ProfilePrivate extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">
+                    <h2 className="labelField">
                         <FormattedMessage
                             id="myAccountPrivateData"
                             defaultMessage="My Account Private data"
                         />
-                    </h1>
+                    </h2>
 
                     <br/>
 

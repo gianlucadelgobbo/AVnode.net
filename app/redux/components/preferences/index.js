@@ -18,7 +18,7 @@ class Preferences extends Component {
                     <ProfileLateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">PREFERENCES</h1>
+                    <h2 className="labelField">PREFERENCES</h2>
                     <br/>
                     <Form
                         initialValues={this.getInitialValues()}

@@ -79,7 +79,7 @@ class ProfileEmails extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h1 className="labelField">MY EMAIL</h1>
+                    <h2 className="labelField">MY EMAIL</h2>
 
                     <br/>
 

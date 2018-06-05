@@ -9,6 +9,7 @@ import {MODAL_ADD_MEMBERS, MODAL_SAVED, MODAL_REMOVE} from "../../modal/constant
 import Loading from '../../loading';
 import Table from '../../table';
 import {injectIntl, FormattedMessage} from 'react-intl';
+import LateralMenu from '../lateralMenu';
 
 class MembersTable extends Component {
 
@@ -44,7 +45,7 @@ class MembersTable extends Component {
                         {
                             label: <FormattedMessage
                                     id="MembersTitle"
-                                    defaultMessage="Members Name"
+                                    defaultMessage="Name"
                                     />
                         }
         return <Table
@@ -96,40 +97,56 @@ class MembersTable extends Component {
 
     render() {
 
-        const {list, showModal, isFetching, errorMessage} = this.props;
+        const {list, showModal,  match: {params: {_id}}, isFetching, errorMessage} = this.props;
 
         return (
 
         <div>
             <div className="row">
-                <div className="col-md-12">
+                <div className="col-md-2">
+                    <LateralMenu
+                    _id={_id}
+                    />
+                </div>
+                <div className="col-md-10">
+                
+                <div className="row marginBottom">
+                    <div className="col-md-6">
+                        <h2 className="labelField">
+                            <FormattedMessage
+                                id="Members"
+                                defaultMessage="Members"
+                            />
+                        </h2>
+                    </div>
+                    <div className="col-md-6">
+                        <Button
+                            bsStyle="success"
+                            className="pull-right"
+                            onClick={() => showModal({
+                                type: MODAL_ADD_MEMBERS
+                            })}>
+                            <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
+                        </Button>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-12">
+                        {/*!list.length && <div>No Crew to display</div>*/}
 
-                <Button
-                    bsStyle="success"
-                    className="pull-right"
-                    onClick={() => showModal({
-                        type: MODAL_ADD_MEMBERS
-                    })}>
-                    <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
-                </Button>
+                        {isFetching && <Loading/>}
+
+                        {errorMessage && <div>{errorMessage}</div>}
+
+                        {list && this.renderTable()}
+                    </div>
+                </div>
 
                 </div>
             </div>
 
             <br/>
-    
 
-            <div className="row">
-                <div className="col-md-12">
-                    {!list.length && <div>No Crew to display</div>}
-
-                    {isFetching && <Loading/>}
-
-                    {errorMessage && <div>{errorMessage}</div>}
-
-                    {list && this.renderTable()}
-                </div>
-            </div>
         </div>
 
         );
