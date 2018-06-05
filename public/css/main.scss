@@ -129,10 +129,22 @@ small, .small {
     color: $color2;
 }
 
- main {
+main {
      background-color: transparent;
  }
  
+ a#to_top {
+    position: fixed;
+    z-index: 1;
+    bottom: 10px;
+    left: 10px;
+    font-size: 40px;
+    text-shadow: 1px 1px 0px $color4;
+    display: none;
+}
+a#to_top.to_top_visibile {
+    display: block;
+}
 
 // EVENT PAGE
 .subtitle {
@@ -1093,4 +1105,141 @@ ul.footer-nav.corporate {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+
+
+// header template performer
+
+.navbar_performer_template .navbar-brand {
+    position: relative;
+    right: calc(-50% + 35px);
+}
+
+// user navbar
+
+ul.user_navbar {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+.user_navbar li {
+    display: inline-block;
+}
+
+.user_menu a {
+    margin: 0px 5px;
+    color: $color3;
+}
+
+.user_menu a:hover {
+    color: $color2;
+    text-decoration: underline;
+}
+
+.user_menu {
+    margin: 0;
+    padding: 0;
+}
+
+.user_menu .lnr {
+    color: $color1;
+}
+
+.user_menu li:after {
+    content: "/";
+    display: inline-block;
+    margin: 0 2px;
+    color: $color1;
+}
+
+.user_menu li:last-child:after {
+    content: "";
+}
+
+.user_menu_logged {
+    padding: 0;
+
+}
+
+.user_menu_logged .dropdown-menu {
+    color: $color2;
+    background-color: #292b2c;
+    border: none;
+    border-radius: 0;
+}
+
+.user_menu_logged ul {
+    padding: 10px 10px 0 10px;
+}
+
+.user_menu_logged li:after {
+    display: none;
+}
+
+.user_menu_logged li {
+    display: block;
+}
+
+.user_menu_logged .dropdown-menu li {
+    margin-bottom: 10px;
+}
+
+.user_menu_logged .dropdown-menu a:hover {
+    color: $color3;
+    text-decoration: none;
+}
+
+.user_menu_logged .dropdown-menu button {
+    padding: 0;
+    color: $color3;
+}
+.user_menu_logged .dropdown-menu button span.label {
+    display: inline-block;
+    margin: 0px 5px;
+}
+
+.user_menu_logged .dropdown-menu button:hover {
+    cursor: pointer;
+}
+
+.navbar-inverse .navbar-toggler {
+    border-color: transparent;
+}
+
+.navbar-toggler .toggle_icon {
+    font-size: 40px;
+}
+
+.navbar-toggler {
+    padding: 0;
+}
+
+
+@media screen and (max-width: 991px)  { /* col-md*/
+    .navbar_extended_template ul.user_navbar {
+        float: left;
+    }
+
+    .navbar_extended_template ul.user_navbar li {
+        display: block;
+        width: 100%;
+    }
+
+    .navbar_extended_template .user_menu ul {
+        padding: 0;
+    }
+
+    .navbar_extended_template .user_navbar .dropdown a {
+        padding: 0;
+    }
+
+    .navbar_extended_template .user_menu li:after {
+        display: none;
+    }
+
+    .navbar_extended_template .user_menu a {
+        margin: 0px;
+    }
 }
