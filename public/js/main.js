@@ -30,10 +30,16 @@ $(document).ready(function(){
       //autoplay: true,
       navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
       responsive:{
-          600:{
-              items:3
-          }
-        }
+                    100:{
+                        items:1
+                    },
+                    600:{
+                    items:2
+                    },
+                    768:{
+                        items:3
+                    }
+                }
     });
 
     $('.loop').owlCarousel({
@@ -47,9 +53,19 @@ $(document).ready(function(){
       //autoplay: true,
       navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
       responsive:{
-          600:{
-              items:4
-          }
+            100:{
+                items:1
+            },
+            600:{
+            items:2
+            },
+            768:{
+                items:3
+            }, 
+            990:{
+                items:4
+            }
+
         }
     });
     
