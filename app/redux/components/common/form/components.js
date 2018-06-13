@@ -496,6 +496,7 @@ export const multiGoogleCityCountry = ({fields, title, showModal, placeholder, m
     })
 };
 
+
 export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, showModal}) => {
     return multiInput({
         showModal,
@@ -577,8 +578,8 @@ export const renderListRadio = ({input, meta, placeholder, hideResetButton, opti
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
-            <dt className="col-sm-3">{label}</dt>
-            <dd className="col-sm-9"> {field} </dd>
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
         </dl>
 };
 
@@ -608,6 +609,7 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
             dateFormat={DATE_FORMAT}
             className="form-control"
             selected={input.value ? moment(input.value, DATE_FORMAT) : null}
+            placeholderText={placeholder}
         />
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
@@ -1693,3 +1695,4 @@ export const multiLegalOrganization = ({fields, title, meta: {error}, placeholde
         </div>
     </div>
 };
+

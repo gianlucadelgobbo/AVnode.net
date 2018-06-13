@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import LateralMenu from '../lateralMenu'
-import Form from './form'
-import {connect} from 'react-redux'
-import {getDefaultModel} from '../selectors'
+import LateralMenu from '../lateralMenu';
+import Form from './form';
+import {connect} from 'react-redux';
+import {getDefaultModel, getErrorMessage, getIsFetching} from '../selectors';
 import {locales, locales_labels} from '../../../../../config/default.json'
 import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
@@ -13,7 +13,6 @@ import ItemNotFound from '../../itemNotFound';
 import TitleComponent from '../../titleComponent';
 import {PROFILE_NAME} from './constants';
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import {sortByLanguage} from "../../common/form";
 
 /*
