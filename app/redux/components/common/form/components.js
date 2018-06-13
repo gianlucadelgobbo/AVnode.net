@@ -559,7 +559,7 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
     </div>
 };
 
-export const renderListRadio = ({input, meta, placeholder, hideResetButton, options, isChild, multiple}) => {
+export const renderListRadio = ({input, meta, placeholder, options, isChild}) => {
     const field = <div className="form-group">
         <ButtonGroup>
             {options.map(option =>
