@@ -8,6 +8,7 @@ import Loading from '../loading';
 import ErrorMessage from '../errorMessage';
 import ItemNotFound from '../itemNotFound';
 import {MODAL_SAVED} from "../modal/constants";
+import {OPTIONS} from "./constants";
 
 class SignUp extends Component {
 
@@ -54,6 +55,10 @@ class SignUp extends Component {
             });
     }
 
+    handleChange(){
+        console.log("valuess")
+    }
+
     render() {
 
         const {model, showModal, isFetching, errorMessage} = this.props;
@@ -66,6 +71,8 @@ class SignUp extends Component {
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         showModal={showModal}
+                        options={OPTIONS}
+                        onChange={this.handleChange.bind(this)}
                     />
                 </div>
             </div>

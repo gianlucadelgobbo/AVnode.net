@@ -15,3 +15,8 @@ export const FETCH_MODEL_REQUEST = PREFIX + 'FETCH_MODEL_REQUEST';
 export const SAVE_MODEL_REQUEST = PREFIX + "SAVE_MODEL_REQUEST";
 export const SAVE_MODEL_SUCCESS = PREFIX + "SAVE_MODEL_SUCCESS";
 export const SAVE_MODEL_ERROR = PREFIX + "SAVE_MODEL_ERROR";
+
+export const OPTIONS = [
+                            ['single', 'Single'],
+                            ['group', 'Crew']
+                        ]

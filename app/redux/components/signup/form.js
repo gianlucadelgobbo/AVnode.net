@@ -17,7 +17,7 @@ class SignUpForm extends Component {
             handleSubmit,
             showModal,
             onSubmit,
-            errors
+            options
         } = this.props;
 
         return (
@@ -27,10 +27,7 @@ class SignUpForm extends Component {
                     name="subscribe"
                     component={renderListRadio}
                     placeholder="Subscribe as"
-                    options={[
-                        ['single', 'As single'],
-                        ['crew', 'As crew']
-                    ]}
+                    options={options}
                 />
 
                 <Field
