@@ -18,7 +18,8 @@ html(lang=session.sessions.current_lang)
     #top
     a#to_top(href="#top", title=global.__('Back to the top'))
       span.lnr.lnr-arrow-up-circle
-    if data.user ==="gianlucadelgobbo"    
+    
+    //-if data.user ==="gianlucadelgobbo"    
       nav.navbar.navbar_performer_template.navbar-toggleable-xs.navbar-fixed-top.navbar-inverse.bg-inverse
         .container
           ul.user_navbar
@@ -85,7 +86,9 @@ html(lang=session.sessions.current_lang)
                 a.nav-link(href='/videos')=global.__('Videos')
               li.nav-item
                 a.nav-link(href='/news')=global.__('News')
-    else      
+      else
+    -//
+       
       nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar-inverse.bg-inverse
         .container
           button.navbar-toggler.navbar-toggler-right(

@@ -405,3 +405,13 @@ div.ReactTags__selected a.ReactTags__remove {
  -webkit-filter: grayscale(0);
 	filter: grayscale(0);
 }
+.autocomplete-dropdown-container{
+  z-index: 999;
+  color:#333;
+}
+.react-datepicker-wrapper, .react-datepicker__input-container {
+  width: 100%;
+}
+.form-group input {
+  width: 100%;
+}

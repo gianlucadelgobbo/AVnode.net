@@ -37,8 +37,6 @@ class TopMenu extends Component {
 
         const {crews, performances, events, footage, playlists} = this.props;
 
-        console.log(playlists);
-
         const items = [
             {
                 href: "/admin/profile/public",
@@ -92,7 +90,7 @@ class TopMenu extends Component {
                     id="preferences"
                     defaultMessage="Preferences"
                 />
-            },
+            }
 
         ];
 

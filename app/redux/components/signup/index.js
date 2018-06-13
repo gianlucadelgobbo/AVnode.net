@@ -1,0 +1,92 @@
+import React, { Component } from 'react';
+import Form from './form';
+import {connect} from 'react-redux';
+import {FormattedMessage, injectIntl} from 'react-intl';
+import {showModal} from "../modal/actions";
+import {bindActionCreators} from "redux";
+import Loading from '../loading';
+import ErrorMessage from '../errorMessage';
+import ItemNotFound from '../itemNotFound';
+import {MODAL_SAVED} from "../modal/constants";
+
+class SignUp extends Component {
+
+    componentDidMount() {
+        //const {fetchModel} = this.props;
+        //fetchModel();
+    }
+
+    // Convert form values to API model
+    createModelToSave(values) {
+
+        //clone obj
+        let model = Object.assign({}, values);
+
+        return model;
+    }
+
+    // Modify model from API to create form initial values
+    getInitialValues() {
+        const {model} = this.props;
+
+        if (!model) {
+            return {};
+        }
+
+        let v = {};
+
+        return v;
+    }
+
+    onSubmit(values) {
+        const {showModal} = this.props;
+        const modelToSave = this.createModelToSave(values);
+
+        // Add auth user _id
+        modelToSave._id = model._id;
+
+        //dispatch the action to save the model here
+        return saveModel(modelToSave)
+            .then(() => {
+                showModal({
+                    type: MODAL_SAVED
+                });
+            });
+    }
+
+    render() {
+
+        const {model, showModal, isFetching, errorMessage} = this.props;
+
+        return (
+        
+            <div className="row">
+                <div className="col-md-12">
+                    <Form
+                        initialValues={this.getInitialValues()}
+                        onSubmit={this.onSubmit.bind(this)}
+                        showModal={showModal}
+                    />
+                </div>
+            </div>
+        
+           
+        );
+    }
+}
+
+//Get form's initial values from redux state here
+const mapStateToProps = (state) => ({
+
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    showModal
+}, dispatch);
+
+SignUp = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SignUp);
+
+export default SignUp;
