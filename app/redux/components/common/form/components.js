@@ -21,11 +21,12 @@ import {fetchPerformancesForSelect, fetchUserForSelect} from "../../../api";
 import {createMultiLanguageInitialObject} from "../../common/form";
 import {DATE_FORMAT} from '../../../conf';
 import { WithContext as ReactTags } from 'react-tag-input';
+import {Collapse} from 'react-collapse';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
         <div className="autocomplete-root">
-            <input {...getInputProps()} />
+            <input className="form-control" placeholder={placeholder} {...getInputProps()} />
             <div className="autocomplete-dropdown-container">
                 {suggestions.map(suggestion => (
                     <div {...getSuggestionItemProps(suggestion)}>
@@ -1696,3 +1697,41 @@ export const multiLegalOrganization = ({fields, title, meta: {error}, placeholde
     </div>
 };
 
+export const CollapsedPanel = ({input, meta, placeholder, options, height, isChild}) => {
+    const field = <div className="form-group">
+        <ButtonGroup>
+            {options.map(option =>
+                <Button
+                    key={option[0]}
+                    bsStyle={option[0] === input.value ? 'primary' : 'default'}
+                    children={option[1]}
+                    name={input.name}
+                    onClick={input.onChange}
+                    value={option[0]}
+                />
+            )}
+        </ButtonGroup>
+        <Collapse isOpened={input.value==='group'}>
+          <div style={{height}} />
+            <Field
+                name="Crew Name"
+                component={inputText}
+                placeholder="Crew Name"
+            />
+            <Field
+                name="Crew profile URL"
+                component={inputText}
+                placeholder="Crew Profile Url"
+            />
+            <h4>YOU AS MEMBER OF THE CREW</h4>
+            <p>You will be able to add more once you confirmed your account</p>
+        </Collapse>
+        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+    </div>;
+    const label = <div className="labelField">{placeholder}</div>;
+    return !!isChild ? field :
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+};

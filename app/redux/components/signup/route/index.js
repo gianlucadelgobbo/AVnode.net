@@ -10,9 +10,9 @@ import SignUp from '../index';
 class MainSignUp extends Component {
     render() {
         return (
-        <div>
+        <div className="signup-container">
             
-            <div className="jumbotron jumbotron-fluid">
+            <div className="jumbotron jumbotron-fluid signup-jumbotron">
                 <div className="container">
                     <h1 className="display-4">
                         <FormattedMessage
