@@ -3,9 +3,9 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants';
-import {inputText, multiGoogleCityCountry, renderDatePicker, inputEmail, googleAutocompleteSelect, inputPassword, renderListRadio} from "../common/form/components";
-import validate from './validate';
-import asyncValidate from './asyncValidate';
+import {inputText, CollapsedPanel, renderDatePicker, inputEmail, googleAutocompleteSelect, inputPassword} from "../common/form/components";
+//import validate from './validate';
+//import asyncValidate from './asyncValidate';
 import {getFormSyncErrors} from 'redux-form';
 
 class SignUpForm extends Component {
@@ -17,7 +17,8 @@ class SignUpForm extends Component {
             handleSubmit,
             showModal,
             onSubmit,
-            options
+            options,
+            height
         } = this.props;
 
         return (
@@ -25,9 +26,10 @@ class SignUpForm extends Component {
 
                 <Field
                     name="subscribe"
-                    component={renderListRadio}
+                    component={CollapsedPanel}
                     placeholder="Subscribe as"
                     options={options}
+                    height={height}          
                 />
 
                 <Field

@@ -11,6 +11,7 @@ import {MODAL_SAVED} from "../modal/constants";
 import {OPTIONS} from "./constants";
 
 class SignUp extends Component {
+    
 
     componentDidMount() {
         //const {fetchModel} = this.props;
@@ -42,9 +43,9 @@ class SignUp extends Component {
     onSubmit(values) {
         const {showModal} = this.props;
         const modelToSave = this.createModelToSave(values);
-
+        console.log(modelToSave);
         // Add auth user _id
-        modelToSave._id = model._id;
+        //modelToSave._id = model._id;
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
@@ -56,13 +57,14 @@ class SignUp extends Component {
     }
 
     handleChange(){
-        console.log("valuess")
+        console.log('isOpened');
     }
+
 
     render() {
 
         const {model, showModal, isFetching, errorMessage} = this.props;
-
+        const height = 50;
         return (
         
             <div className="row">
@@ -73,6 +75,7 @@ class SignUp extends Component {
                         showModal={showModal}
                         options={OPTIONS}
                         onChange={this.handleChange.bind(this)}
+                        height={height}
                     />
                 </div>
             </div>
@@ -84,7 +87,6 @@ class SignUp extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
