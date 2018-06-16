@@ -92,7 +92,7 @@ class PlaylistPublic extends Component {
         modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return saveModel(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED
