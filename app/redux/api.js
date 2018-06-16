@@ -563,7 +563,7 @@ export const fetchCrewPublic = ({id}) => {
 };
 
 export const saveCrewPublic = (model) => {
-    return axios.get(`crews/${model._id}/public`, model)
+    return axios.put(`crews/${model._id}/public`, model)
         .then(result => {
             return result.data;
         });
