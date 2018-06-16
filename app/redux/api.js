@@ -686,3 +686,9 @@ export const fetchPartnerCategories = () => {
     //     });
 };
 
+export const saveSignupPublic = (model) => {
+    return axios.post(`/signup`)
+        .then(result => {
+            return result.data;
+        });
+};

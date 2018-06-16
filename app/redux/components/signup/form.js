@@ -56,7 +56,6 @@ class SignUpForm extends Component {
                     placeholder="Email"
                 />
 
-
                 <Field
                     name="city"
                     component={googleAutocompleteSelect}
@@ -76,12 +75,10 @@ class SignUpForm extends Component {
                     placeholder="Confirm Password"
                 />
 
-                <hr/>
-
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="btn btn-primary btn-lg btn-block">
+                    className="btn btn-primary pull-right btn-lg">
                     {submitting ? "Saving..." : "Save"}
                 </button>
 

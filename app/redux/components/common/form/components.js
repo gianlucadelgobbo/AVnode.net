@@ -111,7 +111,7 @@ export const userAutocompleteSelect = ({input, meta, multi = false, placeholder,
         </dl>
 };
 
-export const renderList = ({input, meta, placeholder, hideResetButton, options, isChild, multiple, clearable}) => {
+export const renderList = ({input, meta, placeholder, options, isChild, multiple, clearable}) => {
     const field = <div className="form-group">
         <Select
             {...input}
@@ -137,7 +137,7 @@ export const renderList = ({input, meta, placeholder, hideResetButton, options, 
         </dl>
 };
 
-const inputField = ({input, type, meta, placeholder, title, isChild}) => {
+const inputField = ({input, type, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         <input type={type} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
@@ -1728,7 +1728,7 @@ export const CollapsedPanel = ({input, meta, placeholder, options, height, isChi
         </Collapse>
         {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>;
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelSignup">{placeholder}</div>;
     return !!isChild ? field :
         <dl className="row">
             <dt className="col-sm-2">{label}</dt>

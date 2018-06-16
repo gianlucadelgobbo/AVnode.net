@@ -4,11 +4,9 @@ import {connect} from 'react-redux';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import {showModal} from "../modal/actions";
 import {bindActionCreators} from "redux";
-import Loading from '../loading';
-import ErrorMessage from '../errorMessage';
-import ItemNotFound from '../itemNotFound';
 import {MODAL_SAVED} from "../modal/constants";
-import {OPTIONS} from "./constants";
+import {OPTIONS, MODELS_NAME} from "./constants";
+import {saveModel} from "./actions";
 
 class SignUp extends Component {
     
@@ -63,7 +61,7 @@ class SignUp extends Component {
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {showModal} = this.props;
         const height = 50;
         return (
         

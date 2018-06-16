@@ -12,7 +12,7 @@ class App extends Component {
         const location = window.location.pathname;
         return (
         <div>
-            {location === "/admin/signup" ? (
+            {location === "/signup" ? (
                 <MainSignUp/>
             ) : (
                 <MainApp/>
