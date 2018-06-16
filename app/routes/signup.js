@@ -8,16 +8,23 @@ const UserTemp = mongoose.model('UserTemp');
 
 let config = require('getconfig');
 
+const logger = require('../utilities/logger');
+
 router.get('/', (req, res) => {
   if (req.user) {
     return res.redirect('/admin/profile/public');
   }
+  res.render('admin/index', {
+    title: __('Create Account'),
+    is_admin: true
+  });
+  /*
   res.render('signup', {
     title: __('Create Account')
   });
+  */
 });
 
-const logger = require('../utilities/logger');
 
 
 router.post('/', (req, res) => {
