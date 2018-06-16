@@ -30,7 +30,7 @@ class MainSignUp extends Component {
                     <div className="container">
                         <Switch>
                            
-                            <Route path="/admin/signup" component={SignUp}/>
+                            <Route path="/signup" component={SignUp}/>
 
                         </Switch>
 
