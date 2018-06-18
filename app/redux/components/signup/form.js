@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants';
 import {inputText, CollapsedPanel, renderDatePicker, inputEmail, googleAutocompleteSelect, inputPassword} from "../common/form/components";
-//import validate from './validate';
-//import asyncValidate from './asyncValidate';
+import validate from './validate';
+import asyncValidate from './asyncValidate';
 import {getFormSyncErrors} from 'redux-form';
 
 class SignUpForm extends Component {
@@ -93,9 +93,9 @@ SignUpForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    //validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[].text']
+    validate,
+    asyncValidate,
+    asyncBlurFields: ['slug', 'addresses[].text']
 })(SignUpForm);
 
 //Get form's initial values from redux state here
