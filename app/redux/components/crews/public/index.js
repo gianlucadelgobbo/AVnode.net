@@ -13,6 +13,7 @@ import TitleComponent from '../../titleComponent';
 import {CREW_NAME} from './constants';
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
+import {populateMultiLanguageObject} from "../../common/form";
 
 class CrewPublic extends Component {
 
@@ -53,6 +54,8 @@ class CrewPublic extends Component {
     getInitialValues() {
         const {model} = this.props;
 
+        const {abouts} = model;
+
         if (!model) {
             return {};
         }
@@ -65,25 +68,7 @@ class CrewPublic extends Component {
         v.stagename = model.stagename;
 
         // Convert about format for FieldArray redux-form
-        v.abouts = [];
-        if (Array.isArray(model.abouts)) {
-
-            // convert current lang
-            v.abouts = model.abouts.map(x => ({
-                key: `abouts.${x.lang}`,
-                value: x.abouttext
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
-            if (!found) {
-                v.abouts.push({
-                    key: `abouts.${l}`,
-                    value: ""
-                })
-            }
-        });
+        v.abouts = populateMultiLanguageObject("abouts", abouts);
 
         // Social: Add one item if value empty
         v.social = (Array.isArray(model.social) && model.social.length > 0) ? model.social : [{url: ""}];
