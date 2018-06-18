@@ -3327,7 +3327,7 @@
           "emails": 1,
           "image": 1,
           "schedule": 1,
-          "program": { "$slice": 1 },
+          "program": 1,
           "tobescheduled": 1,
           "partners": 1
         },
@@ -3335,10 +3335,32 @@
           "path": "program.performance",
           "select": {
             "title": 1,
+            "stats": 1,
+            "users": 1,
+            "categories": 1,
             "image": 1,
             "slug": 1
           },
-          "model": "Performance"
+          "model": "Performance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "UserShow"
+          }, {
+            "path": "categories",
+            "select": {
+              "name": 1,
+              "ancestor": 1
+            },
+            "model": "Category"
+          }]
         }, {
           "path": "program.schedule.categories",
           "select": {
