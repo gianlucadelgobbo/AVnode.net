@@ -195,7 +195,63 @@ const eventSchema = new Schema({
       delete ret.subtitles;
       delete ret.__v;
       delete ret._id;
+      delete ret.program;
     }
+  }
+});
+
+eventSchema.virtual('programmebydayvenue').get(function (req) {
+  //let programmebydayvenue = [];
+  let programmebydayvenueObj = {};
+  if (this.program && this.program.length) {
+    const lang = global.getLocale();
+    for(let a=0;a<this.program.length;a++){
+      let date = new Date(this.program[a].schedule.starttime);  // dateStr you get from mongodb
+      let d = date.getDate();
+      let m = date.getMonth()+1;      
+      let y = date.getFullYear();
+      let newdate = moment(this.program[a].schedule.starttime).format(config.dateFormat[lang].single);
+      if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+        date: newdate,
+        rooms: {}
+      };
+      if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room] = {
+        venue: this.program[a].schedule.venue.name,
+        room: this.program[a].schedule.venue.room,
+        performances: []
+      };
+      if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.push(this.program[a]);
+    }
+    return programmebydayvenueObj;
+  }
+});
+
+eventSchema.virtual('artists').get(function (req) {
+  //let programmebydayvenue = [];
+  let artists = {
+    artistsN: 0,
+    actsN: 0,
+    artistsCount: 0,
+    countries: [],
+    acts: [],
+    artists:[]
+  };
+  if (this.program && this.program.length) {
+    for(let a=0;a<this.program.length;a++){
+      artists.actsN+= 1;
+      for(let b=0;b<this.program[a].performance.users.length;b++){
+        artists.artistsCount+= this.program[a].performance.users[b].members ? this.program[a].performance.users[b].members.length : 1;
+        artists.artistsN+= 1;
+        for(let c=0;c<this.program[a].performance.users[b].addresses.length;c++){
+          if (artists.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) artists.countries.push(this.program[a].performance.users[b].addresses[c].country);
+        }
+        for(let c=0;c<this.program[a].performance.categories.length;c++){
+          if (this.program[a].performance.categories[c].ancestor.toString()==='5a9bba176066240000000188' && artists.acts.indexOf(this.program[a].performance.categories[c].name)===-1) artists.acts.push(this.program[a].performance.categories[c].name);
+        }
+        if (artists.artists.length<15) artists.artists.push(this.program[a].performance.users[b]);
+      }
+    }
+    return artists;
   }
 });
 

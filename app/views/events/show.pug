@@ -40,25 +40,35 @@ block title
       .container 
         .row
           .col-sm-6
-            ul.event_social_list.list-inline.miss
-              li.list-inline-item
-                a(href='#')
-                  span.lnr.lnr-link.about_button
-              li.list-inline-item
-                a(href='#')
-                  i.fa.fa-twitter.about_button
-              li.list-inline-item
-                a(href='#')
-                  i.fa.fa-facebook.about_button
-              li.list-inline-item
-                a(href='#')
-                  i.fa.fa-instagram.about_button
+            ul.event_social_list.list-inline
+              each item in data.web
+                li.list-inline-item
+                  a(href=item.url target='_blank')
+                    span.lnr.lnr-link.about_button
+              each item in data.social
+                if item.url.indexOf('twitter')
+                  li.list-inline-item
+                    a(href=item.url target='_blank')
+                      i.fa.fa-twitter.about_button
+                else if item.url.indexOf('facebook')
+                  li.list-inline-item
+                    a(href=item.url target='_blank')
+                      i.fa.fa-facebook.about_button
+                else if item.url.indexOf('instagram')
+                  li.list-inline-item
+                    a(href=item.url target='_blank')
+                      i.fa.fa-instagram.about_button
+                else
+                  li.list-inline-item
+                    a(href=item.url target='_blank')
+                      i.fa.fa-instagram.about_button
           .col-sm-6            
             ul.list-inline
+              if data.organizationsettings.call.length
+                li.list-inline-item
+                  a.partecipate.button(href="#")=global.__('Participate')
               li.list-inline-item
-                a.miss.partecipate.button(href="#")=global.__('Partecipate')
-              li.list-inline-item
-                a(href='#')
+                a(href="javascript:window.open('https://www.addtoany.com/share_save?linkurl='+encodeURIComponent(document.URL), 'Share Dialog', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=650,height=450,top='+(screen.height/2-450/2)+',left='+(screen.width/2-650/2));")
                   .share_button
                     img(src="/images/share_icon.svg")
 
@@ -84,24 +94,17 @@ block content
     .container
       section.row.program_event_wrapper
         .col-lg-12
-          h2.main_title.indented_title.color1!=global.__('Program')+" <small>(<span class='miss'>99</span>)</small>"
-          h3.date_schedule_title.miss="Saturday, September 10th 2016"
-          .basic_divider
-          h4.program_category_title.miss="Category name"        
-          
-          .owl-carousel.loop.owl-theme
-            .item
-              .miss="I will be an 'include ../partials/boxPerformance' someday..."
-            .item
-              .miss="I will be an 'include ../partials/boxPerformance' someday..."
-            .item
-              .miss="I will be an 'include ../partials/boxPerformance' someday..."
-            .item
-              .miss="I will be an 'include ../partials/boxPerformance' someday..."
-            .item
-              .miss="I will be an 'include ../partials/boxPerformance' someday..."
-            .item
-              .miss="I will be an 'include ../partials/boxPerformance' someday..."
+          h2.main_title.indented_title.color1!=global.__('Program')
+          each day in data.programmebydayvenue
+            h3.date_schedule_title=day.date
+            .basic_divider
+            each venueroom in day.rooms
+              h4.program_category_title=venueroom.venue+" // "+venueroom.room        
+              
+              .owl-carousel.loop.owl-theme
+                if venueroom.performances
+                  each item in venueroom.performances
+                    include ../partials/boxPerformanceScheduled
         .button_more.button_more_program
           span.button_more_label!=global.__('+ All the program')
           span.button_more_bkg
@@ -116,96 +119,10 @@ block content
     .container
       section.row.performers_event_wrapper
         .col-lg-12
-          h2.main_title.indented_title.color1!=global.__('Performers')+" <small>(<span class='miss'>99</span>)</small>"
-          h3.performers_infos.miss="15 artists from 9 countries,  playing 11 AV Performance"        
-          
-          
-          .owl-carousel.loop.owl-theme         
-            .two_performer_extended_item_wrapper
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"                      
-            .two_performer_extended_item_wrapper
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-            .two_performer_extended_item_wrapper
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-            .two_performer_extended_item_wrapper
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-            .two_performer_extended_item_wrapper
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
-              .performer_extended_item_wrapper.miss
-                a(href="/", title="performer name")
-                  img.img-fluid(src="/images/logo_avnode_symbol.svg")
-                  .performer_info
-                    p.performer_name="Performer name"
-                    p.performer_city_country
-                      span="city name"
-                      span="country name"
+          h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.artists.artistsN+")</small>"
+          h3.performers_infos=data.artists.artistsN+" "+global.__('performers')+" ("+data.artists.artistsCount + " " + global.__('artists') +") " + global.__('from') + " " + data.artists.countries.join(', ')+ " " + global.__('playing')+ " " + data.artists.actsN + " " + data.artists.acts.join(', ') + "."      
+          each item in data.artists.artists
+            include ../partials/boxPerformer
   .polygon_divider_bottom
     svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
       g#layer2
@@ -219,7 +136,7 @@ block content
     .container
       section.row.partners_event_wrapper
         .col-lg-8
-          h2.main_title.indented_title.color1!=global.__('Partners')+" <small>(<span class='miss'>99</span>)</small>"
+          h2.main_title.indented_title.color1!=global.__('Partners')
         .col-lg-4
           img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
         .col-sm-12
@@ -255,7 +172,7 @@ block content
           .container
             .row
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Galleries')+" <small class='miss'>(<span>99</span>)</small>"  
+                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.galleries                    
@@ -267,7 +184,7 @@ block content
           .container
             .row
               .col-lg-12
-                h2.main_title.indented_title!=global.__('Video')+" <small class='miss'>(<span>99</span>)</small>"  
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.videos            
