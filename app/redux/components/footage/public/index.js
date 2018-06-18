@@ -13,6 +13,7 @@ import TitleComponent from '../../titleComponent';
 import {FOOTAGE_NAME, FOOTAGE_CODES_TAGS} from './constants';
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
+import {populateMultiLanguageObject} from "../../common/form";
 
 class FootagePublic extends Component {
 
@@ -48,11 +49,12 @@ class FootagePublic extends Component {
     // Modify model from API to create form initial values
     getInitialValues() {
         const {model} = this.props;
-        console.log(model);
 
         if (!model) {
             return {};
         }
+
+        const {abouts} = model;
 
         let f = {}
 
@@ -62,26 +64,8 @@ class FootagePublic extends Component {
         f.title = model.title;
 
         // Convert about format for FieldArray redux-form
-        f.abouts = [];
-        if (Array.isArray(model.abouts)) {
-
-            // convert current lang
-            f.abouts = model.abouts.map(x => ({
-                key: `abouts.${x.lang}`,
-                value: x.abouttext
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = f.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
-            if (!found) {
-                f.abouts.push({
-                    key: `abouts.${l}`,
-                    value: ""
-                })
-            }
-        });
-
+        f.abouts = populateMultiLanguageObject("abouts", abouts);
+        
         f.users = model.users || [];
 
         f.tags = model.tags || [];
