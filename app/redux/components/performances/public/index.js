@@ -15,6 +15,7 @@ import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
+import {populateMultiLanguageObject} from "../../common/form";
 
 class PerformancePublic extends Component {
 
@@ -53,6 +54,8 @@ class PerformancePublic extends Component {
     getInitialValues() {
         const {model} = this.props;
 
+        const {abouts} = model;
+
         if (!model) {
             return {};
         }
@@ -65,26 +68,7 @@ class PerformancePublic extends Component {
         //Convert title for redux-form
         v.title = model.title;
 
-        // Convert about format for FieldArray redux-form
-        v.abouts = [];
-        if (Array.isArray(model.abouts)) {
-
-            // convert current lang
-            v.abouts = model.abouts.map(x => ({
-                key: `abouts.${x.lang}`,
-                value: x.abouttext
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = v.abouts.filter(o => o.key === `abouts.${l}`).length > 0;
-            if (!found) {
-                v.abouts.push({
-                    key: `abouts.${l}`,
-                    value: ""
-                })
-            }
-        });
+        v.abouts = populateMultiLanguageObject("abouts", abouts);
 
         v.is_public = model.is_public;
         v.categories = model.categories;
