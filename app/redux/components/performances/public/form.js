@@ -13,7 +13,7 @@ import {
 } from "../../common/form/components";
 import validate from './validate';
 import {getFormSyncErrors} from 'redux-form';
-//import asyncValidate from './asyncValidate';
+import asyncValidate from './asyncValidate';
 
 class PerformancePublicForm extends Component {
 
@@ -36,13 +36,13 @@ class PerformancePublicForm extends Component {
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Footage url"
+                    placeholder="Performance url"
                 />
 
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Footage name"
+                    placeholder="Title"
                 />
 
                 <FieldArray
@@ -133,9 +133,9 @@ PerformancePublicForm =  reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    //validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[]']
+    validate,
+    asyncValidate,
+    asyncBlurFields: ['slug']
 })(PerformancePublicForm);
 
 //Get form's initial values from redux state here
