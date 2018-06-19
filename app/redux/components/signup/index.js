@@ -5,7 +5,7 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 import {showModal} from "../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../modal/constants";
-import {OPTIONS, MODELS_NAME} from "./constants";
+import {OPTIONS} from "./constants";
 import {saveModel} from "./actions";
 
 class SignUp extends Component {
