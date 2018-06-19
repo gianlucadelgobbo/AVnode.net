@@ -1,4 +1,4 @@
-import {isValidSlug, validateLength, validateMultiLang} from "../../common/form/validators";
+import {isValidName, isValidSlug, validateLength, validateMultiLang} from "../../common/form/validators";
 
 const profilePublicValidate = values => {
 
@@ -6,6 +6,8 @@ const profilePublicValidate = values => {
 
     //Stage name
     validateLength({values, name: "stagename", min: 3, max: 5, errors});
+
+    isValidName({values, name:"stagename", errors});
 
     // Slug
     isValidSlug({values,  name: "slug",  errors});

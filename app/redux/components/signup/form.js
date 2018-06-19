@@ -70,7 +70,7 @@ class SignUpForm extends Component {
                 />  
 
                 <Field
-                    name="confirmpassword"
+                    name="confirmPassword"
                     component={inputPassword}
                     placeholder="Confirm Password"
                 />
