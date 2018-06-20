@@ -85,6 +85,17 @@ export const isValidSlug = ({values, name, errors, index, errorArray}) => {
     }
 };
 
+export const isValidName= ({values, name, errors, index, errorArray}) => {
+    const stagename = values[name];
+    if (!stagename || stagename.trim() === "") {
+        errors[name] = `${name} Required`;
+    }
+
+    if (Array.isArray(errorArray)) {
+        errorArray[index] = errors;
+    }
+};
+
 export const validateMultiLang = ({values, name, value, errors, max, index, errorArray}) => {
     const array = values[name];
     if (Array.isArray(array)) {
