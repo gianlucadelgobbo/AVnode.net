@@ -31,6 +31,7 @@ router.putData = (req, res) => {
           data.save((err) => {
             if (err) {
               console.log('err');
+              console.log(err);
               res.status(400).json(err);
             } else {
               select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
