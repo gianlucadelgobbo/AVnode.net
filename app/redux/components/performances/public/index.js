@@ -33,6 +33,8 @@ class PerformancePublic extends Component {
         //clone obj
         let model = Object.assign({}, values);
 
+        model.is_public = model.is_public;
+
         //Convert abouts for API
         if (Array.isArray(model.abouts)) {
             model.abouts = model.abouts.map(x => {

@@ -13,7 +13,7 @@ import {getDefaultModel} from "../selectors";
 import {fetchList as fetchCountries} from '../../countries/actions'
 import {getList as getCountries} from '../../countries/selectors'
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {getErrorMessage, getIsFetching} from "../selectors";
 import moment from 'moment';
 
 /*
