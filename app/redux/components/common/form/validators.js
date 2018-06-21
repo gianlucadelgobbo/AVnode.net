@@ -3,7 +3,8 @@ import {geocodeByAddress} from "react-places-autocomplete";
 import moment from 'moment';
 import validatorsObj from '../../../../utilities/validators.js';
 import {UPLOAD_IMAGE_MAX_SIZE} from "../../../conf";
-import {DATE_FORMAT} from '../../../conf'
+import {DATE_FORMAT} from '../../../conf';
+import {REQUIRED} from "./errors";
 
 const validators = validatorsObj.validators;
 
@@ -88,7 +89,8 @@ export const isValidSlug = ({values, name, errors, index, errorArray}) => {
 export const isValidName= ({values, name, errors, index, errorArray}) => {
     const stagename = values[name];
     if (!stagename || stagename.trim() === "") {
-        errors[name] = `${name} Required`;
+        //errors[name] = `${name} Required`;
+        errors[name] = REQUIRED;
     }
 
     if (Array.isArray(errorArray)) {

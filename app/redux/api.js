@@ -148,7 +148,7 @@ export const fetchEventPublic = ({id}) => {
 };
 
 export const saveEventPublic = (model) => {
-    return axios.get(`events/${model._id}/public`, model)
+    return axios.put(`events/${model._id}/public`, model)
         .then(result => {
             return result.data;
         });
