@@ -5,7 +5,7 @@ const performancePublicValidate = values => {
     const errors = {};
 
     //Title name
-    validateLength({values, name: "title", min: 3, max: 5, errors});
+    validateLength({values, name: "title", min: 3, max: 50, errors});
 
     isValidName({values, name:"title", errors});
 

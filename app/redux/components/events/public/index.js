@@ -149,7 +149,7 @@ class EventPublic extends Component {
         console.log(modelToSave)
 
         //dispatch the action to save the model here
-        return saveModel(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED

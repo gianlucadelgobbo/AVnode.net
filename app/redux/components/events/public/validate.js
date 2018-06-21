@@ -5,7 +5,7 @@ const profilePublicValidate = values => {
     const errors = {};
 
     //categories
-    validateLength({values, name: "categories", min: 1, max: 2, errors});
+    validateLength({values, name: "categories", min: 1, max: 3, errors});
 
     //schedule
     validateSchedule({values, name:"schedule", errors});
