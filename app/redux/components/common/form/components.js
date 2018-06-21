@@ -22,6 +22,7 @@ import {createMultiLanguageInitialObject} from "../../common/form";
 import {DATE_FORMAT} from '../../../conf';
 import { WithContext as ReactTags } from 'react-tag-input';
 import {Collapse} from 'react-collapse';
+import {FormattedMessage} from 'react-intl';
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
@@ -140,7 +141,7 @@ export const renderList = ({input, meta, placeholder, options, isChild, multiple
 const inputField = ({input, type, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         <input type={type} className="form-control" {...input} placeholder={placeholder}/>
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
