@@ -71,7 +71,7 @@ export const performanceAutocompleteSelect = ({input, meta, multi = false, place
             loadOptions={fetchPerformancesForSelect}
         />
         {meta.error && meta.touched &&
-        <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
+        <span className="error-message">{isChild ? <FormattedMessage id={meta.error._error}/> : <FormattedMessage id={meta.error}/>}</span>}
     </div>;
 
     const label = <div className="labelField">{placeholder}</div>;
@@ -100,7 +100,7 @@ export const userAutocompleteSelect = ({input, meta, multi = false, placeholder,
             loadOptions={fetchUserForSelect}
         />
         {meta.error && meta.touched &&
-        <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
+        <span className="error-message">{isChild ? <FormattedMessage id={meta.error._error}/> : <FormattedMessage id={meta.error}/>}</span>}
     </div>;
 
     const label = <div className="labelField">{placeholder}</div>;
@@ -128,7 +128,7 @@ export const renderList = ({input, meta, placeholder, options, isChild, multiple
             onChange={input.onChange}
             placeholder={placeholder}
         />
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
@@ -166,7 +166,7 @@ export const inputUrl = ({input, meta, placeholder, isChild}) => {
 export const inputTel = ({input, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         <Phone {...input} placeholder={placeholder} className="form-control"/>
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
@@ -188,7 +188,7 @@ export const textarea = ({input, id, meta, placeholder, isChild}) => {
     const field = <div className="form-group">
         {/*placeholder && <label htmlFor="first_name">{placeholder}</label>*/}
         <Textarea id={id} className="form-control" {...input} placeholder={placeholder}/>
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
@@ -342,7 +342,7 @@ export const fieldWithLabel = ({fields, title, showModal, placeholder, meta: {er
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField(member, index, fields, showModal))}
 
         </div>
@@ -463,7 +463,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField(member, index, fields, showModal))}
         </div>
     </div>;
@@ -554,7 +554,7 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, render, key, showModal}))}
 
         </div>
@@ -575,7 +575,7 @@ export const renderListRadio = ({input, meta, placeholder, options, isChild}) =>
                 />
             )}
         </ButtonGroup>
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
@@ -585,7 +585,7 @@ export const renderListRadio = ({input, meta, placeholder, options, isChild}) =>
         </dl>
 };
 
-export const tagsInput = ({input, meta, id, placeholder, disabled, classNames, isChild, tags, delimiters, handleTagClick, handleDelete, handleAddition}) => {
+export const tagsInput = ({meta, placeholder, isChild, tags, delimiters, handleTagClick, handleDelete, handleAddition}) => {
     const field = <div className="form-group">
                     <ReactTags tags={tags}
                         //suggestions={suggestions}
@@ -593,7 +593,7 @@ export const tagsInput = ({input, meta, id, placeholder, disabled, classNames, i
                         handleDelete={handleDelete}
                         handleTagClick={handleTagClick}
                         delimiters={delimiters} />
-                    {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+                    {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
                     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
@@ -613,7 +613,7 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
             selected={input.value ? moment(input.value, DATE_FORMAT) : null}
             placeholderText={placeholder}
         />
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
@@ -633,7 +633,7 @@ export const renderTimePicker = ({input, meta, withoutIcon, timeMode = "24", cla
             theme="classic"
             withoutIcon={withoutIcon}
         />,
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelField">{placeholder}</div>;
     return !!isChild ? field :
@@ -732,7 +732,7 @@ export const renderDropzoneInput = (field) => {
                 <div className="labelFieldUpload">Drop files here, or click to select files to upload.</div>
             </Dropzone>
 
-            {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
+            {field.meta.touched && field.meta.error && <span className="error"><FormattedMessage id={field.meta.error}/></span>}
 
             {files && Array.isArray(files) && (
                 <ul className="list-unstyled attached-file">
@@ -856,7 +856,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
 
         </div>
@@ -984,7 +984,7 @@ export const multiProgram = ({fields, title, meta: {error}, placeholder, showMod
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
 
         </div>
@@ -1112,7 +1112,7 @@ export const multiPackages = ({fields, title, meta: {error}, placeholder, showMo
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
         </div>
     </div>
@@ -1180,7 +1180,7 @@ export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
         </div>
     </div>
@@ -1320,7 +1320,7 @@ export const multiCall = ({fields, title, meta: {error}, placeholder, showModal,
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
         </div>
     </div>
@@ -1470,7 +1470,7 @@ export const multiContacts = ({fields, title, meta: {error}, placeholder, showMo
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
 
         </div>
@@ -1597,7 +1597,7 @@ export const multiActivities = ({fields, title, meta: {error}, placeholder, show
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
 
         </div>
@@ -1691,7 +1691,7 @@ export const multiLegalOrganization = ({fields, title, meta: {error}, placeholde
         </div>
         <div className="card-body">
             <br/>
-            {error && <span className="error-message">{error}</span>}
+            {error && <span className="error-message"><FormattedMessage id={error}/></span>}
             {fields.map((member, index, fields) => renderSubField({member, index, fields, showModal}))}
 
         </div>
@@ -1727,7 +1727,7 @@ export const CollapsedPanel = ({input, meta, placeholder, options, height, isChi
             <h4>YOU AS MEMBER OF THE CREW</h4>
             <p>You will be able to add more once you confirmed your account</p>
         </Collapse>
-        {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
+        {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
     const label = <div className="labelSignup">{placeholder}</div>;
     return !!isChild ? field :

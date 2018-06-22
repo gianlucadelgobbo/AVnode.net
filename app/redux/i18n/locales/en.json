@@ -21,5 +21,7 @@
   "program": "Program",
   "publicData": "Public data",
   "setting": "Settings",
-  "videos": "Videos"
+  "videos": "Videos",
+  "validation.error.required":"Required",
+  "validation.error.slug.is.taken":"That slug is taken"
 }
