@@ -50,10 +50,12 @@ class Galleries extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
@@ -102,7 +104,7 @@ class Galleries extends Component {
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {model={}, showModal, isFetching, errorMessage} = this.props;
         const initialValues = this.getInitialValues();
 
         return (

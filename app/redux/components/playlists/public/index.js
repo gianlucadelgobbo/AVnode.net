@@ -77,16 +77,18 @@ class PlaylistPublic extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    }); 
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
+        const {model={}, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
         
         return (
             <div className="row">
@@ -109,7 +111,7 @@ class PlaylistPublic extends Component {
                     />
                     }
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                          initialValues={this.getInitialValues()}
                          onSubmit={this.onSubmit.bind(this)}
                          model={model}
@@ -117,7 +119,7 @@ class PlaylistPublic extends Component {
                          tabs={locales}
                          labels={locales_labels}
                     
-                    />}
+                    />
                 </div>
             </div>
         );

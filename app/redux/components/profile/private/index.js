@@ -122,10 +122,11 @@ class ProfilePrivate extends Component {
         return saveModel(modelToSave)
             .then((model) => {
 
-                console.log("asdas", model)
-                showModal({
-                    type: MODAL_SAVED
-                });
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
