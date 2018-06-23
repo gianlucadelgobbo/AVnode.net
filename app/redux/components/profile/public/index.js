@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LateralMenu from '../lateralMenu';
 import Form from './form';
 import {connect} from 'react-redux';
-import {getDefaultModel, getErrorMessage, getIsFetching} from '../selectors';
+import {getDefaultModel, getDefaultModelErrorMessage, getIsFetching} from '../selectors';
 import {locales, locales_labels} from '../../../../../config/default.json'
 import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
@@ -128,16 +128,18 @@ class ProfilePublic extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+                if (model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {model = {}, showModal, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
@@ -154,19 +156,18 @@ class ProfilePublic extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && model && <TitleComponent
+                     <TitleComponent
                         title={model.stagename}
                         type={PROFILE_NAME}
                     />
-                    }  
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         tabs={locales}
                         labels={locales_labels}
                         showModal={showModal}
-                    />}
+                    />
                 </div>
             </div>
         );
@@ -177,7 +178,7 @@ class ProfilePublic extends Component {
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
     isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+    errorMessage: getDefaultModelErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

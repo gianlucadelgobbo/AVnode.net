@@ -120,7 +120,9 @@ class ProfilePrivate extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
+            .then((model) => {
+
+                console.log("asdas", model)
                 showModal({
                     type: MODAL_SAVED
                 });
@@ -128,7 +130,7 @@ class ProfilePrivate extends Component {
     }
 
     render() {
-        const {model, countries, showModal, errorMessage, isFetching} = this.props;
+        const {model = {}, countries, showModal, errorMessage, isFetching} = this.props;
 
         return (
             <div className="row">
@@ -151,13 +153,13 @@ class ProfilePrivate extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
                         countries={countries}
-                    />}
+                    />
                 </div>
             </div>
         );
