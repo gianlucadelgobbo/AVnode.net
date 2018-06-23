@@ -28,6 +28,11 @@ export const getDefaultModel = (state) => {
     return firstId? state[entity].byId[firstId] : null;
 };
 
+export const getDefaultModelErrorMessage = (state) => {
+    const firstId = Object.keys(state[entity].byId);
+    return firstId? getModelErrorMessage(state, firstId) : null;
+};
+
 export const getModelErrorMessage = (state, id) =>
     getModel(state, id) && getModel(state, id).errorMessage;
 

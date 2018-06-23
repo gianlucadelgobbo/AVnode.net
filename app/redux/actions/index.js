@@ -57,13 +57,17 @@ export const fetchModel = ({
             (response) => {
                 dispatch({
                     type: constants.FETCH_MODEL_SUCCESS,
-                    response: normalize(response || [], schema)
+                    response: normalize(response || [], schema),
+                    id
                 });
+                return {id};
+
             },
             (error) => {
                 dispatch({
                     type: constants.FETCH_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.'
+                    errorMessage: error.message || 'Something went wrong.',
+                    id
                 });
             });
 };
@@ -90,13 +94,17 @@ export const saveModel = ({
             (response) => {
                 dispatch({
                     type: constants.SAVE_MODEL_SUCCESS,
-                    response: normalize(response || [], schema)
+                    response: normalize(response || [], schema),
+                    id: model.id
                 });
+
+                return {id: model.id || "ok"}
             },
             (error) => {
                 dispatch({
                     type: constants.SAVE_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.'
+                    errorMessage: error.message || 'Something went wrong.',
+                    id: model.id
                 });
             });
 };
@@ -124,13 +132,16 @@ export const removeModel = ({
             (response) => {
                 dispatch({
                     type: constants.SAVE_MODEL_SUCCESS,
-                    response: normalize(response || [], schema)
+                    response: normalize(response || [], schema),
+                    id: model.id
                 });
+                return {id: model.id}
             },
             (error) => {
                 dispatch({
                     type: constants.SAVE_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.'
+                    errorMessage: error.message || 'Something went wrong.',
+                    id: model.id
                 });
             });
 };
