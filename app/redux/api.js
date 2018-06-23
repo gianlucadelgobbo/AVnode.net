@@ -14,18 +14,18 @@ export const fetchProfilePublic = () => {
 export const saveProfilePublic = (model) => {
 
 
-    return new Promise((fulfil, reject) => {
+    /*return new Promise((fulfil, reject) => {
 
         reject({
             message: "Bella pie!!! sono a riga 21 di api.js"
         })
-    })
+    })*/
 
 
-    // return axios.put("profile/public", model)
-    //     .then(result => {
-    //         return result.data;
-    //     });
+    return axios.put("profile/public", model)
+         .then(result => {
+             return result.data;
+         });
 };
 
 export const fetchSlug = (slug) => {

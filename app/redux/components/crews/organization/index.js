@@ -69,7 +69,7 @@ class CrewOrganization extends Component {
     }
 
     onSubmit(values) {
-        const {showModal, editUser, user} = this.props;
+        const {showModal, saveModel, user} = this.props;
         const model = this.createModelToSave(values);
         console.log(model);
 
@@ -77,8 +77,9 @@ class CrewOrganization extends Component {
         model._id = user._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
-            .then(() => {
+        return saveModel(model)
+            .then((model) => {
+                if(model && model.id)
                 showModal({
                      type: MODAL_SAVED
                 });
@@ -87,7 +88,7 @@ class CrewOrganization extends Component {
 
     render() {
 
-        const {model, categories, showModal, errorMessage, isFetching, match: {params: {_id}}} = this.props;
+        const {model={}, categories, showModal, errorMessage, isFetching, match: {params: {_id}}} = this.props;
 
         return (
             <div className="row">
@@ -112,7 +113,7 @@ class CrewOrganization extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && model && <Form
+                   <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
@@ -121,7 +122,7 @@ class CrewOrganization extends Component {
                         tabs={locales}
                         labels={locales_labels}
                         seasons={main_season}
-                    />}
+                    />
                 </div>
             </div>
         );

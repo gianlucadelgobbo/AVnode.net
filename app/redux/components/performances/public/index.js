@@ -129,16 +129,18 @@ class PerformancePublic extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, match: {params: {_id}}, isFetching, errorMessage, categories} = this.props;
+        const {model={}, showModal, match: {params: {_id}}, isFetching, errorMessage, categories} = this.props;
         return (
             <div className="row">
                 <div className="col-md-2">
@@ -160,7 +162,7 @@ class PerformancePublic extends Component {
                     />
                     }
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         model={model}
@@ -168,7 +170,7 @@ class PerformancePublic extends Component {
                         tabs={locales}
                         labels={locales_labels}
                         categories={categories}
-                    />}
+                    />
                 </div>
             </div>
         );

@@ -106,6 +106,7 @@ export const saveModel = ({
                     errorMessage: error.message || 'Something went wrong.',
                     id: model.id
                 });
+                console.log(error.message)
             });
 };
 
