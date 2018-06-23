@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {FormattedMessage, injectIntl} from 'react-intl';
-import {ACCOUNT_NAME} from '../../signup/constants';
 import ModalRoot from '../../modal/root'
 
 // // Sign Up Form
@@ -17,7 +16,7 @@ class MainSignUp extends Component {
                     <h1 className="display-4">
                         <FormattedMessage
                             id="signup"
-                            defaultMessage={ACCOUNT_NAME}
+                            defaultMessage="CREATE ACCOUNT"
                         />
                     </h1>
                 </div>

@@ -1,8 +1,48 @@
 [
   {
-    "id": "admin",
-    "defaultMessage": "Control panel",
-    "filepath": "./app/redux/components/app/index.js"
+    "id": "validation.error.required",
+    "defaultMessage": "Required",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.not.allowed",
+    "defaultMessage": "Characters Not Allowed",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.slug.required",
+    "defaultMessage": "Slug Required",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.slug.is.taken",
+    "defaultMessage": "That slug is taken",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.city",
+    "defaultMessage": "Invalid city",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.address",
+    "defaultMessage": "Invalid address",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.string.length",
+    "defaultMessage": "Invalid string length (max 5000)",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.image.size",
+    "defaultMessage": "Invalid image size",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.string.min.max",
+    "defaultMessage": "Invalid length: please insert",
+    "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
     "id": "publicData",
@@ -20,19 +60,24 @@
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
   },
   {
-    "id": "organization",
-    "defaultMessage": "Organization",
-    "filepath": "./app/redux/components/crews/lateralMenu/index.js"
+    "id": "MembersTitle",
+    "defaultMessage": "Name",
+    "filepath": "./app/redux/components/crews/members/index.js"
   },
   {
-    "id": "myAccountMembersData",
-    "defaultMessage": "My Account Members data",
+    "id": "Members",
+    "defaultMessage": "Members",
     "filepath": "./app/redux/components/crews/members/index.js"
   },
   {
     "id": "myAccountOrganizationData",
     "defaultMessage": "My Account Organization data",
     "filepath": "./app/redux/components/crews/organization/index.js"
+  },
+  {
+    "id": "CrewTitle",
+    "defaultMessage": "Crew Name",
+    "filepath": "./app/redux/components/crews/table/index.js"
   },
   {
     "id": "publicData",
@@ -75,8 +120,33 @@
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
+    "id": "EventTitle",
+    "defaultMessage": "Events Name",
+    "filepath": "./app/redux/components/events/table/index.js"
+  },
+  {
     "id": "publicData",
     "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/footage/lateralMenu/index.js"
+  },
+  {
+    "id": "CrewTitle",
+    "defaultMessage": "Footage Name",
+    "filepath": "./app/redux/components/footage/table/index.js"
+  },
+  {
+    "id": "admin",
+    "defaultMessage": "Control panel",
+    "filepath": "./app/redux/components/main/index.js"
+  },
+  {
+    "id": "publicData",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/performances/lateralMenu/index.js"
+  },
+  {
+    "id": "images",
+    "defaultMessage": "Images",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
   {
@@ -88,6 +158,21 @@
     "id": "videos",
     "defaultMessage": "Videos",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
+  },
+  {
+    "id": "PerformancesTitle",
+    "defaultMessage": "Performances Name",
+    "filepath": "./app/redux/components/performances/table/index.js"
+  },
+  {
+    "id": "publicData",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/playlists/lateralMenu/index.js"
+  },
+  {
+    "id": "PlaylistItem",
+    "defaultMessage": "Playlist Name",
+    "filepath": "./app/redux/components/playlists/table/index.js"
   },
   {
     "id": "publicData",
@@ -125,6 +210,11 @@
     "filepath": "./app/redux/components/profile/private/index.js"
   },
   {
+    "id": "signup",
+    "defaultMessage": "CREATE ACCOUNT",
+    "filepath": "./app/redux/components/signup/route/index.js"
+  },
+  {
     "id": "profile",
     "defaultMessage": "Profile",
     "filepath": "./app/redux/components/topMenu/index.js"
@@ -142,6 +232,16 @@
   {
     "id": "events",
     "defaultMessage": "Events",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "footage",
+    "defaultMessage": "Footage",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "playlists",
+    "defaultMessage": "Playlists",
     "filepath": "./app/redux/components/topMenu/index.js"
   },
   {
