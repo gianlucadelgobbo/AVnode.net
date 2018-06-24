@@ -7,10 +7,9 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
 
 /*
 * Responsabilita'
@@ -96,7 +95,7 @@ class ProfileEmails extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                    />
+                    />}
                 </div>
             </div>
         );
@@ -113,7 +112,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
     saveModel,
-    showModal,
+    showModal
 }, dispatch);
 
 ProfileEmails = connect(

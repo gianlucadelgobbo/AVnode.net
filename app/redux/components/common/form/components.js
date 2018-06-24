@@ -404,8 +404,8 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
                 </div>
             </div>
 
-            <div className="row ">
-                <div className="col-md-5 offset-1">
+            <div className="row">
+                <div className="col-md-5 offset-1 email-subscriptions">
                     Subscriptions:
                 </div>
                 <div className="col-md-4">

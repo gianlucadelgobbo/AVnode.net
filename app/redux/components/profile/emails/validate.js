@@ -1,11 +1,12 @@
 import validatorsObj from '../../../../utilities/validators.js';
+import {REQUIRED, INVALID_EMAIL, DEFINE_LEAST_EMAIL, MULTIPLE_PRIMARY_EMAIL, NO_PRIMARY_EMAIL} from "../../common/form/errors";
 
 const validate = values => {
     const errors = {};
 
     // If no email is defined
     if (!values.emails) {
-        errors.emails = {_error: "Define at least one email"};
+        errors.emails = DEFINE_LEAST_EMAIL;
         return errors;
     }
 
@@ -14,12 +15,12 @@ const validate = values => {
     values.emails.forEach((email, index) => {
         const emailErrors = {};
         if (!email || !email.email) {
-            emailErrors.email = 'Required';
+            emailErrors.email = REQUIRED;
             emailArrayErrors[index] = emailErrors
         }
 
         if (!email || !validatorsObj.validators.isEmail(email.email)) {
-            emailErrors.email = 'Invalid email';
+            emailErrors.email = INVALID_EMAIL;
             emailArrayErrors[index] = emailErrors
         }
     });
@@ -33,10 +34,10 @@ const validate = values => {
     const noMultiplePrimary = primaryEmailAmount === 0;
 
     if (isMultiplePrimary) {
-        errors.emails = {_error: "Multiple primary email"};
+        errors.emails = MULTIPLE_PRIMARY_EMAIL;
     }
     if (noMultiplePrimary) {
-        errors.emails = {_error: "No primary email"};
+        errors.emails = NO_PRIMARY_EMAIL;
     }
 
     // Selector already implement the check that if an email is not confirmed

@@ -45,6 +45,26 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
+    "id": "validation.error.invalid.email",
+    "defaultMessage": "Invalid email",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.define.least.email",
+    "defaultMessage": "Define at least one email",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.multiple.primary.email",
+    "defaultMessage": "Multiple primary email",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.no.primary.email",
+    "defaultMessage": "No primary email",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
     "id": "publicData",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"

@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import {FormattedMessage} from 'react-intl';
 import {bindActionCreators} from "redux";
-import LateralMenu from '../lateralMenu'
-import Form from './form'
-import {connect} from 'react-redux'
+import LateralMenu from '../lateralMenu';
+import Form from './form';
+import {connect} from 'react-redux';
 import {fetchModel, saveModel} from "./actions";
 import {showModal} from "../../modal/actions";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
+import Loading from '../../loading';
+import ErrorMessage from '../../errorMessage';
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
-import {fetchList as fetchCountries} from '../../countries/actions'
-import {getList as getCountries} from '../../countries/selectors'
+import {fetchList as fetchCountries} from '../../countries/actions';
+import {getList as getCountries} from '../../countries/selectors';
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../selectors";
+import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
 import moment from 'moment';
 
 /*
@@ -131,7 +130,7 @@ class ProfilePrivate extends Component {
     }
 
     render() {
-        const {model = {}, countries, showModal, errorMessage, isFetching} = this.props;
+        const {model={}, countries, showModal, errorMessage, isFetching} = this.props;
 
         return (
             <div className="row">
@@ -160,7 +159,7 @@ class ProfilePrivate extends Component {
                         user={model}
                         showModal={showModal}
                         countries={countries}
-                    />
+                    />}
                 </div>
             </div>
         );
