@@ -5,7 +5,7 @@ const crewPublicValidate = values => {
     const errors = {};
 
     //Stage name
-    validateLength({values, name: "stagename", min: 3, max: 5, errors});
+    validateLength({values, name: "stagename", min: 3, max: 50, errors});
 
     isValidName({values, name:"stagename", errors});
 

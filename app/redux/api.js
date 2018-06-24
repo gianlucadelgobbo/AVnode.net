@@ -12,10 +12,20 @@ export const fetchProfilePublic = () => {
 };
 
 export const saveProfilePublic = (model) => {
+
+
+    /*return new Promise((fulfil, reject) => {
+
+        reject({
+            message: "Bella pie!!! sono a riga 21 di api.js"
+        })
+    })*/
+
+
     return axios.put("profile/public", model)
-        .then(result => {
-            return result.data;
-        });
+         .then(result => {
+             return result.data;
+         });
 };
 
 export const fetchSlug = (slug) => {
@@ -148,7 +158,7 @@ export const fetchEventPublic = ({id}) => {
 };
 
 export const saveEventPublic = (model) => {
-    return axios.get(`events/${model._id}/public`, model)
+    return axios.put(`events/${model._id}/public`, model)
         .then(result => {
             return result.data;
         });

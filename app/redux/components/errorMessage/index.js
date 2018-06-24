@@ -9,7 +9,9 @@ class ErrorMessage extends Component {
         return (
             <div className="row">
                 <div className="col-md-12">
-                    Ops... {errorMessage}
+                    <div className="alert alert-danger" role="alert">
+                        Ops... {errorMessage}
+                    </div>
                 </div>
             </div>
         );

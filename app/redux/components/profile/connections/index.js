@@ -56,17 +56,19 @@ class ProfileConnections extends Component {
         model._id = user._id;
 
         //dispatch the action to save the model here
-        return editUser(model)
-            .then(() => {
-                showModal({
-                     type: MODAL_SAVED
-                });
+        return saveModel(model)
+            .then((model) => {
+                if(model && model.id) {
+                    showModal({
+                        type: MODAL_SAVED
+                   });
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {model={}, showModal, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">

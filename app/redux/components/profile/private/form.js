@@ -74,7 +74,10 @@ class ProfilePrivateForm extends Component {
                     component={renderList}
                     placeholder="Citizenship"
                     multiple={true}
-                    options={countries}
+                    options={countries.map(c => ({
+                        value: c.key,
+                        label: c.name
+                    }))}
                 />
 
                 <FieldArray

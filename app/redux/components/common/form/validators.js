@@ -3,7 +3,8 @@ import {geocodeByAddress} from "react-places-autocomplete";
 import moment from 'moment';
 import validatorsObj from '../../../../utilities/validators.js';
 import {UPLOAD_IMAGE_MAX_SIZE} from "../../../conf";
-import {DATE_FORMAT} from '../../../conf'
+import {DATE_FORMAT} from '../../../conf';
+import {REQUIRED, SLUG_IS_TAKEN, SLUG_REQUIRED, NOT_ALLOWED, INVALID_CITY, INVALID_ADDRESS, INVALID_STRING_LENGTH, INVALID_IMAGE_SIZE, INVALID_STRING_MIN_MAX} from "./errors";
 
 const validators = validatorsObj.validators;
 
@@ -14,7 +15,7 @@ export const validateSlug = ({value, previousValue, promises, result, index, err
         promises.push(fetchSlug(slugFromValues)
             .then(response => {
                 if (response.exist) {
-                    Object.assign(result, {slug: 'That slug is taken'});
+                    Object.assign(result, {slug: SLUG_IS_TAKEN});
                     if (Array.isArray(errorArray)) {
                         errorArray[index] = result;
                     }
@@ -31,12 +32,12 @@ export const validateAddress = ({values, promises, result}) => {
     addressesToCheck.forEach((a, index) => {
         promises.push(geocodeByAddress(a.text)
             .catch(error => {
-                addressesErrorArray[index] = {text: {_error: "Invalid city"}};
+                addressesErrorArray[index] = {text: {_error: INVALID_CITY}};
                 result.addresses = addressesErrorArray;
             })
             .then(result => {
                 if (Array.isArray(result) && result.length !== 1) {
-                    addressesErrorArray[index] = {text: {_error: "Invalid address"}};
+                    addressesErrorArray[index] = {text: {_error: INVALID_ADDRESS}};
                     result.addresses_private = addressesErrorArray;
                 }
             })
@@ -72,11 +73,11 @@ export const validateLength = ({values, name, min, max, errors, index, errorArra
 export const isValidSlug = ({values, name, errors, index, errorArray}) => {
     const slug = values[name];
     if (!slug || slug.trim() === "") {
-        errors[name] = 'Slug Required';
+        errors[name] = SLUG_REQUIRED;
     }
     if (slug) {
         if (!validators.isSlug(slug)) {
-            errors[name] = 'Characters Not Allowed';
+            errors[name] = NOT_ALLOWED;
         }
     }
 
@@ -88,7 +89,8 @@ export const isValidSlug = ({values, name, errors, index, errorArray}) => {
 export const isValidName= ({values, name, errors, index, errorArray}) => {
     const stagename = values[name];
     if (!stagename || stagename.trim() === "") {
-        errors[name] = `${name} Required`;
+        //errors[name] = `${name} Required`;
+        errors[name] = REQUIRED;
     }
 
     if (Array.isArray(errorArray)) {
@@ -106,7 +108,7 @@ export const validateMultiLang = ({values, name, value, errors, max, index, erro
             const itemErrors = {};
 
             if (!item || item[value].length > max) {
-                itemErrors[value] = 'Invalid string length (max 5000)';
+                itemErrors[value] = INVALID_STRING_LENGTH;
                 modelErrors[index] = itemErrors;
             }
         });
@@ -124,7 +126,7 @@ export const validateMultiLang = ({values, name, value, errors, max, index, erro
 
 export const validateImageSize = ({image, name, errors}) => {
     if (image.size > UPLOAD_IMAGE_MAX_SIZE) {
-        errors[name] = "Invalid image size";
+        errors[name] = INVALID_IMAGE_SIZE;
     }
 };
 
@@ -137,7 +139,7 @@ export const validateSchedule = ({values, name, errors, date = "date"}) => {
             const modelErrors = {};
             fields.forEach(f => {
                 if (!s[f] || !isValidDate(s[f])) {
-                    modelErrors[s[f]] = 'Required';
+                    modelErrors[s[f]] = REQUIRED;
                     scheduleErrors[i] = modelErrors;
                 }
             })

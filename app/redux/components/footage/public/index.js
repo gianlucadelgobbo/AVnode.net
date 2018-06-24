@@ -117,16 +117,18 @@ class FootagePublic extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
+        const {model={}, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
         const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
 
         return (
@@ -150,7 +152,7 @@ class FootagePublic extends Component {
                     />
                     }
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                          initialValues={this.getInitialValues()}
                          onSubmit={this.onSubmit.bind(this)}
                          model={model}
@@ -162,7 +164,7 @@ class FootagePublic extends Component {
                          handleDelete={this.handleDelete}
                          handleTagClick={this.handleTagClick}
                          handleAddition={this.handleAddition}
-                    />}
+                    />
                 </div>
             </div>
         );
