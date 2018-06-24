@@ -48,11 +48,12 @@ class ProfilePrivate extends Component {
         // Convert addresses_private
         model.addresses_private = model.addresses_private.map(a => {
             const originalString = a.text;
-            const split = originalString.split(",");
-            const country = split[split.length - 1].trim();
-            const street = split[0].trim();
-            const locality = split[1].trim();
-            return {originalString, street, locality, country}
+            //const split = originalString.split(",");
+            //const country = split[split.length - 1].trim();
+            //const street = split[0].trim();
+            //const locality = split[1].trim();
+            const formatted_address = originalString;
+            return {formatted_address}
         });
         // Convert Phone Number
         model.phone = model.phone.filter(a => a).map(p => ({
@@ -94,7 +95,7 @@ class ProfilePrivate extends Component {
         // Addresses_private: Add one item if value empty
         v.addresses_private = (Array.isArray(model.addresses_private) && model.addresses_private.length > 0) ?
             model.addresses_private.map(a => ({
-                text: `${a.locality}, ${a.country}`
+                text: `${a.formatted_address}`
             })) :
             [{text: ""}];
         // Phone: Add one item if value empty
@@ -129,6 +130,7 @@ class ProfilePrivate extends Component {
             });
     }
 
+
     render() {
         const {model={}, countries, showModal, errorMessage, isFetching} = this.props;
 
@@ -159,7 +161,7 @@ class ProfilePrivate extends Component {
                         user={model}
                         showModal={showModal}
                         countries={countries}
-                    />}
+                    />
                 </div>
             </div>
         );
