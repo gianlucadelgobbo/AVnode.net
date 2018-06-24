@@ -3,6 +3,7 @@ import Textarea from 'react-textarea-autosize';
 import {Tab, Tabs, Nav, NavItem, Button, ButtonGroup} from 'react-bootstrap';
 import {Field, FieldArray} from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import Select, {Async} from 'react-select';
 import 'react-select/dist/react-select.css';
 import DatePicker from 'react-datepicker';
@@ -39,8 +40,11 @@ export const googleAutocompleteSelect = ({input, meta, placeholder, options, isC
     );
 
     const field = <div className="form-group">
-        <PlacesAutocomplete {...input} options={options}>
-            {renderFunc}
+        <PlacesAutocomplete 
+        {...input} 
+        options={options}
+        >
+        {renderFunc}
         </PlacesAutocomplete>
         {meta.error && meta.touched &&
         <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
@@ -509,7 +513,7 @@ export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, s
         render: googleAutocompleteSelect,
         key: "text",
         options: {
-            types: ['address']
+            types: ['(address)']
         }, isChild: true
     })
 };
