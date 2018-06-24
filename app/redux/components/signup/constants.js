@@ -1,5 +1,4 @@
 export const FORM_NAME = "SIGNUP.FORM";
-export const ACCOUNT_NAME = "CREATE ACCOUNT";
 
 const PREFIX = 'SIGNUP_';
 export const MODELS_NAME = "signup";

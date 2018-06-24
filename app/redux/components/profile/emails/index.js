@@ -7,10 +7,9 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
 
 /*
 * Responsabilita'
@@ -62,16 +61,18 @@ class ProfileEmails extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {model={}, showModal, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
@@ -89,7 +90,7 @@ class ProfileEmails extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
@@ -111,7 +112,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
     saveModel,
-    showModal,
+    showModal
 }, dispatch);
 
 ProfileEmails = connect(

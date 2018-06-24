@@ -149,17 +149,19 @@ class EventPublic extends Component {
         console.log(modelToSave)
 
         //dispatch the action to save the model here
-        return saveModel(model)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+        return saveModel(modelToSave)
+            .then((model) => {
+                if(model && model.id) {
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, match: {params: {_id}}, isFetching, errorMessage, categories} = this.props;
+        const {model = {}, showModal, match: {params: {_id}}, isFetching, errorMessage, categories} = this.props;
 
         // console.log("model", model)
         //console.log("this.getInitialValues()", this.getInitialValues())
@@ -184,7 +186,7 @@ class EventPublic extends Component {
                         type={EVENT_NAME}
                     />}
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         model={model}
@@ -192,7 +194,7 @@ class EventPublic extends Component {
                         tabs={locales}
                         labels={locales_labels}
                         categories={categories}
-                    />}
+                    />
                 </div>
             </div>
         );

@@ -59,16 +59,18 @@ class ProfilePassword extends Component {
 
         //dispatch the action to save the model here
         return saveModel(model)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {model={}, showModal, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
@@ -86,12 +88,12 @@ class ProfilePassword extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
-                    />}
+                    />
                 </div>
             </div>
         );

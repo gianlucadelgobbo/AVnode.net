@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import {FormattedMessage} from 'react-intl';
 import {bindActionCreators} from "redux";
-import LateralMenu from '../lateralMenu'
-import Form from './form'
-import {connect} from 'react-redux'
+import LateralMenu from '../lateralMenu';
+import Form from './form';
+import {connect} from 'react-redux';
 import {fetchModel, saveModel} from "./actions";
 import {showModal} from "../../modal/actions";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
+import Loading from '../../loading';
+import ErrorMessage from '../../errorMessage';
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
-import {fetchList as fetchCountries} from '../../countries/actions'
-import {getList as getCountries} from '../../countries/selectors'
+import {fetchList as fetchCountries} from '../../countries/actions';
+import {getList as getCountries} from '../../countries/selectors';
 import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
 import moment from 'moment';
 
 /*
@@ -120,15 +119,18 @@ class ProfilePrivate extends Component {
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
+            .then((model) => {
+
+                if(model && model.id){
+                    showModal({
+                        type: MODAL_SAVED
+                    });
+                }
             });
     }
 
     render() {
-        const {model, countries, showModal, errorMessage, isFetching} = this.props;
+        const {model={}, countries, showModal, errorMessage, isFetching} = this.props;
 
         return (
             <div className="row">
@@ -151,7 +153,7 @@ class ProfilePrivate extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && model && <Form
+                    <Form
                         initialValues={this.getInitialValues(this)}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
