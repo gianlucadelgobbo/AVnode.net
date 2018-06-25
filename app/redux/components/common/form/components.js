@@ -25,24 +25,46 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import {Collapse} from 'react-collapse';
 import {FormattedMessage} from 'react-intl';
 
-export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
+export const googleAutocompleteSelect = ({input, meta, placeholder, options, handleSelect, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
         <div className="autocomplete-root">
-            <input className="form-control" placeholder={placeholder} {...getInputProps()} />
-            <div className="autocomplete-dropdown-container">
-                {suggestions.map(suggestion => (
-                    <div {...getSuggestionItemProps(suggestion)}>
-                        <span>{suggestion.description}</span>
-                    </div>
-                ))}
+        <input
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'form-control location-search-input'
+              })}
+            />
+           
+           <div className="autocomplete-dropdown-container">
+              {suggestions.map(suggestion => {
+                const className = suggestion.active ? 'suggestion-item--active' : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div {...getSuggestionItemProps(suggestion, { className, style })}>
+                    <span>{suggestion.description}</span>
+                  </div>
+                )
+              })}
             </div>
         </div>
     );
+
+     handleSelect = (address) => {
+        geocodeByAddress(address)
+        .then(results => getLatLng(results[0]))
+        .then(latLng => console.log('Success', latLng))
+        .catch(error => console.error('Error', error))
+    }
+
 
     const field = <div className="form-group">
         <PlacesAutocomplete 
         {...input} 
         options={options}
+        onSelect={handleSelect}
         >
         {renderFunc}
         </PlacesAutocomplete>
@@ -486,12 +508,13 @@ export const multiInputTel = ({fields, title, showModal, placeholder, meta: {err
     })
 };
 
-export const multiGoogleCityCountry = ({fields, title, showModal, placeholder, meta: {error}}) => {
+export const multiGoogleCityCountry = ({fields, title, showModal, placeholder, meta: {error}, handleSelect}) => {
     return multiInput({
         showModal,
         fields,
         title,
         placeholder,
+        handleSelect,
         meta: {error},
         render: googleAutocompleteSelect,
         key: "text",
@@ -503,11 +526,12 @@ export const multiGoogleCityCountry = ({fields, title, showModal, placeholder, m
 };
 
 
-export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, showModal}) => {
+export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, showModal, handleSelect}) => {
     return multiInput({
         showModal,
         fields,
         placeholder,
+        handleSelect,
         title,
         meta: {error},
         render: googleAutocompleteSelect,
@@ -518,7 +542,7 @@ export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, s
     })
 };
 
-const multiInput = ({fields, title, meta: {error}, render, placeholder, key, showModal}) => {
+const multiInput = ({fields, title, meta: {error}, render, placeholder, key, showModal, handleSelect}) => {
     const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields, render, key = "text"}) => (
         <div className="row" key={index}>
@@ -559,7 +583,7 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
         <div className="card-body">
             <br/>
             {error && <span className="error-message"><FormattedMessage id={error}/></span>}
-            {fields.map((member, index, fields) => renderSubField({member, index, fields, render, key, showModal}))}
+            {fields.map((member, index, fields) => renderSubField({member, index, fields, render, key, showModal, handleSelect}))}
 
         </div>
     </div>

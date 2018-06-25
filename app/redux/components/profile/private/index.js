@@ -13,6 +13,7 @@ import {fetchList as fetchCountries} from '../../countries/actions';
 import {getList as getCountries} from '../../countries/selectors';
 import {MODAL_SAVED} from "../../modal/constants";
 import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import moment from 'moment';
 
 /*
@@ -48,12 +49,12 @@ class ProfilePrivate extends Component {
         // Convert addresses_private
         model.addresses_private = model.addresses_private.map(a => {
             const originalString = a.text;
-            //const split = originalString.split(",");
-            //const country = split[split.length - 1].trim();
-            //const street = split[0].trim();
-            //const locality = split[1].trim();
+            const split = originalString.split(",");
+            const country = split[split.length - 1].trim();
+            const street = split[0].trim();
+            const locality = split[1].trim();
             const formatted_address = originalString;
-            return {formatted_address}
+            return {formatted_address, street, locality, country}
         });
         // Convert Phone Number
         model.phone = model.phone.filter(a => a).map(p => ({
@@ -129,7 +130,7 @@ class ProfilePrivate extends Component {
                 }
             });
     }
-
+    
 
     render() {
         const {model={}, countries, showModal, errorMessage, isFetching} = this.props;
@@ -161,6 +162,7 @@ class ProfilePrivate extends Component {
                         user={model}
                         showModal={showModal}
                         countries={countries}
+                
                     />
                 </div>
             </div>
