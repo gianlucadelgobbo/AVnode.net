@@ -23,7 +23,7 @@ class ProfilePrivateForm extends Component {
             countries,
             onSubmit,
             showModal,
-            handleSelect
+            
         } = this.props;
 
         return (
@@ -86,7 +86,7 @@ class ProfilePrivateForm extends Component {
                     component={multiGoogleAddress}
                     placeholder="Private addresses"
                     showModal={showModal}
-                    handleSelect={handleSelect}
+                    
                 />
 
                 <br/>
