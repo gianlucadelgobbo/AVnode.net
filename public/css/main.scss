@@ -135,15 +135,18 @@ small, .small {
 main {
      background-color: transparent;
  }
+
+ 
  
  a#to_top {
     position: fixed;
     z-index: 1;
     bottom: 10px;
-    left: 10px;
+    right: 10px;
     font-size: 40px;
     text-shadow: 1px 1px 0px $color4;
     display: none;
+    z-index: 99;
 }
 a#to_top.to_top_visibile {
     display: block;
@@ -191,14 +194,35 @@ section.row.program_event_wrapper {
 }
 
 .date_schedule_title {
+    color: $color1;
     text-transform: inherit;
     font-weight: 300;
-    font-size: 18px;
-    margin-bottom: 80px;
+    font-size: 24px;
+    margin-bottom: 20px;
+    margin-top: 140px;
+}
+
+.data_program_divider {
+    width: 100%;
+    height: 7px;
+    background: $color1;
+    left: -50%;
+    position: relative;
+    top: 0px;
+    margin-bottom: 60px;
+}
+
+div.time_schedule {
+    background: $color1;
+    padding: 5px;
+    font-size: 12px;
+    display: inline;
+    position: relative;
+    bottom: -1px;
 }
 
 .program_event_wrapper .basic_divider {    
-    background: $color4;
+    background: $color1;
 }
 
 .program_event_wrapper .main_title {
