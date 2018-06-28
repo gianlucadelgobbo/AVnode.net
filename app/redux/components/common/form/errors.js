@@ -8,8 +8,12 @@ export const INVALID_CITY = "validation.error.invalid.city";
 export const INVALID_ADDRESS = "validation.error.invalid.address";
 export const INVALID_STRING_LENGTH = "validation.error.invalid.string.length";
 export const INVALID_IMAGE_SIZE = "validation.error.invalid.image.size";
-export const INVALID_STRING_MIN_MAX = "validation.error.invalid.string.min.max";
+export const INVALID_STRING_3_20 = "validation.error.invalid.string.3.20";
+export const INVALID_STRING_1_5 = "validation.error.invalid.string.1.5";
+export const INVALID_STRING_1_3 = "validation.error.invalid.string.1.3";
+export const INVALID_STRING_3_50 = "validation.error.invalid.string.3.50";
 export const INVALID_EMAIL = "validation.error.invalid.email";
+export const INVALID_PASSWORD = "validation.error.invalid.password";
 export const DEFINE_LEAST_EMAIL= "validation.error.define.least.email";
 export const MULTIPLE_PRIMARY_EMAIL = "validation.error.multiple.primary.email";
 export const NO_PRIMARY_EMAIL = "validation.error.no.primary.email";
@@ -54,9 +58,21 @@ defineMessages({
         id: INVALID_IMAGE_SIZE,
         defaultMessage: "Invalid image size"
     },
-    [INVALID_STRING_MIN_MAX]: {
-        id: INVALID_STRING_MIN_MAX,
-        defaultMessage: "Invalid length: please insert"
+    [INVALID_STRING_3_20]: {
+        id: INVALID_STRING_3_20,
+        defaultMessage: "Invalid length: please insert 3 to 20 values"
+    },
+    [INVALID_STRING_1_5]: {
+        id: INVALID_STRING_1_5,
+        defaultMessage: "Invalid length: please insert 1 to 5 values"
+    },
+     [INVALID_STRING_1_3]: {
+        id: INVALID_STRING_1_3,
+        defaultMessage: "Invalid length: please insert 1 to 3 values"
+    },
+    [INVALID_STRING_3_50]: {
+        id: INVALID_STRING_3_50,
+        defaultMessage: "Invalid length: please insert 3 to 50 values"
     },
     [INVALID_EMAIL]: {
         id: INVALID_EMAIL,
@@ -73,5 +89,9 @@ defineMessages({
     [NO_PRIMARY_EMAIL]: {
         id: NO_PRIMARY_EMAIL,
         defaultMessage: "No primary email"
-    }
+    },
+    [INVALID_PASSWORD]: {
+        id: INVALID_PASSWORD,
+        defaultMessage: "Passwords don't match"
+    },
 });

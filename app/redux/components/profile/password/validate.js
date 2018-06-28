@@ -1,3 +1,5 @@
+import {INVALID_PASSWORD} from "../../common/form/errors";
+
 const validate = values => {
 
     const errors = {};
@@ -5,7 +7,7 @@ const validate = values => {
 
     // password and confirmPassword must match
     if (password !== confirmPassword) {
-        errors.confirmPassword = "Passwords don't match"
+        errors.confirmPassword = INVALID_PASSWORD;
     }
 
 

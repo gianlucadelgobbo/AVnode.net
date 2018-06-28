@@ -3,6 +3,7 @@ import Textarea from 'react-textarea-autosize';
 import {Tab, Tabs, Nav, NavItem, Button, ButtonGroup} from 'react-bootstrap';
 import {Field, FieldArray} from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import Select, {Async} from 'react-select';
 import 'react-select/dist/react-select.css';
 import DatePicker from 'react-datepicker';
@@ -27,20 +28,36 @@ import {FormattedMessage} from 'react-intl';
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
         <div className="autocomplete-root">
-            <input className="form-control" placeholder={placeholder} {...getInputProps()} />
-            <div className="autocomplete-dropdown-container">
-                {suggestions.map(suggestion => (
-                    <div {...getSuggestionItemProps(suggestion)}>
-                        <span>{suggestion.description}</span>
-                    </div>
-                ))}
+        <input
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'form-control location-search-input'
+              })}
+            />
+           
+           <div className="autocomplete-dropdown-container">
+              {suggestions.map(suggestion => {
+                const className = suggestion.active ? 'suggestion-item--active' : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div {...getSuggestionItemProps(suggestion, { className, style })}>
+                    <span>{suggestion.description}</span>
+                  </div>
+                )
+              })}
             </div>
         </div>
     );
 
     const field = <div className="form-group">
-        <PlacesAutocomplete {...input} options={options}>
-            {renderFunc}
+        <PlacesAutocomplete 
+        {...input} 
+        options={options}
+        >
+        {renderFunc}
         </PlacesAutocomplete>
         {meta.error && meta.touched &&
         <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
@@ -138,7 +155,7 @@ export const renderList = ({input, meta, placeholder, options, isChild, multiple
         </dl>
 };
 
-const inputField = ({input, type, meta, placeholder, isChild}) => {
+const inputField = ({input, type, meta, placeholder, isChild, handleSelect}) => {
     const field = <div className="form-group">
         <input type={type} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
@@ -509,7 +526,7 @@ export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, s
         render: googleAutocompleteSelect,
         key: "text",
         options: {
-            types: ['address']
+            types: ['(address)']
         }, isChild: true
     })
 };
