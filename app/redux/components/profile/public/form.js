@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {reduxForm, Field, FieldArray} from "redux-form";
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {FORM_NAME} from './constants'
+import {FORM_NAME} from './constants';
 import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';

@@ -14,7 +14,8 @@ import TitleComponent from '../../titleComponent';
 import {PROFILE_NAME} from './constants';
 import {MODAL_SAVED} from "../../modal/constants";
 import {sortByLanguage} from "../../common/form";
-
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import axios from 'axios';
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -58,7 +59,8 @@ class ProfilePublic extends Component {
             const split = originalString.split(",");
             const country = split[split.length - 1].trim();
             const locality = split[0].trim();
-            return {originalString, locality, country}
+            const geometry = a.geometry;
+            return {originalString, locality, country, geometry}
         });
 
         return model;
@@ -119,15 +121,33 @@ class ProfilePublic extends Component {
         return v;
     }
 
+    createLatLongToSave = (address) => {
+        return geocodeByAddress(address)
+        .then(results => getLatLng(results[0]))
+
+    }
+
     onSubmit(values) {
         const {showModal, saveModel, model} = this.props;
-        const modelToSave = this.createModelToSave(values);
+    
+        let promises = []
 
-        // Add auth user _id
-        modelToSave._id = model._id;
+        const addrs = values.addresses;
 
-        //dispatch the action to save the model here
-        return saveModel(modelToSave)
+        addrs.forEach(a => {
+            promises.push(this.createLatLongToSave(a.text).then((result) => {
+                 // add to a model
+                 a.geometry = result;
+                }))
+        });
+
+        return axios.all(promises).then(() => {
+            //dispatch the action to save the model here
+            const modelToSave = this.createModelToSave(values);
+
+            modelToSave._id = model._id;
+
+            return saveModel(modelToSave)
             .then((model) => {
                 if (model && model.id){
                     showModal({
@@ -135,6 +155,8 @@ class ProfilePublic extends Component {
                     });
                 }
             });
+        });
+
     }
 
     render() {
@@ -167,6 +189,7 @@ class ProfilePublic extends Component {
                         tabs={locales}
                         labels={locales_labels}
                         showModal={showModal}
+                        //handleSelect={this.createLatLongToSave()}
                     />
                 </div>
             </div>
