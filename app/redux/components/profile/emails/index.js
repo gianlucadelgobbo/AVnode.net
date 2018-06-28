@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import LateralMenu from '../lateralMenu'
-import Form from './form'
+import LateralMenu from '../lateralMenu';
+import Form from './form';
 import {showModal} from "../../modal/actions";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
+import Loading from '../../loading';
+import ErrorMessage from '../../errorMessage';
 import ItemNotFound from '../../itemNotFound';
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";

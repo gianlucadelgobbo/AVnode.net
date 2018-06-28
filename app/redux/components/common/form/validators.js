@@ -54,7 +54,7 @@ export const isValidDate = (date) => {
     return wrapper.isValid();
 };
 
-export const validateLength = ({values, name, min, max, errors, index, errorArray}) => {
+export const validateLength = ({values, name, min, max, errorKey, errors, index, errorArray}) => {
     let value = values[name];
 
     if (value && !!value.trim) {
@@ -62,7 +62,7 @@ export const validateLength = ({values, name, min, max, errors, index, errorArra
     }
 
     if (!value || (value.length < min || value.length > max)) {
-        errors[name] = {_error: `Invalid length: please insert ${min} to ${max} values`};
+        errors[name] = {_error: errorKey};
     }
 
     if (Array.isArray(errorArray)) {
@@ -89,7 +89,6 @@ export const isValidSlug = ({values, name, errors, index, errorArray}) => {
 export const isValidName= ({values, name, errors, index, errorArray}) => {
     const stagename = values[name];
     if (!stagename || stagename.trim() === "") {
-        //errors[name] = `${name} Required`;
         errors[name] = REQUIRED;
     }
 

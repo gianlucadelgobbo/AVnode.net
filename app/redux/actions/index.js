@@ -103,7 +103,7 @@ export const saveModel = ({
             (error) => {
                 dispatch({
                     type: constants.SAVE_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.',
+                    errorMessage: error.response.data.message || 'Something went wrong.',
                     id: model.id
                 });
                 console.log(error.message)

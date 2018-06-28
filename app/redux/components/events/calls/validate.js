@@ -1,4 +1,5 @@
 import {isValidDate, isValidSlug, validateLength, validateMultiLang} from "../../common/form/validators";
+import {REQUIRED} from "../../common/form/errors";
 
 const validate = values => {
 
@@ -32,12 +33,12 @@ const validate = values => {
             });
 
             if (!start_date || !isValidDate(start_date)) {
-                modelErrors.start_date = 'Required';
+                modelErrors.start_date = REQUIRED;
                 callsErrors[i] = modelErrors;
             }
 
             if (!end_date || !isValidDate(end_date)) {
-                modelErrors.end_date = 'Required';
+                modelErrors.end_date = REQUIRED;
                 callsErrors[i] = modelErrors;
             }
 

@@ -15,7 +15,7 @@ import {MODAL_SAVED} from "../../modal/constants";
 import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import moment from 'moment';
-import axios from 'axios'
+import axios from 'axios';
 
 /*
 * Responsabilita'
@@ -177,7 +177,7 @@ class ProfilePrivate extends Component {
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
                     <Form
-                        initialValues={this.getInitialValues(this)}
+                        initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         user={model}
                         showModal={showModal}
