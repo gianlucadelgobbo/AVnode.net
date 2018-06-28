@@ -40,13 +40,33 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
-    "id": "validation.error.invalid.string.min.max",
-    "defaultMessage": "Invalid length: please insert",
+    "id": "validation.error.invalid.string.3.20",
+    "defaultMessage": "Invalid length: please insert 3 to 20 values",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.string.1.5",
+    "defaultMessage": "Invalid length: please insert 1 to 5 values",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+  "id": "validation.error.invalid.string.1.3",
+  "defaultMessage": "Invalid length: please insert 1 to 3 values",
+  "filepath": "./app/redux/components/common/form/errors.js"
+  },
+   {
+    "id": "validation.error.invalid.string.3.50",
+    "defaultMessage": "Invalid length: please insert 3 to 50 values",
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
     "id": "validation.error.invalid.email",
     "defaultMessage": "Invalid email",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.password",
+    "defaultMessage": "Passwords don't match",
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {

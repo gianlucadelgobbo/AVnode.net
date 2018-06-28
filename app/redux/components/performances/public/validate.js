@@ -1,11 +1,12 @@
-import {isValidName, isValidSlug, validateLength, validateMultiLang} from "../../common/form/validators";
+import {isValidName, isValidSlug, validateLength, validateMultiLang, isValidNumber} from "../../common/form/validators";
+import {INVALID_STRING_3_50, INVALID_STRING_1_5} from "../../common/form/errors";
 
 const performancePublicValidate = values => {
 
     const errors = {};
 
     //Title name
-    validateLength({values, name: "title", min: 3, max: 50, errors});
+    validateLength({values, name: "title", min: 3, max: 50, errorKey:INVALID_STRING_3_50, errors});
 
     isValidName({values, name:"title", errors});
 

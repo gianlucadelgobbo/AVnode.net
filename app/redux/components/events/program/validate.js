@@ -1,4 +1,5 @@
 import {isValidDate, validateLength} from "../../common/form/validators";
+import {REQUIRED} from "../../common/form/errors";
 
 const validate = values => {
 
@@ -13,12 +14,12 @@ const validate = values => {
             const {startdate, enddate} = s;
 
             if (!startdate || !isValidDate(startdate)) {
-                modelErrors.startdate = 'Required';
+                modelErrors.startdate = REQUIRED;
                 programErrors[i] = modelErrors;
             }
 
             if (!enddate || !isValidDate(enddate)) {
-                modelErrors.startdate = 'Required';
+                modelErrors.startdate = REQUIRED;
                 programErrors[i] = modelErrors;
             }
 
