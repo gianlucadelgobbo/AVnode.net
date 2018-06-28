@@ -91,15 +91,17 @@ block title
 
 block content
   .program_event_wrapper_bkg
-    .container
-      section.row.program_event_wrapper
+    section.row.program_event_wrapper
         .col-lg-12
-          h2.main_title.indented_title.color1!=global.__('Program')
+          .container
+            h2.main_title.indented_title.color1!=global.__('Program')
           each day in data.programmebydayvenue
-            h3.date_schedule_title=day.date
-            .basic_divider
+            .container
+              h3.date_schedule_title=day.date
+              .data_program_divider
             each venueroom in day.rooms
-              h4.program_category_title=venueroom.venue+" // "+venueroom.room        
+              .container
+                h4.program_category_title=venueroom.venue+" // "+venueroom.room        
               
               .owl-carousel.loop.owl-theme
                 if venueroom.performances

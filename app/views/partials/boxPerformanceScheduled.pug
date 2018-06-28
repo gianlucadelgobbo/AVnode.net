@@ -1,10 +1,13 @@
 .performance_item_wrapper
   if item.schedule
-    b=item.schedule.ora_i+" // "+item.schedule.ora_f
+    div.time_schedule
+      span=item.schedule.ora_i 
+      span.lnr.lnr-chevron-right
+      span=item.schedule.ora_f
 
   if item.performance.imageFormats
     a(href="/performances/"+item.performance.slug, title=item.performance.title)
-      img.card-img-top.img-fluid(
+      img.img-fluid(
         src=item.performance.imageFormats.large
         alt=item.performance.title
       )
