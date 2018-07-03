@@ -54,6 +54,17 @@ export const isValidDate = (date) => {
     return wrapper.isValid();
 };
 
+export const validateDate = ({values, name, errors, index, errorArray}) => {
+const nameIn = values[name];
+    if (!nameIn || nameIn.trim() === "") {
+        errors[name] = REQUIRED;
+    }
+
+    if (Array.isArray(errorArray)) {
+        errorArray[index] = errors;
+    }
+};
+
 export const validateLength = ({values, name, min, max, errorKey, errors, index, errorArray}) => {
     let value = values[name];
 
