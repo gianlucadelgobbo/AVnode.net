@@ -1732,12 +1732,12 @@ export const CollapsedPanel = ({input, meta, placeholder, options, height, isChi
         <Collapse isOpened={input.value==='group'}>
           <div style={{height}} />
             <Field
-                name="Crew Name"
+                name="crewName"
                 component={inputText}
                 placeholder="Crew Name"
             />
             <Field
-                name="Crew profile URL"
+                name="CrewProfile"
                 component={inputText}
                 placeholder="Crew Profile Url"
             />
