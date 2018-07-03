@@ -93,7 +93,6 @@ class ProfileEmails extends Component {
                     <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
-                        user={model}
                         showModal={showModal}
                     />}
                 </div>

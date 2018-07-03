@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {reduxForm, Field, FieldArray} from "redux-form";
-import {FORM_NAME} from './constants'
+import {FORM_NAME} from './constants';
 import {multiInputEmailWithDetails} from "../../common/form/components";
-import validate from './validate'
+import validate from './validate';
 import asyncValidate from './asyncValidate'
 
 class ProfileEmailsForm extends Component {
