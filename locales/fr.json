@@ -33,5 +33,10 @@
 	"example@foo.bar": "example@foo.bar",
 	"Password": "Password",
 	"Use at least eight characters": "Use at least eight characters",
-	"Forgot your password?": "Forgot your password?"
+	"Forgot your password?": "Forgot your password?",
+	"Back to the top": "Back to the top",
+	"You are logged in.": "You are logged in.",
+	"Your Account": "Your Account",
+	"Profile": "Profile",
+	"Log out": "Log out"
 }

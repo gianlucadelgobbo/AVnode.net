@@ -9,11 +9,13 @@ import {addLocaleData, IntlProvider} from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
 import frLocaleData from 'react-intl/locale-data/fr';
 import esLocaleData from 'react-intl/locale-data/es';
+import itLocaleData from 'react-intl/locale-data/it';
 import translations from './i18n/locales';
 
 addLocaleData(enLocaleData);
 addLocaleData(frLocaleData);
 addLocaleData(esLocaleData);
+addLocaleData(itLocaleData);
 
 const getLocale = (user) => {
     const isValidLanguage = (l) => Object.keys(translations).indexOf(l) > -1;
