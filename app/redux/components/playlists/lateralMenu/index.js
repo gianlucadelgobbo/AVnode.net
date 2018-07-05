@@ -8,7 +8,7 @@ const items = [
     {
         href: "/admin/playlists/:_id/public",
         label: <FormattedMessage
-            id="publicData"
+            id="publicDataPlaylists"
             defaultMessage="Public data"
         />
     }

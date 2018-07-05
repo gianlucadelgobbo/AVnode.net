@@ -5,8 +5,8 @@ import it from "./it.json";
 import ru from "./ru.json";
 import pl from "./pl.json";
 import hu from "./hu.json";
-import gr from "./gr.json";
+import el from "./el.json";
 import de from "./de.json";
-import by from "./by.json";
+import be from "./be.json";
 
-export default {fr, en, es, it, ru, pl, hu, gr, de, by};
+export default {fr, en, es, it, ru, pl, hu, el, de, be};

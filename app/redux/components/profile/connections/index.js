@@ -12,6 +12,7 @@ import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import ComingSoon from '../../comingSoon'
+
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here

@@ -6,6 +6,7 @@ import {getModel, getErrorMessage, getIsFetching} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import ImageForm from '../../image';
 import {withRouter} from 'react-router';
+import {FormattedMessage} from 'react-intl';
 
 class EventImages extends Component {
 
@@ -21,7 +22,12 @@ class EventImages extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">MY IMAGE</h2>
+                    <h2 className="labelField">
+                        <FormattedMessage
+                            id="EventPublicImage"
+                            defaultMessage="MY IMAGE"
+                        />
+                    </h2>
 
                     <br/>
 

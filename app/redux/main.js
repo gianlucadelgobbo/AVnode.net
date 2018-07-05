@@ -10,12 +10,16 @@ import enLocaleData from 'react-intl/locale-data/en';
 import frLocaleData from 'react-intl/locale-data/fr';
 import esLocaleData from 'react-intl/locale-data/es';
 import itLocaleData from 'react-intl/locale-data/it';
+import deLocaleData from 'react-intl/locale-data/de';
+import huLocaleData from 'react-intl/locale-data/hu';
+import elLocaleData from 'react-intl/locale-data/el';
+import beLocaleData from 'react-intl/locale-data/be';
+import ruLocaleData from 'react-intl/locale-data/ru';
+import plLocaleData from 'react-intl/locale-data/pl';
+
 import translations from './i18n/locales';
 
-addLocaleData(enLocaleData);
-addLocaleData(frLocaleData);
-addLocaleData(esLocaleData);
-addLocaleData(itLocaleData);
+addLocaleData([...enLocaleData, ...frLocaleData, ...esLocaleData, ...itLocaleData, ...deLocaleData, ...huLocaleData, ...elLocaleData, ...beLocaleData, ...ruLocaleData, ...plLocaleData]);
 
 const getLocale = (user) => {
     const isValidLanguage = (l) => Object.keys(translations).indexOf(l) > -1;
