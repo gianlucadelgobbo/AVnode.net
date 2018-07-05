@@ -97,5 +97,6 @@
 	"performers": "performers",
 	"artists": "artists",
 	"from": "from",
-	"playing": "playing"
+	"playing": "playing",
+	"Email %s not found.": "Email %s not found."
 }

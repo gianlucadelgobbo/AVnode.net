@@ -24,7 +24,7 @@ class ModelTable extends Component {
         const FootageItem = 
                         {
                             label: <FormattedMessage
-                                    id="CrewTitle"
+                                    id="FootageTitle"
                                     defaultMessage="Footage Name"
                                     />
                         }

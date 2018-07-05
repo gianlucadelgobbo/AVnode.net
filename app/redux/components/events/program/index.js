@@ -13,6 +13,7 @@ import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
+import {FormattedMessage} from 'react-intl';
 
 class EventProgram extends Component {
 
@@ -79,7 +80,12 @@ class EventProgram extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">EVENT PROGRAM</h2>
+                    <h2 className="labelField">
+                    <FormattedMessage
+                        id="EventsPublicProgram"
+                        defaultMessage="EVENT PROGRAM"
+                    />
+                    </h2>
 
                     <br/>
 

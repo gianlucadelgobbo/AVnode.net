@@ -4,7 +4,8 @@ import {connect} from 'react-redux'
 import {saveModel, fetchModel, removeModel, addModel} from "./actions";
 import {bindActionCreators} from "redux";
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
-import Partners from '../../partners'
+import Partners from '../../partners';
+import {FormattedMessage} from 'react-intl';
 
 class EventPartners extends Component {
 
@@ -20,7 +21,12 @@ class EventPartners extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">EVENT PARTNERS</h2>
+                    <h2 className="labelField">
+                    <FormattedMessage
+                        id="EventsPublicPartners"
+                        defaultMessage="EVENT PARTNERS"
+                    />
+                    </h2>
 
                     <Partners
                         model={model}

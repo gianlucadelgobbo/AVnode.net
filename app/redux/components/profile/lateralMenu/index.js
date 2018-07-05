@@ -8,21 +8,21 @@ const items = [
     {
         href: "/admin/profile/public",
         label: <FormattedMessage
-            id="publicData"
+            id="publicDataProfile"
             defaultMessage="Public data"
         />
     },
     {
         href: "/admin/profile/images",
         label: <FormattedMessage
-            id="images"
+            id="imagesProfile"
             defaultMessage="Images"/>
 
     },
     {
         href: "/admin/profile/emails",
         label: <FormattedMessage
-            id="emails"
+            id="emailsProfile"
             defaultMessage="Emails"
         />
 
@@ -30,7 +30,7 @@ const items = [
     {
         href: "/admin/profile/private",
         label: <FormattedMessage
-            id="privateData"
+            id="privateDataProfile"
             defaultMessage="Private data"
         />
 
@@ -39,7 +39,7 @@ const items = [
     {
         href: "/admin/profile/password",
         label: <FormattedMessage
-            id="password"
+            id="passwordProfile"
             defaultMessage="Password"
         />
 
@@ -48,7 +48,7 @@ const items = [
     {
         href: "/admin/profile/connections",
         label: <FormattedMessage
-            id="connections"
+            id="connectionsProfile"
             defaultMessage="Connections"
         />
 

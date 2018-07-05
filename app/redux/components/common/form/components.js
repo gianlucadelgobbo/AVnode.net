@@ -160,7 +160,7 @@ const inputField = ({input, type, meta, placeholder, isChild, handleSelect}) => 
         <input type={type} className="form-control" {...input} placeholder={placeholder}/>
         {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     return !!isChild ? field :
         <dl className="row">
             <dt className="col-sm-2">{label}</dt>

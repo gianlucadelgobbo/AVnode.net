@@ -14,6 +14,7 @@ import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import {createMultiLanguageInitialObject} from "../../common/form";
+import {FormattedMessage} from 'react-intl';
 
 class EventCalls extends Component {
 
@@ -99,7 +100,12 @@ class EventCalls extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">EVENT CALLS</h2>
+                    <h2 className="labelField">
+                        <FormattedMessage
+                            id="EventsPublicCalls"
+                            defaultMessage="EVENT CALLS"
+                        />
+                    </h2>
 
                     <br/>
 

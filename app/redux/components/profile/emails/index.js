@@ -10,6 +10,7 @@ import ItemNotFound from '../../itemNotFound';
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
+import {FormattedMessage} from 'react-intl';
 
 /*
 * Responsabilita'
@@ -80,7 +81,12 @@ class ProfileEmails extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">MY EMAIL</h2>
+                    <h2 className="labelField">
+                        <FormattedMessage
+                            id="AccountPublicEmail"
+                            defaultMessage="MY EMAIL"
+                        />
+                    </h2>
 
                     <br/>
 
