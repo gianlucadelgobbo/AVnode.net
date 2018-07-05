@@ -7,6 +7,7 @@ import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 import {getFormSyncErrors} from 'redux-form';
+import {STAGE_NAME, PROFILE_URL} from "../../common/form/labels";
 
 class ProfilePublicForm extends Component {
 
@@ -28,13 +29,13 @@ class ProfilePublicForm extends Component {
                 <Field
                     name="stagename"
                     component={inputText}
-                    placeholder="Stage name"
+                    placeholder={STAGE_NAME}
                 />
 
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Profile url"
+                    placeholder={PROFILE_URL}
                 />
 
                 <FieldArray
