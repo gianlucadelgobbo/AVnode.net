@@ -39,6 +39,8 @@
   "imagesEvents": "Images",
   "imagesPerformances": "Images",
   "imagesProfile": "Images",
+  "label.profile.url": "Profile Url",
+  "label.stagename": "Stage Name",
   "membersCrews": "Members",
   "myAccountOrganizationData": "My Account Organization data",
   "myAccountPrivateData": "My Account Private data",

@@ -261,7 +261,6 @@
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
   
-  
   {
     "id": "myAccountPrivateData",
     "defaultMessage": "My Account Private data",
@@ -411,6 +410,15 @@
   "id": "EventsPublicSettings",
   "defaultMessage": "EVENT SETTINGS",
   "filepath": "./app/redux/components/events/settings/index.js"
+  },
+  {
+  "id": "label.stagename",
+  "defaultMessage": "Stage Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+   {
+  "id": "label.profile.url",
+  "defaultMessage": "Profile Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
   }
-
 ]
