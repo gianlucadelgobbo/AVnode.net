@@ -412,13 +412,33 @@
   "filepath": "./app/redux/components/events/settings/index.js"
   },
   {
-  "id": "label.stagename",
+  "id": "label.form.stagename",
   "defaultMessage": "Stage Name",
   "filepath": "./app/redux/components/common/form/labels.js"
   },
-   {
-  "id": "label.profile.url",
+  {
+  "id": "label.form.url",
   "defaultMessage": "Profile Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.about",
+  "defaultMessage": "About",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.web",
+  "defaultMessage": "Web",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.social",
+  "defaultMessage": "Socials",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.address",
+  "defaultMessage": "Address",
   "filepath": "./app/redux/components/common/form/labels.js"
   }
 ]

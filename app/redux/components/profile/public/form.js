@@ -7,7 +7,7 @@ import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 import {getFormSyncErrors} from 'redux-form';
-import {STAGE_NAME, PROFILE_URL} from "../../common/form/labels";
+import {STAGE_NAME, PROFILE_URL, ABOUT, WEB, SOCIAL, ADDRESS} from "../../common/form/labels";
 
 class ProfilePublicForm extends Component {
 
@@ -43,7 +43,7 @@ class ProfilePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="About"
+                    placeholder={ABOUT}
                     errors={errors}
                 />
 
@@ -52,7 +52,7 @@ class ProfilePublicForm extends Component {
                 <FieldArray
                     name="social"
                     component={multiInputUrl}
-                    placeholder="Socials"
+                    placeholder={SOCIAL}
                     title="Socials"
                     showModal={showModal}
                 />
@@ -62,7 +62,7 @@ class ProfilePublicForm extends Component {
                 <FieldArray
                     name="web"
                     component={multiInputUrl}
-                    placeholder="Web"
+                    placeholder={WEB}
                     title="Web"
                     showModal={showModal}
                 />
@@ -72,7 +72,7 @@ class ProfilePublicForm extends Component {
                 <FieldArray
                     name="addresses"
                     component={multiGoogleCityCountry}
-                    placeholder="Address"
+                    placeholder={ADDRESS}
                     showModal={showModal}
                 />
 
