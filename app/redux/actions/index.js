@@ -117,12 +117,8 @@ export const saveModel = ({
             },
             (error) => {
 
-                alert()
-
                   // scroll to top
-                if ($){
-                   $(window).scrollTop();
-                }
+                window.scrollTo(0, 0)
 
                 const response = error.response || {};
                 const data = response.data || {}
