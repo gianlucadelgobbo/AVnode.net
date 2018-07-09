@@ -63,7 +63,7 @@ export const googleAutocompleteSelect = ({input, meta, placeholder, options, isC
         <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
     </div>;
 
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     return !!isChild ? field :
         <dl className="row">
             <dt className="col-sm-2">{label}</dt>
@@ -218,7 +218,7 @@ export const textareaMultiTab = ({tabs = [], name, labels = {}, placeholder, fie
     const id = `tabs-${Math.random()}`;
     const hasValue = (fields, index) => fields && !!fields.get(index) && !!fields.get(index).value;
     const hasError = (errors = {}, index, name) => errors[name] && errors[name][index] && !!errors[name][index].value;
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
 
     return <div className="card">
         <div className="card-header">
@@ -532,7 +532,7 @@ export const multiGoogleAddress = ({fields, title, placeholder, meta: {error}, s
 };
 
 const multiInput = ({fields, title, meta: {error}, render, placeholder, key, showModal}) => {
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     const renderSubField = ({member, index, fields, render, key = "text"}) => (
         <div className="row" key={index}>
             <div className="col-md-9 offset-1">

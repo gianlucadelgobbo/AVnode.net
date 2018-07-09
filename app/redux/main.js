@@ -26,6 +26,19 @@ const getLocale = (user) => {
 
     const fallback = 'en';
 
+    const code2lang = {
+        gr : "el",
+        en : "en",
+        it : "it",
+        fr : "fr",
+        es : "es",
+        de : "de",
+        hu : "hu",
+        by : "be",
+        ru : "ru",
+        pl : "pl"
+    }
+
     /*
     * priority
     * - settings
@@ -38,15 +51,16 @@ const getLocale = (user) => {
     const settings = user.settings || {};
     const {language} = settings;
     if (isValidLanguage(language)) {
-        return language;
+        return code2lang[language];
     }
 
     // Try to get language from URL
     const hostname = window.location.hostname;
     const splitHostname = hostname.split(".");
     const possibleLanguage = splitHostname[0];
-    if (isValidLanguage(possibleLanguage)) {
-        return possibleLanguage;
+    const key = code2lang[possibleLanguage];
+    if (isValidLanguage(key)) {
+        return key;
     }
 
     // Try to get language from navigator

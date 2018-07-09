@@ -135,10 +135,15 @@ class ProfilePublic extends Component {
         const addrs = values.addresses;
 
         addrs.forEach(a => {
-            promises.push(this.createLatLongToSave(a.text).then((result) => {
+            promises.push(this.createLatLongToSave(a.text)
+            .then(result => {
                  // add to a model
                  a.geometry = result;
-                }))
+                })
+                .catch(()=> {
+                    console.log("ciao da google!")
+                })
+                )
         });
 
         return axios.all(promises).then(() => {
