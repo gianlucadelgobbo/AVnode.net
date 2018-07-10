@@ -13,7 +13,8 @@ $(document).ready(function(){
       dots: false,
       nav: true,
       //autoplay: true,
-      navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+      navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
+      "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
       responsive:{
           600:{
               items:2
@@ -29,7 +30,8 @@ $(document).ready(function(){
       dots: false,
       nav: true,
       //autoplay: true,
-      navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+      navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
+      "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
       responsive:{
                     100:{
                         items:1
