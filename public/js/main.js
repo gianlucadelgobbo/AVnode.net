@@ -6,6 +6,7 @@ $(document).ready(function(){
 
     
     $('.loop_2').owlCarousel({
+      stagePadding: 100,
       center: true,
       items:2,
       loop:false,
@@ -26,7 +27,7 @@ $(document).ready(function(){
       items:3,
       loop:false,
       margin:30,
-      stagePadding: 50,
+      stagePadding: 100,
       dots: false,
       nav: true,
       //autoplay: true,
@@ -47,7 +48,7 @@ $(document).ready(function(){
 
     $('.loop').owlCarousel({
       //center: true,
-      stagePadding: 50,
+      stagePadding: 100,
       items:2,
       loop: false,
       margin:30,
