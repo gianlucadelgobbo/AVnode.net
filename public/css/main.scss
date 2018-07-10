@@ -118,11 +118,11 @@ nav.navbar {
 }
 
 .carousel_nav.carousel_nav_left {
-    left: -30px;
+    left: 0px;
 }
 
 .carousel_nav.carousel_nav_right {
-    right: -30px;
+    right: 0px;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700');
@@ -251,6 +251,7 @@ div.time_schedule {
     display: inline;
     position: absolute;
     top: 0px;
+    right: 0;
 }
 
 .program_event_wrapper .basic_divider {    
