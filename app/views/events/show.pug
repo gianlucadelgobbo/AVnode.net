@@ -95,18 +95,15 @@ block content
         .col-lg-12
           .container
             h2.main_title.indented_title.color1!=global.__('Program')
-          each day in data.programmebydayvenue
-            .container
+            each day in data.programmebydayvenue
               h3.date_schedule_title=day.date
               .data_program_divider
-            each venueroom in day.rooms
-              .container
-                h4.program_category_title=venueroom.venue+" // "+venueroom.room        
-              
-              .owl-carousel.loop.owl-theme
-                if venueroom.performances
-                  each item in venueroom.performances
-                    include ../partials/boxPerformanceScheduled
+              each venueroom in day.rooms              
+                h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
+                .owl-carousel.loop.owl-theme
+                  if venueroom.performances
+                    each item in venueroom.performances
+                      include ../partials/boxPerformanceScheduled
         .button_more.button_more_program
           span.button_more_label!=global.__('+ All the program')
           span.button_more_bkg
@@ -123,8 +120,10 @@ block content
         .col-lg-12
           h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.artists.artistsN+")</small>"
           h3.performers_infos=data.artists.artistsN+" "+global.__('performers')+" ("+data.artists.artistsCount + " " + global.__('artists') +") " + global.__('from') + " " + data.artists.countries.join(', ')+ " " + global.__('playing')+ " " + data.artists.actsN + " " + data.artists.acts.join(', ') + "."      
-          each item in data.artists.artists
-            include ../partials/boxPerformer
+          .row
+            each item in data.artists.artists
+              .col-sm-4
+                include ../partials/boxPerformerEvent
   .polygon_divider_bottom
     svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
       g#layer2
