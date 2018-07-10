@@ -99,7 +99,7 @@ nav.navbar {
 }
 
 .owl-carousel .owl-stage {
-    padding-left: 30px !important;
+    padding-left: 0px !important;
 }
 
 .carousel_nav {
@@ -118,11 +118,11 @@ nav.navbar {
 }
 
 .carousel_nav.carousel_nav_left {
-    left: 0px;
+    left: -30px;
 }
 
 .carousel_nav.carousel_nav_right {
-    right: 0px;
+    right: -30px;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700');
@@ -251,7 +251,6 @@ div.time_schedule {
     display: inline;
     position: absolute;
     top: 0px;
-    right: 0;
 }
 
 .program_event_wrapper .basic_divider {    
