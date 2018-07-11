@@ -236,12 +236,19 @@ eventSchema.virtual('artists').get(function (req) {
     acts: [],
     artists:[]
   };
+  let artistsA = [];
+  let artistsN = [];
+  let actsN = [];
   if (this.program && this.program.length) {
     for(let a=0;a<this.program.length;a++){
-      artists.actsN+= 1;
+      if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
       for(let b=0;b<this.program[a].performance.users.length;b++){
+        if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) artistsA.push(this.program[a].performance.users[b]._id);
         artists.artistsCount+= this.program[a].performance.users[b].members ? this.program[a].performance.users[b].members.length : 1;
         artists.artistsN+= 1;
+        for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
+          if (artistsN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) artistsN.push(this.program[a].performance.users[b].members[d]._id);
+        }
         for(let c=0;c<this.program[a].performance.users[b].addresses.length;c++){
           if (artists.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) artists.countries.push(this.program[a].performance.users[b].addresses[c].country);
         }
@@ -251,6 +258,11 @@ eventSchema.virtual('artists').get(function (req) {
         if (artists.artists.length<15) artists.artists.push(this.program[a].performance.users[b]);
       }
     }
+    artists.artistsN = artistsA.length;
+    artists.artistsCount = artistsN.length;
+    artists.actsN = actsN.length;
+    console.log("artistsA");
+    console.log(artistsA);
     return artists;
   }
 });
