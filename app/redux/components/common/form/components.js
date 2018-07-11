@@ -24,6 +24,7 @@ import {DATE_FORMAT} from '../../../conf';
 import { WithContext as ReactTags } from 'react-tag-input';
 import {Collapse} from 'react-collapse';
 import {FormattedMessage} from 'react-intl';
+import {SUBSCRIPTIONS} from "../../common/form/labels";
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
@@ -147,7 +148,7 @@ export const renderList = ({input, meta, placeholder, options, isChild, multiple
         />
         {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     return !!isChild ? field :
         <dl className="row">
             <dt className="col-sm-2">{label}</dt>
@@ -423,7 +424,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
 
             <div className="row">
                 <div className="col-md-5 offset-1 email-subscriptions">
-                    Subscriptions:
+                   <FormattedMessage id={SUBSCRIPTIONS}/>
                 </div>
                 <div className="col-md-4">
 
@@ -469,7 +470,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
         </div>
 
     };
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     return <div className="card">
         <div className="card-header">
             <h4>{label}</h4>
@@ -632,7 +633,7 @@ export const renderDatePicker = ({input, meta, placeholder, isChild}) => {
         />
         {meta.error && meta.touched && <span className="error-message"><FormattedMessage id={meta.error}/></span>}
     </div>;
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     return !!isChild ? field :
         <dl className="row">
             <dt className="col-sm-2">{label}</dt>

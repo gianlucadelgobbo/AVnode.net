@@ -3,7 +3,8 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants';
 import {multiInputEmailWithDetails} from "../../common/form/components";
 import validate from './validate';
-import asyncValidate from './asyncValidate'
+import asyncValidate from './asyncValidate';
+import {EMAILS} from "../../common/form/labels";
 
 class ProfileEmailsForm extends Component {
 
@@ -22,7 +23,7 @@ class ProfileEmailsForm extends Component {
                 <FieldArray
                     name="emails"
                     component={multiInputEmailWithDetails}
-                    placeholder="Emails"
+                    placeholder={EMAILS}
                     showModal={showModal}
                 />
 
