@@ -9,4 +9,4 @@
     a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
       h4.performer_item_title=item.stagename
     ul.list-inline.performer_infos_list
-      li.miss="Milano, Italy"
+      li!=item.addressesFormatted
