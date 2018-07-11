@@ -12,6 +12,7 @@ import {
 import {locales, locales_labels} from '../../../../../config/default.json'
 import validate from './validate';
 import asyncValidate from './asyncValidate';
+import {NAME, SURNAME, GENDER, LANGUAGE, BIRTHDAY, CITIZENSHIP, PRIVATE_ADDRESSES, PHONE, MOBILE, SKYPE} from "../../common/form/labels";
 
 class ProfilePrivateForm extends Component {
 
@@ -32,19 +33,19 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="name"
                     component={inputText}
-                    placeholder="Name"
+                    placeholder={NAME}
                 />
 
                 <Field
                     name="surname"
                     component={inputText}
-                    placeholder="Surname"
+                    placeholder={SURNAME}
                 />
 
                 <Field
                     name="gender"
                     component={renderList}
-                    placeholder="Gender"
+                    placeholder={GENDER}
                     options={[
                         {value: 'M', label: 'Male'},
                         {value: 'F', label: 'Female'},
@@ -55,7 +56,7 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="lang"
                     component={renderList}
-                    placeholder="Preferred language"
+                    placeholder={LANGUAGE}
                     options={locales.map(l => ({
                         value: l,
                         label: locales_labels[l]
@@ -65,7 +66,7 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="birthday"
                     component={renderDatePicker}
-                    placeholder="Birthday"
+                    placeholder={BIRTHDAY}
                 />
 
                 <br/>
@@ -73,7 +74,7 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="citizenship"
                     component={renderList}
-                    placeholder="Citizenship"
+                    placeholder={CITIZENSHIP}
                     multiple={true}
                     options={countries.map(c => ({
                         value: c.key,
@@ -84,7 +85,7 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="addresses_private"
                     component={multiGoogleAddress}
-                    placeholder="Private addresses"
+                    placeholder={PRIVATE_ADDRESSES}
                     showModal={showModal}
                     
                 />
@@ -94,7 +95,7 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="phone"
                     component={multiInputTel}
-                    placeholder="phone"
+                    placeholder={PHONE}
                     title="Phone Number"
                     showModal={showModal}
                 />
@@ -104,7 +105,7 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="mobile"
                     component={multiInputTel}
-                    placeholder="mobile"
+                    placeholder={MOBILE}
                     title="Mobile Number"
                     showModal={showModal}
                 />
@@ -114,7 +115,8 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="skype"
                     component={multiInputText}
-                    placeholder="Skype"
+                    placeholder={SKYPE}
+                    showModal={showModal}
                 />
 
                 <hr/>

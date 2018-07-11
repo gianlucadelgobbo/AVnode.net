@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {inputPassword, inputPasswordMeter} from "../../common/form/components";
-import validate from './validate'
+import validate from './validate';
+import {OLD_PASSWORD, NEW_PASSWORD, CONFIRM_PASSWORD} from "../../common/form/labels";
 //import asyncValidate from './asyncValidate'
 
 class ProfilePasswordForm extends Component {
@@ -21,7 +22,7 @@ class ProfilePasswordForm extends Component {
                 <Field
                     name="oldpassword"
                     component={inputPassword}
-                    placeholder="Old password"
+                    placeholder={OLD_PASSWORD}
                 />
 
                 <hr/>
@@ -29,13 +30,13 @@ class ProfilePasswordForm extends Component {
                 <Field
                     name="password"
                     component={inputPassword}
-                    placeholder="New Password"
+                    placeholder={NEW_PASSWORD}
                 />
 
                 <Field
                     name="confirmPassword"
                     component={inputPassword}
-                    placeholder="Confirm Password"
+                    placeholder={CONFIRM_PASSWORD}
                 />
 
                 <hr/>

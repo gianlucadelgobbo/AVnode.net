@@ -440,5 +440,81 @@
   "id": "label.form.address",
   "defaultMessage": "Address",
   "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.emails",
+  "defaultMessage": "Emails",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.subscriptions",
+  "defaultMessage": "Subscriptions",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.name",
+  "defaultMessage": "Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.surname",
+  "defaultMessage": "Surname",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.gender",
+  "defaultMessage": "Gender",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.language",
+  "defaultMessage": "Preferred Language",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.birthday",
+  "defaultMessage": "Birthday",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.citizenship",
+  "defaultMessage": "Citizenship",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.privateaddresses",
+  "defaultMessage": "Private Addresses",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.phone",
+  "defaultMessage": "Phone",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.mobile",
+  "defaultMessage": "Mobile",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.skype",
+  "defaultMessage": "Skype",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.oldpassword",
+  "defaultMessage": "Old Password",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.newpassword",
+  "defaultMessage": "New Password",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.confirmpassword",
+  "defaultMessage": "Confirm Password",
+  "filepath": "./app/redux/components/common/form/labels.js"
   }
+
 ]
