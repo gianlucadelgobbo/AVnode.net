@@ -9,6 +9,8 @@ import {MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED} from "../modal/constants";
 import {Player} from 'video-react';
 import "video-react/dist/video-react.css"; // import css
 import {Button} from 'react-bootstrap';
+import {NO_VIDEO_TO_SHOW} from "../common/form/labels";
+import { FormattedMessage } from 'react-intl';
 
 class Videos extends Component {
 
@@ -154,7 +156,7 @@ class Videos extends Component {
                         Array.isArray(model.videos) &&
                         model.videos.length === 0 &&
                         <div className="Novideo">
-                            No video to show
+                            <FormattedMessage id={NO_VIDEO_TO_SHOW}/>
                         </div>}
 
                     </div>

@@ -8,6 +8,7 @@ import {
     checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl,
 } from "../../common/form/components";
 import validate from './validate';
+import {CREW_NAME, CREW_URL, ABOUT, WEB, SOCIAL} from "../../common/form/labels";
 //import asyncValidate from './asyncValidate';
 
 class CrewPublicForm extends Component {
@@ -29,13 +30,13 @@ class CrewPublicForm extends Component {
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Crew url"
+                    placeholder={CREW_URL}
                 />
 
                 <Field
                     name="stagename"
                     component={inputText}
-                    placeholder="Crew name"
+                    placeholder={CREW_NAME}
                 />
 
                 <FieldArray
@@ -43,7 +44,7 @@ class CrewPublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="About"
+                    placeholder={ABOUT}
                 />
 
                 <br/>
@@ -51,7 +52,7 @@ class CrewPublicForm extends Component {
                 <FieldArray
                     name="social"
                     component={multiInputUrl}
-                    placeholder="Socials"
+                    placeholder={SOCIAL}
                     title="Socials"
                     showModal={showModal}
                 />
@@ -61,7 +62,7 @@ class CrewPublicForm extends Component {
                 <FieldArray
                     name="web"
                     component={multiInputUrl}
-                    placeholder="Web"
+                    placeholder={WEB}
                     title="Web"
                     showModal={showModal}
                 />

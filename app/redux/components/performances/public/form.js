@@ -14,6 +14,7 @@ import {
 import validate from './validate';
 import {getFormSyncErrors} from 'redux-form';
 import asyncValidate from './asyncValidate';
+import {PERFORMANCE_URL, TITLE, ABOUT, IS_PUBLIC, CATEGORY, AUTHORS, PRICE, DURATION, TECHNOLOGIES_ARTISTS, TECNICAL_REQUIREMENT} from "../../common/form/labels";
 
 class PerformancePublicForm extends Component {
 
@@ -36,13 +37,13 @@ class PerformancePublicForm extends Component {
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Performance url"
+                    placeholder={PERFORMANCE_URL}
                 />
 
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Title"
+                    placeholder={TITLE}
                 />
 
                 <FieldArray
@@ -51,7 +52,7 @@ class PerformancePublicForm extends Component {
                     tabs={tabs}
                     labels={labels}
                     errors={errors}
-                    placeholder="About"
+                    placeholder={ABOUT}
                 />
 
                 <br/>
@@ -59,13 +60,13 @@ class PerformancePublicForm extends Component {
                 <Field
                     name="is_public"
                     component={checkboxField}
-                    placeholder="Is public"
+                    placeholder={IS_PUBLIC}
                 />
 
                 <Field
                     name="categories"
                     component={renderList}
-                    placeholder="Category"
+                    placeholder={CATEGORY}
                     multiple={true}
                     options={categories}
                 />
@@ -73,7 +74,7 @@ class PerformancePublicForm extends Component {
                 <FieldArray
                     name="users"
                     component={fieldWithLabel}
-                    placeholder="Authors"
+                    placeholder={AUTHORS}
                     showModal={showModal}
                     className=""
                 />
@@ -83,13 +84,13 @@ class PerformancePublicForm extends Component {
                 <Field
                     name="price"
                     component={inputText}
-                    placeholder="Price"
+                    placeholder={PRICE}
                 />
 
                 <Field
                     name="duration"
                     component={inputText}
-                    placeholder="Duration"
+                    placeholder={DURATION}
                 />
 
                 <FieldArray
@@ -97,7 +98,7 @@ class PerformancePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="Technologies with the artists"
+                    placeholder={TECHNOLOGIES_ARTISTS}
                     errors={errors}
                 />
 
@@ -108,7 +109,7 @@ class PerformancePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="Technical requirements"
+                    placeholder={TECNICAL_REQUIREMENT}
                     errors={errors}
                 />
 
