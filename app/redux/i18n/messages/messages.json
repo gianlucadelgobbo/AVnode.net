@@ -515,6 +515,71 @@
   "id": "label.form.confirmpassword",
   "defaultMessage": "Confirm Password",
   "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.crew.url",
+  "defaultMessage": "Crew Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.crew.name",
+  "defaultMessage": "Crew Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.file.upload",
+  "defaultMessage": "Drop files here, or click to select files to upload.",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.performance.url",
+  "defaultMessage": "Performance Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.title",
+  "defaultMessage": "Title",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.is.public",
+  "defaultMessage": "Is Public",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.category",
+  "defaultMessage": "Category",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.authors",
+  "defaultMessage": "Authors",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.price",
+  "defaultMessage": "Price",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.duration",
+  "defaultMessage": "Duration",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.tecnologies.artists",
+  "defaultMessage": "Technologies with the artists",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.tecnical.requirement",
+  "defaultMessage": "Technical requirements",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.video.no.show",
+  "defaultMessage": "No Video to Show",
+  "filepath": "./app/redux/components/common/form/labels.js"
   }
 
 ]

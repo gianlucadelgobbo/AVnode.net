@@ -25,7 +25,23 @@ export const SKYPE = "label.form.skype";
 export const OLD_PASSWORD = "label.form.oldpassword";
 export const NEW_PASSWORD = "label.form.newpassword";
 export const CONFIRM_PASSWORD = "label.form.confirmpassword";
-
+//Crew Public
+export const CREW_URL = "label.form.crew.url";
+export const CREW_NAME = "label.form.crew.name";
+//Crew Image
+export const FILE_UPLOAD = "label.form.file.upload";
+//Performance Public
+export const PERFORMANCE_URL = "label.form.performance.url";
+export const TITLE = "label.form.title";
+export const IS_PUBLIC = "label.form.is.public";
+export const CATEGORY = "label.form.category";
+export const AUTHORS = "label.form.authors";
+export const PRICE = "label.form.price";
+export const DURATION = "label.form.duration";
+export const TECHNOLOGIES_ARTISTS = "label.form.tecnologies.artists";
+export const TECNICAL_REQUIREMENT = "label.form.tecnical.requirement";
+//Video
+export const NO_VIDEO_TO_SHOW = "label.form.video.no.show";
 /*
 * Define i18n Form Label
 * */
@@ -113,6 +129,60 @@ defineMessages({
     [CONFIRM_PASSWORD]: {
         id: CONFIRM_PASSWORD,
         defaultMessage: "Confirm Password"
+    },
+    [CREW_NAME]: {
+        id: CREW_NAME,
+        defaultMessage: "Crew Name"
+    },
+    [CREW_URL]: {
+        id: CREW_URL,
+        defaultMessage: "Crew Url"
+    },
+    [FILE_UPLOAD]: {
+        id: FILE_UPLOAD,
+        defaultMessage: "Drop files here, or click to select files to upload."
+    },
+    [PERFORMANCE_URL]: {
+        id: PERFORMANCE_URL,
+        defaultMessage: "Performance Url"
+    },
+    [TITLE]: {
+        id: TITLE,
+        defaultMessage: "Title"
+    },
+    [IS_PUBLIC]: {
+        id: IS_PUBLIC,
+        defaultMessage: "Is public"
+    },
+    [CATEGORY]: {
+        id: CATEGORY,
+        defaultMessage: "Category"
+    },
+    [AUTHORS]: {
+        id: AUTHORS,
+        defaultMessage: "Authors"
+    },
+    [PRICE]: {
+        id: PRICE,
+        defaultMessage: "Price"
+    },
+    [DURATION]: {
+        id: DURATION,
+        defaultMessage: "Duration"
+    },
+    [TECHNOLOGIES_ARTISTS]: {
+        id: TECHNOLOGIES_ARTISTS,
+        defaultMessage: "Technologies with the artists"
+    },
+    [TECNICAL_REQUIREMENT]: {
+        id: TECNICAL_REQUIREMENT,
+        defaultMessage: "Technical requirements"
+    },
+    [NO_VIDEO_TO_SHOW]: {
+        id: NO_VIDEO_TO_SHOW,
+        defaultMessage: "No Video to Show"
     }
+    
+    
 
 });

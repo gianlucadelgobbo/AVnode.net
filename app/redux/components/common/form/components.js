@@ -24,7 +24,7 @@ import {DATE_FORMAT} from '../../../conf';
 import { WithContext as ReactTags } from 'react-tag-input';
 import {Collapse} from 'react-collapse';
 import {FormattedMessage} from 'react-intl';
-import {SUBSCRIPTIONS} from "../../common/form/labels";
+import {SUBSCRIPTIONS, FILE_UPLOAD} from "../../common/form/labels";
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
@@ -344,7 +344,7 @@ export const fieldWithLabel = ({fields, title, showModal, placeholder, meta: {er
             </div>
         </div>
     }
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     return <div className="card">
         <div className="card-header">
             <h4>{label}</h4>
@@ -673,7 +673,7 @@ export const checkboxField = ({input, meta, id, placeholder, disabled, className
             disabled={disabled}
         />
     </div>;
-    const label = <div className="labelField">{placeholder}</div>;
+    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
     return !!isChild ? field :
         <dl className="row">
             <dt className="col-sm-2">{label}</dt>
@@ -747,7 +747,7 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div className="labelFieldUpload">Drop files here, or click to select files to upload.</div>
+                <div className="labelFieldUpload"><FormattedMessage id={FILE_UPLOAD}/></div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error"><FormattedMessage id={field.meta.error}/></span>}
