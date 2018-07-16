@@ -14,6 +14,7 @@ import {
 } from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
+import {SCHEDULE, ABOUT, CATEGORY, SUBTITLES, EVENT_URL, TITLE, WEB, SOCIAL, EMAILS, PHONE} from "../../common/form/labels";
 
 class EventPublicForm extends Component {
 
@@ -36,7 +37,7 @@ class EventPublicForm extends Component {
                 <Field
                     name="categories"
                     component={renderList}
-                    placeholder="Category"
+                    placeholder={CATEGORY}
                     multiple={true}
                     options={categories}
                 />
@@ -44,7 +45,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="schedule"
                     component={multiSchedule}
-                    placeholder="Schedule"
+                    placeholder={SCHEDULE}
                     showModal={showModal}
                 />
 
@@ -53,13 +54,13 @@ class EventPublicForm extends Component {
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Event url"
+                    placeholder={EVENT_URL}
                 />
 
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Title"
+                    placeholder={TITLE}
                 />
 
                 <FieldArray
@@ -67,7 +68,7 @@ class EventPublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="Subtitles"
+                    placeholder={SUBTITLES}
                     errors={errors}
                 />
 
@@ -78,7 +79,7 @@ class EventPublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="About"
+                    placeholder={ABOUT}
                     errors={errors}
                 />
 
@@ -87,7 +88,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="web"
                     component={multiInputUrl}
-                    placeholder="Web"
+                    placeholder={WEB}
                     title="Web"
                     showModal={showModal}
                     errors={errors}
@@ -98,7 +99,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="social"
                     component={multiInputUrl}
-                    placeholder="Socials"
+                    placeholder={SOCIAL}
                     title="Socials"
                     showModal={showModal}
                 />
@@ -108,7 +109,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="emails"
                     component={multiInputEmail}
-                    placeholder="Emails"
+                    placeholder={EMAILS}
                     showModal={showModal}
                 />
 
@@ -117,7 +118,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="phones"
                     component={multiInputTel}
-                    placeholder="Phones"
+                    placeholder={PHONE}
                     showModal={showModal}
                 />
 

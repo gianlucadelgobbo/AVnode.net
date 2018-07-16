@@ -40,6 +40,23 @@ export const PRICE = "label.form.price";
 export const DURATION = "label.form.duration";
 export const TECHNOLOGIES_ARTISTS = "label.form.tecnologies.artists";
 export const TECNICAL_REQUIREMENT = "label.form.tecnical.requirement";
+//Event Public
+export const SCHEDULE = "label.form.event.schedule";
+export const SUBTITLES = "label.form.event.subtitles";
+export const EVENT_URL = "label.form.event.url";
+//Event Program
+export const PROGRAM = "label.form.event.program";
+//Event Calls
+export const CALLS = "label.form.event.calls";
+export const CALL_NAME = "label.form.event.calls.name";
+export const EMAIL_CONTACT = "label.form.event.calls.email.contact";
+export const START_DATE = "label.form.event.calls.startdate";
+export const END_DATE = "label.form.event.calls.enddate";
+export const EVENT_DESCRIPTION = "label.form.event.calls.description";
+export const EVENT_TERM = "label.form.event.calls.term";
+export const EVENT_CLOSED = "label.form.event.calls.closed";
+export const PACKAGES = "label.form.event.calls.packages";
+export const DESCRIPTION = "label.form.event.calls.description";
 //Video
 export const NO_VIDEO_TO_SHOW = "label.form.video.no.show";
 /*
@@ -181,8 +198,63 @@ defineMessages({
     [NO_VIDEO_TO_SHOW]: {
         id: NO_VIDEO_TO_SHOW,
         defaultMessage: "No Video to Show"
-    }
-    
-    
+    },
+    [SCHEDULE]: {
+        id: SCHEDULE,
+        defaultMessage: "Schedule"
+    },
+    [SUBTITLES]: {
+        id: SUBTITLES,
+        defaultMessage: "Subtitles"
+    },
+    [EVENT_URL]: {
+        id: EVENT_URL,
+        defaultMessage: "Event Url"
+    },
+     [PROGRAM]: {
+        id: PROGRAM,
+        defaultMessage: "Program"
+    },
+     [CALLS]: {
+        id: CALLS,
+        defaultMessage: "Calls"
+    },
+    [CALL_NAME]: {
+        id: CALL_NAME,
+        defaultMessage: "Call Name"
+    },
+     [EMAIL_CONTACT]: {
+        id: EMAIL_CONTACT,
+        defaultMessage: "Email Contact"
+    },
+    [START_DATE]: {
+        id: START_DATE,
+        defaultMessage: "Start Date"
+    },
+    [END_DATE]: {
+        id: END_DATE,
+        defaultMessage: "End Date"
+    },
+    [EVENT_DESCRIPTION]: {
+        id: EVENT_DESCRIPTION,
+        defaultMessage: "Event Description"
+    },
+    [EVENT_TERM]: {
+        id: EVENT_TERM,
+        defaultMessage: "Event Term"
+    },
+    [EVENT_CLOSED]: {
+        id: EVENT_CLOSED,
+        defaultMessage: "Event Closed Call text"
+    },
+    [PACKAGES]: {
+        id: PACKAGES,
+        defaultMessage: "Packages"
+    },
+     [DESCRIPTION]: {
+        id: DESCRIPTION,
+        defaultMessage: "Description"
+    },
+
 
 });

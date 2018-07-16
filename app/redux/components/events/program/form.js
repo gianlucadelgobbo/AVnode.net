@@ -3,7 +3,8 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
 import {multiProgram} from "../../common/form/components";
 import validate from './validate';
-import asyncValidate from './asyncValidate'
+import asyncValidate from './asyncValidate';
+import {PROGRAM} from "../../common/form/labels";
 
 class EventProgramForm extends Component {
 
@@ -23,7 +24,7 @@ class EventProgramForm extends Component {
                 <FieldArray
                     name="program"
                     component={multiProgram}
-                    placeholder="Program"
+                    placeholder={PROGRAM}
                     showModal={showModal}
                     categories={categories}
                 />
