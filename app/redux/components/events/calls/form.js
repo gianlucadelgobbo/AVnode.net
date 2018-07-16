@@ -6,6 +6,7 @@ import {
 } from "../../common/form/components";
 import validate from './validate';
 import asyncValidate from "./asyncValidate";
+import {CALLS} from "../../common/form/labels";
 
 class EventCallsForm extends Component {
 
@@ -27,7 +28,7 @@ class EventCallsForm extends Component {
                 <FieldArray
                     name="calls"
                     component={multiCall}
-                    placeholder="Calls"
+                    placeholder={CALLS}
                     showModal={showModal}
                     categories={categories}
                     tabs={tabs}

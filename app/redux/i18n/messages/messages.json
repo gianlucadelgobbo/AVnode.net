@@ -580,6 +580,77 @@
   "id": "label.form.video.no.show",
   "defaultMessage": "No Video to Show",
   "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.schedule",
+  "defaultMessage": "Schedule",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.subtitles",
+  "defaultMessage": "Subtitles",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.url",
+  "defaultMessage": "Event Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.program",
+  "defaultMessage": "Program",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls",
+  "defaultMessage": "Calls",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.name",
+  "defaultMessage": "Call Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.email.contact",
+  "defaultMessage": "Email Contact",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.startdate",
+  "defaultMessage": "Start Date",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.enddate",
+  "defaultMessage": "End Date",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.description",
+  "defaultMessage": "Event Description",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.term",
+  "defaultMessage": "Event Term",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.closed",
+  "defaultMessage": "Event Closed Call text",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.packages",
+  "defaultMessage": "Packages",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.description",
+  "defaultMessage": "Description",
+  "filepath": "./app/redux/components/common/form/labels.js"
   }
+
 
 ]
