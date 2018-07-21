@@ -4,9 +4,14 @@ import {FORM_NAME} from './constants'
 import {inputPassword, inputPasswordMeter} from "../../common/form/components";
 import validate from './validate';
 import {OLD_PASSWORD, NEW_PASSWORD, CONFIRM_PASSWORD} from "../../common/form/labels";
-//import asyncValidate from './asyncValidate'
+import {injectIntl} from 'react-intl';
 
 class ProfilePasswordForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -22,7 +27,7 @@ class ProfilePasswordForm extends Component {
                 <Field
                     name="oldpassword"
                     component={inputPassword}
-                    placeholder={OLD_PASSWORD}
+                    placeholder={this.getIntlString({id:OLD_PASSWORD})}
                 />
 
                 <hr/>
@@ -30,13 +35,13 @@ class ProfilePasswordForm extends Component {
                 <Field
                     name="password"
                     component={inputPassword}
-                    placeholder={NEW_PASSWORD}
+                    placeholder={this.getIntlString({id:NEW_PASSWORD})}
                 />
 
                 <Field
                     name="confirmPassword"
                     component={inputPassword}
-                    placeholder={CONFIRM_PASSWORD}
+                    placeholder={this.getIntlString({id:CONFIRM_PASSWORD})}
                 />
 
                 <hr/>
@@ -53,12 +58,13 @@ class ProfilePasswordForm extends Component {
     }
 
 }
-
-export default reduxForm({
+ProfilePasswordForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses']
+    validate
 })(ProfilePasswordForm);
+
+ProfilePasswordForm = injectIntl(ProfilePasswordForm);
+
+export default ProfilePasswordForm;
