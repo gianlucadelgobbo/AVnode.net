@@ -10,6 +10,7 @@ import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading';
 import Table from '../../table';
 import {injectIntl, FormattedMessage} from 'react-intl';
+import {ACTION, ERROR_CREW_TO_DISPLAY} from "../../common/form/labels";
 
 class ModelTable extends Component {
 
@@ -17,6 +18,11 @@ class ModelTable extends Component {
         const {fetchList} = this.props;
         fetchList();
     }
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     renderTable() {
 
@@ -28,6 +34,7 @@ class ModelTable extends Component {
                                     defaultMessage="Crew Name"
                                     />
                         }
+
         return <Table
             data={list}
             columns={
@@ -49,7 +56,7 @@ class ModelTable extends Component {
                         }
                     },
                     {
-                        Header: "Actions",
+                        Header: this.getIntlString({id:ACTION}),
                         id: "actions",
                         width: 100,
                         Cell: (props) => {
@@ -83,7 +90,7 @@ class ModelTable extends Component {
 
         return (
             <div>
-                {!list.length && <div>No Crew to display</div>}
+                {!list.length && <div>{ERROR_CREW_TO_DISPLAY}</div>}
 
                 {isFetching && <Loading/>}
 

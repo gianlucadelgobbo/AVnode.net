@@ -10,6 +10,7 @@ import {MODAL_REMOVE} from "../../modal/constants";
 import Loading from '../../loading';
 import Table from '../../table';
 import {injectIntl, FormattedMessage} from 'react-intl';
+import {ACTION} from "../../common/form/labels";
 
 class ModelTable extends Component {
 
@@ -17,6 +18,11 @@ class ModelTable extends Component {
         const {fetchList} = this.props;
         fetchList();
     }
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     renderTable() {
 
@@ -49,7 +55,7 @@ class ModelTable extends Component {
                         }
                     },
                     {
-                        Header: "Actions",
+                        Header: this.getIntlString({id:ACTION}),
                         id: "actions",
                         width: 100,
                         Cell: (props) => {

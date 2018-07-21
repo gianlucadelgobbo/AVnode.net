@@ -17,7 +17,7 @@ export const GENDER = "label.form.gender";
 export const LANGUAGE = "label.form.language";
 export const BIRTHDAY = "label.form.birthday";
 export const CITIZENSHIP = "label.form.citizenship";
-export const PRIVATE_ADDRESSES = "label.form.privateaddresses";
+export const PRIVATE_ADDRESS = "label.form.private.address";
 export const PHONE = "label.form.phone";
 export const MOBILE = "label.form.mobile";
 export const SKYPE = "label.form.skype";
@@ -59,6 +59,10 @@ export const PACKAGES = "label.form.event.calls.packages";
 export const DESCRIPTION = "label.form.event.calls.description";
 //Video
 export const NO_VIDEO_TO_SHOW = "label.form.video.no.show";
+//Table
+export const ACTION = "label.table.action";
+export const ERROR_CREW_TO_DISPLAY = "label.error.crew.to.display";
+export const ERROR_MEMBERS_TO_DISPLAY = "label.error.member.to.display";
 /*
 * Define i18n Form Label
 * */
@@ -119,8 +123,8 @@ defineMessages({
         id: CITIZENSHIP,
         defaultMessage: "Citizenship"
     },
-     [PRIVATE_ADDRESSES]: {
-        id: PRIVATE_ADDRESSES,
+     [PRIVATE_ADDRESS]: {
+        id: PRIVATE_ADDRESS,
         defaultMessage: "Private Addresses"
     },
     [PHONE]: {
@@ -255,6 +259,17 @@ defineMessages({
         id: DESCRIPTION,
         defaultMessage: "Description"
     },
-
+    [ACTION]: {
+        id: ACTION,
+        defaultMessage: "Action"
+    },
+    [ERROR_CREW_TO_DISPLAY]: {
+        id: ERROR_CREW_TO_DISPLAY,
+        defaultMessage: "No Crew to display"
+    },
+    [ERROR_MEMBERS_TO_DISPLAY]: {
+        id: ERROR_MEMBERS_TO_DISPLAY,
+        defaultMessage: "No Members to display"
+    },
 
 });

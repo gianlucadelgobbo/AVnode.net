@@ -482,7 +482,7 @@
   "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
-  "id": "label.form.privateaddresses",
+  "id": "label.form.private.address",
   "defaultMessage": "Private Addresses",
   "filepath": "./app/redux/components/common/form/labels.js"
   },
@@ -649,6 +649,21 @@
   {
   "id": "label.form.event.calls.description",
   "defaultMessage": "Description",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.table.action",
+  "defaultMessage": "Action",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.error.crew.to.display",
+  "defaultMessage": "No Crew to display",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.error.member.to.display",
+  "defaultMessage": "No Members to display",
   "filepath": "./app/redux/components/common/form/labels.js"
   }
 

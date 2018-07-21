@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {reduxForm, Field, FieldArray} from "redux-form";
-import {FORM_NAME} from './constants'
+import {FORM_NAME} from './constants';
+import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
 import {
     inputText,
     renderDatePicker,
@@ -9,12 +11,19 @@ import {
     multiInputTel,
     multiInputText
 } from "../../common/form/components";
-import {locales, locales_labels} from '../../../../../config/default.json'
+import {locales, locales_labels} from '../../../../../config/default.json';
 import validate from './validate';
 import asyncValidate from './asyncValidate';
-import {NAME, SURNAME, GENDER, LANGUAGE, BIRTHDAY, CITIZENSHIP, PRIVATE_ADDRESSES, PHONE, MOBILE, SKYPE} from "../../common/form/labels";
+import {getFormSyncErrors} from 'redux-form';
+import {NAME, SURNAME, GENDER, LANGUAGE, BIRTHDAY, CITIZENSHIP, PRIVATE_ADDRESS, PHONE, MOBILE, SKYPE} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class ProfilePrivateForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -33,19 +42,19 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="name"
                     component={inputText}
-                    placeholder={NAME}
+                    placeholder={this.getIntlString({id:NAME})}
                 />
 
                 <Field
                     name="surname"
                     component={inputText}
-                    placeholder={SURNAME}
+                    placeholder={this.getIntlString({id:SURNAME})}
                 />
 
                 <Field
                     name="gender"
                     component={renderList}
-                    placeholder={GENDER}
+                    placeholder={this.getIntlString({id:GENDER})}
                     options={[
                         {value: 'M', label: 'Male'},
                         {value: 'F', label: 'Female'},
@@ -56,7 +65,7 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="lang"
                     component={renderList}
-                    placeholder={LANGUAGE}
+                    placeholder={this.getIntlString({id:LANGUAGE})}
                     options={locales.map(l => ({
                         value: l,
                         label: locales_labels[l]
@@ -66,7 +75,7 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="birthday"
                     component={renderDatePicker}
-                    placeholder={BIRTHDAY}
+                    placeholder={this.getIntlString({id:BIRTHDAY})}
                 />
 
                 <br/>
@@ -74,7 +83,7 @@ class ProfilePrivateForm extends Component {
                 <Field
                     name="citizenship"
                     component={renderList}
-                    placeholder={CITIZENSHIP}
+                    placeholder={this.getIntlString({id:CITIZENSHIP})}
                     multiple={true}
                     options={countries.map(c => ({
                         value: c.key,
@@ -85,7 +94,7 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="addresses_private"
                     component={multiGoogleAddress}
-                    placeholder={PRIVATE_ADDRESSES}
+                    placeholder={this.getIntlString({id:PRIVATE_ADDRESS})}
                     showModal={showModal}
                     
                 />
@@ -95,7 +104,7 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="phone"
                     component={multiInputTel}
-                    placeholder={PHONE}
+                    placeholder={this.getIntlString({id:PHONE})}
                     title="Phone Number"
                     showModal={showModal}
                 />
@@ -105,7 +114,7 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="mobile"
                     component={multiInputTel}
-                    placeholder={MOBILE}
+                    placeholder={this.getIntlString({id:MOBILE})}
                     title="Mobile Number"
                     showModal={showModal}
                 />
@@ -115,7 +124,7 @@ class ProfilePrivateForm extends Component {
                 <FieldArray
                     name="skype"
                     component={multiInputText}
-                    placeholder={SKYPE}
+                    placeholder={this.getIntlString({id:SKYPE})}
                     showModal={showModal}
                 />
 
@@ -134,7 +143,7 @@ class ProfilePrivateForm extends Component {
 
 }
 
-export default reduxForm({
+ProfilePrivateForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
@@ -142,3 +151,19 @@ export default reduxForm({
     asyncValidate,
     asyncBlurFields: ["name", 'addresses_private[].text']
 })(ProfilePrivateForm);
+
+//Get form's initial values from redux state here
+const mapStateToProps = (state) => ({
+    errors: getFormSyncErrors(FORM_NAME)(state)
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+ProfilePrivateForm = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProfilePrivateForm);
+
+ProfilePrivateForm = injectIntl(ProfilePrivateForm);
+
+export default ProfilePrivateForm;
