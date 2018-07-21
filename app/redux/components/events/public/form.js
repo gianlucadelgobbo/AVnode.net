@@ -15,8 +15,14 @@ import {
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 import {SCHEDULE, ABOUT, CATEGORY, SUBTITLES, EVENT_URL, TITLE, WEB, SOCIAL, EMAILS, PHONE} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class EventPublicForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -37,7 +43,7 @@ class EventPublicForm extends Component {
                 <Field
                     name="categories"
                     component={renderList}
-                    placeholder={CATEGORY}
+                    placeholder={this.getIntlString({id:CATEGORY})}
                     multiple={true}
                     options={categories}
                 />
@@ -45,7 +51,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="schedule"
                     component={multiSchedule}
-                    placeholder={SCHEDULE}
+                    placeholder={this.getIntlString({id:SCHEDULE})}
                     showModal={showModal}
                 />
 
@@ -54,13 +60,13 @@ class EventPublicForm extends Component {
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder={EVENT_URL}
+                    placeholder={this.getIntlString({id:EVENT_URL})}
                 />
 
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder={TITLE}
+                    placeholder={this.getIntlString({id:TITLE})}
                 />
 
                 <FieldArray
@@ -68,7 +74,7 @@ class EventPublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder={SUBTITLES}
+                    placeholder={this.getIntlString({id:SUBTITLES})}
                     errors={errors}
                 />
 
@@ -79,7 +85,7 @@ class EventPublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder={ABOUT}
+                    placeholder={this.getIntlString({id:ABOUT})}
                     errors={errors}
                 />
 
@@ -88,7 +94,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="web"
                     component={multiInputUrl}
-                    placeholder={WEB}
+                    placeholder={this.getIntlString({id:WEB})}
                     title="Web"
                     showModal={showModal}
                     errors={errors}
@@ -99,7 +105,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="social"
                     component={multiInputUrl}
-                    placeholder={SOCIAL}
+                    placeholder={this.getIntlString({id:SOCIAL})}
                     title="Socials"
                     showModal={showModal}
                 />
@@ -109,7 +115,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="emails"
                     component={multiInputEmail}
-                    placeholder={EMAILS}
+                    placeholder={this.getIntlString({id:EMAILS})}
                     showModal={showModal}
                 />
 
@@ -118,7 +124,7 @@ class EventPublicForm extends Component {
                 <FieldArray
                     name="phones"
                     component={multiInputTel}
-                    placeholder={PHONE}
+                    placeholder={this.getIntlString({id:PHONE})}
                     showModal={showModal}
                 />
 
@@ -160,5 +166,7 @@ EventPublicForm = connect(
     mapStateToProps,
     mapDispatchToProps
 )(EventPublicForm);
+
+EventPublicForm = injectIntl(EventPublicForm);
 
 export default EventPublicForm;

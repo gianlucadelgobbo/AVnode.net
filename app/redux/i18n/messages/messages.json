@@ -665,6 +665,36 @@
   "id": "label.error.member.to.display",
   "defaultMessage": "No Members to display",
   "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.settings",
+  "defaultMessage": "Settings",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.footage.name",
+  "defaultMessage": "Footage Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.footage.url",
+  "defaultMessage": "Footage Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.tags",
+  "defaultMessage": "Tags",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.playlist.name",
+  "defaultMessage": "Playlist Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.playlist.url",
+  "defaultMessage": "Playlist Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
   }
 
 

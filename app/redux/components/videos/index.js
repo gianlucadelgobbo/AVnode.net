@@ -10,7 +10,7 @@ import {Player} from 'video-react';
 import "video-react/dist/video-react.css"; // import css
 import {Button} from 'react-bootstrap';
 import {NO_VIDEO_TO_SHOW} from "../common/form/labels";
-import { FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
 
 class Videos extends Component {
 
@@ -18,6 +18,10 @@ class Videos extends Component {
         const {fetchModel, id} = this.props;
         fetchModel({id});
     }
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     // Modify model from API to create form initial values
     getInitialValues() {
@@ -156,7 +160,7 @@ class Videos extends Component {
                         Array.isArray(model.videos) &&
                         model.videos.length === 0 &&
                         <div className="Novideo">
-                            <FormattedMessage id={NO_VIDEO_TO_SHOW}/>
+                            {this.getIntlString({id:NO_VIDEO_TO_SHOW})}
                         </div>}
 
                     </div>
@@ -177,5 +181,7 @@ Videos = connect(
     mapStateToProps,
     mapDispatchToProps
 )(Videos);
+
+Videos = injectIntl(Videos);
 
 export default Videos;
