@@ -9,6 +9,7 @@ const signupValidate = values => {
 
     //Stage name
     validateLength({values, name: "stagename", min: 3, max: 50, errorKey:INVALID_STRING_3_50, errors});
+    
     isValidName({values, name:"stagename", errors});
     
     //Crew Name

@@ -61,7 +61,7 @@ export const googleAutocompleteSelect = ({input, meta, placeholder, options, isC
         {renderFunc}
         </PlacesAutocomplete>
         {meta.error && meta.touched &&
-        <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
+        <span className="error-message">{isChild ? <FormattedMessage id={meta.error._error}/> : <FormattedMessage id={meta.error}/>}</span>}
     </div>;
 
     const label = <div className="labelField">{placeholder}</div>;
