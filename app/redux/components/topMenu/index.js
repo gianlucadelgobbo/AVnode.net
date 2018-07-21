@@ -83,7 +83,8 @@ class TopMenu extends Component {
                     id="playlists"
                     defaultMessage="Playlists"
                 />
-            },
+            }
+            /*,
             {
                 href: "/admin/preferences",
                 label: <FormattedMessage
@@ -91,7 +92,7 @@ class TopMenu extends Component {
                     defaultMessage="Preferences"
                 />
             }
-
+            */
         ];
 
         return (

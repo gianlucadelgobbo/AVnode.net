@@ -540,6 +540,7 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
             <div className="col-md-9 offset-1">
                 <Field
                     name={`${member}.${key}`}
+                    placeholder={placeholder}
                     component={render}
                     isChild={true}
                 />
@@ -786,7 +787,7 @@ export const renderDropzoneInput = (field) => {
 };
 
 export const multiSchedule = ({fields, title, meta: {error}, placeholder, showModal}) => {
-    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
+    const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
         return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
@@ -883,7 +884,7 @@ export const multiSchedule = ({fields, title, meta: {error}, placeholder, showMo
 };
 
 export const multiProgram = ({fields, title, meta: {error}, placeholder, showModal, categories}) => {
-    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
+    const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields}) => {
         return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">
@@ -1206,7 +1207,7 @@ export const multiTopic = ({fields, title, meta: {error}, placeholder, showModal
 };
 
 export const multiCall = ({fields, title, meta: {error}, placeholder, showModal, categories, tabs, labels}) => {
-    const label = <div className="labelField"><FormattedMessage id={placeholder}/></div>;
+    const label = <div className="labelField">{placeholder}</div>;
     const renderSubField = ({member, index, fields, showModal}) => {
         return <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
             <div className="col-md-9 offset-1">

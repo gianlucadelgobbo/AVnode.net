@@ -63,6 +63,15 @@ export const NO_VIDEO_TO_SHOW = "label.form.video.no.show";
 export const ACTION = "label.table.action";
 export const ERROR_CREW_TO_DISPLAY = "label.error.crew.to.display";
 export const ERROR_MEMBERS_TO_DISPLAY = "label.error.member.to.display";
+export const SETTINGS = "label.form.settings";
+//Footage
+export const FOOTAGE_NAME = "label.form.footage.name";
+export const FOOTAGE_URL = "label.form.footage.url";
+export const TAGS = "label.form.tags";
+//Playlist
+export const PLAYLIST_NAME = "label.form.playlist.name";
+export const PLAYLIST_URL = "label.form.playlist.url";
+
 /*
 * Define i18n Form Label
 * */
@@ -270,6 +279,30 @@ defineMessages({
     [ERROR_MEMBERS_TO_DISPLAY]: {
         id: ERROR_MEMBERS_TO_DISPLAY,
         defaultMessage: "No Members to display"
+    },
+    [SETTINGS]: {
+        id: SETTINGS,
+        defaultMessage: "Settings"
+    },
+    [FOOTAGE_NAME]: {
+        id: FOOTAGE_NAME,
+        defaultMessage: "Footage Name"
+    },
+    [FOOTAGE_URL]: {
+        id: FOOTAGE_URL,
+        defaultMessage: "Footage Url"
+    },
+    [TAGS]: {
+        id: TAGS,
+        defaultMessage: "Tags"
+    },
+    [PLAYLIST_NAME]: {
+        id: PLAYLIST_NAME,
+        defaultMessage: "Playlist Name"
+    },
+    [PLAYLIST_URL]: {
+        id: PLAYLIST_URL,
+        defaultMessage: "Playlist Url"
     },
 
 });

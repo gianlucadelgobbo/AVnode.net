@@ -6,10 +6,16 @@ import {
     userAutocompleteSelect
 } from "../../common/form/components";
 import validate from './validate';
-
+import {injectIntl} from 'react-intl';
+import {IS_PUBLIC, SETTINGS} from "../../common/form/labels";
 //import asyncValidate from './asyncValidate';
 
-class EventPublicForm extends Component {
+class EventSettingsForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -22,14 +28,14 @@ class EventPublicForm extends Component {
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
 
-                <h4>Settings</h4>
+                <h4>{this.getIntlString({id:SETTINGS})}</h4>
 
                 <hr/>
 
                 <Field
                     name="is_public"
                     component={checkboxField}
-                    placeholder="Is public"
+                    placeholder={this.getIntlString({id:IS_PUBLIC})}
                 />
 
               {/*  <Field
@@ -87,11 +93,15 @@ class EventPublicForm extends Component {
 
 }
 
-export default reduxForm({
+EventSettingsForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
-})(EventPublicForm);
+})(EventSettingsForm);
+
+EventSettingsForm = injectIntl(EventSettingsForm)
+
+export default EventSettingsForm;

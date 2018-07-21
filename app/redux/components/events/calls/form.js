@@ -7,8 +7,14 @@ import {
 import validate from './validate';
 import asyncValidate from "./asyncValidate";
 import {CALLS} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class EventCallsForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -28,7 +34,7 @@ class EventCallsForm extends Component {
                 <FieldArray
                     name="calls"
                     component={multiCall}
-                    placeholder={CALLS}
+                    placeholder={this.getIntlString({id:CALLS})}
                     showModal={showModal}
                     categories={categories}
                     tabs={tabs}
@@ -50,7 +56,7 @@ class EventCallsForm extends Component {
 
 }
 
-export default reduxForm({
+EventCallsForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
@@ -58,3 +64,7 @@ export default reduxForm({
     asyncValidate,
     asyncBlurFields: ['calls[].slug']
 })(EventCallsForm);
+
+EventCallsForm = injectIntl(EventCallsForm);
+
+export default EventCallsForm;
