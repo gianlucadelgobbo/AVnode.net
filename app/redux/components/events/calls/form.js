@@ -25,7 +25,8 @@ class EventCallsForm extends Component {
             categories,
             showModal,
             tabs,
-            labels
+            labels,
+            labelsShort
         } = this.props;
 
         return (
@@ -38,7 +39,7 @@ class EventCallsForm extends Component {
                     showModal={showModal}
                     categories={categories}
                     tabs={tabs}
-                    labels={labels}
+                    labels={labelsShort}
                 />
 
                 <hr/>

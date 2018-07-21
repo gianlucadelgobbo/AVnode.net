@@ -15,7 +15,7 @@ import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
-import {populateMultiLanguageObject} from "../../common/form";
+import {populateMultiLanguageObject, createMultiLanguageInitialObject} from "../../common/form";
 
 class PerformancePublic extends Component {
 
@@ -77,9 +77,10 @@ class PerformancePublic extends Component {
         v.users = model.users || [];
         v.price = model.price;
         v.duration = model.duration;
-
+        v.tech_art = createMultiLanguageInitialObject("tech_art");
+        v.tech_req = createMultiLanguageInitialObject("tech_req");
         // Convert tech_art format for FieldArray redux-form
-        v.tech_art = [];
+        /*v.tech_art = [];
         if (Array.isArray(model.tech_art)) {
 
             // convert current lang
@@ -117,7 +118,7 @@ class PerformancePublic extends Component {
                 })
             }
         });
-
+        */
         return v;
     }
 
