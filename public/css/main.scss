@@ -88,11 +88,43 @@ nav.navbar {
 
 .owl-carousel {
     margin: 30px 0;
+    background: #353535;
+    //cursor: url(../images/swipe.svg), 4 12, auto;
+}
+
+
+.owl-theme .owl-nav {
+    margin-top: 0;
+    height: 0;
 }
 
 .owl-carousel .owl-stage {
     padding-left: 0px !important;
 }
+
+.carousel_nav {
+    position: absolute;
+    display: block;
+    background: $color1;
+    top: 0;
+    height: 100%;
+    width: 30px;
+    z-index: 20;
+}
+
+.carousel_nav i {
+    position: relative;
+    top: 50%;
+}
+
+.carousel_nav.carousel_nav_left {
+    left: -30px;
+}
+
+.carousel_nav.carousel_nav_right {
+    right: -30px;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700');
 
 @import url('https://cdn.linearicons.com/free/1.0.0/icon-font.min.css'); 
@@ -213,12 +245,12 @@ section.row.program_event_wrapper {
 }
 
 div.time_schedule {
-    background: $color1;
+    background: rgba(20, 141, 212, 0.76);
     padding: 5px;
     font-size: 12px;
     display: inline;
-    position: relative;
-    bottom: -1px;
+    position: absolute;
+    top: 0px;
 }
 
 .program_event_wrapper .basic_divider {    
