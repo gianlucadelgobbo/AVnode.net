@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
+import {injectIntl} from "react-intl";
 
 class ErrorMessage extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -17,5 +23,7 @@ class ErrorMessage extends Component {
         );
     }
 }
+
+ErrorMessage = injectIntl(ErrorMessage);
 
 export default ErrorMessage;
