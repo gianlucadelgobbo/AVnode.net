@@ -95,6 +95,17 @@
     "by":"Belarusian",
     "gr":"Greek"
   },
+  "locales_labels_short": {
+    "it":"It",
+    "en":"En",
+    "es":"Es",
+    "fr":"Fr",
+    "pl":"Pl",
+    "ru":"Ru",
+    "hu":"Hu",
+    "by":"By",
+    "gr":"Gr"
+  },
   "main_season":[
     "Full Year",
     "Winter",
