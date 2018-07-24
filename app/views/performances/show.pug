@@ -4,17 +4,111 @@ block teaser
 
 block title
   if data.title
-    .jumbotron.jumbotron-fluid
-      .container
-        .row
-          .col-lg-8
-            h1.display-4=data.title
-            if data.about
-              p.lead=data.about
+    .container
+      .row.performer_title
+        .col-lg-12
+          h1.main_title=data.title
+        if data.stats
+          .performance_stat_container
+            .performance_stat_wrapper
+              if data.stats.visits
+                =data.stats.visits + global.__(' Views')
+              if data.stats.likes
+                =data.stats.likes + global.__(' Likes')  
 
 block content
-  .row
-    .col-lg-8
-      h3=global.__('Performer')
-    .col-lg-4
-      .card-columns Bella
+  .container
+    .row
+      .col-sm-12
+        if data.imageFormats
+          img.img-fluid.perfomance_image.bottom60(
+            src=data.imageFormats.large
+            alt=data.title
+          )
+    .row
+      .col-sm-8        
+        ul.nav.nav-tabs(role='tablist')
+          if data.about
+            li.nav-item
+              a.tab_link.nav-link.active(href='#about', role='tab', data-toggle='tab') 
+                =global.__(' About')
+          li.nav-item
+            a.tab_link.nav-link(href='#technical_specifications', role='tab', data-toggle='tab')    
+              =global.__(' Technical specifications')
+        // Tab panes
+        .tab-content
+          if data.about
+            #about.tab-pane.in.active(role='tabpanel')
+              p=data.about
+          #technical_specifications.tab-pane(role='tabpanel')
+            p.miss="Lorem ipsum"
+
+      .col-sm-4
+        //if data.categories
+        ul.list-inline.category_performance_item
+          //each category in data.categories
+          li.list-inline-item.miss="categoria performance"
+          li.list-inline-item.miss="altra categoria"
+          //if item.users
+        .users_performance_item_wrapper
+          .row
+            //each user in item.users
+            .col-sm-12
+              .user_performance_wrapper
+                div.user_perfomance_image
+                  //img.miss(src=user.imageFormats.small, alt=user.stagename)
+                  img.miss
+                div.user_perfomance_country_city
+                  p.users_performance_item_name.miss="nome utente"
+                  p.users_performance_item_country.miss="Paese / città"
+            .col-sm-12
+              .user_performance_wrapper
+                div.user_perfomance_image
+                  //img.miss(src=user.imageFormats.small, alt=user.stagename)
+                  img.miss
+                div.user_perfomance_country_city
+                  p.users_performance_item_name.miss="nome utente"
+                  p.users_performance_item_country.miss="Paese / città"     
+        .events_performance_wrapper
+          //if ci sono eventi
+          h3=global.__('Events')  
+          .row
+            //each
+            .col-sm-12
+              p.miss="titolo evento"
+              p
+                span.miss="11 settembre 2016"
+                span.miss="Roma / Italia"
+            .col-sm-12
+              p.miss="titolo evento"
+              p
+                span.miss="11 settembre 2016"
+                span.miss="Roma / Italia"
+  if data.galleries.length || data.videos.length
+    .divider_gallery
+      svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
+        polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
+  if data.galleries.length  
+    .gallery_event_wrapper_bkg
+      section.event_galleries_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.galleries                    
+                    include ../partials/boxGallery
+  if data.videos.length  
+    .video_event_wrapper_bkg
+      section.event_video_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.videos            
+                    include ../partials/boxVideo

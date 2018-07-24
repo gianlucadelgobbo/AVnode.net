@@ -79,6 +79,7 @@ $('a[href*="#"]')
   // Remove links that don't actually link to anything
   .not('[href="#"]')
   .not('[href="#0"]')
+  .not('a.tab_link')
   .click(function(event) {
     // On-page links
     if (
