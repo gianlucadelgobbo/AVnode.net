@@ -9,6 +9,6 @@ export const saveModel = (model) => generateSaveModel({
     selectors,
     constants,
     request: api.saveSignupPublic,
-    schema: signup,
+    //schema: signup,
     model,
 });

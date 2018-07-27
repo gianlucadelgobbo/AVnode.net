@@ -39,7 +39,7 @@ class SignUp extends Component {
     }
 
     onSubmit(values) {
-        const {showModal} = this.props;
+        const {showModal, saveModel} = this.props;
         const modelToSave = this.createModelToSave(values);
         console.log(modelToSave);
         // Add auth user _id
@@ -90,6 +90,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    saveModel,
     showModal
 }, dispatch);
 
