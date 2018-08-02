@@ -359,7 +359,22 @@ a:hover + .partner_stagename,
     color: $color1;
 }
 
+// PERFORMANCE PAGE
 
+.performer_title h1 {
+    border-bottom: 1px solid $color1;
+    margin: 15px 0;
+    padding: 0 0 15px 0;
+}
+
+.performance_stat_container {
+    background: $color1;
+    position: absolute;
+    right: -68%;
+    width: 100%;
+    padding: 0 0 0 60px;
+    top: 20px;
+}
 
 /* performer page */
  
