@@ -98,5 +98,9 @@
 	"artists": "artists",
 	"from": "from",
 	"playing": "playing",
-	"Email %s not found.": "Email %s not found."
+	"Email %s not found.": "Email %s not found.",
+	"Views": "Views",
+	" Views": " Views",
+	" About": " About",
+	" Technical specifications": " Technical specifications"
 }
