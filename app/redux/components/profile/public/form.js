@@ -7,8 +7,15 @@ import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 import {getFormSyncErrors} from 'redux-form';
+import {STAGE_NAME, PROFILE_URL, ABOUT, WEB, SOCIAL, ADDRESS} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class ProfilePublicForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -28,13 +35,13 @@ class ProfilePublicForm extends Component {
                 <Field
                     name="stagename"
                     component={inputText}
-                    placeholder="Stage name"
+                    placeholder={this.getIntlString({id:STAGE_NAME})}
                 />
 
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Profile url"
+                    placeholder={this.getIntlString({id:PROFILE_URL})}
                 />
 
                 <FieldArray
@@ -42,7 +49,7 @@ class ProfilePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="About"
+                    placeholder={this.getIntlString({id:ABOUT})}
                     errors={errors}
                 />
 
@@ -51,7 +58,7 @@ class ProfilePublicForm extends Component {
                 <FieldArray
                     name="social"
                     component={multiInputUrl}
-                    placeholder="Socials"
+                    placeholder={this.getIntlString({id:SOCIAL})}
                     title="Socials"
                     showModal={showModal}
                 />
@@ -61,7 +68,7 @@ class ProfilePublicForm extends Component {
                 <FieldArray
                     name="web"
                     component={multiInputUrl}
-                    placeholder="Web"
+                    placeholder={this.getIntlString({id:WEB})}
                     title="Web"
                     showModal={showModal}
                 />
@@ -71,7 +78,7 @@ class ProfilePublicForm extends Component {
                 <FieldArray
                     name="addresses"
                     component={multiGoogleCityCountry}
-                    placeholder="Address"
+                    placeholder={this.getIntlString({id:ADDRESS})}
                     showModal={showModal}
                 />
 
@@ -111,5 +118,7 @@ ProfilePublicForm = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ProfilePublicForm);
+
+ProfilePublicForm = injectIntl(ProfilePublicForm);
 
 export default ProfilePublicForm;

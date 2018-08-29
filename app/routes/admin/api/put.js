@@ -18,7 +18,6 @@ router.putData = (req, res) => {
   logger.debug('putData');
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
-    
     Models[config.cpanel[req.params.sez].model]
     .findById(id, config.cpanel[req.params.sez].forms[req.params.form].select, (err, data) => {
       //, put, {new: true, runValidators: true, select: select}).
@@ -31,7 +30,6 @@ router.putData = (req, res) => {
           data.save((err) => {
             if (err) {
               console.log('err');
-              console.log(err);
               res.status(400).json(err);
             } else {
               select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);

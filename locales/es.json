@@ -13,5 +13,22 @@
 	"example@foo.bar": "example@foo.bar",
 	"Password": "Password",
 	"Use at least eight characters": "Use at least eight characters",
-	"Forgot your password?": "Forgot your password?"
+	"Forgot your password?": "Forgot your password?",
+	"Back to the top": "Back to the top",
+	"You are logged in.": "You are logged in.",
+	"Your Account": "Your Account",
+	"Profile": "Profile",
+	"Log out": "Log out",
+	"Text is missing": "Text is missing",
+	"Search is currently unavailable…": "Search is currently unavailable…",
+	"All": "All",
+	"Clubbing": "Clubbing",
+	"Corporate": "Corporate",
+	"Festival": "Festival",
+	"One night": "One night",
+	"Television": "Television",
+	"Workshops & learning": "Workshops & learning",
+	"Most recent": "Most recent",
+	"Most viewed": "Most viewed",
+	"Most liked": "Most liked"
 }

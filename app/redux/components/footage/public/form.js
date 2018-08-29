@@ -8,9 +8,15 @@ import {
     checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl, fieldWithLabel
 } from "../../common/form/components";
 import validate from './validate';
-//import asyncValidate from './asyncValidate';
+import {injectIntl} from 'react-intl';
+import {ABOUT, FOOTAGE_NAME, FOOTAGE_URL, AUTHORS, TAGS} from "../../common/form/labels";
 
 class FootagePublicForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -35,13 +41,13 @@ class FootagePublicForm extends Component {
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Footage name"
+                    placeholder={this.getIntlString({id:FOOTAGE_NAME})}
                 />
 
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Url name"
+                    placeholder={this.getIntlString({id:FOOTAGE_URL})}
                 />
 
                 <FieldArray
@@ -49,7 +55,7 @@ class FootagePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="About"
+                    placeholder={this.getIntlString({id:ABOUT})}
                 />
 
                 <br/>
@@ -57,9 +63,8 @@ class FootagePublicForm extends Component {
                 <FieldArray
                     name="users"
                     component={fieldWithLabel}
-                    placeholder="Authors"
+                    placeholder={this.getIntlString({id:AUTHORS})}
                     showModal={showModal}
-                    className=""
                 />
 
                 <br/>
@@ -72,7 +77,7 @@ class FootagePublicForm extends Component {
                     handleDelete={handleDelete}
                     handleTagClick={handleTagClick}
                     handleAddition={handleAddition}
-                    placeholder="Tags"
+                    placeholder={this.getIntlString({id:TAGS})}
                 />
 
                 <br/>
@@ -92,7 +97,7 @@ class FootagePublicForm extends Component {
 
 }
 
-export default reduxForm({
+FootagePublicForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
@@ -100,3 +105,8 @@ export default reduxForm({
     //asyncValidate,
     //asyncBlurFields: ['slug', 'addresses[]']
 })(FootagePublicForm);
+
+FootagePublicForm = injectIntl(FootagePublicForm);
+
+export default FootagePublicForm;
+

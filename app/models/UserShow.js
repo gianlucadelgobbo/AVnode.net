@@ -126,6 +126,23 @@ userSchema.virtual('publicEmails').get(function () {
   }
 });
 
+userSchema.virtual('addressesFormatted').get(function () {
+  let addresses = {};
+  let addressesFormatted = [];
+  if (this.addresses && this.addresses.length) {
+    this.addresses.forEach((address) => {
+      if (address.country) {
+        if (!addresses[address.country]) addresses[address.country] = [];
+        if (address.locality) addresses[address.country].push(address.locality);
+      }
+    });
+    for(country in addresses) {
+      addressesFormatted.push(" <b>"+country+"</b> "+addresses[country].join(", "));
+    }
+    return addressesFormatted.join(", ");
+  }
+});
+
 userSchema.virtual('about').get(function (req) {
   let about = __('Text is missing');
   let aboutA = [];

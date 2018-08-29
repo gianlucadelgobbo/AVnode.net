@@ -10,7 +10,7 @@ import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
-//import {checkboxField} from "../../common/form/components";
+import {FormattedMessage} from 'react-intl';
 
 class EventPublic extends Component {
 
@@ -81,7 +81,12 @@ class EventPublic extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">EVENT SETTINGS</h2>
+                    <h2 className="labelField">
+                        <FormattedMessage
+                            id="EventsPublicSettings"
+                            defaultMessage="EVENT SETTINGS"
+                        />
+                    </h2>
 
                     <br/>
 

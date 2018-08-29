@@ -9,14 +9,21 @@ import {reduxForm, FieldArray, Field} from "redux-form";
 import {renderList} from "../common/form/components";
 import {FORM_NAME} from "./constants";
 import validate from "./validate";
+import {injectIntl} from 'react-intl';
+import {NAME, CATEGORY, ACTION} from "../common/form/labels";
 
 class ModelTable extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     getColumns(fields) {
         const {showModal, removeModel, categories, hideCategory} = this.props;
         let columns = [];
         let nameColumn = {
-            Header: "Name",
+            Header: this.getIntlString({id:NAME}),
             id: "name",
             accessor: 'stagename',
             Cell: (props) => {
@@ -27,7 +34,7 @@ class ModelTable extends Component {
             }
         };
         let categoryColumn = {
-            Header: "Category",
+            Header: this.getIntlString({id:CATEGORY}),
             accessor: 'category.name',
             Cell: (props) => {
                 const {index} = props;
@@ -44,7 +51,7 @@ class ModelTable extends Component {
             }
         };
         let actionColumn = {
-            Header: "Actions",
+            Header: this.getIntlString({id:ACTION}),
             id: "actions",
             width: 100,
             Cell: (props) => {
@@ -129,11 +136,13 @@ ModelTable = connect(
     mapDispatchToProps
 )(ModelTable);
 
-export default reduxForm({
+ModelTable = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[]']
+    validate
 })(ModelTable);
+
+ModelTable = injectIntl(ModelTable);
+
+export default ModelTable;

@@ -11,6 +11,7 @@ import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
+import {FormattedMessage} from 'react-intl';
 
 /*
 * Responsabilita'
@@ -78,7 +79,12 @@ class ProfilePassword extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">MY Password</h2>
+                    <h2 className="labelField">
+                    <FormattedMessage
+                        id="AccountPublicPassword"
+                        defaultMessage="MY PASSWORD"
+                    />
+                    </h2>
 
                     <br/>
 

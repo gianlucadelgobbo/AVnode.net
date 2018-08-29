@@ -26,9 +26,14 @@ export const fetchList = ({
                 });
             },
             (error) => {
+
+                const response = error.response || {};
+                const data = response.data || {}
+                const message = data.message || {};
+
                 dispatch({
                     type: constants.FETCH_LIST_ERROR,
-                    errorMessage: error.message || 'Something went wrong.'
+                    errorMessage: message || 'Something went wrong.'
                 });
             });
 };
@@ -64,9 +69,19 @@ export const fetchModel = ({
 
             },
             (error) => {
+
+                // scroll to top
+                if ($ && typeof $.fn.scrollTop === "function"){
+                   $(window).scrollTop();
+                }
+
+                const response = error.response || {};
+                const data = response.data || {}
+                const message = data.message || {};
+
                 dispatch({
                     type: constants.FETCH_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.',
+                    errorMessage: message || 'Something went wrong.',
                     id
                 });
             });
@@ -101,12 +116,19 @@ export const saveModel = ({
                 return {id: model.id || "ok"}
             },
             (error) => {
+
+                  // scroll to top
+                window.scrollTo(0, 0)
+
+                const response = error.response || {};
+                const data = response.data || {}
+                const message = data.message || {};
+
                 dispatch({
                     type: constants.SAVE_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.',
+                    errorMessage: message || 'Something went wrong.',
                     id: model.id
                 });
-                console.log(error.message)
             });
 };
 
@@ -139,9 +161,14 @@ export const removeModel = ({
                 return {id: model.id}
             },
             (error) => {
+                
+                const response = error.response || {};
+                const data = response.data || {}
+                const message = data.message || {};
+
                 dispatch({
                     type: constants.SAVE_MODEL_ERROR,
-                    errorMessage: error.message || 'Something went wrong.',
+                    errorMessage: message || 'Something went wrong.',
                     id: model.id
                 });
             });

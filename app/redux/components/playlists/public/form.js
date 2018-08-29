@@ -8,9 +8,15 @@ import {
     checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl, fieldWithLabel
 } from "../../common/form/components";
 import validate from './validate';
-//import asyncValidate from './asyncValidate';
+import {injectIntl} from 'react-intl';
+import {ABOUT, PLAYLIST_NAME, PLAYLIST_URL, AUTHORS} from "../../common/form/labels";
 
 class PlaylistPublicForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -30,13 +36,13 @@ class PlaylistPublicForm extends Component {
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Playlist name"
+                    placeholder={this.getIntlString({id:PLAYLIST_NAME})}
                 />
 
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Url name"
+                    placeholder={this.getIntlString({id:PLAYLIST_URL})}
                 />
 
                 <FieldArray
@@ -44,7 +50,7 @@ class PlaylistPublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="About"
+                    placeholder={this.getIntlString({id:ABOUT})}
                 />
 
                 <br/>
@@ -52,9 +58,8 @@ class PlaylistPublicForm extends Component {
                 <FieldArray
                     name="users"
                     component={fieldWithLabel}
-                    placeholder="Authors"
+                    placeholder={this.getIntlString({id:AUTHORS})}
                     showModal={showModal}
-                    className=""
                 />
 
                 <br/>
@@ -74,11 +79,13 @@ class PlaylistPublicForm extends Component {
 
 }
 
-export default reduxForm({
+PlaylistPublicForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[]']
+    validate
 })(PlaylistPublicForm);
+
+PlaylistPublicForm = injectIntl(PlaylistPublicForm);
+
+export default PlaylistPublicForm;

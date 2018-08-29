@@ -45,7 +45,7 @@ class SignUpForm extends Component {
                 />  
 
                 <Field
-                    name="Birthdate"
+                    name="birthdate"
                     component={renderDatePicker}
                     placeholder="Birthdate"
                 />
@@ -94,8 +94,8 @@ SignUpForm = reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
-    asyncValidate,
-    asyncBlurFields: ['slug', 'addresses[].text']
+    //asyncValidate,
+    //asyncBlurFields: ['slug', 'city[].text']
 })(SignUpForm);
 
 //Get form's initial values from redux state here

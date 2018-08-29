@@ -8,6 +8,7 @@ import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
 import Galleries from '../../galleries';
 import {PERFORMANCE_NAME} from '../constants';
 import TitleComponent from '../../titleComponent';
+import {FormattedMessage} from 'react-intl';
 
 class PerformanceGallery extends Component {
 
@@ -24,7 +25,12 @@ class PerformanceGallery extends Component {
                 </div>
                 <div className="col-md-10">
                    
-                    <h2 className="labelField">PERFORMANCE GALLERY</h2>
+                    <h2 className="labelField">
+                        <FormattedMessage
+                            id="PerformancePublicGallery"
+                            defaultMessage="PERFORMANCE GALLERY"
+                        />
+                    </h2>
 
                     <Galleries
                         model={model}

@@ -5,7 +5,8 @@ import LateralMenu from '../lateralMenu'
 import {getModel} from "../selectors";
 import {fetchModel, saveModel, removeModel} from "./actions";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
-import Videos from '../../videos'
+import Videos from '../../videos';
+import {FormattedMessage} from 'react-intl';
 
 class EventsImage extends Component {
 
@@ -21,7 +22,12 @@ class EventsImage extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">EVENT VIDEOS</h2>
+                    <h2 className="labelField">
+                    <FormattedMessage
+                        id="EventsPublicVideos"
+                        defaultMessage="EVENT VIDEOS"
+                    />
+                    </h2>
 
                     <Videos
                         model={model}

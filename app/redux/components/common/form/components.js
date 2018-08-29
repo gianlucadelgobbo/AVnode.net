@@ -24,6 +24,7 @@ import {DATE_FORMAT} from '../../../conf';
 import { WithContext as ReactTags } from 'react-tag-input';
 import {Collapse} from 'react-collapse';
 import {FormattedMessage} from 'react-intl';
+import {SUBSCRIPTIONS, FILE_UPLOAD} from "../../common/form/labels";
 
 export const googleAutocompleteSelect = ({input, meta, placeholder, options, isChild}) => {
     const renderFunc = ({getInputProps, getSuggestionItemProps, suggestions}) => (
@@ -60,7 +61,7 @@ export const googleAutocompleteSelect = ({input, meta, placeholder, options, isC
         {renderFunc}
         </PlacesAutocomplete>
         {meta.error && meta.touched &&
-        <span className="error-message">{isChild ? meta.error._error : meta.error}</span>}
+        <span className="error-message">{isChild ? <FormattedMessage id={meta.error._error}/> : <FormattedMessage id={meta.error}/>}</span>}
     </div>;
 
     const label = <div className="labelField">{placeholder}</div>;
@@ -375,6 +376,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
                     <Field
                         name={`${member}.email`}
                         component={inputEmail}
+                        placeholder={placeholder}
                         isChild={true}
                     />
                 </div>
@@ -423,7 +425,7 @@ export const multiInputEmailWithDetails = ({fields, title, showModal, placeholde
 
             <div className="row">
                 <div className="col-md-5 offset-1 email-subscriptions">
-                    Subscriptions:
+                   <FormattedMessage id={SUBSCRIPTIONS}/>
                 </div>
                 <div className="col-md-4">
 
@@ -538,6 +540,7 @@ const multiInput = ({fields, title, meta: {error}, render, placeholder, key, sho
             <div className="col-md-9 offset-1">
                 <Field
                     name={`${member}.${key}`}
+                    placeholder={placeholder}
                     component={render}
                     isChild={true}
                 />
@@ -746,7 +749,7 @@ export const renderDropzoneInput = (field) => {
                     field.input.onChange(files)
                 }}
             >
-                <div className="labelFieldUpload">Drop files here, or click to select files to upload.</div>
+                <div className="labelFieldUpload"><FormattedMessage id={FILE_UPLOAD}/></div>
             </Dropzone>
 
             {field.meta.touched && field.meta.error && <span className="error"><FormattedMessage id={field.meta.error}/></span>}
@@ -1732,12 +1735,12 @@ export const CollapsedPanel = ({input, meta, placeholder, options, height, isChi
         <Collapse isOpened={input.value==='group'}>
           <div style={{height}} />
             <Field
-                name="Crew Name"
+                name="crewName"
                 component={inputText}
                 placeholder="Crew Name"
             />
             <Field
-                name="Crew profile URL"
+                name="CrewProfile"
                 component={inputText}
                 placeholder="Crew Profile Url"
             />

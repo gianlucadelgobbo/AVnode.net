@@ -8,9 +8,15 @@ import {
     checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl,
 } from "../../common/form/components";
 import validate from './validate';
-//import asyncValidate from './asyncValidate';
+import {CREW_NAME, CREW_URL, ABOUT, WEB, SOCIAL} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class CrewPublicForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -20,7 +26,7 @@ class CrewPublicForm extends Component {
             tabs,
             labels,
             showModal,
-            onSubmit,
+            onSubmit
         } = this.props;
 
         return (
@@ -29,13 +35,13 @@ class CrewPublicForm extends Component {
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Crew url"
+                    placeholder={this.getIntlString({id:CREW_URL})}
                 />
 
                 <Field
                     name="stagename"
                     component={inputText}
-                    placeholder="Crew name"
+                    placeholder={this.getIntlString({id:CREW_NAME})}
                 />
 
                 <FieldArray
@@ -43,7 +49,7 @@ class CrewPublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="About"
+                    placeholder={this.getIntlString({id:ABOUT})}
                 />
 
                 <br/>
@@ -51,7 +57,7 @@ class CrewPublicForm extends Component {
                 <FieldArray
                     name="social"
                     component={multiInputUrl}
-                    placeholder="Socials"
+                    placeholder={this.getIntlString({id:SOCIAL})}
                     title="Socials"
                     showModal={showModal}
                 />
@@ -61,7 +67,7 @@ class CrewPublicForm extends Component {
                 <FieldArray
                     name="web"
                     component={multiInputUrl}
-                    placeholder="Web"
+                    placeholder={this.getIntlString({id:WEB})}
                     title="Web"
                     showModal={showModal}
                 />
@@ -83,11 +89,13 @@ class CrewPublicForm extends Component {
 
 }
 
-export default reduxForm({
+CrewPublicForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses[]']
+    validate
 })(CrewPublicForm);
+
+CrewPublicForm = injectIntl(CrewPublicForm);
+
+export default CrewPublicForm;

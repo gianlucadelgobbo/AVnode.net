@@ -2,7 +2,7 @@ import axios from 'axios'
 //import LocalStorage from 'localStorage';
 
 //const API_BASE_URL = process.env.APP_API_BASE_URL ;
-const API_BASE_URL = "http://localhost:8006/admin/api/" ;
+const API_BASE_URL = "/admin/api/" ;
 
 /**
  * Sets the default URL for API Calls

@@ -1,24 +1,37 @@
-import {isValidSlug, validateLength} from "../common/form/validators";
+import {isValidSlug, validateLength, isValidName, isValidDate} from "../common/form/validators";
+import {INVALID_STRING_3_50} from "../common/form/errors";
 
 const signupValidate = values => {
 
     const errors = {};
 
-    let {password, confirmPassword} = values;
+    const {birthday} = values;
 
     //Stage name
-    validateLength({values, name: "stagename", min: 3, max: 5, errors});
-
+    validateLength({values, name: "stagename", min: 3, max: 50, errorKey:INVALID_STRING_3_50, errors});
+    
+    isValidName({values, name:"stagename", errors});
+    
+    //Crew Name
+    //isValidName({values, name:"crewName", errors});
+    
+    //Crew Profile
+    //isValidName({values, name:"CrewProfile", errors});
+    
     // Slug
-    //isValidSlug({values,  name: "slug",  errors});
+    isValidSlug({values,  name: "slug",  errors});
 
-    // addresses
-    //validateLength({values, name: "addresses", min: 1, max: 5, errors});
-
-    // password and confirmPassword must match
-    if (password !== confirmPassword) {
-        errors.confirmPassword = "Passwords don't match"
-    }
+    //Birthdate
+    //isValidName({values, name:"birthdate", errors});
+    
+    //Email
+    isValidName({values, name:"email", errors});
+    //Address
+    isValidName({values, name:"city", errors});
+    //Password
+    isValidName({values, name:"password", errors});
+    //Password
+    isValidName({values, name:"confirmPassword", errors});
 
     return errors
 };
