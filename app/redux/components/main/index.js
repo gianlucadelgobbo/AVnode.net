@@ -113,7 +113,7 @@ class MainApp extends Component {
                             <Route path="/admin/playlists/:_id/public/" component={PlaylistPublic}/>
                             <Route path="/admin/playlists" component={Playlist}/>
 
-                            <Route path="/admin/preferences" component={Preferences}/>
+                            {/*<Route path="/admin/preferences" component={Preferences}/>*/}
 
                             <Route path="*" component={PageNotFound}/>
                         </Switch>

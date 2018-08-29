@@ -10,10 +10,11 @@ import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
-import {locales, locales_labels} from "../../../../../config/default";
+import {locales, locales_labels, locales_labels_short} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import {createMultiLanguageInitialObject} from "../../common/form";
+import {FormattedMessage} from 'react-intl';
 
 class EventCalls extends Component {
 
@@ -99,7 +100,12 @@ class EventCalls extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">EVENT CALLS</h2>
+                    <h2 className="labelField">
+                        <FormattedMessage
+                            id="EventsPublicCalls"
+                            defaultMessage="EVENT CALLS"
+                        />
+                    </h2>
 
                     <br/>
 
@@ -116,6 +122,7 @@ class EventCalls extends Component {
                         showModal={showModal}
                         tabs={locales}
                         labels={locales_labels}
+                        labelsShort={locales_labels_short}
                         categories={categories}
                     />
                 </div>

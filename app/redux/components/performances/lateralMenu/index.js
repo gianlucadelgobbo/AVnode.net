@@ -8,28 +8,28 @@ const items = [
     {
         href: "/admin/performances/:_id/public",
         label: <FormattedMessage
-            id="publicData"
+            id="publicDataPerformances"
             defaultMessage="Public data"
         />
     },
     {
         href: "/admin/performances/:_id/image",
         label: <FormattedMessage
-            id="images"
+            id="imagesPerformances"
             defaultMessage="Images"
         />
     },
     {
         href: "/admin/performances/:_id/galleries",
         label: <FormattedMessage
-            id="galleries"
+            id="galleriesPerformances"
             defaultMessage="Galleries"
         />
     },
     {
         href: "/admin/performances/:_id/videos",
         label: <FormattedMessage
-            id="videos"
+            id="videosPerformances"
             defaultMessage="Videos"
         />
 

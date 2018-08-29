@@ -8,6 +8,7 @@ import {fetchModel, saveModel} from "./actions";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import ImageForm from '../../image';
 import {withRouter} from 'react-router';
+import {FormattedMessage} from 'react-intl';
 
 class CrewImage extends Component {
 
@@ -24,7 +25,12 @@ class CrewImage extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">MY IMAGE</h2>
+                    <h2 className="labelField">
+                    <FormattedMessage
+                        id="CrewPublicImage"
+                        defaultMessage="MY IMAGE"
+                    />
+                    </h2>
 
                     <br/>
 

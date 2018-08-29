@@ -9,16 +9,35 @@ import {addLocaleData, IntlProvider} from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
 import frLocaleData from 'react-intl/locale-data/fr';
 import esLocaleData from 'react-intl/locale-data/es';
+import itLocaleData from 'react-intl/locale-data/it';
+import deLocaleData from 'react-intl/locale-data/de';
+import huLocaleData from 'react-intl/locale-data/hu';
+import elLocaleData from 'react-intl/locale-data/el';
+import beLocaleData from 'react-intl/locale-data/be';
+import ruLocaleData from 'react-intl/locale-data/ru';
+import plLocaleData from 'react-intl/locale-data/pl';
+
 import translations from './i18n/locales';
 
-addLocaleData(enLocaleData);
-addLocaleData(frLocaleData);
-addLocaleData(esLocaleData);
+addLocaleData([...enLocaleData, ...frLocaleData, ...esLocaleData, ...itLocaleData, ...deLocaleData, ...huLocaleData, ...elLocaleData, ...beLocaleData, ...ruLocaleData, ...plLocaleData]);
 
 const getLocale = (user) => {
     const isValidLanguage = (l) => Object.keys(translations).indexOf(l) > -1;
 
     const fallback = 'en';
+
+    const code2lang = {
+        gr : "el",
+        en : "en",
+        it : "it",
+        fr : "fr",
+        es : "es",
+        de : "de",
+        hu : "hu",
+        by : "be",
+        ru : "ru",
+        pl : "pl"
+    }
 
     /*
     * priority
@@ -32,15 +51,16 @@ const getLocale = (user) => {
     const settings = user.settings || {};
     const {language} = settings;
     if (isValidLanguage(language)) {
-        return language;
+        return code2lang[language];
     }
 
     // Try to get language from URL
     const hostname = window.location.hostname;
     const splitHostname = hostname.split(".");
     const possibleLanguage = splitHostname[0];
-    if (isValidLanguage(possibleLanguage)) {
-        return possibleLanguage;
+    const key = code2lang[possibleLanguage];
+    if (isValidLanguage(key)) {
+        return key;
     }
 
     // Try to get language from navigator

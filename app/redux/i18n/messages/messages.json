@@ -50,11 +50,11 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
-  "id": "validation.error.invalid.string.1.3",
-  "defaultMessage": "Invalid length: please insert 1 to 3 values",
-  "filepath": "./app/redux/components/common/form/errors.js"
+    "id": "validation.error.invalid.string.1.3",
+    "defaultMessage": "Invalid length: please insert 1 to 3 values",
+    "filepath": "./app/redux/components/common/form/errors.js"
   },
-   {
+  {
     "id": "validation.error.invalid.string.3.50",
     "defaultMessage": "Invalid length: please insert 3 to 50 values",
     "filepath": "./app/redux/components/common/form/errors.js"
@@ -62,11 +62,6 @@
   {
     "id": "validation.error.invalid.email",
     "defaultMessage": "Invalid email",
-    "filepath": "./app/redux/components/common/form/errors.js"
-  },
-  {
-    "id": "validation.error.invalid.password",
-    "defaultMessage": "Passwords don't match",
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
@@ -85,17 +80,22 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
-    "id": "publicData",
+    "id": "validation.error.invalid.password",
+    "defaultMessage": "Passwords don't match",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "publicDataCrews",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
   },
   {
-    "id": "images",
+    "id": "imagesCrews",
     "defaultMessage": "Images",
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
   },
   {
-    "id": "members",
+    "id": "membersCrews",
     "defaultMessage": "Members",
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
   },
@@ -120,42 +120,42 @@
     "filepath": "./app/redux/components/crews/table/index.js"
   },
   {
-    "id": "publicData",
+    "id": "publicDataEvents",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "images",
+    "id": "imagesEvents",
     "defaultMessage": "Images",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "partners",
+    "id": "partnersEvents",
     "defaultMessage": "Partners",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "program",
+    "id": "programEvents",
     "defaultMessage": "Program",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "galleries",
+    "id": "galleriesEvents",
     "defaultMessage": "Galleries",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "videos",
+    "id": "videosEvents",
     "defaultMessage": "Videos",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "calls",
+    "id": "callsEvents",
     "defaultMessage": "Calls",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "setting",
+    "id": "settingEvents",
     "defaultMessage": "Settings",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
@@ -165,12 +165,12 @@
     "filepath": "./app/redux/components/events/table/index.js"
   },
   {
-    "id": "publicData",
+    "id": "publicDataFootage",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/footage/lateralMenu/index.js"
   },
   {
-    "id": "CrewTitle",
+    "id": "FootageTitle",
     "defaultMessage": "Footage Name",
     "filepath": "./app/redux/components/footage/table/index.js"
   },
@@ -180,22 +180,22 @@
     "filepath": "./app/redux/components/main/index.js"
   },
   {
-    "id": "publicData",
+    "id": "publicDataPerformances",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
   {
-    "id": "images",
+    "id": "imagesPerformances",
     "defaultMessage": "Images",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
   {
-    "id": "galleries",
+    "id": "galleriesPerformances",
     "defaultMessage": "Galleries",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
   {
-    "id": "videos",
+    "id": "videosPerformances",
     "defaultMessage": "Videos",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
@@ -205,7 +205,7 @@
     "filepath": "./app/redux/components/performances/table/index.js"
   },
   {
-    "id": "publicData",
+    "id": "publicDataPlaylists",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/playlists/lateralMenu/index.js"
   },
@@ -215,20 +215,36 @@
     "filepath": "./app/redux/components/playlists/table/index.js"
   },
   {
-    "id": "publicData",
+    "id": "publicDataProfile",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
+    {
+    "id": "privateDataProfile",
+    "defaultMessage": "Private data",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
   {
-    "id": "images",
+  "id": "passwordProfile",
+  "defaultMessage": "Password",
+  "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  {
+    "id": "imagesProfile",
     "defaultMessage": "Images",
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
   {
-    "id": "emails",
+    "id": "emailsProfile",
     "defaultMessage": "Emails",
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
+   {
+    "id": "connectionsProfile",
+    "defaultMessage": "Connections",
+    "filepath": "./app/redux/components/profile/lateralMenu/index.js"
+  },
+  
   {
     "id": "privateData",
     "defaultMessage": "Private data",
@@ -244,6 +260,7 @@
     "defaultMessage": "Connections",
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
+  
   {
     "id": "myAccountPrivateData",
     "defaultMessage": "My Account Private data",
@@ -288,5 +305,397 @@
     "id": "preferences",
     "defaultMessage": "Preferences",
     "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "account.public.data",
+    "defaultMessage": "MY ACCOUNT PUBLIC DATA",
+    "filepath": "./app/redux/components/profile/public/constant.js"
+  },
+  {
+    "id": "crew.public.data",
+    "defaultMessage": "CREW PUBLIC DATA",
+    "filepath": "./app/redux/components/crews/public/constant.js"
+  },
+  {
+    "id": "performance.public.data",
+    "defaultMessage": "PERFORMANCE PUBLIC DATA",
+    "filepath": "./app/redux/components/performances/public/constant.js"
+  },
+  {
+    "id": "event.public.data",
+    "defaultMessage": "EVENT PUBLIC DATA",
+    "filepath": "./app/redux/components/events/public/constant.js"
+  },
+  {
+    "id": "footage.public.data",
+    "defaultMessage": "FOOTAGE PUBLIC DATA",
+    "filepath": "./app/redux/components/footage/public/constant.js"
+  },
+  {
+    "id": "playlist.public.data",
+    "defaultMessage": "PLAYLIST PUBLIC DATA",
+    "filepath": "./app/redux/components/playlists/public/constant.js"
+  },
+  {
+    "id": "AccountPublicImage",
+    "defaultMessage": "MY IMAGE",
+    "filepath": "./app/redux/components/profile/image/index.js"
+  },
+  {
+    "id": "CrewPublicImage",
+    "defaultMessage": "MY IMAGE",
+    "filepath": "./app/redux/components/crews/image/index.js"
+  },
+  {
+    "id": "PerformancePublicImage",
+    "defaultMessage": "MY IMAGE",
+    "filepath": "./app/redux/components/performances/image/index.js"
+  },
+  {
+    "id": "EventPublicImage",
+    "defaultMessage": "MY IMAGE",
+    "filepath": "./app/redux/components/events/image/index.js"
+  },
+  {
+    "id": "AccountPublicEmail",
+    "defaultMessage": "MY EMAIL",
+    "filepath": "./app/redux/components/profile/emails/index.js"
+  },
+  {
+    "id": "AccountPublicPassword",
+    "defaultMessage": "MY PASSWORD",
+    "filepath": "./app/redux/components/profile/emails/index.js"
+  },
+  {
+    "id": "comingSoon",
+    "defaultMessage": "Coming soon!",
+    "filepath": "./app/redux/components/comingSoon/index.js"
+  },
+  {
+    "id": "PerformancePublicGallery",
+    "defaultMessage": "PERFORMANCE GALLERY",
+    "filepath": "./app/redux/components/performances/galleries/index.js"
+  },
+  {
+    "id": "PerformancePublicVideos",
+    "defaultMessage": "PERFORMANCE VIDEOS",
+    "filepath": "./app/redux/components/performances/videos/index.js"
+  },
+  {
+    "id": "EventsPublicPartners",
+    "defaultMessage": "EVENT PARTNERS",
+    "filepath": "./app/redux/components/events/partners/index.js"
+  },
+  {
+    "id": "EventsPublicProgram",
+    "defaultMessage": "EVENT PROGRAM",
+    "filepath": "./app/redux/components/events/program/index.js"
+  },
+  {
+    "id": "EventsPublicGalleries",
+    "defaultMessage": "EVENT GALLERY",
+    "filepath": "./app/redux/components/events/galleries/index.js"
+  },
+  {
+    "id": "EventsPublicVideos",
+    "defaultMessage": "EVENT VIDEOS",
+    "filepath": "./app/redux/components/events/videos/index.js"
+  },
+  {
+  "id": "EventsPublicCalls",
+  "defaultMessage": "EVENT CALLS",
+  "filepath": "./app/redux/components/events/calls/index.js"
+  },
+  {
+  "id": "EventsPublicSettings",
+  "defaultMessage": "EVENT SETTINGS",
+  "filepath": "./app/redux/components/events/settings/index.js"
+  },
+  {
+  "id": "label.form.stagename",
+  "defaultMessage": "Stage Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.url",
+  "defaultMessage": "Profile Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.about",
+  "defaultMessage": "About",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.web",
+  "defaultMessage": "Web",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.social",
+  "defaultMessage": "Socials",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.address",
+  "defaultMessage": "Address",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.emails",
+  "defaultMessage": "Emails",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.subscriptions",
+  "defaultMessage": "Subscriptions",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.name",
+  "defaultMessage": "Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.surname",
+  "defaultMessage": "Surname",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.gender",
+  "defaultMessage": "Gender",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.language",
+  "defaultMessage": "Preferred Language",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.birthday",
+  "defaultMessage": "Birthday",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.citizenship",
+  "defaultMessage": "Citizenship",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.private.address",
+  "defaultMessage": "Private Addresses",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.phone",
+  "defaultMessage": "Phone",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.mobile",
+  "defaultMessage": "Mobile",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.skype",
+  "defaultMessage": "Skype",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.oldpassword",
+  "defaultMessage": "Old Password",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.newpassword",
+  "defaultMessage": "New Password",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.confirmpassword",
+  "defaultMessage": "Confirm Password",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.crew.url",
+  "defaultMessage": "Crew Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.crew.name",
+  "defaultMessage": "Crew Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.file.upload",
+  "defaultMessage": "Drop files here, or click to select files to upload.",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.performance.url",
+  "defaultMessage": "Performance Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.title",
+  "defaultMessage": "Title",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.is.public",
+  "defaultMessage": "Is Public",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.category",
+  "defaultMessage": "Category",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.authors",
+  "defaultMessage": "Authors",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.price",
+  "defaultMessage": "Price",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.duration",
+  "defaultMessage": "Duration",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.tecnologies.artists",
+  "defaultMessage": "Technologies with the artists",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.tecnical.requirement",
+  "defaultMessage": "Technical requirements",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.video.no.show",
+  "defaultMessage": "No Video to Show",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.schedule",
+  "defaultMessage": "Schedule",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.subtitles",
+  "defaultMessage": "Subtitles",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.url",
+  "defaultMessage": "Event Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.program",
+  "defaultMessage": "Program",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls",
+  "defaultMessage": "Calls",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.name",
+  "defaultMessage": "Call Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.email.contact",
+  "defaultMessage": "Email Contact",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.startdate",
+  "defaultMessage": "Start Date",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.enddate",
+  "defaultMessage": "End Date",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.description",
+  "defaultMessage": "Event Description",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.term",
+  "defaultMessage": "Event Term",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.closed",
+  "defaultMessage": "Event Closed Call text",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.packages",
+  "defaultMessage": "Packages",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.event.calls.description",
+  "defaultMessage": "Description",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.table.action",
+  "defaultMessage": "Action",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.error.crew.to.display",
+  "defaultMessage": "No Crew to display",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.error.member.to.display",
+  "defaultMessage": "No Members to display",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.settings",
+  "defaultMessage": "Settings",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.footage.name",
+  "defaultMessage": "Footage Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.footage.url",
+  "defaultMessage": "Footage Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.tags",
+  "defaultMessage": "Tags",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.playlist.name",
+  "defaultMessage": "Playlist Name",
+  "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+  "id": "label.form.playlist.url",
+  "defaultMessage": "Playlist Url",
+  "filepath": "./app/redux/components/common/form/labels.js"
   }
+
+
 ]

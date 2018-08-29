@@ -3,9 +3,15 @@ import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants';
 import {multiInputEmailWithDetails} from "../../common/form/components";
 import validate from './validate';
-import asyncValidate from './asyncValidate'
+import {EMAILS} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class ProfileEmailsForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -22,7 +28,7 @@ class ProfileEmailsForm extends Component {
                 <FieldArray
                     name="emails"
                     component={multiInputEmailWithDetails}
-                    placeholder="Emails"
+                    placeholder={this.getIntlString({id:EMAILS})}
                     showModal={showModal}
                 />
 
@@ -41,11 +47,13 @@ class ProfileEmailsForm extends Component {
 
 }
 
-export default reduxForm({
+ProfileEmailsForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    validate,
-    //asyncValidate,
-    //asyncBlurFields: ['slug', 'addresses']
+    validate
 })(ProfileEmailsForm);
+
+ProfileEmailsForm = injectIntl(ProfileEmailsForm);
+
+export default ProfileEmailsForm;

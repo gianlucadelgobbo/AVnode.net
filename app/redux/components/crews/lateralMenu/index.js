@@ -8,21 +8,21 @@ const items = [
     {
         href: "/admin/crews/:_id/public",
         label: <FormattedMessage
-            id="publicData"
+            id="publicDataCrews"
             defaultMessage="Public data"
         />
     },
     {
         href: "/admin/crews/:_id/images",
         label: <FormattedMessage
-            id="images"
+            id="imagesCrews"
             defaultMessage="Images"
         />
     },
     {
         href: "/admin/crews/:_id/members",
         label: <FormattedMessage
-            id="members"
+            id="membersCrews"
             defaultMessage="Members"
         />
 

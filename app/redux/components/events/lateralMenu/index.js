@@ -8,21 +8,21 @@ const items = [
     {
         href: "/admin/events/:_id/public",
         label: <FormattedMessage
-            id="publicData"
+            id="publicDataEvents"
             defaultMessage="Public data"
         />
     },
     {
         href: "/admin/events/:_id/images",
         label: <FormattedMessage
-            id="images"
+            id="imagesEvents"
             defaultMessage="Images"/>
 
     },
     {
         href: "/admin/events/:_id/partners",
         label: <FormattedMessage
-            id="partners"
+            id="partnersEvents"
             defaultMessage="Partners"
         />
 
@@ -30,7 +30,7 @@ const items = [
     {
         href: "/admin/events/:_id/program",
         label: <FormattedMessage
-            id="program"
+            id="programEvents"
             defaultMessage="Program"
         />
 
@@ -38,14 +38,14 @@ const items = [
     {
         href: "/admin/events/:_id/galleries",
         label: <FormattedMessage
-            id="galleries"
+            id="galleriesEvents"
             defaultMessage="Galleries"
         />
     },
     {
         href: "/admin/events/:_id/videos",
         label: <FormattedMessage
-            id="videos"
+            id="videosEvents"
             defaultMessage="Videos"
         />
 
@@ -53,7 +53,7 @@ const items = [
     {
         href: "/admin/events/:_id/calls",
         label: <FormattedMessage
-            id="calls"
+            id="callsEvents"
             defaultMessage="Calls"
         />
 
@@ -61,7 +61,7 @@ const items = [
     {
         href: "/admin/events/:_id/settings",
         label: <FormattedMessage
-            id="setting"
+            id="settingEvents"
             defaultMessage="Settings"
         />
 

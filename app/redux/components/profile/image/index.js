@@ -7,6 +7,7 @@ import {getDefaultModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import ImageForm from '../../image';
+import {FormattedMessage} from 'react-intl';
 
 class ProfileImage extends Component {
 
@@ -21,7 +22,12 @@ class ProfileImage extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">MY IMAGE</h2>
+                    <h2 className="labelField">
+                        <FormattedMessage
+                            id="AccountPublicImage"
+                            defaultMessage="MY IMAGE"
+                        />
+                    </h2>
 
                     <br/>
 

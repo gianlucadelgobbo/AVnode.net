@@ -5,7 +5,8 @@ import LateralMenu from '../lateralMenu'
 import {getModel} from "../selectors";
 import {fetchModel, saveModel, removeModel} from "./actions";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
-import Galleries from '../../galleries'
+import Galleries from '../../galleries';
+import {FormattedMessage} from 'react-intl';
 
 class EventsImage extends Component {
 
@@ -21,7 +22,12 @@ class EventsImage extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">EVENT GALLERY</h2>
+                    <h2 className="labelField">
+                    <FormattedMessage
+                        id="EventsPublicGalleries"
+                        defaultMessage="EVENT GALLERY"
+                    />
+                    </h2>
 
                     <Galleries
                         model={model}

@@ -14,8 +14,15 @@ import {
 import validate from './validate';
 import {getFormSyncErrors} from 'redux-form';
 import asyncValidate from './asyncValidate';
+import {PERFORMANCE_URL, TITLE, ABOUT, IS_PUBLIC, CATEGORY, AUTHORS, PRICE, DURATION, TECHNOLOGIES_ARTISTS, TECNICAL_REQUIREMENT} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class PerformancePublicForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -36,13 +43,13 @@ class PerformancePublicForm extends Component {
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Performance url"
+                    placeholder={this.getIntlString({id:PERFORMANCE_URL})}
                 />
 
                 <Field
                     name="title"
                     component={inputText}
-                    placeholder="Title"
+                    placeholder={this.getIntlString({id:TITLE})}
                 />
 
                 <FieldArray
@@ -51,7 +58,7 @@ class PerformancePublicForm extends Component {
                     tabs={tabs}
                     labels={labels}
                     errors={errors}
-                    placeholder="About"
+                    placeholder={this.getIntlString({id:ABOUT})}
                 />
 
                 <br/>
@@ -59,13 +66,13 @@ class PerformancePublicForm extends Component {
                 <Field
                     name="is_public"
                     component={checkboxField}
-                    placeholder="Is public"
+                    placeholder={this.getIntlString({id:IS_PUBLIC})}
                 />
 
                 <Field
                     name="categories"
                     component={renderList}
-                    placeholder="Category"
+                    placeholder={this.getIntlString({id:CATEGORY})}
                     multiple={true}
                     options={categories}
                 />
@@ -73,7 +80,7 @@ class PerformancePublicForm extends Component {
                 <FieldArray
                     name="users"
                     component={fieldWithLabel}
-                    placeholder="Authors"
+                    placeholder={this.getIntlString({id:AUTHORS})}
                     showModal={showModal}
                     className=""
                 />
@@ -83,13 +90,13 @@ class PerformancePublicForm extends Component {
                 <Field
                     name="price"
                     component={inputText}
-                    placeholder="Price"
+                    placeholder={this.getIntlString({id:PRICE})}
                 />
 
                 <Field
                     name="duration"
                     component={inputText}
-                    placeholder="Duration"
+                    placeholder={this.getIntlString({id:DURATION})}
                 />
 
                 <FieldArray
@@ -97,7 +104,7 @@ class PerformancePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="Technologies with the artists"
+                    placeholder={this.getIntlString({id:TECHNOLOGIES_ARTISTS})}
                     errors={errors}
                 />
 
@@ -108,7 +115,7 @@ class PerformancePublicForm extends Component {
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
-                    placeholder="Technical requirements"
+                    placeholder={this.getIntlString({id:TECNICAL_REQUIREMENT})}
                     errors={errors}
                 />
 
@@ -149,5 +156,7 @@ PerformancePublicForm = connect(
     mapStateToProps,
     mapDispatchToProps
 )(PerformancePublicForm);
+
+PerformancePublicForm = injectIntl(PerformancePublicForm);
 
 export default PerformancePublicForm;

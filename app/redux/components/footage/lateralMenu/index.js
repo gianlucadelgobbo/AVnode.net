@@ -8,7 +8,7 @@ const items = [
     {
         href: "/admin/footage/:_id/public",
         label: <FormattedMessage
-            id="publicData"
+            id="publicDataFootage"
             defaultMessage="Public data"
         />
     }

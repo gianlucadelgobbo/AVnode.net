@@ -6,6 +6,7 @@ import {getModel} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {getModelIsFetching, getModelErrorMessage} from "../../events/selectors";
 import Videos from '../../videos';
+import {FormattedMessage} from 'react-intl';
 
 class PerformaceVideo extends Component {
 
@@ -21,7 +22,12 @@ class PerformaceVideo extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">PERFORMANCE VIDEOS</h2>
+                    <h2 className="labelField">
+                    <FormattedMessage
+                        id="PerformancePublicVideos"
+                        defaultMessage="PERFORMANCE VIDEOS"
+                    />
+                    </h2>
 
                     <Videos
                         model={model}

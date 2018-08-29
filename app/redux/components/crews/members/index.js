@@ -10,6 +10,7 @@ import Loading from '../../loading';
 import Table from '../../table';
 import {injectIntl, FormattedMessage} from 'react-intl';
 import LateralMenu from '../lateralMenu';
+import {ACTION, ERROR_MEMBERS_TO_DISPLAY} from "../../common/form/labels";
 
 class MembersTable extends Component {
 
@@ -20,6 +21,10 @@ class MembersTable extends Component {
         });
     }
 
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     onAddModel(values) {
         const {showModal, addModel, model} = this.props;
@@ -68,7 +73,7 @@ class MembersTable extends Component {
                         }
                     },
                     {
-                        Header: "Actions",
+                        Header: this.getIntlString({id:ACTION}),
                         id: "actions",
                         width: 100,
                         Cell: (props) => {
@@ -132,7 +137,7 @@ class MembersTable extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        {/*!list.length && <div>No Crew to display</div>*/}
+                        {!list.length && <div>{ERROR_MEMBERS_TO_DISPLAY}</div>}
 
                         {isFetching && <Loading/>}
 
