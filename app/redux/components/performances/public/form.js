@@ -100,7 +100,7 @@ class PerformancePublicForm extends Component {
                 />
 
                 <FieldArray
-                    name="tech_art"
+                    name="tech_arts"
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}
@@ -111,7 +111,7 @@ class PerformancePublicForm extends Component {
                 <br/>
 
                 <FieldArray
-                    name="tech_req"
+                    name="tech_reqs"
                     component={textareaMultiTab}
                     tabs={tabs}
                     labels={labels}

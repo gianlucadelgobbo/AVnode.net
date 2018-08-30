@@ -23,10 +23,10 @@ const performancePublicValidate = values => {
     isValidName({values, name:"duration", errors});
 
     // Tech_art
-    //validateMultiLang({values, name: "tech_art", value: "value", errors, max: 100});
+    //validateMultiLang({values, name: "tech_arts", value: "value", errors, max: 100});
     
     // Tech_req
-    //validateMultiLang({values, name: "tech_req", value: "value", errors, max: 100});
+    //validateMultiLang({values, name: "tech_reqs", value: "value", errors, max: 100});
 
     return errors
 };

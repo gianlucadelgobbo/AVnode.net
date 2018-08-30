@@ -45,8 +45,8 @@ class PerformancePublic extends Component {
                 }
             });
         }
-        // Convert tech_req for API
-        model.tech_req = model.tech_req.filter(w => w.value);
+        // Convert tech_reqs for API
+        model.tech_reqs = model.tech_reqs.filter(w => w.value);
 
         
         return model;
@@ -77,43 +77,43 @@ class PerformancePublic extends Component {
         v.users = model.users || [];
         v.price = model.price;
         v.duration = model.duration;
-        v.tech_art = createMultiLanguageInitialObject("tech_art");
-        v.tech_req = createMultiLanguageInitialObject("tech_req");
-        // Convert tech_art format for FieldArray redux-form
-        /*v.tech_art = [];
-        if (Array.isArray(model.tech_art)) {
+        v.tech_arts = createMultiLanguageInitialObject("tech_arts");
+        v.tech_reqs = createMultiLanguageInitialObject("tech_reqs");
+        // Convert tech_arts format for FieldArray redux-form
+        /*v.tech_arts = [];
+        if (Array.isArray(model.tech_arts)) {
 
             // convert current lang
-            v.tech_art = model.tech_art.map(x => ({
-                key: `tech_art.${x.lang}`,
+            v.tech_arts = model.tech_arts.map(x => ({
+                key: `tech_arts.${x.lang}`,
                 value: x.text
             }));
         }
 
         locales.forEach(l => {
-            let found = v.tech_art.filter(o => o.key === `tech_art.${l}`).length > 0;
+            let found = v.tech_arts.filter(o => o.key === `tech_arts.${l}`).length > 0;
             if (!found) {
-                v.tech_art.push({
-                    key: `tech_art.${l}`,
+                v.tech_arts.push({
+                    key: `tech_arts.${l}`,
                     value: ""
                 })
             }
         });
-        v.tech_req = [];
-        if (Array.isArray(model.tech_req)) {
+        v.tech_reqs = [];
+        if (Array.isArray(model.tech_reqs)) {
 
             // convert current lang
-            v.tech_req = model.tech_req.map(x => ({
-                key: `tech_req.it`,
+            v.tech_reqs = model.tech_reqs.map(x => ({
+                key: `tech_reqs.it`,
                 value: x
             }));
         }
 
         locales.forEach(l => {
-            let found = v.tech_req.filter(o => o.key === `tech_req.${l}`).length > 0;
+            let found = v.tech_reqs.filter(o => o.key === `tech_reqs.${l}`).length > 0;
             if (!found) {
-                v.tech_req.push({
-                    key: `tech_req.${l}`,
+                v.tech_reqs.push({
+                    key: `tech_reqs.${l}`,
                     value: ""
                 })
             }
