@@ -13,13 +13,13 @@ block title
 
 block content
   .container
-    section.row.performer_crews_wrapper
+    section.row.mb-5
       .col-lg-12
         h2.main_title.indented_title.color1!=global.__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"
         .row
           each item in data.crews
             .col-sm-4
               include ../partials/boxPerformer
-      .text-center
-        a.btn.btn-primary(href="/#{data.slug}/crews/page/#{nextpage}/")=global.__("Nexts")+" >>"
+        .text-center
+          a.btn.btn-primary(href='/'+data.slug+'/crews/page/'+nextpage+'/')=global.__("Nexts")+" >>"
                   

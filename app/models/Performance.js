@@ -45,8 +45,8 @@ const performanceSchema = new Schema({
   stats: {},
   price: String,
   duration: String,
-  tech_art: [About], // what the artist brings
-  tech_req: [About], // what the artist need
+  tech_arts: [About], // what the artist brings
+  tech_reqs: [About], // what the artist need
   bookings:[Booking],
 
   users: [{ type : Schema.ObjectId, ref : 'User' }],
@@ -78,6 +78,40 @@ performanceSchema.virtual('about').get(function (req) {
     }
     return about;
   }
+});
+
+performanceSchema.virtual('tech_req').get(function (req) {
+  let tech_req = __('Nothing');
+  let tech_reqA = [];
+  if (this.tech_reqs && this.tech_reqs.length) {
+    tech_reqA = this.tech_reqs.filter(item => item.lang === global.getLocale());
+    if (tech_reqA.length && tech_reqA[0].abouttext) {
+      tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      tech_reqA = this.tech_reqs.filter(item => item.lang === config.defaultLocale);
+      if (tech_reqA.length && tech_reqA[0].abouttext) {
+        tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    return tech_req;
+  }
+});
+
+performanceSchema.virtual('tech_art').get(function (req) {
+  let tech_art = __('Nothing');
+  let tech_artA = [];
+  if (this.tech_arts && this.tech_arts.length) {
+    tech_artA = this.tech_arts.filter(item => item.lang === global.getLocale());
+    if (tech_artA.length && tech_artA[0].abouttext) {
+      tech_art = tech_artA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      tech_artA = this.tech_arts.filter(item => item.lang === config.defaultLocale);
+      if (tech_artA.length && tech_artA[0].abouttext) {
+        tech_art = tech_artA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+  }
+  return tech_art;
 });
 
 
