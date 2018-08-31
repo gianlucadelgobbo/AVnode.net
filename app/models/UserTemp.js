@@ -2,21 +2,25 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Address = require('./shared/Address');
-
 const bcrypt = require('bcrypt-nodejs');
-const mailer = require('../utilities/mailer');
 const uid = require('uuid');
 
 const adminsez = 'signup';
 
 const userSchema = new Schema({
   creation_date: Date,
-  crewname: { type: String, minlength: 3, maxlength: 50 },
-  stagename: { type: String, minlength: 3, maxlength: 50 },
-  addresses: [Address],
-  email: { type: String, unique: true },
-  password: { type: String, minlength: 3, maxlength: 50 },
+  crewname: { type: String, trim: true, minlength: 3, maxlength: 50 },
+  crewslug: { type: String, unique: true, trim: true, minlength: 3, maxlength: 50 },
+  stagename: { type: String, trim: true, required: true, minlength: 3, maxlength: 50 },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
+  birthday: { type: Date, required: true},
+  email: { type: String, required: true, unique: true, trim: true },
+  addresses: [{
+    locality: { type: String, required: true },
+    country: { type: String, required: true },
+    geometry: { type: String, required: true }
+  }],
+  password: { type: String, required: true, minlength: 3, maxlength: 50 },
   confirm: String
 }, {
   timestamps: true,
@@ -32,8 +36,7 @@ const userSchema = new Schema({
 userSchema.pre('save', function (next) {
   const user = this;
   console.log(process.env.BASE);
-  console.log('userSchema.pre(save) id:' + this._id);
-  console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
+  console.log(user);
   //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
@@ -42,17 +45,6 @@ userSchema.pre('save', function (next) {
       user.password = hash;
       user.confirm = uid.v4();
       console.log(user);
-      mailer.sendEmail({
-        template: 'confirm-email',
-        message: {
-          to: user.email
-        },
-        locals: {
-          link: process.env.BASE+'verify/signup/' + user.confirm,
-          stagename: user.stagename,
-          email: user.email
-        }
-      }, next);
       next();
     });
   });

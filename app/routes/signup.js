@@ -1,5 +1,5 @@
 const router = require('./router')();
-const uuid = require('uuid');
+const mailer = require('../utilities/mailer');
 
 const mongoose = require('mongoose');
 const UserTemp = mongoose.model('UserTemp');
@@ -28,8 +28,13 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res) => {
+  console.log('signupsignupsignupsignupsignupsignupsignupsignupsignup');
+  console.log(req.params);
+  console.log(req.query);
+  console.log(req.body);
   let data = new UserTemp();
   let select = config.cpanel.signup.forms.signup.select;
+  console.log(select)
   let put = {};
   for (const item in select) if(req.body[item]) put[item] = req.body[item];
   Object.assign(data, put);
@@ -38,31 +43,46 @@ router.post('/', (req, res) => {
     data.save((err) => {
       if (err) {
         console.log('err');
+        console.log(err);
         res.status(400).json(err);
       } else {
         select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
         let populate = config.cpanel.signup.forms.signup.populate;
   
+        //.populate(populate)
         UserTemp
         .findById(data._id)
         .select(select)
-        .populate(populate)
         .exec((err, data) => {
+          console.log('findByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindById');
+          console.log(data);
           if (err) {
             res.status(500).json({ error: `${JSON.stringify(err)}` });
           } else {
             if (!data) {
               res.status(204).json({ error: `DOC_NOT_FOUND` });
             } else {
-              let send = {_id: data._id};
-              for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
-              res.json(send);
+              mailer.sendEmail({
+                template: 'confirm-email',
+                message: {
+                  to: data.email
+                },
+                locals: {
+                  link: process.env.BASE+'verify/signup/' + data.confirm,
+                  stagename: data.stagename,
+                  email: data.email
+                }
+              }, function () {
+                let send = {_id: data._id};
+                for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
+                res.json(send);
+              });
             }
           }
         });
       }
     });
-    });
+  });
 });
 /*
 router.post('/', (req, res, next) => {
