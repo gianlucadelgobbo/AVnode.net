@@ -1,102 +1,94 @@
-import React, { Component } from 'react';
-import Form from './form';
-import {connect} from 'react-redux';
-import {FormattedMessage, injectIntl} from 'react-intl';
-import {showModal} from "../modal/actions";
-import {bindActionCreators} from "redux";
-import {MODAL_SAVED} from "../modal/constants";
-import {OPTIONS} from "./constants";
-import {saveModel} from "./actions";
+import React, { Component } from "react";
+import Form from "./form";
+import { connect } from "react-redux";
+import { FormattedMessage, injectIntl } from "react-intl";
+import { showModal } from "../modal/actions";
+import { bindActionCreators } from "redux";
+import { MODAL_SAVED } from "../modal/constants";
+import { OPTIONS } from "./constants";
+import { saveModel } from "./actions";
+import ErrorMessage from "../errorMessage";
+import { getModelErrorMessage } from "./selectors";
 
 class SignUp extends Component {
-    
+  componentDidMount() {
+    //const {fetchModel} = this.props;
+    //fetchModel();
+  }
 
-    componentDidMount() {
-        //const {fetchModel} = this.props;
-        //fetchModel();
-    }
+  // Convert form values to API model
+  createModelToSave(values) {
+    //clone obj
+    let model = Object.assign({}, values);
 
-    // Convert form values to API model
-    createModelToSave(values) {
+    return model;
+  }
 
-        //clone obj
-        let model = Object.assign({}, values);
+  onSubmit(values) {
+    const { showModal, saveModel, model } = this.props;
+    const modelToSave = this.createModelToSave(values);
+    // Add auth user _id
+    modelToSave.id = "1";
+    console.log(modelToSave);
+    //dispatch the action to save the model here
+    return saveModel(modelToSave).then(model => {
+      if (model && model.id) {
+        showModal({
+          type: MODAL_SAVED
+        });
+      }
+    });
+  }
 
-        return model;
-    }
+  handleChange() {
+    console.log("isOpened");
+  }
 
-    // Modify model from API to create form initial values
-    getInitialValues() {
-        const {model} = this.props;
+  render() {
+    const { showModal, errorMessage } = this.props;
+    const height = 50;
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-        if (!model) {
-            return {};
-        }
-
-        let v = {};
-
-        return v;
-    }
-
-    onSubmit(values) {
-        const {showModal, saveModel} = this.props;
-        const modelToSave = this.createModelToSave(values);
-        console.log(modelToSave);
-        // Add auth user _id
-        //modelToSave._id = model._id;
-
-        //dispatch the action to save the model here
-        return saveModel(modelToSave)
-            .then((model) => {
-                if(model && model.id){
-                    showModal({
-                        type: MODAL_SAVED
-                    });
-                }
-            });
-    }
-
-    handleChange(){
-        console.log('isOpened');
-    }
-
-
-    render() {
-
-        const {showModal} = this.props;
-        const height = 50;
-        return (
-        
-            <div className="row">
-                <div className="col-md-12">
-                    <Form
-                        initialValues={this.getInitialValues()}
-                        onSubmit={this.onSubmit.bind(this)}
-                        showModal={showModal}
-                        options={OPTIONS}
-                        onChange={this.handleChange.bind(this)}
-                        height={height}
-                    />
-                </div>
-            </div>
-        
-           
-        );
-    }
+          <Form
+            onSubmit={this.onSubmit.bind(this)}
+            showModal={showModal}
+            options={OPTIONS}
+            //onChange={this.handleChange.bind(this)}
+            height={height}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
+const mapStateToProps = (
+  state,
+  {
+    match: {
+      params: { _id }
+    }
+  }
+) => ({
+  errorMessage: getModelErrorMessage(state, (_id = "1"))
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    saveModel,
-    showModal
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      saveModel,
+      showModal
+    },
+    dispatch
+  );
 
 SignUp = connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(SignUp);
 
 export default SignUp;
