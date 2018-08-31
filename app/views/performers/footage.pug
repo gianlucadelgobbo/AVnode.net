@@ -13,13 +13,12 @@ block title
 
 block content
   .container
-    section.row.performer_footage_wrapper
+    section.row.mb-5
       .col-lg-12
         h2.main_title.indented_title.color1!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"
         .row
           each item in data.footage
             .col-sm-4
               include ../partials/boxFootage
-      .text-center
-        a.btn.btn-primary(href="/#{data.slug}/footage/page/#{nextpage}/")=global.__("Nexts")+" >>"
-                  
+        .text-center
+          a.btn.btn-primary(href='/'+data.slug+'/footage/page/'+nextpage+'/')=global.__("Nexts")+" >>"

@@ -43,8 +43,8 @@ dataproviderAdmin.fetchUser = (id, cb) => {
       'teaserImage': 1,
       'file': 1,
       'categories': 1,
-      'tech_art': 1,
-      'tech_req': 1,
+      'tech_arts': 1,
+      'tech_reqs': 1,
       'video': 1
     }
   }, {
@@ -74,8 +74,8 @@ dataproviderAdmin.fetchUser = (id, cb) => {
         'teaserImage': 1,
         'file': 1,
         'categories': 1,
-        'tech_art': 1,
-        'tech_req': 1,
+        'tech_arts': 1,
+        'tech_reqs': 1,
         'video': 1
       }
     }],

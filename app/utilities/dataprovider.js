@@ -120,7 +120,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           }
         }
         res.render(section + '/' + subsection, {
-          title: data.stagename,
+          title: data.stagename ? data.stagename : data.title,
           data: data,
           path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
