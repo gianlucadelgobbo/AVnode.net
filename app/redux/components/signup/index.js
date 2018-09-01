@@ -11,6 +11,7 @@ import ErrorMessage from "../errorMessage";
 import { getModelErrorMessage } from "./selectors";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import axios from "axios";
+import moment from "moment";
 
 class SignUp extends Component {
   componentDidMount() {
@@ -22,6 +23,10 @@ class SignUp extends Component {
   createModelToSave(values) {
     //clone obj
     let model = Object.assign({}, values);
+
+    //let birthday = model.birthday;
+    //let myDate = moment(birthday, "DD-MM-YYYY").toDate();
+    //model.birthday = myDate;
 
     return model;
   }
