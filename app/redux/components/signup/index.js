@@ -9,6 +9,8 @@ import { OPTIONS } from "./constants";
 import { saveModel } from "./actions";
 import ErrorMessage from "../errorMessage";
 import { getModelErrorMessage } from "./selectors";
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import axios from "axios";
 
 class SignUp extends Component {
   componentDidMount() {
@@ -24,19 +26,57 @@ class SignUp extends Component {
     return model;
   }
 
+  createLatLongToSave = address => {
+    return geocodeByAddress(address).then(results => getLatLng(results[0]));
+  };
+
   onSubmit(values) {
     const { showModal, saveModel, model } = this.props;
-    const modelToSave = this.createModelToSave(values);
-    // Add auth user _id
-    modelToSave.id = "1";
-    console.log(modelToSave);
-    //dispatch the action to save the model here
-    return saveModel(modelToSave).then(model => {
-      if (model && model.id) {
-        showModal({
-          type: MODAL_SAVED
-        });
-      }
+
+    let data = Object.assign({}, values);
+
+    data.addresses = [];
+
+    data.addresses.push(values.addresses);
+
+    data.addresses = data.addresses.map(a => {
+      const originalString = a;
+      const split = originalString.split(",");
+      const country = split[split.length - 1].trim();
+      const locality = split[0].trim();
+      const geometry = a.geometry;
+      return { originalString, locality, country, geometry };
+    });
+
+    let promises = [];
+
+    const addrs = data.addresses;
+    addrs.forEach(a => {
+      promises.push(
+        this.createLatLongToSave(a.originalString)
+          .then(result => {
+            a.geometry = result;
+          })
+          .catch(() => {
+            console.log("ciao da google!");
+          })
+      );
+    });
+
+    return axios.all(promises).then(() => {
+      const modelToSave = this.createModelToSave(values);
+      modelToSave.addresses = addrs;
+      // Add auth user _id
+      modelToSave.id = "1";
+      console.log(modelToSave);
+      //dispatch the action to save the model here
+      return saveModel(modelToSave).then(model => {
+        if (model && model.id) {
+          showModal({
+            type: MODAL_SAVED
+          });
+        }
+      });
     });
   }
 
