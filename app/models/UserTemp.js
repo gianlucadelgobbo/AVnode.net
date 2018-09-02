@@ -10,15 +10,18 @@ const adminsez = 'signup';
 const userSchema = new Schema({
   creation_date: Date,
   crewname: { type: String, trim: true, minlength: 3, maxlength: 50 },
-  crewslug: { type: String, unique: true, trim: true, minlength: 3, maxlength: 50 },
+  crewslug: { type: String, trim: true, minlength: 3, maxlength: 50 },
   stagename: { type: String, trim: true, required: true, minlength: 3, maxlength: 50 },
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
+  slug: { type: String, trim: true, required: true, minlength: 3, maxlength: 50 },
   birthday: { type: Date, required: true},
   email: { type: String, required: true, unique: true, trim: true },
   addresses: [{
     locality: { type: String, required: true },
     country: { type: String, required: true },
-    geometry: { type: String, required: true }
+    geometry: { 
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true }
+    }
   }],
   password: { type: String, required: true, minlength: 3, maxlength: 50 },
   confirm: String
