@@ -697,7 +697,7 @@ export const fetchPartnerCategories = () => {
 };
 
 export const saveSignupPublic = (model) => {
-    return axios.post(`signup`)
+    return axios.post(`signup`, model)
         .then(result => {
             return result.data;
         });
