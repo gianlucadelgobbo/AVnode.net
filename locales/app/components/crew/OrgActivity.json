@@ -1,0 +1,122 @@
+[
+  {
+    "id": "activity_name",
+    "defaultMessage": "Activity Name"
+  },
+  {
+    "id": "public",
+    "defaultMessage": "Public"
+  },
+  {
+    "id": "activity_logo",
+    "defaultMessage": "Activity logo (.svg only)"
+  },
+  {
+    "id": "activity_start_date",
+    "defaultMessage": "Activity start date"
+  },
+  {
+    "id": "activity_is_running",
+    "defaultMessage": "Activity is running?"
+  },
+  {
+    "id": "activity_end_date",
+    "defaultMessage": "Activity end date (only if it is not running)"
+  },
+  {
+    "id": "activity_season",
+    "defaultMessage": "Activity main season"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "Private"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.empty",
+    "defaultMessage": "Please select"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.fullyear",
+    "defaultMessage": "Full year"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.winter",
+    "defaultMessage": "Winter"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.spring",
+    "defaultMessage": "Spring"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.summer",
+    "defaultMessage": "Summer"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.autumn",
+    "defaultMessage": "Autumn"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.january",
+    "defaultMessage": "January"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.february",
+    "defaultMessage": "February"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.march",
+    "defaultMessage": "March"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.april",
+    "defaultMessage": "April"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.may",
+    "defaultMessage": "May"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.june",
+    "defaultMessage": "June"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.july",
+    "defaultMessage": "July"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.august",
+    "defaultMessage": "August"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.september",
+    "defaultMessage": "September"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.october",
+    "defaultMessage": "October"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.november",
+    "defaultMessage": "November"
+  },
+  {
+    "id": "crew.edit.form.label.activity_season.december",
+    "defaultMessage": "December"
+  },
+  {
+    "id": "activity_address",
+    "defaultMessage": "Activity cities"
+  },
+  {
+    "id": "crew.edit.form.label.activity_country.empty",
+    "defaultMessage": "Please select a country"
+  },
+  {
+    "id": "crew.edit.form.label.activity_country.en",
+    "defaultMessage": "English"
+  },
+  {
+    "id": "crew.edit.form.label.activity_country.it",
+    "defaultMessage": "Italiano"
+  }
+]

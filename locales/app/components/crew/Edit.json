@@ -1,0 +1,286 @@
+[
+  {
+    "id": "name",
+    "defaultMessage": "Name"
+  },
+  {
+    "id": "public",
+    "defaultMessage": "Public"
+  },
+  {
+    "id": "teaserImage",
+    "defaultMessage": "TeaserImage"
+  },
+  {
+    "id": "image",
+    "defaultMessage": "Image"
+  },
+  {
+    "id": "addabout",
+    "defaultMessage": "About"
+  },
+  {
+    "id": "language",
+    "defaultMessage": "Language"
+  },
+  {
+    "id": "language.en",
+    "defaultMessage": "English"
+  },
+  {
+    "id": "manageabout",
+    "defaultMessage": "Manage your About texts"
+  },
+  {
+    "id": "members",
+    "defaultMessage": "Members"
+  },
+  {
+    "id": "inviteMembers",
+    "defaultMessage": "Invite members"
+  },
+  {
+    "id": "suggestMembersLoading",
+    "defaultMessage": "Finding users…"
+  },
+  {
+    "id": "org_extradata_title",
+    "defaultMessage": "Organization Extra Data"
+  },
+  {
+    "id": "org_name",
+    "defaultMessage": "Organisation legal name"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "Private"
+  },
+  {
+    "id": "org_foundation_year",
+    "defaultMessage": "Organisation foundation year"
+  },
+  {
+    "id": "org_type",
+    "defaultMessage": "Organisation type"
+  },
+  {
+    "id": "Please select",
+    "defaultMessage": "Please select"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.art_gallery",
+    "defaultMessage": "Art gallery"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.centre_for_architecture",
+    "defaultMessage": "Centre for Architecture"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.choir",
+    "defaultMessage": "Choir"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.concert_hall",
+    "defaultMessage": "Concert hall"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.dance_company",
+    "defaultMessage": "Dance Company"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.design-art_centre",
+    "defaultMessage": "Design/Art centre"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.festival",
+    "defaultMessage": "Festival (non Audiovisual)"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.group_of_young_people_active_in_youth_work",
+    "defaultMessage": "Group of young people active in youth work"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.higher_education_institution",
+    "defaultMessage": "Higher education institution (tertiary level)"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.library",
+    "defaultMessage": "Library"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.literature_foundation",
+    "defaultMessage": "Literature Foundation"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.local_public_body",
+    "defaultMessage": "Local Public body"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.multimedia_association",
+    "defaultMessage": "Multimedia association"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.museum",
+    "defaultMessage": "Museum"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.music_centre",
+    "defaultMessage": "Music Centre"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.national_public_body",
+    "defaultMessage": "National Public body"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.non-governmental_organisation-association-social_enterprise",
+    "defaultMessage": "Non-governmental organisation/association/social enterprise"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.opera",
+    "defaultMessage": "Opera"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.orchestra",
+    "defaultMessage": "Orchestra"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.regional_public_body",
+    "defaultMessage": "Regional Public body"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.research_institute-centre",
+    "defaultMessage": "Research Institute/Centre"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.school-institute-educational_centre-general_education",
+    "defaultMessage": "School/Institute/Educational centre – General education (secondary level)"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.street_art_association",
+    "defaultMessage": "Street art association"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.theatre",
+    "defaultMessage": "Theatre"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.type.other",
+    "defaultMessage": "Other"
+  },
+  {
+    "id": "org_logo",
+    "defaultMessage": "Organisation logo (.svg only)"
+  },
+  {
+    "id": "org_public_email",
+    "defaultMessage": "Organisation public email"
+  },
+  {
+    "id": "org_aims_and_activities",
+    "defaultMessage": "Aims and activities of the organisation"
+  },
+  {
+    "id": "org_pic_code",
+    "defaultMessage": "Organisation PIC Code"
+  },
+  {
+    "id": "org_address",
+    "defaultMessage": "Organisation legal address (only one)"
+  },
+  {
+    "id": "org_vat_number",
+    "defaultMessage": "Organisation vat number"
+  },
+  {
+    "id": "org_able_to_recuperate_vat",
+    "defaultMessage": "Able to recuperate VAT?"
+  },
+  {
+    "id": "org_official_registration_number",
+    "defaultMessage": "Organisation official registration number"
+  },
+  {
+    "id": "org_legal_representative_title",
+    "defaultMessage": "Organisation legal representative title"
+  },
+  {
+    "id": "crew.edit.form.label.org_legal_representative_title.mr",
+    "defaultMessage": "Mr."
+  },
+  {
+    "id": "crew.edit.form.label.org_legal_representative_title.miss",
+    "defaultMessage": "Miss"
+  },
+  {
+    "id": "org_legal_representative_role",
+    "defaultMessage": "Organisation legal representative role"
+  },
+  {
+    "id": "org_legal_representative_name",
+    "defaultMessage": "Organisation legal representative name"
+  },
+  {
+    "id": "org_legal_representative_surname",
+    "defaultMessage": "Organisation legal representative surname"
+  },
+  {
+    "id": "org_legal_representative_email",
+    "defaultMessage": "Organisation legal representative email"
+  },
+  {
+    "id": "org_statute",
+    "defaultMessage": "Organisation statute (pdf only)"
+  },
+  {
+    "id": "org_members_cv",
+    "defaultMessage": "Organisation members cv (pdf only)"
+  },
+  {
+    "id": "org_activity_report",
+    "defaultMessage": "Organisation Activity Report (pdf only)"
+  },
+  {
+    "id": "org_permanent_employees",
+    "defaultMessage": "Organisation permanent employees"
+  },
+  {
+    "id": "org_permanent_employees_avnode",
+    "defaultMessage": "Organisation permanent employees AVnode"
+  },
+  {
+    "id": "org_temporary_employees",
+    "defaultMessage": "Organisation temporary employees"
+  },
+  {
+    "id": "org_temporary_employees_avnode",
+    "defaultMessage": "Organisation temporary employees AVnode"
+  },
+  {
+    "id": "org_relevance_in_the_project",
+    "defaultMessage": "Organisation relevance in the project"
+  },
+  {
+    "id": "org_emerging_artists_definition",
+    "defaultMessage": "Organisation emerging artists definition"
+  },
+  {
+    "id": "org_eu_grants_received_in_the_last_3_years",
+    "defaultMessage": "EU grants received in the last 3 years"
+  },
+  {
+    "id": "org_annual_turnover_in_euro",
+    "defaultMessage": "Organisation annual turnover in euro"
+  },
+  {
+    "id": "org_contacts",
+    "defaultMessage": "Organisation contacts (multiple)"
+  },
+  {
+    "id": "org_activities",
+    "defaultMessage": "Organisation activities (multiple)"
+  },
+  {
+    "id": "form.save",
+    "defaultMessage": "Save"
+  }
+]

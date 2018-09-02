@@ -1,0 +1,22 @@
+[
+  {
+    "id": "Profile",
+    "defaultMessage": "Profile"
+  },
+  {
+    "id": "Crews",
+    "defaultMessage": "Crews"
+  },
+  {
+    "id": "Performances",
+    "defaultMessage": "Performances"
+  },
+  {
+    "id": "Events",
+    "defaultMessage": "Events"
+  },
+  {
+    "id": "Preferences",
+    "defaultMessage": "Preferences"
+  }
+]

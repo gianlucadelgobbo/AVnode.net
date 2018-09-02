@@ -1,0 +1,54 @@
+[
+  {
+    "id": "crew.org.contact_title",
+    "defaultMessage": "Organisation contact title"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "Private"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.contact_title.empty",
+    "defaultMessage": "Please select"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.contact_title.mr",
+    "defaultMessage": "Mr."
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.contact_language.miss",
+    "defaultMessage": "Miss"
+  },
+  {
+    "id": "crew.org.contact_role",
+    "defaultMessage": "Organisation contact role"
+  },
+  {
+    "id": "crew.org.contact_name",
+    "defaultMessage": "Organisation contact name"
+  },
+  {
+    "id": "crew.org.contact_surname",
+    "defaultMessage": "Organisation contact surname"
+  },
+  {
+    "id": "crew.org.contact_email",
+    "defaultMessage": "Organisation contact email"
+  },
+  {
+    "id": "crew.org.contact_language",
+    "defaultMessage": "Organisation contact language"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.contact_language.empty",
+    "defaultMessage": "Please select"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.contact_language.en",
+    "defaultMessage": "English"
+  },
+  {
+    "id": "crew.edit.form.label.crew.org.contact_language.it",
+    "defaultMessage": "Italiano"
+  }
+]
