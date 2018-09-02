@@ -19,3 +19,4 @@ __IMPORT SCRIPTS
 
 /.db/
 /.elasticsearch/
+config/ses.json
