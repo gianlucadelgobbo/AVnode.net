@@ -1,10 +1,56 @@
 const Email = require('email-templates');
 const nodemailer = require('nodemailer');
+const logger = require('./logger');
+
 //const ses = require('nodemailer-ses-transport');
 const aws = require('aws-sdk');
-const logger = require('./logger');
 aws.config.loadFromPath('./config/ses.json');
+var params = {
+  Destination: { /* required */
+    CcAddresses: [
+      'g.delgobbo@flyer.it',
+      /* more items */
+    ],
+    ToAddresses: [
+      'g.delgobbo@flyer.it',
+      /* more items */
+    ]
+  },
+  Message: { /* required */
+    Body: { /* required */
+      Html: {
+       Charset: "UTF-8",
+       Data: "HTML_FORMAT_BODY"
+      },
+      Text: {
+       Charset: "UTF-8",
+       Data: "TEXT_FORMAT_BODY"
+      }
+     },
+     Subject: {
+      Charset: 'UTF-8',
+      Data: 'Test email'
+     }
+    },
+  Source: 'info@avnode.net', /* required */
+  ReplyToAddresses: [
+      'info@avnode.net',
+    /* more items */
+  ],
+};       
 
+// Create the promise and SES service object
+var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+
+// Handle promise's fulfilled/rejected states
+sendPromise.then(
+  function(data) {
+    console.log(data.MessageId);
+  }).catch(
+    function(err) {
+    console.error(err, err.stack);
+  });
+  
 const getTransporter = () => {
   return nodemailer.createTransport({
     SES: new aws.SES({
