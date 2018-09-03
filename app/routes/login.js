@@ -46,6 +46,7 @@ router.post('/', (req, res, next) => {
       }
       delete req.session.returnTo;
       logger.info('passport.authenticate auth success');
+      logger.info(returnTo);
       req.flash('success', { msg: __('You are logged in.') });
       res.redirect(returnTo);
     });
