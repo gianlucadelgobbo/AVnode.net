@@ -28,6 +28,77 @@ router.get('/', (req, res) => {
 
 
 
+router.post('/', (req, res) => {
+  console.log('signupsignupsignupsignupsignupsignupsignupsignupsignup');
+  console.log(req.body);
+  if (req.body.crewName) req.body.crewname = req.body.crewName;
+  if (req.body.CrewProfile) req.body.crewslug = req.body.CrewProfile;
+  req.body.lang = global.getLocale();
+
+  let data = new UserTemp();
+  let select = config.cpanel.signup.forms.signup.select;
+  let put = {};
+  for (const item in select) if(req.body[item]) put[item] = req.body[item];
+  router.signupValidator(put, (put, errors) => {
+    console.log('signupValidator CB');
+    console.log(errors.errors);
+    if (errors.message === "") {
+      console.log('signupValidator CB');
+      Object.assign(data, put);
+                
+      UserTemp.deleteMany({ email: data.email }, function (err) {
+        data.save((err) => {
+          if (err) {
+            console.log('err');
+            console.log(err);
+            res.status(400).json(err);
+          } else {
+            select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
+            //let populate = config.cpanel.signup.forms.signup.populate;      
+            //.populate(populate)
+            UserTemp
+            .findById(data._id)
+            .select(select)
+            .exec((err, data) => {
+              console.log('findByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindById');
+              console.log(data);
+              if (err) {
+                res.status(500).json({ error: `${JSON.stringify(err)}` });
+              } else {
+                if (!data) {
+                  res.status(204).json({ error: `DOC_NOT_FOUND` });
+                } else {
+                  mailer.signup({
+                    template: 'signup',
+                    message: {
+                      to: data.email
+                    },
+                    locals: {
+                      link: 'http://'+req.headers.host+'/verify/signup/',
+                      stagename: data.stagename,
+                      email: data.email,
+                      uuid: data.confirm
+                    }
+                  }, function(){
+                    console.log("stocazzo");
+                  });
+                  console.log("stocazzo2");
+                  let send = {_id: data._id};
+                  for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
+                  res.json(send);
+                }
+              }
+            });
+          }
+        });
+      });
+    } else {
+      console.log('signupValidator CB errors');
+      res.status(400).json(errors);  
+    }
+  });
+});
+
 router.signupValidator = (put, cb) => {
   console.log('signupValidatorsignupValidatorsignupValidatorsignupValidatorsignupValidator');
  
@@ -185,74 +256,7 @@ router.signupValidator = (put, cb) => {
 
 
 
-router.post('/', (req, res) => {
-  console.log('signupsignupsignupsignupsignupsignupsignupsignupsignup');
-  console.log(req.body);
-  if (req.body.crewName) req.body.crewname = req.body.crewName;
-  if (req.body.CrewProfile) req.body.crewslug = req.body.CrewProfile;
-  let data = new UserTemp();
-  let select = config.cpanel.signup.forms.signup.select;
-  let put = {};
-  for (const item in select) if(req.body[item]) put[item] = req.body[item];
-  router.signupValidator(put, (put, errors) => {
-    console.log('signupValidator CB');
-    console.log(errors.errors);
-    if (errors.message === "") {
-      console.log('signupValidator CB');
-      Object.assign(data, put);
-                
-      UserTemp.deleteMany({ email: data.email }, function (err) {
-        data.save((err) => {
-          if (err) {
-            console.log('err');
-            console.log(err);
-            res.status(400).json(err);
-          } else {
-            select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
-            //let populate = config.cpanel.signup.forms.signup.populate;      
-            //.populate(populate)
-            UserTemp
-            .findById(data._id)
-            .select(select)
-            .exec((err, data) => {
-              console.log('findByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindById');
-              console.log(data);
-              if (err) {
-                res.status(500).json({ error: `${JSON.stringify(err)}` });
-              } else {
-                if (!data) {
-                  res.status(204).json({ error: `DOC_NOT_FOUND` });
-                } else {
-                  mailer.signup({
-                    template: 'signup',
-                    message: {
-                      to: data.email
-                    },
-                    locals: {
-                      link: 'http://'+req.headers.host+'/verify/signup/',
-                      stagename: data.stagename,
-                      email: data.email,
-                      uuid: data.confirm
-                    }
-                  }, function(){
-                    console.log("stocazzo");
-                  });
-                  console.log("stocazzo2");
-                  let send = {_id: data._id};
-                  for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
-                  res.json(send);
-                }
-              }
-            });
-          }
-        });
-      });
-    } else {
-      console.log('signupValidator CB errors');
-      res.status(400).json(errors);  
-    }
-  });
-});
+
 /*
 router.post('/', (req, res, next) => {
   if (req.body.email && req.body.username && req.body.stagename && req.body.name && req.body.surname && req.body.password) {

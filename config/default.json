@@ -148,6 +148,7 @@
             "subscribe": 1,
             "stagename": 1,
             "slug": 1,
+            "lang": 1,
             "birthday": 1,
             "email": 1,
             "password": 1,
@@ -2965,6 +2966,16 @@
           "model": "EventShow"
         }, {
           "path": "crews",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 5 },
+          "model": "UserShow"
+        }, {
+          "path": "members",
           "select": {
             "stagename": 1,
             "slug": 1,
