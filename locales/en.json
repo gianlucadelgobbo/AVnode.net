@@ -128,5 +128,11 @@
 	"Author": "Author",
 	"Technical specifications": "Technical specifications",
 	"Likes": "Likes",
-	"Signup verify": "Signup verify"
+	"Signup verify": "Signup verify",
+	"Verification Failed": "Verification Failed",
+	"Verification was already done or someone subscribed with some of your data, please sign up again.": "Verification was already done or someone subscribed with some of your data, please sign up again.",
+	"SIGN UP": "SIGN UP",
+	"Verification Success!!!": "Verification Success!!!",
+	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.",
+	"LOG IN": "LOG IN"
 }

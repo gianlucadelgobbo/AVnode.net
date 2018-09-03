@@ -14,6 +14,7 @@ const userSchema = new Schema({
   stagename: { type: String, trim: true, required: true, minlength: 3, maxlength: 50 },
   slug: { type: String, trim: true, required: true, minlength: 3, maxlength: 50 },
   birthday: { type: Date, required: true},
+  lang: { type: String, required: true},
   email: { type: String, required: true, unique: true, trim: true },
   addresses: [{
     locality: { type: String, required: true },
