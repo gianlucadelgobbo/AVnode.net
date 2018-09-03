@@ -777,7 +777,7 @@ export const singleGoogleCityCountry = ({
     options: {
       types: ["(city)"]
     },
-    isChild: true
+    isChild: false
   });
 };
 
@@ -818,18 +818,14 @@ const singleInput = ({
       name="addresses"
       placeholder={placeholder}
       component={render}
-      isChild={true}
+      isChild={false}
     />
   );
 
   return (
-    <dl className="row">
-      <dt className="col-sm-2">{label}</dt>
-      <dd className="col-sm-10">
-        {" "}
-        {renderSubField({ fields, render, key, showModal })}{" "}
-      </dd>
-    </dl>
+      <div>
+        {renderSubField({ fields, render, key, showModal })}
+      </div>
   );
 };
 
@@ -2402,7 +2398,11 @@ export const CollapsedPanel = ({
       </ButtonGroup>
       <Collapse isOpened={input.value === "group"}>
         <div style={{ height }} />
-        <Field name="crewName" component={inputText} placeholder="Crew Name" />
+        <Field 
+          name="crewName" 
+          component={inputText} 
+          placeholder="Crew Name" 
+        />
         <Field
           name="CrewProfile"
           component={inputText}

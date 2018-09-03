@@ -4,17 +4,19 @@ import {
   isValidName,
   isValidDate
 } from "../common/form/validators";
-import { INVALID_STRING_3_50, INVALID_PASSWORD } from "../common/form/errors";
+import { INVALID_STRING_3_50, INVALID_PASSWORD, REQUIRED } from "../common/form/errors";
 
 const signupValidate = values => {
   const errors = {};
 
-  const { birthday } = values;
-
-  let { password, confirmPassword } = values;
+  let { subscribe, birthday, password, confirmPassword } = values;
 
   if (password !== confirmPassword) {
     errors.confirmPassword = INVALID_PASSWORD;
+  }
+  if(subscribe==="group"){
+    isValidName({ values, name: "crewName", errors });
+    isValidName({ values, name: "CrewProfile", errors });
   }
 
   //Stage name
@@ -26,25 +28,20 @@ const signupValidate = values => {
     errorKey: INVALID_STRING_3_50,
     errors
   });
-
+  //Subscribe
+  isValidName({ values, name: "subscribe", errors });
+  //StageName
   isValidName({ values, name: "stagename", errors });
-
-  //Crew Name
-  //isValidName({values, name:"crewName", errors});
-
-  //Crew Profile
-  //isValidName({values, name:"CrewProfile", errors});
-
-  // Slug
+  //Slug
   isValidSlug({ values, name: "slug", errors });
-
-  //Birthdate
-  //isValidName({values, name:"birthdate", errors});
-
+  //Birthday
+  if (!birthday || !isValidDate(birthday)) {
+      errors.birthday = REQUIRED;
+  }
   //Email
   isValidName({ values, name: "email", errors });
   //Address
-  isValidName({ values, name: "city", errors });
+  isValidName({ values, name: "addresses", errors });
   //Password
   isValidName({ values, name: "password", errors });
   //Password
