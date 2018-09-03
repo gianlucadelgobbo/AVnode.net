@@ -46,6 +46,7 @@ router.use('/logout', logout);
 router.use('/password', password);
 router.use('/search', search);
 router.use('/signup', signup);
+router.use('/admin/api/signup', signup);
 
 router.use('/verify', verify);
 
