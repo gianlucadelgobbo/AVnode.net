@@ -45,16 +45,17 @@ block title
 
 block content
   .container
-    section#events.row.performer_events_wrapper
-      .col-lg-12
-        h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-        .owl-carousel.loop.owl-theme
-          each item in data.events
-            include ../partials/boxEvent
-        .button_more.button_more_program
-          a(href="/"+data.slug+"/events", title=data.stagename)
-            span.button_more_label!=global.__('+ All the events')
-            span.button_more_bkg
+    if data.events.length
+      section#events.row.performer_events_wrapper
+        .col-lg-12
+          h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+          .owl-carousel.loop.owl-theme
+            each item in data.events
+              include ../partials/boxEvent
+          .button_more.button_more_program
+            a(href="/"+data.slug+"/events", title=data.stagename)
+              span.button_more_label!=global.__('+ All the events')
+              span.button_more_bkg
           
   
   if data.performances.length
@@ -98,6 +99,22 @@ block content
               .col-sm-6
                 .row
                   each item in data.crews
+                    .col-sm-12
+                      include ../partials/boxPerformer
+              .col-sm-6
+                img.img-fluid(src="/images/logo_avnode_symbol.svg")
+
+  if data.members.length
+    section#members.performer_crew_wrapper
+      .container
+        .row
+          .col-lg-12
+            h2.main_title.indented_title!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+            .performance_divider.basic_divider
+            .row
+              .col-sm-6
+                .row
+                  each item in data.members
                     .col-sm-12
                       include ../partials/boxPerformer
               .col-sm-6

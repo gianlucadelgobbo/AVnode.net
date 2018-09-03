@@ -41,15 +41,15 @@ const userSchema = new Schema({
   name: { type: String, trim: true, maxlength: 50 },
   surname: { type: String, trim: true, maxlength: 50 },
   gender: { type: String, trim: true, enum: ['M', 'F', 'Other'] },
-  lang: { type: String, trim: true, required: true},
-  birthday: { type: Date, required: true},
+  lang: { type: String, trim: true, required: function() { return !this.is_crew; }},
+  birthday: { type: Date, required: function() { return !this.is_crew; }},
   citizenship: [],
   addresses_private: [AddressPrivate],
   phone: [Link],
   mobile: [Link],
   skype: [Link],
 
-  email: { type: String, trim: true, index: true, unique: true, sparse: true },
+  email: { type: String, trim: true, index: true, unique: true, sparse: true, required: function() { return this.is_crew === false ? "EMAIL_IS_REQUIRED" : false; } },
   emails: {
     type     : [{
       email: {
@@ -58,7 +58,7 @@ const userSchema = new Schema({
         index: true, 
       /*  unique: true, */
         sparse: true,
-        required: 'EMAIL_IS_REQUIRED',
+        required: function() { return this.is_crew === false ? "EMAIL_IS_REQUIRED" : false; },
         validate: [(email) => {
           var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
           return re.test(email)
@@ -70,7 +70,7 @@ const userSchema = new Schema({
       mailinglists: {},
       confirm: String
     }],
-    required : true,
+    required : function() { return this.is_crew === false ? "EMAIL_IS_REQUIRED" : false; },
     sparse: true,
     validate : [{
       validator : function(array) {
@@ -231,7 +231,7 @@ userSchema.pre('save', function (next) {
   console.log('userSchema.pre(save) id:' + this._id);
   const user = this;
   console.log(process.env.BASE);
-  if (user.emails) {
+  if (user.emails && !user.is_crew) {
     for(let item=0;item<user.emails.length;item++) {
       let mailinglists = [];
       for (mailinglist in user.emails[item].mailinglists) if (user.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);

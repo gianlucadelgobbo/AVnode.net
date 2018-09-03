@@ -1,0 +1,14 @@
+[
+  {
+    "id": "tel",
+    "defaultMessage": "Phone"
+  },
+  {
+    "id": "public",
+    "defaultMessage": "PUBLIC"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "PRIVATE"
+  }
+]
