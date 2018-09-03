@@ -1,0 +1,38 @@
+[
+  {
+    "id": "primary",
+    "defaultMessage": "Primary"
+  },
+  {
+    "id": "confirmed",
+    "defaultMessage": "Confirmed"
+  },
+  {
+    "id": "unconfirmed",
+    "defaultMessage": "Unconfirmed"
+  },
+  {
+    "id": "public",
+    "defaultMessage": "Public"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "Private"
+  },
+  {
+    "id": "makeitprimary",
+    "defaultMessage": "Make it primary"
+  },
+  {
+    "id": "makeitprivate",
+    "defaultMessage": "Make it private"
+  },
+  {
+    "id": "makeitpublic",
+    "defaultMessage": "Make it public"
+  },
+  {
+    "id": "delete",
+    "defaultMessage": "Delete"
+  }
+]
