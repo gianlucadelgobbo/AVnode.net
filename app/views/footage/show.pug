@@ -1,54 +1,73 @@
 extends ../layout
 
 block teaser
-  if data.teaserImage
-    .d-flex.justify-content-center.align-items-start
-      img.card-img-top.img-fluid(
-        src=`${data.teaserImageFormats.large}`
-        alt=`${data.name}`
-      )
 
 block title
   if data.title
-    .jumbotron.jumbotron-fluid
-      .container
-        .row
-          .col-lg-8
-            h1.display-4=data.title
-            p=data.about
-          .col-lg-4
-            if data.image
-              img.card-img-top.img-fluid(
-                src=data.imageFormats.medium
-                alt=data.title
-              )
+    .container
+      .row.performer_title
+        .col-lg-12
+          h1.main_title=data.title
 
 block content
-  video#my-video.video-js(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{aspectRatio:"16:9", fluid: true}')
-    source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
-    //source(src='MY_VIDEO.webm', type='video/webm')
-    p.vjs-no-js
-      !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
-      a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
+  .container
+    .row
+      .col-md-8
+        .embed-responsive.embed-responsive-16by9
+          - var ext = data.media.file.substring(data.media.file.lastIndexOf(".")+1)
+          if ext==="swf"
+            object.embed-responsive-item(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', width='550', height='400', align='middle',  type="application/x-shockwave-flash", data='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
+              param(name='movie', value='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
+              embed(width='550', height='400', align='middle',  src='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
+              a(href='http://www.adobe.com/go/getflash')
+                img(src='http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif', alt='Get Adobe Flash player')
+          else
+            video.embed-responsive-item#my-video.video-js(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{aspectRatio:"16:9", fluid: true}')
+              source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
+              //source(src='MY_VIDEO.webm', type='video/webm')
+              p.vjs-no-js
+                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
+                a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
+        .row.mt-3
+          .col-md-6
+            button.btn.btn-primary.btn-lg.btn-block.download=global.__('Download') 
+          .col-md-6
+            button.btn.btn-primary.btn-lg.btn-block.download=global.__('Add to Playlist') 
 
-  object(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', width='550', height='400', align='middle',  type="application/x-shockwave-flash", data='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
-    param(name='movie', value='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
-    embed(width='550', height='400', align='middle',  src='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
-    a(href='http://www.adobe.com/go/getflash')
-      img(src='http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif', alt='Get Adobe Flash player')
- 
-  .row
-    .col-lg-12
-      h3=global.__('Members')
-      .card-columns
-        //each member in data.members
-          .card
-            if member.image
-              img.card-img-top.img-fluid(
-                src=member.imageFormats.medium
-                alt=member.name
-              )
-            .card-block
-              h4.card-title
-                =member.stagename
-              a.btn.btn-primary(href=member.publicUrl)=global.__('More')
+
+      .col-md-4
+        if data.stats
+          h3=__("Stats")
+          ul
+            if data.stats.visits
+              li=data.stats.visits + ' ' + global.__('Views')
+            if data.stats.likes
+              li=data.stats.likes + ' ' + global.__('Likes')  
+            if data.stats.downloads
+              li=data.stats.downloads + ' ' + global.__('Downloads')  
+        h3=__("Data")
+        ul
+          li=global.__('File name')+": "
+            b=data.media.file.substring(data.media.file.lastIndexOf("/")+1)
+          li=global.__('File size')+": "
+            b=( data.media.filesize / Math.pow(1024, Math.floor( Math.log(data.media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.media.filesize) / Math.log(1024) )]
+          li=global.__('File duration')+": "
+            b=data.media.duration
+          li=global.__('File type')+": "
+            b=ext
+        if data.tags
+          h3=__("Tags")
+          ul.list-inline.category_performance_item
+            each tag in data.tags
+              li.list-inline-item=tag.tag
+        if data.about
+          h3=__("About")
+          .pt-2.pb-2!=data.about
+        h3=__("Author")
+        each user in data.users
+          .user_performance_wrapper
+            div.user_perfomance_image
+              img(src=user.imageFormats.small, alt=user.stagename)
+            div.user_perfomance_country_city
+              p.users_performance_item_name=user.stagename
+              p.users_performance_item_country!=user.addressesFormatted

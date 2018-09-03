@@ -1,0 +1,10 @@
+[
+  {
+    "id": "primary",
+    "defaultMessage": "Primary"
+  },
+  {
+    "id": "makeitprimary",
+    "defaultMessage": "Make it primary"
+  }
+]

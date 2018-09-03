@@ -1,41 +1,55 @@
 extends ../layout
 
 block teaser
-  if data.teaserImage
-    .d-flex.justify-content-center.align-items-start
-      img.card-img-top.img-fluid(
-        src=`${data.teaserImageFormats.large}`
-        alt=`${data.name}`
-      )
 
 block title
   if data.title
-    .jumbotron.jumbotron-fluid
-      .container
-        .row
-          .col-lg-8
-            h1.display-4=data.title
-            p=data.about
-          .col-lg-4
-            if data.image
-              img.card-img-top.img-fluid(
-                src=data.imageFormats.medium
-                alt=data.title
-              )
+    .container
+      .row.performer_title
+        .col-lg-12
+          h1.main_title=data.title
 
 block content
-  .row
-    .col-lg-12
-      h3=global.__('Members')
-      .card-columns
-        //each member in data.members
-          .card
-            if member.image
-              img.card-img-top.img-fluid(
-                src=member.imageFormats.medium
-                alt=member.name
-              )
-            .card-block
-              h4.card-title
-                =member.stagename
-              a.btn.btn-primary(href=member.publicUrl)=global.__('More')
+  .container
+    .row
+      .col-md-8
+        if data.imageFormats
+          img.img-fluid.perfomance_image.bottom60(
+            src=data.imageFormats.large
+            alt=data.title
+          )
+      .col-md-4
+        if data.stats
+          h3=__("Stats")
+          ul
+            if data.stats.visits
+              li=data.stats.visits + ' ' + global.__('Views')
+            if data.stats.likes
+              li=data.stats.likes + ' ' + global.__('Likes')
+            if data.stats.downloads
+              li=data.stats.downloads + ' ' + global.__('Downloads')  
+            if data.stats.footage
+              li=data.stats.footage + ' ' + global.__('Footage')  
+
+        if data.tags
+          h3=__("Tags")
+          ul.list-inline.category_performance_item
+            each tag in data.tags
+              li.list-inline-item=tag.tag
+        if data.about
+          h3=__("About")
+          .pt-2.pb-2!=data.about
+        h3=__("Author")
+        each user in data.users
+          .user_performance_wrapper
+            div.user_perfomance_image
+              img(src=user.imageFormats.small, alt=user.stagename)
+            div.user_perfomance_country_city
+              p.users_performance_item_name=user.stagename
+              p.users_performance_item_country!=user.addressesFormatted
+    if data.footage.length 
+      h2.mt-5.main_title.indented_title.color1=__("Footage")
+      .row.mb-5
+        each item in data.footage
+          .col-md-4
+            include ../partials/boxFootage

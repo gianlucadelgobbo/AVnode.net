@@ -73,14 +73,14 @@ block title
                     img(src="/images/share_icon.svg")
 
         if data.abouts      
-            .row
-              .col-sm-12
-                  .about_wrapper
-                    !=data.about
-                    br
-                    span#about_collapse.about_more.collapse.miss="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"
-                  .more_button
-                    span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
+          .row
+            .col-sm-12
+                .about_wrapper
+                  !=data.about
+                  br
+                  span#about_collapse.about_more.collapse.miss="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"
+                .more_button
+                  span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
     .polygon_divider_bottom
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
         g#layer2
@@ -90,59 +90,61 @@ block title
             polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
 
 block content
-  .program_event_wrapper_bkg
-    section.row.program_event_wrapper
-        .col-lg-12
-          .container
-            h2.main_title.indented_title.color1!=global.__('Program')
-            each day in data.programmebydayvenue
-              h3.date_schedule_title=day.date
-              .data_program_divider
-              each venueroom in day.rooms              
-                h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
-                .owl-carousel.loop.owl-theme
-                  if venueroom.performances
-                    each item in venueroom.performances
-                      include ../partials/boxPerformanceScheduled
-        .button_more.button_more_program
-          span.button_more_label!=global.__('+ All the program')
-          span.button_more_bkg
-  .polygon_divider_top
-    svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
-      g#layer2
-      g#Layer_1
-        g
-          polygon(fill='#232323' points='1927.4,99.5 0,99.5 0,-1 		')
-          polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
-  .performers_event_wrapper_bkg
-    .container
-      section.row.performers_event_wrapper
-        .col-lg-12
-          h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.artists.artistsN+")</small>"
-          h3.performers_infos=data.artists.artistsN+" "+global.__('performers')+" ("+data.artists.artistsCount + " " + global.__('artists') +") " + global.__('from') + " " + data.artists.countries.join(', ')+ " " + global.__('playing')+ " " + data.artists.actsN + " " + data.artists.acts.join(', ') + "."      
-          .row
-            each item in data.artists.artists
-              .col-sm-4
-                include ../partials/boxPerformerEvent
-  .polygon_divider_bottom
-    svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
-      g#layer2
-      g#Layer_1
-        g
-          polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
-          polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
+  if data.programmebydayvenue
+    .program_event_wrapper_bkg
+      section.row.program_event_wrapper
+          .col-lg-12
+            .container
+              h2.main_title.indented_title.color1!=global.__('Program')
+              each day in data.programmebydayvenue
+                h3.date_schedule_title=day.date
+                .data_program_divider
+                each venueroom in day.rooms              
+                  h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
+                  .owl-carousel.loop.owl-theme
+                    if venueroom.performances
+                      each item in venueroom.performances
+                        include ../partials/boxPerformanceScheduled
+          .button_more.button_more_program
+            span.button_more_label!=global.__('+ All the program')
+            span.button_more_bkg
+    .polygon_divider_top
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='#232323' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
+  if data.artists
+    .performers_event_wrapper_bkg
+      .container
+        section.row.performers_event_wrapper
+          .col-lg-12
+            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.artists.artistsN+")</small>"
+            h3.performers_infos=data.artists.artistsN+" "+global.__('performers')+" ("+data.artists.artistsCount + " " + global.__('artists') +") " + global.__('from') + " " + data.artists.countries.join(', ')+ " " + global.__('playing')+ " " + data.artists.actsN + " " + data.artists.acts.join(', ') + "."      
+            .row
+              each item in data.artists.artists
+                .col-sm-4
+                  include ../partials/boxPerformerEvent
+    .polygon_divider_bottom
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
     
   
-  .partners_event_wrapper_bkg
-    .container
-      section.row.partners_event_wrapper
-        .col-lg-8
-          h2.main_title.indented_title.color1!=global.__('Partners')
-        .col-lg-4
-          img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
-        .col-sm-12
-          .row
-            if data.partners.length > 0
+  if data.partners.length
+    .partners_event_wrapper_bkg
+      .container
+        section.row.partners_event_wrapper
+          .col-lg-8
+            h2.main_title.indented_title.color1!=global.__('Partners')
+          .col-lg-4
+            img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
+          .col-sm-12
+            .row
               each partners_block in data.partners
                 .col-sm-12.partners_block
                   h4!=global.__('Partners')+ " / " +partners_block.category.name

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "primary",
+    "defaultMessage": "Primary"
+  },
+  {
+    "id": "confirmed",
+    "defaultMessage": "Confirmed"
+  },
+  {
+    "id": "unconfirmed",
+    "defaultMessage": "Unconfirmed"
+  },
+  {
+    "id": "public",
+    "defaultMessage": "Public"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "Private"
+  }
+]

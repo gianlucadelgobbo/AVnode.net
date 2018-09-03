@@ -123,7 +123,7 @@ app.use((req, res, next) => {
     } else */
     //logger.debug('req.path: '+req.path);
 
-    if (!req.user && req.path.indexOf('/admin') === 0) {
+    if (!req.user && req.path.indexOf('/admin') === 0 && req.path !== '/admin/api/signup') {
         logger.debug('NON LOGGATO ');
         //logger.debug(req);
         req.session.returnTo = req.path;
