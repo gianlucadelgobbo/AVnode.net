@@ -145,12 +145,18 @@
           "components": {
           },
           "select": {
-            "crewname": 1,
+            "subscribe": 1,
             "stagename": 1,
-            "address": 1,
+            "slug": 1,
+            "lang": 1,
+            "birthday": 1,
+            "email": 1,
             "password": 1,
-            "confirm": 1,
-            "email": 1
+            "addresses": 1,
+            "confirmPassword": 1,
+            "crewname": 1,
+            "crewslug": 1,
+            "confirm": 1
           },
           "selectaddon": {
           },
@@ -2960,6 +2966,16 @@
           "model": "EventShow"
         }, {
           "path": "crews",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 5 },
+          "model": "UserShow"
+        }, {
+          "path": "members",
           "select": {
             "stagename": 1,
             "slug": 1,
