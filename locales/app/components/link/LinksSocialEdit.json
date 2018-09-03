@@ -1,0 +1,14 @@
+[
+  {
+    "id": "tw",
+    "defaultMessage": "Social channels"
+  },
+  {
+    "id": "public",
+    "defaultMessage": "PUBLIC"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "PRIVATE"
+  }
+]

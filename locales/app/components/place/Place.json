@@ -1,0 +1,34 @@
+[
+  {
+    "id": "places",
+    "defaultMessage": "Places"
+  },
+  {
+    "id": "manual_input",
+    "defaultMessage": "Or manually input address"
+  },
+  {
+    "id": "street_number",
+    "defaultMessage": "Street Number"
+  },
+  {
+    "id": "route",
+    "defaultMessage": "Street"
+  },
+  {
+    "id": "postal_code",
+    "defaultMessage": "Postal code"
+  },
+  {
+    "id": "locality",
+    "defaultMessage": "Locality"
+  },
+  {
+    "id": "region",
+    "defaultMessage": "Region"
+  },
+  {
+    "id": "country",
+    "defaultMessage": "Country"
+  }
+]

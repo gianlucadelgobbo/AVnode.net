@@ -11,7 +11,8 @@ const Media = new Schema({
   preview: String,
   originalname: String,
   mimetype: String,
-  size: Number,
+  filesize: Number,
+  duration: Number,
   width: Number,
   height: Number,
 

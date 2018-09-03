@@ -1,0 +1,10 @@
+[
+  {
+    "id": "name",
+    "defaultMessage": "Name"
+  },
+  {
+    "id": "pleaseWait",
+    "defaultMessage": "Please wait…"
+  }
+]

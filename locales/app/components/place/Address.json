@@ -1,0 +1,14 @@
+[
+  {
+    "id": "primary",
+    "defaultMessage": "Primary"
+  },
+  {
+    "id": "public",
+    "defaultMessage": "Public"
+  },
+  {
+    "id": "private",
+    "defaultMessage": "Private"
+  }
+]

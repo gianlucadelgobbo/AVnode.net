@@ -69,7 +69,7 @@ const PUBLIC = {
         'Number': {min: 3, max: 50},
     }
   },
-  tech_art: {
+  tech_arts: {
     schema: 'shared/About',
     comp: 'textarea_multilang',
     label: 'Technologies with the artists',
@@ -77,7 +77,7 @@ const PUBLIC = {
         'String': {min: 0, max: 50000}
     }
   }, // what the artist brings
-  tech_req: {
+  tech_reqs: {
     schema: 'shared/About',
     comp: 'textarea_multilang',
     label: 'Technical requirements',

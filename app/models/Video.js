@@ -62,6 +62,24 @@ videoSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
+
+videoSchema.virtual('about').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    return about;
+  }
+});
+
 /*
 videoSchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
