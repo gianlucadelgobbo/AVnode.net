@@ -101,7 +101,7 @@ module.exports.resetPassword = (options, data, cb) => {
 
 };
 
-module.exports.sendMsgEmail = (options, data, cb) => {
+module.exports.sendMsgEmail = (data, cb) => {
 
   const email = new Email({
     message: {
@@ -111,18 +111,11 @@ module.exports.sendMsgEmail = (options, data, cb) => {
     transport: getTransporter(),
     views: { root: 'app/views/emails' }
   });
-  console.log('to:' + options.to + ' uuid: ' + data.msg);
+  console.log('to:' + data.to + ' msg: ' + data.msg);
 
-  email.send({
-    template: 'templates/send-email',
-    message: {
-      to: options.to
-    },
-    locals: {
-      link: "https://dev.avnode.net/",
-      msg: data.msg
-    }
-  }).then(info => logger.info('sendMsgEmail sent', info)).catch(err => cb(err));
+  email.send(data)
+  .then(info => logger.info('sendMsgEmail sent', info))
+  .catch(err => cb(err));
 
 };
 

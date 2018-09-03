@@ -1,5 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt-nodejs');
 
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
@@ -23,7 +24,7 @@ passport.deserializeUser((id, done) => {
 passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
   logger.debug('passport.use:' + email);
 
-  User.findOne({ email: email.toLowerCase() }, 'stagename slug', (err, user) => {
+  User.findOne({ email: email.toLowerCase() }, 'stagename slug password', (err, user) => {
     logger.debug(user);
     if (err) {
       logger.debug('passport.use User.findOne error:' + email + ' ' +  JSON.stringify(err));
@@ -66,8 +67,8 @@ flxer.flxerLogin = (existingUser, email, password, done) => {
     body: querystring.stringify({ email: email, password: password })
   }, function (err, res, body) {
     if (err) {
-      return done(err);
       logger.debug('flxer.authenticate error:' + JSON.stringify(err));
+      return done(err);
     }
 
     logger.debug('passport.authenticate flxer:' + JSON.stringify(body));
@@ -77,20 +78,33 @@ flxer.flxerLogin = (existingUser, email, password, done) => {
 
       //if (isNaN(existingUser.activity) ) existingUser.activity = 0;
       existingUser.password = password;
+      logger.debug('existingUser.save existingUser:' + password);
+      logger.debug('existingUser.save existingUser.password:' + existingUser.password);
       existingUser.save((err) => {
         if (err) {
           logger.debug('existingUser.save error:' + err);
+        } else {
+          logger.debug('existingUser.save success');
+          mailer.sendMsgEmail({
+            template: 'send-email',
+            message: {
+              to: email
+            },
+            locals: {
+              link: "https://dev.avnode.net/",
+              msg: 'Password migrated from flxer, please login again.'
+            }
+          }, (err) => {
+            if (err) {
+              logger.debug('mailer.sendMsgEmail error:' + err);
+            } else {
+              logger.debug('mailer.sendMsgEmail success:' + err);
+            }
+          });
         }
-        mailer.sendMsgEmail({ to: email }, { msg: 'Password migrated from flxer, please login again.' }, (err) => {
-          if (err) {
-            logger.debug('mailer.sendMsgEmail error:' + err);
-          } else {
-            logger.debug('mailer.sendMsgEmail success:' + err);
-          }
-          
-        });
         done(true);
       });
+
 
     } else {
       done(false);
