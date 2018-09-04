@@ -1,15 +1,18 @@
 extends ../layout
 
 block content
-  form(method='post', action="/password/reset")
-    input(type='hidden', name='_csrf', value=_csrf)
-    input(type='hidden', name='user', value=userId)
-    .form-group
-      label(for='password')=global.__('Password')
-      input.form-control(type='password', name='password', id='password', placeholder=global.__('Use at least eight characters'), required)
-    .form-group
-      label(for='retypePassword')=global.__('Retype password')
-      input.form-control(type='password', name='retypePassword', id='retypePassword', placeholder=global.__('Use at least eight characters'), required)
-    .form-group
-      button.btn.btn-primary.btn-success(type='submit')=global.__('reset password')
-        i.fa.fa-angle-right.fa-fw
+  .container
+    .row
+      .col-md-6.offset-md-3
+        .pb-5
+          form(method='post', action="/password/reset")
+            input(type='hidden', name='token', value=token)
+            .form-group
+              label(for='password')=global.__('New Password')
+              input.form-control(type='password', name='password', id='password', placeholder=global.__('New Password'), required)
+            .form-group
+              label(for='retypePassword')=global.__('Confirm Password')
+              input.form-control(type='password', name='retypePassword', id='retypePassword', placeholder=global.__('Confirm Password'), required)
+            .form-group
+              button.btn.btn-primary.btn-success(type='submit')=global.__('Save & Continue')
+                i.fa.fa-angle-right.fa-fw

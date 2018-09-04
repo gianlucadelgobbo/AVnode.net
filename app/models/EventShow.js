@@ -261,8 +261,6 @@ eventSchema.virtual('artists').get(function (req) {
     artists.artistsN = artistsA.length;
     artists.artistsCount = artistsN.length;
     artists.actsN = actsN.length;
-    console.log("artistsA");
-    console.log(artistsA);
     return artists;
   }
 });

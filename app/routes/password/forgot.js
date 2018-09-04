@@ -9,7 +9,7 @@ const _ = require('lodash');
 
 router.get('/', (req, res) => {
   res.render('password/forgot', {
-    title: __('Request a new password')
+    title: __('Reset password')
   });
 });
 
@@ -29,20 +29,31 @@ router.post('/', (req, res) => {
 
       user.save((err) => {
         if (err) {
-          throw err;
-        }
-        const mailOptions = {
-          token: token,
-          email: user.email,
-          expires: expiresInHours
-        };
-        mailer.resetPassword({ to: user.email }, mailOptions, (err) => {
-          if (err) {
-            throw err;
-          }
-          req.flash('success', {msg: __('Password reset link sent '+req.body.email+'.')});
+          req.flash('errors', {msg: __('Password not generated, please retry.')});
           res.redirect('/password/forgot');
-        });
+        } else {
+          mailer.resetPassword({
+            template: 'reset-password',
+            message: {
+              to: user.email
+            },
+            locals: {
+              site: 'http://'+req.headers.host,
+              link: 'http://'+req.headers.host+'/password/reset/',
+              stagename: user.stagename,
+              email: user.email,
+              confirm: token
+            }
+          }, function (err){
+            if (err) {
+              req.flash('errors', {msg: __('User not found.')});
+              res.redirect('/password/forgot');
+            } else {
+              req.flash('success', {msg: __('Password reset link sent to:')+" "+req.body.email });
+              res.redirect('/password/forgot');
+            }
+          });
+        }
       });
     }
   });
