@@ -134,5 +134,10 @@
 	"SIGN UP": "SIGN UP",
 	"Verification Success!!!": "Verification Success!!!",
 	"Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.": "Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.",
-	"LOG IN": "LOG IN"
+	"LOG IN": "LOG IN",
+	"Welcome!": "Welcome!",
+	"We're excited to have you get started. First, you need to confirm your account. Just press the button below.": "We're excited to have you get started. First, you need to confirm your account. Just press the button below.",
+	"Confirm Account": "Confirm Account",
+	"If that doesn't work, copy and paste the following link in your browser:": "If that doesn't work, copy and paste the following link in your browser:",
+	"If you have any questions, just reply to this email, we're always happy to help out.": "If you have any questions, just reply to this email, we're always happy to help out."
 }
