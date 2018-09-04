@@ -124,13 +124,10 @@ app.use((req, res, next) => {
     //logger.debug('req.path: '+req.path);
 
     if (!req.user && req.path.indexOf('/admin') === 0 && req.path !== '/admin/api/signup') {
-        logger.debug('NON LOGGATO ');
         //logger.debug(req);
         req.session.returnTo = req.path;
         res.redirect('/login');
     } else {
-        logger.debug('LOGGATO ');
-        //logger.debug(req.user);
         next();
     }
 });
