@@ -74,10 +74,11 @@ router.post('/', (req, res) => {
                       to: data.email
                     },
                     locals: {
+                      site: 'http://'+req.headers.host,
                       link: 'http://'+req.headers.host+'/verify/signup/',
                       stagename: data.stagename,
                       email: data.email,
-                      uuid: data.confirm
+                      confirm: data.confirm
                     }
                   }, function(){
                     console.log("stocazzo");
