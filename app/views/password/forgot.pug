@@ -1,11 +1,16 @@
 extends ../layout
 
 block content
-  form(method='post')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label(for='email')=global.__('Email')
-      input.form-control(type='email', name='email', id='email', placeholder=global.__('example@foo.bar'), autofocus, required)
-    .form-group
-      button.btn.btn-primary.btn-success(type='submit')=global.__('reset password')
-        i.fa.fa-angle-right.fa-fw
+  .container
+    .row
+      .col-md-6.offset-md-3
+        .pb-5
+          p=global.__("Enter the email address associated with your account, and we’ll email you a link to reset your password.")
+          form(method='post')
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+              label(for='email')=global.__('Email')
+              input.form-control(type='email', name='email', id='email', placeholder=global.__('example@foo.bar'), autofocus, required)
+            .form-group
+              button.btn.btn-primary.btn-success(type='submit')=global.__('reset password')
+                i.fa.fa-angle-right.fa-fw

@@ -1,6 +1,5 @@
 .footage_item_wrapper
   if item && item.imageFormats && item.imageFormats.large
-    //- console.log(item.imageFormats)
     a(href="/footage/"+item.slug, title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.small

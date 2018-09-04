@@ -102,21 +102,7 @@ html(lang=session.sessions.current_lang)
           .collapse.navbar-collapse(
             id="navbar-collapse_performer_template"
           )
-            ul.navbar-nav.mr-auto
-              li.nav-item
-                a.nav-link(href='/performers')=global.__('Performers')
-              li.nav-item
-                a.nav-link(href='/performances')=global.__('Performances')
-              li.nav-item
-                a.nav-link(href='/events')=global.__('Events')
-              li.nav-item
-                a.nav-link(href='/footage')=global.__('Footage')
-              li.nav-item
-                a.nav-link(href='/playlists')=global.__('Playlists')
-              li.nav-item
-                a.nav-link(href='/videos')=global.__('Videos')
-              li.nav-item
-                a.nav-link(href='/news')=global.__('News')
+            include partials/menuHeader
 
             ul.user_navbar
               if user
@@ -166,7 +152,7 @@ html(lang=session.sessions.current_lang)
         if title
           .jumbotron.jumbotron-fluid
             .container
-              h1.display-4=title
+              h1.display-4!=title
               if subtitle
                 p.lead.mb-0=subtitle
       block content

@@ -36,17 +36,10 @@ block content
             a.tab_link.nav-link(href='#technical_specifications', role='tab', data-toggle='tab')    
               =global.__('Technical specifications')
         // Tab panes
-<<<<<<< HEAD
-        .tab-content.tab_contents_single_performance
-          if data.about
-            #about.tab-pane.in.active(role='tabpanel')
-              p=data.about
-=======
         .tab-content
           //if data.about
           #about.tab-pane.in.active(role='tabpanel')
             .pt-2.pb-2!=data.about
->>>>>>> 3cc5a5b83b540520b95602b0f5e9a20017f9e144
           #technical_specifications.tab-pane(role='tabpanel')
             h4.pt-2=global.__('Duration (minutes)')
             .pt-2.pb-2!=data.duration
@@ -56,51 +49,6 @@ block content
             .pt-2.pb-2!=data.tech_art
 
       .col-sm-4
-<<<<<<< HEAD
-        .single_performance_sidebar
-          //if data.categories
-          ul#single_performance_categories.list-inline.category_performance_item
-            //each category in data.categories
-            li.list-inline-item.miss="categoria performance"
-            li.list-inline-item.miss="altra categoria"
-            //if item.users
-          .users_performance_item_wrapper
-            .row
-              //each user in item.users
-              .col-sm-12
-                .user_performance_wrapper
-                  div.user_perfomance_image
-                    //img.miss(src=user.imageFormats.small, alt=user.stagename)
-                    img.miss
-                  div.user_perfomance_country_city
-                    p.users_performance_item_name.miss="nome utente"
-                    p.users_performance_item_country.miss="Paese / città"
-              .col-sm-12
-                .user_performance_wrapper
-                  div.user_perfomance_image
-                    //img.miss(src=user.imageFormats.small, alt=user.stagename)
-                    img.miss
-                  div.user_perfomance_country_city
-                    p.users_performance_item_name.miss="nome utente"
-                    p.users_performance_item_country.miss="Paese / città"     
-          .events_performance_wrapper
-            //if ci sono eventi
-            h3=global.__('Events')  
-            .row
-              //each
-              .col-sm-12
-                .single_performance_event_wrapper
-                  p.titolo_evento.miss="titolo evento"
-                  p.citta_paese_evento
-                    span.miss="11 settembre 2016"
-                    span.miss="Roma / Italia"
-              .col-sm-12
-                .single_performance_event_wrapper
-                  p.titolo_evento.miss="titolo evento"
-                  p.citta_paese_evento
-                    span.miss="11 settembre 2016"
-                    span.miss="Roma / Italia"                
-=======
         if data.categories
           ul.list-inline.category_performance_item
             each category in data.categories
@@ -125,7 +73,6 @@ block content
                     a(href="/events/"+booking.event.slug)=booking.event.title
                   p=booking.schedule.day + " | " + booking.schedule.ora_i
                   p=booking.schedule.venue.name + " | " + booking.schedule.venue.room + " | " + booking.schedule.venue.location.locality + ", " + booking.schedule.venue.location.country
->>>>>>> 3cc5a5b83b540520b95602b0f5e9a20017f9e144
   if data.galleries.length || data.videos.length
     .divider_gallery
       svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
