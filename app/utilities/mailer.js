@@ -24,7 +24,7 @@ var params = {
     },
     Subject: {
       Charset: 'UTF-8',
-      Data: 'AVnode.net | '
+      Data: ''
     }
   },
   Source: "MAILFROM", /* required */
@@ -75,7 +75,7 @@ module.exports.signup = (data, cb) => {
   params.Destination.ToAddresses = [ data.message.to ];
   params.Message.Body.Html.Data = HTML_FORMAT_BODY;
   params.Message.Body.Text.Data = TEXT_FORMAT_BODY;
-  params.Message.Subject.Data+= __("Confirm Account");
+  params.Message.Subject.Data = 'AVnode.net | ' + __("Confirm Account");
   params.Source = process.env.MAILFROM, /* required */
   params.ReplyToAddresses = [ process.env.MAILFROM ],
 
