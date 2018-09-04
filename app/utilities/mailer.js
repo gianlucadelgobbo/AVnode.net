@@ -40,9 +40,6 @@ module.exports.signup = (data, cb) => {
     link:     data.locals.link+data.locals.confirm,
     signature: "Cheers<br />The AVnode.net Team",
   });
-  console.log("HTML_FORMAT_BODY");
-  console.log(HTML_FORMAT_BODY);
-  
   var params = {
     Destination: { /* required */
       /* CcAddresses: [ 'g.delgobbo@flyer.it' ], */
@@ -53,12 +50,12 @@ module.exports.signup = (data, cb) => {
     Message: { /* required */
       Body: { /* required */
         Html: {
-        Charset: "UTF-8",
-        Data: HTML_FORMAT_BODY
+          Charset: "UTF-8",
+          Data: HTML_FORMAT_BODY
         },
         Text: {
-        Charset: "UTF-8",
-        Data: "TEXT_FORMAT_BODY"
+          Charset: "UTF-8",
+          Data: "TEXT_FORMAT_BODY"
         }
       },
       Subject: {
@@ -85,8 +82,6 @@ module.exports.signup = (data, cb) => {
       cb(err);
     }
   );
-  
-
 };
 
 
