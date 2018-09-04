@@ -6,6 +6,31 @@ const pug = require('pug');
 const aws = require('aws-sdk');
 aws.config.loadFromPath('./config/ses.json');
 
+var params = {
+  Destination: { /* required */
+    /* CcAddresses: [ 'g.delgobbo@flyer.it' ], */
+    ToAddresses: []
+  },
+  Message: { /* required */
+    Body: { /* required */
+      Html: {
+        Charset: "UTF-8",
+        Data: "HTML_FORMAT_BODY"
+      },
+      Text: {
+        Charset: "UTF-8",
+        Data: "TEXT_FORMAT_BODY"
+      }
+    },
+    Subject: {
+      Charset: 'UTF-8',
+      Data: 'AVnode.net | '
+    }
+  },
+  Source: "MAILFROM", /* required */
+  ReplyToAddresses: [ "MAILFROM" ],
+}; 
+
 module.exports.sendEmail = (data, cb) => {
   logger.info('Sending Email');
   const transport = getTransporter();
@@ -27,9 +52,9 @@ module.exports.sendEmail = (data, cb) => {
 module.exports.signup = (data, cb) => {
   logger.info('Sending signup Email');
 
-  const fn = pug.compileFile(__dirname+'/../views/emails/signup.pug', null);
-
-  let HTML_FORMAT_BODY = fn({
+  const fn_html = pug.compileFile(__dirname+'/../views/emails/signup/html_ses.pug', null);
+  const fn_text = pug.compileFile(__dirname+'/../views/emails/signup/text_ses.pug', null);
+  const email_content = {
     site:    data.locals.site,
     title:    __("Welcome!"),
     block_0:  __("We're thrilled to have you here! Get ready to dive into your new account."),
@@ -38,47 +63,34 @@ module.exports.signup = (data, cb) => {
     block_2:  __("If that doesn't work, copy and paste the following link in your browser:"),
     block_3:  __("If you have any questions, just reply to this email, we're always happy to help out."),
     link:     data.locals.link+data.locals.confirm,
-    signature: "Cheers<br />The AVnode.net Team",
-  });
-  var params = {
-    Destination: { /* required */
-      /* CcAddresses: [ 'g.delgobbo@flyer.it' ], */
-      ToAddresses: [
-        data.message.to,
-      ]
-    },
-    Message: { /* required */
-      Body: { /* required */
-        Html: {
-          Charset: "UTF-8",
-          Data: HTML_FORMAT_BODY
-        },
-        Text: {
-          Charset: "UTF-8",
-          Data: "TEXT_FORMAT_BODY"
-        }
-      },
-      Subject: {
-        Charset: 'UTF-8',
-        Data: 'AVnode.net | ' + __("Confirm Account")
-      }
-    },
-    Source: process.env.MAILFROM, /* required */
-    ReplyToAddresses: [ process.env.MAILFROM ],
-  };       
-  
+    signature: "Cheers<br/>The AVnode.net Team"
+  }
+
+  const HTML_FORMAT_BODY = fn_html(email_content);
+  const TEXT_FORMAT_BODY = fn_text(email_content).split("<br/>").join("\n");
+
+  logger.info('TEXT_FORMAT_BODY');
+  logger.info(TEXT_FORMAT_BODY);
+
+  params.Destination.ToAddresses = [ data.message.to ];
+  params.Message.Body.Html.Data = HTML_FORMAT_BODY;
+  params.Message.Body.Text.Data = TEXT_FORMAT_BODY;
+  params.Message.Subject.Data+= __("Confirm Account");
+  params.Source = process.env.MAILFROM, /* required */
+  params.ReplyToAddresses = [ process.env.MAILFROM ],
+
+  logger.info(params);
+    
   // Create the promise and SES service object
   var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
   
   // Handle promise's fulfilled/rejected states
   sendPromise.then(
     function(data) {
-      console.log(data.MessageId);
       cb(null);
     }
   ).catch(
     function(err) {
-      console.error(err, err.stack);
       cb(err);
     }
   );
