@@ -235,6 +235,7 @@ userSchema.pre('save', function (next) {
   let conta = 0;
   if (user.emails && !user.is_crew) {
     for(let item=0;item<user.emails.length;item++) {
+      if (!user.emails[item].is_confirmed) this.emails[item].confirm = uid.v4();
       User.find({"_id":{$ne: user._id}, $or: [{"emails.email": user.emails[item].email, "email": user.emails[item].email}]}).
       select({_id: 1}).
       limit(100).
@@ -287,7 +288,6 @@ userSchema.pre('save', function (next) {
           if (!user.emails[item].is_confirmed) {
             console.log("sendEmailConfirm");
             //console.log(user.emails[item].email);
-            this.emails[item].confirm = uid.v4();
             mailer.sendEmailConfirm({
               template: 'confirm-email',
               message: {
