@@ -231,51 +231,95 @@ userSchema.pre('save', function (next) {
   console.log('userSchema.pre(save) id:' + this._id);
   const user = this;
   console.log(process.env.BASE);
+  let errors = [];
+  let conta = 0;
   if (user.emails && !user.is_crew) {
     for(let item=0;item<user.emails.length;item++) {
-      let mailinglists = [];
-      for (mailinglist in user.emails[item].mailinglists) if (user.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
-
-      let formData = {
-        list: 'AXRGq2Ftn2Fiab3skb5E892g',
-        email: user.emails[item].email,
-        Topics: mailinglists.join(','),
-        avnode_id: user._id.toString(),
-        flxer_id: user.old_id ? user.old_id : "avnode",
-      };
-      if (user.name) formData.Name = user.name;
-      if (user.surname) formData.Surname = user.surname;
-      if (user.stagename) formData.Stagename = user.stagename;
-      if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = user.addresses[0].locality;
-      if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
-      if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
-      if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
-
-      request.post({
-        url: 'https://ml.avnode.net/subscribe',
-        formData:formData,
-        function (error, response, body) {
-          console.log(error);
-          console.log(body);
+      User.find({"_id":{$ne: user._id}, $or: [{"emails.email": user.emails[item].email, "email": user.emails[item].email}]}).
+      select({_id: 1}).
+      limit(100).
+      exec((err, data) => {
+        console.log("MAIL EXISTS?");
+        console.log(user.emails[item].email);
+        console.log(err);
+        console.log(user._id);
+        console.log(data);
+        conta++;
+        if (err) { return next(err); }
+        if (data.length) {
+          user.emails[item].error = "Email in use";
+          errors.push({email: user.emails[item].email,error: "Email in use"});
+          console.log("Email in use");
+          if (conta === user.emails.length) console.log("FINISCHED");
+          if (conta === user.emails.length) console.log(errors);
+          if (conta === user.emails.length) return next(errors);
+        } else {
+          console.log("Email OK");
+          let mailinglists = [];
+          for (mailinglist in user.emails[item].mailinglists) if (user.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
+    
+          let formData = {
+            list: 'AXRGq2Ftn2Fiab3skb5E892g',
+            email: user.emails[item].email,
+            Topics: mailinglists.join(','),
+            avnode_id: user._id.toString(),
+            flxer_id: user.old_id ? user.old_id : "avnode",
+          };
+          if (user.name) formData.Name = user.name;
+          if (user.surname) formData.Surname = user.surname;
+          if (user.stagename) formData.Stagename = user.stagename;
+          if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = user.addresses[0].locality;
+          if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
+          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
+          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
+    
+          request.post({
+            url: 'https://ml.avnode.net/subscribe',
+            formData:formData,
+            function (error, response, body) {
+              console.log("Newsletter");
+              console.log(error);
+              console.log(body);
+            }
+          });
+          //console.log(mailinglists.join(','));
+    
+          if (!user.emails[item].is_confirmed) {
+            console.log("sendEmailConfirm");
+            //console.log(user.emails[item].email);
+            user.emails[item].confirm = uid.v4();
+            mailer.sendEmailConfirm({
+              template: 'confirm-email',
+              message: {
+                to: user.emails[item].email
+              },
+              locals: {
+                link: '/password/reset/',
+                stagename: user.stagename,
+                email: user.email,
+                confirm: user.emails[item].confirm
+              }
+            }, function (err){
+              if (err) {
+                errors.push({email: user.emails[item].email,error: "Email sending failure"});
+                console.log("Email sending failure");
+                if (conta === user.emails.length) console.log("FINISCHED");
+                if (conta === user.emails.length) console.log(errors);
+                if (conta === user.emails.length) return next(errors);
+              } else {
+                console.log("Email sending OK");
+                if (conta === user.emails.length) console.log("FINISCHED");
+                if (conta === user.emails.length) console.log(errors);
+                if (conta === user.emails.length) return next(errors);
+              }
+            });
+          } else {
+            if (conta === user.emails.length) console.log("FINISCHED");
+            if (conta === user.emails.length) console.log(errors);
+              if (conta === user.emails.length) return next(errors);
+          }
         }
       });
-      //console.log(mailinglists.join(','));
-
-      if (!user.emails[item].is_confirmed) {
-        //console.log(user.emails[item].email);
-        user.emails[item].confirm = uid.v4();
-        mailer.sendEmail({
-          template: 'confirm-email',
-          message: {
-            to: user.emails[item].email
-          },
-          locals: {
-            link: process.env.BASE+'verify/email/' + user.emails[item].confirm,
-            stagename: user.stagename,
-            email: user.emails[item].email
-          }
-        }, next);
-      }
     }
     next();
   }

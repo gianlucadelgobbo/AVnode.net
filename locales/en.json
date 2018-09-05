@@ -161,5 +161,7 @@
 	"Passwords are not equal. Try again…": "Passwords are not equal. Try again…",
 	"Link to change the password has expired or is not valid.": "Link to change the password has expired or is not valid.",
 	"Your password has been reset.": "Your password has been reset.",
-	"Invalid email or password.": "Invalid email or password."
+	"Invalid email or password.": "Invalid email or password.",
+	"Images minimum size is": "Images minimum size is",
+	"Email Confirm": "Email Confirm"
 }

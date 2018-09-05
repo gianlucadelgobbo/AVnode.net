@@ -41,7 +41,7 @@ upload.uploader = (req, res, done) => {
       cb(null, upload.getServerpath(options.storage));
     },
     filename: (req, file, cb) => {
-      cb(null, `${uuid.v4()}.${mime.extension(file.mimetype)}`);
+      cb(null, `${uuid.v4()}.${mime.getExtension(file.mimetype)}`);
     }
   });
   const multerupload = multer({
