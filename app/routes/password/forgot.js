@@ -32,17 +32,23 @@ router.post('/', (req, res) => {
           req.flash('errors', {msg: __('Password not generated, please retry.')});
           res.redirect('/password/forgot');
         } else {
-          mailer.resetPassword({
+          mailer.mySendMailer({
             template: 'reset-password',
             message: {
               to: user.email
             },
-            locals: {
-              site: 'http://'+req.headers.host,
-              link: 'http://'+req.headers.host+'/password/reset/',
+            email_content: {
               stagename: user.stagename,
               email: user.email,
-              confirm: token
+              confirm: token,
+              site:    'http://'+req.headers.host,
+              title:    __("Password reset"),
+              block_1:  __("We’ve received a request to reset your password."),
+              button:   __("Click here to reset your password"),
+              block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),
+              block_3:  __("Thanks."),
+              link:     'http://'+req.headers.host+'/password/reset/'+token,
+              signature: "The AVnode.net Team"
             }
           }, function (err){
             if (err) {

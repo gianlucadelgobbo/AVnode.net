@@ -167,5 +167,6 @@
 	"Email verify": "Email verify",
 	"We’ve received a request to add this new email": "We’ve received a request to add this new email",
 	"Click here to confirm": "Click here to confirm",
-	"If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:": "If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"
+	"If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:": "If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:",
+	"User not found.": "User not found."
 }

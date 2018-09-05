@@ -68,17 +68,25 @@ router.post('/', (req, res) => {
                 if (!data) {
                   res.status(204).json({ error: `DOC_NOT_FOUND` });
                 } else {
-                  mailer.signup({
+                  mailer.mySendMailer({
                     template: 'signup',
                     message: {
                       to: data.email
                     },
                     locals: {
+                    },
+                    email_content: {
                       site: 'http://'+req.headers.host,
-                      link: 'http://'+req.headers.host+'/verify/signup/',
+                      link: 'http://'+req.headers.host+'/verify/signup/'+data.confirm,
                       stagename: data.stagename,
                       email: data.email,
-                      confirm: data.confirm
+                      confirm: data.confirm,
+                      title:    __("Welcome!"),
+                      block_1:  __("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
+                      button:   __("Confirm Account"),
+                      block_2:  __("If that doesn't work, copy and paste the following link in your browser:"),
+                      block_3:  __("If you have any questions, just reply to this email, we're always happy to help out."),
+                      signature: "Cheers<br/>The AVnode.net Team"
                     }
                   }, function(){
                     console.log("stocazzo");
