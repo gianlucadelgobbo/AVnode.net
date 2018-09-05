@@ -1,22 +1,24 @@
 const Email = require('email-templates');
 const nodemailer = require('nodemailer');
+const ses = require('nodemailer-ses-transport');
 const logger = require('./logger');
 
-//const ses = require('nodemailer-ses-transport');
-
-  
 const getTransporter = () => {
-  return nodemailer.createTransport({
-    SES: new aws.SES({
-        apiVersion: '2010-12-01'
-    })
-  });
-}
+  if (process.env.ACCESSKEYID == null || process.env.ACCESSKEYID === '') {
+    throw new Error('Missing ACCESSKEYID config value');
+  }
+  if (process.env.SECRETACCESSKEY == null || process.env.SECRETACCESSKEY === '') {
+    throw new Error('Missing SECRETACCESSKEY config value');
+  }
+  return nodemailer.createTransport(ses({
+    accessKeyId: process.env.ACCESSKEYID,
+    secretAccessKey: process.env.SECRETACCESSKEY,
+    region: 'eu-west-1'
+  }));
+};
 
 module.exports.sendEmail = (data, cb) => {
   logger.info('Sending Email');
-  const transport = getTransporter();
-  logger.info(transport);
   logger.info(data);
   const email = new Email({
     message: {
@@ -24,31 +26,36 @@ module.exports.sendEmail = (data, cb) => {
       name: 'AVnode.net'
     },
     views: { root: 'app/views/emails' },
-    transport: transport
+    transport: getTransporter()
   });
   email.send(data)
   .then(info => logger.info('Email sent', info))
   .catch(err => cb(err));
 }
 
-module.exports.signup = (data, cb) => {
-  logger.info('Sending signup Email');
-  const transport = getTransporter();
-  logger.info(transport);
-  logger.info(data);
+module.exports.signup = (options, data, cb) => {
+
   const email = new Email({
     message: {
       from: process.env.MAILFROM,
       name: 'AVnode'
     },
-    transport: transport,
+    transport: getTransporter(),
     views: { root: 'app/views/emails' }
   });
   // console.log('to:' + options.to + ' uuid: ' + data.uuid);
 
-  email.send(data)
-  .then(info => logger.info('Signup email sent', info))
-  .catch(err => cb(err));
+  email.send({
+    template: 'signup',
+    message: {
+      to: options.to
+    },
+    locals: {
+      link: '/user/confirm/',
+      uuid: data.uuid
+    }
+  }).then(info => logger.info('Signup email sent', info)).catch(err => cb(err));
+
 };
 
 
@@ -101,7 +108,7 @@ module.exports.resetPassword = (options, data, cb) => {
 
 };
 
-module.exports.sendMsgEmail = (data, cb) => {
+module.exports.sendMsgEmail = (options, data, cb) => {
 
   const email = new Email({
     message: {
@@ -111,11 +118,18 @@ module.exports.sendMsgEmail = (data, cb) => {
     transport: getTransporter(),
     views: { root: 'app/views/emails' }
   });
-  console.log('to:' + data.to + ' msg: ' + data.msg);
+  console.log('to:' + options.to + ' uuid: ' + data.msg);
 
-  email.send(data)
-  .then(info => logger.info('sendMsgEmail sent', info))
-  .catch(err => cb(err));
+  email.send({
+    template: 'templates/send-email',
+    message: {
+      to: options.to
+    },
+    locals: {
+      link: "https://dev.avnode.net/",
+      msg: data.msg
+    }
+  }).then(info => logger.info('sendMsgEmail sent', info)).catch(err => cb(err));
 
 };
 
