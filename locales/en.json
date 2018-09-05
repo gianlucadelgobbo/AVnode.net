@@ -163,5 +163,9 @@
 	"Your password has been reset.": "Your password has been reset.",
 	"Invalid email or password.": "Invalid email or password.",
 	"Images minimum size is": "Images minimum size is",
-	"Email Confirm": "Email Confirm"
+	"Email Confirm": "Email Confirm",
+	"Email verify": "Email verify",
+	"We’ve received a request to add this new email": "We’ve received a request to add this new email",
+	"Click here to confirm": "Click here to confirm",
+	"If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:": "If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"
 }

@@ -33,16 +33,16 @@ var params = {
 
 module.exports.sendEmailConfirm = (data, cb) => {
   logger.info('Sending Email Confirm');
-  data.locals.site = 'http://'/* +req.headers.host */;
-  data.locals.link = 'http://'/* +req.headers.host */+data.locals.link;
+  data.locals.site = 'http://avnode.net'/* +req.headers.host */;
+  data.locals.link = 'http://avnode.net'/* +req.headers.host */+data.locals.link;
   const fn_html = pug.compileFile(__dirname+'/../views/emails/reset-password/html_ses.pug', null);
   const fn_text = pug.compileFile(__dirname+'/../views/emails/reset-password/text_ses.pug', null);
   const email_content = {
     site:    data.locals.site,
     title:    __("Email Confirm"),
-    block_1:  __("We’ve received a request to reset your password."),
-    button:   __("Click here to reset your password"),
-    block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),
+    block_1:  __("We’ve received a request to add this new email")+": "+data.message.to,
+    button:   __("Click here to confirm"),
+    block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
     block_3:  __("Thanks."),
     link:     data.locals.link+data.locals.confirm,
     signature: "The AVnode.net Team"
@@ -57,7 +57,7 @@ module.exports.sendEmailConfirm = (data, cb) => {
   params.Destination.ToAddresses = [ data.message.to ];
   params.Message.Body.Html.Data = HTML_FORMAT_BODY;
   params.Message.Body.Text.Data = TEXT_FORMAT_BODY;
-  params.Message.Subject.Data = 'AVnode.net | ' + __("Password reset");
+  params.Message.Subject.Data = 'AVnode.net | ' + __("Email Confirm");
   params.Source = process.env.MAILFROM, /* required */
   params.ReplyToAddresses = [ process.env.MAILFROM ],
 
