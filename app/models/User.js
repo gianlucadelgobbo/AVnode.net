@@ -287,17 +287,17 @@ userSchema.pre('save', function (next) {
           if (!user.emails[item].is_confirmed) {
             console.log("sendEmailConfirm");
             //console.log(user.emails[item].email);
-            user.emails[item].confirm = uid.v4();
+            this.emails[item].confirm = uid.v4();
             mailer.sendEmailConfirm({
               template: 'confirm-email',
               message: {
                 to: user.emails[item].email
               },
               locals: {
-                link: '/password/reset/',
+                link: '/verify/email/',
                 stagename: user.stagename,
                 email: user.email,
-                confirm: user.emails[item].confirm
+                confirm: this.emails[item].confirm
               }
             }, function (err){
               if (err) {

@@ -132,6 +132,23 @@ router.get('/:sez/:code', (req, res) => {
       }
     });
   }
+  if (req.params.sez == 'email' && req.params.code) {
+    User
+    .findOne({"emails.confirm":req.params.code})
+    .exec((err, put) => {
+      if (put) {
+        res.render('verify/email', {
+          title: __('Email verify'),
+          err: false,
+        });
+      } else {
+        res.render('verify/email', {
+          title: __('Email verify'),
+          err: true,
+        });
+      }
+    });
+  }
 });
 
 router.signupVerifyValidator = (put, cb) => {
