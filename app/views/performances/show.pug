@@ -41,12 +41,18 @@ block content
           #about.tab-pane.in.active(role='tabpanel')
             .pt-2.pb-2!=data.about
           #technical_specifications.tab-pane(role='tabpanel')
-            h4.pt-2=global.__('Duration (minutes)')
-            .pt-2.pb-2!=data.duration
-            h4.pt-2=global.__('What is needed')
-            .pt-2.pb-2!=data.tech_req
-            h4.pt-2=global.__('What the artists brings')
-            .pt-2.pb-2!=data.tech_art
+            if data.duration
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('Duration (minutes)')
+                p!=data.duration
+            if data.tech_req
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('What is needed')
+                p!=data.tech_req
+            if data.tech_art
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('What the artists brings')
+                p!=data.tech_art
 
       .col-sm-4
         if data.categories
