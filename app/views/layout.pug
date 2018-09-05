@@ -98,7 +98,7 @@ html(lang=session.sessions.current_lang)
           )
             span.lnr.lnr-menu.toggle_icon
           a.navbar-brand(href='/', title="AvNode  ")
-            img(src='/images/LogoAVnode-bar.svg', height='30', class='d-inline-block align-top' alt='')
+            img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='')
           .collapse.navbar-collapse(
             id="navbar-collapse_performer_template"
           )
@@ -150,9 +150,9 @@ html(lang=session.sessions.current_lang)
       block teaser
       block title
         if title
-          .jumbotron.jumbotron-fluid
+          .main_title_bkg
             .container
-              h1.display-4!=title
+              h1!=title
               if subtitle
                 p.lead.mb-0=subtitle
       block content

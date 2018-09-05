@@ -10,9 +10,11 @@ block teaser
 
 block title
   if data.title
-    .jumbotron.jumbotron-fluid
+    .main_title_bkg
       .container
-        h1.display-4=data.title
+        h1!=title
+        if subtitle
+          p.lead.mb-0=subtitle
 
 block content
   .container

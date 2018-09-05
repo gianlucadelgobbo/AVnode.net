@@ -131,7 +131,8 @@ nav.navbar {
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #303030;
+    // background-color: #303030;
+    background-color: #212121;
     color: #fff;
     line-height: 1.8;
 }
@@ -167,6 +168,7 @@ small, .small {
 main {
      background-color: transparent;
      overflow: hidden;
+     padding-bottom: 30px;
  }
 
  
@@ -366,6 +368,7 @@ a:hover + .partner_stagename,
     border-bottom: 1px solid $color1;
     margin: 30px 0;
     padding: 0 0 15px 0;
+    width: 68%;
 }
 
 .performance_stat_container {
@@ -432,6 +435,18 @@ a:hover + .partner_stagename,
     text-transform: inherit;
     font-weight: 300;
     font-size: 18px;
+}
+
+.tech_info_title {
+    color: $color1;
+    text-transform: inherit;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+.tech_info_wrapper {
+    border-bottom: 1px dashed $color1;
+    margin-bottom: 20px;
 }
 /* performer page */
  
@@ -1191,6 +1206,22 @@ section.performer_news_wrapper {
     content: "";
 }
 
+
+// GENERIC LIST
+
+.list_item {
+    margin-bottom: 30px;
+}
+
+.main_title_bkg {
+    background: $color4;
+    padding: 60px 0;
+    margin-bottom: 30px;
+}
+
+.main_title_bkg h4 {
+    font-size: 30px;
+}
 // FOOTER 
 .footer_site {
     background: #141719;
@@ -1239,6 +1270,12 @@ ul.footer-nav.corporate {
 }
 
 
+// header
+
+.main_logo {
+    position: relative;
+    bottom: 3px;
+}
 
 // header template performer
 
