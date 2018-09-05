@@ -106,6 +106,105 @@ router.getCountries = (req, res) => {
   });
 }
 
+router.sendEmailVericaition = (req, res) => {
+  console.log("sendEmailVericaition");
+  console.log(req.params.email.replace("@","stocazzo"));
+  console.log(req.headers.host);
+  const uid = require('uuid');
+  //const request = require('request');
+  const mongoose = require('mongoose');
+  const User = mongoose.model('User');
+  User.findOne({"emails.email": req.params.email}, "emails", (err, user) => {
+    console.log(user._id.toString());
+    console.log(req.params.id);
+    if (err) { 
+      console.log("MAIL SEARCH ERROR");
+      res.json({error: true, msg: "MAIL SEARCH ERROR"});
+    } else if (!user) {
+      console.log("USER NOT FOUND");     
+      res.json({error: true, msg: "USER NOT FOUND"});
+    } else if (req.params.id !== user._id.toString()) {
+      console.log("EMAIL IS NOT YOUR");     
+      res.json({error: true, msg: "EMAIL IS NOT YOUR"});
+    } else {
+      console.log("Email OK");
+      for(let item=0;item<user.emails.length;item++) {
+        if (user.emails[item].email === req.params.email && !user.emails[item].is_confirmed) {
+          const mailer = require('../../../utilities/mailer');
+          user.emails[item].confirm = uid.v4();
+          console.log(user.emails[item]);
+          console.log(user);
+          user.save((err) => {
+            if (err) {
+              console.log("Save failure");
+              console.log(err);
+              res.json({error: true, msg: "Save failure"});
+            } else {
+              console.log("Save success");
+              console.log("mySendMailer");
+              mailer.mySendMailer({
+                template: 'confirm-email',
+                message: {
+                  to: user.emails[item].email
+                },
+                email_content: {
+                  site:    req.protocol+"://"+req.headers.host,
+                  title:    __("Email Confirm"),
+                  block_1:  __("We’ve received a request to add this new email")+": "+user.emails[item].email,
+                  button:   __("Click here to confirm"),
+                  block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
+                  block_3:  __("Thanks."),
+                  link:     req.protocol+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
+                  signature: "The AVnode.net Team"
+                }
+              }, function (err){
+                if (err) {
+                  console.log("Email sending failure");
+                  res.json({error: true, msg: "Email sending failure"});
+                } else {
+                  console.log("Email sending OK");
+                  res.json({error: false, msg: "Email sending success"});
+                }
+              });
+            }
+          });
+        }
+      }
+    }
+  });
+}
+/* 
+          let mailinglists = [];
+
+          for (mailinglist in user.emails[item].mailinglists) if (user.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
+
+          let formData = {
+            list: 'AXRGq2Ftn2Fiab3skb5E892g',
+            email: user.emails[item].email,
+            Topics: mailinglists.join(','),
+            avnode_id: user._id.toString(),
+            flxer_id: user.old_id ? user.old_id : "avnode",
+          };
+          if (user.name) formData.Name = user.name;
+          if (user.surname) formData.Surname = user.surname;
+          if (user.stagename) formData.Stagename = user.stagename;
+          if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = user.addresses[0].locality;
+          if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
+          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
+          if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
+
+          request.post({
+            url: 'https://ml.avnode.net/subscribe',
+            formData:formData,
+            function (error, response, body) {
+              console.log("Newsletter");
+              console.log(error);
+              console.log(body);
+            }
+          });
+          //console.log(mailinglists.join(','));
+ */
+
 /**/
 
 /*

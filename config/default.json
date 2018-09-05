@@ -128,6 +128,35 @@
   "cp_basepath": "controlpanel",
   "usersListItems": 6,
   "cpanel": {
+    "signup": {
+      "title": "Signup",
+      "limit": 1,
+      "basepath": "signup",
+      "model": "UserTemp",
+      "forms": {
+        "signup": {
+          "components": {
+          },
+          "select": {
+            "subscribe": 1,
+            "stagename": 1,
+            "slug": 1,
+            "lang": 1,
+            "birthday": 1,
+            "email": 1,
+            "password": 1,
+            "addresses": 1,
+            "confirmPassword": 1,
+            "crewname": 1,
+            "crewslug": 1,
+            "confirm": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        }
+      }
+    },
     "profile": {
       "title": "Profile",
       "limit": 1,
