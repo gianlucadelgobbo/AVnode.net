@@ -71,16 +71,18 @@ block content
                     p.users_performance_item_name=user.stagename
                     p.users_performance_item_country!=user.addressesFormatted
         .events_performance_wrapper
-          if data.bookings
+          if data.bookings.length
             h3=global.__('Events')  
             .row
               each booking in data.bookings
                 .col-sm-12.performance_event
                   .performance_event_wrapper
                     p
-                      a(href="/events/"+booking.event.slug class="miss performance_event_title")="Live Cinema Festival 2016"
-                    p=booking.schedule.day + " | " + booking.schedule.ora_i
-                    p=booking.schedule.venue.name + " | " + booking.schedule.venue.room + " | " + booking.schedule.venue.location.locality + ", " + booking.schedule.venue.location.country
+                      a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
+                      br
+                      !=booking.schedule.day + " | " + booking.schedule.ora_i
+                      br
+                      !=booking.schedule.venue.name + " | " + booking.schedule.venue.room + " | " + booking.schedule.venue.location.locality + ", " + booking.schedule.venue.location.country
   if data.galleries.length || data.videos.length
     .divider_gallery
       svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
