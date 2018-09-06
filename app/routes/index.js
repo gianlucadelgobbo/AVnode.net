@@ -31,6 +31,8 @@ const fourOhFour = require('./404');
 router.get('/__webpack_hmr', function(){});
 
 router.use('/contacts', pages);
+router.use('/terms', pages);
+router.use('/privacy', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);

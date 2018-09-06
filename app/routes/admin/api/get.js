@@ -108,7 +108,6 @@ router.getCountries = (req, res) => {
 
 router.sendEmailVericaition = (req, res) => {
   console.log("sendEmailVericaition");
-  console.log(req.params.email.replace("@","stocazzo"));
   console.log(req.headers.host);
   const uid = require('uuid');
   //const request = require('request');
@@ -128,8 +127,10 @@ router.sendEmailVericaition = (req, res) => {
       res.json({error: true, msg: "EMAIL IS NOT YOUR"});
     } else {
       console.log("Email OK");
+      let nothingToDo = true;
       for(let item=0;item<user.emails.length;item++) {
         if (user.emails[item].email === req.params.email && !user.emails[item].is_confirmed) {
+          nothingToDo = false;
           const mailer = require('../../../utilities/mailer');
           user.emails[item].confirm = uid.v4();
           console.log(user.emails[item]);
@@ -169,6 +170,10 @@ router.sendEmailVericaition = (req, res) => {
             }
           });
         }
+      }
+      if(nothingToDo) {
+        console.log("Nothing to do");
+        res.json({error: true, msg: "Nothing to do"});          
       }
     }
   });
