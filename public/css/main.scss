@@ -901,11 +901,14 @@ section.performer_news_wrapper {
 
 .performer_item_wrapper img {
     max-width: 100px;
-    height: auto;
+    height: 100px;
     border-radius: 50%;
     margin-right: 30px;
 }
 
+.performer_item_wrapper img:hover {
+    opacity: 0.8;
+}
 .performer_infos_list li:after {
     content: "/";
     color: $color2;
@@ -1221,6 +1224,17 @@ section.performer_news_wrapper {
 
 .main_title_bkg h4 {
     font-size: 30px;
+}
+
+.pagination a {
+    background: $color4;
+    color: $color1;
+    border: 1px solid $color1;
+}
+.pagination a:hover {
+    background: $color1;
+    color: $color3;
+    border: 1px solid $color1;    
 }
 // FOOTER 
 .footer_site {
