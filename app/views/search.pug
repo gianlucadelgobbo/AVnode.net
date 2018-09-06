@@ -1,29 +1,15 @@
 extends layout
 
 block content
-  if searchAvailable
-    form.mb-3(method='get')
-      .input-group.input-group-lg
-        input.form-control(
-          placeholder=global.__('What are you searching for?')
-          type='text'
-          name='q'
-          value=q
-        )   
-        span.input-group-btn
-          button.btn.btn-primary=global.__('Search')
-
-    if resultCount
-      each hit in data
-        case hit._type
-          when 'event'
-            - var item = hit._source
-            include partials/search/event
-          when 'user'
-            - var item = hit._source
-            include partials/search/performer
-          when 'crew'
-            - var item = hit._source
-            include partials/search/crew
-    else
-      p=global.__('No results found…')
+  .container
+    script.
+      (function() {
+        var cx = '006376263216181099211:nipa3crth2a';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+      })();
+    <gcse:searchresults-only></gcse:searchresults-only>

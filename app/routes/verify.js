@@ -135,12 +135,34 @@ router.get('/:sez/:code', (req, res) => {
   if (req.params.sez == 'email' && req.params.code) {
     User
     .findOne({"emails.confirm":req.params.code})
-    .exec((err, put) => {
-      if (put) {
-        res.render('verify/email', {
-          title: __('Email verify'),
-          err: false,
-        });
+    .select({emails: 1})
+    .exec((err, user) => {
+      if (user) {
+        for(let item=0;item<user.emails.length;item++) {
+          if (user.emails[item].confirm === req.params.code) {
+            user.emails[item].is_confirmed = true;
+            user.emails[item].mailinglists = { livevisuals: 1 };
+            delete user.emails[item].confirm;
+          }
+        }
+        user.save((err) => {
+          if (err) {
+            res.render('verify/email', {
+              title: __('Email verify'),
+              err: true,
+            });
+          } else {
+            if (req.user) {
+              req.flash('success', { msg: __('Email verificated with success.') });
+              res.redirect('/admin/profile/emails');
+            } else {
+              res.render('verify/email', {
+                title: __('Email verify'),
+                err: false,
+              });  
+            }
+          }
+        });  
       } else {
         res.render('verify/email', {
           title: __('Email verify'),

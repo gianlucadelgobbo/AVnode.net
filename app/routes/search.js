@@ -1,7 +1,16 @@
 const router = require('./router')();
+router.use('/', (req, res) => {
+  res.render('search', {
+    title: 'Search results',
+    url: req.originalUrl,
+    q: req.query.q
+  });
+});
+
+/*
+const logger = require('../utilities/logger');
 const elasticsearch = require('../utilities/elasticsearch');
 const _ = require('lodash');
-const logger = require('../utilities/logger');
 
 
 const allowedTypes = ['event', 'user', 'crew', 'performance'];
@@ -45,6 +54,6 @@ router.use('/:type?', ({ params, query }, res) => {
       });
     }
   });
-});
+}); */
 
 module.exports = router;

@@ -4,9 +4,7 @@ block content
   .container
     if err
       h3=global.__("Verification Failed")
-      p=global.__("Verification was already done or someone subscribed with some of your data, please sign up again.")
-      p.text-center
-        a.btn.btn-primary.btn-lg(href="/signup")=global.__("SIGN UP")
+      p=global.__("Verification was already done or someone subscribed with some of your data.")
     else
       h3=global.__("Verification Success!!!")
       p=global.__("Verification was succesfully, to be listed as performer please login and complete your profile with images and infos.")
