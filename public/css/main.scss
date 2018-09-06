@@ -1217,13 +1217,15 @@ section.performer_news_wrapper {
 }
 
 .main_title_bkg {
-    background: $color4;
-    padding: 60px 0;
+    background: $color1;
+    padding: 20px 0;
     margin-bottom: 30px;
 }
 
-.main_title_bkg h4 {
-    font-size: 30px;
+.main_title_bkg h4,
+.main_title_bkg h1 {
+    font-size: 28px;
+    margin-bottom: 0;
 }
 
 .pagination a {
