@@ -9,11 +9,12 @@ import SignUp from '../index';
 class MainSignUp extends Component {
     render() {
         return (
+
         <div className="signup-container">
             
-            <div className="jumbotron jumbotron-fluid signup-jumbotron">
+            <div className="main_title_bkg">
                 <div className="container">
-                    <h1 className="display-4">
+                    <h1>
                         <FormattedMessage
                             id="signup"
                             defaultMessage="CREATE ACCOUNT"
