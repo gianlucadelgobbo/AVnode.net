@@ -11,10 +11,11 @@ block title
         if data.stats
           .performance_stat_container
             .performance_stat_wrapper
-              if data.stats.visits
-                =data.stats.visits + ' ' + global.__('Views')
-              if data.stats.likes
-                =data.stats.likes + ' ' + global.__('Likes')  
+              ul
+                if data.stats.visits
+                  li=data.stats.visits + ' ' + global.__('Views')
+                if data.stats.likes
+                  li=data.stats.likes + ' ' + global.__('Likes')            
 
 block content
   .container
