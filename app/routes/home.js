@@ -101,7 +101,20 @@ router.get('/', (req, res) => {
                 res.render('home', {
                   title: __('Welcome to AVnode network'),
                   subtitle: __('AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.'),
-                  data: homedata
+                  data: homedata,
+                  canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
+                  jsonld: {
+                    "@context": "http://schema.org",
+                    "@type": "WebSite",
+                    "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+                    "description": __('AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.'),
+                    "image": req.protocol + '://' + req.get('host') + req.originalUrl+"/images/avnode_mainimg.jpg",
+                    "potentialAction": {
+                      "@type": "SearchAction",
+                      "target": req.protocol + '://' + req.get('host') + req.originalUrl+"/search?&q={query}",
+                      "query-input": "required"
+                    }
+                  }          
                 });
               }
             });

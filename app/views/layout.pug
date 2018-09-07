@@ -6,9 +6,12 @@ html(lang=session.sessions.current_lang)
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
     title #{title} - AVnode.net
+    meta(name="robots" content="index, follow")
+    link(href=canonical rel="canonical")
     if jsonld
       meta(name="description" content=jsonld.description)
       meta(property="og:title" content=title)
+      meta(property="og:url" content=canonical)
       meta(property="og:type" content=jsonld["@type"]==="Person" || jsonld["@type"]==="PerformingGroup" ? "profile" : "website")
       meta(property="og:description" content=jsonld.description)
       meta(property="og:image" content=jsonld.image)
