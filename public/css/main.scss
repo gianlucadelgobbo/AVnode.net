@@ -382,6 +382,28 @@ a:hover + .partner_stagename,
     top: 40px;
 }
 
+.performance_stat_wrapper ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.performance_stat_wrapper ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.performance_stat_wrapper ul li:after {
+    content: "/";
+    display: inline-block;
+    margin: 0 0 0 8px;
+    color: $color4;
+}
+
+.performance_stat_wrapper ul li:last-child:after {
+    content: none;
+}
+
 .tabs_single_performance {
     border-color: $color1;
 }
@@ -776,6 +798,42 @@ section.performer_news_wrapper {
     padding: 60px 0;
 }
 
+
+// FOOTAGE & VIDEO PAGE
+
+.data_footage_video h3 {
+    color: $color1;
+    text-transform: inherit;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+.data_footage_video ul {
+    padding: 0;
+    margin: 0 0 30px 0;
+    list-style: none;
+}
+
+.data_footage_video ul li b {
+    font-weight: 700;
+}
+
+.data_footage_video .user_performance_wrapper img {
+    height: 50px !important;
+    width: 50px !important;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.data_footage_video_wrapper {
+    margin-bottom: 30px;
+    border-bottom: 1px solid $color1;
+}
+
+.data_footage_video_wrapper .category_performance_item {
+    border-bottom: none;
+    color: #fff;
+}
 
 
 

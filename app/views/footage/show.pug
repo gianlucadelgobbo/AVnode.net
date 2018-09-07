@@ -8,6 +8,17 @@ block title
       .row.performer_title
         .col-lg-12
           h1.main_title=data.title
+        if data.stats
+          .performance_stat_container
+            .performance_stat_wrapper
+              ul
+                if data.stats.visits
+                  li=data.stats.visits + ' ' + global.__('Views')
+                if data.stats.likes
+                  li=data.stats.likes + ' ' + global.__('Likes')  
+                if data.stats.downloads
+                  li=data.stats.downloads + ' ' + global.__('Downloads')  
+
 
 block content
   .container
@@ -35,39 +46,34 @@ block content
             button.btn.btn-primary.btn-lg.btn-block.download=global.__('Add to Playlist') 
 
 
-      .col-md-4
-        if data.stats
-          h3=__("Stats")
+      .col-md-4.data_footage_video
+        .data_footage_video_wrapper
+          h3=__("Data")
           ul
-            if data.stats.visits
-              li=data.stats.visits + ' ' + global.__('Views')
-            if data.stats.likes
-              li=data.stats.likes + ' ' + global.__('Likes')  
-            if data.stats.downloads
-              li=data.stats.downloads + ' ' + global.__('Downloads')  
-        h3=__("Data")
-        ul
-          li=global.__('File name')+": "
-            b=data.media.file.substring(data.media.file.lastIndexOf("/")+1)
-          li=global.__('File size')+": "
-            b=( data.media.filesize / Math.pow(1024, Math.floor( Math.log(data.media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.media.filesize) / Math.log(1024) )]
-          li=global.__('File duration')+": "
-            b=data.media.duration
-          li=global.__('File type')+": "
-            b=ext
+            li=global.__('File name')+": "
+              b=data.media.file.substring(data.media.file.lastIndexOf("/")+1)
+            li=global.__('File size')+": "
+              b=( data.media.filesize / Math.pow(1024, Math.floor( Math.log(data.media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.media.filesize) / Math.log(1024) )]
+            li=global.__('File duration')+": "
+              b=data.media.duration
+            li=global.__('File type')+": "
+              b=ext
         if data.tags
-          h3=__("Tags")
-          ul.list-inline.category_performance_item
-            each tag in data.tags
-              li.list-inline-item=tag.tag
+          .data_footage_video_wrapper
+            h3=__("Tags")
+            ul.list-inline.category_performance_item
+              each tag in data.tags
+                li.list-inline-item=tag.tag
         if data.about
-          h3=__("About")
-          .pt-2.pb-2!=data.about
-        h3=__("Author")
-        each user in data.users
-          .user_performance_wrapper
-            div.user_perfomance_image
-              img(src=user.imageFormats.small, alt=user.stagename)
-            div.user_perfomance_country_city
-              p.users_performance_item_name=user.stagename
-              p.users_performance_item_country!=user.addressesFormatted
+          .data_footage_video_wrapper
+            h3=__("About")
+            .pt-2.pb-2!=data.about
+        .data_footage_video_wrapper
+          h3=__("Author")
+          each user in data.users
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=user.imageFormats.small, alt=user.stagename)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=user.stagename
+                p.users_performance_item_country!=user.addressesFormatted
