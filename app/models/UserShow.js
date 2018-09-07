@@ -174,7 +174,7 @@ userSchema.virtual('description').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
-    about = about.trim().replace(/,/g , "").replace(/###b###/g , "").replace(/###\/b###/g , "").replace(/<br \/>/g , " ").replace(/  /g , " ");
+    about = about.trim().replace(/,/g , "").replace(/###b###/g , "").replace(/"/g , "").replace(/###\/b###/g , "").replace(/<br \/>/g , " ").replace(/  /g , " ");
 
     descriptionA = about.split(" ");
     let descriptionShort = "";

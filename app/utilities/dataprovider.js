@@ -43,7 +43,7 @@ dataprovider.getJsonld = (data) => {
   let jsonld = {
     "@context": "http://schema.org",
   }
-  if (jsonld["@type"] = "Person/PerformingGroup") {
+  if (data.stagename) {
     if (data.is_crew) {
       jsonld["@type"] = "PerformingGroup";
       jsonld.member = [];
@@ -62,13 +62,87 @@ dataprovider.getJsonld = (data) => {
     jsonld.name = data.stagename;
     jsonld.description = data.description;
     jsonld.image = data.imageFormats.large;
-    for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
-    for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
+    if ((data.web && data.web.length) || (data.social && data.social.length)) {
+      jsonld.sameAs = [];
+      if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
+      if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
+    }
     jsonld.address = {
       "@type": "PostalAddress",
       "addressLocality": data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
     }
+  } else if (data.title) {
+    if (data.schedule) {
+      jsonld["@type"] = "Event";
+      jsonld.startDate = data.schedule[0].starttime;
+      jsonld.location = {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": data.schedule[0].venue.location.locality,
+          "addressCountry": data.schedule[0].venue.location.country
+        },
+        "name": data.schedule[0].venue.name
+      };
+    } else {
+      jsonld["@type"] = "CreativeWork";
+      jsonld.author = [];
+      for(let a=0;a<data.users.length;a++) {
+        if (data.users[a].members && data.users[a].members.length) {
+          jsonld.author.push({
+            '@type': 'OrganizationRole',
+            "name": data.users[a].stagename
+          });
+  
+        } else {
+          jsonld.author.push({
+            '@type': 'Person',
+            "name": data.users[a].stagename
+          });
+        }
+      }
+    }
+    jsonld.name = data.title;
+    jsonld.description = data.description;
+    jsonld.image = data.imageFormats.large;
+    if ((data.web && data.web.length) || (data.social && data.social.length)) {
+      jsonld.sameAs = [];
+      if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
+      if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
+    }
+  } else if (data.length) {
+    jsonld["@type"] = "ItemList";
+    jsonld.itemListElement = [];
+    for(let a=0;a<data.length;a++) {
+      if (data[a].stagename) {
+        if (data[a].stats.members) {
+          jsonld.itemListElement.push({
+            '@type': 'OrganizationRole',
+            "name": data[a].stagename,
+            "url": data[a].slug
+          });
+  
+        } else {
+          jsonld.itemListElement.push({
+            '@type': 'Person',
+            "name": data[a].stagename,
+            "url": data[a].slug
+          });
+        }
+  
+      } else {
+        jsonld.itemListElement.push({
+          '@type': 'CreativeWork',
+          "name": data[a].title,
+          "url": data[a].slug
+        });
+      }
+    }
+    /* jsonld.name = data.title;
+    jsonld.description = data.description;
+    jsonld.image = data.imageFormats.large; */
   }
+
   logger.debug(jsonld);
   return jsonld;
 };
@@ -156,6 +230,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data),
+          canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
           data: data,
           path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
@@ -201,6 +276,7 @@ dataprovider.list = (req, res, section, model) => {
         res.render(config.sections[section].view_list, {
           title: title,
           section: section,
+          jsonld:dataprovider.getJsonld(data),
           sort: sorting,
           pages: pages,
           filter: filter,
