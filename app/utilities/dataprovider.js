@@ -39,11 +39,14 @@ dataprovider.getPerformanceByIds = (req, ids, cb) => {
   });
 };
 
-dataprovider.getJsonld = (data, jsonld) => {
-  //logger.debug(data);
+dataprovider.getJsonld = (data) => {
+  let jsonld = {
+    "@context": "http://schema.org",
+  }
   if (jsonld["@type"] = "Person/PerformingGroup") {
     if (data.is_crew) {
       jsonld["@type"] = "PerformingGroup";
+      jsonld.member = [];
       for(let a=0;a<data.members.length;a++) {
         jsonld.member.push({
           '@type': 'OrganizationRole', 
@@ -61,7 +64,10 @@ dataprovider.getJsonld = (data, jsonld) => {
     jsonld.image = data.imageFormats.large;
     for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
     for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
-    jsonld.address.addressLocality = data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "");
+    jsonld.address = {
+      "@type": "PostalAddress",
+      "addressLocality": data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
+    }
   }
   logger.debug(jsonld);
   return jsonld;
@@ -149,7 +155,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
-          jsonld:dataprovider.getJsonld(data, config.sections[section][subsection].jsonld),
+          jsonld:dataprovider.getJsonld(data),
           data: data,
           path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2

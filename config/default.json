@@ -2847,18 +2847,6 @@
         "crews":"Crews"
       },
       "show": {
-        "jsonld": {
-          "@context": "http://schema.org",
-          "@type": "Person/PerformingGroup",
-          "name": "Jane Doe",
-          "image": "janedoe.jpg",
-          "sameAs": [],
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Seattle, USA"
-          },
-          "member": []
-        },
         "select": {
           "stagename": 1,
           "abouts": 1,
