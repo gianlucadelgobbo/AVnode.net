@@ -39,7 +39,7 @@ dataprovider.getPerformanceByIds = (req, ids, cb) => {
   });
 };
 
-dataprovider.getJsonld = (data) => {
+dataprovider.getJsonld = (data, req) => {
   let jsonld = {
     "@context": "http://schema.org",
   }
@@ -117,24 +117,29 @@ dataprovider.getJsonld = (data) => {
       if (data[a].stagename) {
         if (data[a].stats.members) {
           jsonld.itemListElement.push({
-            '@type': 'OrganizationRole',
-            "name": data[a].stagename,
-            "url": data[a].slug
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
           });
   
         } else {
           jsonld.itemListElement.push({
-            '@type': 'Person',
-            "name": data[a].stagename,
-            "url": data[a].slug
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
           });
         }
   
       } else {
         jsonld.itemListElement.push({
-          '@type': 'CreativeWork',
-          "name": data[a].title,
-          "url": data[a].slug
+          '@type': 'ListItem',
+          "position": a+1,
+          "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+          /* "item": {
+            '@type': 'CreativeWork',
+            "name": data[a].title,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+          } */
         });
       }
     }
@@ -276,7 +281,8 @@ dataprovider.list = (req, res, section, model) => {
         res.render(config.sections[section].view_list, {
           title: title,
           section: section,
-          jsonld:dataprovider.getJsonld(data),
+          jsonld:dataprovider.getJsonld(data, req),
+          canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
           sort: sorting,
           pages: pages,
           filter: filter,
