@@ -39,7 +39,7 @@ dataprovider.getPerformanceByIds = (req, ids, cb) => {
   });
 };
 
-dataprovider.getJsonld = (data, req) => {
+dataprovider.getJsonld = (data, req, title) => {
   let jsonld = {
     "@context": "http://schema.org",
   }
@@ -71,6 +71,49 @@ dataprovider.getJsonld = (data, req) => {
       "@type": "PostalAddress",
       "addressLocality": data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
     }
+    /*
+    if(data.crews && data.crews.length) {
+      jsonld.crews = {};
+      jsonld.crews["@type"] = "ItemList";
+      jsonld.crews.itemListElement = [];
+      jsonld.crews.name = "Crews";
+      jsonld.crews.description = __("The list of Crews");
+      jsonld.crews.itemListElement = [];
+      for(let a=0;a<data.crews.length;a++) {
+        if (data.crews[a].stats.members) {
+          jsonld.crews.itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data.crews[a].slug
+          });
+  
+        } else {
+          jsonld.crews.itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[item][a].slug
+          });
+        }
+      }
+    }
+  
+    for(let item in config.sections) {
+      if(data[item] && data[item].length) {
+        jsonld[item] = {};
+        jsonld[item]["@type"] = "ItemList";
+        jsonld[item].itemListElement = [];
+        jsonld[item].name = config.sections[item].title;
+        jsonld[item].description = __("The list of "+jsonld[item].name);
+        for(let a=0;a<data[item].length;a++) {
+          jsonld[item].itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+item+"/"+data[item][a].slug
+          });
+        }
+      }
+    }
+    */
   } else if (data.title) {
     if (data.schedule) {
       jsonld["@type"] = "Event";
@@ -112,6 +155,9 @@ dataprovider.getJsonld = (data, req) => {
     }
   } else if (data.length) {
     jsonld["@type"] = "ItemList";
+    jsonld.itemListElement = [];
+    jsonld.name = title;
+    jsonld.description = __("The list of "+jsonld.name);
     jsonld.itemListElement = [];
     for(let a=0;a<data.length;a++) {
       if (data[a].stagename) {
@@ -234,7 +280,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
-          jsonld:dataprovider.getJsonld(data),
+          jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
           canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
           data: data,
           path: req.originalUrl,
@@ -281,7 +327,7 @@ dataprovider.list = (req, res, section, model) => {
         res.render(config.sections[section].view_list, {
           title: title,
           section: section,
-          jsonld:dataprovider.getJsonld(data, req),
+          jsonld:dataprovider.getJsonld(data, req, title),
           canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
           sort: sorting,
           pages: pages,

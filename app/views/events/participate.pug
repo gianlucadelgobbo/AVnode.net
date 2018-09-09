@@ -1,56 +1,57 @@
 extends ../layout
 block content
-  .user_dett.single_event_page
-    - var perc = parseInt((100/participateMenu.length)*(call.step+1))
-    h1=global.__("Participate") + ": " + global.__("Step")+ " " + (call.step+1)
-    hr
-    .progress
-      .progress-bar(role="progressbar" style='width: '+perc+'%;', aria-valuenow=perc, aria-valuemin='0', aria-valuemax='100')=perc+"%"
-    hr
-    ul.nav.nav-pills.nav-wizard.nav-fill.mb-3
-      each val, index in participateMenu 
-        li.nav-item(class=call.step==index ? "active" : index>call.step ? "disabled" : "link")
-          if index>0
-            .nav-wedge
-          if index>=call.step
-            span.nav-link(class=call.step==index ? "active" : index>call.step ? "disabled" : undefined)
-              !=(index+1)+". "
-              span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
-          else 
-            a.nav-link(href='?step='+index)
-              !=(index+1)+". "
-              span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
-          if index<participateMenu.length-1
-            .nav-arrow
-    if msg
-      include ../partials/msg  
-    - if (dett.subtitle)
-      //h3=Fnc.getTextFormat(dett.subtitle, config.lang, true)
-    - if (!dett.organizationsettings.call_is_active)
-      p=global.__("No call for proposals is active")
-    - else if (!user || !user._id)
-      p=global.__("To participate to the call for proposal you have to be logged in")
-      a.btn.btn-primary(href="/login/?from=/events/"+dett.slug+"/participate/")=global.__("LOGIN")
-      a.btn.btn-default(href="/signup/?from=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
-    - else
-      form(method="post")
-        h2.mb-3=participateMenu[call.step]
-        case call.step
-          when 0
-            include participate/step_0
-          when 1
-            include participate/step_1
-          when 2
-            include participate/step_2
-          when 3
-            include participate/step_3
-          when 4
-            //include participate/step_4
-          when 5
-            //include participate/step_5
-          when 6
-            //include participate/step_6
-          default
-            include participate/step_0
-        input.btn.btn-primary(type="submit" value=global.__("NEXT >>"))
-        input(type="hidden" name="step" value=call.step)
+  .container
+    .user_dett.single_event_page
+      - var perc = parseInt((100/participateMenu.length)*(call.step+1))
+      h1=global.__("Participate") + ": " + global.__("Step")+ " " + (call.step+1)
+      hr
+      .progress
+        .progress-bar(role="progressbar" style='width: '+perc+'%;', aria-valuenow=perc, aria-valuemin='0', aria-valuemax='100')=perc+"%"
+      hr
+      ul.nav.nav-pills.nav-wizard.nav-fill.mb-3
+        each val, index in participateMenu 
+          li.nav-item(class=call.step==index ? "active" : index>call.step ? "disabled" : "link")
+            if index>0
+              .nav-wedge
+            if index>=call.step
+              span.nav-link(class=call.step==index ? "active" : index>call.step ? "disabled" : undefined)
+                !=(index+1)+". "
+                span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
+            else 
+              a.nav-link(href='?step='+index)
+                !=(index+1)+". "
+                span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
+            if index<participateMenu.length-1
+              .nav-arrow
+      if msg
+        include ../partials/msg  
+      - if (dett.subtitle)
+        //h3=Fnc.getTextFormat(dett.subtitle, config.lang, true)
+      - if (!dett.organizationsettings.call_is_active)
+        p=global.__("No call for proposals is active")
+      - else if (!user || !user._id)
+        p=global.__("To participate to the call for proposal you have to be logged in")
+        a.btn.btn-primary(href="/login/?from=/events/"+dett.slug+"/participate/")=global.__("LOGIN")
+        a.btn.btn-default(href="/signup/?from=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
+      - else
+        form(method="post")
+          h2.mb-3=participateMenu[call.step]
+          case call.step
+            when 0
+              include participate/step_0
+            when 1
+              include participate/step_1
+            when 2
+              include participate/step_2
+            when 3
+              include participate/step_3
+            when 4
+              //include participate/step_4
+            when 5
+              //include participate/step_5
+            when 6
+              //include participate/step_6
+            default
+              include participate/step_0
+          input.btn.btn-primary(type="submit" value=global.__("NEXT >>"))
+          input(type="hidden" name="step" value=call.step)
