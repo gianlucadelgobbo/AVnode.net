@@ -194,7 +194,7 @@ dataprovider.getJsonld = (data, req, title) => {
     jsonld.image = data.imageFormats.large; */
   }
 
-  logger.debug(jsonld);
+  //logger.debug(jsonld);
   return jsonld;
 };
 
@@ -313,12 +313,20 @@ dataprovider.list = (req, res, section, model) => {
     //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
     const query = config.sections[section].categoriesQueries[filter];
     dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
+      console.log(req.originalUrl);
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         if (process.env.DEBUG) {
           res.render('json', {total:total, skip:skip, data:data});
         } else {
           res.json({total:total, skip:skip, data:data});
         }
+      } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
+        res.render('sitemaps/list', {
+          pretty: true,
+          title: data.stagename,
+          data: data,
+          nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+        });
       } else {
         const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
         let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
