@@ -36,6 +36,7 @@ router.use('/privacy', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
+router.use('/performers-sitemap.xml', performers);
 router.use('/performances', performances);
 router.use('/events', events);
 router.use('/footage', footage);
