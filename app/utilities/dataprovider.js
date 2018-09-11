@@ -278,11 +278,26 @@ dataprovider.show = (req, res, section, subsection, model) => {
             }
           }
         }
+        if (!req.session[data._id]) {
+          req.session[data._id] = true;
+          data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
+          model.update({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
+            //if (err) c
+            //console.log('The raw response from Mongo was ', raw);
+          });
+        }
+        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
+          data.liked = false;
+        } else {
+          data.liked = true;
+        }
+        logger.debug(req.user);
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
           canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
           data: data,
+          section: section,
           path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });

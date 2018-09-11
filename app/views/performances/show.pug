@@ -56,6 +56,8 @@ block content
                 p!=data.tech_art
 
       .col-sm-4.performance_info_sidebar
+        button#liker.btn.btn-primary(type="button" data-endpoint="/likes/" data-method="GET" data-payload="{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" style=data.liked ? "opacity: .65;" : undefined)=data.liked ? "Unlike" : "Like"
+
         if data.categories
           ul.list-inline.category_performance_item.single_performance
             each category in data.categories
