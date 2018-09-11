@@ -189,6 +189,30 @@ a#to_top.to_top_visibile {
     display: block;
 }
 
+.button_share_like {
+    background: transparent;
+    border: none;
+    padding: 0;    
+}
+
+.label_like_button_wrapper {
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+.label_like_button_wrapper .label_like_button {
+    background-color: $color1;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 10px;
+    font-weight: 200;
+    text-transform: lowercase;
+    border-radius: 5px;
+    line-height: 20px;
+    position: relative;
+    bottom: 15px;    
+}
+
 // EVENT PAGE
 .subtitle {
     color: $color1;
