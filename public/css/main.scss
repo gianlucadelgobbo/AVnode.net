@@ -213,6 +213,14 @@ a#to_top.to_top_visibile {
     bottom: 15px;    
 }
 
+.button_share_like:hover {
+    cursor: pointer;
+    background: transparent;
+}
+.button_share_like:focus {
+    box-shadow: none;
+}
+
 // EVENT PAGE
 .subtitle {
     color: $color1;
