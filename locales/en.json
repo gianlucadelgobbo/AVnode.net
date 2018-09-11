@@ -197,5 +197,15 @@
 	"NEXT >>": "NEXT >>",
 	"Please select a call": "Please select a call",
 	"The list of Performers: All Most active": "The list of Performers: All Most active",
-	"Please login to like": "Please login to like"
+	"Please login to like": "Please login to like",
+	"NaNPerformers": "NaNPerformers",
+	"NaNEvents": "NaNEvents",
+	"NaNPerformances": "NaNPerformances",
+	"NaNVideos": "NaNVideos",
+	"NaNNews": "NaNNews",
+	"NaNFootage": "NaNFootage",
+	"NaNPlaylists": "NaNPlaylists",
+	"NaNGallery": "NaNGallery",
+	"NaN": null,
+	"Image of:": "Image of:"
 }

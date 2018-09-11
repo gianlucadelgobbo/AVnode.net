@@ -24,6 +24,8 @@ const likes = require('./likes');
 const admin = require('./admin');
 
 const pages = require('./pages');
+const dataprovider = require('../utilities/dataprovider');
+
 /*
 const user = require('./user');
 const storage = require('./storage');
@@ -40,7 +42,6 @@ router.use('/privacy', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
-router.use('/performers-sitemap.xml', performers);
 router.use('/performances', performances);
 router.use('/events', events);
 router.use('/footage', footage);
@@ -63,6 +64,33 @@ router.get('/404', fourOhFour);
 
 router.use('/admin', admin);
 
+router.use('/sitemap.xml', home);
+router.get('/performances-page-:page-sitemap.xml', (req, res) => {
+    const Model = require('mongoose').model('Performance');
+    const section = "performances";
+    console.log("BINGOOOOOOO");
+    req.params.sorting = config.sections[section].orders[0];
+    req.params.filter = config.sections[section].categories[0];
+    dataprovider.list(req, res, section, Model);
+});
+
+router.get('/performances-sitemap.xml', (req, res) => {
+    const Model = require('mongoose').model('Performance');
+    const section = "performances";
+    console.log("BINGOOOOOOO");
+    req.params.page = 1;
+    req.params.sorting = config.sections[section].orders[0];
+    req.params.filter = config.sections[section].categories[0];
+    dataprovider.list(req, res, section, Model);
+});
+/* router.use('/performers-sitemap.xml', performers);
+router.use('/performances-sitemap.xml', performances);
+router.use('/events-sitemap.xml', events);
+router.use('/footage-sitemap.xml', footage);
+router.use('/playlists-sitemap.xml', playlists);
+router.use('/videos-sitemap.xml', videos);
+router.use('/news-sitemap.xml', news);
+ */
 router.use('/:slug', show);
 
 router.use('/', home);
