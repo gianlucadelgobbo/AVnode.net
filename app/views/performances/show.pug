@@ -6,16 +6,34 @@ block title
   if data.title
     .container
       .row.performer_title
-        .col-lg-12
+        .col-lg-9
           h1.main_title=data.title
-        if data.stats
-          .performance_stat_container
-            .performance_stat_wrapper
-              ul
-                if data.stats.visits
-                  li=data.stats.visits + ' ' + global.__('Views')
-                if data.stats.likes
-                  li=data.stats.likes + ' ' + global.__('Likes')            
+          if data.stats
+            .performance_stat_container
+              .performance_stat_wrapper
+                ul
+                  if data.stats.visits
+                    li=data.stats.visits + ' ' + global.__('Views')
+                  if data.stats.likes
+                    li=data.stats.likes + ' ' + global.__('Likes')                      
+        .col-lg-3.share_like_list_column
+          ul.list-inline.share_like_list
+            li.list-inline-item
+              a(href="javascript:window.open('https://www.addtoany.com/share_save?linkurl='+encodeURIComponent(document.URL), 'Share Dialog', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=650,height=450,top='+(screen.height/2-450/2)+',left='+(screen.width/2-650/2));")
+                .share_button.button_share_like
+                  img(src="/images/share_icon.svg")        
+                .label_like_button_wrapper
+                  span.label_like_button="share"
+
+            li.list-inline-item
+              button#liker.btn.btn-primary.button_share_like(type="button" data-endpoint="/likes/" data-method="GET" data-payload="{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" style=data.liked ? "opacity: .65;" : undefined)
+                .share_button
+                  img(src=data.liked ? "/images/like_full_icon.svg" : "/images/like_icon.svg")
+                .label_like_button_wrapper
+                  span.label_like_button=data.liked ? "Unlike" : "Like"        
+
+          
+
 
 block content
   .container
@@ -56,20 +74,7 @@ block content
                 p!=data.tech_art
 
       .col-sm-4.performance_info_sidebar
-        ul.list-inline
-          li.list-inline-item
-            button#liker.btn.btn-primary.button_share_like(type="button" data-endpoint="/likes/" data-method="GET" data-payload="{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" style=data.liked ? "opacity: .65;" : undefined)
-              .share_button
-                img(src=data.liked ? "/images/like_full_icon.svg" : "/images/like_icon.svg")
-            .label_like_button_wrapper
-              span.label_like_button=data.liked ? "Unlike" : "Like"        
-          li.list-inline-item
-            a(href="javascript:window.open('https://www.addtoany.com/share_save?linkurl='+encodeURIComponent(document.URL), 'Share Dialog', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=650,height=450,top='+(screen.height/2-450/2)+',left='+(screen.width/2-650/2));")
-              .share_button.button_share_like
-                img(src="/images/share_icon.svg")        
-            .label_like_button_wrapper
-              span.label_like_button="share"
-
+        
         if data.categories
           ul.list-inline.category_performance_item.single_performance
             each category in data.categories
