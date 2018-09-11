@@ -1,5 +1,5 @@
 doctype html
-html(lang=session.sessions.current_lang)
+html(lang=session.current_lang)
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -17,7 +17,7 @@ html(lang=session.sessions.current_lang)
       meta(property="og:description" content=jsonld.description)
       meta(property="og:image" content=jsonld.image)
       meta(property="og:site_name" content="AVnode.net")
-      meta(property="og:locale" content=session.sessions.current_lang+"_"+session.sessions.current_lang.toUpperCase())
+      meta(property="og:locale" content=session.current_lang+"_"+session.current_lang.toUpperCase())
 
     link(rel='shortcut icon', href='/icons/favicon.ico', type='image/x-icon')
     link(rel='apple-touch-icon', href='/icons/apple-touch-icon.png')
@@ -79,7 +79,7 @@ html(lang=session.sessions.current_lang)
                 i.fa.fa-search.fa-lg.fa-fw
             li.nav-item.dropdown
               a#langDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                b=session.sessions.current_lang.toUpperCase()
+                b=session.current_lang.toUpperCase()
               .dropdown-menu(aria-labelledby='langDropdown')
                 each lang,slug in config.locales_labels
                   a.dropdown-item(href=protocol+'://'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
@@ -162,7 +162,7 @@ html(lang=session.sessions.current_lang)
                     i.fa.fa-search.fa-lg.fa-fw
               li.nav-item.dropdown
                 a#langDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                  b=session.sessions.current_lang.toUpperCase()
+                  b=session.current_lang.toUpperCase()
                 .dropdown-menu(aria-labelledby='langDropdown')
                   each lang,slug in config.locales_labels
                     a.dropdown-item(href=protocol+'://'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
@@ -267,6 +267,7 @@ html(lang=session.sessions.current_lang)
     script(src='/js/video.min.js')
     script(src="/js/owl.carousel.min.js")
     script(src="/js/main.js")
+    script(src="/js/ajax.js")
     script(async src="https://www.googletagmanager.com/gtag/js?id=UA-124799696-1")
     script.
       window.dataLayer = window.dataLayer || [];

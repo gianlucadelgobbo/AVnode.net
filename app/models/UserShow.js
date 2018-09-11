@@ -35,6 +35,8 @@ const userSchema = new Schema({
   is_public: Boolean,
   creation_date: Date,
   stats: {},
+  likes: {},
+
   birthday: Date,
   citizenship: [], // NEW
 

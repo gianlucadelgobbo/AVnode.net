@@ -19,6 +19,8 @@ const search = require('./search');
 const signup = require('./signup');
 const verify = require('./verify');
 
+const likes = require('./likes');
+
 const admin = require('./admin');
 
 const pages = require('./pages');
@@ -29,6 +31,8 @@ const crews = require('./crews');
 const fourOhFour = require('./404');
 */
 router.get('/__webpack_hmr', function(){});
+
+router.use('/likes', likes);
 
 router.use('/contacts', pages);
 router.use('/terms', pages);

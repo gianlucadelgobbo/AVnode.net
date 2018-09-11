@@ -25,6 +25,7 @@ const userSchema = new Schema({
   is_public: Boolean,
   creation_date: Date,
   stats: {},
+  likes: {},
 
   slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
   stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'FIELD_REQUIRED'], minlength: [4, 'FIELD_TOO_SHORT'], maxlength: [50, 'FIELD_TOO_LONG'] },
