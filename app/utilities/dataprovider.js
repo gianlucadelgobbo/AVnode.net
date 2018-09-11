@@ -336,10 +336,16 @@ dataprovider.list = (req, res, section, model) => {
           res.json({total:total, skip:skip, data:data});
         }
       } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
+        let lastmod = new Date();
+        lastmod.setHours( lastmod.getHours() -2 );
+        lastmod.setMinutes(0);
+        lastmod = helper.dateoW3CString(lastmod);
+        res.set('Content-Type', 'text/xml');
         res.render('sitemaps/list', {
-          pretty: true,
-          title: data.stagename,
+          host: req.protocol+"://"+req.headers.host,
           data: data,
+          lastmod: lastmod,
+          basepath: config.sections[section].basepath,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
