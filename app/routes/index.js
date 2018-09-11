@@ -25,6 +25,8 @@ const admin = require('./admin');
 
 const pages = require('./pages');
 const dataprovider = require('../utilities/dataprovider');
+const helper = require('../utilities/helper');
+
 
 /*
 const user = require('./user');
@@ -64,33 +66,37 @@ router.get('/404', fourOhFour);
 
 router.use('/admin', admin);
 
-router.use('/sitemap.xml', home);
-router.get('/performances-page-:page-sitemap.xml', (req, res) => {
+router.get('/sitemap.xml', (req, res) => {
+    let lastmod = new Date();
+    lastmod.setHours( lastmod.getHours() -2 );
+    lastmod.setMinutes(0);
+    lastmod = helper.dateoW3CString(lastmod);
+    res.set('Content-Type', 'text/xml');
+    res.render('sitemaps/index', {
+      pretty: true,
+      host: req.protocol+"://"+req.headers.host,
+      data: config.sections,
+      lastmod: lastmod
+    });
+});
+
+router.get('/:section-page-:page-sitemap.xml', (req, res) => {
     const Model = require('mongoose').model('Performance');
-    const section = "performances";
-    console.log("BINGOOOOOOO");
+    const section = req.params.section;
     req.params.sorting = config.sections[section].orders[0];
     req.params.filter = config.sections[section].categories[0];
     dataprovider.list(req, res, section, Model);
 });
 
-router.get('/performances-sitemap.xml', (req, res) => {
+router.get('/:section-sitemap.xml', (req, res) => {
     const Model = require('mongoose').model('Performance');
-    const section = "performances";
-    console.log("BINGOOOOOOO");
+    const section = req.params.section;
     req.params.page = 1;
     req.params.sorting = config.sections[section].orders[0];
     req.params.filter = config.sections[section].categories[0];
     dataprovider.list(req, res, section, Model);
 });
-/* router.use('/performers-sitemap.xml', performers);
-router.use('/performances-sitemap.xml', performances);
-router.use('/events-sitemap.xml', events);
-router.use('/footage-sitemap.xml', footage);
-router.use('/playlists-sitemap.xml', playlists);
-router.use('/videos-sitemap.xml', videos);
-router.use('/news-sitemap.xml', news);
- */
+
 router.use('/:slug', show);
 
 router.use('/', home);

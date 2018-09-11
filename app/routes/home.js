@@ -10,23 +10,11 @@ const Footage = mongoose.model('Footage');
 const Playlist = mongoose.model('Playlist');
 
 const dataprovider = require('../utilities/dataprovider');
-const helper = require('../utilities/helper');
 
 const logger = require('../utilities/logger');
 
 router.get('/', (req, res) => {
   if (req.originalUrl.indexOf("sitemap.xml")!==-1) {
-    let lastmod = new Date();
-    lastmod.setHours( lastmod.getHours() -2 );
-    lastmod.setMinutes(0);
-    lastmod = helper.dateoW3CString(lastmod);
-    res.set('Content-Type', 'text/xml');
-    res.render('sitemaps/index', {
-      pretty: true,
-      host: req.protocol+"://"+req.headers.host,
-      data: config.sections,
-      lastmod: lastmod
-    });
   } else {
     let homedata = {stats:{}};
     const section = 'events';
