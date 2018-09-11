@@ -1,7 +1,9 @@
 $("#liker").on('click', function(ev) {
   ///likes/?section=performances&id=5a9c32c3606624000000bccb
   ev.preventDefault();
-  const $el = $(this);
+  const $el = $("#liker");
+  const $label = $("#liker .label_like_button");
+  const $icon = $("#liker img");
   const url = $el.attr('data-endpoint');
   const method = $el.attr('data-method');
   let payload = $el.attr('data-payload');
@@ -30,11 +32,13 @@ $("#liker").on('click', function(ev) {
       alert(data.msg);
     } else {
       if(data.status==="Unliked") {
-        $el.html("Like");
+        $label.html("Like");
         $el.attr("style","")
+        $icon.attr("src","/images/like_icon.svg")
       } else {
-        $el.html("Unlike");
+        $label.html("Unlike");
         $el.attr("style","opacity: .65;")
+        $icon.attr("src","/images/like_full_icon.svg")
       }
     }
   });
