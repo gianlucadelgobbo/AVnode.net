@@ -221,6 +221,21 @@ a#to_top.to_top_visibile {
     box-shadow: none;
 }
 
+.share_like_list li {
+    float: left;
+    transition: all 0.5s ease-in-out;        
+}
+
+.share_like_list li:hover {
+    opacity: 0.5;
+}
+.share_like_list {
+    display: block;
+    width: 100%;
+    clear: both;
+    float: left;
+}
+
 // EVENT PAGE
 .subtitle {
     color: $color1;
@@ -400,18 +415,20 @@ a:hover + .partner_stagename,
 
 .performer_title h1 {
     border-bottom: 1px solid $color1;
-    margin: 30px 0;
-    padding: 0 0 15px 0;
-    width: 68%;
+    margin: 30px 0 0 0;
+    padding: 0 0 15px 0;    
+}
+
+.share_like_list_column {
+    margin-top: 30px;
 }
 
 .performance_stat_container {
     background: $color1;
-    position: absolute;
-    right: -68%;
     width: 100%;
-    padding: 0 0 0 60px;
+    padding: 0 15px;
     top: 40px;
+    margin-bottom: 30px;
 }
 
 .performance_stat_wrapper ul {
