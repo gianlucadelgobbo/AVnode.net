@@ -4,6 +4,7 @@ $("#liker").on('click', function(ev) {
   const $el = $("#liker");
   const $label = $("#liker .label_like_button");
   const $icon = $("#liker img");
+  const $likes_count = $(".likes_count");
   const url = $el.attr('data-endpoint');
   const method = $el.attr('data-method');
   let payload = $el.attr('data-payload');
@@ -33,12 +34,14 @@ $("#liker").on('click', function(ev) {
     } else {
       if(data.status==="Unliked") {
         $label.html("Like");
-        $el.attr("style","")
-        $icon.attr("src","/images/like_icon.svg")
+        $likes_count.html(parseFloat($likes_count.html())-1);
+        $el.attr("style","");
+        $icon.attr("src","/images/like_icon.svg");
       } else {
         $label.html("Unlike");
-        $el.attr("style","opacity: .65;")
-        $icon.attr("src","/images/like_full_icon.svg")
+        $likes_count.html(parseFloat($likes_count.html())+1);
+        $el.attr("style","opacity: .65;");
+        $icon.attr("src","/images/like_full_icon.svg");
       }
     }
   });
