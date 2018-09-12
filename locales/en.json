@@ -211,5 +211,12 @@
 	"The list of Footage: All Most recent": "The list of Footage: All Most recent",
 	"The list of Videos: All Most recent": "The list of Videos: All Most recent",
 	"The list of News: All Most recent": "The list of News: All Most recent",
-	"The list of Playlists: All Most recent": "The list of Playlists: All Most recent"
+	"The list of Playlists: All Most recent": "The list of Playlists: All Most recent",
+	"Alert": "Alert",
+	"AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:": "AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:",
+	"The database will be resetted more than once in the alpha phase, you could loose some data you insert": "The database will be resetted more than once in the alpha phase, you could loose some data you insert",
+	"Control panel is still under development, fome feature is still not fully working": "Control panel is still under development, fome feature is still not fully working",
+	"Please send any suggestion to:": "Please send any suggestion to:",
+	"I have read, continue": "I have read, continue",
+	"Control panel is still under development, some features are still not fully working": "Control panel is still under development, some features are still not fully working"
 }
