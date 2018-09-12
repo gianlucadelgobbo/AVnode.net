@@ -2801,9 +2801,11 @@
   "sections": {
     "performers": {
       "title": "Performers",
+      "model": "UserShow",
       "limit": 20,
       "basepath": "performers",
       "main_image": "/images/sez_performers.jpg",
+      "sitemap_pages": 500,
       "coll": "users",
       "view_list": "performers/list",
       "view_edit": "user",
@@ -3254,9 +3256,11 @@
     },
     "events": {
       "title": "Events",
+      "model": "EventShow",
       "limit": 20,
       "basepath": "events",
       "main_image": "/images/sez_events.jpg",
+      "sitemap_pages": 19,
       "coll": "events",
       "view_list": "events/list",
       "list_fields": {
@@ -3423,9 +3427,11 @@
     },
     "performances": {
       "title": "Performances",
+      "model": "Performance",
       "limit": 20,
       "basepath": "performances",
       "main_image": "/images/sez_performances.jpg",
+      "sitemap_pages": 203,
       "coll": "performances",
       "view_list": "performances/list",
       "list_fields": {
@@ -3554,9 +3560,11 @@
     },
     "videos": {
       "title": "Videos",
+      "model": "Video",
       "limit": 20,
       "basepath": "videos",
       "main_image": "/images/sez_videos.jpg",
+      "sitemap_pages": 121,
       "coll": "video",
       "view_list": "videos/list",
       "list_fields": {
@@ -3664,9 +3672,11 @@
     },
     "news": {
       "title": "News",
+      "model": "News",
       "limit": 20,
       "basepath": "news",
       "main_image": "/images/sez_news.jpg",
+      "sitemap_pages": 1,
       "coll": "news",
       "view_list": "news/list",
       "list_fields": {
@@ -3723,8 +3733,10 @@
     },
     "footage": {
       "title": "Footage",
+      "model": "Footage",
       "limit": 20,
       "basepath": "footage",
+      "sitemap_pages": 334,
       "main_image": "/images/sez_footage.jpg",
       "coll": "footage",
       "view_list": "footage/list",
@@ -3805,8 +3817,10 @@
     },
     "playlists": {
       "title": "Playlists",
+      "model": "Playlist",
       "limit": 20,
       "basepath": "playlists",
+      "sitemap_pages": 31,
       "main_image": "/images/sez_playlists.jpg",
       "coll": "playlists",
       "view_list": "playlists/list",
@@ -3883,9 +3897,11 @@
     },
     "gallery": {
       "title": "Gallery",
+      "model": "Gallery",
       "limit": 20,
       "basepath": "gallery",
       "main_image": "/images/sez_gallery.jpg",
+      "sitemap_pages": 20,
       "coll": "gallery",
       "view_list": "gallery/list",
       "list_fields": {
