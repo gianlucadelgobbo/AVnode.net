@@ -195,7 +195,7 @@ html(lang=session.current_lang)
     footer.footer_site
       .container
         .row
-          .col-sm-4.footer_info
+          .col-md-4.footer_info
             div(itemprop='organizer', itemscope='', itemtype='http://schema.org/Organization')
               a(href='/', title='AVnode')
                 img.logo_footer.media-object(src='/images/logo_grey.svg', alt='AVnode.net', itemprop='logo')
@@ -223,7 +223,7 @@ html(lang=session.current_lang)
               a(itemprop='email', title='Write to AVnode', href='mailto:info@avnode.net') info@avnode.net
               br.d-none
               a.d-none(itemprop='url', title='AVnode Web Site', href='https://avnode.net') https://avnode.net
-          .col-sm-4.hidden-print
+          .col-md-4.hidden-print
             h3 Corporate
             nav
               ul.footer-nav.corporate
@@ -235,7 +235,7 @@ html(lang=session.current_lang)
                   a(href='/privacy/', title='Privacy')=global.__("Privacy")
                 li
                   a(href='/contacts/', title='Contacts')=global.__("Contacts")
-          .col-sm-4.hidden-print
+          .col-md-4.hidden-print
             h3 Social Networks
             ul.footer-nav.footer-nav-inline.socials
               li
