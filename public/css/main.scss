@@ -683,10 +683,7 @@ performance_event_title
     transition: all 0.5s ease-in-out;        
 }
 
-.event_social_list {
-    border-left: 1px solid $color3;
-    padding-left: 15px;
-}
+
 
 .about_button {
     font-size: 40px;
@@ -850,6 +847,9 @@ section.performer_news_wrapper {
 
 // FOOTAGE & VIDEO PAGE
 
+.embed-responsive {
+    margin-bottom: 30px;
+}
 .data_footage_video h3 {
     color: $color1;
     text-transform: inherit;
@@ -884,6 +884,9 @@ section.performer_news_wrapper {
     color: #fff;
 }
 
+.buttons_footage button {
+    margin-bottom: 15px;
+}
 
 
 // ITEM NEWS
@@ -1390,6 +1393,7 @@ section.performer_news_wrapper {
 
 .footer_info {
     font-size: 14px;
+    margin-bottom: 30px;
 }
 
 .footer_site h3 {
@@ -1424,7 +1428,7 @@ ul.footer-nav.footer-nav-inline.socials .about_button {
 
 ul.footer-nav.corporate {
     list-style: none;
-    margin: 0;
+    margin: 0 0  30px 0;
     padding: 0;
 }
 
@@ -1435,6 +1439,8 @@ ul.footer-nav.corporate {
     position: relative;
     bottom: 1px;
 }
+
+
 
 // header template performer
 
@@ -1453,6 +1459,14 @@ ul.user_navbar {
 
 .user_navbar li {
     display: inline-block;
+}
+
+.user_navbar .dropdown-menu {
+    color: #fff;
+    background-color: $color1;
+    border: none;
+    border-radius: 0;
+    top: 49px;
 }
 
 .user_menu a {
@@ -1569,4 +1583,60 @@ ul.user_navbar {
     .navbar_extended_template .user_menu a {
         margin: 0px;
     }
+
+    .navbar .container {
+        width: 100%;
+        max-width: 100%;
+    }
+    .footer_site {
+        text-align: center;
+    }
+
+    .performance_stat_container {
+        margin-bottom: 0;
+    }
+    .clearfix.submenu .nav {
+        display: inline-block;     
+        margin-right: 15px;
+    }
+    .event_main_image_wrapper {    
+        top: -230px;
+        margin-bottom: -200px;
+    }
+
+    .about_wrapper {
+        column-count: 1;
+        -webkit-column-gap: 30px;
+        -moz-column-gap: 30px;
+        column-gap: 30px;
+        -webkit-column-rule-style: solid;
+        -moz-column-rule-style: solid;
+        column-rule-style: solid;
+        column-rule-color: #148dd4;
+        column-rule-width: 1px;
+        margin-bottom: 30px;
+    }
+
+}
+
+@media screen and (max-width: 541px)  { /* solo smartphone*/
+    .clearfix.submenu>div {
+        float: left;
+        margin-bottom: 10px;
+    }
+
+    .performance_info_sidebar {
+        border-left: none;
+        border-top: 1px solid $color1;
+    }
+
+    .event_main_image_wrapper {    
+        top: -130px;
+        margin-bottom: -100px;
+    }
+
+    .partners_list_wrapper > div {
+        width: 25%;
+    }
+
 }
