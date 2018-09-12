@@ -14,8 +14,9 @@ block title
                 ul
                   if data.stats.visits
                     li=data.stats.visits + ' ' + global.__('Views')
-                  if data.stats.likes
-                    li=data.stats.likes + ' ' + global.__('Likes')  
+                  li
+                    span.likes_count=data.stats.likes ? data.stats.likes : 0
+                    !=' ' + global.__('Likes')  
                   if data.stats.downloads
                     li=data.stats.downloads + ' ' + global.__('Downloads')
         .col-lg-3.share_like_list_column

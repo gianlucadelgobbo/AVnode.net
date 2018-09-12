@@ -130,19 +130,21 @@ dataprovider.getJsonld = (data, req, title) => {
     } else {
       jsonld["@type"] = "CreativeWork";
       jsonld.author = [];
-      for(let a=0;a<data.users.length;a++) {
-        if (data.users[a].members && data.users[a].members.length) {
-          jsonld.author.push({
-            '@type': 'OrganizationRole',
-            "name": data.users[a].stagename
-          });
-  
-        } else {
-          jsonld.author.push({
-            '@type': 'Person',
-            "name": data.users[a].stagename
-          });
-        }
+      if (data.users) {
+        for(let a=0;a<data.users.length;a++) {
+          if (data.users[a].members && data.users[a].members.length) {
+            jsonld.author.push({
+              '@type': 'OrganizationRole',
+              "name": data.users[a].stagename
+            });
+    
+          } else {
+            jsonld.author.push({
+              '@type': 'Person',
+              "name": data.users[a].stagename
+            });
+          }
+        }  
       }
     }
     jsonld.name = data.title;

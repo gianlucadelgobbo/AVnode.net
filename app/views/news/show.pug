@@ -10,11 +10,21 @@ block teaser
 
 block title
   if data.title
-    .main_title_bkg
-      .container
-        h1!=title
-        if subtitle
-          p.lead.mb-0=subtitle
+    .container
+      .row.performer_title
+        .col-lg-9
+          h1.main_title=data.title
+          if data.stats
+            .performance_stat_container
+              .performance_stat_wrapper
+                ul
+                  if data.stats.visits
+                    li=data.stats.visits + ' ' + global.__('Views')
+                  li
+                    span.likes_count=data.stats.likes ? data.stats.likes : 0
+                    !=' ' + global.__('Likes')                      
+        .col-lg-3.share_like_list_column
+          include ../partials/share_like
 
 block content
   .container
