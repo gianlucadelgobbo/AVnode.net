@@ -81,20 +81,20 @@ router.get('/sitemap.xml', (req, res) => {
 });
 
 router.get('/:section-page-:page-sitemap.xml', (req, res) => {
-    const Model = require('mongoose').model('Performance');
-    const section = req.params.section;
-    req.params.sorting = config.sections[section].orders[0];
-    req.params.filter = config.sections[section].categories[0];
-    dataprovider.list(req, res, section, Model);
+  const section = req.params.section;
+  const Model = require('mongoose').model(config.sections[section].model);
+  req.params.sorting = config.sections[section].orders[0];
+  req.params.filter = config.sections[section].categories[0];
+  dataprovider.list(req, res, section, Model);
 });
 
 router.get('/:section-sitemap.xml', (req, res) => {
-    const Model = require('mongoose').model('Performance');
-    const section = req.params.section;
-    req.params.page = 1;
-    req.params.sorting = config.sections[section].orders[0];
-    req.params.filter = config.sections[section].categories[0];
-    dataprovider.list(req, res, section, Model);
+  const section = req.params.section;
+  const Model = require('mongoose').model(config.sections[section].model);
+  req.params.page = 1;
+  req.params.sorting = config.sections[section].orders[0];
+  req.params.filter = config.sections[section].categories[0];
+  dataprovider.list(req, res, section, Model);
 });
 
 router.use('/:slug', show);
