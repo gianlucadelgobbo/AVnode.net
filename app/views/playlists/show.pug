@@ -6,8 +6,20 @@ block title
   if data.title
     .container
       .row.performer_title
-        .col-lg-12
+        .col-lg-9
           h1.main_title=data.title
+          if data.stats
+            .performance_stat_container
+              .performance_stat_wrapper
+                ul
+                  if data.stats.visits
+                    li=data.stats.visits + ' ' + global.__('Views')
+                  if data.stats.likes
+                    li=data.stats.likes + ' ' + global.__('Likes')  
+                  if data.stats.downloads
+                    li=data.stats.downloads + ' ' + global.__('Downloads')
+        .col-lg-3.share_like_list_column
+          include ../partials/share_like
 
 block content
   .container

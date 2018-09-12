@@ -24,6 +24,10 @@ const likes = require('./likes');
 const admin = require('./admin');
 
 const pages = require('./pages');
+const dataprovider = require('../utilities/dataprovider');
+const helper = require('../utilities/helper');
+
+
 /*
 const user = require('./user');
 const storage = require('./storage');
@@ -40,7 +44,6 @@ router.use('/privacy', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
-router.use('/performers-sitemap.xml', performers);
 router.use('/performances', performances);
 router.use('/events', events);
 router.use('/footage', footage);
@@ -62,6 +65,37 @@ router.get('/404', fourOhFour);
 */
 
 router.use('/admin', admin);
+
+router.get('/sitemap.xml', (req, res) => {
+    let lastmod = new Date();
+    lastmod.setHours( lastmod.getHours() -2 );
+    lastmod.setMinutes(0);
+    lastmod = helper.dateoW3CString(lastmod);
+    res.set('Content-Type', 'text/xml');
+    res.render('sitemaps/index', {
+      pretty: true,
+      host: req.protocol+"://"+req.headers.host,
+      data: config.sections,
+      lastmod: lastmod
+    });
+});
+
+router.get('/:section-page-:page-sitemap.xml', (req, res) => {
+    const Model = require('mongoose').model('Performance');
+    const section = req.params.section;
+    req.params.sorting = config.sections[section].orders[0];
+    req.params.filter = config.sections[section].categories[0];
+    dataprovider.list(req, res, section, Model);
+});
+
+router.get('/:section-sitemap.xml', (req, res) => {
+    const Model = require('mongoose').model('Performance');
+    const section = req.params.section;
+    req.params.page = 1;
+    req.params.sorting = config.sections[section].orders[0];
+    req.params.filter = config.sections[section].categories[0];
+    dataprovider.list(req, res, section, Model);
+});
 
 router.use('/:slug', show);
 

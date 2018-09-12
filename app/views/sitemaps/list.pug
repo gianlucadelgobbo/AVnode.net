@@ -1,14 +1,17 @@
-// ?xml version="1.0" encoding="UTF-8"?
-// ?xml-stylesheet type="text/xsl" href="//www.viaggiemiraggi.org/wp-content/plugins/wordpress-seo/css/main-sitemap.xsl"?
-urlset(xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance', xmlns:image='http://www.google.com/schemas/sitemap-image/1.1', xsi:schemalocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd', xmlns='http://www.sitemaps.org/schemas/sitemap/0.9')
-  url
-    loc https://www.viaggiemiraggi.org/news/
-    lastmod 2018-09-06T15:29:25+02:00
-  url
-    loc https://www.viaggiemiraggi.org/news/online-sito-viaggiemiraggi/
-    lastmod 2018-02-27T12:12:44+01:00
-    image:image
-      image:loc
-        | https://www.viaggiemiraggi.org/wp-content/uploads/2018/02/viaggiemiraggi_nuovo_sito.jpg
-      image:title
-        // [CDATA[viaggiemiraggi_nuovo_sito]]
+<?xml version="1.0" encoding="UTF-8"?>
+urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1")
+  if nextpage === 2
+    url
+      loc=host+"/"+basepath
+      lastmod=lastmod
+  each item in data
+    url
+      loc=host+"/"+(basepath==="performers" ? "" : basepath+"/")+item.slug
+      lastmod=lastmod
+      image:image
+        image:loc=item.imageFormats.large
+        image:title=global.__("Image of:")+" "+item.title
+  if(nextpage)
+    sitemap
+        loc=host+"/"+basepath+"-page-"+nextpage+"-sitemap.xml"
+        lastmod=lastmod
