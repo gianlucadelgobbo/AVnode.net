@@ -11,6 +11,9 @@ import AddCrewModal from './crews/add';
 import AddMembersModal from './members/add';
 import AddFootageModal from './footage/add';
 import AddPlaylistModal from './playlists/add';
+import SignupModal from './signup/index';
+import EmailVerificationSuccess from './emails/success';
+import EmailVerificationError from './emails/error';
 
 import ModalWrapper from './wrapper';
 import {connect} from 'react-redux';
@@ -28,7 +31,10 @@ import {
     MODAL_ADD_CREW,
     MODAL_ADD_MEMBERS,
     MODAL_ADD_FOOTAGE,
-    MODAL_ADD_PLAYLIST
+    MODAL_ADD_PLAYLIST,
+    MODAL_SIGN_UP_SUCCESS,
+    MODAL_EMAIL_VERIFICATION_SUCCESS,
+    MODAL_EMAIL_VERIFICATION_ERROR,
 } from "./constants"
 
 /*
@@ -52,7 +58,11 @@ const MODAL_COMPONENTS = {
     [MODAL_ADD_CREW]:AddCrewModal,
     [MODAL_ADD_MEMBERS]:AddMembersModal,
     [MODAL_ADD_FOOTAGE]:AddFootageModal,
-    [MODAL_ADD_PLAYLIST]:AddPlaylistModal
+    [MODAL_ADD_PLAYLIST]:AddPlaylistModal,
+    [MODAL_SIGN_UP_SUCCESS]:SignupModal,
+    [MODAL_EMAIL_VERIFICATION_SUCCESS]:EmailVerificationSuccess,
+    [MODAL_EMAIL_VERIFICATION_ERROR]:EmailVerificationError,
+
     /* other modals */
 };
 
@@ -68,7 +78,10 @@ const MODAL_TITLES = {
     [MODAL_ADD_CREW]:"Add Crew",
     [MODAL_ADD_MEMBERS]:"Add Members",
     [MODAL_ADD_FOOTAGE]:"Add Footage",
-    [MODAL_ADD_PLAYLIST]:"Add Playlist"
+    [MODAL_ADD_PLAYLIST]:"Add Playlist",
+    [MODAL_SIGN_UP_SUCCESS]:"Welcome!",
+    [MODAL_EMAIL_VERIFICATION_SUCCESS]:"Verification sent!",
+    [MODAL_EMAIL_VERIFICATION_ERROR]:"Ops...",
     /* other modals */
 };
 

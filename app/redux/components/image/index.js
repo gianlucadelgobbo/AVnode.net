@@ -88,6 +88,7 @@ class Image extends Component {
                             onSubmit={this.onSubmit.bind(this)}
                             user={model}
                             showModal={showModal}
+                            onVerifyEmail={this.onVerifyEmail.bind(this)}
                         />
                     </div>
                 </div>
@@ -103,7 +104,7 @@ class Image extends Component {
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    showModal,
+    showModal
 }, dispatch);
 
 Image = connect(
