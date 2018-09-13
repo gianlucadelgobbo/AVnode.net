@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+sitemapindex(xmlns='http://www.sitemaps.org/schemas/sitemap/0.9')
+  each item in data
+    sitemap
+      loc=host+"/"+item.basepath+"-sitemap.xml"
+      lastmod=lastmod
+    - for(var a=2;a<item.sitemap_pages;a++)
+        sitemap
+          loc=host+"/"+item.basepath+"-page-"+a+"-sitemap.xml"
+          lastmod=lastmod

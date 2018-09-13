@@ -246,7 +246,7 @@ function init() {
         "stylers": [{
         "lightness": 17
 	      }, {
-	        "color": "#303030"
+	        "color": "#212121"
 	      }]
     }
   ]};

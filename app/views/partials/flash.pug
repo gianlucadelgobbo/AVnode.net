@@ -1,15 +1,15 @@
 if messages.errors
-  .container
+  .container.mt-3
     .alert.alert-danger
       for error in messages.errors
         div=error.msg
 if messages.info
-  .container
+  .container.mt-3
     .alert.alert-info
       for info in messages.info
         div=info.msg
 if messages.success
-  .container
+  .container.mt-3
     .alert.alert-success
       for success in messages.success
         div=success.msg

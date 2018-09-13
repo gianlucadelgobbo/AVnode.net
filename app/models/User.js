@@ -14,9 +14,6 @@ const Link = require('./shared/Link');
 const OrganizationData = require('./shared/OrganizationData');
 
 const bcrypt = require('bcrypt-nodejs');
-const mailer = require('../utilities/mailer');
-const uid = require('uuid');
-const request = require('request');
 
 const adminsez = 'profile';
 
@@ -28,6 +25,7 @@ const userSchema = new Schema({
   is_public: Boolean,
   creation_date: Date,
   stats: {},
+  likes: {},
 
   slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
   stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'FIELD_REQUIRED'], minlength: [4, 'FIELD_TOO_SHORT'], maxlength: [50, 'FIELD_TOO_LONG'] },
@@ -227,58 +225,10 @@ userSchema.virtual('teaserImageFormats').get(function () {
   return teaserImageFormats;
 });
 */
+
 userSchema.pre('save', function (next) {
   console.log('userSchema.pre(save) id:' + this._id);
-  const user = this;
-  console.log(process.env.BASE);
-  if (user.emails && !user.is_crew) {
-    for(let item=0;item<user.emails.length;item++) {
-      let mailinglists = [];
-      for (mailinglist in user.emails[item].mailinglists) if (user.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
-
-      let formData = {
-        list: 'AXRGq2Ftn2Fiab3skb5E892g',
-        email: user.emails[item].email,
-        Topics: mailinglists.join(','),
-        avnode_id: user._id.toString(),
-        flxer_id: user.old_id ? user.old_id : "avnode",
-      };
-      if (user.name) formData.Name = user.name;
-      if (user.surname) formData.Surname = user.surname;
-      if (user.stagename) formData.Stagename = user.stagename;
-      if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = user.addresses[0].locality;
-      if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
-      if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
-      if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
-
-      request.post({
-        url: 'https://ml.avnode.net/subscribe',
-        formData:formData,
-        function (error, response, body) {
-          console.log(error);
-          console.log(body);
-        }
-      });
-      //console.log(mailinglists.join(','));
-
-      if (!user.emails[item].is_confirmed) {
-        //console.log(user.emails[item].email);
-        user.emails[item].confirm = uid.v4();
-        mailer.sendEmail({
-          template: 'confirm-email',
-          message: {
-            to: user.emails[item].email
-          },
-          locals: {
-            link: process.env.BASE+'verify/email/' + user.emails[item].confirm,
-            stagename: user.stagename,
-            email: user.emails[item].email
-          }
-        }, next);
-      }
-    }
-    next();
-  }
+  let user = this;
   if (!user.isModified('password')) { return next(); }
   console.log('userSchema.pre(save) id:' + this._id);
   console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
@@ -291,7 +241,7 @@ userSchema.pre('save', function (next) {
       next();
     });
   });
-  next();
+  //next();
 });
 
 
