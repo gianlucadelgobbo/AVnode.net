@@ -1,5 +1,5 @@
 .gallery_item_wrapper
-  a(href=item.publicUrl, title=item.title)
+  a(href="/galleries/"+item.slug, title=item.title)
     if item.imageFormats
       img.card-img-top.img-fluid(src=item.imageFormats.small, alt=item.title)
     .gallery_item_info_wrapper

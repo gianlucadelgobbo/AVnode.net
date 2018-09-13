@@ -10,6 +10,7 @@ const events = require('./events');
 const footage = require('./footage');
 const playlists = require('./playlists');
 const videos = require('./videos');
+const galleries = require('./galleries');
 const news = require('./news');
 
 const login = require('./login');
@@ -49,6 +50,7 @@ router.use('/events', events);
 router.use('/footage', footage);
 router.use('/playlists', playlists);
 router.use('/videos', videos);
+router.use('/galleries', galleries);
 router.use('/news', news);
 
 router.use('/login', login);
