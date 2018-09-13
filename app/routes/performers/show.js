@@ -74,11 +74,11 @@ router.get('/news/page/:page', (req, res) => {
   dataprovider.show(req, res, section, 'news', Model);
 });
 
-
+/*
 router.get('/*', (req, res) => {
   res.status(404).render('404', {title:"<span class=\"lnr lnr-warning\" style=\"font-size:  200%;vertical-align:  middle;padding-right: 20px;\"></span><span style=\"vertical-align:  middle;\">"+__("404: Page not found")+"</span>"});
 });
-
+*/
 
 module.exports = router;
 
