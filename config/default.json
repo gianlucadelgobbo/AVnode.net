@@ -3895,20 +3895,20 @@
         }]
      }
     },
-    "gallery": {
-      "title": "Gallery",
+    "galleries": {
+      "title": "Galleries",
       "model": "Gallery",
       "limit": 20,
       "basepath": "gallery",
       "main_image": "/images/sez_gallery.jpg",
       "sitemap_pages": 20,
       "coll": "gallery",
-      "view_list": "gallery/list",
+      "view_list": "galleries/list",
       "list_fields": {
         "title":1,
         "users":1,
         "slug":1,
-        "files":1,
+        "image":1,
         "stats":1
       },
       "list_populate": [],
@@ -3939,7 +3939,52 @@
         "mostviewed": "Most viewed",
         "mostliked": "Most liked",
         "all": "All"
-      }
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "medias": 1
+        },
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "members": 1,
+            "addresses.country": 1,
+            "addresses.locality": 1,
+            "stats": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "events",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "Event"
+        }, {
+          "path": "performances",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
+          "options": { "limit": 5 },
+          "model": "Performance"
+        }]
+     }
     }
   },
   "company": {
