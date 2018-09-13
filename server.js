@@ -99,13 +99,13 @@ app.use((req, res, next) => {
     const path = req.path.split('/')[1];
     const lang = req.headers.host.split('.')[0] != req.headers.host && req.headers.host.split('.')[0] != 'avnode' && req.headers.host.split('.')[0] != 'dev' && req.headers.host.split('.')[0] != 'api' ? req.headers.host.split('.')[0] : 'en';
     //logger.debug('req.headers.host: '+req.headers.host.split('.')[0]);
-    if (!req.session.sessions) {
-        req.session.sessions = {current_lang: config.defaultLocale};
+    if (!req.session.current_lang) {
+        req.session.current_lang = config.defaultLocale;
     }
-    if (req.session.sessions.current_lang != lang) {
-        req.session.sessions.current_lang = lang;
+    if (req.session.current_lang != lang) {
+        req.session.current_lang = lang;
     }
-    global.setLocale(req.session.sessions.current_lang);
+    global.setLocale(req.session.current_lang);
 
     if (/auth|login|logout|signup|images|fonts/i.test(path)) {
         return next();

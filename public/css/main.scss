@@ -12,6 +12,8 @@
  $color3: #A6A8AB;
  $color4: #282828;
 
+ .modal{color: $color4}
+
  a {
      color: $color1;
  }
@@ -125,15 +127,18 @@ nav.navbar {
     right: -30px;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,700');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:200,200i,700');
 
 @import url('https://cdn.linearicons.com/free/1.0.0/icon-font.min.css'); 
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #303030;
+    // background-color: #303030;
+    background-color: #212121;
     color: #fff;
     line-height: 1.8;
+    font-weight: 200;
+    font-size: 15px;
 }
 h1, h2, h3, h4, h5 {
     font-weight: 700;
@@ -167,6 +172,7 @@ small, .small {
 main {
      background-color: transparent;
      overflow: hidden;
+     padding-bottom: 30px;
  }
 
  
@@ -183,6 +189,53 @@ main {
 }
 a#to_top.to_top_visibile {
     display: block;
+}
+
+.button_share_like {
+    background: transparent;
+    border: none;
+    padding: 0;    
+}
+
+.label_like_button_wrapper {
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+.label_like_button_wrapper .label_like_button {
+    background-color: $color1;
+    color: #fff;
+    display: inline-block;
+    padding: 3px 10px;
+    font-weight: 200;
+    text-transform: lowercase;
+    border-radius: 5px;
+    line-height: 20px;
+    position: relative;
+    bottom: 15px;    
+}
+
+.button_share_like:hover {
+    cursor: pointer;
+    background: transparent;
+}
+.button_share_like:focus {
+    box-shadow: none;
+}
+
+.share_like_list li {
+    float: left;
+    transition: all 0.5s ease-in-out;        
+}
+
+.share_like_list li:hover {
+    opacity: 0.5;
+}
+.share_like_list {
+    display: block;
+    width: 100%;
+    clear: both;
+    float: left;
 }
 
 // EVENT PAGE
@@ -364,17 +417,42 @@ a:hover + .partner_stagename,
 
 .performer_title h1 {
     border-bottom: 1px solid $color1;
-    margin: 30px 0;
-    padding: 0 0 15px 0;
+    margin: 30px 0 0 0;
+    padding: 0 0 15px 0;    
+}
+
+.share_like_list_column {
+    margin-top: 30px;
 }
 
 .performance_stat_container {
     background: $color1;
-    position: absolute;
-    right: -68%;
     width: 100%;
-    padding: 0 0 0 60px;
+    padding: 0 15px;
     top: 40px;
+    margin-bottom: 30px;
+}
+
+.performance_stat_wrapper ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.performance_stat_wrapper ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.performance_stat_wrapper ul li:after {
+    content: "/";
+    display: inline-block;
+    margin: 0 0 0 8px;
+    color: $color4;
+}
+
+.performance_stat_wrapper ul li:last-child:after {
+    content: none;
 }
 
 .tabs_single_performance {
@@ -433,6 +511,52 @@ a:hover + .partner_stagename,
     font-weight: 300;
     font-size: 18px;
 }
+
+.tech_info_title {
+    color: $color1;
+    text-transform: inherit;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+.tech_info_wrapper {
+    border-bottom: 1px dashed $color1;
+    margin-bottom: 20px;
+}
+
+.category_performance_item.single_performance {
+    border: none;
+    margin: 0 0 20px;
+    padding: 10px 0;
+}
+
+.category_performance_item.single_performance li {
+    color: #fff;
+    font-size: 16px;
+}
+
+.performance_info_sidebar {
+    border-left: 1px solid $color1;
+}
+
+.performance_event_wrapper p {
+    margin-bottom: 3px;
+    font-size: 13px;
+    color: $color1;
+
+}
+
+.performance_event_wrapper {
+    border-bottom: 1px solid $color1;
+    padding-bottom: 10px;
+}
+
+.performance_event_wrapper .performance_event_title  {
+    color: $color3;
+    font-size: 15px;
+}
+
+performance_event_title
 /* performer page */
  
 .performer_links_list {
@@ -561,10 +685,7 @@ a:hover + .partner_stagename,
     transition: all 0.5s ease-in-out;        
 }
 
-.event_social_list {
-    border-left: 1px solid $color3;
-    padding-left: 15px;
-}
+
 
 .about_button {
     font-size: 40px;
@@ -726,6 +847,48 @@ section.performer_news_wrapper {
 }
 
 
+// FOOTAGE & VIDEO PAGE
+
+.embed-responsive {
+    margin-bottom: 30px;
+}
+.data_footage_video h3 {
+    color: $color1;
+    text-transform: inherit;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+.data_footage_video ul {
+    padding: 0;
+    margin: 0 0 30px 0;
+    list-style: none;
+}
+
+.data_footage_video ul li b {
+    font-weight: 700;
+}
+
+.data_footage_video .user_performance_wrapper img {
+    height: 50px !important;
+    width: 50px !important;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.data_footage_video_wrapper {
+    margin-bottom: 30px;
+    border-bottom: 1px solid $color1;
+}
+
+.data_footage_video_wrapper .category_performance_item {
+    border-bottom: none;
+    color: #fff;
+}
+
+.buttons_footage button {
+    margin-bottom: 15px;
+}
 
 
 // ITEM NEWS
@@ -886,11 +1049,14 @@ section.performer_news_wrapper {
 
 .performer_item_wrapper img {
     max-width: 100px;
-    height: auto;
+    height: 100px;
     border-radius: 50%;
     margin-right: 30px;
 }
 
+.performer_item_wrapper img:hover {
+    opacity: 0.8;
+}
 .performer_infos_list li:after {
     content: "/";
     color: $color2;
@@ -1191,6 +1357,35 @@ section.performer_news_wrapper {
     content: "";
 }
 
+
+// GENERIC LIST
+
+.list_item {
+    margin-bottom: 30px;
+}
+
+.main_title_bkg {
+    background: $color1;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
+.main_title_bkg h4,
+.main_title_bkg h1 {
+    font-size: 28px;
+    margin-bottom: 0;
+}
+
+.pagination a {
+    background: $color4;
+    color: $color1;
+    border: 1px solid $color1;
+}
+.pagination a:hover {
+    background: $color1;
+    color: $color3;
+    border: 1px solid $color1;    
+}
 // FOOTER 
 .footer_site {
     background: #141719;
@@ -1200,6 +1395,7 @@ section.performer_news_wrapper {
 
 .footer_info {
     font-size: 14px;
+    margin-bottom: 30px;
 }
 
 .footer_site h3 {
@@ -1234,8 +1430,16 @@ ul.footer-nav.footer-nav-inline.socials .about_button {
 
 ul.footer-nav.corporate {
     list-style: none;
-    margin: 0;
+    margin: 0 0  30px 0;
     padding: 0;
+}
+
+
+// header
+
+.main_logo {
+    position: relative;
+    bottom: 1px;
 }
 
 
@@ -1257,6 +1461,14 @@ ul.user_navbar {
 
 .user_navbar li {
     display: inline-block;
+}
+
+.user_navbar .dropdown-menu {
+    color: #fff;
+    background-color: $color1;
+    border: none;
+    border-radius: 0;
+    top: 49px;
 }
 
 .user_menu a {
@@ -1373,4 +1585,60 @@ ul.user_navbar {
     .navbar_extended_template .user_menu a {
         margin: 0px;
     }
+
+    .navbar .container {
+        width: 100%;
+        max-width: 100%;
+    }
+    .footer_site {
+        text-align: center;
+    }
+
+    .performance_stat_container {
+        margin-bottom: 0;
+    }
+    .clearfix.submenu .nav {
+        display: inline-block;     
+        margin-right: 15px;
+    }
+    .event_main_image_wrapper {    
+        top: -230px;
+        margin-bottom: -200px;
+    }
+
+    .about_wrapper {
+        column-count: 1;
+        -webkit-column-gap: 30px;
+        -moz-column-gap: 30px;
+        column-gap: 30px;
+        -webkit-column-rule-style: solid;
+        -moz-column-rule-style: solid;
+        column-rule-style: solid;
+        column-rule-color: #148dd4;
+        column-rule-width: 1px;
+        margin-bottom: 30px;
+    }
+
+}
+
+@media screen and (max-width: 541px)  { /* solo smartphone*/
+    .clearfix.submenu>div {
+        float: left;
+        margin-bottom: 10px;
+    }
+
+    .performance_info_sidebar {
+        border-left: none;
+        border-top: 1px solid $color1;
+    }
+
+    .event_main_image_wrapper {    
+        top: -130px;
+        margin-bottom: -100px;
+    }
+
+    .partners_list_wrapper > div {
+        width: 25%;
+    }
+
 }

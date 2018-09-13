@@ -1,11 +1,34 @@
 doctype html
-html(lang=session.sessions.current_lang)
+html(lang=session.current_lang)
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
     title #{title} - AVnode.net
+    meta(name="robots" content="index, follow")
+    link(href=canonical rel="canonical")
+    if jsonld
+      meta(name="description" content=jsonld.description)
+      meta(property="og:title" content=title)
+      meta(property="og:app_id" content="1243968378972425")
+      meta(property="og:url" content=canonical)
+      meta(property="og:type" content=jsonld["@type"]==="Person" || jsonld["@type"]==="PerformingGroup" ? "profile" : "website")
+      meta(property="og:description" content=jsonld.description)
+      meta(property="og:image" content=jsonld.image)
+      meta(property="og:site_name" content="AVnode.net")
+      meta(property="og:locale" content=session.current_lang+"_"+session.current_lang.toUpperCase())
+
+    link(rel='shortcut icon', href='/icons/favicon.ico', type='image/x-icon')
+    link(rel='apple-touch-icon', href='/icons/apple-touch-icon.png')
+    link(rel='apple-touch-icon', sizes='57x57', href='/icons/apple-touch-icon-57x57.png')
+    link(rel='apple-touch-icon', sizes='72x72', href='/icons/apple-touch-icon-72x72.png')
+    link(rel='apple-touch-icon', sizes='76x76', href='/icons/apple-touch-icon-76x76.png')
+    link(rel='apple-touch-icon', sizes='114x114', href='/icons/apple-touch-icon-114x114.png')
+    link(rel='apple-touch-icon', sizes='120x120', href='/icons/apple-touch-icon-120x120.png')
+    link(rel='apple-touch-icon', sizes='144x144', href='/icons/apple-touch-icon-144x144.png')
+    link(rel='apple-touch-icon', sizes='152x152', href='/icons/apple-touch-icon-152x152.png')
+    link(rel='apple-touch-icon', sizes='180x180', href='/icons/apple-touch-icon-180x180.png')
 
     link(rel='stylesheet', type='text/css', href='/css/font-awesome/font-awesome.css')
     link(rel='stylesheet', type='text/css', href='/css/main.css')
@@ -14,6 +37,8 @@ html(lang=session.sessions.current_lang)
     link(rel='stylesheet', type='text/css', href='/css/owl/owl.theme.default.min.css')
     if is_admin
       link(rel='stylesheet', href='/css/admin.css')
+    script(type="application/ld+json")
+      !=JSON.stringify(jsonld)
   body
     #top
     a#to_top(href="#top", title=global.__('Back to the top'))
@@ -54,7 +79,7 @@ html(lang=session.sessions.current_lang)
                 i.fa.fa-search.fa-lg.fa-fw
             li.nav-item.dropdown
               a#langDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                b=session.sessions.current_lang.toUpperCase()
+                b=session.current_lang.toUpperCase()
               .dropdown-menu(aria-labelledby='langDropdown')
                 each lang,slug in config.locales_labels
                   a.dropdown-item(href=protocol+'://'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
@@ -98,7 +123,7 @@ html(lang=session.sessions.current_lang)
           )
             span.lnr.lnr-menu.toggle_icon
           a.navbar-brand(href='/', title="AvNode  ")
-            img(src='/images/LogoAVnode-bar.svg', height='30', class='d-inline-block align-top' alt='')
+            img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='')
           .collapse.navbar-collapse(
             id="navbar-collapse_performer_template"
           )
@@ -107,21 +132,18 @@ html(lang=session.sessions.current_lang)
             ul.user_navbar
               if user
                 li.nav-item.dropdown.user_menu.user_menu_logged                  
-                  span.lnr.lnr-user
                   a#userDropdown.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                    span.lnr.lnr-user
                   .dropdown-menu(aria-labelledby='userDropdown')
                     ul
                       li.nav-item
-                        span.lnr.lnr-eye
-                        a(href='/admin/profile/public')=global.__('Profile')                    
+                        a(href='/admin/profile/public')                    
+                          span.lnr.lnr-eye
+                          !=" "+global.__('Profile')
                       li.nav-item
-                        form(
-                          method='post'
-                          action='/logout'
-                        )
-                          button.btn-link
-                            span.lnr.lnr-exit
-                            span.label=global.__('Log out')
+                        a(href='/logout')                    
+                          span.lnr.lnr-exit
+                          !=" "+global.__('Log out')
                             
               else
                 li.nav-item.user_menu
@@ -132,14 +154,27 @@ html(lang=session.sessions.current_lang)
                     li.nav-item
                       a(href='/signup', title=global.__('Sign up'))=global.__('Sign up')
               li.nav-item
-                a(href='/search?q=*', title=__('Search'))
-                  i.fa.fa-search.fa-lg.fa-fw
+                if url && url.indexOf("/search")===0
+                  a(href='#')
+                    i.fa.fa-search.fa-lg.fa-fw
+                else
+                  a(href='#searchbar', title=__('Search'), data-toggle="collapse", role="button", aria-expanded="false", aria-controls="searchbar")
+                    i.fa.fa-search.fa-lg.fa-fw
               li.nav-item.dropdown
                 a#langDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                  b=session.sessions.current_lang.toUpperCase()
+                  b=session.current_lang.toUpperCase()
                 .dropdown-menu(aria-labelledby='langDropdown')
                   each lang,slug in config.locales_labels
                     a.dropdown-item(href=protocol+'://'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
+    #searchbar(class=url && url.indexOf("/search")===0 ? undefined : "collapse")
+      .container
+        .row
+          .col-lg-6.offset-lg-3
+            form(action="/search" method="GET")
+              .input-group
+                input#q.form-control.mb-2.mr-sm-2(type="text", value=q, name="q", placeholder=global.__("Performer name, events, performance..."))
+                .input-group-append
+                  button(type="submit", class="btn btn-primary mb-2")=global.__("Search")
 
           
 
@@ -150,9 +185,9 @@ html(lang=session.sessions.current_lang)
       block teaser
       block title
         if title
-          .jumbotron.jumbotron-fluid
+          .main_title_bkg
             .container
-              h1.display-4!=title
+              h1!=title
               if subtitle
                 p.lead.mb-0=subtitle
       block content
@@ -160,12 +195,12 @@ html(lang=session.sessions.current_lang)
     footer.footer_site
       .container
         .row
-          .col-sm-4.footer_info
+          .col-md-4.footer_info
             div(itemprop='organizer', itemscope='', itemtype='http://schema.org/Organization')
               a(href='/', title='AVnode')
                 img.logo_footer.media-object(src='/images/logo_grey.svg', alt='AVnode.net', itemprop='logo')
               br
-              strong.sr-only(itemprop='name') AVnode
+              strong.d-none(itemprop='name') AVnode
               br
               | a project of Stichting AVnode
               br
@@ -177,54 +212,68 @@ html(lang=session.sessions.current_lang)
                   span(itemprop='addressLocality') Amsterdam
                   | &nbsp;
                   span(itemprop='addressCountry') Netherlands
-                span.hide(itemprop='geo', itemscope='', itemtype='http://schema.org/GeoCoordinates')
+                span.d-none(itemprop='geo', itemscope='', itemtype='http://schema.org/GeoCoordinates')
                   span(itemprop='latitude') 52.3823559
                   | ,
                   span(itemprop='longitude') 4.8237471
-                br
-                a(itemprop='url', title='map', href='https://www.google.it/maps/place/Arondeusstraat+7,+1063+GB+Amsterdam,+Netherlands/@52.3823559,4.8237471,17z/data=!3m1!4b1!4m5!3m4!1s0x47c5e251a2807e6b:0xf143ebca2731e3fb!8m2!3d52.3823559!4d4.8259358!10m1!1e1', target='_blank') map
                 br
               | VAT N° 
               span(itemprop='vatID') NL856555253B01
               br
               a(itemprop='email', title='Write to AVnode', href='mailto:info@avnode.net') info@avnode.net
-              br.sr-only
-              a.sr-only(itemprop='url', title='AVnode Web Site', href='https://avnode.net') https://avnode.net
-          .col-sm-4.hidden-print
+              br.d-none
+              a.d-none(itemprop='url', title='AVnode Web Site', href='https://avnode.net') https://avnode.net
+          .col-md-4.hidden-print
             h3 Corporate
             nav
               ul.footer-nav.corporate
                 li
-                  a(href='https://avnode.net', title='Stichting AVnode') Stichting AVnode
+                  a(href='https://avnode.org', title='Stichting AVnode') Stichting AVnode
                 li
-                  a(href='/terms-conditions/', title='Terms & Conditions') Terms &amp; Conditions
+                  a(href='/terms/', title='Terms & Conditions')=global.__("Terms")
                 li
-                  a(href='/privacy/', title='Privacy') Privacy
+                  a(href='/privacy/', title='Privacy')=global.__("Privacy")
                 li
-                  a(href='/contacts/', title='Contacts') Contacts
-          .col-sm-4.hidden-print
+                  a(href='/contacts/', title='Contacts')=global.__("Contacts")
+          .col-md-4.hidden-print
             h3 Social Networks
             ul.footer-nav.footer-nav-inline.socials
               li
                 a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://www.facebook.com/avnode.net/', title='', data-original-title='AVnode on Facebook')
                   i.fa.fa-facebook.about_button
-                  .sr-only Facebook
+                  .d-none Facebook
               li
                 a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://www.instagram.com/avnodenet/', title='', data-original-title='AVnode on Instagram')
                   i.fa.fa-instagram.about_button
-                  .sr-only Instagram
+                  .d-none Instagram
               li
                 a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://twitter.com/avnodenet', title='', data-original-title='AVnode on Twitter')
                   i.fa.fa-twitter.about_button
-                  .sr-only Twitter
+                  .d-none Twitter
               li
                 a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://plus.google.com/+AvnodeNet', title='', data-original-title='AVnode on Google Plus')
                   i.fa.fa-google-plus.about_button
-                  .sr-only Google+
+                  .d-none Google+
               li
                 a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://t.me/avnode', title='', data-original-title='AVnode Channel on Telegram ')
                   i.fa.fa-telegram.about_button
-                  .sr-only Telegram Channel
+                  .d-none Telegram Channel
+    .modal.fade.bd-example-modal-lg#msg_modal(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+      .modal-dialog.modal-lg.modal-dialog-centered
+        .modal-content
+          .modal-header
+            h5#exampleModalCenterTitle.modal-title=global.__("Alert")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            p!=global.__("AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:")
+            ul
+              li=global.__("The database will be resetted more than once in the alpha phase, you could loose some data you insert")
+              li=global.__("Control panel is still under development, some features are still not fully working")
+            p!=global.__("Please send any suggestion to:")+" "
+              a(href="mailto:info@avnode.net") info@avnode.net
+          .modal-footer
+            button.btn.btn-primary(type='button', data-dismiss='modal')=global.__("I have read, continue")
 
     script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js')
@@ -234,6 +283,7 @@ html(lang=session.sessions.current_lang)
     script(src='/js/video.min.js')
     script(src="/js/owl.carousel.min.js")
     script(src="/js/main.js")
+    script(src="/js/ajax.js")
     script(async src="https://www.googletagmanager.com/gtag/js?id=UA-124799696-1")
     script.
       window.dataLayer = window.dataLayer || [];

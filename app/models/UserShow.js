@@ -35,6 +35,8 @@ const userSchema = new Schema({
   is_public: Boolean,
   creation_date: Date,
   stats: {},
+  likes: {},
+
   birthday: Date,
   citizenship: [], // NEW
 
@@ -156,7 +158,30 @@ userSchema.virtual('about').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
+    about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
     return about;
+  }
+});
+
+userSchema.virtual('description').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    about = about.trim().replace(/,/g , "").replace(/###b###/g , "").replace(/"/g , "").replace(/###\/b###/g , "").replace(/<br \/>/g , " ").replace(/  /g , " ");
+
+    descriptionA = about.split(" ");
+    let descriptionShort = "";
+    for(let item in descriptionA) if ((descriptionShort+" "+descriptionA[item]).trim().length<300) descriptionShort+=descriptionA[item]+" ";
+    return descriptionShort.trim();
   }
 });
 

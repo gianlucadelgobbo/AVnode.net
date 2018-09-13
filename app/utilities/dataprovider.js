@@ -39,6 +39,167 @@ dataprovider.getPerformanceByIds = (req, ids, cb) => {
   });
 };
 
+dataprovider.getJsonld = (data, req, title) => {
+  let jsonld = {
+    "@context": "http://schema.org",
+  }
+  if (data.stagename) {
+    if (data.is_crew) {
+      jsonld["@type"] = "PerformingGroup";
+      jsonld.member = [];
+      for(let a=0;a<data.members.length;a++) {
+        jsonld.member.push({
+          '@type': 'OrganizationRole', 
+          "member": {
+            "@type": "Person",
+            "name": data.members[a].stagename
+          }
+        });
+      }
+    } else {
+      jsonld["@type"] = "Person";
+    }
+    jsonld.name = data.stagename;
+    jsonld.description = data.description;
+    jsonld.image = data.imageFormats.large;
+    if ((data.web && data.web.length) || (data.social && data.social.length)) {
+      jsonld.sameAs = [];
+      if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
+      if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
+    }
+    jsonld.address = {
+      "@type": "PostalAddress",
+      "addressLocality": data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
+    }
+    /*
+    if(data.crews && data.crews.length) {
+      jsonld.crews = {};
+      jsonld.crews["@type"] = "ItemList";
+      jsonld.crews.itemListElement = [];
+      jsonld.crews.name = "Crews";
+      jsonld.crews.description = __("The list of Crews");
+      jsonld.crews.itemListElement = [];
+      for(let a=0;a<data.crews.length;a++) {
+        if (data.crews[a].stats.members) {
+          jsonld.crews.itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data.crews[a].slug
+          });
+  
+        } else {
+          jsonld.crews.itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[item][a].slug
+          });
+        }
+      }
+    }
+  
+    for(let item in config.sections) {
+      if(data[item] && data[item].length) {
+        jsonld[item] = {};
+        jsonld[item]["@type"] = "ItemList";
+        jsonld[item].itemListElement = [];
+        jsonld[item].name = config.sections[item].title;
+        jsonld[item].description = __("The list of "+jsonld[item].name);
+        for(let a=0;a<data[item].length;a++) {
+          jsonld[item].itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+item+"/"+data[item][a].slug
+          });
+        }
+      }
+    }
+    */
+  } else if (data.title) {
+    if (data.schedule) {
+      jsonld["@type"] = "Event";
+      jsonld.startDate = data.schedule[0].starttime;
+      jsonld.location = {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": data.schedule[0].venue.location.locality,
+          "addressCountry": data.schedule[0].venue.location.country
+        },
+        "name": data.schedule[0].venue.name
+      };
+    } else {
+      jsonld["@type"] = "CreativeWork";
+      jsonld.author = [];
+      if (data.users) {
+        for(let a=0;a<data.users.length;a++) {
+          if (data.users[a].members && data.users[a].members.length) {
+            jsonld.author.push({
+              '@type': 'OrganizationRole',
+              "name": data.users[a].stagename
+            });
+    
+          } else {
+            jsonld.author.push({
+              '@type': 'Person',
+              "name": data.users[a].stagename
+            });
+          }
+        }  
+      }
+    }
+    jsonld.name = data.title;
+    jsonld.description = data.description;
+    jsonld.image = data.imageFormats.large;
+    if ((data.web && data.web.length) || (data.social && data.social.length)) {
+      jsonld.sameAs = [];
+      if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
+      if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
+    }
+  } else if (data.length) {
+    jsonld["@type"] = "ItemList";
+    jsonld.itemListElement = [];
+    jsonld.name = title;
+    jsonld.description = __("The list of "+jsonld.name);
+    jsonld.itemListElement = [];
+    for(let a=0;a<data.length;a++) {
+      if (data[a].stagename) {
+        if (data[a].stats.members) {
+          jsonld.itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+          });
+  
+        } else {
+          jsonld.itemListElement.push({
+            '@type': 'ListItem',
+            "position": a+1,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+          });
+        }
+  
+      } else {
+        jsonld.itemListElement.push({
+          '@type': 'ListItem',
+          "position": a+1,
+          "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+          /* "item": {
+            '@type': 'CreativeWork',
+            "name": data[a].title,
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+          } */
+        });
+      }
+    }
+    /* jsonld.name = data.title;
+    jsonld.description = data.description;
+    jsonld.image = data.imageFormats.large; */
+  }
+
+  //logger.debug(jsonld);
+  return jsonld;
+};
+
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
   model.count(query, function(error, total) {
     model.find(query)
@@ -119,9 +280,26 @@ dataprovider.show = (req, res, section, subsection, model) => {
             }
           }
         }
+        if (!req.session[data._id]) {
+          req.session[data._id] = true;
+          data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
+          model.update({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
+            //if (err) c
+            //console.log('The raw response from Mongo was ', raw);
+          });
+        }
+        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
+          data.liked = false;
+        } else {
+          data.liked = true;
+        }
+        logger.debug(req.user);
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
+          jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
+          canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
           data: data,
+          section: section,
           path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
@@ -152,12 +330,26 @@ dataprovider.list = (req, res, section, model) => {
     //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
     const query = config.sections[section].categoriesQueries[filter];
     dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
+      console.log(req.originalUrl);
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         if (process.env.DEBUG) {
           res.render('json', {total:total, skip:skip, data:data});
         } else {
           res.json({total:total, skip:skip, data:data});
         }
+      } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
+        let lastmod = new Date();
+        lastmod.setHours( lastmod.getHours() -2 );
+        lastmod.setMinutes(0);
+        lastmod = helper.dateoW3CString(lastmod);
+        res.set('Content-Type', 'text/xml');
+        res.render('sitemaps/list', {
+          host: req.protocol+"://"+req.headers.host,
+          data: data,
+          lastmod: lastmod,
+          basepath: config.sections[section].basepath,
+          nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+        });
       } else {
         const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
         let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
@@ -166,6 +358,8 @@ dataprovider.list = (req, res, section, model) => {
         res.render(config.sections[section].view_list, {
           title: title,
           section: section,
+          jsonld:dataprovider.getJsonld(data, req, title),
+          canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
           sort: sorting,
           pages: pages,
           filter: filter,

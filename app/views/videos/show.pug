@@ -6,8 +6,21 @@ block title
   if data.title
     .container
       .row.performer_title
-        .col-lg-12
+        .col-lg-9
           h1.main_title=data.title
+          if data.stats
+            .performance_stat_container
+              .performance_stat_wrapper
+                ul
+                  if data.stats.visits
+                    li=data.stats.visits + ' ' + global.__('Views')
+                  li
+                    span.likes_count=data.stats.likes ? data.stats.likes : 0
+                    !=' ' + global.__('Likes')
+                  if data.stats.downloads
+                    li=data.stats.downloads + ' ' + global.__('Downloads')
+        .col-lg-3.share_like_list_column
+          include ../partials/share_like
 
 block content
   .container
@@ -20,31 +33,41 @@ block content
             p.vjs-no-js
               !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
               a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
-      .col-md-4
-        if data.stats
-          h3=__("Stats")
-          ul
-            if data.stats.visits
-              li=data.stats.visits + ' ' + global.__('Views')
-            if data.stats.likes
-              li=data.stats.likes + ' ' + global.__('Likes')
 
+      .col-md-4.data_footage_video
+        .data_footage_video_wrapper
+          h3=__("Data")
+          ul
+            li=global.__('File name')+": "
+              b=data.media.file.substring(data.media.file.lastIndexOf("/")+1)
+            li=global.__('File size')+": "
+              b=( data.media.filesize / Math.pow(1024, Math.floor( Math.log(data.media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.media.filesize) / Math.log(1024) )]
+            li=global.__('File duration')+": "
+              b=data.media.duration
+            li=global.__('File type')+": "
+              b=ext
         if data.tags
-          h3=__("Tags")
-          ul.list-inline.category_performance_item
-            each tag in data.tags
-              li.list-inline-item=tag.tag
+          .data_footage_video_wrapper
+            h3=__("Tags")
+            ul.list-inline.category_performance_item
+              each tag in data.tags
+                li.list-inline-item=tag.tag
         if data.about
-          h3=__("About")
-          .pt-2.pb-2!=data.about
-        h3=__("Author")
-        each user in data.users
-          .user_performance_wrapper
-            div.user_perfomance_image
-              img(src=user.imageFormats.small, alt=user.stagename)
-            div.user_perfomance_country_city
-              p.users_performance_item_name=user.stagename
-              p.users_performance_item_country!=user.addressesFormatted
+          .data_footage_video_wrapper
+            h3=__("About")
+            .pt-2.pb-2!=data.about
+        .data_footage_video_wrapper
+          h3=__("Author")
+          each user in data.users
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=user.imageFormats.small, alt=user.stagename)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=user.stagename
+                p.users_performance_item_country!=user.addressesFormatted
+
+
+      
     if data.events.length 
       h2.mt-5.main_title.indented_title.color1=__("Events")
       .row.mb-5

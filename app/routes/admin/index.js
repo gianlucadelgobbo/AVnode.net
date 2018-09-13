@@ -35,13 +35,20 @@ router.put('/api/profile/:form/', (req, res) => {
     put.putData(req, res);
   }
 });
+router.get('/api/profile/emails/verify/:email', (req, res)=>{
+  req.params.id = req.user.id;
+  req.params.sez = 'profile';
+  get.sendEmailVericaition(req, res);
+});
 
 router.get('/api/:sez/:id/public/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
+
 router.get('/api/:sez/:id/:form/', (req, res) => {
   get.getData(req, res);
 });
+
 router.put('/api/:sez/:id/:form/', (req, res) => {
   if (['profile/image','footage/public','events/image','performances/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     upload.uploader(req, res, (err, data) => {

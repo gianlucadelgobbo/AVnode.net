@@ -22,8 +22,20 @@ block title
       .row
         .col-lg-12
           header.header_event
-            if data.title
-              h1.main_title=data.title
+            .row
+              .col-lg-9
+                h1.main_title=data.title
+                if data.stats
+                  .performance_stat_container
+                    .performance_stat_wrapper
+                      ul
+                        if data.stats.visits
+                          li=data.stats.visits + ' ' + global.__('Views')
+                        li
+                          span.likes_count=data.stats.likes ? data.stats.likes : 0
+                          !=' ' + global.__('Likes')                      
+              .col-lg-3.share_like_list_column
+                include ../partials/share_like
             if data.dateFormatted
               p.subtitle=data.dateFormatted
             if data.subtitle  

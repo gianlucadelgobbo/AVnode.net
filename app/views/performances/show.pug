@@ -6,15 +6,22 @@ block title
   if data.title
     .container
       .row.performer_title
-        .col-lg-12
+        .col-lg-9
           h1.main_title=data.title
-        if data.stats
-          .performance_stat_container
-            .performance_stat_wrapper
-              if data.stats.visits
-                =data.stats.visits + ' ' + global.__('Views')
-              if data.stats.likes
-                =data.stats.likes + ' ' + global.__('Likes')  
+          if data.stats
+            .performance_stat_container
+              .performance_stat_wrapper
+                ul
+                  if data.stats.visits
+                    li=data.stats.visits + ' ' + global.__('Views')
+                  li
+                    span.likes_count=data.stats.likes ? data.stats.likes : 0
+                    !=' ' + global.__('Likes')                      
+        .col-lg-3.share_like_list_column
+          include ../partials/share_like
+
+          
+
 
 block content
   .container
@@ -41,18 +48,26 @@ block content
           #about.tab-pane.in.active(role='tabpanel')
             .pt-2.pb-2!=data.about
           #technical_specifications.tab-pane(role='tabpanel')
-            h4.pt-2=global.__('Duration (minutes)')
-            .pt-2.pb-2!=data.duration
-            h4.pt-2=global.__('What is needed')
-            .pt-2.pb-2!=data.tech_req
-            h4.pt-2=global.__('What the artists brings')
-            .pt-2.pb-2!=data.tech_art
+            if data.duration
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('Duration (minutes)')
+                p!=data.duration
+            if data.tech_req
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('What is needed')
+                p!=data.tech_req
+            if data.tech_art
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('What the artists brings')
+                p!=data.tech_art
 
-      .col-sm-4
+      .col-sm-4.performance_info_sidebar
+        
         if data.categories
-          ul.list-inline.category_performance_item
+          ul.list-inline.category_performance_item.single_performance
             each category in data.categories
-              li.list-inline-item=category.name
+              li.list-inline-item
+                span=category.name
         .users_performance_item_wrapper
           .row
             each user in data.users
@@ -64,15 +79,18 @@ block content
                     p.users_performance_item_name=user.stagename
                     p.users_performance_item_country!=user.addressesFormatted
         .events_performance_wrapper
-          if data.bookings
+          if data.bookings.length
             h3=global.__('Events')  
             .row
               each booking in data.bookings
-                .col-sm-12
-                  p
-                    a(href="/events/"+booking.event.slug)=booking.event.title
-                  p=booking.schedule.day + " | " + booking.schedule.ora_i
-                  p=booking.schedule.venue.name + " | " + booking.schedule.venue.room + " | " + booking.schedule.venue.location.locality + ", " + booking.schedule.venue.location.country
+                .col-sm-12.performance_event
+                  .performance_event_wrapper
+                    p
+                      a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
+                      br
+                      !=booking.schedule.day + " | " + booking.schedule.ora_i
+                      br
+                      !=booking.schedule.venue.name + " | " + booking.schedule.venue.room + " | " + booking.schedule.venue.location.locality + ", " + booking.schedule.venue.location.country
   if data.galleries.length || data.videos.length
     .divider_gallery
       svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
