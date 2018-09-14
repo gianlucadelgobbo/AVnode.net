@@ -1132,6 +1132,7 @@ export const fieldInColumn = ({
 
 export const renderDropzoneInput = field => {
   let files = field.input.value;
+  console.log(field);
   let myClassName = field.className === undefined ? "" : field.className;
   const getExtensionIcon = name => {
     let extension =
@@ -1172,16 +1173,15 @@ export const renderDropzoneInput = field => {
   return (
     <div className={`${myClassName} form-group`}>
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
-      // CONFIG
       <Dropzone
         className="attachment-dropzone"
-        name={field.name}
+        name={field.properties.fields.name}
         accept={field.accept}
-        maxSize={10485760}
+        maxSize={field.properties.maxsize}
         multiple={field.multiple || false}
         onDropRejected={() =>
           alert(
-            "Unable to upload the file: allowed file size exceeded (max 10 MB)"
+            "Unable to upload the file: allowed file size exceeded (max 20 MB)"
           )
         }
         onDrop={filesToUpload => {
