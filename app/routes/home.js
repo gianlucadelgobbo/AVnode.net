@@ -54,7 +54,7 @@ router.get('/', (req, res) => {
           homedata.videos = data;
           homedata.stats.videos = total;
       
-          const section = 'gallery';
+          const section = 'galleries';
           const model = Gallery;
           const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
           const select = config.sections[section].list_fields;
