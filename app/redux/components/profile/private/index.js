@@ -163,7 +163,7 @@ class ProfilePrivate extends Component {
                 <div className="col-md-10">
                     <h2 className="labelField">
                         <FormattedMessage
-                            id="myAccountPrivateData"
+                            id="AccountPrivateData"
                             defaultMessage="My Account Private data"
                         />
                     </h2>

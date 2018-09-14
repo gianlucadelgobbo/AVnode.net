@@ -100,7 +100,7 @@ class CrewOrganization extends Component {
                 <div className="col-md-10">
                     <h1 className="labelField">
                         <FormattedMessage
-                            id="myAccountOrganizationData"
+                            id="AccountOrganizationData"
                             defaultMessage="My Account Organization data"
                         />
                     </h1>

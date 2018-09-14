@@ -25,7 +25,7 @@ class ProfileImage extends Component {
                     <h2 className="labelField">
                         <FormattedMessage
                             id="AccountPublicImage"
-                            defaultMessage="MY IMAGE"
+                            defaultMessage="PROFILE IMAGE"
                         />
                     </h2>
 

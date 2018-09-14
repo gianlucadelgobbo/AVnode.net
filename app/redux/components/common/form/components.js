@@ -591,7 +591,7 @@ export const multiInputEmailWithDetails = ({
               isChild={true}
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-5">
             <div className="row">
               <div className="col-md-4">
                 <Field
@@ -656,7 +656,7 @@ export const multiInputEmailWithDetails = ({
           <div className="col-md-5 offset-1 email-subscriptions">
             <FormattedMessage id={SUBSCRIPTIONS} />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <div className="row">
               <div className="col-md-3">
                 <Field
@@ -1072,16 +1072,17 @@ export const checkboxField = ({
   isChild
 }) => {
   const field = (
-    <div className={"form-group " + classNames}>
-      {isChild && placeholder && <label htmlFor={id}>{placeholder}</label>}
+    <div className="custom-control custom-checkbox">
+    {isChild && placeholder && <label htmlFor={id}>{placeholder}</label>}
       <input
         id={id}
         defaultChecked={input.value}
-        className="form-control"
+        className="custom-control-input"
         type="checkbox"
         {...input}
         disabled={disabled}
       />
+      <span className="custom-control-indicator"></span>
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -1132,6 +1133,7 @@ export const fieldInColumn = ({
 
 export const renderDropzoneInput = field => {
   let files = field.input.value;
+  console.log(field);
   let myClassName = field.className === undefined ? "" : field.className;
   const getExtensionIcon = name => {
     let extension =
@@ -1172,16 +1174,15 @@ export const renderDropzoneInput = field => {
   return (
     <div className={`${myClassName} form-group`}>
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
-      // CONFIG
       <Dropzone
         className="attachment-dropzone"
-        name={field.name}
+        name={field.properties.fields.name}
         accept={field.accept}
-        maxSize={10485760}
+        maxSize={field.properties.maxsize}
         multiple={field.multiple || false}
         onDropRejected={() =>
           alert(
-            "Unable to upload the file: allowed file size exceeded (max 10 MB)"
+            "Unable to upload the file: allowed file size exceeded (max 20 MB)"
           )
         }
         onDrop={filesToUpload => {
