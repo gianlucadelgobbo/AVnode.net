@@ -7,65 +7,120 @@ block title
     .container
       .row.performer_title
         .col-lg-9
-          h1.main_title=data.title
-          if data.stats
-            .performance_stat_container
-              .performance_stat_wrapper
-                ul
-                  if data.stats.visits
-                    li=data.stats.visits + ' ' + global.__('Views')
-                  li
-                    span.likes_count=data.stats.likes ? data.stats.likes : 0
-                    !=' ' + global.__('Likes')
+          h1.main_title=data.img && data.img.title ? data.title+": "+data.img.title : data.title
+          if data.img
+            if data.img.stats
+              .performance_stat_container
+                .performance_stat_wrapper
+                  ul
+                    if data.img.stats.visits
+                      li=data.img.stats.visits + ' ' + global.__('Views')
+                    li
+                      span.likes_count=data.img.stats.likes ? data.img.stats.likes : 0
+                      !=' ' + global.__('Likes')
+          else 
+            if data.stats
+              .performance_stat_container
+                .performance_stat_wrapper
+                  ul
+                    if data.stats.visits
+                      li=data.stats.visits + ' ' + global.__('Views')
+                    li
+                      span.likes_count=data.stats.likes ? data.stats.likes : 0
+                      !=' ' + global.__('Likes')
         .col-lg-3.share_like_list_column
           include ../partials/share_like
 
 block content
   .container
     .row
-      .col-md-8
-        if data.imageFormats
-          img.img-fluid.perfomance_image.bottom60(
-            src=data.imageFormats.large
-            alt=data.title
-          )
-      .col-md-4.data_footage_video
-        if data.stats
-          h3=__("Stats")
-          ul
-            if data.stats.visits
-              li=data.stats.visits + ' ' + global.__('Views')
-            if data.stats.likes
-              li=data.stats.likes + ' ' + global.__('Likes')
-            if data.stats.medias
-              li=data.stats.medias + ' ' + global.__('Images')  
+      if data.img
+        .col-md-8
+          if data.img.imageFormats
+            img.img-fluid.perfomance_image.bottom60(
+              src=data.img.imageFormats.large
+              alt=data.img.title
+            )
+        .col-md-4.data_footage_video
+          h3=__("Gallery")
+          if data.imageFormats
+            a(href="/galleries/"+data.slug alt=data.title)
+              img.img-fluid.perfomance_image.bottom60(
+                src=data.imageFormats.large
+                alt=data.title
+              )
+          h3
+            a(href="/galleries/"+data.slug)=data.title
+          if data.about
+            h3=__("About")
+            .pt-2.pb-2!=data.about
+          h3=__("Author")
+          each user in data.users
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=user.imageFormats.small, alt=user.stagename)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=user.stagename
+                p.users_performance_item_country!=user.addressesFormatted
+          h3=__("Performances")
+          each performance in data.performances
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=performance.imageFormats.small, alt=performance.title)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=performance.title
+                p.users_performance_item_country!=performance.addressesFormatted
+          h3=__("Events")
+          each event in data.events
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=event.imageFormats.small, alt=event.title)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=event.title
+      else
+        .col-md-8
+          if data.imageFormats
+            img.img-fluid.perfomance_image.bottom60(
+              src=data.imageFormats.large
+              alt=data.title
+            )
+        .col-md-4.data_footage_video
+          if data.stats
+            h3=__("Stats")
+            ul
+              if data.stats.visits
+                li=data.stats.visits + ' ' + global.__('Views')
+              if data.stats.likes
+                li=data.stats.likes + ' ' + global.__('Likes')
+              if data.stats.medias
+                li=data.stats.medias + ' ' + global.__('Images')  
 
-        if data.about
-          h3=__("About")
-          .pt-2.pb-2!=data.about
-        h3=__("Author")
-        each user in data.users
-          .user_performance_wrapper
-            div.user_perfomance_image
-              img(src=user.imageFormats.small, alt=user.stagename)
-            div.user_perfomance_country_city
-              p.users_performance_item_name=user.stagename
-              p.users_performance_item_country!=user.addressesFormatted
-        h3=__("Performances")
-        each performance in data.performances
-          .user_performance_wrapper
-            div.user_perfomance_image
-              img(src=performance.imageFormats.small, alt=performance.title)
-            div.user_perfomance_country_city
-              p.users_performance_item_name=performance.title
-              p.users_performance_item_country!=performance.addressesFormatted
-        h3=__("Events")
-        each event in data.events
-          .user_performance_wrapper
-            div.user_perfomance_image
-              img(src=event.imageFormats.small, alt=event.title)
-            div.user_perfomance_country_city
-              p.users_performance_item_name=event.title
+          if data.about
+            h3=__("About")
+            .pt-2.pb-2!=data.about
+          h3=__("Author")
+          each user in data.users
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=user.imageFormats.small, alt=user.stagename)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=user.stagename
+                p.users_performance_item_country!=user.addressesFormatted
+          h3=__("Performances")
+          each performance in data.performances
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=performance.imageFormats.small, alt=performance.title)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=performance.title
+                p.users_performance_item_country!=performance.addressesFormatted
+          h3=__("Events")
+          each event in data.events
+            .user_performance_wrapper
+              div.user_perfomance_image
+                img(src=event.imageFormats.small, alt=event.title)
+              div.user_perfomance_country_city
+                p.users_performance_item_name=event.title
     if data.medias.length 
       h2.mt-5.main_title.indented_title.color1=__("Images")
       .row.mb-5

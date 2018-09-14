@@ -280,18 +280,41 @@ dataprovider.show = (req, res, section, subsection, model) => {
             }
           }
         }
-        if (!req.session[data._id]) {
-          req.session[data._id] = true;
-          data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
-          model.update({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
-            //if (err) c
-            //console.log('The raw response from Mongo was ', raw);
-          });
-        }
-        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
-          data.liked = false;
+        if (req.params.img) {
+          for (let item in data.medias) {
+            if (data.medias[item].slug===req.params.img) {
+              if (!req.session[data._id+"#IMG:"+data.medias[item].slug]) {
+                req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
+                if (!data.medias[item].stats) data.medias[item].stats = {}
+                data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
+                model.update({_id:data._id},{"medias":data.medias}, (err, raw) => {
+                  //if (err) c
+                  //console.log('The raw response from Mongo was ', raw);
+                });
+              }
+              data.img = data.medias[item];
+              data.img.index = item;
+            }
+          }
+          if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {
+            data.liked = false;
+          } else {
+            data.liked = true;
+          }
         } else {
-          data.liked = true;
+          if (!req.session[data._id]) {
+            req.session[data._id] = true;
+            data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
+            model.update({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
+              //if (err) c
+              //console.log('The raw response from Mongo was ', raw);
+            });
+          }  
+          if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
+            data.liked = false;
+          } else {
+            data.liked = true;
+          }
         }
         logger.debug(req.user);
         res.render(section + '/' + subsection, {
