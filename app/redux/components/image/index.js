@@ -93,7 +93,6 @@ class Image extends Component {
               onSubmit={this.onSubmit.bind(this)}
               user={model}
               showModal={showModal}
-              //onVerifyEmail={this.onVerifyEmail.bind(this)}
             />
           </div>
         </div>
