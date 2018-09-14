@@ -19,3 +19,5 @@ export const saveModel = (model) => generateSaveModel({
     schema: profile,
     model,
 });
+
+export const verifyEmail = (model) => () => api.verifyEmail(model);

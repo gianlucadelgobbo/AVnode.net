@@ -23,9 +23,9 @@ export const saveProfilePublic = (model) => {
 
 
     return axios.put("profile/public", model)
-         .then(result => {
-             return result.data;
-         });
+        .then(result => {
+            return result.data;
+        });
 };
 
 export const fetchSlug = (slug) => {
@@ -702,3 +702,5 @@ export const saveSignupPublic = (model) => {
             return result.data;
         });
 };
+
+export const verifyEmail = ({email}) => axios.post(encodeURI(`/admin/api/profile/emails/verify/${email}`));

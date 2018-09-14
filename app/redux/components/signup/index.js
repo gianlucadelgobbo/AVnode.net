@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { showModal } from "../modal/actions";
 import { bindActionCreators } from "redux";
-import { MODAL_SAVED } from "../modal/constants";
+import { MODAL_SIGN_UP_SUCCESS } from "../modal/constants";
 import { OPTIONS } from "./constants";
 import { saveModel } from "./actions";
 import ErrorMessage from "../errorMessage";
@@ -78,7 +78,7 @@ class SignUp extends Component {
       return saveModel(modelToSave).then(model => {
         if (model && model.id) {
           showModal({
-            type: MODAL_SAVED
+            type: MODAL_SIGN_UP_SUCCESS,
           });
         }
       });
