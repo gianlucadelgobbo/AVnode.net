@@ -2,7 +2,7 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const adminsez = 'gallery';
+const adminsez = 'galleries';
 
 const Media = new Schema({
   url: String,
@@ -30,38 +30,31 @@ const Media = new Schema({
     virtuals: true
   }
 });
-/*
-Media.virtual('files').get(function () {
-  console.log('filesfilesfilesfilesfilesfilesfilesfiles');
+Media.virtual('imageFormats').get(function () {
+  let imageFormats = {};
+  //console.log(config.cpanel[adminsez].sizes.image);
+  //if (this.medias && this.medias.length && this.medias[0].file) {
   if (this.file) {
-    //const pre = '';
-    const pre = process.env.WAREHOUSE;
-    
+    for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+      imageFormats[format] = config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].default;
+    }
+    //const serverPath = this.medias[0].file;
     const serverPath = this.file;
-    const localFileNameExtension = serverPath.substring(serverPath.lastIndexOf('.') + 1);
-    if (localFileNameExtension == "mp4") {
-      const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-      const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
-      const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-      console.log(localFileName);
-      const localFileNameOriginalExtension = localFileName.substring(localFileName.lastIndexOf('_') + 1, localFileName.lastIndexOf('.'));
-      const localFileNameWithoutOriginalExtension = localFileName.substring(0, localFileName.lastIndexOf('_'));
-      const files = {
-        file: pre+this.file,
-        previewFile: `${localPath}/preview_files/${localFileNameWithoutExtension}.png`,
-        originalFile: `${localPath}/original_video/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`,
-        fileNew: this.file.replace('/warehouse/', '/warehouse/videos/'),
-        previewFileNew: `${localPath}/preview_files/${localFileNameWithoutExtension}.png`.replace('https://flxer.net/warehouse/','/warehouse/videos/'),
-        originalFileNew: `${localPath}/${localFileNameWithoutOriginalExtension}.${localFileNameOriginalExtension}`.replace('https://flxer.net/warehouse/','/warehouse/videos_originals/'),
-      };
-
-      console.log(files);
-
-      return files;
+    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/galleries_originals/', process.env.WAREHOUSE+'/warehouse/galleries/'); // /warehouse/2017/03
+    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
+    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
+    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
+    for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    }
+  } else {
+    for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].default}`;
     }
   }
+  return imageFormats;
 });
-*/
 /*
 Media.virtual('imageFormats').get(function () {
   let imageFormats = {};

@@ -1,6 +1,6 @@
 .video_item_wrapper
   if item.imageFormats
-    a(href="/galleries/"+item.slug, title=item.title)
+    a(href="/galleries/"+data.slug+"/"+item.slug, title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.large
         alt=item.title
