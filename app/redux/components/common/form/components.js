@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import Textarea from "react-textarea-autosize";
-import { Tab, Tabs, Nav, NavItem, Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
-import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import Select, { Async } from "react-select";
 import "react-select/dist/react-select.css";
 import DatePicker from "react-datepicker";
@@ -11,9 +10,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Dropzone from "react-dropzone";
 import {
-  MODAL_REMOVE,
   MODAL_ADD_USER_PERFORMANCE,
-  MODAL_SAVED
+  MODAL_REMOVE
 } from "../../modal/constants";
 import TimePicker from "react-times";
 import "react-times/css/classic/default.css";
@@ -28,7 +26,7 @@ import { DATE_FORMAT } from "../../../conf";
 import { WithContext as ReactTags } from "react-tag-input";
 import { Collapse } from "react-collapse";
 import { FormattedMessage } from "react-intl";
-import { SUBSCRIPTIONS, FILE_UPLOAD } from "../../common/form/labels";
+import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 
 export const googleAutocompleteSelect = ({
   input,
@@ -573,14 +571,16 @@ export const multiInputEmailWithDetails = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
+  onVerifyEmail
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
-    const { is_confirmed } = fields.get(index);
+    const field = fields.get(index);
+    const { is_confirmed, _id } = field;
     return (
       <div
         className={"container-fluid " + (index % 2 === 0 ? "even" : "odd")}
-        key={index}
+        key={_id || index}
       >
         <div className="row ">
           <div className="col-md-5 offset-1">
@@ -616,7 +616,18 @@ export const multiInputEmailWithDetails = ({
                 />
               </div>
               <div className="col-md-4">
-                {is_confirmed ? "Is confirmed" : "Not yet confirmed"}
+                {is_confirmed ? (
+                  <div className="form-group">
+                    <span className="badge badge-success">Is confirmed</span>
+                  </div>
+                ) : (
+                  <Button
+                    bsStyle="primary"
+                    onClick={() => onVerifyEmail(field)}
+                  >
+                    Verify!
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -822,11 +833,7 @@ const singleInput = ({
     />
   );
 
-  return (
-      <div>
-        {renderSubField({ fields, render, key, showModal })}
-      </div>
-  );
+  return <div>{renderSubField({ fields, render, key, showModal })}</div>;
 };
 
 const multiInput = ({
@@ -1165,7 +1172,7 @@ export const renderDropzoneInput = field => {
   return (
     <div className={`${myClassName} form-group`}>
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
-
+      // CONFIG
       <Dropzone
         className="attachment-dropzone"
         name={field.name}
@@ -1188,14 +1195,12 @@ export const renderDropzoneInput = field => {
           <FormattedMessage id={FILE_UPLOAD} />
         </div>
       </Dropzone>
-
       {field.meta.touched &&
         field.meta.error && (
           <span className="error">
             <FormattedMessage id={field.meta.error} />
           </span>
         )}
-
       {files &&
         Array.isArray(files) && (
           <ul className="list-unstyled attached-file">
@@ -2398,11 +2403,7 @@ export const CollapsedPanel = ({
       </ButtonGroup>
       <Collapse isOpened={input.value === "group"}>
         <div style={{ height }} />
-        <Field 
-          name="crewName" 
-          component={inputText} 
-          placeholder="Crew Name" 
-        />
+        <Field name="crewName" component={inputText} placeholder="Crew Name" />
         <Field
           name="CrewProfile"
           component={inputText}
