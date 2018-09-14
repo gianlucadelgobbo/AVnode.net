@@ -19,7 +19,8 @@ class ProfileEmailsForm extends Component {
             submitting,
             handleSubmit,
             showModal,
-            onSubmit
+            onSubmit,
+            verifyEmail
         } = this.props;
 
         return (
@@ -30,6 +31,7 @@ class ProfileEmailsForm extends Component {
                     component={multiInputEmailWithDetails}
                     placeholder={this.getIntlString({id:EMAILS})}
                     showModal={showModal}
+                    onVerifyEmail={verifyEmail}
                 />
 
                 <hr/>
@@ -50,7 +52,6 @@ class ProfileEmailsForm extends Component {
 ProfileEmailsForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
-    keepDirtyOnReinitialize: true,
     validate
 })(ProfileEmailsForm);
 

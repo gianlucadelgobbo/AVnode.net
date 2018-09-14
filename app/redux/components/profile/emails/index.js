@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu';
@@ -7,8 +7,9 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading';
 import ErrorMessage from '../../errorMessage';
 import ItemNotFound from '../../itemNotFound';
-import {fetchModel, saveModel} from "./actions";
-import {MODAL_SAVED} from "../../modal/constants";
+import {fetchModel, saveModel, verifyEmail} from "./actions";
+import {MODAL_EMAIL_VERIFICATION_ERROR, MODAL_EMAIL_VERIFICATION_SUCCESS, MODAL_SAVED} from "../../modal/constants";
+
 import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
 import {FormattedMessage} from 'react-intl';
 
@@ -63,7 +64,7 @@ class ProfileEmails extends Component {
         //dispatch the action to save the model here
         return saveModel(modelToSave)
             .then((model) => {
-                if(model && model.id){
+                if (model && model.id) {
                     showModal({
                         type: MODAL_SAVED
                     });
@@ -71,9 +72,25 @@ class ProfileEmails extends Component {
             });
     }
 
+    verifyEmail(values) {
+        const {showModal, verifyEmail} = this.props;
+
+        return verifyEmail(values)
+            .then(() => {
+                showModal({
+                    type: MODAL_EMAIL_VERIFICATION_SUCCESS
+                });
+            })
+            .catch(() => {
+                showModal({
+                    type: MODAL_EMAIL_VERIFICATION_ERROR
+                });
+            });
+    }
+
     render() {
 
-        const {model={}, showModal, isFetching, errorMessage} = this.props;
+        const {model = {}, showModal, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
@@ -100,6 +117,7 @@ class ProfileEmails extends Component {
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
                         showModal={showModal}
+                        verifyEmail={this.verifyEmail.bind(this)}
                     />}
                 </div>
             </div>
@@ -117,7 +135,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
     saveModel,
-    showModal
+    showModal,
+    verifyEmail
 }, dispatch);
 
 ProfileEmails = connect(
