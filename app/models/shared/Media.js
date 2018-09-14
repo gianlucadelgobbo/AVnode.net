@@ -6,7 +6,7 @@ const adminsez = 'gallery';
 
 const Media = new Schema({
   url: String,
-  slug: { type: String, unique: true },
+  slug: { type: String/* , unique: true */ },
   file: String,
   filename: String,
   preview: String,
