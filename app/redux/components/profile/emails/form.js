@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {reduxForm, Field, FieldArray} from "redux-form";
+import React, {Component} from 'react';
+import {FieldArray, reduxForm} from "redux-form";
 import {FORM_NAME} from './constants';
 import {multiInputEmailWithDetails} from "../../common/form/components";
 import validate from './validate';
@@ -13,6 +13,15 @@ class ProfileEmailsForm extends Component {
         return intl.formatMessage(obj)
     };
 
+    extractModelEmails() {
+        const {model = {}} = this.props;
+        let {emails = []} = model;
+
+        emails = emails.map(e => e.email);
+        return emails;
+
+    }
+
     render() {
 
         const {
@@ -20,8 +29,10 @@ class ProfileEmailsForm extends Component {
             handleSubmit,
             showModal,
             onSubmit,
-            verifyEmail
+            verifyEmail,
         } = this.props;
+
+        const emails = this.extractModelEmails();
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -29,9 +40,10 @@ class ProfileEmailsForm extends Component {
                 <FieldArray
                     name="emails"
                     component={multiInputEmailWithDetails}
-                    placeholder={this.getIntlString({id:EMAILS})}
+                    placeholder={this.getIntlString({id: EMAILS})}
                     showModal={showModal}
                     onVerifyEmail={verifyEmail}
+                    modelEmails={emails}
                 />
 
                 <hr/>
