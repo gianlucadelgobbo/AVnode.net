@@ -138,7 +138,7 @@ class ProfilePrivate extends Component {
             const modelToSave = this.createModelToSave(values);
 
             modelToSave._id = model._id;
-            
+
             return saveModel(modelToSave)
             .then((model) => {
                 if (model && model.id){
