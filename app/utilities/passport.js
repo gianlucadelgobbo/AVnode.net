@@ -21,7 +21,7 @@ passport.deserializeUser((id, done) => {
     done(err, user);
   });
 });
-passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
   logger.debug('passport.use:' + email);
 
   User.findOne({ email: email.toLowerCase() }, 'stagename slug password', (err, user) => {
@@ -45,7 +45,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
         return done(null, user);
       } else {
         logger.debug('passport.use User.comparePassword NO match, try flxer');
-        flxer.flxerLogin(user, email, password, (isFlxerMatch) => {
+        flxer.flxerLogin(req, user, email, password, (isFlxerMatch) => {
           if (isFlxerMatch) {
             logger.debug('flxerLogin match');
             return done(null, user);
@@ -59,7 +59,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
   });
 }));
 
-flxer.flxerLogin = (existingUser, email, password, done) => {
+flxer.flxerLogin = (req, existingUser, email, password, done) => {
   // try with flxer api
   request.post({
     uri: 'https://flxer.net/api/login',
@@ -85,16 +85,20 @@ flxer.flxerLogin = (existingUser, email, password, done) => {
           logger.debug('existingUser.save error:' + err);
         } else {
           logger.debug('existingUser.save success');
-          mailer.sendMsgEmail({
-            template: 'send-email',
+          mailer.mySendMailer({
+            template: 'confirm-email',
             message: {
               to: email
             },
-            locals: {
-              link: "https://dev.avnode.net/",
-              msg: 'Password migrated from flxer, please login again.'
+            email_content: {
+              site:    req.protocol+"://"+req.headers.host,
+              title:    __("Passworrd from FLxER success!!!"),
+              block_1:  __("Password migrated from FLxER.net, please login again."),
+              button:   __("Click here to login"),
+              link:     req.protocol+"://"+req.headers.host+'/login/',
+              signature: "The AVnode.net Team"
             }
-          }, (err) => {
+          }, function (err){
             if (err) {
               logger.debug('mailer.sendMsgEmail error:' + err);
             } else {

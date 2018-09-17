@@ -17,6 +17,10 @@ const bcrypt = require('bcrypt-nodejs');
 
 const adminsez = 'profile';
 
+const hasNumber = (str) => /\d/.test(str);
+const hasLowerCase = (str) => /[a-z]/.test(str);
+const hasUpperCase = (str) => /[A-Z]/.test(str);
+
 const userSchema = new Schema({
   old_id: String,
   is_crew: Boolean,
@@ -110,7 +114,25 @@ const userSchema = new Schema({
   // Organization Extra Data
   organizationData: [OrganizationData],
 
-  password: String,
+  password: {
+    type: String,
+    validate: [{
+      validator : function(password) {
+        console.log("passwordpasswordpasswordpasswordpasswordpassword");
+        console.log(password);
+        console.log(!password || password.length < 10);
+        return password && password.length > 10;
+      }, msg: 'INVALID_PASSWORD_LENGTH'
+    },
+    {
+      validator : function(password) {
+        console.log("passwordpasswordpasswordpasswordpasswordpassword2");
+        console.log(password);
+        console.log(hasNumber(password) && hasLowerCase(password) && hasUpperCase(password));
+        return hasNumber(password) && hasLowerCase(password) && hasUpperCase(password);
+      }, msg: 'INVALID_PASSWORD_CHR'
+    }]
+  },
   passwordResetToken: String,
   passwordResetExpires: Date,
   is_confirmed: { type: Boolean, default: false },
@@ -230,24 +252,50 @@ userSchema.pre('save', function (next) {
   console.log('userSchema.pre(save) id:' + this._id);
   let user = this;
   if (!user.isModified('password')) { return next(); }
-  console.log('userSchema.pre(save) id:' + this._id);
-  console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
-  //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) { return next(err); }
-      user.password = hash;
-      next();
-    });
-  });
+    if (user.oldpassword) {
+      user.comparePassword(user.oldpassword, (err, isMatch) => {
+        if (err) return next(err);
+        console.log('userSchema.pre(save) id:' + this._id);
+        console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
+        //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
+        bcrypt.genSalt(10, (err, salt) => {
+          if (err) { return next(err); }
+          bcrypt.hash(user.password, salt, null, (err, hash) => {
+            if (err) { return next(err); }
+            user.password = hash;
+            next();
+          });
+        });
+      });
+    } else {
+      var err = {
+        errors: {
+          oldpassword: {
+            message: 'INVALID_OLD_PASSWORD',
+            name: 'ValidatorError',
+            kind: 'user defined',
+            path: 'password',
+            value: user.oldpassword,
+            reason: undefined,
+            '$isValidatorError': true
+          }
+        },
+        _message: 'User validation failed',
+        name: 'ValidationError'
+      };
+      next(err);qQaaaaaaaaa1
+    }
   //next();
 });
 
+userSchema.path('password').set(function (newVal) {
+  var originalVal = this.password;
+  this.originalpassword = originalVal;
+});
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.password);
+  bcrypt.compare(candidatePassword, this.originalpassword, (err, isMatch) => {
+    console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.originalpassword);
     cb(err, isMatch);
   });
 };

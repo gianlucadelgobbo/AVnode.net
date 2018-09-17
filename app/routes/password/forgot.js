@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  User.findOne({email: req.body.email}, (err, user) => {
+  User.findOne({email: req.body.email}, "_id stagename email", (err, user) => {
     if (err) {
       throw err;
     }
@@ -23,12 +23,14 @@ router.post('/', (req, res) => {
       res.redirect('/password/forgot');
     } else {
       const token = uuid.v4();
+      console.log();
       const expiresInHours = _.parseInt(process.env.PASSWORD_RESET_EXPIRES);
       user.passwordResetToken = token;
       user.passwordResetExpires = moment().add(expiresInHours, 'hours').toDate();
 
       user.save((err) => {
         if (err) {
+          console.log(err);
           req.flash('errors', {msg: __('Password not generated, please retry.')});
           res.redirect('/password/forgot');
         } else {
@@ -52,7 +54,7 @@ router.post('/', (req, res) => {
             }
           }, function (err){
             if (err) {
-              req.flash('errors', {msg: __('User not found.')});
+              req.flash('errors', {msg: __('Unable to send Confirm Email.')});
               res.redirect('/password/forgot');
             } else {
               req.flash('success', {msg: __('Password reset link sent to:')+" "+req.body.email });
