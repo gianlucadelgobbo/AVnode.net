@@ -1,1 +1,6 @@
 export const FORM_NAME = "PROFILE.PASSWORD";
+
+export const PASSWORD_MIN_LENGTH = 8;
+export const PASSWORD_MUST_CONTAIN_CAPITAL_LETTER = true;
+export const PASSWORD_MUST_CONTAIN_NUMBER = true;
+export const PASSWORD_MUST_CONTAIN_SPECIAL_CHAR = true;

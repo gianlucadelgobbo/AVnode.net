@@ -32,7 +32,8 @@ class ProfilePassword extends Component {
 
         let model = {};
 
-        // Pass only 'password' to API
+        model.oldpassword = values.oldpassword;
+
         model.password = values.password;
 
         return model;
@@ -58,8 +59,10 @@ class ProfilePassword extends Component {
         // Add auth user _id
         modelToSave._id = model._id;
 
+        console.log("on submit", modelToSave)
+
         //dispatch the action to save the model here
-        return saveModel(model)
+        return saveModel(modelToSave)
             .then((model) => {
                 if(model && model.id){
                     showModal({

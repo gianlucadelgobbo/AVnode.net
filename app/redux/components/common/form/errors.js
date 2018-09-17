@@ -14,6 +14,8 @@ export const INVALID_STRING_1_3 = "validation.error.invalid.string.1.3";
 export const INVALID_STRING_3_50 = "validation.error.invalid.string.3.50";
 export const INVALID_EMAIL = "validation.error.invalid.email";
 export const INVALID_PASSWORD = "validation.error.invalid.password";
+export const INVALID_PASSWORD_LENGTH = "validation.error.invalid.passwordLength";
+export const INVALID_PASSWORD_CONTENT = "validation.error.invalid.passwordContent";
 export const DEFINE_LEAST_EMAIL= "validation.error.define.least.email";
 export const MULTIPLE_PRIMARY_EMAIL = "validation.error.multiple.primary.email";
 export const NO_PRIMARY_EMAIL = "validation.error.no.primary.email";
@@ -93,5 +95,13 @@ defineMessages({
     [INVALID_PASSWORD]: {
         id: INVALID_PASSWORD,
         defaultMessage: "Passwords don't match"
+    },
+    [INVALID_PASSWORD_LENGTH]: {
+        id: INVALID_PASSWORD_LENGTH,
+        defaultMessage: "Your password is too short"
+    },
+    [INVALID_PASSWORD_CONTENT]: {
+        id: INVALID_PASSWORD_CONTENT,
+        defaultMessage: "Password must contain at least number, a capital letter and a lower case letter"
     },
 });
