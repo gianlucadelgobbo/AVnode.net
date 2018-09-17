@@ -44,7 +44,7 @@ class ProfilePrivate extends Component {
         //convert Lang
         model.lang = values.lang.value;
         //convert Birthday
-        model.birthday = moment(values.birthday).utc();
+        model.birthday = moment(values.birthday).utc().format();
         // Convert citizenship
         model.citizenship = model.citizenship.filter(a => a).map(a => a.value);
         // Convert addresses_private
@@ -138,7 +138,7 @@ class ProfilePrivate extends Component {
             const modelToSave = this.createModelToSave(values);
 
             modelToSave._id = model._id;
-
+            
             return saveModel(modelToSave)
             .then((model) => {
                 if (model && model.id){
