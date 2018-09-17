@@ -118,6 +118,7 @@ class ProfileEmails extends Component {
                         onSubmit={this.onSubmit.bind(this)}
                         showModal={showModal}
                         verifyEmail={this.verifyEmail.bind(this)}
+                        model={model}
                     />}
                 </div>
             </div>
