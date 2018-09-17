@@ -576,7 +576,9 @@ export const multiInputEmailWithDetails = ({
         const field = fields.get(index);
         const {is_confirmed, _id, email} = field;
 
-        const showAdditionalInfo = modelEmails.indexOf(email) > -1;
+        // Get all the 'already rendered' email
+        const alreadyRenderedEmailsFromFields = fields.getAll().slice(0, index).map(f => f.email);
+        const showAdditionalInfo = (modelEmails.indexOf(email) > -1) && (alreadyRenderedEmailsFromFields.indexOf(email) === -1);
 
         return (
             <div
