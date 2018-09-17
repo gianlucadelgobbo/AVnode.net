@@ -703,4 +703,4 @@ export const saveSignupPublic = (model) => {
         });
 };
 
-export const verifyEmail = ({email}) => axios.post(encodeURI(`/admin/api/profile/emails/verify/${email}`));
+export const verifyEmail = ({email}) => axios.get(encodeURI(`/admin/api/profile/emails/verify/${email}`));
