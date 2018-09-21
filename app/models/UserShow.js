@@ -185,30 +185,6 @@ userSchema.virtual('description').get(function (req) {
   }
 });
 
-/* BL FIXME later for crews
-userSchema.pre('remove', function(next) {
-  const crew = this;
-  crew.model('UserShow').update(
-    { $pull: { crews: crew._id } },
-    next
-  );
-});
-
-userSchema.virtual('publicUrl').get(function () {
-  if (this.slug) return `/${this.slug}`;
-});
-userSchema.virtual('editUrl').get(function () {
-  if (this.slug) {
-    if (this.is_crew) {
-      return `/admin/crew/${this.slug}`;
-    } else {
-      return `/admin/${this.slug}`;
-    } 
-  } 
-});
-
-*/
-
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
     const lang = global.getLocale();
@@ -266,30 +242,6 @@ userSchema.virtual('teaserImageFormats').get(function () {
   return teaserImageFormats;
 });
 */
-userSchema.pre('save', function save(next) {
-  console.log('userSchema.pre(save) id:' + this._id);
-  const user = this;
-  console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
-  //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
-  if (!user.isModified('password')) { return next(); }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) { return next(err); }
-      user.password = hash;
-      next();
-    });
-  });
-});
-
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  // console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.password);
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
-  });
-};
-
-userSchema.plugin(indexPlugin());
 
 const UserShow = mongoose.model('UserShow', userSchema);
 

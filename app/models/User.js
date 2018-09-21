@@ -297,11 +297,9 @@ userSchema.pre('save', function (next) {
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
-    console.log('userSchema.pre(save) password:' + (user.password));
     bcrypt.hash(user.password, salt, null, (err, hash) => {
       if (err) { return next(err); }
       user.password = hash;
-      console.log('userSchema.pre(save) passwordhash:' + (user.password));
       next();
     });
   });
@@ -313,8 +311,6 @@ userSchema.pre('save', function (next) {
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.password + ' isMatch: ' + isMatch);
-    console.log(err);
     cb(err, isMatch);
   });
 };
