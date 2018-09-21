@@ -2,7 +2,14 @@ if messages.errors
   .container.mt-3
     .alert.alert-danger
       for error in messages.errors
-        div=error.msg
+        if error.msg instanceof Object
+          for item in error.msg
+            if item instanceof Object
+              for err in item
+                div=err.message
+        else
+          div=error.msg
+
 if messages.info
   .container.mt-3
     .alert.alert-info
