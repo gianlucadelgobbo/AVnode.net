@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     req.flash('errors', {msg: __('Link to change the password has expired or is not valid.')});
     res.redirect('/password/forgot/');
   } else {
-    User.findOne({passwordResetToken: req.body.token}, "passwordResetToken passwordResetExpires", (err, user) => {
+    User.findOne({passwordResetToken: req.body.token}, "password passwordResetToken passwordResetExpires", (err, user) => {
       console.log("user");
       console.log(user);
       if (!user) {
@@ -29,8 +29,13 @@ router.post('/', (req, res) => {
           user.passwordResetExpires = null;
           user.passwordResetToken = null;
           user.password = req.body.password;
+          console.log(req.body);
+          console.log("user ch");
+          console.log(user);
+          //res.redirect('/password/reset/'+req.body.token);
           user.save((err) => {
             if (err) {
+              console.log(err);
               req.flash('errors', {msg: err});
               res.redirect('/password/reset/'+req.body.token);
             } else {

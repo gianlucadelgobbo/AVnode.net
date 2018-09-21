@@ -120,7 +120,7 @@ const userSchema = new Schema({
       validator : function(password) {
         console.log("passwordpasswordpasswordpasswordpasswordpassword");
         console.log(password);
-        console.log(!password || password.length < 10);
+        console.log(password && password.length > 10);
         return password && password.length > 10;
       }, msg: 'INVALID_PASSWORD_LENGTH'
     },
@@ -133,6 +133,8 @@ const userSchema = new Schema({
       }, msg: 'INVALID_PASSWORD_CHR'
     }]
   },
+  newpassword: String,
+  oldpassword: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
   is_confirmed: { type: Boolean, default: false },
@@ -248,54 +250,71 @@ userSchema.virtual('teaserImageFormats').get(function () {
 });
 */
 
+userSchema.pre('validate', function (next) {
+  //070190Gian!
+  console.log('userSchema.pre(validate) id:' + this._id);
+  let user = this;
+  console.log('userSchema.pre(validate) newpassword:' + (user.newpassword));
+  console.log('userSchema.pre(validate) oldpassword:' + (user.oldpassword));
+  if ((user.oldpassword || user.oldpassword === "") && (user.newpassword || user.newpassword === "")) {
+    user.comparePassword(user.oldpassword, (err, isMatch) => {
+      if (err) return next(err);
+      if (isMatch) {
+        user.password = user.newpassword;
+        console.log('userSchema.pre(validate) password:' + (user.password));
+        console.log(user);
+        user.set("oldpassword", undefined, {strict: false});
+        user.set("newpassword", undefined, {strict: false});
+        console.log('userSchema.pre(validate) password:' + (user.password));
+        console.log(user);
+        //console.log('userSchema.pre(validate) user:' + JSON.stringify(user.linkSocial));
+        next();
+      } else {
+        var err = {
+          errors: {
+            oldpassword: {
+              message: 'INVALID_PASSWORD',
+              name: 'ValidatorError',
+              kind: 'user defined',
+              path: 'oldpassword',
+              value: user.oldpassword,
+              reason: undefined,
+              '$isValidatorError': true
+            }
+          },
+          _message: 'User validation failed',
+          name: 'ValidationError'
+        };
+        next(err);
+      }
+    });
+  } else {
+    next();
+  }
+});
 userSchema.pre('save', function (next) {
-  console.log('userSchema.pre(save) id:' + this._id);
   let user = this;
   if (!user.isModified('password')) { return next(); }
-    if (user.oldpassword) {
-      user.comparePassword(user.oldpassword, (err, isMatch) => {
-        if (err) return next(err);
-        console.log('userSchema.pre(save) id:' + this._id);
-        console.log('userSchema.pre(save) name:' + JSON.stringify(user.name));
-        //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
-        bcrypt.genSalt(10, (err, salt) => {
-          if (err) { return next(err); }
-          bcrypt.hash(user.password, salt, null, (err, hash) => {
-            if (err) { return next(err); }
-            user.password = hash;
-            next();
-          });
-        });
-      });
-    } else {
-      var err = {
-        errors: {
-          oldpassword: {
-            message: 'INVALID_OLD_PASSWORD',
-            name: 'ValidatorError',
-            kind: 'user defined',
-            path: 'password',
-            value: user.oldpassword,
-            reason: undefined,
-            '$isValidatorError': true
-          }
-        },
-        _message: 'User validation failed',
-        name: 'ValidationError'
-      };
-      next(err);qQaaaaaaaaa1
-    }
-  //next();
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) { return next(err); }
+    console.log('userSchema.pre(save) password:' + (user.password));
+    bcrypt.hash(user.password, salt, null, (err, hash) => {
+      if (err) { return next(err); }
+      user.password = hash;
+      console.log('userSchema.pre(save) passwordhash:' + (user.password));
+      next();
+    });
+  });
 });
 
-userSchema.path('password').set(function (newVal) {
-  var originalVal = this.password;
-  this.originalpassword = originalVal;
-});
+/*userSchema.virtual('originalpassword').get(function () {
+  return this.password;
+});*/
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.originalpassword, (err, isMatch) => {
-    console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.originalpassword);
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    console.log('userSchema comparePassword:' + candidatePassword + ' p: ' + this.password + ' isMatch: ' + isMatch);
+    console.log(err);
     cb(err, isMatch);
   });
 };

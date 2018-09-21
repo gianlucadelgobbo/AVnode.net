@@ -26,8 +26,33 @@ router.putData = (req, res) => {
         if (data) {
           let select = config.cpanel[req.params.sez].forms[req.params.form].select;
           let put = {};
-          for (const item in select) if(req.body[item]) put[item] = req.body[item];
+          //for (const item in select) if(req.body[item]) put[item] = req.body[item];
+          // db.users.update({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
+          logger.debug('Data');
+          logger.debug(data);
+          logger.debug('select');
+          logger.debug(select);
+          for (const item in select) if(req.body[item]) {
+            logger.debug(item);
+            if (item === "password" && data.password && (req.body.oldpassword || req.body.oldpassword === "")) {
+              logger.debug('STOCAZZO'+item);
+              put.newpassword = req.body.password;
+              put.oldpassword = req.body.oldpassword;
+              /* data.oldpassword = put.oldpassword;
+              data.newpassword = put.newpassword; */
+              data.set("oldpassword", put.oldpassword, {strict: false});
+              data.set("newpassword", put.newpassword), {strict: false};
+            } else {
+              put[item] = req.body[item];
+            }
+          }
+          logger.debug('put');
+          logger.debug(put);
+          logger.debug('Data');
+          logger.debug(data);
           Object.assign(data, put);
+          logger.debug('putData');
+          logger.debug(data);
           data.save((err) => {
             if (err) {
               console.log('err');

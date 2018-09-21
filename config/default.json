@@ -416,7 +416,8 @@
           "components": {},
           "select": {
             "oldpassword": 1,
-            "password": 1
+            "password": 1,
+            "newpassword": 1
           },
           "populate": []
         },
