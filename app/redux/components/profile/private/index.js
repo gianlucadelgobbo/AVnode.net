@@ -12,7 +12,13 @@ import ItemNotFound from '../../itemNotFound';
 import {fetchList as fetchCountries} from '../../countries/actions';
 import {getList as getCountries} from '../../countries/selectors';
 import {MODAL_SAVED} from "../../modal/constants";
-import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
+import {
+    getDefaultModel,
+    getDefaultModelErrorMessage,
+    getDefaultModelIsFetching,
+    getErrorMessage,
+    getIsFetching
+} from "../selectors";
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import moment from 'moment';
 import axios from 'axios';
@@ -193,8 +199,8 @@ class ProfilePrivate extends Component {
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
     countries: getCountries(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+    isFetching: getDefaultModelIsFetching(state),
+    errorMessage: getDefaultModelErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

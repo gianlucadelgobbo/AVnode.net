@@ -10,7 +10,13 @@ import ItemNotFound from '../../itemNotFound';
 import {fetchModel, saveModel, verifyEmail} from "./actions";
 import {MODAL_EMAIL_VERIFICATION_ERROR, MODAL_EMAIL_VERIFICATION_SUCCESS, MODAL_SAVED} from "../../modal/constants";
 
-import {getDefaultModel, getErrorMessage, getIsFetching} from "../selectors";
+import {
+    getDefaultModel,
+    getDefaultModelErrorMessage,
+    getDefaultModelIsFetching,
+    getErrorMessage,
+    getIsFetching
+} from "../selectors";
 import {FormattedMessage} from 'react-intl';
 
 /*
@@ -129,8 +135,8 @@ class ProfileEmails extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+    isFetching: getDefaultModelIsFetching(state),
+    errorMessage: getDefaultModelErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
