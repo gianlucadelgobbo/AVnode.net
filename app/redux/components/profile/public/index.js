@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LateralMenu from '../lateralMenu';
 import Form from './form';
 import {connect} from 'react-redux';
-import {getDefaultModel, getDefaultModelErrorMessage, getIsFetching} from '../selectors';
+import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching, getIsFetching} from '../selectors';
 import {locales, locales_labels} from '../../../../../config/default.json'
 import {saveModel, fetchModel} from "./actions";
 import {showModal} from "../../modal/actions";
@@ -205,7 +205,7 @@ class ProfilePublic extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
-    isFetching: getIsFetching(state),
+    isFetching: getDefaultModelIsFetching(state),
     errorMessage: getDefaultModelErrorMessage(state),
 });
 
