@@ -33,6 +33,12 @@ export const getDefaultModelErrorMessage = (state) => {
     return firstId? getModelErrorMessage(state, firstId) : null;
 };
 
+export const getDefaultModelIsFetching = (state) => {
+    const firstId = Object.keys(state[entity].byId);
+    return firstId? getModelIsFetching(state, firstId) : null;
+};
+
+
 export const getModelErrorMessage = (state, id) =>
     getModel(state, id) && getModel(state, id).errorMessage;
 
