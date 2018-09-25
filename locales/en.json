@@ -225,5 +225,14 @@
 	"Passworrd from FLxER success!!!": "Passworrd from FLxER success!!!",
 	"Password migrated from FLxER.net, please login again.": "Password migrated from FLxER.net, please login again.",
 	"Click here to login": "Click here to login",
-	"Password not generated, please retry.": "Password not generated, please retry."
+	"Password not generated, please retry.": "Password not generated, please retry.",
+	"There are some errors": "There are some errors",
+	"Unknow error": "Unknow error",
+	"Warning: You have no performance eligible for the call selected. Please create a performance and come back.": "Warning: You have no performance eligible for the call selected. Please create a performance and come back.",
+	"I accept this terms": "I accept this terms",
+	"Please accept the terms and conditions to go forward": "Please accept the terms and conditions to go forward",
+	"Type": "Type",
+	"Authors": "Authors",
+	"Please select a performance to go forward": "Please select a performance to go forward",
+	"Please select at least 1 topic to go forward": "Please select at least 1 topic to go forward"
 }

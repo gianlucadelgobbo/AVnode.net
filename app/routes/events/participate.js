@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
   exec((err, data) => {
     logger.debug('routes/events/participate err:' + err);
     logger.debug(err);
-    logger.debug(data);
+    //logger.debug(data);
     let ids = [];
     if (req.user) ids = [req.user._id].concat(req.user.crews);
     logger.debug(ids);
@@ -58,7 +58,6 @@ router.get('/', (req, res) => {
         topics: req.session.call.topics,
         subscriptions: req.session.call.subscriptions
       };
-      logger.debug('events/participateaaaaaaa');
     }
     logger.debug('events/participateaaaaaaa');
     logger.debug(req.session.call);
@@ -78,6 +77,8 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+  let myasync = true;
+  logger.debug('POSTPOSTPOSTPOSTPOST');
   logger.debug('fetchEvent'+req.params.slug);  
   Event.
   findOne({slug: req.params.slug}).
@@ -87,17 +88,25 @@ router.post('/', (req, res) => {
     if (err || data === null) {
       return next(err);
     }
-    logger.debug('POSTPOSTPOSTPOSTPOST');
-    logger.debug(data.organizationsettings.call.calls[0].packages);
-    logger.debug('POSTPOSTPOSTPOSTPOST');
+    logger.debug('data.organizationsettings.call:');
+    logger.debug(data.organizationsettings.call);
+    logger.debug('session.call');
     logger.debug(req.session.call);
+    logger.debug('req.body');
+    logger.debug(req.body);
     if (data && typeof req.body.step!='undefined') {
       var msg;
       switch (parseInt(req.body.step)) {
         case 0 :
+          logger.debug('case 0');
           if (data && typeof req.body.index!='undefined') {
             let ids = [req.user._id].concat(req.user.crews);
+            myasync = false;
+            logger.debug("req.user");
+            logger.debug(req.user);
             dataprovider.getPerformanceByIds(req, ids, (err, performances) =>{
+              logger.debug(performances);
+              
               let admitted = {};
               var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
               for (let item in admittedCat) {
@@ -122,10 +131,14 @@ router.post('/', (req, res) => {
                 req.session.call.admitted = admittedA;
               } else {
                 msg = {e:[{name:'index', m:__('Warning: You have no performance eligible for the call selected. Please create a performance and come back.')}]};
+                logger.debug('STOCAZZO 1');
+                logger.debug(msg);
               }
               if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
                 res.json(data);
               } else {
+                logger.debug('STOCAZZO ');
+                logger.debug(msg);
                 res.render('events/participate', {
                   title: data.title,
                   dett: data,
@@ -147,18 +160,6 @@ router.post('/', (req, res) => {
           } else {
             msg = {e:[{name:'accept',m:__('Please accept the terms and conditions to go forward')}]}
           }
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-            res.json(data);
-          } else {
-            res.render('events/participate', {
-              title: data.title,
-              dett: data,
-              call: req.session.call,
-              participateMenu: participateMenu,
-              user: req.user,
-              msg: msg
-            });
-          }
           break;
         case 2 :
           if (data && typeof req.body.performance!='undefined') {
@@ -167,14 +168,6 @@ router.post('/', (req, res) => {
           } else {
             msg = {e:[{name:'accept',m:__('Please select a performance to go forward')}]}
           }
-          res.render('events/participate', {
-            title: data.title,
-            dett: data,
-            call: req.session.call,
-            participateMenu: participateMenu,
-            user: req.user,
-            msg: msg
-          });
           break;
         case 3 :
           if (data && req.body.topics && req.body.topics.length) {
@@ -183,14 +176,6 @@ router.post('/', (req, res) => {
           } else {
             msg = {e:[{name:'accept',m:__('Please select at least 1 topic to go forward')}]}
           }
-          res.render('events/participate', {
-            title: data.title,
-            dett: data,
-            call: req.session.call,
-            participateMenu: participateMenu,
-            user: req.user,
-            msg: msg
-          });
           break;
         case 4 :
           logger.debug('STOCAZZO');  
@@ -222,14 +207,6 @@ router.post('/', (req, res) => {
             msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]};
           }
           logger.debug(req.session.call);  
-          res.render('events/participate', {
-            title: data.title,
-            dett: data,
-            call: req.session.call,
-            participateMenu: participateMenu,
-            user: req.user,
-            msg: msg
-          });
           break;
         case 5 :
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
@@ -242,21 +219,27 @@ router.post('/', (req, res) => {
           } else {
             msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]}
           }
-          res.render('events/participate', {
-            title: data.title,
-            dett: data,
-            call: req.session.call,
-            participateMenu: participateMenu,
-            user: req.user,
-            msg: msg
-          });
           break;
-      }      
+      }
     } else {
-      res.sendStatus(404);
+      msg = {e:[{name:'index', m:__('Unknow error')}]};
     }
-  
-
+    if (myasync) {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        logger.debug('STOCAZZO ');
+        logger.debug(msg);
+        res.render('events/participate', {
+          title: data.title,
+          dett: data,
+          call: req.session.call,
+          participateMenu: participateMenu,
+          user: req.user,
+          msg: msg
+        });
+      }
+    }
   });
 });
 

@@ -17,7 +17,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id, 'stagename slug likes', (err, user) => {
+  User.findById(id, 'stagename slug likes crews', (err, user) => {
     done(err, user);
   });
 });
