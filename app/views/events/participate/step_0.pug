@@ -8,8 +8,9 @@
     - topics.push(dett.organizationsettings.call.calls[a].topics[b].name)
   .row
     .col-md-1
-      .text-right
-        input(type="radio" name="index" value=a checked=call.index==a ? "checked" : undefined)
+      .form-check
+        .text-right
+          input.form-check-input.position-static(type="radio" name="index" value=a checked=call.index==a ? "checked" : undefined)
     .col-md-11
       label
         h4=dett.organizationsettings.call.calls[a].title
