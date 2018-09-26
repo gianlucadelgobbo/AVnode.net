@@ -1296,7 +1296,9 @@ section.performer_news_wrapper {
     padding: 10px;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: -webkit-calc(100% - 30px);
+    width: -moz-calc(100% - 30px);
+    width: calc(100% - 30px);
 }
 
 .gallery_stats {
@@ -1312,6 +1314,15 @@ section.performer_news_wrapper {
     color: $color1;
 }
 
+.gallery_item_info_wrapper_single_gallery {
+    background: $color4;
+    padding: 10px;
+}
+
+.gallery_item_info_wrapper_single_gallery h3 {    
+    margin: 0;
+    line-height: 24px;
+}
 
 
 // ITEM EXTENDED PERFORMER EVENT PAGE
