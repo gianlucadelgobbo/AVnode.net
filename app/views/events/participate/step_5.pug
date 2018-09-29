@@ -1,9 +1,10 @@
 // Packages
 - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
-  - console.log(dett.organizationsettings.call.calls[call.index].packages)
+  - console.log("call.subscriptions")
+  - console.log(call.subscriptions)
   - if (dett.organizationsettings.call.calls[call.index].packages[b].personal)
     - for (var c=0;c<call.subscriptions.length;c++)
-      if call.subscriptions[c].stagename
+      if call.subscriptions[c].subscriber_id
         .row
           .col-md-1
             .checkbox
@@ -27,4 +28,4 @@
           .col-md-3
             .text-right
               h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+global.__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price
-              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+global.__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price_formattednpm
+              h3!=(dett.organizationsettings.call.calls[call.index].packages[b].daily ? " ("+global.__("per day")+")" : "") + " € "+dett.organizationsettings.call.calls[call.index].packages[b].price_formatted

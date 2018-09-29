@@ -66,6 +66,7 @@ router.get('/', (req, res) => {
 
     res.render('events/participate', {
       title: data.title,
+      canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
       dett: data,
       call: req.session.call,
       participateMenu: participateMenu,
@@ -141,6 +142,7 @@ router.post('/', (req, res) => {
                 logger.debug(msg);
                 res.render('events/participate', {
                   title: data.title,
+                  canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
                   dett: data,
                   call: req.session.call,
                   participateMenu: participateMenu,
@@ -229,10 +231,12 @@ router.post('/', (req, res) => {
         res.json(data);
       } else {
         logger.debug('STOCAZZO ');
+        logger.debug(req.session.call.step);
         logger.debug(msg);
         res.render('events/participate', {
           title: data.title,
           dett: data,
+          canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
           call: req.session.call,
           participateMenu: participateMenu,
           user: req.user,

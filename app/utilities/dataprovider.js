@@ -320,7 +320,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
-          canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
+          canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
           data: data,
           section: section,
           path: req.originalUrl,
@@ -382,7 +382,7 @@ dataprovider.list = (req, res, section, model) => {
           title: title,
           section: section,
           jsonld:dataprovider.getJsonld(data, req, title),
-          canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
+          canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
           sort: sorting,
           pages: pages,
           filter: filter,

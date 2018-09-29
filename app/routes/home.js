@@ -105,7 +105,7 @@ router.get('/', (req, res) => {
                     title: __('Welcome to AVnode network'),
                     subtitle: __('AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.'),
                     data: homedata,
-                    canonical: req.protocol + '://' + req.get('host') + req.originalUrl,
+                    canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
                     jsonld: {
                       "@context": "http://schema.org",
                       "@type": "WebSite",
