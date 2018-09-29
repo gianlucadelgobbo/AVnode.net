@@ -47,22 +47,24 @@ div
         b=global.__('Availability')
     .col-md-9
       each subscription in call.subscriptions
-        li
-          b=subscription.stagename
-          ul
-            each day in subscription.days
-              li=day
+        if subscription.subscriber_id
+          li
+            b=subscription.stagename
+            ul
+              each day in subscription.days
+                li=day
   .row
     .col-md-3
       .text-right
         b=global.__('Packages')
     .col-md-9
       each subscription in call.subscriptions
-        li
-          b=subscription.stagename
-          ul
-            each package in subscription.packages
-              li=package
+        if subscription.subscriber_id
+          li
+            b=subscription.stagename
+            ul
+              each package in subscription.packages
+                li=package
 
     
   pre=JSON.stringify(call, null, '\t')

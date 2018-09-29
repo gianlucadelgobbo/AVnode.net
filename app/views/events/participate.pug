@@ -34,7 +34,7 @@ block content
         a.btn.btn-primary(href="/login/?from=/events/"+dett.slug+"/participate/")=global.__("LOGIN")
         a.btn.btn-default(href="/signup/?from=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
       - else
-        form(method="post")
+        form(method="post" action=canonical)
           h2.mb-3=participateMenu[call.step]
           case call.step
             when 0
@@ -46,11 +46,11 @@ block content
             when 3
               include participate/step_3
             when 4
-              //include participate/step_4
+              include participate/step_4
             when 5
-              //include participate/step_5
+              include participate/step_5
             when 6
-              //include participate/step_6
+              include participate/step_6
             default
               include participate/step_0
           input.btn.btn-primary(type="submit" value=global.__("NEXT >>"))

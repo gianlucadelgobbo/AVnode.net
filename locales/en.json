@@ -234,5 +234,13 @@
 	"Type": "Type",
 	"Authors": "Authors",
 	"Please select a performance to go forward": "Please select a performance to go forward",
-	"Please select at least 1 topic to go forward": "Please select at least 1 topic to go forward"
+	"Please select at least 1 topic to go forward": "Please select at least 1 topic to go forward",
+	"Please select at least 1 person to go forward": "Please select at least 1 person to go forward",
+	"Please select at least 1 day for all the people availables to go forward": "Please select at least 1 day for all the people availables to go forward",
+	"for": "for",
+	"requested": "requested",
+	"per day": "per day",
+	"Call": "Call",
+	"Performance Name": "Performance Name",
+	"Reference": "Reference"
 }
