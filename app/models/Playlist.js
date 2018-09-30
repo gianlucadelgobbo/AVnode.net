@@ -129,11 +129,11 @@ playlistSchema.virtual('publicUrl').get(function () {
 
 playlistSchema.pre('remove', function(next) {
   const playlist = this;
-  playlist.model('User').update(
+  playlist.model('User').updateMany(
     { $pull: { playlists: playlist._id } },
     next
   );
-  playlist.model('Crew').update(
+  playlist.model('Crew').updateMany(
     { $pull: { playlists: playlist._id } },
     next
   );

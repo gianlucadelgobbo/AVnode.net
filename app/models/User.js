@@ -168,7 +168,7 @@ userSchema.virtual('crews', {
 /* BL FIXME later for crews
 userSchema.pre('remove', function(next) {
   const crew = this;
-  crew.model('User').update(
+  crew.model('User').updateMany(
     { $pull: { crews: crew._id } },
     next
   );

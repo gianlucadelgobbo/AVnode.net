@@ -196,11 +196,11 @@ performanceSchema.virtual('publicUrl').get(function () {
 */
 performanceSchema.pre('remove', function(next) {
   const performance = this;
-  performance.model('User').update(
+  performance.model('User').updateMany(
     { $pull: { performances: performance._id } },
     next
   );
-  performance.model('Crew').update(
+  performance.model('Crew').updateMany(
     { $pull: { performances: performance._id } },
     next
   );

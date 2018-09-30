@@ -456,7 +456,7 @@ eventSchema.virtual('dateFormatted').get(function () {
 
 eventSchema.pre('remove',function(next) {
   const event = this;
-  event.model('UserShow').update(
+  event.model('UserShow').updateMany(
     { $pull: { events: event._id } },
     next
   );

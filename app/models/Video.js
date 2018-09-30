@@ -137,11 +137,11 @@ videoSchema.virtual('publicUrl').get(function () {
 
 videoSchema.pre('remove', function(next) {
   const video = this;
-  video.model('User').update(
+  video.model('User').updateMany(
     { $pull: { videos: video._id } },
     next
   );
-  video.model('Crew').update(
+  video.model('Crew').updateMany(
     { $pull: { videos: video._id } },
     next
   );
