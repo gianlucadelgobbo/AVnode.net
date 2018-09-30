@@ -46,15 +46,17 @@ dataprovider.getJsonld = (data, req, title) => {
   if (data.stagename) {
     if (data.is_crew) {
       jsonld["@type"] = "PerformingGroup";
-      jsonld.member = [];
-      for(let a=0;a<data.members.length;a++) {
-        jsonld.member.push({
-          '@type': 'OrganizationRole', 
-          "member": {
-            "@type": "Person",
-            "name": data.members[a].stagename
-          }
-        });
+      if (data.members.length) {
+        jsonld.member = [];
+        for(let a=0;a<data.members.length;a++) {
+          jsonld.member.push({
+            '@type': 'OrganizationRole', 
+            "member": {
+              "@type": "Person",
+              "name": data.members[a].stagename
+            }
+          });
+        }
       }
     } else {
       jsonld["@type"] = "Person";
@@ -67,9 +69,11 @@ dataprovider.getJsonld = (data, req, title) => {
       if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
       if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
     }
-    jsonld.address = {
-      "@type": "PostalAddress",
-      "addressLocality": data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
+    if (data.addressesFormatted) {
+      jsonld.address = {
+        "@type": "PostalAddress",
+        "addressLocality": data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
+      }  
     }
     /*
     if(data.crews && data.crews.length) {
