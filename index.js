@@ -3,6 +3,8 @@ const app = require('./server');
 const mongoose = require('./app/utilities/mongoose');
 
 const options = {
+  useCreateIndex: true,
+  useNewUrlParser: true
   //useMongoClient: true
 };
 
