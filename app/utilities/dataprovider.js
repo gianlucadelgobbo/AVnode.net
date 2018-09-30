@@ -46,7 +46,7 @@ dataprovider.getJsonld = (data, req, title) => {
   if (data.stagename) {
     if (data.is_crew) {
       jsonld["@type"] = "PerformingGroup";
-      if (data.members.length) {
+      if (data.members && data.members.length) {
         jsonld.member = [];
         for(let a=0;a<data.members.length;a++) {
           jsonld.member.push({
