@@ -130,11 +130,11 @@ footageSchema.virtual('publicUrl').get(function () {
 
 footageSchema.pre('remove', function(next) {
   const footage = this;
-  footage.model('User').update(
+  footage.model('User').updateMany(
     { $pull: { footage: footage._id } },
     next
   );
-  footage.model('Crew').update(
+  footage.model('Crew').updateMany(
     { $pull: { footage: footage._id } },
     next
   );

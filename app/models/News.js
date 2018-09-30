@@ -162,11 +162,11 @@ newsSchema.virtual('publicUrl').get(function () {
 */
 newsSchema.pre('remove', function(next) {
   const news = this;
-  news.model('User').update(
+  news.model('User').updateMany(
     { $pull: { news: news._id } },
     next
   );
-  news.model('Crew').update(
+  news.model('Crew').updateMany(
     { $pull: { news: news._id } },
     next
   );

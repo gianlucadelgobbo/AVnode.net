@@ -205,7 +205,7 @@ dataprovider.getJsonld = (data, req, title) => {
 };
 
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
-  model.count(query, function(error, total) {
+  model.countDocuments(query, function(error, total) {
     model.find(query)
     .populate(populate)
     .select(select)

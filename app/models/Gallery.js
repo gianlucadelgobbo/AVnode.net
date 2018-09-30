@@ -98,23 +98,23 @@ gallerySchema.virtual('publicUrl').get(function () {
 
 gallerySchema.pre('remove', function (next) {
   const gallery = this;
-  gallery.model('User').update(
+  gallery.model('User').updateMany(
         { $pull: { galleries: gallery._id } },
         next
     );
-  /*gallery.model('Crew').update(
+  /*gallery.model('Crew').updateMany(
         { $pull: { galleries: gallery._id } },
         next
   );*/
-  gallery.model('Event').update(
+  gallery.model('Event').updateMany(
         { $pull: { galleries: gallery._id } },
         next
     );
-  gallery.model('Performance').update(
+  gallery.model('Performance').updateMany(
         { $pull: { galleries: gallery._id } },
         next
     );
-  gallery.model('User').update(
+  gallery.model('User').updateMany(
         { $pull: { galleries: gallery._id } },
         next
     );
