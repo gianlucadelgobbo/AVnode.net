@@ -7,7 +7,7 @@ import {showModal} from "../../modal/actions";
 import Loading from '../../loading'
 import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel} from "../selectors";
+import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {MODAL_SAVED} from "../../modal/constants";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
@@ -34,7 +34,9 @@ class ProfilePassword extends Component {
 
         model.oldpassword = values.oldpassword;
 
-        model.password = values.password;
+        model.newpassword = values.password;
+
+        model.newpasswordconfirm = values.confirmPassword;
 
         return model;
     }
@@ -58,8 +60,6 @@ class ProfilePassword extends Component {
 
         // Add auth user _id
         modelToSave._id = model._id;
-
-        console.log("on submit", modelToSave)
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
@@ -111,8 +111,8 @@ class ProfilePassword extends Component {
 
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+    isFetching: getDefaultModelIsFetching(state),
+    errorMessage: getDefaultModelErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
