@@ -579,6 +579,7 @@ export const multiInputEmailWithDetails = ({
         // Get all the 'already rendered' email
         const alreadyRenderedEmailsFromFields = fields.getAll().slice(0, index).map(f => f.email);
         const showAdditionalInfo = (modelEmails.indexOf(email) > -1) && (alreadyRenderedEmailsFromFields.indexOf(email) === -1);
+        const showCheckbox = is_confirmed;
 
         return (
             <div
@@ -597,15 +598,15 @@ export const multiInputEmailWithDetails = ({
 
                     {showAdditionalInfo && <div className="col-md-5">
                         <div className="row">
-                            <div className="col-md-4">
+                            {showCheckbox && <div className="col-md-4">
                                 <Field
                                     name={`${member}.is_public`}
                                     component={checkboxField}
                                     placeholder={<div>Is public</div>}
                                     isChild={true}
                                 />
-                            </div>
-                            <div className="col-md-4">
+                            </div>}
+                            {showCheckbox && <div className="col-md-4">
                                 <Field
                                     disabled={!is_confirmed}
                                     name={`${member}.is_primary`}
@@ -618,8 +619,8 @@ export const multiInputEmailWithDetails = ({
                                     }
                                     isChild={true}
                                 />
-                            </div>
-                            <div className="col-md-4">
+                            </div>}
+                           <div className="col-md-4">
                                 {is_confirmed ? (
                                     <div className="form-group">
                                         <span className="badge badge-success">Is confirmed</span>
@@ -658,7 +659,7 @@ export const multiInputEmailWithDetails = ({
 
                 </div>
 
-                {showAdditionalInfo && <div className="row">
+                {showAdditionalInfo && showCheckbox && <div className="row">
                     <div className="col-md-5 offset-1 email-subscriptions">
                         <FormattedMessage id={SUBSCRIPTIONS}/>
                     </div>
@@ -699,6 +700,7 @@ export const multiInputEmailWithDetails = ({
                         </div>
                     </div>
                 </div>}
+
                 <hr/>
             </div>
         );

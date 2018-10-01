@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from "redux";
 import LateralMenu from '../lateralMenu'
 import {showModal} from "../../modal/actions";
-import {getDefaultModel} from "../selectors";
+import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import ImageForm from '../../image';
@@ -47,8 +47,8 @@ class ProfileImage extends Component {
 
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
-    isFetching: getIsFetching(state),
-    errorMessage: getErrorMessage(state),
+    isFetching: getDefaultModelIsFetching(state),
+    errorMessage: getDefaultModelErrorMessage(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
