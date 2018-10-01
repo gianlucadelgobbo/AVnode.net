@@ -3,20 +3,35 @@ import {reduxForm, Field} from "redux-form";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {FORM_NAME} from './constants';
-import {userAutocompleteSelect, renderList} from "../../../common/form/components";
+import {userAutocompleteSelect} from "../../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
+import {saveModel} from "../../../crews/members/actions";
 
-class AddPartnerForm extends Component {
+class AddMembersForm extends Component {
 
-    submitForm(data) {
-        const {onSubmit, reset} = this.props;
+    createModelToSave(values){
+         //clone obj
+         let model = Object.assign({}, values);
 
-        // reset form after submit
-        return onSubmit(data)
-            .then(() => {
-                reset();
-            });
+         model = model.members;
+
+         return model;
+    }
+
+    submitForm(values) {
+        const {saveModel} = this.props;
+        const modelToSave = this.createModelToSave(values);
+        return saveModel(modelToSave)
+        .then((model) => {
+            if(model && model.id){
+                showModal({
+                    type: MODAL_SAVED
+                });
+            }
+        });
+
+       
     }
 
     render() {
@@ -54,20 +69,20 @@ class AddPartnerForm extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({saveModel}, dispatch);
 
-AddPartnerForm = connect(
+AddMembersForm = connect(
     mapStateToProps,
     mapDispatchToProps
-)(AddPartnerForm);
+)(AddMembersForm);
 
-AddPartnerForm = reduxForm({
+AddMembersForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
     asyncValidate,
     //asyncBlurFields: ['slug', 'addresses']
-})(AddPartnerForm);
+})(AddMembersForm);
 
-export default AddPartnerForm;
+export default AddMembersForm;

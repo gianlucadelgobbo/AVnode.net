@@ -619,7 +619,7 @@ export const fetchCrewMembers = ({id}) => {
 };
 
 export const saveCrewMembers = (model) => {
-    return axios.get(`crews/${model._id}/members`, model)
+    return axios.post(`crews/${model._id}/members`, model)
         .then(result => {
             return result.data;
         });
