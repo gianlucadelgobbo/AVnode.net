@@ -5,7 +5,7 @@ import {getModel} from '../selectors'
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../../modal/constants";
-import {saveModel} from '../actions'
+import {saveModel} from '../members/actions'
 
 class AddCrew extends Component {
 
