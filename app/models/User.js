@@ -1,5 +1,3 @@
-
-
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
