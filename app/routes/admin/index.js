@@ -3,6 +3,7 @@ const config = require('getconfig');
 
 const get = require('./api/get');
 const put = require('./api/put');
+const post = require('./api/post');
 const upload = require('./api/upload');
 
 const logger = require('../../utilities/logger');
@@ -58,6 +59,10 @@ router.put('/api/:sez/:id/:form/', (req, res) => {
   } else {
     put.putData(req, res);
   }
+});
+
+router.post('/api/:sez/new/', (req, res) => {
+  post.postData(req, res);
 });
 
 router.get('/api/countries', (req, res) => {
