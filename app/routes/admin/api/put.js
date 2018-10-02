@@ -33,25 +33,14 @@ router.putData = (req, res) => {
           logger.debug('select');
           logger.debug(select);
           for (const item in select) if(req.body[item]) {
-            logger.debug(item);
-            if (item === "password" && data.password && (req.body.oldpassword || req.body.oldpassword === "")) {
-              logger.debug('STOCAZZO'+item);
-              put.newpassword = req.body.password;
-              put.oldpassword = req.body.oldpassword;
-              /* data.oldpassword = put.oldpassword;
-              data.newpassword = put.newpassword; */
-              data.set("oldpassword", put.oldpassword, {strict: false});
-              data.set("newpassword", put.newpassword), {strict: false};
-            } else {
-              put[item] = req.body[item];
-            }
+            put[item] = req.body[item];
           }
-          logger.debug('put');
+          logger.debug('putputputputputput');
           logger.debug(put);
-          logger.debug('Data');
+          logger.debug('DataDataDataDataDataData');
           logger.debug(data);
           Object.assign(data, put);
-          logger.debug('putData');
+          logger.debug('putDataputDataputDataputDataputDataputData');
           logger.debug(data);
           data.save((err) => {
             if (err) {
