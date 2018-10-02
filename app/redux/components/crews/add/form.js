@@ -18,10 +18,17 @@ class AddCrewForm extends Component {
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
-                    name="name"
+                    name="stagename"
                     component={inputText}
                     placeholder="Name"
                 />
+
+                <Field
+                    name="slug"
+                    component={inputText}
+                    placeholder="Slug"
+                />
+
 
                 <hr/>
 
