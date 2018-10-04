@@ -31,9 +31,8 @@ export const autocompleteComponent  = ({inputProps, suggestions, placeholder, ge
     const label = <div className="labelField">{placeholder}</div>;
 
     const field = (
-        <div className="form-group">
+        <div>
             <Autosuggest
-                className="form-control"
                 suggestions={suggestions}
                 onSuggestionsFetchRequested={onSuggestionsFetchRequested}
                 onSuggestionsClearRequested={onSuggestionsClearRequested}

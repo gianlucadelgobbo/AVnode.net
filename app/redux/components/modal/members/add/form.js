@@ -7,34 +7,7 @@ import {autocompleteComponent} from "../../../common/form/components";
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 import {saveModel} from "../../../crews/members/actions";
-
-const members = [
-    {
-        name: 'John',
-        year: 1972
-    },
-    {
-        name: 'Daniele',
-        year: 2012
-    },
-    {
-        name: 'Marco',
-        year: 1972
-    },
-    {
-        name: 'Luca',
-        year: 2012
-    }
-  ];
-
-const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-  
-    return inputLength === 0 ? [] : members.filter(member =>
-        member.name.toLowerCase().slice(0, inputLength) === inputValue
-    );
-  };
+import axios from '../../../../conf/axios';
   
   const getSuggestionValue = suggestion => suggestion.name;
   
@@ -62,10 +35,10 @@ class AddMembersForm extends Component {
     };
 
     onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-        suggestions: getSuggestions(value)
-        });
-    };
+    return axios.get(`https://swapi.co/api/people/?search=${value}`)
+        .then(response => response.data)
+        .then(data => this.setState({ suggestions: data.results }))
+    }
 
     onSuggestionsClearRequested = () => {
         this.setState({
