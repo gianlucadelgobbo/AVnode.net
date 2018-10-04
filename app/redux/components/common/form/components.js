@@ -17,6 +17,7 @@ import "react-phone-number-input/rrui.css";
 import "react-phone-number-input/style.css";
 import Phone from "react-phone-number-input";
 import Reorder from "../../reorder";
+import Autosuggest from 'react-autosuggest';
 import {fetchPerformancesForSelect, fetchUserForSelect} from "../../../api";
 import {createMultiLanguageInitialObject} from "../../common/form";
 import {DATE_FORMAT} from "../../../conf";
@@ -24,6 +25,32 @@ import {WithContext as ReactTags} from "react-tag-input";
 import {Collapse} from "react-collapse";
 import {FormattedMessage} from "react-intl";
 import {FILE_UPLOAD, SUBSCRIPTIONS} from "../../common/form/labels";
+
+export const autocompleteComponent  = ({inputProps, suggestions, placeholder, getSuggestionValue, renderSuggestion, onSuggestionsFetchRequested, onSuggestionsClearRequested}) => {
+
+    const label = <div className="labelField">{placeholder}</div>;
+
+    const field = (
+        <div className="form-group">
+            <Autosuggest
+                className="form-control"
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps}
+            />
+        </div>
+    );
+
+    return (
+        <dl className="row">
+            <dt className="col-sm-2">{label}</dt>
+            <dd className="col-sm-10"> {field} </dd>
+        </dl>
+    )
+}
 
 export const googleAutocompleteSelect = ({
                                              input,
