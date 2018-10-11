@@ -702,7 +702,7 @@ export const multiInputEmailWithDetails = ({
 
         {showAdditionalInfo && (
           <div className="row">
-            <div className="col-sm-12 email-subscriptions">
+            <div className="col-sm-11 offset-1 email-subscriptions">
               <FormattedMessage id={SUBSCRIPTIONS} />
 
               <div className="row">

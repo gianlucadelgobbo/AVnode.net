@@ -1,4 +1,4 @@
-import {fetchSlug} from '../../../api';
+//import {fetchSlug} from '../../../api';
 import {geocodeByAddress} from "react-places-autocomplete";
 import moment from 'moment';
 import validatorsObj from '../../../../utilities/validators.js';
@@ -8,7 +8,7 @@ import {REQUIRED, SLUG_IS_TAKEN, SLUG_REQUIRED, NOT_ALLOWED, INVALID_CITY, INVAL
 
 const validators = validatorsObj.validators;
 
-export const validateSlug = ({value, previousValue, promises, result, index, errorArray}) => {
+export const validateSlug = ({value, previousValue, promises, result, index, errorArray, fetchSlug}) => {
     // slug
     let slugFromValues = value;
     if (slugFromValues !== previousValue) {
