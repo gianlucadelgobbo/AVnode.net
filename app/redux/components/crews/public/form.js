@@ -10,6 +10,7 @@ import {
 import validate from './validate';
 import {CREW_NAME, CREW_URL, ABOUT, WEB, SOCIAL} from "../../common/form/labels";
 import {injectIntl} from 'react-intl';
+import asyncValidate from './asyncValidate';
 
 class CrewPublicForm extends Component {
 
@@ -93,7 +94,9 @@ CrewPublicForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
-    validate
+    validate, 
+    asyncValidate,
+    asyncBlurFields: ['slug']
 })(CrewPublicForm);
 
 CrewPublicForm = injectIntl(CrewPublicForm);

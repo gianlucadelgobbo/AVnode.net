@@ -3,6 +3,7 @@ import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {inputText} from "../../common/form/components";
 import validate from './validate';
+import asyncValidate from './asyncValidate';
 
 class AddCrewForm extends Component {
 
@@ -51,4 +52,6 @@ export default reduxForm({
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
     validate,
+    asyncValidate,
+    asyncBlurFields: ['slug']
 })(AddCrewForm);

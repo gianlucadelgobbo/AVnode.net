@@ -507,7 +507,7 @@ export const saveCrewPublic = model => {
   });
 };
 
-/*
+
 export const fetchSlugCrew = () => {
     return new Promise(fulfil => {
 
@@ -519,7 +519,6 @@ export const fetchSlugCrew = () => {
         fulfil(obj);
     })
 }
-*/
 
 // - images
 
