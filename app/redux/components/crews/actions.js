@@ -15,7 +15,7 @@ export const fetchList = () => generateFetchList({
     request: api.fetchCrews,
 });
 
-export const removeModel = ({id}) => () => generateRemoveModel({
+export const removeModel = ({id}) => generateRemoveModel({
     selectors,
     constants,
     schema: crew,
@@ -23,7 +23,7 @@ export const removeModel = ({id}) => () => generateRemoveModel({
     id
 });
 
-export const saveModel = (model) => () => generateSaveModel({
+export const saveModel = (model) => generateSaveModel({
     selectors,
     constants,
     schema: crew,

@@ -459,7 +459,7 @@ export const removeCrew = ({id}) => {
     });
 };
 
-export const postCrew = obj => axios.post(`crews/`, obj)
+export const postCrew = obj => axios.post(`crews/new/`, obj)
 
 // - public
 
