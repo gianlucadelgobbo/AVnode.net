@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants'
-import {inputText} from "../../common/form/components";
+import {inputText, renderDropzoneInput} from "../../common/form/components";
 import validate from './validate';
 
 class AddFootageForm extends Component {
@@ -22,7 +22,14 @@ class AddFootageForm extends Component {
                     component={inputText}
                     placeholder="Title"
                 />
-        
+
+                <br/>
+
+                <Field
+                    name="images"
+                    component={renderDropzoneInput}
+                    placeholder="Videos"
+                />
 
                 <hr/>
 
