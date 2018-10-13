@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Form from './form'
 import {connect} from 'react-redux'
 import {getModel} from '../selectors'
@@ -35,10 +35,12 @@ class AddCrew extends Component {
         const {showModal, saveModel} = this.props;
         const modelToSave = this.createModelToSave(values);
 
+        console.log(saveModel,saveModel.then)
+
         //dispatch the action to save the model here
         return saveModel(modelToSave)
             .then((model) => {
-                if(model && model.id){
+                if (model && model.id) {
                     showModal({
                         type: MODAL_SAVED
                     });

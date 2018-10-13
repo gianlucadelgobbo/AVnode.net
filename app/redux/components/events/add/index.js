@@ -35,6 +35,8 @@ class AddEvent extends Component {
         const {showModal, saveModel} = this.props;
         const modelToSave = this.createModelToSave(values);
 
+        console.log("add saveModel",saveModel)
+
         //dispatch the action to save the model here
         return saveModel(modelToSave)
             .then(() => {
