@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import Form from './form'
 import {connect} from 'react-redux'
-import {getModel} from '../selectors'
+import {getModel, getModelIsFetching, getModelErrorMessage} from '../selectors'
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import {MODAL_SAVED} from "../../modal/constants";
-import {saveModel} from '../actions'
+import {saveModel} from '../actions';
+import Loading from "../../loading";
+import ErrorMessage from "../../errorMessage";
+import ItemNotFound from "../../itemNotFound";
 
 class AddCrew extends Component {
 
@@ -36,6 +39,7 @@ class AddCrew extends Component {
         const modelToSave = this.createModelToSave(values);
 
         console.log(saveModel,saveModel.then)
+        modelToSave.id = "1";
 
         //dispatch the action to save the model here
         return saveModel(modelToSave)
@@ -50,12 +54,15 @@ class AddCrew extends Component {
 
     render() {
 
-        const {showModal} = this.props;
+        const { showModal, errorMessage } = this.props;
 
         return (
 
             <div className="row">
                 <div className="col-md-12">
+
+                    {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+
                     <Form
                         initialValues={this.getInitialValues()}
                         onSubmit={this.onSubmit.bind(this)}
@@ -69,8 +76,9 @@ class AddCrew extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    model: getModel(state)
+const mapStateToProps = (state, _id) => ({
+    model: getModel(state),
+    errorMessage: getModelErrorMessage(state,  (_id = "1"))
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
