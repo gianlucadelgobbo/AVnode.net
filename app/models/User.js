@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
 const indexPlugin = require('../utilities/elasticsearch/User');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const MediaImage = require('./shared/MediaImage');
 const About = require('./shared/About');
@@ -74,7 +75,7 @@ const userSchema = new Schema({
     sparse: true,
     validate : [{
       validator : function(array) {
-        let confirmed_exists = false;
+        let confirmed_exists = this.is_crew;
         for (let a=0; a<array.length ;a++) {
           if (array[a].is_confirmed) confirmed_exists = array[a].is_confirmed;
         }
@@ -82,7 +83,7 @@ const userSchema = new Schema({
       }, msg: 'EMAILS_NO_CONFIRMED'
     },{
       validator : function(array) {
-        let primary_exists = false;
+        let primary_exists = this.is_crew;
         for (let a=0; a<array.length ;a++) {
           if (array[a].is_primary) primary_exists = array[a].is_primary;
         }
@@ -314,6 +315,7 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
 };
 
 userSchema.plugin(indexPlugin());
+userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model('User', userSchema);
 

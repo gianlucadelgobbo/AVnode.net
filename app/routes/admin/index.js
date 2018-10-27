@@ -42,6 +42,10 @@ router.get('/api/profile/emails/verify/:email', (req, res)=>{
   get.sendEmailVericaition(req, res);
 });
 
+router.get('/api/:sez/new/slugs/:slug', (req, res)=>{
+  get.getSlug(req, res);
+});
+
 router.get('/api/:sez/:id/public/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
