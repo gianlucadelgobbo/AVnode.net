@@ -477,6 +477,7 @@
             "stagename": 1
           },
           "selectaddon": {
+            "is_crew": true
           },
           "populate": []
         },
