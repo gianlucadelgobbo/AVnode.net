@@ -465,7 +465,11 @@ export const removeCrew = ({ id }) => {
   });
 };
 
-export const postCrew = obj => axios.post(`crews/new/`, obj);
+export const postCrew = obj => {
+  return axios.post(`crews/new/`, obj).then(result => {
+    return result.data;
+  });
+};
 
 // - public
 
