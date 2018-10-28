@@ -15,8 +15,7 @@ import {
   INVALID_IMAGE_SIZE,
   INVALID_STRING_MIN_MAX
 } from "./errors";
-import { fetchSlug } from "../../../api";
-import { fetchSlugCrew } from "../../../api";
+import { fetchSlug, fetchSlugCrew, fetchSlugNewCrew } from "../../../api";
 
 const validators = validatorsObj.validators;
 
@@ -60,6 +59,32 @@ export const validateSlugWithID = ({
   if (slugFromValues !== previousValue) {
     promises.push(
       fetchSlugCrew(id, slugFromValues)
+        .then(response => {
+          if (response.exist) {
+            Object.assign(result, { slug: SLUG_IS_TAKEN });
+            if (Array.isArray(errorArray)) {
+              errorArray[index] = result;
+            }
+          }
+        })
+        .catch()
+    );
+  }
+};
+
+export const validateSlugNewCrew = ({
+  value,
+  previousValue,
+  promises,
+  result,
+  index,
+  errorArray
+}) => {
+  // slug
+  let slugFromValues = value;
+  if (slugFromValues !== previousValue) {
+    promises.push(
+      fetchSlugNewCrew(slugFromValues)
         .then(response => {
           if (response.exist) {
             Object.assign(result, { slug: SLUG_IS_TAKEN });
