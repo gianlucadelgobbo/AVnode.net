@@ -500,6 +500,12 @@ export const fetchSlugCrew = ({ id }, slug) => {
   });
 };
 
+export const fetchSlugNewCrew = slug => {
+  return axios.get(`crews/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+
 // - images
 
 export const fetchCrewImages = ({ id }) => {
