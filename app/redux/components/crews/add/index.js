@@ -6,7 +6,7 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../selectors";
-import { showModal } from "../../modal/actions";
+import { showModal, hideModal } from "../../modal/actions";
 import { bindActionCreators } from "redux";
 import { MODAL_SAVED } from "../../modal/constants";
 import { fetchList, saveModel } from "../actions";
@@ -37,7 +37,7 @@ class AddCrew extends Component {
   }
 
   onSubmit(values) {
-    const { showModal, saveModel, fetchList } = this.props;
+    const { saveModel, fetchList, hideModal } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     console.log(saveModel, saveModel.then);
@@ -46,10 +46,8 @@ class AddCrew extends Component {
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(model => {
       if (model && model.id) {
-        showModal({
-          type: MODAL_SAVED
-        });
         fetchList();
+        hideModal();
       }
     });
   }
@@ -83,6 +81,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       showModal,
+      hideModal,
       saveModel,
       fetchList
     },
