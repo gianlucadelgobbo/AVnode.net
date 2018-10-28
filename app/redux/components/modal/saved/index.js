@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class SavedForm extends Component {
+  render() {
+    const { onAdd } = this.props;
 
-    render() {
-        return (<div>
-            Saved!
-        </div>);
-    }
+    return <div>Saved!</div>;
+  }
 }
 
 export default SavedForm;

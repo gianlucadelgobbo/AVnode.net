@@ -465,7 +465,11 @@ export const removeCrew = ({ id }) => {
   });
 };
 
-export const postCrew = obj => axios.post(`crews/new/`, obj);
+export const postCrew = obj => {
+  return axios.post(`crews/new/`, obj).then(result => {
+    return result.data;
+  });
+};
 
 // - public
 
@@ -496,6 +500,12 @@ export const fetchSlugCrew = () => {
 
 export const fetchSlugCrew = ({ id }, slug) => {
   return axios.get(`crews/${id}/public/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+
+export const fetchSlugNewCrew = slug => {
+  return axios.get(`crews/new/slugs/${slug}`).then(result => {
     return result.data;
   });
 };
