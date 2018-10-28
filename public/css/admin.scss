@@ -14,8 +14,8 @@ $gray-lightest: #f8f8f8;
 
 $input-color-placeholder: $gray-light;
 
-.marginBottom{
-  margin-bottom:5px;
+.marginBottom {
+  margin-bottom: 5px;
 }
 
 #app {
@@ -27,7 +27,9 @@ $input-color-placeholder: $gray-light;
     background-color: $gray-lighter;
     margin-bottom: $jumbotron-padding;
   }
-  h3{color: $gray-dark}
+  h3 {
+    color: $gray-dark;
+  }
   #account-nav {
     .nav-link {
       background-color: $gray-lighter;
@@ -37,7 +39,7 @@ $input-color-placeholder: $gray-light;
       &.active {
         background-color: $gray-lightest;
       }
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
     }
   }
   #account-sidenav {
@@ -49,7 +51,7 @@ $input-color-placeholder: $gray-light;
       &.active {
         background-color: $gray-lightest;
       }
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
     }
   }
   fieldset {
@@ -60,8 +62,8 @@ $input-color-placeholder: $gray-light;
   }
   label {
     color: $gray-light;
-    margin-bottom: .2rem;
-    font-size: .8rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
   }
   .list-group-item {
     background-color: transparent;
@@ -72,11 +74,11 @@ $input-color-placeholder: $gray-light;
   position: fixed;
   left: 0;
   bottom: -4rem;
-  background-color: rgba($gray-dark, .9);
+  background-color: rgba($gray-dark, 0.9);
   width: 100%;
   height: 4rem;
-  padding: .5rem;
-  transition: top .5s ease;
+  padding: 0.5rem;
+  transition: top 0.5s ease;
   &.active {
     bottom: 0;
   }
@@ -96,12 +98,12 @@ $input-color-placeholder: $gray-light;
 .teaser {
   border-radius: 3px;
   display: inline-block;
-  background-color: rgba($white, .7);
+  background-color: rgba($white, 0.7);
   padding: 1rem 3rem;
   margin: 3rem 0 3rem 3rem;
 }
 
-.input-error span{
+.input-error span {
   border: none;
   font-weight: 700;
   color: #700;
@@ -118,52 +120,55 @@ $input-color-placeholder: $gray-light;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: '\F06A';
+  content: "\F06A";
   margin-right: 5px;
   margin-left: 5px;
 }
 
-  .tabparent{
-    ul{
-      li{
-        a{
-          margin-right: 10px;
-        }
+.tabparent {
+  ul {
+    li {
+      a {
+        margin-right: 10px;
       }
     }
   }
+}
 .deleteicon i {
-  color:#a7a7a7;
+  color: #a7a7a7;
   padding: 5px;
   float: right;
 }
 
 .fade {
   opacity: 1;
-  transition: opacity 0.15s linear; 
+  transition: opacity 0.15s linear;
 }
 .fade.show {
-  opacity: 1; 
+  opacity: 1;
 }
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
   color: #555;
   cursor: default;
   background-color: #fff;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
 }
-.nav>li>a {
+.nav > li > a {
   position: relative;
   display: block;
-  padding: 5px 15px;}
-.tab-content > .active{
+  padding: 5px 15px;
+}
+.tab-content > .active {
   background-color: #fff;
   padding: 10px;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
-.nav-tabs>li {
+.nav-tabs > li {
   float: left;
   margin-bottom: -1px;
 }
@@ -178,54 +183,55 @@ textarea#styled {
   height: 300px;
   border: none;
 }
-.input-group-btn:not(:first-child)>.btn, .input-group-btn:not(:first-child)>.btn-group{
-  margin-left:0;
+.input-group-btn:not(:first-child) > .btn,
+.input-group-btn:not(:first-child) > .btn-group {
+  margin-left: 0;
 }
-.input-group .form-control{
-  z-index:auto;
+.input-group .form-control {
+  z-index: auto;
 }
 .modal-close i {
-  position:absolute;
-  top:0;
-  right:0;
-  padding:5px;
-  cursor:pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  cursor: pointer;
 }
 .modal-backdrop.in {
-  opacity:0.5;
+  opacity: 0.5;
 }
-.modal-dialog{
-  margin-top:10%;
+.modal-dialog {
+  margin-top: 10%;
 }
 .modal-title {
   color: #0f8845;
-  margin:0 auto;
+  margin: 0 auto;
 }
-.modal-body h4{
-  text-align:center;
+.modal-body h4 {
+  text-align: center;
   color: #0f8845;
 }
-.publicUrl{
+.publicUrl {
   color: #545454;
   font-style: italic;
   font-size: 14px;
   padding: 5px;
 }
-.labelField{
+.labelField {
   color: #636c72;
   font-weight: 600;
 }
-.labelFieldUpload{
+.labelFieldUpload {
   color: #636c72;
   font-weight: 400;
   padding-top: 5px;
-  cursor:pointer;
+  cursor: pointer;
   font-style: italic;
 }
-.card-header h4{
-  display:inline-block;
+.card-header h4 {
+  display: inline-block;
 }
-.checkbox-list{
+.checkbox-list {
   margin-left: 10px;
 }
 .checkbox-list label {
@@ -239,14 +245,14 @@ textarea#styled {
   padding-left: 10px;
   text-transform: capitalize;
 }
-#PlacesAutocomplete__autocomplete-container{
-  z-index:999;
+#PlacesAutocomplete__autocomplete-container {
+  z-index: 999;
 }
-.attached-file > li{
-  color:#636c72;
+.attached-file > li {
+  color: #636c72;
 }
-.enableBorder{
-  border: 1px solid rgba(0,0,0,0.15);
+.enableBorder {
+  border: 1px solid rgba(0, 0, 0, 0.15);
   padding: 10px;
 }
 .CrewTable a img {
@@ -277,16 +283,16 @@ textarea#styled {
 .rt-resizable-header-content {
   color: #333;
 }
-.rt-resizable-header-content span i{
+.rt-resizable-header-content span i {
   padding-left: 10px;
 }
-footer{
+footer {
   margin-top: 40px;
 }
-.titleComponent{
+.titleComponent {
   margin-bottom: 20px;
 }
-.titleComponent h2{
+.titleComponent h2 {
   color: #636c72;
   font-weight: 600;
 }
@@ -299,7 +305,7 @@ footer{
 }
 .PerformanceTable a p:hover {
   text-decoration: underline;
-  color:#0f8fcf;
+  color: #0f8fcf;
 }
 .CrewTable a p {
   text-transform: inherit;
@@ -309,8 +315,7 @@ footer{
   padding: 5px;
 }
 .CrewTable a p:hover {
-  text-decoration: underline;
-  color:#0f8fcf;
+  color: #0f8fcf;
 }
 .EventTable a p {
   text-transform: inherit;
@@ -321,7 +326,7 @@ footer{
 }
 .EventTable a p:hover {
   text-decoration: underline;
-  color:#0f8fcf;
+  color: #0f8fcf;
 }
 .FootageTable a p {
   text-transform: inherit;
@@ -332,13 +337,13 @@ footer{
 }
 .FootageTable a p:hover {
   text-decoration: underline;
-  color:#0f8fcf;
+  color: #0f8fcf;
 }
 .Novideo {
   font-size: 24px;
   color: #333;
 }
-.memberTitle p{
+.memberTitle p {
   color: #333;
   text-align: left;
   margin: 0;
@@ -347,10 +352,10 @@ footer{
   margin-left: 10px;
 }
 
-.rt-resizable-header-content{
+.rt-resizable-header-content {
   font-size: 18px;
 }
-.user-list{
+.user-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -362,7 +367,7 @@ footer{
   border-bottom: 1px solid #ddd;
 }
 
-div.ReactTags__selected span.ReactTags__tag{
+div.ReactTags__selected span.ReactTags__tag {
   border: 1px solid #ddd;
   background: #eee;
   font-size: 12px;
@@ -370,14 +375,15 @@ div.ReactTags__selected span.ReactTags__tag{
   padding: 5px;
   margin: 0 5px;
   border-radius: 2px;
-  color:#333;
+  color: #333;
 }
 div.ReactTags__tagInput {
   width: 200px;
   border-radius: 2px;
   display: inline-block;
 }
-div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+div.ReactTags__tagInput input.ReactTags__tagInputField,
+div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
   height: 31px;
   margin: 0;
   font-size: 12px;
@@ -393,63 +399,64 @@ div.ReactTags__selected a.ReactTags__remove {
   margin-left: 5px;
   cursor: pointer;
 }
-.ReactTags__remove:hover{
+.ReactTags__remove:hover {
   color: #333;
 }
-.image-preview{
-  cursor:pointer;
+.image-preview {
+  cursor: pointer;
   -webkit-filter: grayscale(100%);
-	filter: grayscale(100%);
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
+  filter: grayscale(100%);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
-.image-preview:hover{
- -webkit-filter: grayscale(0);
-	filter: grayscale(0);
+.image-preview:hover {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
 }
-.autocomplete-dropdown-container{
+.autocomplete-dropdown-container {
   z-index: 999;
-  color:#333;
+  color: #333;
   background-color: #fff;
   padding-left: 5px;
 }
-.react-datepicker-wrapper, .react-datepicker__input-container {
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
   width: 100%;
 }
 .form-group input {
   width: 100%;
 }
-.ReactCollapse--content p{
-  color:#fff;
+.ReactCollapse--content p {
+  color: #fff;
 }
 .signup-jumbotron {
   padding: 4rem 2rem;
   margin-bottom: 2rem;
 }
-.signup-container{
-  font-family: 'Montserrat', sans-serif;
+.signup-container {
+  font-family: "Montserrat", sans-serif;
   background-color: #303030;
   color: #fff;
   line-height: 1.8;
 }
-.labelFieldSignup{
- color:#fff;
- font-weight: 400; 
+.labelFieldSignup {
+  color: #fff;
+  font-weight: 400;
 }
-.labelSignup{
-  color:#fff;
+.labelSignup {
+  color: #fff;
   font-size: 24px;
 }
 
 .is-open {
   z-index: 100 !important;
-  }
+}
 
-.email-subscriptions{
-  color:#333;
+.email-subscriptions {
+  color: #333;
   font-size: 14px;
 }
-.custom-control-input{
+.custom-control-input {
   top: 5px;
   left: 2px;
   z-index: 999;

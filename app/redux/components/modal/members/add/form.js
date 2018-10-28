@@ -49,9 +49,10 @@ class AddMembersForm extends Component {
     return model;
   }
 
-  submitForm(values) {
+  submitForm(event, value) {
+    event.preventDefault();
     const { saveModel } = this.props;
-    const modelToSave = this.createModelToSave(values);
+    const modelToSave = this.createModelToSave(value);
     return saveModel(modelToSave).then(model => {
       if (model && model.id) {
         showModal({
@@ -62,8 +63,7 @@ class AddMembersForm extends Component {
   }
 
   render() {
-    const { submitting, handleSubmit } = this.props;
-
+    const { submitting } = this.props;
     const { value, suggestions } = this.state;
 
     const inputProps = {
@@ -73,7 +73,7 @@ class AddMembersForm extends Component {
     };
 
     return (
-      <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
+      <div>
         <Field
           name="members"
           component={autocompleteComponent}
@@ -93,13 +93,13 @@ class AddMembersForm extends Component {
         <hr />
 
         <button
-          type="submit"
           disabled={submitting}
+          onClick={() => this.submitForm(event, value)}
           className="btn btn-primary btn-lg btn-block"
         >
           {submitting ? "Saving..." : "Save"}
         </button>
-      </form>
+      </div>
     );
   }
 }
