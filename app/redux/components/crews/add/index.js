@@ -8,11 +8,8 @@ import {
 } from "../selectors";
 import { showModal, hideModal } from "../../modal/actions";
 import { bindActionCreators } from "redux";
-import { MODAL_SAVED } from "../../modal/constants";
 import { fetchList, saveModel } from "../actions";
-import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
-import ItemNotFound from "../../itemNotFound";
 
 class AddCrew extends Component {
   // Convert form values to API model
