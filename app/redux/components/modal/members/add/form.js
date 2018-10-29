@@ -9,9 +9,9 @@ import asyncValidate from "./asyncValidate";
 import { saveModel } from "../../../crews/members/actions";
 import { loadSuggestion } from "../../../../api";
 
-const getSuggestionValue = suggestion => suggestion.name;
+const getSuggestionValue = suggestion => suggestion.stagename;
 
-const renderSuggestion = suggestion => <div>{suggestion.name}</div>;
+const renderSuggestion = suggestion => <div>{suggestion.stagename}</div>;
 
 class AddMembersForm extends Component {
   constructor(props) {
@@ -29,9 +29,11 @@ class AddMembersForm extends Component {
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
-    return loadSuggestion({ value }).then(response =>
-      this.setState({ suggestions: response.data.results })
-    );
+    if (value.length >= 3) {
+      return loadSuggestion({ value }).then(response =>
+        this.setState({ suggestions: response.data })
+      );
+    }
   };
 
   onSuggestionsClearRequested = () => {
@@ -40,11 +42,13 @@ class AddMembersForm extends Component {
     });
   };
 
-  createModelToSave(values) {
+  createModelToSave(value) {
     //clone obj
-    let model = Object.assign({}, values);
+    let model = {};
 
-    model = model.members;
+    model.value = value;
+
+    model._id = "3232";
 
     return model;
   }
@@ -67,6 +71,7 @@ class AddMembersForm extends Component {
     const { value, suggestions } = this.state;
 
     const inputProps = {
+      className: "form-control",
       placeholder: "Type a members",
       value,
       onChange: this.onChange

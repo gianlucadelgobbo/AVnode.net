@@ -533,7 +533,9 @@ export const fetchCrewMembers = ({ id }) => {
 };
 
 export const saveCrewMembers = model =>
-  axios.post(`crews/${model._id}/members`, model);
+  axios.post(`crews/${model._id}/members`, model).then(result => {
+    return result.data;
+  });
 
 // - organization
 
@@ -614,7 +616,6 @@ export const fetchPartnerCategories = () => {
 export const saveSignupPublic = model => axios.post(`signup`, model);
 
 export const verifyEmail = ({ email }) =>
-  axios.get(encodeURI(`/admin/api/profile/emails/verify/${email}`));
+  axios.get(encodeURI(`profile/emails/verify/${email}`));
 
-export const loadSuggestion = ({ value }) =>
-  axios.get(`https://swapi.co/api/people/?search=${value}`);
+export const loadSuggestion = ({ value }) => axios.get(`getmembers/${value}`);
