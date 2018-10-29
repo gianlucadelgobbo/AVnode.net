@@ -78,6 +78,10 @@ router.get('/api/:sez', (req, res) => {
   get.getList(req, res);
 });
 
+router.get('/api/getmembers/:q', (req, res)=>{
+  get.getMembers(req, res);
+});
+
 
 
 
