@@ -36,7 +36,8 @@ export const autocompleteComponent = ({
   getSuggestionValue,
   renderSuggestion,
   onSuggestionsFetchRequested,
-  onSuggestionsClearRequested
+  onSuggestionsClearRequested,
+  theme
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
 
