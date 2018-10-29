@@ -85,8 +85,8 @@ router.post('/', (req, res) => {
   findOne({slug: req.params.slug}).
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   exec((err, data) => {
-    logger.debug('routes/events/participate err:' + err);
     if (err || data === null) {
+      logger.debug('routes/events/participate err:' + err);
       return next(err);
     }
     logger.debug('data.organizationsettings.call:');
@@ -94,7 +94,7 @@ router.post('/', (req, res) => {
     logger.debug('session.call');
     logger.debug(req.session.call);
     logger.debug('req.body');
-    logger.debug(req.body);
+    logger.debug(req.body.subscriptions);
     if (data && typeof req.body.step!='undefined') {
       var msg;
       switch (parseInt(req.body.step)) {
@@ -180,9 +180,7 @@ router.post('/', (req, res) => {
           }
           break;
         case 4 :
-          logger.debug('STOCAZZO');  
-          logger.debug(req.body);  
-          let subscriptions = [];
+         let subscriptions = [];
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
             for (var a=0; a<req.body.subscriptions.length; a++) {
               if (req.body.subscriptions[a].subscriber_id){
@@ -208,14 +206,13 @@ router.post('/', (req, res) => {
           } else {
             msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]};
           }
-          logger.debug(req.session.call);  
           break;
         case 5 :
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
             req.session.call.step = parseInt(req.body.step)+1;
             for (var a=0; a<req.body.subscriptions.length; a++) {
               if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages.length){
-                req.session.call.subscriptions[a].packages = req.body.subscriptions[a].packages;
+                req.session.call.subscriptions[a].packages = data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages];
               }
             }
           } else {
@@ -230,8 +227,9 @@ router.post('/', (req, res) => {
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         res.json(data);
       } else {
-        logger.debug('STOCAZZO ');
+        logger.debug('JUST BEFORE RENDER');
         logger.debug(req.session.call.step);
+        logger.debug(req.session.call);  
         logger.debug(msg);
         res.render('events/participate', {
           title: data.title,

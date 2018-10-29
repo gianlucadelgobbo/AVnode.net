@@ -12,19 +12,20 @@ div
       - for(var b=0;b<dett.organizationsettings.call.calls[call.index].topics.length;b++)
         - topics.push(dett.organizationsettings.call.calls[call.index].topics[b].name)
       h4=dett.organizationsettings.call.calls[call.index].title
-      p=global.__("Start date")+": "+dett.organizationsettings.call.calls[call.index].start_date_formatted+" | "+global.__("End date")+": "+dett.organizationsettings.call.calls[call.index].end_date+" | "+global.__("Email")+": "+dett.organizationsettings.call.calls[call.index].email
-      p=global.__("Admitted projects") + ": "
-      ul
-        each cat in admitted
-          li=cat.name
-      p=global.__("Topics") + ": " + topics.join(", ")
-      p=dett.organizationsettings.call.calls[call.index].excerpt
+      //p=global.__("Start date")+": "+dett.organizationsettings.call.calls[call.index].start_date_formatted+" | "+global.__("End date")+": "+dett.organizationsettings.call.calls[call.index].end_date+" | "+global.__("Email")+": "+dett.organizationsettings.call.calls[call.index].email
+        p=global.__("Admitted projects") + ": "
+        ul
+          each cat in admitted
+            li=cat.name
+        p=global.__("Topics") + ": " + topics.join(", ")
+        p=dett.organizationsettings.call.calls[call.index].excerpt
 
   .row
     .col-md-3
       .text-right
         b=global.__('Performance Name')
-    .col-md-9=call.admitted[call.performance].title
+    .col-md-9
+      h5=call.admitted[call.performance].title
   .row
     .col-md-3
       .text-right
@@ -44,6 +45,11 @@ div
   .row
     .col-md-3
       .text-right
+        b=global.__('Reference Email')
+    .col-md-9=user.email
+  .row
+    .col-md-3
+      .text-right
         b=global.__('Availability')
     .col-md-9
       each subscription in call.subscriptions
@@ -52,7 +58,10 @@ div
             b=subscription.stagename
             ul
               each day in subscription.days
-                li=day
+                - var d = new Date(day)
+                - var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                - var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                li= days[d.getDay()] + " " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear()
   .row
     .col-md-3
       .text-right
@@ -60,11 +69,10 @@ div
     .col-md-9
       each subscription in call.subscriptions
         if subscription.subscriber_id
-          li
-            b=subscription.stagename
-            ul
-              each package in subscription.packages
-                li=package
+          b=subscription.stagename
+          ul
+            each package in subscription.packages
+              li=package
 
     
   pre=JSON.stringify(call, null, '\t')
