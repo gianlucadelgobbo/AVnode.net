@@ -86,6 +86,19 @@ router.getSlug = (req, res) => {
   });
 }
 
+router.getMembers = (req, res) => {
+  Models.User
+  .find({$or:[
+    { slug : { "$regex": req.params.q, "$options": "i" } },
+    { stagename : { "$regex": req.params.q, "$options": "i" } },
+    { name : { "$regex": req.params.q, "$options": "i" } },
+    { surname : { "$regex": req.params.q, "$options": "i" } }
+  ],is_crew: false},'_id, stagename', (err, users) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    res.json(users);
+  });
+}
+
 router.getCountries = (req, res) => {
   const allCountries = require('node-countries-list');
   const R = require('ramda');
