@@ -23,18 +23,24 @@ div
   .row
     .col-md-3
       .text-right
-        b=global.__('Performance Name')
+        b=global.__('Topics')
+    .col-md-9
+      p=topics.join(", ")
+  .row
+    .col-md-3
+      .text-right
+        b=global.__('Proposal Name')
     .col-md-9
       h5=call.admitted[call.performance].title
   .row
     .col-md-3
       .text-right
         if call.admitted[call.performance].users.lenght>1
-          b=global.__('Performers')
+          b=global.__('Authors')
         else
-          b=global.__('Performer')
+          b=global.__('Author')
     .col-md-9
-      ul
+      ul.mb-0
         each performer in call.admitted[call.performance].users
           li=performer.stagename
   .row
@@ -50,7 +56,10 @@ div
   .row
     .col-md-3
       .text-right
-        b=global.__('Availability')
+        if call.subscriptions.lenght>1
+          b=global.__('Authors') + " " + global.__('availability')
+        else
+          b=global.__('Author') + " " + global.__('availability')
     .col-md-9
       each subscription in call.subscriptions
         if subscription.subscriber_id
@@ -67,12 +76,54 @@ div
       .text-right
         b=global.__('Packages')
     .col-md-9
-      each subscription in call.subscriptions
-        if subscription.subscriber_id
-          b=subscription.stagename
-          ul
+      - var total = 0;
+      table.table
+        each subscription in call.subscriptions
+          if subscription.subscriber_id
+            thead
+              tr
+                th(colspan="3",style="border-top:0;")
+                  h4.mb-0=subscription.stagename
             each package in subscription.packages
-              li=package
+              tr
+                - console.log(package)
+                - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
+                  - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                - else 
+                  - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                td
+                  h5!=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
+                  div!=dett.organizationsettings.call.calls[call.index].packages[package.id].description
+                  - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
+                    p=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
+                td
+                  .text-right
+                    if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                      div=global.__("per person/per day")
+                    else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
+                      div=global.__("per person")
+                    else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
+                      div=global.__("per day")
+                td
+                  .text-right="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
+              if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                tr
+                  td(style="border-top:0;")
+                    if subscription.days.length = 1
+                      b=subscription.days.length + " " + global.__('day')
+                    else
+                      b=subscription.days.length + " " + global.__('days')
+                  td(style="border-top:0;")
+                    .text-right
+                      b=global.__("Total")
+                  td(style="border-top:0;")
+                    .text-right
+                      b="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
+                     
+        tr
+          td(colspan="2")=global.__("Amount to pay if the submission will be approved")
+          td
+            .text-right="€ "+total
 
     
   pre=JSON.stringify(call, null, '\t')

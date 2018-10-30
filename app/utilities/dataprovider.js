@@ -39,6 +39,14 @@ dataprovider.getPerformanceByIds = (req, ids, cb) => {
   });
 };
 
+/* dataprovider.getEmailById = (id, cb) => {
+  UserShow.findOne({'_id':id}, "email",(err, data) => {
+    logger.debug("getEmailById");  
+    logger.debug(data);  
+    cb(err, data);
+  });
+}; */
+
 dataprovider.getJsonld = (data, req, title) => {
   let jsonld = {
     "@context": "http://schema.org",

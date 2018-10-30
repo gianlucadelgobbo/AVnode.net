@@ -80,21 +80,23 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   let myasync = true;
   logger.debug('POSTPOSTPOSTPOSTPOST');
-  logger.debug('fetchEvent'+req.params.slug);  
+  //logger.debug('fetchEvent'+req.params.slug);  
   Event.
   findOne({slug: req.params.slug}).
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   exec((err, data) => {
     if (err || data === null) {
-      logger.debug('routes/events/participate err:' + err);
+      //logger.debug('routes/events/participate err:' + err);
       return next(err);
     }
-    logger.debug('data.organizationsettings.call:');
-    logger.debug(data.organizationsettings.call);
     logger.debug('session.call');
     logger.debug(req.session.call);
+    /*
+    logger.debug('data.organizationsettings.call:');
+    logger.debug(data.organizationsettings.call);
     logger.debug('req.body');
     logger.debug(req.body.subscriptions);
+    */
     if (data && typeof req.body.step!='undefined') {
       var msg;
       switch (parseInt(req.body.step)) {
@@ -103,11 +105,9 @@ router.post('/', (req, res) => {
           if (data && typeof req.body.index!='undefined') {
             let ids = [req.user._id].concat(req.user.crews);
             myasync = false;
-            logger.debug("req.user");
-            logger.debug(req.user);
             dataprovider.getPerformanceByIds(req, ids, (err, performances) =>{
               logger.debug(performances);
-              
+            
               let admitted = {};
               var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
               for (let item in admittedCat) {
@@ -212,17 +212,70 @@ router.post('/', (req, res) => {
             req.session.call.step = parseInt(req.body.step)+1;
             for (var a=0; a<req.body.subscriptions.length; a++) {
               if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages.length){
-                req.session.call.subscriptions[a].packages = data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages];
+                req.session.call.subscriptions[a].packages = req.body.subscriptions[a].packages;
               }
             }
+            // SAVE
+            req.session.call.save = {
+              event:        req.session.call.event._id,
+              call:         req.session.call.index,
+              topics:       req.session.call.topics,
+              performance:  req.session.call.admitted[req.session.call.performance]._id,
+              reference:    req.user._id,
+              subscriptions:[]
+            };
+            for (var a=0; a<req.session.call.subscriptions.length; a++) {
+              if (req.session.call.subscriptions[a].subscriber_id){
+                var packages = []; 
+                for (var b=0; b<req.session.call.subscriptions[a].packages.length; b++) {
+                  var pack = JSON.parse(JSON.stringify(data.organizationsettings.call.calls[req.session.call.index].packages[req.session.call.subscriptions[a].packages[b].id]));
+                  pack.option = req.session.call.subscriptions[a].packages[b].option;
+                  packages.push(pack);
+                }
+                var sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
+                delete sub.packagess;
+                sub.packages = packages;
+                req.session.call.save.subscriptions.push(sub);
+              }
+            }
+            // MAILER
+            const mailer = require('../../../utilities/mailer');
+            mailer.mySendMailer({
+              template: 'confirm-email',
+              message: {
+                to: user.emails[item].email
+              },
+              email_content: {
+                site:    req.protocol+"://"+req.headers.host,
+                title:    __("Email Confirm"),
+                block_1:  __("We’ve received a request to add this new email")+": "+user.emails[item].email,
+                button:   __("Click here to confirm"),
+                block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
+                block_3:  __("Thanks."),
+                link:     req.protocol+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
+                signature: "The AVnode.net Team"
+              }
+            }, function (err){
+              if (err) {
+                console.log("Email sending failure");
+                res.json({error: true, msg: "Email sending failure"});
+              } else {
+                console.log("Email sending OK");
+                res.json({error: false, msg: "Email sending success"});
+              }
+            });
           } else {
-            msg = {e:[{name:'accept',m:__('Please select at least 1 person to go forward')}]}
+            msg = {e:[{name:'accept',m:__('Please select at least 1 package to go forward')}]}
           }
           break;
       }
     } else {
       msg = {e:[{name:'index', m:__('Unknow error')}]};
     }
+/*
+    logger.debug("req.user");
+    logger.debug(req.user);
+ */
     if (myasync) {
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         res.json(data);

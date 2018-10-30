@@ -244,5 +244,15 @@
 	"Performance Name": "Performance Name",
 	"Reference": "Reference",
 	"total": "total",
-	"Reference Email": "Reference Email"
+	"Reference Email": "Reference Email",
+	"To participate to the call for proposal you have to be logged in": "To participate to the call for proposal you have to be logged in",
+	"LOGIN": "LOGIN",
+	"REGISTER": "REGISTER",
+	"Amount to pay if the submission will be approved": "Amount to pay if the submission will be approved",
+	"per person": "per person",
+	"per person/per day": "per person/per day",
+	"Total": "Total",
+	"Proposal Name": "Proposal Name",
+	"availability": "availability",
+	"day": "day"
 }
