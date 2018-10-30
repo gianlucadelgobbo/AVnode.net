@@ -39,6 +39,7 @@ router.getList = (req, res) => {
 }
 
 router.getData = (req, res) => {
+  console.log(req.params);
   for (let item in config.cpanel) {
     console.log("http://localhost:8006/admin/api/"+item+"?pure=1")
     for (let item2 in config.cpanel[item].forms) {
@@ -99,6 +100,50 @@ router.getMembers = (req, res) => {
   });
 }
 
+router.addMember = (req, res) => {
+  Models.User
+  .findOne({_id: req.params.id, members:req.user.id},'_id, members', (err, crew) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!crew) {
+      res.status(404).json({ error: `USER_NOT_ALLOWED_TO_EDIT` });
+    } else if (crew.members.indexOf(req.params.member)!==-1) {
+      res.status(404).json({ error: `MEMBER_IS_ALREADY_MEMBER` });
+    } else {
+      crew.members.push(req.params.member);
+      crew.save(function(err){
+        //res.json(crew);
+        req.params.sez = 'crews';
+        req.params.form = 'members';
+        router.getData(req, res);
+      });
+    }
+  });
+}
+
+router.removeMember = (req, res) => {
+  Models.User
+  .findOne({_id: req.params.id, members:req.user.id},'_id, members', (err, crew) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!crew) {
+      res.status(404).json({ error: `USER_NOT_ALLOWED_TO_EDIT` });
+    } else if (crew.members.indexOf(req.params.member)===-1) {
+      res.status(404).json({ error: `MEMBER_IS_NOT_A_MEMBER` });
+    } else {
+      crew.members.splice(crew.members.indexOf(req.params.member), 1);
+      //res.json(crew);
+      crew.save(function(err){
+        //res.json(crew);
+        req.params.sez = 'crews';
+        req.params.form = 'members';
+        router.getData(req, res);
+      });
+    }
+  });
+}
 router.getCountries = (req, res) => {
   const allCountries = require('node-countries-list');
   const R = require('ramda');
