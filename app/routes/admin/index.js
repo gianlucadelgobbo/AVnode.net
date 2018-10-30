@@ -82,6 +82,14 @@ router.get('/api/getmembers/:q', (req, res)=>{
   get.getMembers(req, res);
 });
 
+router.get('/api/crews/:id/members/add/:member', (req, res)=>{
+  get.addMember(req, res);
+});
+
+router.get('/api/crews/:id/members/remove/:member', (req, res)=>{
+  get.removeMember(req, res);
+});
+
 
 
 
