@@ -143,7 +143,8 @@ class MembersTable extends Component {
                   className="pull-right"
                   onClick={() =>
                     showModal({
-                      type: MODAL_ADD_MEMBERS
+                      type: MODAL_ADD_MEMBERS,
+                      props:{_id}
                     })
                   }
                 >

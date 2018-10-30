@@ -5,7 +5,8 @@ import Form from "./form";
 
 class AddMembersModal extends Component {
   render() {
-    return <Form />;
+    const {_id}= this.props; 
+    return <Form _id={_id}/>;
   }
 }
 
