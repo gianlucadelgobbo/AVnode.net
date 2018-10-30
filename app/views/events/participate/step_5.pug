@@ -8,9 +8,9 @@
             .col-md-1
               .checkbox
                   if dett.organizationsettings.call.calls[call.index].packages[b].requested
-                    input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "]", value=b,    type="checkbox", checked="checked", class="disabled")
+                    input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked="checked", class="disabled")
                   else
-                    input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "]", value=b,    type="checkbox", checked=(call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b]==b) || dett.organizationsettings.call.calls[call.index].packages[b].requested ? "checked" : undefined)
+                    input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked=(call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b]==b) || dett.organizationsettings.call.calls[call.index].packages[b].requested ? "checked" : undefined)
             .col-md-11
               .row
                 .col-md-9
@@ -23,7 +23,7 @@
                         - for (var d=0;d<options.length;d++)
                           .checkbox
                             label
-                              input(name="subscriptions[" + c + "][packages][" + b + "][option]", value=options[d],    type="checkbox",checked=call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b].option==options[d] ? "checked" : undefined)
+                              input(name="subscriptions[" + c + "][packages][" + b + "][option]", value=options[d],    type="radio",checked=call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b].option==options[d] ? "checked" : undefined)
                               !=options[d]
                 .col-md-3
                   .text-right
