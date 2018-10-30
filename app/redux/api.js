@@ -533,7 +533,7 @@ export const fetchCrewMembers = ({ id }) => {
 };
 
 export const saveCrewMembers = model =>
-  axios.post(`crews/${model._id}/members`, model).then(result => {
+  axios.put(`crews/${model._id}/members`, model).then(result => {
     return result.data;
   });
 

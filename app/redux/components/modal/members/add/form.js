@@ -42,21 +42,21 @@ class AddMembersForm extends Component {
     });
   };
 
-  createModelToSave(value) {
+  createModelToSave(value, _id) {
     //clone obj
     let model = {};
 
     model.value = value;
 
-    model._id = "3232";
+    model._id = _id;
 
     return model;
   }
 
-  submitForm(event, value) {
+  submitForm(event, value, _id) {
     event.preventDefault();
     const { saveModel } = this.props;
-    const modelToSave = this.createModelToSave(value);
+    const modelToSave = this.createModelToSave(value, _id);
     return saveModel(modelToSave).then(model => {
       if (model && model.id) {
         showModal({
@@ -67,7 +67,7 @@ class AddMembersForm extends Component {
   }
 
   render() {
-    const { submitting } = this.props;
+    const { submitting, _id } = this.props;
     const { value, suggestions } = this.state;
 
     const inputProps = {
@@ -99,7 +99,7 @@ class AddMembersForm extends Component {
 
         <button
           disabled={submitting}
-          onClick={() => this.submitForm(event, value)}
+          onClick={() => this.submitForm(event, value, _id)}
           className="btn btn-primary btn-lg btn-block"
         >
           {submitting ? "Saving..." : "Save"}
