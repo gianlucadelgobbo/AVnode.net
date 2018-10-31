@@ -6,7 +6,7 @@ const subscriptionSchema = new Schema({
   event: { type: Schema.ObjectId, ref: 'Event', required: true },
   call: { type: Number, required: true},
   topics: { type: [String], minlength: 1},
-  performance: { type: Schema.ObjectId, ref: 'Performance', required: true },
+  performance: { type: Schema.ObjectId, ref: 'Performance', required: true, unique: true },
   reference: { type: Schema.ObjectId, ref: 'User', required: true },
   subscriptions: {
     type: [{
