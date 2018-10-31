@@ -1,11 +1,109 @@
 !=title
 br
 br
-!=block_1
+!=block_1_plain
+br
+br
+!=link_plain
+br
+br
+!=global.__("SUMMARY")+": "
+br
+br
+!=global.__('Call')+": "+dett.organizationsettings.call.calls[call.index].title
+br
+br
+!=global.__('Topics')+": "+call.topics.join(", ")
+br
+br
+!=global.__('Proposal Name')+": "+call.admitted[call.performance].title
+br
+br
+if call.admitted[call.performance].users.lenght>1
+  !=global.__('Authors')
+else
+  !=global.__('Author')
+br
+each performer in call.admitted[call.performance].users
+  !=performer.stagename
+  br
+br
+!=global.__('Reference')+": "+user.stagename
+br
+br
+!=global.__('Reference Email')+": "+user.email
+br
+br
+if call.subscriptions.lenght>1
+  !=global.__('Authors') + " " + global.__('availability')
+else
+  !=global.__('Author') + " " + global.__('availability')
+br
+br
+each subscription in call.subscriptions
+  if subscription.subscriber_id
+    !=subscription.stagename
+    br
+    each day in subscription.days
+      - var d = new Date(day)
+      - var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      - var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      != days[d.getDay()] + " " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear()
+      br
+    br
+!=global.__('Packages')
+br
+br
+- var total = 0;
+- var conta = 0;
+each subscription, index in call.subscriptions
+  if subscription.subscriber_id
+    - var subscriber_total = 0;
+    - conta = 1;
+    !=conta+". "+subscription.stagename
+    br
+    each package in subscription.packages
+      - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
+        - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+        - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+      - else 
+        - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+        - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+        !=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
+        br
+        - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
+          !=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
+          br
+        if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+          !=global.__("per person/per day")
+        else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
+          !=global.__("per person")
+        else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
+          !=global.__("per day")
+        br
+        !="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
+        br
+      if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+        if subscription.days.length = 1
+          !=subscription.days.length + " " + global.__('day')
+        else
+          !=subscription.days.length + " " + global.__('days')
+        br
+        !=global.__("Total")
+        br
+        !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
+        br
+    br
+    !=global.__('Total amount for')+" "+subscription.stagename
+    br
+    !="€ "+subscriber_total
+    br
+    br
+!=global.__("Amount to pay if the submission will be approved")
+!="€ "+total
+br
 br
 !=block_2
-br
-!=link
 br
 br
 !=block_3

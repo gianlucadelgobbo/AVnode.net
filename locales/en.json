@@ -254,5 +254,16 @@
 	"Total": "Total",
 	"Proposal Name": "Proposal Name",
 	"availability": "availability",
-	"day": "day"
+	"day": "day",
+	"Call Submission": "Call Submission",
+	"We’ve received a request to participate to": "We’ve received a request to participate to",
+	"We’ve received a request to participate from": "We’ve received a request to participate from",
+	"You will receive a feedback on your proposal as soon.": "You will receive a feedback on your proposal as soon.",
+	"SUMMARY": "SUMMARY",
+	"Total amount for": "Total amount for",
+	"Unable to submit the proposal, please try again.": "Unable to submit the proposal, please try again.",
+	"Please select at least 1 option of the package": "Please select at least 1 option of the package",
+	"of": "of",
+	"Please select at least 1 option of all the packages": "Please select at least 1 option of all the packages",
+	"Submit Success!!!": "Submit Success!!!"
 }

@@ -1,5 +1,4 @@
 // Packages
-- console.log(dett.organizationsettings.call.calls[call.index].packages)
 - for (var c=0;c<call.subscriptions.length;c++)
   if call.subscriptions[c].subscriber_id
     - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
@@ -7,10 +6,11 @@
           .row
             .col-md-1
               .checkbox
-                  if dett.organizationsettings.call.calls[call.index].packages[b].requested
-                    input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked="checked", class="disabled")
-                  else
-                    input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked=(call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b]==b) || dett.organizationsettings.call.calls[call.index].packages[b].requested ? "checked" : undefined)
+                - var checked = call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages.length && call.subscriptions[c].packages.map(obj =>{return parseInt(obj.id);}).indexOf(b) !==-1;
+                if dett.organizationsettings.call.calls[call.index].packages[b].requested
+                  input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked="checked", class="disabled")
+                else
+                  input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked=checked ? "checked" : undefined)
             .col-md-11
               .row
                 .col-md-9
