@@ -4,34 +4,135 @@ block content
     // COPY
     tbody
       tr
-        td(bgcolor='#ffffff', align='left', style='padding: 20px 30px 40px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
-          p(style='margin: 0;')=block_1
+        td(bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 10px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+          p(style='margin-top: 0;')!=block_1
+          p(style='margin-top: 0;')!=link
+          p(style='margin-top: 0;')
+            b=global.__("SUMMARY")+":"
       // COPY
       tr
-        td(bgcolor='#ffffff', align='left', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
-          p(style='margin: 0;')=block_2
-      // BULLETPROOF BUTTON
-      tr
-        td(bgcolor='#ffffff', align='left')
+        td(bgcolor='#ffffff', valign='top', align='left')
           table(width='100%', border='0', cellspacing='0', cellpadding='0')
             tbody
               tr
-                td(bgcolor='#ffffff', align='center', style='padding: 20px 30px 60px 30px;')
-                  table(border='0', cellspacing='0', cellpadding='0')
-                    tbody
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+                  b=global.__('Call')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+                  b=dett.organizationsettings.call.calls[call.index].title
+              tr
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  b=global.__('Topics')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  p=call.topics.join(", ")
+              tr
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  b=global.__('Proposal Name')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  b=call.admitted[call.performance].title
+              tr
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  if call.admitted[call.performance].users.lenght>1
+                    b=global.__('Authors')
+                  else
+                    b=global.__('Author')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  ol(style='margin-top:0;padding: 0;')
+                    each performer in call.admitted[call.performance].users
+                      li=performer.stagename
+              tr
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  b=global.__('Reference')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')=user.stagename
+              tr
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  b=global.__('Reference Email')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')=user.email
+              tr
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  if call.subscriptions.lenght>1
+                    b=global.__('Authors') + " " + global.__('availability')
+                  else
+                    b=global.__('Author') + " " + global.__('availability')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+                  ol(style='margin-top:0;padding: 0;')
+                    each subscription in call.subscriptions
+                      if subscription.subscriber_id
+                        li
+                          b=subscription.stagename
+                          ul
+                            each day in subscription.days
+                              - var d = new Date(day)
+                              - var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                              - var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                              li= days[d.getDay()] + " " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear()
+      tr
+        td(bgcolor='#ffffff', valign='top', align='left')
+          table(width='100%', border='0', cellspacing='0', cellpadding='0')
+            tbody
+              tr
+                td(colspan="3", bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  u=global.__('Packages')
+              - var total = 0;
+              - var conta = 0;
+                each subscription, index in call.subscriptions
+                  if subscription.subscriber_id
+                    - var subscriber_total = 0;
+                    - conta = 1;
+                    tr
+                      td(colspan="3",bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+                        b=conta+". "+subscription.stagename
+                    each package in subscription.packages
                       tr
-                        td(align='center', style='border-radius: 3px;', bgcolor='#148dd4')
-                          a(href=link, target='_blank', style='font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #148dd4; display: inline-block;')=button
+                        - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
+                          - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                          - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                        - else 
+                          - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                          - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                        td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                          b!=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
+                          div!=dett.organizationsettings.call.calls[call.index].packages[package.id].description
+                          - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
+                            p=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
+                        td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 10px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                          if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                            div=global.__("per person/per day")
+                          else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
+                            div=global.__("per person")
+                          else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
+                            div=global.__("per day")
+                        td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                          !="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                      if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                        tr
+                          td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                            if subscription.days.length = 1
+                              !=subscription.days.length + " " + global.__('day')
+                            else
+                              !=subscription.days.length + " " + global.__('days')
+                          td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 10px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                            !=global.__("Total")
+                          td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                            !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
+                    tr
+                      td(colspan="2",bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+                        b=global.__('Total amount for')+" "+subscription.stagename
+                      td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 30px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                        b="€ "+subscriber_total
+                              
+                tr
+                  td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 30px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                    b=global.__("Amount to pay if the submission will be approved")
+                  td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 30px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                    b="€ "+total
+      tr
+        td(bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 20px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+          p(style='margin: 0;')=block_2
       // COPY
       tr
-        td(bgcolor='#ffffff', align='left', style='padding: 20px 30px 20px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
-          p(style='margin: 0;')
-            a(href=link, target='_blank', style='color: #148dd4;')=link
-      // COPY
-      tr
-        td(bgcolor='#ffffff', align='left', style='padding: 0px 30px 20px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+        td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 20px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
           p(style='margin: 0;')=block_3
       // COPY
       tr
-        td(bgcolor='#ffffff', align='left', style='padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+        td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
           p(style='margin: 0;')!=signature

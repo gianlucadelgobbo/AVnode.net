@@ -18,10 +18,7 @@
             h3=call.admitted[call.performance].users[b].members[c].stagename+count
             .subscription(style=!call.subscriptions || !call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
               - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []
-              - console.log("STOCAZZO"+count)
-              - console.log(dates)
               - for (var d=0;d<dett.schedule.length;d++)
-                - console.log(dett.schedule[d])
                 .form-check
                   input.form-check-input(id="subscription"+b+"_"+c+"_"+d, name="subscriptions[" + count + "][days][" + d + "]", value=dett.schedule[d].date.toString(),    type="checkbox", checked=(dates.length && dates.indexOf(dett.schedule[d].date.toString())!=-1) ? "checked" : undefined)
                   label.form-check-label(for="subscription"+b+"_"+c+"_"+d)

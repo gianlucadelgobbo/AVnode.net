@@ -2,6 +2,7 @@ const router = require('../router')();
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Event = mongoose.model('Event');
+const Subscription = mongoose.model('Subscription');
 const dataprovider = require('../../utilities/dataprovider');
 
 const logger = require('../../utilities/logger');
@@ -25,16 +26,13 @@ router.get('/', (req, res) => {
   findOne({slug: req.params.slug}).
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   exec((err, data) => {
-    logger.debug('routes/events/participate err:' + err);
-    logger.debug(err);
-    //logger.debug(data);
-    let ids = [];
+    /*let ids = [];
     if (req.user) ids = [req.user._id].concat(req.user.crews);
-    logger.debug(ids);
     //logger.debug(performances);
     if (err || data === null) {
       //return next(err);
     }
+    */
     if (!req.session.call || (req.query.step && req.query.step.toString() === '0')) {
       req.session.call = {
         step: 0,
@@ -47,23 +45,6 @@ router.get('/', (req, res) => {
     if (req.query.step && parseInt(req.query.step, 10) < req.session.call.step) {
       req.session.call.step = parseInt(req.query.step);
     }
-    let tosave = {};
-    
-    if (req.session.call.step == 6) {
-      tosave = {
-        event: req.session.call.event._id,
-        performance: req.session.call.admitted[req.session.call.performance]._id,
-        user: req.user._id,
-        call_id: req.session.call.index,
-        topics: req.session.call.topics,
-        subscriptions: req.session.call.subscriptions
-      };
-    }
-    logger.debug('events/participateaaaaaaa');
-    logger.debug(req.session.call);
-    logger.debug(data.title);
-    logger.debug(tosave);
-
     res.render('events/participate', {
       title: data.title,
       canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -71,8 +52,7 @@ router.get('/', (req, res) => {
       call: req.session.call,
       participateMenu: participateMenu,
       user: req.user,
-      msg: null,
-      tosave: tosave
+      msg: null
     });
   });
 });
@@ -89,9 +69,9 @@ router.post('/', (req, res) => {
       //logger.debug('routes/events/participate err:' + err);
       return next(err);
     }
+    /*
     logger.debug('session.call');
     logger.debug(req.session.call);
-    /*
     logger.debug('data.organizationsettings.call:');
     logger.debug(data.organizationsettings.call);
     logger.debug('req.body');
@@ -180,24 +160,16 @@ router.post('/', (req, res) => {
           }
           break;
         case 4 :
-         let subscriptions = [];
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
+            let days_check = true;
             for (var a=0; a<req.body.subscriptions.length; a++) {
               if (req.body.subscriptions[a].subscriber_id){
-                subscriptions.push(req.body.subscriptions[a]);
+                if (!req.body.subscriptions[a].days || !req.body.subscriptions[a].days.length) {
+                  days_check = false;
+                }
               }
             }
-          }
-          req.session.call.subscriptions = req.body.subscriptions;
-          if (subscriptions.length) {
-            let days = true;
-
-            for (var a=0; a<subscriptions.length; a++) {
-              if (!subscriptions[a].days || !subscriptions[a].days.length) {
-                days = false;
-              }
-            }
-            if (days) {
+            if (days_check) {
               req.session.call.step = parseInt(req.body.step)+1;
               req.session.call.subscriptions = req.body.subscriptions;
             } else {
@@ -209,64 +181,102 @@ router.post('/', (req, res) => {
           break;
         case 5 :
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
-            req.session.call.step = parseInt(req.body.step)+1;
             for (var a=0; a<req.body.subscriptions.length; a++) {
-              if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages.length){
+              if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages !== 'null'){
                 req.session.call.subscriptions[a].packages = req.body.subscriptions[a].packages;
-              }
-            }
-            // SAVE
-            req.session.call.save = {
-              event:        req.session.call.event._id,
-              call:         req.session.call.index,
-              topics:       req.session.call.topics,
-              performance:  req.session.call.admitted[req.session.call.performance]._id,
-              reference:    req.user._id,
-              subscriptions:[]
-            };
-            for (var a=0; a<req.session.call.subscriptions.length; a++) {
-              if (req.session.call.subscriptions[a].subscriber_id){
-                var packages = []; 
-                for (var b=0; b<req.session.call.subscriptions[a].packages.length; b++) {
-                  var pack = JSON.parse(JSON.stringify(data.organizationsettings.call.calls[req.session.call.index].packages[req.session.call.subscriptions[a].packages[b].id]));
-                  pack.option = req.session.call.subscriptions[a].packages[b].option;
-                  packages.push(pack);
+                for (var b=0; b<req.body.subscriptions[a].packages.length; b++) {
+                  logger.debug('subscriptions packages');
+                  logger.debug(req.body.subscriptions[a]);
+                  if (data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].allow_options && !req.body.subscriptions[a].packages[b].option ){
+                    msg = {e:[{name:'accept',m:__('Please select at least 1 option of all the packages')+" "+data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].name}]}
+                  }
                 }
-                var sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
-                delete sub.packagess;
-                sub.packages = packages;
-                req.session.call.save.subscriptions.push(sub);
               }
             }
-            // MAILER
-            const mailer = require('../../../utilities/mailer');
-            mailer.mySendMailer({
-              template: 'confirm-email',
-              message: {
-                to: user.emails[item].email
-              },
-              email_content: {
-                site:    req.protocol+"://"+req.headers.host,
-                title:    __("Email Confirm"),
-                block_1:  __("We’ve received a request to add this new email")+": "+user.emails[item].email,
-                button:   __("Click here to confirm"),
-                block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
-                block_3:  __("Thanks."),
-                link:     req.protocol+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
-                signature: "The AVnode.net Team"
-              }
-            }, function (err){
-              if (err) {
-                console.log("Email sending failure");
-                res.json({error: true, msg: "Email sending failure"});
-              } else {
-                console.log("Email sending OK");
-                res.json({error: false, msg: "Email sending success"});
-              }
-            });
+            if (!msg) req.session.call.step = parseInt(req.body.step)+1;
           } else {
             msg = {e:[{name:'accept',m:__('Please select at least 1 package to go forward')}]}
           }
+          break;
+        case 6 :
+          myasync = false;
+          // SAVE
+          logger.debug('req.session.call.save');
+          logger.debug(req.session.call.save);
+          req.session.call.save = {
+            event:        req.session.call.event._id,
+            call:         req.session.call.index,
+            topics:       req.session.call.topics,
+            performance:  req.session.call.admitted[req.session.call.performance]._id,
+            reference:    req.user._id,
+            subscriptions:[]
+          };
+          for (var a=0; a<req.session.call.subscriptions.length; a++) {
+            if (req.session.call.subscriptions[a].subscriber_id){
+              var packages = []; 
+              for (var b=0; b<req.session.call.subscriptions[a].packages.length; b++) {
+                var pack = JSON.parse(JSON.stringify(data.organizationsettings.call.calls[req.session.call.index].packages[req.session.call.subscriptions[a].packages[b].id]));
+                pack.option = req.session.call.subscriptions[a].packages[b].option;
+                packages.push(pack);
+              }
+              var sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
+              sub.packages = packages;
+              req.session.call.save.subscriptions.push(sub);
+            }
+          }
+          Subscription.create(req.session.call.save, function (err, sub) {
+            if (err) {
+              msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
+              res.render('events/participate', {
+                title: data.title,
+                canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                dett: data,
+                call: req.session.call,
+                participateMenu: participateMenu,
+                user: req.user,
+                msg: msg
+              });
+            } else {
+              // saved!
+              // MAILER
+              const mailer = require('../../utilities/mailer');
+              mailer.mySendMailer({
+                template: 'participate',
+                message: {
+                  to: req.user.email
+                },
+                email_content: {
+                  site:    req.protocol+"://"+req.headers.host,
+                  title:   data.organizationsettings.call.calls[req.session.call.index].title + " " + __("Call Submission"),
+                  block_1:  __("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+__("from")+" <b>"+req.user.stagename+"</b>",
+                  block_1_plain:  __("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+__("from")+" "+req.user.stagename+"",
+                  user: req.user,
+                  dett: data,
+                  call: req.session.call,
+                  block_2:  __("You will receive a feedback on your proposal as soon."),
+                  block_3:  __("Thanks."),
+                  link:  "<a href=\""+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
+                  link_plain: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                  signature: "The AVnode.net Team"
+                }
+              }, function (err){
+                if (err) {
+                  msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')}]};
+                } else {
+                  req.session.call.step = parseInt(req.body.step)+1;
+                }
+                res.render('events/participate', {
+                  title: data.title,
+                  canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                  dett: data,
+                  call: req.session.call,
+                  participateMenu: participateMenu,
+                  user: req.user,
+                  msg: msg
+                });
+              });
+            }
+          });
           break;
       }
     } else {
@@ -286,8 +296,8 @@ router.post('/', (req, res) => {
         logger.debug(msg);
         res.render('events/participate', {
           title: data.title,
-          dett: data,
           canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+          dett: data,
           call: req.session.call,
           participateMenu: participateMenu,
           user: req.user,

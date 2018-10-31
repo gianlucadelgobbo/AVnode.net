@@ -1,18 +1,18 @@
 // Summary
-div
-  .row
-    .col-md-3
+table.table
+  tr
+    th(scope="row")
       .text-right
         b=global.__('Call')
-    .col-md-9
-      - var admitted = []
-      - for(var b=0;b<dett.organizationsettings.call.calls[call.index].admitted.length;b++)
-        - admitted.push(dett.organizationsettings.call.calls[call.index].admitted[b])
-      - var topics = []
-      - for(var b=0;b<dett.organizationsettings.call.calls[call.index].topics.length;b++)
-        - topics.push(dett.organizationsettings.call.calls[call.index].topics[b].name)
+    td
       h4=dett.organizationsettings.call.calls[call.index].title
       //p=global.__("Start date")+": "+dett.organizationsettings.call.calls[call.index].start_date_formatted+" | "+global.__("End date")+": "+dett.organizationsettings.call.calls[call.index].end_date+" | "+global.__("Email")+": "+dett.organizationsettings.call.calls[call.index].email
+        - var admitted = []
+        - for(var b=0;b<dett.organizationsettings.call.calls[call.index].admitted.length;b++)
+          - admitted.push(dett.organizationsettings.call.calls[call.index].admitted[b])
+        - var topics = []
+        - for(var b=0;b<dett.organizationsettings.call.calls[call.index].topics.length;b++)
+          - topics.push(dett.organizationsettings.call.calls[call.index].topics[b].name)
         p=global.__("Admitted projects") + ": "
         ul
           each cat in admitted
@@ -20,47 +20,47 @@ div
         p=global.__("Topics") + ": " + topics.join(", ")
         p=dett.organizationsettings.call.calls[call.index].excerpt
 
-  .row
-    .col-md-3
+  tr
+    th(scope="row")
       .text-right
         b=global.__('Topics')
-    .col-md-9
-      p=topics.join(", ")
-  .row
-    .col-md-3
+    td
+      p=call.topics.join(", ")
+  tr
+    th(scope="row")
       .text-right
         b=global.__('Proposal Name')
-    .col-md-9
+    td
       h5=call.admitted[call.performance].title
-  .row
-    .col-md-3
+  tr
+    th(scope="row")
       .text-right
         if call.admitted[call.performance].users.lenght>1
           b=global.__('Authors')
         else
           b=global.__('Author')
-    .col-md-9
+    td
       ul.mb-0
         each performer in call.admitted[call.performance].users
           li=performer.stagename
-  .row
-    .col-md-3
+  tr
+    th(scope="row")
       .text-right
         b=global.__('Reference')
-    .col-md-9=user.stagename
-  .row
-    .col-md-3
+    td=user.stagename
+  tr
+    th(scope="row")
       .text-right
         b=global.__('Reference Email')
-    .col-md-9=user.email
-  .row
-    .col-md-3
+    td=user.email
+  tr
+    th(scope="row")
       .text-right
         if call.subscriptions.lenght>1
           b=global.__('Authors') + " " + global.__('availability')
         else
           b=global.__('Author') + " " + global.__('availability')
-    .col-md-9
+    td
       each subscription in call.subscriptions
         if subscription.subscriber_id
           li
@@ -71,26 +71,30 @@ div
                 - var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 - var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 li= days[d.getDay()] + " " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear()
-  .row
-    .col-md-3
+  tr
+    th(scope="row")
       .text-right
         b=global.__('Packages')
-    .col-md-9
-      - var total = 0;
-      table.table
+    td
+      table.table(style="background:none;")
+        - var total = 0;
         each subscription in call.subscriptions
+          - console.log("STOCAZZO")
+          - console.log(subscription.days)
           if subscription.subscriber_id
-            thead
-              tr
-                th(colspan="3",style="border-top:0;")
-                  h4.mb-0=subscription.stagename
+            - var subscriber_total = 0;
+            tr
+              td(colspan="3",style="border-top:0;")
+                h4.mb-0=subscription.stagename
             each package in subscription.packages
               tr
                 - console.log(package)
                 - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
                   - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                  - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
                 - else 
                   - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                  - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
                 td
                   h5!=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
                   div!=dett.organizationsettings.call.calls[call.index].packages[package.id].description
@@ -110,21 +114,23 @@ div
                 tr
                   td(style="border-top:0;")
                     if subscription.days.length = 1
-                      b=subscription.days.length + " " + global.__('day')
+                      !=subscription.days.length + " " + global.__('day')
                     else
-                      b=subscription.days.length + " " + global.__('days')
+                      !=subscription.days.length + " " + global.__('days')
                   td(style="border-top:0;")
                     .text-right
-                      b=global.__("Total")
+                      !=global.__("Total")
                   td(style="border-top:0;")
                     .text-right
-                      b="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
-                     
+                      !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
+            tr
+              td(colspan="2")
+                b=global.__('Total amount for')+" "+subscription.stagename
+              td
+                .text-right
+                  b="€ "+subscriber_total
+                        
         tr
-          td(colspan="2")=global.__("Amount to pay if the submission will be approved")
-          td
+          td(colspan="2", style="border-top:0;")=global.__("Amount to pay if the submission will be approved")
+          td(style="border-top:0;")
             .text-right="€ "+total
-
-    
-  pre=JSON.stringify(call, null, '\t')
-    

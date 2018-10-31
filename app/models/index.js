@@ -12,3 +12,4 @@ require('./Playlist');
 require('./Video');
 require('./News');
 require('./AddressDB');
+require('./Subscription');
