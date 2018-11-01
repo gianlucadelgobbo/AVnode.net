@@ -13,7 +13,6 @@ import partnerCategories from "../components/partnerCategories/reducers";
 import footage from "../components/footage/reducers";
 import playlists from "../components/playlists/reducers";
 import signup from "../components/signup/reducers";
-
 // import preferences from './preferences';
 
 const reducer = combineReducers({

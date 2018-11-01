@@ -15,6 +15,7 @@ import Table from "../../table";
 import { injectIntl, FormattedMessage } from "react-intl";
 import LateralMenu from "../lateralMenu";
 import { ACTION, ERROR_MEMBERS_TO_DISPLAY } from "../../common/form/labels";
+import ErrorMessage from "../../errorMessage";
 
 class MembersTable extends Component {
   componentDidMount() {
@@ -86,6 +87,7 @@ class MembersTable extends Component {
             width: 100,
             Cell: props => {
               const { original } = props;
+              let model = { id: original._id, value: original.stagename };
               return (
                 <Button
                   bsStyle="danger"
@@ -94,7 +96,7 @@ class MembersTable extends Component {
                     showModal({
                       type: MODAL_REMOVE,
                       props: {
-                        onRemove: () => removeModel({ id: original._id })
+                        onRemove: () => removeModel(model)
                       }
                     })
                   }
@@ -123,7 +125,7 @@ class MembersTable extends Component {
       isFetching,
       errorMessage
     } = this.props;
-
+    console.log(errorMessage);
     return (
       <div>
         <div className="row">
@@ -144,7 +146,7 @@ class MembersTable extends Component {
                   onClick={() =>
                     showModal({
                       type: MODAL_ADD_MEMBERS,
-                      props:{_id}
+                      props: { _id }
                     })
                   }
                 >
@@ -158,11 +160,11 @@ class MembersTable extends Component {
             </div>
             <div className="row">
               <div className="col-md-12">
-                {!list.length && <div>{ERROR_MEMBERS_TO_DISPLAY}</div>}
+                {/*!list.length && <div>{ERROR_MEMBERS_TO_DISPLAY}</div>*/}
 
                 {isFetching && <Loading />}
 
-                {errorMessage && <div>{errorMessage}</div>}
+                {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
                 {list && this.renderTable()}
               </div>

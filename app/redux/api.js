@@ -533,9 +533,18 @@ export const fetchCrewMembers = ({ id }) => {
 };
 
 export const saveCrewMembers = model =>
-  axios.put(`crews/${model._id}/members`, model).then(result => {
-    return result.data;
-  });
+  axios
+    .get(`crews/${model.id}/members/add/${model.value}`, model)
+    .then(result => {
+      return result.data;
+    });
+
+export const removeCrewMembers = model =>
+  axios
+    .get(`crews/${model.id}/members/remove/${model.value}`, model)
+    .then(result => {
+      return result.data;
+    });
 
 // - organization
 
