@@ -8,6 +8,8 @@ import validate from "./validate";
 import asyncValidate from "./asyncValidate";
 import { saveModel } from "../../../crews/members/actions";
 import { loadSuggestion } from "../../../../api";
+import { showModal } from "../../actions";
+import { MODAL_SAVED } from "../../constants";
 
 const getSuggestionValue = suggestion => suggestion.stagename;
 
@@ -55,7 +57,7 @@ class AddMembersForm extends Component {
 
   submitForm(event, value, id) {
     event.preventDefault();
-    const { saveModel } = this.props;
+    const { saveModel, showModal } = this.props;
     const modelToSave = this.createModelToSave(value, id);
     return saveModel(modelToSave).then(model => {
       if (model && model.id) {
@@ -113,7 +115,7 @@ class AddMembersForm extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveModel }, dispatch);
+  bindActionCreators({ saveModel, showModal }, dispatch);
 
 AddMembersForm = connect(
   mapStateToProps,
