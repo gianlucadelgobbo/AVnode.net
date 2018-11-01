@@ -46,9 +46,9 @@ module.exports.mySendMailer = (data, cb) => {
   params.Destination.ToAddresses = [ data.message.to ];
   params.Message.Body.Html.Data = HTML_FORMAT_BODY;
   params.Message.Body.Text.Data = TEXT_FORMAT_BODY;
-  params.Message.Subject.Data = 'AVnode.net | ' + data.email_content.title;
-  params.Source = process.env.MAILFROM; /* required */
-  params.ReplyToAddresses = [ process.env.MAILFROM ];
+  params.Message.Subject.Data = data.email_content.subject;
+  params.Source = data.message.from ? data.message.from : process.env.MAILFROM; /* required */
+  params.ReplyToAddresses = [ data.message.from ? data.message.from : process.env.MAILFROM ];
 
   logger.info(params);
     

@@ -209,6 +209,7 @@ router.sendEmailVericaition = (req, res) => {
                 email_content: {
                   site:    req.protocol+"://"+req.headers.host,
                   title:    __("Email Confirm"),
+                  subject:  __("Email Confirm")+' | AVnode.net',
                   block_1:  __("We’ve received a request to add this new email")+": "+user.emails[item].email,
                   button:   __("Click here to confirm"),
                   block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),

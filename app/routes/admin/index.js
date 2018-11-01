@@ -5,6 +5,7 @@ const get = require('./api/get');
 const put = require('./api/put');
 const post = require('./api/post');
 const upload = require('./api/upload');
+const tools = require('./tools/tools');
 
 const logger = require('../../utilities/logger');
 
@@ -102,6 +103,8 @@ router.get('/api/*', (req, res) => {
 router.get('/api', (req, res) => {
   res.status(404).json({ error: `API_NOT_FOUND` });
 });
+
+router.use('/tools', tools);
 
 router.get('/*', (req, res) => {
   res.render('admin/index', {
