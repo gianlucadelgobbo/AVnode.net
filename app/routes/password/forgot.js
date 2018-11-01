@@ -45,6 +45,7 @@ router.post('/', (req, res) => {
               confirm: token,
               site:    'http://'+req.headers.host,
               title:    __("Password reset"),
+              subject:  __("Password reset")+' | AVnode.net',
               block_1:  __("We’ve received a request to reset your password."),
               button:   __("Click here to reset your password"),
               block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),

@@ -243,11 +243,13 @@ router.post('/', (req, res) => {
               mailer.mySendMailer({
                 template: 'participate',
                 message: {
-                  to: req.user.email
+                  to: req.user.stagename+" <"+req.user.email+">",
+                  from: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"
                 },
                 email_content: {
                   site:    req.protocol+"://"+req.headers.host,
-                  title:   data.organizationsettings.call.calls[req.session.call.index].title + " " + __("Call Submission"),
+                  title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
+                  subject: data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
                   block_1:  __("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+__("from")+" <b>"+req.user.stagename+"</b>",
                   block_1_plain:  __("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+__("from")+" "+req.user.stagename+"",
                   user: req.user,
@@ -261,7 +263,7 @@ router.post('/', (req, res) => {
                 }
               }, function (err){
                 if (err) {
-                  msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')}]};
+                  msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
                 } else {
                   req.session.call.step = parseInt(req.body.step)+1;
                 }

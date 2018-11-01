@@ -82,6 +82,7 @@ router.post('/', (req, res) => {
                       email: data.email,
                       confirm: data.confirm,
                       title:    __("Welcome!"),
+                      subject:  __("Welcome!")+' | AVnode.net',
                       block_1:  __("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
                       button:   __("Confirm Account"),
                       block_2:  __("If that doesn't work, copy and paste the following link in your browser:"),
