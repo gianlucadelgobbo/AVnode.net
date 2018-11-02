@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Form from "./form";
+import Form from "../../../crews/members/add";
 
 class AddMembersModal extends Component {
   render() {
