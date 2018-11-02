@@ -23,7 +23,7 @@ block content
                 td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
                   b=global.__('Topics')
                 td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                  p=call.topics.join(", ")
+                  !=call.topics.join(", ")
               tr
                 td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
                   b=global.__('Proposal Name')

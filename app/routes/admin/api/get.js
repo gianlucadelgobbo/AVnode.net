@@ -107,9 +107,39 @@ router.addMember = (req, res) => {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
     } else if (!crew) {
-      res.status(404).json({ error: `USER_NOT_ALLOWED_TO_EDIT` });
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      }, null);
     } else if (crew.members.indexOf(req.params.member)!==-1) {
-      res.status(404).json({ error: `MEMBER_IS_ALREADY_MEMBER` });
+      res.status(404).json({
+        "message": "MEMBER_IS_ALREADY_MEMBER",
+        "name": "MongoError",
+        "stringValue":"\"MEMBER_IS_ALREADY_MEMBER\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"MEMBER_IS_ALREADY_MEMBER",
+          "name":"MongoError",
+          "stringValue":"\"MEMBER_IS_ALREADY_MEMBER\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      }, null);
     } else {
       crew.members.push(req.params.member);
       crew.save(function(err){
@@ -129,9 +159,39 @@ router.removeMember = (req, res) => {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
     } else if (!crew) {
-      res.status(404).json({ error: `USER_NOT_ALLOWED_TO_EDIT` });
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      }, null);
     } else if (crew.members.indexOf(req.params.member)===-1) {
-      res.status(404).json({ error: `MEMBER_IS_NOT_A_MEMBER` });
+      res.status(404).json({
+        "message": "MEMBER_IS_NOT_A_MEMBER",
+        "name": "MongoError",
+        "stringValue":"\"MEMBER_IS_NOT_A_MEMBER\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"MEMBER_IS_NOT_A_MEMBER",
+          "name":"MongoError",
+          "stringValue":"\"MEMBER_IS_NOT_A_MEMBER\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      }, null);
     } else {
       crew.members.splice(crew.members.indexOf(req.params.member), 1);
       //res.json(crew);
