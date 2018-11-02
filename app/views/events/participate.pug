@@ -4,25 +4,14 @@ block content
     .user_dett.single_event_page
       - var perc = parseInt((100/participateMenu.length)*(call.step+1))
       h1=global.__("Participate") + ": " + global.__("Step")+ " " + (call.step+1)
-      hr
-      .progress
+      .progress.mb-3
         .progress-bar(role="progressbar" style='width: '+perc+'%;', aria-valuenow=perc, aria-valuemin='0', aria-valuemax='100')=perc+"%"
-      hr
-      ul.nav.nav-pills.nav-wizard.nav-fill.mb-3
+      ul.nav.nav-pills.nav-wizard.mb-3
         each val, index in participateMenu 
-          li.nav-item(class=call.step==index ? "active" : index>call.step ? "disabled" : "link")
-            if index>0
-              .nav-wedge
-            if index>=call.step
-              span.nav-link(class=call.step==index ? "active" : index>call.step ? "disabled" : undefined)
-                !=(index+1)+". "
-                span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
-            else 
-              a.nav-link(href='?step='+index)
-                !=(index+1)+". "
-                span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
-            if index<participateMenu.length-1
-              .nav-arrow
+          li.nav-item
+            a.nav-link(href=index>call.step ? '' : '?step='+index, class=call.step==index ? "active" : index>call.step ? "disabled" : "")
+              !=(index+1)+". "
+              span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
       if msg
         include ../partials/msg  
       - if (dett.subtitle)
