@@ -34,7 +34,7 @@ class MembersTable extends Component {
     const { intl } = this.props;
     return intl.formatMessage(obj);
   };
-
+  /*
   onAddModel(values) {
     const { showModal, addModel, model } = this.props;
     const modelToSave = this.createAddModelToSave(values);
@@ -48,9 +48,9 @@ class MembersTable extends Component {
       });
     });
   }
-
+  */
   renderTable() {
-    const { showModal, removeModel, list = {} } = this.props;
+    const { showModal, removeModel, list = {},  match: {params: { _id }}, } = this.props;
     const { members = [] } = list;
 
     const MemberItem = {
@@ -87,7 +87,7 @@ class MembersTable extends Component {
             width: 100,
             Cell: props => {
               const { original } = props;
-              let model = { id: original._id, value: original.stagename };
+              let model = { idmember: original._id, idcrew: _id };
               return (
                 <Button
                   bsStyle="danger"

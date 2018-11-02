@@ -6,27 +6,33 @@ import { FORM_NAME } from "./constants";
 import { autocompleteComponent } from "../../../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
-import { saveModel } from "../../../crews/members/actions";
+import { fetchModel, saveModel } from "../../../crews/members/actions";
 import { loadSuggestion } from "../../../../api";
-import { showModal } from "../../actions";
+import { showModal, hideModal } from "../../actions";
 import { MODAL_SAVED } from "../../constants";
+
 
 const getSuggestionValue = suggestion => suggestion.stagename;
 
-const renderSuggestion = suggestion => <div>{suggestion.stagename}</div>;
+const getSuggestionID = suggestion => suggestion.id;
+
+const renderSuggestion = suggestion => <div id={suggestion.id}>{suggestion.stagename}</div>;
 
 class AddMembersForm extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       value: "",
+      idmember:"",
       suggestions: []
     };
   }
 
   onChange = (event, { newValue }) => {
     this.setState({
-      value: newValue
+      value: newValue,
+      idmember:event.target.id
     });
   };
 
@@ -44,38 +50,38 @@ class AddMembersForm extends Component {
     });
   };
 
-  createModelToSave(value, id) {
+  createModelToSave(idmember, idcrew) {
     //clone obj
     let model = {};
 
-    model.value = value;
+    model.idmember = idmember;
 
-    model.id = id;
+    model.idcrew = idcrew;
 
     return model;
   }
 
-  submitForm(event, value, id) {
+  submitForm(event, idmember, idcrew) {
     event.preventDefault();
-    const { saveModel, showModal } = this.props;
-    const modelToSave = this.createModelToSave(value, id);
+    const { fetchModel, saveModel, hideModal } = this.props;
+    const modelToSave = this.createModelToSave(idmember, idcrew);
     return saveModel(modelToSave).then(model => {
       if (model && model.id) {
-        showModal({
-          type: MODAL_SAVED
-        });
+        fetchModel(idcrew);
+        hideModal();
       }
     });
   }
 
   render() {
-    const { submitting, id } = this.props;
-    const { value, suggestions } = this.state;
+    const { submitting, idcrew } = this.props;
+    const { value, suggestions, idmember } = this.state;
 
     const inputProps = {
       className: "form-control",
       placeholder: "Type a members",
       value,
+      idmember,
       onChange: this.onChange
     };
 
@@ -94,6 +100,7 @@ class AddMembersForm extends Component {
             this
           )}
           getSuggestionValue={getSuggestionValue}
+          getSuggestionID={getSuggestionID}
           renderSuggestion={renderSuggestion}
         />
 
@@ -101,7 +108,7 @@ class AddMembersForm extends Component {
 
         <button
           disabled={submitting}
-          onClick={() => this.submitForm(event, value, id)}
+          onClick={() => this.submitForm(event, idmember, idcrew)}
           className="btn btn-primary btn-lg btn-block"
         >
           {submitting ? "Saving..." : "Save"}
@@ -115,7 +122,7 @@ class AddMembersForm extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ saveModel, showModal }, dispatch);
+  bindActionCreators({ saveModel, showModal, fetchModel, hideModal }, dispatch);
 
 AddMembersForm = connect(
   mapStateToProps,

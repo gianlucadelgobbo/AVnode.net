@@ -534,14 +534,14 @@ export const fetchCrewMembers = ({ id }) => {
 
 export const saveCrewMembers = model =>
   axios
-    .get(`crews/${model.id}/members/add/${model.value}`, model)
+    .get(`crews/${model.idcrew}/members/add/${model.idmember}`, model)
     .then(result => {
       return result.data;
     });
 
 export const removeCrewMembers = model =>
   axios
-    .get(`crews/${model.id}/members/remove/${model.value}`, model)
+    .get(`crews/${model.idcrew}/members/remove/${model.idmember}`, model)
     .then(result => {
       return result.data;
     });
