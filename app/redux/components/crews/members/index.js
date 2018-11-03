@@ -25,6 +25,7 @@ class MembersTable extends Component {
         params: { _id }
       }
     } = this.props;
+    console.log(_id);
     fetchModel({
       id: _id
     });
@@ -50,7 +51,14 @@ class MembersTable extends Component {
   }
   */
   renderTable() {
-    const { showModal, removeModel, list = {},  match: {params: { _id }}, } = this.props;
+    const {
+      showModal,
+      removeModel,
+      list = {},
+      match: {
+        params: { _id }
+      }
+    } = this.props;
     const { members = [] } = list;
 
     const MemberItem = {
@@ -87,7 +95,7 @@ class MembersTable extends Component {
             width: 100,
             Cell: props => {
               const { original } = props;
-              let model = { idmember: original._id, idcrew: _id };
+              let model = { idmember: original._id, id: _id };
               return (
                 <Button
                   bsStyle="danger"

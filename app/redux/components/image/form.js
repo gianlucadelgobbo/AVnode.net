@@ -19,16 +19,17 @@ class ProfileImageForm extends Component {
     });
   }
 
-  renderImageType(components){
+  renderImageType(components) {
     let filetypes = components.image.config.filetypes;
-    let renderFiletypes = filetypes.map((filetype)=>`${'image/'+filetype}`)
+    let renderFiletypes = filetypes.map(filetype => `${"image/" + filetype}`);
+    console.log(renderFiletypes);
     return renderFiletypes;
-  } 
+  }
 
   render() {
     const { submitting, handleSubmit, showModal, images } = this.props;
 
-    const {components} = properties.cpanel.profile.forms.image;
+    const { components } = properties.cpanel.profile.forms.image;
 
     return (
       <form onSubmit={handleSubmit(this.submitForm.bind(this))}>

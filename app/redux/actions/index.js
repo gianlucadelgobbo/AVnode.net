@@ -110,7 +110,6 @@ export const saveModel = ({ constants, selectors, request, schema, model }) => (
       const response = error.response || {};
       const data = response.data || {};
       const message = data.message || {};
-
       dispatch({
         type: constants.SAVE_MODEL_ERROR,
         errorMessage: message || "Something went wrong.",
