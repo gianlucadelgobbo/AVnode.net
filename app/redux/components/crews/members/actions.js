@@ -8,7 +8,7 @@ import {
 import * as selectors from "../selectors";
 import * as constants from "../constants";
 
-export const fetchModel =  id  =>
+export const fetchModel = ({ id }) =>
   generateFetchModel({
     selectors,
     constants,

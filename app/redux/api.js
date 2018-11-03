@@ -533,15 +533,24 @@ export const fetchCrewMembers = ({ id }) => {
 };
 
 export const saveCrewMembers = model =>
+  /*new Promise((fulfil, reject) => {
+    reject({
+      response: {
+        data: {
+          message: "Bella pie"
+        }
+      }
+    });
+  });*/
   axios
-    .get(`crews/${model.idcrew}/members/add/${model.idmember}`, model)
+    .get(`crews/${model.id}/members/add/${model.idmember}`, model)
     .then(result => {
       return result.data;
     });
 
 export const removeCrewMembers = model =>
   axios
-    .get(`crews/${model.idcrew}/members/remove/${model.idmember}`, model)
+    .get(`crews/${model.id}/members/remove/${model.idmember}`, model)
     .then(result => {
       return result.data;
     });
