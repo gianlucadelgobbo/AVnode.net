@@ -11,12 +11,10 @@ import { loadSuggestion } from "../../../../api";
 import { showModal, hideModal } from "../../actions";
 import { MODAL_SAVED } from "../../constants";
 
-
 class AddMembersForm extends Component {
-
   render() {
-    const { 
-      submitting, 
+    const {
+      submitting,
       inputProps,
       suggestions,
       placeholder,
@@ -26,9 +24,9 @@ class AddMembersForm extends Component {
       getSuggestionID,
       renderSuggestion,
       name,
-      onSubmitForm 
+      onSubmitForm
     } = this.props;
-    
+
     const { idmember } = inputProps;
 
     return (
@@ -50,7 +48,7 @@ class AddMembersForm extends Component {
 
         <button
           disabled={submitting}
-          onClick={()=>onSubmitForm(idmember)}
+          onClick={() => onSubmitForm(idmember)}
           className="btn btn-primary btn-lg btn-block"
         >
           {submitting ? "Saving..." : "Save"}
@@ -59,7 +57,6 @@ class AddMembersForm extends Component {
     );
   }
 }
-
 
 AddMembersForm = reduxForm({
   form: FORM_NAME,

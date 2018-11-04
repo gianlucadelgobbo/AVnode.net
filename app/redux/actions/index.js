@@ -87,7 +87,7 @@ export const saveModel = ({ constants, selectors, request, schema, model }) => (
   // if (selectors.getModelIsFetching(getState()), model.id) {
   //     return;
   // }
-
+  console.log(model);
   dispatch({
     type: constants.SAVE_MODEL_REQUEST,
     id: model.id
@@ -97,7 +97,7 @@ export const saveModel = ({ constants, selectors, request, schema, model }) => (
     response => {
       dispatch({
         type: constants.SAVE_MODEL_SUCCESS,
-        response: normalize(response.data || [], schema),
+        response: normalize(response || [], schema),
         id: model.id
       });
 
