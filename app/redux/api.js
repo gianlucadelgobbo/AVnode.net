@@ -298,6 +298,12 @@ export const savePerformancePublic = model => {
   });
 };
 
+export const fetchSlugNewPerformance = slug => {
+  return axios.get(`performances/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+
 // - images
 
 export const fetchPerformanceImages = ({ id }) => {
@@ -498,8 +504,8 @@ export const fetchSlugCrew = () => {
 };
 */
 
-export const fetchSlugCrew = ({ id }, slug) => {
-  return axios.get(`crews/${id}/public/slugs/${slug}`).then(result => {
+export const fetchSlugSectionPublic = (section, id, slug) => {
+  return axios.get(`${section}/${id}/public/slugs/${slug}`).then(result => {
     return result.data;
   });
 };
@@ -509,7 +515,6 @@ export const fetchSlugNewCrew = slug => {
     return result.data;
   });
 };
-
 // - images
 
 export const fetchCrewImages = ({ id }) => {

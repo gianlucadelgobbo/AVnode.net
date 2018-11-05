@@ -15,7 +15,12 @@ import {
   INVALID_IMAGE_SIZE,
   INVALID_STRING_MIN_MAX
 } from "./errors";
-import { fetchSlug, fetchSlugCrew, fetchSlugNewCrew } from "../../../api";
+import {
+  fetchSlug,
+  fetchSlugSectionPublic,
+  fetchSlugNewCrew,
+  fetchSlugNewPerformance
+} from "../../../api";
 
 const validators = validatorsObj.validators;
 
@@ -52,13 +57,14 @@ export const validateSlugWithID = ({
   result,
   index,
   errorArray,
-  id
+  id,
+  section
 }) => {
   // Crew slug
   let slugFromValues = value;
   if (slugFromValues !== previousValue) {
     promises.push(
-      fetchSlugCrew(id, slugFromValues)
+      fetchSlugSectionPublic(section, id, slugFromValues)
         .then(response => {
           if (response.exist) {
             Object.assign(result, { slug: SLUG_IS_TAKEN });
@@ -85,6 +91,32 @@ export const validateSlugNewCrew = ({
   if (slugFromValues !== previousValue) {
     promises.push(
       fetchSlugNewCrew(slugFromValues)
+        .then(response => {
+          if (response.exist) {
+            Object.assign(result, { slug: SLUG_IS_TAKEN });
+            if (Array.isArray(errorArray)) {
+              errorArray[index] = result;
+            }
+          }
+        })
+        .catch()
+    );
+  }
+};
+
+export const validateSlugNewPerformance = ({
+  value,
+  previousValue,
+  promises,
+  result,
+  index,
+  errorArray
+}) => {
+  // slug
+  let slugFromValues = value;
+  if (slugFromValues !== previousValue) {
+    promises.push(
+      fetchSlugNewPerformance(slugFromValues)
         .then(response => {
           if (response.exist) {
             Object.assign(result, { slug: SLUG_IS_TAKEN });

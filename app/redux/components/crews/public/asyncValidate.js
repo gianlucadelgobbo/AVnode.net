@@ -3,19 +3,18 @@ import {
   validateAddress
 } from "../../common/form/validators";
 import { checkIfError } from "../../common/form";
-//import { fetchSlugCrew as fetchSlug } from "../../../api";
 
 const asyncValidate = (values, dispatch, state) => {
   const promises = [];
   const result = {};
-
   // slug
   validateSlugWithID({
     value: values.slug,
     previousValue: state.initialValues.slug,
     promises,
     result,
-    id: state.model.id
+    id: state.model.id,
+    section: "crews"
   });
 
   return Promise.all(promises)
