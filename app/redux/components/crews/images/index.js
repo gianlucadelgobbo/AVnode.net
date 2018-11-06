@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import LateralMenu from "../lateralMenu";
 import { showModal } from "../../modal/actions";
 import { fetchModel, saveModel } from "./actions";
-import {getModel, getIsFetching, getErrorMessage} from "../selectors";
+import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import ImageForm from "../../image";
 import { withRouter } from "react-router";
 import { FormattedMessage } from "react-intl";
@@ -57,8 +57,8 @@ const mapStateToProps = (
   }
 ) => ({
   model: getModel(state, _id),
-  isFetching: getIsFetching(state),
-  errorMessage: getErrorMessage(state)
+  isFetching: getModelIsFetching(state, _id),
+  errorMessage: getModelErrorMessage(state, _id)
 });
 
 const mapDispatchToProps = dispatch =>

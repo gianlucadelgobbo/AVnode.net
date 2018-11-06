@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LateralMenu from "../lateralMenu";
 import { showModal } from "../../modal/actions";
-import {getModel, getDefaultModel, getIsFetching, getErrorMessage} from "../selectors";
+import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import { fetchModel, saveModel } from "./actions";
 import ImageForm from "../../image";
 import { FormattedMessage } from "react-intl";
@@ -50,10 +50,14 @@ class CrewImage extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, {
+  match: {
+    params: { _id }
+  }
+}) => ({
   model: getModel(state, _id),
-  isFetching: getIsFetching(state),
-  errorMessage: getErrorMessage(state)
+  isFetching: getModelIsFetching(state, _id),
+  errorMessage: getModelErrorMessage(state, _id)
 });
 
 const mapDispatchToProps = dispatch =>
