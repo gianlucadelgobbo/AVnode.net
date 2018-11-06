@@ -271,5 +271,6 @@
 	"We have sent you an email with a copy of your submission to": "We have sent you an email with a copy of your submission to",
 	"Submission of": "Submission of",
 	"to": "to",
-	"sent with success!!!": "sent with success!!!"
+	"sent with success!!!": "sent with success!!!",
+	"File upload only supports the following filetypes": "File upload only supports the following filetypes"
 }
