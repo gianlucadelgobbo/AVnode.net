@@ -43,7 +43,7 @@ class Image extends Component {
     const modelToSave = this.createModelToSave(values);
 
     // Add auth user _id
-    modelToSave._id = model._id;
+    modelToSave.id = model._id;
 
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(model => {
