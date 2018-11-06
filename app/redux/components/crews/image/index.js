@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LateralMenu from "../lateralMenu";
 import { showModal } from "../../modal/actions";
-import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching} from "../selectors";
+import {getModel, getDefaultModel, getIsFetching, getErrorMessage} from "../selectors";
 import { fetchModel, saveModel } from "./actions";
-import { getErrorMessage, getDefaultModelIsFetching } from "../../events/selectors";
 import ImageForm from "../../image";
 import { FormattedMessage } from "react-intl";
 
@@ -52,9 +51,9 @@ class CrewImage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  model: getDefaultModel(state),
-  isFetching: getDefaultModelIsFetching(state),
-  errorMessage: getDefaultModelErrorMessage(state),
+  model: getModel(state, _id),
+  isFetching: getIsFetching(state),
+  errorMessage: getErrorMessage(state)
 });
 
 const mapDispatchToProps = dispatch =>
