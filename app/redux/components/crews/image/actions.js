@@ -15,7 +15,7 @@ export const fetchModel = ({id} = {}) => generateFetchModel({
 export const saveModel = (model) => generateSaveModel({
     selectors,
     constants,
-    request: api.saveCrewImage,
+    request: api.saveCrewImages,
     schema: crew,
     model,
 });
