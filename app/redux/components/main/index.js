@@ -37,7 +37,7 @@ import PerformancesVideos from '../performances/videos';
 // // Crews
 import Crews from '../crews/index.js';
 import CrewsPublic from '../crews/public';
-import CrewsImages from '../crews/images';
+import CrewsImages from '../crews/image';
 import CrewsMembers from '../crews/members';
 import CrewsOrganization from '../crews/organization';
 
@@ -92,7 +92,7 @@ class MainApp extends Component {
                             <Route path="/admin/crews" component={Crews}/>
 
                             <Route path="/admin/performances/:_id/public/" component={PerformancesPublic}/>
-                            <Route path="/admin/performances/:_id/image/" component={PerformancesImages}/>
+                            <Route path="/admin/performances/:_id/images/" component={PerformancesImages}/>
                             <Route path="/admin/performances/:_id/galleries/" component={PerformancesGalleries}/>
                             <Route path="/admin/performances/:_id/videos/" component={PerformancesVideos}/>
                             <Route path="/admin/performances" component={Performances}/>
