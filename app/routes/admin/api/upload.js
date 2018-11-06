@@ -70,7 +70,7 @@ upload.uploader = (req, res, done) => {
 
   up(req, res, (err, r) => {
     error = false;
-    if (err) {
+    if (err instanceof multer.MulterError) {
       logger.debug('upload err');
       logger.debug(err);
       done({

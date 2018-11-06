@@ -102,6 +102,7 @@ router.get('/:section-sitemap.xml', (req, res) => {
 router.use('/:slug', show);
 
 router.use('/', home);
+
 /*
 router.use('/user', user);
 router.use('/performers', performers);
