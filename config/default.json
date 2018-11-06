@@ -249,7 +249,7 @@
                 },
                 "filetypes": ["jpg","jpeg","png","gif","svg"],
                 "storage": "/glacier/users_originals/",
-                "maxsize": 2048000,
+                "maxsize": 2048,
                 "minwidth": 1000,
                 "minheight": 1000,
                 "sizes": {
@@ -557,7 +557,7 @@
                 },
                 "filetypes": ["jpg","jpeg","png","gif","svg"],
                 "storage": "/glacier/users_originals/",
-                "maxsize": 2048000,
+                "maxsize": 2048,
                 "minwidth": 1000,
                 "minheight": 1000,
                 "sizes": {
