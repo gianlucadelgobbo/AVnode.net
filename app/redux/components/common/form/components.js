@@ -1229,14 +1229,14 @@ export const renderDropzoneInput = field => {
       <Dropzone
         className="attachment-dropzone"
         name={field.properties.fields.name}
-        accept={field.accept}
-        maxSize={field.properties.maxsize}
-        multiple={field.multiple || false}
-        onDropRejected={() =>
+        //accept={field.accept}
+        //maxSize={field.properties.maxsize}
+        //multiple={field.multiple || false}
+        /*</div>onDropRejected={() =>
           alert(
             "Unable to upload the file: allowed file size exceeded (max 20 MB)"
           )
-        }
+        }*/
         onDrop={filesToUpload => {
           let files = [...field.input.value, ...filesToUpload];
           files = files.filter((item, pos) => files.indexOf(item) === pos);
