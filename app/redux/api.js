@@ -524,10 +524,18 @@ export const fetchCrewImages = ({ id }) => {
 };
 
 export const saveCrewImages = model => {
-  return axios.get(`crews/${model._id}/image`, model).then(result => {
-    return result.data;
-  });
-};
+   // convert image to Form Data
+   let formBox = new FormData();
+   formBox.append("image", model.image);
+ 
+   // define request headers
+   const config = { headers: { "Content-Type": "multipart/form-data" } };
+ 
+   return axios.put(`crews/${model._id}/image`, formBox, config).then(result => {
+     return result.data;
+   });
+ };
+  
 
 // - members
 
