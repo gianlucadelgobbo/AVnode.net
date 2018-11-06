@@ -96,6 +96,7 @@ upload.uploader = (req, res, done) => {
         }
       }
       if (error) {
+        logger.debug('ERRORERRORERRORERRORERRORERRORERRORERRORERROR');
         done({ errors: req.files }, null);
       } else {
         imageUtil.resizer(req.files[options.fields.name], options, (resizeerr, info) => {

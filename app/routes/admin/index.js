@@ -28,6 +28,9 @@ router.get('/api/profile/:form/', (req, res) => {
 router.put('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
+  logger.debug("req.params");
+  logger.debug(req.params);
+  logger.debug(req.body);
   if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     upload.uploader(req, res, (err, data) => {
       for (const item in data) req.body[item] = data[item];
@@ -56,10 +59,18 @@ router.get('/api/:sez/:id/:form/', (req, res) => {
 });
 
 router.put('/api/:sez/:id/:form/', (req, res) => {
+  logger.debug("req.params");
+  logger.debug(req.params);
+  logger.debug(req.body);
   if (['profile/image','crews/image','footage/public','events/image','performances/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     upload.uploader(req, res, (err, data) => {
-      for (const item in data) req.body[item] = data[item];
-      put.putData(req, res);
+      if (err) {
+        res.status(500).json({ error: `${JSON.stringify(err)}` });
+      } else {
+        for (const item in data) req.body[item] = data[item];
+        put.putData(req, res);
+      }
+
     });
   } else {
     put.putData(req, res);
