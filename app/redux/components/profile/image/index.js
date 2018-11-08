@@ -48,7 +48,7 @@ class ProfileImage extends Component {
 const mapStateToProps = (state) => ({
     model: getDefaultModel(state),
     isFetching: getDefaultModelIsFetching(state),
-    errorMessage: getDefaultModelErrorMessage(state),
+    errorMessage: getDefaultModelErrorMessage(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
