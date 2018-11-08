@@ -282,7 +282,11 @@ export const removePerformance = ({ id }) => {
   });
 };
 
-export const postPerformance = obj => axios.post(`performances/`, obj);
+export const postPerformance = obj => {
+  return axios.post(`performances/new/`, obj).then(result => {
+    return result.data;
+  });
+};
 
 // - public
 
