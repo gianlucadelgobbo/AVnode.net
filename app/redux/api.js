@@ -316,8 +316,19 @@ export const fetchPerformanceImages = ({ id }) => {
   });
 };
 
-export const savePerformanceImages = model =>
-  axios.post(`performances/${model._id}/image`, model);
+export const savePerformanceImages = model => {
+  // convert image to Form Data
+  let formBox = new FormData();
+  formBox.append("image", model.image);
+
+  // define request headers
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+  return axios.put(`performances/${model.id}/image`, formBox, config).then(result => {
+    return result.data;
+  });
+};
+//axios.post(`performances/${model._id}/image`, model);
 
 // - galleries
 
@@ -528,10 +539,18 @@ export const fetchCrewImages = ({ id }) => {
 };
 
 export const saveCrewImages = model => {
-  return axios.get(`crews/${model._id}/image`, model).then(result => {
-    return result.data;
-  });
-};
+   // convert image to Form Data
+   let formBox = new FormData();
+   formBox.append("image", model.image);
+ 
+   // define request headers
+   const config = { headers: { "Content-Type": "multipart/form-data" } };
+ 
+   return axios.put(`crews/${model.id}/image`, formBox, config).then(result => {
+     return result.data;
+   });
+ };
+  
 
 // - members
 

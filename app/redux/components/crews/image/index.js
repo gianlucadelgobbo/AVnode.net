@@ -3,11 +3,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LateralMenu from "../lateralMenu";
 import { showModal } from "../../modal/actions";
-import { getModel } from "../selectors";
+import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import { fetchModel, saveModel } from "./actions";
-import { getErrorMessage, getIsFetching } from "../../events/selectors";
 import ImageForm from "../../image";
-import { withRouter } from "react-router";
 import { FormattedMessage } from "react-intl";
 
 class CrewImage extends Component {
@@ -22,7 +20,7 @@ class CrewImage extends Component {
       fetchModel,
       saveModel
     } = this.props;
-    console.log(model);
+
     return (
       <div className="row">
         <div className="col-md-2">
@@ -30,7 +28,10 @@ class CrewImage extends Component {
         </div>
         <div className="col-md-10">
           <h2 className="labelField">
-            <FormattedMessage id="CrewPublicImage" defaultMessage="MY IMAGE" />
+            <FormattedMessage
+              id="CrewPublicImage"
+              defaultMessage="CREW IMAGE"
+            />
           </h2>
 
           <br />
@@ -49,17 +50,14 @@ class CrewImage extends Component {
   }
 }
 
-const mapStateToProps = (
-  state,
-  {
-    match: {
-      params: { _id }
-    }
+const mapStateToProps = (state, {
+  match: {
+    params: { _id }
   }
-) => ({
+}) => ({
   model: getModel(state, _id),
-  isFetching: getIsFetching(state),
-  errorMessage: getErrorMessage(state)
+  isFetching: getModelIsFetching(state, _id),
+  errorMessage: getModelErrorMessage(state, _id)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -77,4 +75,4 @@ CrewImage = connect(
   mapDispatchToProps
 )(CrewImage);
 
-export default withRouter(CrewImage);
+export default CrewImage;

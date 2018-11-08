@@ -73,7 +73,22 @@ upload.uploader = (req, res, done) => {
     if (err) {
       logger.debug('upload err');
       logger.debug(err);
-      res.status(404).json({ error: `${JSON.stringify(err)}` });
+      done({
+        "message": err,
+        "name": "UploadError",
+        "stringValue": err,
+        "kind":"Date",
+        "value":null,
+        "path":"image",
+        "reason":{
+          "message": err,
+          "name":"UploadError",
+          "stringValue": err,
+          "kind":"string",
+          "value":null,
+          "path":"image"
+        }
+      }, null);
     } else if (req.files[options.fields.name] && req.files[options.fields.name].length) { // MANCA ELSE
       let conta = 0;
 
@@ -96,7 +111,23 @@ upload.uploader = (req, res, done) => {
         }
       }
       if (error) {
-        done({ errors: req.files }, null);
+        logger.debug('ERRORERRORERRORERRORERRORERRORERRORERRORERROR');
+        done({
+          "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
+          "name": "UploadError",
+          "stringValue": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
+          "kind":"Date",
+          "value":null,
+          "path":"image",
+          "reason":{
+            "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
+            "name":"UploadError",
+            "stringValue": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
+            "kind":"string",
+            "value":null,
+            "path":"image"
+          }
+        }, null);
       } else {
         imageUtil.resizer(req.files[options.fields.name], options, (resizeerr, info) => {
           conta++;
