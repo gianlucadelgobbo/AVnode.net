@@ -206,21 +206,23 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
   if (this.program && this.program.length) {
     const lang = global.getLocale();
     for(let a=0;a<this.program.length;a++){
-      let date = new Date(this.program[a].schedule.starttime);  // dateStr you get from mongodb
-      let d = date.getDate();
-      let m = date.getMonth()+1;      
-      let y = date.getFullYear();
-      let newdate = moment(this.program[a].schedule.starttime).format(config.dateFormat[lang].single);
-      if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
-        date: newdate,
-        rooms: {}
-      };
-      if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room] = {
-        venue: this.program[a].schedule.venue.name,
-        room: this.program[a].schedule.venue.room,
-        performances: []
-      };
-      if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.push(this.program[a]);
+      if (this.program[a].schedule.starttime) {
+        let date = new Date(this.program[a].schedule.starttime);  // dateStr you get from mongodb
+        let d = date.getDate();
+        let m = date.getMonth()+1;      
+        let y = date.getFullYear();
+        let newdate = moment(this.program[a].schedule.starttime).format(config.dateFormat[lang].single);
+        if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+          date: newdate,
+          rooms: {}
+        };
+        if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room] = {
+          venue: this.program[a].schedule.venue.name,
+          room: this.program[a].schedule.venue.room,
+          performances: []
+        };
+        if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.push(this.program[a]);  
+      }
     }
     return programmebydayvenueObj;
   }
