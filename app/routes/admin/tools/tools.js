@@ -816,13 +816,13 @@ router.get('/files/footagefiles', (req, res) => {
       const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
       const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
       const publicPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/footage/"); // /warehouse/2017/03
-      const oldPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse_old/"); // /warehouse/2017/03
+      const oldPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/"); // /warehouse/2017/03
       const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
       const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
       let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
       let originalFileName = '';
       if (!footages[footage].media.exists) {
-        footages[footage].media.find = `mkdir ${fileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${fileName}' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")} \;`;
+        footages[footage].media.find = `mkdir ${fileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse/", "warehouse/")} -name '${fileName}' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")} \;`;
       }
 
       if (valid.indexOf(originalFileExtension)===-1) {
@@ -853,7 +853,7 @@ router.get('/files/footagefiles', (req, res) => {
         const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
         const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
         const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
-        const oldPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse_old/"); // /warehouse/2017/03
+        const oldPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/"); // /warehouse/2017/03
         const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
         const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
         if (footages[footage].media.previewexists) {
@@ -865,9 +865,9 @@ router.get('/files/footagefiles', (req, res) => {
             footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
           }
         } else {
-          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName.replace('.png','*.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
-          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse_old/ -name '${previewFileName.replace('.png','.jpg')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \;`;
-          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse_old/ -name '${previewFileName.replace('.png','_flv.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
+          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse/", "warehouse/")} -name '${previewFileName.replace('.png','*.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
+          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse/ -name '${previewFileName.replace('.png','.jpg')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \;`;
+          //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse/ -name '${previewFileName.replace('.png','_flv.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \;`;
           //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
           //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         }
@@ -1244,29 +1244,30 @@ router.get('/files/galleryimages', (req, res) => {
       for (let media=0; media<galleries[gallery].medias.length; media++) {
         //console.log(galleries[gallery].medias[media].file);
         galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
-          galleries[gallery].medias[media].imageFormats = {};
-          galleries[gallery].medias[media].imageFormatsExists = {};
-          const previewFile = galleries[gallery].medias[media].file;
-          logger.debug(previewFile);
-          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
-          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-          const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
-          const oldPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse_old/"); // /warehouse/2017/03
-          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
-          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-            galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
-          }
-          for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-            galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
-          }
-          if (!galleries[gallery].medias[media].exists) {
-            galleries[gallery].medias[media].find = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse_old/", "warehouse_old/")} -name '${previewFileName}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \;`;
-          }
+        galleries[gallery].medias[media].imageFormats = {};
+        galleries[gallery].medias[media].imageFormatsExists = {};
+        const previewFile = galleries[gallery].medias[media].file;
+        logger.debug(previewFile);
+        const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+        const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
+        const oldPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/"); // /warehouse/2017/03
+        const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+        const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+        // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+        for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+          galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+        }
+        for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+          galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
+        }
+        if (!galleries[gallery].medias[media].exists) {
+          galleries[gallery].medias[media].mkdir = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}`;
+          galleries[gallery].medias[media].find = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")} -name '${previewFileName}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \\;`;
+        }
         data.push(galleries[gallery].medias[media]);
-        logger.debug("galleries.length "+ galleries.length+" "+ gallery);
-        logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
+        //logger.debug("galleries.length "+ galleries.length+" "+ gallery);
+        //logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
         if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
           console.log(req.path);
           res.render('admin/tools/files/showall', {
