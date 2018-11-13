@@ -636,8 +636,8 @@ router.get('/files/eventformatsgenerator', (req, res) => {
               sharp(global.appRoot+events[event].image.file)
               .resize(config.cpanel[adminsez].forms.image.components.image.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.sizes[format].h)
               .toFile(global.appRoot+events[event].image.imageFormats[format], (err, info) => {
-                logger.debug(err);
-                logger.debug(info);
+                console.log(err);
+                console.log(info);
               });
             });
           }
