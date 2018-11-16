@@ -44,9 +44,14 @@ block title
               p.boxDate=data.boxDate
             if data.boxVenue
               p.boxVenue=data.boxVenue
-          #mappa_evento.miss
-            h1="Mappa"
-            p="mancano lat/long della venue"
+          #mappa_evento
+            script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js')
+            script(src='https://cdn.mapkit.io/v1/infobox.js')
+            link(href='https://cdn.mapkit.io/v1/infobox.css', rel='stylesheet')
+            script.
+              var locations = !{JSON.stringify(data.locations)}
+            script(src='/js/mymaps.js')
+            #performer_map
   .wrapper_about_partecipate_evento
     .abouts_wrapper(style='background-image: url(/images/logo_avnode_svg_grey.svg)') 
       .container 

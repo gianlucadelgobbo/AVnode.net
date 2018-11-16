@@ -1392,6 +1392,17 @@ router.get('/addresses/showall', (req, res) => {
   });
 });
 
+router.get('/addresses/usersdbcheck', (req, res) => {
+  logger.debug('/admin/tools/addresses/usersdbcheck');
+  usersdbcheck(req, res, cb = (data) => {
+    res.render('admin/tools/addresses/usersdbcheck', {
+      title: 'admin/tools/addresses/usersdbcheck',
+      currentUrl: '/admin/tools'+req.path,
+      data: data
+    });
+  });
+});
+
 router.get('/addresses/updatedb', (req, res) => {
   logger.debug('/admin/tools/addresses/updatedb');
   showall(req, res, true, cb = (data) => {
@@ -1479,8 +1490,9 @@ const setgeometry = (req, res, s, cb) => {
 
 const getgeometry = (req, res, cb) => {
   let allres = [];
-  //AddressDB.find({country_new: {$exists: false}, locality_new: {$exists: false}, status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
-  AddressDB.find({status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  //AddressDB.find({country_new: {$exists: false}, status: {$not:{$in: ['OK', 'CHECK', 'ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  //AddressDB.find({status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  AddressDB.find({status: {$exists: false}}).
   limit(50).
   sort({"country": 1, "locality": 1}).
   then(function(addressesA) {
@@ -1507,6 +1519,9 @@ const getgeometry = (req, res, cb) => {
                 for(const part in json.results[0].address_components) {
                   if (json.results[0].address_components[part].types[0] === "locality") addressesA[index].locality_new = json.results[0].address_components[part].long_name;
                   if (json.results[0].address_components[part].types[0] === "country") addressesA[index].country_new = json.results[0].address_components[part].long_name;
+                }
+                if (!addressesA[index].locality_new || !addressesA[index].country_new || addressesA[index].locality_new !== addressesA[index].locality || addressesA[index].country_new !== addressesA[index].country) {
+                  addressesA[index].status = "CHECK";
                 }
                 addressesA[index].geometry = json.results[0].geometry.location;
               } else {
@@ -1774,6 +1789,16 @@ const showall = (req, res, save, cb) => {
       });
       */
     });
+ };
+
+ const usersdbcheck = (req, res, cb) => {
+  const q = req.query.q ? {status: req.query.q} : {};
+  AddressDB.find(q).
+  sort('country').
+  sort('locality').
+  exec((err, addresses) => {
+    cb(addresses);
+  });
  };
 
  const sanitizeUnicode = (str) => {	
