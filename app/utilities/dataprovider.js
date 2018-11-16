@@ -252,6 +252,9 @@ dataprovider.show = (req, res, section, subsection, model) => {
   const select = config.sections[section][subsection].select;
 
   dataprovider.fetchShow(req, model, populate, select, (err, data) => {
+    console.log("stocazzo");
+    console.log(populate);
+    console.log(err);
     if (err || data === null) {
       res.status(404).render('404', {title:"<span class=\"lnr lnr-warning\" style=\"font-size:  200%;vertical-align:  middle;padding-right: 20px;\"></span><span style=\"vertical-align:  middle;\">"+__("404: Page not found")+"</span>"});
     } else {
@@ -269,6 +272,29 @@ dataprovider.show = (req, res, section, subsection, model) => {
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
+        if (data.schedule) {
+          const locations = data.schedule.map(obj =>{
+            if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
+              var rObj = {
+                "marker":{
+                  "url":"/images/avnode_marker.svg",
+                  "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
+                  "origin":{"x":0,"y":0},
+                  "anchor":{"x":23,"y":78}
+                }
+              };
+              rObj.lat = obj.venue.location.geometry.lat;
+              rObj.lng = obj.venue.location.geometry.lng;
+              return rObj;
+            }
+          });
+          if (locations && locations.length) {
+            data.locations = [];
+            for (let item in locations) {
+              if (locations[item]) data.locations.push(locations[item]);
+            }
+          }
+        }
         if (data.addresses) {
           const locations = data.addresses.map(obj =>{
             if (obj.geometry && obj.geometry.lat && obj.geometry.lng) {

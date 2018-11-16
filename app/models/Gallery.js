@@ -23,7 +23,7 @@ const gallerySchema = new Schema({
 
   users: [{ type : Schema.ObjectId, ref : 'User' }], 
   performances: [{ type : Schema.ObjectId, ref : 'Performance' }], 
-  events: [{ type : Schema.ObjectId, ref : 'Event' }], 
+  events: [{ type : Schema.ObjectId, ref : 'EventShow' }], 
   medias: [Media]
 }, {
   timestamps: true,

@@ -10,7 +10,8 @@ const Models = {
   'Gallery': mongoose.model('Gallery'),
   'News': mongoose.model('News'),
   'Playlist': mongoose.model('Playlist'),
-  'Video': mongoose.model('Video')
+  'Video': mongoose.model('Video'),
+  'AddressDB': mongoose.model('AddressDB')
 }
 const logger = require('../../../utilities/logger');
 
@@ -97,6 +98,118 @@ router.getMembers = (req, res) => {
   ],is_crew: false},'_id, stagename', (err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     res.json(users);
+  });
+}
+
+router.removeAddress = (req, res) => {
+  console.log(req.query);
+  router.removeAddressUsers(req, res, () => {
+    router.removeAddressDB(req, res, () => {
+      res.json(req.query);
+    });
+  });
+
+}
+
+router.removeAddressUsers = (req, res, cb) => {
+  console.log("removeAddressUsers");
+  var conta = 0;
+  //res.json(req.query);
+  Models.User
+  .find({"addresses.country": req.query.country, "addresses.locality": req.query.locality},'_id, addresses', (err, users) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (users.length) {
+      console.log("stocazzo");
+      for(var a=0;a<users.length;a++){
+        for(var b=0;b<users[a].addresses.length;b++){
+          if (users[a].addresses[b].country === req.query.country && users[a].addresses[b].locality === req.query.locality) {
+            if (req.query.action === "REMOVE") {
+              if (req.query.field === "locality") {
+                users[a].addresses[b].locality = undefined;
+              }
+              if (req.query.field === "country") {
+                console.log("stocazzzooooooooooo USERS");
+                console.log(users[a]);
+                users[a].addresses.splice(b, 1);
+                console.log(users[a]);
+              }
+            }
+            if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
+              users[a].addresses[b][req.query.field] = req.query.new;
+            }
+          }
+        }
+        console.log("stocazzzooooooooooo USERS");
+        console.log(users[a]);
+        Models.User.updateOne({_id: users[a]._id}, { $set: {addresses: users[a].addresses}}, function(err, res) {
+          conta++;
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(res);
+          }
+          if (conta === users.length) cb();
+        });
+      }
+    } else {
+      cb();
+    }
+  });
+}
+
+router.removeAddressDB = (req, res, cb) => {
+  console.log("removeAddressDB");
+  Models.AddressDB
+  .find({"country": req.query.country, "locality": req.query.locality}, (err, addresses) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (addresses.length) {
+      var b=0;
+      if (req.query.action === "REMOVE") {
+        if (req.query.field === "locality") {
+          addresses[b].locality = undefined;
+          console.log("stocazzzooooooooooo AddressDB");
+          console.log(addresses[b]);
+          Models.AddressDB.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
+            console.log(err);
+            console.log(res);
+            if (err && err.code == "11000") {
+              Models.AddressDB.deleteOne({"country": req.query.country, "locality": req.query.locality}, function (err) {
+                if (err) console.log(err);
+                cb();
+                // deleted at most one tank document
+              });
+            } else {
+              cb();
+            }
+          });
+        }
+        if (req.query.field === "country") {
+          Models.AddressDB.deleteOne({"country": req.query.country, "locality": req.query.locality}, function (err) {
+            if (err) console.log(err);
+            cb();
+          });
+        }
+      }
+      if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
+        var update = {};
+        update[req.query.field] = req.query.new;
+        Models.AddressDB.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
+          console.log(err);
+          console.log(res);
+          if (err && err.code == "11000") {
+            Models.AddressDB.deleteOne({"country": req.query.country, "locality": req.query.locality}, function (err) {
+              if (err) console.log(err);
+              cb();
+              // deleted at most one tank document
+            });
+          } else {
+            cb();
+          }
+        });
+      }
+    } else {
+      cb();
+    }
   });
 }
 

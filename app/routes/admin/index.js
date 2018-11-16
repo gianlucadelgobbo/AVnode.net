@@ -82,13 +82,12 @@ router.get('/api/countries', (req, res) => {
   get.getCountries(req, res);
 });
 
-router.get('/api/:sez', (req, res) => {
-  req.params.id = req.user.id;
-  get.getList(req, res);
-});
-
 router.get('/api/getmembers/:q', (req, res)=>{
   get.getMembers(req, res);
+});
+
+router.get('/api/removeAddress', (req, res)=>{
+  get.removeAddress(req, res);
 });
 
 router.get('/api/crews/:id/members/add/:member', (req, res)=>{
@@ -97,6 +96,11 @@ router.get('/api/crews/:id/members/add/:member', (req, res)=>{
 
 router.get('/api/crews/:id/members/remove/:member', (req, res)=>{
   get.removeMember(req, res);
+});
+
+router.get('/api/:sez', (req, res) => {
+  req.params.id = req.user.id;
+  get.getList(req, res);
 });
 
 
