@@ -127,7 +127,7 @@ dataprovider.getJsonld = (data, req, title) => {
     }
     */
   } else if (data.title) {
-    if (data.schedule) {
+    if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
       jsonld["@type"] = "Event";
       jsonld.startDate = data.schedule[0].starttime;
       jsonld.location = {
@@ -272,7 +272,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
-        if (data.schedule) {
+        if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
           const locations = data.schedule.map(obj =>{
             if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
               var rObj = {
@@ -342,6 +342,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         } else {
           if (!req.session[data._id]) {
             req.session[data._id] = true;
+            if (!data.stats) data.stats = {};
             data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
             model.update({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
               //if (err) c

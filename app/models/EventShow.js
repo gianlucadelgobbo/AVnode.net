@@ -374,7 +374,7 @@ eventSchema.virtual('boxDate').get(function () {
 
 eventSchema.virtual('boxVenue').get(function () {
   let boxVenue;
-  if (this.schedule && this.schedule.length) {
+  if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {
     boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
   }
   return boxVenue;

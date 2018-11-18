@@ -17,6 +17,7 @@ const Package = new Schema({
   start_date: Date,
   end_date: Date
 }, {
+  _id : false,
   toObject: {
     virtuals: true
   },
