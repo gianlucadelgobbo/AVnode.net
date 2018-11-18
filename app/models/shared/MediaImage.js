@@ -9,5 +9,5 @@ const MediaImage = new Schema({
   size: Number,
   width: Number,
   height: Number
-});
+},{ _id : false });
 module.exports = MediaImage;

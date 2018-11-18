@@ -73,6 +73,6 @@ const OrganizationData = new Schema({
       event: { type : Schema.ObjectId, ref : 'Event' }
     }]
   }]
-});
+},{ _id : false });
 
 module.exports = OrganizationData;

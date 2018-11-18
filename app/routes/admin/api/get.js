@@ -11,6 +11,7 @@ const Models = {
   'News': mongoose.model('News'),
   'Playlist': mongoose.model('Playlist'),
   'Video': mongoose.model('Video'),
+  'VenueDB': mongoose.model('VenueDB'),
   'AddressDB': mongoose.model('AddressDB')
 }
 const logger = require('../../../utilities/logger');
@@ -102,13 +103,23 @@ router.getMembers = (req, res) => {
 }
 
 router.removeAddress = (req, res) => {
-  console.log(req.query);
-  router.removeAddressUsers(req, res, () => {
-    router.removeAddressDB(req, res, () => {
-      res.json(req.query);
+  if (req.query.db === "users") {
+    console.log(req.query);
+    router.removeAddressUsers(req, res, () => {
+      router.removeAddressDB(req, res, () => {
+        res.json(req.query);
+      });
     });
-  });
-
+  }
+  if (req.query.db === "venues") {
+    console.log(req.query);
+    router.removeAddressEvents(req, res, () => {
+      router.removeVenueDB(req, res, () => {
+        console.log("stocazzo END");
+        res.json(req.query);
+      });
+    });
+  }
 }
 
 router.removeAddressUsers = (req, res, cb) => {
@@ -159,8 +170,19 @@ router.removeAddressUsers = (req, res, cb) => {
 
 router.removeAddressDB = (req, res, cb) => {
   console.log("removeAddressDB");
-  Models.AddressDB
-  .find({"country": req.query.country, "locality": req.query.locality}, (err, addresses) => {
+  var collection;
+  var rel;
+  var q;
+  if (req.query.db === "users") {
+    collection = Models.AddressDB;
+    q = {"country": req.query.country, "locality": req.query.locality};
+  }
+  if (req.query.db === "venues") {
+    collection = Models.VenueDB;
+    q = {"name": req.query.name, "country": req.query.country, "locality": req.query.locality};
+  }
+  collection
+  .find(q, (err, addresses) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     if (addresses.length) {
       var b=0;
@@ -169,11 +191,11 @@ router.removeAddressDB = (req, res, cb) => {
           addresses[b].locality = undefined;
           console.log("stocazzzooooooooooo AddressDB");
           console.log(addresses[b]);
-          Models.AddressDB.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
+          collection.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
             console.log(err);
             console.log(res);
             if (err && err.code == "11000") {
-              Models.AddressDB.deleteOne({"country": req.query.country, "locality": req.query.locality}, function (err) {
+              collection.deleteOne(q, function (err) {
                 if (err) console.log(err);
                 cb();
                 // deleted at most one tank document
@@ -184,7 +206,7 @@ router.removeAddressDB = (req, res, cb) => {
           });
         }
         if (req.query.field === "country") {
-          Models.AddressDB.deleteOne({"country": req.query.country, "locality": req.query.locality}, function (err) {
+          collection.deleteOne(q, function (err) {
             if (err) console.log(err);
             cb();
           });
@@ -193,11 +215,11 @@ router.removeAddressDB = (req, res, cb) => {
       if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
         var update = {};
         update[req.query.field] = req.query.new;
-        Models.AddressDB.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
+        collection.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
           console.log(err);
           console.log(res);
           if (err && err.code == "11000") {
-            Models.AddressDB.deleteOne({"country": req.query.country, "locality": req.query.locality}, function (err) {
+            collection.deleteOne(q, function (err) {
               if (err) console.log(err);
               cb();
               // deleted at most one tank document
@@ -208,6 +230,139 @@ router.removeAddressDB = (req, res, cb) => {
         });
       }
     } else {
+      cb();
+    }
+  });
+}
+
+router.removeAddressEvents = (req, res, cb) => {
+  console.log("removeAddressEvents");
+  var conta = 0;
+  Models.Event
+  .find({"schedule.venue.name": req.query.name, "schedule.venue.location.country": req.query.country, "schedule.venue.location.locality": req.query.locality},{schedule:1,title:1,program:1}, (err, events) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (events.length) {
+      for(var a=0;a<events.length;a++){
+        console.log(events[a].title);
+        for(var b=0;b<events[a].schedule.length;b++){
+          if (events[a].schedule[b].venue.location.country === req.query.country && events[a].schedule[b].venue.location.locality === req.query.locality) {
+            /* if (req.query.action === "REMOVE") {
+              if (req.query.field === "locality") {
+                events[a].schedule[b].venue.location.locality = undefined;
+              }
+              if (req.query.field === "country") {
+                events[a].schedule.splice(b, 1);
+              }
+            } */
+            if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
+              if (req.query.field === "name") {
+                events[a].schedule[b].venue.name = req.query.new;
+              } else {
+                events[a].schedule[b].venue.location[req.query.field] = req.query.new;
+              }
+            }
+          }
+        }
+        if (events[a].program && events[a].program.length) {
+          for(var b=0;b<events[a].program.length;b++){
+            if (events[a].program[b].schedule.venue && events[a].program[b].schedule.venue.location.country === req.query.country && events[a].program[b].schedule.venue.location.locality === req.query.locality) {
+              /* if (req.query.action === "REMOVE") {
+                if (req.query.field === "locality") {
+                  events[a].program[b].schedule.venue.location.locality = undefined;
+                }
+                if (req.query.field === "country") {
+                  console.log("stocazzzooooooooooo events");
+                  console.log(events[a]);
+                  events[a].program.splice(b, 1);
+                  console.log(events[a]);
+                }
+              } */
+              if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
+                if (req.query.field === "name") {
+                  events[a].program[b].schedule.venue.name = req.query.new;
+                } else {
+                  events[a].program[b].schedule.venue.location[req.query.field] = req.query.new;
+                }
+              }
+            }
+          }
+        }
+        console.log("stocazzzooooooooooo events");
+        console.log(events[a]);
+        var set = events[a].program ? {schedule: events[a].schedule,program: events[a].program} : {schedule: events[a].schedule};
+        Models.Event.updateOne({_id: events[a]._id}, set, function(err, res) {
+          conta++;
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(res);
+          }
+          if (conta === events.length) cb();
+        });
+      }
+    } else {
+      cb();
+    }
+  });
+}
+
+router.removeVenueDB = (req, res, cb) => {
+  console.log("removeVenueDB");
+  var collection;
+  var rel;
+  var q;
+  collection = Models.VenueDB;
+  q = {"name": req.query.name, "country": req.query.country, "locality": req.query.locality};
+  collection
+  .find(q, (err, addresses) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (addresses.length) {
+      var b=0;
+      /* if (req.query.action === "REMOVE") {
+        if (req.query.field === "locality") {
+          addresses[b].locality = undefined;
+          console.log("stocazzzooooooooooo AddressDB");
+          console.log(addresses[b]);
+          collection.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
+            console.log(err);
+            console.log(res);
+            if (err && err.code == "11000") {
+              collection.deleteOne(q, function (err) {
+                if (err) console.log(err);
+                cb();
+                // deleted at most one tank document
+              });
+            } else {
+              cb();
+            }
+          });
+        }
+        if (req.query.field === "country") {
+          collection.deleteOne(q, function (err) {
+            if (err) console.log(err);
+            cb();
+          });
+        }
+      } */
+      if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
+        var update = {};
+        update[req.query.field] = req.query.new;
+        collection.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
+          console.log(err);
+          console.log(res);
+          if (err && err.code == "11000") {
+            collection.deleteOne(q, function (err) {
+              if (err) console.log(err);
+              cb();
+              // deleted at most one tank document
+            });
+          } else {
+            cb();
+          }
+        });
+      }
+    } else {
+      console.log("stocazzostocazzostocazzostocazzostocazzo");
       cb();
     }
   });

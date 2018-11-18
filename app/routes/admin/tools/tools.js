@@ -11,11 +11,12 @@ const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
-const AddressDB = mongoose.model('AddressDB');
 const request = require('request');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');
+const AddressDB = mongoose.model('AddressDB');
+const VenueDB = mongoose.model('VenueDB');
 
 const logger = require('../../../utilities/logger');
 
@@ -104,6 +105,10 @@ router.get('/updateSendy', (req, res) => {
       if (e.stagename) email.Stagename = e.stagename;
       if (e.addresses && e.addresses[0] && e.addresses[0].locality) email.City = e.addresses[0].locality;
       if (e.addresses && e.addresses[0] && e.addresses[0].country) email.Country = e.addresses[0].country;
+      if (e.addresses && e.addresses[0] && e.addresses[0].geometry && e.addresses[0].geometry.lat && e.addresses[0].geometry.lng) {
+        email.LATITUDE = e.addresses[0].geometry.lat;
+        email.LONGITUDE = e.addresses[0].geometry.lng;
+      }
 
       e.emails.forEach(function(ee) {
         email.email = ee.email;
@@ -128,8 +133,8 @@ router.get('/updateSendy', (req, res) => {
               currentUrl: req.path,
               data: mailinglists,
               skip: skip,
-              script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/emails/updateSendy?skip=' + (skip+limit) + '"},1000);</script>'
-  });
+              script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/updateSendy?skip=' + (skip+limit) + '"},1000);</script>'
+            });
           }
         });
       });
@@ -200,150 +205,6 @@ router.get('/categories', (req, res) => {
   });
 });
 
-
-router.get('/news/import', (req, res) => {
-  logger.debug('/admin/tools/news/import');
-  let page = (req.param.page ? req.param.page : 1);
-  const url = `https://flyer.dev.flyer.it/wp-json/wp/v2/news/?page=${page}`;
-
-  page++;
-  request({
-      url: url,
-      json: true
-  }, function (error, response, body) {
-    if (!error && response.statusCode === 200, body.length) {
-      let data = [];
-      let contapost = 0;
-      let contaposttotal = 0;
-      body.forEach((item, index) => {
-        item.date = new Date(item.date);
-        let month = item.date.getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        const source = item.featured.full;
-        console.log(source);
-        let filename = '';
-        let dest = '';
-        //if (source) {
-          contaposttotal++;
-          filename = source.substring(source.lastIndexOf('/') + 1);
-          dest = `${global.appRoot}/glacier/news_originals/${item.date.getFullYear()}/`;
-          if (!fs.existsSync(dest)) {
-            logger.debug(fs.mkdirSync(dest));
-          }
-          dest += month;
-          if (!fs.existsSync(dest)) {
-            logger.debug(fs.mkdirSync(dest));
-          }
-          dest += `/${filename}`;
-          console.log(dest);
-          router.download(source, dest, (p1,p2,p3) => {
-            contapost++;
-            let tmp = {
-              old_id: item.id,
-              creation_date: item.date,
-              slug: item.slug,
-              title: item.title.rendered,
-              is_public: true,
-              abouts: [{
-                lang: 'en',
-                abouttext: item.content.rendered
-              }],
-              stats: {
-                views: 100+Math.floor((Math.random() * 1000) + 1),
-                likes: 100+Math.floor((Math.random() * 1000) + 1)
-              },
-              web: [],
-              social: [],
-              image :{
-                file: dest.replace(global.appRoot, ''),
-                filename: filename,
-                originalname: source/*,
-                mimetype: String,
-                size: Number,
-                width: Number,
-                height: Number*/
-              },
-              users: []
-            };
-            if (item.video_thumbnail && item.video_thumbnail !== '') {
-              tmp.media = {url: item.video_thumbnail};
-            }
-            for (let web_site in item.web_site) {
-              if (
-                item.web_site[web_site].indexOf("facebook.com")!==-1 ||
-                item.web_site[web_site].indexOf("fb.com")!==-1 ||
-                item.web_site[web_site].indexOf("twitter.com")!==-1 ||
-                item.web_site[web_site].indexOf("instagram.com")!==-1 ||      
-                item.web_site[web_site].indexOf("youtube.com")!==-1 ||      
-                item.web_site[web_site].indexOf("vimeo.com")!==-1      
-              ) {
-                tmp.social.push({
-                  url: item.web_site[web_site],
-                  type: 'social'
-                });
-              } else {
-                tmp.web.push({
-                  url: item.web_site[web_site],
-                  type: 'web'
-                });
-              }
-            }
-            let contausers = 0;
-            for (let user in item.capauthors) {
-              User.
-              findOne({slug: user.user_login}).
-              select('_id').
-              exec((err, person) => {
-                if (!person || !person._id) person = {'_id': '5a8b7256a5755a000000d702'};
-                contausers++;
-                console.log('person');
-                console.log(person);
-                tmp.users.push(person);
-                console.log(tmp.slug);
-                console.log('contausers '+contausers);
-                console.log('capauthors '+item.capauthors.length);
-                console.log('contapost '+contapost);
-                console.log('contaposttotal '+contaposttotal);
-                console.log('body.length '+body.length);
-                if (contausers == item.capauthors.length) {
-                  data.push(tmp);
-                  if (contapost == body.length) {
-                    console.log('saveoutput ');
-                    console.log(data.length);
-                    console.log(data);
-                    News.
-                    create(data, (err) => {
-                      let result;
-                      if (err) {
-                        console.log('error '+err);
-                        result = err;
-                      } else {
-                        result = data;
-                      }
-                      res.render('admin/tools', {
-                        title: 'News',
-                        currentUrl: req.path,
-                        data: result,
-                        script: false
-                        //script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/news/import?page=' + (page) + '"},1000);</script>'
-                      });
-                    });
-                  }
-                }
-              });
-            }
-          });
-      });
-    } else {
-      res.render('admin/tools', {
-        title: 'News',
-        currentUrl: req.path,
-        data: {msg: ['End']},
-        script: false
-      });
-    }
-  });
-});
 
 router.download = (source, dest, callback) => {
   request.head(source, function(err, res, body){
@@ -1442,6 +1303,31 @@ router.get('/addresses/setgeometry', (req, res) => {
   });
 });
 
+router.get('/addresses/venuesdbcheck', (req, res) => {
+  logger.debug('/admin/tools/addresses/venuesdbcheck');
+  venuesdbcheck(req, res, cb = (data) => {
+    logger.debug(data);
+    res.render('admin/tools/addresses/venuesdbcheck', {
+      title: 'admin/tools/addresses/venuesdbcheck',
+      currentUrl: '/admin/tools'+req.path,
+      data: data
+    });
+  });
+});
+router.get('/addresses/venuesgetgeometry', (req, res) => {
+  console.log('/addresses/venuesgetgeometry');
+  venuesgetgeometry(req, res, cb = (data) => {
+    console.log('venuesgetgeometry');
+    const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
+    console.log(script);
+    res.render('admin/tools', {
+      title: 'admin/tools/addresses/venuesgetgeometry',
+      currentUrl: req.path,
+      data: data,
+      script: script
+    });
+  });
+});
 const setgeometry = (req, res, s, cb) => {
   console.log(s);
   AddressDB.find({formatted_address: {$exists: true}}).
@@ -1485,6 +1371,102 @@ const setgeometry = (req, res, s, cb) => {
         }
       });
     });
+  });
+};
+
+const venuesgetgeometry = (req, res, cb) => {
+  let allres = [];
+  //AddressDB.find({country_new: {$exists: false}, status: {$not:{$in: ['OK', 'CHECK', 'ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  //AddressDB.find({status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
+  VenueDB.find({status: {$exists: false}}).
+  //VenueDB.find({postal_code_new: {$exists: false}}).
+  limit(50).
+  sort({"name": 1, "country": 1, "locality": 1}).
+  then(function(addressesA) {
+    if (addressesA.length) {
+      let conta = 0;
+      addressesA.forEach((element, index) => {
+        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+(element.name ? element.name+',' : '')+(element.locality ? element.locality+',' : '')+','+element.country);
+        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent((element.name ? element.name+',' : '')+(element.locality ? element.locality+',' : '')+element.country), (error, response, b) => {
+          console.log("requestrequestrequestrequest");
+          //console.log(error);
+          //console.log(b);
+          if (error) {
+            console.log(error);
+          } else {
+            try {
+              console.log("ADDRESS try");
+              let eee = JSON.parse(b).results[0];
+              console.log(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id);
+              request.get(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id, (error, response, body) => {
+                console.log("requestrequestrequestrequest");
+                //console.log(element);
+                //console.log(error);
+                //console.log(body);
+                conta++;
+                if (error) {
+                  console.log(error);
+                } else {
+                  try {
+                    console.log("ADDRESS try");
+                    let json = JSON.parse(body);
+                    if (json.result) {
+                      console.log(json.result.address_components);
+                      addressesA[index].name_new = json.result.name;
+                      addressesA[index].formatted_address = json.result.formatted_address;
+                      addressesA[index].status = json.status;
+                      for(const part in json.result.address_components) {
+                        if (json.result.address_components[part].types[0] === "locality") addressesA[index].locality_new = json.result.address_components[part].long_name;
+                        if (json.result.address_components[part].types[0] === "country") addressesA[index].country_new = json.result.address_components[part].long_name;
+                        if (json.result.address_components[part].types[0] === "street_number") addressesA[index].street_number_new = json.result.address_components[part].long_name;
+                        if (json.result.address_components[part].types[0] === "route") addressesA[index].route_new = json.result.address_components[part].long_name;
+                        if (json.result.address_components[part].types[0] === "postal_code") addressesA[index].postal_code_new = json.result.address_components[part].long_name;
+                      }
+                      if (!addressesA[index].locality_new || !addressesA[index].country_new || addressesA[index].locality_new !== addressesA[index].locality || addressesA[index].country_new !== addressesA[index].country) {
+                        addressesA[index].status = "CHECK";
+                      }
+                      addressesA[index].geometry = json.result.geometry.location;
+                      console.log("addressesA[index]");
+                      console.log(addressesA[index]);
+                    } else {
+                      addressesA[index].formatted_address = "";
+                      addressesA[index].status = json.status;
+                    }
+                    VenueDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+                      if (err) {
+                        console.log(err);
+                      } else {
+                        VenueDB.find({_id: addressesA[index]._id}).
+                        then(function(resres) {
+                          if (err) {
+                            console.log(err);
+                          } else {
+                            allres = allres.concat(resres);
+                          }
+                          console.log("update end");
+                          if (conta === addressesA.length) {
+                            console.log("update end");
+                            cb(allres);
+                          }
+                        });
+                      }
+                    });
+                  } catch(e) {
+                    const error = JSON.parse(body);
+                    console.log("ADDRESS catch");
+                    console.log(error);
+                  }
+                }
+              });    
+            } catch(e) {
+              const error = JSON.parse(b);
+            }
+          }
+        });
+      });  
+    } else {
+      cb([{error_message: "ALL ADDRESS PROCESSED"}]);
+    }
   });
 };
 
@@ -1791,7 +1773,7 @@ const showall = (req, res, save, cb) => {
     });
  };
 
- const usersdbcheck = (req, res, cb) => {
+const usersdbcheck = (req, res, cb) => {
   const q = req.query.q ? {status: req.query.q} : {};
   AddressDB.find(q).
   sort('country').
@@ -1799,9 +1781,20 @@ const showall = (req, res, save, cb) => {
   exec((err, addresses) => {
     cb(addresses);
   });
- };
+};
 
- const sanitizeUnicode = (str) => {	
+const venuesdbcheck = (req, res, cb) => {
+  const q = req.query.q ? {status: req.query.q} : {};
+  logger.debug(q);
+  VenueDB.find(q).
+  sort('name').
+  exec((err, addresses) => {
+    logger.debug(q);
+    cb(addresses);
+  });
+};
+
+const sanitizeUnicode = (str) => {	
   return str.	
   replace('u00e9', 'é').	
   replace('u00fa', 'ú').	

@@ -9,15 +9,30 @@
         - var link = "/emails/updateSendy"
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
   .p-3
-    h4.color1 News
+    h4.color1 Import
     ul.nav.flex-column.nav-pills
       li.nav-item
-        - var link = "/news/import"
+        - var link = "/import/news"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/import/events"
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
   .p-3
     h4.color1 Performers
     ul.nav.flex-column.nav-pills
       li.nav-item
+        - var link = "/addresses/venuesdbcheck"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/venuesgetgeometry"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
+    h4.color1 Performers
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/addresses/usersdbcheck"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      //li.nav-item
         - var link = "/addresses/showall"
         a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
       li.nav-item

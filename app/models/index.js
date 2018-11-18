@@ -11,5 +11,6 @@ require('./Footage');
 require('./Playlist');
 require('./Video');
 require('./News');
-require('./AddressDB');
 require('./Subscription');
+require('./AddressDB');
+require('./VenueDB');

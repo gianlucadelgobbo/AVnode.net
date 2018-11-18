@@ -19,7 +19,7 @@ const scheduleSchema = new Schema({
   starttime: Date,
   endtime: Date,
   venue: Venue
-});
+},{ _id : false });
 
 scheduleSchema.virtual('date_formatted').get(function () {
   return moment(this.date).format('MMMM Do YYYY');
@@ -45,6 +45,7 @@ const packageSchema = new Schema({
   start_date: Date,
   end_date: Date
 }, {
+  _id : false,
   toObject: {
     virtuals: true,
     getters: true
@@ -78,6 +79,7 @@ const programSchema = new Schema({
   },
   performance: { type: Schema.ObjectId, ref: 'Performance' }
 }, {
+  _id : false,
   toObject: {
     virtuals: true,
     getters: true
@@ -107,6 +109,7 @@ const callSchema = new Schema({
     description: String
   }]
 }, {
+  _id : false,
   toObject: {
     virtuals: true,
     getters: true
@@ -124,6 +127,10 @@ callSchema.virtual('end_date_formatted').get(function () {
 });
 
 const eventSchema = new Schema({
+  wp_id: String,
+  wp_users: [],
+  wp_tags: [],
+  
   old_id: String,
   creation_date: Date,
 
@@ -262,7 +269,7 @@ eventSchema.virtual('boxDate').get(function () {
 
 eventSchema.virtual('boxVenue').get(function () {
   let boxVenue;
-  if (this.schedule && this.schedule.length) {
+  if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {
     boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
   }
   return boxVenue;

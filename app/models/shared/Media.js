@@ -22,6 +22,7 @@ const Media = new Schema({
   stats: {},
   title: String,
 }, {
+  _id : false,
   timestamps: true,
   toObject: {
     virtuals: true

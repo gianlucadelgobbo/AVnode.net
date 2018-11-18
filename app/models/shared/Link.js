@@ -1,17 +1,15 @@
 const Schema = require('mongoose').Schema;
 
 const Link = new Schema({
-  slug: String, // removed { type: String, unique: true },
-  link: String,
+  txt: String, // removed { type: String, unique: true },
+  target: String,
   url: String,
-  type: String,
-  tel: String,
-  mailinglists: [],
-  is_public: { type: Boolean, default: false },
+  is_public: { type: Boolean, default: true },
   is_confirmed: { type: Boolean, default: false },
   is_primary: { type: Boolean, default: false }
-}, {
-  timestamps: true,
+},{
+  _id : false,
+  timestamps: false,
   toObject: {
     virtuals: false
   },

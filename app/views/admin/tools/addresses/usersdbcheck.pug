@@ -68,7 +68,7 @@ block content
       $.ajax({
         method: "GET",
         url: "/admin/api/removeAddress",
-        data: { country: country, locality: locality, field:field, action:action, old:old, new:neww }
+        data: { db: "users", country: country, locality: locality, field:field, action:action, old:old, new:neww }
       })
       .done(function( msg ) {
         console.log("."+field);
