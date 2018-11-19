@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
+const News = mongoose.model('News');
+const fs = require('fs');
 
 const logger = require('../../../utilities/logger');
 const events = [
@@ -337,7 +339,7 @@ router.get('/events', (req, res) => {
       url: url,
       json: true
   }, function (error, response, body) {
-    if (!error && response.statusCode === 200, body) {
+    if (!error && response.statusCode === 200, body.ID) {
       let data = [];
       let contapost = 0;
       let contaposttotal = 0;
@@ -451,122 +453,9 @@ router.get('/events', (req, res) => {
           script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/events?page=' + (page) + '"},1000);</script>'
         });
       });
-/* body.date = new Date(body.date);
-      let month = body.date.getMonth() + 1;
-      month = month < 10 ? '0' + month : month;
-      const source = body.featured.full;
-      console.log(source);
-      let filename = '';
-      let dest = '';
-      //if (source) {
-        contaposttotal++;
-        filename = source.substring(source.lastIndexOf('/') + 1);
-        dest = `${global.appRoot}/glacier/news_originals/${body.date.getFullYear()}/`;
-        if (!fs.existsSync(dest)) {
-          logger.debug(fs.mkdirSync(dest));
-        }
-        dest += month;
-        if (!fs.existsSync(dest)) {
-          logger.debug(fs.mkdirSync(dest));
-        }
-        dest += `/${filename}`;
-        console.log(dest);
-        router.download(source, dest, (p1,p2,p3) => {
-          contapost++;
-          let tmp = {
-            old_id: body.id,
-            creation_date: body.date,
-            slug: body.slug,
-            title: body.title.rendered,
-            is_public: true,
-            abouts: [{
-              lang: 'en',
-              abouttext: body.content.rendered
-            }],
-            stats: {
-              views: 100+Math.floor((Math.random() * 1000) + 1),
-              likes: 100+Math.floor((Math.random() * 1000) + 1)
-            },
-            web: [],
-            social: [],
-            image :{
-              file: dest.replace(global.appRoot, ''),
-              filename: filename,
-              originalname: source
-            },
-            users: []
-          };
-          if (body.video_thumbnail && body.video_thumbnail !== '') {
-            tmp.media = {url: body.video_thumbnail};
-          }
-          for (let web_site in body.web_site) {
-            if (
-              body.web_site[web_site].indexOf("facebook.com")!==-1 ||
-              body.web_site[web_site].indexOf("fb.com")!==-1 ||
-              body.web_site[web_site].indexOf("twitter.com")!==-1 ||
-              body.web_site[web_site].indexOf("instagram.com")!==-1 ||      
-              body.web_site[web_site].indexOf("youtube.com")!==-1 ||      
-              body.web_site[web_site].indexOf("vimeo.com")!==-1      
-            ) {
-              tmp.social.push({
-                url: body.web_site[web_site],
-                type: 'social'
-              });
-            } else {
-              tmp.web.push({
-                url: body.web_site[web_site],
-                type: 'web'
-              });
-            }
-          }
-          let contausers = 0;
-          for (let user in body.capauthors) {
-            User.
-            findOne({slug: user.user_login}).
-            select('_id').
-            exec((err, person) => {
-              if (!person || !person._id) person = {'_id': '5a8b7256a5755a000000d702'};
-              contausers++;
-              console.log('person');
-              console.log(person);
-              tmp.users.push(person);
-              console.log(tmp.slug);
-              console.log('contausers '+contausers);
-              console.log('capauthors '+body.capauthors.length);
-              console.log('contapost '+contapost);
-              console.log('contaposttotal '+contaposttotal);
-              console.log('body.length '+body.length);
-              if (contausers == body.capauthors.length) {
-                data.push(tmp);
-                if (contapost == body.length) {
-                  console.log('saveoutput ');
-                  console.log(data.length);
-                  console.log(data);
-                  News.
-                  create(data, (err) => {
-                    let result;
-                    if (err) {
-                      console.log('error '+err);
-                      result = err;
-                    } else {
-                      result = data;
-                    }
-                    res.render('admin/tools', {
-                      title: 'News',
-                      currentUrl: req.path,
-                      data: result,
-                      script: false
-                      //script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/import/news?page=' + (page) + '"},1000);</script>'
-                    });
-                  });
-                }
-              }
-            });
-          }
-        }); */
     } else {
       res.render('admin/tools', {
-        title: 'News',
+        title: 'WP Events',
         currentUrl: req.path,
         data: {msg: ['End']},
         script: false
@@ -576,8 +465,8 @@ router.get('/events', (req, res) => {
 });
 
 router.get('/news', (req, res) => {
-  logger.debug('/admin/tools/import/news');
-  let page = (req.param.page ? req.param.page : 1);
+  logger.debug('/admin/tools/wpimport/news');
+  let page = req.query.page ? parseFloat(req.query.page) : 1;
   const url = `https://flyer.dev.flyer.it/wp-json/wp/v2/news/?page=${page}`;
 
   page++;
@@ -589,124 +478,150 @@ router.get('/news', (req, res) => {
       let data = [];
       let contapost = 0;
       let contaposttotal = 0;
-      body.forEach((body, index) => {
-        body.date = new Date(body.date);
-        let month = body.date.getMonth() + 1;
-        month = month < 10 ? '0' + month : month;
-        const source = body.featured.full;
-        console.log(source);
-        let filename = '';
-        let dest = '';
-        //if (source) {
-          contaposttotal++;
-          filename = source.substring(source.lastIndexOf('/') + 1);
-          dest = `${global.appRoot}/glacier/news_originals/${body.date.getFullYear()}/`;
-          if (!fs.existsSync(dest)) {
-            logger.debug(fs.mkdirSync(dest));
+      body.forEach((news, index) => {
+        console.log("News "+index);
+        console.log("News "+news.title.rendered);
+        //console.log(news);
+        let tmp = {
+          old_id: news.id,
+          creation_date: news.date,
+          slug: news.slug,
+          title: news.title.rendered,
+          is_public: true,
+          abouts: [{
+            lang: 'en',
+            abouttext: news.content.rendered
+          }],
+          stats: {
+            views: 100+Math.floor((Math.random() * 1000) + 1),
+            likes: 100+Math.floor((Math.random() * 1000) + 1)
+          },
+          web: [],
+          social: [],
+          users: []
+        };
+        if (news.video_thumbnail && news.video_thumbnail !== '') {
+          tmp.media = {url: news.video_thumbnail};
+        }
+        for (let web_site in news.web_site) {
+          if (
+            news.web_site[web_site].indexOf("facebook.com")!==-1 ||
+            news.web_site[web_site].indexOf("fb.com")!==-1 ||
+            news.web_site[web_site].indexOf("twitter.com")!==-1 ||
+            news.web_site[web_site].indexOf("instagram.com")!==-1 ||      
+            news.web_site[web_site].indexOf("youtube.com")!==-1 ||      
+            news.web_site[web_site].indexOf("vimeo.com")!==-1      
+          ) {
+            tmp.social.push({
+              url: news.web_site[web_site],
+              type: 'social'
+            });
+          } else {
+            tmp.web.push({
+              url: news.web_site[web_site],
+              type: 'web'
+            });
           }
-          dest += month;
-          if (!fs.existsSync(dest)) {
-            logger.debug(fs.mkdirSync(dest));
-          }
-          dest += `/${filename}`;
-          console.log(dest);
-          router.download(source, dest, (p1,p2,p3) => {
-            contapost++;
-            let tmp = {
-              old_id: body.id,
-              creation_date: body.date,
-              slug: body.slug,
-              title: body.title.rendered,
-              is_public: true,
-              abouts: [{
-                lang: 'en',
-                abouttext: body.content.rendered
-              }],
-              stats: {
-                views: 100+Math.floor((Math.random() * 1000) + 1),
-                likes: 100+Math.floor((Math.random() * 1000) + 1)
-              },
-              web: [],
-              social: [],
-              image :{
-                file: dest.replace(global.appRoot, ''),
-                filename: filename,
-                originalname: source/*,
-                mimetype: String,
-                size: Number,
-                width: Number,
-                height: Number*/
-              },
-              users: []
-            };
-            if (body.video_thumbnail && body.video_thumbnail !== '') {
-              tmp.media = {url: body.video_thumbnail};
+        }
+        var slugs = [];
+        for (let user in news.capauthors) {
+          slugs.push(news.capauthors[user].user_login);
+        }
+        User.find({"slug": {$in: slugs}}).exec((err, persons) => {
+          console.log("slugs");
+          console.log(slugs);
+          var usersA = persons.map(function(item){ return item._id; });
+          console.log("usersA");
+          if (!usersA.length) usersA = ['5be8772bfc39610000007065'];
+          tmp.users = usersA;
+          console.log(usersA);
+          if (news.featured && news.featured.full) {
+            let filename = '';
+            let dest = '';
+            const source = news.featured.full;
+            filename = source.substring(source.lastIndexOf('/') + 1);
+  
+            news.date = new Date(news.date);
+            let month = news.date.getMonth() + 1;
+            month = month < 10 ? '0' + month : month;
+            contaposttotal++;
+            dest = `${global.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
+            if (!fs.existsSync(dest)) {
+              logger.debug(fs.mkdirSync(dest));
             }
-            for (let web_site in body.web_site) {
-              if (
-                body.web_site[web_site].indexOf("facebook.com")!==-1 ||
-                body.web_site[web_site].indexOf("fb.com")!==-1 ||
-                body.web_site[web_site].indexOf("twitter.com")!==-1 ||
-                body.web_site[web_site].indexOf("instagram.com")!==-1 ||      
-                body.web_site[web_site].indexOf("youtube.com")!==-1 ||      
-                body.web_site[web_site].indexOf("vimeo.com")!==-1      
-              ) {
-                tmp.social.push({
-                  url: body.web_site[web_site],
-                  type: 'social'
-                });
-              } else {
-                tmp.web.push({
-                  url: body.web_site[web_site],
-                  type: 'web'
+            dest += month;
+            if (!fs.existsSync(dest)) {
+              logger.debug(fs.mkdirSync(dest));
+            }
+            dest += `/${filename}`;
+            //console.log(dest.replace(global.appRoot, '')+filename);
+            tmp.image = {
+              file: dest.replace(global.appRoot, ''),
+              filename: filename,
+              originalname: source
+            };
+            data.push(tmp);
+            router.download(source, dest, (p1,p2,p3) => {
+              contapost++;
+              console.log('contapost download ');
+              console.log(data.length);
+              console.log(body.length);
+              console.log(contapost);
+
+              if (contapost == body.length) {
+                console.log('saveoutput ');
+                console.log(data.length);
+                console.log(data);
+                News.
+                create(data, (err) => {
+                  let result;
+                  if (err) {
+                    console.log('error '+err);
+                    result = err;
+                  } else {
+                    result = data;
+                  }
+                  res.render('admin/tools', {
+                    title: 'News',
+                    currentUrl: req.path,
+                    data: result,
+                    //script: false
+                    script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/news?page=' + (page) + '"},1000);</script>'
+                  });
                 });
               }
-            }
-            let contausers = 0;
-            for (let user in body.capauthors) {
-              User.
-              findOne({slug: user.user_login}).
-              select('_id').
-              exec((err, person) => {
-                if (!person || !person._id) person = {'_id': '5a8b7256a5755a000000d702'};
-                contausers++;
-                console.log('person');
-                console.log(person);
-                tmp.users.push(person);
-                console.log(tmp.slug);
-                console.log('contausers '+contausers);
-                console.log('capauthors '+body.capauthors.length);
-                console.log('contapost '+contapost);
-                console.log('contaposttotal '+contaposttotal);
-                console.log('body.length '+body.length);
-                if (contausers == body.capauthors.length) {
-                  data.push(tmp);
-                  if (contapost == body.length) {
-                    console.log('saveoutput ');
-                    console.log(data.length);
-                    console.log(data);
-                    News.
-                    create(data, (err) => {
-                      let result;
-                      if (err) {
-                        console.log('error '+err);
-                        result = err;
-                      } else {
-                        result = data;
-                      }
-                      res.render('admin/tools', {
-                        title: 'News',
-                        currentUrl: req.path,
-                        data: result,
-                        script: false
-                        //script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/import/news?page=' + (page) + '"},1000);</script>'
-                      });
-                    });
-                  }
+  
+            });          
+          } else {
+            contapost++;
+            console.log('contapost NO download ');
+            console.log(data.length);
+            console.log(body.length);
+            console.log(contapost);
+            if (contapost == body.length) {
+              console.log('saveoutput ');
+              console.log(data.length);
+              console.log(data);
+              News.
+              create(data, (err) => {
+                let result;
+                if (err) {
+                  console.log('error '+err);
+                  result = err;
+                } else {
+                  result = data;
                 }
+                res.render('admin/tools', {
+                  title: 'News',
+                  currentUrl: req.path,
+                  data: result,
+                  //script: false
+                  script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/news?page=' + (page) + '"},1000);</script>'
+                });
               });
             }
-          });
+          }
+        });
       });
     } else {
       res.render('admin/tools', {
@@ -718,5 +633,17 @@ router.get('/news', (req, res) => {
     }
   });
 });
+
+router.download = (source, dest, callback) => {
+  request.head(source, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+    console.log("source ");
+    console.log(source);
+    console.log("dest ");
+    console.log(dest);
+    request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
+  });
+};
 
 module.exports = router;

@@ -2063,53 +2063,6 @@
           "selectaddon": {
           },
           "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
-        },
-        "image": {
-          "components": {
-            "image": {
-              "config":{
-                "fields": {
-                  "name": "image",
-                  "maxCount": 1
-                },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
-                "storage": "/glacier/users_originals/",
-                "maxsize": 2048,
-                "minwidth": 1000,
-                "minheight": 1000,
-                "sizes": {
-                  "small": {
-                    "w": 100,
-                    "h": 100,
-                    "folder": "100x100",
-                    "default": "/images/default-user.svg"
-                  },
-                  "large": {
-                    "w": 400,
-                    "h": 400,
-                    "folder": "400x400",
-                    "default": "/images/default-user.svg"
-                  }
-                }
-              },
-              "comp": "uploader",
-              "label": "Profile Image",
-              "validators": {
-                "Mime": {},
-                "Weight": {},
-                "Size": {}
-              }
-            }
-          },
-          "select": {
-            "image": 1
-          },
-          "selectaddon": {
-            "slug": 1,
-            "stagename": 1,
-            "imageFormats": 1
-          },
-          "populate": []
         }
       },
       "list": {
