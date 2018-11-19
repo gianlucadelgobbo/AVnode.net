@@ -2842,7 +2842,7 @@
     "performers": {
       "title": "Performers",
       "model": "UserShow",
-      "limit": 20,
+      "limit": 21,
       "basepath": "performers",
       "main_image": "/images/sez_performers.jpg",
       "sitemap_pages": 500,
@@ -3297,7 +3297,7 @@
     "events": {
       "title": "Events",
       "model": "EventShow",
-      "limit": 20,
+      "limit": 21,
       "basepath": "events",
       "main_image": "/images/sez_events.jpg",
       "sitemap_pages": 19,
@@ -3328,16 +3328,16 @@
       ],
       "categoriesQueries": {
         "all":  {},
-        "clubbing": {"categories": "59fc65d6ff4bcb5a610001c7" },
-        "corporate": {"categories": "59fc65d6ff4bcb5a61000149" },
-        "festival": {"categories": "59fc65d6ff4bcb5a6100004e" },
-        "one-night": {"categories": "59fc65d6ff4bcb5a610000cc" },
-        "television": {"categories": "59fc65d6ff4bcb5a6100004f" },
-        "workshops-learning": {"categories": "59fc65d6ff4bcb5a61000244" }
+        "clubbing": {"categories": "5be8708afc396100000000d8" },
+        "corporate": {"categories": "5be8708afc39610000000054" },
+        "festival": {"categories": "5be8708afc396100000001de" },
+        "one-night": {"categories": "5be8708afc39610000000262" },
+        "television": {"categories": "5be8708afc396100000001df" },
+        "workshops-learning": {"categories": "5be8708afc3961000000015b" }
       },
       "ordersQueries": {
         "mostrecent": {
-          "date_time_venue.0.date": -1
+          "schedule.0.date": -1
         },
         "mostviewed": {
           "stats.visits": -1
@@ -3468,7 +3468,7 @@
     "performances": {
       "title": "Performances",
       "model": "Performance",
-      "limit": 20,
+      "limit": 21,
       "basepath": "performances",
       "main_image": "/images/sez_performances.jpg",
       "sitemap_pages": 203,
@@ -3498,11 +3498,11 @@
       ],
       "categoriesQueries": {
         "all": {},
-        "av-performance": {"categories": "59fc65d6ff4bcb5a61000094" },
-        "vj-set": {"categories": "59fc65d6ff4bcb5a61000017" },
-        "workshop": {"categories": "59fc65d6ff4bcb5a61000015" },
-        "project-showcase": {"categories": "59fc65d6ff4bcb5a6100018d" },
-        "dj-set": {"categories": "59fc65d6ff4bcb5a6100018e" }
+        "av-performance": {"categories": "5be8708afc3961000000011b" },
+        "vj-set": {"categories": "5be8708afc39610000000014" },
+        "workshop": {"categories": "5be8708afc39610000000099" },
+        "project-showcase": {"categories": "5be8708afc3961000000011c" },
+        "dj-set": {"categories": "5be8708afc3961000000011d" }
       },
       "ordersQueries": {
         "mostrecent": {
@@ -3601,7 +3601,7 @@
     "videos": {
       "title": "Videos",
       "model": "Video",
-      "limit": 20,
+      "limit": 21,
       "basepath": "videos",
       "main_image": "/images/sez_videos.jpg",
       "sitemap_pages": 121,
@@ -3629,18 +3629,10 @@
       ],
       "categoriesQueries": {
         "all": {},
-        "performances": {
-          "categories.slug": "performances"
-        },
-        "vj-dj-sets": {
-          "categories.slug": "vj-dj-sets"
-        },
-        "docs": {
-          "categories.slug": "docs"
-        },
-        "video": {
-          "categories.slug": "video"
-        }
+        "performances": {"categories": "5be8708afc39610000000195"},
+        "vj-dj-sets": {"categories": "5be8708afc39610000000218"},
+        "docs": {"categories": "5be8708afc3961000000008e" },
+        "video": {"categories": "5be8708afc39610000000112"}
       },
       "ordersQueries": {
         "mostrecent": {
@@ -3713,7 +3705,7 @@
     "news": {
       "title": "News",
       "model": "News",
-      "limit": 20,
+      "limit": 21,
       "basepath": "news",
       "main_image": "/images/sez_news.jpg",
       "sitemap_pages": 1,
@@ -3774,7 +3766,7 @@
     "footage": {
       "title": "Footage",
       "model": "Footage",
-      "limit": 20,
+      "limit": 21,
       "basepath": "footage",
       "sitemap_pages": 334,
       "main_image": "/images/sez_footage.jpg",
@@ -3802,13 +3794,13 @@
       "categoriesQueries": {
         "all": {},
         "hole": {
-          "tag.tag": "hole"
+          "tags.tag": "hole"
         },
         "no-hole": {
-          "tag.tag": "no-hole"
+          "tags.tag": "no-hole"
         },
         "koncept": {
-          "tag.tag": "koncept"
+          "tags.tag": "koncept"
         }
       },
       "ordersQueries": {
@@ -3858,7 +3850,7 @@
     "playlists": {
       "title": "Playlists",
       "model": "Playlist",
-      "limit": 20,
+      "limit": 21,
       "basepath": "playlists",
       "sitemap_pages": 31,
       "main_image": "/images/sez_playlists.jpg",
@@ -3938,7 +3930,7 @@
     "galleries": {
       "title": "Galleries",
       "model": "Gallery",
-      "limit": 20,
+      "limit": 21,
       "basepath": "gallery",
       "main_image": "/images/sez_gallery.jpg",
       "sitemap_pages": 20,
