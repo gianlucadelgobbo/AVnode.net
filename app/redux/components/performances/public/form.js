@@ -34,7 +34,8 @@ class PerformancePublicForm extends Component {
             showModal,
             onSubmit,
             errors,
-            categories
+            categories,
+            _id
         } = this.props;
 
         return (
@@ -82,7 +83,7 @@ class PerformancePublicForm extends Component {
                     component={fieldWithLabel}
                     placeholder={this.getIntlString({id:AUTHORS})}
                     showModal={showModal}
-                    className=""
+                    _id={_id}
                 />
 
                 <br/>
