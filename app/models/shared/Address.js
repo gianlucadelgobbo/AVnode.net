@@ -1,6 +1,10 @@
 const Schema = require('mongoose').Schema;
 
 const Address = new Schema({
+  postal_code: String,
+  street_number: String,
+  route: String,
+  formatted_address: String,
   locality: String,
   country: String,
   geometry: Object,

@@ -102,3 +102,50 @@ var USERS = function() {
 
 }
 
+db.venuedb.find({geometry:{$exists:true}}).forEach(function(e) {
+  if (!e.geometry.lat || !e.geometry.lng || e.geometry.lat.toString()!=Number(e.geometry.lat).toString() || e.geometry.lng.toString()!=Number(e.geometry.lng).toString()) {
+    delete e.status;
+    delete e.geometry;
+    db.venuedb.save(e);
+    printjson(e);  
+  }
+});
+db.venuedb.find({geometry_new:{$exists:true}}).forEach(function(e) {
+  printjson(e);  
+});
+
+db.venuedb.find({geometry:{$exists:true}}).forEach(function(e) {
+  //if (e.geometry.lat!=Number(e.geometry.lat) || e.geometry.lng!=Number(e.geometry.lng)) {
+    e.geometry.lng = Number(e.geometry.lng);
+    e.geometry.lat = Number(e.geometry.lat);
+    db.venuedb.save(e);
+    printjson(e);  
+  //}
+});
+
+db.venuedb.find({}).forEach(function(e) {
+  printjson(e.name);  
+  ok = db.events.count({"schedule.venue.name": e.name, "schedule.venue.location.country": e.country, "schedule.venue.location.locality": e.locality});
+  if (ok && e.geometry && e.geometry.lat && e.geometry.lng && e.route_new && e.name == e.name_new && e.locality == e.locality_new && e.country == e.country_new) {
+    e.status = "        OK";
+    printjson(e.status);  
+    db.venuedb.save(e);
+  } else {
+    check = db.events.count({"schedule.venue.name": e.name});
+    if (check) {
+      e.status = "        CHECK";
+    } else {
+      e.status = "        NOT IN USE";  
+    }
+    printjson(e.status);  
+    db.venuedb.save(e);
+  }
+});
+
+db.venuedb.find({}).forEach(function(e) {
+  if (e.geometry && e.geometry.lat && e.geometry.lng && e.route_new && e.name == e.name_new && e.locality == e.locality_new && e.country == e.country_new) {
+    e.status = "OK";
+    db.venuedb.save(e);
+    printjson(e);
+  }
+});
