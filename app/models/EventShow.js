@@ -1,7 +1,9 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.ObjectId;
 const moment = require('moment');
+const truncatise = require('truncatise');
 const indexPlugin = require('../utilities/elasticsearch/Event');
 
 const About = require('./shared/About');
@@ -199,6 +201,17 @@ const eventSchema = new Schema({
     }
   }
 });
+eventSchema.pre('init', function(data) {
+  if (!data.partners || !data.partners.length) {
+    data.partners = [{
+      "category" : {
+        _id: "5be8708afc3961000000005d",
+        name: "PRODUCTION"
+      },
+      "users" : data.users
+    }];  
+  }  
+});
 
 eventSchema.virtual('programmebydayvenue').get(function (req) {
   //let programmebydayvenue = [];
@@ -280,10 +293,51 @@ eventSchema.virtual('about').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
+    var options = {
+      TruncateLength: 40,
+      TruncateBy : "words",
+      Strict : true,
+      StripHTML : false,
+    };
+    about = truncatise(about, options);
+  
     return about;
   }
 });
 
+
+eventSchema.virtual('aboutFull').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    var options = {
+      TruncateLength: 4000000000,
+      TruncateBy : "words",
+      Strict : true,
+      StripHTML : false,
+    };
+    about = truncatise(about, options);
+    
+    var options = {
+      TruncateLength: 40,
+      TruncateBy : "words",
+      Strict : true,
+      StripHTML : false,
+    };
+    about = about.replace(truncatise(about, options),"");
+
+    return about;
+  }
+});
 eventSchema.virtual('description').get(function (req) {
   let about = __('Text is missing');
   let aboutA = [];

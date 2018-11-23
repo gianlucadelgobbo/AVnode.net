@@ -2903,6 +2903,19 @@
           "image": 1
         },
         "populate": [{
+          "path": "partnerships",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 5 },
+          "model": "EventShow"
+        }, {
           "path": "news",
           "select": {
             "title": 1,
@@ -3031,6 +3044,42 @@
         },
         "populate": [{
           "path": "events",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 5 },
+          "model": "EventShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "partnerships": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "partnerships",
           "select": {
             "title": 1,
             "slug": 1,
@@ -3433,6 +3482,14 @@
           "model": "Category"
         }, {
           "path": "partners.users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "users",
           "select": {
             "slug": 1,
             "image": 1,
