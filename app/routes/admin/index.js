@@ -7,6 +7,7 @@ const post = require('./api/post');
 const upload = require('./api/upload');
 const tools = require('./tools/tools');
 const wpimport = require('./tools/wpimport');
+const addresses = require('./tools/addresses');
 
 const logger = require('../../utilities/logger');
 
@@ -118,6 +119,7 @@ router.get('/api', (req, res) => {
 });
 
 router.use('/tools/wpimport', wpimport);
+router.use('/tools/addresses', addresses);
 router.use('/tools', tools);
 
 router.get('/*', (req, res) => {

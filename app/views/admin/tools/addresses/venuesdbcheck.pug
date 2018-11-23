@@ -9,6 +9,8 @@ block content
     li.nav-item
       a.nav-link.active.mr-1(href=currentUrl+'?q=CHECK')="CHECK"
     li.nav-item
+      a.nav-link.active.mr-1(href=currentUrl+'?q=NOT IN USE')="NOT IN USE"
+    li.nav-item
       a.nav-link.active.mr-1(href=currentUrl+'?q=ZERO_RESULTS')="ZERO_RESULTS"
     li.nav-item
       a.nav-link.active.mr-1(href=currentUrl+'?q=INVALID_REQUEST')="INVALID_REQUEST"
@@ -58,7 +60,7 @@ block content
               else if !add.country_new
                 a(href="#", onclick='ajax(this.parentElement,"'+add.name+'","'+add.country+'","'+add.locality+'","country","REMOVE");return false;').badge.badge-danger="REMOVE"
               else if add.country_new && add.country!=add.country_new
-                a(href="#", onclick='ajax(this.parentElement,"'+add.name+'","'+add.country+'","'+add.locality+'","country","CHANGE","'+add.name+'","'+add.country+'","'+add.country_new+'");return false;').badge.badge-danger="CHANGE TO: "+add.country_new
+                a(href="#", onclick='ajax(this.parentElement,"'+add.name+'","'+add.country+'","'+add.locality+'","country","CHANGE","'+add.country+'","'+add.country_new+'");return false;').badge.badge-danger="CHANGE TO: "+add.country_new
                 !=" "
                 a(href="#", onclick='ajax(this.parentElement,"'+add.name+'","'+add.country+'","'+add.locality+'","country","REMOVE");return false;').badge.badge-danger="REMOVE"
               else
@@ -82,7 +84,12 @@ block content
               else
                 span.badge.badge-danger="BIG PROBLEMS"
           td=add.status
-          td=(add.formatted_address ? add.formatted_address : add.localityOld.join(', '))
+          td
+            !=(add.formatted_address ? add.formatted_address : "")
+            br
+            !="*"
+            br
+            !=(add.route_new ? add.route_new+" " : "")+(add.street_number_new ? add.street_number_new+" " : "")+(add.street_number_new ? add.postal_code_new+" " : "")+(add.locality ? add.locality+" " : "")+(add.country ? add.country+" " : "")
           td=(add.geometry && add.geometry.lng && add.geometry.lat ? add.geometry.lng+";"+add.geometry.lat : "EMPTY")
   script.
     function ajax(elem, name, country, locality, field, action, old, neww) {

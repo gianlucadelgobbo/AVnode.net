@@ -9,7 +9,7 @@ const News = mongoose.model('News');
 const fs = require('fs');
 
 const logger = require('../../../utilities/logger');
-const events = [
+let events = [
   "homework-festival-3",
   "flxer-abuser-alla-biennale-di-venezia",
   "2-many-vjs",
@@ -463,6 +463,191 @@ router.get('/events', (req, res) => {
     }
   });
 });
+
+events = [
+  "soundframe-2013",
+  "2-many-vjs",
+  "wam-architecture",
+  "queer-jubilee-iii",
+  "digital-freedom-week-2007",
+  "odd-stream",
+  "nufest07",
+  "queer-jubilee-iv",
+  "homework-festival-5",
+  "video-drome",
+  "lpm-percentomusica",
+  "lpm-2016-strati",
+  "siliana-crocchianti-life-igt-2016"];
+
+router.get('/eventsupdate', (req, res) => {
+  logger.debug('/admin/tools/import/eventsupdate');
+  let page = req.query.page ? parseFloat(req.query.page) : 0;
+  if (events[page]) {
+    const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/events/"+events[page];
+
+    page++;
+    request({
+        url: url,
+        json: true
+    }, function (error, response, body) {
+      if (!error && response.statusCode === 200, body.ID) {
+        //console.log(body);
+        var startdatetime = new Date((parseInt(body['wpcf-startdate'])*1000));
+        //console.log(startdatetime);
+        var enddatetime = new Date((parseInt(body['wpcf-enddate'])*1000));
+        //console.log(enddatetime);
+        
+        var locations = [];
+        for (var item in body['wpcf-location']) {
+          var arr = body['wpcf-location'][item].replace("&amp;","&").split(";");
+          var venue = {
+            name : arr[0], 
+            location : {
+              locality : arr[1], 
+              country : arr[2], 
+              geometry : {
+                lat : arr[3], 
+                lng : arr[4]
+              }
+            }
+          }
+          locations.push(venue);
+        }
+        //console.log(locations);
+
+        var event = {
+          wp_id: body.ID,
+          //wp_users: body.capauthors,
+          //wp_tags: body.tags,
+          creation_date: new Date(body.date),
+          stats: {
+            visits: Math.floor(Math.random() * 1000)+1000,
+            likes: Math.floor(Math.random() * 100)+100
+          },
+          slug: body.post_name,
+          title: body.post_title,
+          subtitles: [{
+            lang : "en", 
+            abouttext: body.data_evento
+          }], 
+          image : body.featured && body.featured.full ? {
+            file: "/glacier/events_originals/"+body.featured.full.replace("https://flyer.dev.flyer.it/files/", ""), 
+          } : undefined, 
+          abouts: [{
+            lang : "en", 
+            abouttext: body.post_content
+          }], 
+          web: [], 
+          schedule: [], 
+          is_public: true,
+          gallery_is_public : false, 
+          is_freezed : false, 
+          organizationsettings : {
+            program_builder : 0, 
+            advanced_proposals_manager : 0, 
+            call : {}, 
+            permissions : {}
+          }, 
+          categories : [
+              ("5be8708afc396100000001de")
+          ]
+        };
+        ////console.log(body.web_site);
+        for (var item in body.web_site) {
+          var web = {
+            txt : body.web_site[item],
+            url : body.web_site[item],
+            target: "_blank"
+          }
+          event.web.push(web);
+        }
+        //console.log("enddate.getDate()-startdate.getDate() "+router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*1000), new Date(parseInt(body['wpcf-enddate'])*1000) ));
+        var daysBetween = router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*1000), new Date(parseInt(body['wpcf-enddate'])*1000) )
+        for (var a=0;a<=daysBetween;a++) {
+          console.log(a);
+          if (locations.length) {
+            for (var b=0;b<locations.length;b++) {
+              var schedule = {
+                date: new Date((parseInt(body['wpcf-startdate'])*1000)+(a*(1000*60*60*24))),
+                starttime: new Date((parseInt(body['wpcf-startdate'])*1000)+(a*(1000*60*60*24))),
+                endtime: new Date((parseInt(body['wpcf-enddate'])*1000)-((daysBetween-a)*(1000*60*60*24))),
+                venue: locations[b]
+              };
+              ////console.log(schedule);
+              event.schedule.push(schedule);
+            }
+          } else {
+            var schedule = {
+              date: new Date(parseInt(body['wpcf-startdate'])*1000),
+              starttime: new Date(parseInt(body['wpcf-startdate'])*1000),
+              endtime: new Date(parseInt(body['wpcf-enddate'])*1000)
+            };
+            event.schedule.push(schedule);
+          }
+        }
+        //console.log("original");
+        //console.log(original);
+
+        Event.findOneAndUpdate({"slug": body.post_name}, event, { upsert: true, new: false, setDefaultsOnInsert: true }, function(error, result) {
+          if (error) {
+            console.log(error);
+          } else if (!result) {
+            // Create it
+            //result = new Model();
+            //result = Object.assign(result, event);
+            console.log("insert");
+            console.log(events[page]);
+            // If the document doesn't exist
+            // Save the document
+            /* result.save(function(error) {
+                if (!error) {
+                    // Do something with the document
+                } else {
+                    throw error;
+                }
+            }); */
+          } 
+          res.render('admin/tools', {
+            title: 'WP Events',
+            currentUrl: req.path,
+            data: error || result,
+            //script: false
+            script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/eventsupdate?page=' + (page) + '"},1000);</script>'
+          });
+        });
+      } else {
+        res.render('admin/tools', {
+          title: 'WP Events',
+          currentUrl: req.path,
+          data: {msg: ['ERROR']},
+          script: false
+        });
+      }
+    });
+  } else {
+    res.render('admin/tools', {
+      title: 'WP Events',
+      currentUrl: req.path,
+      data: {msg: ['End']},
+      script: false
+    });
+  }
+});
+
+router.daysBetween = function( date1, date2 ) {
+  //Get 1 day in milliseconds
+  var one_day=1000*60*60*24;
+
+  // Convert both dates to milliseconds
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+
+  // Calculate the difference in milliseconds
+  var difference_ms = date2_ms - date1_ms;
+    
+  // Convert back to days and return
+  return Math.round(difference_ms/one_day); 
+}
 
 router.get('/news', (req, res) => {
   logger.debug('/admin/tools/wpimport/news');

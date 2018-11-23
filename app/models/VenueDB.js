@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const VenueDBschema = new Schema({
-  name: String,
+  name: { type: String, unique: true },
   street_number: String,
   route: String,
   postal_code: String,
