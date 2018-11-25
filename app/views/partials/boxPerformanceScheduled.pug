@@ -1,9 +1,9 @@
 .performance_item_wrapper
   if item.schedule
     div.time_schedule
-      span=item.schedule.ora_i 
+      span=item.schedule.starttimeTime 
       span.lnr.lnr-chevron-right
-      span=item.schedule.ora_f
+      span=item.schedule.endtimeTime
 
   if item.performance.imageFormats
     a(href="/performances/"+item.performance.slug, title=item.performance.title)
@@ -19,7 +19,7 @@
         each category in item.performance.categories
           li.list-inline-item=category.name
     if item.performance.users
-      .users_performance_item_wrapper
+      .performance_users_item_wrapper
         .flex_left      
           if (item.performance.users.length > 1)
             div

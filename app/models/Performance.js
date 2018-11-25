@@ -5,33 +5,9 @@ const indexPlugin = require('../utilities/elasticsearch/Performance');
 
 const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
-const Venue = require('./shared/Venue');
+const Booking = require('./shared/Booking');
 
 const adminsez = 'performances';
-
-const Booking = new Schema({
-  schedule: {
-      date: Date,
-      starttime: Date,
-      endtime: Date,
-      data_i: String,
-      data_f: String,
-      ora_i: Number,
-      ora_f: Number,
-      rel_id: Number,
-      user_id: Number,
-      confirm: String,
-      day: String,
-      venue: Venue,
-      categories: [{ type: Schema.ObjectId, ref: 'Category' }]
-  },
-  event: [{ type: Schema.ObjectId, ref: 'Event' }]
-});
-
-const Techreq = new Schema({
-  lang: String,
-  text: String
-})
 
 const performanceSchema = new Schema({
   old_id : String,
