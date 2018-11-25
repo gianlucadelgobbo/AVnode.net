@@ -68,29 +68,33 @@ block content
             each category in data.categories
               li.list-inline-item
                 span=category.name
-        .users_performance_item_wrapper
+        .performance_users_item_wrapper
           .row
             each user in data.users
               .col-sm-12
-                .user_performance_wrapper
-                  div.user_perfomance_image
-                    img(src=user.imageFormats.small, alt=user.stagename)
-                  div.user_perfomance_country_city
-                    p.users_performance_item_name=user.stagename
+                .performance_user_wrapper
+                  .user_perfomance_image
+                    a.performance_event_title(href="/"+user.slug)
+                      img(src=user.imageFormats.small, alt=user.stagename)
+                  .user_perfomance_country_city
+                    a.performance_event_title(href="/"+user.slug).users_performance_item_name=user.stagename
                     p.users_performance_item_country!=user.addressesFormatted
-        .events_performance_wrapper
+        .performance_events_wrapper
           if data.bookings.length
             h3=global.__('Events')  
-            .row
+            .row.performance_event_wrapper
               each booking in data.bookings
-                .col-sm-12.performance_event
-                  .performance_event_wrapper
-                    p
-                      a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
-                      br
-                      !=booking.schedule.day + " | " + booking.schedule.ora_i
-                      br
-                      !=booking.schedule.venue.name + " | " + booking.schedule.venue.room + " | " + booking.schedule.venue.location.locality + ", " + booking.schedule.venue.location.country
+                .col-sm-3
+                  .performance_event_image
+                    a.performance_event_title(href="/events/"+booking.event.slug)
+                      img.img-fluid(src=booking.event.imageFormats.small, alt=booking.event.title)
+                .col-sm-9
+                  .performance_event_info
+                    a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
+                    br
+                    !=booking.schedule.boxDate
+                    br
+                    !=booking.schedule.venue.name + " | " + booking.schedule.venue.room + " | " + booking.schedule.venue.location.locality + ", " + booking.schedule.venue.location.country
   if data.galleries.length || data.videos.length
     .divider_gallery
       svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')

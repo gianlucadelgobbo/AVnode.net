@@ -2,13 +2,14 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
+
 const indexPlugin = require('../utilities/elasticsearch/Event');
 
 const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
 const Link = require('./shared/Link');
 const Venue = require('./shared/Venue');
-//const Schedule = require('./shared/Schedule');
+const Schedule = require('./shared/Schedule');
 //const Package = require('./shared/Package');
 
 const adminsez = 'events';
@@ -59,34 +60,15 @@ const packageSchema = new Schema({
 const partnershipSchema = new Schema({
   category:  { type : Schema.ObjectId, ref : 'Category' },
   users:  [{ type : Schema.ObjectId, ref : 'User' }]
+}, {
+  _id : false
 });
 
 const programSchema = new Schema({
-  schedule: {
-    date: Date,
-    starttime: Date,
-    endtime: Date,
-    data_i: String,
-    data_f: String,
-    ora_i: Number,
-    ora_f: Number,
-    rel_id: String,
-    user_id: String,
-    confirm: String,
-    day: String,
-    venue: Venue,
-    categories: [{ type: Schema.ObjectId, ref: 'Category' }]
-  },
+  schedule: Schedule,
   performance: { type: Schema.ObjectId, ref: 'Performance' }
 }, {
-  _id : false,
-  toObject: {
-    virtuals: true,
-    getters: true
-  },
-  toJSON: {
-    virtuals: true
-  }
+  _id : false
 });
 
 packageSchema.virtual('price_formatted').get(function () {

@@ -135,10 +135,10 @@ userSchema.virtual('addressesFormatted').get(function () {
     this.addresses.forEach((address) => {
       if (address.country) {
         if (!addresses[address.country]) addresses[address.country] = [];
-        if (address.locality) addresses[address.country].push(address.locality);
+        if (address.locality && addresses[address.country].indexOf(address.locality)===-1) addresses[address.country].push(address.locality);
       }
     });
-    for(country in addresses) {
+    for(let country in addresses) {
       addressesFormatted.push(" <b>"+country+"</b> "+addresses[country].join(", "));
     }
     return addressesFormatted.join(", ");
