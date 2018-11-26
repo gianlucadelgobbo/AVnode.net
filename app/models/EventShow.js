@@ -1,11 +1,14 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 const moment = require('moment');
 const truncatise = require('truncatise');
 const indexPlugin = require('../utilities/elasticsearch/Event');
 
 const About = require('./shared/About');
+const Category = require('./shared/Category');
+
 const MediaImage = require('./shared/MediaImage');
 const Link = require('./shared/Link');
 const Venue = require('./shared/Venue');
@@ -189,17 +192,23 @@ const eventSchema = new Schema({
     }
   }
 });
-eventSchema.pre('init', function(data) {
-  if (!data.partners || !data.partners.length) {
-    data.partners = [{
-      "category" : {
-        _id: "5be8708afc3961000000005d",
-        name: "PRODUCTION"
-      },
-      "users" : data.users
-    }];  
+/*eventSchema.virtual('partners2').get(function (req) {
+  if (!this.partners || !this.partners.length) {
+    Category.findOne({"_id":"5be8708afc3961000000005d"}, function (err, category) {
+      console.log("5be8708afc3961000000005d");
+      console.log(category);
+      let partners2 = [{
+        "category" : {
+          _id: category._id,
+          name: category.name
+        },
+        "users" : this.users
+      }];
+      console.log(partners2);
+      return partners2;
+    });
   }  
-});
+});*/
 
 eventSchema.virtual('programmebydayvenue').get(function (req) {
   //let programmebydayvenue = [];

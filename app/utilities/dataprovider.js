@@ -254,9 +254,9 @@ dataprovider.show = (req, res, section, subsection, model) => {
   const select = config.sections[section][subsection].select;
 
   dataprovider.fetchShow(req, model, populate, select, (err, data) => {
-    console.log("stocazzo");
-    console.log(populate);
-    console.log(err);
+    //console.log("stocazzo");
+    //console.log(populate);
+    //console.log(err);
     if (err || data === null) {
       res.status(404).render('404', {title:"<span class=\"lnr lnr-warning\" style=\"font-size:  200%;vertical-align:  middle;padding-right: 20px;\"></span><span style=\"vertical-align:  middle;\">"+__("404: Page not found")+"</span>"});
     } else {
