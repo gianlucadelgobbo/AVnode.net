@@ -151,33 +151,36 @@ block content
             polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
     
   
-  if data.partners.length
-    .partners_event_wrapper_bkg
-      .container
-        section.row.partners_event_wrapper
-          .col-lg-8
-            h2.main_title.indented_title.color1!=global.__('Partners')
-          .col-lg-4
-            img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
-          .col-sm-12
-            .row
-              each partners_block in data.partners
-                .col-sm-12.partners_block
-                  h4!=global.__('Partners')+ " / " +partners_block.category.name
-                  .basic_divider
-                  .row.partners_list_wrapper
-                    each partner in partners_block.users
-                      .col-sm-2
-                        .partner_box_wrapper
+  - var partners = !data.partners || !data.partners.length ?  [{"category" : {name: "PRODUCTION"}, "users" : data.users}] : data.partners;
+  - console.log("partners")
+  - console.log(partners)
+
+  .partners_event_wrapper_bkg
+    .container
+      section.row.partners_event_wrapper
+        .col-lg-8
+          h2.main_title.indented_title.color1!=global.__('Partners')
+        .col-lg-4
+          img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
+        .col-sm-12
+          .row
+            each partners_block in partners
+              .col-sm-12.partners_block
+                h4!=global.__('Partners')+ " / " +partners_block.category.name
+                .basic_divider
+                .row.partners_list_wrapper
+                  each partner in partners_block.users
+                    .col-sm-2
+                      .partner_box_wrapper
+                        a(href="/"+partner.slug, title=partner.stagename)
+                          if partner.imageFormats                          
+                            img.card-img-top.img-fluid(
+                              src=partner.imageFormats.large
+                              alt=partner.title
+                            )
+                        p.partner_stagename
                           a(href="/"+partner.slug, title=partner.stagename)
-                            if partner.imageFormats                          
-                              img.card-img-top.img-fluid(
-                                src=partner.imageFormats.large
-                                alt=partner.title
-                              )
-                          p.partner_stagename
-                            a(href="/"+partner.slug, title=partner.stagename)
-                              span=partner.stagename
+                            span=partner.stagename
     
   
   if data.galleries.length || data.videos.length
