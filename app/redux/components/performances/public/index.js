@@ -184,6 +184,7 @@ class PerformancePublic extends Component {
             tabs={locales}
             labels={locales_labels}
             categories={categories}
+            _id={_id}
           />
         </div>
       </div>

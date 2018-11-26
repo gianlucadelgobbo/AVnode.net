@@ -526,7 +526,7 @@ export const multiInputCheckbox = ({
 
 export const fieldWithLabel = ({
   fields,
-  title,
+  _id,
   showModal,
   placeholder,
   meta: { error }
@@ -575,7 +575,8 @@ export const fieldWithLabel = ({
           //onClick={() => fields.unshift({})}
           onClick={() =>
             showModal({
-              type: MODAL_ADD_USER_PERFORMANCE
+              type: MODAL_ADD_USER_PERFORMANCE,
+              props:{_id}
             })
           }
         >
