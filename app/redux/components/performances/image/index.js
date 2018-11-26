@@ -7,12 +7,15 @@ import {fetchModel, saveModel} from "./actions";
 import ImageForm from '../../image';
 import {withRouter} from 'react-router';
 import {FormattedMessage} from 'react-intl';
+import properties from "../../../../../config/default.json";
 
 class PerformanceImages extends Component {
 
     render() {
 
         const {model, isFetching, errorMessage, match: {params: {_id}}, fetchModel, saveModel} = this.props;
+
+         const { components } = properties.cpanel.performances.forms.image;
 
         return (
             <div className="row">
@@ -38,6 +41,7 @@ class PerformanceImages extends Component {
                         fetchModel={fetchModel}
                         saveModel={saveModel}
                         id={_id}
+                        properties={components}
                     />
 
                 </div>

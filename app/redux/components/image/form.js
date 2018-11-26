@@ -7,7 +7,7 @@ import { renderDropzoneInput } from "../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
 import { formValueSelector } from "redux-form";
-import properties from "../../../../config/default.json";
+//import properties from "../../../../config/default.json";
 
 class ProfileImageForm extends Component {
   submitForm(data) {
@@ -27,9 +27,9 @@ class ProfileImageForm extends Component {
   }
 
   render() {
-    const { submitting, handleSubmit, showModal, images } = this.props;
+    const { submitting, handleSubmit, showModal, images, properties } = this.props;
 
-    const { components } = properties.cpanel.profile.forms.image;
+    //const { components } = properties.cpanel.profile.forms.image;
 
     return (
       <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
@@ -37,8 +37,8 @@ class ProfileImageForm extends Component {
           name="images"
           component={renderDropzoneInput}
           showModal={showModal}
-          properties={components.image.config}
-          accept={this.renderImageType(components)}
+          properties={properties.image.config}
+          accept={this.renderImageType(properties)}
         />
 
         <hr />

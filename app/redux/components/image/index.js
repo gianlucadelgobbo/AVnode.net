@@ -56,7 +56,7 @@ class Image extends Component {
   }
 
   render() {
-    const { model = {}, showModal, isFetching, errorMessage } = this.props;
+    const { model = {}, showModal, isFetching, errorMessage, properties } = this.props;
 
     return (
       <div>
@@ -93,6 +93,7 @@ class Image extends Component {
               onSubmit={this.onSubmit.bind(this)}
               user={model}
               showModal={showModal}
+              properties={properties}
             />
           </div>
         </div>
