@@ -7,6 +7,7 @@ import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import { fetchModel, saveModel } from "./actions";
 import ImageForm from "../../image";
 import { FormattedMessage } from "react-intl";
+import properties from "../../../../../config/default.json";
 
 class CrewImage extends Component {
   render() {
@@ -20,7 +21,8 @@ class CrewImage extends Component {
       fetchModel,
       saveModel
     } = this.props;
-
+    const { components } = properties.cpanel.crews.forms.image;
+    //console.log(components)
     return (
       <div className="row">
         <div className="col-md-2">
@@ -43,6 +45,7 @@ class CrewImage extends Component {
             fetchModel={fetchModel}
             saveModel={saveModel}
             id={_id}
+            properties={components}
           />
         </div>
       </div>
