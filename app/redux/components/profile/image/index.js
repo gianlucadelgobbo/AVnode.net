@@ -8,6 +8,7 @@ import {fetchModel, saveModel} from "./actions";
 import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import ImageForm from '../../image';
 import {FormattedMessage} from 'react-intl';
+import properties from "../../../../../config/default.json";
 
 class ProfileImage extends Component {
 
@@ -15,6 +16,8 @@ class ProfileImage extends Component {
     render() {
 
         const {model, isFetching, errorMessage, fetchModel, saveModel} = this.props;
+
+         const { components } = properties.cpanel.profile.forms.image;
 
         return (
             <div className="row">
@@ -37,6 +40,7 @@ class ProfileImage extends Component {
                         errorMessage={errorMessage}
                         fetchModel={fetchModel}
                         saveModel={saveModel}
+                        properties={components}
                     />
 
                 </div>
