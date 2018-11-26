@@ -32,7 +32,7 @@ class AddMediaForm extends Component {
   render() {
     const { submitting, handleSubmit, images } = this.props;
 
-    const { components } = properties.cpanel.performances.forms.galleries;
+    const { components } = properties.cpanel.crews.forms.galleries;
 
     return (
       <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
