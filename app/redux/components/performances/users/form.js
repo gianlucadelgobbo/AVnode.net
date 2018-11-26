@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {userAutocompleteSelect} from "../../common/form/components";
+import { autocompleteComponent } from "../../common/form/components";
 //import validate from './validate';
 
 class AddUsersForm extends Component {
@@ -10,31 +11,47 @@ class AddUsersForm extends Component {
 
         const {
             submitting,
-            handleSubmit,
-            onSubmit,
-            users
+            inputProps,
+            suggestions,
+            placeholder,
+            onSuggestionsFetchRequested,
+            onSuggestionsClearRequested,
+            getSuggestionValue,
+            getSuggestionID,
+            renderSuggestion,
+            name,
+            onSubmitForm
         } = this.props;
 
+        const { idusers } = inputProps;
+
         return (
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <div>
 
                 <Field
-                    name="Users"
-                    component={userAutocompleteSelect}
-                    placeholder="Users"
-                    options={users}
-                />
+                    name={name}
+                    component={autocompleteComponent}
+                    inputProps={inputProps}
+                    suggestions={suggestions}
+                    placeholder={placeholder}
+                    onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={onSuggestionsClearRequested}
+                    getSuggestionValue={getSuggestionValue}
+                    getSuggestionID={getSuggestionID}
+                    renderSuggestion={renderSuggestion}
+                    />
 
                 <hr/>
 
                 <button
                     type="submit"
                     disabled={submitting}
+                    onClick={() => onSubmitForm(idusers)}
                     className="btn btn-primary btn-large btn-block">
                     {submitting ? "Saving..." : "Save"}
                 </button>
 
-            </form>
+            </div>
 
         );
     }
