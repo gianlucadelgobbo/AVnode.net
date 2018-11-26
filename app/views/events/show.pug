@@ -39,9 +39,7 @@ block title
             if data.dateFormatted
               p.subtitle=data.dateFormatted
             if data.subtitle  
-              p.subtitle=data.subtitle
-            if data.boxDate
-              p.boxDate=data.boxDate
+              p.subtitle=data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
             if data.boxVenue
               p.boxVenue=data.boxVenue
           #mappa_evento
