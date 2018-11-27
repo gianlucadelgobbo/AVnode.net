@@ -316,7 +316,9 @@ db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
 
 db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).toArray().map(function(item){ return item._id; });
 db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).forEach(function(e) {
-  printjson(e.slug);
+  //printjson('"'+e.slug+'": {"categories": "'+e_id+'" }');
+  //printjson(e.slug);
+  printjson(e.slug+"\": \""+e.name);
 });
 
 
