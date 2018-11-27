@@ -27,6 +27,8 @@ const userSchema = new Schema({
   image: MediaImage,
   teaserImage: MediaImage,
   activity: Number, // BL TODO frontend, issue #5, added
+  activity_as_performer: Number,
+  activity_as_organization: Number,
 //  file: { file: String },
   name: String,
   surname: String,

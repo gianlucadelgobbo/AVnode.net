@@ -163,7 +163,7 @@ router.checkAndCreate = (folder, cb) => {
   }
   cb();
 };
-router.get('/categories', (req, res) => {
+router.get('/categoriesdbcheck', (req, res) => {
   Category.find({}).
   lean().
   sort('name').

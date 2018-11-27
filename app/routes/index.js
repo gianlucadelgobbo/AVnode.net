@@ -28,6 +28,7 @@ const pages = require('./pages');
 const dataprovider = require('../utilities/dataprovider');
 const helper = require('../utilities/helper');
 
+const organizations = require('./organizations');
 
 /*
 const user = require('./user');
@@ -45,6 +46,7 @@ router.use('/privacy', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
+router.use('/organizations', organizations);
 router.use('/performances', performances);
 router.use('/events', events);
 router.use('/footage', footage);

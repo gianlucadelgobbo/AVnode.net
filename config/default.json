@@ -2866,17 +2866,19 @@
         "crews"
       ],
       "categoriesQueries": {
-        "all": {},
+        "all": {"performances.0":{"$exists": true}},
         "individuals": {
+          "performances.0":{"$exists": true},
           "is_crew": 0
         },
         "crews": {
+          "performances.0":{"$exists": true},
           "is_crew": 1
         }
       },
       "ordersQueries": {
         "mostactive": {
-          "activity": -1
+          "activity_as_performer": -1
         },
         "mostrecent": {
           "creation_date": -1
@@ -2913,7 +2915,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "EventShow"
         }, {
           "path": "news",
@@ -2938,7 +2940,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Footage"
         }, {
           "path": "playlists",
@@ -2949,7 +2951,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Playlist"
         }, {
           "path": "galleries",
@@ -2960,7 +2962,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Gallery"
         }, {
           "path": "videos",
@@ -2972,7 +2974,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Video"
         }, {
           "path": "performances",
@@ -2984,7 +2986,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Performance"
         }, {
           "path": "events",
@@ -2997,7 +2999,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "EventShow"
         }, {
           "path": "crews",
@@ -3007,7 +3009,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "UserShow"
         }, {
           "path": "members",
@@ -3017,7 +3019,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3053,7 +3055,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3089,7 +3091,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3124,7 +3126,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Footage"
         }, {
           "path": "categories",
@@ -3158,7 +3160,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Playlist"
         }, {
           "path": "categories",
@@ -3193,7 +3195,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Performance"
         }, {
           "path": "categories",
@@ -3228,7 +3230,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Video"
         }, {
           "path": "categories",
@@ -3264,7 +3266,7 @@
             "image.file": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "News"
         }, {
           "path": "categories",
@@ -3298,7 +3300,7 @@
             "image.file": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Gallery"
         }, {
           "path": "categories",
@@ -3331,7 +3333,582 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
+          "model": "UserShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "members": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "members",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 6 },
+          "model": "UserShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      }
+    },
+    "organizations": {
+      "title": "Organizations",
+      "model": "UserShow",
+      "limit": 21,
+      "basepath": "performers",
+      "main_image": "/images/sez_performers.jpg",
+      "sitemap_pages": 500,
+      "coll": "users",
+      "view_list": "organizations/list",
+      "view_edit": "user",
+      "list_fields": {
+        "stagename":1,
+        "slug":1,
+        "image":1,
+        "stats":1
+      },
+      "list_populate": [],
+      "orders": [
+        "mostactive",
+        "mostrecent"
+      ],
+      "categories": [
+        "all",
+        "individuals",
+        "crews"
+      ],
+      "categoriesQueries": {
+        "all": {
+          "events.0":{"$exists": true},
+          "is_crew": 1
+        },
+        "individuals": {
+          "performances.0":{"$exists": true},
+          "is_crew": 0
+        },
+        "crews": {
+          "performances.0":{"$exists": true},
+          "is_crew": 1
+        }
+      },
+      "ordersQueries": {
+        "mostactive": {
+          "activity_as_organization": -1
+        },
+        "mostrecent": {
+          "creation_date": -1
+        }
+      },
+      "labels": {
+        "mostrecent":"Most recent",
+        "mostactive":"Most active",
+        "all":"All",
+        "individuals":"Individuals",
+        "crews":"Crews"
+      },
+      "show": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "partnerships",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 6 },
+          "model": "EventShow"
+        }, {
+          "path": "news",
+          "select": {
+            "title": 1,
+            "creation_date":1,
+            "abouts":1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
+          "options": { "limit": 6 },
+          "model": "News"
+        }, {
+          "path": "footage",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
+          "options": { "limit": 6 },
+          "model": "Footage"
+        }, {
+          "path": "playlists",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 6 },
+          "model": "Playlist"
+        }, {
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 6 },
+          "model": "Gallery"
+        }, {
+          "path": "videos",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 6 },
+          "model": "Video"
+        }, {
+          "path": "performances",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 6 },
+          "model": "Performance"
+        }, {
+          "path": "events",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 6 },
+          "model": "EventShow"
+        }, {
+          "path": "crews",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 6 },
+          "model": "UserShow"
+        }, {
+          "path": "members",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 6 },
+          "model": "UserShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "events": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "events",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 6 },
+          "model": "EventShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "partnerships": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "partnerships",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "limit": 6 },
+          "model": "EventShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "footage": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "footage": 1,
+          "emails": 1,
+          "media": 1
+        },
+        "populate": [{
+          "path": "footage",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 6 },
+          "model": "Footage"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "playlists": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "playlists": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "playlists",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 6 },
+          "model": "Playlist"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "performances": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "performances": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "performances",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 6 },
+          "model": "Performance"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "videos": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "videos": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "videos",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 6 },
+          "model": "Video"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "news": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "news",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media.file": 1,
+            "image.file": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 6 },
+          "model": "News"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "galleries": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image.file": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 6 },
+          "model": "Gallery"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "crews": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "crews",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 6 },
+          "model": "UserShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "members": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "web": 1,
+          "social": 1,
+          "events": 1,
+          "emails": 1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "members",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "limit": 6 },
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3506,7 +4083,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Video"
         }, {
           "path": "galleries",
@@ -3517,7 +4094,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Gallery"
         }]
       }
@@ -3639,7 +4216,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Video"
         }, {
           "path": "galleries",
@@ -3650,7 +4227,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Gallery"
         }]
       }
@@ -3742,7 +4319,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Performance"
         }, {
           "path": "events",
@@ -3754,7 +4331,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Event"
         }]
       }
@@ -3979,7 +4556,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Footage"
         }]
      }
@@ -4059,7 +4636,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Event"
         }, {
           "path": "performances",
@@ -4070,7 +4647,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 5 },
+          "options": { "limit": 6 },
           "model": "Performance"
         }]
      }

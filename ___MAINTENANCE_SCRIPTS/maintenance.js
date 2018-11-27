@@ -10,10 +10,10 @@ var USERS = function() {
   printjson(e.partnerships);
 
 
-  db.users.find({}).forEach(function(e) {
+  db.users.find({activity_as_performer:{$exists:false}}).forEach(function(e) {
     var myids = [e._id];
     for (item in e.crews) {
-      myids.push(e.crews[item]);
+      //myids.push(e.crews[item]);
     }
     var footage =  db.footage.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
     if (footage.length) e.footage = footage;
@@ -32,6 +32,19 @@ var USERS = function() {
     if (!performances.length) delete e.performances;
     printjson("e.performances");
     printjson(performances);
+
+    var perf = {};
+    perf["lights-installation"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000017")});
+    perf["mapping"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000016")});
+    perf["vj-set"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000014")});
+    perf["workshop"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000099")});
+    perf["av-performance"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000011b")});
+    perf["project-showcase"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000011c")});
+    perf["dj-set"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000011d")});
+    perf["video-installation"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000019f")});
+    perf["lecture"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc396100000001a1")});
+    printjson("perf");
+    printjson(perf);
 
     var events =  db.events.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
     if (events.length) e.events = events;
@@ -73,41 +86,50 @@ var USERS = function() {
     if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
     if (e.news && e.news.length) e.stats.news = e.news.length;
 
+    if (perf["lights-installation"]) e.stats["lights-installation"] = perf["lights-installation"];
+    if (perf["mapping"]) e.stats["mapping"] = perf["mapping"];
+    if (perf["vj-set"]) e.stats["vj-set"] = perf["vj-set"];
+    if (perf["workshop"]) e.stats["workshop"] = perf["workshop"];
+    if (perf["av-performance"]) e.stats["av-performance"] = perf["av-performance"];
+    if (perf["project-showcase"]) e.stats["project-showcase"] = perf["project-showcase"];
+    if (perf["dj-set"]) e.stats["dj-set"] = perf["dj-set"];
+    if (perf["video-installation"]) e.stats["video-installation"] = perf["video-installation"];
+    if (perf["lecture"]) e.stats["lecture"] = perf["lecture"];
+    
+
     if (e.is_crew && e.members && e.members.length) e.stats.members = e.members.length;
     if (!e.is_crew && e.crews && e.crews.length) e.stats.crews = e.crews.length;
 
     e.activity = 0;
-    e.activity+= (e.stats.performances ? e.stats.performances * 3 : 0);
-    e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
+    e.activity+= (e.stats.performances ? e.stats.performances * 100 : 0);
+    e.activity+= (e.stats.events ? e.stats.events             * 50 : 0);
     e.activity+= (e.stats.partnerships ? e.stats.partnerships * 5 : 0);
     e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
     e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
     e.activity+= (e.stats.videos ? e.stats.videos             * 3 : 0);
     e.activity+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
     e.activity+= (e.stats.news ? e.stats.news                 * 1 : 0);
+
+    e.activity_as_performer = 0;
+    e.activity_as_performer+= (e.stats.performances ? e.stats.performances * 100 : 0);
+    e.activity_as_performer+= (e.stats.footage ? e.stats.footage           * 1 : 0);
+    e.activity_as_performer+= (e.stats.playlists ? e.stats.playlists       * 1 : 0);
+
+    e.activity_as_organization = 0;
+    e.activity_as_organization+= (e.stats.events ? e.stats.events             * 10 : 0);
+    e.activity_as_organization+= (e.stats.partnerships ? e.stats.partnerships * 1 : 0);
+    e.activity_as_organization+= (e.stats.videos ? e.stats.videos             * 1 : 0);
+    e.activity_as_organization+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
+    e.activity_as_organization+= (e.stats.news ? e.stats.news                 * 1 : 0);
 
     db.users.save(e);
   });
 
   db.users.find({}).forEach(function(e) {
     //e.news = db.news.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
-
-    e.stats = {};
-    if (e.performances && e.performances.length) e.stats.performances = e.performances.length;
-    if (e.events && e.events.length) e.stats.events = e.events.length;
-    if (e.partnerships && e.partnerships.length) e.stats.partnerships = e.partnerships.length;
-    if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
-    if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
-    if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
-    if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
-    if (e.news && e.news.length) e.stats.news = e.news.length;
-
-    if (e.is_crew && e.members && e.members.length) e.stats.members = e.members.length;
-    if (!e.is_crew && e.crews && e.crews.length) e.stats.crews = e.crews.length;
-
     e.activity = 0;
-    e.activity+= (e.stats.performances ? e.stats.performances * 3 : 0);
-    e.activity+= (e.stats.events ? e.stats.events             * 5 : 0);
+    e.activity+= (e.stats.performances ? e.stats.performances * 100 : 0);
+    e.activity+= (e.stats.events ? e.stats.events             * 50 : 0);
     e.activity+= (e.stats.partnerships ? e.stats.partnerships * 5 : 0);
     e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
     e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
@@ -115,9 +137,21 @@ var USERS = function() {
     e.activity+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
     e.activity+= (e.stats.news ? e.stats.news                 * 1 : 0);
 
-    //printjson(e);
+    e.activity_as_performer = 0;
+    e.activity_as_performer+= (e.stats.performances ? e.stats.performances * 100 : 0);
+    e.activity_as_performer+= (e.stats.footage ? e.stats.footage           * 1 : 0);
+    e.activity_as_performer+= (e.stats.playlists ? e.stats.playlists       * 1 : 0);
+
+    e.activity_as_organization = 0;
+    e.activity_as_organization+= (e.stats.events ? e.stats.events             * 10 : 0);
+    e.activity_as_organization+= (e.stats.partnerships ? e.stats.partnerships * 1 : 0);
+    e.activity_as_organization+= (e.stats.videos ? e.stats.videos             * 1 : 0);
+    e.activity_as_organization+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
+    e.activity_as_organization+= (e.stats.news ? e.stats.news                 * 1 : 0);
+
     db.users.save(e);
-  });  
+  });
+
 
 }
 
@@ -256,6 +290,8 @@ db.performances.find({bookings:{$exists: true}}).forEach(function(e) {
   db.performances.save(e);
 });
 
+db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).toArray().map(function(item){ return item._id; });
+
 db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
   for (i in e.program) {
     var booking = {};
@@ -278,4 +314,27 @@ db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
   }];
 });
 
+db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).toArray().map(function(item){ return item._id; });
+db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).forEach(function(e) {
+  printjson(e.slug);
+});
 
+
+
+.toArray().map(function(item){ return ""item.name+" "+item._id; });
+
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000017")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000016")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000014")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000098")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000099")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc3961000000009a")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc3961000000011b")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc3961000000011c")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc3961000000011d")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc3961000000011e")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc3961000000019f")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc396100000001a1")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000222")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000223")}));
+printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000224")}));

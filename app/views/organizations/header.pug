@@ -1,0 +1,78 @@
+.container
+  .row
+    .col-lg-7
+      h1.main_title=data.stagename          
+      ul.performer_address.list-inline
+        each address in data.addresses
+          li.list-inline-item=address.locality + ", " + address.country
+      .row
+        .col-lg-12
+          div.performer_stats_wrapper
+            if data.stats
+              ul.performer_stats_list.performer_stats_list_1.list-inline
+                if data.stats.events
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/events")!=global.__('Events')+" (<span>"+data.stats.events+"</span>)"
+                if data.stats.performances
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/performances")!=global.__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
+                if data.stats.crews
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/crews")!=global.__('Crews')+" (<span>"+data.stats.crews+"</span>)"    
+                if data.stats.members
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/members")!=global.__('Members')+" (<span>"+data.stats.members+"</span>)"    
+          div.performer_stats_wrapper
+            if data.stats
+              ul.performer_stats_list.performer_stats_list_2.list-inline
+                if data.stats.footage
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/footage")!=global.__('Footage')+" (<span>"+data.stats.footage+"</span>)"
+                if data.stats.playlists
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/playlists")!=global.__('Playlists')+" (<span>"+data.stats.playlists+"</span>)"  
+                if data.stats.videos
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/videos")!=global.__('Videos')+" (<span>"+data.stats.videos+"</span>)"    
+                if data.stats.galleries
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/galleries")!=global.__('Galleries')+" (<span>"+data.stats.galleries+"</span>)"    
+                if data.stats.news
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/news")!=global.__('News')+" (<span>"+data.stats.news+"</span>)"
+        .col-lg-12
+          if (data.web && data.web.length) || (data.social && data.social.length) || (data.publicEmails && data.publicEmails.length)
+            div.performer_links_wrapper
+              ul.performer_links_list.performer_links_list_2.list-inline                 
+                if data.social && data.social.length
+                  each link in data.social
+                    li.list-inline-item
+                      if link.label == "facebook.com"
+                        a(href=link.url, target="_blank")
+                          i.fa.fa-facebook
+                      if link.label == "twitter.com"
+                        a(href=link.url, target="_blank")
+                          i.fa.fa-twitter                            
+                if data.publicEmails && data.publicEmails.length          
+                  each email in data.publicEmails
+                    li.list-inline-item
+                      a(href="mailto:"+email)
+                        span.lnr.lnr-envelope
+                if data.web && data.web.length
+                  each link in data.web
+                    li.list-inline-item
+                      a(href=link.url, target="_blank")=link.label
+                        
+
+    .col-lg-5
+      .row
+        .col-sm-6
+          .performer_image_wrapper
+            //.performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
+            img.rounded-circle.img-fluid(
+              src=data.imageFormats.large
+              alt=data.stagename
+              )
+        .col-sm-6
+          img.img-fluid(src="/images/logo_avnode_svg.svg")
+

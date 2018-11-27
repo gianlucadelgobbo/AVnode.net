@@ -123,14 +123,14 @@ block content
           if (data.performances.length)
             .data_footage_video_wrapper
               h3=__("Performances")
-              each performances in data.performancess
+              each performances in data.performances
                 .row
                   .col-md-4
-                    a(href="/performancess/"+performances.slug+"/")
+                    a(href="/performances/"+performances.slug+"/")
                       img(src=performances.imageFormats.small, alt=performances.title)
                   .col-md-8
                     p
-                      a(href="/performancess/"+performances.slug+"/")=performances.title
+                      a(href="/performances/"+performances.slug+"/")=performances.title
                     p.users_performances_item_country!=event.addressesFormatted
           if (data.events.length)
             .data_performances_event_wrapper
