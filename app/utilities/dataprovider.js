@@ -229,7 +229,7 @@ dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting,
 
 dataprovider.show = (req, res, section, subsection, model) => {
   console.log(section);
-  console.log(subsection);
+  console.log(config.sections[section]);
   let populate = config.sections[section][subsection].populate;
   for(let item in populate) {
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);

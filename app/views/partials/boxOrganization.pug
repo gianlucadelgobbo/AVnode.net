@@ -1,0 +1,25 @@
+.performer_item_wrapper
+  if item.imageFormats
+    a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
+      img.card-img-top.img-fluid(
+        src=item.imageFormats.large
+        alt=item.stagename
+      )
+  .performer_item_info_wrapper
+    a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
+      h4.performer_item_title=item.stagename
+    ul.list-inline.performer_infos_list
+      if item.stats.events      
+        li.list-inline-item!="<span>"+item.stats.events+"</span> "+global.__('Events')
+      if item.stats.news      
+        li.list-inline-item!="<span>"+item.stats.news+"</span> "+global.__('News')
+      if item.stats.videos      
+        li.list-inline-item!="<span>"+item.stats.videos+"</span> "+global.__('Videos')
+      if item.stats.galleries      
+        li.list-inline-item!="<span>"+item.stats.galleries+"</span> "+global.__('Galleries')
+      if item.stats.footage      
+        li.list-inline-item!="<span>"+item.stats.footage+"</span> "+global.__('Footage')
+      if item.stats.playlists      
+        li.list-inline-item!="<span>"+item.stats.playlists+"</span> "+global.__('Playlists')
+      //if item.stats.performances      
+        li.list-inline-item!="<span>"+item.stats.performances+"</span> "+global.__('Performances')

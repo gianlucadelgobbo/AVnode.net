@@ -25,6 +25,8 @@ const userSchema = new Schema({
   is_crew: Boolean,
   user_type : Number,
   activity: Number,
+  activity_as_performer: Number,
+  activity_as_organization: Number,
   is_public: Boolean,
   creation_date: Date,
   stats: {},
