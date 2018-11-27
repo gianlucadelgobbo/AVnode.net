@@ -3,13 +3,25 @@
     - var currentcat
     .pull-right
       ul.nav.nav-pills
-        each category in categories
-          li(class="nav-item")
-            if category === filter
-              - currentcat = category
-              a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
-            else
-              a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+        each category, index in categories
+          if index < 5
+            li(class="nav-item")
+              if category === filter
+                - currentcat = category
+                a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+              else
+                a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+        if categories.length > 4
+          li(class="nav-item dropdown")
+            a(class="nav-link dropdown-toggle", data-toggle="dropdown", href="#", role="button", aria-haspopup="true", aria-expanded="false")=""
+            .dropdown-menu
+              each category, index in categories
+                if index > 4
+                  if category === filter
+                    - currentcat = category
+                    a(class="dropdown-item active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+                  else
+                    a(class="dropdown-item", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
     .pull-left
       ul.nav.nav-pills
         each order in orderings

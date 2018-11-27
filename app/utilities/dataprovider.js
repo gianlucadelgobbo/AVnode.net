@@ -17,15 +17,41 @@ const News = mongoose.model('News');
 const logger = require('./logger');
 
 dataprovider.fetchShow = (req, model, populate, select, cb) => {
-  model.
-  findOne({slug: req.params.slug}).
-  // lean({ virtuals: true }).
-  // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-  populate(populate).
-  select(select).
-  exec((err, data) => {
-    cb(err, data);
-  });
+  if (populate.length<3) {
+    const nolimit = JSON.parse(JSON.stringify(populate));
+    delete nolimit[0].options;
+    model.
+    findOne({slug: req.params.slug}).
+    lean({ virtuals: false }).
+    // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+    populate(nolimit).
+    select(select).
+    exec((err, d) => {
+      console.log(d[nolimit[0].path].length);
+      const total = d[nolimit[0].path].length;
+      model.
+      findOne({slug: req.params.slug}).
+      // lean({ virtuals: true }).
+      // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+      populate(populate).
+      select(select).
+      exec((err, data) => {
+        cb(err, data, d[nolimit[0].path].length);
+      });
+    });
+  
+  } else {
+    model.
+    findOne({slug: req.params.slug}).
+    // lean({ virtuals: true }).
+    // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+    populate(populate).
+    select(select).
+    exec((err, data) => {
+      cb(err, data);
+    });
+  }
+
 };
 
 dataprovider.getPerformanceByIds = (req, ids, cb) => {
@@ -229,7 +255,7 @@ dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting,
 
 dataprovider.show = (req, res, section, subsection, model) => {
   console.log(section);
-  console.log(config.sections[section]);
+  //console.log(config.sections[section]);
   let populate = config.sections[section][subsection].populate;
   for(let item in populate) {
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
@@ -253,7 +279,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
   }
   const select = config.sections[section][subsection].select;
 
-  dataprovider.fetchShow(req, model, populate, select, (err, data) => {
+  dataprovider.fetchShow(req, model, populate, select, (err, data, total) => {
     //console.log("stocazzo");
     //console.log(populate);
     //console.log(err);
@@ -357,12 +383,22 @@ dataprovider.show = (req, res, section, subsection, model) => {
             data.liked = true;
           }
         }
-        logger.debug(req.user);
+        logger.debug("stocazzo");
+        let pages;
+        if (total) {
+          let link = '/' + data.slug + '/' + subsection + '/page/';
+          let page = (req.params.page ? parseFloat(req.params.page) : 1);
+          skip = (page - 1) * config.sections[section].limit;
+          pages = helper.getPagination(link, skip, config.sections[section].limit, total); 
+        } else {
+          pages = false;
+        }
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
           canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
           data: data,
+          pages: pages,
           section: section,
           path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2

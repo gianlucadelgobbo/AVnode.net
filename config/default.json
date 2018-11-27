@@ -906,9 +906,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -1129,9 +1129,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -1199,9 +1199,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -1679,9 +1679,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -1849,9 +1849,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -1998,9 +1998,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -2246,9 +2246,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -2292,9 +2292,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -2362,9 +2362,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -2509,9 +2509,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -2682,9 +2682,9 @@
                     "default": "/images/default-item.svg"
                   },
                   "large": {
-                    "w": 1040,
-                    "h": 585,
-                    "folder": "1040x585",
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
                     "default": "/images/default-item.svg"
                   }
                 }
@@ -2915,7 +2915,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "EventShow"
         }, {
           "path": "news",
@@ -2928,7 +2928,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "News"
         }, {
           "path": "footage",
@@ -2940,7 +2940,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Footage"
         }, {
           "path": "playlists",
@@ -2951,7 +2951,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Playlist"
         }, {
           "path": "galleries",
@@ -2962,7 +2962,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Gallery"
         }, {
           "path": "videos",
@@ -2974,7 +2974,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Video"
         }, {
           "path": "performances",
@@ -2986,7 +2986,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Performance"
         }, {
           "path": "events",
@@ -2999,7 +2999,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
           "model": "EventShow"
         }, {
           "path": "crews",
@@ -3009,7 +3009,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "members",
@@ -3019,7 +3019,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3055,7 +3055,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "schedule.0.date": -1 } },
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3091,7 +3091,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3126,7 +3126,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Footage"
         }, {
           "path": "categories",
@@ -3160,7 +3160,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Playlist"
         }, {
           "path": "categories",
@@ -3195,7 +3195,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Performance"
         }, {
           "path": "categories",
@@ -3230,7 +3230,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Video"
         }, {
           "path": "categories",
@@ -3266,7 +3266,7 @@
             "image.file": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "News"
         }, {
           "path": "categories",
@@ -3300,7 +3300,7 @@
             "image.file": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Gallery"
         }, {
           "path": "categories",
@@ -3333,7 +3333,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3366,7 +3366,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3401,21 +3401,21 @@
       ],
       "categories": [
         "all",
-        "individuals",
-        "crews"
+        "producers",
+        "partners"
       ],
       "categoriesQueries": {
         "all": {
-          "events.0":{"$exists": true},
-          "is_crew": 1
+          "is_crew" : true,
+          "$or":[{"events.0": {"$exists": true}},{"partnerships.0": {"$exists": true}}]
         },
-        "individuals": {
-          "performances.0":{"$exists": true},
-          "is_crew": 0
+        "producers": {
+          "is_crew" : true,
+          "events.0": {"$exists": true}
         },
-        "crews": {
-          "performances.0":{"$exists": true},
-          "is_crew": 1
+        "partners": {
+          "is_crew" : true,
+          "partnerships.0": {"$exists": true}
         }
       },
       "ordersQueries": {
@@ -3430,8 +3430,8 @@
         "mostrecent":"Most recent",
         "mostactive":"Most active",
         "all":"All",
-        "individuals":"Individuals",
-        "crews":"Crews"
+        "producers":"Producers",
+        "partners":"Partners"
       },
       "show": {
         "select": {
@@ -3457,7 +3457,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "EventShow"
         }, {
           "path": "news",
@@ -3470,7 +3470,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "News"
         }, {
           "path": "footage",
@@ -3482,7 +3482,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Footage"
         }, {
           "path": "playlists",
@@ -3493,7 +3493,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Playlist"
         }, {
           "path": "galleries",
@@ -3504,7 +3504,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Gallery"
         }, {
           "path": "videos",
@@ -3516,7 +3516,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Video"
         }, {
           "path": "performances",
@@ -3528,7 +3528,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Performance"
         }, {
           "path": "events",
@@ -3541,7 +3541,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
           "model": "EventShow"
         }, {
           "path": "crews",
@@ -3551,7 +3551,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "members",
@@ -3561,7 +3561,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3597,7 +3597,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3633,7 +3633,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3668,7 +3668,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Footage"
         }, {
           "path": "categories",
@@ -3702,7 +3702,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Playlist"
         }, {
           "path": "categories",
@@ -3737,7 +3737,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Performance"
         }, {
           "path": "categories",
@@ -3772,7 +3772,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Video"
         }, {
           "path": "categories",
@@ -3808,7 +3808,7 @@
             "image.file": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "News"
         }, {
           "path": "categories",
@@ -3842,7 +3842,7 @@
             "image.file": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Gallery"
         }, {
           "path": "categories",
@@ -3875,7 +3875,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3908,7 +3908,7 @@
             "stats": 1,
             "image": 1
           },
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "activity": -1 }},
           "model": "UserShow"
         }, {
           "path": "categories",
@@ -3945,12 +3945,12 @@
       ],
       "categories": [
         "all",
-        "clubbing",
-        "corporate",
         "festival",
-        "one-night",
-        "television", 
-        "workshops-learning"
+        "one-night", 
+        "clubbing",
+        "workshops-learning",
+        "corporate",
+        "television"
       ],
       "categoriesQueries": {
         "all":  {},
@@ -4083,7 +4083,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Video"
         }, {
           "path": "galleries",
@@ -4094,7 +4094,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Gallery"
         }]
       }
@@ -4125,18 +4125,28 @@
       "categories": [
         "all",
         "av-performance",
+        "mapping",
         "vj-set",
         "workshop",
+        "lecture",
         "project-showcase",
+        "video-installation",
+        "lights-installation",
+        "dvd-projection",
         "dj-set"
       ],
       "categoriesQueries": {
         "all": {},
         "av-performance": {"categories": "5be8708afc3961000000011b" },
+        "mapping": {"categories": "5be8708afc39610000000016" },
         "vj-set": {"categories": "5be8708afc39610000000014" },
         "workshop": {"categories": "5be8708afc39610000000099" },
+        "lecture": {"categories": "5be8708afc396100000001a1" },
         "project-showcase": {"categories": "5be8708afc3961000000011c" },
-        "dj-set": {"categories": "5be8708afc3961000000011d" }
+        "lights-installation": {"categories": "5be8708afc39610000000017" },
+        "video-installation": {"categories": "5be8708afc3961000000019f" },
+        "dj-set": {"categories": "5be8708afc3961000000011d" },
+        "dvd-projection": {"categories": "5be8708afc39610000000015" }
       },
       "ordersQueries": {
         "mostrecent": {
@@ -4154,11 +4164,16 @@
         "mostviewed": "Most viewed",
         "mostliked": "Most liked",
         "all": "All",
-        "av-performance": "AV Performance",
+        "dvd-projection": "DVD projection",
+        "lights-installation": "Lights Installation",
+        "mapping": "Mapping",
         "vj-set": "VJ Set",
+        "workshop": "Workshop",
+        "av-performance": "AV Performance",
+        "project-showcase": "Project showcase",
         "dj-set": "DJ Set",
-        "project-showcase": "Project Showcase",
-        "workshop": "Workshop"
+        "video-installation": "AV Installation",
+        "lecture": "Lecture"
       },
       "show": {
         "select": {
@@ -4216,7 +4231,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Video"
         }, {
           "path": "galleries",
@@ -4227,7 +4242,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Gallery"
         }]
       }
@@ -4319,7 +4334,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Performance"
         }, {
           "path": "events",
@@ -4331,7 +4346,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
           "model": "Event"
         }]
       }
@@ -4556,7 +4571,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Footage"
         }]
      }
@@ -4636,7 +4651,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
           "model": "Event"
         }, {
           "path": "performances",
@@ -4647,7 +4662,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 6 },
+          "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Performance"
         }]
      }
