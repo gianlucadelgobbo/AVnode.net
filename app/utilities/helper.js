@@ -48,7 +48,9 @@ const linkify = (str) => {
   return str
       .replace(urlPattern, '<a href="$&">$&</a>')
       .replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>')
-      .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
+      .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>')
+      .replace(/\r\n/gi,"<br />")
+      .replace(/\n/gi,"<br />");
 };
 
 const setIdentifier = () => {
