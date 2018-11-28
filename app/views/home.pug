@@ -1,16 +1,22 @@
 extends layout
 
-block teaser
-  if event && event.teaserImage
-    .teaser-block(style="background-image: url(" + event.teaserImageFormats.large + ")")
-      .container
-        .teaser
-          .display-6.badge.badge-success Upcoming Event
-          h1.display-3=event.title
-          p.lead=event.dateFormatted
-          a.btn.btn-primary(href=event.publicUrl)=global.__('More')
+block title
+
 
 block content
+  section#home_main_carousel
+    .container
+      .owl-carousel.mono.owl-theme
+        img.img-fluid(src="/images/placeholder_1_home.png")
+        img.img-fluid(src="/images/placeholder_2_home.png")
+        p="proviamo il tag strong "
+          strong="STRONG"   
+
+      
+      if subtitle
+        .home_main_title
+          p=subtitle           
+
   section.home_events_wrapper
     .content_wrapper
       .container
