@@ -20,5 +20,5 @@ block content
           each item in data.news
             .col-sm-4
               include ../partials/boxNews
-        .text-center
-          a.btn.btn-primary(href='/'+data.slug+'/news/page/'+nextpage+'/')=global.__("Nexts")+" >>"
+    hr
+    include ../partials/pagination

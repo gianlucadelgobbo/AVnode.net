@@ -20,6 +20,6 @@ block content
           each item in data.playlists
             .col-sm-4
               include ../partials/boxPlaylist
-      .text-center
-        a.btn.btn-primary(href='/'+data.slug+'/playlists/page/'+nextpage+'/')=global.__("Nexts")+" >>"
+    hr
+    include ../partials/pagination
                   

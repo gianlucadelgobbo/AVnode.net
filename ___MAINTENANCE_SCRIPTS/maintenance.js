@@ -285,19 +285,20 @@ db.events.find({"program.schedule.venue.name": {$exists:true},"program.schedule.
   printjson(venues);  
 });
 
-db.performances.find({bookings:{$exists: true}}).forEach(function(e) {
-  e.bookings = [];
+db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).toArray().map(function(item){ return item._id; });
+
+db.performances.find({"bookings":{$exists:true},"bookings.0":{$exists:false}}).forEach(function(e) {
+  delete e.bookings;
   db.performances.save(e);
 });
-
-db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).toArray().map(function(item){ return item._id; });
 
 db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
   for (i in e.program) {
     var booking = {};
     booking.event = e._id;
     booking.schedule = e.program[i].schedule;
-    if (e.program[i].performance) {
+    if (e.program[i].performance && e.program[i].schedule.venue) {
+      printjson(e.program[i].performance);
       var perf = db.performances.findOne({_id:e.program[i].performance});
       if (!perf.bookings) perf.bookings = [];
       perf.bookings.push(booking);
@@ -340,3 +341,160 @@ printjson(db.performances.count({"categories": ObjectId("5be8708afc396100000001a
 printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000222")}));
 printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000223")}));
 printjson(db.performances.count({"categories": ObjectId("5be8708afc39610000000224")}));
+
+
+
+[
+	"ObjectId(\"5be8708afc39610000000013\")",
+	"ObjectId(\"5be8708afc39610000000097\")",
+	"ObjectId(\"5be8708afc3961000000011a\")",
+	"ObjectId(\"5be8708afc3961000000019e\")",
+	"ObjectId(\"5be8708afc39610000000221\")"
+]
+
+var status_search = db.categories.find({"ancestor":ObjectId("5be8708afc3961000000000b")}).toArray().map(function(item){ return item._id; });
+var status = db.categories.find({"ancestor":ObjectId("5be8708afc3961000000000b")}).toArray().map(function(item){ return item._id.toString(); });
+printjson(status);
+
+db.performances.find({"categories":{$in:status_search}}).forEach(function(e) {
+  printjson("e.categories PRIMA");
+  printjson(e.categories);
+  for (a=0;a<e.categories.length;a++) {
+    printjson(e.categories[a]);
+    if (status.indexOf(e.categories[a].toString())!==-1) printjson(a+" "+status.indexOf(e.categories[a].toString()));
+    if (status.indexOf(e.categories[a].toString())!==-1) {
+      e.categories.splice(a,1);
+      a-=1;
+    }
+  }
+  printjson("e.categories DOPO");
+  printjson(e.categories);
+  db.performances.save(e);
+});
+
+var status_search = db.categories.find({"name":{$regex:".*Rooms"}}).toArray().map(function(item){ return item._id; });
+printjson(status_search);
+
+var ancestor = [
+	ObjectId("5be8708afc3961000000000d"),
+	ObjectId("5be8708afc39610000000012"),
+	ObjectId("5be8708afc3961000000000c"),
+	ObjectId("5be8708afc39610000000011"),
+	ObjectId("5be8708afc3961000000000e"),
+	ObjectId("5be8708afc3961000000000f"),
+	ObjectId("5be8708afc39610000000090"),
+	ObjectId("5be8708afc39610000000091"),
+	ObjectId("5be8708afc39610000000092"),
+	ObjectId("5be8708afc39610000000094"),
+	ObjectId("5be8708afc39610000000095"),
+	ObjectId("5be8708afc39610000000096"),
+	ObjectId("5be8708afc39610000000114"),
+	ObjectId("5be8708afc39610000000117"),
+	ObjectId("5be8708afc39610000000118"),
+	ObjectId("5be8708afc39610000000119"),
+	ObjectId("5be8708afc39610000000197"),
+	ObjectId("5be8708afc3961000000019a"),
+	ObjectId("5be8708afc3961000000019b"),
+	ObjectId("5be8708afc3961000000019c"),
+	ObjectId("5be8708afc3961000000019d"),
+	ObjectId("5be8708afc3961000000021a"),
+	ObjectId("5be8708afc3961000000021b"),
+	ObjectId("5be8708afc3961000000021d"),
+	ObjectId("5be8708afc3961000000021e"),
+	ObjectId("5be8708afc3961000000021f"),
+	ObjectId("5be8708afc39610000000220")
+];
+var status_search = db.categories.find({"ancestor":{$in:ancestor}}).toArray().map(function(item){ return item._id; });
+var status = db.categories.find({"ancestor":{$in:ancestor}}).toArray().map(function(item){ return item._id.toString(); });
+printjson(status);
+
+db.performances.find({"categories":{$in:status_search}}).forEach(function(e) {
+  printjson(e.slug);
+  printjson("e.categories PRIMA");
+  printjson(e.categories);
+  for (a=0;a<e.categories.length;a++) {
+    printjson(e.categories[a]);
+    if (status.indexOf(e.categories[a].toString())!==-1) printjson(a+" "+status.indexOf(e.categories[a].toString()));
+    if (status.indexOf(e.categories[a].toString())!==-1) {
+      e.categories.splice(a,1);
+      a-=1;
+    }
+  }
+  printjson("e.categories DOPO");
+  printjson(e.categories);
+  db.performances.save(e);
+});
+
+makeTextPlainToRich = function(str) {
+  return str
+      //.replace(/"/gi,'&quot;')
+      .replace(/###b###/gi,"<b>")
+      .replace(/###\/b###/gi,"</b>")
+      .replace(/\r\n/gi,"<br />")
+      .replace(/\n/gi,"<br />");
+};
+linkify = function(str) {
+
+  // http://, https://, ftp://
+  var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+
+  // www. sans http:// or https://
+  var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+
+  // Email addresses
+  var emailAddressPattern = /[\w.]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,6})+/gim;
+
+  return str
+      .replace(urlPattern, '<a href="$&">$&</a>')
+      .replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>')
+      .replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
+};
+
+var str = '###b###The quick brown\r\n fox g.delgobbo@flyer.it  fox https://flyer.it  fox http://flyer.it jumped \r\nover the lazy ###/b###. If the dog \nreacted, was \nit really lazy?';
+c
+onsole.log(makeTextPlainToRich(str));
+
+makeTextPlainToRich = function(str) {
+  return str.replace(/###b###/gi,"<b>").replace(/###\/b###/gi,"</b>");
+};
+// expected output: "The quick brown fox jumped over the lazy ferret. If the ferret reacted, was it really lazy?"
+db.events.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
+  for (a=0;a<e.abouts.length;a++) {
+    printjson(e.abouts[a].abouttext);
+    e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
+    printjson(e.abouts[a].abouttext);
+    db.events.save(e);
+  }
+});
+db.performances.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
+  for (a=0;a<e.abouts.length;a++) {
+    printjson(e.abouts[a].abouttext);
+    e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
+    printjson(e.abouts[a].abouttext);
+    db.performances.save(e);
+  }
+});
+db.users.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
+  for (a=0;a<e.abouts.length;a++) {
+    printjson(e.abouts[a].abouttext);
+    e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
+    printjson(e.abouts[a].abouttext);
+    db.users.save(e);
+  }
+});
+db.videos.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
+  for (a=0;a<e.abouts.length;a++) {
+    printjson(e.abouts[a].abouttext);
+    e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
+    printjson(e.abouts[a].abouttext);
+    db.videos.save(e);
+  }
+});
+db.footage.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
+  for (a=0;a<e.abouts.length;a++) {
+    printjson(e.abouts[a].abouttext);
+    e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
+    printjson(e.abouts[a].abouttext);
+    db.footage.save(e);
+  }
+});

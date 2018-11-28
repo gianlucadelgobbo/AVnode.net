@@ -6,6 +6,7 @@ const moment = require('moment');
 const indexPlugin = require('../utilities/elasticsearch/User');
 const async = require('async');
 //const imageUtil = require('../utilities/image');
+const helper = require('../utilities/helper');
 
 const MediaImage = require('./shared/MediaImage');
 const Address = require('./shared/Address');
@@ -161,6 +162,7 @@ userSchema.virtual('about').get(function (req) {
       }
     }
     about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
+    about = helper.linkify(about);
     return about;
   }
 });

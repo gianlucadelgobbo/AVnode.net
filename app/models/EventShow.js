@@ -17,6 +17,7 @@ const Schedule = require('./shared/Schedule');
 
 const adminsez = 'events';
 const logger = require('../utilities/logger');
+const helper = require('../utilities/helper');
 
 const scheduleSchema = new Schema({
   date: Date,
@@ -34,6 +35,7 @@ scheduleSchema.virtual('starttime_formatted').get(function () {
 scheduleSchema.virtual('endtime_formatted').get(function () {
   return moment(this.endtime).format('h:mm');
 });
+
 
 const packageSchema = new Schema({
   name: String,
@@ -296,8 +298,12 @@ eventSchema.virtual('about').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
+    about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
+
     about = truncatise(about, options);
   
+    about = helper.linkify(about);
+
     return about;
   }
 });
@@ -330,7 +336,11 @@ eventSchema.virtual('aboutFull').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
+    about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
+
     about = about.replace(truncatise(about, options),"");
+  
+    about = helper.linkify(about);
 
     return about;
   }
