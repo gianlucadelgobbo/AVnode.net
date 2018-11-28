@@ -13,125 +13,68 @@ block content
           strong="STRONG"   
 
       
-      if subtitle
+  section#home_main_title
+    if subtitle
+      .home_main_title_bkg
         .home_main_title
-          p=subtitle           
+          p=subtitle
 
-  section.home_events_wrapper
+  section#performances_home.section_home
     .content_wrapper
       .container
-        section#events.row.performer_events_wrapper
+        .row
           .col-lg-12
-            h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-            .owl-carousel.loop.owl-theme
-              each item in data.events
-                include partials/boxEvent
-            .button_more.button_more_program
-              a(href="/events",  title=global.__('All the events'))
-                span.button_more_label!=global.__('+ All the events')
-                span.button_more_bkg        
-        //.row
+            h2.home_title
+              span.title_label!=global.__('Performances overview')
+              a(href="/performances",  title=global.__('All the performances'))
+                span.button_more_label!=global.__('See all+')                            
+            - var item = data.performances[0]
+                include partials/boxPerformanceHome
+
+  section#home_events_wrapper.section_home
+    .content_wrapper
+      .container
+        .row
           .col-lg-12
-            h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
-            .row.carousel
-              each item in data.events
-                .col-sm-4
-                  include partials/boxEvent
-            .text-right
-              a.btn.btn-secondary(href="/events/")=global.__('View all')        
-          
-  if data.performances.length
-    .polygon_divider_top
-      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
-        g#layer2
-        g#Layer_1
-          g
-            polygon(fill='#0f8fcf' points='1927.4,99.5 0,99.5 0,-1 		')
-            polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
-    section#performances.performer_performances_wrapper
-      .content_wrapper
-        .container
-          .row
-            .col-lg-12
-              h2.main_title.indented_title!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
-              .performance_divider.basic_divider
-              .owl-carousel.loop.owl-theme
-                each item in data.performances                
-                  include partials/boxPerformance
-              .button_more.button_more_grey
-                a(href="/performances",  title=global.__('All the performances'))
-                  span.button_more_label!=global.__('+ All the performances')
-                  span.button_more_bkg                  
-    .polygon_divider_bottom
-      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
-        g#layer2
-        g#Layer_1
-          g
-            polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
-            polygon(fill='#0f8fcf' points='0,0 1920,0 1920,100.5 		')  
-     
+            h2.home_title
+              span.title_label!=global.__('Next events')
+              a(href="/performances",  title=global.__('All the events'))
+                span.button_more_label!=global.__('See all+')                                                
+        .row
+          .col-sm-6
+            a(href="/performances",  title=global.__('All the performances'))
+                div.bkg_seeall
+                    img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
+                    span.seeall_label!=global.__('See All')            
+          .col-sm-6
+            each item, index in data.events
+              if index < 3
+                include partials/boxEventHome
 
-  if data.footage.length || data.videos.length || data.playlists.length
-    .polygon_divider_top
-      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
-        g#layer2
-        g#Layer_1
-          g
-            polygon(fill='#0f8fcf' points='1927.4,99.5 0,99.5 0,-1 		')
-            polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')  
-    section.performer_videos_wrapper
-      .content_wrapper
-        .container
-          if data.footage.length
-            #footage.row.performer_footage.bottom60
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
-                .owl-carousel.loop.owl-theme
-                  each item in data.footage            
-                    include partials/boxFootage 
-                .button_more.button_more_grey
-                  a(href="/"+data.slug+"/footage", title=data.stagename)
-                    span.button_more_label!=global.__('+ All the footages')
-                    span.button_more_bkg                     
+  section#home_news_wrapper.section_home
+    .content_wrapper
+      .container
+        .row
+          .col-lg-12
+            h2.home_title
+              span.title_label!=global.__('News')
+              a(href="/news",  title=global.__('All the news'))
+                span.button_more_label!=global.__('See all+')                                                
+        .row
+          .col-sm-6
+            .miss.news_item_wrapper
+              p.news_date February 22 2018
+              a(href='#', title='title')
+                h4.news_item_title LPM 2018 Rome Spot
+              p.news_excerpt Text is missing
+            .miss.news_item_wrapper
+              p.news_date February 22 2018
+              a(href='#', title='title')
+                h4.news_item_title LPM 2018 Rome Spot
+              p.news_excerpt Text is missing     
+          .col-sm-6
+            a(href="/news",  title=global.__('All the news'))
+                div.bkg_seeall
+                    img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
+                    span.seeall_label!=global.__('See All')                                                                           
 
-          if data.videos.length
-            #videos.row.performer_video
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
-                .owl-carousel.loop.owl-theme.bottom60
-                  each item in data.videos            
-                    include partials/boxVideo
-                .button_more.button_more_grey
-                  a(href="/"+data.slug+"/videos", title=data.stagename)
-                    span.button_more_label!=global.__('+ All the videos')
-                    span.button_more_bkg                    
-
-          if data.playlists.length
-            #playlists.row.performer_playlist
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
-                .owl-carousel.loop.owl-theme.bottom60
-                  each item in data.playlists
-                    include partials/boxPlaylist
-                .button_more.button_more_grey
-                  a(href="/"+data.slug+"/playlists", title=data.stagename)
-                    span.button_more_label!=global.__('+ All the playlists')
-                    span.button_more_bkg
-    
-
-  
-  if data.galleries.length    
-    section#galleries.performer_galleries_wrapper
-      .content_wrapper
-        .container
-          .row
-            .col-lg-12
-              h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
-              .performance_divider.basic_divider
-              .owl-carousel.loop_3items.owl-theme
-                each item in data.galleries
-                  include partials/boxGallery  
-              .button_more.button_more_program
-                a(href="/galleries", title=global.__('All the galleries'))
-                  span.button_more_label!=global.__('+ All the galleries')
-                  span.button_more_bkg                        

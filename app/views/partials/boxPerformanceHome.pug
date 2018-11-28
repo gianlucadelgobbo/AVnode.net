@@ -1,0 +1,44 @@
+.performance_item_wrapper
+    .row
+        .col-sm-6
+            if item.imageFormats
+                a(href="/performances/"+item.slug, title=item.title)
+                    img.card-img-top.img-fluid(
+                        src=item.imageFormats.large
+                        alt=item.title
+                    )
+        .col-sm-4
+  
+            .performance_item_info_wrapper
+                a(href="/performances/"+item.slug, title=item.title)
+                    h4.performance_item_title=item.title
+                if item.categories
+                    ul.list-inline.category_performance_item
+                        each category in item.categories
+                            li.list-inline-item=category.name
+                if item.users
+                    .performance_users_item_wrapper
+                        .flex_left      
+                            if (item.users.length > 1)
+                                div
+                                    img.img-fluid(src="/images/more_users.svg")
+                                div
+                                    p.users_performance_item_name=item.users.length+" "+global.__("users")
+                            else              
+                                each user in item.users
+                                    div
+                                        img(src=user.imageFormats.small, alt=user.stagename)
+                                    div
+                                        p.users_performance_item_name=user.stagename
+                                        p.users_performance_item_views=item.stats.visits+" "+global.__("views")
+                        .flex_right      
+                            .users_performance_item_likes
+                                span.color2.lnr.lnr-heart
+                                br
+                                span=item.stats.likes+" "+global.__("likes")                
+                p.miss.performance_about="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+        .col-sm-2
+            a(href="/performances",  title=global.__('All the performances'))
+                div.bkg_seeall
+                    img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
+                    span.seeall_label!=global.__('See All')
