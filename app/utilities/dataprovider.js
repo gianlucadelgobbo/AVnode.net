@@ -253,12 +253,28 @@ dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting,
   });
 };
 
+dataprovider.makeTextPlainToRich = (str) => {
+  str=str.replace('"','&quot;');
+  str=str.replace("###b###","<b>");
+  str=str.replace("###/b###","</b>");
+  str=str.replace('((mailto:|(news|(ht|f)tp(s?))://){1}\S+)','<a href="\0" target="_blank">\0</a>');
+  str=str.replace(">mailto:", ">", str);
+  //str = preg_replace('/((http(s)?:\/\/)|(www\\.))((\w|\.)+)(\/)?(\S+)?/i','<a href="\0" target="_blank">\0</a>', str);
+  str=str.replace("\r\n","<br />");
+  str=str.replace("\n","<br />");
+  //str=$this->eraseTripleBr(str);
+  //str=htmlspecialchars(str);
+  //str=htmlentities(str);
+  return str;	
+}
+
 dataprovider.show = (req, res, section, subsection, model) => {
   console.log(section);
   //console.log(config.sections[section]);
   let populate = config.sections[section][subsection].populate;
   for(let item in populate) {
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
+    
     if (populate[item].model === 'UserShow') populate[item].model = UserShow;
     if (populate[item].model === 'Performance') populate[item].model = Performance;
     if (populate[item].model === 'Event') populate[item].model = Event;

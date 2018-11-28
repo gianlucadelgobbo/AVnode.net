@@ -166,7 +166,7 @@ const eventSchema = new Schema({
   }
 });
 
-eventSchema.virtual('about').get(function (req) {
+/*eventSchema.virtual('about').get(function (req) {
   let about = __('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
@@ -200,7 +200,7 @@ eventSchema.virtual('subtitle').get(function (req) {
   }
 });
 
-
+*/
 
 
 eventSchema.virtual('imageFormats').get(function () {

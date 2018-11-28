@@ -2,6 +2,7 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const indexPlugin = require('../utilities/elasticsearch/Video');
+const helper = require('../utilities/helper');
 
 const About = require('./shared/About');
 const Media = require('./shared/Media');
@@ -76,6 +77,10 @@ videoSchema.virtual('about').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
+    about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
+
+    about = helper.linkify(about);
+
     return about;
   }
 });
