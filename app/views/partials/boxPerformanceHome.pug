@@ -7,7 +7,7 @@
                         src=item.imageFormats.large
                         alt=item.title
                     )
-        .col-sm-4
+        .col-md-4.col-sm-6
   
             .performance_item_info_wrapper
                 a(href="/performances/"+item.slug, title=item.title)
@@ -37,7 +37,7 @@
                                 br
                                 span=item.stats.likes+" "+global.__("likes")                
                 p.miss.performance_about="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-        .col-sm-2
+        .col-sm-2.d-sm-none.d-none
             a(href="/performances",  title=global.__('All the performances'))
                 div.bkg_seeall
                     img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
