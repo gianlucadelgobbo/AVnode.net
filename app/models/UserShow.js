@@ -161,7 +161,7 @@ userSchema.virtual('about').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
-    about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
+    about = about.replace(new RegExp(/\n/gi)," <br />");
     about = helper.linkify(about);
     return about;
   }
