@@ -298,12 +298,13 @@ eventSchema.virtual('about').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
-    about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
+    str = about;
+    str = str.replace(new RegExp(/\n/gi)," <br />"); 
 
-    about = truncatise(about, options);
+    str = helper.linkify(str);
+
+    str = truncatise(str, options);
   
-    about = helper.linkify(about);
-
     return about;
   }
 });
@@ -336,13 +337,17 @@ eventSchema.virtual('aboutFull').get(function (req) {
       Strict : true,
       StripHTML : false,
     };
-    about = about.trim().replace(/###b###/g , "<b>").replace(/###\/b###/g , "</b>").replace(/  /g , " ");
+    str = about;
 
-    about = about.replace(truncatise(about, options),"");
+    str = str.replace(new RegExp(/\n/gi)," <br />"); 
+
+    str = helper.linkify(str);
+    //str = str.replace(new RegExp(/<br \/><br \/>+/gi), "<br />");
+
+    str = str.replace(truncatise(str, options),"");
   
-    about = helper.linkify(about);
 
-    return about;
+    return str;
   }
 });
 eventSchema.virtual('description').get(function (req) {

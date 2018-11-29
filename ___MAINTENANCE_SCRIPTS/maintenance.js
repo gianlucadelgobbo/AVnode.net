@@ -453,16 +453,65 @@ linkify = function(str) {
 var str = '###b###The quick brown\r\n fox g.delgobbo@flyer.it  fox https://flyer.it  fox http://flyer.it jumped \r\nover the lazy ###/b###. If the dog \nreacted, was \nit really lazy?';
 c
 onsole.log(makeTextPlainToRich(str));
+/* .replace(/“/gi, "\\\"")
+.replace(/<em>/gi, "###em###")
+.replace(/<\/em>/gi, "###/em###")
+.replace(/<strong>/gi, "###b###")
+.replace(/<\/strong>/gi, "###/b###")
+.replace(/<p>/gi, "")
+.replace(/<br\/>/gi, "\n")
+.replace(/<br \/>/gi, "\n")
+.replace(/<br>/gi, "\n")
+.replace(/<\/p>/gi, "\n\n")
+.replace(/\n\n\n/gi, "\n\n")
+.replace(/\n\n\n/gi, "\n\n");
+replace(/<(?:.|\n)*?>/gm, '')
+.trim()
+.replace(/###em###/gi, "<em>")
+.replace(/###\/em###/gi, "</em>")
+.replace(/###b###/gi, "<b>")
+.replace(/###\/b###/gi, "</b>");
+ */
 
-makeTextPlainToRich = function(str) {
-  return str.replace(/###b###/gi,"<b>").replace(/###\/b###/gi,"</b>");
-};
-// expected output: "The quick brown fox jumped over the lazy ferret. If the ferret reacted, was it really lazy?"
-db.events.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
+ printjson(makeTextPlainToRich("<em><script>aaaaa</script>"));
+
+function makeTextPlainToRich(str) {
+  str = str.replace(new RegExp(/&#8211;/gi), "-");
+  str = str.replace(new RegExp(/<u>/gi), "###u###");
+  str = str.replace(new RegExp(/<\/u>/gi), "###/u###");
+  str = str.replace(new RegExp(/<i>/gi), "###i###");
+  str = str.replace(new RegExp(/<\/i>/gi), "###/i###");
+  str = str.replace(new RegExp(/<em>/gi), "###i###");
+  str = str.replace(new RegExp(/<\/em>/gi), "###/i###");
+  str = str.replace(new RegExp(/<strong>/gi), "###b###");
+  str = str.replace(new RegExp(/<\/strong>/gi), "###/b###");
+  str = str.replace(new RegExp(/<br\/>/gi), "\n");
+  str = str.replace(new RegExp(/<br \/>/gi), "\n");
+  str = str.replace(new RegExp(/<br>/gi), "\n");
+  str = str.replace(new RegExp(/<\/p>/gi), "<\/p>\n\n");
+  str = str.replace(new RegExp(/<(?:.|\n)*?>/gm), "");
+  str = str.replace(new RegExp(/\n\n+/gi), "\n\n");
+  str = str.replace(new RegExp(/\t/gi), " ");
+  str = str.replace(new RegExp(/ +/gi), " ");
+  str = str.replace(new RegExp(/\r\n/gi), "\n");
+  str = str.replace(new RegExp(/ \n/gi), "\n");
+  str = str.replace(new RegExp(/\n /gi), "\n");
+  str = str.replace(new RegExp(/\n\n+/gi), "\n\n");
+  str = str.trim();
+  str = str.replace(new RegExp(/###u###/gi), "<u>");
+  str = str.replace(new RegExp(/###\/u###/gi), "</u>");
+  str = str.replace(new RegExp(/###i###/gi), "<i>");
+  str = str.replace(new RegExp(/###\/i###/gi), "</i>");
+  str = str.replace(new RegExp(/###b###/gi), "<b>");
+  str = str.replace(new RegExp(/###\/b###/gi), "</b>");
+  return str;
+}
+db.events.find({}).forEach(function(e) {
+  e.aboutsbkp = JSON.parse(JSON.stringify(e.abouts));
   for (a=0;a<e.abouts.length;a++) {
-    printjson(e.abouts[a].abouttext);
+    //printjson(e.abouts[a].abouttext);
     e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
-    printjson(e.abouts[a].abouttext);
+    //printjson(e.abouts[a].abouttext);
     db.events.save(e);
   }
 });
