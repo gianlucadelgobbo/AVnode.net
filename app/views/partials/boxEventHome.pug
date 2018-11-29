@@ -4,5 +4,6 @@
       h4.event_item_title=item.title
     ul.event_item_date_and_locality.list-inline
       li.list-inline-item.event_item_date=item.boxDate
-      li.list-inline-item.event_item_locality_paese=item.boxVenue  
-    span.open_call_home!=global.__('Open call')      
+      li.list-inline-item.event_item_locality_paese=item.boxVenue
+    if item.call_is_active 
+      span.open_call_home!=global.__('Open call')      

@@ -3932,9 +3932,9 @@
       "list_fields": {
         "title": 1,
         "slug": 1,
-        "categories": 1,
         "image": 1,
         "stats": 1,
+        "call_is_active": 1,
         "schedule": 1
       },
       "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
@@ -4364,6 +4364,7 @@
         "title":1,
         "creation_date":1,
         "users":1,
+        "abouts":1,
         "slug":1,
         "image":1,
         "media":1,
