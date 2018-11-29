@@ -10,7 +10,7 @@ var USERS = function() {
   printjson(e.partnerships);
 
 
-  db.users.find({activity_as_performer:{$exists:false}}).forEach(function(e) {
+  db.users.find({}).forEach(function(e) {
     var myids = [e._id];
     for (item in e.crews) {
       //myids.push(e.crews[item]);
@@ -506,6 +506,15 @@ function makeTextPlainToRich(str) {
   str = str.replace(new RegExp(/###\/b###/gi), "</b>");
   return str;
 }
+db.performances.find({"abouts.abouttext":{$regex:".*###.*"}}).forEach(function(e) {
+  e.aboutsbkp = JSON.parse(JSON.stringify(e.abouts));
+  for (a=0;a<e.abouts.length;a++) {
+    //printjson(e.abouts[a].abouttext);
+    e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
+    //printjson(e.abouts[a].abouttext);
+    db.performances.save(e);
+  }
+});
 db.events.find({}).forEach(function(e) {
   e.aboutsbkp = JSON.parse(JSON.stringify(e.abouts));
   for (a=0;a<e.abouts.length;a++) {
@@ -513,14 +522,6 @@ db.events.find({}).forEach(function(e) {
     e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
     //printjson(e.abouts[a].abouttext);
     db.events.save(e);
-  }
-});
-db.performances.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
-  for (a=0;a<e.abouts.length;a++) {
-    printjson(e.abouts[a].abouttext);
-    e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
-    printjson(e.abouts[a].abouttext);
-    db.performances.save(e);
   }
 });
 db.users.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
@@ -545,5 +546,20 @@ db.footage.find({"abouts.abouttext":{$regex:"/.*###.*/"}}).forEach(function(e) {
     e.abouts[a].abouttext = makeTextPlainToRich(e.abouts[a].abouttext);
     printjson(e.abouts[a].abouttext);
     db.footage.save(e);
+  }
+});
+
+
+db.galleries.find({}).forEach(function(gallery) {
+  gallery.events = db.events.find({galleries:gallery._id}).toArray().map(function(item){ return item._id; });
+  gallery.performances = db.performances.find({galleries:gallery._id}).toArray().map(function(item){ return item._id; });
+  printjson(gallery.events.length+gallery.performances.length);
+  if (gallery.events.length+gallery.performances.length>0) {
+    db.galleries.save(gallery);
+  } else {
+    printjson(gallery.events);
+    printjson(gallery.performances);
+    db.galleries.remove(gallery);
+    db.galleries_not_in_use.save(gallery);
   }
 });

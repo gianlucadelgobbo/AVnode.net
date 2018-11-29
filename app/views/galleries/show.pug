@@ -125,13 +125,11 @@ block content
               h3=__("Performances")
               each performances in data.performances
                 .row
-                  .col-md-4
+                  .col-md-4.mb-3
                     a(href="/performances/"+performances.slug+"/")
-                      img(src=performances.imageFormats.small, alt=performances.title)
-                  .col-md-8
-                    p
-                      a(href="/performances/"+performances.slug+"/")=performances.title
-                    p.users_performances_item_country!=event.addressesFormatted
+                      img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
+                  .col-md-8.mb-1
+                    a(href="/performances/"+performances.slug+"/")=performances.title
           if (data.events.length)
             .data_performances_event_wrapper
               h3=__("Events")
@@ -141,8 +139,7 @@ block content
                     a(href="/events/"+event.slug+"/")
                       img.img-fluid(src=event.imageFormats.small, alt=event.title)
                   .col-md-8
-                    p
-                      a(href="/events/"+event.slug+"/")=event.title
+                    a(href="/events/"+event.slug+"/")=event.title
     if data.medias.length 
       h2.mt-5.main_title.indented_title.color1=__("Images")
       .row.mb-5
