@@ -90,12 +90,14 @@ footageSchema.virtual('description').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
-    about = about.trim().replace(/,/g , "").replace(/###b###/g , "").replace(/"/g , "").replace(/###\/b###/g , "").replace(/<br \/>/g , " ").replace(/  /g , " ");
+    about = about.replace(new RegExp(/<(?:.|\n)*?>/gm), "").trim().replace(/  /g , " ");
 
     descriptionA = about.split(" ");
     let descriptionShort = "";
     for(let item in descriptionA) if ((descriptionShort+" "+descriptionA[item]).trim().length<300) descriptionShort+=descriptionA[item]+" ";
-    return descriptionShort.trim();
+    descriptionShort = descriptionShort.trim();
+    if (descriptionShort.length < about.length) descriptionShort+"..."
+    return descriptionShort;
   }
 });
 

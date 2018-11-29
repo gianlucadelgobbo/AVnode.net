@@ -238,6 +238,21 @@ dataprovider.getJsonld = (data, req, title) => {
   return jsonld;
 };
 
+dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, skip, sorting, cb) => {
+  console.log(query);
+  Performance.countDocuments(query, function(error, total) {
+    var random = Math.floor(Math.random() * total)
+    Performance.find(query)
+    .skip(random)
+    .populate(populate)
+    .limit(1)
+    .select(select)
+    .exec(function(err, data) {
+      cb(err, data, total);
+    });
+  });
+};
+
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
   model.countDocuments(query, function(error, total) {
     model.find(query)

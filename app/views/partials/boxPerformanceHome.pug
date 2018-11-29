@@ -24,6 +24,7 @@
                                     img.img-fluid(src="/images/more_users.svg")
                                 div
                                     p.users_performance_item_name=item.users.length+" "+global.__("users")
+                                    p.users_performance_item_views=item.stats.visits+" "+global.__("views")
                             else              
                                 each user in item.users
                                     div
@@ -36,9 +37,9 @@
                                 span.color2.lnr.lnr-heart
                                 br
                                 span=item.stats.likes+" "+global.__("likes")                
-                p.miss.performance_about="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                p.performance_about!=item.description
         .col-sm-2.d-sm-none.d-none
-            a(href="/performances",  title=global.__('All the performances'))
+            a(href="/performances/",  title=global.__('All the performances'))
                 div.bkg_seeall
                     img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
                     span.seeall_label!=global.__('See All')

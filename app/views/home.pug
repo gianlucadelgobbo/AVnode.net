@@ -7,10 +7,10 @@ block content
   section#home_main_carousel
     .container
       .owl-carousel.mono.owl-theme
-        img.img-fluid(src="/images/placeholder_1_home.png")
-        img.img-fluid(src="/images/placeholder_2_home.png")
-        p="proviamo il tag strong "
-          strong="STRONG"   
+        a(href="/events/patchlab-2018")
+          img.img-fluid(src="/images/home/2018/12_Fotonica_2018.jpg")
+        a(href="/events/fotonica-2018")
+          img.img-fluid(src="/images/home/2018/10_Patchlab_2018.jpg")
 
       
   section#home_main_title
@@ -62,16 +62,9 @@ block content
                 span.button_more_label!=global.__('See all+')                                                
         .row
           .col-sm-6
-            .miss.news_item_wrapper
-              p.news_date February 22 2018
-              a(href='#', title='title')
-                h4.news_item_title LPM 2018 Rome Spot
-              p.news_excerpt Text is missing
-            .miss.news_item_wrapper
-              p.news_date February 22 2018
-              a(href='#', title='title')
-                h4.news_item_title LPM 2018 Rome Spot
-              p.news_excerpt Text is missing     
+            each item, index in data.news
+              if index < 3
+                include partials/boxNews
           .col-sm-6
             a(href="/news",  title=global.__('All the news'))
                 div.bkg_seeall

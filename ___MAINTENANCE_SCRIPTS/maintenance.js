@@ -559,7 +559,77 @@ db.galleries.find({}).forEach(function(gallery) {
   } else {
     printjson(gallery.events);
     printjson(gallery.performances);
-    db.galleries.remove(gallery);
+    db.galleries.remove({_id:gallery._id});
     db.galleries_not_in_use.save(gallery);
   }
 });
+
+db.galleries.find({'medias.file':{$regex: '.*avi.*'}}).forEach(function(gallery) {
+  printjson(gallery);
+  for (var a=0; a<gallery.medias.length; a++) {
+    if (gallery.medias[a].file.indexOf(".avi")!==-1) {
+      video = JSON.parse(JSON.stringify(gallery));
+      video.media = gallery.medias[a];
+      video.users = gallery.users;
+      video.events = gallery.events;
+      video.performances = gallery.performances;
+      video.media.original = gallery.medias[a].file.replace("glacier/galleries_originals", "glacier/videos_originals");
+      video.media.encoded = 1;
+      video.media.file = gallery.medias[a].file.replace(".avi", "_avi.mp4").replace("glacier/galleries_originals", "warehouse/videos");
+      video.media.preview = video.media.original.replace(".avi", "_avi.png").replace("glacier/videos_originals", "glacier/videos_previews");
+      delete video.medias;
+      delete video.image;
+      delete video._id;
+      gallery.medias.splice(a, 1);
+      a--;
+
+      printjson("video");
+      printjson(video);
+      printjson("gallery");
+      printjson(gallery);
+      db.galleries.save(gallery);
+      db.videos.save(video);
+      if (video.performances.length) {
+        db.performances.find({_id:{$in: video.performances}}).forEach(function(performance) {
+          performance.galleries = db.galleries.find({performances:performance._id}).toArray().map(function(item){ return item._id; });
+          printjson("performance.galleries");
+          printjson(performance.galleries);
+          performance.videos = db.videos.find({performances:performance._id}).toArray().map(function(item){ return item._id; });
+          printjson("performance.videos");
+          printjson(performance.videos);
+          db.performances.save(performance);
+        });
+      }
+      if (video.events.length) {
+        db.events.find({_id:{$in: video.events}}).forEach(function(performance) {
+          event.galleries = db.galleries.find({events:event._id}).toArray().map(function(item){ return item._id; });
+          printjson("performance.galleries");
+          printjson(performance.galleries);
+          event.videos = db.videos.find({events:event._id}).toArray().map(function(item){ return item._id; });
+          printjson("performance.videos");
+          printjson(performance.videos);
+         db.events.save(event);
+        });
+      }    
+    }
+  }
+});
+"media" : {
+  "title" : "omino reel 2011 crop - Computer",
+  "slug" : "omino-reel-2011-crop-computer",
+  "fileflxer" : "/warehouse/2011/03/omino_reel_2011_crop_-_computer.avi",
+  "original" : "/glacier/videos_originals/2011/03/omino_reel_2011_crop_-_computer.avi",
+  "preview" : "/glacier/videos_previews/2011/03/omino_reel_2011_crop_-_computer_avi.png"
+}
+"media" : {
+  "file" : "/warehouse/videos/2018/08/lcf2018-teaser_mov.mp4", 
+  "filesize" : 3795845.12, 
+  "encoded" : NumberInt(1), 
+  "title" : "LCF2018-teaser", 
+  "slug" : "lcf2018-teaser", 
+  "fileflxer" : "/warehouse/2018/08/lcf2018-teaser_mov.mp4", 
+  "previewflxer" : "/warehouse/2018/08/preview_files/lcf2018-teaser_mov.png", 
+  "originalflxer" : "/warehouse/2018/08/original_video/lcf2018-teaser.mov", 
+  "original" : "/glacier/videos_originals/2018/08/lcf2018-teaser.mov", 
+  "preview" : "/glacier/videos_previews/2018/08/lcf2018-teaser_mov.png"
+}

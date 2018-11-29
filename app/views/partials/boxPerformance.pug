@@ -20,6 +20,7 @@
               img.img-fluid(src="/images/more_users.svg")
             div
               p.users_performance_item_name=item.users.length+" "+global.__("users")
+              p.users_performance_item_views=item.stats.visits+" "+global.__("views")
           else              
             each user in item.users
               div

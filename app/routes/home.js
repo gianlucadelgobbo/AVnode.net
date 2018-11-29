@@ -2,12 +2,9 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const router = require('./router')();
 
-const Event = mongoose.model('EventShow');
+const EventShow = mongoose.model('EventShow');
 const Performance = mongoose.model('Performance');
-const Video = mongoose.model('Video');
-const Gallery = mongoose.model('Gallery');
-const Footage = mongoose.model('Footage');
-const Playlist = mongoose.model('Playlist');
+const News = mongoose.model('News');
 
 const dataprovider = require('../utilities/dataprovider');
 
@@ -18,80 +15,43 @@ router.get('/', (req, res) => {
   } else {
     let homedata = {stats:{}};
     const section = 'events';
-    const model = Event;
+    const model = EventShow;
     const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
     const select = config.sections[section].list_fields;
     const populate = config.sections[section].list_populate;
-    const limit = config.sections[section].limit;
+    const limit = 3;
     const skip = 0;
-    const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
+    const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]];
   
     dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
       homedata.events = data;
       homedata.stats.events = total;
       const section = 'performances';
       const model = Performance;
-      const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
-      const select = config.sections[section].list_fields;
       const populate = config.sections[section].list_populate;
-      const limit = config.sections[section].limit;
-      const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
-    
-      dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
+      //const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
+      let select = config.sections[section].list_fields;
+      select.abouts = 1;
+      const query = {"categories": "5be8708afc3961000000011b","image.file": {$exists: true},"abouts.abouttext": {$exists: true},"bookings.0": {$exists: true},"creation_date": {$gte: new Date(new Date().setYear(new Date().getFullYear()-2))}};
+
+      dataprovider.fetchRandomPerformance(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
         homedata.performances = data;
         homedata.stats.performances = total;
     
-        const section = 'videos';
-        const model = Video;
+        const section = 'news';
+        const model = News;
         const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
         const select = config.sections[section].list_fields;
         const populate = config.sections[section].list_populate;
-        const limit = config.sections[section].limit;
+        const limit = 3;
         const skip = 0;
         const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
       
         dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
-          homedata.videos = data;
-          homedata.stats.videos = total;
+          homedata.news = data;
+          homedata.stats.news = total;
       
-          const section = 'galleries';
-          const model = Gallery;
-          const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
-          const select = config.sections[section].list_fields;
-          const populate = config.sections[section].list_populate;
-          const limit = config.sections[section].limit;
-          const skip = 0;
-          const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
-        
-          dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
-            homedata.galleries = data;
-            homedata.stats.galleries = total;
-        
-            const section = 'footage';
-            const model = Footage;
-            const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
-            const select = config.sections[section].list_fields;
-            const populate = config.sections[section].list_populate;
-            const limit = config.sections[section].limit;
-            const skip = 0;
-            const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
-          
-            dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
-              homedata.footage = data;
-              homedata.stats.footage = total;
-          
-              const section = 'playlists';
-              const model = Playlist;
-              const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
-              const select = config.sections[section].list_fields;
-              const populate = config.sections[section].list_populate;
-              const limit = config.sections[section].limit;
-              const skip = 0;
-              const sorting = config.sections[section].ordersQueries[config.sections[section].orders[0]]
-            
-              dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
-                homedata.playlists = data;
-                homedata.stats.playlists = total;
+
   
                 if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
                   if (process.env.DEBUG) {
@@ -103,14 +63,14 @@ router.get('/', (req, res) => {
                 } else {
                   res.render('home', {
                     title: __('Welcome to AVnode network'),
-                    subtitle: __('AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.'),
+                    subtitle: __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
                     data: homedata,
                     canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
                     jsonld: {
                       "@context": "http://schema.org",
                       "@type": "WebSite",
                       "url": req.protocol + '://' + req.get('host') + req.originalUrl,
-                      "description": __('AVnode is an international network of artists and professionals organising activities in the field of audio visual performing arts.'),
+                      "description": __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
                       "image": req.protocol + '://' + req.get('host') + req.originalUrl+"images/avnode_mainimg.jpg",
                       "potentialAction": {
                         "@type": "SearchAction",
@@ -127,9 +87,6 @@ router.get('/', (req, res) => {
               });
             });
           });
-        });
-      });
-    });
   }
 });
 
