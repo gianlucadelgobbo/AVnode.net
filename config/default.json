@@ -1247,7 +1247,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "videos", "select": "title image imageFormats users", "model": "Video", "populate": { "path": "users", "select": "stagename image imageFormats", "model": "User"}}]
+          "populate": [{ "path": "videos", "match": { "is_public": true}, "select": "title image imageFormats users", "model": "Video", "populate": { "path": "users", "select": "stagename image imageFormats", "model": "User"}}]
         },
         "calls": {
           "components": {
@@ -1593,7 +1593,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "events", "select": "title image imageFormats categories schedule", "model": "Event", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "events", "match": { "is_public": true}, "select": "title image imageFormats categories schedule", "model": "Event", "populate": { "path": "categories" , "select": "name"} }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -1754,7 +1754,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "footage", "select": "title media imageFormats categories tags", "model": "Footage", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "footage", "match": { "is_public": true}, "select": "title media imageFormats categories tags", "model": "Footage", "populate": { "path": "categories" , "select": "name"} }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -1912,7 +1912,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "galleries", "select": "title media imageFormats stats", "model": "Gallery", "populate": [{ "path": "events" , "select": "title", "model": "Event"},{ "path": "performances" , "select": "title", "model": "Performance"}]  }],
+        "populate": [{ "path": "galleries", "match": { "is_public": true}, "select": "title media imageFormats stats", "model": "Gallery", "populate": [{ "path": "events" , "match": { "is_public": true}, "select": "title", "model": "Event"},{ "path": "performances" , "match": { "is_public": true}, "select": "title", "model": "Performance"}]  }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2075,7 +2075,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "news", "select": "title creation_date image imageFormats stats categories", "model": "News", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
+        "populate": [{ "path": "news", "match": { "is_public": true}, "select": "title creation_date image imageFormats stats categories", "model": "News", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2410,7 +2410,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "videos", "select": "title image imageFormats", "model": "Video"}]
+          "populate": [{ "path": "videos", "match": { "is_public": true}, "select": "title image imageFormats", "model": "Video"}]
         }
       },
       "list": {
@@ -2423,7 +2423,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "performances", "select": "title image imageFormats categories", "model": "Performance", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "performances", "match": { "is_public": true}, "select": "title image imageFormats categories", "model": "Performance", "populate": { "path": "categories" , "select": "name"} }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2583,7 +2583,7 @@
           },
           "selectaddon": {
           },
-          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "footage", "select": "title media imageFormats tags stats", "model": "Footage"}, { "path": "categories" , "select": "name" }]
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "footage", "match": { "is_public": true}, "select": "title media imageFormats tags stats", "model": "Footage"}, { "path": "categories" , "select": "name" }]
         }
       },
       "list": {
@@ -2596,7 +2596,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "playlists", "select": "title image imageFormats stats categories", "model": "Playlist", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
+        "populate": [{ "path": "playlists", "match": { "is_public": true}, "select": "title image imageFormats stats categories", "model": "Playlist", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2767,7 +2767,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "events", "select": "title image imageFormats", "model": "Event"}]
+          "populate": [{ "path": "events", "match": { "is_public": true}, "select": "title image imageFormats", "model": "Event"}]
         },
         "performances": {
           "components": {
@@ -2805,7 +2805,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "performances", "select": "title image imageFormats", "model": "Performance"}, { "path": "categories" , "select": "name" }]
+          "populate": [{ "path": "performances", "match": { "is_public": true}, "select": "title image imageFormats", "model": "Performance"}, { "path": "categories" , "select": "name" }]
         }
       },
       "list": {
@@ -2818,7 +2818,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "videos", "select": "title media imageFormats categories", "model": "Video", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "videos", "match": { "is_public": true}, "select": "title media imageFormats categories", "model": "Video", "populate": { "path": "categories" , "select": "name"} }],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2906,6 +2906,7 @@
         },
         "populate": [{
           "path": "partnerships",
+          "match": { "is_public": true}, 
           "select": {
             "title": 1,
             "slug": 1,
@@ -2919,6 +2920,7 @@
           "model": "EventShow"
         }, {
           "path": "news",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "creation_date":1,
@@ -2932,6 +2934,7 @@
           "model": "News"
         }, {
           "path": "footage",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -2944,6 +2947,7 @@
           "model": "Footage"
         }, {
           "path": "playlists",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -2955,6 +2959,7 @@
           "model": "Playlist"
         }, {
           "path": "galleries",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -2966,6 +2971,7 @@
           "model": "Gallery"
         }, {
           "path": "videos",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -2978,6 +2984,7 @@
           "model": "Video"
         }, {
           "path": "performances",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -2990,6 +2997,7 @@
           "model": "Performance"
         }, {
           "path": "events",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3046,6 +3054,7 @@
         },
         "populate": [{
           "path": "events",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3082,6 +3091,7 @@
         },
         "populate": [{
           "path": "partnerships",
+          "match": { "is_public": true}, 
           "select": {
             "title": 1,
             "slug": 1,
@@ -3118,6 +3128,7 @@
         },
         "populate": [{
           "path": "footage",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3153,6 +3164,7 @@
         },
         "populate": [{
           "path": "playlists",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3187,6 +3199,7 @@
         },
         "populate": [{
           "path": "performances",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3222,6 +3235,7 @@
         },
         "populate": [{
           "path": "videos",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3257,6 +3271,7 @@
         },
         "populate": [{
           "path": "news",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3293,6 +3308,7 @@
         },
         "populate": [{
           "path": "galleries",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3448,6 +3464,7 @@
         },
         "populate": [{
           "path": "partnerships",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3461,6 +3478,7 @@
           "model": "EventShow"
         }, {
           "path": "news",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "creation_date":1,
@@ -3474,6 +3492,7 @@
           "model": "News"
         }, {
           "path": "footage",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3486,6 +3505,7 @@
           "model": "Footage"
         }, {
           "path": "playlists",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3497,6 +3517,7 @@
           "model": "Playlist"
         }, {
           "path": "galleries",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3508,6 +3529,7 @@
           "model": "Gallery"
         }, {
           "path": "videos",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3520,6 +3542,7 @@
           "model": "Video"
         }, {
           "path": "performances",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3532,6 +3555,7 @@
           "model": "Performance"
         }, {
           "path": "events",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3588,6 +3612,7 @@
         },
         "populate": [{
           "path": "events",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3624,6 +3649,7 @@
         },
         "populate": [{
           "path": "partnerships",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3660,6 +3686,7 @@
         },
         "populate": [{
           "path": "footage",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3695,13 +3722,14 @@
         },
         "populate": [{
           "path": "playlists",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "match": { "is_public": true}, "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 21,"sort": { "created_at": -1 }},
           "model": "Playlist"
         }, {
@@ -3729,6 +3757,7 @@
         },
         "populate": [{
           "path": "performances",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3764,6 +3793,7 @@
         },
         "populate": [{
           "path": "videos",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3799,6 +3829,7 @@
         },
         "populate": [{
           "path": "news",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3835,6 +3866,7 @@
         },
         "populate": [{
           "path": "galleries",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -4326,6 +4358,7 @@
           "model": "UserShow"
         }, {
           "path": "performances",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -4338,6 +4371,7 @@
           "model": "Performance"
         }, {
           "path": "events",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -4513,7 +4547,7 @@
         "footage":1,
         "stats":1
       },
-      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"}],
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "footage", "match": { "is_public": true}, "select": "media", "model": "Footage"}],
       "orders": [
         "mostrecent",
         "mostviewed",
@@ -4564,6 +4598,7 @@
           "model": "UserShow"
         }, {
           "path": "footage",
+          "match": { "is_public": true}, 
           "select": {
             "title": 1,
             "slug": 1,
@@ -4645,6 +4680,7 @@
           "model": "UserShow"
         }, {
           "path": "events",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -4656,6 +4692,7 @@
           "model": "Event"
         }, {
           "path": "performances",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
