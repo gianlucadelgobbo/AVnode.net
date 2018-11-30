@@ -10,69 +10,84 @@ var USERS = function() {
   printjson(e.partnerships);
 
 
-  db.users.find({$or: [{"scriptupdate": {$exists: false}},{"scriptupdate": {$lt: 1}}]}).forEach(function(e) {
+  //db.users.find({slug:"diablos"}).forEach(function(e) {
+    
+  var query = {
+    "scriptupdate": {$lt: 2},
+    $or: [
+      {"performances.0": {$exists: true}}, 
+      {"events.0": {$exists: true}}, 
+      {"news.0": {$exists: true}}, 
+      {"videos.0": {$exists: true}}, 
+      {"galleries.0": {$exists: true}}, 
+      {"partnerships.0": {$exists: true}}, 
+      {"footage.0": {$exists: true}}, 
+      {"playlists.0": {$exists: true}}
+    ]
+  };
+  db.users.find(query).forEach(function(e) {
     printjson(e._id);
-    e.scriptupdate = 1;
+    e.scriptupdate = 2;
     var myids = [e._id];
     for (item in e.crews) {
       //myids.push(e.crews[item]);
     }
-    var footage =  db.footage.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
+    var footage =  db.footage.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (footage.length) e.footage = footage;
     if (!footage.length) delete e.footage;
     printjson("e.footage");
     printjson(footage);
 
-    var playlists =  db.playlists.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
+    var playlists =  db.playlists.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (playlists.length) e.playlists = playlists;
     if (!playlists.length) delete e.playlists;
     printjson("e.playlists");
     printjson(playlists);
 
-    var performances =  db.performances.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
+    var performances =  db.performances.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (performances.length) e.performances = performances;
     if (!performances.length) delete e.performances;
     printjson("e.performances");
     printjson(performances);
 
     var perf = {};
-    perf["lights-installation"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000017")});
-    perf["mapping"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000016")});
-    perf["vj-set"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000014")});
-    perf["workshop"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc39610000000099")});
-    perf["av-performance"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000011b")});
-    perf["project-showcase"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000011c")});
-    perf["dj-set"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000011d")});
-    perf["video-installation"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc3961000000019f")});
-    perf["lecture"] = db.performances.count({"users": {$in: myids}, "categories": ObjectId("5be8708afc396100000001a1")});
+    perf["lights-installation"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc39610000000017")});
+    perf["mapping"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc39610000000016")});
+    perf["vj-set"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc39610000000014")});
+    perf["workshop"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc39610000000099")});
+    perf["av-performance"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc3961000000011b")});
+    perf["project-showcase"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc3961000000011c")});
+    perf["dj-set"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc3961000000011d")});
+    perf["video-installation"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc3961000000019f")});
+    perf["lecture"] = db.performances.count({"users": {$in: myids}, "is_public": true, "categories": ObjectId("5be8708afc396100000001a1")});
     printjson("perf");
     printjson(perf);
 
-    var events =  db.events.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
+    var events =  db.events.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (events.length) e.events = events;
     if (!events.length) delete e.events;
     printjson("e.events");
     printjson(events);
 
-    var partnerships =  db.events.find({"partners.users": e._id}).toArray().map(function(item){ return item._id; });
+    var partnerships =  db.events.find({"partners.users": e._id, "is_public": true}).toArray().map(function(item){ return item._id; });
     printjson("e.partnerships");
     if (partnerships.length) e.partnerships = partnerships;
     if (!partnerships.length) delete e.partnerships;
     printjson(partnerships);
 
-    var galleries =  db.galleries.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
+    var galleries =  db.galleries.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (galleries.length) e.galleries = galleries;
     if (!galleries.length) delete e.galleries;
     printjson("e.galleries");
     printjson(galleries);
 
-    var videos =  db.videos.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
+    var videos =  db.videos.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (videos.length) e.videos = videos;
     if (!videos.length) delete e.videos;
     printjson("e.videos");
     printjson(videos);
 
-    var news =  db.news.find({"users": {$in: myids}}).toArray().map(function(item){ return item._id; });
+    var news =  db.news.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (news.length) e.news = news;
     if (!news.length) delete e.news;
     printjson("e.news");
@@ -617,22 +632,8 @@ db.galleries.find({'medias.file':{$regex: '.*avi.*'}}).forEach(function(gallery)
     }
   }
 });
-"media" : {
-  "title" : "omino reel 2011 crop - Computer",
-  "slug" : "omino-reel-2011-crop-computer",
-  "fileflxer" : "/warehouse/2011/03/omino_reel_2011_crop_-_computer.avi",
-  "original" : "/glacier/videos_originals/2011/03/omino_reel_2011_crop_-_computer.avi",
-  "preview" : "/glacier/videos_previews/2011/03/omino_reel_2011_crop_-_computer_avi.png"
-}
-"media" : {
-  "file" : "/warehouse/videos/2018/08/lcf2018-teaser_mov.mp4", 
-  "filesize" : 3795845.12, 
-  "encoded" : NumberInt(1), 
-  "title" : "LCF2018-teaser", 
-  "slug" : "lcf2018-teaser", 
-  "fileflxer" : "/warehouse/2018/08/lcf2018-teaser_mov.mp4", 
-  "previewflxer" : "/warehouse/2018/08/preview_files/lcf2018-teaser_mov.png", 
-  "originalflxer" : "/warehouse/2018/08/original_video/lcf2018-teaser.mov", 
-  "original" : "/glacier/videos_originals/2018/08/lcf2018-teaser.mov", 
-  "preview" : "/glacier/videos_previews/2018/08/lcf2018-teaser_mov.png"
-}
+
+db.performances.find({"bookings.0": {$exists: false},"image.file": {$exists: false}}).forEach(function(performance) {
+  performance.is_public = false;
+  db.performances.save(performance);
+});

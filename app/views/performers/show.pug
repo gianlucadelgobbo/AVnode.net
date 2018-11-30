@@ -29,12 +29,13 @@ block title
       .container
         .row
           .col-sm-12
-              .about_wrapper
-                !=data.about
-                br
-                span#about_collapse.about_more.collapse="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"        
+            .about_wrapper
+              span#about_collapse.about_collapse.collapse.show!=data.about
+              if data.aboutFull.length > data.about.length
+                span#about_collapseFull.about_collapse.about_more.collapse!=data.aboutFull
+            if data.aboutFull.length > data.about.length
               .more_button
-                span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
+                span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', data-target=".about_collapse", href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse about_collapseFull')
   .polygon_divider_bottom
     svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
       g#layer2

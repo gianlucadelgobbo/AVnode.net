@@ -7,6 +7,7 @@ const indexPlugin = require('../utilities/elasticsearch/User');
 const async = require('async');
 //const imageUtil = require('../utilities/image');
 const helper = require('../utilities/helper');
+const truncatise = require('truncatise');
 
 const MediaImage = require('./shared/MediaImage');
 const Address = require('./shared/Address');
@@ -161,9 +162,62 @@ userSchema.virtual('about').get(function (req) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
-    about = about.replace(new RegExp(/\n/gi)," <br />");
-    about = helper.linkify(about);
-    return about;
+    var options = {
+      TruncateLength: 80,
+      TruncateBy : "words",
+      Strict : true,
+      StripHTML : false,
+    };
+    str = about;
+    str = str.replace(new RegExp(/\n/gi)," <br />"); 
+
+    str = helper.linkify(str);
+
+    str = truncatise(str, options);
+  
+    return str;
+  }
+});
+
+
+userSchema.virtual('aboutFull').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    var options = {
+      TruncateLength: 4000000000,
+      TruncateBy : "words",
+      Strict : true,
+      StripHTML : false,
+    };
+    about = truncatise(about, options);
+    
+    var options = {
+      TruncateLength: 40,
+      TruncateBy : "words",
+      Strict : true,
+      StripHTML : false,
+    };
+    str = about;
+
+    str = str.replace(new RegExp(/\n/gi)," <br />"); 
+
+    str = helper.linkify(str);
+    //str = str.replace(new RegExp(/<br \/><br \/>+/gi), "<br />");
+
+    str = str.replace(truncatise(str, options),"");
+  
+
+    return str;
   }
 });
 

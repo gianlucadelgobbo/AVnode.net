@@ -305,7 +305,7 @@ eventSchema.virtual('about').get(function (req) {
 
     str = truncatise(str, options);
   
-    return about;
+    return str;
   }
 });
 

@@ -67,27 +67,26 @@ block content
                 div.user_perfomance_country_city
                   p.users_performance_item_name=user.stagename
                   p.users_performance_item_country!=user.addressesFormatted
-          if data.performances
+          if (data.performances.length)
             .data_footage_video_wrapper
               h3=__("Performances")
-              each performance in data.performances
-                .user_performance_wrapper
-                  div.user_perfomance_image
-                    img(src=performance.imageFormats.small, alt=performance.title)
-                  div.user_perfomance_country_city
-                    p.users_performance_item_name=performance.title
-                    p.users_performance_item_country!=performance.addressesFormatted
-          if data.events
-            - console.log(events)
-            .data_footage_video_wrapper
+              each performances in data.performances
+                .row.mb-3
+                  .col-md-4
+                    a(href="/performances/"+performances.slug+"/")
+                      img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
+                  .col-md-8
+                    a(href="/performances/"+performances.slug+"/")=performances.title
+          if (data.events.length)
+            .data_performances_event_wrapper
               h3=__("Events")
               each event in data.events
-                .user_performance_wrapper
-                  div.user_perfomance_image
-                    - console.log(event)
-                    img(src=event.imageFormats.small, alt=event.title)
-                  div.user_perfomance_country_city
-                    p.users_performance_item_name=event.title
+                .row.mb-3
+                  .col-md-4
+                    a(href="/events/"+event.slug+"/")
+                      img.img-fluid(src=event.imageFormats.small, alt=event.title)
+                  .col-md-8
+                    a(href="/events/"+event.slug+"/")=event.title
       else
         .col-md-8
           if data.imageFormats
@@ -124,17 +123,17 @@ block content
             .data_footage_video_wrapper
               h3=__("Performances")
               each performances in data.performances
-                .row
-                  .col-md-4.mb-3
+                .row.mb-3
+                  .col-md-4
                     a(href="/performances/"+performances.slug+"/")
                       img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
-                  .col-md-8.mb-1
+                  .col-md-8
                     a(href="/performances/"+performances.slug+"/")=performances.title
           if (data.events.length)
             .data_performances_event_wrapper
               h3=__("Events")
               each event in data.events
-                .row
+                .row.mb-3
                   .col-md-4
                     a(href="/events/"+event.slug+"/")
                       img.img-fluid(src=event.imageFormats.small, alt=event.title)
