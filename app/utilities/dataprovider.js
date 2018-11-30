@@ -27,8 +27,7 @@ dataprovider.fetchShow = (req, model, populate, select, cb) => {
     populate(nolimit).
     select(select).
     exec((err, d) => {
-      console.log(d[nolimit[0].path].length);
-      const total = d[nolimit[0].path].length;
+      const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
       model.
       findOne({slug: req.params.slug}).
       // lean({ virtuals: true }).
@@ -36,7 +35,7 @@ dataprovider.fetchShow = (req, model, populate, select, cb) => {
       populate(populate).
       select(select).
       exec((err, data) => {
-        cb(err, data, d[nolimit[0].path].length);
+        cb(err, data, total);
       });
     });
   

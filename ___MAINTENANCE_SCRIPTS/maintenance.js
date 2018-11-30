@@ -10,7 +10,9 @@ var USERS = function() {
   printjson(e.partnerships);
 
 
-  db.users.find({}).forEach(function(e) {
+  db.users.find({$or: [{"scriptupdate": {$exists: false}},{"scriptupdate": {$lt: 1}}]}).forEach(function(e) {
+    printjson(e._id);
+    e.scriptupdate = 1;
     var myids = [e._id];
     for (item in e.crews) {
       //myids.push(e.crews[item]);
@@ -122,6 +124,7 @@ var USERS = function() {
     e.activity_as_organization+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
     e.activity_as_organization+= (e.stats.news ? e.stats.news                 * 1 : 0);
 
+    printjson("pre save");
     db.users.save(e);
   });
 
