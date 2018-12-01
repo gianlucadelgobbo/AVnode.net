@@ -11,7 +11,7 @@ block content
               h3=global.__('Subscribe as')
           .col-md-9
             .form-check
-              input.form-check-input(type='radio', name="signup_type", id='signup_type_single', data-toggle="collapse" data-target=".multi-collapse.show" checked)
+              input.form-check-input(type='radio', name="signup_type", id='signup_type_single', data-toggle="collapse" data-target=".multi-collapse.show" checked="checked")
               label.form-check-label(for='signup_type_single')=global.__('As single')
             .form-check
               input.form-check-input(type='radio', name="signup_type", id='signup_type_crew', data-toggle="collapse" data-target=".multi-collapse:not(.show)")
@@ -19,7 +19,7 @@ block content
             script.
               window.onload = function() {
                 $('.multi-collapse').on('shown.bs.collapse', function (e) {
-                  alert("bella");
+                  // alert("bella");
                   // Action to execute once the collapsible area is expanded
                 })
               }
