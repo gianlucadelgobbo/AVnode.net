@@ -313,8 +313,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
   const select = config.sections[section][subsection].select;
 
   dataprovider.fetchShow(req, section, subsection, model, populate, select, (err, data, total) => {
-    console.log("stocazzo");
-    console.log(data.stocazzo);
     //console.log(err);
     if (err || data === null) {
       res.status(404).render('404', {title:"<span class=\"lnr lnr-warning\" style=\"font-size:  200%;vertical-align:  middle;padding-right: 20px;\"></span><span style=\"vertical-align:  middle;\">"+__("404: Page not found")+"</span>"});
@@ -416,8 +414,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
             data.liked = true;
           }
         }
-        logger.debug("stocazzo2");
-        logger.debug(data.stocazzo);
         let pages;
         if (total) {
           let link = '/' + data.slug + '/' + subsection + '/page/';
