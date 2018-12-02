@@ -39,14 +39,14 @@ router.get('/', (req, res) => {
             res_send = "Unliked";
             inc = -1;
         }
-        User.update({_id:req.user._id},{likes:req.user.likes}, (err, raw) => {
+        User.updateOne({_id:req.user._id},{likes:req.user.likes}, (err, raw) => {
             if (req.query.img_slug) {
-                model.update({_id:req.query.id,"medias.slug": req.query.img_slug},{ $inc: { "medias.$.stats.likes": inc }}, (err, raw) => {
+                model.updateOne({_id:req.query.id,"medias.slug": req.query.img_slug},{ $inc: { "medias.$.stats.likes": inc }}, (err, raw) => {
                     if (err) logger.debug(err);
                     res.send({err:false,msg:"", status:res_send});
                 });
             } else {
-                model.update({_id:req.query.id},{ $inc: { "stats.likes": inc }}, (err, raw) => {
+                model.updateOne({_id:req.query.id},{ $inc: { "stats.likes": inc }}, (err, raw) => {
                     if (err) logger.debug(err);
                     res.send({err:false,msg:"", status:res_send});
                 });
