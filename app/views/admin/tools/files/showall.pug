@@ -23,6 +23,8 @@ block content
           li
             if item.find
               !=item.find
+              !="<br />"
+              !=item.find2
             else 
               !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
               if item.imageFormats
