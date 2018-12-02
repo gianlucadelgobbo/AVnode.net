@@ -22,7 +22,7 @@ router.postData = (req, res) => {
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
     let post = {};
     //for (const item in select) if(req.body[item]) post[item] = req.body[item];
-    // db.users.update({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
+    // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
     logger.debug('select');
     logger.debug(select);
     for (const item in select) if(req.body[item]) {
