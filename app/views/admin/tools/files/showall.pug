@@ -23,8 +23,9 @@ block content
           li
             if item.find
               !=item.find
-              !="<br />"
-              !=item.find2
+              if item.find2
+                !="<br />"
+                !=item.find2
             else 
               !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
               if item.imageFormats
@@ -37,9 +38,12 @@ block content
                 !=item.findpreview
               else 
                 !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            //if item.original
+            if item.original
               !="<br />"
-              !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              if item.findoriginal
+                !=item.findoriginal
+              else 
+                !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             if item.files
               !="<br />File: "+item.files.file
               !="<br />originalFile: "+item.files.originalFile
