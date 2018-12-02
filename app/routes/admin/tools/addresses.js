@@ -225,7 +225,7 @@ const getgeometry = (req, res, cb) => {
                 addressesA[index].formatted_address = "";
                 addressesA[index].status = json.status;
               }
-              AddressDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+              AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                 if (err) {
                   console.log(err);
                 } else {
@@ -251,7 +251,7 @@ const getgeometry = (req, res, cb) => {
 
               if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
                 addressesA[index].status = error.status;
-                AddressDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+                AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                   if (err) {
                     console.log(err);
                   } else {
@@ -595,7 +595,7 @@ const venuesgetgeometry = (req, res, cb) => {
                       addressesA[index].formatted_address = "";
                       addressesA[index].status = json.status;
                     }
-                    VenueDB.update({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+                    VenueDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                       if (err) {
                         console.log(err);
                       } else {

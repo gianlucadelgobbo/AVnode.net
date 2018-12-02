@@ -27,7 +27,7 @@ router.putData = (req, res) => {
           let select = config.cpanel[req.params.sez].forms[req.params.form].select;
           let put = {};
           //for (const item in select) if(req.body[item]) put[item] = req.body[item];
-          // db.users.update({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
+          // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
           logger.debug('Data');
           logger.debug(data);
           logger.debug('select');
