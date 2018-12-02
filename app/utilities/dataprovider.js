@@ -384,7 +384,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
                 req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
                 if (!data.medias[item].stats) data.medias[item].stats = {}
                 data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
-                model.update({_id:data._id},{"medias":data.medias}, (err, raw) => {
+                model.updateOne({_id:data._id},{"medias":data.medias}, (err, raw) => {
                   //if (err) c
                   //console.log('The raw response from Mongo was ', raw);
                 });
@@ -403,7 +403,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             req.session[data._id] = true;
             if (!data.stats) data.stats = {};
             data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
-            model.update({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
+            model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
               //if (err) c
               //console.log('The raw response from Mongo was ', raw);
             });
