@@ -232,6 +232,7 @@ router.get('/files/userimages', (req, res) => {
         const file = users[user].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
         const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const oldPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/"); // /warehouse/2017/03
         const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
@@ -242,6 +243,12 @@ router.get('/files/userimages', (req, res) => {
         }
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           users[user].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+users[user].image.imageFormats[format]);
+        }
+        if (!users[user].image.exists) {
+          users[user].image.mkdir = `mkdir ${fileFolder.replace("/glacier/", "glacier/")}`;
+          users[user].image.find = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")}  -maxdepth 1 -name '${fileName}' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")} \\;`;
+          users[user].image.find2 = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")} -maxdepth 1 -name '${fileName.substring(0, fileName.lastIndexOf("_"))}*';`;
+          users[user].image.find2 = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")} -maxdepth 1 -name '${fileName.substring(0, fileName.lastIndexOf("_"))}*' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")}/${fileName} \\;`;
         }
       //}
       data.push(users[user].image);
