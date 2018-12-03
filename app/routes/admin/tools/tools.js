@@ -1187,7 +1187,7 @@ router.get('/files/galleryimages', (req, res) => {
 
 router.get('/files/gallerygenerator', (req, res) => {
   logger.debug('/admin/tools/files/gallerygenerator');
-  var limit = 10;
+  var limit = 5;
   var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
   let data = [];
   const adminsez = 'galleries';
