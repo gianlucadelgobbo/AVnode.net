@@ -19,7 +19,7 @@ block content
   ol
     if data.length
       each item, index in data
-        if !item.exists || !item.previewexists || !item.originalexists
+        if !item.exists || !item.previewexists
           li
             if item.find
               !=item.find
