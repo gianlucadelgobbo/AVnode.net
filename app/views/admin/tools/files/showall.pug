@@ -19,7 +19,7 @@ block content
   ol
     if data.length
       each item, index in data
-        if !item.exists
+        if !item.exists || !item.previewexists || !item.originalexists
           li
             if item.find
               !=item.find
@@ -44,7 +44,7 @@ block content
                 !=item.findoriginal
               else 
                 !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.files
+            //if item.files
               !="<br />File: "+item.files.file
               !="<br />originalFile: "+item.files.originalFile
               !="<br />previewFile: "+item.files.previewFile
