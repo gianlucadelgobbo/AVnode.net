@@ -42,14 +42,15 @@ block content
                 span.button_more_label!=global.__('See all+')                                                
         .row
           .col-sm-6
-            a(href="/performances",  title=global.__('All the performances'))
-                div.bkg_seeall
-                    img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
-                    span.seeall_label!=global.__('See All')            
-          .col-sm-6
             each item, index in data.events
               if index < 3
                 include partials/boxEventHome
+          .col-sm-6
+            a(href="/performances",  title=global.__('All the events'))
+                div.bkg_seeall
+                    img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
+                    span.seeall_label!=global.__('All the events')            
+
 
   section#home_news_wrapper.section_home
     .content_wrapper
@@ -62,12 +63,11 @@ block content
                 span.button_more_label!=global.__('See all+')                                                
         .row
           .col-sm-6
-            each item, index in data.news
-              if index < 3
-                include partials/boxNews
-          .col-sm-6
             a(href="/news",  title=global.__('All the news'))
                 div.bkg_seeall
                     img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg")
-                    span.seeall_label!=global.__('See All')                                                                           
-
+                    span.seeall_label!=global.__('All the news')                                                                           
+          .col-sm-6
+            each item, index in data.news
+              if index < 3
+                include partials/boxNews
