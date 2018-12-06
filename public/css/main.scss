@@ -162,7 +162,7 @@ pre {
 }
 
 nav.navbar {
-    z-index: 1;
+    z-index: 2;
 }
 
 .polygon_divider_top {
@@ -1607,7 +1607,7 @@ ul.user_navbar {
     background-color: $color1;
     border: none;
     border-radius: 0;
-    top: 49px;
+    top: 48px;
 }
 
 .user_menu a {
