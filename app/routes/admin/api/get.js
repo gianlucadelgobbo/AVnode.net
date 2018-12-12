@@ -3,6 +3,7 @@ let config = require('getconfig');
 
 const mongoose = require('mongoose');
 const Models = {
+  'Category': mongoose.model('Category'),
   'User': mongoose.model('User'),
   'Performance': mongoose.model('Performance'),
   'Event': mongoose.model('Event'),
@@ -89,6 +90,43 @@ router.getSlug = (req, res) => {
   });
 }
 
+router.getCategoryByAncestor = (cat, cb) => {
+  Models.Category.find({ancestor: cat._id})
+  .select({name:1 , slug:1})
+  .exec( (err, sons) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    cb(sons);
+  });
+}
+
+router.getCategories = (req, res) => {
+  let conta = 0;
+  Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+  .select({name:1 , slug:1})
+  .exec( (err, category) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    if (category && category._id) {
+      router.getCategoryByAncestor(category, (sons) => {
+        if (err) logger.debug(`${JSON.stringify(err)}`);
+        for (let a=0;a<sons.length;a++){
+          router.getCategoryByAncestor(sons[a], (sons2) => {
+            sons[a].sons = sons2;
+            conta++;
+            if (sons.length == conta) {
+              category.sons = sons;
+              res.json(category);
+            }
+          });
+        }
+    
+      });  
+    } else {
+      res.json(category);
+    }
+  
+  });
+}
+
 router.getMembers = (req, res) => {
   Models.User
   .find({$or:[
@@ -97,6 +135,19 @@ router.getMembers = (req, res) => {
     { name : { "$regex": req.params.q, "$options": "i" } },
     { surname : { "$regex": req.params.q, "$options": "i" } }
   ],is_crew: false},'_id, stagename', (err, users) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    res.json(users);
+  });
+}
+
+router.getAuthors = (req, res) => {
+  Models.User
+  .find({$or:[
+    { slug : { "$regex": req.params.q, "$options": "i" } },
+    { stagename : { "$regex": req.params.q, "$options": "i" } },
+    { name : { "$regex": req.params.q, "$options": "i" } },
+    { surname : { "$regex": req.params.q, "$options": "i" } }
+  ]},'_id, stagename', (err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     res.json(users);
   });

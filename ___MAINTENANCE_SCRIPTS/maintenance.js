@@ -325,6 +325,22 @@ db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
     }
   }
 });
+db.performances.find({"tech_req":{$exists:true}}).forEach(function(e) {
+  var tech_reqs = [];
+  printjson(e.tech_req);
+  for (var i in e.tech_req) {
+    var tech_req = {
+      "lang" : i, 
+      "abouttext" : e.tech_req[i]
+    };
+    tech_reqs.push(tech_req);
+  }
+  e.tech_reqs = tech_reqs;
+  printjson(e.tech_reqs);
+  delete e.tech_req;
+  db.performances.save(e);
+});
+
 
 db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
   var partners = [{
