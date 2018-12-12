@@ -47,12 +47,16 @@
     "express-session": "^1.15.6",
     "express-status-monitor": "^1.0.1",
     "getconfig": "^4.4.1",
+<<<<<<< HEAD
     "gulp": "^3.9.0",
     "gulp-cli": "^2.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
+=======
+    "html-react-parser": "^0.4.7",
+>>>>>>> 9ed3168e6b2cc3993f048455ff3254d3cfdfd9dd
     "i18n": "^0.8.3",
     "image-size": "^0.6.2",
     "joi": "^13.3.0",

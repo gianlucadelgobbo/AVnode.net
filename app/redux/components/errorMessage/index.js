@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {injectIntl} from "react-intl";
+import Parser from 'html-react-parser';
 
 class ErrorMessage extends Component {
 
@@ -16,7 +17,7 @@ class ErrorMessage extends Component {
             <div className="row">
                 <div className="col-md-12">
                     <div className="alert alert-danger" role="alert">
-                        Ops... {errorMessage}
+                        Ops... {Parser(errorMessage)}
                     </div>
                 </div>
             </div>
