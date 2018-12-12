@@ -1050,10 +1050,10 @@ export const renderDatePicker = ({ input, meta, placeholder, isChild }) => {
         value={null}
         dateFormat={DATE_FORMAT}
         className="form-control"
-        //peekNextMonth
-        //showMonthDropdown
-        //showYearDropdown
-        //dropdownMode="select"
+        peekNextMonth
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
         selected={input.value ? moment(input.value, DATE_FORMAT) : null}
         placeholderText={placeholder}
       />
