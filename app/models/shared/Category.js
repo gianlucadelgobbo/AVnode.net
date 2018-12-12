@@ -7,8 +7,22 @@ const categorySchema = new Schema({
   name : String,
   rel : String,
   slug : String,
+  sons : [],
   ancestor : { type : Schema.ObjectId, ref : 'Category' }
-}, { collection: 'categories' });
+}, {
+  collection: 'categories',
+  timestamps: true,
+  toObject: {
+  virtuals: true
+},
+toJSON: {
+  virtuals: true
+}
+});
+
+
+
+
 
 const Category = mongoose.model('Category', categorySchema);
 

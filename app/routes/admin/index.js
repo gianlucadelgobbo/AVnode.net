@@ -84,8 +84,16 @@ router.get('/api/countries', (req, res) => {
   get.getCountries(req, res);
 });
 
+router.get('/api/getcategories/:rel/slug/:q', (req, res)=>{
+  get.getCategories(req, res);
+});
+
 router.get('/api/getmembers/:q', (req, res)=>{
   get.getMembers(req, res);
+});
+
+router.get('/api/getauthors/:q', (req, res)=>{
+  get.getAuthors(req, res);
 });
 
 router.get('/api/removeAddress', (req, res)=>{
