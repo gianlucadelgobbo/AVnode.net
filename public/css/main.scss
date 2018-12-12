@@ -1,7 +1,11 @@
 //@import "custom/overrides";
 //@import "node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+<<<<<<< HEAD
 //npm run@import "bootstrap/bootstrap";
+=======
+// @import "bootstrap/bootstrap";
+>>>>>>> 9ed3168e6b2cc3993f048455ff3254d3cfdfd9dd
 //@import "custom/layout";
 //@import "node_modules/react-widgets/lib/scss/react-widgets";
 
@@ -1171,7 +1175,7 @@ section.performer_news_wrapper {
 
 .performer_item_wrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 15px;    
 }
 
@@ -1860,6 +1864,37 @@ span.seeall_label {
 #home_news_wrapper {
     padding: 30px 0;
     background-color: $color5;
+}
+
+@media (min-width: 992px) {
+.navbar-toggleable-md > .container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.navbar-toggleable-md .navbar-toggler {
+    display: none;
+}
+
+.navbar-toggleable-md .navbar-collapse {
+    display: flex !important;
+    width: 100%;
+}
+
+.navbar-toggleable-md .navbar-nav {
+    flex-direction: row;
+}
+.navbar-toggleable-md .navbar-nav .nav-link {
+    padding-right: .5rem;
+    padding-left: .5rem;
+}
+
+.navbar-inverse .navbar-nav .nav-link {
+    color: rgba(255,255,255,0.5);
+}
+
+
 }
 
 @media screen and (max-width: 991px)  { /* col-md*/
