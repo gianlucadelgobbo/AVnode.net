@@ -1952,6 +1952,20 @@ span.seeall_label {
         margin-bottom: 30px;
     }
 
+    .navbar-toggler .toggle_icon {
+        color: $color2;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 2px 0;
+    }
+
+    .navbar-nav {
+        margin-bottom: 15px;
+    }
+    .navbar-toggler .toggle_icon:focus {
+        box-shadow: none;
+    }    
 }
 
 @media screen and (max-width: 541px)  { /* solo smartphone*/
