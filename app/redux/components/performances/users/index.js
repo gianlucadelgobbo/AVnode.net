@@ -94,19 +94,6 @@ class AddUsersPerformance extends Component {
         });
       }
 
-    /*onSubmit(values) {
-        const {showModal} = this.props;
-        const modelToSave = this.createModelToSave(values);
-
-        //dispatch the action to save the model here
-        return saveModel(modelToSave)()
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
-            });
-    }*/
-
     render() {
 
         const {showModal, errorMessage} = this.props;
