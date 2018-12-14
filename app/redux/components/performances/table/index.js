@@ -54,7 +54,7 @@ class ModelTable extends Component {
                                     </Link>
                         }
                     },
-                    {
+                    /*{
                         Header: this.getIntlString({id:ACTION}),
                         id: "actions",
                         width: 100,
@@ -75,7 +75,7 @@ class ModelTable extends Component {
                             </Button>
                         }
 
-                    }
+                    }*/
                 ]
             }
         />

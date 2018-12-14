@@ -1125,17 +1125,17 @@ export const checkboxField = ({
   isChild
 }) => {
   const field = (
-    <div className="custom-control custom-checkbox">
+  
+    <div className="form-check">
       {isChild && placeholder && <label htmlFor={id}>{placeholder}</label>}
       <input
         id={id}
         defaultChecked={input.value}
-        className="custom-control-input"
+        className="form-check-input"
         type="checkbox"
         {...input}
         disabled={disabled}
       />
-      <span className="custom-control-indicator" />
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -1164,14 +1164,6 @@ export const fieldInColumn = ({
       <ul className="user-list">
         <li id={id}>{input.value}</li>
       </ul>
-      {/*<input
-            id={id}
-            defaultChecked={input.value}
-            className=""
-            type="checkbox"
-            {...input}
-            disabled={disabled}
-        />*/}
     </div>
   );
   const list = <div className="labelField">{placeholder}</div>;
@@ -1229,9 +1221,12 @@ export const renderDropzoneInput = field => {
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
       <Dropzone
         className="attachment-dropzone"
-        name={field.properties.fields.name}
+        name={field.name}
         accept={field.accept}
-        maxSize={field.properties.maxsize}
+        maxSize={10485760}
+        //name={field.properties.fields.name}
+        //accept={field.accept}
+        //maxSize={field.properties.maxsize}
         multiple={field.multiple || false}
         onDropRejected={() =>
           alert(
