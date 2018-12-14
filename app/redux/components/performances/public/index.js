@@ -86,6 +86,7 @@ class PerformancePublic extends Component {
     v.duration = model.duration;
     v.tech_arts = createMultiLanguageInitialObject("tech_arts");
     v.tech_reqs = createMultiLanguageInitialObject("tech_reqs");
+
     // Convert tech_arts format for FieldArray redux-form
     /*v.tech_arts = [];
         if (Array.isArray(model.tech_arts)) {
