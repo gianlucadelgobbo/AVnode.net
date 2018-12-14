@@ -7,7 +7,6 @@ import { renderDropzoneInput } from "../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
 import { formValueSelector } from "redux-form";
-//import properties from "../../../../config/default.json";
 
 class ProfileImageForm extends Component {
   submitForm(data) {
@@ -19,8 +18,8 @@ class ProfileImageForm extends Component {
     });
   }
 
-  renderImageType(components) {
-    let filetypes = components.image.config.filetypes;
+  renderImageType() {
+    let filetypes = ["jpeg, png"];
     let renderFiletypes = filetypes.map(filetype => `${"image/" + filetype}`);
     console.log(renderFiletypes);
     return renderFiletypes;
@@ -37,8 +36,9 @@ class ProfileImageForm extends Component {
           name="images"
           component={renderDropzoneInput}
           showModal={showModal}
-          properties={properties.image.config}
-          accept={this.renderImageType(properties)}
+          //properties={["jpeg, png"]}
+          accept="image/jpeg, image/png"
+          //accept={this.renderImageType()}
         />
 
         <hr />
