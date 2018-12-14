@@ -8,7 +8,7 @@ import {MODAL_SAVED} from "../../modal/constants";
 import {fetchModel, saveModel} from './actions';
 import {fetchList as fetchUsers} from "./actions";
 import {getList as getUsers} from "./selectors";
-import { loadSuggestion } from "../../../api";
+import { loadSuggestionAuthors } from "../../../api";
 import ErrorMessage from "../../errorMessage";
 
 
@@ -46,7 +46,7 @@ class AddUsersPerformance extends Component {
 
     onSuggestionsFetchRequested = ({ value }) => {
         if (value.length >= 3) {
-        return loadSuggestion({ value }).then(response =>
+        return loadSuggestionAuthors({ value }).then(response =>
             this.setState({ suggestions: response.data })
         );
         }
@@ -59,13 +59,13 @@ class AddUsersPerformance extends Component {
       };
 
     // Convert form values to API model
-    createModelToSave(idmember, id) {
+    createModelToSave(idusers, _id) {
         //clone obj
         let model = {};
     
         model.idusers = idusers;
     
-        model.id = id;
+        model._id = _id;
     
         return model;
       }
@@ -84,12 +84,11 @@ class AddUsersPerformance extends Component {
     }
 
     onSubmitForm(idusers) {
-        const { id } = this.props;
-        const { fetchModel, saveModel, hideModal } = this.props;
-        const modelToSave = this.createModelToSave(idusers, id);
+        const { fetchModel, saveModel, hideModal, _id } = this.props;
+        const modelToSave = this.createModelToSave(idusers, _id);
         return saveModel(modelToSave).then(model => {
-          if (model && model.id) {
-            fetchModel({ id: id });
+          if (model && model._id) {
+            fetchModel({ id: _id });
             hideModal();
           }
         });

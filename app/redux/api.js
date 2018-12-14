@@ -468,10 +468,16 @@ export const fetchPerformanceUsers = () => {
       */
 };
 
-export const savePerformanceUsers = model => (
+/*export const savePerformanceUsers = model => (
   `performances/${model._id}/users`, model
+);*/
+export const savePerformanceUsers = model => (
+axios
+    .get(`performances/${model._id}/authors/add/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    })
 );
-
 // ============ Crews
 
 export const fetchCrews = () => {
@@ -665,3 +671,5 @@ export const verifyEmail = ({ email }) =>
   axios.get(encodeURI(`profile/emails/verify/${email}`));
 
 export const loadSuggestion = ({ value }) => axios.get(`getmembers/${value}`);
+
+export const loadSuggestionAuthors = ({ value }) => axios.get(`getauthors/${value}`);
