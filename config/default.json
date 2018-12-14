@@ -715,6 +715,43 @@
     "events": {
       "model": "Event",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Event url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Event name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
         "public": {
           "components": {
             "categories": [
@@ -1615,6 +1652,43 @@
     "footage": {
       "model": "Footage",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Footage url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Footage title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
         "public": {
           "components": {
             "slug": {
@@ -1776,6 +1850,43 @@
     "galleries": {
       "model": "Gallery",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Gallery url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Gallery title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
         "public": {
           "components": {
             "slug": {
@@ -1934,6 +2045,43 @@
     "news": {
       "model": "News",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "News url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "News title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
         "public": {
           "components": {
             "slug": {
@@ -2097,6 +2245,43 @@
     "performances": {
       "model": "Performance",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Performance url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Performance title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
         "public": {
           "components": {
             "slug": {
@@ -2445,6 +2630,43 @@
     "playlists": {
       "model": "Playlist",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Playlist url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Playlist title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
         "public": {
           "components": {
             "slug": {
@@ -2618,6 +2840,43 @@
     "videos": {
       "model": "Video",
       "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Video url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "title": {
+              "comp": "simpletext",
+              "label": "Video title",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        },
         "public": {
           "components": {
             "slug": {
