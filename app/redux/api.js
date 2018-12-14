@@ -616,7 +616,14 @@ export const fetchCountries = () => {
 // categories
 
 export const fetchCategories = () => {
-  return new Promise(fulfil => {
+
+  return axios.get('/getcategories/performances/slug/type')
+       .then(result => {
+           return result.data.sons;
+       });
+
+
+  /*return new Promise(fulfil => {
     const items = [
       { _id: "5a9bba1760662400000000ce", name: "Festival" },
       { _id: "5a9bba176066240000000144", name: "CallOpen" },
@@ -624,11 +631,7 @@ export const fetchCategories = () => {
     ];
 
     fulfil(items);
-  });
-  // return axios.get('/user/categories')
-  //     .then(result => {
-  //         return result.data;
-  //     });
+  });*/
 };
 
 export const fetchPartnerCategories = () => {

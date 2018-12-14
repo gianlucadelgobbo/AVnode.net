@@ -1164,14 +1164,6 @@ export const fieldInColumn = ({
       <ul className="user-list">
         <li id={id}>{input.value}</li>
       </ul>
-      {/*<input
-            id={id}
-            defaultChecked={input.value}
-            className=""
-            type="checkbox"
-            {...input}
-            disabled={disabled}
-        />*/}
     </div>
   );
   const list = <div className="labelField">{placeholder}</div>;
