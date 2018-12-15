@@ -32,15 +32,12 @@ class AddPerformance extends Component {
   onSubmit(values) {
     const { history, saveModel, hideModal } = this.props;
     const modelToSave = this.createModelToSave(values);
-
     modelToSave.id = "1";
-
     //dispatch the action to save the model here
-    return saveModel(modelToSave).then(model => {
-      if (model && model.id) {
-        //fetchList();
-        this.props.history.push(
-          "/admin/performances/" + `${model.id}` + "/public/"
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model.id) {
+        history.push(
+          "/admin/performances/" + `${response.model.id}` + "/public/"
         );
         hideModal();
       }

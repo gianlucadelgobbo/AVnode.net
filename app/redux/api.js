@@ -324,9 +324,11 @@ export const savePerformanceImages = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put(`performances/${model.id}/image`, formBox, config).then(result => {
-    return result.data;
-  });
+  return axios
+    .put(`performances/${model.id}/image`, formBox, config)
+    .then(result => {
+      return result.data;
+    });
 };
 //axios.post(`performances/${model._id}/image`, model);
 
@@ -471,13 +473,12 @@ export const fetchPerformanceUsers = () => {
 /*export const savePerformanceUsers = model => (
   `performances/${model._id}/users`, model
 );*/
-export const savePerformanceUsers = model => (
-axios
+export const savePerformanceUsers = model =>
+  axios
     .get(`performances/${model._id}/authors/add/${model.idusers}`, model)
     .then(result => {
       return result.data;
-    })
-);
+    });
 // ============ Crews
 
 export const fetchCrews = () => {
@@ -545,18 +546,17 @@ export const fetchCrewImages = ({ id }) => {
 };
 
 export const saveCrewImages = model => {
-   // convert image to Form Data
-   let formBox = new FormData();
-   formBox.append("image", model.image);
- 
-   // define request headers
-   const config = { headers: { "Content-Type": "multipart/form-data" } };
- 
-   return axios.put(`crews/${model.id}/image`, formBox, config).then(result => {
-     return result.data;
-   });
- };
-  
+  // convert image to Form Data
+  let formBox = new FormData();
+  formBox.append("image", model.image);
+
+  // define request headers
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+  return axios.put(`crews/${model.id}/image`, formBox, config).then(result => {
+    return result.data;
+  });
+};
 
 // - members
 
@@ -616,12 +616,9 @@ export const fetchCountries = () => {
 // categories
 
 export const fetchCategories = () => {
-
-  return axios.get('/getcategories/performances/slug/type')
-       .then(result => {
-           return result.data.sons;
-       });
-
+  return axios.get("/getcategories/performances/slug/type").then(result => {
+    return result.data.sons;
+  });
 
   /*return new Promise(fulfil => {
     const items = [
@@ -675,4 +672,5 @@ export const verifyEmail = ({ email }) =>
 
 export const loadSuggestion = ({ value }) => axios.get(`getmembers/${value}`);
 
-export const loadSuggestionAuthors = ({ value }) => axios.get(`getauthors/${value}`);
+export const loadSuggestionAuthors = ({ value }) =>
+  axios.get(`getauthors/${value}`);
