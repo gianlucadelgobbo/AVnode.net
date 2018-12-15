@@ -108,6 +108,14 @@ router.get('/api/crews/:id/members/remove/:member', (req, res)=>{
   get.removeMember(req, res);
 });
 
+router.get('/api/:sez/:id/users/add/:user', (req, res)=>{
+  get.addUser(req, res);
+});
+
+router.get('/api/:sez/:id/users/remove/:user', (req, res)=>{
+  get.removeUser(req, res);
+});
+
 router.get('/api/:sez', (req, res) => {
   req.params.id = req.user.id;
   get.getList(req, res);
