@@ -18,6 +18,7 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.getList = (req, res) => {
+  console.log("getList");
   if (config.cpanel[req.params.sez] && req.params.id) {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
@@ -441,7 +442,7 @@ router.addMember = (req, res) => {
           "value":null,
           "path":"id"
         }
-      }, null);
+      });
     } else if (crew.members.indexOf(req.params.member)!==-1) {
       res.status(404).json({
         "message": "MEMBER_IS_ALREADY_MEMBER",
@@ -458,7 +459,7 @@ router.addMember = (req, res) => {
           "value":null,
           "path":"id"
         }
-      }, null);
+      });
     } else {
       crew.members.push(req.params.member);
       crew.save(function(err){
@@ -493,7 +494,7 @@ router.removeMember = (req, res) => {
           "value":null,
           "path":"id"
         }
-      }, null);
+      });
     } else if (crew.members.indexOf(req.params.member)===-1) {
       res.status(404).json({
         "message": "MEMBER_IS_NOT_A_MEMBER",
@@ -510,7 +511,7 @@ router.removeMember = (req, res) => {
           "value":null,
           "path":"id"
         }
-      }, null);
+      });
     } else {
       crew.members.splice(crew.members.indexOf(req.params.member), 1);
       //res.json(crew);
@@ -523,6 +524,112 @@ router.removeMember = (req, res) => {
     }
   });
 }
+
+router.addUser = (req, res) => {
+  Models[config.cpanel[req.params.sez].model]
+  .findOne({_id: req.params.id, users:req.user.id},'_id, users', (err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.users.indexOf(req.params.user)!==-1) {
+      res.status(404).json({
+        "message": "USER_IS_ALREADY_IN",
+        "name": "MongoError",
+        "stringValue":"\"USER_IS_ALREADY_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_IS_ALREADY_IN",
+          "name":"MongoError",
+          "stringValue":"\"USER_IS_ALREADY_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.users.push(req.params.user);
+      item.save(function(err){
+        //res.json(item);
+        req.params.form = 'public';
+        logger.debug(`STOCAZZO`);
+
+        router.getData(req, res);
+      });
+    }
+  });
+}
+
+router.removeUser = (req, res) => {
+  Models[config.cpanel[req.params.sez].model]
+  .findOne({_id: req.params.id, users:req.user.id},'_id, users', (err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.users.indexOf(req.params.user)===-1) {
+      res.status(404).json({
+        "message": "USER_IS_NOT_IN",
+        "name": "MongoError",
+        "stringValue":"\"USER_IS_NOT_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_IS_NOT_IN",
+          "name":"MongoError",
+          "stringValue":"\"USER_IS_NOT_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.users.splice(item.users.indexOf(req.params.user), 1);
+      //res.json(item);
+      item.save(function(err){
+        //res.json(item);
+        req.params.form = 'public';
+        router.getData(req, res);
+      });
+    }
+  });
+}
+
 router.getCountries = (req, res) => {
   const allCountries = require('node-countries-list');
   const R = require('ramda');
