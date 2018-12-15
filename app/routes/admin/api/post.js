@@ -17,6 +17,8 @@ const logger = require('../../../utilities/logger');
 router.postData = (req, res) => {
   logger.debug('postData');
   logger.debug(req.body);
+  logger.debug('req.params.sez');
+  logger.debug(req.params.sez);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
     let select = config.cpanel[req.params.sez].forms.new.select;
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
@@ -33,35 +35,55 @@ router.postData = (req, res) => {
     }
     logger.debug('postpostpostpostpostpost');
     logger.debug(post);
-    logger.debug('session');
-    logger.debug(req.sessions);
+    if (req.params.sez == "crews") {
+      post.members = [req.user.id];
+    } else {
+      post.users = [req.user.id];
+    }
 
     Models[config.cpanel[req.params.sez].model]
     .create(post, (err, data) => {
-      if (err) {
-        console.log('err');
-        console.log(err);
-        res.status(400).json(err);
-      } else {
+      if (!err) {
+        console.log('create success');
+        console.log(data);
         const id = req.user.id;
         logger.debug('req.user.id');
         logger.debug(req.user.id);
-        Models[config.cpanel[req.params.sez].model]
+        Models['User']
         .findById(id, req.params.sez, (err, user) => {
-          logger.debug('useruseruseruseruseruseruseruseruseruseruseruser');
+          logger.debug('findById user');
           logger.debug(user);
           if (!err) {
             if (user) {
               user[req.params.sez].push(data._id);
-              logger.debug('useruseruseruseruseruseruseruseruseruseruseruser');
+              logger.debug('save user');
               logger.debug(user);
               user.save((err) => {
                 if (err) {
-                  console.log('err');
+                  console.log('save user err');
                   console.log(err);
                   res.status(400).json(err);
                 } else {
-                  select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
+                  logger.debug('save user success');
+                  if (req.params.ancestor && req.params.id) {
+                    Models[config.cpanel[req.params.ancestor].model]
+                    .findById(req.params.id)
+                    .exec((err, ancestor) => {
+                      ancestor[req.params.sez].push(data._id);
+                      ancestor.save((err) => {
+                        if (err) {
+                          console.log('save ancestor err');
+                          console.log(err);
+                          res.status(400).json(err);
+                        } else {
+                          res.json(data);                    
+                        }
+                      });
+                    });
+                  } else {
+                    res.json(data);                    
+                  }
+                  /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
                   const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
                     
                   Models[config.cpanel[req.params.sez].list.model]
@@ -78,7 +100,7 @@ router.postData = (req, res) => {
                       console.log(send);
                       res.json(send);
                     }
-                  });
+                  }); */
                 }
               });
             } else {
@@ -88,10 +110,11 @@ router.postData = (req, res) => {
             res.status(500).json({ error: `${JSON.stringify(err)}` });
           }
         });
-/*         logger.debug('DataDataDataDataDataData');
-        logger.debug(data);
-        res.json(data);
- */      }
+      } else {
+        console.log('create err');
+        console.log(err);
+        res.status(400).json(err);
+      }
     });
   } else {
     res.status(404).json({ error: `API_NOT_FOUND` });
