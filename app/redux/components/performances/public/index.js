@@ -171,11 +171,9 @@ class PerformancePublic extends Component {
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage &&
-            !isFetching &&
-            model && (
-              <TitleComponent title={model.title} type={PERFORMANCE_NAME} />
-            )}
+          {!errorMessage && !isFetching && model && (
+            <TitleComponent title={model.title} type={PERFORMANCE_NAME} />
+          )}
 
           <Form
             initialValues={this.getInitialValues()}
