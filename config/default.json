@@ -2420,6 +2420,7 @@
                   "maxCount": 1
                 },
                 "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "storage": "/glacier/performances_originals/",
                 "maxsize": 2048000,
                 "minwidth": 1000,
                 "minheight": 1000,
