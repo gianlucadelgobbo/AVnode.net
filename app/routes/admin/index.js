@@ -62,7 +62,7 @@ router.get('/api/:sez/:id/:form/', (req, res) => {
 });
 
 router.put('/api/:sez/:id/:form/', (req, res) => {
-  if (['profile/image','crews/image','footage/public','events/image','events/galleries','events/videos','performances/image','performances/galleries','performances/videos'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+  if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/public','videos/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     upload.uploader(req, res, (err, data) => {
       if (err) {
         res.status(500).json(err);
@@ -77,6 +77,10 @@ router.put('/api/:sez/:id/:form/', (req, res) => {
 });
 
 router.post('/api/:sez/new/', (req, res) => {
+  post.postData(req, res);
+});
+
+router.post('/api/:ancestor/:id/:sez/', (req, res) => {
   post.postData(req, res);
 });
 

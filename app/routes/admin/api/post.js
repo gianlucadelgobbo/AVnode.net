@@ -65,7 +65,24 @@ router.postData = (req, res) => {
                   res.status(400).json(err);
                 } else {
                   logger.debug('save user success');
-                  res.json(data);
+                  if (req.params.ancestor && req.params.id) {
+                    Models[config.cpanel[req.params.ancestor].model]
+                    .findById(req.params.id)
+                    .exec((err, ancestor) => {
+                      ancestor[req.params.sez].push(data._id);
+                      ancestor.save((err) => {
+                        if (err) {
+                          console.log('save ancestor err');
+                          console.log(err);
+                          res.status(400).json(err);
+                        } else {
+                          res.json(data);                    
+                        }
+                      });
+                    });
+                  } else {
+                    res.json(data);                    
+                  }
                   /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
                   const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
                     
