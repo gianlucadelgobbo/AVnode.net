@@ -101,7 +101,7 @@ export const saveModel = ({ constants, selectors, request, schema, model }) => (
         id: model.id
       });
 
-      return { id: model.id || "ok" };
+      return { model: response || "ok" };
     },
     error => {
       // scroll to top
