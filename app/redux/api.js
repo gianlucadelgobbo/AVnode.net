@@ -475,7 +475,7 @@ export const fetchPerformanceUsers = () => {
 );*/
 export const savePerformanceUsers = model =>
   axios
-    .get(`performances/${model._id}/authors/add/${model.idusers}`, model)
+    .get(`performances/${model._id}/users/add/${model.idusers}`, model)
     .then(result => {
       return result.data;
     });
