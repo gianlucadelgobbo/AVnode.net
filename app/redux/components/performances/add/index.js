@@ -32,7 +32,7 @@ class AddPerformance extends Component {
   onSubmit(values) {
     const { history, saveModel, hideModal } = this.props;
     const modelToSave = this.createModelToSave(values);
-    modelToSave.id = "1";
+    modelToSave.id = "2";
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model.id) {
@@ -65,7 +65,7 @@ class AddPerformance extends Component {
 //Get form's initial values from redux state here
 const mapStateToProps = (state, _id) => ({
   model: getModel(state),
-  errorMessage: getModelErrorMessage(state, (_id = "1"))
+  errorMessage: getModelErrorMessage(state, (_id = "2"))
 });
 
 const mapDispatchToProps = dispatch =>
