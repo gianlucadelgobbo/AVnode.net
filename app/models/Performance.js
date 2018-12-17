@@ -115,8 +115,8 @@ performanceSchema.virtual('tech_art').get(function (req) {
         tech_art = tech_artA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
+    return tech_art;
   }
-  return tech_art;
 });
 
 
