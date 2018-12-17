@@ -76,6 +76,9 @@ router.postData = (req, res) => {
                           console.log(err);
                           res.status(400).json(err);
                         } else {
+                          console.log("data");
+                          console.log(data);
+                          console.log(data);
                           res.json(data);                    
                         }
                       });

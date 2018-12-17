@@ -13,7 +13,7 @@ var USERS = function() {
   //db.users.find({slug:"diablos"}).forEach(function(e) {
     
   var query = {
-    "scriptupdate": {$lt: 2},
+    "scriptupdate": {$lt: 5},
     $or: [
       {"performances.0": {$exists: true}}, 
       {"events.0": {$exists: true}}, 
@@ -25,9 +25,10 @@ var USERS = function() {
       {"playlists.0": {$exists: true}}
     ]
   };
+  //query = {_id:ObjectId("5be881a7fc3961000000b69b")};
   db.users.find(query).forEach(function(e) {
     printjson(e._id);
-    e.scriptupdate = 2;
+    e.scriptupdate = 5;
     var myids = [e._id];
     for (item in e.crews) {
       //myids.push(e.crews[item]);
@@ -305,7 +306,7 @@ db.events.find({"program.schedule.venue.name": {$exists:true},"program.schedule.
 
 db.categories.find({"ancestor":ObjectId("5be8708afc3961000000008f")}).toArray().map(function(item){ return item._id; });
 
-db.performances.find({"bookings":{$exists:true},"bookings.0":{$exists:false}}).forEach(function(e) {
+db.performances.find({"bookings":{$exists:true}}).forEach(function(e) {
   delete e.bookings;
   db.performances.save(e);
 });
@@ -652,4 +653,64 @@ db.galleries.find({'medias.file':{$regex: '.*avi.*'}}).forEach(function(gallery)
 db.performances.find({"bookings.0": {$exists: false},"image.file": {$exists: false}}).forEach(function(performance) {
   performance.is_public = false;
   db.performances.save(performance);
+});
+
+
+db.galleries.find({}).forEach(function(e) {
+  e.is_public = true;
+  db.galleries.save(e);
+  printjson(e);  
+});
+
+db.performances.find({}).forEach(function(performance) {
+  var videos = db.videos.find({"performances":performance._id}).toArray().map(function(item){ return item._id; });
+  if (videos.length) {
+    printjson("performance.videos");  
+    printjson(performance.videos && performance.videos.length ? performance.videos.length : 0);  
+    performance.videos = videos;
+    printjson(performance.videos.length);  
+  }
+  db.performances.save(performance);
+});
+
+db.performances.find({}).forEach(function(performance) {
+  var galleries = db.galleries.find({"performances":performance._id}).toArray().map(function(item){ return item._id; });
+  if (galleries.length && galleries.length!=performance.galleries.length) {
+    printjson("performance.galleries");  
+    printjson(performance.galleries && performance.galleries.length ? performance.galleries.length : 0);  
+    performance.galleries = galleries;
+    printjson(performance.galleries);  
+  }
+  db.performances.save(performance);
+});
+
+db.videos.find({"performance.0":{$exists:true}}).forEach(function(performance) {
+  printjson("performance.videos");  
+  printjson(video.performances.length);  
+  performance.videos = db.videos.find({"_id":{$in:performance.videos}}).toArray().map(function(item){ return item._id; });
+  printjson(performance.videos.length);  
+  //db.performances.save(performance);
+});
+
+
+db.events.find({}).forEach(function(event) {
+  var videos = db.videos.find({"events":event._id}).toArray().map(function(item){ return item._id; });
+  if (videos.length && videos.length!=event.videos.length) {
+    printjson("event.videos");  
+    printjson(event.videos && event.videos.length ? event.videos.length : 0);  
+    event.videos = videos;
+    printjson(event.videos.length);  
+    db.events.save(event);
+  }
+});
+
+db.events.find({}).forEach(function(event) {
+  var galleries = db.galleries.find({"events":event._id}).toArray().map(function(item){ return item._id; });
+  if (galleries.length && galleries.length!=event.galleries.length) {
+    printjson("event.galleries");  
+    printjson(event.galleries && event.galleries.length ? event.galleries.length : 0);  
+    event.galleries = galleries;
+    printjson(event.galleries.length);  
+    db.events.save(event);
+  }
 });
