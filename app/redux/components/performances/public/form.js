@@ -8,7 +8,7 @@ import {
     inputText,
     textareaMultiTab,
     checkboxField, 
-    multiInputText,
+    reactTreeComponent,
     fieldWithLabel
 } from "../../common/form/components";
 import validate from './validate';
@@ -35,7 +35,27 @@ class PerformancePublicForm extends Component {
             onSubmit,
             errors,
             categories,
-            _id
+            _id,
+
+            style,
+            transitionName,
+            choiceTransitionName,
+            dropdownStyle,
+            searchPlaceholder,
+            searchValue,
+            value,
+            treeData,
+            treeNodeFilterProp,
+            filterTreeNode,
+            onChange,
+            showSearch, allowClear, treeLine,
+            onSearch,
+            open,
+            onDropdownVisibleChange,
+            onSelect,
+            placeholder
+            
+
         } = this.props;
 
         return (
@@ -76,6 +96,31 @@ class PerformancePublicForm extends Component {
                     placeholder={this.getIntlString({id:CATEGORY})}
                     multiple={true}
                     options={categories}
+                />
+
+                <Field
+                    name="categories"
+                    component={reactTreeComponent}
+                    style={style}
+                    transitionName={transitionName}
+                    choiceTransitionName={choiceTransitionName}
+                    dropdownStyle={dropdownStyle}
+                    searchPlaceholder={searchPlaceholder}
+                    showSearch={showSearch} 
+                    allowClear={allowClear}
+                    treeLine={treeLine}
+                    value={value}
+                    searchValue={searchValue}
+                    treeData={treeData}
+                    treeNodeFilterProp={treeNodeFilterProp}
+                    filterTreeNode={filterTreeNode}
+                    onChange={onChange}
+                    onSearch={onSearch}
+                    open={open}
+                    onDropdownVisibleChange={onDropdownVisibleChange}
+                    onSelect={onSelect}
+                    //placeholder={placeholder}
+                    placeholder={this.getIntlString({id:CATEGORY})}
                 />
 
                 <FieldArray
