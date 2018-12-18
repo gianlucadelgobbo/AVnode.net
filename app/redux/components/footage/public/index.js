@@ -91,7 +91,7 @@ class FootagePublic extends Component {
   getFormattedTags() {
     const { model } = this.props;
     if (!model) {
-      return {};
+      return [];
     }
     let tags = [];
     if (Array.isArray(model.tags)) {
