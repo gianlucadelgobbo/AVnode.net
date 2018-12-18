@@ -1221,6 +1221,7 @@ export const renderDropzoneInput = field => {
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
       <Dropzone
         className="attachment-dropzone"
+        activeClassName='active-dropzone'
         name={field.name}
         accept={field.accept}
         maxSize={10485760}

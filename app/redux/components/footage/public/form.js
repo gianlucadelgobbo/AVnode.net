@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import {reduxForm, Field, FieldArray} from "redux-form";
 import {FORM_NAME} from './constants';
 import {
-    renderList,
+    renderDropzoneInput,
     inputText,
-    textareaMultiTab, tagsInput,
-    checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl, fieldWithLabel
+    textareaMultiTab, tagsInput, fieldWithLabel
 } from "../../common/form/components";
 import validate from './validate';
 import {injectIntl} from 'react-intl';
@@ -48,6 +47,15 @@ class FootagePublicForm extends Component {
                     name="slug"
                     component={inputText}
                     placeholder={this.getIntlString({id:FOOTAGE_URL})}
+                />
+
+                <Field
+                    name="videos"
+                    component={renderDropzoneInput}
+                    showModal={showModal}
+                    //properties={["jpeg, png"]}
+                    accept="image/jpeg, image/png"
+                    //accept={this.renderImageType()}
                 />
 
                 <FieldArray
