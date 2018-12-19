@@ -26,7 +26,13 @@ class ProfileImageForm extends Component {
   }
 
   render() {
-    const { submitting, handleSubmit, showModal, images, properties } = this.props;
+    const {
+      submitting,
+      handleSubmit,
+      showModal,
+      images,
+      properties
+    } = this.props;
 
     //const { components } = properties.cpanel.profile.forms.image;
 
@@ -37,6 +43,7 @@ class ProfileImageForm extends Component {
           component={renderDropzoneInput}
           showModal={showModal}
           //properties={["jpeg, png"]}
+          maxSize={10485760}
           accept="image/jpeg, image/png"
           //accept={this.renderImageType()}
         />
@@ -56,9 +63,9 @@ class ProfileImageForm extends Component {
 }
 
 /*
-* formValueSelector is a "selector" API to make it easier to connect() to form values.
-* It creates a selector function that accepts field names and returns corresponding values from the named form.
-* */
+ * formValueSelector is a "selector" API to make it easier to connect() to form values.
+ * It creates a selector function that accepts field names and returns corresponding values from the named form.
+ * */
 const valueSelector = formValueSelector(FORM_NAME);
 
 //Get form's initial values from redux state here
