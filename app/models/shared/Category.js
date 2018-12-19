@@ -7,9 +7,10 @@ const categorySchema = new Schema({
   name : String,
   rel : String,
   slug : String,
-  sons : [],
+  childrens : [],
   ancestor : { type : Schema.ObjectId, ref : 'Category' }
 }, {
+  id : false,
   collection: 'categories',
   timestamps: true,
   toObject: {

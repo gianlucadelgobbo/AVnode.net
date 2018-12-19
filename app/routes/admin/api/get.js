@@ -113,37 +113,73 @@ router.getSlug = (req, res) => {
 router.getCategoryByAncestor = (cat, cb) => {
   Models.Category.find({ancestor: cat._id})
   .select({name:1 , slug:1})
-  .exec( (err, sons) => {
+  .exec( (err, childrens) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
-    cb(sons);
+    cb(childrens);
   });
 }
 
 router.getCategories = (req, res) => {
-  let conta = 0;
-  Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+  if (req.params.rel == "performances" && req.params.q == "type") {
+    router.getPerfCategories(req, res);
+  } else {
+    let conta = 0;
+    Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+    .select({name:1 , slug:1})
+    .exec( (err, category) => {
+      if (err) logger.debug(`${JSON.stringify(err)}`);
+      if (category && category._id) {
+        router.getCategoryByAncestor(category, (childrens) => {
+          if (err) logger.debug(`${JSON.stringify(err)}`);
+          for (let a=0;a<childrens.length;a++){
+            router.getCategoryByAncestor(childrens[a], (childrens2) => {
+              childrens[a].childrens = childrens2;
+              conta++;
+              if (childrens.length == conta) {
+                category.childrens = childrens;
+                res.json(category);
+              }
+            });
+          }
+      
+        });  
+      } else {
+        res.json(category);
+      }
+    });  
+  }
+}
+
+router.getPerfCategories = (req, res) => {
+  Models.Category.find({ancestor: "5be8708afc3961000000021c", rel: req.params.rel })
   .select({name:1 , slug:1})
-  .exec( (err, category) => {
-    if (err) logger.debug(`${JSON.stringify(err)}`);
-    if (category && category._id) {
-      router.getCategoryByAncestor(category, (sons) => {
-        if (err) logger.debug(`${JSON.stringify(err)}`);
-        for (let a=0;a<sons.length;a++){
-          router.getCategoryByAncestor(sons[a], (sons2) => {
-            sons[a].sons = sons2;
-            conta++;
-            if (sons.length == conta) {
-              category.sons = sons;
-              res.json(category);
-            }
-          });
-        }
-    
-      });  
-    } else {
-      res.json(category);
-    }
-  
+  .exec( (err, genre) => {
+    let conta = 0;
+    Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+    .select({name:1 , slug:1})
+    .exec( (err, category) => {
+      if (err) logger.debug(`${JSON.stringify(err)}`);
+      if (category && category._id) {
+        router.getCategoryByAncestor(category, (childrens) => {
+          logger.debug(childrens);
+          if (err) logger.debug(`${JSON.stringify(err)}`);
+          for (let a=0;a<childrens.length;a++){
+            router.getCategoryByAncestor(childrens[a], (childrens2) => {
+              for (let b=0;b<childrens2.length;b++) childrens2[b].childrens = genre;
+              childrens[a].childrens = childrens2;
+              conta++;
+              if (childrens.length == conta) {
+                category.childrens = childrens;
+                res.json(category);
+              }
+            });
+          }
+      
+        });  
+      } else {
+        res.json(category);
+      }    
+    });
   });
 }
 
