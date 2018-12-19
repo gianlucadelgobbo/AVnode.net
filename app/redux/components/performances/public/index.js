@@ -75,8 +75,7 @@ class PerformancePublic extends Component {
       tsOpen: false,
       visible: false,
       searchValue: '0-0-0-label',
-      value: '0-0-0-value1',
-      // value: ['0-0-0-0-value', '0-0-0-1-value', '0-0-0-2-value'],
+      value: '',
       lv: { value: '0-0-0-value', label: 'spe label' },
       multipleValue: [],
       simpleSearchValue: 'test111',
@@ -111,10 +110,7 @@ class PerformancePublic extends Component {
     this.setState({ searchValue: value });
   }
 
-  onChange = (value, ...rest) => {
-    console.log('onChange', value, ...rest);
-    this.setState({ value });
-  }
+  
 
   onChangeChildren = (...args) => {
     console.log('onChangeChildren', ...args);
@@ -138,8 +134,8 @@ class PerformancePublic extends Component {
     this.setState({ multipleValue: value });
   }
 
-  onSelect = () => {
-    // use onChange instead
+  onSelect = (item) => {
+    this.setState({ value:item });
     console.log(arguments);
   }
 
@@ -310,7 +306,7 @@ class PerformancePublic extends Component {
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}
-            model={model}
+            //model={model}
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
@@ -330,15 +326,6 @@ class PerformancePublic extends Component {
             filterTreeNode={false}
             onSearch={this.onSearch}
             open={this.state.tsOpen}
-            onChange={(value, ...args) => {
-              console.log('onChange', value, ...args);
-              if (value === '0-0-0-0-value') {
-                this.setState({ tsOpen: true });
-              } else {
-                this.setState({ tsOpen: false });
-              }
-              this.setState({ value });
-            } }
             onDropdownVisibleChange={(v, info) => {
               console.log('single onDropdownVisibleChange', v, info);
               // document clicked
@@ -351,6 +338,7 @@ class PerformancePublic extends Component {
               return true;
             } }
             onSelect={this.onSelect}
+           
           />
         </div>
       </div>

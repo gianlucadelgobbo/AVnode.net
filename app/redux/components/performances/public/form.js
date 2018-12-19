@@ -48,12 +48,12 @@ class PerformancePublicForm extends Component {
             treeNodeFilterProp,
             filterTreeNode,
             onChange,
-            showSearch, allowClear, treeLine,
+            //showSearch, allowClear, treeLine,
             onSearch,
             open,
             onDropdownVisibleChange,
             onSelect,
-            placeholder
+            //placeholder
             
 
         } = this.props;
@@ -90,13 +90,13 @@ class PerformancePublicForm extends Component {
                     placeholder={this.getIntlString({id:IS_PUBLIC})}
                 />
 
-                <Field
+                {/*<Field
                     name="categories"
                     component={renderList}
                     placeholder={this.getIntlString({id:CATEGORY})}
                     multiple={true}
                     options={categories}
-                />
+                /> */}
 
                 <Field
                     name="categories"
@@ -106,10 +106,8 @@ class PerformancePublicForm extends Component {
                     choiceTransitionName={choiceTransitionName}
                     dropdownStyle={dropdownStyle}
                     searchPlaceholder={searchPlaceholder}
-                    showSearch={showSearch} 
-                    allowClear={allowClear}
-                    treeLine={treeLine}
-                    value={value}
+                    showSearch allowClear treeLine
+                    myvalue={value}
                     searchValue={searchValue}
                     treeData={treeData}
                     treeNodeFilterProp={treeNodeFilterProp}
