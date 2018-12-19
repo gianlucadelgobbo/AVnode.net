@@ -20,20 +20,30 @@ const logger = require('../../../utilities/logger');
 router.getList = (req, res) => {
   console.log("getList");
   if (config.cpanel[req.params.sez] && req.params.id) {
-    const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
+    const ids = [req.params.id].concat(req.user.crews);
+    const query = req.params.sez == "crews" ? {members: req.params.id} : {users:{$in: ids}};
+
+    console.log("ids");
+    console.log(ids);
+    console.log(req.params.sez);
+    console.log(config.cpanel[req.params.sez].list.model);
 
     Models[config.cpanel[req.params.sez].list.model]
-    .findById(id)
+    .find(query)
     .select(select)
     .populate(populate)
+    .sort({createdAt:-1})
     .exec((err, data) => {
+      console.log("req.user");
+      console.log(req.user);
       if (err) {
         res.status(500).json({ error: `${JSON.stringify(err)}` });
       } else {
-        let send = {_id: data._id};
-        for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
+        let send = JSON.parse(JSON.stringify(req.user));
+        send[req.params.sez] = data;
+        //for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
         res.json(send);
       }
     });
@@ -82,6 +92,15 @@ router.getData = (req, res) => {
   } else {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
+}
+router.getOwnresIds = (req, res,cb) => {
+  Models.User
+  .findById(req.params.id)
+  .select({crews:1})
+  .exec((err, data) => {
+    if (data._id) data.crews.push(data._id);
+    cb(data.crews);
+  });
 }
 router.getSlug = (req, res) => {
   Models[config.cpanel[req.params.sez].model]

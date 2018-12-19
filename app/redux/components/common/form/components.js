@@ -28,6 +28,9 @@ import { WithContext as ReactTags } from "react-tag-input";
 import { Collapse } from "react-collapse";
 import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
+import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
+import 'rc-tree-select/assets/index.css';
+
 
 export const autocompleteComponent = ({
   inputProps,
@@ -52,6 +55,59 @@ export const autocompleteComponent = ({
         inputProps={inputProps}
         getSuggestionID={getSuggestionID}
       />
+    </div>
+  );
+
+  return (
+    <dl className="row">
+      <dt className="col-sm-2">{label}</dt>
+      <dd className="col-sm-10"> {field} </dd>
+    </dl>
+  );
+};
+
+export const reactTreeComponent = ({
+  style,
+  transitionName,
+  choiceTransitionName,
+  dropdownStyle,
+  placeholder,
+  searchPlaceholder,
+  //showSearch, allowClear, treeLine,
+  myvalue,
+  treeData,
+  treeNodeFilterProp,
+  filterTreeNode,
+  onChange,
+  searchValue,
+  onSearch,
+  open,
+  onDropdownVisibleChange,
+  onSelect
+}) => {
+  const label = <div className="labelField">{placeholder}</div>;
+
+  const field = (
+    <div>
+     <TreeSelect
+          style={style}
+          transitionName={transitionName}
+          choiceTransitionName={choiceTransitionName}
+          dropdownStyle={dropdownStyle}
+          placeholder={placeholder}
+          searchPlaceholder={searchPlaceholder}
+          showSearch allowClear treeLine
+          value={myvalue}
+          searchValue={searchValue}
+          treeData={treeData}
+          treeNodeFilterProp={treeNodeFilterProp}
+          filterTreeNode={filterTreeNode}
+          onChange={onChange}
+          onSearch={onSearch}
+          onDropdownVisibleChange={onDropdownVisibleChange}
+          open={open}
+          onSelect={onSelect}
+        />
     </div>
   );
 
@@ -1209,6 +1265,7 @@ export const renderDropzoneInput = field => {
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
       <Dropzone
         className="attachment-dropzone"
+        activeClassName='active-dropzone'
         name={field.name}
         accept={field.accept}
         maxSize={field.maxSize || 10485760}
