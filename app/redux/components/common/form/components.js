@@ -29,8 +29,8 @@ import { Collapse } from "react-collapse";
 import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
-import 'rc-tree-select/assets/select.css';
-import 'rc-tree-select/assets/tree.css';
+import 'rc-tree-select/assets/index.css';
+
 
 export const autocompleteComponent = ({
   inputProps,
@@ -73,8 +73,8 @@ export const reactTreeComponent = ({
   dropdownStyle,
   placeholder,
   searchPlaceholder,
-  showSearch, allowClear, treeLine,
-  value,
+  //showSearch, allowClear, treeLine,
+  myvalue,
   treeData,
   treeNodeFilterProp,
   filterTreeNode,
@@ -96,10 +96,8 @@ export const reactTreeComponent = ({
           dropdownStyle={dropdownStyle}
           placeholder={placeholder}
           searchPlaceholder={searchPlaceholder}
-          showSearch={showSearch}
-          allowClear={allowClear} 
-          treeLine={treeLine}
-          value={value}
+          showSearch allowClear treeLine
+          value={myvalue}
           searchValue={searchValue}
           treeData={treeData}
           treeNodeFilterProp={treeNodeFilterProp}
