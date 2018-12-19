@@ -227,7 +227,7 @@ textarea#styled {
 .labelFieldUpload {
   color: #636c72;
   font-weight: 400;
-  padding-top: 5px;
+  padding: 10px;
   cursor: pointer;
   font-style: italic;
 }
@@ -522,3 +522,40 @@ div.ReactTags__selected a.ReactTags__remove {
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
 }
+.attachment-dropzone{
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+}
+
+.rc-tree-select-tree li{
+  color: #333!important;
+}
+
+.rc-tree-select-selection--multiple {
+  max-height: 50px;
+  overflow-y: scroll;
+}
+.rc-tree-select-dropdown {
+  max-height: 350px;
+  overflow-y: scroll;
+}
+.check-select {
+  width: 300px;
+}
+.check-select .rc-tree-select-selection--multiple {
+  min-height: 50px;
+}
+.rc-tree-select-arrow{
+  top:5px!important;
+}
+.rc-tree-select-selection--single {
+  height: 36px!important;
+}
+.rc-tree-select-selection--single .rc-tree-select-selection__rendered{
+  line-height: 36px!important;
+}
+

@@ -1621,16 +1621,14 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "Event",
         "select": {
-          "events": 1
+          "title": 1,
+          "image": 1
         },
         "select_addon": {
-          "stagename": 1,
-          "image": 1,
-          "imageFormats": 1
         },
-        "populate": [{ "path": "events", "match": { "is_public": true}, "select": "title image imageFormats categories schedule", "model": "Event", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image"}],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -1819,16 +1817,17 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "Footage",
         "select": {
-          "footage": 1
+          "title": 1,
+          "media": 1
         },
         "selectaddon": {
           "stagename": 1,
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "footage", "match": { "is_public": true}, "select": "title media imageFormats categories tags", "model": "Footage", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image"}],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2014,16 +2013,14 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "Gallery",
         "select": {
-          "galleries": 1
+          "title": 1,
+          "image": 1
         },
         "selectaddon": {
-          "stagename": 1,
-          "image": 1,
-          "imageFormats": 1
         },
-        "populate": [{ "path": "galleries", "match": { "is_public": true}, "select": "title media imageFormats stats", "model": "Gallery", "populate": [{ "path": "events" , "match": { "is_public": true}, "select": "title", "model": "Event"},{ "path": "performances" , "match": { "is_public": true}, "select": "title", "model": "Performance"}]  }],
+        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "performances", "select": "title", "model": "Performance"}],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2214,7 +2211,7 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "News",
         "select": {
           "news": 1
         },
@@ -2223,7 +2220,7 @@
           "image": 1,
           "imageFormats": 1
         },
-        "populate": [{ "path": "news", "match": { "is_public": true}, "select": "title creation_date image imageFormats stats categories", "model": "News", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
+        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image"}],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2409,7 +2406,7 @@
           },
           "selectaddon": {
           },
-          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}]
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"},{ "path": "categories", "select": "name slug", "model": "Category"}]
         },
         "image": {
           "components": {
@@ -2600,16 +2597,14 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "Performance",
         "select": {
-          "performances": 1
+          "title": 1,
+          "image": 1
         },
         "selectaddon": {
-          "stagename": 1,
-          "image": 1,
-          "imageFormats": 1
         },
-        "populate": [{ "path": "performances", "match": { "is_public": true}, "select": "title image imageFormats categories", "model": "Performance", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image"}],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -2810,16 +2805,14 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "Playlist",
         "select": {
-          "playlists": 1
+          "title": 1,
+          "image": 1
         },
         "selectaddon": {
-          "stagename": 1,
-          "image": 1,
-          "imageFormats": 1
         },
-        "populate": [{ "path": "playlists", "match": { "is_public": true}, "select": "title image imageFormats stats categories", "model": "Playlist", "populate": { "path": "categories" , "select": "name", "model": "Category"}  }],
+        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image"}],
         "orders": [
           "mostrecent",
           "mostviewed"
@@ -3069,16 +3062,14 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "Video",
         "select": {
-          "videos": 1
+          "title": 1,
+          "media": 1
         },
         "selectaddon": {
-          "stagename": 1,
-          "image": 1,
-          "imageFormats": 1
         },
-        "populate": [{ "path": "videos", "match": { "is_public": true}, "select": "title media imageFormats categories", "model": "Video", "populate": { "path": "categories" , "select": "name"} }],
+        "populate": [{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "performances", "select": "title", "model": "Performance"}],
         "orders": [
           "mostrecent",
           "mostviewed"
