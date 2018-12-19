@@ -64,6 +64,19 @@ export const saveProfileImages = model => {
   });
 };
 
+export const saveProfileVideo = model => {
+  // convert image to Form Data
+  let formBox = new FormData();
+  formBox.append("video", model.video);
+
+  // define request headers
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+  return axios.put("profile/videos", formBox, config).then(result => {
+    return result.data;
+  });
+};
+
 // - emails
 
 export const fetchProfileEmails = () => {

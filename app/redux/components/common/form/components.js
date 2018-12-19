@@ -50,7 +50,7 @@ export const autocompleteComponent = ({
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
-        getSuggestionID = {getSuggestionID}
+        getSuggestionID={getSuggestionID}
       />
     </div>
   );
@@ -107,16 +107,15 @@ export const googleAutocompleteSelect = ({
       <PlacesAutocomplete {...input} options={options}>
         {renderFunc}
       </PlacesAutocomplete>
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            {isChild ? (
-              <FormattedMessage id={meta.error._error} />
-            ) : (
-              <FormattedMessage id={meta.error} />
-            )}
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          {isChild ? (
+            <FormattedMessage id={meta.error._error} />
+          ) : (
+            <FormattedMessage id={meta.error} />
+          )}
+        </span>
+      )}
     </div>
   );
 
@@ -155,16 +154,15 @@ export const performanceAutocompleteSelect = ({
         labelKey="title"
         loadOptions={fetchPerformancesForSelect}
       />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            {isChild ? (
-              <FormattedMessage id={meta.error._error} />
-            ) : (
-              <FormattedMessage id={meta.error} />
-            )}
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          {isChild ? (
+            <FormattedMessage id={meta.error._error} />
+          ) : (
+            <FormattedMessage id={meta.error} />
+          )}
+        </span>
+      )}
     </div>
   );
 
@@ -204,16 +202,15 @@ export const userAutocompleteSelect = ({
         labelKey="title"
         loadOptions={fetchUserForSelect}
       />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            {isChild ? (
-              <FormattedMessage id={meta.error._error} />
-            ) : (
-              <FormattedMessage id={meta.error} />
-            )}
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          {isChild ? (
+            <FormattedMessage id={meta.error._error} />
+          ) : (
+            <FormattedMessage id={meta.error} />
+          )}
+        </span>
+      )}
     </div>
   );
 
@@ -254,12 +251,11 @@ export const renderList = ({
         onChange={input.onChange}
         placeholder={placeholder}
       />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -289,12 +285,11 @@ const inputField = ({
         {...input}
         placeholder={placeholder}
       />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -324,12 +319,11 @@ export const inputTel = ({ input, meta, placeholder, isChild }) => {
   const field = (
     <div className="form-group">
       <Phone {...input} placeholder={placeholder} className="form-control" />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -361,12 +355,11 @@ export const textarea = ({ input, id, meta, placeholder, isChild }) => {
         {...input}
         placeholder={placeholder}
       />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -576,7 +569,7 @@ export const fieldWithLabel = ({
           onClick={() =>
             showModal({
               type: MODAL_ADD_USER_PERFORMANCE,
-              props:{_id}
+              props: { _id }
             })
           }
         >
@@ -984,12 +977,11 @@ export const renderListRadio = ({
           />
         ))}
       </ButtonGroup>
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -1023,12 +1015,11 @@ export const tagsInput = ({
         handleTagClick={handleTagClick}
         delimiters={delimiters}
       />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -1057,12 +1048,11 @@ export const renderDatePicker = ({ input, meta, placeholder, isChild }) => {
         selected={input.value ? moment(input.value, DATE_FORMAT) : null}
         placeholderText={placeholder}
       />
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -1096,12 +1086,11 @@ export const renderTimePicker = ({
         withoutIcon={withoutIcon}
       />
       ,
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -1125,7 +1114,6 @@ export const checkboxField = ({
   isChild
 }) => {
   const field = (
-  
     <div className="form-check">
       {isChild && placeholder && <label htmlFor={id}>{placeholder}</label>}
       <input
@@ -1223,7 +1211,7 @@ export const renderDropzoneInput = field => {
         className="attachment-dropzone"
         name={field.name}
         accept={field.accept}
-        maxSize={10485760}
+        maxSize={field.maxSize || 10485760}
         //name={field.properties.fields.name}
         //accept={field.accept}
         //maxSize={field.properties.maxsize}
@@ -1244,45 +1232,43 @@ export const renderDropzoneInput = field => {
           <FormattedMessage id={FILE_UPLOAD} />
         </div>
       </Dropzone>
-      {field.meta.touched &&
-        field.meta.error && (
-          <span className="error">
-            <FormattedMessage id={field.meta.error} />
-          </span>
-        )}
-      {files &&
-        Array.isArray(files) && (
-          <ul className="list-unstyled attached-file">
-            {files.map((file, i) => (
-              <li key={i}>
-                {getExtensionIcon(file.name)} {file.name}
-                <span className="file-size">({formatBytes(file.size)})</span>
-                <button
-                  type="button"
-                  className="btn btn-default clear-attachment"
-                  onClick={() => {
-                    field.showModal({
-                      type: MODAL_REMOVE,
-                      props: {
-                        onRemove: () => {
-                          let result = [...files];
-                          result.splice(i, 1);
-                          field.input.onChange(result);
-                        }
+      {field.meta.touched && field.meta.error && (
+        <span className="error">
+          <FormattedMessage id={field.meta.error} />
+        </span>
+      )}
+      {files && Array.isArray(files) && (
+        <ul className="list-unstyled attached-file">
+          {files.map((file, i) => (
+            <li key={i}>
+              {getExtensionIcon(file.name)} {file.name}
+              <span className="file-size">({formatBytes(file.size)})</span>
+              <button
+                type="button"
+                className="btn btn-default clear-attachment"
+                onClick={() => {
+                  field.showModal({
+                    type: MODAL_REMOVE,
+                    props: {
+                      onRemove: () => {
+                        let result = [...files];
+                        result.splice(i, 1);
+                        field.input.onChange(result);
                       }
-                    });
-                  }}
-                >
-                  <i
-                    className="fa fa-trash"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                  />
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+                    }
+                  });
+                }}
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
@@ -2461,12 +2447,11 @@ export const CollapsedPanel = ({
         <h4>YOU AS MEMBER OF THE CREW</h4>
         <p>You will be able to add more once you confirmed your account</p>
       </Collapse>
-      {meta.error &&
-        meta.touched && (
-          <span className="error-message">
-            <FormattedMessage id={meta.error} />
-          </span>
-        )}
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
   );
   const label = <div className="labelSignup">{placeholder}</div>;
