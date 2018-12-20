@@ -73,7 +73,7 @@ export const reactTreeComponent = ({
   dropdownStyle,
   placeholder,
   searchPlaceholder,
-  //showSearch, allowClear, treeLine,
+  showSearch, allowClear, treeLine,
   myvalue,
   treeData,
   treeNodeFilterProp,
@@ -96,7 +96,9 @@ export const reactTreeComponent = ({
           dropdownStyle={dropdownStyle}
           placeholder={placeholder}
           searchPlaceholder={searchPlaceholder}
-          showSearch allowClear treeLine
+          showSearch={showSearch}
+          allowClear={allowClear}
+          treeLine={treeLine}
           value={myvalue}
           searchValue={searchValue}
           treeData={treeData}
@@ -1220,7 +1222,7 @@ export const fieldInColumn = ({
   );
 };
 
-export const renderDropzoneInput = field => {
+export const renderDropzoneInput = (field) => {
   let files = field.input.value;
   console.log(field);
   let myClassName = field.className === undefined ? "" : field.className;
@@ -1326,6 +1328,17 @@ export const renderDropzoneInput = field => {
           ))}
         </ul>
       )}
+      <button
+        type="button"
+        className="btn btn-success"
+        onClick={field.uploadFile}
+      >
+        <i
+          className="fa fa-upload"
+          data-toggle="tooltip"
+          data-placement="top"
+        />
+      </button>
     </div>
   );
 };

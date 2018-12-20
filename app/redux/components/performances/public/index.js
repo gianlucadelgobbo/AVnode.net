@@ -175,6 +175,8 @@ class PerformancePublic extends Component {
 
     model.is_public = model.is_public;
 
+    model.categories =  this.state.value;
+
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
       model.abouts = model.abouts.map(x => {
@@ -306,7 +308,7 @@ class PerformancePublic extends Component {
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}
-            //model={model}
+            model={model}
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
@@ -318,7 +320,9 @@ class PerformancePublic extends Component {
             choiceTransitionName="rc-tree-select-selection__choice-zoom"
             dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
             searchPlaceholder="please search"
-            showSearch allowClear treeLine
+            showSearch={true} 
+            allowClear={true} 
+            treeLine={true}
             searchValue={this.state.searchValue}
             value={this.state.value}
             treeData={gData}

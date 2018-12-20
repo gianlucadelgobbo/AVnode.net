@@ -116,6 +116,10 @@ class FootagePublic extends Component {
     return tags;
   }
 
+  uploadFile(files){
+    console.log(files)
+  }
+
   onSubmit(values) {
     const { showModal, saveModel, model } = this.props;
     const modelToSave = this.createModelToSave(values);
@@ -172,6 +176,7 @@ class FootagePublic extends Component {
             handleDelete={this.handleDelete}
             handleTagClick={this.handleTagClick}
             handleAddition={this.handleAddition}
+            uploadFile={this.uploadFile.bind(this)}
           />
         </div>
       </div>

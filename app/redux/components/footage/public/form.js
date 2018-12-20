@@ -30,7 +30,8 @@ class FootagePublicForm extends Component {
             handleDelete,
             handleTagClick,
             handleAddition,
-            tags
+            tags,
+            uploadFile
         } = this.props;
 
         return (
@@ -55,6 +56,7 @@ class FootagePublicForm extends Component {
                     showModal={showModal}
                     //properties={["jpeg, png"]}
                     accept="image/jpeg, image/png"
+                    uploadFile={uploadFile}
                     //accept={this.renderImageType()}
                 />
 
