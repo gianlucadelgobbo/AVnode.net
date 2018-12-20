@@ -74,7 +74,7 @@ class PerformancePublic extends Component {
     this.state = {
       tsOpen: false,
       visible: false,
-      searchValue: '0-0-0-label',
+      searchValue: '',
       value: '',
       lv: { value: '0-0-0-value', label: 'spe label' },
       multipleValue: [],
@@ -288,7 +288,7 @@ class PerformancePublic extends Component {
       errorMessage,
       categories
     } = this.props;
-
+    console.log(categories)
     return (
       <div className="row">
         <div className="col-md-2">
@@ -325,7 +325,7 @@ class PerformancePublic extends Component {
             treeLine={true}
             searchValue={this.state.searchValue}
             value={this.state.value}
-            treeData={gData}
+            treeData={categories}
             treeNodeFilterProp="label"
             filterTreeNode={false}
             onSearch={this.onSearch}
@@ -362,7 +362,7 @@ const mapStateToProps = (
   model: getModel(state, _id),
   isFetching: getModelIsFetching(state, _id),
   errorMessage: getModelErrorMessage(state, _id),
-  categories: getCategories(state).map(c => ({ value: c._id, label: c.name }))
+  categories: getCategories(state)
 });
 
 const mapDispatchToProps = dispatch =>
