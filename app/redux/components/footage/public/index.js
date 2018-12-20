@@ -3,6 +3,7 @@ import LateralMenu from "../lateralMenu";
 import Form from "./form";
 import { connect } from "react-redux";
 import { saveModel, fetchModel } from "./actions";
+import { saveFootageVideo } from "../../../api";
 import { showModal } from "../../modal/actions";
 import { bindActionCreators } from "redux";
 import { MODAL_SAVED } from "../../modal/constants";
@@ -118,6 +119,13 @@ class FootagePublic extends Component {
 
   uploadFile(files){
     console.log(files)
+    return saveFootageVideo(files).then(model => {
+      if (model && model.id) {
+        showModal({
+          type: MODAL_SAVED
+        });
+      }
+    });
   }
 
   onSubmit(values) {

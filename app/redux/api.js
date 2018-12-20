@@ -64,15 +64,16 @@ export const saveProfileImages = model => {
   });
 };
 
-export const saveProfileVideo = model => {
+
+export const saveFootageVideo = model => {
   // convert image to Form Data
   let formBox = new FormData();
-  formBox.append("video", model.video);
+  formBox.append("video", model);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put("profile/videos", formBox, config).then(result => {
+  return axios.post("footage/videos", formBox, config).then(result => {
     return result.data;
   });
 };
@@ -630,7 +631,7 @@ export const fetchCountries = () => {
 
 export const fetchCategories = () => {
   return axios.get("/getcategories/performances/slug/type").then(result => {
-    return result.data.childrens;
+    return result.data.children;
   });
 
   /*return new Promise(fulfil => {
