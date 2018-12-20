@@ -170,7 +170,40 @@ router.getPerfCategories = (req, res) => {
               conta++;
               if (childrens.length == conta) {
                 category.childrens = childrens;
-                res.json(category);
+                let send = {
+                  title: category.name,
+                  value: category.slug,
+                  key: category._id,
+                  children:[]
+                };
+                for(let a=0; a<category.childrens.length;a++){
+                  let child = {
+                    title: category.childrens[a].name,
+                    value: category.childrens[a].slug,
+                    key: category.childrens[a]._id,
+                    children:[]
+                  };
+                  for(let b=0; b<category.childrens[a].childrens.length;b++){
+                    let childchild = {
+                      title: category.childrens[a].childrens[b].name,
+                      value: category.childrens[a].childrens[b].slug,
+                      key: category.childrens[a].childrens[b]._id,
+                      children:[]
+                    };
+                    for(let c=0; c<category.childrens[a].childrens[b].childrens.length;c++){
+                      let childchildchild = {
+                        title: category.childrens[a].childrens[b].childrens[c].name,
+                        value: category.childrens[a].childrens[b].childrens[c].slug,
+                        key: category.childrens[a].childrens[b].childrens[c]._id,
+                        children:[]
+                      };
+                      childchild.children.push(childchildchild);
+                    }
+                    child.children.push(childchild);
+                  }
+                  send.children.push(child);
+                }
+                res.json(send);
               }
             });
           }
