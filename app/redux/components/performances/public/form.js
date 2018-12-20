@@ -48,7 +48,9 @@ class PerformancePublicForm extends Component {
             treeNodeFilterProp,
             filterTreeNode,
             onChange,
-            //showSearch, allowClear, treeLine,
+            showSearch, 
+            allowClear, 
+            treeLine,
             onSearch,
             open,
             onDropdownVisibleChange,
@@ -115,6 +117,9 @@ class PerformancePublicForm extends Component {
                     onChange={onChange}
                     onSearch={onSearch}
                     open={open}
+                    showSearch={showSearch} 
+                    allowClear={allowClear} 
+                    treeLine={treeLine}
                     onDropdownVisibleChange={onDropdownVisibleChange}
                     onSelect={onSelect}
                     //placeholder={placeholder}

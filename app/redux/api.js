@@ -630,7 +630,7 @@ export const fetchCountries = () => {
 
 export const fetchCategories = () => {
   return axios.get("/getcategories/performances/slug/type").then(result => {
-    return result.data.sons;
+    return result.data.childrens;
   });
 
   /*return new Promise(fulfil => {
