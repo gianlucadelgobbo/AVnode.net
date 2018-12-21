@@ -5,7 +5,7 @@ import Form from "../../../crews/add";
 
 class AddCrewModal extends Component {
   render() {
-    return <Form />;
+    return <Form history={this.props.history}/>;
   }
 }
 

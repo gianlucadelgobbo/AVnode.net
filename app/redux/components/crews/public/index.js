@@ -98,8 +98,8 @@ class CrewPublic extends Component {
     modelToSave._id = model._id;
 
     //dispatch the action to save the model here
-    return saveModel(modelToSave).then(model => {
-      if (model && model.id) {
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model._id) {
         showModal({
           type: MODAL_SAVED
         });
