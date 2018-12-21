@@ -10,7 +10,7 @@ class Crews extends Component {
 
     render() {
 
-        const {showModal} = this.props;
+        const {showModal, history} = this.props;
 
         return (
             <div className="row">
@@ -22,7 +22,8 @@ class Crews extends Component {
                                 bsStyle="success"
                                 className="pull-right"
                                 onClick={() => showModal({
-                                    type: MODAL_ADD_CREW
+                                    type: MODAL_ADD_CREW,
+                                    props: { history }
                                 })}>
                                 <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
                             </Button>

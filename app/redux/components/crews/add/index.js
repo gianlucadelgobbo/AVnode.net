@@ -34,16 +34,18 @@ class AddCrew extends Component {
   }
 
   onSubmit(values) {
-    const { saveModel, fetchList, hideModal } = this.props;
+    const { saveModel, history, hideModal } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     console.log(saveModel, saveModel.then);
     modelToSave.id = "1";
 
     //dispatch the action to save the model here
-    return saveModel(modelToSave).then(model => {
-      if (model && model.id) {
-        fetchList();
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model.id) {
+        history.push(
+          "/admin/crews/" + `${response.model.id}` + "/public/"
+        );
         hideModal();
       }
     });

@@ -5,11 +5,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { MODAL_ADD_PERFORMANCE } from "../modal/constants";
 import { showModal } from "../modal/actions";
-import { BrowserRouter as Router } from "react-router-dom";
 
 class Performances extends Component {
   render() {
-    const { showModal, location, history } = this.props;
+    const { showModal, history } = this.props;
 
     return (
       <div className="row">

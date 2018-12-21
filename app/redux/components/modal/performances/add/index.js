@@ -8,7 +8,7 @@ class AddPerformanceModal extends Component {
     render() {
 
         return (
-            <Form/>
+            <Form history={this.props.history}/>
         );
     }
 }
