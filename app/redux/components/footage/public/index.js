@@ -118,6 +118,7 @@ class FootagePublic extends Component {
   }
 
   uploadFile(files){
+    console.log("files")
     console.log(files)
     return saveFootageVideo(files).then(model => {
       if (model && model.id) {

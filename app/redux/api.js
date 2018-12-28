@@ -68,12 +68,12 @@ export const saveProfileImages = model => {
 export const saveFootageVideo = model => {
   // convert image to Form Data
   let formBox = new FormData();
-  formBox.append("video", model);
+  formBox.append("media", model.media);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.post("footage/videos", formBox, config).then(result => {
+  return axios.put(`footage/${model.id}/media`, formBox, config).then(result => {
     return result.data;
   });
 };
@@ -338,11 +338,9 @@ export const savePerformanceImages = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios
-    .put(`performances/${model.id}/image`, formBox, config)
-    .then(result => {
-      return result.data;
-    });
+  return axios.put(`performances/${model.id}/image`, formBox, config).then(result => {
+    return result.data;
+  });
 };
 //axios.post(`performances/${model._id}/image`, model);
 

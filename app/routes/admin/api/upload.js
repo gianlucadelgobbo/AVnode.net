@@ -35,6 +35,8 @@ upload.getServerpath = (storage) => {
 }
 
 upload.uploader = (req, res, done) => {
+  console.log(req.params.sez);
+  console.log(req.params.form);
   const options = config.cpanel[req.params.sez].forms[req.params.form].components[req.params.form].config;
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -70,6 +72,9 @@ upload.uploader = (req, res, done) => {
 
   up(req, res, (err, r) => {
     error = false;
+    console.log("req.files");
+    console.log(req.files);
+    
     if (err instanceof multer.MulterError) {
       logger.debug('upload err');
       logger.debug(err);
@@ -112,20 +117,23 @@ upload.uploader = (req, res, done) => {
       }
       if (error) {
         logger.debug('ERRORERRORERRORERRORERRORERRORERRORERRORERROR');
+        //done({ errors: req.files }, null);
         done({
-          "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-          "name": "UploadError",
-          "stringValue": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-          "kind":"Date",
-          "value":null,
-          "path":"image",
-          "reason":{
+          "message": {
             "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-            "name":"UploadError",
+            "name": "UploadError",
             "stringValue": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-            "kind":"string",
+            "kind":"Date",
             "value":null,
-            "path":"image"
+            "path":"image",
+            "reason":{
+              "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
+              "name":"UploadError",
+              "stringValue": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
+              "kind":"string",
+              "value":null,
+              "path":"image"
+            }
           }
         }, null);
       } else {
@@ -148,7 +156,7 @@ upload.uploader = (req, res, done) => {
               done({ errors: req.files }, null);
             } else {
               let put = {};
-              if (options.fields.name === 'image') {
+              if (req.files[options.fields.name].length == 1) {
                 put[options.fields.name] = {
                   file: req.files[options.fields.name][0].path.replace(global.appRoot, ''),
                   originalname: req.files[options.fields.name][0].originalname,
@@ -160,6 +168,22 @@ upload.uploader = (req, res, done) => {
                   width: req.files[options.fields.name][0].width,
                   height: req.files[options.fields.name][0].height
                 };
+              } else {
+                put[options.fields.name] = [];
+                for (let a = 0; a < req.files[options.fields.name].length; a++) {
+                  const ins  = {
+                    file: req.files[options.fields.name][a].path.replace(global.appRoot, ''),
+                    originalname: req.files[options.fields.name][a].originalname,
+                    encoding: req.files[options.fields.name][a].encoding,
+                    mimetype: req.files[options.fields.name][a].mimetype,
+                    folder: req.files[options.fields.name][a].destination,
+                    filename: req.files[options.fields.name][a].filename,
+                    size: req.files[options.fields.name][a].size,
+                    width: req.files[options.fields.name][a].width,
+                    height: req.files[options.fields.name][a].height
+                  };
+                  put[options.fields.name].push(ins);
+                }
               }
               logger.debug('SALVAAAAAAAAA');
               done(null, put);          

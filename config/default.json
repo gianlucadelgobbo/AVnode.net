@@ -249,7 +249,7 @@
                 },
                 "filetypes": ["jpg","jpeg","png","gif","svg"],
                 "storage": "/glacier/users_originals/",
-                "maxsize": 2048,
+                "maxsize": 2048000,
                 "minwidth": 1000,
                 "minheight": 1000,
                 "sizes": {
@@ -557,7 +557,7 @@
                 },
                 "filetypes": ["jpg","jpeg","png","gif","svg"],
                 "storage": "/glacier/users_originals/",
-                "maxsize": 2048,
+                "maxsize": 2048000,
                 "minwidth": 1000,
                 "minheight": 1000,
                 "sizes": {
@@ -1800,6 +1800,56 @@
                 }
               }
             ]
+          },
+          "select": {
+            "slug": 1,
+            "title": 1,
+            "abouts": 1,
+            "is_public": 1,
+            "media": 1,
+            "categories": 1,
+            "users": 1,
+            "tags": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
+        },
+        "media": {
+          "components": {
+            "media": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "maxsize": 2048000,
+                "minwidth": 1000,
+                "minheight": 1000,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "uploader",
+              "label": "Footage file",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
+              }
+            }
           },
           "select": {
             "slug": 1,
