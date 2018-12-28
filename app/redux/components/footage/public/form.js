@@ -51,11 +51,12 @@ class FootagePublicForm extends Component {
                 />
 
                 <Field
-                    name="videos"
+                    name="media"
                     component={renderDropzoneInput}
                     showModal={showModal}
                     //properties={["jpeg, png"]}
                     accept="video/mp4, video/quicktime, video/x-flv, video/x-ms-wmv, video/x-msvideo"
+                    maxSize={21474836480}
                     uploadFile={uploadFile}
                     //accept={this.renderImageType()}
                 />
