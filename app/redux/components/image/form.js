@@ -31,6 +31,7 @@ class ProfileImageForm extends Component {
       handleSubmit,
       showModal,
       images,
+      multiple,
       properties
     } = this.props;
 
@@ -42,6 +43,7 @@ class ProfileImageForm extends Component {
           name="images"
           component={renderDropzoneInput}
           showModal={showModal}
+          multiple={multiple}
           //properties={["jpeg, png"]}
           maxSize={10485760}
           accept="image/jpeg, image/png"
