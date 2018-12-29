@@ -121,13 +121,20 @@ class FootagePublic extends Component {
     console.log("files");
     console.log(files);
     const { model } = this.props;
-    return saveFootageVideo(files, model).then(model => {
-      if (model && model.id) {
-        showModal({
-          type: MODAL_SAVED
-        });
+    return saveFootageVideo(files, model).then(
+      model => {
+        if (model && model.id) {
+          showModal({
+            type: MODAL_SAVED
+          });
+        }
+      },
+      error => {
+        {
+          alert(error.response.data.errors);
+        }
       }
-    });
+    );
   }
 
   onSubmit(values) {
