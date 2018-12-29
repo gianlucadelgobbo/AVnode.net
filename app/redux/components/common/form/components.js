@@ -1270,7 +1270,7 @@ export const renderDropzoneInput = (field) => {
             //name={field.properties.fields.name}
             //accept={field.accept}
             //maxSize={field.properties.maxsize}
-            multiple={field.multiple || false}
+            multiple={!!field.multiple || false}
             onDropRejected={() => {
               alert("Ops... it seems your file is invalid")
             }
