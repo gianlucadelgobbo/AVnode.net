@@ -117,8 +117,8 @@ upload.uploader = (req, res, done) => {
       }
       if (error) {
         logger.debug('ERRORERRORERRORERRORERRORERRORERRORERRORERROR');
-        //done({ errors: req.files }, null);
-        done({
+        done({ errors: req.files }, null);
+        /* done({
           "message": {
             "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
             "name": "UploadError",
@@ -135,7 +135,7 @@ upload.uploader = (req, res, done) => {
               "path":"image"
             }
           }
-        }, null);
+        }, null); */
       } else {
         imageUtil.resizer(req.files[options.fields.name], options, (resizeerr, info) => {
           conta++;
