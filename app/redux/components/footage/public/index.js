@@ -117,10 +117,11 @@ class FootagePublic extends Component {
     return tags;
   }
 
-  uploadFile(files){
-    console.log("files")
-    console.log(files)
-    return saveFootageVideo(files).then(model => {
+  uploadFile(files) {
+    console.log("files");
+    console.log(files);
+    const { model } = this.props;
+    return saveFootageVideo(files, model).then(model => {
       if (model && model.id) {
         showModal({
           type: MODAL_SAVED
@@ -155,6 +156,7 @@ class FootagePublic extends Component {
       isFetching,
       errorMessage
     } = this.props;
+    console.log(errorMessage);
     const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
 
     return (
@@ -169,9 +171,9 @@ class FootagePublic extends Component {
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage &&
-            !isFetching &&
-            model && <TitleComponent title={model.title} type={FOOTAGE_NAME} />}
+          {!errorMessage && !isFetching && model && (
+            <TitleComponent title={model.title} type={FOOTAGE_NAME} />
+          )}
 
           <Form
             initialValues={this.getInitialValues()}

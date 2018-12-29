@@ -64,18 +64,19 @@ export const saveProfileImages = model => {
   });
 };
 
-
-export const saveFootageVideo = model => {
+export const saveFootageVideo = (file, model) => {
   // convert image to Form Data
   let formBox = new FormData();
-  formBox.append("media", model.media);
+  formBox.append("media", file);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put(`footage/${model.id}/media`, formBox, config).then(result => {
-    return result.data;
-  });
+  return axios
+    .put(`footage/${model.id}/media`, formBox, config)
+    .then(result => {
+      return result.data;
+    });
 };
 
 // - emails
@@ -338,9 +339,11 @@ export const savePerformanceImages = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put(`performances/${model.id}/image`, formBox, config).then(result => {
-    return result.data;
-  });
+  return axios
+    .put(`performances/${model.id}/image`, formBox, config)
+    .then(result => {
+      return result.data;
+    });
 };
 //axios.post(`performances/${model._id}/image`, model);
 
