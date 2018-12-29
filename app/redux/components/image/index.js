@@ -56,7 +56,7 @@ class Image extends Component {
   }
 
   render() {
-    const { model = {}, showModal, isFetching, errorMessage, properties } = this.props;
+    const { model = {}, showModal, isFetching, errorMessage, properties, multiple = false} = this.props;
 
     return (
       <div>
@@ -94,6 +94,7 @@ class Image extends Component {
               user={model}
               showModal={showModal}
               properties={properties}
+              multiple={multiple}
             />
           </div>
         </div>

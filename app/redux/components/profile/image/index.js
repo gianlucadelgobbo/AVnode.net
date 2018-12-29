@@ -41,6 +41,7 @@ class ProfileImage extends Component {
                         fetchModel={fetchModel}
                         saveModel={saveModel}
                         properties={components}
+                        multiple={false}
                     />
 
                 </div>
