@@ -1820,7 +1820,7 @@
             "media": {
               "config":{
                 "fields": {
-                  "name": "image",
+                  "name": "media",
                   "maxCount": 1
                 },
                 "filetypes": ["jpg","jpeg","png","gif","svg"],
