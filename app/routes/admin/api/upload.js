@@ -75,6 +75,7 @@ upload.uploader = (req, res, done) => {
     error = false;
     console.log("req.files");
     console.log(req.files);
+    console.log(options.fields.name);
     
     if (err instanceof multer.MulterError) {
       logger.debug('upload err');
