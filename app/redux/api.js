@@ -67,7 +67,7 @@ export const saveProfileImages = model => {
 export const saveFootageVideo = (file, model) => {
   // convert image to Form Data
   let formBox = new FormData();
-  formBox.append("media", file);
+  formBox.append("media", file[0]);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
