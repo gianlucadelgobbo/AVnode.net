@@ -1300,17 +1300,19 @@ export const renderDropzoneInput = field => {
             <li key={i}>
               {getExtensionIcon(file.name)} {file.name}
               <span className="file-size">({formatBytes(file.size)})</span>
-              <button
-                type="button"
-                className="btn btn-success"
-                onClick={() => field.uploadFile(field.input.value)}
-              >
-                <i
-                  className="fa fa-upload"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                />
-              </button>
+              {field.uploadButton && (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() => field.uploadFile(field.input.value)}
+                >
+                  <i
+                    className="fa fa-upload"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </button>
+              )}
               <button
                 type="button"
                 className="btn btn-default clear-attachment"
