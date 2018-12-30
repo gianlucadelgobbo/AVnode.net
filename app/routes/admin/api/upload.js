@@ -80,25 +80,14 @@ upload.uploader = (req, res, done) => {
     if (err instanceof multer.MulterError) {
       logger.debug('upload err');
       logger.debug(err);
-      done({
-        "message": err,
-        "name": "UploadError",
-        "stringValue": err,
-        "kind":"Date",
-        "value":null,
-        "path":"image",
-        "reason":{
-          "message": err,
-          "name":"UploadError",
-          "stringValue": err,
-          "kind":"string",
-          "value":null,
-          "path":"image"
-        }
-      }, null);
+      done({ errors: {form_error: err} }, null);
+    } else if (!options) { // MANCA ELSE
+      done({ errors: {form_error: 'UPLOAD_CONFIG_ERROR'} }, null);
     } else if (req.files[options.fields.name] && req.files[options.fields.name].length) { // MANCA ELSE
       let conta = 0;
-
+      /* 
+      { errors: {form_error: } }
+       */
       for (let a = 0; a < req.files[options.fields.name].length; a++) {
         const dimensions = sizeOf(req.files[options.fields.name][a].path);
 
@@ -194,11 +183,24 @@ upload.uploader = (req, res, done) => {
         });
       }
     } else {
-      done({ errors: 'UPLOAD_CONFIG_ERROR' }, null);
+      done({ errors: {form_error: 'Missing req.files.'+options.fields.name} }, null);
     }
   });
 };
 
+
+/* { errors: 
+  {
+    form_error: 'XXXXXXXXXX',
+    FIELDNAME: [
+      {
+        err: 'XXXXXXXXXX',
+        file: "..."
+        ...
+      }
+    ]
+  }
+} */
 /* C
 const checkImageFile = (file, apiCall) => {
   let valid = true;
