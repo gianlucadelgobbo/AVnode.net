@@ -65,7 +65,7 @@ class Image extends Component {
 
         <div className="row">
           <div className="col-md-6">
-            {errorMessage && <ErrorMessage errorMessage={errorMessage.message} />}
+            {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
             {!errorMessage &&
               !isFetching &&
