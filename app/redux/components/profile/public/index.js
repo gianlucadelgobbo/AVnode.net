@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import LateralMenu from '../lateralMenu';
 import Form from './form';
 import {connect} from 'react-redux';
-import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching, getIsFetching} from '../selectors';
+import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching} from '../selectors';
 import {locales, locales_labels} from '../../../../../config/default.json'
-import {saveModel, fetchModel} from "./actions";
+import {fetchModel, saveModel} from "./actions";
 import {showModal} from "../../modal/actions";
 import {bindActionCreators} from "redux";
 import Loading from '../../loading';
@@ -14,8 +14,9 @@ import TitleComponent from '../../titleComponent';
 import {PROFILE_NAME} from './constants';
 import {MODAL_SAVED} from "../../modal/constants";
 import {sortByLanguage} from "../../common/form";
-import { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import {geocodeByAddress, getLatLng} from 'react-places-autocomplete';
 import axios from 'axios';
+
 /*
 * Responsabilita'
 * - Get form's initial values from redux state here
@@ -99,7 +100,7 @@ class ProfilePublic extends Component {
                 v.abouts.push({
                     key: `abouts.${l}`,
                     value: "",
-                    lang : l
+                    lang: l
                 })
             }
         });
@@ -123,27 +124,27 @@ class ProfilePublic extends Component {
 
     createLatLongToSave = (address) => {
         return geocodeByAddress(address)
-        .then(results => getLatLng(results[0]))
+            .then(results => getLatLng(results[0]))
 
     }
 
     onSubmit(values) {
         const {showModal, saveModel, model} = this.props;
-    
+
         let promises = []
 
         const addrs = values.addresses;
 
         addrs.forEach(a => {
             promises.push(this.createLatLongToSave(a.text)
-            .then(result => {
-                 // add to a model
-                 a.geometry = result;
+                .then(result => {
+                    // add to a model
+                    a.geometry = result;
                 })
-                .catch(()=> {
+                .catch(() => {
                     console.log("ciao da google!")
                 })
-                )
+            )
         });
 
         return axios.all(promises).then(() => {
@@ -153,13 +154,13 @@ class ProfilePublic extends Component {
             modelToSave._id = model._id;
 
             return saveModel(modelToSave)
-            .then((model) => {
-                if (model && model.id){
-                    showModal({
-                        type: MODAL_SAVED
-                    });
-                }
-            });
+                .then((model) => {
+                    if (model && model.id) {
+                        showModal({
+                            type: MODAL_SAVED
+                        });
+                    }
+                });
         });
 
     }
@@ -183,7 +184,7 @@ class ProfilePublic extends Component {
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                     <TitleComponent
+                    <TitleComponent
                         title={model.stagename}
                         type={PROFILE_NAME}
                     />
@@ -204,7 +205,7 @@ class ProfilePublic extends Component {
 
 //Get form's initial values from redux state here
 const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
+    model: getDefaultModel(state) || {},
     isFetching: getDefaultModelIsFetching(state),
     errorMessage: getDefaultModelErrorMessage(state),
 });

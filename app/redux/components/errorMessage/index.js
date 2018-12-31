@@ -33,13 +33,18 @@ class ErrorMessage extends Component {
     render() {
 
         const {errorMessage} = this.props;
-        const isMultipleError = Array.isArray(errorMessage);
+
+        const errorIsAnObj = typeof errorMessage === 'object' && !!Object.keys(errorMessage).length;
+        const firstErrorKey = !!errorIsAnObj && Object.keys(errorMessage)[0];
+        const isMultipleError = !!errorIsAnObj && !!firstErrorKey && Array.isArray(errorMessage[firstErrorKey]);
+
+        console.log(errorMessage)
 
         return (
             <div className="row">
                 <div className="col-md-12">
 
-                    {isMultipleError ?
+                    {!isMultipleError ?
                         this.printError(errorMessage)
                         :
                         <ul className="list-unstyled">
