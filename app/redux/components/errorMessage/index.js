@@ -38,8 +38,6 @@ class ErrorMessage extends Component {
         const firstErrorKey = !!errorIsAnObj && Object.keys(errorMessage)[0];
         const isMultipleError = !!errorIsAnObj && !!firstErrorKey && Array.isArray(errorMessage[firstErrorKey]);
 
-        console.log(errorMessage)
-
         return (
             <div className="row">
                 <div className="col-md-12">
