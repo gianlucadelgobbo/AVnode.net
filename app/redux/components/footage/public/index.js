@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import LateralMenu from "../lateralMenu";
 import Form from "./form";
 import { connect } from "react-redux";
-import { saveModel, fetchModel } from "./actions";
+import { saveModel, fetchModel, uploadModel } from "./actions";
 import { saveFootageVideo } from "../../../api";
 import { showModal } from "../../modal/actions";
 import { bindActionCreators } from "redux";
@@ -120,21 +120,15 @@ class FootagePublic extends Component {
   uploadFile(files) {
     console.log("files");
     console.log(files);
-    const { model } = this.props;
-    return saveFootageVideo(files, model).then(
-      model => {
-        if (model && model.id) {
-          showModal({
-            type: MODAL_SAVED
-          });
-        }
-      },
-      error => {
-        {
-          alert(error.response.data.errors);
-        }
+    const { model, uploadModel } = this.props;
+    model.video = files;
+    return uploadModel(model).then(model => {
+      if (model && model.id) {
+        showModal({
+          type: MODAL_SAVED
+        });
       }
-    );
+    });
   }
 
   onSubmit(values) {
@@ -221,7 +215,8 @@ const mapDispatchToProps = dispatch =>
     {
       saveModel,
       fetchModel,
-      showModal
+      showModal,
+      uploadModel
     },
     dispatch
   );
