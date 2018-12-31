@@ -6,7 +6,8 @@ import {
   inputText,
   textareaMultiTab,
   tagsInput,
-  fieldWithLabel
+  fieldWithLabel,
+  uploadComponent
 } from "../../common/form/components";
 import validate from "./validate";
 import { injectIntl } from "react-intl";
@@ -56,10 +57,10 @@ class FootagePublicForm extends Component {
 
         <Field
           name="media"
-          component={renderDropzoneInput}
+          component={uploadComponent}
           showModal={showModal}
           //properties={["jpeg, png"]}
-          accept="video/mp4, video/quicktime, video/x-flv, video/x-ms-wmv, video/x-msvideo"
+          accept="video/mp4, video/mpg, video/quicktime, video/x-flv, video/x-ms-wmv, video/x-msvideo"
           maxSize={21474836480}
           uploadFile={uploadFile}
           uploadButton={true}

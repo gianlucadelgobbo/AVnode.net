@@ -2219,6 +2219,38 @@ export const multiContacts = ({
   );
 };
 
+export const uploadComponent = ({
+  fields,
+  title,
+  meta: { error },
+  placeholder,
+  showModal,
+  uploadButton,
+  accept,
+  uploadFile
+}) => {
+  const label = <div className="labelField">{placeholder}</div>;
+  const renderSubField = () => {
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          <Field
+            name="media"
+            component={renderDropzoneInput}
+            placeholder="Video"
+            accept={accept}
+            showModal={showModal}
+            className="enableBorder"
+            uploadFile={uploadFile}
+            uploadButton={uploadButton}
+          />
+        </div>
+      </div>
+    );
+  };
+  return <div>{renderSubField()}</div>;
+};
+
 export const multiActivities = ({
   fields,
   title,
