@@ -5,19 +5,17 @@ import LateralMenu from '../lateralMenu'
 import {showModal} from "../../modal/actions";
 import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching} from "../selectors";
 import {fetchModel, saveModel} from "./actions";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
 import ImageForm from '../../image';
 import {FormattedMessage} from 'react-intl';
 import properties from "../../../../../config/default.json";
 
 class ProfileImage extends Component {
 
-
     render() {
 
         const {model, isFetching, errorMessage, fetchModel, saveModel} = this.props;
 
-         const { components } = properties.cpanel.profile.forms.image;
+        const {components} = properties.cpanel.profile.forms.image;
 
         return (
             <div className="row">

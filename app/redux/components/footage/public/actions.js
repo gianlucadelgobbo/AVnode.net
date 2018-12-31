@@ -26,6 +26,15 @@ export const saveModel = model =>
     model
   });
 
+export const uploadModel = model =>
+  generateSaveModel({
+    selectors,
+    constants,
+    request: api.saveFootageVideo,
+    schema: footage,
+    model
+  });
+
 export const removeModel = model =>
   generateRemoveModel({
     selectors,

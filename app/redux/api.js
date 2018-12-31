@@ -64,10 +64,10 @@ export const saveProfileImages = model => {
   });
 };
 
-export const saveFootageVideo = (file, model) => {
+export const saveFootageVideo = model => {
   // convert image to Form Data
   let formBox = new FormData();
-  formBox.append("media", file[0]);
+  formBox.append("media", model.video);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
