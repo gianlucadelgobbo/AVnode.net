@@ -1,10 +1,10 @@
-import {normalize} from "normalizr";
+import { normalize } from "normalizr";
 
 // ==== List
 
-export const fetchList = ({constants, selectors, request, schema}) => (
-    dispatch,
-    getState
+export const fetchList = ({ constants, selectors, request, schema }) => (
+  dispatch,
+  getState
 ) => {
   if (selectors.getIsFetching(getState())) {
     return;
@@ -15,34 +15,34 @@ export const fetchList = ({constants, selectors, request, schema}) => (
   });
 
   return request().then(
-      response => {
-        dispatch({
-          type: constants.FETCH_LIST_SUCCESS,
-          response: normalize(response || [], schema)
-        });
-      },
-      error => {
-        const response = error.response || {};
-        const data = response.data || {};
-        const message = data.message || {};
+    response => {
+      dispatch({
+        type: constants.FETCH_LIST_SUCCESS,
+        response: normalize(response || [], schema)
+      });
+    },
+    error => {
+      const response = error.response || {};
+      const data = response.data || {};
+      const message = data.message || {};
 
-        dispatch({
-          type: constants.FETCH_LIST_ERROR,
-          errorMessage: message || "Something went wrong."
-        });
-      }
+      dispatch({
+        type: constants.FETCH_LIST_ERROR,
+        errorMessage: message || "Something went wrong."
+      });
+    }
   );
 };
 
 // ==== Modal
 
 export const fetchModel = ({
-                             constants,
-                             selectors,
-                             request,
-                             schema,
-                             id
-                           } = {}) => (dispatch, getState) => {
+  constants,
+  selectors,
+  request,
+  schema,
+  id
+} = {}) => (dispatch, getState) => {
   if (selectors.getModelIsFetching(getState(), id)) {
     return;
   }
@@ -52,37 +52,37 @@ export const fetchModel = ({
     id
   });
 
-  return request({id}).then(
-      response => {
-        dispatch({
-          type: constants.FETCH_MODEL_SUCCESS,
-          response: normalize(response || [], schema),
-          id
-        });
-        return {id};
-      },
-      error => {
-        // scroll to top
-        if ($ && typeof $.fn.scrollTop === "function") {
-          $(window).scrollTop();
-        }
-
-        const response = error.response || {};
-        const data = response.data || {};
-        const message = data.message || {};
-
-        dispatch({
-          type: constants.FETCH_MODEL_ERROR,
-          errorMessage: message || "Something went wrong.",
-          id
-        });
+  return request({ id }).then(
+    response => {
+      dispatch({
+        type: constants.FETCH_MODEL_SUCCESS,
+        response: normalize(response || [], schema),
+        id
+      });
+      return { id };
+    },
+    error => {
+      // scroll to top
+      if ($ && typeof $.fn.scrollTop === "function") {
+        $(window).scrollTop();
       }
+
+      const response = error.response || {};
+      const data = response.data || {};
+      const message = data.message || {};
+
+      dispatch({
+        type: constants.FETCH_MODEL_ERROR,
+        errorMessage: message || "Something went wrong.",
+        id
+      });
+    }
   );
 };
 
-export const saveModel = ({constants, selectors, request, schema, model}) => (
-    dispatch,
-    getState
+export const saveModel = ({ constants, selectors, request, schema, model }) => (
+  dispatch,
+  getState
 ) => {
   // if (selectors.getModelIsFetching(getState()), model.id) {
   //     return;
@@ -94,41 +94,41 @@ export const saveModel = ({constants, selectors, request, schema, model}) => (
   });
 
   return request(model).then(
-      response => {
-        dispatch({
-          type: constants.SAVE_MODEL_SUCCESS,
-          response: normalize(response || [], schema),
-          id: model.id
-        });
+    response => {
+      dispatch({
+        type: constants.SAVE_MODEL_SUCCESS,
+        response: normalize(response || [], schema),
+        id: model.id
+      });
 
-        return {model: response || "ok"};
-      },
-      error => {
-        // scroll to top
-        window.scrollTo(0, 0);
+      return { model: response || "ok" };
+    },
+    error => {
+      // scroll to top
+      window.scrollTo(0, 0);
 
-        const response = error.response || {};
+      const response = error.response || {};
 
-        const data = response.data || {};
-        const message = data.message || data.error ||  data.errors ||{};
+      const data = response.data || {};
+      const message = data.message || data.error || data.errors || {};
 
-        dispatch({
-          type: constants.SAVE_MODEL_ERROR,
-          errorMessage: message || "Something went wrong.",
-          id: model.id
-        });
-      }
+      dispatch({
+        type: constants.SAVE_MODEL_ERROR,
+        errorMessage: message || "Something went wrong.",
+        id: model.id
+      });
+    }
   );
 };
 
 export const removeModel = ({
-                              constants,
-                              selectors,
-                              request,
-                              getIsFetching,
-                              schema,
-                              model
-                            }) => (dispatch, getState) => {
+  constants,
+  selectors,
+  request,
+  getIsFetching,
+  schema,
+  model
+}) => (dispatch, getState) => {
   if (selectors.getModelIsFetching(getState(), model.id)) {
     return;
   }
@@ -139,27 +139,27 @@ export const removeModel = ({
   });
 
   return request(model).then(
-      response => {
-        dispatch({
-          type: constants.SAVE_MODEL_SUCCESS,
-          response: normalize(response || [], schema),
-          id: model.id
-        });
-        return {id: model.id};
-      },
-      error => {
-        // scroll to top
-        window.scrollTo(0, 0);
+    response => {
+      dispatch({
+        type: constants.SAVE_MODEL_SUCCESS,
+        response: normalize(response || [], schema),
+        id: model.id
+      });
+      return { id: model.id };
+    },
+    error => {
+      // scroll to top
+      window.scrollTo(0, 0);
 
-        const response = error.response || {};
-        const data = response.data || {};
-        const message = data.message || {};
+      const response = error.response || {};
+      const data = response.data || {};
+      const message = data.message || {};
 
-        dispatch({
-          type: constants.SAVE_MODEL_ERROR,
-          errorMessage: message || "Something went wrong.",
-          id: model.id
-        });
-      }
+      dispatch({
+        type: constants.SAVE_MODEL_ERROR,
+        errorMessage: message || "Something went wrong.",
+        id: model.id
+      });
+    }
   );
 };
