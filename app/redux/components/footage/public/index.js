@@ -3,7 +3,6 @@ import LateralMenu from "../lateralMenu";
 import Form from "./form";
 import { connect } from "react-redux";
 import { saveModel, fetchModel, uploadModel } from "./actions";
-import { saveFootageVideo } from "../../../api";
 import { showModal } from "../../modal/actions";
 import { bindActionCreators } from "redux";
 import { MODAL_SAVED } from "../../modal/constants";
@@ -120,10 +119,10 @@ class FootagePublic extends Component {
   uploadFile(files) {
     console.log("files");
     console.log(files);
-    const { model, uploadModel } = this.props;
+    const { model, uploadModel, showModal } = this.props;
     model.video = files;
-    return uploadModel(model).then(model => {
-      if (model && model.id) {
+    return uploadModel(model).then(response => {
+      if (response.model && response.model._id) {
         showModal({
           type: MODAL_SAVED
         });
@@ -138,8 +137,8 @@ class FootagePublic extends Component {
     modelToSave._id = model._id;
 
     //dispatch the action to save the model here
-    return saveModel(modelToSave).then(model => {
-      if (model && model.id) {
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model._id) {
         showModal({
           type: MODAL_SAVED
         });
@@ -168,7 +167,11 @@ class FootagePublic extends Component {
         <div className="col-md-10">
           {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+          {errorMessage && (
+            <ErrorMessage
+              errorMessage={errorMessage[Object.keys(errorMessage)]}
+            />
+          )}
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
