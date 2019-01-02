@@ -124,7 +124,6 @@ playlistSchema.virtual('teaserImageFormats').get(function () {
   }
   return teaserImageFormats;
 });
-*/
 playlistSchema.virtual('editUrl').get(function () {
   return `/admin/playlists/public/${this.slug}`;
 });
@@ -132,6 +131,7 @@ playlistSchema.virtual('editUrl').get(function () {
 playlistSchema.virtual('publicUrl').get(function () {
   return `/playlists/${this.slug}`;
 });
+*/
 
 playlistSchema.pre('remove', function(next) {
   const playlist = this;

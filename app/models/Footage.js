@@ -19,6 +19,7 @@ const footageSchema = new Schema({
   abouts: [About],
   stats: {},
   users: [{ type : Schema.ObjectId, ref : 'UserShow' }],
+  playlists: [{ type : Schema.ObjectId, ref : 'Playlist' }],
   tags: [{
     old_id : String,
     tag : String,
@@ -36,11 +37,19 @@ const footageSchema = new Schema({
     virtuals: true
   }
 });
+
 // Return thumbnail
 footageSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-    imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
+  if (this.media.encoded) {
+    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
+    }  
+  } else {
+    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].tobeencoded;
+      console.log(config.cpanel[adminsez].forms.public.components.media.config.sizes[format]);
+    }  
   }
   if (this.media && this.media.preview) {
     const serverPath = this.media.preview;

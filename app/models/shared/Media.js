@@ -2,8 +2,6 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const adminsez = 'galleries';
-
 const Media = new Schema({
   url: String,
   slug: { type: String/* , unique: true */ },
@@ -17,20 +15,15 @@ const Media = new Schema({
   width: Number,
   height: Number,
 
-  encoded: { type: Boolean, default: false },
+  encoded: { type: Number, default: 0 },
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   stats: {},
   title: String,
 }, {
-  _id : false,
-  timestamps: true,
-  toObject: {
-    virtuals: true
-  },
-  toJSON: {
-    virtuals: true
-  }
+  _id : false
 });
+
+/*
 Media.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
@@ -56,7 +49,6 @@ Media.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-/*
 Media.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
