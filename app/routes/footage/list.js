@@ -14,7 +14,7 @@ router.get('/:filter/:sorting/:page', (req, res) => {
 router.get('/:filter/:sorting', (req, res) => {
   if (req.params.sorting == "tobeencoded") {
     Model
-    .find({"media.encoded":{$exists:true},"media.encoded": {$ne:true},"media.encoded": {$ne:1}})
+    .findOne({"media.encoded":{$exists:true},"media.encoded": {$ne:true},"media.encoded": {$ne:1}})
     .select({media:1})
     .exec((err, data) => {
       if (err) {
