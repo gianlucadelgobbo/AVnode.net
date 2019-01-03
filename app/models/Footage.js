@@ -54,7 +54,7 @@ footageSchema.virtual('imageFormats').get(function () {
   if (this.media && this.media.preview) {
     const serverPath = this.media.preview;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/footage_previews/', process.env.WAREHOUSE+'/warehouse/footage/'); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/footage_previews/', process.env.WAREHOUSE+'/warehouse/footage_previews/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
