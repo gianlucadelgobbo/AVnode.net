@@ -8,7 +8,7 @@ const imageUtil = require("../../utilities/image");
 const Footage = require('mongoose').model('Footage');
 const Video = require('mongoose').model('Video');
 
-//const logger = require('../../utilities/logger');
+const logger = require('../../utilities/logger');
 
 router.get('/tobeencoded/:sez', (req, res) => {
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;  
@@ -41,17 +41,17 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
         data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
         data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
         data.is_public = 1;
+        console.log(global.appRoot+data.media.preview);
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
           const options = config.cpanel[req.params.sez].forms.media.components.media.config;
 
-          imageUtil.resizer(global.appRoot+data.media.preview, options, (resizeerr, info) => {
+          imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (resizeerr, info) => {
             if (resizeerr || !info) {
               if (resizeerr) {
                 logger.debug(`Image resize ERROR: ${resizeerr}`);
                 res.json({error: `Image resize ERROR: ${resizeerr}`});
-              }
-              if (!info) {
+              } else if (!info) {
                 logger.debug("Image resize ERROR: info undefined");
                 res.json({error: `Image resize ERROR: ${resizeerr}`});
               }
