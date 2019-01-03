@@ -41,7 +41,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
         data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
         data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
         data.is_public = 1;
-        if (fs.existsSync(data.media.file)) {
+        if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
           const options = config.cpanel[req.params.sez].forms.media.components.media.config;
 
