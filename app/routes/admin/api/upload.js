@@ -37,10 +37,7 @@ upload.getServerpath = storage => {
 upload.uploader = (req, res, done) => {
   console.log(req.params.sez);
   console.log(req.params.form);
-  const options =
-    config.cpanel[req.params.sez].forms[req.params.form].components[
-      req.params.form
-    ].config;
+  const options = config.cpanel[req.params.sez].forms[req.params.form].components[req.params.form].config;
   console.log(options.maxsize);
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -197,12 +194,8 @@ upload.uploader = (req, res, done) => {
                   let put = {};
                   if (req.files[options.fields.name].length == 1) {
                     put[options.fields.name] = {
-                      file: req.files[options.fields.name][0].path.replace(
-                        global.appRoot,
-                        ""
-                      ),
-                      originalname:
-                        req.files[options.fields.name][0].originalname,
+                      file: req.files[options.fields.name][0].path.replace(global.appRoot,""),
+                      originalname: req.files[options.fields.name][0].originalname,
                       encoding: req.files[options.fields.name][0].encoding,
                       mimetype: req.files[options.fields.name][0].mimetype,
                       folder: req.files[options.fields.name][0].destination,
@@ -219,12 +212,8 @@ upload.uploader = (req, res, done) => {
                       a++
                     ) {
                       const ins = {
-                        file: req.files[options.fields.name][a].path.replace(
-                          global.appRoot,
-                          ""
-                        ),
-                        originalname:
-                          req.files[options.fields.name][a].originalname,
+                        file: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                        originalname: req.files[options.fields.name][a].originalname,
                         encoding: req.files[options.fields.name][a].encoding,
                         mimetype: req.files[options.fields.name][a].mimetype,
                         folder: req.files[options.fields.name][a].destination,
@@ -246,35 +235,29 @@ upload.uploader = (req, res, done) => {
           let put = {};
           if (req.files[options.fields.name].length == 1) {
             put[options.fields.name] = {
-              file: req.files[options.fields.name][0].path.replace(
-                global.appRoot,
-                ""
-              ),
+              original: req.files[options.fields.name][0].path.replace(global.appRoot,""),
               originalname: req.files[options.fields.name][0].originalname,
-              encoding: false,
+              encoding: 0,
               mimetype: req.files[options.fields.name][0].mimetype,
-              folder: req.files[options.fields.name][0].destination,
+              //folder: req.files[options.fields.name][0].destination,
               filename: req.files[options.fields.name][0].filename,
-              size: req.files[options.fields.name][0].size,
-              width: req.files[options.fields.name][0].width,
-              height: req.files[options.fields.name][0].height
+              //size: req.files[options.fields.name][0].size,
+              //width: req.files[options.fields.name][0].width,
+              //height: req.files[options.fields.name][0].height
             };
           } else {
             put[options.fields.name] = [];
             for (let a = 0; a < req.files[options.fields.name].length; a++) {
               const ins = {
-                file: req.files[options.fields.name][a].path.replace(
-                  global.appRoot,
-                  ""
-                ),
+                original: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
                 originalname: req.files[options.fields.name][a].originalname,
-                encoding: false,
+                encoding: 0,
                 mimetype: req.files[options.fields.name][a].mimetype,
-                folder: req.files[options.fields.name][a].destination,
+                //folder: req.files[options.fields.name][a].destination,
                 filename: req.files[options.fields.name][a].filename,
-                size: req.files[options.fields.name][a].size,
-                width: req.files[options.fields.name][a].width,
-                height: req.files[options.fields.name][a].height
+                //size: req.files[options.fields.name][a].size,
+                //width: req.files[options.fields.name][a].width,
+                //height: req.files[options.fields.name][a].height
               };
               put[options.fields.name].push(ins);
             }

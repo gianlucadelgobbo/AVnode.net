@@ -12,6 +12,7 @@ const playlists = require('./playlists');
 const videos = require('./videos');
 const galleries = require('./galleries');
 const news = require('./news');
+const api = require('./api');
 
 const login = require('./login');
 const logout = require('./logout');
@@ -35,8 +36,8 @@ const user = require('./user');
 const storage = require('./storage');
 const crews = require('./crews');
 const fourOhFour = require('./404');
-*/
 router.get('/__webpack_hmr', function(){});
+*/
 
 router.use('/likes', likes);
 
@@ -54,6 +55,7 @@ router.use('/playlists', playlists);
 router.use('/videos', videos);
 router.use('/galleries', galleries);
 router.use('/news', news);
+router.use('/api', api);
 
 router.use('/login', login);
 router.use('/logout', logout);
