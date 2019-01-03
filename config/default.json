@@ -1739,7 +1739,7 @@
             "media": {
               "config":{
                 "fields": {
-                  "name": "image",
+                  "name": "media",
                   "maxCount": 1
                 },
                 "filetypes": ["mp4","mov","m4v","avi"],
@@ -1752,13 +1752,16 @@
                     "w": 400,
                     "h": 225,
                     "folder": "400x225",
-                    "default": "/images/default-item.svg"
+                    "default": "/images/default-item.svg",
+                    "tobeencoded": "/images/default-footage-tobeencoded.svg"
                   },
                   "large": {
                     "w": 1140,
                     "h": 641,
                     "folder": "1140x641",
-                    "default": "/images/default-item.svg"
+                    "default": "/images/default-item.svg",
+                    "tobeencoded": "/images/default-footage-tobeencoded.svg"
+
                   }
                 }
               },
@@ -1813,62 +1816,13 @@
             "media": 1,
             "categories": 1,
             "users": 1,
-            "tags": 1
+            "playlists": 1,
+            "tags": 1,
+            "imageFormats": 1
           },
           "selectaddon": {
           },
-          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
-        },
-        "media": {
-          "components": {
-            "media": {
-              "config":{
-                "fields": {
-                  "name": "media",
-                  "maxCount": 1
-                },
-                "filetypes": ["mp4","mov","m4v","avi"],
-                "storage": "/glacier/footage_originals/",
-                "maxsize": 2147483648,
-                "minwidth": 1000,
-                "minheight": 1000,
-                "sizes": {
-                  "small": {
-                    "w": 400,
-                    "h": 225,
-                    "folder": "400x225",
-                    "default": "/images/default-item.svg"
-                  },
-                  "large": {
-                    "w": 1140,
-                    "h": 641,
-                    "folder": "1140x641",
-                    "default": "/images/default-item.svg"
-                  }
-                }
-              },
-              "comp": "uploader",
-              "label": "Footage file",
-              "validators": {
-                "Mime": {},
-                "Weight": {},
-                "Size": {}
-              }
-            }
-          },
-          "select": {
-            "slug": 1,
-            "title": 1,
-            "abouts": 1,
-            "is_public": 1,
-            "media": 1,
-            "categories": 1,
-            "users": 1,
-            "tags": 1
-          },
-          "selectaddon": {
-          },
-          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }, { "path": "playlists" , "select": "title" }]
         }
       },
       "list": {

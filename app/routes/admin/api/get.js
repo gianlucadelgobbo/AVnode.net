@@ -53,18 +53,17 @@ router.getList = (req, res) => {
 }
 
 router.getData = (req, res) => {
-  console.log(req.params);
+  //console.log(req.params);
   for (let item in config.cpanel) {
-    console.log("http://localhost:8006/admin/api/"+item+"?pure=1")
+    //console.log("http://localhost:8006/admin/api/"+item+"?pure=1")
     for (let item2 in config.cpanel[item].forms) {
       //console.log("http://localhost:8006/admin/api/"+item+"/"+item2);
-      console.log("http://localhost:8006/admin/api/"+item+"/:ID/"+item2+"?pure=1");
+      //console.log("http://localhost:8006/admin/api/"+item+"/:ID/"+item2+"?pure=1");
       //config.cpanel[item].forms[item2].populate = [];
       //config.cpanel[item].forms[item2].select = {};
       for (let item3 in config.cpanel[item].forms[item2].validators) {
         //config.cpanel[item].forms[item2].select[item3] = 1;
-        console.log(item+"/"+item2+"/"+item3);
-  
+        //console.log(item+"/"+item2+"/"+item3);
       } 
     }
   }
