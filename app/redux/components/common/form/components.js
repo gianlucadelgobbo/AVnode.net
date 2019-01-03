@@ -2260,6 +2260,9 @@ export const uploadComponent = ({
       {media && (
         <div className="row">
           <div className="col-sm-6">
+            <div className="labelField">
+              <h4>{media.originalname}</h4>
+            </div>
             <Player playsInline src={media.file} />
           </div>
           <div className="col-sm-6" />
@@ -2282,6 +2285,36 @@ export const uploadComponent = ({
               />
             </Button>
           </div>
+        </div>
+      )}
+
+      {media && Array.isArray(media) && media.length > 0 && (
+        <div className="row">
+          {media.map((v, i) => (
+            <div className="col-sm-6">
+              <div className="labelField">
+                <h4>{v.originalname}</h4>
+              </div>
+              <Player playsInline src={v.file} />
+              <Button
+                bsStyle="danger"
+                onClick={() =>
+                  showModal({
+                    type: MODAL_REMOVE,
+                    props: {
+                      onRemove: () => this.onRemove(v)
+                    }
+                  })
+                }
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+              </Button>
+            </div>
+          ))}
         </div>
       )}
     </div>
