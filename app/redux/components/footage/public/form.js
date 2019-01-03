@@ -38,7 +38,8 @@ class FootagePublicForm extends Component {
       handleTagClick,
       handleAddition,
       tags,
-      uploadFile
+      uploadFile,
+      media
     } = this.props;
 
     return (
@@ -64,6 +65,7 @@ class FootagePublicForm extends Component {
           maxSize={21474836480}
           uploadFile={uploadFile}
           uploadButton={true}
+          media={media}
           //accept={this.renderImageType()}
         />
 
