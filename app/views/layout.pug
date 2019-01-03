@@ -166,7 +166,7 @@ html(lang=session.current_lang)
                   b=session.current_lang.toUpperCase()
                 .dropdown-menu(aria-labelledby='langDropdown')
                   each lang,slug in config.locales_labels
-                    a.dropdown-item(href=protocol+'://'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
+                    a.dropdown-item(href='//'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
     #searchbar(class=url && url.indexOf("/search")===0 ? undefined : "collapse")
       .container
         .row

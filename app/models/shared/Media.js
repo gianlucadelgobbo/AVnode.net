@@ -6,6 +6,7 @@ const Media = new Schema({
   url: String,
   slug: { type: String/* , unique: true */ },
   file: String,
+  original: String,
   filename: String,
   preview: String,
   originalname: String,
