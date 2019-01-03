@@ -2240,7 +2240,7 @@ export const uploadComponent = ({
       <div className="row">
         <div className="col-md-12">
           <Field
-            name="media"
+            name="video"
             component={renderDropzoneInput}
             placeholder="Video"
             accept={accept}
@@ -2257,12 +2257,13 @@ export const uploadComponent = ({
   return (
     <div>
       <div>{renderSubField()}</div>
-      {/*media && (
+      {media && (
         <div className="row">
           <div className="col-sm-6">
             <Player playsInline src={media.file} />
           </div>
-          <div>
+          <div className="col-sm-6" />
+          <div className="col-sm-6 float-right">
             <Button
               bsStyle="danger"
               onClick={() =>
@@ -2282,7 +2283,7 @@ export const uploadComponent = ({
             </Button>
           </div>
         </div>
-            )*/}
+      )}
     </div>
   );
 };

@@ -57,7 +57,7 @@ class FootagePublicForm extends Component {
         />
 
         <Field
-          name="media"
+          name="video"
           component={uploadComponent}
           showModal={showModal}
           accept="video/mp4, video/mpg, video/quicktime, video/x-flv, video/x-ms-wmv, video/x-msvideo"

@@ -185,7 +185,7 @@ class FootagePublic extends Component {
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
-            tags={this.getFormattedTags()}
+            tags={this.getFormattedTags() || []}
             delimiters={delimiters}
             handleDelete={this.handleDelete}
             handleTagClick={this.handleTagClick}
