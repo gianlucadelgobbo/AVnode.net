@@ -1228,7 +1228,7 @@ export const fieldInColumn = ({
 export const renderDropzoneInput = field => {
   let files = field.input.value;
   let myClassName = field.className === undefined ? "" : field.className;
-  const getExtensionIcon = name => {
+  const getExtensionIcon = (name = "") => {
     let extension =
       name.replace(/\s/g, "").slice(((name.lastIndexOf(".") - 1) >>> 0) + 2) ||
       "Unknown";
@@ -1296,6 +1296,7 @@ export const renderDropzoneInput = field => {
           <FormattedMessage id={field.meta.error} />
         </span>
       )}
+      {console.log(files)}
       {files && Array.isArray(files) && (
         <ul className="list-unstyled attached-file">
           {files.map((file, i) => (
@@ -2230,7 +2231,8 @@ export const uploadComponent = ({
   uploadButton,
   accept,
   uploadFile,
-  media
+  media,
+  multiple
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = () => {
@@ -2246,6 +2248,7 @@ export const uploadComponent = ({
             className="enableBorder"
             uploadFile={uploadFile}
             uploadButton={uploadButton}
+            multiple={multiple}
           />
         </div>
       </div>
@@ -2254,7 +2257,7 @@ export const uploadComponent = ({
   return (
     <div>
       <div>{renderSubField()}</div>
-      {media && (
+      {/*media && (
         <div className="row">
           <div className="col-sm-6">
             <Player playsInline src={media.file} />
@@ -2279,7 +2282,7 @@ export const uploadComponent = ({
             </Button>
           </div>
         </div>
-      )}
+            )*/}
     </div>
   );
 };
