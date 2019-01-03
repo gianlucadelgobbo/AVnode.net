@@ -157,7 +157,6 @@ class FootagePublic extends Component {
     } = this.props;
     console.log(model.media);
     const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
-
     return (
       <div className="row">
         <div className="col-md-2">
