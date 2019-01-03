@@ -30,6 +30,8 @@ import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 import TreeSelect from "rc-tree-select";
 import "rc-tree-select/assets/index.css";
+import { Player } from "video-react";
+import "video-react/dist/video-react.css";
 
 export const autocompleteComponent = ({
   inputProps,
@@ -2227,7 +2229,8 @@ export const uploadComponent = ({
   showModal,
   uploadButton,
   accept,
-  uploadFile
+  uploadFile,
+  media
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = () => {
@@ -2248,7 +2251,37 @@ export const uploadComponent = ({
       </div>
     );
   };
-  return <div>{renderSubField()}</div>;
+  return (
+    <div>
+      <div>{renderSubField()}</div>
+      {media && (
+        <div className="row">
+          <div className="col-sm-6">
+            <Player playsInline src={media.file} />
+          </div>
+          <div>
+            <Button
+              bsStyle="danger"
+              onClick={() =>
+                showModal({
+                  type: MODAL_REMOVE,
+                  props: {
+                    onRemove: () => this.onRemove(media)
+                  }
+                })
+              }
+            >
+              <i
+                className="fa fa-trash"
+                data-toggle="tooltip"
+                data-placement="top"
+              />
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export const multiActivities = ({

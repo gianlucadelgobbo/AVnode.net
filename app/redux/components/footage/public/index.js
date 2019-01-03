@@ -69,7 +69,8 @@ class FootagePublic extends Component {
     f.slug = model.slug;
     //Convert stagename
     f.title = model.title;
-
+    //Convert Video
+    f.media = model.media;
     // Convert about format for FieldArray redux-form
     f.abouts = populateMultiLanguageObject("abouts", abouts);
 
@@ -117,8 +118,6 @@ class FootagePublic extends Component {
   }
 
   uploadFile(files) {
-    console.log("files");
-    console.log(files);
     const { model, uploadModel, showModal } = this.props;
     model.video = files;
     return uploadModel(model).then(response => {
@@ -156,7 +155,7 @@ class FootagePublic extends Component {
       isFetching,
       errorMessage
     } = this.props;
-    console.log(errorMessage);
+    console.log(model.media);
     const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
 
     return (
@@ -182,7 +181,7 @@ class FootagePublic extends Component {
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}
-            model={model}
+            media={model.media}
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
