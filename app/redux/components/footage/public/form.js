@@ -60,12 +60,12 @@ class FootagePublicForm extends Component {
           name="media"
           component={uploadComponent}
           showModal={showModal}
-          //properties={["jpeg, png"]}
           accept="video/mp4, video/mpg, video/quicktime, video/x-flv, video/x-ms-wmv, video/x-msvideo"
           maxSize={21474836480}
           uploadFile={uploadFile}
           uploadButton={true}
           media={media}
+          multiple={false}
           //accept={this.renderImageType()}
         />
 
