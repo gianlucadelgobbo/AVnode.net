@@ -38,7 +38,8 @@ class FootagePublicForm extends Component {
       handleTagClick,
       handleAddition,
       tags,
-      uploadFile
+      uploadFile,
+      media
     } = this.props;
 
     return (
@@ -56,14 +57,15 @@ class FootagePublicForm extends Component {
         />
 
         <Field
-          name="media"
+          name="video"
           component={uploadComponent}
           showModal={showModal}
-          //properties={["jpeg, png"]}
           accept="video/mp4, video/mpg, video/quicktime, video/x-flv, video/x-ms-wmv, video/x-msvideo"
           maxSize={21474836480}
           uploadFile={uploadFile}
           uploadButton={true}
+          media={media}
+          multiple={false}
           //accept={this.renderImageType()}
         />
 
