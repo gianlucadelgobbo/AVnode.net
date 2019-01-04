@@ -2259,37 +2259,28 @@ export const uploadComponent = ({
   };
   return (
     <div>
-      <div>{renderSubField()}</div>
       {mediaIsAnObj && (
         <div className="row">
           <div className="col-sm-6">
             <div style={containerVideo}>
-              <div className="labelField">
-                <h4>{media.originalname}</h4>
-              </div>
-              <Player playsInline src={media.file} />
-              <Button
-                className="btn-block"
-                bsStyle="danger"
-                onClick={() =>
-                  showModal({
-                    type: MODAL_REMOVE,
-                    props: {
-                      onRemove: () => this.onRemove(media)
-                    }
-                  })
-                }
-              >
-                <i
-                  className="fa fa-trash"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                />
-              </Button>
+              <Player playsInline src={media.original} />
             </div>
+          </div>
+          <div className="col-sm-6">
+            <table className="table-video-detail">
+              <tr>
+                <th>FILE NAME:</th>
+                <td>{media.originalname}</td>
+              </tr>
+              <tr>
+                <th>MIME TYPE:</th>
+                <td>{media.mimetype}</td>
+              </tr>
+            </table>
           </div>
         </div>
       )}
+      <div>{renderSubField()}</div>
       {/* if array of video */}
       {media && Array.isArray(media) && media.length > 0 && (
         <div className="row">
@@ -2299,7 +2290,7 @@ export const uploadComponent = ({
                 <div className="labelField">
                   <h4>{v.originalname}</h4>
                 </div>
-                <Player playsInline src={v.file} />
+                <Player playsInline src={v.original} />
                 <Button
                   className="btn-block"
                   bsStyle="danger"

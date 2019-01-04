@@ -404,7 +404,11 @@ export const removeFootage = ({ id }) => {
   });
 };
 
-export const postFootage = obj => axios.post(`footage/`, obj);
+export const postFootage = obj => {
+  return axios.post(`footage/new/`, obj).then(result => {
+    return result.data;
+  });
+};
 
 // - public
 
@@ -422,6 +426,12 @@ export const saveFootagePublic = model => {
 
 export const removeFootagePublic = model => {
   return axios.delete(`footage/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+
+export const fetchSlugNewFootage = slug => {
+  return axios.get(`footage/new/slugs/${slug}`).then(result => {
     return result.data;
   });
 };
