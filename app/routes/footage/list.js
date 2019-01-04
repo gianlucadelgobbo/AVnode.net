@@ -12,23 +12,8 @@ router.get('/:filter/:sorting/:page', (req, res) => {
 });
 
 router.get('/:filter/:sorting', (req, res) => {
-  if (req.params.sorting == "tobeencoded") {
-    Model
-    //.findOne({"media.encoded":{$exists:true},"media.encoded": {$ne:true},"media.encoded": {$ne:1}})
-    .find({"media.encoded":{$exists:true}, "media.original":{$exists:true}, "media.encoded": 1,"media.original":{$regex: '2013/12/capillary_short.mov'}})
-    .limit(1)
-    .select({media:1})
-    .exec((err, data) => {
-      if (err) {
-        res.status(500).json({ error: `${JSON.stringify(err)}` });
-      } else {
-        res.json(data);
-      }
-    });
-  } else {
-    req.params.page = 1;
-    dataprovider.list(req, res, section, Model);
-  }
+  req.params.page = 1;
+  dataprovider.list(req, res, section, Model);
 });
 
 /* router.get('/:filter', (req, res) => {
