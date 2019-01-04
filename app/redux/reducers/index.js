@@ -13,7 +13,7 @@ import partnerCategories from "../components/partnerCategories/reducers";
 import footage from "../components/footage/reducers";
 import playlists from "../components/playlists/reducers";
 import signup from "../components/signup/reducers";
-// import preferences from './preferences';
+import videos from "../components/videos/reducers";
 
 const reducer = combineReducers({
   events,
@@ -21,7 +21,6 @@ const reducer = combineReducers({
   countries,
   categories,
   users,
-  //preferences,
   performances,
   crews,
   form: formReducer,
@@ -29,7 +28,8 @@ const reducer = combineReducers({
   partnerCategories,
   footage,
   playlists,
-  signup
+  signup,
+  videos
 });
 
 export default reducer;

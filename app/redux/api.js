@@ -470,6 +470,26 @@ export const removePlaylistsPublic = model => {
   });
 };
 
+// ============ Videos
+
+export const fetchVideos = () => {
+  return axios.get("videos").then(result => {
+    return result.data.videos;
+  });
+};
+
+export const removeVideos = ({ id }) => {
+  return axios.delete(`videos/${id}`).then(result => {
+    return result.data;
+  });
+};
+
+export const postVideos = obj => {
+  return axios.post(`videos/new/`, obj).then(result => {
+    return result.data;
+  });
+};
+
 // - users
 
 export const fetchPerformanceUsers = () => {
