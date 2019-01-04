@@ -1300,7 +1300,7 @@ export const renderDropzoneInput = field => {
       {files && Array.isArray(files) && (
         <ul className="list-unstyled attached-file">
           {files.map((file, i) => (
-            <li key={i}>
+            <li className="list-upload" key={i}>
               {getExtensionIcon(file.name)} {file.name}
               <span className="file-size">({formatBytes(file.size)})</span>
               {field.uploadButton && (
@@ -1318,7 +1318,7 @@ export const renderDropzoneInput = field => {
               )}
               <button
                 type="button"
-                className="btn btn-default clear-attachment"
+                className="btn btn-danger clear-attachment"
                 onClick={() => {
                   field.showModal({
                     type: MODAL_REMOVE,
@@ -2245,7 +2245,6 @@ export const uploadComponent = ({
           <Field
             name="video"
             component={renderDropzoneInput}
-            placeholder="Video"
             accept={accept}
             showModal={showModal}
             className="enableBorder"
@@ -2260,23 +2259,30 @@ export const uploadComponent = ({
   return (
     <div>
       {mediaIsAnObj && (
-        <div className="row">
-          <div className="col-sm-6">
-            <div style={containerVideo}>
-              <Player playsInline src={media.original} />
+        <div className="container-video">
+          <div className="row">
+            <div className="col-sm-12">
+              <div class="labelField">
+                <h4>Video</h4>
+              </div>
             </div>
           </div>
-          <div className="col-sm-6">
-            <table className="table-video-detail">
-              <tr>
-                <th>FILE NAME:</th>
-                <td>{media.originalname}</td>
-              </tr>
-              <tr>
-                <th>MIME TYPE:</th>
-                <td>{media.mimetype}</td>
-              </tr>
-            </table>
+          <div className="row">
+            <div className="col-sm-6">
+              <Player playsInline src={media.original} />
+            </div>
+            <div className="col-sm-6">
+              <table className="table-video-detail">
+                <tr>
+                  <th>FILE NAME:</th>
+                  <td>{media.originalname}</td>
+                </tr>
+                <tr>
+                  <th>MIME TYPE:</th>
+                  <td>{media.mimetype}</td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
       )}
