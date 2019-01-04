@@ -30,6 +30,8 @@ import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 import TreeSelect from "rc-tree-select";
 import "rc-tree-select/assets/index.css";
+import { Player } from "video-react";
+import "video-react/dist/video-react.css";
 
 export const autocompleteComponent = ({
   inputProps,
@@ -1226,7 +1228,7 @@ export const fieldInColumn = ({
 export const renderDropzoneInput = field => {
   let files = field.input.value;
   let myClassName = field.className === undefined ? "" : field.className;
-  const getExtensionIcon = name => {
+  const getExtensionIcon = (name = "") => {
     let extension =
       name.replace(/\s/g, "").slice(((name.lastIndexOf(".") - 1) >>> 0) + 2) ||
       "Unknown";
@@ -1294,6 +1296,7 @@ export const renderDropzoneInput = field => {
           <FormattedMessage id={field.meta.error} />
         </span>
       )}
+      {console.log(files)}
       {files && Array.isArray(files) && (
         <ul className="list-unstyled attached-file">
           {files.map((file, i) => (
@@ -2227,15 +2230,20 @@ export const uploadComponent = ({
   showModal,
   uploadButton,
   accept,
-  uploadFile
+  uploadFile,
+  media,
+  multiple
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
+  const containerVideo = { marginBottom: "20px" };
+  const mediaIsAnObj = typeof media === "object";
+
   const renderSubField = () => {
     return (
       <div className="row">
         <div className="col-md-12">
           <Field
-            name="media"
+            name="video"
             component={renderDropzoneInput}
             placeholder="Video"
             accept={accept}
@@ -2243,12 +2251,80 @@ export const uploadComponent = ({
             className="enableBorder"
             uploadFile={uploadFile}
             uploadButton={uploadButton}
+            multiple={multiple}
           />
         </div>
       </div>
     );
   };
-  return <div>{renderSubField()}</div>;
+  return (
+    <div>
+      <div>{renderSubField()}</div>
+      {mediaIsAnObj && (
+        <div className="row">
+          <div className="col-sm-6">
+            <div style={containerVideo}>
+              <div className="labelField">
+                <h4>{media.originalname}</h4>
+              </div>
+              <Player playsInline src={media.file} />
+              <Button
+                className="btn-block"
+                bsStyle="danger"
+                onClick={() =>
+                  showModal({
+                    type: MODAL_REMOVE,
+                    props: {
+                      onRemove: () => this.onRemove(media)
+                    }
+                  })
+                }
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* if array of video */}
+      {media && Array.isArray(media) && media.length > 0 && (
+        <div className="row">
+          {media.map((v, i) => (
+            <div className="col-sm-6" key={i}>
+              <div style={containerVideo}>
+                <div className="labelField">
+                  <h4>{v.originalname}</h4>
+                </div>
+                <Player playsInline src={v.file} />
+                <Button
+                  className="btn-block"
+                  bsStyle="danger"
+                  onClick={() =>
+                    showModal({
+                      type: MODAL_REMOVE,
+                      props: {
+                        onRemove: () => this.onRemove(i)
+                      }
+                    })
+                  }
+                >
+                  <i
+                    className="fa fa-trash"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export const multiActivities = ({
