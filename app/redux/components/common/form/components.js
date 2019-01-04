@@ -2235,6 +2235,9 @@ export const uploadComponent = ({
   multiple
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
+  const containerVideo = { marginBottom: "20px" };
+  const mediaIsAnObj = typeof media === "object";
+
   const renderSubField = () => {
     return (
       <div className="row">
@@ -2257,52 +2260,22 @@ export const uploadComponent = ({
   return (
     <div>
       <div>{renderSubField()}</div>
-      {media && (
+      {mediaIsAnObj && (
         <div className="row">
           <div className="col-sm-6">
-            <div className="labelField">
-              <h4>{media.originalname}</h4>
-            </div>
-            <Player playsInline src={media.file} />
-          </div>
-          <div className="col-sm-6" />
-          <div className="col-sm-6 float-right">
-            <Button
-              bsStyle="danger"
-              onClick={() =>
-                showModal({
-                  type: MODAL_REMOVE,
-                  props: {
-                    onRemove: () => this.onRemove(media)
-                  }
-                })
-              }
-            >
-              <i
-                className="fa fa-trash"
-                data-toggle="tooltip"
-                data-placement="top"
-              />
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {media && Array.isArray(media) && media.length > 0 && (
-        <div className="row">
-          {media.map((v, i) => (
-            <div className="col-sm-6">
+            <div style={containerVideo}>
               <div className="labelField">
-                <h4>{v.originalname}</h4>
+                <h4>{media.originalname}</h4>
               </div>
-              <Player playsInline src={v.file} />
+              <Player playsInline src={media.file} />
               <Button
+                className="btn-block"
                 bsStyle="danger"
                 onClick={() =>
                   showModal({
                     type: MODAL_REMOVE,
                     props: {
-                      onRemove: () => this.onRemove(v)
+                      onRemove: () => this.onRemove(media)
                     }
                   })
                 }
@@ -2313,6 +2286,39 @@ export const uploadComponent = ({
                   data-placement="top"
                 />
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* if array of video */}
+      {media && Array.isArray(media) && media.length > 0 && (
+        <div className="row">
+          {media.map((v, i) => (
+            <div className="col-sm-6" key={i}>
+              <div style={containerVideo}>
+                <div className="labelField">
+                  <h4>{v.originalname}</h4>
+                </div>
+                <Player playsInline src={v.file} />
+                <Button
+                  className="btn-block"
+                  bsStyle="danger"
+                  onClick={() =>
+                    showModal({
+                      type: MODAL_REMOVE,
+                      props: {
+                        onRemove: () => this.onRemove(i)
+                      }
+                    })
+                  }
+                >
+                  <i
+                    className="fa fa-trash"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </Button>
+              </div>
             </div>
           ))}
         </div>
