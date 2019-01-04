@@ -1,7 +1,4 @@
-import {
-  validateSlugNewCrew,
-  validateAddress
-} from "../../common/form/validators";
+import { validateSlugNewCrew } from "../../common/form/validators";
 import { checkIfError } from "../../common/form";
 //import {fetchSlugCrew as fetchSlug} from '../../../api';
 
