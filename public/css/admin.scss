@@ -522,17 +522,17 @@ div.ReactTags__selected a.ReactTags__remove {
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
 }
-.attachment-dropzone{
+.attachment-dropzone {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: .25rem;
-  transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.rc-tree-select-tree li{
-  color: #333!important;
+.rc-tree-select-tree li {
+  color: #333 !important;
 }
 
 .rc-tree-select-selection--multiple {
@@ -549,13 +549,26 @@ div.ReactTags__selected a.ReactTags__remove {
 .check-select .rc-tree-select-selection--multiple {
   min-height: 50px;
 }
-.rc-tree-select-arrow{
-  top:5px!important;
+.rc-tree-select-arrow {
+  top: 5px !important;
 }
 .rc-tree-select-selection--single {
-  height: 36px!important;
+  height: 36px !important;
 }
-.rc-tree-select-selection--single .rc-tree-select-selection__rendered{
-  line-height: 36px!important;
+.rc-tree-select-selection--single .rc-tree-select-selection__rendered {
+  line-height: 36px !important;
 }
 
+.table-video-detail {
+  table,
+  th,
+  td {
+    border-collapse: collapse;
+    color: #333;
+  }
+  th,
+  td {
+    padding-right: 10px;
+    text-align: left;
+  }
+}
