@@ -41,14 +41,13 @@ const footageSchema = new Schema({
 // Return thumbnail
 footageSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  if (this.media.encoded) {
+  if (this.media && (!this.media.encoded || this.media.encoded === 0)) {
     for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
+      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].tobeencoded;
     }  
   } else {
     for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].tobeencoded;
-      console.log(config.cpanel[adminsez].forms.public.components.media.config.sizes[format]);
+      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
     }  
   }
   if (this.media && this.media.preview) {
