@@ -25,10 +25,8 @@ class ModelTable extends Component {
 
   renderTable() {
     const { showModal, removeModel, list } = this.props;
-    const FootageItem = {
-      label: (
-        <FormattedMessage id="FootageTitle" defaultMessage="Footage Name" />
-      )
+    const VideosItem = {
+      label: <FormattedMessage id="VideosTitle" defaultMessage="Videos Name" />
     };
     return (
       <Table
@@ -38,18 +36,18 @@ class ModelTable extends Component {
             Header: () => {
               return (
                 <span>
-                  {FootageItem.label}
+                  {VideosItem.label}
                   <i className="fa fa-sort" />
                 </span>
               );
             },
             id: "title",
             accessor: "title",
-            className: "FootageTable",
+            className: "VideosTable",
             Cell: props => {
               const { row, original } = props;
               return (
-                <Link to={`/admin/footage/${original._id}/public`}>
+                <Link to={`/admin/videos/${original._id}/public`}>
                   <img
                     height={140}
                     className="image-responsive"
@@ -61,27 +59,33 @@ class ModelTable extends Component {
             }
           }
           /*{
-                        Header: this.getIntlString({id:ACTION}),
-                        id: "actions",
-                        width: 100,
-                        Cell: (props) => {
-                            const {original} = props;
-                            return <Button
-                                bsStyle="danger"
-                                className="btn-block"
-                                onClick={() =>
-                                    showModal({
-                                        type: MODAL_REMOVE,
-                                        props: {
-                                            onRemove: () => removeModel({id: original._id})
-                                        }
-                                    })}
-                            >
-                                <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                            </Button>
-                        }
-
-                    }*/
+            Header: this.getIntlString({ id: ACTION }),
+            id: "actions",
+            width: 100,
+            Cell: props => {
+              const { original } = props;
+              return (
+                <Button
+                  bsStyle="danger"
+                  className="btn-block"
+                  onClick={() =>
+                    showModal({
+                      type: MODAL_REMOVE,
+                      props: {
+                        onRemove: () => removeModel({ id: original._id })
+                      }
+                    })
+                  }
+                >
+                  <i
+                    className="fa fa-trash"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </Button>
+              );
+            }
+          }*/
         ]}
       />
     );
@@ -92,7 +96,7 @@ class ModelTable extends Component {
 
     return (
       <div>
-        {!list.length && <div>No Footage to display</div>}
+        {!list.length && <div>No Videos to display</div>}
 
         {isFetching && <Loading />}
 

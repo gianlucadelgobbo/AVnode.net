@@ -8,7 +8,7 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../../events/selectors";
-import Videos from "../../videos";
+import Videos from "../../video";
 import { FormattedMessage } from "react-intl";
 
 class PerformaceVideo extends Component {
