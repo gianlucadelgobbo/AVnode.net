@@ -2267,7 +2267,7 @@ export const uploadComponent = ({
               <div className="labelField">
                 <h4>{media.originalname}</h4>
               </div>
-              <Player playsInline src={media.file} />
+              <Player playsInline src={media.original} />
               <Button
                 className="btn-block"
                 bsStyle="danger"
@@ -2299,7 +2299,7 @@ export const uploadComponent = ({
                 <div className="labelField">
                   <h4>{v.originalname}</h4>
                 </div>
-                <Player playsInline src={v.file} />
+                <Player playsInline src={v.original} />
                 <Button
                   className="btn-block"
                   bsStyle="danger"
