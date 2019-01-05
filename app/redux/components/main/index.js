@@ -50,7 +50,8 @@ import Playlist from "../playlists/index.js";
 import PlaylistPublic from "../playlists/public";
 
 // // Videos
-import Videos from "../videos/index";
+import Videos from "../videos/index.js";
+import VideosPublic from "../videos/public";
 
 class MainApp extends Component {
   render() {
@@ -172,6 +173,10 @@ class MainApp extends Component {
                 />
                 <Route path="/admin/playlists" component={Playlist} />
 
+                <Route
+                  path="/admin/videos/:_id/public/"
+                  component={VideosPublic}
+                />
                 <Route path="/admin/videos" component={Videos} />
 
                 <Route path="*" component={PageNotFound} />

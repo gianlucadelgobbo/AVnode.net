@@ -2262,7 +2262,7 @@ export const uploadComponent = ({
         <div className="container-video">
           <div className="row">
             <div className="col-sm-12">
-              <div class="labelField">
+              <div className="labelField">
                 <h4>Video</h4>
               </div>
             </div>
@@ -2273,14 +2273,20 @@ export const uploadComponent = ({
             </div>
             <div className="col-sm-6">
               <table className="table-video-detail">
-                <tr>
-                  <th>FILE NAME:</th>
-                  <td>{media.originalname}</td>
-                </tr>
-                <tr>
-                  <th>MIME TYPE:</th>
-                  <td>{media.mimetype}</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <th>FILE NAME:</th>
+                    <td>{media.title}</td>
+                  </tr>
+                  <tr>
+                    <th>FILE SIZE:</th>
+                    <td>{media.filesize}</td>
+                  </tr>
+                  <tr>
+                    <th>MIME TYPE:</th>
+                    <td>{media.mimetype}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
