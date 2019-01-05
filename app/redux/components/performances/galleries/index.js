@@ -8,7 +8,7 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../../events/selectors";
-import Galleries from "../../galleries";
+import Galleries from "../../gallery";
 import { PERFORMANCE_NAME } from "../constants";
 import TitleComponent from "../../titleComponent";
 import { FormattedMessage } from "react-intl";

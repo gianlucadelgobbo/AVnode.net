@@ -528,6 +528,66 @@ export const fetchSlugNewVideos = slug => {
   });
 };
 
+// ============ GALLERIES
+
+export const fetchGalleries = () => {
+  return axios.get("galleries").then(result => {
+    return result.data.galleries;
+  });
+};
+
+export const removeGalleries = ({ id }) => {
+  return axios.delete(`galleries/${id}`).then(result => {
+    return result.data;
+  });
+};
+
+export const postGalleries = obj => {
+  return axios.post(`galleries/new/`, obj).then(result => {
+    return result.data;
+  });
+};
+
+// - public
+export const fetchGalleriesPublic = ({ id }) => {
+  return axios.get(`galleries/${id}/public`).then(result => {
+    return result.data;
+  });
+};
+
+export const saveGalleriesPublic = model => {
+  return axios.put(`galleries/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+
+export const removeGalleriesPublic = model => {
+  return axios.delete(`galleries/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+
+export const saveGalleriesMedia = model => {
+  // convert image to Form Data
+  let formBox = new FormData();
+  formBox.append("image", model);
+
+  // define request headers
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+  return axios
+    .put(`galleries/${model.id}/media`, formBox, config)
+    .then(result => {
+      return result.data;
+    });
+};
+
+export const fetchSlugNewGalleries = slug => {
+  return axios.get(`galleries/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+
 // - users
 
 export const fetchPerformanceUsers = () => {

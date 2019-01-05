@@ -74,7 +74,9 @@ export const PLAYLIST_URL = "label.form.playlist.url";
 //Videos
 export const VIDEOS_NAME = "label.form.videos.name";
 export const VIDEOS_URL = "label.form.videos.url";
-
+//Galleries
+export const GALLERIES_NAME = "label.form.galleries.name";
+export const GALLERIES_URL = "label.form.galleries.url";
 /*
  * Define i18n Form Label
  * */
@@ -314,5 +316,13 @@ defineMessages({
   [VIDEOS_URL]: {
     id: VIDEOS_URL,
     defaultMessage: "Video Url"
+  },
+  [GALLERIES_NAME]: {
+    id: GALLERIES_NAME,
+    defaultMessage: "Gallery Name"
+  },
+  [GALLERIES_URL]: {
+    id: GALLERIES_URL,
+    defaultMessage: "Gallery Url"
   }
 });
