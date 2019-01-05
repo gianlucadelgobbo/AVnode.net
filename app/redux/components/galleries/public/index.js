@@ -68,7 +68,7 @@ class GalleriesPublic extends Component {
     //Convert stagename
     f.title = model.title;
     //Convert Video
-    f.media = model.media;
+    f.medias = model.medias;
     // Convert about format for FieldArray redux-form
     f.abouts = populateMultiLanguageObject("abouts", abouts);
 
@@ -79,7 +79,7 @@ class GalleriesPublic extends Component {
 
   uploadFile(files) {
     const { model, uploadModel, showModal } = this.props;
-    model.video = files;
+    model.medias = files;
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
         showModal({
@@ -134,7 +134,7 @@ class GalleriesPublic extends Component {
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}
-            media={model.media}
+            media={model.medias}
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}

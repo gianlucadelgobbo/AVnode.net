@@ -5,7 +5,7 @@ import {
   inputText,
   textareaMultiTab,
   fieldWithLabel,
-  uploadComponent
+  uploadGallery
 } from "../../common/form/components";
 import validate from "./validate";
 import { injectIntl } from "react-intl";
@@ -49,8 +49,8 @@ class VideosPublicForm extends Component {
         />
 
         <Field
-          name="video"
-          component={uploadComponent}
+          name="galleries"
+          component={uploadGallery}
           showModal={showModal}
           accept="image/jpeg, image/png"
           maxSize={21474836480}
@@ -58,7 +58,6 @@ class VideosPublicForm extends Component {
           uploadButton={true}
           media={media}
           multiple={true}
-          //accept={this.renderImageType()}
         />
 
         <FieldArray
