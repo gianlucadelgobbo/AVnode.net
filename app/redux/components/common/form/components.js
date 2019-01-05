@@ -1,6 +1,6 @@
 import React from "react";
 import Textarea from "react-textarea-autosize";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Image } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select, { Async } from "react-select";
@@ -31,6 +31,7 @@ import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 import TreeSelect from "rc-tree-select";
 import "rc-tree-select/assets/index.css";
 import { Player } from "video-react";
+import LightBox from "../../lightboxGallery";
 import "video-react/dist/video-react.css";
 
 export const autocompleteComponent = ({
@@ -2321,6 +2322,88 @@ export const uploadComponent = ({
                     data-placement="top"
                   />
                 </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const uploadGallery = ({
+  fields,
+  title,
+  meta: { error },
+  placeholder,
+  showModal,
+  uploadButton,
+  accept,
+  uploadFile,
+  media,
+  multiple
+}) => {
+  const label = <div className="labelField">{placeholder}</div>;
+  const containerVideo = { marginBottom: "20px" };
+  const renderSubField = () => {
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          <Field
+            name="gallery"
+            component={renderDropzoneInput}
+            accept={accept}
+            showModal={showModal}
+            className="enableBorder"
+            uploadFile={uploadFile}
+            uploadButton={uploadButton}
+            multiple={multiple}
+          />
+        </div>
+      </div>
+    );
+  };
+  return (
+    <div>
+      {/* if array of images */}
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="labelField">
+            <h4>Gallery</h4>
+          </div>
+        </div>
+      </div>
+      <div>{renderSubField()}</div>
+      {media && Array.isArray(media) && media.length > 0 && (
+        <div className="row">
+          {media.map((image, i) => (
+            <div className="col-sm-3" key={i}>
+              <div style={containerVideo}>
+                <div className="labelField">
+                  <p>{image.title}</p>
+                </div>
+                <div className="col-sm-11">
+                  <Image src={image.file} responsive rounded />
+                </div>
+                {/*<div className="col-sm-1">
+                  <Button
+                    bsStyle="danger"
+                    onClick={() =>
+                      showModal({
+                        type: MODAL_REMOVE,
+                        props: {
+                          onRemove: () => this.onRemove(img)
+                        }
+                      })
+                    }
+                  >
+                    <i
+                      className="fa fa-trash"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    />
+                  </Button>
+                </div>*/}
               </div>
             </div>
           ))}
