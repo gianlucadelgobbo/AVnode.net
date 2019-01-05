@@ -385,9 +385,19 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.videos.name",
+    "defaultMessage": "Video Name",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.videos.url",
+    "defaultMessage": "Video Url",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "CrewPublicImage",
-    "defaultMessage": "MY IMAGE",
-    "filepath": "./app/redux/components/crews/images/index.js"
+    "defaultMessage": "CREW IMAGE",
+    "filepath": "./app/redux/components/crews/image/index.js"
   },
   {
     "id": "publicDataCrews",
@@ -683,5 +693,25 @@
     "id": "playlists",
     "defaultMessage": "Playlists",
     "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "videos",
+    "defaultMessage": "Videos",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "publicDataVideos",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/videos/lateralMenu/index.js"
+  },
+  {
+    "id": "videos.public.data",
+    "defaultMessage": "VIDEOS PUBLIC DATA",
+    "filepath": "./app/redux/components/videos/public/constants.js"
+  },
+  {
+    "id": "VideosTitle",
+    "defaultMessage": "Videos Name",
+    "filepath": "./app/redux/components/videos/table/index.js"
   }
 ]

@@ -22,6 +22,7 @@
   "PerformancePublicVideos": "PERFORMANCE VIDEOS",
   "PerformancesTitle": "Performances Name",
   "PlaylistItem": "Playlist Name",
+  "VideosTitle": "Videos Name",
   "account.public.data": "MY ACCOUNT PUBLIC DATA",
   "admin": "Control panel ITA",
   "callsEvents": "Calls",
@@ -95,6 +96,8 @@
   "label.form.title": "Title",
   "label.form.url": "Profilo Url",
   "label.form.video.no.show": "Technical requirements",
+  "label.form.videos.name": "Videos Name",
+  "label.form.videos.url": "Videos Url",
   "label.form.web": "Web",
   "label.table.action": "Action",
   "membersCrews": "Members",
@@ -113,6 +116,7 @@
   "publicDataPerformances": "Public data",
   "publicDataPlaylists": "Public data",
   "publicDataProfile": "Public data",
+  "publicDataVideos": "Public data",
   "settingEvents": "Settings",
   "signup": "CREATE ACCOUNT",
   "validation.error.define.least.email": "Define at least one email",
@@ -134,6 +138,8 @@
   "validation.error.required": "Required",
   "validation.error.slug.is.taken": "That slug is taken",
   "validation.error.slug.required": "Slug Required",
+  "videos": "Videos",
+  "videos.public.data": "VIDEOS PUBLIC DATA",
   "videosEvents": "Videos",
   "videosPerformances": "Videos"
 }

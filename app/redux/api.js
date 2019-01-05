@@ -490,6 +490,44 @@ export const postVideos = obj => {
   });
 };
 
+// - public
+export const fetchVideosPublic = ({ id }) => {
+  return axios.get(`videos/${id}/public`).then(result => {
+    return result.data;
+  });
+};
+
+export const saveVideosPublic = model => {
+  return axios.put(`videos/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+
+export const removeVideosPublic = model => {
+  return axios.delete(`videos/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+
+export const saveVideosMedia = model => {
+  // convert image to Form Data
+  let formBox = new FormData();
+  formBox.append("media", model.video[0]);
+
+  // define request headers
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+  return axios.put(`videos/${model.id}/media`, formBox, config).then(result => {
+    return result.data;
+  });
+};
+
+export const fetchSlugNewVideos = slug => {
+  return axios.get(`videos/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+
 // - users
 
 export const fetchPerformanceUsers = () => {

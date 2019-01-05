@@ -1,4 +1,4 @@
-import {defineMessages} from 'react-intl';
+import { defineMessages } from "react-intl";
 
 //Profile Public
 export const STAGE_NAME = "label.form.stagename";
@@ -71,238 +71,248 @@ export const TAGS = "label.form.tags";
 //Playlist
 export const PLAYLIST_NAME = "label.form.playlist.name";
 export const PLAYLIST_URL = "label.form.playlist.url";
+//Videos
+export const VIDEOS_NAME = "label.form.videos.name";
+export const VIDEOS_URL = "label.form.videos.url";
 
 /*
-* Define i18n Form Label
-* */
+ * Define i18n Form Label
+ * */
 defineMessages({
-    [STAGE_NAME]: {
-        id: STAGE_NAME,
-        defaultMessage: "Stage Name"
-    },
-    [PROFILE_URL]: {
-        id: PROFILE_URL,
-        defaultMessage: "Profile Url"
-    },
-    [ABOUT]: {
-        id: ABOUT,
-        defaultMessage: "About"
-    },
-    [WEB]: {
-        id: WEB,
-        defaultMessage: "Web"
-    },
-    [SOCIAL]: {
-        id: SOCIAL,
-        defaultMessage: "Socials"
-    },
-    [ADDRESS]: {
-        id: ADDRESS,
-        defaultMessage: "Address"
-    },
-    [EMAILS]: {
-        id: EMAILS,
-        defaultMessage: "Emails"
-    },
-    [SUBSCRIPTIONS]: {
-        id: SUBSCRIPTIONS,
-        defaultMessage: "Subscriptions"
-    },
-    [NAME]: {
-        id: NAME,
-        defaultMessage: "Name"
-    },
-    [SURNAME]: {
-        id: SURNAME,
-        defaultMessage: "Surname"
-    },
-    [GENDER]: {
-        id: GENDER,
-        defaultMessage: "Gender"
-    },
-    [LANGUAGE]: {
-        id: LANGUAGE,
-        defaultMessage: "Preferred Language"
-    },
-    [BIRTHDAY]: {
-        id: BIRTHDAY,
-        defaultMessage: "Birthday"
-    },
-     [CITIZENSHIP]: {
-        id: CITIZENSHIP,
-        defaultMessage: "Citizenship"
-    },
-     [PRIVATE_ADDRESS]: {
-        id: PRIVATE_ADDRESS,
-        defaultMessage: "Private Addresses"
-    },
-    [PHONE]: {
-        id: PHONE,
-        defaultMessage: "Phone"
-    },
-    [MOBILE]: {
-        id: MOBILE,
-        defaultMessage: "Mobile"
-    },
-    [SKYPE]: {
-        id: SKYPE,
-        defaultMessage: "Skype"
-    },
-    [OLD_PASSWORD]: {
-        id: OLD_PASSWORD,
-        defaultMessage: "Old Password"
-    },
-    [NEW_PASSWORD]: {
-        id: NEW_PASSWORD,
-        defaultMessage: "New Password"
-    },
-    [CONFIRM_PASSWORD]: {
-        id: CONFIRM_PASSWORD,
-        defaultMessage: "Confirm Password"
-    },
-    [CREW_NAME]: {
-        id: CREW_NAME,
-        defaultMessage: "Crew Name"
-    },
-    [CREW_URL]: {
-        id: CREW_URL,
-        defaultMessage: "Crew Url"
-    },
-    [FILE_UPLOAD]: {
-        id: FILE_UPLOAD,
-        defaultMessage: "Drop files here, or click to select files to upload."
-    },
-    [PERFORMANCE_URL]: {
-        id: PERFORMANCE_URL,
-        defaultMessage: "Performance Url"
-    },
-    [TITLE]: {
-        id: TITLE,
-        defaultMessage: "Title"
-    },
-    [IS_PUBLIC]: {
-        id: IS_PUBLIC,
-        defaultMessage: "Is public"
-    },
-    [CATEGORY]: {
-        id: CATEGORY,
-        defaultMessage: "Category"
-    },
-    [AUTHORS]: {
-        id: AUTHORS,
-        defaultMessage: "Authors"
-    },
-    [PRICE]: {
-        id: PRICE,
-        defaultMessage: "Price"
-    },
-    [DURATION]: {
-        id: DURATION,
-        defaultMessage: "Duration"
-    },
-    [TECHNOLOGIES_ARTISTS]: {
-        id: TECHNOLOGIES_ARTISTS,
-        defaultMessage: "Technologies with the artists"
-    },
-    [TECNICAL_REQUIREMENT]: {
-        id: TECNICAL_REQUIREMENT,
-        defaultMessage: "Technical requirements"
-    },
-    [NO_VIDEO_TO_SHOW]: {
-        id: NO_VIDEO_TO_SHOW,
-        defaultMessage: "No Video to Show"
-    },
-    [SCHEDULE]: {
-        id: SCHEDULE,
-        defaultMessage: "Schedule"
-    },
-    [SUBTITLES]: {
-        id: SUBTITLES,
-        defaultMessage: "Subtitles"
-    },
-    [EVENT_URL]: {
-        id: EVENT_URL,
-        defaultMessage: "Event Url"
-    },
-     [PROGRAM]: {
-        id: PROGRAM,
-        defaultMessage: "Program"
-    },
-     [CALLS]: {
-        id: CALLS,
-        defaultMessage: "Calls"
-    },
-    [CALL_NAME]: {
-        id: CALL_NAME,
-        defaultMessage: "Call Name"
-    },
-     [EMAIL_CONTACT]: {
-        id: EMAIL_CONTACT,
-        defaultMessage: "Email Contact"
-    },
-    [START_DATE]: {
-        id: START_DATE,
-        defaultMessage: "Start Date"
-    },
-    [END_DATE]: {
-        id: END_DATE,
-        defaultMessage: "End Date"
-    },
-    [EVENT_DESCRIPTION]: {
-        id: EVENT_DESCRIPTION,
-        defaultMessage: "Event Description"
-    },
-    [EVENT_TERM]: {
-        id: EVENT_TERM,
-        defaultMessage: "Event Term"
-    },
-    [EVENT_CLOSED]: {
-        id: EVENT_CLOSED,
-        defaultMessage: "Event Closed Call text"
-    },
-    [PACKAGES]: {
-        id: PACKAGES,
-        defaultMessage: "Packages"
-    },
-     [DESCRIPTION]: {
-        id: DESCRIPTION,
-        defaultMessage: "Description"
-    },
-    [ACTION]: {
-        id: ACTION,
-        defaultMessage: "Action"
-    },
-    [ERROR_CREW_TO_DISPLAY]: {
-        id: ERROR_CREW_TO_DISPLAY,
-        defaultMessage: "No Crew to display"
-    },
-    [ERROR_MEMBERS_TO_DISPLAY]: {
-        id: ERROR_MEMBERS_TO_DISPLAY,
-        defaultMessage: "No Members to display"
-    },
-    [SETTINGS]: {
-        id: SETTINGS,
-        defaultMessage: "Settings"
-    },
-    [FOOTAGE_NAME]: {
-        id: FOOTAGE_NAME,
-        defaultMessage: "Footage Name"
-    },
-    [FOOTAGE_URL]: {
-        id: FOOTAGE_URL,
-        defaultMessage: "Footage Url"
-    },
-    [TAGS]: {
-        id: TAGS,
-        defaultMessage: "Tags"
-    },
-    [PLAYLIST_NAME]: {
-        id: PLAYLIST_NAME,
-        defaultMessage: "Playlist Name"
-    },
-    [PLAYLIST_URL]: {
-        id: PLAYLIST_URL,
-        defaultMessage: "Playlist Url"
-    },
-
+  [STAGE_NAME]: {
+    id: STAGE_NAME,
+    defaultMessage: "Stage Name"
+  },
+  [PROFILE_URL]: {
+    id: PROFILE_URL,
+    defaultMessage: "Profile Url"
+  },
+  [ABOUT]: {
+    id: ABOUT,
+    defaultMessage: "About"
+  },
+  [WEB]: {
+    id: WEB,
+    defaultMessage: "Web"
+  },
+  [SOCIAL]: {
+    id: SOCIAL,
+    defaultMessage: "Socials"
+  },
+  [ADDRESS]: {
+    id: ADDRESS,
+    defaultMessage: "Address"
+  },
+  [EMAILS]: {
+    id: EMAILS,
+    defaultMessage: "Emails"
+  },
+  [SUBSCRIPTIONS]: {
+    id: SUBSCRIPTIONS,
+    defaultMessage: "Subscriptions"
+  },
+  [NAME]: {
+    id: NAME,
+    defaultMessage: "Name"
+  },
+  [SURNAME]: {
+    id: SURNAME,
+    defaultMessage: "Surname"
+  },
+  [GENDER]: {
+    id: GENDER,
+    defaultMessage: "Gender"
+  },
+  [LANGUAGE]: {
+    id: LANGUAGE,
+    defaultMessage: "Preferred Language"
+  },
+  [BIRTHDAY]: {
+    id: BIRTHDAY,
+    defaultMessage: "Birthday"
+  },
+  [CITIZENSHIP]: {
+    id: CITIZENSHIP,
+    defaultMessage: "Citizenship"
+  },
+  [PRIVATE_ADDRESS]: {
+    id: PRIVATE_ADDRESS,
+    defaultMessage: "Private Addresses"
+  },
+  [PHONE]: {
+    id: PHONE,
+    defaultMessage: "Phone"
+  },
+  [MOBILE]: {
+    id: MOBILE,
+    defaultMessage: "Mobile"
+  },
+  [SKYPE]: {
+    id: SKYPE,
+    defaultMessage: "Skype"
+  },
+  [OLD_PASSWORD]: {
+    id: OLD_PASSWORD,
+    defaultMessage: "Old Password"
+  },
+  [NEW_PASSWORD]: {
+    id: NEW_PASSWORD,
+    defaultMessage: "New Password"
+  },
+  [CONFIRM_PASSWORD]: {
+    id: CONFIRM_PASSWORD,
+    defaultMessage: "Confirm Password"
+  },
+  [CREW_NAME]: {
+    id: CREW_NAME,
+    defaultMessage: "Crew Name"
+  },
+  [CREW_URL]: {
+    id: CREW_URL,
+    defaultMessage: "Crew Url"
+  },
+  [FILE_UPLOAD]: {
+    id: FILE_UPLOAD,
+    defaultMessage: "Drop files here, or click to select files to upload."
+  },
+  [PERFORMANCE_URL]: {
+    id: PERFORMANCE_URL,
+    defaultMessage: "Performance Url"
+  },
+  [TITLE]: {
+    id: TITLE,
+    defaultMessage: "Title"
+  },
+  [IS_PUBLIC]: {
+    id: IS_PUBLIC,
+    defaultMessage: "Is public"
+  },
+  [CATEGORY]: {
+    id: CATEGORY,
+    defaultMessage: "Category"
+  },
+  [AUTHORS]: {
+    id: AUTHORS,
+    defaultMessage: "Authors"
+  },
+  [PRICE]: {
+    id: PRICE,
+    defaultMessage: "Price"
+  },
+  [DURATION]: {
+    id: DURATION,
+    defaultMessage: "Duration"
+  },
+  [TECHNOLOGIES_ARTISTS]: {
+    id: TECHNOLOGIES_ARTISTS,
+    defaultMessage: "Technologies with the artists"
+  },
+  [TECNICAL_REQUIREMENT]: {
+    id: TECNICAL_REQUIREMENT,
+    defaultMessage: "Technical requirements"
+  },
+  [NO_VIDEO_TO_SHOW]: {
+    id: NO_VIDEO_TO_SHOW,
+    defaultMessage: "No Video to Show"
+  },
+  [SCHEDULE]: {
+    id: SCHEDULE,
+    defaultMessage: "Schedule"
+  },
+  [SUBTITLES]: {
+    id: SUBTITLES,
+    defaultMessage: "Subtitles"
+  },
+  [EVENT_URL]: {
+    id: EVENT_URL,
+    defaultMessage: "Event Url"
+  },
+  [PROGRAM]: {
+    id: PROGRAM,
+    defaultMessage: "Program"
+  },
+  [CALLS]: {
+    id: CALLS,
+    defaultMessage: "Calls"
+  },
+  [CALL_NAME]: {
+    id: CALL_NAME,
+    defaultMessage: "Call Name"
+  },
+  [EMAIL_CONTACT]: {
+    id: EMAIL_CONTACT,
+    defaultMessage: "Email Contact"
+  },
+  [START_DATE]: {
+    id: START_DATE,
+    defaultMessage: "Start Date"
+  },
+  [END_DATE]: {
+    id: END_DATE,
+    defaultMessage: "End Date"
+  },
+  [EVENT_DESCRIPTION]: {
+    id: EVENT_DESCRIPTION,
+    defaultMessage: "Event Description"
+  },
+  [EVENT_TERM]: {
+    id: EVENT_TERM,
+    defaultMessage: "Event Term"
+  },
+  [EVENT_CLOSED]: {
+    id: EVENT_CLOSED,
+    defaultMessage: "Event Closed Call text"
+  },
+  [PACKAGES]: {
+    id: PACKAGES,
+    defaultMessage: "Packages"
+  },
+  [DESCRIPTION]: {
+    id: DESCRIPTION,
+    defaultMessage: "Description"
+  },
+  [ACTION]: {
+    id: ACTION,
+    defaultMessage: "Action"
+  },
+  [ERROR_CREW_TO_DISPLAY]: {
+    id: ERROR_CREW_TO_DISPLAY,
+    defaultMessage: "No Crew to display"
+  },
+  [ERROR_MEMBERS_TO_DISPLAY]: {
+    id: ERROR_MEMBERS_TO_DISPLAY,
+    defaultMessage: "No Members to display"
+  },
+  [SETTINGS]: {
+    id: SETTINGS,
+    defaultMessage: "Settings"
+  },
+  [FOOTAGE_NAME]: {
+    id: FOOTAGE_NAME,
+    defaultMessage: "Footage Name"
+  },
+  [FOOTAGE_URL]: {
+    id: FOOTAGE_URL,
+    defaultMessage: "Footage Url"
+  },
+  [TAGS]: {
+    id: TAGS,
+    defaultMessage: "Tags"
+  },
+  [PLAYLIST_NAME]: {
+    id: PLAYLIST_NAME,
+    defaultMessage: "Playlist Name"
+  },
+  [PLAYLIST_URL]: {
+    id: PLAYLIST_URL,
+    defaultMessage: "Playlist Url"
+  },
+  [VIDEOS_NAME]: {
+    id: VIDEOS_NAME,
+    defaultMessage: "Video Name"
+  },
+  [VIDEOS_URL]: {
+    id: VIDEOS_URL,
+    defaultMessage: "Video Url"
+  }
 });
