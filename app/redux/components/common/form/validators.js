@@ -21,7 +21,8 @@ import {
   fetchSlugNewCrew,
   fetchSlugNewPerformance,
   fetchSlugNewFootage,
-  fetchSlugNewVideos
+  fetchSlugNewVideos,
+  fetchSlugNewGalleries
 } from "../../../api";
 
 const validators = validatorsObj.validators;
@@ -171,6 +172,32 @@ export const validateSlugNewVideos = ({
   if (slugFromValues !== previousValue) {
     promises.push(
       fetchSlugNewVideos(slugFromValues)
+        .then(response => {
+          if (response.exist) {
+            Object.assign(result, { slug: SLUG_IS_TAKEN });
+            if (Array.isArray(errorArray)) {
+              errorArray[index] = result;
+            }
+          }
+        })
+        .catch()
+    );
+  }
+};
+
+export const validateSlugNewGalleries = ({
+  value,
+  previousValue,
+  promises,
+  result,
+  index,
+  errorArray
+}) => {
+  // slug
+  let slugFromValues = value;
+  if (slugFromValues !== previousValue) {
+    promises.push(
+      fetchSlugNewGalleries(slugFromValues)
         .then(response => {
           if (response.exist) {
             Object.assign(result, { slug: SLUG_IS_TAKEN });

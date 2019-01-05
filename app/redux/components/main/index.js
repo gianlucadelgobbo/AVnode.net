@@ -53,6 +53,10 @@ import PlaylistPublic from "../playlists/public";
 import Videos from "../videos/index.js";
 import VideosPublic from "../videos/public";
 
+// // Galleries
+import Galleries from "../galleries/index.js";
+import GalleriesPublic from "../galleries/public";
+
 class MainApp extends Component {
   render() {
     return (
@@ -178,6 +182,12 @@ class MainApp extends Component {
                   component={VideosPublic}
                 />
                 <Route path="/admin/videos" component={Videos} />
+
+                <Route
+                  path="/admin/galleries/:_id/public/"
+                  component={GalleriesPublic}
+                />
+                <Route path="/admin/galleries" component={Galleries} />
 
                 <Route path="*" component={PageNotFound} />
               </Switch>

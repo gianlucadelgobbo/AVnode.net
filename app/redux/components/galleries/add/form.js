@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { reduxForm, Field, FieldArray } from "redux-form";
+import { reduxForm, Field } from "redux-form";
 import { FORM_NAME } from "./constants";
-import { inputText, renderDropzoneInput } from "../../common/form/components";
+import { inputText } from "../../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
 
-class AddVideosForm extends Component {
+class AddGalleriesForm extends Component {
   render() {
     const { submitting, handleSubmit, onSubmit } = this.props;
 
@@ -33,4 +33,4 @@ export default reduxForm({
   validate,
   asyncValidate,
   asyncBlurFields: ["slug"]
-})(AddVideosForm);
+})(AddGalleriesForm);

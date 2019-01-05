@@ -14,6 +14,7 @@ import footage from "../components/footage/reducers";
 import playlists from "../components/playlists/reducers";
 import signup from "../components/signup/reducers";
 import videos from "../components/videos/reducers";
+import galleries from "../components/galleries/reducers";
 
 const reducer = combineReducers({
   events,
@@ -29,7 +30,8 @@ const reducer = combineReducers({
   footage,
   playlists,
   signup,
-  videos
+  videos,
+  galleries
 });
 
 export default reducer;

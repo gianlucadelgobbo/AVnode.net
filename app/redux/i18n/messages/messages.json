@@ -395,6 +395,16 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.galleries.name",
+    "defaultMessage": "Gallery Name",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.galleries.url",
+    "defaultMessage": "Gallery Url",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "CrewPublicImage",
     "defaultMessage": "CREW IMAGE",
     "filepath": "./app/redux/components/crews/image/index.js"
@@ -538,6 +548,21 @@
     "id": "FootageTitle",
     "defaultMessage": "Footage Name",
     "filepath": "./app/redux/components/footage/table/index.js"
+  },
+  {
+    "id": "publicDataGalleries",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/galleries/lateralMenu/index.js"
+  },
+  {
+    "id": "galleries.public.data",
+    "defaultMessage": "GALLERY PUBLIC DATA",
+    "filepath": "./app/redux/components/galleries/public/constants.js"
+  },
+  {
+    "id": "GalleriesTitle",
+    "defaultMessage": "Galleries Name",
+    "filepath": "./app/redux/components/galleries/table/index.js"
   },
   {
     "id": "admin",
@@ -700,13 +725,18 @@
     "filepath": "./app/redux/components/topMenu/index.js"
   },
   {
+    "id": "galleries",
+    "defaultMessage": "Galleries",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
     "id": "publicDataVideos",
     "defaultMessage": "Public data",
     "filepath": "./app/redux/components/videos/lateralMenu/index.js"
   },
   {
     "id": "videos.public.data",
-    "defaultMessage": "VIDEOS PUBLIC DATA",
+    "defaultMessage": "VIDEO PUBLIC DATA",
     "filepath": "./app/redux/components/videos/public/constants.js"
   },
   {
