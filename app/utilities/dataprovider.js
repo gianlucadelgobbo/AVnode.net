@@ -315,7 +315,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
   dataprovider.fetchShow(req, section, subsection, model, populate, select, (err, data, total) => {
     //console.log(err);
     if (err || data === null) {
-      res.status(404).render('404', {title:"<span class=\"lnr lnr-warning\" style=\"font-size:  200%;vertical-align:  middle;padding-right: 20px;\"></span><span style=\"vertical-align:  middle;\">"+__("404: Page not found")+"</span>"});
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
       if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
         if (process.env.DEBUG) {
@@ -455,7 +455,7 @@ dataprovider.list = (req, res, section, model) => {
   const populate = config.sections[section].list_populate;
 
   if (notfound) {
-    res.status(404).render('404', {title:"<span class=\"lnr lnr-warning\" style=\"font-size:  200%;vertical-align:  middle;padding-right: 20px;\"></span><span style=\"vertical-align:  middle;\">"+__("404: Page not found")+"</span>"});
+    res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
   } else {
     //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
     const query = config.sections[section].categoriesQueries[filter];
