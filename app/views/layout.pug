@@ -188,7 +188,12 @@ html(lang=session.current_lang)
         if title
           .main_title_bkg
             .container
-              h1!=title
+              h1
+                if titleicon
+                  span.lnr.lnr-warning.titleicon
+                  span.titleicontext!=title
+                else 
+                  !=title
               if subtitle
                 p.lead.mb-0=subtitle
       block content
