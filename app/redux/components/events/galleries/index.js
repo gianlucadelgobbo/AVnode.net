@@ -8,7 +8,7 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../../events/selectors";
-import Galleries from "../../gallery";
+import Gallery from "../../gallery";
 import { FormattedMessage } from "react-intl";
 
 class EventsImage extends Component {
@@ -38,7 +38,7 @@ class EventsImage extends Component {
             />
           </h2>
 
-          <Galleries
+          <Gallery
             model={model}
             isFetching={isFetching}
             errorMessage={errorMessage}
