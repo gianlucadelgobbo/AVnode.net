@@ -74,20 +74,24 @@ class Reorder extends Component {
                     className="Row"
                 >
                     <div className="col-sm-12">
-                        <h3>{item.title} <Button bsStyle="danger"
-                                                 onClick={() =>
-                                                     showModal({
-                                                         type: MODAL_REMOVE,
-                                                         props: {
-                                                             onRemove: () => onRemove(item)
-                                                         }
-                                                     })}
+                        <h3>{item.title}</h3>
+                        <div>
+                        <Image src={item.imageFormats ? item.imageFormats.small : ""} responsive/>
+                        </div>
+                        <Button 
+                        bsStyle="danger"
+                        className="btn-block"
+                        onClick={() =>
+                            showModal({
+                                type: MODAL_REMOVE,
+                                props: {
+                                    onRemove: () => onRemove(item)
+                                }
+                            })}
                         >
                             <i className="fa fa-trash" data-toggle="tooltip"
-                               data-placement="top"/>
+                            data-placement="top"/>
                         </Button>
-                        </h3>
-                        <Image src={item.image ? item.image.file : ""} responsive/>;
                     </div>
 
                 </div>
