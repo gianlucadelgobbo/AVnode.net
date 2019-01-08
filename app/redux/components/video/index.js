@@ -86,15 +86,18 @@ class Video extends Component {
 
         return <div className="col-md-6" key={i}>
             <div className="row">
-                <div className="col-sm-11">
+                <div className="col-sm-12">
                     <h3>{v.title}</h3>
                     <Player
                         playsInline
                         src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
                     />
                 </div>
-                <div className="col-sm-1">
+                </div>
+                <div className="row">
+                <div className="col-sm-12">
                     <Button bsStyle="danger"
+                            className="btn-block"
                             onClick={() =>
                                 showModal({
                                     type: MODAL_REMOVE,
