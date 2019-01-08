@@ -124,4 +124,86 @@ router.postData = (req, res) => {
   }
 }
 
+router.addGallery = (req, res) => {
+  Models[req.params.model]
+  .findOne({_id: req.params.id/* , members:req.user.id */},'_id, galleries', (err, result) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!result) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      Models.Gallery
+      .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          result.galleries.push(data._id);
+          result.save(function(err){
+            //res.json(result);
+            res.json(data);
+          });
+        }
+      });
+    }
+  });
+}
+
+router.addVideos = (req, res) => {
+  Models[req.params.model]
+  .findOne({_id: req.params.id/* , members:req.user.id */},'_id, videos', (err, result) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!result) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      Models.Video
+      .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          result.videos.push(data._id);
+          result.save(function(err){
+            //res.json(result);
+            res.json(data);
+          });
+        }
+      });
+    }
+  });
+}
+
 module.exports = router;

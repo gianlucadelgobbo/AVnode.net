@@ -85,6 +85,27 @@ router.post('/api/:ancestor/:id/:sez/', (req, res) => {
   post.postData(req, res);
 });
 
+router.post('/api/performances/:id/videos', (req, res)=>{
+  req.params.model = 'Performance';
+  get.addVideo(req, res);
+});
+
+router.post('/api/performances/:id/galleries', (req, res)=>{
+  req.params.model = 'Performance';
+  get.addGallery(req, res);
+});
+
+router.post('/api/events/:id/videos', (req, res)=>{
+  req.params.model = 'Event';
+  get.addVideo(req, res);
+});
+
+router.post('/api/events/:id/galleries', (req, res)=>{
+  req.params.model = 'Event';
+  get.addGallery(req, res);
+});
+
+
 router.get('/api/countries', (req, res) => {
   get.getCountries(req, res);
 });

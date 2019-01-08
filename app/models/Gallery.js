@@ -12,8 +12,8 @@ const gallerySchema = new Schema({
   old_id : String,
 
   creation_date: Date,
-  slug: { type: String, unique: true },
-  title: String,
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
+  title: { type: String, trim: true, required: true, maxlength: 50 },
   is_public: { type: Boolean, default: false },
   image: MediaImage,
   teaserImage: MediaImage,
