@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {MODAL_REMOVE} from "../modal/constants";
 import {Button, Image} from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -75,10 +76,12 @@ class Reorder extends Component {
                 >
                     <div className="col-sm-12">
                         <h3>{item.title}</h3>
-                        <div>
-                        <Image src={item.imageFormats ? item.imageFormats.small : ""} responsive/>
-                        </div>
-                        <Button 
+                        
+                        <Link to={`/admin/galleries/${item.id}/public`}>
+                            <Image src={item.imageFormats ? item.imageFormats.small : ""} responsive/>
+                        </Link>
+                       
+                         {/*<Button 
                         bsStyle="danger"
                         className="btn-block"
                         onClick={() =>
@@ -91,7 +94,7 @@ class Reorder extends Component {
                         >
                             <i className="fa fa-trash" data-toggle="tooltip"
                             data-placement="top"/>
-                        </Button>
+                        </Button>*/}
                     </div>
 
                 </div>
