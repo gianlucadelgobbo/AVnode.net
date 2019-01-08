@@ -6,11 +6,11 @@ import { showModal } from "../modal/actions";
 import Loading from "../loading";
 import ErrorMessage from "../errorMessage";
 import ItemNotFound from "../itemNotFound";
-import { MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED } from "../modal/constants";
+import { MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED, MODAL_ADD_GALLERIES } from "../modal/constants";
 import { Button, Image } from "react-bootstrap";
 import LightBox from "../lightboxGallery";
 
-class Galleries extends Component {
+class Gallery extends Component {
   componentDidMount() {
     const { fetchModel, id } = this.props;
     fetchModel({ id });
@@ -117,7 +117,7 @@ class Galleries extends Component {
               className="pull-right"
               onClick={() =>
                 showModal({
-                  type: MODAL_ADD_MEDIA,
+                  type: MODAL_ADD_GALLERIES,
                   props: {
                     onSubmit: this.onSubmit.bind(this)
                   }
@@ -199,9 +199,9 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-Galleries = connect(
+Gallery = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Galleries);
+)(Gallery);
 
-export default Galleries;
+export default Gallery;

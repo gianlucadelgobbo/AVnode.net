@@ -264,7 +264,6 @@ class PerformancePublic extends Component {
   onSubmit(values) {
     const { showModal, saveModel, model } = this.props;
     const modelToSave = this.createModelToSave(values);
-
     modelToSave._id = model._id;
 
     //dispatch the action to save the model here
@@ -288,7 +287,6 @@ class PerformancePublic extends Component {
       errorMessage,
       categories
     } = this.props;
-    console.log(categories)
     return (
       <div className="row">
         <div className="col-md-2">
