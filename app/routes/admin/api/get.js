@@ -507,58 +507,6 @@ router.removeVenueDB = (req, res, cb) => {
   });
 }
 
-router.addMember = (req, res) => {
-  Models.User
-  .findOne({_id: req.params.id, members:req.user.id},'_id, members', (err, crew) => {
-    if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
-    } else if (!crew) {
-      res.status(404).json({
-        "message": "USER_NOT_ALLOWED_TO_EDIT",
-        "name": "MongoError",
-        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"USER_NOT_ALLOWED_TO_EDIT",
-          "name":"MongoError",
-          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-          "kind":"string",
-          "value":null,
-          "path":"id"
-        }
-      });
-    } else if (crew.members.indexOf(req.params.member)!==-1) {
-      res.status(404).json({
-        "message": "MEMBER_IS_ALREADY_MEMBER",
-        "name": "MongoError",
-        "stringValue":"\"MEMBER_IS_ALREADY_MEMBER\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"MEMBER_IS_ALREADY_MEMBER",
-          "name":"MongoError",
-          "stringValue":"\"MEMBER_IS_ALREADY_MEMBER\"",
-          "kind":"string",
-          "value":null,
-          "path":"id"
-        }
-      });
-    } else {
-      crew.members.push(req.params.member);
-      crew.save(function(err){
-        //res.json(crew);
-        req.params.sez = 'crews';
-        req.params.form = 'members';
-        router.getData(req, res);
-      });
-    }
-  });
-}
-
 router.removeMember = (req, res) => {
   Models.User
   .findOne({_id: req.params.id, members:req.user.id},'_id, members', (err, crew) => {
