@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
           data: body
         });
       } else {
-        res.status(404).render('404', {title:"<span class=\"lnr lnr-warning\" style=\"font-size:  200%;vertical-align:  middle;padding-right: 20px;\"></span><span style=\"vertical-align:  middle;\">"+__("408: Request Timeout")+"</span>"});
+        res.status(408).render('404', {path: req.originalUrl, title:__("408: Request Timeout"), titleicon:"lnr-warning"});
       }
     }
   );
