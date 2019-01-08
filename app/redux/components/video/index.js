@@ -5,14 +5,14 @@ import {showModal} from "../modal/actions";
 import Loading from '../loading'
 import ErrorMessage from '../errorMessage'
 import ItemNotFound from '../itemNotFound';
-import {MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED} from "../modal/constants";
+import {MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED, MODAL_ADD_VIDEOS} from "../modal/constants";
 import {Player} from 'video-react';
 import "video-react/dist/video-react.css"; // import css
 import {Button} from 'react-bootstrap';
 import {NO_VIDEO_TO_SHOW} from "../common/form/labels";
 import { injectIntl } from 'react-intl';
 
-class Videos extends Component {
+class Video extends Component {
 
     componentDidMount() {
         const {fetchModel, id} = this.props;
@@ -115,7 +115,7 @@ class Videos extends Component {
 
     render() {
 
-        const {model, showModal, isFetching, errorMessage} = this.props;
+        const {model, showModal, isFetching, errorMessage, history} = this.props;
 
         return (
             <div>
@@ -125,9 +125,10 @@ class Videos extends Component {
                             bsStyle="success"
                             className="pull-right"
                             onClick={() => showModal({
-                                type: MODAL_ADD_MEDIA,
+                                type: MODAL_ADD_VIDEOS,
                                 props: {
-                                    onSubmit: this.onSubmit.bind(this)
+                                    //onSubmit: this.onSubmit.bind(this),
+                                    history
                                 }
                             })}>
                             <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
@@ -177,11 +178,11 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     showModal,
 }, dispatch);
 
-Videos = connect(
+Video = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Videos);
+)(Video);
 
-Videos = injectIntl(Videos);
+Video = injectIntl(Video);
 
-export default Videos;
+export default Video;

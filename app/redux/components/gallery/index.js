@@ -10,7 +10,7 @@ import { MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED } from "../modal/constants";
 import { Button, Image } from "react-bootstrap";
 import LightBox from "../lightboxGallery";
 
-class Galleries extends Component {
+class Gallery extends Component {
   componentDidMount() {
     const { fetchModel, id } = this.props;
     fetchModel({ id });
@@ -199,9 +199,9 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-Galleries = connect(
+Gallery = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Galleries);
+)(Gallery);
 
-export default Galleries;
+export default Gallery;

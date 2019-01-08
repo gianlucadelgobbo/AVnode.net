@@ -87,7 +87,7 @@ class Reorder extends Component {
                                data-placement="top"/>
                         </Button>
                         </h3>
-                        <Image src={item.image ? item.image.file : ""} responsive/>;
+                        <Image src={item.imageFormats ? item.imageFormats.small : ""} responsive/>;
                     </div>
 
                 </div>
