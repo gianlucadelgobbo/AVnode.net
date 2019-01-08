@@ -1,4 +1,4 @@
-//@import "custom/overrides";
+@import "./custom/overrides.scss";
 //@import "node_modules/bootstrap/scss/bootstrap";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 // @import "bootstrap/bootstrap";
@@ -11,6 +11,16 @@ b, strong{font-weight: 700}
 .nav-link {
     display: block;
     padding: .4rem 1rem;
+}
+
+.titleicon {
+    font-size:  200%;
+    vertical-align: middle;
+    padding-right: 20px;
+}
+
+.titleicontext {
+    vertical-align: middle;
 }
 
 .nav-pills.nav-wizard > li
