@@ -8,10 +8,10 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../../events/selectors";
-import Videos from "../../video";
+import Video from "../../video";
 import { FormattedMessage } from "react-intl";
 
-class EventsImage extends Component {
+class EventsVideo extends Component {
   render() {
     const {
       model,
@@ -38,7 +38,7 @@ class EventsImage extends Component {
             />
           </h2>
 
-          <Videos
+          <Video
             model={model}
             isFetching={isFetching}
             errorMessage={errorMessage}
@@ -77,9 +77,9 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-EventsImage = connect(
+EventsVideo = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EventsImage);
+)(EventsVideo);
 
-export default EventsImage;
+export default EventsVideo;

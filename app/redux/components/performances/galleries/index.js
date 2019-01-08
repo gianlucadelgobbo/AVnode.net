@@ -8,7 +8,7 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../../events/selectors";
-import Galleries from "../../gallery";
+import Gallery from "../../gallery";
 import { PERFORMANCE_NAME } from "../constants";
 import TitleComponent from "../../titleComponent";
 import { FormattedMessage } from "react-intl";
@@ -43,7 +43,7 @@ class PerformanceGallery extends Component {
             />
           </h2>
 
-          <Galleries
+          <Gallery
             model={model}
             isFetching={isFetching}
             errorMessage={errorMessage}
