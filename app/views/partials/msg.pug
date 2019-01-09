@@ -4,7 +4,7 @@
     h4=global.__("There are some errors")
     ul.mb-0
       - for(a=0;a<msg.e.length;a++)
-        li=msg.e[a].m
+        li!=msg.e[a].m
 - if (typeof msg !== "undefined" && typeof msg.c !== "undefined" && msg.c.length)
   hr
   .alert.alert-danger.text-left(role="alert")

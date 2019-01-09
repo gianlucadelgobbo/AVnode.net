@@ -1,7 +1,7 @@
 extends ../layout
 block content
   .container
-    .user_dett.single_event_page
+    .pb-3
       - var perc = parseInt((100/participateMenu.length)*(call.step+1))
       h1=global.__("Participate") + ": " + global.__("Step")+ " " + (call.step+1)
       .progress.mb-3
@@ -13,7 +13,7 @@ block content
               !=(index+1)+". "
               span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
       if msg
-        include ../partials/msg  
+        include ../partials/msg
       - if (dett.subtitle)
         //h3=Fnc.getTextFormat(dett.subtitle, config.lang, true)
       - if (!dett.organizationsettings.call_is_active)
@@ -45,5 +45,6 @@ block content
             default
               include participate/step_0
           if call.step < 7
-            input.btn.btn-primary(type="submit" value=global.__("NEXT >>"))
-            input(type="hidden" name="step" value=call.step)
+            .text-right
+              input.btn.btn-lg.btn-primary(type="submit" value=global.__("NEXT >>"))
+              input(type="hidden" name="step" value=call.step)

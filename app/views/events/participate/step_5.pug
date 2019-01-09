@@ -21,14 +21,15 @@
                         h3=dett.organizationsettings.call.calls[call.index].packages[b].options_name
                         - var options = dett.organizationsettings.call.calls[call.index].packages[b].options.split(",")
                         - for (var d=0;d<options.length;d++)
-                          .checkbox
-                            label
-                              input(name="subscriptions[" + c + "][packages][" + b + "][option]", value=options[d],    type="radio",checked=call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b].option==options[d] ? "checked" : undefined)
+                          .form-check
+                            input.form-check-input(name="subscriptions[" + c + "][packages][" + b + "][option]", value=options[d],    type="radio",checked=call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b].option==options[d] ? "checked" : undefined)
+                            label.form-check-label
                               !=options[d]
                 .col-md-3
                   .text-right
                     if dett.organizationsettings.call.calls[call.index].packages[b].daily
-                      h3!=global.__("per day")+" € "+dett.organizationsettings.call.calls[call.index].packages[b].price + " " +global.__("total")+" € "+ (dett.organizationsettings.call.calls[call.index].packages[b].price*call.subscriptions[c].days.length)
+                      h3!=global.__("per day")+" € "+dett.organizationsettings.call.calls[call.index].packages[b].price
+                      // + " " +global.__("total")+" € "+ (dett.organizationsettings.call.calls[call.index].packages[b].price*call.subscriptions[c].days.length)
                     else
                       h3!=" € "+dett.organizationsettings.call.calls[call.index].packages[b].price_formatted
   else
