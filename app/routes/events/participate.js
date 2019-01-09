@@ -24,8 +24,10 @@ router.get('/', (req, res) => {
   logger.debug(req.session.call);
   Event.
   findOne({slug: req.params.slug}).
+  //select({slug: 1}).
   populate({path: 'organizationsettings.call.calls.admitted', select: 'name'}).
   exec((err, data) => {
+    logger.debug(data.organizationsettings.call);
     /*let ids = [];
     if (req.user) ids = [req.user._id].concat(req.user.crews);
     //logger.debug(performances);
@@ -45,6 +47,8 @@ router.get('/', (req, res) => {
     if (req.query.step && parseInt(req.query.step, 10) < req.session.call.step) {
       req.session.call.step = parseInt(req.query.step);
     }
+    const msg = !req.user.mobile || !req.user.mobile.length ? {e:[{name:'index', m:__('Warning: You have no mobile phone available. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD MOBILE NOW")+"</a>"}]} : null;
+
     res.render('events/participate', {
       title: data.title,
       canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -52,7 +56,7 @@ router.get('/', (req, res) => {
       call: req.session.call,
       participateMenu: participateMenu,
       user: req.user,
-      msg: null
+      msg: msg
     });
   });
 });
@@ -77,8 +81,11 @@ router.post('/', (req, res) => {
     logger.debug('req.body');
     logger.debug(req.body.subscriptions);
     */
+    let msg = !req.user.mobile || !req.user.mobile.length ? {e:[{name:'index', m:__('Warning: You have no mobile phone available. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD MOBILE NOW")+"</a>"}]} : null;
+    logger.debug("msg");
+    logger.debug(msg);
     if (data && typeof req.body.step!='undefined') {
-      var msg;
+      logger.debug(req.user);
       switch (parseInt(req.body.step)) {
         case 0 :
           logger.debug('case 0');
@@ -147,6 +154,55 @@ router.post('/', (req, res) => {
           if (data && typeof req.body.performance!='undefined') {
             req.session.call.step = parseInt(req.body.step)+1;
             req.session.call.performance = parseInt(req.body.performance);
+            let perfpeoples = [];
+            let allsubscriptions = [];
+            for (var b=0;b<req.session.call.admitted[req.session.call.performance].users.length;b++) {
+              if (req.session.call.admitted[req.session.call.performance].users[b].members){
+                //console.log(call.admitted[call.performance].users[b].members);
+                for (var c=0;c<req.session.call.admitted[req.session.call.performance].users[b].members.length;c++) {
+                  perfpeoples.push(req.session.call.admitted[req.session.call.performance].users[b].members[c]._id);
+                  allsubscriptions.push({subscriber_id: req.session.call.admitted[req.session.call.performance].users[b].members[c]._id,stagename: req.session.call.admitted[req.session.call.performance].users[b].members[c].stagename});
+                }
+              } else {
+                perfpeoples.push(req.session.call.admitted[req.session.call.performance].users[b]._id);
+                allsubscriptions.push({subscriber_id: req.session.call.admitted[req.session.call.performance].users[b]._id,stagename: req.session.call.admitted[req.session.call.performance].users[b].stagename});
+              }          
+            }
+            console.log("perfpeoples");
+            console.log(perfpeoples);
+            myasync = false;
+            Subscription.find({"subscriptions.subscriber_id":{$in:perfpeoples}}).
+            lean().
+            exec((err, subscriptions) => {
+              let subscriptionsfound = [];
+              for (var b=0;b<subscriptions.length;b++) {
+                subscriptionsfound = subscriptionsfound.concat(subscriptions[b].subscriptions);
+                console.log(subscriptions[b].subscriptions);
+                console.log(subscriptionsfound);
+              }
+              for (var b=0;b<allsubscriptions.length;b++) {
+                for (var d=0;d<subscriptionsfound.length;d++) {
+                  if (subscriptionsfound[d].subscriber_id.toString()===allsubscriptions[b].subscriber_id.toString()) {
+                    allsubscriptions[b].days = subscriptionsfound[d].days;
+                    allsubscriptions[b].packages = subscriptionsfound[d].packages;
+                  } else {
+                    delete allsubscriptions[b].subscriber_id;
+                  }
+                }
+              }
+              req.session.call.subscriptions = allsubscriptions;
+              console.log("allsubscriptions");
+              console.log(allsubscriptions);
+              res.render('events/participate', {
+                title: data.title,
+                canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                dett: data,
+                call: req.session.call,
+                participateMenu: participateMenu,
+                user: req.user,
+                msg: msg
+              });
+            });
           } else {
             msg = {e:[{name:'accept',m:__('Please select a performance to go forward')}]}
           }
@@ -160,6 +216,8 @@ router.post('/', (req, res) => {
           }
           break;
         case 4 :
+          console.log("req.body.subscriptions");
+          console.log(req.body.subscriptions);
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
             let days_check = true;
             for (var a=0; a<req.body.subscriptions.length; a++) {

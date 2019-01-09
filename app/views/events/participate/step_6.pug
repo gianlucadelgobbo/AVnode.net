@@ -113,7 +113,7 @@ table.table
               if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
                 tr
                   td(style="border-top:0;")
-                    if subscription.days.length = 1
+                    if subscription.days.length == 1
                       !=subscription.days.length + " " + global.__('day')
                     else
                       !=subscription.days.length + " " + global.__('days')
