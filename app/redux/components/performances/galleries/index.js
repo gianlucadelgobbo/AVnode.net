@@ -12,7 +12,6 @@ import Gallery from "../../gallery";
 import { PERFORMANCE_NAME } from "../constants";
 import TitleComponent from "../../titleComponent";
 import { FormattedMessage } from "react-intl";
-import properties from "../../../../../config/default.json";
 
 class PerformanceGallery extends Component {
   render() {
@@ -25,10 +24,9 @@ class PerformanceGallery extends Component {
       },
       saveModel,
       removeModel,
-      fetchModel
+      fetchModel,
+      history
     } = this.props;
-
-    const { components } = properties.cpanel.performances.forms.galleries;
 
     return (
       <div className="row">
@@ -42,7 +40,6 @@ class PerformanceGallery extends Component {
               defaultMessage="PERFORMANCE GALLERY"
             />
           </h2>
-
           <Gallery
             model={model}
             isFetching={isFetching}
@@ -51,6 +48,7 @@ class PerformanceGallery extends Component {
             saveModel={saveModel}
             id={_id}
             fetchModel={fetchModel}
+            history={history}
           />
         </div>
       </div>
