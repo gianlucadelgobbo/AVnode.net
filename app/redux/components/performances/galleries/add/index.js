@@ -31,14 +31,16 @@ class AddPerformancesGalleries extends Component {
   }
 
   onSubmit(values) {
-    const { fetchModel, saveModel, hideModal, id } = this.props;
+    const { history, saveModel, hideModal, id } = this.props;
     const modelToSave = this.createModelToSave(values);
     modelToSave._id = id;
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model.id) {
+        history.push(
+          "/admin/galleries/" + `${response.model.id}` + "/public/"
+        );
         hideModal();
-        fetchModel({ id: id });
       }
     });
   }
