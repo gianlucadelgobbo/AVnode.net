@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
     if (req.query.step && parseInt(req.query.step, 10) < req.session.call.step) {
       req.session.call.step = parseInt(req.query.step);
     }
-    const msg = !req.user.mobile || !req.user.mobile.length ? {e:[{name:'index', m:__('Warning: You have no mobile phone available. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD MOBILE NOW")+"</a>"}]} : null;
+    const msg = null;
 
     res.render('events/participate', {
       title: data.title,
@@ -81,73 +81,102 @@ router.post('/', (req, res) => {
     logger.debug('req.body');
     logger.debug(req.body.subscriptions);
     */
-    let msg = !req.user.mobile || !req.user.mobile.length ? {e:[{name:'index', m:__('Warning: You have no mobile phone available. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD MOBILE NOW")+"</a>"}]} : null;
+    let msg
     logger.debug("msg");
     logger.debug(msg);
     if (data && typeof req.body.step!='undefined') {
-      logger.debug(req.user);
+      //logger.debug(req.user);
       switch (parseInt(req.body.step)) {
         case 0 :
           logger.debug('case 0');
-          if (data && typeof req.body.index!='undefined') {
-            let ids = [req.user._id].concat(req.user.crews);
-            myasync = false;
-            dataprovider.getPerformanceByIds(req, ids, (err, performances) =>{
-              logger.debug(performances);
-            
-              let admitted = {};
-              var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
-              for (let item in admittedCat) {
-                for (let perf in performances) {
-                  var result = performances[perf].categories.map(a => a._id.toString());
-                  if (result.indexOf(admittedCat[item]) !== -1) {
-                    admitted[performances[perf]._id.toString()] = performances[perf];
+          if (!req.user.name) {
+            if (!msg || !msg.e) msg = {e:[]};
+            msg.e.push({name:'index', m:__('Warning: You have no name available. Please add your name in your profile and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD NOW")+"</a>"});
+          }
+          if (!req.user.surname) {
+            if (!msg || !msg.e) msg = {e:[]};
+            msg.e.push({name:'index', m:__('Warning: You have no surname available. Please add your surname in your profile and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD NOW")+"</a>"});
+          }
+          if (!req.user.email) {
+            if (!msg || !msg.e) msg = {e:[]};
+            msg.e.push({name:'index', m:__('Warning: You have no email available. We need your email for all the communications. Please add an email and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD NOW")+"</a>"});
+          }
+          var results = req.user.mobile.reduce((results, item) => {
+            if (item.url) results.push(item.url); // modify is a fictitious function that would apply some change to the items in the array
+            return results
+          }, [])
+          if (!results.length) {
+            if (!msg || !msg.e) msg = {e:[]};
+            msg.e.push({name:'index', m:__('Warning: You have no mobile phone available. We need your mobile phone in case of urgent issue. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/private\">"+__("ADD NOW")+"</a>"});
+          }
+          if (!msg) {
+            if (data && typeof req.body.index!='undefined') {
+              let ids = [req.user._id].concat(req.user.crews);
+              myasync = false;
+              dataprovider.getPerformanceByIds(req, ids, (err, performances) =>{
+                logger.debug(performances);
+              
+                let admitted = {};
+                var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
+                for (let item in admittedCat) {
+                  for (let perf in performances) {
+                    var result = performances[perf].categories.map(a => a._id.toString());
+                    if (result.indexOf(admittedCat[item]) !== -1) {
+                      admitted[performances[perf]._id.toString()] = performances[perf];
+                    }
                   }
                 }
-              }
-              let admittedA = [];
-              for (let perf in admitted) {
-                logger.debug(admitted[perf].categories);
-                admittedA.push(admitted[perf]);
-              }
-              logger.debug('performances '+performances.length);
-              logger.debug('admitted '+admittedA.length);
-              //logger.debug(admitted);
-              if (admittedA.length) {
-                req.session.call.step = parseInt(req.body.step)+1;
-                req.session.call.index = parseInt(req.body.index);
-                req.session.call.admitted = admittedA;
-              } else {
-                msg = {e:[{name:'index', m:__('Warning: You have no performance eligible for the call selected. Please create a performance and come back.')}]};
-                logger.debug('STOCAZZO 1');
-                logger.debug(msg);
-              }
-              if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-                res.json(data);
-              } else {
-                logger.debug('STOCAZZO ');
-                logger.debug(msg);
-                res.render('events/participate', {
-                  title: data.title,
-                  canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
-                  dett: data,
-                  call: req.session.call,
-                  participateMenu: participateMenu,
-                  user: req.user,
-                  msg: msg
-                });
-              }
-            });
-          } else {
-            msg = {e:[{name:'index', m:__('Please select a call')}]};
+                let admittedA = [];
+                for (let perf in admitted) {
+                  logger.debug(admitted[perf].categories);
+                  admittedA.push(admitted[perf]);
+                }
+                logger.debug('performances '+performances.length);
+                logger.debug('admitted '+admittedA.length);
+                //logger.debug(admitted);
+                if (admittedA.length) {
+                  req.session.call.step = parseInt(req.body.step)+1;
+                  req.session.call.index = parseInt(req.body.index);
+                  req.session.call.admitted = admittedA;
+                } else {
+                  msg = {e:[{name:'index', m:__('Warning: You have no performance eligible for the call selected. Please create a performance and come back.')}]};
+                  logger.debug('STOCAZZO 1');
+                  logger.debug(msg);
+                }
+                if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+                  res.json(data);
+                } else {
+                  logger.debug('STOCAZZO ');
+                  logger.debug(msg);
+                  res.render('events/participate', {
+                    title: data.title,
+                    canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                    dett: data,
+                    call: req.session.call,
+                    participateMenu: participateMenu,
+                    user: req.user,
+                    msg: msg
+                  });
+                }
+              });
+            } else {
+              msg = {e:[{name:'index', m:__('Please select a call')}]};
+            }  
           }
           break;
         case 1 :
           logger.debug('case 1');  
-          if (data && req.body.accept=='1') {
+          if (data && req.body.accept=='1' && req.body.confirm_personal_data=='1') {
             req.session.call.step++;
           } else {
-            msg = {e:[{name:'accept',m:__('Please accept the terms and conditions to go forward')}]}
+            if (req.body.accept!='1') {
+              if (!msg || !msg.e) msg = {e:[]};
+              msg.e.push({name:'accept',m:__('Please accept the terms and conditions to go forward')});
+            }
+            if (req.body.confirm_personal_data!='1') {
+              if (!msg || !msg.e) msg = {e:[]};
+              msg.e.push({name:'confirm_personal_data',m:__('Please confirm your personal data to go forward')});
+            }
           }
           break;
         case 2 :
@@ -156,8 +185,10 @@ router.post('/', (req, res) => {
             req.session.call.performance = parseInt(req.body.performance);
             let perfpeoples = [];
             let allsubscriptions = [];
+            console.log("req.session.call.admitted[req.session.call.performance].users");
+            console.log(req.session.call.admitted[req.session.call.performance].users);
             for (var b=0;b<req.session.call.admitted[req.session.call.performance].users.length;b++) {
-              if (req.session.call.admitted[req.session.call.performance].users[b].members){
+              if (req.session.call.admitted[req.session.call.performance].users[b].members && req.session.call.admitted[req.session.call.performance].users[b].members.length){
                 //console.log(call.admitted[call.performance].users[b].members);
                 for (var c=0;c<req.session.call.admitted[req.session.call.performance].users[b].members.length;c++) {
                   perfpeoples.push(req.session.call.admitted[req.session.call.performance].users[b].members[c]._id);
@@ -182,14 +213,14 @@ router.post('/', (req, res) => {
               }
               for (var b=0;b<allsubscriptions.length;b++) {
                 for (var d=0;d<subscriptionsfound.length;d++) {
-                  if (subscriptionsfound[d].subscriber_id.toString()===allsubscriptions[b].subscriber_id.toString()) {
+                  if (allsubscriptions[b].subscriber_id && subscriptionsfound[d].subscriber_id.toString()===allsubscriptions[b].subscriber_id.toString()) {
                     allsubscriptions[b].days = subscriptionsfound[d].days;
                     allsubscriptions[b].packages = subscriptionsfound[d].packages;
-                  } else {
-                    delete allsubscriptions[b].subscriber_id;
+                    allsubscriptions[b].freezed = true;
                   }
                 }
               }
+              for (var b=0;b<allsubscriptions.length;b++) if (!allsubscriptions[b].freezed) delete allsubscriptions[b].subscriber_id;
               req.session.call.subscriptions = allsubscriptions;
               console.log("allsubscriptions");
               console.log(allsubscriptions);
@@ -221,7 +252,7 @@ router.post('/', (req, res) => {
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
             let days_check = true;
             for (var a=0; a<req.body.subscriptions.length; a++) {
-              if (req.body.subscriptions[a].subscriber_id){
+              if (req.body.subscriptions[a].subscriber_id && req.body.subscriptions[a].freezed!='true'){
                 if (!req.body.subscriptions[a].days || !req.body.subscriptions[a].days.length) {
                   days_check = false;
                 }
@@ -229,7 +260,16 @@ router.post('/', (req, res) => {
             }
             if (days_check) {
               req.session.call.step = parseInt(req.body.step)+1;
-              req.session.call.subscriptions = req.body.subscriptions;
+              for (var a=0; a<req.body.subscriptions.length; a++) {
+                if (req.body.subscriptions[a].subscriber_id && req.body.subscriptions[a].freezed != 'true'){
+                  for (var b=0; b<req.session.call.subscriptions.length; b++) {
+                    if (req.session.call.subscriptions[b].stagename === req.body.subscriptions[a].stagename){
+                      req.session.call.subscriptions[b].subscriber_id = req.body.subscriptions[a].subscriber_id;
+                      req.session.call.subscriptions[b].days = req.body.subscriptions[a].days;
+                    }
+                  }
+                }
+              }
             } else {
               msg = {e:[{name:'accept',m:__('Please select at least 1 day for all the people availables to go forward')}]};
             }
@@ -240,11 +280,9 @@ router.post('/', (req, res) => {
         case 5 :
           if (data && req.body.subscriptions && req.body.subscriptions.length) {
             for (var a=0; a<req.body.subscriptions.length; a++) {
-              if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages !== 'null'){
+              if (req.body.subscriptions[a].packages && req.body.subscriptions[a].packages !== 'null' && req.session.call.subscriptions[a].freezed != 'true'){
                 req.session.call.subscriptions[a].packages = req.body.subscriptions[a].packages;
                 for (var b=0; b<req.body.subscriptions[a].packages.length; b++) {
-                  logger.debug('subscriptions packages');
-                  logger.debug(req.body.subscriptions[a]);
                   if (data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].allow_options && !req.body.subscriptions[a].packages[b].option ){
                     msg = {e:[{name:'accept',m:__('Please select at least 1 option of all the packages')+" "+data.organizationsettings.call.calls[req.session.call.index].packages[req.body.subscriptions[a].packages[b].id].name}]}
                   }
@@ -271,14 +309,19 @@ router.post('/', (req, res) => {
           };
           for (var a=0; a<req.session.call.subscriptions.length; a++) {
             if (req.session.call.subscriptions[a].subscriber_id){
-              var packages = []; 
-              for (var b=0; b<req.session.call.subscriptions[a].packages.length; b++) {
-                var pack = JSON.parse(JSON.stringify(data.organizationsettings.call.calls[req.session.call.index].packages[req.session.call.subscriptions[a].packages[b].id]));
-                pack.option = req.session.call.subscriptions[a].packages[b].option;
-                packages.push(pack);
+              if (req.session.call.subscriptions[a].packages[0].personal) {
+                var sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
+                sub.packages = req.session.call.subscriptions[a].packages;
+              } else {
+                var packages = []; 
+                for (var b=0; b<req.session.call.subscriptions[a].packages.length; b++) {
+                  var pack = JSON.parse(JSON.stringify(data.organizationsettings.call.calls[req.session.call.index].packages[req.session.call.subscriptions[a].packages[b].id]));
+                  pack.option = req.session.call.subscriptions[a].packages[b].option;
+                  packages.push(pack);
+                }
+                var sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
+                sub.packages = packages;
               }
-              var sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
-              sub.packages = packages;
               req.session.call.save.subscriptions.push(sub);
             }
           }
@@ -352,7 +395,7 @@ router.post('/', (req, res) => {
       } else {
         logger.debug('JUST BEFORE RENDER');
         logger.debug(req.session.call.step);
-        logger.debug(req.session.call);  
+        //logger.debug(req.session.call);  
         logger.debug(msg);
         res.render('events/participate', {
           title: data.title,

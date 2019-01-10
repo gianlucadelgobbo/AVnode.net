@@ -5,17 +5,13 @@ block content
     .row
       .col-md-6.offset-md-3
         .pb-5
-          .alert.alert-info
-            img.card-img-top.img-fluid(src="/images/logoFLxER_X.svg", style="display: inline-block;vertical-align: middle;max-width: 50px;", alt="FLxER Logo")
-            !=global.__('Are you a FLxER User?')
-            !=" "
-            a(href="/flxerlogin")=global.__('Please login here')
           form(method='post')
             input(type='hidden', name='_csrf', value=_csrf)
             input(type='hidden', name='returnTo', value=returnTo)
             .form-group
-              label(for='email')=global.__('Email')
-              input.form-control(type='email', name='email', id='email', placeholder=global.__('example@foo.bar'), autofocus, required)
+              label(for='email')=global.__('FLxER Username')
+              input.form-control(type='input', name='email', id='email', placeholder=global.__('Username'), autofocus, required)
+              .badge=global.__('If your profile is https://flxer.net/USERNAME insert USERNAME')
             .form-group
               label(for='password')=global.__('Password')
               input.form-control(type='password', name='password', id='password', placeholder=global.__('Use at least eight characters'), required)

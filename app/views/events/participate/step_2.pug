@@ -15,7 +15,7 @@
         label(for=call.admitted[a]._id)
           h3=call.admitted[a].title
           p=global.__("Type")+": "+ categories.join(", ")
-          p=global.__("Authors") + ": " + users.join(", ")
+          p=global.__("Authors") + ": "
           ul
             each user in call.admitted[a].users
               li=user.stagename

@@ -13,7 +13,6 @@ const MediaImage = require('./shared/MediaImage');
 const Link = require('./shared/Link');
 const Venue = require('./shared/Venue');
 const Schedule = require('./shared/Schedule');
-//const Package = require('./shared/Package');
 
 const adminsez = 'events';
 const logger = require('../utilities/logger');

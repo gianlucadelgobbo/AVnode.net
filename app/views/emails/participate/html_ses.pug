@@ -46,6 +46,10 @@ block content
               tr
                 td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
                   b=global.__('Reference Email')
+                td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')=user.mobile.map(function(item) {return item.url}).join(", ")
+              tr
+                td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                  b=global.__('Reference Mobile')
                 td(colspan="2", bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 30px 0px 0; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')=user.email
               tr
                 td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
@@ -81,39 +85,44 @@ block content
                     tr
                       td(colspan="3",bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
                         b=conta+". "+subscription.stagename
-                    each package in subscription.packages
+                    if subscription.freezed
                       tr
-                        - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
-                          - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
-                          - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
-                        - else 
-                          - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
-                          - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
-                        td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                          b!=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
-                          div!=dett.organizationsettings.call.calls[call.index].packages[package.id].description
-                          - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
-                            p=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
-                        td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 10px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                          if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
-                            div=global.__("per person/per day")
-                          else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
-                            div=global.__("per person")
-                          else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
-                            div=global.__("per day")
-                        td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                          !="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
-                      if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                        td(colspan="3",bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
+                          b!=global.__("This person is already in with another act and already choose his packages")
+                    else
+                      each package in subscription.packages
                         tr
+                          - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
+                            - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                            - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                          - else 
+                            - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                            - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
                           td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                            if subscription.days.length = 1
-                              !=subscription.days.length + " " + global.__('day')
-                            else
-                              !=subscription.days.length + " " + global.__('days')
+                            b!=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
+                            div!=dett.organizationsettings.call.calls[call.index].packages[package.id].description
+                            - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
+                              p=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
                           td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 10px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                            !=global.__("Total")
+                            if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                              div=global.__("per person/per day")
+                            else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
+                              div=global.__("per person")
+                            else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
+                              div=global.__("per day")
                           td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
-                            !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
+                            !="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                        if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                          tr
+                            td(bgcolor='#ffffff', valign='top', align='left', style='padding: 0px 10px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                              if subscription.days.length = 1
+                                !=subscription.days.length + " " + global.__('day')
+                              else
+                                !=subscription.days.length + " " + global.__('days')
+                            td(bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 10px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                              !=global.__("Total")
+                            td(nowrap, bgcolor='#ffffff', valign='top', align='right', style='padding: 0px 30px 0px 10px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px;')
+                              !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
                     tr
                       td(colspan="2",bgcolor='#ffffff', valign='top', align='left', style='padding: 20px 30px 0px 30px; color: #666666; font-family: Lato, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;')
                         b=global.__('Total amount for')+" "+subscription.stagename

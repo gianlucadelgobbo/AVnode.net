@@ -4,3 +4,22 @@
   input.form-check-input(id="accept_terms", type="checkbox", name="accept", value=1)
   label.form-check-label(for="accept_terms")
     !=" "+global.__("I accept this terms")
+b!=global.__("SUBMISSION MAIN CONTACT")
+ul
+  li
+    !=global.__("Name")+": "
+    b!=user.name
+  li
+    !=global.__("Surame")+": "
+    b!=user.surname
+  li
+    !=global.__("Mobile")+": "
+    b!=user.mobile.map(function(item) {return item.url}).join(", ")
+  li
+    !=global.__("Email")+": "
+    b!=user.email
+
+.form-check.mb-4
+  input.form-check-input(id="confirm_personal_data", type="checkbox", name="confirm_personal_data", value=1)
+  label.form-check-label(for="confirm_personal_data")
+    !=" "+global.__("I confirm my personal data")
