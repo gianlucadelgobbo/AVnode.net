@@ -18,7 +18,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   User.findOne({_id:id}).
-  select('stagename slug image crews email').
+  select('name surname stagename slug image crews email mobile').
   exec((err, user) => {
     done(err, user);
   });
@@ -26,7 +26,7 @@ passport.deserializeUser((id, done) => {
 passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
   logger.debug('passport.use:' + email);
 
-  User.findOne({ email: email.toLowerCase() }, 'stagename slug password mobile', (err, user) => {
+  User.findOne({ $or: [{ "email": email.toLowerCase() }, { "slug": email.toLowerCase()}, { "emails.email": email.toLowerCase() }] }, 'stagename slug password email', (err, user) => {
     logger.debug(user);
     if (err) {
       logger.debug('passport.use User.findOne error:' + email + ' ' +  JSON.stringify(err));
@@ -47,7 +47,7 @@ passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true
         return done(null, user);
       } else {
         logger.debug('passport.use User.comparePassword NO match, try flxer');
-        flxer.flxerLogin(req, user, email, password, (isFlxerMatch) => {
+        flxer.flxerLogin(req, user, user.email, password, (isFlxerMatch) => {
           if (isFlxerMatch) {
             logger.debug('flxerLogin match');
             return done(null, user);

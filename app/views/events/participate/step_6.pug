@@ -47,12 +47,17 @@ table.table
     th(scope="row")
       .text-right
         b=global.__('Reference')
-    td=user.stagename
+    td=user.name+" "+user.surname
   tr
     th(scope="row")
       .text-right
         b=global.__('Reference Email')
     td=user.email
+  tr
+    th(scope="row")
+      .text-right
+        b=global.__('Reference Mobile')
+    td=user.mobile.map(function(item) {return item.url}).join(", ")
   tr
     th(scope="row")
       .text-right
@@ -86,49 +91,54 @@ table.table
             tr
               td(colspan="3",style="border-top:0;")
                 h4.mb-0=subscription.stagename
-            each package in subscription.packages
+            if subscription.freezed
               tr
-                - console.log(package)
-                - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
-                  - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
-                  - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
-                - else 
-                  - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
-                  - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
-                td
-                  h5!=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
-                  div!=dett.organizationsettings.call.calls[call.index].packages[package.id].description
-                  - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
-                    p=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
+                td(colspan="3")
+                  b!=global.__("This person is already in with another act and already choose his packages")
+            else
+              each package in subscription.packages
+                tr
+                  - console.log(package)
+                  - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
+                    - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                    - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+                  - else 
+                    - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                    - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                  td
+                    h5!=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
+                    div!=dett.organizationsettings.call.calls[call.index].packages[package.id].description
+                    - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
+                      p=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
+                  td
+                    .text-right
+                      if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                        div=global.__("per person/per day")
+                      else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
+                        div=global.__("per person")
+                      else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
+                        div=global.__("per day")
+                  td
+                    .text-right="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
+                if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+                  tr
+                    td(style="border-top:0;")
+                      if subscription.days.length == 1
+                        !=subscription.days.length + " " + global.__('day')
+                      else
+                        !=subscription.days.length + " " + global.__('days')
+                    td(style="border-top:0;")
+                      .text-right
+                        !=global.__("Total")
+                    td(style="border-top:0;")
+                      .text-right
+                        !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
+              tr
+                td(colspan="2")
+                  b=global.__('Total amount for')+" "+subscription.stagename
                 td
                   .text-right
-                    if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
-                      div=global.__("per person/per day")
-                    else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
-                      div=global.__("per person")
-                    else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
-                      div=global.__("per day")
-                td
-                  .text-right="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
-              if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
-                tr
-                  td(style="border-top:0;")
-                    if subscription.days.length == 1
-                      !=subscription.days.length + " " + global.__('day')
-                    else
-                      !=subscription.days.length + " " + global.__('days')
-                  td(style="border-top:0;")
-                    .text-right
-                      !=global.__("Total")
-                  td(style="border-top:0;")
-                    .text-right
-                      !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
-            tr
-              td(colspan="2")
-                b=global.__('Total amount for')+" "+subscription.stagename
-              td
-                .text-right
-                  b="€ "+subscriber_total
+                    b="€ "+subscriber_total
                         
         tr
           td(colspan="2", style="border-top:0;")=global.__("Amount to pay if the submission will be approved")

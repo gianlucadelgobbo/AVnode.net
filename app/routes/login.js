@@ -12,8 +12,11 @@ router.get('/', (req, res) => {
   if (req.user) {
     return res.redirect (returnTo);
   }
-  res.render('login', {
-    title: __('Login'),
+  console.log(req);
+  const template = req.originalUrl === '/flxerlogin' ? 'login_flxer' : 'login';
+  const title = req.originalUrl === '/flxerlogin' ? __('FLxER Login') : __('Login');
+  res.render(template, {
+    title: title,
     returnTo: returnTo
   });
 });

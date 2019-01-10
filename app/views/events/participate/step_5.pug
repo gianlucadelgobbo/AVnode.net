@@ -1,29 +1,47 @@
 // Packages
 - for (var c=0;c<call.subscriptions.length;c++)
   if call.subscriptions[c].subscriber_id
-    - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
-      if dett.organizationsettings.call.calls[call.index].packages[b].personal
+    if call.subscriptions[c].freezed
+      .row
+        .col-md-1
+          .checkbox
+            input(type="checkbox", checked="checked", disabled="disabled")
+            input(name="subscriptions[" + c + "][packages]", value="null",    type="hidden")
+
+        .col-md-11
+          .row
+            .col-md-9
+                label
+                  h3.mb-0!=call.subscriptions[c].stagename
+                  p!=global.__("This person is already in with another act and already choose his packages")
+
+    else 
+      - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
+        if dett.organizationsettings.call.calls[call.index].packages[b].personal
           .row
             .col-md-1
               .checkbox
                 - var checked = call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages.length && call.subscriptions[c].packages.map(obj =>{return parseInt(obj.id);}).indexOf(b) !==-1;
                 if dett.organizationsettings.call.calls[call.index].packages[b].requested
-                  input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked="checked", class="disabled")
+                  input(id="package"+c+"_"+b,    type="checkbox", checked="checked", disabled="disabled")
+                  input(name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="hidden")
+
                 else
                   input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked=checked ? "checked" : undefined)
             .col-md-11
               .row
                 .col-md-9
                     label(for="package"+c+"_"+b)
-                      h3!="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + global.__("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+global.__("requested")+")" : "")
+                      h3!="<b>"+dett.organizationsettings.call.calls[call.index].packages[b].name + "</b> " + global.__("for") + " " + call.subscriptions[c].stagename + (dett.organizationsettings.call.calls[call.index].packages[b].requested ? " ("+global.__("Required")+")" : "")
                       !=dett.organizationsettings.call.calls[call.index].packages[b].description
                       - if (dett.organizationsettings.call.calls[call.index].packages[b].allow_options)
                         h3=dett.organizationsettings.call.calls[call.index].packages[b].options_name
                         - var options = dett.organizationsettings.call.calls[call.index].packages[b].options.split(",")
                         - for (var d=0;d<options.length;d++)
                           .form-check
-                            input.form-check-input(name="subscriptions[" + c + "][packages][" + b + "][option]", value=options[d],    type="radio",checked=call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b].option==options[d] ? "checked" : undefined)
-                            label.form-check-label
+                            input.form-check-input(id="subscription"+b+"_"+c+"_"+d, name="subscriptions[" + c + "][packages][" + b + "][option]", value=options[d],    type="radio",checked=call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages[b].option==options[d] ? "checked" : undefined)
+                            label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
+
                               !=options[d]
                 .col-md-3
                   .text-right

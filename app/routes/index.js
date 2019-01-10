@@ -58,6 +58,7 @@ router.use('/news', news);
 router.use('/api', api);
 
 router.use('/login', login);
+router.use('/flxerlogin', login);
 router.use('/logout', logout);
 router.use('/password', password);
 router.use('/search', search);

@@ -34,6 +34,9 @@ br
 !=global.__('Reference Email')+": "+user.email
 br
 br
+!=global.__('Reference Mobile')+": "+user.mobile.map(function(item) {return item.url}).join(", ")
+br
+br
 if call.subscriptions.lenght>1
   !=global.__('Authors') + " " + global.__('availability')
 else
@@ -62,37 +65,40 @@ each subscription, index in call.subscriptions
     - conta = 1;
     !=conta+". "+subscription.stagename
     br
-    each package in subscription.packages
-      - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
-        - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
-        - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
-      - else 
-        - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
-        - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
-        !=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
-        br
-        - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
-          !=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
+    if subscription.freezed
+      !=global.__("This person is already in with another act and already choose his packages")
+    else
+      each package in subscription.packages
+        - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
+          - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+          - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
+        - else 
+          - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+          - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price
+          !=dett.organizationsettings.call.calls[call.index].packages[package.id].name + (dett.organizationsettings.call.calls[call.index].packages[package.id].requested ? " ("+global.__("requested")+")" : "")
           br
-        if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
-          !=global.__("per person/per day")
-        else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
-          !=global.__("per person")
-        else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
-          !=global.__("per day")
-        br
-        !="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
-        br
-      if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
-        if subscription.days.length = 1
-          !=subscription.days.length + " " + global.__('day')
-        else
-          !=subscription.days.length + " " + global.__('days')
-        br
-        !=global.__("Total")
-        br
-        !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
-        br
+          - if (dett.organizationsettings.call.calls[call.index].packages[package.id].allow_options)
+            !=dett.organizationsettings.call.calls[call.index].packages[package.id].options_name+": "+package.option
+            br
+          if dett.organizationsettings.call.calls[call.index].packages[package.id].personal && dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+            !=global.__("per person/per day")
+          else if dett.organizationsettings.call.calls[call.index].packages[package.id].personal 
+            !=global.__("per person")
+          else if dett.organizationsettings.call.calls[call.index].packages[package.id].daily 
+            !=global.__("per day")
+          br
+          !="€ "+dett.organizationsettings.call.calls[call.index].packages[package.id].price
+          br
+        if dett.organizationsettings.call.calls[call.index].packages[package.id].daily
+          if subscription.days.length = 1
+            !=subscription.days.length + " " + global.__('day')
+          else
+            !=subscription.days.length + " " + global.__('days')
+          br
+          !=global.__("Total")
+          br
+          !="€ "+(dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length)
+          br
     br
     !=global.__('Total amount for')+" "+subscription.stagename
     br
