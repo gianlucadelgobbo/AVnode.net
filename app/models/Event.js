@@ -10,6 +10,7 @@ const MediaImage = require('./shared/MediaImage');
 const Link = require('./shared/Link');
 const Venue = require('./shared/Venue');
 const Schedule = require('./shared/Schedule');
+const Subscription = require('./Subscription');
 
 const adminsez = 'events';
 const logger = require('../utilities/logger');
@@ -64,6 +65,7 @@ const partnershipSchema = new Schema({
 });
 
 const programSchema = new Schema({
+  subscription_id: { type: Schema.ObjectId, ref: 'Subscription' },
   schedule: Schedule,
   performance: { type: Schema.ObjectId, ref: 'Performance' }
 }, {
