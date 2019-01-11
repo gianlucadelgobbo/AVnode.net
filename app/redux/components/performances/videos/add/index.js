@@ -6,9 +6,8 @@ import { showModal, hideModal } from "../../../modal/actions";
 import { bindActionCreators } from "redux";
 import { fetchModel, saveModel } from "../actions";
 import ErrorMessage from "../../../errorMessage";
-import { MODAL_SAVED } from "../../../modal/constants";
 
-class AddPerformancesGalleries extends Component {
+class AddPerformancesVideos extends Component {
   // Convert form values to API model
   createModelToSave(values) {
     //clone obj
@@ -39,7 +38,7 @@ class AddPerformancesGalleries extends Component {
       if (response.model && response.model.id) {
         hideModal();
         history.push(
-          "/admin/galleries/" + `${response.model.id}` + "/public"
+          "/admin/videos/" + `${response.model.id}` + "/public"
         );
       }
     });
@@ -80,9 +79,9 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-AddPerformancesGalleries = connect(
+AddPerformancesVideos = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddPerformancesGalleries);
+)(AddPerformancesVideos);
 
-export default AddPerformancesGalleries;
+export default AddPerformancesVideos;

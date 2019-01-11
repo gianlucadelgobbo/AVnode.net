@@ -8,7 +8,7 @@ import { INVALID_STRING_3_50 } from "../../../common/form/errors";
 const validate = values => {
   const errors = {};
 
-  isValidName({ values, name: "stagename", errors });
+  isValidName({ values, name: "title", errors });
 
   isValidSlug({ values, name: "slug", errors });
 

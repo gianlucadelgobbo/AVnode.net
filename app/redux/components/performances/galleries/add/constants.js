@@ -1,1 +1,1 @@
-export const FORM_NAME = "PERFORMANCES.ADD";
+export const FORM_NAME = "PERFORMANCES.GALLERIES.ADD";

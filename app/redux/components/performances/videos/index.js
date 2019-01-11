@@ -20,6 +20,7 @@ class PerformaceVideo extends Component {
       fetchModel,
       removeModel,
       saveModel,
+      history,
       match: {
         params: { _id }
       }
@@ -46,6 +47,7 @@ class PerformaceVideo extends Component {
             fetchModel={fetchModel}
             saveModel={saveModel}
             removeModel={removeModel}
+            history={history}
           />
         </div>
       </div>
