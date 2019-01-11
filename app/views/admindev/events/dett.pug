@@ -1,0 +1,11 @@
+extends ../layout_admin
+block content
+  h2=title
+  ul.nav.flex-column.nav-pills
+    li.nav-item
+      a.nav-link.text-white(href='/admindev/events/'+data.event._id)=data.event.title
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/acts/')=global.__('Acts')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/peoples/')=global.__('Peoples')
+  pre=JSON.stringify(data, null, 2)

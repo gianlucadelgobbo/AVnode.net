@@ -1,0 +1,55 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title #{title} - AVnode.net
+    link(rel='apple-touch-icon', sizes='180x180', href='/images/apple-touch-icon.png')
+    link(rel='icon', type='image/png', href='/images/favicon-32x32.png', sizes='32x32')
+    link(rel='icon', type='image/png', href='/images/favicon-16x16.png', sizes='16x16')
+    link(rel='manifest', href='/images/manifest.json')
+    link(rel='mask-icon', href='/images/safari-pinned-tab.svg', color='#ffffff')
+    link(rel='shortcut, icon', href='/images/favicon.ico')
+    meta(name='msapplication-config', content='/images/browserconfig.xml')
+    meta(name='theme-color', content='#ffffff')
+
+    link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
+    link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/css/video-js.min.css')
+  body
+    nav.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
+      a.navbar-brand(href='/', title="AVnode.net")
+        img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')
+      button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
+        span.lnr.lnr-menu.toggle_icon
+      .collapse.navbar-collapse(
+        id="navbar-collapse_performer_template"
+      )
+        include ./menuHeader
+
+        ul.user_navbar
+          li.nav-item.dropdown.user_menu.user_menu_logged                  
+            a#userDropdown.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+              span.lnr.lnr-user
+            .dropdown-menu(aria-labelledby='userDropdown')
+              ul
+                li.nav-item
+                  a(href='/admin/profile/public')                    
+                    span.lnr.lnr-eye
+                    !=" "+global.__('Profile')
+                li.nav-item
+                  a(href='/logout')                    
+                    span.lnr.lnr-exit
+                    !=" "+global.__('Log out')
+    include ../partials/flash
+    main.container-fluid
+      block content
+    if script
+        !=script
+
+    footer
+      .container-fluid
+        .text-muted=global.__('AVnode.net')
+    script(src='/js/combo.min.js')
+    script(src="/js/admindev.js")

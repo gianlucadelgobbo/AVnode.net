@@ -24,6 +24,7 @@ const verify = require('./verify');
 const likes = require('./likes');
 
 const admin = require('./admin');
+const admindev = require('./admindev');
 
 const pages = require('./pages');
 const dataprovider = require('../utilities/dataprovider');
@@ -72,6 +73,7 @@ router.get('/404', fourOhFour);
 */
 
 router.use('/admin', admin);
+router.use('/admindev', admindev);
 
 router.get('/sitemap.xml', (req, res) => {
     let lastmod = new Date();

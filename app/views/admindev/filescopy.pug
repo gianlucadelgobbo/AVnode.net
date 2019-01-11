@@ -1,0 +1,7 @@
+extends ../../../layout_tools
+block content
+  h2=title
+  if data.length
+    each item, index in data
+      !="<br />"+item
+  //pre=JSON.stringify(data, null, 2)
