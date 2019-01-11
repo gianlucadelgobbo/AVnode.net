@@ -1,0 +1,59 @@
+extends ../layout_admin
+block content
+  table.table
+    thead
+      tr
+        th="ID"
+        th="ACT"
+        th="TOPICS"
+        th="AUTHORS"
+        th="COUNTRY"
+        th="REFERENCE"
+    tbody
+      each item, index in data.subscriptions
+        tr
+          td!=index
+          td
+            h2!=item.performance.title
+            p
+              !="TYPE: "+item.performance.categories.filter(word => word.ancestor.slug == "type")[0].name
+              br
+              !="STYLE: "+item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug)[0].name
+              br
+              !="GENRE: "+item.performance.categories.filter(word => word.ancestor.slug == "genre")[0].name
+          td!=item.topics.join("<br />")
+          td!=item.performance.users.map((item) => {return item.stagename}).join("<br />")
+          //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
+          - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
+          - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
+          td!=addressesaddresses.sort().join("<br />")
+          td!=item.reference.stagename
+        tr
+          td!=index
+          td(colspan="2")
+            img.img-fluid(src=item.performance.imageFormats.small)
+            !=item.performance.about
+          td(colspan="2")
+            each user, i in item.performance.users
+              .media
+                .mr-3
+                  img.img-fluid(src=user.imageFormats.small)
+                .media-body
+                  h3!=user.stagename
+                  div
+                  div!=user.addressesFormatted
+                  div!=user.about
+                  div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                  div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+          - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
+          - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
+          - console.log(addresses)
+          - console.log(addressesaddresses)
+          td
+            !=item.reference.name+" "+item.reference.surname
+            br
+            !='<a href="mailto:'+item.reference.email+'">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'">SEARCH MESSAGES</a>'
+            br
+            !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+
+  pre=JSON.stringify(data, null, 2)

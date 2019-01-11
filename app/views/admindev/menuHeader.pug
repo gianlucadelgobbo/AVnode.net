@@ -1,0 +1,20 @@
+ul.navbar-nav.mr-auto
+  - console.log (data)
+  if currentUrl.indexOf("/admindev/events")===0
+    li.nav-item
+      a.nav-link.text-white(href='/admindev/events/'+data.event._id)=data.event.title
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/acts/')=global.__('Acts')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/peoples/')=global.__('Peoples')
+    li.nav-item
+      a.nav-link(href='/events/')=global.__('Events')
+    li.nav-item
+      a.nav-link(href='/footage/')=global.__('Footage')
+    li.nav-item
+      a.nav-link(href='/playlists/')=global.__('Playlists')
+    li.nav-item
+      a.nav-link(href='/videos/')=global.__('Videos')
+    li.nav-item
+      a.nav-link(href='/news/')=global.__('News')
+

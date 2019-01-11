@@ -1,0 +1,106 @@
+.menu
+  .p-3
+    h4.color1 Email
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/emails"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/emails/updateSendy"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
+    h4.color1 Addresses Venues Events 
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/addresses/venuesdbcheck"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/addresses/venuesdbimport"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/venuesgetgeometry"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/venuessetgeometry"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
+    h4.color1 Addresses Performers
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/addresses/usersdbcheck"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      //li.nav-item
+        - var link = "/addresses/showall"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/updatedb"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/getgeometry"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - link = "/addresses/setgeometry"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
+    h4.color1 Files
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/files/userimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/userformatsgenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/performanceimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/performanceformatsgenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/eventimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/eventformatsgenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/newsimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/newsformatsgenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/footagefiles"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/footagerenamer"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/footageformatsgenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/videofiles"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/videoformatsgenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/galleryimages"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/files/gallerygenerator"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
+    h4.color1 Import
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/wpimport/news"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+      li.nav-item
+        - var link = "/wpimport/events"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
+  .p-3
+    h4.color1 Categories
+    ul.nav.flex-column.nav-pills
+      li.nav-item
+        - var link = "/categoriesdbcheck"
+        a.nav-link(href='/admin/tools'+link, class=currentUrl==link ? "active" : undefined)=link
