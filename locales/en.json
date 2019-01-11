@@ -222,7 +222,7 @@
 	"The list of Galleries: All Most recent": "The list of Galleries: All Most recent",
 	"Images": "Images",
 	"Gallery": "Gallery",
-	"Passworrd from FLxER success!!!": "Passworrd from FLxER success!!!",
+	"Password from FLxER success!!!": "Password from FLxER success!!!",
 	"Password migrated from FLxER.net, please login again.": "Password migrated from FLxER.net, please login again.",
 	"Click here to login": "Click here to login",
 	"Password not generated, please retry.": "Password not generated, please retry.",
@@ -369,5 +369,6 @@
 	"Are you a FLxER User?": "Are you a FLxER User?",
 	"Please login here": "Please login here",
 	"Acts": "Acts",
-	"Peoples": "Peoples"
+	"Peoples": "Peoples",
+	"Control Panel": "Control Panel"
 }

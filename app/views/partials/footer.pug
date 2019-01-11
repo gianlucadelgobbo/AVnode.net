@@ -1,0 +1,66 @@
+footer.footer_site
+  .container
+    .row
+      .col-md-4.footer_info
+        div(itemprop='organizer', itemscope='', itemtype='http://schema.org/Organization')
+          a(href='/', title='AVnode')
+            img.logo_footer.media-object(src='/images/logo_grey.svg', alt='AVnode.net', itemprop='logo')
+          br
+          strong.d-none(itemprop='name') AVnode
+          br
+          | a project of Stichting AVnode
+          br
+          span(itemprop='location', itemscope='', itemtype='http://schema.org/Place')
+            span(itemprop='address', itemscope='', itemtype='http://schema.org/PostalAddress')
+              span(itemprop='streetAddress') Arondeusstraat 7
+              span(itemprop='postalCode') 1063GB
+              br
+              span(itemprop='addressLocality') Amsterdam
+              | &nbsp;
+              span(itemprop='addressCountry') Netherlands
+            span.d-none(itemprop='geo', itemscope='', itemtype='http://schema.org/GeoCoordinates')
+              span(itemprop='latitude') 52.3823559
+              | ,
+              span(itemprop='longitude') 4.8237471
+            br
+          | VAT N° 
+          span(itemprop='vatID') NL856555253B01
+          br
+          a(itemprop='email', title='Write to AVnode', href='mailto:info@avnode.net') info@avnode.net
+          br.d-none
+          a.d-none(itemprop='url', title='AVnode Web Site', href='https://avnode.net') https://avnode.net
+      .col-md-4.hidden-print
+        h3 Corporate
+        nav
+          ul.footer-nav.corporate
+            li
+              a(href='https://avnode.org', title='Stichting AVnode') Stichting AVnode
+            li
+              a(href='/terms/', title='Terms & Conditions')=global.__("Terms")
+            li
+              a(href='/privacy/', title='Privacy')=global.__("Privacy")
+            li
+              a(href='/contacts/', title='Contacts')=global.__("Contacts")
+      .col-md-4.hidden-print
+        h3 Social Networks
+        ul.footer-nav.footer-nav-inline.socials
+          li
+            a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://www.facebook.com/avnode.net/', title='', data-original-title='AVnode on Facebook')
+              i.fa.fa-facebook.about_button
+              .d-none Facebook
+          li
+            a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://www.instagram.com/avnodenet/', title='', data-original-title='AVnode on Instagram')
+              i.fa.fa-instagram.about_button
+              .d-none Instagram
+          li
+            a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://twitter.com/avnodenet', title='', data-original-title='AVnode on Twitter')
+              i.fa.fa-twitter.about_button
+              .d-none Twitter
+          li
+            a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://plus.google.com/+AvnodeNet', title='', data-original-title='AVnode on Google Plus')
+              i.fa.fa-google-plus.about_button
+              .d-none Google+
+          li
+            a.tooltips(data-toggle='tooltip', data-placement='bottom', target='_blank', href='https://t.me/avnode', title='', data-original-title='AVnode Channel on Telegram ')
+              i.fa.fa-telegram.about_button
+              .d-none Telegram Channel

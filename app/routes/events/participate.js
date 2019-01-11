@@ -325,7 +325,9 @@ router.post('/', (req, res) => {
               req.session.call.save.subscriptions.push(sub);
             }
           }
-          Subscription.create(req.session.call.save, function (err, sub) {
+          if (!data.program) data.program = [];
+          data.program.push({schedule : {categories : []}, performance : req.session.call.admitted[req.session.call.performance]._id});
+          data.save((err) => {
             if (err) {
               msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
               res.render('events/participate', {
@@ -338,45 +340,60 @@ router.post('/', (req, res) => {
                 msg: msg
               });
             } else {
-              // saved!
-              // MAILER
-              const mailer = require('../../utilities/mailer');
-              mailer.mySendMailer({
-                template: 'participate',
-                message: {
-                  to: req.user.stagename+" <"+req.user.email+">",
-                  from: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"
-                },
-                email_content: {
-                  site:    req.protocol+"://"+req.headers.host,
-                  title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
-                  subject: data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
-                  block_1:  __("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+__("from")+" <b>"+req.user.stagename+"</b>",
-                  block_1_plain:  __("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+__("from")+" "+req.user.stagename+"",
-                  user: req.user,
-                  dett: data,
-                  call: req.session.call,
-                  block_2:  __("You will receive a feedback on your proposal as soon."),
-                  block_3:  __("Thanks."),
-                  link:  "<a href=\""+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
-                  link_plain: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
-                  signature: "The AVnode.net Team"
-                }
-              }, function (err){
+              Subscription.create(req.session.call.save, function (err, sub) {
                 if (err) {
                   msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
+                  res.render('events/participate', {
+                    title: data.title,
+                    canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                    dett: data,
+                    call: req.session.call,
+                    participateMenu: participateMenu,
+                    user: req.user,
+                    msg: msg
+                  });
                 } else {
-                  req.session.call.step = parseInt(req.body.step)+1;
+                  // saved!
+                  // MAILER
+                  const mailer = require('../../utilities/mailer');
+                  mailer.mySendMailer({
+                    template: 'participate',
+                    message: {
+                      to: req.user.stagename+" <"+req.user.email+">",
+                      from: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"
+                    },
+                    email_content: {
+                      site:    req.protocol+"://"+req.headers.host,
+                      title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
+                      subject: data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
+                      block_1:  __("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+__("from")+" <b>"+req.user.stagename+"</b>",
+                      block_1_plain:  __("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+__("from")+" "+req.user.stagename+"",
+                      user: req.user,
+                      dett: data,
+                      call: req.session.call,
+                      block_2:  __("You will receive a feedback on your proposal as soon."),
+                      block_3:  __("Thanks."),
+                      link:  "<a href=\""+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
+                      link_plain: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                      signature: "The AVnode.net Team"
+                    }
+                  }, function (err){
+                    if (err) {
+                      msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
+                    } else {
+                      req.session.call.step = parseInt(req.body.step)+1;
+                    }
+                    res.render('events/participate', {
+                      title: data.title,
+                      canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                      dett: data,
+                      call: req.session.call,
+                      participateMenu: participateMenu,
+                      user: req.user,
+                      msg: msg
+                    });
+                  });
                 }
-                res.render('events/participate', {
-                  title: data.title,
-                  canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
-                  dett: data,
-                  call: req.session.call,
-                  participateMenu: participateMenu,
-                  user: req.user,
-                  msg: msg
-                });
               });
             }
           });

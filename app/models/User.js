@@ -115,14 +115,15 @@ const userSchema = new Schema({
   // Organization Extra Data
   organizationData: [OrganizationData],
 
+  flxermigrate: { type: Boolean, default: false },
   password: {
     type: String,
     validate: [{
       validator : function(password) {
         console.log("passwordpasswordpasswordpasswordpasswordpassword");
-        console.log(password);
+        console.log(this);
         console.log(password && password.length > 10);
-        return password && password.length > 10;
+        return this.flxermigrate || (password && password.length > 10);
       }, msg: 'INVALID_PASSWORD_LENGTH'
     },
     {
@@ -130,7 +131,7 @@ const userSchema = new Schema({
         console.log("passwordpasswordpasswordpasswordpasswordpassword2");
         console.log(password);
         console.log(hasNumber(password) && hasLowerCase(password) && hasUpperCase(password));
-        return hasNumber(password) && hasLowerCase(password) && hasUpperCase(password);
+        return this.flxermigrate || (hasNumber(password) && hasLowerCase(password) && hasUpperCase(password));
       }, msg: 'INVALID_PASSWORD_CHR'
     }]
   },
