@@ -67,5 +67,14 @@
 	"Tags": "Tags",
 	"Gallery": "Gallery",
 	"Images": "Images",
-	"Gallery: ": "Gallery: "
+	"Gallery: ": "Gallery: ",
+	"Organizations": "Organizations",
+	"Are you a FLxER User?": "Are you a FLxER User?",
+	"Please login here": "Please login here",
+	"Alert": "Alert",
+	"AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:": "AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:",
+	"The database will be resetted more than once in the alpha phase, you could loose some data you insert": "The database will be resetted more than once in the alpha phase, you could loose some data you insert",
+	"Control panel is still under development, some features are still not fully working": "Control panel is still under development, some features are still not fully working",
+	"Please send any suggestion to:": "Please send any suggestion to:",
+	"I have read, continue": "I have read, continue"
 }

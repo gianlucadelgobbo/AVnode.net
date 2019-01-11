@@ -80,6 +80,7 @@ flxer.flxerLogin = (req, existingUser, email, password, done) => {
 
       //if (isNaN(existingUser.activity) ) existingUser.activity = 0;
       existingUser.password = password;
+      existingUser.flxermigrate = true;
       logger.debug('existingUser.save existingUser:' + password);
       logger.debug('existingUser.save existingUser.password:' + existingUser.password);
       existingUser.save((err) => {
@@ -94,8 +95,8 @@ flxer.flxerLogin = (req, existingUser, email, password, done) => {
             },
             email_content: {
               site:    req.protocol+"://"+req.headers.host,
-              title:    __("Passworrd from FLxER success!!!"),
-              subject:  __("Passworrd from FLxER success!!!")+' | AVnode.net',
+              title:    __("Password from FLxER success!!!"),
+              subject:  __("Password from FLxER success!!!")+' | AVnode.net',
               block_1:  __("Password migrated from FLxER.net, please login again."),
               button:   __("Click here to login"),
               link:     req.protocol+"://"+req.headers.host+'/login/',
