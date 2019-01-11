@@ -37,10 +37,10 @@ class AddPerformancesGalleries extends Component {
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model.id) {
-        history.push(
-          "/admin/galleries/" + `${response.model.id}` + "/public/"
-        );
         hideModal();
+        history.push(
+          "/admin/galleries/" + `${response.model.id}` + "/public"
+        );
       }
     });
   }
