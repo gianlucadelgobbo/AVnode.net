@@ -1,189 +1,208 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux'
-import {bindActionCreators} from "redux";
-import {showModal} from "../modal/actions";
-import Loading from '../loading'
-import ErrorMessage from '../errorMessage'
-import ItemNotFound from '../itemNotFound';
-import {MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED, MODAL_ADD_VIDEOS} from "../modal/constants";
-import {Player} from 'video-react';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { showModal } from "../modal/actions";
+import Loading from "../loading";
+import ErrorMessage from "../errorMessage";
+import ItemNotFound from "../itemNotFound";
+import {
+  MODAL_ADD_MEDIA,
+  MODAL_REMOVE,
+  MODAL_SAVED,
+  MODAL_ADD_VIDEOS
+} from "../modal/constants";
+import { Player } from "video-react";
 import "video-react/dist/video-react.css"; // import css
-import {Button} from 'react-bootstrap';
-import {NO_VIDEO_TO_SHOW} from "../common/form/labels";
-import { injectIntl } from 'react-intl';
+import { Button, Image } from "react-bootstrap";
+import { NO_VIDEO_TO_SHOW } from "../common/form/labels";
+import { injectIntl } from "react-intl";
+import { Link } from "react-router-dom";
 
 class Video extends Component {
+  componentDidMount() {
+    const { fetchModel, id } = this.props;
+    fetchModel({ id });
+  }
+  getIntlString = obj => {
+    const { intl } = this.props;
+    return intl.formatMessage(obj);
+  };
 
-    componentDidMount() {
-        const {fetchModel, id} = this.props;
-        fetchModel({id});
-    }
-    getIntlString = (obj) => {
-        const {intl} = this.props;
-        return intl.formatMessage(obj)
-    };
+  // Modify model from API to create form initial values
+  getInitialValues() {
+    const { user } = this.props;
 
-    // Modify model from API to create form initial values
-    getInitialValues() {
-        const {user} = this.props;
-
-        if (!user) {
-            return {};
-        }
-
-        let v = {};
-
-        return v;
+    if (!user) {
+      return {};
     }
 
-    // Add video
-    createModelToSave(values) {
+    let v = {};
 
-        //clone obj
-        let model = Object.assign({}, values);
+    return v;
+  }
 
-        return model;
-    }
+  // Add video
+  createModelToSave(values) {
+    //clone obj
+    let model = Object.assign({}, values);
 
-    onSubmit(values) {
-        const {showModal, saveModel, model} = this.props;
-        const modelToSave = this.createModelToSave(values);
+    return model;
+  }
 
-        // Add auth user _id
-        modelToSave._id = model._id;
+  onSubmit(values) {
+    const { showModal, saveModel, model } = this.props;
+    const modelToSave = this.createModelToSave(values);
 
-        //dispatch the action to save the model here
-        return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
-            });
-    }
+    // Add auth user _id
+    modelToSave._id = model._id;
 
-    // Remove video
-    createModelToRemove(values) {
+    //dispatch the action to save the model here
+    return saveModel(modelToSave).then(() => {
+      showModal({
+        type: MODAL_SAVED
+      });
+    });
+  }
 
-        //clone obj
-        let model = Object.assign({}, values);
+  // Remove video
+  createModelToRemove(values) {
+    //clone obj
+    let model = Object.assign({}, values);
 
-        return model;
-    }
+    return model;
+  }
 
-    onRemove(values) {
-        const {removeModel, model} = this.props;
-        const modelToRemove = this.createModelToRemove(values);
-        // Add auth user _id
-        modelToRemove._id = model._id;
+  onRemove(values) {
+    const { removeModel, model } = this.props;
+    const modelToRemove = this.createModelToRemove(values);
+    // Add auth user _id
+    modelToRemove._id = model._id;
 
-        return removeModel(modelToRemove);
-    }
+    return removeModel(modelToRemove);
+  }
 
-    renderVideo(v, i) {
+  renderVideo(v, i) {
+    const { showModal } = this.props;
 
-        const {showModal} = this.props;
-
-
-        return <div className="col-md-6" key={i}>
-            <div className="row">
-                <div className="col-sm-12">
-                    <h3>{v.title}</h3>
-                    <Player
-                        playsInline
-                        src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
-                    />
-                </div>
-                </div>
-                <div className="row">
-                <div className="col-sm-12">
-                    <Button bsStyle="danger"
-                            className="btn-block"
-                            onClick={() =>
-                                showModal({
-                                    type: MODAL_REMOVE,
-                                    props: {
-                                        onRemove: () => this.onRemove(v)
-                                    }
-                                })}
-                    >
-                        <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                    </Button>
-                </div>
-            </div>
-
-
-            <br/>
+    return (
+      <div className="col-md-6" key={i}>
+        <div className="row">
+          <div className="col-sm-12">
+            <h3>{v.title}</h3>
+            <Link to={`/admin/videos/${v.id}/public`}>
+              <Image
+                src={v.imageFormats ? v.imageFormats.small : ""}
+                responsive
+              />
+            </Link>
+          </div>
         </div>
-    }
+        {/*<div className="row">
+          <div className="col-sm-12">
+            <Button
+              bsStyle="danger"
+              className="btn-block"
+              onClick={() =>
+                showModal({
+                  type: MODAL_REMOVE,
+                  props: {
+                    onRemove: () => this.onRemove(v)
+                  }
+                })
+              }
+            >
+              <i
+                className="fa fa-trash"
+                data-toggle="tooltip"
+                data-placement="top"
+              />
+            </Button>
+          </div>
+            </div>*/}
 
-    render() {
+        <br />
+      </div>
+    );
+  }
 
-        const {model, showModal, isFetching, errorMessage, history} = this.props;
+  render() {
+    const { model, showModal, isFetching, errorMessage, history } = this.props;
 
-        return (
-            <div>
+    return (
+      <div>
+        <div className="row">
+          <div className="col-md-12">
+            <Button
+              bsStyle="success"
+              className="pull-right"
+              onClick={() =>
+                showModal({
+                  type: MODAL_ADD_VIDEOS,
+                  props: {
+                    //onSubmit: this.onSubmit.bind(this),
+                    history
+                  }
+                })
+              }
+            >
+              <i
+                className="fa fa-plus"
+                data-toggle="tooltip"
+                data-placement="top"
+              />
+            </Button>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-12">
+            <br />
+            {isFetching && !model && <Loading />}
+
+            {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+
+            {!errorMessage && !isFetching && !model && <ItemNotFound />}
+
+            {!errorMessage &&
+              !isFetching &&
+              model &&
+              Array.isArray(model.videos) &&
+              model.videos.length > 0 && (
                 <div className="row">
-                    <div className="col-md-12">
-                        <Button
-                            bsStyle="success"
-                            className="pull-right"
-                            onClick={() => showModal({
-                                type: MODAL_ADD_VIDEOS,
-                                props: {
-                                    //onSubmit: this.onSubmit.bind(this),
-                                    history
-                                }
-                            })}>
-                            <i className="fa fa-plus" data-toggle="tooltip" data-placement="top"/>
-                        </Button>
-
-                    </div>
+                  {model.videos.map(this.renderVideo.bind(this))}
                 </div>
+              )}
 
-                <div className="row">
-                    <div className="col-md-12">
-                        <br/>
-                        {isFetching && !model && <Loading/>}
-
-                        {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
-
-                        {!errorMessage && !isFetching && !model && <ItemNotFound/>}
-
-                        {!errorMessage &&
-                        !isFetching &&
-                        model &&
-                        Array.isArray(model.videos) &&
-                        model.videos.length > 0 &&
-                        <div className="row">
-                            {model.videos.map(this.renderVideo.bind(this))}
-                        </div>}
-
-                        {!errorMessage &&
-                        !isFetching &&
-                        model &&
-                        Array.isArray(model.videos) &&
-                        model.videos.length === 0 &&
-                        <div className="Novideo">
-                            {this.getIntlString({id:NO_VIDEO_TO_SHOW})}
-                        </div>}
-
-                    </div>
+            {!errorMessage &&
+              !isFetching &&
+              model &&
+              Array.isArray(model.videos) &&
+              model.videos.length === 0 && (
+                <div className="Novideo">
+                  {this.getIntlString({ id: NO_VIDEO_TO_SHOW })}
                 </div>
-            </div>
-        );
-    }
+              )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({});
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    showModal,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      showModal
+    },
+    dispatch
+  );
 
 Video = connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Video);
 
 Video = injectIntl(Video);
