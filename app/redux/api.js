@@ -380,7 +380,10 @@ export const fetchPerformanceVideos = ({ id }) => {
 };
 
 export const savePerformanceVideos = model =>
-  axios.post(`performances/${model._id}/videos`, model);
+  axios.post(`performances/${model._id}/videos`, model)
+  .then(result => {
+    return result.data;
+  });
 
 export const removePerformanceVideos = model => {
   return axios

@@ -9,7 +9,8 @@ import {
   MODAL_ADD_MEDIA,
   MODAL_REMOVE,
   MODAL_SAVED,
-  MODAL_ADD_VIDEOS
+  MODAL_ADD_VIDEOS,
+  MODAL_ADD_PERFORMANCES_VIDEOS
 } from "../modal/constants";
 import { Player } from "video-react";
 import "video-react/dist/video-react.css"; // import css
@@ -126,7 +127,7 @@ class Video extends Component {
   }
 
   render() {
-    const { model, showModal, isFetching, errorMessage, history } = this.props;
+    const { model, showModal, isFetching, errorMessage, history, id } = this.props;
 
     return (
       <div>
@@ -137,9 +138,9 @@ class Video extends Component {
               className="pull-right"
               onClick={() =>
                 showModal({
-                  type: MODAL_ADD_VIDEOS,
+                  type: MODAL_ADD_PERFORMANCES_VIDEOS,
                   props: {
-                    //onSubmit: this.onSubmit.bind(this),
+                    id,
                     history
                   }
                 })
