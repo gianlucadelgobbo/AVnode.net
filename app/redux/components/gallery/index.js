@@ -6,7 +6,11 @@ import { showModal } from "../modal/actions";
 import Loading from "../loading";
 import ErrorMessage from "../errorMessage";
 import ItemNotFound from "../itemNotFound";
-import { MODAL_ADD_MEDIA, MODAL_REMOVE, MODAL_SAVED, MODAL_ADD_GALLERIES } from "../modal/constants";
+import {
+  MODAL_REMOVE,
+  MODAL_SAVED,
+  MODAL_ADD_PERFORMANCES_GALLERIES
+} from "../modal/constants";
 import { Button, Image } from "react-bootstrap";
 import LightBox from "../lightboxGallery";
 
@@ -105,9 +109,15 @@ class Gallery extends Component {
   }
 
   render() {
-    const { model = {}, showModal, isFetching, errorMessage } = this.props;
+    const {
+      model = {},
+      showModal,
+      isFetching,
+      errorMessage,
+      history,
+      id
+    } = this.props;
     const initialValues = this.getInitialValues();
-
     return (
       <div>
         <div className="row">
@@ -117,10 +127,8 @@ class Gallery extends Component {
               className="pull-right"
               onClick={() =>
                 showModal({
-                  type: MODAL_ADD_GALLERIES,
-                  props: {
-                    onSubmit: this.onSubmit.bind(this)
-                  }
+                  type: MODAL_ADD_PERFORMANCES_GALLERIES,
+                  props: { history, id }
                 })
               }
             >
@@ -136,7 +144,7 @@ class Gallery extends Component {
               model &&
               Array.isArray(model.galleries) && (
                 <LightBox
-                  images={model.galleries.map(x => x.image.file)}
+                  images={model.galleries.map(x => x.imageFormats.small)}
                   Button={
                     <Button bsStyle="primary" className="pull-right">
                       <i
