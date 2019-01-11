@@ -9,7 +9,8 @@ import ItemNotFound from "../itemNotFound";
 import {
   MODAL_REMOVE,
   MODAL_SAVED,
-  MODAL_ADD_PERFORMANCES_GALLERIES
+  MODAL_ADD_PERFORMANCES_GALLERIES,
+  MODAL_ADD_GALLERIES
 } from "../modal/constants";
 import { Button, Image } from "react-bootstrap";
 import LightBox from "../lightboxGallery";

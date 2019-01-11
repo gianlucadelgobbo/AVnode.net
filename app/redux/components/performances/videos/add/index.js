@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Form from "./form";
 import { connect } from "react-redux";
-import { getModel, getModelErrorMessage } from "../selectors";
-import { hideModal, showModal } from "../../modal/actions";
+import { getModel, getModelErrorMessage } from "../../selectors";
+import { showModal, hideModal } from "../../../modal/actions";
 import { bindActionCreators } from "redux";
-import { saveModel } from "../actions";
-import ErrorMessage from "../../errorMessage";
+import { fetchModel, saveModel } from "../actions";
+import ErrorMessage from "../../../errorMessage";
 
-class AddGalleries extends Component {
+class AddPerformancesVideos extends Component {
   // Convert form values to API model
   createModelToSave(values) {
     //clone obj
@@ -30,23 +30,23 @@ class AddGalleries extends Component {
   }
 
   onSubmit(values) {
-    const { history, saveModel, hideModal } = this.props;
+    const { history, saveModel, hideModal, id } = this.props;
     const modelToSave = this.createModelToSave(values);
-    modelToSave.id = "2";
+    modelToSave._id = id;
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model.id) {
-        history.push("/admin/galleries/" + `${response.model.id}` + "/public");
         hideModal();
+        history.push(
+          "/admin/videos/" + `${response.model.id}` + "/public"
+        );
       }
     });
   }
 
   render() {
-    const { showModal, errorMessage, history } = this.props;
-    {
-      console.log(history);
-    }
+    const { showModal, errorMessage } = this.props;
+
     return (
       <div className="row">
         <div className="col-md-12">
@@ -72,15 +72,16 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       showModal,
-      hideModal,
-      saveModel
+      saveModel,
+      fetchModel,
+      hideModal
     },
     dispatch
   );
 
-AddGalleries = connect(
+AddPerformancesVideos = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddGalleries);
+)(AddPerformancesVideos);
 
-export default AddGalleries;
+export default AddPerformancesVideos;
