@@ -14,6 +14,7 @@ import AddPlaylistModal from "./playlists/add";
 import AddVideosModal from "./videos/add";
 import AddGalleriesModal from "./galleries/add";
 import AddPerformancesGalleriesModal from "../performances/galleries/add";
+import AddPerformancesVideosModal from "../performances/videos/add";
 import SignupModal from "./signup/index";
 import EmailVerificationSuccess from "./emails/success";
 import EmailVerificationError from "./emails/error";
@@ -38,6 +39,7 @@ import {
   MODAL_ADD_VIDEOS,
   MODAL_ADD_GALLERIES,
   MODAL_ADD_PERFORMANCES_GALLERIES,
+  MODAL_ADD_PERFORMANCES_VIDEOS,
   MODAL_SIGN_UP_SUCCESS,
   MODAL_EMAIL_VERIFICATION_SUCCESS,
   MODAL_EMAIL_VERIFICATION_ERROR
@@ -68,6 +70,7 @@ const MODAL_COMPONENTS = {
   [MODAL_ADD_VIDEOS]: AddVideosModal,
   [MODAL_ADD_GALLERIES]: AddGalleriesModal,
   [MODAL_ADD_PERFORMANCES_GALLERIES]: AddPerformancesGalleriesModal,
+  [MODAL_ADD_PERFORMANCES_VIDEOS]: AddPerformancesVideosModal,
   [MODAL_SIGN_UP_SUCCESS]: SignupModal,
   [MODAL_EMAIL_VERIFICATION_SUCCESS]: EmailVerificationSuccess,
   [MODAL_EMAIL_VERIFICATION_ERROR]: EmailVerificationError
@@ -90,7 +93,8 @@ const MODAL_TITLES = {
   [MODAL_ADD_PLAYLIST]: "Add Playlist",
   [MODAL_ADD_VIDEOS]: "Add Video",
   [MODAL_ADD_GALLERIES]: "Add Gallery",
-  [MODAL_ADD_PERFORMANCES_GALLERIES]: "Add Performance Gallery",
+  [MODAL_ADD_PERFORMANCES_GALLERIES]: "Add Gallery",
+  [MODAL_ADD_PERFORMANCES_VIDEOS]: "Add Video",
   [MODAL_SIGN_UP_SUCCESS]: "Welcome!",
   [MODAL_EMAIL_VERIFICATION_SUCCESS]: "Verification sent!",
   [MODAL_EMAIL_VERIFICATION_ERROR]: "Ops..."
