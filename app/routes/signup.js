@@ -87,7 +87,8 @@ router.post('/', (req, res) => {
                       button:   __("Confirm Account"),
                       block_2:  __("If that doesn't work, copy and paste the following link in your browser:"),
                       block_3:  __("If you have any questions, just reply to this email, we're always happy to help out."),
-                      signature: "Cheers<br/>The AVnode.net Team"
+                      html_sign: "The AVnode.net Team",
+                      text_sign:  "The AVnode.net Team"
                     }
                   }, function(){
                     console.log("stocazzo");

@@ -1,5 +1,88 @@
 extends ../layout_admin
 block content
+  .actsfilters.mt-2.mb-3
+    .actsfilters-header Filters
+    form.form-inline(method='get')
+      //input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
+        label.mr-sm-5(for='confirm') Confirm from user
+        select.form-control.mr-sm-2#confirm(name='confirm')
+          option(value='') Any status
+          option(value='0000-00-00') none
+          option(value='2019-01-11') before today
+        
+      select.form-control.mr-sm-2(name='program.schedule.categories')
+        option(value='0') LPM Status
+        each stat in status
+          option(value=stat._id)=stat.name
+
+      small.mr-sm-2(style="white-space: nowrap;display: contents;")
+        input.mr-sm-1#not0(type='checkbox', name='not0', value='1', checked=get.fullinfo ? "checked" : undefinded)
+        label.mr-sm-5(for='not0') NOT
+
+      select.form-control.mr-sm-2(name='program.performance.categories')
+        option(value='0') Performance Type
+        option(value='0') Any type
+        option(value='380|381') AV Performance
+        option(value='380|408') DJ SET
+        option(value='380|387') DVD projection
+        option(value='380|406') Outdoor AV Preformance
+        option(value='380|386') Project showcase
+        option(value='380|407') Tournament
+        option(value='380|385') Video Installation
+        option(value='380|673') Interactive
+        option(value='380|384') Video Theatre
+        option(value='380|383') Visual Games
+        option(value='380|382') VJ SET
+        option(value='380|388') Workshop
+        option(value='380|652') Mapping
+        option(value='380|827') Panel
+        option(value='380|834') Lecture
+
+      small.mr-sm-2(style="white-space: nowrap;display: contents;")
+        input.mr-sm-1#not2(type='checkbox', name='not2', value='1', checked=get.fullinfo ? "checked" : undefinded)
+        label.mr-sm-5(for='not2') NOT
+
+      select.form-control.mr-sm-2(name='program.schedule.venue.room')
+        option(value='0') Room
+        option(value='0') Any Room
+        option(value='|929|930|') Foyer
+        option(value='|929|931|') Auditorium
+        option(value='|929|932|') Spazio Area
+        option(value='|929|933|') Sala Cinema
+        option(value='|929|934|') Foyer lights
+        option(value='|929|935|') Foyer netart
+        option(value='|929|936|') Sala lettura
+
+      small.mr-sm-2(style="white-space: nowrap;display: contents;")
+        input.mr-sm-1#not3(type='checkbox', name='not3', value='1', checked=get.fullinfo ? "checked" : undefinded)
+        label.mr-sm-5(for='not3') NOT
+
+      select.form-control.mr-sm-2(name='subscriptions.packages.name')
+        option(value='0') Package
+        option(value='NO') NO
+        option(value='SI') SI
+        option(value='SIlusso') SIlusso
+
+      small.mr-sm-2(style="white-space: nowrap;display: contents;")
+        input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.fullinfo ? "checked" : undefinded)
+        label.mr-sm-5(for='not4') NOT
+
+      select.form-control.mr-sm-5(name='sortby')
+        option(value='0') Sort by
+        option(value='day') group by day
+        option(value='sortby_name') sort by perf name
+        option(value='sortby_submissiondate') sort by sub date
+
+      input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.fullinfo ? "checked" : undefinded)
+      label.mr-sm-5(for='unlink') Performance suspect
+      br
+      input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
+      label.mr-sm-5(for='fullinfo') FULL INFO
+
+      input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
+      input.form-control.mr-sm-2(type='hidden', name='save', value='1')
+      input.btn.btn-primary(type='submit', name='submit_search', value='FILTER')
+
   table.table
     thead
       tr
@@ -18,42 +101,44 @@ block content
             p
               !="TYPE: "+item.performance.categories.filter(word => word.ancestor.slug == "type")[0].name
               br
-              !="STYLE: "+item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug)[0].name
-              br
-              !="GENRE: "+item.performance.categories.filter(word => word.ancestor.slug == "genre")[0].name
+              if item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug).length
+                !="STYLE: "+item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug)[0].name
+                br
+                !="GENRE: "+item.performance.categories.filter(word => word.ancestor.slug == "genre")[0].name
           td!=item.topics.join("<br />")
           td!=item.performance.users.map((item) => {return item.stagename}).join("<br />")
           //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
           - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
           - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
-          td!=addressesaddresses.sort().join("<br />")
+          td!=addressesaddresses.sort().join(", ")
           td!=item.reference.stagename
-        tr
-          td!=index
-          td(colspan="2")
-            img.img-fluid(src=item.performance.imageFormats.small)
-            !=item.performance.about
-          td(colspan="2")
-            each user, i in item.performance.users
-              .media
-                .mr-3
-                  img.img-fluid(src=user.imageFormats.small)
-                .media-body
-                  h3!=user.stagename
-                  div
-                  div!=user.addressesFormatted
-                  div!=user.about
-                  div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
-                  div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
-          - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
-          - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
-          - console.log(addresses)
-          - console.log(addressesaddresses)
-          td
-            !=item.reference.name+" "+item.reference.surname
-            br
-            !='<a href="mailto:'+item.reference.email+'">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'">SEARCH MESSAGES</a>'
-            br
-            !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+        if get.fullinfo
+          tr
+            td!=index
+            td(colspan="2")
+              img.img-fluid(src=item.performance.imageFormats.small)
+              !=item.performance.about
+            td(colspan="2")
+              each user, i in item.performance.users
+                .media
+                  .mr-3
+                    img.img-fluid(src=user.imageFormats.small)
+                  .media-body
+                    h3!=user.stagename
+                    div
+                    div!=user.addressesFormatted
+                    div!=user.about
+                    div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                    div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+            - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
+            - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
+            - console.log(addresses)
+            - console.log(addressesaddresses)
+            td
+              !=item.reference.name+" "+item.reference.surname
+              br
+              !='<a href="mailto:'+item.reference.email+'">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'">SEARCH MESSAGES</a>'
+              br
+              !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
 
   pre=JSON.stringify(data, null, 2)

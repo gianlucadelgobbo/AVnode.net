@@ -39,7 +39,6 @@ const userSchema = new Schema({
 
 userSchema.pre('save', function (next) {
   const user = this;
-  console.log(process.env.BASE);
   console.log(user);
   //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
   bcrypt.genSalt(10, (err, salt) => {

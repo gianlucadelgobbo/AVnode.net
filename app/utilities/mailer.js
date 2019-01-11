@@ -67,7 +67,7 @@ module.exports.mySendMailer = (data, cb) => {
   );
 };
 
-module.exports.sendMsgEmail = (data, cb) => {
+/* module.exports.sendMsgEmail = (data, cb) => {
 
   const email = new Email({
     message: {
@@ -83,10 +83,10 @@ module.exports.sendMsgEmail = (data, cb) => {
   .then(info => logger.info('sendMsgEmail sent', info))
   .catch(err => cb(err));
 
-};
+}; */
 
 // add crew member
-module.exports.addCrewMember = (options, data, cb) => {
+/* module.exports.addCrewMember = (options, data, cb) => {
 
   const email = new Email({
     message: {
@@ -109,4 +109,4 @@ module.exports.addCrewMember = (options, data, cb) => {
     }
   }).then(info => logger.info('Add Crew Member email sent', info)).catch(err => cb(err));
 
-};
+}; */

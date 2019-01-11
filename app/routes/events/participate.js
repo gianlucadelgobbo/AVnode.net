@@ -1,6 +1,7 @@
 const router = require('../router')();
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
 const Event = mongoose.model('Event');
 const Subscription = mongoose.model('Subscription');
 const dataprovider = require('../../utilities/dataprovider');
@@ -298,7 +299,6 @@ router.post('/', (req, res) => {
           myasync = false;
           // SAVE
           logger.debug('req.session.call.save');
-          logger.debug(req.session.call.save);
           req.session.call.save = {
             event:        req.session.call.event._id,
             call:         req.session.call.index,
@@ -325,9 +325,8 @@ router.post('/', (req, res) => {
               req.session.call.save.subscriptions.push(sub);
             }
           }
-          if (!data.program) data.program = [];
-          data.program.push({schedule : {categories : []}, performance : req.session.call.admitted[req.session.call.performance]._id});
-          data.save((err) => {
+          logger.debug(req.session.call.save);
+          Subscription.create(req.session.call.save, function (err, sub) {
             if (err) {
               msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
               res.render('events/participate', {
@@ -340,7 +339,9 @@ router.post('/', (req, res) => {
                 msg: msg
               });
             } else {
-              Subscription.create(req.session.call.save, function (err, sub) {
+              if (!data.program) data.program = [];
+              data.program.push({subscription_id: sub._id, schedule : {categories : ["5c38c57d9d426a9522c15ba5"]}, performance : req.session.call.admitted[req.session.call.performance]._id});
+              data.save((err) => {
                 if (err) {
                   msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
                   res.render('events/participate', {
@@ -364,6 +365,10 @@ router.post('/', (req, res) => {
                     },
                     email_content: {
                       site:    req.protocol+"://"+req.headers.host,
+                      imghead: req.protocol+"://"+req.headers.host + data.organizationsettings.call.calls[req.session.call.index].imghead,
+                      imgalt:  data.organizationsettings.call.calls[req.session.call.index].imgalt,
+                      html_sign:  data.organizationsettings.call.calls[req.session.call.index].html_sign,
+                      text_sign:  data.organizationsettings.call.calls[req.session.call.index].text_sign,
                       title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
                       subject: data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
                       block_1:  __("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+__("from")+" <b>"+req.user.stagename+"</b>",
@@ -374,8 +379,7 @@ router.post('/', (req, res) => {
                       block_2:  __("You will receive a feedback on your proposal as soon."),
                       block_3:  __("Thanks."),
                       link:  "<a href=\""+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
-                      link_plain: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
-                      signature: "The AVnode.net Team"
+                      link_plain: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]
                     }
                   }, function (err){
                     if (err) {

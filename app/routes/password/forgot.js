@@ -51,8 +51,9 @@ router.post('/', (req, res) => {
               block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you can reset your password using this link:"),
               block_3:  __("Thanks."),
               link:     'http://'+req.headers.host+'/password/reset/'+token,
-              signature: "The AVnode.net Team"
-            }
+              html_sign: "The AVnode.net Team",
+              text_sign:  "The AVnode.net Team"
+        }
           }, function (err){
             if (err) {
               req.flash('errors', {msg: __('Unable to send Confirm Email.')});

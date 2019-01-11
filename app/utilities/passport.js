@@ -100,13 +100,14 @@ flxer.flxerLogin = (req, existingUser, email, password, done) => {
               block_1:  __("Password migrated from FLxER.net, please login again."),
               button:   __("Click here to login"),
               link:     req.protocol+"://"+req.headers.host+'/login/',
-              signature: "The AVnode.net Team"
-            }
+              html_sign: "The AVnode.net Team",
+              text_sign:  "The AVnode.net Team"
+        }
           }, function (err){
             if (err) {
-              logger.debug('mailer.sendMsgEmail error:' + err);
+              logger.debug('mailer.mySendMailer error:' + err);
             } else {
-              logger.debug('mailer.sendMsgEmail success:' + err);
+              logger.debug('mailer.mySendMailer success:' + err);
             }
           });
         }

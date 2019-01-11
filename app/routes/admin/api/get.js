@@ -736,7 +736,8 @@ router.sendEmailVericaition = (req, res) => {
                   block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
                   block_3:  __("Thanks."),
                   link:     req.protocol+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
-                  signature: "The AVnode.net Team"
+                  html_sign: "The AVnode.net Team",
+                  text_sign:  "The AVnode.net Team"
                 }
               }, function (err){
                 if (err) {
