@@ -8,7 +8,7 @@ import {
   const validate = values => {
     const errors = {};
   
-    isValidName({ values, name: "stagename", errors });
+    isValidName({ values, name: "title", errors });
   
     isValidSlug({ values, name: "slug", errors });
   

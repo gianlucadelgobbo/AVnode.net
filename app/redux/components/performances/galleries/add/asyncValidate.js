@@ -1,11 +1,11 @@
-import { validateSlugNewPerformance } from "../../../common/form/validators";
+import { validateSlugNewGalleries } from "../../../common/form/validators";
 import { checkIfError } from "../../../common/form";
+
 const asyncValidate = (values, dispatch, state) => {
   const promises = [];
   const result = {};
-
   // slug
-  validateSlugNewPerformance({
+  validateSlugNewGalleries({
     value: values.slug,
     previousValue: state.initialValues.slug,
     promises,
