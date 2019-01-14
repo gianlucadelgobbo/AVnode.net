@@ -293,6 +293,7 @@ export const isValidSlug = ({ values, name, errors, index, errorArray }) => {
 };
 
 export const isValidName = ({ values, name, errors, index, errorArray }) => {
+  console.log(values)
   const stagename = values[name];
   if (!stagename || stagename.trim() === "") {
     errors[name] = REQUIRED;
