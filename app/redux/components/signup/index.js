@@ -12,8 +12,16 @@ import { getModelErrorMessage } from "./selectors";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import axios from "axios";
 import moment from "moment";
+import { inputCheckbox } from "../common/form/components";
 
 class SignUp extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {option:'single'};
+  }
+
+
   componentDidMount() {
     //const {fetchModel} = this.props;
     //fetchModel();
@@ -85,12 +93,13 @@ class SignUp extends Component {
     });
   }
 
-  handleChange() {
-    console.log("isOpened");
+  _onOptionChange(e){
+    this.setState({option:e.target.value})
   }
 
   render() {
     const { showModal, errorMessage } = this.props;
+    const {option} = this.state;
     const height = 50;
     return (
       <div className="row">
@@ -101,7 +110,8 @@ class SignUp extends Component {
             onSubmit={this.onSubmit.bind(this)}
             showModal={showModal}
             options={OPTIONS}
-            //onChange={this.handleChange.bind(this)}
+            option={option}
+            _onOptionChange={this._onOptionChange.bind(this)}
             height={height}
           />
         </div>
