@@ -16,7 +16,7 @@ const signupValidate = values => {
   }
   if(subscribe==="group"){
     isValidName({ values, name: "crewName", errors });
-    isValidName({ values, name: "CrewProfile", errors });
+    isValidName({ values, name: "crewUrl", errors });
   }
 
   //Stage name
@@ -28,22 +28,29 @@ const signupValidate = values => {
     errorKey: INVALID_STRING_3_50,
     errors
   });
-  //Subscribe
-  isValidName({ values, name: "subscribe", errors });
+
+  //Subscribe Single
+  //isValidName({ values:"single", name: "subscribe", errors });
+
   //StageName
   isValidName({ values, name: "stagename", errors });
+
   //Slug
   isValidSlug({ values, name: "slug", errors });
+
   //Birthday
   if (!birthday || !isValidDate(birthday)) {
       errors.birthday = REQUIRED;
   }
   //Email
   isValidName({ values, name: "email", errors });
+
   //Address
   isValidName({ values, name: "addresses", errors });
+
   //Password
   isValidName({ values, name: "password", errors });
+  
   //Password
   isValidName({ values, name: "confirmPassword", errors });
 
