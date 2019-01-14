@@ -72,6 +72,7 @@ class PerformancePublic extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      selectedView: 'Cheating',
       tsOpen: false,
       visible: false,
       searchValue: '',
@@ -92,6 +93,7 @@ class PerformancePublic extends Component {
       },
     }
   }
+  
   
   onClick = () => {
     this.setState({
@@ -275,6 +277,9 @@ class PerformancePublic extends Component {
       }
     });
   }
+  onChangeSelect(e){
+    this.setState({selectedView: e.target.value});
+  }
 
   render() {
     const {
@@ -287,6 +292,31 @@ class PerformancePublic extends Component {
       errorMessage,
       categories
     } = this.props;
+    const { selectedView } = this.state
+    const options = [
+      {
+        name: 'Cheating', 
+        minor: ['a', 'b'], 
+        method: ['apple', 'orange']
+      }, {
+        name: 'Abductions', 
+        minor: ['AB', 'BC', 'X'], 
+        method: ['cat', 'dog']
+      }
+    ]
+    const getMajorMethod = () => {
+      const view = options.filter(({name}) => name === selectedView)[0]
+      return (
+        <div>
+          <select>
+            {view.minor.map((m,index) => <option key={index}>{m}</option>)}
+          </select>
+          <select>
+            {view.method.map((m,index) => <option key={index}>{m}</option>)}
+          </select>
+        </div>
+      )
+    }
     return (
       <div className="row">
         <div className="col-md-2">
@@ -312,6 +342,9 @@ class PerformancePublic extends Component {
             labels={locales_labels}
             categories={categories}
             _id={_id}
+            options={options}
+            getMajorMethod={getMajorMethod()}
+            onChangeSelect={e => this.onChangeSelect(e)}
 
             style={{ width: 300 }}
             transitionName="rc-tree-select-dropdown-slide-up"

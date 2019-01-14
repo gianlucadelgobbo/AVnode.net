@@ -448,7 +448,7 @@ export const textareaMultiTab = ({
   fields,
   errors = {}
 }) => {
-  const id = `tabs-${Math.random()*100000000000000000}`;
+  const id = `tabs-${Math.random() * 100000000000000000}`;
   const hasValue = (fields, index) =>
     fields && !!fields.get(index) && !!fields.get(index).value;
   const hasError = (errors = {}, index, name) =>
@@ -1194,7 +1194,11 @@ export const checkboxField = ({
         {...input}
         disabled={disabled}
       />
-      {isChild && placeholder && <label className="form-check-label" htmlFor={id}>{placeholder}</label>}
+      {isChild && placeholder && (
+        <label className="form-check-label" htmlFor={id}>
+          {placeholder}
+        </label>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -2698,21 +2702,22 @@ export const radioButton = ({
   optionValue
 }) => {
   return (
-  <div>
-  <ButtonGroup>
-    {options.map(option => (
-      <Button
-        key={option[0]}
-        bsStyle={option[0] === optionValue ? "primary" : "secondary"}
-        children={option[1]}
-        name={input.name}
-        onClick={_onOptionChange}
-        value={option[0]}
-      />      
-    ))}
-  </ButtonGroup>
-  </div>
-  )}
+    <div>
+      <ButtonGroup>
+        {options.map(option => (
+          <Button
+            key={option[0]}
+            bsStyle={option[0] === optionValue ? "primary" : "secondary"}
+            children={option[1]}
+            name={input.name}
+            onClick={_onOptionChange}
+            value={option[0]}
+          />
+        ))}
+      </ButtonGroup>
+    </div>
+  );
+};
 
 export const CollapsedPanel = ({
   input,
@@ -2726,23 +2731,19 @@ export const CollapsedPanel = ({
 }) => {
   const field = (
     <div className="form-group">
-      <Field 
-        name="single" 
-        component={radioButton}  
+      <Field
+        name="single"
+        component={radioButton}
         placeholder="Subscribe as"
         options={options}
         height={height}
         _onOptionChange={_onOptionChange}
-        optionValue={optionValue}>
-      </Field>
+        optionValue={optionValue}
+      />
       <Collapse isOpened={optionValue === "group"}>
         <div style={{ height }} />
         <Field name="crewName" component={inputText} placeholder="Crew Name" />
-        <Field
-          name="crewUrl"
-          component={inputText}
-          placeholder="Crew Url"
-        />
+        <Field name="crewUrl" component={inputText} placeholder="Crew Url" />
         <h4>YOU AS MEMBER OF THE CREW</h4>
         <p>You will be able to add more once you confirmed your account</p>
       </Collapse>
@@ -2757,6 +2758,36 @@ export const CollapsedPanel = ({
   return !!isChild ? (
     field
   ) : (
+    <dl className="row">
+      <dt className="col-sm-2">{label}</dt>
+      <dd className="col-sm-10"> {field} </dd>
+    </dl>
+  );
+};
+
+export const renderRadioButton = ({
+  input,
+  meta,
+  placeholder,
+  onChange,
+  options,
+  getMajorMethod,
+  onChangeSelect
+}) => {
+  const field = (
+    <div className="form-group">
+      <select onChange={onChangeSelect}>
+        {options.map(({ name }, index) => (
+          <option key={index} value={name}>
+            {name}
+          </option>
+        ))}
+      </select>
+      {getMajorMethod}
+    </div>
+  );
+  const label = <div className="labelSignup">{placeholder}</div>;
+  return (
     <dl className="row">
       <dt className="col-sm-2">{label}</dt>
       <dd className="col-sm-10"> {field} </dd>
