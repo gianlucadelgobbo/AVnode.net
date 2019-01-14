@@ -45,7 +45,7 @@ class SignUpForm extends Component {
           placeholder="Stage name"
         />
 
-        <Field name="slug" component={inputText} placeholder="Profile url" />
+        <Field name="slug" component={inputText} placeholder="Profile Url" help="To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)" />
 
         <Field
           name="birthday"

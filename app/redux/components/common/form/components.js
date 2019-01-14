@@ -337,6 +337,7 @@ const inputField = ({
   meta,
   placeholder,
   isChild,
+  help,
   handleSelect
 }) => {
   const field = (
@@ -347,6 +348,11 @@ const inputField = ({
         {...input}
         placeholder={placeholder}
       />
+      {help && (
+        <div>
+          <FormattedMessage id={help} />
+        </div>
+      )}
       {meta.error && meta.touched && (
         <span className="error-message">
           <FormattedMessage id={meta.error} />
@@ -365,8 +371,8 @@ const inputField = ({
   );
 };
 
-export const inputText = ({ input, meta, placeholder, isChild }) => {
-  return inputField({ input, type: "text", meta, placeholder, isChild });
+export const inputText = ({ input, meta, placeholder, isChild, help }) => {
+  return inputField({ input, type: "text", meta, placeholder, isChild, help });
 };
 
 export const inputPassword = ({ input, meta, placeholder, isChild }) => {
@@ -442,7 +448,7 @@ export const textareaMultiTab = ({
   fields,
   errors = {}
 }) => {
-  const id = `tabs-${Math.random()}`;
+  const id = `tabs-${Math.random()*100000000000000000}`;
   const hasValue = (fields, index) =>
     fields && !!fields.get(index) && !!fields.get(index).value;
   const hasError = (errors = {}, index, name) =>
@@ -450,20 +456,22 @@ export const textareaMultiTab = ({
   const label = <div className="labelField">{placeholder}</div>;
 
   return (
-    <div className="card">
+    <div>
       <div className="card-header">
         <h4>{label}</h4>
       </div>
-      <div className="card-body">
+      <div>
         <br />
 
-        <ul className="nav nav-pills justify-content-center">
+        <ul className="nav nav-tabs justify-content-center" role="tablist">
           {tabs.map((k, index) => (
             <li className="nav-item" key={index}>
               <a
                 className={"nav-link " + (index === 0 ? "active" : "")}
-                data-toggle="pill"
-                href={`#${id}${index}`}
+                data-toggle="tab"
+                role="tab"
+                href={`#`}
+                data-target={`#${id}${index}`}
               >
                 {hasError(errors, index, fields.name) ? "! " : ""}
                 {labels[k]}
@@ -478,8 +486,9 @@ export const textareaMultiTab = ({
             return (
               <div
                 key={index}
+                role="tabpanel"
                 className={
-                  "tab-pane container " + (index === 0 ? "active" : "")
+                  "tab-pane container " + (index === 0 ? "show active" : "")
                 }
                 id={`${id}${index}`}
               >
