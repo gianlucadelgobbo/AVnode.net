@@ -2694,7 +2694,7 @@ export const radioButton = ({
     {options.map(option => (
       <Button
         key={option[0]}
-        bsStyle={option[0] === optionValue ? "primary" : "default"}
+        bsStyle={option[0] === optionValue ? "primary" : "secondary"}
         children={option[1]}
         name={input.name}
         onClick={_onOptionChange}
