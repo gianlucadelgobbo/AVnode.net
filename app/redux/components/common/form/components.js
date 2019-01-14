@@ -1,6 +1,6 @@
 import React from "react";
 import Textarea from "react-textarea-autosize";
-import { Button, ButtonGroup, Image } from "react-bootstrap";
+import { Button, ButtonGroup, Image, Radio } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select, { Async } from "react-select";
@@ -2684,23 +2684,25 @@ export const CollapsedPanel = ({
   placeholder,
   options,
   height,
-  isChild
+  isChild,
+  _onOptionChange,
+  optionValue
 }) => {
   const field = (
     <div className="form-group">
-      <ButtonGroup>
+      {<ButtonGroup>
         {options.map(option => (
           <Button
             key={option[0]}
-            bsStyle={option[0] === input.value ? "primary" : "default"}
+            bsStyle={option[0] === optionValue ? "primary" : "default"}
             children={option[1]}
             name={input.name}
-            onClick={input.onChange}
+            onClick={_onOptionChange}
             value={option[0]}
           />
         ))}
-      </ButtonGroup>
-      <Collapse isOpened={input.value === "group"}>
+        </ButtonGroup>}
+      <Collapse isOpened={optionValue === "group"}>
         <div style={{ height }} />
         <Field name="crewName" component={inputText} placeholder="Crew Name" />
         <Field
