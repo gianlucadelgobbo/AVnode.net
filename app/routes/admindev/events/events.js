@@ -331,7 +331,7 @@ router.get('/:event/program', (req, res) => {
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, organizationsettings: 1}).
-  populate(populate_event).
+  //populate(populate_event).
   exec((err, event) => {
     if (err) {
       res.json(err);

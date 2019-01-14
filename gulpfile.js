@@ -25,6 +25,7 @@ gulp.task('css_avnode_bs', function() {
 gulp.task('compress_js_avnode', function() {
   return gulp.src([
       config.modulesDir + '/jquery/dist/jquery.min.js',
+      config.modulesDir + '/popper.js/dist/umd/popper.min.js',
       config.modulesDir + '/bootstrap/dist/js/bootstrap.min.js'/* ,
       './gulp/js/main.js' */
     ])
