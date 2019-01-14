@@ -668,9 +668,9 @@ export const multiInputEmailWithDetails = ({
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
     const field = fields.get(index);
-    const { is_confirmed, _id } = field;
+    const { is_confirmed, stored } = field;
 
-    const isNewEmail = typeof _id === "undefined";
+    const isNewEmail = typeof stored === "undefined";
     const emailIsStored = !isNewEmail;
     const emailIsStoredAndNotConfirmed = emailIsStored && !is_confirmed;
     const showAdditionalInfo = emailIsStored && is_confirmed;
@@ -679,7 +679,7 @@ export const multiInputEmailWithDetails = ({
     return (
       <div
         className={"container-fluid " + (index % 2 === 0 ? "even" : "odd")}
-        key={_id || index}
+        key={stored || index}
       >
         <div className="row ">
           <div className="col-md-5 offset-1">
@@ -708,7 +708,7 @@ export const multiInputEmailWithDetails = ({
                   <Field
                     name={`${member}.is_public`}
                     component={checkboxField}
-                    placeholder={<div>Is public</div>}
+                    placeholder={<span>Is public</span>}
                     isChild={true}
                   />
                 </div>
@@ -1177,7 +1177,6 @@ export const checkboxField = ({
 }) => {
   const field = (
     <div className="form-check">
-      {isChild && placeholder && <label htmlFor={id}>{placeholder}</label>}
       <input
         id={id}
         defaultChecked={input.value}
@@ -1186,6 +1185,7 @@ export const checkboxField = ({
         {...input}
         disabled={disabled}
       />
+      {isChild && placeholder && <label className="form-check-label" htmlFor={id}>{placeholder}</label>}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
