@@ -1,129 +1,133 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux'
-import {bindActionCreators} from "redux";
-import LateralMenu from '../lateralMenu'
-import Form from './form'
-import {showModal} from "../../modal/actions";
-import Loading from '../../loading'
-import ErrorMessage from '../../errorMessage'
-import ItemNotFound from '../../itemNotFound';
-import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching} from "../selectors";
-import {fetchModel, saveModel} from "./actions";
-import {MODAL_SAVED} from "../../modal/constants";
-import {getErrorMessage, getIsFetching} from "../../events/selectors";
-import {FormattedMessage} from 'react-intl';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import LateralMenu from "../lateralMenu";
+import Form from "./form";
+import { showModal } from "../../modal/actions";
+import Loading from "../../loading";
+import ErrorMessage from "../../errorMessage";
+import ItemNotFound from "../../itemNotFound";
+import {
+  getDefaultModel,
+  getDefaultModelErrorMessage,
+  getDefaultModelIsFetching
+} from "../selectors";
+import { fetchModel, saveModel } from "./actions";
+import { MODAL_SAVED } from "../../modal/constants";
+import { getErrorMessage, getIsFetching } from "../../events/selectors";
+import { FormattedMessage } from "react-intl";
 
 /*
-* Responsabilita'
-* - Get form's initial values from redux state here
-* - pass initial values to form
-* - dispatch the action to save the model
-* */
+ * Responsabilita'
+ * - Get form's initial values from redux state here
+ * - pass initial values to form
+ * - dispatch the action to save the model
+ * */
 
 class ProfilePassword extends Component {
+  componentDidMount() {
+    const { fetchModel } = this.props;
+    fetchModel();
+  }
 
-    componentDidMount() {
-        const {fetchModel} = this.props;
-        fetchModel();
+  // Convert form values to API model
+  createModelToSave(values) {
+    let model = {};
+
+    model.oldpassword = values.oldpassword;
+
+    model.newpassword = values.password;
+
+    model.newpasswordconfirm = values.confirmPassword;
+
+    return model;
+  }
+
+  // Modify model from API to create form initial values
+  getInitialValues() {
+    const { model } = this.props;
+
+    if (!model) {
+      return {};
     }
 
-    // Convert form values to API model
-    createModelToSave(values) {
+    let v = {};
 
-        let model = {};
+    return v;
+  }
 
-        model.oldpassword = values.oldpassword;
+  onSubmit(values) {
+    const { showModal, saveModel, model } = this.props;
+    const modelToSave = this.createModelToSave(values);
 
-        model.newpassword = values.password;
+    // Add auth user _id
+    modelToSave._id = model._id;
 
-        model.newpasswordconfirm = values.confirmPassword;
+    //dispatch the action to save the model here
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model._id) {
+        showModal({
+          type: MODAL_SAVED
+        });
+      }
+    });
+  }
 
-        return model;
-    }
+  render() {
+    const { model = {}, showModal, isFetching, errorMessage } = this.props;
 
-    // Modify model from API to create form initial values
-    getInitialValues() {
-        const {model} = this.props;
+    return (
+      <div className="row">
+        <div className="col-md-2">
+          <LateralMenu />
+        </div>
+        <div className="col-md-10">
+          <h2 className="labelField">
+            <FormattedMessage
+              id="AccountPublicPassword"
+              defaultMessage="MY PASSWORD"
+            />
+          </h2>
 
-        if (!model) {
-            return {};
-        }
+          <br />
 
-        let v = {};
+          {isFetching && !model && <Loading />}
 
-        return v;
-    }
+          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-    onSubmit(values) {
-        const {showModal, saveModel, model} = this.props;
-        const modelToSave = this.createModelToSave(values);
+          {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-        // Add auth user _id
-        modelToSave._id = model._id;
-
-        //dispatch the action to save the model here
-        return saveModel(modelToSave)
-            .then((model) => {
-                if(model && model.id){
-                    showModal({
-                        type: MODAL_SAVED
-                    });
-                }
-            });
-    }
-
-    render() {
-
-        const {model={}, showModal, isFetching, errorMessage} = this.props;
-
-        return (
-            <div className="row">
-                <div className="col-md-2">
-                    <LateralMenu/>
-                </div>
-                <div className="col-md-10">
-                    <h2 className="labelField">
-                    <FormattedMessage
-                        id="AccountPublicPassword"
-                        defaultMessage="MY PASSWORD"
-                    />
-                    </h2>
-
-                    <br/>
-
-                    {isFetching && !model && <Loading/>}
-
-                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
-
-                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
-
-                    <Form
-                        initialValues={this.getInitialValues(this)}
-                        onSubmit={this.onSubmit.bind(this)}
-                        user={model}
-                        showModal={showModal}
-                    />
-                </div>
-            </div>
-        );
-    }
+          <Form
+            initialValues={this.getInitialValues(this)}
+            onSubmit={this.onSubmit.bind(this)}
+            user={model}
+            showModal={showModal}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state) => ({
-    model: getDefaultModel(state),
-    isFetching: getDefaultModelIsFetching(state),
-    errorMessage: getDefaultModelErrorMessage(state),
+const mapStateToProps = state => ({
+  model: getDefaultModel(state),
+  isFetching: getDefaultModelIsFetching(state),
+  errorMessage: getDefaultModelErrorMessage(state)
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchModel,
-    saveModel,
-    showModal,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchModel,
+      saveModel,
+      showModal
+    },
+    dispatch
+  );
 
 ProfilePassword = connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ProfilePassword);
 
 export default ProfilePassword;
