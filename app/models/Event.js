@@ -10,7 +10,8 @@ const MediaImage = require('./shared/MediaImage');
 const Link = require('./shared/Link');
 const Venue = require('./shared/Venue');
 const Schedule = require('./shared/Schedule');
-const Subscription = require('./Subscription');
+const Program = require('./Program');
+const Package = require('./shared/Package');
 
 const adminsez = 'events';
 const logger = require('../utilities/logger');
@@ -19,6 +20,7 @@ const scheduleSchema = new Schema({
   date: Date,
   starttime: Date,
   endtime: Date,
+  admitted: [{ type : Schema.ObjectId, ref : 'Category' }],
   venue: Venue
 },{ _id : false });
 
@@ -32,30 +34,6 @@ scheduleSchema.virtual('endtime_formatted').get(function () {
   return moment(this.endtime).format('h:mm');
 });
 
-const packageSchema = new Schema({
-  name: String,
-  price: Number,
-  description: String,
-  personal: { type: Boolean, default: false },
-  requested: { type: Boolean, default: false },
-  allow_multiple: { type: Boolean, default: false },
-  allow_options: { type: Boolean, default: false },
-  options_name: String,
-  options: String,
-  daily: { type: Boolean, default: false },
-  start_date: Date,
-  end_date: Date
-}, {
-  _id : false,
-  toObject: {
-    virtuals: true,
-    getters: true
-  },
-  toJSON: {
-    virtuals: true,
-    getters: true
-  }
-});
 
 const partnershipSchema = new Schema({
   category:  { type : Schema.ObjectId, ref : 'Category' },
@@ -65,16 +43,11 @@ const partnershipSchema = new Schema({
 });
 
 const programSchema = new Schema({
-  subscription_id: { type: Schema.ObjectId, ref: 'Subscription' },
+  subscription_id: { type: Schema.ObjectId, ref: 'Program' },
   schedule: Schedule,
   performance: { type: Schema.ObjectId, ref: 'Performance' }
 }, {
   _id : false
-});
-
-packageSchema.virtual('price_formatted').get(function () {
-  //return accounting.formatMoney(this.price, '€ ', 2, '.', ',');
-  return this.price;
 });
 
 const callSchema = new Schema({
@@ -86,7 +59,7 @@ const callSchema = new Schema({
   admitted: [{ type: Schema.ObjectId, ref: 'Category' }],
   excerpt: String,
   terms: String,
-  packages: [packageSchema],
+  packages: [Package],
   topics: [{
     name: String,
     description: String

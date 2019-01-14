@@ -1,0 +1,18 @@
+extends ../layout_admin
+block content
+  .row(style="height: 100vh;")
+    .col-md-3(style="height: 100%;overflow-y: scroll;")
+      h2=global.__("TO BE SCHEDULED")
+      #external-events
+        each prg in data.program
+          if !prg.schedule.starttime
+            .fc-event.ui-draggable.ui-draggable-handle( data-event='{ title: "my event", duration: "02:00" }')
+              !=prg.performance.title
+              //!=prg.performance.categories.filter(function (el) {return el.ancestor.slug=="type";})[0].name
+    .col-md-9(style="height: 100%;overflow-y: scroll;")
+      each room,i in data.rooms
+        h2=room
+        div(id="calendarroom"+i)
+        div(id="calendarroom2"+i)
+        
+  pre=JSON.stringify(data.program, null, 2)
