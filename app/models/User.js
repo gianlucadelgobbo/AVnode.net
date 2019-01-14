@@ -67,6 +67,7 @@ const userSchema = new Schema({
           return re.test(email)
         }, 'EMAIL_IS_NOT_VALID']
       },
+      stored: { type: Boolean, default: true },
       is_public: { type: Boolean, default: false },
       is_primary: { type: Boolean, default: false },
       is_confirmed: { type: Boolean, default: false },

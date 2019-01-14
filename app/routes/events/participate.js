@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
 const Event = mongoose.model('Event');
-const Subscription = mongoose.model('Subscription');
+const Program = mongoose.model('Program');
 const dataprovider = require('../../utilities/dataprovider');
 
 const logger = require('../../utilities/logger');
@@ -203,7 +203,7 @@ router.post('/', (req, res) => {
             console.log("perfpeoples");
             console.log(perfpeoples);
             myasync = false;
-            Subscription.find({"subscriptions.subscriber_id":{$in:perfpeoples}}).
+            Program.find({"subscriptions.subscriber_id":{$in:perfpeoples}}).
             lean().
             exec((err, subscriptions) => {
               let subscriptionsfound = [];
@@ -304,6 +304,8 @@ router.post('/', (req, res) => {
             call:         req.session.call.index,
             topics:       req.session.call.topics,
             performance:  req.session.call.admitted[req.session.call.performance]._id,
+            performance_categories:  req.session.call.admitted[req.session.call.performance].filter(function (el) {return el.ancestor.slug=="type";})[0]._id,
+            schedule:     {categories : ["5c38c57d9d426a9522c15ba5"]},
             reference:    req.user._id,
             subscriptions:[]
           };
@@ -326,7 +328,7 @@ router.post('/', (req, res) => {
             }
           }
           logger.debug(req.session.call.save);
-          Subscription.create(req.session.call.save, function (err, sub) {
+          Program.create(req.session.call.save, function (err, sub) {
             if (err) {
               msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
               res.render('events/participate', {
