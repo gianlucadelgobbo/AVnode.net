@@ -16,7 +16,7 @@ const signupValidate = values => {
   }
   if(subscribe==="group"){
     isValidName({ values, name: "crewName", errors });
-    isValidName({ values, name: "CrewProfile", errors });
+    isValidName({ values, name: "crewUrl", errors });
   }
 
   //Stage name

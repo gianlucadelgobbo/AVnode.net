@@ -32,10 +32,6 @@ class SignUp extends Component {
     //clone obj
     let model = Object.assign({}, values);
 
-    //let birthday = model.birthday;
-    //let myDate = moment(birthday, "DD-MM-YYYY").toDate();
-    //model.birthday = myDate;
-
     return model;
   }
 
@@ -44,9 +40,16 @@ class SignUp extends Component {
   };
 
   onSubmit(values) {
-    const { showModal, saveModel, model } = this.props;
+    const { showModal, saveModel } = this.props;
 
     let data = Object.assign({}, values);
+    
+    if(!values.crewUrl){
+      data.subscribe = "single"
+    }
+    else{
+      data.subscribe = "group"
+    }
 
     data.addresses = [];
 
@@ -83,8 +86,8 @@ class SignUp extends Component {
       modelToSave.id = "1";
       console.log(modelToSave);
       //dispatch the action to save the model here
-      return saveModel(modelToSave).then(model => {
-        if (model && model.id) {
+      return saveModel(modelToSave).then(response => {
+        if (response.model && response.model_id) {
           showModal({
             type: MODAL_SIGN_UP_SUCCESS,
           });
