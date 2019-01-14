@@ -8,12 +8,10 @@ import {
   CollapsedPanel,
   renderDatePicker,
   inputEmail,
-  googleAutocompleteSelect,
   singleGoogleCityCountry,
   inputPassword
 } from "../common/form/components";
 import validate from "./validate";
-import asyncValidate from "./asyncValidate";
 import { getFormSyncErrors } from "redux-form";
 
 class SignUpForm extends Component {
@@ -24,7 +22,9 @@ class SignUpForm extends Component {
       showModal,
       onSubmit,
       options,
-      height
+      height,
+      _onOptionChange,
+      option
     } = this.props;
 
     return (
@@ -35,6 +35,8 @@ class SignUpForm extends Component {
           placeholder="Subscribe as"
           options={options}
           height={height}
+          _onOptionChange={(e)=>_onOptionChange(e)}
+          optionValue={option}
         />
 
         <Field

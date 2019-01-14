@@ -1,167 +1,172 @@
-import React, { Component } from 'react';
-import {reduxForm, Field, FieldArray} from "redux-form";
-import {FORM_NAME} from './constants';
-import {connect} from 'react-redux';
-import {bindActionCreators} from "redux";
+import React, { Component } from "react";
+import { reduxForm, Field, FieldArray } from "redux-form";
+import { FORM_NAME } from "./constants";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {
-    inputText,
-    renderDatePicker,
-    renderList,
-    multiGoogleAddress,
-    multiInputTel,
-    multiInputText
+  inputText,
+  renderDatePicker,
+  renderList,
+  multiGoogleAddress,
+  multiInputTel,
+  multiInputText
 } from "../../common/form/components";
-import {locales, locales_labels} from '../../../../../config/default.json';
-import validate from './validate';
-import asyncValidate from './asyncValidate';
-import {getFormSyncErrors} from 'redux-form';
-import {NAME, SURNAME, GENDER, LANGUAGE, BIRTHDAY, CITIZENSHIP, PRIVATE_ADDRESS, PHONE, MOBILE, SKYPE} from "../../common/form/labels";
-import {injectIntl} from 'react-intl';
+import { locales, locales_labels } from "../../../../../config/default.json";
+import validate from "./validate";
+import asyncValidate from "./asyncValidate";
+import { getFormSyncErrors } from "redux-form";
+import {
+  NAME,
+  SURNAME,
+  GENDER,
+  LANGUAGE,
+  BIRTHDAY,
+  CITIZENSHIP,
+  PRIVATE_ADDRESS,
+  PHONE,
+  MOBILE,
+  SKYPE
+} from "../../common/form/labels";
+import { injectIntl } from "react-intl";
 
 class ProfilePrivateForm extends Component {
+  getIntlString = obj => {
+    const { intl } = this.props;
+    return intl.formatMessage(obj);
+  };
 
-    getIntlString = (obj) => {
-        const {intl} = this.props;
-        return intl.formatMessage(obj)
-    };
+  render() {
+    const {
+      submitting,
+      handleSubmit,
+      countries,
+      onSubmit,
+      showModal
+    } = this.props;
 
-    render() {
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Field
+          name="name"
+          component={inputText}
+          placeholder={this.getIntlString({ id: NAME })}
+        />
 
-        const {
-            submitting,
-            handleSubmit,
-            countries,
-            onSubmit,
-            showModal,
-            
-        } = this.props;
+        <Field
+          name="surname"
+          component={inputText}
+          placeholder={this.getIntlString({ id: SURNAME })}
+        />
 
-        return (
-            <form onSubmit={handleSubmit(onSubmit)}>
+        <Field
+          name="gender"
+          component={renderList}
+          placeholder={this.getIntlString({ id: GENDER })}
+          options={[
+            { value: "M", label: "Male" },
+            { value: "F", label: "Female" },
+            { value: "Others", label: "Other" }
+          ]}
+        />
 
-                <Field
-                    name="name"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:NAME})}
-                />
+        <Field
+          name="lang"
+          component={renderList}
+          placeholder={this.getIntlString({ id: LANGUAGE })}
+          options={locales.map(l => ({
+            value: l,
+            label: locales_labels[l]
+          }))}
+        />
 
-                <Field
-                    name="surname"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:SURNAME})}
-                />
+        <Field
+          name="birthday"
+          component={renderDatePicker}
+          placeholder={this.getIntlString({ id: BIRTHDAY })}
+        />
 
-                <Field
-                    name="gender"
-                    component={renderList}
-                    placeholder={this.getIntlString({id:GENDER})}
-                    options={[
-                        {value: 'M', label: 'Male'},
-                        {value: 'F', label: 'Female'},
-                        {value: 'Others', label: 'Other'}
-                    ]}
-                />
+        <br />
 
-                <Field
-                    name="lang"
-                    component={renderList}
-                    placeholder={this.getIntlString({id:LANGUAGE})}
-                    options={locales.map(l => ({
-                        value: l,
-                        label: locales_labels[l]
-                    }))}
-                />
+        <Field
+          name="citizenship"
+          component={renderList}
+          placeholder={this.getIntlString({ id: CITIZENSHIP })}
+          multiple={true}
+          options={countries.map(c => ({
+            value: c.key,
+            label: c.name
+          }))}
+        />
 
-                <Field
-                    name="birthday"
-                    component={renderDatePicker}
-                    placeholder={this.getIntlString({id:BIRTHDAY})}
-                />
+        <FieldArray
+          name="addresses_private"
+          component={multiGoogleAddress}
+          placeholder={this.getIntlString({ id: PRIVATE_ADDRESS })}
+          showModal={showModal}
+        />
 
-                <br/>
+        <br />
 
-                <Field
-                    name="citizenship"
-                    component={renderList}
-                    placeholder={this.getIntlString({id:CITIZENSHIP})}
-                    multiple={true}
-                    options={countries.map(c => ({
-                        value: c.key,
-                        label: c.name
-                    }))}
-                />
+        <FieldArray
+          name="phone"
+          component={multiInputTel}
+          placeholder={this.getIntlString({ id: PHONE })}
+          title="Phone Number"
+          showModal={showModal}
+        />
 
-                <FieldArray
-                    name="addresses_private"
-                    component={multiGoogleAddress}
-                    placeholder={this.getIntlString({id:PRIVATE_ADDRESS})}
-                    showModal={showModal}
-                    
-                />
+        <br />
 
-                <br/>
+        <FieldArray
+          name="mobile"
+          component={multiInputTel}
+          placeholder={this.getIntlString({ id: MOBILE })}
+          title="Mobile Number"
+          showModal={showModal}
+        />
 
-                <FieldArray
-                    name="phone"
-                    component={multiInputTel}
-                    placeholder={this.getIntlString({id:PHONE})}
-                    title="Phone Number"
-                    showModal={showModal}
-                />
+        <br />
 
-                <br/>
+        <FieldArray
+          name="skype"
+          component={multiInputText}
+          placeholder={this.getIntlString({ id: SKYPE })}
+          showModal={showModal}
+        />
 
-                <FieldArray
-                    name="mobile"
-                    component={multiInputTel}
-                    placeholder={this.getIntlString({id:MOBILE})}
-                    title="Mobile Number"
-                    showModal={showModal}
-                />
+        <hr />
 
-                <br/>
-
-                <FieldArray
-                    name="skype"
-                    component={multiInputText}
-                    placeholder={this.getIntlString({id:SKYPE})}
-                    showModal={showModal}
-                />
-
-                <hr/>
-
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    className="btn btn-primary btn-lg btn-block">
-                    {submitting ? "Saving..." : "Save"}
-                </button>
-
-            </form>
-        );
-    }
-
+        <button
+          type="submit"
+          disabled={submitting}
+          className="btn btn-primary btn-lg btn-block"
+        >
+          {submitting ? "Saving..." : "Save"}
+        </button>
+      </form>
+    );
+  }
 }
 
 ProfilePrivateForm = reduxForm({
-    form: FORM_NAME,
-    enableReinitialize: true,
-    keepDirtyOnReinitialize: true,
-    validate,
-    asyncValidate,
-    asyncBlurFields: ["name", 'addresses_private[].text']
+  form: FORM_NAME,
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
+  validate,
+  asyncValidate,
+  asyncBlurFields: ["name", "addresses_private[].text"]
 })(ProfilePrivateForm);
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    errors: getFormSyncErrors(FORM_NAME)(state)
+const mapStateToProps = state => ({
+  errors: getFormSyncErrors(FORM_NAME)(state)
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
 ProfilePrivateForm = connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ProfilePrivateForm);
 
 ProfilePrivateForm = injectIntl(ProfilePrivateForm);

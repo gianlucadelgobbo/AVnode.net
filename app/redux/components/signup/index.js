@@ -12,8 +12,16 @@ import { getModelErrorMessage } from "./selectors";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import axios from "axios";
 import moment from "moment";
+import { inputCheckbox } from "../common/form/components";
 
 class SignUp extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {option:'single'};
+  }
+
+
   componentDidMount() {
     //const {fetchModel} = this.props;
     //fetchModel();
@@ -24,10 +32,6 @@ class SignUp extends Component {
     //clone obj
     let model = Object.assign({}, values);
 
-    //let birthday = model.birthday;
-    //let myDate = moment(birthday, "DD-MM-YYYY").toDate();
-    //model.birthday = myDate;
-
     return model;
   }
 
@@ -36,9 +40,16 @@ class SignUp extends Component {
   };
 
   onSubmit(values) {
-    const { showModal, saveModel, model } = this.props;
+    const { showModal, saveModel } = this.props;
 
     let data = Object.assign({}, values);
+    
+    if(!values.crewUrl){
+      data.subscribe = "single"
+    }
+    else{
+      data.subscribe = "group"
+    }
 
     data.addresses = [];
 
@@ -75,8 +86,8 @@ class SignUp extends Component {
       modelToSave.id = "1";
       console.log(modelToSave);
       //dispatch the action to save the model here
-      return saveModel(modelToSave).then(model => {
-        if (model && model.id) {
+      return saveModel(modelToSave).then(response => {
+        if (response.model && response.model_id) {
           showModal({
             type: MODAL_SIGN_UP_SUCCESS,
           });
@@ -85,12 +96,13 @@ class SignUp extends Component {
     });
   }
 
-  handleChange() {
-    console.log("isOpened");
+  _onOptionChange(e){
+    this.setState({option:e.target.value})
   }
 
   render() {
     const { showModal, errorMessage } = this.props;
+    const {option} = this.state;
     const height = 50;
     return (
       <div className="row">
@@ -101,7 +113,8 @@ class SignUp extends Component {
             onSubmit={this.onSubmit.bind(this)}
             showModal={showModal}
             options={OPTIONS}
-            //onChange={this.handleChange.bind(this)}
+            option={option}
+            _onOptionChange={this._onOptionChange.bind(this)}
             height={height}
           />
         </div>

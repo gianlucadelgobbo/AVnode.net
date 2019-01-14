@@ -1,6 +1,6 @@
 import React from "react";
 import Textarea from "react-textarea-autosize";
-import { Button, ButtonGroup, Image } from "react-bootstrap";
+import { Button, ButtonGroup, Image, Radio } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select, { Async } from "react-select";
@@ -2678,35 +2678,61 @@ export const multiLegalOrganization = ({
   );
 };
 
+export const radioButton = ({
+  input,
+  meta,
+  placeholder,
+  options,
+  height,
+  isChild,
+  _onOptionChange,
+  optionValue
+}) => {
+  return (
+  <div>
+  <ButtonGroup>
+    {options.map(option => (
+      <Button
+        key={option[0]}
+        bsStyle={option[0] === optionValue ? "primary" : "default"}
+        children={option[1]}
+        name={input.name}
+        onClick={_onOptionChange}
+        value={option[0]}
+      />      
+    ))}
+  </ButtonGroup>
+  </div>
+  )}
+
 export const CollapsedPanel = ({
   input,
   meta,
   placeholder,
   options,
   height,
-  isChild
+  isChild,
+  _onOptionChange,
+  optionValue
 }) => {
   const field = (
     <div className="form-group">
-      <ButtonGroup>
-        {options.map(option => (
-          <Button
-            key={option[0]}
-            bsStyle={option[0] === input.value ? "primary" : "default"}
-            children={option[1]}
-            name={input.name}
-            onClick={input.onChange}
-            value={option[0]}
-          />
-        ))}
-      </ButtonGroup>
-      <Collapse isOpened={input.value === "group"}>
+      <Field 
+        name="single" 
+        component={radioButton}  
+        placeholder="Subscribe as"
+        options={options}
+        height={height}
+        _onOptionChange={_onOptionChange}
+        optionValue={optionValue}>
+      </Field>
+      <Collapse isOpened={optionValue === "group"}>
         <div style={{ height }} />
         <Field name="crewName" component={inputText} placeholder="Crew Name" />
         <Field
-          name="CrewProfile"
+          name="crewUrl"
           component={inputText}
-          placeholder="Crew Profile Url"
+          placeholder="Crew Url"
         />
         <h4>YOU AS MEMBER OF THE CREW</h4>
         <p>You will be able to add more once you confirmed your account</p>
