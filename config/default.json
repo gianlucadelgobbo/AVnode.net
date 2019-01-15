@@ -9,14 +9,14 @@
   "defaultLocale": "en",
   "dateFormat": {
     "en": {
-      "single" : "MMMM DD YYYY",
+      "single" : "dddd MMMM DD YYYY",
       "daymonth1" : "MMMM DD",
       "daymonth2" : "MMMM DD YYYY",
       "day1" : "MMMM DD",
       "day2" : "DD YYYY"
     },
     "it": {
-      "single" : "DD MMMM YYYY",
+      "single" : "dddd DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
       "daymonth2" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -4401,6 +4401,12 @@
           }]
         }, {
           "path": "program.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "program.schedule.status",
           "select": {
             "name": 1
           },

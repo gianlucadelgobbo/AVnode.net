@@ -45,7 +45,7 @@ const partnershipSchema = new Schema({
 
 const programSchema = new Schema({
   subscription_id: { type: Schema.ObjectId, ref: 'Program' },
-  schedule: Schedule,
+  schedule: [Schedule],
   performance: { type: Schema.ObjectId, ref: 'Performance' }
 }, {
   toObject: {
@@ -53,7 +53,7 @@ const programSchema = new Schema({
     getters: true
   },
   toJSON: {
-    virtuals: true,
+    virtuals: true/* ,
     transform: (doc, ret, options) => {
       delete ret.schedule.data_i;
       delete ret.schedule.data_f;
@@ -64,7 +64,7 @@ const programSchema = new Schema({
       delete ret.schedule.confirm;
       delete ret.schedule.day;
       delete ret.schedule.date;
-    }
+    } */
   }
 });
 
@@ -188,22 +188,54 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
   if (this.program && this.program.length) {
     const lang = global.getLocale();
     for(let a=0;a<this.program.length;a++){
-      if (this.program[a].schedule.starttime) {
-        let date = new Date(this.program[a].schedule.starttime);  // dateStr you get from mongodb
-        let d = date.getDate();
-        let m = date.getMonth()+1;      
-        let y = date.getFullYear();
-        let newdate = moment(this.program[a].schedule.starttime).format(config.dateFormat[lang].single);
-        if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
-          date: newdate,
-          rooms: {}
-        };
-        if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room] = {
-          venue: this.program[a].schedule.venue.name,
-          room: this.program[a].schedule.venue.room,
-          performances: []
-        };
-        if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule.venue.name+this.program[a].schedule.venue.room].performances.push(this.program[a]);  
+      for(let b=0;b<this.program[a].schedule.length;b++){
+        if (this.program[a].schedule[b].starttime) {
+          if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
+            let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
+            if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
+            let d = date.getUTCDate();
+            let m = date.getUTCMonth()+1;      
+            let y = date.getUTCFullYear();
+            let newdate = moment(date).format(config.dateFormat[lang].single);
+            if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+              date: newdate,
+              rooms: {}
+            };
+            if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room] = {
+              venue: this.program[a].schedule[b].venue.name,
+              room: this.program[a].schedule[b].venue.room,
+              performances: []
+            };
+            let clone = JSON.parse(JSON.stringify(this.program[a]));
+            clone.schedule = this.program[a].schedule[b];
+            if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
+          } else {
+            var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+/*             console.log("this.program[a].schedule[b].starttime");
+            console.log(this.program[a].schedule[b].starttime);
+            console.log(this.program[a].schedule[b].endtime);
+            console.log(days);
+ */            for(let c=0;c<days;c++){
+              let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+              let d = date.getUTCDate();
+              let m = date.getUTCMonth()+1;      
+              let y = date.getUTCFullYear();
+              let newdate = moment(date).format(config.dateFormat[lang].single);
+              if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+                date: newdate,
+                rooms: {}
+              };
+              if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room] = {
+                venue: this.program[a].schedule[b].venue.name,
+                room: this.program[a].schedule[b].venue.room,
+                performances: []
+              };
+              let clone = JSON.parse(JSON.stringify(this.program[a]));
+              clone.schedule = this.program[a].schedule[b];
+              if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
+            }
+          }
+        }
       }
     }
     return programmebydayvenueObj;

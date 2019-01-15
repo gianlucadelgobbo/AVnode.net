@@ -47,8 +47,6 @@ router.postData = (req, res) => {
         console.log('create success');
         console.log(data);
         const id = req.user.id;
-        logger.debug('req.user.id');
-        logger.debug(req.user.id);
         Models['User']
         .findById(id, req.params.sez, (err, user) => {
           logger.debug('findById user');

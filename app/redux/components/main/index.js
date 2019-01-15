@@ -77,7 +77,7 @@ class MainApp extends Component {
               </div>
             </div>
 
-            <div className="container">
+            <div className="container mb-3">
               <Switch>
                 <Route path="/admin/profile/public" component={ProfilePublic} />
                 <Route path="/admin/profile/images" component={ProfileImages} />

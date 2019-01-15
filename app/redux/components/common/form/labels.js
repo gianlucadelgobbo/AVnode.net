@@ -3,6 +3,7 @@ import { defineMessages } from "react-intl";
 //Profile Public
 export const STAGE_NAME = "label.form.stagename";
 export const PROFILE_URL = "label.form.url";
+export const PROFILE_URL_HELP = "label.form.url.help";
 export const ABOUT = "label.form.about";
 export const WEB = "label.form.web";
 export const SOCIAL = "label.form.social";
@@ -88,6 +89,10 @@ defineMessages({
   [PROFILE_URL]: {
     id: PROFILE_URL,
     defaultMessage: "Profile Url"
+  },
+  [PROFILE_URL_HELP]: {
+    id: PROFILE_URL_HELP,
+    defaultMessage: "To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)"
   },
   [ABOUT]: {
     id: ABOUT,
