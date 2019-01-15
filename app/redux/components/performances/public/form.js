@@ -44,30 +44,10 @@ class PerformancePublicForm extends Component {
       onSubmit,
       errors,
       categories,
-      options,
       _id,
       getMajorMethod,
       onChangeSelect,
-
-      style,
-      transitionName,
-      choiceTransitionName,
-      dropdownStyle,
-      searchPlaceholder,
-      searchValue,
-      value,
-      treeData,
-      treeNodeFilterProp,
-      filterTreeNode,
-      onChange,
-      showSearch,
-      allowClear,
-      treeLine,
-      onSearch,
-      open,
-      onDropdownVisibleChange,
-      onSelect
-      //placeholder
+      getChildrenCategories
     } = this.props;
 
     return (
@@ -113,37 +93,11 @@ class PerformancePublicForm extends Component {
           name="categories"
           component={renderRadioButton}
           placeholder={this.getIntlString({ id: CATEGORY })}
-          options={options}
           getMajorMethod={getMajorMethod}
+          getChildrenCategories={getChildrenCategories}
           onChangeSelect={onChangeSelect}
-        />
-
-        <Field
-          name="categories"
-          component={reactTreeComponent}
-          style={style}
-          transitionName={transitionName}
-          choiceTransitionName={choiceTransitionName}
-          dropdownStyle={dropdownStyle}
-          searchPlaceholder={searchPlaceholder}
-          showSearch
-          allowClear
-          treeLine
-          myvalue={value}
-          searchValue={searchValue}
-          treeData={treeData}
-          treeNodeFilterProp={treeNodeFilterProp}
-          filterTreeNode={filterTreeNode}
-          onChange={onChange}
-          onSearch={onSearch}
-          open={open}
-          showSearch={showSearch}
-          allowClear={allowClear}
-          treeLine={treeLine}
-          onDropdownVisibleChange={onDropdownVisibleChange}
-          onSelect={onSelect}
-          //placeholder={placeholder}
-          placeholder={this.getIntlString({ id: CATEGORY })}
+          categories={categories}
+          
         />
 
         <FieldArray

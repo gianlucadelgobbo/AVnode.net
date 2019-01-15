@@ -24,137 +24,14 @@ import {
   createMultiLanguageInitialObject
 } from "../../common/form";
 
-import { gData } from '../../common/form/utils';
-
-function isLeaf(value) {
-  if (!value) {
-    return false;
-  }
-  let queues = [...gData];
-  while (queues.length) { // BFS
-    const item = queues.shift();
-    if (item.value === value) {
-      if (!item.children) {
-        return true;
-      }
-      return false;
-    }
-    if (item.children) {
-      queues = queues.concat(item.children);
-    }
-  }
-  return false;
-}
-
-function findPath(value, data) {
-  const sel = [];
-  function loop(selected, children, item) {
-    for (let i = 0; i < children.length; i++) {
-      const item = children[i];
-      if (selected === item.value) {
-        sel.push(item);
-        return;
-      }
-      if (item.children) {
-        loop(selected, item.children, item);
-        if (sel.length) {
-          sel.push(item);
-          return;
-        }
-      }
-    }
-  }
-  loop(value, data);
-  return sel;
-}
-
 class PerformancePublic extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedView: 'Cheating',
-      tsOpen: false,
-      visible: false,
-      searchValue: '',
-      value: '',
-      lv: { value: '0-0-0-value', label: 'spe label' },
-      multipleValue: [],
-      simpleSearchValue: 'test111',
-      simpleTreeData: [
-        { key: 1, pId: 0, label: 'test1', value: 'test1' },
-        { key: 121, pId: 0, label: 'test2', value: 'test2' },
-        { key: 11, pId: 1, label: 'test11', value: 'test11' },
-        { key: 12, pId: 1, label: 'test12', value: 'test12' },
-        { key: 111, pId: 11, label: 'test111', value: 'test111' },
-      ],
-      treeDataSimpleMode: {
-        id: 'key',
-        rootPId: 0,
-      },
+      selectedView: '',
+      categorySelected:[]     
     }
   }
-  
-  
-  onClick = () => {
-    this.setState({
-      visible: true,
-    });
-  }
-
-  onClose = () => {
-    this.setState({
-      visible: false,
-    });
-  }
-
-  onSearch = (value) => {
-    console.log('Do Search:', value, arguments);
-    this.setState({ searchValue: value });
-  }
-
-  
-
-  onChangeChildren = (...args) => {
-    console.log('onChangeChildren', ...args);
-    const value = args[0];
-    const pre = value ? this.state.value : undefined;
-    this.setState({ value: isLeaf(value) ? value : pre });
-  }
-
-  onChangeLV = (value) => {
-    console.log('labelInValue', arguments);
-    if (!value) {
-      this.setState({ lv: undefined });
-      return;
-    }
-    const path = findPath(value.value, gData).map(i => i.label).reverse().join(' > ');
-    this.setState({ lv: { value: value.value, label: path } });
-  }
-
-  onMultipleChange = (value) => {
-    console.log('onMultipleChange', arguments);
-    this.setState({ multipleValue: value });
-  }
-
-  onSelect = (item) => {
-    this.setState({ value:item });
-    console.log(arguments);
-  }
-
-  onDropdownVisibleChange = (visible, info) => {
-    console.log(visible, this.state.value, info);
-    if (Array.isArray(this.state.value) && this.state.value.length > 1
-      && this.state.value.length < 3) {
-      window.alert('please select more than two item or less than one item.');
-      return false;
-    }
-    return true;
-  }
-
-  filterTreeNode = (input, child) => {
-    return String(child.props.title).indexOf(input) === 0;
-  }
-
 
   componentDidMount() {
     const {
@@ -278,7 +155,9 @@ class PerformancePublic extends Component {
     });
   }
   onChangeSelect(e){
-    this.setState({selectedView: e.target.value});
+    const {categories} = this.props;
+    const categorySelected = categories.filter(item=>item.value===e.target.value);
+    this.setState({selectedView: e.target.value, categorySelected:categorySelected});
   }
 
   render() {
@@ -292,30 +171,74 @@ class PerformancePublic extends Component {
       errorMessage,
       categories
     } = this.props;
-    const { selectedView } = this.state
-    const options = [
-      {
-        name: 'Cheating', 
-        minor: ['a', 'b'], 
-        method: ['apple', 'orange']
-      }, {
-        name: 'Abductions', 
-        minor: ['AB', 'BC', 'X'], 
-        method: ['cat', 'dog']
-      }
-    ]
-    const getMajorMethod = () => {
-      const view = options.filter(({name}) => name === selectedView)[0]
-      return (
+
+    const { selectedView, categorySelected } = this.state;
+   
+    const getMajorMethod2 = () => {
+      const view = categories.filter((item) => item.value === selectedView);
+      return view.length === 0 ? (
+        ""
+      ) : (
         <div>
+          {view[0].children.length>0 &&
           <select>
-            {view.minor.map((m,index) => <option key={index}>{m}</option>)}
+            {view[0].children.map((t) => <option key={t.key} value={t.value}>{t.title}</option>)}
           </select>
-          <select>
-            {view.method.map((m,index) => <option key={index}>{m}</option>)}
-          </select>
+          }
         </div>
-      )
+      );
+    }
+
+    const getMajorMethod = () => {
+      const view = categories.filter((item) => item.value === selectedView);
+      return view.length === 0 ? (
+        ""
+      ) : (
+        <div>
+          <div className="labelField">{view[0].children.length > 0 && `${view[0].title + " Technique"}`}</div>
+          {view[0].children.length>0 &&
+            view[0].children.map((t) => (
+            <div className="form-check" key={t.key}>
+              <input className="form-check-input" type="radio" name="categoryRadios2" id={t.key} value={t.value}/>
+              <label className="form-check-label" for={t.value}>{t.title}</label>
+            </div>
+            ))} 
+        </div>
+      );
+    }
+
+    const getChildrenCategories2 = () => {
+      const genres = categorySelected.length>0?categorySelected[0].children:"";
+      console.log(genres);
+      return genres.length === 0 ? (
+        ""
+        ) : (
+        <div>
+          {genres[0].children.length>0 &&
+            <select>
+              {genres[0].children.map((t) => <option key={t.key} value={t.value}>{t.title}</option>)}
+            </select>
+          }
+        </div>
+      );
+    }
+    const getChildrenCategories = () => {
+      const genres = categorySelected.length>0?categorySelected[0].children:"";
+      console.log(genres);
+      return genres.length === 0 ? (
+        ""
+        ) : (
+          <div>
+          <div className="labelField">{genres[0].children.length > 0 && `Genre`}</div>
+          {genres[0].children.length>0 &&
+            genres[0].children.map((t) => (
+            <div className="form-check" key={t.key}>
+              <input className="form-check-input" type="radio" name="categoryRadios3" id={t.key} value={t.value}/>
+              <label className="form-check-label" for={t.value}>{t.title}</label>
+            </div>
+            ))} 
+        </div>
+      );
     }
     return (
       <div className="row">
@@ -342,38 +265,9 @@ class PerformancePublic extends Component {
             labels={locales_labels}
             categories={categories}
             _id={_id}
-            options={options}
             getMajorMethod={getMajorMethod()}
             onChangeSelect={e => this.onChangeSelect(e)}
-
-            style={{ width: 300 }}
-            transitionName="rc-tree-select-dropdown-slide-up"
-            choiceTransitionName="rc-tree-select-selection__choice-zoom"
-            dropdownStyle={{ maxHeight: 200, overflow: 'auto' }}
-            searchPlaceholder="please search"
-            showSearch={true} 
-            allowClear={true} 
-            treeLine={true}
-            searchValue={this.state.searchValue}
-            value={this.state.value}
-            treeData={categories}
-            treeNodeFilterProp="label"
-            filterTreeNode={false}
-            onSearch={this.onSearch}
-            open={this.state.tsOpen}
-            onDropdownVisibleChange={(v, info) => {
-              console.log('single onDropdownVisibleChange', v, info);
-              // document clicked
-              if (info.documentClickClose && this.state.value === '0-0-0-0-value') {
-                return false;
-              }
-              this.setState({
-                tsOpen: v,
-              });
-              return true;
-            } }
-            onSelect={this.onSelect}
-           
+            getChildrenCategories={getChildrenCategories()}
           />
         </div>
       </div>
