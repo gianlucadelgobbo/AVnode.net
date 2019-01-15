@@ -44,7 +44,7 @@ const partnershipSchema = new Schema({
 
 const programSchema = new Schema({
   subscription_id: { type: Schema.ObjectId, ref: 'Program' },
-  schedule: Schedule,
+  schedule: [Schedule],
   performance: { type: Schema.ObjectId, ref: 'Performance' }
 }, {
   _id : false

@@ -100,6 +100,7 @@
   "label.form.tecnologies.artists": "Technologies with the artists",
   "label.form.title": "Title",
   "label.form.url": "Profilo Url",
+  "label.form.url.help": "To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)",
   "label.form.video.no.show": "Technical requirements",
   "label.form.videos.name": "Videos Name",
   "label.form.videos.url": "Videos Url",

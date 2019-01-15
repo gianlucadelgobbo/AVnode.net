@@ -71,18 +71,104 @@ block content
     thead
       tr
         th="ID"
-        th="SCHEDULE"
-        th="ACT"
-        th="TOPICS"
-        th="AUTHORS"
-        th="COUNTRY"
-        th="SUBSCRIPTION"
+        th="Act"
+        th="Submission"
+        th="Person"
+        th="Packages"
+        - for(let a=0;a<=data.daysN;a++)
+          - var d = new Date(data.days[0])
+          - var dd = new Date(d.setDate(d.getDate() + a))
+          th=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
+
+        //th="Type"
+          th="type"
+          th="hotel"
+          th="Room"
+          th="T-Shirt size"
+          th="Arrival date"
+          th="Departure date"
+          th="Total"
+          th="2018-06-06"
+          th="2018-06-07"
+          th="2018-06-08"
+          th="2018-06-09"
+          th="2018-06-10"
+          th="2018-06-11"
+          th="Note"
     tbody
+      - var conta = 0
       each item, index in data.program
         //pre=JSON.stringify(item, null, 2)
         each subscription in item.subscriptions
-          td=subscription.subscriber_id.stagename
-          //pre=JSON.stringify(subscription, null, 2)
+          - conta++
+
+          tr
+            td=conta
+            td
+              form(action="")
+                each status in data.status
+                  -   console.log("ddd")
+                  -   console.log(item.schedule.categories[0])
+                  -   console.log(status._id)
+                  -   console.log(item.schedule.categories[0].toString()==status._id.toString())
+                  .form-check.text-nowrap
+                    input.form-check-input(id='status'+status._id+subscription.subscriber_id._id, name='status'+subscription.subscriber_id._id, type='radio', value=status.id, checked=item.schedule.categories[0].toString()==status._id.toString() ? "checked" : undefined)
+                    label.form-check-label(for='status'+status._id+subscription.subscriber_id._id)=status.name
+            td
+              b!=item.performance.title
+                a.badge.badge-primary.ml-2(href="/performance/"+item.performance.slug, target="_blank")="VIEW"
+              br
+              !=item.reference.name+" "+item.reference.surname
+              br
+              a(href="mailto:"+item.reference.email)=item.reference.email
+              a.badge.badge-primary.ml-2(href="https://mail.google.com/mail/u/0/#search/"+item.reference.email)="SEARCH MESSAGES"
+              br
+              !=item.reference.mobile.map((item) => {return item.url+' '+'<a class="badge badge-primary ml-2" href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WA</a>'})
+            td
+              !=subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
+              br
+              !='<a href="mailto:'+subscription.subscriber_id.email+'">'+subscription.subscriber_id.email+'</a>'
+              //<a href="https://mail.google.com/mail/u/0/#search/'+subscription.subscriber_id.email+'">SEARCH MESSAGES</a>'
+                br
+                !=subscription.subscriber_id.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+                pre=subscription.subscriber_id
+            td(style="border-right: 2px solid #dee2e6;")
+              table
+                - var tot = 0
+                each pack in subscription.packages
+                  tr
+                    td(style="white-space: nowrap;")
+                      !=pack.name
+                      if (pack.daily)
+                        br
+                        !="Days"
+                        br
+                    td.text-right
+                      !=pack.price
+                      if (pack.daily)
+                        br
+                        !=subscription.days.length
+                        br
+                        !=subscription.days.length*pack.price
+                        - tot+= subscription.days.length*pack.price
+                      else
+                        - tot+= pack.price
+                tr
+                  td(style="white-space: nowrap;")
+                    b!="Total"
+                  td.text-right
+                    !=tot
+
+                //pre=subscription.packages
+            - for(let a=0;a<=data.daysN;a++)
+              - var d = new Date(data.days[0])
+              - var dd = new Date(d.setDate(d.getDate() + a))
+              - var present = "#000000"
+              - for(let b=0;b<subscription.days.length;b++) {
+              -   var ddd = new Date(subscription.days[b])
+              -   if (ddd.toString() == dd.toString()) present = "#FF0000"
+              - }
+              td(style="border-right: 2px solid #dee2e6;background-color:"+present)
           //tr
             td!=index
             td
@@ -107,8 +193,8 @@ block content
                 if item.performance.categories.filter(word => word.ancestor.slug == "genre").length
                   !="GENRE: "+item.performance.categories.filter(word => word.ancestor.slug == "genre")[0].name
             td
-              if item.subscription_id
-                !=item.subscription_id.topics.join("<br />")
+              if item
+                !=item.topics.join("<br />")
               else
                 .badge.badge-danger MISSING
             td!=item.performance.users.map((item) => {return item.stagename}).join("<br />")
@@ -117,14 +203,14 @@ block content
             - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
             td!=addressesaddresses.sort().join(", ")
             td
-              if item.subscription_id
+              if item
                 p
                   b!="CALL: "
-                  !=data.organizationsettings.call.calls[item.subscription_id.call].title
+                  !=data.organizationsettings.call.calls[item.call].title
                 p
                   b!="AVAILABILITY"
                 ol
-                  each subscription in item.subscription_id.subscriptions
+                  each subscription in item.subscriptions
                     li
                       b!=subscription.subscriber_id.stagename
                       br
@@ -137,11 +223,11 @@ block content
                 p
                   b!="REFERENCE"
                   br
-                  !=item.subscription_id.reference.name+" "+item.subscription_id.reference.surname
+                  !=item.reference.name+" "+item.reference.surname
                   br
-                  !='<a href="mailto:'+item.subscription_id.reference.email+'">'+item.subscription_id.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.subscription_id.reference.email+'">SEARCH MESSAGES</a>'
+                  !='<a href="mailto:'+item.reference.email+'">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'">SEARCH MESSAGES</a>'
                   br
-                  !=item.subscription_id.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+                  !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
               else
                 .badge.badge-danger MISSING
 

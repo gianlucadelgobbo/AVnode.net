@@ -8,4 +8,5 @@ block content
       a.nav-link(href='/admindev/events/'+data.event._id+'/acts/')=global.__('Acts')
     li.nav-item
       a.nav-link(href='/admindev/events/'+data.event._id+'/peoples/')=global.__('Peoples')
-  pre=JSON.stringify(data, null, 2)
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/program/')=global.__('Program')

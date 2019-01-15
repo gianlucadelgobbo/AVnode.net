@@ -58,126 +58,127 @@ html(lang='en')
     script(src="/js/admindev.js")
     //script(src="/js/moment.min.js")
     //script(src="/js/jquery-ui.min.js")
-    script(src="/js/fullcalendar.min.js")
-    each room,i in data.rooms
-      script.
-        document.addEventListener('DOMContentLoaded', function() {
-          var calendars = {};
-          var cal1 = document.getElementById('calendarroom#{i}');
-          if (cal1) {
-            calendars['calendarroom#{i}'] = new FullCalendar.Calendar(cal1, {
-              header: false,
-              defaultView: 'agendaWeek',
-              validRange: {
-                start: '2019-05-09',
-                end: '2019-05-13'
-              },
-              //columnHeaderFormat: "dddd D",
-              minTime: "15:00",
-              maxTime: "24:00",
-              slotDuration: "00:10:00",
-              slotLabelInterval: "01:00:00",
-              hiddenDays: [ 1, 2, 3 ],
-              firstDay: 1,
-              editable: true,
-              droppable: true, // this allows things to be dropped onto the calendar
-              drop: function(info) {
-                console.log(info);
-                // is the "remove after drop" checkbox checked?
-                if ($('#drop-remove').is(':checked')) {
-                  // if so, remove the element from the "Draggable Events" list
-                  $(this).remove();
-                }
-                info.draggedEl.parentNode.removeChild(info.draggedEl);
-              },
-              eventClick: function() {
-                alert('a day has been clicked!');
-              },
-              events: [
-                {
-                  title: 'My Event',
-                  start: '2019-05-13 01:00:00',
-                  end: '2019-05-13 01:15:00',
-                  description: 'This is a cool event'
-                }
-                // more events here
-              ],
-              eventDrop: function(event, element) {  
-                console.log(event);
-              },
-              eventLeave: function(info) {
-                console.log('event left!', info.event);
-              },
-              eventReceive: function(info) {
-                console.log('event received!', info.event);
-              }
-            });
-            calendars['calendarroom#{i}'].render();
-          }
-          var cal2 = document.getElementById('calendarroom2#{i}');
-          if (cal2) {
-            calendars['calendarroom2#{i}'] = new FullCalendar.Calendar(cal2, {
-              header: false,
-              defaultView: 'agendaWeek',
-              validRange: {
-                start: '2019-05-10',
-                end: '2019-05-14'
-              },
-              //columnHeaderFormat: "dddd D",
-              minTime: "00:00",
-              maxTime: "06:00",
-              slotDuration: "00:10:00",
-              slotLabelInterval: "01:00:00",
-              hiddenDays: [ 2, 3, 4 ],
-              firstDay: 2,
-              editable: true,
-              droppable: true, // this allows things to be dropped onto the calendar
-              drop: function(info) {
-                console.log(info);
-                info.draggedEl.parentNode.removeChild(info.draggedEl);
+    if currentUrl.indexOf("/program")!==-1
+      script(src="/js/fullcalendar.min.js")
+      each room,i in data.rooms
+        script.
+          document.addEventListener('DOMContentLoaded', function() {
+            var calendars = {};
+            var cal1 = document.getElementById('calendarroom#{i}');
+            if (cal1) {
+              calendars['calendarroom#{i}'] = new FullCalendar.Calendar(cal1, {
+                header: false,
+                defaultView: 'agendaWeek',
+                validRange: {
+                  start: '2019-05-09',
+                  end: '2019-05-13'
+                },
+                //columnHeaderFormat: "dddd D",
+                minTime: "15:00",
+                maxTime: "24:00",
+                slotDuration: "00:10:00",
+                slotLabelInterval: "01:00:00",
+                hiddenDays: [ 1, 2, 3 ],
+                firstDay: 1,
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function(info) {
+                  console.log(info);
                   // is the "remove after drop" checkbox checked?
                   if ($('#drop-remove').is(':checked')) {
                     // if so, remove the element from the "Draggable Events" list
                     $(this).remove();
                   }
-              },
-              eventClick: function() {
-                alert('a day has been clicked!');
-              },
-              events: [
-                {
-                  title: 'My Event',
-                  start: '2019-05-13 01:00:00',
-                  end: '2019-05-13 01:15:00',
-                  description: 'This is a cool event'
+                  info.draggedEl.parentNode.removeChild(info.draggedEl);
+                },
+                eventClick: function() {
+                  alert('a day has been clicked!');
+                },
+                events: [
+                  {
+                    title: 'My Event',
+                    start: '2019-05-13 01:00:00',
+                    end: '2019-05-13 01:15:00',
+                    description: 'This is a cool event'
+                  }
+                  // more events here
+                ],
+                eventDrop: function(event, element) {  
+                  console.log(event);
+                },
+                eventLeave: function(info) {
+                  console.log('event left!', info.event);
+                },
+                eventReceive: function(info) {
+                  console.log('event received!', info.event);
                 }
-                // more events here
-              ],
-              eventDrop: function(event, element) {  
-                console.log(event);
-              },
-              eventLeave: function(info) {
-                console.log('event left!', info.event);
-              },
-              eventReceive: function(info) {
-                console.log('event received!', info.event);
-              }
-            });
-            calendars['calendarroom2#{i}'].render();
-          }
-        });
-    script.
-      document.addEventListener('DOMContentLoaded', function() {
-        var exte = document.getElementById('external-events');
-        if (exte) {
-          new FullCalendar.Draggable(exte, {
-            itemSelector: '.fc-event',
-            eventData: function(eventEl) {
-              return {
-                title: eventEl.innerText
-              };
+              });
+              calendars['calendarroom#{i}'].render();
+            }
+            var cal2 = document.getElementById('calendarroom2#{i}');
+            if (cal2) {
+              calendars['calendarroom2#{i}'] = new FullCalendar.Calendar(cal2, {
+                header: false,
+                defaultView: 'agendaWeek',
+                validRange: {
+                  start: '2019-05-10',
+                  end: '2019-05-14'
+                },
+                //columnHeaderFormat: "dddd D",
+                minTime: "00:00",
+                maxTime: "06:00",
+                slotDuration: "00:10:00",
+                slotLabelInterval: "01:00:00",
+                hiddenDays: [ 2, 3, 4 ],
+                firstDay: 2,
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar
+                drop: function(info) {
+                  console.log(info);
+                  info.draggedEl.parentNode.removeChild(info.draggedEl);
+                    // is the "remove after drop" checkbox checked?
+                    if ($('#drop-remove').is(':checked')) {
+                      // if so, remove the element from the "Draggable Events" list
+                      $(this).remove();
+                    }
+                },
+                eventClick: function() {
+                  alert('a day has been clicked!');
+                },
+                events: [
+                  {
+                    title: 'My Event',
+                    start: '2019-05-13 01:00:00',
+                    end: '2019-05-13 01:15:00',
+                    description: 'This is a cool event'
+                  }
+                  // more events here
+                ],
+                eventDrop: function(event, element) {  
+                  console.log(event);
+                },
+                eventLeave: function(info) {
+                  console.log('event left!', info.event);
+                },
+                eventReceive: function(info) {
+                  console.log('event received!', info.event);
+                }
+              });
+              calendars['calendarroom2#{i}'].render();
             }
           });
-        }
-      });
+      script.
+        document.addEventListener('DOMContentLoaded', function() {
+          var exte = document.getElementById('external-events');
+          if (exte) {
+            new FullCalendar.Draggable(exte, {
+              itemSelector: '.fc-event',
+              eventData: function(eventEl) {
+                return {
+                  title: eventEl.innerText
+                };
+              }
+            });
+          }
+        });
 

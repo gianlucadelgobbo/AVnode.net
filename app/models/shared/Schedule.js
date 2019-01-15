@@ -15,7 +15,8 @@ const Schedule = new Schema({
   confirm: String,
   day: String,
   venue: Venue,
-  categories: [{ type: Schema.ObjectId, ref: 'Category' }]
+  categories: [{ type: Schema.ObjectId, ref: 'Category' }],
+  status: { type: Schema.ObjectId, ref: 'Category' }
 },{
   _id : false,
   toObject: {
@@ -32,8 +33,8 @@ Schedule.virtual('boxDate').get(function () {
   if (this.starttime) {
     const lang = global.getLocale();
     moment.locale(lang);
-    boxDate = moment(this.starttime).format(config.dateFormat[lang].single);
-    boxDate+= " | "+moment(this.starttime).format('hh:mm');
+    boxDate = moment.utc(this.starttime).format(config.dateFormat[lang].single);
+    boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
   }
   return boxDate;
 });
@@ -43,18 +44,19 @@ Schedule.virtual('starttimeTime').get(function () {
   if (this.starttime) {
     const lang = global.getLocale();
     moment.locale(lang);
-    starttimeTime = moment(this.starttime).format('hh:mm');
+    starttimeTime = moment.utc(new Date(this.starttime)).format('HH:mm');
   }
   return starttimeTime;
 });
 
 Schedule.virtual('endtimeTime').get(function () {
   let endtimeTime;
+  console.log(this.endtime);
   if (this.endtime) {
-    const lang = global.getLocale();
-    moment.locale(lang);
-    endtimeTime = moment(this.endtime).format('hh:mm');
+    endtimeTime = moment.utc(this.endtime).format('HH:mm');
+    endtimeTime = moment.utc(new Date(this.endtime)).format('HH:mm');
   }
+  console.log(endtimeTime);
   return endtimeTime;
 });
 

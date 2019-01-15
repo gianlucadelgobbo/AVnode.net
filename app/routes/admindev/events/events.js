@@ -20,7 +20,7 @@ const logger = require('../../../utilities/logger');
 const populate_program = [
   { 
     "path": "performance", 
-    "select": "title image abouts stats duration tech_arts tech_reqs",
+    "select": "title slug image abouts stats duration tech_arts tech_reqs",
     "model": "Performance", 
     "populate": [
       { 
@@ -123,12 +123,12 @@ const populate_program = [
     ];
  */
 const status = [
+  { "_id" : "5c38c57d9d426a9522c15ba5", "name" : "to be evaluated" },
+  { "_id" : "5be8708afc3961000000019e", "name" : "accepted - waiting for payment" },
   { "_id" : "5be8708afc39610000000013", "name" : "accepted" },
   { "_id" : "5be8708afc39610000000097", "name" : "to be completed" },
   { "_id" : "5be8708afc3961000000011a", "name" : "not_accepted" },
-  { "_id" : "5be8708afc3961000000019e", "name" : "accepted - waiting for payment" },
-  { "_id" : "5be8708afc39610000000221", "name" : "refused from user" },
-  { "_id" : "5c38c57d9d426a9522c15ba5", "name" : "to be evaluated" }
+  { "_id" : "5be8708afc39610000000221", "name" : "refused from user" }
 ];
 
 // V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
@@ -143,6 +143,7 @@ router.get('/:event', (req, res) => {
   select({title: 1, creation_date: 1}).
   exec((err, event) => {
     data.event = event;
+    data.status = status;
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
@@ -297,11 +298,25 @@ router.get('/:event/peoples', (req, res) => {
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
+
         console.log(program);
         if (err) {
           res.json(err);
         } else {
           data.program = program;
+          let days = [];
+          for(let a=0;a<program.length;a++) {
+            for(let b=0; b<program[a].subscriptions.length;b++) {
+              days = days.concat(program[a].subscriptions[b].days);
+            }
+          }
+          days = days.sort(function(a, b) {
+            a = new Date(a);
+            b = new Date(b);
+            return a<b ? -1 : a>b ? 1 : 0;
+          });
+          data.days = days;
+          data.daysN = (data.days[data.days.length-1]-data.days[0])/(24*60*60*1000);
           let admittedO = {};
           for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
           data.admitted = [];
@@ -337,6 +352,7 @@ router.get('/:event/program', (req, res) => {
       res.json(err);
     } else {
       data.event = event;
+      data.status = status;
       Program.
       find({"event": req.params.event}).
       //select({title: 1, organizationsettings: 1}).
