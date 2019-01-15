@@ -28,8 +28,6 @@ import { WithContext as ReactTags } from "react-tag-input";
 import { Collapse } from "react-collapse";
 import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
-import TreeSelect from "rc-tree-select";
-import "rc-tree-select/assets/index.css";
 import { Player } from "video-react";
 import LightBox from "../../lightboxGallery";
 import "video-react/dist/video-react.css";
@@ -56,63 +54,6 @@ export const autocompleteComponent = ({
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
         getSuggestionID={getSuggestionID}
-      />
-    </div>
-  );
-
-  return (
-    <dl className="row">
-      <dt className="col-sm-2">{label}</dt>
-      <dd className="col-sm-10"> {field} </dd>
-    </dl>
-  );
-};
-
-export const reactTreeComponent = ({
-  style,
-  transitionName,
-  choiceTransitionName,
-  dropdownStyle,
-  placeholder,
-  searchPlaceholder,
-  showSearch,
-  allowClear,
-  treeLine,
-  myvalue,
-  treeData,
-  treeNodeFilterProp,
-  filterTreeNode,
-  onChange,
-  searchValue,
-  onSearch,
-  open,
-  onDropdownVisibleChange,
-  onSelect
-}) => {
-  const label = <div className="labelField">{placeholder}</div>;
-
-  const field = (
-    <div>
-      <TreeSelect
-        style={style}
-        transitionName={transitionName}
-        choiceTransitionName={choiceTransitionName}
-        dropdownStyle={dropdownStyle}
-        placeholder={placeholder}
-        searchPlaceholder={searchPlaceholder}
-        showSearch={showSearch}
-        allowClear={allowClear}
-        treeLine={treeLine}
-        value={myvalue}
-        searchValue={searchValue}
-        treeData={treeData}
-        treeNodeFilterProp={treeNodeFilterProp}
-        filterTreeNode={filterTreeNode}
-        onChange={onChange}
-        onSearch={onSearch}
-        onDropdownVisibleChange={onDropdownVisibleChange}
-        open={open}
-        onSelect={onSelect}
       />
     </div>
   );
@@ -2770,23 +2711,40 @@ export const renderRadioButton = ({
   meta,
   placeholder,
   onChange,
-  options,
   getMajorMethod,
-  onChangeSelect
+  getChildrenCategories,
+  onChangeSelect,
+  categories
 }) => {
   const field = (
     <div className="form-group">
-      <select onChange={onChangeSelect}>
-        {options.map(({ name }, index) => (
-          <option key={index} value={name}>
-            {name}
+    <div className="row">
+    <div className="col-md-3">
+    <div className="labelField">Type</div>
+    {categories.map((category) => (
+    <div className="form-check" key={category.key}>
+      <input className="form-check-input" onChange={onChangeSelect} type="radio" name="categoryRadios" id={category.key} value={category.value}/>
+      <label className="form-check-label" for={category.key}>{category.title}</label>
+    </div>
+    ))}
+    </div>
+      {/*<select onChange={onChangeSelect}>
+        {categories.map((category) => (
+          <option key={category.key} value={category.value}>
+            {category.title}
           </option>
         ))}
-      </select>
-      {getMajorMethod}
+        </select>*/}
+      <div className="col-md-3">
+        {getMajorMethod}
+      </div>
+      <div className="col-md-3">
+        {getChildrenCategories}
+      </div>
+    </div>
     </div>
   );
-  const label = <div className="labelSignup">{placeholder}</div>;
+  const label = <div className="labelField">{placeholder}</div>;
   return (
     <dl className="row">
       <dt className="col-sm-2">{label}</dt>
