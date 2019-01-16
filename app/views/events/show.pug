@@ -121,7 +121,7 @@ block content
                     if venueroom.performances
                       each item in venueroom.performances
                         include ../partials/boxPerformanceScheduled
-          .button_more.button_more_program
+          //.button_more.button_more_program
             span.button_more_label!=global.__('+ All the program')
             span.button_more_bkg
     .polygon_divider_top
@@ -137,7 +137,12 @@ block content
         section.row.performers_event_wrapper
           .col-lg-12
             h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.artists.artistsN+")</small>"
-            h3.performers_infos=data.artists.artistsN+" "+global.__('performers')+" ("+data.artists.artistsCount + " " + global.__('artists') +") " + global.__('from') + " " + data.artists.countries.join(', ')+ " " + global.__('playing')+ " " + data.artists.actsN + " " + data.artists.acts.join(', ') + "."      
+            h3.performers_infos
+              b=data.artists.artistsN
+              !=" "+global.__('performers')+" ("+data.artists.artistsCount + " " + global.__('artists') +") "
+              !=global.__('from') + " " + data.artists.countries.join(', ')+ " " + global.__('playing')+ " "
+              b=data.artists.actsN
+              !=" " + data.artists.acts.join(', ') + "."      
             .row
               each item in data.artists.artists
                 .col-sm-4
@@ -152,8 +157,6 @@ block content
     
   
   - var partners = !data.partners || !data.partners.length ?  [{"category" : {name: "PRODUCTION"}, "users" : data.users}] : data.partners;
-  - console.log("partners")
-  - console.log(partners)
 
   .partners_event_wrapper_bkg
     .container

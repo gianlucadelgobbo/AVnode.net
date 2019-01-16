@@ -19,20 +19,20 @@ const adminsez = 'events';
 const logger = require('../utilities/logger');
 const helper = require('../utilities/helper');
 
-const scheduleSchema = new Schema({
+const datevenueSchema = new Schema({
   date: Date,
   starttime: Date,
   endtime: Date,
   venue: Venue
 },{ _id : false });
 
-scheduleSchema.virtual('date_formatted').get(function () {
+datevenueSchema.virtual('date_formatted').get(function () {
   return moment(this.date).format('MMMM Do YYYY');
 });
-scheduleSchema.virtual('starttime_formatted').get(function () {
+datevenueSchema.virtual('starttime_formatted').get(function () {
   return moment(this.starttime).format('h:mm');
 });
-scheduleSchema.virtual('endtime_formatted').get(function () {
+datevenueSchema.virtual('endtime_formatted').get(function () {
   return moment(this.endtime).format('h:mm');
 });
 
@@ -53,18 +53,7 @@ const programSchema = new Schema({
     getters: true
   },
   toJSON: {
-    virtuals: true/* ,
-    transform: (doc, ret, options) => {
-      delete ret.schedule.data_i;
-      delete ret.schedule.data_f;
-      delete ret.schedule.ora_i;
-      delete ret.schedule.ora_f;
-      delete ret.schedule.rel_id;
-      delete ret.schedule.user_id;
-      delete ret.schedule.confirm;
-      delete ret.schedule.day;
-      delete ret.schedule.date;
-    } */
+    virtuals: true
   }
 });
 
@@ -118,7 +107,7 @@ const eventSchema = new Schema({
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
   stats: {},
-  schedule: [scheduleSchema],
+  schedule: [datevenueSchema],
   partners: [partnershipSchema],
   program: [programSchema],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
@@ -208,7 +197,8 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
             };
             let clone = JSON.parse(JSON.stringify(this.program[a]));
             clone.schedule = this.program[a].schedule[b];
-            if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
+            //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
+            programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
           } else {
             var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
 /*             console.log("this.program[a].schedule[b].starttime");
@@ -232,7 +222,8 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
               };
               let clone = JSON.parse(JSON.stringify(this.program[a]));
               clone.schedule = this.program[a].schedule[b];
-              if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
+              //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
+              programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
             }
           }
         }
@@ -269,7 +260,7 @@ eventSchema.virtual('artists').get(function (req) {
           if (artists.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) artists.countries.push(this.program[a].performance.users[b].addresses[c].country);
         }
         for(let c=0;c<this.program[a].performance.categories.length;c++){
-          if (this.program[a].performance.categories[c].ancestor.toString()==='5a9bba176066240000000188' && artists.acts.indexOf(this.program[a].performance.categories[c].name)===-1) artists.acts.push(this.program[a].performance.categories[c].name);
+          if (this.program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && artists.acts.indexOf(this.program[a].performance.categories[c].name)===-1) artists.acts.push(this.program[a].performance.categories[c].name);
         }
         if (artists.artists.length<15) artists.artists.push(this.program[a].performance.users[b]);
       }

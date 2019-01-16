@@ -190,8 +190,9 @@ db.events.find({"program.0": {$exists:true}}).forEach(function(e) {
   for (i in e.program) {
     var booking = {};
     booking.event = e._id;
-    booking.schedule = e.program[i].schedule;
-    if (e.program[i].performance && e.program[i].schedule.venue) {
+    booking.schedule = [];
+    if (e.program[i].performance) for (a in e.program[i].schedule) if (e.program[i].schedule[a].venue) booking.schedule.push(e.program[i].schedule[a]);
+    if (booking.schedule.length) {
       printjson(e.program[i].performance);
       var perf = db.performances.findOne({_id:e.program[i].performance});
       if (!perf.bookings) perf.bookings = [];

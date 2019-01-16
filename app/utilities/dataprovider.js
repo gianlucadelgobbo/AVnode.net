@@ -40,6 +40,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, cb)
     });
   
   } else {
+    console.log("STOCAZZO!!!");
     model.
     findOne({slug: req.params.slug}).
     // lean({ virtuals: true }).
@@ -47,6 +48,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, cb)
     populate(populate).
     select(select).
     exec((err, data) => {
+      console.log(data);
       cb(err, data);
     });
   }
@@ -317,6 +319,104 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (err || data === null) {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
+      if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
+        const locations = data.schedule.map(obj =>{
+          if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
+            var rObj = {
+              "marker":{
+                "url":"/images/avnode_marker.svg",
+                "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
+                "origin":{"x":0,"y":0},
+                "anchor":{"x":23,"y":78}
+              }
+            };
+            rObj.lat = obj.venue.location.geometry.lat;
+            rObj.lng = obj.venue.location.geometry.lng;
+            return rObj;
+          }
+        });
+        if (locations && locations.length) {
+          data.locations = [];
+          for (let item in locations) {
+            if (locations[item]) data.locations.push(locations[item]);
+          }
+        }
+      }
+      if (data.addresses) {
+        const locations = data.addresses.map(obj =>{
+          if (obj.geometry && obj.geometry.lat && obj.geometry.lng) {
+            var rObj = {
+              "marker":{
+                "url":"/images/avnode_marker.svg",
+                "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
+                "origin":{"x":0,"y":0},
+                "anchor":{"x":23,"y":78}
+              }
+            };
+            rObj.lat = obj.geometry.lat;
+            rObj.lng = obj.geometry.lng;
+            return rObj;
+          }
+        });
+        if (locations && locations.length) {
+          data.locations = [];
+          for (let item in locations) {
+            if (locations[item]) data.locations.push(locations[item]);
+          }
+        }
+      }
+      if (req.params.img) {
+        for (let item in data.medias) {
+          if (data.medias[item].slug===req.params.img) {
+            if (!req.session[data._id+"#IMG:"+data.medias[item].slug]) {
+              req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
+              if (!data.medias[item].stats) data.medias[item].stats = {}
+              data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
+              model.updateOne({_id:data._id},{"medias":data.medias}, (err, raw) => {
+                //if (err) c
+                //console.log('The raw response from Mongo was ', raw);
+              });
+            }
+            data.img = data.medias[item];
+            data.img.index = item;
+          }
+        }
+        for (let item in data.medias2) {
+          if (data.medias2[item].slug===req.params.img) {
+            data.img.imageFormats = data.medias2[item].imageFormats;
+          }
+        }
+        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {
+          data.liked = false;
+        } else {
+          data.liked = true;
+        }
+      } else {
+        if (!req.session[data._id]) {
+          req.session[data._id] = true;
+          if (!data.stats) data.stats = {};
+          data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
+          model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
+            //if (err) c
+            //console.log('The raw response from Mongo was ', raw);
+          });
+        }  
+        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
+          data.liked = false;
+        } else {
+          data.liked = true;
+        }
+      }
+      let pages;
+      if (total) {
+        let link = '/' + data.slug + '/' + subsection + '/page/';
+        let page = (req.params.page ? parseFloat(req.params.page) : 1);
+        skip = (page - 1) * config.sections[section].limit;
+        pages = helper.getPagination(link, skip, config.sections[section].limit, total); 
+      } else {
+        pages = false;
+      }
+      console.log("STOCAZZO!!!");
       if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
         if (process.env.DEBUG) {
           res.render('json', {data: data});
@@ -331,98 +431,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
-        if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
-          const locations = data.schedule.map(obj =>{
-            if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
-              var rObj = {
-                "marker":{
-                  "url":"/images/avnode_marker.svg",
-                  "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
-                  "origin":{"x":0,"y":0},
-                  "anchor":{"x":23,"y":78}
-                }
-              };
-              rObj.lat = obj.venue.location.geometry.lat;
-              rObj.lng = obj.venue.location.geometry.lng;
-              return rObj;
-            }
-          });
-          if (locations && locations.length) {
-            data.locations = [];
-            for (let item in locations) {
-              if (locations[item]) data.locations.push(locations[item]);
-            }
-          }
-        }
-        if (data.addresses) {
-          const locations = data.addresses.map(obj =>{
-            if (obj.geometry && obj.geometry.lat && obj.geometry.lng) {
-              var rObj = {
-                "marker":{
-                  "url":"/images/avnode_marker.svg",
-                  "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
-                  "origin":{"x":0,"y":0},
-                  "anchor":{"x":23,"y":78}
-                }
-              };
-              rObj.lat = obj.geometry.lat;
-              rObj.lng = obj.geometry.lng;
-              return rObj;
-            }
-          });
-          if (locations && locations.length) {
-            data.locations = [];
-            for (let item in locations) {
-              if (locations[item]) data.locations.push(locations[item]);
-            }
-          }
-        }
-        if (req.params.img) {
-          for (let item in data.medias) {
-            if (data.medias[item].slug===req.params.img) {
-              if (!req.session[data._id+"#IMG:"+data.medias[item].slug]) {
-                req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
-                if (!data.medias[item].stats) data.medias[item].stats = {}
-                data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
-                model.updateOne({_id:data._id},{"medias":data.medias}, (err, raw) => {
-                  //if (err) c
-                  //console.log('The raw response from Mongo was ', raw);
-                });
-              }
-              data.img = data.medias[item];
-              data.img.index = item;
-            }
-          }
-          if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {
-            data.liked = false;
-          } else {
-            data.liked = true;
-          }
-        } else {
-          if (!req.session[data._id]) {
-            req.session[data._id] = true;
-            if (!data.stats) data.stats = {};
-            data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
-            model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
-              //if (err) c
-              //console.log('The raw response from Mongo was ', raw);
-            });
-          }  
-          if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
-            data.liked = false;
-          } else {
-            data.liked = true;
-          }
-        }
-        let pages;
-        if (total) {
-          let link = '/' + data.slug + '/' + subsection + '/page/';
-          let page = (req.params.page ? parseFloat(req.params.page) : 1);
-          skip = (page - 1) * config.sections[section].limit;
-          pages = helper.getPagination(link, skip, config.sections[section].limit, total); 
-        } else {
-          pages = false;
-        }
+  
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
