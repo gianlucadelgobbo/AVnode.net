@@ -160,6 +160,10 @@ class PerformancePublic extends Component {
     this.setState({selectedView: e.target.value, categorySelected:categorySelected});
   }
 
+  onChangeRadios(e){
+    console.log(e.target.value)
+  }
+
   render() {
     const {
       model = {},
@@ -199,8 +203,8 @@ class PerformancePublic extends Component {
           {view[0].children.length>0 &&
             view[0].children.map((t) => (
             <div className="form-check" key={t.key}>
-              <input className="form-check-input" type="radio" name="categoryRadios2" id={t.key} value={t.value}/>
-              <label className="form-check-label" for={t.value}>{t.title}</label>
+              <input className="form-check-input" type="radio" onChange={(e)=>this.onChangeRadios(e)} name="categoryRadios2" id={t.key} value={t.value}/>
+              <label className="form-check-label" htmlFor={t.value}>{t.title}</label>
             </div>
             ))} 
         </div>
@@ -234,7 +238,7 @@ class PerformancePublic extends Component {
             genres[0].children.map((t) => (
             <div className="form-check" key={t.key}>
               <input className="form-check-input" type="radio" name="categoryRadios3" id={t.key} value={t.value}/>
-              <label className="form-check-label" for={t.value}>{t.title}</label>
+              <label className="form-check-label" htmlFor={t.value}>{t.title}</label>
             </div>
             ))} 
         </div>

@@ -97,7 +97,7 @@ class PerformancePublicForm extends Component {
           getChildrenCategories={getChildrenCategories}
           onChangeSelect={onChangeSelect}
           categories={categories}
-          
+          errors={errors}
         />
 
         <FieldArray

@@ -2723,8 +2723,8 @@ export const renderRadioButton = ({
     <div className="labelField">Type</div>
     {categories.map((category) => (
     <div className="form-check" key={category.key}>
-      <input className="form-check-input" onChange={onChangeSelect} type="radio" name="categoryRadios" id={category.key} value={category.value}/>
-      <label className="form-check-label" for={category.key}>{category.title}</label>
+      <Field className="form-check-input" onChange={onChangeSelect} component="input" type="radio" name="categoryRadios" id={category.key} value={category.value}/>
+      <label className="form-check-label" htmlFor={category.value}>{category.title}</label>
     </div>
     ))}
     </div>
@@ -2742,7 +2742,13 @@ export const renderRadioButton = ({
         {getChildrenCategories}
       </div>
     </div>
+    {meta.error && meta.touched && (
+      <span className="error-message">
+        <FormattedMessage id={meta.error} />
+      </span>
+    )}
     </div>
+    
   );
   const label = <div className="labelField">{placeholder}</div>;
   return (
