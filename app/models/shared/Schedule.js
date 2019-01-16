@@ -24,7 +24,19 @@ const Schedule = new Schema({
     getters: true
   },
   toJSON: {
-    virtuals: true
+    virtuals: true ,
+    transform: (doc, ret, options) => {
+      delete ret.id;
+      delete ret.date;
+      delete ret.data_i;
+      delete ret.data_f;
+      delete ret.ora_i;
+      delete ret.ora_f;
+      delete ret.rel_id;
+      delete ret.user_id;
+      delete ret.confirm;
+      delete ret.day;
+    }
   }
 });
 
@@ -51,12 +63,10 @@ Schedule.virtual('starttimeTime').get(function () {
 
 Schedule.virtual('endtimeTime').get(function () {
   let endtimeTime;
-  console.log(this.endtime);
   if (this.endtime) {
     endtimeTime = moment.utc(this.endtime).format('HH:mm');
     endtimeTime = moment.utc(new Date(this.endtime)).format('HH:mm');
   }
-  console.log(endtimeTime);
   return endtimeTime;
 });
 

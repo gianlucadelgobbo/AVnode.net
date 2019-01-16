@@ -126,7 +126,6 @@
     "December"
   ],
   "cp_basepath": "controlpanel",
-  "usersListItems": 6,
   "cpanel": {
     "signup": {
       "title": "Signup",
