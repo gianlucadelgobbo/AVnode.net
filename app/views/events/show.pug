@@ -144,7 +144,7 @@ block content
               b=data.artists.actsN
               !=" " + data.artists.acts.join(', ') + "."      
             .row
-              each item in data.artists.artists
+              each item, i in data.artists.artists
                 .col-sm-4
                   include ../partials/boxPerformerEvent
     .polygon_divider_bottom
