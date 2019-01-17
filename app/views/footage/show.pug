@@ -8,6 +8,9 @@ block title
       .row.performer_title
         .col-lg-9
           h1.main_title=data.title
+            if editable
+              !="  "
+              a.badge.badge-danger(href="/admin/footage/"+data._id+"/public")=global.__("EDIT")
           if data.stats
             .performance_stat_container
               .performance_stat_wrapper

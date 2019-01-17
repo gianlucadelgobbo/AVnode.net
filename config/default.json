@@ -1,4 +1,5 @@
 {
+  "superusers": ["5be881a7fc3961000000b69b"],
   "imageWidth": 400,
   "imageHeight": 300,
   "teaserWidth": 1920,
@@ -2391,7 +2392,29 @@
               "unique": false,
               "validators": {}
             },
-            "categories": [
+            "type": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "tecnique": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "genre": [
               {
                 "comp": "simpleselect",
                 "label": "Footage categories",
@@ -2463,7 +2486,9 @@
             "title": 1,
             "abouts": 1,
             "is_public": 1,
-            "categories": 1,
+            "type":1,
+            "tecnique":1,
+            "genre":1,
             "users": 1,
             "price": 1,
             "duration": 1,
@@ -2472,7 +2497,7 @@
           },
           "selectaddon": {
           },
-          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"},{ "path": "categories", "select": "name slug", "model": "Category"}]
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"},{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "tecnique", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}]
         },
         "image": {
           "components": {
@@ -4472,10 +4497,12 @@
         "users":1,
         "slug":1,
         "image":1,
-        "categories":1,
+        "type":1,
+        "tecnique":1,
+        "genre":1,
         "stats":1
       },
-      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+      "list_populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "tecnique", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}],
       "orders": [
         "mostrecent",
         "mostviewed",
@@ -4496,16 +4523,16 @@
       ],
       "categoriesQueries": {
         "all": {},
-        "av-performance": {"categories": "5be8708afc3961000000011b" },
-        "mapping": {"categories": "5be8708afc39610000000016" },
-        "vj-set": {"categories": "5be8708afc39610000000014" },
-        "workshop": {"categories": "5be8708afc39610000000099" },
-        "lecture": {"categories": "5be8708afc396100000001a1" },
-        "project-showcase": {"categories": "5be8708afc3961000000011c" },
-        "lights-installation": {"categories": "5be8708afc39610000000017" },
-        "video-installation": {"categories": "5be8708afc3961000000019f" },
-        "dj-set": {"categories": "5be8708afc3961000000011d" },
-        "dvd-projection": {"categories": "5be8708afc39610000000015" }
+        "av-performance": {"type": "5be8708afc3961000000011b" },
+        "mapping": {"type": "5be8708afc39610000000016" },
+        "vj-set": {"type": "5be8708afc39610000000014" },
+        "workshop": {"type": "5be8708afc39610000000099" },
+        "lecture": {"type": "5be8708afc396100000001a1" },
+        "project-showcase": {"type": "5be8708afc3961000000011c" },
+        "lights-installation": {"type": "5be8708afc39610000000017" },
+        "video-installation": {"type": "5be8708afc3961000000019f" },
+        "dj-set": {"type": "5be8708afc3961000000011d" },
+        "dvd-projection": {"type": "5be8708afc39610000000015" }
       },
       "ordersQueries": {
         "mostrecent": {
@@ -4541,7 +4568,9 @@
           "slug": 1,
           "stats": 1,
           "image": 1,
-          "categories": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
           "duration": 1,
           "tech_arts": 1, 
           "tech_reqs": 1,
@@ -4560,7 +4589,21 @@
           },
           "model": "UserShow"
         }, {
-        "path": "categories",
+          "path": "type",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "tecnique",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "genre",
           "select": {
             "name": 1,
             "slug": 1

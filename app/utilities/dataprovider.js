@@ -40,7 +40,6 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, cb)
     });
   
   } else {
-    console.log("STOCAZZO!!!");
     model.
     findOne({slug: req.params.slug}).
     // lean({ virtuals: true }).
@@ -48,7 +47,6 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, cb)
     populate(populate).
     select(select).
     exec((err, data) => {
-      console.log(data);
       cb(err, data);
     });
   }
@@ -416,7 +414,16 @@ dataprovider.show = (req, res, section, subsection, model) => {
       } else {
         pages = false;
       }
-      console.log("STOCAZZO!!!");
+      let editable = false;
+      if (req.user._id) {
+        if (config.superusers.indexOf(req.user._id.toString())!==-1) {
+          editable = true;
+        } else if (data.users) {
+          for(let a=0;a<data.users.length;a++) if (data.users[a]._id.toString() === req.user._id.toString() || req.user.crews.indexOf(data.users[a]._id.toString())!==-1) editable = true;
+        } else if (data._id.toString() === req.user._id.toString()) {
+          editable = true;
+        }
+      }
       if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
         if (process.env.DEBUG) {
           res.render('json', {data: data});
@@ -431,11 +438,12 @@ dataprovider.show = (req, res, section, subsection, model) => {
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
-  
+
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
           canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+          editable: editable,
           data: data,
           pages: pages,
           section: section,

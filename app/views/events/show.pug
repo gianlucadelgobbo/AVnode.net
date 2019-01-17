@@ -25,6 +25,9 @@ block title
             .row
               .col-lg-9
                 h1.main_title=data.title
+                  if editable
+                    !="  "
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
                 if data.stats
                   .performance_stat_container
                     .performance_stat_wrapper
