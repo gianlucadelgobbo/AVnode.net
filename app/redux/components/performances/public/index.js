@@ -177,6 +177,8 @@ class PerformancePublic extends Component {
     } = this.props;
 
     const { selectedView, categorySelected } = this.state;
+
+    console.log(selectedView)
    
     const getMajorMethod2 = () => {
       const view = categories.filter((item) => item.value === selectedView);
