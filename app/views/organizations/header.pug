@@ -1,7 +1,10 @@
 .container
   .row
     .col-lg-7
-      h1.main_title=data.stagename          
+      h1.main_title=data.stagename
+        if editable
+          !="  "
+          a.badge.badge-danger(href="/admin/crews/"+data._id+"/public")=global.__("EDIT")          
       ul.performer_address.list-inline
         each address in data.addresses
           li.list-inline-item=address.locality + ", " + address.country

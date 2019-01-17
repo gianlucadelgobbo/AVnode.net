@@ -8,6 +8,9 @@ block title
       .row.performer_title
         .col-lg-9
           h1.main_title=data.title
+            if editable
+              !="  "
+              a.badge.badge-danger(href="/admin/performances/"+data._id+"/public")=global.__("EDIT")
           if data.stats
             .performance_stat_container
               .performance_stat_wrapper
@@ -62,12 +65,16 @@ block content
                 p!=data.tech_art
 
       .col-sm-4.performance_info_sidebar
-        
-        if data.categories
+        if data.type
           ul.list-inline.category_performance_item.single_performance
-            each category in data.categories
+            li.list-inline-item
+                span=data.type.name
+            if data.tecnique
               li.list-inline-item
-                span=category.name
+                span=data.tecnique.name
+            if data.genre
+              li.list-inline-item
+                span=data.genre.name
         .performance_users_item_wrapper
           .row
             each user in data.users

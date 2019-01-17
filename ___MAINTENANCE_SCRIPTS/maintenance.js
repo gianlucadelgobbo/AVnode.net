@@ -33,6 +33,7 @@ var USERS = function() {
     for (item in e.crews) {
       //myids.push(e.crews[item]);
     }
+
     var footage =  db.footage.find({"users": {$in: myids}, "is_public": true}).toArray().map(function(item){ return item._id; });
     if (footage.length) e.footage = footage;
     if (!footage.length) delete e.footage;
@@ -144,8 +145,35 @@ var USERS = function() {
     db.users.save(e);
   });
 
-  db.users.find({}).forEach(function(e) {
+  var query = {
+    $or: [
+      {"performances.0": {$exists: true}}, 
+      {"events.0": {$exists: true}}, 
+      {"news.0": {$exists: true}}, 
+      {"videos.0": {$exists: true}}, 
+      {"galleries.0": {$exists: true}}, 
+      {"partnerships.0": {$exists: true}}, 
+      {"footage.0": {$exists: true}}, 
+      {"playlists.0": {$exists: true}}
+    ]
+  };
+  //query = {_id:ObjectId("5be881a7fc3961000000b69b")};
+  db.users.find(query).forEach(function(e) {
+    var myids = [e._id];
+    for (item in e.crews) {
+      //myids.push(e.crews[item]);
+    }
     //e.news = db.news.find({users:{$in:meandcrews}},{_id: 1}).toArray().map(function(item){ return item._id; });
+    var recent = {};
+    recent.performances = db.performances.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    recent.events = db.events.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    recent.partnerships = db.partnerships.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    recent.footage = db.footage.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    recent.playlists = db.playlists.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    recent.videos = db.videos.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    recent.galleries = db.galleries.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    recent.news = db.news.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+
     e.activity = 0;
     e.activity+= (e.stats.performances ? e.stats.performances * 100 : 0);
     e.activity+= (e.stats.events ? e.stats.events             * 50 : 0);
@@ -167,6 +195,25 @@ var USERS = function() {
     e.activity_as_organization+= (e.stats.videos ? e.stats.videos             * 1 : 0);
     e.activity_as_organization+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
     e.activity_as_organization+= (e.stats.news ? e.stats.news                 * 1 : 0);
+
+    e.activity+= (recent.performances ? recent.performances * 1000 : 0);
+    e.activity+= (recent.events ? recent.events             * 500 : 0);
+    e.activity+= (recent.partnerships ? recent.partnerships * 50 : 0);
+    e.activity+= (recent.footage ? recent.footage           * 10 : 0);
+    e.activity+= (recent.playlists ? recent.playlists       * 20 : 0);
+    e.activity+= (recent.videos ? recent.videos             * 30 : 0);
+    e.activity+= (recent.galleries ? recent.galleries       * 10 : 0);
+    e.activity+= (recent.news ? recent.news                 * 10 : 0);
+
+    e.activity_as_performer+= (recent.performances ? recent.performances * 1000 : 0);
+    e.activity_as_performer+= (recent.footage ? recent.footage           * 10 : 0);
+    e.activity_as_performer+= (recent.playlists ? recent.playlists       * 10 : 0);
+
+    e.activity_as_organization+= (recent.events ? recent.events             * 100 : 0);
+    e.activity_as_organization+= (recent.partnerships ? recent.partnerships * 10 : 0);
+    e.activity_as_organization+= (recent.videos ? recent.videos             * 10 : 0);
+    e.activity_as_organization+= (recent.galleries ? recent.galleries       * 10 : 0);
+    e.activity_as_organization+= (recent.news ? recent.news                 * 10 : 0);
 
     db.users.save(e);
   });
@@ -714,3 +761,34 @@ db.events.find({}).forEach(function(event) {
     db.events.save(event);
   }
 });
+
+db.performances.find({"categories.0":{$exists: true}}).forEach(function(e) {
+  e.categories.forEach(function(cat_id) {
+    db.categories.find({"_id":cat_id}).forEach(function(cat) {
+      printjson(cat.name);  
+      if (cat.ancestor.str == "5be8708afc3961000000008f") {
+        e.type = cat._id;
+        printjson("e.type");  
+        printjson(e.type);  
+      }
+      if (cat.ancestor.str == "5be8708afc3961000000021c") {
+        e.genre = cat._id;
+        printjson("e.genre");  
+        printjson(e.genre);  
+      } 
+      if (cat.ancestor.str == "5be8708afc39610000000014") {
+        e.tecnique = cat._id;
+        printjson("e.tecnique");  
+        printjson(e.tecnique);  
+      } 
+      if (cat.ancestor.str == "5be8708afc3961000000011b") {
+        printjson("e.tecnique");  
+        printjson(e.tecnique);  
+        e.tecnique = cat._id;
+      } 
+    });
+  });
+  db.performances.save(e);
+});
+
+
