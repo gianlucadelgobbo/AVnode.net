@@ -1129,7 +1129,7 @@ export const checkboxField = ({
     <div className="form-check">
       <input
         id={id}
-        defaultChecked={input.value}
+        checked={input.value}
         className="form-check-input"
         type="checkbox"
         {...input}
@@ -2716,6 +2716,7 @@ export const renderRadioButton = ({
   onChangeSelect,
   categories
 }) => {
+  console.log(input.value)
   const field = (
     <div className="form-group">
     <div className="row">
@@ -2723,7 +2724,16 @@ export const renderRadioButton = ({
     <div className="labelField">Type</div>
     {categories.map((category) => (
     <div className="form-check" key={category.key}>
-      <Field className="form-check-input" onChange={onChangeSelect} component="input" type="radio" name="categoryRadios" id={category.key} value={category.value}/>
+      <Field 
+        className="form-check-input" 
+        onChange={onChangeSelect} 
+        component="input" 
+        type="radio" 
+        name="categoryRadios" 
+        id={category.key} 
+        value={category.value}
+        //checked={input.value[0].slug === "vj-set"} 
+      />
       <label className="form-check-label" htmlFor={category.value}>{category.title}</label>
     </div>
     ))}
