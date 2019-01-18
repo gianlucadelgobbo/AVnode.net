@@ -10,33 +10,33 @@ const request = require('request');
 const logger = require('../../../utilities/logger');
 
 /* router.get('/showall', (req, res) => {
-  logger.debug('/admin/tools/addresses/showall');
+  logger.debug('/admindev/supertools/addresses/showall');
   showall(req, res, false, cb = (data) => {
-    res.render('admin/tools/addresses/showall', {
-      title: 'admin/tools/addresses/showall',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools/addresses/showall', {
+      title: 'admindev/supertools/addresses/showall',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
   });
 }); */
 
 router.get('/usersdbcheck', (req, res) => {
-  logger.debug('/admin/tools/addresses/usersdbcheck');
+  logger.debug('/admindev/supertools/addresses/usersdbcheck');
   usersdbcheck(req, res, cb = (data) => {
-    res.render('admin/tools/addresses/usersdbcheck', {
-      title: 'admin/tools/addresses/usersdbcheck',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools/addresses/usersdbcheck', {
+      title: 'admindev/supertools/addresses/usersdbcheck',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
   });
 });
 
 router.get('/updatedb', (req, res) => {
-  logger.debug('/admin/tools/addresses/updatedb');
+  logger.debug('/admindev/supertools/addresses/updatedb');
   showall(req, res, true, cb = (data) => {
-    res.render('admin/tools', {
-      title: 'admin/tools/addresses/updatedb',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools', {
+      title: 'admindev/supertools/addresses/updatedb',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
   });
@@ -47,9 +47,9 @@ router.get('/getgeometry', (req, res) => {
     console.log('getgeometry');
     const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
     console.log(script);
-    res.render('admin/tools', {
-      title: 'admin/tools/addresses/getgeometry',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools', {
+      title: 'admindev/supertools/addresses/getgeometry',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
       script: script
     });
@@ -61,11 +61,11 @@ router.get('/setgeometry', (req, res) => {
   var skip = req.query.skip ? parseFloat(req.query.skip)+1 : 0;
   console.log(skip);
   setgeometry(req, res, skip, cb = (data) => {
-    res.render('admin/tools', {
-      title: 'admin/tools/addresses/setgeometry',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools', {
+      title: 'admindev/supertools/addresses/setgeometry',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
-      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/addresses/setgeometry?skip=' + (skip) + '"},1000);</script>' : ""
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/addresses/setgeometry?skip=' + (skip) + '"},1000);</script>' : ""
     });
   });
 });
@@ -73,24 +73,24 @@ router.get('/setgeometry', (req, res) => {
 // VENUES
 
 router.get('/venuesdbcheck', (req, res) => {
-  logger.debug('/admin/tools/addresses/venuesdbcheck');
+  logger.debug('/admindev/supertools/addresses/venuesdbcheck');
   venuesdbcheck(req, res, cb = (data) => {
     logger.debug(data);
-    res.render('admin/tools/addresses/venuesdbcheck', {
-      title: 'admin/tools/addresses/venuesdbcheck',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools/addresses/venuesdbcheck', {
+      title: 'admindev/supertools/addresses/venuesdbcheck',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
   });
 });
 
 router.get('/venuesdbimport', (req, res) => {
-  logger.debug('/admin/tools/addresses/venuesdbimport');
+  logger.debug('/admindev/supertools/addresses/venuesdbimport');
   venuesdbimport(req, res, cb = (data) => {
     //logger.debug(data);
-    res.render('admin/tools/addresses/venuesdbcheck', {
-      title: 'admin/tools/addresses/venuesdbimport',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools/addresses/venuesdbcheck', {
+      title: 'admindev/supertools/addresses/venuesdbimport',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
   });
@@ -102,9 +102,9 @@ router.get('/venuesgetgeometry', (req, res) => {
     console.log('venuesgetgeometry');
     const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
     console.log(script);
-    res.render('admin/tools', {
-      title: 'admin/tools/addresses/venuesgetgeometry',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools', {
+      title: 'admindev/supertools/addresses/venuesgetgeometry',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
       script: script
     });
@@ -116,11 +116,11 @@ router.get('/venuessetgeometry', (req, res) => {
   var skip = req.query.skip ? parseFloat(req.query.skip)+1 : 0;
   console.log(skip);
   venuessetgeometry(req, res, skip, cb = (data) => {
-    res.render('admin/tools', {
-      title: 'admin/tools/addresses/venuessetgeometry',
-      currentUrl: '/admin/tools/addresses'+req.path,
+    res.render('admindev/supertools', {
+      title: 'admindev/supertools/addresses/venuessetgeometry',
+      currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
-      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admin/tools/addresses/venuessetgeometry?skip=' + (skip) + '"},1000);</script>' : ""
+      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/addresses/venuessetgeometry?skip=' + (skip) + '"},1000);</script>' : ""
     });
   });
 });
@@ -477,8 +477,8 @@ const showall = (req, res, save, cb) => {
             }
           }
           if (index === addressesA.length-1) {
-            res.render('admin/tools', {
-              title: 'admin/tools',
+            res.render('admindev/supertools', {
+              title: 'admindev/supertools',
               data: addressesA
             });
           }

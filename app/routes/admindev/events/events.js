@@ -134,6 +134,30 @@ const status = [
 // V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
 // V {"addresses.country": "Italy", "addresses.locality":{$in: ["Rome","Roma"]}},{addresses:1}
 
+router.get('/', (req, res) => {
+  logger.debug('/events');
+  let results = {};
+  const myids = req.user.crews.concat([req.user._id.toString()]);
+  Event.
+  find({"users": {$in: myids}}).
+  //lean().
+  select({title: 1, creation_date: 1}).
+  exec((err, data) => {
+    results.events = data;
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(results);
+    } else {
+      console.log(data);
+      res.render('admindev/home', {
+        title: 'Advanced Tools',
+        currentUrl: req.originalUrl,
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        data: results,
+        script: false
+      });
+    }
+  });
+});
 router.get('/:event', (req, res) => {
   logger.debug('/events/'+req.params.event);
   let data = {};

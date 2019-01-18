@@ -5,14 +5,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Event = mongoose.model('Event');
 
-/* const get = require('./api/get');
-const put = require('./api/put');
-const post = require('./api/post');
-const upload = require('./api/upload'); */
-const tools = require('./tools/tools');
-const wpimport = require('./tools/wpimport');
-const addresses = require('./tools/addresses');
-const events = require('./events/events');
+const events =      require('./events/events');
+
+const supertools =  require('./supertools/index');
+const wpimport =    require('./supertools/wpimport');
+const addresses =   require('./supertools/addresses');
+const files =       require('./supertools/files');
+const emails =      require('./supertools/emails');
+const categories =  require('./supertools/categories');
 
 const logger = require('../../utilities/logger');
 
@@ -23,6 +23,13 @@ if (process.env.DEBUG) {
 }
 
 router.use('/events', events);
+
+router.use('/supertools/wpimport', wpimport);
+router.use('/supertools/addresses', addresses);
+router.use('/supertools/files', files);
+router.use('/supertools/emails', emails);
+router.use('/supertools/categories', categories);
+router.use('/supertools', supertools);
 
 router.get('/', (req, res) => {
   logger.debug('/events');
@@ -39,13 +46,26 @@ router.get('/', (req, res) => {
     } else {
       console.log(data);
       res.render('admindev/home', {
-        title: 'Advanced Tools',
+        title: 'Events',
         currentUrl: req.originalUrl,
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
         data: results,
         script: false
       });
     }
   });
+});
+
+router.get('/api/*', (req, res) => {
+  res.status(404).json({ error: `API_NOT_FOUND` });
+});
+
+router.get('/api', (req, res) => {
+  res.status(404).json({ error: `API_NOT_FOUND` });
+});
+
+router.get('/*', (req, res) => {
+  res.status(404).json({ error: `API_NOT_FOUND` });
 });
 
 
@@ -180,25 +200,5 @@ router.get('/api/:sez', (req, res) => {
   get.getList(req, res);
 });
  */
-
-
-
-
-
-router.get('/api/*', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
-});
-
-router.get('/api', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
-});
-
-router.use('/tools/wpimport', wpimport);
-router.use('/tools/addresses', addresses);
-router.use('/tools', tools);
-
-router.get('/*', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
-});
 
 module.exports = router;

@@ -29,7 +29,7 @@ router.getList = (req, res) => {
     .find(query)
     .select(select)
     .populate(populate)
-    .sort({createdAt:-1})
+    .sort({creation_date:-1})
     .exec((err, data) => {
       if (err) {
         res.status(500).json({ error: `${JSON.stringify(err)}` });
