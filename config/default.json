@@ -4468,7 +4468,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": {},
           "model": "Video"
         }, {
           "path": "galleries",
@@ -4479,7 +4479,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": {},
           "model": "Gallery"
         }]
       }
