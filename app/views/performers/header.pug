@@ -1,7 +1,7 @@
 .container
   .row
     .col-lg-7
-      h1.main_title=data.stagename  title
+      h1.main_title=data.stagename
         if editable
           !="  "
           a.badge.badge-danger(href="/admin/"+(data.is_crew ? "crews" : "profile")+"/"+data._id+"/public")=global.__("EDIT")        

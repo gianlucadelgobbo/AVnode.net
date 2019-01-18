@@ -1,21 +1,17 @@
 extends layout_admin
 block content
-  h2=title
-  hr.border.border-white
   .row
-    .col-md-8.offset-md-2
-      .row
-        .col-md-4
-          if data.events.length
-            h2=global.__("Events")
-            ul
-            each item, index in data.events
-              li
-                a(href="/admindev/events/"+item._id)!=item.title
-        .col-md-4
-          if data.events.length
-            h2=global.__("Events")
-        .col-md-4
-          if data.events.length
-            h2=global.__("Events")
-  pre=JSON.stringify(data, null, 2)
+    .col-md-4
+      if data.events.length
+        h2=global.__("Events")
+        ul
+        each item, index in data.events
+          li
+            a(href="/admindev/events/"+item._id)!=item.title
+    .col-md-4
+      if data.events.length
+        h2=global.__("Organizations")
+    .col-md-4
+      if data.events.length
+        h2=global.__("Partners")
+  //pre=JSON.stringify(data, null, 2)

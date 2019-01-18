@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
   let results = {};
   const myids = req.user.crews.concat([req.user._id.toString()]);
   Event.
-  find({"users": {$in: myids}}).
+  find({"users": {$in: myids},"organizationsettings.call.calls.0":{$exists:true}}).
   //lean().
   select({title: 1, creation_date: 1}).
   exec((err, data) => {
@@ -46,7 +46,7 @@ router.get('/', (req, res) => {
     } else {
       console.log(data);
       res.render('admindev/home', {
-        title: 'Events',
+        title: 'Advanced Tools',
         currentUrl: req.originalUrl,
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
         data: results,
