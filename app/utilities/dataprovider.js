@@ -508,6 +508,7 @@ dataprovider.list = (req, res, section, model) => {
           jsonld:dataprovider.getJsonld(data, req, title),
           canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
           sort: sorting,
+          total: total,
           pages: pages,
           filter: filter,
           categories: config.sections[section].categories,

@@ -152,9 +152,9 @@ var USERS = function() {
       {"news.0": {$exists: true}}, 
       {"videos.0": {$exists: true}}, 
       {"galleries.0": {$exists: true}}, 
-      {"partnerships.0": {$exists: true}}, 
+      {"partnerships.0": {$exists: true}}/* , 
       {"footage.0": {$exists: true}}, 
-      {"playlists.0": {$exists: true}}
+      {"playlists.0": {$exists: true}} */
     ]
   };
   //query = {_id:ObjectId("5be881a7fc3961000000b69b")};
@@ -168,8 +168,8 @@ var USERS = function() {
     recent.performances = db.performances.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
     recent.events = db.events.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
     recent.partnerships = db.partnerships.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
-    recent.footage = db.footage.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
-    recent.playlists = db.playlists.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    //recent.footage = db.footage.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+    //recent.playlists = db.playlists.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
     recent.videos = db.videos.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
     recent.galleries = db.galleries.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
     recent.news = db.news.count({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
@@ -178,16 +178,16 @@ var USERS = function() {
     e.activity+= (e.stats.performances ? e.stats.performances * 100 : 0);
     e.activity+= (e.stats.events ? e.stats.events             * 50 : 0);
     e.activity+= (e.stats.partnerships ? e.stats.partnerships * 5 : 0);
-    e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
-    e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
+    //e.activity+= (e.stats.footage ? e.stats.footage           * 1 : 0);
+    //e.activity+= (e.stats.playlists ? e.stats.playlists       * 2 : 0);
     e.activity+= (e.stats.videos ? e.stats.videos             * 3 : 0);
     e.activity+= (e.stats.galleries ? e.stats.galleries       * 1 : 0);
     e.activity+= (e.stats.news ? e.stats.news                 * 1 : 0);
 
     e.activity_as_performer = 0;
     e.activity_as_performer+= (e.stats.performances ? e.stats.performances * 100 : 0);
-    e.activity_as_performer+= (e.stats.footage ? e.stats.footage           * 1 : 0);
-    e.activity_as_performer+= (e.stats.playlists ? e.stats.playlists       * 1 : 0);
+    //e.activity_as_performer+= (e.stats.footage ? e.stats.footage           * 1 : 0);
+    //e.activity_as_performer+= (e.stats.playlists ? e.stats.playlists       * 1 : 0);
 
     e.activity_as_organization = 0;
     e.activity_as_organization+= (e.stats.events ? e.stats.events             * 10 : 0);
@@ -199,15 +199,15 @@ var USERS = function() {
     e.activity+= (recent.performances ? recent.performances * 1000 : 0);
     e.activity+= (recent.events ? recent.events             * 500 : 0);
     e.activity+= (recent.partnerships ? recent.partnerships * 50 : 0);
-    e.activity+= (recent.footage ? recent.footage           * 10 : 0);
-    e.activity+= (recent.playlists ? recent.playlists       * 20 : 0);
+    //e.activity+= (recent.footage ? recent.footage           * 10 : 0);
+    //e.activity+= (recent.playlists ? recent.playlists       * 20 : 0);
     e.activity+= (recent.videos ? recent.videos             * 30 : 0);
     e.activity+= (recent.galleries ? recent.galleries       * 10 : 0);
     e.activity+= (recent.news ? recent.news                 * 10 : 0);
 
     e.activity_as_performer+= (recent.performances ? recent.performances * 1000 : 0);
-    e.activity_as_performer+= (recent.footage ? recent.footage           * 10 : 0);
-    e.activity_as_performer+= (recent.playlists ? recent.playlists       * 10 : 0);
+    //e.activity_as_performer+= (recent.footage ? recent.footage           * 10 : 0);
+    //e.activity_as_performer+= (recent.playlists ? recent.playlists       * 10 : 0);
 
     e.activity_as_organization+= (recent.events ? recent.events             * 100 : 0);
     e.activity_as_organization+= (recent.partnerships ? recent.partnerships * 10 : 0);
