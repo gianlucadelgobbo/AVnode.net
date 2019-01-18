@@ -415,7 +415,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         pages = false;
       }
       let editable = false;
-      if (req.user._id) {
+      if (req.user && req.user._id) {
         if (config.superusers.indexOf(req.user._id.toString())!==-1) {
           editable = true;
         } else if (data.users) {
