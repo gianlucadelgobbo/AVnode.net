@@ -13,7 +13,7 @@ class ProfileEmailsForm extends Component {
   };
 
   extractModelEmails() {
-    const { model = {} } = this.props;
+    let { model = {} } = this.props;
     let { emails = [] } = model;
 
     emails = emails.map(e => e.email);
