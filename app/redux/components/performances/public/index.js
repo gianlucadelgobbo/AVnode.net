@@ -28,8 +28,9 @@ class PerformancePublic extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedView: '',
-      categorySelected:[]     
+      selectedType:"vj-set",
+      selectedTechnique:'generative',
+      selectedGenre:'jazz'
     }
   }
 
@@ -75,9 +76,11 @@ class PerformancePublic extends Component {
   // Modify model from API to create form initial values
   getInitialValues() {
     const { model } = this.props;
+
     if (!model) {
       return {};
     }
+
     const { abouts } = model;
     let v = {};
 
@@ -86,6 +89,8 @@ class PerformancePublic extends Component {
 
     //Convert title for redux-form
     v.title = model.title;
+    model.type = 'vj-set';
+    v.type = model.type;
 
     v.abouts = populateMultiLanguageObject("abouts", abouts);
 
@@ -97,46 +102,6 @@ class PerformancePublic extends Component {
     v.tech_arts = createMultiLanguageInitialObject("tech_arts");
     v.tech_reqs = createMultiLanguageInitialObject("tech_reqs");
 
-    // Convert tech_arts format for FieldArray redux-form
-    /*v.tech_arts = [];
-        if (Array.isArray(model.tech_arts)) {
-
-            // convert current lang
-            v.tech_arts = model.tech_arts.map(x => ({
-                key: `tech_arts.${x.lang}`,
-                value: x.text
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = v.tech_arts.filter(o => o.key === `tech_arts.${l}`).length > 0;
-            if (!found) {
-                v.tech_arts.push({
-                    key: `tech_arts.${l}`,
-                    value: ""
-                })
-            }
-        });
-        v.tech_reqs = [];
-        if (Array.isArray(model.tech_reqs)) {
-
-            // convert current lang
-            v.tech_reqs = model.tech_reqs.map(x => ({
-                key: `tech_reqs.it`,
-                value: x
-            }));
-        }
-
-        locales.forEach(l => {
-            let found = v.tech_reqs.filter(o => o.key === `tech_reqs.${l}`).length > 0;
-            if (!found) {
-                v.tech_reqs.push({
-                    key: `tech_reqs.${l}`,
-                    value: ""
-                })
-            }
-        });
-        */
     return v;
   }
 
@@ -154,14 +119,11 @@ class PerformancePublic extends Component {
       }
     });
   }
-  onChangeSelect(e){
-    const {categories} = this.props;
-    const categorySelected = categories.filter(item=>item.value===e.target.value);
-    this.setState({selectedView: e.target.value, categorySelected:categorySelected});
-  }
 
-  onChangeRadios(e){
-    console.log(e.target.value)
+  handleChange(key, value){
+    this.setState({[key]: value});
+    const {model} = this.props;
+    model.type = value;
   }
 
   render() {
@@ -176,27 +138,16 @@ class PerformancePublic extends Component {
       categories
     } = this.props;
 
-    const { selectedView, categorySelected } = this.state;
+    const {selectedType, selectedTechnique, selectedGenre } = this.state;
 
-    console.log(selectedView)
-   
-    const getMajorMethod2 = () => {
-      const view = categories.filter((item) => item.value === selectedView);
-      return view.length === 0 ? (
-        ""
-      ) : (
-        <div>
-          {view[0].children.length>0 &&
-          <select>
-            {view[0].children.map((t) => <option key={t.key} value={t.value}>{t.title}</option>)}
-          </select>
-          }
-        </div>
-      );
-    }
+    //model.type = "dvd-projection";
 
-    const getMajorMethod = () => {
-      const view = categories.filter((item) => item.value === selectedView);
+    //model.techique = 'generative';
+
+    //model.genre = 'jazz';
+
+    const getTechnique = () => {
+      const view = categories.filter((item) => item.value === model.type);
       return view.length === 0 ? (
         ""
       ) : (
@@ -205,7 +156,15 @@ class PerformancePublic extends Component {
           {view[0].children.length>0 &&
             view[0].children.map((t) => (
             <div className="form-check" key={t.key}>
-              <input className="form-check-input" type="radio" onChange={(e)=>this.onChangeRadios(e)} name="categoryRadios2" id={t.key} value={t.value}/>
+              <input 
+                className="form-check-input" 
+                type="radio" 
+                onChange={(e)=>this.handleChange('selectedTechnique', e.target.value)}
+                name="categoryRadios2" 
+                id={t.key} 
+                value={t.value}
+                checked={t.value===selectedTechnique}
+              />
               <label className="form-check-label" htmlFor={t.value}>{t.title}</label>
             </div>
             ))} 
@@ -213,24 +172,9 @@ class PerformancePublic extends Component {
       );
     }
 
-    const getChildrenCategories2 = () => {
-      const genres = categorySelected.length>0?categorySelected[0].children:"";
-      console.log(genres);
-      return genres.length === 0 ? (
-        ""
-        ) : (
-        <div>
-          {genres[0].children.length>0 &&
-            <select>
-              {genres[0].children.map((t) => <option key={t.key} value={t.value}>{t.title}</option>)}
-            </select>
-          }
-        </div>
-      );
-    }
-    const getChildrenCategories = () => {
-      const genres = categorySelected.length>0?categorySelected[0].children:"";
-      console.log(genres);
+    const getGenre = () => {
+      const view = categories.filter((item) => item.value === model.type);
+      const genres = view.length>0?view[0].children:"";   
       return genres.length === 0 ? (
         ""
         ) : (
@@ -239,7 +183,15 @@ class PerformancePublic extends Component {
           {genres[0].children.length>0 &&
             genres[0].children.map((t) => (
             <div className="form-check" key={t.key}>
-              <input className="form-check-input" type="radio" name="categoryRadios3" id={t.key} value={t.value}/>
+              <input 
+                className="form-check-input" 
+                type="radio"
+                onChange={(e)=>this.handleChange('selectedGenre', e.target.value)}
+                name="categoryRadios3" 
+                id={t.key} 
+                value={t.value}
+                checked={t.value===selectedGenre}
+              />
               <label className="form-check-label" htmlFor={t.value}>{t.title}</label>
             </div>
             ))} 
@@ -271,9 +223,10 @@ class PerformancePublic extends Component {
             labels={locales_labels}
             categories={categories}
             _id={_id}
-            getMajorMethod={getMajorMethod()}
-            onChangeSelect={e => this.onChangeSelect(e)}
-            getChildrenCategories={getChildrenCategories()}
+            getTechnique={getTechnique()}
+            handleChange={e => this.handleChange('selectedType', e.target.value)}
+            getGenre={getGenre()}
+            selectedType={selectedType}
           />
         </div>
       </div>
