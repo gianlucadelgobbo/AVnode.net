@@ -161,7 +161,38 @@ block content
             polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
             polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
     
-  
+
+  //if data.galleries.length || data.videos.length
+    .divider_gallery
+      svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
+        polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
+  if data.galleries.length  
+    .gallery_event_wrapper_bkg
+      section.event_galleries_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.galleries
+                    - console.log(item._id+"\t"+item.title)                
+                    include ../partials/boxGallery
+  if data.videos.length  
+    .video_event_wrapper_bkg
+      section.event_video_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.videos            
+                    include ../partials/boxVideo
+
+
   - var partners = !data.partners || !data.partners.length ?  [{"category" : {name: "PRODUCTION"}, "users" : data.users}] : data.partners;
 
   .partners_event_wrapper_bkg
@@ -192,31 +223,3 @@ block content
                             span=partner.stagename
     
   
-  if data.galleries.length || data.videos.length
-    .divider_gallery
-      svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
-        polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
-  if data.galleries.length  
-    .gallery_event_wrapper_bkg
-      section.event_galleries_wrapper
-        .content_wrapper
-          .container
-            .row
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
-                .performance_divider.basic_divider
-                .owl-carousel.loop_3items.owl-theme
-                  each item in data.galleries                    
-                    include ../partials/boxGallery
-  if data.videos.length  
-    .video_event_wrapper_bkg
-      section.event_video_wrapper
-        .content_wrapper
-          .container
-            .row
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
-                .performance_divider.basic_divider
-                .owl-carousel.loop_3items.owl-theme
-                  each item in data.videos            
-                    include ../partials/boxVideo
