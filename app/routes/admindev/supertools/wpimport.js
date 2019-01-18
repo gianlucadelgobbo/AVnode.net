@@ -447,7 +447,7 @@ router.get('/events', (req, res) => {
         }
         res.render('admin/tools', {
           title: 'WP Events',
-          currentUrl: req.path,
+          currentUrl: req.originalUrl,
           data: result,
           //script: false
           script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/events?page=' + (page) + '"},1000);</script>'
@@ -456,7 +456,7 @@ router.get('/events', (req, res) => {
     } else {
       res.render('admin/tools', {
         title: 'WP Events',
-        currentUrl: req.path,
+        currentUrl: req.originalUrl,
         data: {msg: ['End']},
         script: false
       });
@@ -609,7 +609,7 @@ router.get('/eventsupdate', (req, res) => {
           } 
           res.render('admin/tools', {
             title: 'WP Events',
-            currentUrl: req.path,
+            currentUrl: req.originalUrl,
             data: error || result,
             //script: false
             script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/eventsupdate?page=' + (page) + '"},1000);</script>'
@@ -618,7 +618,7 @@ router.get('/eventsupdate', (req, res) => {
       } else {
         res.render('admin/tools', {
           title: 'WP Events',
-          currentUrl: req.path,
+          currentUrl: req.originalUrl,
           data: {msg: ['ERROR']},
           script: false
         });
@@ -627,7 +627,7 @@ router.get('/eventsupdate', (req, res) => {
   } else {
     res.render('admin/tools', {
       title: 'WP Events',
-      currentUrl: req.path,
+      currentUrl: req.originalUrl,
       data: {msg: ['End']},
       script: false
     });
@@ -768,7 +768,7 @@ router.get('/news', (req, res) => {
                   }
                   res.render('admin/tools', {
                     title: 'News',
-                    currentUrl: req.path,
+                    currentUrl: req.originalUrl,
                     data: result,
                     //script: false
                     script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/news?page=' + (page) + '"},1000);</script>'
@@ -798,7 +798,7 @@ router.get('/news', (req, res) => {
                 }
                 res.render('admin/tools', {
                   title: 'News',
-                  currentUrl: req.path,
+                  currentUrl: req.originalUrl,
                   data: result,
                   //script: false
                   script: '<script>var timeout = setTimeout(function(){location.href="/admin/tools/wpimport/news?page=' + (page) + '"},1000);</script>'
@@ -811,7 +811,7 @@ router.get('/news', (req, res) => {
     } else {
       res.render('admin/tools', {
         title: 'News',
-        currentUrl: req.path,
+        currentUrl: req.originalUrl,
         data: {msg: ['End']},
         script: false
       });

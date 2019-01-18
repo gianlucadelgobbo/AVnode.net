@@ -44,141 +44,191 @@ html(lang='en')
                   a(href='/logout')                    
                     span.lnr.lnr-exit
                     !=" "+global.__('Log out')
-    include ../partials/flash
-    main.container-fluid
-      block content
-    if script
-        !=script
+    .container-fluid
+      .row
+        // Sidebar
+        if currentUrl.indexOf("/admindev/events")===0
+          include partials/menuEvents
+        else if superuser
+          include partials/menuSuper
+        main.col(role='main')
+          .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+            h1.h2=title
+            .btn-toolbar.mb-2.mb-md-0
+              .btn-group.mr-2
+                button.btn.btn-sm.btn-outline-secondary(type='button') Share
+                button.btn.btn-sm.btn-outline-secondary(type='button') Export
+              button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button')
+                svg.feather.feather-calendar(xmlns='http://www.w3.org/2000/svg', width='24', height='24', viewBox='0 0 24 24', fill='none', stroke='currentColor', stroke-width='2', stroke-linecap='round', stroke-linejoin='round')
+                  rect(x='3', y='4', width='18', height='18', rx='2', ry='2')
+                  line(x1='16', y1='2', x2='16', y2='6')
+                  line(x1='8', y1='2', x2='8', y2='6')
+                  line(x1='3', y1='10', x2='21', y2='10')
+                |             This week
 
-    footer
-      .container-fluid
-        .text-muted=global.__('AVnode.net')
-    script(src='/js/combo.min.js')
-    script(src="/js/owl.carousel.min.js")
-    script(src="/js/admindev.js")
-    //script(src="/js/moment.min.js")
-    //script(src="/js/jquery-ui.min.js")
-    if currentUrl.indexOf("/program")!==-1
-      script(src="/js/fullcalendar.min.js")
-      each room,i in data.rooms
-        script.
-          document.addEventListener('DOMContentLoaded', function() {
-            var calendars = {};
-            var cal1 = document.getElementById('calendarroom#{i}');
-            if (cal1) {
-              calendars['calendarroom#{i}'] = new FullCalendar.Calendar(cal1, {
-                header: false,
-                defaultView: 'agendaWeek',
-                validRange: {
-                  start: '2019-05-09',
-                  end: '2019-05-13'
-                },
-                //columnHeaderFormat: "dddd D",
-                minTime: "15:00",
-                maxTime: "24:00",
-                slotDuration: "00:10:00",
-                slotLabelInterval: "01:00:00",
-                hiddenDays: [ 1, 2, 3 ],
-                firstDay: 1,
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar
-                drop: function(info) {
-                  console.log(info);
-                  // is the "remove after drop" checkbox checked?
-                  if ($('#drop-remove').is(':checked')) {
-                    // if so, remove the element from the "Draggable Events" list
-                    $(this).remove();
-                  }
-                  info.draggedEl.parentNode.removeChild(info.draggedEl);
-                },
-                eventClick: function() {
-                  alert('a day has been clicked!');
-                },
-                events: [
-                  {
-                    title: 'My Event',
-                    start: '2019-05-13 01:00:00',
-                    end: '2019-05-13 01:15:00',
-                    description: 'This is a cool event'
-                  }
-                  // more events here
-                ],
-                eventDrop: function(event, element) {  
-                  console.log(event);
-                },
-                eventLeave: function(info) {
-                  console.log('event left!', info.event);
-                },
-                eventReceive: function(info) {
-                  console.log('event received!', info.event);
-                }
-              });
-              calendars['calendarroom#{i}'].render();
-            }
-            var cal2 = document.getElementById('calendarroom2#{i}');
-            if (cal2) {
-              calendars['calendarroom2#{i}'] = new FullCalendar.Calendar(cal2, {
-                header: false,
-                defaultView: 'agendaWeek',
-                validRange: {
-                  start: '2019-05-10',
-                  end: '2019-05-14'
-                },
-                //columnHeaderFormat: "dddd D",
-                minTime: "00:00",
-                maxTime: "06:00",
-                slotDuration: "00:10:00",
-                slotLabelInterval: "01:00:00",
-                hiddenDays: [ 2, 3, 4 ],
-                firstDay: 2,
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar
-                drop: function(info) {
-                  console.log(info);
-                  info.draggedEl.parentNode.removeChild(info.draggedEl);
-                    // is the "remove after drop" checkbox checked?
-                    if ($('#drop-remove').is(':checked')) {
-                      // if so, remove the element from the "Draggable Events" list
-                      $(this).remove();
-                    }
-                },
-                eventClick: function() {
-                  alert('a day has been clicked!');
-                },
-                events: [
-                  {
-                    title: 'My Event',
-                    start: '2019-05-13 01:00:00',
-                    end: '2019-05-13 01:15:00',
-                    description: 'This is a cool event'
-                  }
-                  // more events here
-                ],
-                eventDrop: function(event, element) {  
-                  console.log(event);
-                },
-                eventLeave: function(info) {
-                  console.log('event left!', info.event);
-                },
-                eventReceive: function(info) {
-                  console.log('event received!', info.event);
-                }
-              });
-              calendars['calendarroom2#{i}'].render();
-            }
-          });
-      script.
-        document.addEventListener('DOMContentLoaded', function() {
-          var exte = document.getElementById('external-events');
-          if (exte) {
-            new FullCalendar.Draggable(exte, {
-              itemSelector: '.fc-event',
-              eventData: function(eventEl) {
-                return {
-                  title: eventEl.innerText
-                };
-              }
+          include ../partials/flash
+          block content
+          if script
+              !=script
+
+          footer
+            .container-fluid
+              .text-muted=global.__('AVnode.net')
+          script(src='/js/combo.min.js')
+          script(src="/js/owl.carousel.min.js")
+          script(src="/js/admindev.js")
+          //script(src="/js/moment.min.js")
+          //script(src="/js/jquery-ui.min.js")
+          script.
+            // Hide submenus
+            $('#body-row .collapse').collapse('hide'); 
+
+            // Collapse/Expand icon
+            $('#collapse-icon').addClass('fa-angle-double-left'); 
+
+            // Collapse click
+            $('[data-toggle=sidebar-colapse]').click(function() {
+                SidebarCollapse();
             });
-          }
-        });
+
+            function SidebarCollapse () {
+              $('.menu-collapsed').toggleClass('d-none');
+              $('.sidebar-submenu').toggleClass('d-none');
+              $('.submenu-icon').toggleClass('d-none');
+              $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
+              
+              // Treating d-flex/d-none on separators with title
+              var SeparatorTitle = $('.sidebar-separator-title');
+              if ( SeparatorTitle.hasClass('d-flex') ) {
+                  SeparatorTitle.removeClass('d-flex');
+              } else {
+                  SeparatorTitle.addClass('d-flex');
+              }
+              
+              // Collapse/Expand icon
+              $('#collapse-icon').toggleClass('fa-arrow-circle-o-left fa-arrow-circle-o-right');
+            }
+          if currentUrl.indexOf("/program")!==-1
+            script(src="/js/fullcalendar.min.js")
+            each room,i in data.rooms
+              script.
+                document.addEventListener('DOMContentLoaded', function() {
+                  var calendars = {};
+                  var cal1 = document.getElementById('calendarroom#{i}');
+                  if (cal1) {
+                    calendars['calendarroom#{i}'] = new FullCalendar.Calendar(cal1, {
+                      header: false,
+                      defaultView: 'agendaWeek',
+                      validRange: {
+                        start: '2019-05-09',
+                        end: '2019-05-13'
+                      },
+                      //columnHeaderFormat: "dddd D",
+                      minTime: "15:00",
+                      maxTime: "24:00",
+                      slotDuration: "00:10:00",
+                      slotLabelInterval: "01:00:00",
+                      hiddenDays: [ 1, 2, 3 ],
+                      firstDay: 1,
+                      editable: true,
+                      droppable: true, // this allows things to be dropped onto the calendar
+                      drop: function(info) {
+                        console.log(info);
+                        // is the "remove after drop" checkbox checked?
+                        if ($('#drop-remove').is(':checked')) {
+                          // if so, remove the element from the "Draggable Events" list
+                          $(this).remove();
+                        }
+                        info.draggedEl.parentNode.removeChild(info.draggedEl);
+                      },
+                      eventClick: function() {
+                        alert('a day has been clicked!');
+                      },
+                      events: [
+                        {
+                          title: 'My Event',
+                          start: '2019-05-13 01:00:00',
+                          end: '2019-05-13 01:15:00',
+                          description: 'This is a cool event'
+                        }
+                        // more events here
+                      ],
+                      eventDrop: function(event, element) {  
+                        console.log(event);
+                      },
+                      eventLeave: function(info) {
+                        console.log('event left!', info.event);
+                      },
+                      eventReceive: function(info) {
+                        console.log('event received!', info.event);
+                      }
+                    });
+                    calendars['calendarroom#{i}'].render();
+                  }
+                  var cal2 = document.getElementById('calendarroom2#{i}');
+                  if (cal2) {
+                    calendars['calendarroom2#{i}'] = new FullCalendar.Calendar(cal2, {
+                      header: false,
+                      defaultView: 'agendaWeek',
+                      validRange: {
+                        start: '2019-05-10',
+                        end: '2019-05-14'
+                      },
+                      //columnHeaderFormat: "dddd D",
+                      minTime: "00:00",
+                      maxTime: "06:00",
+                      slotDuration: "00:10:00",
+                      slotLabelInterval: "01:00:00",
+                      hiddenDays: [ 2, 3, 4 ],
+                      firstDay: 2,
+                      editable: true,
+                      droppable: true, // this allows things to be dropped onto the calendar
+                      drop: function(info) {
+                        console.log(info);
+                        info.draggedEl.parentNode.removeChild(info.draggedEl);
+                          // is the "remove after drop" checkbox checked?
+                          if ($('#drop-remove').is(':checked')) {
+                            // if so, remove the element from the "Draggable Events" list
+                            $(this).remove();
+                          }
+                      },
+                      eventClick: function() {
+                        alert('a day has been clicked!');
+                      },
+                      events: [
+                        {
+                          title: 'My Event',
+                          start: '2019-05-13 01:00:00',
+                          end: '2019-05-13 01:15:00',
+                          description: 'This is a cool event'
+                        }
+                        // more events here
+                      ],
+                      eventDrop: function(event, element) {  
+                        console.log(event);
+                      },
+                      eventLeave: function(info) {
+                        console.log('event left!', info.event);
+                      },
+                      eventReceive: function(info) {
+                        console.log('event received!', info.event);
+                      }
+                    });
+                    calendars['calendarroom2#{i}'].render();
+                  }
+                });
+            script.
+              document.addEventListener('DOMContentLoaded', function() {
+                var exte = document.getElementById('external-events');
+                if (exte) {
+                  new FullCalendar.Draggable(exte, {
+                    itemSelector: '.fc-event',
+                    eventData: function(eventEl) {
+                      return {
+                        title: eventEl.innerText
+                      };
+                    }
+                  });
+                }
+              });
 
