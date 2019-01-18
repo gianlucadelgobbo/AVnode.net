@@ -45,9 +45,11 @@ class PerformancePublicForm extends Component {
       errors,
       categories,
       _id,
-      getMajorMethod,
-      onChangeSelect,
-      getChildrenCategories
+      getTechnique,
+      handleChange,
+      getGenre,
+      model,
+      selectedType
     } = this.props;
 
     return (
@@ -90,14 +92,16 @@ class PerformancePublicForm extends Component {
                 /> */}
 
         <Field
-          name="categories"
+          name="type"
           component={renderRadioButton}
           placeholder={this.getIntlString({ id: CATEGORY })}
-          getMajorMethod={getMajorMethod}
-          getChildrenCategories={getChildrenCategories}
-          onChangeSelect={onChangeSelect}
+          getTechnique={getTechnique}
+          getGenre={getGenre}
+          handleChange={handleChange}
           categories={categories}
           errors={errors}
+          model={model}
+          selectedType={selectedType}
         />
 
         <FieldArray

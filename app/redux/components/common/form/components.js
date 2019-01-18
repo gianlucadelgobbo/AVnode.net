@@ -2711,45 +2711,39 @@ export const renderRadioButton = ({
   meta,
   placeholder,
   onChange,
-  getMajorMethod,
-  getChildrenCategories,
-  onChangeSelect,
-  categories
+  getTechnique,
+  getGenre,
+  handleChange,
+  categories,
+  model,
+  selectedType
 }) => {
-  console.log(input.value)
   const field = (
     <div className="form-group">
     <div className="row">
     <div className="col-md-3">
     <div className="labelField">Type</div>
-    {categories.map((category) => (
+    {categories.map(category => (
     <div className="form-check" key={category.key}>
       <Field 
         className="form-check-input" 
-        onChange={onChangeSelect} 
+        onChange={handleChange} 
         component="input" 
         type="radio" 
         name="categoryRadios" 
         id={category.key} 
         value={category.value}
-        //checked={input.value[0].slug === "vj-set"} 
+        checked={category.value === input.value} 
       />
       <label className="form-check-label" htmlFor={category.value}>{category.title}</label>
     </div>
     ))}
     </div>
-      {/*<select onChange={onChangeSelect}>
-        {categories.map((category) => (
-          <option key={category.key} value={category.value}>
-            {category.title}
-          </option>
-        ))}
-        </select>*/}
       <div className="col-md-3">
-        {getMajorMethod}
+        {getTechnique}
       </div>
       <div className="col-md-3">
-        {getChildrenCategories}
+        {getGenre}
       </div>
     </div>
     {meta.error && meta.touched && (
