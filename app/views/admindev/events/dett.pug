@@ -1,12 +1,30 @@
 extends ../layout_admin
 block content
-  h2=title
+  h3=data.event.title
   ul.nav.flex-column.nav-pills
-    li.nav-item
-      a.nav-link.text-white(href='/admindev/events/'+data.event._id)=data.event.title
     li.nav-item
       a.nav-link(href='/admindev/events/'+data.event._id+'/acts/')=global.__('Acts')
     li.nav-item
       a.nav-link(href='/admindev/events/'+data.event._id+'/peoples/')=global.__('Peoples')
     li.nav-item
       a.nav-link(href='/admindev/events/'+data.event._id+'/program/')=global.__('Program')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/technical-riders/')=global.__('Technical Riders')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/programme/')=global.__('Program Prints')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/pass/')=global.__('Pass')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/pass_list/')=global.__('Pass List')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/countries/')=global.__('Countries')
+    //li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/tweets/')=global.__('TWEETS')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/partners/')=global.__('Partners')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/numbers/')=global.__('Numbers')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/guestlist/')=global.__('Guestlist')
+    li.nav-item
+      a.nav-link(href='/admindev/events/'+data.event._id+'/cachecreator/')=global.__('Cache Creator')

@@ -3,10 +3,9 @@ block content
   - var mkdir = []
   - var find = []
   - var find2 = []
-
-  h2="FILES NOT FOUND"
-  ol
-    if data.length
+  if data.length
+    h3="FILES NOT FOUND"
+    ol
       each item, index in data
         if !item.exists
           li!="file: "+global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
@@ -23,9 +22,8 @@ block content
               each image, format in item.imageFormats
                 !="<br />"
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-  h2="MISSING FORMATS"
-  ol
-    if data.length
+    h3="MISSING FORMATS"
+    ol
       each item, index in data
         if item.exists && Object.values(item.imageFormatsExists).indexOf(false)!=-1
           li
@@ -34,9 +32,8 @@ block content
               each image, format in item.imageFormats
                 !="<br />"
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-  h2="FILES OK"
-  ol
-    if data.length
+    h3="FILES OK"
+    ol
       each item, index in data
         if item.exists && Object.values(item.imageFormatsExists).indexOf(false)==-1
           li
@@ -45,11 +42,13 @@ block content
               each image, format in item.imageFormats
                 !="<br />"
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-  pre
-    !=mkdir.join("\n")
-  pre
-    !=find.join("\n")
-  pre
-    !=find2.join("\n")
+    pre
+      !=mkdir.join("\n")
+    pre
+      !=find.join("\n")
+    pre
+      !=find2.join("\n")
 
-  //pre=JSON.stringify(data, null, 2)
+    //pre=JSON.stringify(data, null, 2)
+  else
+    h3="EMPTY SET"

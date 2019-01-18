@@ -106,6 +106,7 @@ const eventSchema = new Schema({
   is_public: { type: Boolean, default: false },
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
+  participate: { type: Boolean, default: false },
   stats: {},
   schedule: [datevenueSchema],
   partners: [partnershipSchema],
@@ -290,7 +291,7 @@ eventSchema.virtual('about').get(function (req) {
       }
     }
     var options = {
-      TruncateLength: 40,
+      TruncateLength: 100,
       TruncateBy : "words",
       Strict : true,
       StripHTML : false,

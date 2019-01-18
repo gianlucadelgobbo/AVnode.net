@@ -23,12 +23,12 @@ html(lang='en')
     //link(href="/js/fullcalendar.print.min.css" rel="stylesheet" media="print")
   body
     nav.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
-      a.navbar-brand(href='/', title="AVnode.net")
+      a.navbar-brand(href='/admindev', title="AVnode.net")
         img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')
       button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
         span.lnr.lnr-menu.toggle_icon
       .collapse.navbar-collapse(id="navbar-collapse_performer_template")
-        include ./menuHeader
+        include partials/menuHeaderEvents
 
         ul.user_navbar
           li.nav-item.dropdown.user_menu.user_menu_logged                  
@@ -37,9 +37,13 @@ html(lang='en')
             .dropdown-menu(aria-labelledby='userDropdown')
               ul
                 li.nav-item
-                  a(href='/admin/profile/public')                    
+                  a(href='/'+user.slug)                    
                     span.lnr.lnr-eye
                     !=" "+global.__('Profile')
+                li.nav-item
+                  a(href='/admin/profile/public')                    
+                    span.lnr.lnr-cog
+                    !=" "+global.__('Control Panel')
                 li.nav-item
                   a(href='/logout')                    
                     span.lnr.lnr-exit
@@ -49,8 +53,10 @@ html(lang='en')
         // Sidebar
         if currentUrl.indexOf("/admindev/events")===0
           include partials/menuEvents
-        else if superuser
+        else if currentUrl.indexOf("/admindev/supertools")===0
           include partials/menuSuper
+        else if currentUrl.indexOf("/admindev")===0
+          include partials/menuHome
         main.col(role='main')
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
             h1.h2=title
@@ -71,9 +77,9 @@ html(lang='en')
           if script
               !=script
 
-          footer
+          footer.border-top.mt-3
             .container-fluid
-              .text-muted=global.__('AVnode.net')
+              .text-muted.text-right=global.__('AVnode.net')
           script(src='/js/combo.min.js')
           script(src="/js/owl.carousel.min.js")
           script(src="/js/admindev.js")

@@ -317,6 +317,10 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (err || data === null) {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
+      if (data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
+        data.participate = true;
+        data.organizationsettings = undefined;
+      }
       if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
         const locations = data.schedule.map(obj =>{
           if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {

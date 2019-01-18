@@ -987,7 +987,7 @@ router.get('/galleryimages', (req, res) => {
   Gallery.
   find({"medias.0": {$exists: true}}).
   lean().
-  limit(1).
+  //limit(1).
   select({medias:1, creation_date: 1}).
   exec((err, galleries) => {
     for (let gallery=0; gallery<galleries.length; gallery++) {
@@ -1048,52 +1048,63 @@ router.get('/gallerygenerator', (req, res) => {
   skip(skip).
   select({medias:1, creation_date: 1}).
   exec((err, galleries) => {
-    for (let gallery=0; gallery<galleries.length; gallery++) {
-      for (let media=0; media<galleries[gallery].medias.length; media++) {
-        //console.log(galleries[gallery].medias[media].file);
-        galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
-        if (galleries[gallery].medias[media].exists) {
-          galleries[gallery].medias[media].imageFormats = {};
-          galleries[gallery].medias[media].imageFormatsExists = {};
-          const previewFile = galleries[gallery].medias[media].file;
-          const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
-          const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-          const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
-          const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
-          const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-            galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
-          }
-          for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-            galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
-            if (!galleries[gallery].medias[media].imageFormatsExists[format]) {
-              let folder = galleries[gallery].medias[media].imageFormats[format].substring(0, galleries[gallery].medias[media].imageFormats[format].lastIndexOf('/'))
-              router.checkAndCreate(folder, () => {
-                sharp(global.appRoot+previewFile)
-                .resize(config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].h)
-                .toFile(global.appRoot+galleries[gallery].medias[media].imageFormats[format], (err, info) => {
-                  logger.debug(err);
-                  logger.debug(info);
-                });
-              });
+    logger.debug(galleries);
+    if (galleries.length) {
+      for (let gallery=0; gallery<galleries.length; gallery++) {
+        for (let media=0; media<galleries[gallery].medias.length; media++) {
+          //console.log(galleries[gallery].medias[media].file);
+          galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
+          if (galleries[gallery].medias[media].exists) {
+            galleries[gallery].medias[media].imageFormats = {};
+            galleries[gallery].medias[media].imageFormatsExists = {};
+            const previewFile = galleries[gallery].medias[media].file;
+            const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+            const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+            const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
+            const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+            const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+            // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+            for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+              galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
             }
+            for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+              galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
+              if (!galleries[gallery].medias[media].imageFormatsExists[format]) {
+                let folder = galleries[gallery].medias[media].imageFormats[format].substring(0, galleries[gallery].medias[media].imageFormats[format].lastIndexOf('/'))
+                router.checkAndCreate(folder, () => {
+                  sharp(global.appRoot+previewFile)
+                  .resize(config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].h)
+                  .toFile(global.appRoot+galleries[gallery].medias[media].imageFormats[format], (err, info) => {
+                    logger.debug(err);
+                    logger.debug(info);
+                  });
+                });
+              }
+            }
+            data.push(galleries[gallery].medias[media]);
           }
-          data.push(galleries[gallery].medias[media]);
+          logger.debug("galleries.length "+ galleries.length+" "+ gallery);
+          logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
+          if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
+            console.log(req.path);
+            res.render('admindev/supertools/files/galleryShow', {
+              title: 'Gallery images generator',
+              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              currentUrl: req.originalUrl,
+              data: data,
+              script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/gallerygenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+            });          
+          }
         }
-        logger.debug("galleries.length "+ galleries.length+" "+ gallery);
-        logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
-        if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
-          console.log(req.path);
-          res.render('admindev/supertools/files/galleryShow', {
-            title: 'Gallery images generator',
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-            currentUrl: req.originalUrl,
-            data: data,
-            script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/gallerygenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
-          });          
-        }
-      }
+      }  
+    } else {
+      res.render('admindev/supertools/files/galleryShow', {
+        title: 'Gallery images generator',
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        currentUrl: req.originalUrl,
+        data: data,
+        script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/gallerygenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+      });          
     }
   });
 });

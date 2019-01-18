@@ -4389,6 +4389,7 @@
           "image": 1,
           "schedule": 1,
           "program": 1,
+          "organizationsettings": 1,
           "tobescheduled": 1,
           "partners": 1
         },
