@@ -152,3 +152,89 @@ export function getFilterValue(val, sVal, delVal) {
   }
   return newVal;
 }
+
+
+// Convert tech_arts format for FieldArray redux-form
+    /*v.tech_arts = [];
+        if (Array.isArray(model.tech_arts)) {
+
+            // convert current lang
+            v.tech_arts = model.tech_arts.map(x => ({
+                key: `tech_arts.${x.lang}`,
+                value: x.text
+            }));
+        }
+
+        locales.forEach(l => {
+            let found = v.tech_arts.filter(o => o.key === `tech_arts.${l}`).length > 0;
+            if (!found) {
+                v.tech_arts.push({
+                    key: `tech_arts.${l}`,
+                    value: ""
+                })
+            }
+        });
+        v.tech_reqs = [];
+        if (Array.isArray(model.tech_reqs)) {
+
+            // convert current lang
+            v.tech_reqs = model.tech_reqs.map(x => ({
+                key: `tech_reqs.it`,
+                value: x
+            }));
+        }
+
+        locales.forEach(l => {
+            let found = v.tech_reqs.filter(o => o.key === `tech_reqs.${l}`).length > 0;
+            if (!found) {
+                v.tech_reqs.push({
+                    key: `tech_reqs.${l}`,
+                    value: ""
+                })
+            }
+        });
+        */
+
+
+    /*
+
+     <select onChange={onChangeSelect}>
+        {categories.map((category) => (
+          <option key={category.key} value={category.value}>
+            {category.title}
+          </option>
+        ))}
+        </select>
+
+
+      const getMajorMethod2 = () => {
+      const view = categories.filter((item) => item.value === selectedRadio);
+      return view.length === 0 ? (
+        ""
+      ) : (
+        <div>
+          {view[0].children.length>0 &&
+          <select>
+            {view[0].children.map((t) => <option key={t.key} value={t.value}>{t.title}</option>)}
+          </select>
+          }
+        </div>
+      );
+    }
+
+    const getChildrenCategories2 = () => {
+      const genres = categorySelected.length>0?categorySelected[0].children:"";
+      return genres.length === 0 ? (
+        ""
+        ) : (
+        <div>
+          {genres[0].children.length>0 &&
+            <select>
+              {genres[0].children.map((t) => <option key={t.key} value={t.value}>{t.title}</option>)}
+            </select>
+          }
+        </div>
+      );
+    }
+         
+  */
