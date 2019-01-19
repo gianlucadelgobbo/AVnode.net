@@ -25,17 +25,17 @@ export const getModel = (state, id) =>
 
 export const getDefaultModel = (state) => {
     const firstId = Object.keys(state[entity].byId)[0];
-    return firstId ? state[entity].byId[firstId] : null;
+    return firstId ? state[entity].byId[firstId] : undefined;
 };
 
 export const getDefaultModelErrorMessage = (state) => {
     const firstId = Object.keys(state[entity].byId)[0];
-    return firstId ? getModelErrorMessage(state, firstId) : null;
+    return firstId ? getModelErrorMessage(state, firstId) : undefined;
 };
 
 export const getDefaultModelIsFetching = (state) => {
     const firstId = Object.keys(state[entity].byId)[0];
-    return firstId ? getModelIsFetching(state, firstId) : null;
+    return firstId ? getModelIsFetching(state, firstId) : undefined;
 };
 
 

@@ -28,8 +28,6 @@ import { WithContext as ReactTags } from "react-tag-input";
 import { Collapse } from "react-collapse";
 import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
-import TreeSelect from "rc-tree-select";
-import "rc-tree-select/assets/index.css";
 import { Player } from "video-react";
 import LightBox from "../../lightboxGallery";
 import "video-react/dist/video-react.css";
@@ -56,63 +54,6 @@ export const autocompleteComponent = ({
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
         getSuggestionID={getSuggestionID}
-      />
-    </div>
-  );
-
-  return (
-    <dl className="row">
-      <dt className="col-sm-2">{label}</dt>
-      <dd className="col-sm-10"> {field} </dd>
-    </dl>
-  );
-};
-
-export const reactTreeComponent = ({
-  style,
-  transitionName,
-  choiceTransitionName,
-  dropdownStyle,
-  placeholder,
-  searchPlaceholder,
-  showSearch,
-  allowClear,
-  treeLine,
-  myvalue,
-  treeData,
-  treeNodeFilterProp,
-  filterTreeNode,
-  onChange,
-  searchValue,
-  onSearch,
-  open,
-  onDropdownVisibleChange,
-  onSelect
-}) => {
-  const label = <div className="labelField">{placeholder}</div>;
-
-  const field = (
-    <div>
-      <TreeSelect
-        style={style}
-        transitionName={transitionName}
-        choiceTransitionName={choiceTransitionName}
-        dropdownStyle={dropdownStyle}
-        placeholder={placeholder}
-        searchPlaceholder={searchPlaceholder}
-        showSearch={showSearch}
-        allowClear={allowClear}
-        treeLine={treeLine}
-        value={myvalue}
-        searchValue={searchValue}
-        treeData={treeData}
-        treeNodeFilterProp={treeNodeFilterProp}
-        filterTreeNode={filterTreeNode}
-        onChange={onChange}
-        onSearch={onSearch}
-        onDropdownVisibleChange={onDropdownVisibleChange}
-        open={open}
-        onSelect={onSelect}
       />
     </div>
   );
@@ -448,7 +389,7 @@ export const textareaMultiTab = ({
   fields,
   errors = {}
 }) => {
-  const id = `tabs-${Math.random()*100000000000000000}`;
+  const id = `tabs-${Math.random() * 100000000000000000}`;
   const hasValue = (fields, index) =>
     fields && !!fields.get(index) && !!fields.get(index).value;
   const hasError = (errors = {}, index, name) =>
@@ -1188,13 +1129,17 @@ export const checkboxField = ({
     <div className="form-check">
       <input
         id={id}
-        defaultChecked={input.value}
+        checked={input.value}
         className="form-check-input"
         type="checkbox"
         {...input}
         disabled={disabled}
       />
-      {isChild && placeholder && <label className="form-check-label" htmlFor={id}>{placeholder}</label>}
+      {isChild && placeholder && (
+        <label className="form-check-label" htmlFor={id}>
+          {placeholder}
+        </label>
+      )}
     </div>
   );
   const label = <div className="labelField">{placeholder}</div>;
@@ -2698,21 +2643,22 @@ export const radioButton = ({
   optionValue
 }) => {
   return (
-  <div>
-  <ButtonGroup>
-    {options.map(option => (
-      <Button
-        key={option[0]}
-        bsStyle={option[0] === optionValue ? "primary" : "secondary"}
-        children={option[1]}
-        name={input.name}
-        onClick={_onOptionChange}
-        value={option[0]}
-      />      
-    ))}
-  </ButtonGroup>
-  </div>
-  )}
+    <div>
+      <ButtonGroup>
+        {options.map(option => (
+          <Button
+            key={option[0]}
+            bsStyle={option[0] === optionValue ? "primary" : "secondary"}
+            children={option[1]}
+            name={input.name}
+            onClick={_onOptionChange}
+            value={option[0]}
+          />
+        ))}
+      </ButtonGroup>
+    </div>
+  );
+};
 
 export const CollapsedPanel = ({
   input,
@@ -2726,23 +2672,19 @@ export const CollapsedPanel = ({
 }) => {
   const field = (
     <div className="form-group">
-      <Field 
-        name="single" 
-        component={radioButton}  
+      <Field
+        name="single"
+        component={radioButton}
         placeholder="Subscribe as"
         options={options}
         height={height}
         _onOptionChange={_onOptionChange}
-        optionValue={optionValue}>
-      </Field>
+        optionValue={optionValue}
+      />
       <Collapse isOpened={optionValue === "group"}>
         <div style={{ height }} />
         <Field name="crewName" component={inputText} placeholder="Crew Name" />
-        <Field
-          name="crewUrl"
-          component={inputText}
-          placeholder="Crew Url"
-        />
+        <Field name="crewUrl" component={inputText} placeholder="Crew Url" />
         <h4>YOU AS MEMBER OF THE CREW</h4>
         <p>You will be able to add more once you confirmed your account</p>
       </Collapse>
@@ -2757,6 +2699,63 @@ export const CollapsedPanel = ({
   return !!isChild ? (
     field
   ) : (
+    <dl className="row">
+      <dt className="col-sm-2">{label}</dt>
+      <dd className="col-sm-10"> {field} </dd>
+    </dl>
+  );
+};
+
+export const renderRadioButton = ({
+  input,
+  meta,
+  placeholder,
+  onChange,
+  getTechnique,
+  getGenre,
+  handleChange,
+  categories,
+  model,
+  selectedType
+}) => {
+  const field = (
+    <div className="form-group">
+    <div className="row">
+    <div className="col-md-3">
+    <div className="labelField">Type</div>
+    {categories.map(category => (
+    <div className="form-check" key={category.key}>
+      <Field 
+        className="form-check-input" 
+        onChange={handleChange} 
+        component="input" 
+        type="radio" 
+        name="categoryRadios" 
+        id={category.key} 
+        value={category.value}
+        checked={category.value === input.value} 
+      />
+      <label className="form-check-label" htmlFor={category.value}>{category.title}</label>
+    </div>
+    ))}
+    </div>
+      <div className="col-md-3">
+        {getTechnique}
+      </div>
+      <div className="col-md-3">
+        {getGenre}
+      </div>
+    </div>
+    {meta.error && meta.touched && (
+      <span className="error-message">
+        <FormattedMessage id={meta.error} />
+      </span>
+    )}
+    </div>
+    
+  );
+  const label = <div className="labelField">{placeholder}</div>;
+  return (
     <dl className="row">
       <dt className="col-sm-2">{label}</dt>
       <dd className="col-sm-10"> {field} </dd>
