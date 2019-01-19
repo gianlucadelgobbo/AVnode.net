@@ -15,7 +15,7 @@ font-awesome.css
 AVnode.net.code-workspace
 __BUTTARE
 __IMPORT SCRIPTS
-
+___MAINTENANCE_SCRIPTS
 /.db/
 /.elasticsearch/
 config/ses.json
