@@ -1,8 +1,24 @@
-const asyncValidate = (values, dispatch, state) => {
-    const promises = [];
-    const result = {};
+import { validateSlugNewPlaylist } from "../../common/form/validators";
+import { checkIfError } from "../../common/form";
 
-    return Promise.all(promises).then(() => result);
+const asyncValidate = (values, dispatch, state) => {
+  const promises = [];
+  const result = {};
+  // slug
+  validateSlugNewPlaylist({
+    value: values.slug,
+    previousValue: state.initialValues.slug,
+    promises,
+    result
+  });
+
+  return Promise.all(promises)
+    .then(() => {
+      return checkIfError(result);
+    })
+    .catch(() => {
+      return checkIfError(result);
+    });
 };
 
-export default asyncValidate
+export default asyncValidate;

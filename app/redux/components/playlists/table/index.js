@@ -49,7 +49,6 @@ class ModelTable extends Component {
             className: "PlaylistTable",
             Cell: props => {
               const { row, original } = props;
-              console.log(row);
               return (
                 <Link to={`/admin/playlists/${original._id}/public`}>
                   <img
