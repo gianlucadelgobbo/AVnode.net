@@ -136,7 +136,7 @@ export const removeEvent = ({ id }) => {
 };
 
 export const postEvent = obj => {
-  return axios.post(`events/`, obj).then(result => {
+  return axios.post(`events/new`, obj).then(result => {
     return result.data;
   });
 };

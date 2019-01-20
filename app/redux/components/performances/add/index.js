@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { getModel, getModelErrorMessage } from "../selectors";
 import { showModal, hideModal } from "../../modal/actions";
 import { bindActionCreators } from "redux";
-import { fetchList, saveModel } from "../actions";
+import { saveModel } from "../actions";
 import ErrorMessage from "../../errorMessage";
 
 class AddPerformance extends Component {
@@ -73,7 +73,6 @@ const mapDispatchToProps = dispatch =>
     {
       showModal,
       saveModel,
-      fetchList,
       hideModal
     },
     dispatch
