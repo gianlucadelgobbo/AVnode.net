@@ -20,6 +20,7 @@ import {
   fetchSlugSectionPublic,
   fetchSlugNewCrew,
   fetchSlugNewPerformance,
+  fetchSlugNewEvent,
   fetchSlugNewFootage,
   fetchSlugNewPlaylist,
   fetchSlugNewVideos,
@@ -121,6 +122,32 @@ export const validateSlugNewPerformance = ({
   if (slugFromValues !== previousValue) {
     promises.push(
       fetchSlugNewPerformance(slugFromValues)
+        .then(response => {
+          if (response.exist) {
+            Object.assign(result, { slug: SLUG_IS_TAKEN });
+            if (Array.isArray(errorArray)) {
+              errorArray[index] = result;
+            }
+          }
+        })
+        .catch()
+    );
+  }
+};
+
+export const validateSlugNewEvent = ({
+  value,
+  previousValue,
+  promises,
+  result,
+  index,
+  errorArray
+}) => {
+  // slug
+  let slugFromValues = value;
+  if (slugFromValues !== previousValue) {
+    promises.push(
+      fetchSlugNewEvent(slugFromValues)
         .then(response => {
           if (response.exist) {
             Object.assign(result, { slug: SLUG_IS_TAKEN });
