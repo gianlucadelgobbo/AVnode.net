@@ -52,7 +52,8 @@ router.get('/', (req, res) => {
 
     res.render('events/participate', {
       title: data.title,
-      canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+      //canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
+      canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
       dett: data,
       call: req.session.call,
       participateMenu: participateMenu,
@@ -151,7 +152,7 @@ router.post('/', (req, res) => {
                   logger.debug(msg);
                   res.render('events/participate', {
                     title: data.title,
-                    canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                    canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
                     dett: data,
                     call: req.session.call,
                     participateMenu: participateMenu,
@@ -227,7 +228,7 @@ router.post('/', (req, res) => {
               console.log(allsubscriptions);
               res.render('events/participate', {
                 title: data.title,
-                canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
                 dett: data,
                 call: req.session.call,
                 participateMenu: participateMenu,
@@ -333,7 +334,7 @@ router.post('/', (req, res) => {
               msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
               res.render('events/participate', {
                 title: data.title,
-                canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
                 dett: data,
                 call: req.session.call,
                 participateMenu: participateMenu,
@@ -348,7 +349,7 @@ router.post('/', (req, res) => {
                   msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
                   res.render('events/participate', {
                     title: data.title,
-                    canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                    canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
                     dett: data,
                     call: req.session.call,
                     participateMenu: participateMenu,
@@ -366,8 +367,8 @@ router.post('/', (req, res) => {
                       from: data.organizationsettings.call.calls[req.session.call.index].title+" <"+data.organizationsettings.call.calls[req.session.call.index].email+">"
                     },
                     email_content: {
-                      site:    req.protocol+"://"+req.headers.host,
-                      imghead: req.protocol+"://"+req.headers.host + data.organizationsettings.call.calls[req.session.call.index].imghead,
+                      site:    (req.get('host') === "localhost:8006" ? "http" : "https")+"://"+req.headers.host,
+                      imghead: (req.get('host') === "localhost:8006" ? "http" : "https")+"://"+req.headers.host + data.organizationsettings.call.calls[req.session.call.index].imghead,
                       imgalt:  data.organizationsettings.call.calls[req.session.call.index].imgalt,
                       html_sign:  data.organizationsettings.call.calls[req.session.call.index].html_sign,
                       text_sign:  data.organizationsettings.call.calls[req.session.call.index].text_sign,
@@ -380,8 +381,8 @@ router.post('/', (req, res) => {
                       call: req.session.call,
                       block_2:  __("You will receive a feedback on your proposal as soon."),
                       block_3:  __("Thanks."),
-                      link:  "<a href=\""+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
-                      link_plain: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0]
+                      link:  "<a href=\""+(req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
+                      link_plain: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]
                     }
                   }, function (err){
                     if (err) {
@@ -391,7 +392,7 @@ router.post('/', (req, res) => {
                     }
                     res.render('events/participate', {
                       title: data.title,
-                      canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                      canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
                       dett: data,
                       call: req.session.call,
                       participateMenu: participateMenu,
@@ -422,7 +423,7 @@ router.post('/', (req, res) => {
         logger.debug(msg);
         res.render('events/participate', {
           title: data.title,
-          canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+          canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
           dett: data,
           call: req.session.call,
           participateMenu: participateMenu,
