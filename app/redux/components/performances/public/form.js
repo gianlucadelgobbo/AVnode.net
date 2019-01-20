@@ -8,7 +8,6 @@ import {
   inputText,
   textareaMultiTab,
   checkboxField,
-  reactTreeComponent,
   fieldWithLabel
 } from "../../common/form/components";
 import validate from "./validate";

@@ -23,15 +23,16 @@ import {
   populateMultiLanguageObject,
   createMultiLanguageInitialObject
 } from "../../common/form";
+import { fetchPerformanceCategory } from "../../../api";
 
 class PerformancePublic extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      selectedType:"vj-set",
-      selectedTechnique:'generative',
-      selectedGenre:'jazz'
-    }
+      selectedType: "",
+      selectedTechnique: "",
+      selectedGenre: ""
+    };
   }
 
   componentDidMount() {
@@ -46,6 +47,13 @@ class PerformancePublic extends Component {
       id: _id
     });
     fetchCategories();
+    fetchPerformanceCategory().then(result => {
+      this.setState({
+        selectedType: result.type,
+        selectedTechnique: result.technique,
+        selectedGenre: result.genre
+      });
+    });
   }
 
   // Convert form values to API model
@@ -53,9 +61,17 @@ class PerformancePublic extends Component {
     //clone obj
     let model = Object.assign({}, values) || {};
 
+    const { selectedType, selectedTechnique, selectedGenre } = this.state;
+
+    model.type = selectedType;
+
+    model.technique = selectedTechnique;
+
+    model.genre = selectedGenre;
+
     model.is_public = model.is_public;
 
-    model.categories =  this.state.value;
+    model.categories = this.state.value;
 
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
@@ -69,7 +85,7 @@ class PerformancePublic extends Component {
     }
     // Convert tech_reqs for API
     model.tech_reqs = model.tech_reqs.filter(w => w.value);
-
+    console.log(model);
     return model;
   }
 
@@ -89,8 +105,6 @@ class PerformancePublic extends Component {
 
     //Convert title for redux-form
     v.title = model.title;
-    model.type = 'vj-set';
-    v.type = model.type;
 
     v.abouts = populateMultiLanguageObject("abouts", abouts);
 
@@ -120,10 +134,8 @@ class PerformancePublic extends Component {
     });
   }
 
-  handleChange(key, value){
-    this.setState({[key]: value});
-    const {model} = this.props;
-    model.type = value;
+  handleChange(key, value) {
+    this.setState({ [key]: value });
   }
 
   render() {
@@ -138,66 +150,72 @@ class PerformancePublic extends Component {
       categories
     } = this.props;
 
-    const {selectedType, selectedTechnique, selectedGenre } = this.state;
-
-    //model.type = "dvd-projection";
-
-    //model.techique = 'generative';
-
-    //model.genre = 'jazz';
+    const { selectedType, selectedTechnique, selectedGenre } = this.state;
 
     const getTechnique = () => {
-      const view = categories.filter((item) => item.value === model.type);
+      const view = categories.filter(item => item.value === selectedType);
       return view.length === 0 ? (
         ""
       ) : (
         <div>
-          <div className="labelField">{view[0].children.length > 0 && `${view[0].title + " Technique"}`}</div>
-          {view[0].children.length>0 &&
-            view[0].children.map((t) => (
-            <div className="form-check" key={t.key}>
-              <input 
-                className="form-check-input" 
-                type="radio" 
-                onChange={(e)=>this.handleChange('selectedTechnique', e.target.value)}
-                name="categoryRadios2" 
-                id={t.key} 
-                value={t.value}
-                checked={t.value===selectedTechnique}
-              />
-              <label className="form-check-label" htmlFor={t.value}>{t.title}</label>
-            </div>
-            ))} 
+          <div className="labelField">
+            {view[0].children.length > 0 && `${view[0].title + " Technique"}`}
+          </div>
+          {view[0].children.length > 0 &&
+            view[0].children.map(t => (
+              <div className="form-check" key={t.key}>
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  onChange={e =>
+                    this.handleChange("selectedTechnique", e.target.value)
+                  }
+                  name="categoryRadios2"
+                  id={t.key}
+                  value={t.value}
+                  checked={t.value === selectedTechnique}
+                />
+                <label className="form-check-label" htmlFor={t.value}>
+                  {t.title}
+                </label>
+              </div>
+            ))}
         </div>
       );
-    }
+    };
 
     const getGenre = () => {
-      const view = categories.filter((item) => item.value === model.type);
-      const genres = view.length>0?view[0].children:"";   
+      const view = categories.filter(item => item.value === selectedType);
+      const genres = view.length > 0 ? view[0].children : "";
       return genres.length === 0 ? (
         ""
-        ) : (
-          <div>
-          <div className="labelField">{genres[0].children.length > 0 && `Genre`}</div>
-          {genres[0].children.length>0 &&
-            genres[0].children.map((t) => (
-            <div className="form-check" key={t.key}>
-              <input 
-                className="form-check-input" 
-                type="radio"
-                onChange={(e)=>this.handleChange('selectedGenre', e.target.value)}
-                name="categoryRadios3" 
-                id={t.key} 
-                value={t.value}
-                checked={t.value===selectedGenre}
-              />
-              <label className="form-check-label" htmlFor={t.value}>{t.title}</label>
-            </div>
-            ))} 
+      ) : (
+        <div>
+          <div className="labelField">
+            {genres[0].children.length > 0 && `Genre`}
+          </div>
+          {genres[0].children.length > 0 &&
+            genres[0].children.map(t => (
+              <div className="form-check" key={t.key}>
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  onChange={e =>
+                    this.handleChange("selectedGenre", e.target.value)
+                  }
+                  name="categoryRadios3"
+                  id={t.key}
+                  value={t.value}
+                  checked={t.value === selectedGenre}
+                />
+                <label className="form-check-label" htmlFor={t.value}>
+                  {t.title}
+                </label>
+              </div>
+            ))}
         </div>
       );
-    }
+    };
     return (
       <div className="row">
         <div className="col-md-2">
@@ -224,7 +242,9 @@ class PerformancePublic extends Component {
             categories={categories}
             _id={_id}
             getTechnique={getTechnique()}
-            handleChange={e => this.handleChange('selectedType', e.target.value)}
+            handleChange={e =>
+              this.handleChange("selectedType", e.target.value)
+            }
             getGenre={getGenre()}
             selectedType={selectedType}
           />
