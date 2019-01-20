@@ -277,6 +277,13 @@ export const fetchUserForSelect = () => {
   });
 };
 
+//Event Slug
+export const fetchSlugNewEvent = slug => {
+  return axios.get(`events/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+
 // ============ Performances
 
 export const fetchPerformances = () => {
