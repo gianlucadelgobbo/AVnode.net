@@ -83,7 +83,7 @@ router.get('/sitemap.xml', (req, res) => {
     res.set('Content-Type', 'text/xml');
     res.render('sitemaps/index', {
       pretty: true,
-      host: req.protocol+"://"+req.headers.host,
+      host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
       data: config.sections,
       lastmod: lastmod
     });

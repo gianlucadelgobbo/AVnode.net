@@ -56,7 +56,7 @@ app.use(i18n.init);
 app.use( function ( req, res, next ) {
     // ADD VARS TO JADE
     res.locals.current_url = req.url;
-    res.locals.protocol = req.protocol;
+    res.locals.protocol = (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/;
     let hostA = req.headers.host.split('.');
     if (config.locales.indexOf(hostA[0])>=0) hostA.shift();
     res.locals.basehost = hostA.join('.');

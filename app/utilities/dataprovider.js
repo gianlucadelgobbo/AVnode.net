@@ -121,14 +121,14 @@ dataprovider.getJsonld = (data, req, title) => {
           jsonld.crews.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data.crews[a].slug
+            "url": (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data.crews[a].slug
           });
   
         } else {
           jsonld.crews.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[item][a].slug
+            "url": (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[item][a].slug
           });
         }
       }
@@ -145,7 +145,7 @@ dataprovider.getJsonld = (data, req, title) => {
           jsonld[item].itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": req.protocol + '://' + req.get('host') + req.originalUrl+item+"/"+data[item][a].slug
+            "url": (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl+item+"/"+data[item][a].slug
           });
         }
       }
@@ -204,14 +204,14 @@ dataprovider.getJsonld = (data, req, title) => {
           jsonld.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
           });
   
         } else {
           jsonld.itemListElement.push({
             '@type': 'ListItem',
             "position": a+1,
-            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
           });
         }
   
@@ -219,11 +219,11 @@ dataprovider.getJsonld = (data, req, title) => {
         jsonld.itemListElement.push({
           '@type': 'ListItem',
           "position": a+1,
-          "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+          "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+data[a].slug
           /* "item": {
             '@type': 'CreativeWork',
             "name": data[a].title,
-            "url": req.protocol + '://' + req.get('host') + req.originalUrl+data[a].slug
+            "url": (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl+data[a].slug
           } */
         });
       }
@@ -446,7 +446,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
-          canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+          canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
           editable: editable,
           data: data,
           pages: pages,
@@ -495,7 +495,7 @@ dataprovider.list = (req, res, section, model) => {
         lastmod = helper.dateoW3CString(lastmod);
         res.set('Content-Type', 'text/xml');
         res.render('sitemaps/list', {
-          host: req.protocol+"://"+req.headers.host,
+          host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
           data: data,
           lastmod: lastmod,
           basepath: config.sections[section].basepath,
@@ -510,7 +510,7 @@ dataprovider.list = (req, res, section, model) => {
           title: title,
           section: section,
           jsonld:dataprovider.getJsonld(data, req, title),
-          canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+          canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
           sort: sorting,
           total: total,
           pages: pages,
