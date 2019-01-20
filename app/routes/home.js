@@ -65,16 +65,16 @@ router.get('/', (req, res) => {
                     title: __('Welcome to AVnode network'),
                     subtitle: __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
                     data: homedata,
-                    canonical: req.protocol + '://' + req.get('host') + req.originalUrl.split("?")[0],
+                    canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
                     jsonld: {
                       "@context": "http://schema.org",
                       "@type": "WebSite",
-                      "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+                      "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl,
                       "description": __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
-                      "image": req.protocol + '://' + req.get('host') + req.originalUrl+"images/avnode_mainimg.jpg",
+                      "image": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/avnode_mainimg.jpg",
                       "potentialAction": {
                         "@type": "SearchAction",
-                        "target": req.protocol + '://' + req.get('host') + req.originalUrl+"search?&q={q}",
+                        "target": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"search?&q={q}",
                         "query-input": {
                           "@type": "PropertyValueSpecification",
                           "valueRequired": false,

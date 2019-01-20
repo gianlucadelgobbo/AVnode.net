@@ -721,14 +721,14 @@ router.sendEmailVericaition = (req, res) => {
                   to: user.emails[item].email
                 },
                 email_content: {
-                  site:    req.protocol+"://"+req.headers.host,
+                  site:    (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
                   title:    __("Email Confirm"),
                   subject:  __("Email Confirm")+' | AVnode.net',
                   block_1:  __("We’ve received a request to add this new email")+": "+user.emails[item].email,
                   button:   __("Click here to confirm"),
                   block_2:  __("If you didn’t make the request, just ignore this message. Otherwise, you add the email using this link:"),
                   block_3:  __("Thanks."),
-                  link:     req.protocol+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
+                  link:     (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host+'/verify/email/'+user.emails[item].confirm,
                   html_sign: "The AVnode.net Team",
                   text_sign:  "The AVnode.net Team"
                 }

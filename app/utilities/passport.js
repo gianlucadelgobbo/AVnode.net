@@ -94,12 +94,12 @@ flxer.flxerLogin = (req, existingUser, email, password, done) => {
               to: email
             },
             email_content: {
-              site:    req.protocol+"://"+req.headers.host,
+              site:    (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
               title:    __("Password from FLxER success!!!"),
               subject:  __("Password from FLxER success!!!")+' | AVnode.net',
               block_1:  __("Password migrated from FLxER.net, please login again."),
               button:   __("Click here to login"),
-              link:     req.protocol+"://"+req.headers.host+'/login/',
+              link:     (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host+'/login/',
               html_sign: "The AVnode.net Team",
               text_sign:  "The AVnode.net Team"
         }
