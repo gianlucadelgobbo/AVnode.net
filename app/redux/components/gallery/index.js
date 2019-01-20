@@ -7,10 +7,9 @@ import Loading from "../loading";
 import ErrorMessage from "../errorMessage";
 import ItemNotFound from "../itemNotFound";
 import {
-  MODAL_REMOVE,
   MODAL_SAVED,
   MODAL_ADD_PERFORMANCES_GALLERIES,
-  MODAL_ADD_GALLERIES
+  MODAL_ADD_VIDEOS_GALLERIES
 } from "../modal/constants";
 import { Button, Image } from "react-bootstrap";
 import LightBox from "../lightboxGallery";
@@ -82,10 +81,10 @@ class Gallery extends Component {
       <div className="col-md-6" key={i}>
         <div className="row">
           <div className="col-sm-12">
-          <h3>{img.title}</h3>
-          <Link to={`/admin/galleries/${img.id}/public`}>
-            <Image src={small} responsive rounded />
-          </Link>
+            <h3>{img.title}</h3>
+            <Link to={`/admin/galleries/${img.id}/public`}>
+              <Image src={small} responsive rounded />
+            </Link>
           </div>
           {/*<div className="col-sm-12">
             <Button
@@ -120,7 +119,8 @@ class Gallery extends Component {
       isFetching,
       errorMessage,
       history,
-      id
+      id,
+      type
     } = this.props;
     const initialValues = this.getInitialValues();
     return (
@@ -132,7 +132,7 @@ class Gallery extends Component {
               className="pull-right"
               onClick={() =>
                 showModal({
-                  type: MODAL_ADD_PERFORMANCES_GALLERIES,
+                  type: `MODAL_ADD_${type}_GALLERIES`,
                   props: { history, id }
                 })
               }
@@ -168,11 +168,8 @@ class Gallery extends Component {
           <div className="col-md-12">
             <br />
             {isFetching && !model && <Loading />}
-
             {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-
             {!errorMessage && !isFetching && !model && <ItemNotFound />}
-
             {/*!errorMessage &&
               !isFetching &&
               model &&
@@ -186,12 +183,15 @@ class Gallery extends Component {
                   onRemove={this.onRemove.bind(this)}
                 />
               )*/}
-              {!errorMessage &&
-              !isFetching && model
-              && Array.isArray(model.galleries) &&
-              <div className="row">
+            {!errorMessage &&
+              !isFetching &&
+              model &&
+              Array.isArray(model.galleries) && (
+                <div className="row">
                   {model.galleries.map(this.renderImage.bind(this))}
-              </div>}}
+                </div>
+              )}
+            }
           </div>
         </div>
       </div>

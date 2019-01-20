@@ -5,7 +5,7 @@ import { inputText } from "../../../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
 
-class AddPerformancesGalleriesForm extends Component {
+class AddEventsGalleriesForm extends Component {
   render() {
     const { submitting, handleSubmit, onSubmit } = this.props;
 
@@ -34,4 +34,4 @@ export default reduxForm({
   validate,
   asyncValidate,
   asyncBlurFields: ["slug"]
-})(AddPerformancesGalleriesForm);
+})(AddEventsGalleriesForm);

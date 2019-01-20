@@ -49,6 +49,7 @@ class PerformanceGallery extends Component {
             id={_id}
             fetchModel={fetchModel}
             history={history}
+            type="PERFORMANCES"
           />
         </div>
       </div>
