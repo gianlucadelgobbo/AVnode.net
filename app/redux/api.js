@@ -380,8 +380,7 @@ export const fetchPerformanceVideos = ({ id }) => {
 };
 
 export const savePerformanceVideos = model =>
-  axios.post(`performances/${model._id}/videos`, model)
-  .then(result => {
+  axios.post(`performances/${model._id}/videos`, model).then(result => {
     return result.data;
   });
 
@@ -671,6 +670,17 @@ export const fetchSlugCrew = () => {
   });
 };
 */
+export const fetchPerformanceCategory = () => {
+  return new Promise(fulfil => {
+    const obj = {
+      type: "video-installation",
+      genre: "jazz",
+      technique: "generative"
+    };
+
+    fulfil(obj);
+  });
+};
 
 export const fetchSlugSectionPublic = (section, id, slug) => {
   return axios.get(`${section}/${id}/public/slugs/${slug}`).then(result => {
