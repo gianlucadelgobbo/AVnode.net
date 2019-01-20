@@ -21,6 +21,7 @@ import {
   fetchSlugNewCrew,
   fetchSlugNewPerformance,
   fetchSlugNewFootage,
+  fetchSlugNewPlaylist,
   fetchSlugNewVideos,
   fetchSlugNewGalleries
 } from "../../../api";
@@ -146,6 +147,32 @@ export const validateSlugNewFootage = ({
   if (slugFromValues !== previousValue) {
     promises.push(
       fetchSlugNewFootage(slugFromValues)
+        .then(response => {
+          if (response.exist) {
+            Object.assign(result, { slug: SLUG_IS_TAKEN });
+            if (Array.isArray(errorArray)) {
+              errorArray[index] = result;
+            }
+          }
+        })
+        .catch()
+    );
+  }
+};
+
+export const validateSlugNewPlaylist = ({
+  value,
+  previousValue,
+  promises,
+  result,
+  index,
+  errorArray
+}) => {
+  // slug
+  let slugFromValues = value;
+  if (slugFromValues !== previousValue) {
+    promises.push(
+      fetchSlugNewPlaylist(slugFromValues)
         .then(response => {
           if (response.exist) {
             Object.assign(result, { slug: SLUG_IS_TAKEN });
@@ -293,7 +320,6 @@ export const isValidSlug = ({ values, name, errors, index, errorArray }) => {
 };
 
 export const isValidName = ({ values, name, errors, index, errorArray }) => {
-
   const stagename = values[name];
   if (!stagename || stagename.trim() === "") {
     errors[name] = REQUIRED;

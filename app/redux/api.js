@@ -471,7 +471,12 @@ export const removePlaylistsPublic = model => {
     return result.data;
   });
 };
-
+//Playlists Slug
+export const fetchSlugNewPlaylist = slug => {
+  return axios.get(`playlists/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
 // ============ Videos
 
 export const fetchVideos = () => {
