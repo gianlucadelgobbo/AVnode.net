@@ -32,7 +32,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'pug');
 app.set('view options', {debug: true});
-app.enable('trust proxy');
+app.set('trust proxy', 'loopback');
 
 app.use(morgan('short'));
 app.use(expressStatusMonitor());
