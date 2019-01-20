@@ -1,84 +1,86 @@
-import React, { Component } from 'react';
-import Form from './form'
-import {connect} from 'react-redux'
-import {getModel} from '../selectors'
-import {showModal} from "../../modal/actions";
-import {bindActionCreators} from "redux";
-import {MODAL_SAVED} from "../../modal/constants";
-import {saveModel} from '../actions'
+import React, { Component } from "react";
+import Form from "./form";
+import { connect } from "react-redux";
+import { getModel, getModelErrorMessage } from "../selectors";
+import { showModal, hideModal } from "../../modal/actions";
+import { bindActionCreators } from "redux";
+import { saveModel } from "../actions";
+import ErrorMessage from "../../errorMessage";
 
 class AddEvent extends Component {
+  // Convert form values to API model
+  createModelToSave(values) {
+    //clone obj
+    let model = Object.assign({}, values);
 
-    // Convert form values to API model
-    createModelToSave(values) {
+    return model;
+  }
 
-        //clone obj
-        let model = Object.assign({}, values);
+  // Modify model from API to create form initial values
+  getInitialValues() {
+    const { model } = this.props;
 
-        return model;
+    if (!model) {
+      return {};
     }
 
-    // Modify model from API to create form initial values
-    getInitialValues() {
-        const {model} = this.props;
+    let v = {};
 
-        if (!model) {
-            return {};
-        }
+    return v;
+  }
 
-        let v = {};
+  onSubmit(values) {
+    const { history, saveModel, hideModal } = this.props;
+    const modelToSave = this.createModelToSave(values);
 
-        return v;
-    }
+    modelToSave.id = "2";
 
-    onSubmit(values) {
-        const {showModal, saveModel} = this.props;
-        const modelToSave = this.createModelToSave(values);
+    //dispatch the action to save the model here
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model.id) {
+        history.push("/admin/events/" + `${response.model.id}` + "/public");
+        hideModal();
+      }
+    });
+  }
 
-        console.log("add saveModel",saveModel)
+  render() {
+    const { showModal, errorMessage } = this.props;
 
-        //dispatch the action to save the model here
-        return saveModel(modelToSave)
-            .then(() => {
-                showModal({
-                    type: MODAL_SAVED
-                });
-            });
-    }
-
-    render() {
-
-        const {showModal} = this.props;
-
-        return (
-
-            <div className="row">
-                <div className="col-md-12">
-                    <Form
-                        initialValues={this.getInitialValues()}
-                        onSubmit={this.onSubmit.bind(this)}
-                        showModal={showModal}
-                    />
-                </div>
-            </div>
-
-        );
-    }
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+          <Form
+            initialValues={this.getInitialValues()}
+            onSubmit={this.onSubmit.bind(this)}
+            showModal={showModal}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = (state) => ({
-    model: getModel(state)
+const mapStateToProps = (state, _id) => ({
+  model: getModel(state),
+  errorMessage: getModelErrorMessage(state, (_id = "2"))
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    showModal,
-    saveModel
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      showModal,
+      saveModel,
+      hideModal
+    },
+    dispatch
+  );
 
 AddEvent = connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AddEvent);
 
 export default AddEvent;
