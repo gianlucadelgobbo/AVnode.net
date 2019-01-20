@@ -16,8 +16,6 @@ block title
       .col-sm-12
         .performer_map_wrapper         
           script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js')
-          script(src='https://cdn.mapkit.io/v1/infobox.js')
-          link(href='https://cdn.mapkit.io/v1/infobox.css', rel='stylesheet')
           script.
             var locations = !{JSON.stringify(data.locations)}
           script(src='/js/mymaps.js')
