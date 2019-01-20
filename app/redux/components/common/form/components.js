@@ -2720,39 +2720,36 @@ export const renderRadioButton = ({
 }) => {
   const field = (
     <div className="form-group">
-    <div className="row">
-    <div className="col-md-3">
-    <div className="labelField">Type</div>
-    {categories.map(category => (
-    <div className="form-check" key={category.key}>
-      <Field 
-        className="form-check-input" 
-        onChange={handleChange} 
-        component="input" 
-        type="radio" 
-        name="categoryRadios" 
-        id={category.key} 
-        value={category.value}
-        checked={category.value === input.value} 
-      />
-      <label className="form-check-label" htmlFor={category.value}>{category.title}</label>
-    </div>
-    ))}
-    </div>
-      <div className="col-md-3">
-        {getTechnique}
+      <div className="row">
+        <div className="col-md-3">
+          <div className="labelField">Type</div>
+          {categories.map(category => (
+            <div className="form-check" key={category.key}>
+              <input
+                className="form-check-input"
+                onChange={handleChange}
+                component="input"
+                type="radio"
+                name="categoryRadios"
+                id={category.key}
+                value={category.value}
+                checked={category.value === selectedType}
+              />
+              <label className="form-check-label" htmlFor={category.value}>
+                {category.title}
+              </label>
+            </div>
+          ))}
+        </div>
+        <div className="col-md-3">{getTechnique}</div>
+        <div className="col-md-3">{getGenre}</div>
       </div>
-      <div className="col-md-3">
-        {getGenre}
-      </div>
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
     </div>
-    {meta.error && meta.touched && (
-      <span className="error-message">
-        <FormattedMessage id={meta.error} />
-      </span>
-    )}
-    </div>
-    
   );
   const label = <div className="labelField">{placeholder}</div>;
   return (
