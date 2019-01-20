@@ -218,7 +218,7 @@ export const fetchEventGalleries = ({ id }) => {
 };
 
 export const saveEventGalleries = model => {
-  return axios.get(`events/${model._id}/galleries`, model).then(result => {
+  return axios.post(`events/${model._id}/galleries`, model).then(result => {
     return result.data;
   });
 };
@@ -238,7 +238,7 @@ export const fetchEventVideos = ({ id }) => {
 };
 
 export const saveEventVideos = model => {
-  return axios.get(`events/${model._id}/videos`, model).then(result => {
+  return axios.post(`events/${model._id}/videos`, model).then(result => {
     return result.data;
   });
 };

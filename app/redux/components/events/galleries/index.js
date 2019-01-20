@@ -22,7 +22,8 @@ class EventsImage extends Component {
       },
       saveModel,
       removeModel,
-      fetchModel
+      fetchModel,
+      history
     } = this.props;
 
     return (
@@ -46,6 +47,8 @@ class EventsImage extends Component {
             saveModel={saveModel}
             id={_id}
             fetchModel={fetchModel}
+            history={history}
+            type="EVENTS"
           />
         </div>
       </div>
