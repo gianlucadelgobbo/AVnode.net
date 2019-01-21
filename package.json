@@ -114,7 +114,7 @@
     "react-widgets": "^4.2.6",
     "react-widgets-moment": "^4.0.12",
     "redux-form": "^7.3.0",
-    "request": "^2.86.0",
+    "request": "^2.88.0",
     "sharp": "^0.20.2",
     "to": "^0.2.9",
     "truncatise": "0.0.7",

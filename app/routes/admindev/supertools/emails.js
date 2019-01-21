@@ -120,6 +120,10 @@ router.get('/updateSendy', (req, res) => {
         mailinglists.push(email);
 
         request.post({
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          
             url: 'https://ml.avnode.net/subscribe',
             formData: email
         }, function (error, response, body) {

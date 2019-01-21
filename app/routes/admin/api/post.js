@@ -204,4 +204,43 @@ router.addVideos = (req, res) => {
   });
 }
 
+router.updateSendy = function (req, res) {
+  let err = [];
+  /*let conta = 0;
+  let emailwithmailinglists = user.emails.filter(item => item.mailinglists);
+  for (let item=0 ; item<emailwithmailinglists.length;item++) {*/
+    let mailinglists = [];
+    for (mailinglist in req.body.mailinglists) if (req.body.mailinglists[mailinglist]) mailinglists.push(mailinglist);
+    let formData = {
+      list: 'AXRGq2Ftn2Fiab3skb5E892g',
+      email: req.body.email,
+      Topics: mailinglists.join(','),
+      avnode_id: req.user._id.toString()
+    };
+    if (req.user.name) formData.Name = req.user.name;
+    if (req.user.surname) formData.Surname = req.user.surname;
+    if (req.user.stagename) formData.Stagename = req.user.stagename;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) formData.Location = req.req.user.addresses[0].locality;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].country) formData.Country = req.req.user.addresses[0].country;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lat) formData.LATITUDE = req.user.addresses[0].geometry.lat;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lng) formData.LONGITUDE = req.user.addresses[0].geometry.lng;
+    console.log("formData");
+    console.log(formData);
+  
+    request.post({
+      url: 'https://ml.avnode.net/subscribe',
+      form: formData,
+      function (error, response, body) {
+        console.log("Newsletter");
+        console.log(error);
+        console.log(body);
+        res.json(error);
+      }
+    });
+    //console.log(mailinglists.join(','));  }
+  //}
+}
+
+
+
 module.exports = router;
