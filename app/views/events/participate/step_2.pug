@@ -6,16 +6,15 @@
   - var categories = []
   - for(var b=0;b<call.admitted[a].categories.length;b++)
     - categories.push(call.admitted[a].categories[b].name)
-  .container
-    .row
-      .col-md-1
-        .text-center
-          input(id=call.admitted[a]._id type="radio" name="performance" value=a)
-      .col-md-11
-        label(for=call.admitted[a]._id)
-          h3=call.admitted[a].title
-          p=global.__("Type")+": "+ categories.join(", ")
-          p=global.__("Authors") + ": "
-          ul
-            each user in call.admitted[a].users
-              li=user.stagename
+  .row
+    .col-1
+      .text-center
+        input(id=call.admitted[a]._id type="radio" name="performance" value=a)
+    .col-11
+      label(for=call.admitted[a]._id)
+        h3=call.admitted[a].title
+        p=global.__("Type")+": "+ call.admitted[a].type.name
+        p=global.__("Authors") + ": "
+        ul
+          each user in call.admitted[a].users
+            li=user.stagename

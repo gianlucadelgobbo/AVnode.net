@@ -9,14 +9,14 @@
     - for (var c=0;c<call.admitted[call.performance].users[b].members.length;c++)
       //- console.log(call.admitted[call.performance].users[b].members[c])
       .row.mb-3
-        .col-md-1
+        .col-1
           .text-center
             input.switch(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.admitted[call.performance].users[b].members[c]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].members[c].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined))
             input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.admitted[call.performance].users[b].members[c].stagename)
             if (call.subscriptions[count].freezed)
               input(name="subscriptions[" + count + "][freezed]", type="hidden", value='true')
               input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.admitted[call.performance].users[b].members[c]._id)
-        .col-md-11
+        .col-11
           label(for="subscription"+b+"_"+c)
             h3(class=call.subscriptions[count].freezed ? "mb-0" : undefined)
               !=call.admitted[call.performance].users[b].members[c].stagename
@@ -36,14 +36,14 @@
       - count++
   - else
     .row.mb-3
-      .col-md-1
+      .col-1
         .text-center
           input.switch(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.admitted[call.performance].users[b]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined))
           input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.admitted[call.performance].users[b].stagename)
           if (call.subscriptions[count].freezed)
             input(name="subscriptions[" + count + "][freezed]", type="hidden", value='true')
             input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.admitted[call.performance].users[b]._id)
-      .col-md-11
+      .col-11
         label(for="subscription"+b+"_"+c)
           h3(class=call.subscriptions[count].freezed ? "mb-0" : undefined)
             !=call.admitted[call.performance].users[b].stagename

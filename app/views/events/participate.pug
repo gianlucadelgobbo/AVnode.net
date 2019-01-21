@@ -8,7 +8,7 @@ block content
         .progress-bar(role="progressbar" style='width: '+perc+'%;', aria-valuenow=perc, aria-valuemin='0', aria-valuemax='100')=perc+"%"
       ul.nav.nav-pills.nav-wizard.mb-3
         each val, index in participateMenu 
-          li.nav-item
+          li.nav-item.mb-2
             a.nav-link(href=index>call.step ? '' : '?step='+index, class=call.step==index ? "active" : index>call.step ? "disabled" : "")
               !=(index+1)+". "
               span.d-none.d-md-inline.d-lg-inline.d-xl-inline=val
@@ -20,7 +20,7 @@ block content
         p=global.__("No call for proposals is active")
       - else if (!user || !user._id)
         p=global.__("To participate to the call for proposal you have to be logged in")
-        a.btn.btn-primary(href="/login/?returnTo=/events/"+dett.slug+"/participate/")=global.__("LOGIN")
+        a.btn.btn-primary.mr-3(href="/login/?returnTo=/events/"+dett.slug+"/participate/")=global.__("LOGIN")
         a.btn.btn-light(href="/signup/?returnTo=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
       - else
         form(method="post" action=canonical)
