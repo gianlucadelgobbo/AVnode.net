@@ -2,6 +2,8 @@ const router = require('../../router')();
 let config = require('getconfig');
 
 const mongoose = require('mongoose');
+const request = require('request');
+
 const Models = {
   'User': mongoose.model('User'),
   'Performance': mongoose.model('Performance'),
@@ -65,6 +67,17 @@ router.putData = (req, res) => {
                     let send = {_id: data._id};
                     for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
                     res.json(send);
+                    /* if (data.emails && data.emails.filter(item => item.mailinglists) && data.emails.filter(item => item.mailinglists).length) {
+                      console.log("req.user");
+                      console.log(req.user);
+                      console.log("emailwithmailinglists");
+                      router.updateSendy(data, req, (err) => {
+                        let send = {_id: data._id};
+                        for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+                        res.json(send);
+                      });
+                    } else {
+                    } */
                   }
                 }
               });
@@ -81,5 +94,4 @@ router.putData = (req, res) => {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
 }
-
 module.exports = router;

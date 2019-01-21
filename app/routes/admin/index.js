@@ -40,10 +40,19 @@ router.put('/api/profile/:form/', (req, res) => {
     put.putData(req, res);
   }
 });
+
 router.get('/api/profile/emails/verify/:email', (req, res)=>{
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   get.sendEmailVericaition(req, res);
+});
+
+router.get('/api/profile/emails/email/:email', (req, res)=>{
+  get.getEmail(req, res);
+});
+
+router.post('/api/profile/emails/updateSendy', (req, res)=>{
+  post.updateSendy(req, res);
 });
 
 router.get('/api/:sez/new/slugs/:slug', (req, res)=>{

@@ -1,5 +1,8 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
+const request = require('request');
+const axios = require('axios')
+
 const Schema = mongoose.Schema;
 const moment = require('moment');
 const indexPlugin = require('../utilities/elasticsearch/User');
@@ -306,6 +309,138 @@ userSchema.pre('save', function (next) {
       next();
     });
   });
+});
+
+userSchema.pre('save', function (next) {
+  if (this.emails) {
+    let query = { _id:{$ne:this._id}, $or : [] };
+    for (let item=0 ;item< this.emails.length; item++) {
+      query.$or.push({ "email" : this.emails[item].email });
+      query.$or.push({ "emails.email" : this.emails[item].email })
+    }
+    User.findOne(query,'_id', (err, user) => {
+      if (!user){
+          next();
+      }else{                
+          console.log('EMAIL IS NOT YOUR');
+          const err = {
+            "message": "EMAIL IS NOT YOUR",
+            "name": "MongoError",
+            "stringValue":"\"EMAIL IS NOT YOUR\"",
+            "kind":"Email",
+            "value":null,
+            "path":"email",
+            "reason":{
+              "message":"EMAIL IS NOT YOUR",
+              "name":"MongoError",
+              "stringValue":"\"EMAIL IS NOT YOUR\"",
+              "kind":"string",
+              "value":null,
+              "path":"email"
+            }
+          };
+          next(err);
+      }
+    });
+  } else {
+    next();
+  }
+});
+userSchema.pre('save', function (next) {
+  console.log("this.emails.filter(item => item.newsletters)");
+  console.log(this.emails.filter(item => item.mailinglists));
+  if (this.emails && this.emails.filter(item => item.mailinglists).length>0) {
+  /*for (let item=0 ; item<emailwithmailinglists.length;item++) {*/
+    let mailinglists = [];
+    for (mailinglist in this.emails[0].mailinglists) if (this.emails[0].mailinglists[mailinglist]) mailinglists.push(mailinglist);
+    let formData = {
+      list: 'AXRGq2Ftn2Fiab3skb5E892g',
+      email: this.emails[0].email,
+      Stagename: this.stagename,
+      Topics: mailinglists.join(','),
+      avnode_id: this._id.toString(),
+      boolean: true
+    };
+/*     if (req.user.name) formData.Name = req.user.name;
+    if (req.user.surname) formData.Surname = req.user.surname;
+    if (req.user.stagename) formData.Stagename = req.user.stagename;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) formData.Location = req.req.user.addresses[0].locality;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].country) formData.Country = req.req.user.addresses[0].country;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lat) formData.LATITUDE = req.user.addresses[0].geometry.lat;
+    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lng) formData.LONGITUDE = req.user.addresses[0].geometry.lng;
+ */    console.log("formData");
+    console.log(formData);
+    /* axios.post('https://ml.avnode.net/subscribe', formData)
+    .then((res) => {
+      console.log(`statusCode:`)
+      console.log(res);
+      next();
+    })
+    .catch((error) => {
+      console.error(error);
+      next();
+    }) */
+    request.post({
+                headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+
+      url: 'https://ml.avnode.net/subscribe',
+      form: formData,
+      function (error, response, body) {
+        console.log("Newsletter");
+        console.log(error);
+        console.log(body);
+        next();
+      }
+    });
+    //console.log(mailinglists.join(','));  }
+  //} 
+  }
+});
+userSchema.pre('save', function (next) {
+  if (this.emails && this.emails.filter(item => item.is_primary).length===0) {
+    const err = {
+      "message": "MISSING ONE PRIMARY EMAIL",
+      "name": "MongoError",
+      "stringValue":"\"MISSING ONE PRIMARY EMAIL\"",
+      "kind":"Email",
+      "value":null,
+      "path":"email",
+      "reason":{
+        "message":"MISSING ONE PRIMARY EMAIL",
+        "name":"MongoError",
+        "stringValue":"\"MISSING ONE PRIMARY EMAIL\"",
+        "kind":"string",
+        "value":null,
+        "path":"email"
+      }
+    };
+    next(err);
+  } else if (this.emails && this.emails.filter(item => item.is_primary).length>1) {
+    const err = {
+      "message": "ONLY ONE EMAIL CAN BE PRIMARY",
+      "name": "MongoError",
+      "stringValue":"\"ONLY ONE EMAIL CAN BE PRIMARY\"",
+      "kind":"Email",
+      "value":null,
+      "path":"email",
+      "reason":{
+        "message":"ONLY ONE EMAIL CAN BE PRIMARY",
+        "name":"MongoError",
+        "stringValue":"\"ONLY ONE EMAIL CAN BE PRIMARY\"",
+        "kind":"string",
+        "value":null,
+        "path":"email"
+      }
+    };
+    next(err);
+  } else if (this.emails && this.emails.filter(item => item.is_primary).length===1) {
+    this.email = this.emails.filter(item => item.is_primary)[0].email;
+    next();
+  } else {
+    next();
+  }
 });
 
 /*userSchema.virtual('originalpassword').get(function () {

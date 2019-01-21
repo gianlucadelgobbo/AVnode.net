@@ -102,6 +102,14 @@ router.getSlug = (req, res) => {
   });
 }
 
+router.getEmail = (req, res) => {
+  Models["User"]
+  .findOne({ $or : [{ "email" : req.params.email },{ "emails.email" : req.params.email }] },'_id', (err, user) => {
+    if (err) logger.debug(`${JSON.stringify(err)}`);
+    res.json({email:req.params.email,exist:user!==null?true:false});
+  });
+}
+
 router.getCategoryByAncestor = (cat, cb) => {
   Models.Category.find({ancestor: cat._id})
   .select({name:1 , slug:1})
