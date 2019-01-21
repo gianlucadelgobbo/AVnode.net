@@ -44,6 +44,12 @@ router.putData = (req, res) => {
           Object.assign(data, put);
           logger.debug('putDataputDataputDataputDataputDataputData');
           logger.debug(data);
+          if (data.emails){
+            if (req.user.name) data.name = req.user.name;
+            if (req.user.surname) data.surname = req.user.surname;
+            if (req.user.stagename) data.stagename = req.user.stagename;
+            if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) data.addresses = req.user.addresses;
+          }
           data.save((err) => {
             if (err) {
               console.log('err');

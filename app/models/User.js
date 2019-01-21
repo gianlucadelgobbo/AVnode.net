@@ -347,55 +347,71 @@ userSchema.pre('save', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
-  console.log("this.emails.filter(item => item.newsletters)");
-  console.log(this.emails.filter(item => item.mailinglists));
-  if (this.emails && this.emails.filter(item => item.mailinglists).length>0) {
-  /*for (let item=0 ; item<emailwithmailinglists.length;item++) {*/
-    let mailinglists = [];
-    for (mailinglist in this.emails[0].mailinglists) if (this.emails[0].mailinglists[mailinglist]) mailinglists.push(mailinglist);
-    let formData = {
-      list: 'AXRGq2Ftn2Fiab3skb5E892g',
-      email: this.emails[0].email,
-      Stagename: this.stagename,
-      Topics: mailinglists.join(','),
-      avnode_id: this._id.toString(),
-      boolean: true
-    };
-/*     if (req.user.name) formData.Name = req.user.name;
-    if (req.user.surname) formData.Surname = req.user.surname;
-    if (req.user.stagename) formData.Stagename = req.user.stagename;
-    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) formData.Location = req.req.user.addresses[0].locality;
-    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].country) formData.Country = req.req.user.addresses[0].country;
-    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lat) formData.LATITUDE = req.user.addresses[0].geometry.lat;
-    if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lng) formData.LONGITUDE = req.user.addresses[0].geometry.lng;
- */    console.log("formData");
-    console.log(formData);
-    /* axios.post('https://ml.avnode.net/subscribe', formData)
-    .then((res) => {
-      console.log(`statusCode:`)
-      console.log(res);
-      next();
-    })
-    .catch((error) => {
-      console.error(error);
-      next();
-    }) */
-    request.post({
-                headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
+  if (this.emails) {
+    const emailwithmailinglists = this.emails.filter(item => item.mailinglists)
+    if (emailwithmailinglists.length>0) {
+      let conta = 0;
+      for (let item=0 ; item<emailwithmailinglists.length;item++) {
+        let mailinglists = [];
+        for (mailinglist in this.emails[item].mailinglists) if (this.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
+        let formData = {
+          list: 'AXRGq2Ftn2Fiab3skb5E892g',
+          email: this.emails[item].email,
+          Topics: mailinglists.join(','),
+          avnode_id: this._id.toString(),
+          boolean: true
+        };
+        if (this.name) formData.name = this.name;
+        if (this.surname) formData.Surname = this.surname;
+        if (this.stagename) formData.Stagename = this.stagename;
+        if (this.addresses && this.addresses[0] && this.addresses[0].locality) formData.Location = this.addresses[0].locality;
+        if (this.addresses && this.addresses[0] && this.addresses[0].country) formData.Country = this.addresses[0].country;
+        if (this.addresses && this.addresses[0] && this.addresses[0].geometry && this.addresses[0].geometry.lat) formData.LATITUDE = this.addresses[0].geometry.lat;
+        if (this.addresses && this.addresses[0] && this.addresses[0].geometry && this.addresses[0].geometry.lng) formData.LONGITUDE = this.addresses[0].geometry.lng;
 
-      url: 'https://ml.avnode.net/subscribe',
-      form: formData,
-      function (error, response, body) {
-        console.log("Newsletter");
-        console.log(error);
-        console.log(body);
-        next();
-      }
-    });
-    //console.log(mailinglists.join(','));  }
-  //} 
+        var https = require('https');
+        var querystring = require('querystring');
+        
+        // form data
+        var postData = querystring.stringify(formData);
+        
+        // request option
+        var options = {
+          host: 'ml.avnode.net',
+          port: 443,
+          method: 'POST',
+          path: '/subscribe',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': postData.length
+          }
+        };
+        
+        // request object
+        var req = https.request(options, function (res) {
+          var result = '';
+          res.on('data', function (chunk) {
+            result += chunk;
+          });
+          res.on('end', function () {
+            conta++;
+            if (conta== emailwithmailinglists.length) next();
+          });
+          res.on('error', function (err) {
+            if (conta== emailwithmailinglists.length) next();
+          })
+        });
+        
+        // req error
+        req.on('error', function (err) {
+          console.log(err);
+        });
+        
+        //send request witht the postData form
+        req.write(postData);
+        req.end();
+      } 
+    }
   }
 });
 userSchema.pre('save', function (next) {
