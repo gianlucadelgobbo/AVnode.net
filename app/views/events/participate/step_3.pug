@@ -2,10 +2,10 @@
 .container
 - for(var b=0;b<dett.organizationsettings.call.calls[call.index].topics.length;b++)
   .row
-    .col-md-1
+    .col-1
       .text-center
         input(id="topic"+b type="checkbox" name="topics["+b+"]" value=dett.organizationsettings.call.calls[call.index].topics[b].name checked=call.topics && call.topics.indexOf(dett.organizationsettings.call.calls[call.index].topics[b].name)!=-1 ? "checked" : undefined)
-    .col-md-11
+    .col-11
       label(for="topic"+b)
         h3=dett.organizationsettings.call.calls[call.index].topics[b].name
         p=dett.organizationsettings.call.calls[call.index].topics[b].description

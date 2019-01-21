@@ -3,23 +3,21 @@
   if call.subscriptions[c].subscriber_id
     if call.subscriptions[c].freezed
       .row
-        .col-md-1
+        .col-1
           .checkbox
             input(type="checkbox", checked="checked", disabled="disabled")
             input(name="subscriptions[" + c + "][packages]", value="null",    type="hidden")
 
-        .col-md-11
-          .row
-            .col-md-9
-                label
-                  h3.mb-0!=call.subscriptions[c].stagename
-                  p!=global.__("This person is already in with another act and already choose his packages")
+        .col-11
+          label
+            h3.mb-0!=call.subscriptions[c].stagename
+            p!=global.__("This person is already in with another act and already choose his packages")
 
     else 
       - for (var b=0;b<dett.organizationsettings.call.calls[call.index].packages.length;b++)
         if dett.organizationsettings.call.calls[call.index].packages[b].personal
           .row
-            .col-md-1
+            .col-1
               .checkbox
                 - var checked = call.subscriptions[c] && call.subscriptions[c].packages && call.subscriptions[c].packages.length && call.subscriptions[c].packages.map(obj =>{return parseInt(obj.id);}).indexOf(b) !==-1;
                 if dett.organizationsettings.call.calls[call.index].packages[b].requested
@@ -28,7 +26,7 @@
 
                 else
                   input(id="package"+c+"_"+b, name="subscriptions[" + c + "][packages][" + b + "][id]", value=b,    type="checkbox", checked=checked ? "checked" : undefined)
-            .col-md-11
+            .col-11
               .row
                 .col-md-9
                     label(for="package"+c+"_"+b)

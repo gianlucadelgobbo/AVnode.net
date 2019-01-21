@@ -122,15 +122,18 @@ router.post('/', (req, res) => {
                 var admittedCat = data.organizationsettings.call.calls[req.body.index].admitted.map(a => a._id.toString());
                 for (let item in admittedCat) {
                   for (let perf in performances) {
-                    var result = performances[perf].categories.map(a => a._id.toString());
-                    if (result.indexOf(admittedCat[item]) !== -1) {
-                      admitted[performances[perf]._id.toString()] = performances[perf];
+                    if (performances[perf].type) {
+                      //var result = performances[perf].categories.map(a => a._id.toString());
+                      var result = performances[perf].type.toString();
+                      if (result.indexOf(admittedCat[item]) !== -1) {
+                        admitted[performances[perf]._id.toString()] = performances[perf];
+                      }
                     }
                   }
                 }
                 let admittedA = [];
                 for (let perf in admitted) {
-                  logger.debug(admitted[perf].categories);
+                  logger.debug(admitted[perf].type);
                   admittedA.push(admitted[perf]);
                 }
                 logger.debug('performances '+performances.length);
@@ -300,12 +303,13 @@ router.post('/', (req, res) => {
           myasync = false;
           // SAVE
           logger.debug('req.session.call.save');
+          logger.debug(req.session.call.admitted[req.session.call.performance]);
           req.session.call.save = {
             event:        req.session.call.event._id,
             call:         req.session.call.index,
             topics:       req.session.call.topics,
             performance:  req.session.call.admitted[req.session.call.performance]._id,
-            performance_categories:  req.session.call.admitted[req.session.call.performance].filter(function (el) {return el.ancestor.slug=="type";})[0]._id,
+            performance_categories:  req.session.call.admitted[req.session.call.performance].type,/*filter(function (el) {return el.ancestor.slug=="type";})[0]._id,*/
             schedule:     {categories : ["5c38c57d9d426a9522c15ba5"]},
             reference:    req.user._id,
             subscriptions:[]
