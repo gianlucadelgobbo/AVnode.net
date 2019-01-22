@@ -682,6 +682,8 @@ export const fetchSlugCrew = () => {
   });
 };
 */
+
+/*
 export const fetchPerformanceCategory = () => {
   return new Promise(fulfil => {
     const obj = {
@@ -693,6 +695,7 @@ export const fetchPerformanceCategory = () => {
     fulfil(obj);
   });
 };
+*/
 
 export const fetchSlugSectionPublic = (section, id, slug) => {
   return axios.get(`${section}/${id}/public/slugs/${slug}`).then(result => {

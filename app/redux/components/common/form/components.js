@@ -2733,7 +2733,7 @@ export const renderRadioButton = ({
                 name="categoryRadios"
                 id={category.key}
                 value={category.value}
-                checked={category.value === selectedType}
+                checked={category.key === selectedType}
               />
               <label className="form-check-label" htmlFor={category.value}>
                 {category.title}
