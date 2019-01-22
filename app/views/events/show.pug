@@ -46,7 +46,7 @@ block title
             if data.boxVenue
               p.boxVenue=data.boxVenue
       .row
-        .col-sm-6
+        .col
           ul.event_social_list.list-inline
             each item in data.web
               li.list-inline-item
@@ -77,9 +77,10 @@ block title
                 li.list-inline-item
                   a(href=item.url target='_blank')
                     span.lnr.lnr-link.about_button
-        .col-sm-6            
-          p.text-right
-            a.participate.btn.btn-primary(href="/events/"+data.slug+"/participate/")=global.__('Participate')
+        if data.participate
+          .col            
+            p.text-right
+              a.participate.btn.btn-primary(href="/events/"+data.slug+"/participate/")=global.__('Participate')
       .row
         .col-lg-12
           #mappa_evento

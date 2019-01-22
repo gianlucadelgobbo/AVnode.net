@@ -76,10 +76,10 @@ const callSchema = new Schema({
   }
 });
 callSchema.virtual('start_date_formatted').get(function () {
-  return moment(this.start_date).format('MMMM Do YYYY, h:mm:ss a');
+  return moment(this.start_date).utc().format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
-  return moment(this.end_date).format('MMMM Do YYYY, h:mm:ss a');
+  return moment(this.end_date).utc().format('MMMM Do YYYY, HH:mm');
 });
 
 const eventSchema = new Schema({
