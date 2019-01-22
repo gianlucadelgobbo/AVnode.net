@@ -12,15 +12,19 @@ router.get('/dbcheck', (req, res) => {
   exec((err, cat) => {
     let catO = {};
     cat.forEach(function(e) {
-      if (!e.ancestor) {
+      if (e.ancestor) {
+        if (!catO[e.ancestor]) catO[e.ancestor] = []; 
+        catO[e.ancestor].push(e);
+      }
+      /* if (!e.ancestor) {
         if (!catO[e.rel]) {
           catO[e.rel] = {};
         }
         catO[e.rel][e._id] = e;
         catO[e.rel][e._id].son = [];
-      }
+      } */
     });
-    catO.stocazzo = {}
+    /* catO.stocazzo = {}
     catO.stocazzo.son = [];
     cat.forEach(function(e) {
       if (e.ancestor) {
@@ -32,10 +36,20 @@ router.get('/dbcheck', (req, res) => {
             return 0;
           });
         } else {
-          catO.stocazzo.son.push(e);          
+          for (var item in catO[e.rel]) {
+            if (catO[e.rel][item][e.ancestor]) {
+              catO[e.rel][item][e.ancestor].son.push(e);
+              catO[e.rel][item][e.ancestor].son.sort(function(a, b){
+                if(a.name < b.name) return -1;
+                if(a.name > b.name) return 1;
+                return 0;
+              });
+            } 
+          }
+          //catO.stocazzo.son.push(e);          
         }
       }
-    });
+    }); */
     res.render('admindev/supertools/categories/showall', {
       title: 'Categories',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,

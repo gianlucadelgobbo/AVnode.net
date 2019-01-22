@@ -24,7 +24,7 @@ const logger = require('../../../utilities/logger');
 router.get('/', (req, res) => {
   logger.debug('/admindev/supertools/emails');
   User.find({is_crew: false}).
-  select({name: 1, old_id: 1, surname: 1, stagename: 1, addresses: 1, emails: 1}).
+  select({name: 1, slug: 1, old_id: 1, activity: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   lean().
   sort('name').
   exec((err, results) => {
@@ -37,6 +37,13 @@ router.get('/', (req, res) => {
     });
     
     results.forEach(function(e) {
+      /* if (e.emails.filter(item => item.email=e.email).length===0 && e.activity==0) {
+        console.log("e.emails.filter(item => item.email=e.email).length");
+        console.log(e.emails.filter(item => item.email=e.email).length);
+        console.log(e.email);
+        console.log(e.emails);
+        console.log(e.slug);
+      } */
       let email = {
         avnode_id: e._id.toString(),
         flxer_id: e.old_id,
@@ -115,15 +122,11 @@ router.get('/updateSendy', (req, res) => {
 
         for (const mailinglist in ee.mailinglists) if (ee.mailinglists[mailinglist]) topics.push(mailinglist);
         email.Topics = topics.join(',');
-        console.log(email);
+        //console.log(email);
         //email.mailinglists = ee.mailinglists;
         mailinglists.push(email);
 
-        request.post({
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          
+        request.post({          
             url: 'https://ml.avnode.net/subscribe',
             formData: email
         }, function (error, response, body) {
@@ -134,7 +137,7 @@ router.get('/updateSendy', (req, res) => {
             res.render('admindev/supertools/emails/showall', {
               title: 'Emails',
               superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
+              currentUrl: req.originalUrl,
               data: mailinglists,
               skip: skip,
               script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/updateSendy?skip=' + (skip+limit) + '"},1000);</script>'
