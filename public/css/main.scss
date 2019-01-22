@@ -735,15 +735,18 @@ performance_event_title
      margin-bottom: 10px;
  }
  .performer_address li {
-     color: $color1;
-     font-size: 30px;
-     font-weight: 700;
-     display: inline-block;
-     margin-right: 10px;
- }
+    color: $color1;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-block;
+    margin-right: 10px;
+}
+.performer_address li.big {
+    font-size: 30px;
+}
 
  .performer_address li:after {
-     content: "/";
+     content: " /";
      color: $color2;
  }
  .performer_address li:last-child:after {
