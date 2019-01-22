@@ -23,7 +23,7 @@ import {
   populateMultiLanguageObject,
   createMultiLanguageInitialObject
 } from "../../common/form";
-import { fetchPerformanceCategory } from "../../../api";
+import { fetchPerformancePublic } from "../../../api";
 
 class PerformancePublic extends Component {
   constructor(props) {
@@ -47,11 +47,12 @@ class PerformancePublic extends Component {
       id: _id
     });
     fetchCategories();
-    fetchPerformanceCategory().then(result => {
+    fetchPerformancePublic({ id: _id }).then(result => {
       this.setState({
-        selectedType: result.type,
-        selectedTechnique: result.technique,
-        selectedGenre: result.genre
+        selectedType: result.type !== undefined || null ? result.type._id : "",
+        selectedTechnique:
+          result.tecnique !== undefined || "" ? result.tecnique._id : "",
+        selectedGenre: result.genre !== undefined || "" ? result.genre._id : ""
       });
     });
   }
@@ -65,7 +66,7 @@ class PerformancePublic extends Component {
 
     model.type = selectedType;
 
-    model.technique = selectedTechnique;
+    model.tecnique = selectedTechnique;
 
     model.genre = selectedGenre;
 
@@ -153,7 +154,7 @@ class PerformancePublic extends Component {
     const { selectedType, selectedTechnique, selectedGenre } = this.state;
 
     const getTechnique = () => {
-      const view = categories.filter(item => item.value === selectedType);
+      const view = categories.filter(item => item.key === selectedType);
       return view.length === 0 ? (
         ""
       ) : (
@@ -168,12 +169,12 @@ class PerformancePublic extends Component {
                   className="form-check-input"
                   type="radio"
                   onChange={e =>
-                    this.handleChange("selectedTechnique", e.target.value)
+                    this.handleChange("selectedTechnique", e.target.id)
                   }
                   name="categoryRadios2"
                   id={t.key}
                   value={t.value}
-                  checked={t.value === selectedTechnique}
+                  checked={t.key === selectedTechnique}
                 />
                 <label className="form-check-label" htmlFor={t.value}>
                   {t.title}
@@ -185,7 +186,7 @@ class PerformancePublic extends Component {
     };
 
     const getGenre = () => {
-      const view = categories.filter(item => item.value === selectedType);
+      const view = categories.filter(item => item.key === selectedType);
       const genres = view.length > 0 ? view[0].children : "";
       return genres.length === 0 ? (
         ""
@@ -201,12 +202,12 @@ class PerformancePublic extends Component {
                   className="form-check-input"
                   type="radio"
                   onChange={e =>
-                    this.handleChange("selectedGenre", e.target.value)
+                    this.handleChange("selectedGenre", e.target.id)
                   }
                   name="categoryRadios3"
                   id={t.key}
                   value={t.value}
-                  checked={t.value === selectedGenre}
+                  checked={t.key === selectedGenre}
                 />
                 <label className="form-check-label" htmlFor={t.value}>
                   {t.title}
@@ -242,9 +243,7 @@ class PerformancePublic extends Component {
             categories={categories}
             _id={_id}
             getTechnique={getTechnique()}
-            handleChange={e =>
-              this.handleChange("selectedType", e.target.value)
-            }
+            handleChange={e => this.handleChange("selectedType", e.target.id)}
             getGenre={getGenre()}
             selectedType={selectedType}
           />
