@@ -4341,7 +4341,7 @@
       },
       "ordersQueries": {
         "mostrecent": {
-          "schedule.0.date": -1
+          "schedule.0.starttime": -1
         },
         "mostviewed": {
           "stats.visits": -1
