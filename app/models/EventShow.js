@@ -426,15 +426,33 @@ eventSchema.virtual('boxDate').get(function () {
     const lang = global.getLocale();
     moment.locale(lang);
     if (this.schedule.length == 1) {
-      boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].single);
-    } else {
-      if (this.schedule[0].date.getFullYear()!==this.schedule[this.schedule.length-1].date.getFullYear()) {
-        boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].date).format(config.dateFormat[lang].single);
+      const startdate = new Date(new Date(this.schedule[0].starttime).setUTCHours(0,0,0,0));
+      const enddate = new Date(new Date(this.schedule[0].endtime).setUTCHours(0,0,0,0));
+      console.log("this.schedule[0].starttime");
+      console.log(this.schedule[0].starttime);
+      if(startdate==enddate) {
+        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single);
       } else {
-        if (this.schedule[0].date.getMonth()!==this.schedule[this.schedule.length-1].date.getMonth()) {
-          boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].date).format(config.dateFormat[lang].daymonth2);
+        if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
+          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].single);
         } else {
-          boxDate = moment(this.schedule[0].date).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].date).format(config.dateFormat[lang].day2);
+          if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
+            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].daymonth2);
+          } else {
+            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].day2);
+          }
+        }
+      }
+      console.log("this.schedule[0].endtime");
+      //console.log(new Date(enddate));
+    } else {
+      if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
+        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].single);
+      } else {
+        if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
+          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].daymonth2);
+        } else {
+          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].day2);
         }
       }
     }
