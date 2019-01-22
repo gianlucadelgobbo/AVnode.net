@@ -21,7 +21,7 @@ block content
       - else if (!user || !user._id)
         p=global.__("To participate to the call for proposal you have to be logged in")
         a.btn.btn-primary.mr-3(href="/login/?returnTo=/events/"+dett.slug+"/participate/")=global.__("LOGIN")
-        a.btn.btn-light(href="/signup/?returnTo=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
+        a.btn.btn-light(href="/signup?returnTo=/events/"+dett.slug+"/participate/")=global.__("REGISTER")
       - else
         form(method="post" action=canonical)
           h2.mb-3=participateMenu[call.step]
