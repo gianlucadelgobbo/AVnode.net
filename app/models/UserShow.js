@@ -78,7 +78,7 @@ const userSchema = new Schema({
   roles: [], // BL TODO frontend, issue #5, array of roles
   connections: [], // BL TODO frontend, issue #5, added
   // Organization Extra Data
-  organizationData: [OrganizationData],
+  organizationData: {},
 
   password: String,
   passwordResetToken: String,

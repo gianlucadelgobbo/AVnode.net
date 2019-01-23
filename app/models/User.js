@@ -117,7 +117,7 @@ const userSchema = new Schema({
   connections: [],
 
   // Organization Extra Data
-  organizationData: [OrganizationData],
+  organizationData: {},
 
   flxermigrate: { type: Boolean, default: false },
   password: {
@@ -257,11 +257,8 @@ userSchema.virtual('teaserImageFormats').get(function () {
 */
 
 userSchema.pre('validate', function (next) {
-  //070190Gian!
-  console.log('userSchema.pre(validate) id:' + this._id);
+  console.log("userSchema.pre('validate' PASSWORD");
   let user = this;
-  console.log('userSchema.pre(validate) newpassword:' + (user.newpassword));
-  console.log('userSchema.pre(validate) oldpassword:' + (user.oldpassword));
   if ((user.oldpassword || user.oldpassword === "") && (user.newpassword || user.newpassword === "")) {
     user.comparePassword(user.oldpassword, (err, isMatch) => {
       if (err) return next(err);
@@ -299,6 +296,7 @@ userSchema.pre('validate', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
+  console.log("userSchema.pre('save' PASSWORD");
   let user = this;
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
@@ -312,7 +310,8 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre('save', function (next) {
-  if (this.emails) {
+  console.log("userSchema.pre('save' EMAILS");
+  if (this.emails && this.emails.length) {
     let query = { _id:{$ne:this._id}, $or : [] };
     for (let item=0 ;item< this.emails.length; item++) {
       query.$or.push({ "email" : this.emails[item].email });
@@ -347,7 +346,8 @@ userSchema.pre('save', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
-  if (this.emails) {
+  console.log("userSchema.pre('save' NEWSLETTER");
+  if (this.emails && this.emails.length) {
     const emailwithmailinglists = this.emails.filter(item => item.mailinglists)
     if (emailwithmailinglists.length>0) {
       let conta = 0;
@@ -411,49 +411,59 @@ userSchema.pre('save', function (next) {
         req.write(postData);
         req.end();
       } 
+    } else {
+      next();
     }
+  } else {
+    next();
   }
 });
 userSchema.pre('save', function (next) {
-  if (this.emails && this.emails.filter(item => item.is_primary).length===0) {
-    const err = {
-      "message": "MISSING ONE PRIMARY EMAIL",
-      "name": "MongoError",
-      "stringValue":"\"MISSING ONE PRIMARY EMAIL\"",
-      "kind":"Email",
-      "value":null,
-      "path":"email",
-      "reason":{
-        "message":"MISSING ONE PRIMARY EMAIL",
-        "name":"MongoError",
+  console.log("userSchema.pre('save' PRIMARY");
+  console.log(this);
+  if (this.emails && this.emails.length) {
+    if (this.emails.filter(item => item.is_primary).length===0) {
+      const err = {
+        "message": "MISSING ONE PRIMARY EMAIL",
+        "name": "MongoError",
         "stringValue":"\"MISSING ONE PRIMARY EMAIL\"",
-        "kind":"string",
+        "kind":"Email",
         "value":null,
-        "path":"email"
-      }
-    };
-    next(err);
-  } else if (this.emails && this.emails.filter(item => item.is_primary).length>1) {
-    const err = {
-      "message": "ONLY ONE EMAIL CAN BE PRIMARY",
-      "name": "MongoError",
-      "stringValue":"\"ONLY ONE EMAIL CAN BE PRIMARY\"",
-      "kind":"Email",
-      "value":null,
-      "path":"email",
-      "reason":{
-        "message":"ONLY ONE EMAIL CAN BE PRIMARY",
-        "name":"MongoError",
+        "path":"email",
+        "reason":{
+          "message":"MISSING ONE PRIMARY EMAIL",
+          "name":"MongoError",
+          "stringValue":"\"MISSING ONE PRIMARY EMAIL\"",
+          "kind":"string",
+          "value":null,
+          "path":"email"
+        }
+      };
+      next(err);
+    } else if (this.emails.filter(item => item.is_primary).length>1) {
+      const err = {
+        "message": "ONLY ONE EMAIL CAN BE PRIMARY",
+        "name": "MongoError",
         "stringValue":"\"ONLY ONE EMAIL CAN BE PRIMARY\"",
-        "kind":"string",
+        "kind":"Email",
         "value":null,
-        "path":"email"
-      }
-    };
-    next(err);
-  } else if (this.emails && this.emails.filter(item => item.is_primary).length===1) {
-    this.email = this.emails.filter(item => item.is_primary)[0].email;
-    next();
+        "path":"email",
+        "reason":{
+          "message":"ONLY ONE EMAIL CAN BE PRIMARY",
+          "name":"MongoError",
+          "stringValue":"\"ONLY ONE EMAIL CAN BE PRIMARY\"",
+          "kind":"string",
+          "value":null,
+          "path":"email"
+        }
+      };
+      next(err);
+    } else if (this.emails.filter(item => item.is_primary).length===1) {
+      this.email = this.emails.filter(item => item.is_primary)[0].email;
+      next();
+    } else {
+      next();
+    }
   } else {
     next();
   }

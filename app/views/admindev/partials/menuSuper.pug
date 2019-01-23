@@ -88,6 +88,8 @@
       a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
       - var obj = {link:"/wpimport/events", title:"Events"}
       a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+      - var obj = {link:"/wpimport/organizations", title:"Organizations"}
+      a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
     a.bg-dark.list-group-item.list-group-item-action.flex-column.align-items-start(href='#submenu6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/admindev/supertools/categories")===0 ? "true" : "false")
       .d-flex.w-100.justify-content-start.align-items-center
         span.fa.fa-tags.fa-fw.mr-3
