@@ -1,0 +1,12 @@
+extends ../../layout_admin
+block content
+  .container.mb-2
+    form(action=formUrl, method="post")
+      textarea(name="q").form-control.mb-2
+        if body
+          !=body
+        else 
+          !='"3dmotion","4youreye","areaodeon","avnode","bam","born-digital","c3avoi","cairotronica","culture-action-europe","cynetart","dancity","elasticeye","elita","eurocommpr","fiber","flyer","institut-francais","jetztkultur","kiritanflux","","les-reseaux-de-la-creation","lighttouch,","linux-club","lunchmeat","mad","magnetic-field-b","medusalab","metasphere","mira","multitrab","muvelodesi-szint","nodeforum","oddstream","photon","procult","qvrtv","reactionav","rencontres-audiovisuelles","schmiede","scope","self-fish","shape","shiny-toys","simultan","skanumezs","slv","sound-frame","springattitude","telenoika","the-sharing","toolkit","transfera-media-arts","video-hack-space","vj-torna-international","young-talents","zetema","zsolnay"'
+      .text-right
+        button.btn.btn-primary(type="submit")="SUBMIT"
+  pre=JSON.stringify(data, null, 2)

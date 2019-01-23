@@ -634,6 +634,171 @@ router.get('/eventsupdate', (req, res) => {
   }
 });
 
+/* let organizations = [
+  "telenoika"]; */
+router.get('/organizations', (req, res) => {
+  req.session.organizations = undefined;
+  logger.debug('/admin/tools/import/organizations');
+  res.render('admindev/supertools/import', {
+    title: 'WP Organizations',
+    currentUrl: req.originalUrl,
+    formUrl: req.originalUrl+"_import",
+    data: {},
+    script: false
+    //script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations?page=' + (page) + '"},1000);</script>'
+  });  
+});
+    
+router.post('/organizations_import', (req, res) => {
+  logger.debug('/admin/tools/import/organizations_import POST');
+  logger.debug('{"q": '+req.body.q+'}');
+  if (!req.session.organizations && req.body.q) req.session.organizations = req.body.q;
+  res.redirect(req.originalUrl);
+});
+
+router.get('/organizations_import', (req, res) => {
+  logger.debug('/admin/tools/import/organizations_import');
+  logger.debug(req.session.organizations);
+  let organizations = JSON.parse('{"q": '+req.session.organizations+'}').q;
+  logger.debug(organizations);
+  let page = req.query.page ? parseFloat(req.query.page) : 0;
+  if (organizations[page]) {
+    const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/author/avnode/"+organizations[page];
+    console.log({"url": url});
+
+    request({
+        url: url,
+        json: true
+    }, function (error, response, body) {
+      console.log({"slug": body.user_login});
+      console.log(error);
+      console.log(response.statusCode);
+      console.log("body.ID");
+      console.log(body.ID);
+      if (!error && response.statusCode === 200) {
+        page++;
+        if (body.organisation) {
+          console.log({"slug": body.user_login});
+          console.log(url);
+          console.log(body.organisation);
+          User.findOne({"slug": body.user_login}, function(error, result) {
+            result.organizationData = JSON.parse(JSON.stringify(body.organisation));
+            if (result.organizationData.description) {
+              var descr = {
+                "is_primary": false,
+                "lang": "fr",
+                "abouttext": result.organizationData.description
+              }
+              result.abouts.push(descr);
+            }
+            if (result.organizationData.url.length) {
+              result.web = result.web.concat(result.organizationData.url);
+              delete result.organizationData.url;
+            }
+            if (result.organizationData.social.length) {
+              result.social = result.social.concat(result.organizationData.social);
+              delete result.organizationData.social;
+            }
+            if (result.organizationData.logo || result.organizationData.statute || result.organizationData.members_cv || result.organizationData.cv) {
+              let row = [];
+              if (result.organizationData.logo) {
+                var obj = {source: result.organizationData.logo.toString()};
+                const ext = result.organizationData.logo.substring(result.organizationData.logo.lastIndexOf("."));
+                obj.dest = result.organizationData.logo = "/warehouse/organizations/logos/LOGO-"+result.slug+ext;
+                console.log(obj);
+                row.push(obj);
+              }
+              if (result.organizationData.statute) {
+                var obj = {source: result.organizationData.statute.toString()};
+                const ext = result.organizationData.statute.substring(result.organizationData.statute.lastIndexOf("."));
+                obj.dest = result.organizationData.statute = "/warehouse/organizations/statutes/STATUTE-"+result.slug+ext;
+                row.push(obj);
+              }
+              if (result.organizationData.members_cv) {
+                var obj = {source: result.organizationData.members_cv.toString()};
+                const ext = result.organizationData.members_cv.substring(result.organizationData.members_cv.lastIndexOf("."));
+                obj.dest = result.organizationData.members_cv = "/warehouse/organizations/cvs/MEMBERS-CV-"+result.slug+ext;
+                row.push(obj);
+              }
+              if (result.organizationData.cv) {
+                var obj = {source: result.organizationData.cv.toString()};
+                const ext = result.organizationData.cv.substring(result.organizationData.cv.lastIndexOf("."));
+                obj.dest = result.organizationData.cv = "/warehouse/organizations/cvs/CV-"+result.slug+ext;
+                row.push(obj);
+              }
+              let contapost = 0;
+              for (let a=0;a<row.length;a++) {
+                router.download(row[a].source, global.appRoot+row[a].dest, (p1,p2,p3) => {
+                  contapost++;
+                  if (contapost == row.length) {
+                    result.save(function(error) {
+                      res.render('admindev/supertools/import', {
+                        title: 'WP Organizations',
+                        currentUrl: req.originalUrl,
+                        body: req.session.organizations,
+                        formUrl: req.originalUrl,
+                        data: error || result,
+                        //script: false
+                        script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
+                      });
+                    });
+                  }
+                });          
+              }
+            } else {
+              console.log('saveoutput ');
+              console.log({"result": result});
+              console.log(body.organisation);
+              result.save(function(error) {
+                console.log("salvato");
+                console.log(error || result);
+                res.render('admindev/supertools/import', {
+                  title: 'WP Organizations',
+                  currentUrl: req.originalUrl,
+                  body: req.session.organizations,
+                  formUrl: req.originalUrl,
+                  data: error || result,
+                  //script: false
+                  script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
+                });
+              });
+            }
+          });
+        } else {
+          res.render('admindev/supertools/import', {
+            title: 'WP Organizations',
+            currentUrl: req.originalUrl,
+            body: req.session.organizations,
+            formUrl: req.originalUrl,
+            data: {msg: ['ERROR: '+organizations[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
+            //script: false
+            //script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
+          });
+        }
+      } else {
+        res.render('admindev/supertools/import', {
+          title: 'WP Organizations',
+          currentUrl: req.originalUrl,
+          body: req.session.organizations,
+          formUrl: req.originalUrl,
+          data: {msg: ['ERROR: '+organizations[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
+          script: false
+        });
+      }
+    });
+  } else {
+    req.session.organizations = undefined;
+    res.render('admindev/supertools/import', {
+      title: 'WP Organizations',
+      currentUrl: req.originalUrl,
+      body: req.session.organizations,
+      formUrl: req.originalUrl,
+      data: {msg: ['End']},
+      script: false
+    });
+  }
+});
+
 router.daysBetween = function( date1, date2 ) {
   //Get 1 day in milliseconds
   var one_day=1000*60*60*24;
@@ -650,6 +815,27 @@ router.daysBetween = function( date1, date2 ) {
 }
 
 router.get('/news', (req, res) => {
+  req.session.news = undefined;
+  logger.debug('/admin/tools/import/news');
+  res.render('admindev/supertools/import', {
+    title: 'WP News',
+    currentUrl: req.originalUrl,
+    formUrl: req.originalUrl+"_import",
+    data: {},
+    script: false
+    //script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/news?page=' + (page) + '"},1000);</script>'
+  });  
+});
+    
+router.post('/news_import', (req, res) => {
+  logger.debug('/admin/tools/import/news_import POST');
+  logger.debug('{"q": '+req.body.q+'}');
+  if (!req.session.news && req.body.q) req.session.news = req.body.q;
+  res.redirect(req.originalUrl);
+});
+
+
+/* router.get('/news_import', (req, res) => {
   logger.debug('/admin/tools/wpimport/news');
   let page = req.query.page ? parseFloat(req.query.page) : 1;
   const url = `https://flyer.dev.flyer.it/wp-json/wp/v2/news/?page=${page}`;
@@ -817,12 +1003,204 @@ router.get('/news', (req, res) => {
       });
     }
   });
+}); */
+router.get('/news_import', (req, res) => {
+  logger.debug('/admin/tools/import/news_import');
+  logger.debug(req.session.news);
+  let news = JSON.parse('{"q": '+req.session.news+'}').q;
+  logger.debug(news);
+  let page = req.query.page ? parseFloat(req.query.page) : 0;
+  logger.debug(news[page]);
+  if (news[page]) {
+    const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/news/"+news[page];
+    console.log({"url": url});
+
+    request({
+        url: url,
+        json: true
+    }, function (error, response, body) {
+      console.log(error);
+      console.log(response.statusCode);
+      console.log("body.ID");
+      console.log(body.ID);
+      if (!error && response.statusCode === 200) {
+        page++;
+        if (body.ID) {
+          let news = body;
+          console.log("News "+news.post_title);
+          console.log(news);
+          let tmp = {
+            old_id: news.id,
+            creation_date: news.date,
+            slug: news.slug,
+            title: news.post_title,
+            is_public: true,
+            abouts: [{
+              lang: 'en',
+              abouttext: news.post_content
+            }],
+            stats: {
+              views: 100+Math.floor((Math.random() * 1000) + 1),
+              likes: 100+Math.floor((Math.random() * 1000) + 1)
+            },
+            web: [],
+            social: [],
+            users: []
+          };
+          if (news.video_thumbnail && news.video_thumbnail !== '') {
+            tmp.media = {url: news.video_thumbnail};
+          }
+          for (let web_site in news.web_site) {
+            if (
+              news.web_site[web_site].indexOf("facebook.com")!==-1 ||
+              news.web_site[web_site].indexOf("fb.com")!==-1 ||
+              news.web_site[web_site].indexOf("twitter.com")!==-1 ||
+              news.web_site[web_site].indexOf("instagram.com")!==-1 ||      
+              news.web_site[web_site].indexOf("youtube.com")!==-1 ||      
+              news.web_site[web_site].indexOf("vimeo.com")!==-1      
+            ) {
+              tmp.social.push({
+                url: news.web_site[web_site],
+                type: 'social'
+              });
+            } else {
+              tmp.web.push({
+                url: news.web_site[web_site],
+                type: 'web'
+              });
+            }
+          }
+          var slugs = [];
+          for (let user in news.capauthors) {
+            slugs.push(news.capauthors[user].user_login);
+          }
+          User.find({"slug": {$in: slugs}}).exec((err, persons) => {
+            console.log("slugs");
+            console.log(slugs);
+            var usersA = persons.map(function(item){ return item._id; });
+            console.log("usersA");
+            if (!usersA.length) usersA = ['5be8772bfc39610000007065'];
+            tmp.users = usersA;
+            console.log(usersA);
+            if (news.featured && news.featured.full) {
+              let filename = '';
+              let dest = '';
+              const source = news.featured.full;
+              filename = source.substring(source.lastIndexOf('/') + 1);
+    
+              news.date = new Date(news.date);
+              let month = news.date.getMonth() + 1;
+              month = month < 10 ? '0' + month : month;
+              dest = `${global.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
+              if (!fs.existsSync(dest)) {
+                logger.debug(fs.mkdirSync(dest));
+              }
+              dest += month;
+              if (!fs.existsSync(dest)) {
+                logger.debug(fs.mkdirSync(dest));
+              }
+              dest += `/${filename}`;
+              //console.log(dest.replace(global.appRoot, '')+filename);
+              tmp.image = {
+                file: dest.replace(global.appRoot, ''),
+                filename: filename,
+                originalname: source
+              };
+              router.download(source, dest, (p1,p2,p3) => {
+  
+                console.log('saveoutput ');
+                console.log(tmp);
+                News.
+                update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
+                  let result;
+                  if (err) {
+                    console.log('error '+err);
+                    result = err;
+                  } else {
+                    result = tmp;
+                  }
+                  res.render('admindev/supertools/import', {
+                    title: 'WP News',
+                    currentUrl: req.originalUrl,
+                    body: req.session.news,
+                    formUrl: req.originalUrl,
+                    data: error || result,
+                    //script: false
+                    script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/news_import?page=' + (page) + '"},1000);</script>'
+                  });
+              });
+    
+              });          
+            } else {
+              console.log('saveoutput ');
+              console.log(tmp);
+              News.
+              update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
+                let result;
+                if (err) {
+                  console.log('error '+err);
+                  result = err;
+                } else {
+                  result = tmp;
+                }
+                res.render('admindev/supertools/import', {
+                  title: 'WP News',
+                  currentUrl: req.originalUrl,
+                  body: req.session.news,
+                  formUrl: req.originalUrl,
+                  data: error || result,
+                  //script: false
+                  script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/news_import?page=' + (page) + '"},1000);</script>'
+                });
+              });
+            }
+          });
+        } else {
+          res.render('admindev/supertools/import', {
+            title: 'WP News',
+            currentUrl: req.originalUrl,
+            body: req.session.news,
+            formUrl: req.originalUrl,
+            data: {msg: ['ERROR: '+news[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
+            //script: false
+            //script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
+          });
+        }
+      } else {
+        res.render('admindev/supertools/import', {
+          title: 'WP Organizations',
+          currentUrl: req.originalUrl,
+          body: req.session.news,
+          formUrl: req.originalUrl,
+          data: {msg: ['ERROR: '+news[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
+          script: false
+        });
+      }
+    });
+  } else {
+    //req.session.news = undefined;
+    res.render('admindev/supertools/import', {
+      title: 'WP Organizations',
+      currentUrl: req.originalUrl,
+      body: req.session.news,
+      formUrl: req.originalUrl,
+      data: {msg: ['End']},
+      script: false
+    });
+  }
 });
+
 
 router.download = (source, dest, callback) => {
   request.head(source, function(err, res, body){
-    console.log('content-type:', res.headers['content-type']);
-    console.log('content-length:', res.headers['content-length']);
+    if (err) {
+      console.log(err);
+    }
+    if (res) {
+      console.log('content-type:', res.headers['content-type']);
+      console.log('content-length:', res.headers['content-length']);
+    }
+    //dest = dest.substring(0, dest.lastIndexOf("/"));
     console.log("source ");
     console.log(source);
     console.log("dest ");

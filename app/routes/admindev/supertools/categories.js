@@ -5,17 +5,44 @@ const config = require('getconfig');
 
 const logger = require('../../../utilities/logger');
 
+router.unflatten = function( array, parent, tree ){
+
+  tree = typeof tree !== 'undefined' ? tree : [];
+  parent = typeof parent !== 'undefined' ? parent : { _id: 0 };
+
+  var children = array.filter(child => child.ancestor == parent._id || !child.ancestor);
+  console.log("children");
+  console.log(children);
+  console.log("parent");
+  console.log(parent);
+
+  if( children.length!==0  ){
+      if( parent._id == 0 ){
+         tree = children;   
+      }else{
+         parent['children'] = children;
+      }
+      for(let child in children){ 
+        console.log(child);
+        router.unflatten( array, child ) 
+      }                    
+  }
+  console.log(tree);
+
+  return tree;
+}
+
 router.get('/dbcheck', (req, res) => {
   Category.find({}).
   lean().
   sort('name').
   exec((err, cat) => {
-    let catO = {};
+    let catO = router.unflatten( cat );;
     cat.forEach(function(e) {
-      if (e.ancestor) {
+     /*  if (e.ancestor) {
         if (!catO[e.ancestor]) catO[e.ancestor] = []; 
         catO[e.ancestor].push(e);
-      }
+      } */
       /* if (!e.ancestor) {
         if (!catO[e.rel]) {
           catO[e.rel] = {};
