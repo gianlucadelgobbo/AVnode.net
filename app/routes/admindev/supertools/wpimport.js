@@ -682,85 +682,97 @@ router.get('/organizations_import', (req, res) => {
           console.log(url);
           console.log(body.organisation);
           User.findOne({"slug": body.user_login}, function(error, result) {
-            result.organizationData = JSON.parse(JSON.stringify(body.organisation));
-            if (result.organizationData.description) {
-              var descr = {
-                "is_primary": false,
-                "lang": "fr",
-                "abouttext": result.organizationData.description
+            if (result) {
+              result.organizationData = JSON.parse(JSON.stringify(body.organisation));
+              if (result.organizationData.description) {
+                var descr = {
+                  "is_primary": false,
+                  "lang": "fr",
+                  "abouttext": result.organizationData.description
+                }
+                result.abouts.push(descr);
               }
-              result.abouts.push(descr);
-            }
-            if (result.organizationData.url.length) {
-              result.web = result.web.concat(result.organizationData.url);
-              delete result.organizationData.url;
-            }
-            if (result.organizationData.social.length) {
-              result.social = result.social.concat(result.organizationData.social);
-              delete result.organizationData.social;
-            }
-            if (result.organizationData.logo || result.organizationData.statute || result.organizationData.members_cv || result.organizationData.cv) {
-              let row = [];
-              if (result.organizationData.logo) {
-                var obj = {source: result.organizationData.logo.toString()};
-                const ext = result.organizationData.logo.substring(result.organizationData.logo.lastIndexOf("."));
-                obj.dest = result.organizationData.logo = "/warehouse/organizations/logos/LOGO-"+result.slug+ext;
-                console.log(obj);
-                row.push(obj);
+              if (result.organizationData.url.length) {
+                result.web = result.web.concat(result.organizationData.url);
+                delete result.organizationData.url;
               }
-              if (result.organizationData.statute) {
-                var obj = {source: result.organizationData.statute.toString()};
-                const ext = result.organizationData.statute.substring(result.organizationData.statute.lastIndexOf("."));
-                obj.dest = result.organizationData.statute = "/warehouse/organizations/statutes/STATUTE-"+result.slug+ext;
-                row.push(obj);
+              if (result.organizationData.social.length) {
+                result.social = result.social.concat(result.organizationData.social);
+                delete result.organizationData.social;
               }
-              if (result.organizationData.members_cv) {
-                var obj = {source: result.organizationData.members_cv.toString()};
-                const ext = result.organizationData.members_cv.substring(result.organizationData.members_cv.lastIndexOf("."));
-                obj.dest = result.organizationData.members_cv = "/warehouse/organizations/cvs/MEMBERS-CV-"+result.slug+ext;
-                row.push(obj);
-              }
-              if (result.organizationData.cv) {
-                var obj = {source: result.organizationData.cv.toString()};
-                const ext = result.organizationData.cv.substring(result.organizationData.cv.lastIndexOf("."));
-                obj.dest = result.organizationData.cv = "/warehouse/organizations/cvs/CV-"+result.slug+ext;
-                row.push(obj);
-              }
-              let contapost = 0;
-              for (let a=0;a<row.length;a++) {
-                router.download(row[a].source, global.appRoot+row[a].dest, (p1,p2,p3) => {
-                  contapost++;
-                  if (contapost == row.length) {
-                    result.save(function(error) {
-                      res.render('admindev/supertools/import', {
-                        title: 'WP Organizations',
-                        currentUrl: req.originalUrl,
-                        body: req.session.organizations,
-                        formUrl: req.originalUrl,
-                        data: error || result,
-                        //script: false
-                        script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
+              if (result.organizationData.logo || result.organizationData.statute || result.organizationData.members_cv || result.organizationData.cv) {
+                let row = [];
+                if (result.organizationData.logo) {
+                  var obj = {source: result.organizationData.logo.toString()};
+                  const ext = result.organizationData.logo.substring(result.organizationData.logo.lastIndexOf("."));
+                  obj.dest = result.organizationData.logo = "/warehouse/organizations/logos/LOGO-"+result.slug+ext;
+                  console.log(obj);
+                  row.push(obj);
+                }
+                if (result.organizationData.statute) {
+                  var obj = {source: result.organizationData.statute.toString()};
+                  const ext = result.organizationData.statute.substring(result.organizationData.statute.lastIndexOf("."));
+                  obj.dest = result.organizationData.statute = "/warehouse/organizations/statutes/STATUTE-"+result.slug+ext;
+                  row.push(obj);
+                }
+                if (result.organizationData.members_cv) {
+                  var obj = {source: result.organizationData.members_cv.toString()};
+                  const ext = result.organizationData.members_cv.substring(result.organizationData.members_cv.lastIndexOf("."));
+                  obj.dest = result.organizationData.members_cv = "/warehouse/organizations/cvs/MEMBERS-CV-"+result.slug+ext;
+                  row.push(obj);
+                }
+                if (result.organizationData.cv) {
+                  var obj = {source: result.organizationData.cv.toString()};
+                  const ext = result.organizationData.cv.substring(result.organizationData.cv.lastIndexOf("."));
+                  obj.dest = result.organizationData.cv = "/warehouse/organizations/cvs/CV-"+result.slug+ext;
+                  row.push(obj);
+                }
+                let contapost = 0;
+                for (let a=0;a<row.length;a++) {
+                  router.download(row[a].source, global.appRoot+row[a].dest, (p1,p2,p3) => {
+                    contapost++;
+                    if (contapost == row.length) {
+                      result.save(function(error) {
+                        res.render('admindev/supertools/import', {
+                          title: 'WP Organizations',
+                          currentUrl: req.originalUrl,
+                          body: req.session.organizations,
+                          formUrl: req.originalUrl,
+                          data: error || result,
+                          //script: false
+                          script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
+                        });
                       });
-                    });
-                  }
-                });          
+                    }
+                  });          
+                }
+              } else {
+                console.log('saveoutput ');
+                console.log({"result": result});
+                console.log(body.organisation);
+                result.save(function(error) {
+                  console.log("salvato");
+                  console.log(error || result);
+                  res.render('admindev/supertools/import', {
+                    title: 'WP Organizations',
+                    currentUrl: req.originalUrl,
+                    body: req.session.organizations,
+                    formUrl: req.originalUrl,
+                    data: error || result,
+                    //script: false
+                    script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
+                  });
+                });
               }
             } else {
-              console.log('saveoutput ');
-              console.log({"result": result});
-              console.log(body.organisation);
-              result.save(function(error) {
-                console.log("salvato");
-                console.log(error || result);
-                res.render('admindev/supertools/import', {
-                  title: 'WP Organizations',
-                  currentUrl: req.originalUrl,
-                  body: req.session.organizations,
-                  formUrl: req.originalUrl,
-                  data: error || result,
-                  //script: false
-                  script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
-                });
+              res.render('admindev/supertools/import', {
+                title: 'WP Organizations',
+                currentUrl: req.originalUrl,
+                body: req.session.organizations,
+                formUrl: req.originalUrl,
+                data: {msg: ['ERROR NOT FOUND IN AVNODE: '+organizations[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
+                //script: false
+                //script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},1000);</script>'
               });
             }
           });
@@ -1030,9 +1042,9 @@ router.get('/news_import', (req, res) => {
           console.log("News "+news.post_title);
           console.log(news);
           let tmp = {
-            old_id: news.id,
+            old_id: news.ID,
             creation_date: news.date,
-            slug: news.slug,
+            slug: news.post_name,
             title: news.post_title,
             is_public: true,
             abouts: [{
