@@ -3199,6 +3199,7 @@
         "stagename":1,
         "slug":1,
         "image":1,
+        "organizationData.logo":1,
         "stats":1
       },
       "list_populate": [],
@@ -3248,6 +3249,7 @@
           "web": 1,
           "social": 1,
           "emails": 1,
+          "organizationData.logo":1,
           "image": 1
         },
         "populate": [{
@@ -3754,6 +3756,7 @@
         "stagename":1,
         "slug":1,
         "image":1,
+        "organizationData.logo":1,
         "stats":1
       },
       "list_populate": [],
@@ -3806,6 +3809,7 @@
           "web": 1,
           "social": 1,
           "emails": 1,
+          "organizationData.logo": 1,
           "image": 1
         },
         "populate": [{

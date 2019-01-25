@@ -161,9 +161,16 @@ h1 .badge{vertical-align: text-top;}
  }
 
  a:hover {
-     text-decoration: none;
- }
- .bottom60 {
+    text-decoration: none;
+}
+h1 a {
+    color: $color2;
+}
+h1 a:hover {
+    color: $color1;
+}
+
+.bottom60 {
      margin-bottom: 60px;
  }
 
@@ -416,7 +423,7 @@ header.header_event {
 
 .expand_image_event:hover {
     cursor: pointer;
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
 section.row.program_event_wrapper {
@@ -712,6 +719,7 @@ performance_event_title
 
 .performer_links_list a {
     color: $color2;
+    display: inline-block;
 }
 .performer_links_list li:after {
     content: "/";
@@ -764,6 +772,9 @@ performance_event_title
 
 .performer_stats_list_1 a {
     color: $color2;
+}
+.performer_stats_list_1 a:hover {
+    color: $color1;
 }
 .performer_stats_list_2 li:after {
     content: "/";
@@ -1220,9 +1231,12 @@ section.performer_news_wrapper {
 
 .performer_item_title {
     color: $color3;
-    font-weight: 300;
+    font-weight: 700;
     text-transform: none;
     font-size: 18px;    
+}
+.performer_item_title:hover {
+    color: $color2;
 }
 
 
@@ -1606,7 +1620,9 @@ ul.footer-nav.corporate {
     position: relative;
     right: calc(-50% + 35px);
 }
-
+.navbar-brand:hover {
+    opacity: 0.5;
+}
 // user navbar
 
 ul.user_navbar {
@@ -1632,7 +1648,7 @@ ul.user_navbar {
     color: $color3;
 }
 
-.user_menu a:hover {
+.user_menu ul a:hover {
     color: $color2;
     text-decoration: underline;
 }

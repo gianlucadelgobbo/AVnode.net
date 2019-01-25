@@ -13,7 +13,7 @@ function init() {
       style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
     },
     scaleControl: true,
-    scrollwheel: true,
+    scrollwheel: false,
     streetViewControl: true,
     draggable : true,
     clickableIcons: false,

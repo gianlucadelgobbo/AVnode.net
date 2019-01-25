@@ -1,12 +1,12 @@
 .performer_item_wrapper
   if item.imageFormats
-    a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
+    a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
       img.card-img-top.img-fluid(
         src=item.imageFormats.large
         alt=item.stagename
       )
   .performer_item_info_wrapper
-    a(href="/"+item.slug, stagename=item.stagename, title=item.stagename)
+    a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
       h4.performer_item_title=item.stagename
     ul.list-inline.performer_infos_list
       if item.stats.events      

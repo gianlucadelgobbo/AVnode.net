@@ -138,8 +138,8 @@ userSchema.virtual('addressesFormatted').get(function () {
   if (this.addresses && this.addresses.length) {
     this.addresses.forEach((address) => {
       if (address.country) {
-        if (!addresses[address.country]) addresses[address.country] = [];
-        if (address.locality && addresses[address.country].indexOf(address.locality)===-1) addresses[address.country].push(address.locality);
+        if (!addresses[address.country.trim()]) addresses[address.country.trim()] = [];
+        if (address.locality && addresses[address.country.trim()].indexOf(address.locality)===-1) addresses[address.country.trim()].push(address.locality.trim());
       }
     });
     for(let country in addresses) {
@@ -256,8 +256,11 @@ userSchema.virtual('birthdayFormatted').get(function () {
 // Return thumbnail
 userSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.image);
-  if (this.image && this.image.file) {
+  if (this.organizationData && this.organizationData.logo) {
+    for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+      imageFormats[format] = this.organizationData.logo;
+    }
+  } else if (this.image && this.image.file) {
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
     }

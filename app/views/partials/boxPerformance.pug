@@ -1,12 +1,12 @@
 .performance_item_wrapper
   if item.imageFormats
-    a(href="/performances/"+item.slug, title=item.title)
+    a(href="/performances/"+item.slug+"/", title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.large
         alt=item.title
       )
   .performance_item_info_wrapper
-    a(href="/performances/"+item.slug, title=item.title)
+    a(href="/performances/"+item.slug+"/", title=item.title)
       h4.performance_item_title=item.title
     if item.type
       ul.list-inline.category_performance_item
