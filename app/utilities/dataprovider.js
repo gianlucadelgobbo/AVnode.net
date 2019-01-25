@@ -105,7 +105,7 @@ dataprovider.getJsonld = (data, req, title) => {
     if (data.addressesFormatted) {
       jsonld.address = {
         "@type": "PostalAddress",
-        "addressLocality": data.addressesFormatted.trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
+        "addressLocality": data.addressesFormatted.join(", ").trim().split(",")[0].replace(" ", ", ").replace("<b>", "").replace("</b>", "")
       }  
     }
     /*

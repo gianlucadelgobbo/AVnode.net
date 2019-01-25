@@ -32,7 +32,31 @@ const userSchema = new Schema({
   activity_as_organization: Number,
   is_public: Boolean,
   creation_date: Date,
-  stats: {},
+  stats: {
+    crews: Number,
+    members: Number,
+    performances: Number,
+    galleries: Number,
+    'lights-installation': Number,
+    mapping: Number,
+    'vj-set': Number,
+    workshop: Number,
+    'av-performance': Number,
+    'project-showcase': Number,
+    'dj-set': Number,
+    'video-installation': Number,
+    lecture: Number,
+    recent:
+     { performances: Number,
+       events: Number,
+       partnerships: Number,
+       footage: Number,
+       playlists: Number,
+       videos: Number,
+       galleries: Number,
+       news: Number },
+    visits: Number
+  },
   likes: {},
 
   slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
@@ -296,6 +320,25 @@ userSchema.pre('validate', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
+  console.log("userSchema.pre('save' CREW ADRESSES");
+  if (this.crews) {
+    this.stats.crews = this.crews.length;
+    console.log(this.stats);
+  }
+  if (this.members) {
+    if (this.stats) this.stats.members = this.members.length;
+    let addressesO = {};
+    for(let a=0;a<this.members.length;a++) 
+      for(let b=0;b<this.members[a].addresses.length;b++) 
+        if (!addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country]) addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country] = this.members[a].addresses[b]
+    this.addresses = Object.values(addressesO);
+    next();
+  } else {
+    next();
+  }
+});
+
+userSchema.pre('save', function (next) {
   console.log("userSchema.pre('save' PASSWORD");
   let user = this;
   if (!user.isModified('password')) { return next(); }
@@ -420,7 +463,7 @@ userSchema.pre('save', function (next) {
 });
 userSchema.pre('save', function (next) {
   console.log("userSchema.pre('save' PRIMARY");
-  console.log(this);
+  //console.log(this.stats);
   if (this.emails && this.emails.length) {
     if (this.emails.filter(item => item.is_primary).length===0) {
       const err = {

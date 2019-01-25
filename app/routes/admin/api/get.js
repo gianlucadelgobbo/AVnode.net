@@ -508,9 +508,15 @@ router.removeVenueDB = (req, res, cb) => {
   });
 }
 
-router.removeMember = (req, res) => {
-  Models.User
-  .findOne({_id: req.params.id, members:req.user.id},'_id, members', (err, crew) => {
+router.addMember = (req, res) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = req.user._id;
+  Models["User"]
+  .findOne(query)
+  .select({_id:1, stats:1, stagename:1, members:1})
+  .populate({ "path": "members", "select": "addresses", "model": "User"})
+  .exec((err, crew) => {
+    console.log(crew.members.map((item)=>{return item._id}));
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
@@ -531,7 +537,93 @@ router.removeMember = (req, res) => {
           "path":"id"
         }
       });
-    } else if (crew.members.indexOf(req.params.member)===-1) {
+    } else if (crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member)!==-1) {
+      res.status(404).json({
+        "message": "USER_IS_ALREADY_IN",
+        "name": "MongoError",
+        "stringValue":"\"USER_IS_ALREADY_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_IS_ALREADY_IN",
+          "name":"MongoError",
+          "stringValue":"\"USER_IS_ALREADY_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      crew.members.push(req.params.member);
+      console.log("crew.members");
+      console.log(crew.members);
+      console.log(crew.members.length);
+      crew.stats.members = crew.members.length;
+      console.log(crew);
+      crew.save(function(err){
+        var query = {_id: req.params.member};
+        Models["User"]
+        .findOne(query)
+        .select({_id:1, stats:1, crews:1})
+        //.populate({ "path": "members", "select": "addresses", "model": "User"})
+        .exec((err, member) => {
+          if (err) {
+            logger.debug(`${JSON.stringify(err)}`);
+            res.status(404).json({ error: err });
+          } else {
+            member.crews.push(req.params.id);
+            console.log("member.crews");
+            console.log(member.crews);
+            console.log(member.crews.length);
+            member.stats.crews = member.crews.length;
+            member.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'crews';
+                req.params.form = 'members';
+                router.getData(req, res);
+              }
+            });              
+          }
+        });
+      });
+    }
+  });
+}
+
+router.removeMember = (req, res) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = req.user._id;
+  console.log(query);
+  Models["User"]
+  .findOne(query)
+  .select({_id:1, stagename:1, stats:1, members:1})
+  .populate({ "path": "members", "select": "addresses", "model": "User"})
+  .exec((err, crew) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!crew) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member)===-1) {
       res.status(404).json({
         "message": "MEMBER_IS_NOT_A_MEMBER",
         "name": "MongoError",
@@ -549,13 +641,40 @@ router.removeMember = (req, res) => {
         }
       });
     } else {
-      crew.members.splice(crew.members.indexOf(req.params.member), 1);
-      //res.json(crew);
+      crew.members.splice(crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member), 1);
+      console.log("crew.members");
+      console.log(crew.members);
+      console.log(crew.members.length);
+      crew.stats.members = crew.members.length;
+
       crew.save(function(err){
-        //res.json(crew);
-        req.params.sez = 'crews';
-        req.params.form = 'members';
-        router.getData(req, res);
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.member};
+          Models["User"]
+          .findOne(query)
+          .select({_id:1, stats:1, crews:1})
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, member) => {
+            member.crews.splice(member.crews.indexOf(req.params.id), 1);
+            console.log("member.crews");
+            console.log(member.crews);
+            console.log(member.crews.length);
+            member.stats.crews = member.crews.length;
+            member.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'crews';
+                req.params.form = 'members';
+                router.getData(req, res);
+              }
+            });
+          });
+        }
       });
     }
   });
@@ -606,8 +725,6 @@ router.addUser = (req, res) => {
       item.save(function(err){
         //res.json(item);
         req.params.form = 'public';
-        logger.debug(`STOCAZZO`);
-
         router.getData(req, res);
       });
     }

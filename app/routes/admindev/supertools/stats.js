@@ -178,6 +178,115 @@ router.setStatsAndActivity = function(query) {
     });
   });
 }
+
+router.setCrewAdresses = function(query) {
+  return new Promise(function (resolve, reject) {
+    //let query = JSON.parse('{"q": '+req.body.q+'}').q;
+    console.log("router.setStatsAndActivity 1");
+    console.log(query);
+    User.
+    findOne(query).
+    populate({ "path": "categories", "select": "name slug", "model": "Category"})
+    exec((err, e) => {
+      var myids = [e._id];
+      console.log("router.setStatsAndActivity 2");
+      Promise.all([
+        Event.find({"users": {$in: myids}, "is_public": true}).select("_id"),
+        Event.find({"partners.users": {$in: myids}, "is_public": true}).select("_id"),
+        Performance.find({"users": {$in: myids}, "is_public": true}).select("_id"),
+        Gallery.find({"users": {$in: myids}, "is_public": true}).select("_id"),
+        Video.find({"users": {$in: myids}, "is_public": true}).select("_id"),
+        News.find({"users": {$in: myids}, "is_public": true}).select("_id"),
+        Footage.find({"users": {$in: myids}, "is_public": true}).select("_id"),
+        Playlist.find({"users": {$in: myids}, "is_public": true}).select("_id"),
+
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000017"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000016"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000014"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc39610000000099"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000011b"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000011c"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000011d"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000019f"}),
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc396100000001a1"}),
+
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Event.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Event.countDocuments({"partners.users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Footage.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Playlist.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Video.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Gallery.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        News.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+
+      ]).then( ([ events, partnerships, performances, galleries, videos, news, footage, playlists, lightsinstallation,mapping,vjset,workshop,avperformance,projectshowcase,djset,videoinstallation,lecture, recent_events, recent_partnerships, recent_performances, recent_galleries, recent_videos, recent_news, recent_footage, recent_playlists ]) => {
+        e.events = events;
+        e.performances = performances;
+        e.partnerships = partnerships;
+        e.galleries = galleries;
+        e.videos = videos;
+        e.news = news;
+        e.footage = footage;
+        e.playlists = playlists;
+
+        e.stats = {};
+        if (e.is_crew && e.members && e.members.length) e.stats.members = e.members.length;
+        if (!e.is_crew && e.crews && e.crews.length) e.stats.crews = e.crews.length;
+    
+        if (e.performances && e.performances.length) e.stats.performances = e.performances.length;
+        if (e.events && e.events.length) e.stats.events = e.events.length;
+        if (e.partnerships && e.partnerships.length) e.stats.partnerships = e.partnerships.length;
+        if (e.footage && e.footage.length) e.stats.footage = e.footage.length;
+        if (e.playlists && e.playlists.length) e.stats.playlists = e.playlists.length;
+        if (e.videos && e.videos.length) e.stats.videos = e.videos.length;
+        if (e.galleries && e.galleries.length) e.stats.galleries = e.galleries.length;
+        if (e.news && e.news.length) e.stats.news = e.news.length;
+
+        e.stats["lights-installation"] = lightsinstallation;
+        e.stats["mapping"] = mapping;
+        e.stats["vj-set"] = vjset;
+        e.stats["workshop"] = workshop;
+        e.stats["av-performance"] = avperformance;
+        e.stats["project-showcase"] = projectshowcase;
+        e.stats["dj-set"] = djset;
+        e.stats["video-installation"] = videoinstallation;
+        e.stats["lecture"] = lecture;
+
+        e.stats.recent = {};
+        e.stats.recent.events = recent_events;
+        e.stats.recent.partnerships = recent_partnerships;
+        e.stats.recent.performances = recent_performances;
+        e.stats.recent.galleries = recent_galleries;
+        e.stats.recent.videos = recent_videos;
+        e.stats.recent.news = recent_news;
+        e.stats.recent.footage = recent_footage;
+        e.stats.recent.playlists = recent_playlists;
+
+        console.log("router.setStatsAndActivity 3");
+        console.log(e.stats);
+        e.activity = router.getActivity(e.stats);
+        e.activity_as_performer = router.getActivityAsPerformer(e.stats);
+        e.activity_as_organization = router.getActivityAsOrganization(e.stats);
+        e.save((err) => {
+          if (err) {
+            console.log('save user err');
+            console.log(err);
+            setTimeout(function() {
+              resolve(err);
+            }, 1000);
+          } else {
+            console.log("router.setStatsAndActivity 4");
+            console.log(e.stats);
+            setTimeout(function() {
+              resolve(e.stats);
+            }, 1000);
+          }
+        });
+      });
+    });
+  });
+}
+
 router.getActivity = (stats) => {
   let activity = 0;
   activity+= (stats.performances ? stats.performances * 100 : 0);

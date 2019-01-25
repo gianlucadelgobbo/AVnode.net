@@ -145,7 +145,8 @@ userSchema.virtual('addressesFormatted').get(function () {
     for(let country in addresses) {
       addressesFormatted.push(" <b>"+country+"</b> "+addresses[country].join(", "));
     }
-    return addressesFormatted.join(", ");
+    console.log(addressesFormatted);
+    return addressesFormatted/* .join(", ") */;
   }
 });
 
