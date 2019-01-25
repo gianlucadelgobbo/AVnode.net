@@ -62,7 +62,7 @@ block content
               img(src=user.imageFormats.small, alt=user.stagename)
             div.user_perfomance_country_city
               p.users_performance_item_name=user.stagename
-              p.users_performance_item_country!=user.addressesFormatted
+              p.users_performance_item_country!=user.addressesFormatted.join(", ")
     if data.footage.length 
       h2.mt-5.main_title.indented_title.color1=__("Footage")
       .row.mb-5

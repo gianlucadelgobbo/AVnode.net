@@ -3264,7 +3264,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "activity": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "news",
@@ -3355,7 +3355,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "crews",
@@ -3412,7 +3412,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "schedule.0.date": -1 } },
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 } },
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3449,7 +3449,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "activity": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -3824,7 +3824,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "activity": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "news",
@@ -3915,7 +3915,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "crews",
@@ -3972,7 +3972,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -4009,7 +4009,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "activity": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "categories",
@@ -4755,7 +4755,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "Event"
         }]
       }
@@ -5063,7 +5063,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "schedule.0.date": -1 }},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "Event"
         }, {
           "path": "performances",

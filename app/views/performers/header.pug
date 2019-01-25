@@ -7,8 +7,8 @@
           !="  "
           a.badge.badge-danger(href="/admin/"+(data.is_crew ? "crews" : "profile")+"/"+data._id+"/public")=global.__("EDIT")        
       ul.performer_address.list-inline
-        each address in data.addresses
-          li.list-inline-item(class=data.addresses.length<5 ? "big" : undefined)=address.locality + ", " + address.country
+        each address in data.addressesFormatted
+          li.list-inline-item(class=data.addresses.length<5 ? "big" : undefined)!=address
       .row
         .col-lg-12
           div.performer_stats_wrapper

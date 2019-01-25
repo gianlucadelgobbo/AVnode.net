@@ -154,7 +154,7 @@ block content
                   .media-body
                     h3!=user.stagename
                     div
-                    div!=user.addressesFormatted
+                    div!=user.addressesFormatted.join(", ")
                     div!=user.about
                     div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
                     div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
