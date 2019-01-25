@@ -46,15 +46,16 @@ const userSchema = new Schema({
     'dj-set': Number,
     'video-installation': Number,
     lecture: Number,
-    recent:
-     { performances: Number,
-       events: Number,
-       partnerships: Number,
-       footage: Number,
-       playlists: Number,
-       videos: Number,
-       galleries: Number,
-       news: Number },
+    recent:{ 
+      performances: Number,
+      events: Number,
+      partnerships: Number,
+      footage: Number,
+      playlists: Number,
+      videos: Number,
+      galleries: Number,
+      news: Number
+    },
     visits: Number
   },
   likes: {},

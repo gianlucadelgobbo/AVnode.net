@@ -38,7 +38,32 @@ const userSchema = new Schema({
   lang: String, // BL TODO navigator or user.settings or subdomain language
   is_public: Boolean,
   creation_date: Date,
-  stats: {},
+  stats: {
+    crews: Number,
+    members: Number,
+    performances: Number,
+    galleries: Number,
+    'lights-installation': Number,
+    mapping: Number,
+    'vj-set': Number,
+    workshop: Number,
+    'av-performance': Number,
+    'project-showcase': Number,
+    'dj-set': Number,
+    'video-installation': Number,
+    lecture: Number,
+    recent:{ 
+      performances: Number,
+      events: Number,
+      partnerships: Number,
+      footage: Number,
+      playlists: Number,
+      videos: Number,
+      galleries: Number,
+      news: Number
+    },
+    visits: Number
+  },
   likes: {},
 
   birthday: Date,
