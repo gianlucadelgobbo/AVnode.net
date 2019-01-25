@@ -629,7 +629,7 @@ export const multiInputEmailWithDetails = ({
     return (
       <div
         className={"container-fluid " + (index % 2 === 0 ? "even" : "odd")}
-        key={stored || index}
+        key={index}
       >
         <div className="row ">
           <div className="col-md-5 offset-1">
