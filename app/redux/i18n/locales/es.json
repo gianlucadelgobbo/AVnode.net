@@ -127,6 +127,8 @@
   "settingEvents": "Settings_es",
   "signup": "CREATE ACCOUNT_es",
   "validation.error.define.least.email": "Define at least one email_es",
+  "validation.error.email.duplicated": "Duplicated email",
+  "validation.error.email.is.take": "The email is already in use",
   "validation.error.invalid.address": "Invalid address_es",
   "validation.error.invalid.city": "Invalid city_es",
   "validation.error.invalid.email": "Invalid email_es",

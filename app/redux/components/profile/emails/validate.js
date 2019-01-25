@@ -1,14 +1,42 @@
 import validatorsObj from '../../../../utilities/validators.js';
-import {REQUIRED, INVALID_EMAIL, DEFINE_LEAST_EMAIL, MULTIPLE_PRIMARY_EMAIL, NO_PRIMARY_EMAIL} from "../../common/form/errors";
+import {
+    DEFINE_LEAST_EMAIL,
+    DUPLICATED_EMAIL,
+    INVALID_EMAIL,
+    MULTIPLE_PRIMARY_EMAIL,
+    NO_PRIMARY_EMAIL,
+    REQUIRED
+} from "../../common/form/errors";
+
+const find_duplicate_in_array = (arra1) => {
+    let object = {};
+    let result = [];
+
+    arra1.forEach(function (item) {
+        if (!object[item])
+            object[item] = 0;
+        object[item] += 1;
+    });
+
+    for (let prop in object) {
+        if (object[prop] >= 2) {
+            result.push(prop);
+        }
+    }
+
+    return result;
+
+};
 
 const validate = values => {
     const errors = {};
 
     // If no email is defined
-    if (!values.emails) {
+    if (!values.emails || !Array.isArray(values.emails)) {
         errors.emails = DEFINE_LEAST_EMAIL;
         return errors;
     }
+    const duplicates = find_duplicate_in_array(values.emails.map(e => e.email));
 
     // check that are all valid emails
     const emailArrayErrors = [];
@@ -23,6 +51,12 @@ const validate = values => {
             emailErrors.email = INVALID_EMAIL;
             emailArrayErrors[index] = emailErrors
         }
+
+        if (duplicates.indexOf(email.email) >= 0) {
+            emailErrors.email = DUPLICATED_EMAIL;
+            emailArrayErrors[index] = emailErrors
+        }
+
     });
     if (emailArrayErrors.length) {
         errors.emails = emailArrayErrors

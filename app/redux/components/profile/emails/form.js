@@ -5,6 +5,7 @@ import { multiInputEmailWithDetails } from "../../common/form/components";
 import validate from "./validate";
 import { EMAILS } from "../../common/form/labels";
 import { injectIntl } from "react-intl";
+import asyncValidate from "./asyncValidate";
 
 class ProfileEmailsForm extends Component {
   getIntlString = obj => {
@@ -59,7 +60,10 @@ class ProfileEmailsForm extends Component {
 ProfileEmailsForm = reduxForm({
   form: FORM_NAME,
   enableReinitialize: true,
-  validate
+  validate,
+  asyncValidate,
+  asyncBlurFields: ['emails[].email'],
+  //asyncFields: ['emails[].email']
 })(ProfileEmailsForm);
 
 ProfileEmailsForm = injectIntl(ProfileEmailsForm);
