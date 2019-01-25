@@ -1031,10 +1031,6 @@ router.get('/news_import', (req, res) => {
         url: url,
         json: true
     }, function (error, response, body) {
-      console.log(error);
-      console.log(response.statusCode);
-      console.log("body.ID");
-      console.log(body.ID);
       if (!error && response.statusCode === 200) {
         page++;
         if (body.ID) {
