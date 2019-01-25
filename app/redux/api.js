@@ -93,6 +93,12 @@ export const saveProfileEmails = model => {
   });
 };
 
+export const getProfileEmailValidation = ({email}) => {
+  return axios.get(`profile/emails/email/${email}`).then(result => {
+    return result.data;
+  });
+};
+
 // - connections
 
 export const fetchProfileConnections = () => {

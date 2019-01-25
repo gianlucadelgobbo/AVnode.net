@@ -19,6 +19,8 @@ export const INVALID_PASSWORD_CONTENT = "validation.error.invalid.passwordConten
 export const DEFINE_LEAST_EMAIL= "validation.error.define.least.email";
 export const MULTIPLE_PRIMARY_EMAIL = "validation.error.multiple.primary.email";
 export const NO_PRIMARY_EMAIL = "validation.error.no.primary.email";
+export const EMAIL_IS_TAKEN = "validation.error.email.is.take";
+export const DUPLICATED_EMAIL = "validation.error.email.duplicated";
 
 //export const IS_NAN = "validation.error.is_nan";
 //export const END_DATE_BEFORE_START_DATE = "validation.error.end_data_before_start_date";
@@ -103,5 +105,13 @@ defineMessages({
     [INVALID_PASSWORD_CONTENT]: {
         id: INVALID_PASSWORD_CONTENT,
         defaultMessage: "Password must contain at least number, a capital letter and a lower case letter"
+    },
+    [EMAIL_IS_TAKEN]: {
+        id: EMAIL_IS_TAKEN,
+        defaultMessage: "The email is already in use"
+    },
+    [DUPLICATED_EMAIL]: {
+        id: DUPLICATED_EMAIL,
+        defaultMessage: "Duplicated email"
     },
 });
