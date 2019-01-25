@@ -34,10 +34,10 @@ const validate = values => {
     const noMultiplePrimary = primaryEmailAmount === 0;
 
     if (isMultiplePrimary) {
-        errors.emails = MULTIPLE_PRIMARY_EMAIL;
+        errors.emails = {_error: MULTIPLE_PRIMARY_EMAIL};
     }
     if (noMultiplePrimary) {
-        errors.emails = NO_PRIMARY_EMAIL;
+        errors.emails = {_error: NO_PRIMARY_EMAIL};
     }
 
     // Selector already implement the check that if an email is not confirmed
