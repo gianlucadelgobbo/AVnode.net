@@ -49,33 +49,34 @@ block title
         .col
           ul.event_social_list.list-inline
             each item in data.web
-              li.list-inline-item
-                a(href=item.url target='_blank')
+              li.list-inline-item.mb-3
+                a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
                   span.lnr.lnr-link.about_button
             each item in data.social
               if item.url.indexOf('instagram.com/')!=-1
-                li.list-inline-item
-                  a(href=item.url target='_blank')
+                li.list-inline-item.mb-3
+                  - var tooltip = item.url.replace("http://","").replace("https://","").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
                     i.fa.fa-instagram.about_button
               else if item.url.indexOf('twitter.com/')!=-1
-                li.list-inline-item
-                  a(href=item.url target='_blank')
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
                     i.fa.fa-twitter.about_button
-              else if item.url.indexOf('facebook.com/')!=-1
-                li.list-inline-item
-                  a(href=item.url target='_blank')
+              else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
                     i.fa.fa-facebook.about_button
               else if item.url.indexOf('vimeo.com/')!=-1
-                li.list-inline-item
-                  a(href=item.url target='_blank')
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
                     i.fa.fa-vimeo.about_button
               else if item.url.indexOf('youtube.com/')!=-1
-                li.list-inline-item
-                  a(href=item.url target='_blank')
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
                     i.fa.fa-youtube.about_button
               else
-                li.list-inline-item
-                  a(href=item.url target='_blank')
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
                     span.lnr.lnr-link.about_button
         if data.participate
           .col            
@@ -111,21 +112,54 @@ block title
             polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
 
 block content
+  if data.galleries.length  
+    .gallery_event_wrapper_bkg
+      section.event_galleries_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.galleries
+                    - console.log(item._id+"\t"+item.title)                
+                    include ../partials/boxGallery
+  if data.videos.length  
+    .video_event_wrapper_bkg
+      section.event_video_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.videos            
+                    include ../partials/boxVideo
   if data.programmebydayvenue
     .program_event_wrapper_bkg
       section.row.program_event_wrapper
           .col-lg-12
             .container
               h2.main_title.indented_title.color1!=global.__('Program')
-              each day in data.programmebydayvenue
-                h3.date_schedule_title=day.date
-                .data_program_divider
-                each venueroom in day.rooms              
-                  h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
-                  .owl-carousel.loop.owl-theme
-                    if venueroom.performances
-                      each item in venueroom.performances
-                        include ../partials/boxPerformanceScheduled
+              - addtit = false;
+              each day, index in data.programmebydayvenue
+                - console.log(index)
+                if data.programmebydayvenue[index+1] && JSON.stringify(data.programmebydayvenue[index].rooms) == JSON.stringify(data.programmebydayvenue[index+1].rooms)
+                  - console.log("UGUALE"+index)
+                  - if (!addtit) titstart = day.date
+                  - addtit = true;
+                else
+                  h3.date_schedule_title=addtit ? titstart+" // "+day.date : day.date
+                  - addtit = false;
+                  .data_program_divider
+                  each venueroom in day.rooms              
+                    h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
+                    .owl-carousel.loop.owl-theme
+                      if venueroom.performances
+                        each item in venueroom.performances
+                          include ../partials/boxPerformanceScheduled
           //.button_more.button_more_program
             span.button_more_label!=global.__('+ All the program')
             span.button_more_bkg
@@ -165,60 +199,56 @@ block content
     .divider_gallery
       svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
         polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
-  if data.galleries.length  
-    .gallery_event_wrapper_bkg
-      section.event_galleries_wrapper
-        .content_wrapper
-          .container
-            .row
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
-                .performance_divider.basic_divider
-                .owl-carousel.loop_3items.owl-theme
-                  each item in data.galleries
-                    - console.log(item._id+"\t"+item.title)                
-                    include ../partials/boxGallery
-  if data.videos.length  
-    .video_event_wrapper_bkg
-      section.event_video_wrapper
-        .content_wrapper
-          .container
-            .row
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
-                .performance_divider.basic_divider
-                .owl-carousel.loop_3items.owl-theme
-                  each item in data.videos            
-                    include ../partials/boxVideo
 
-
-  - var partners = !data.partners || !data.partners.length ?  [{"category" : {name: "PRODUCTION"}, "users" : data.users}] : data.partners;
 
   .partners_event_wrapper_bkg
     .container
       section.row.partners_event_wrapper
         .col-lg-8
-          h2.main_title.indented_title.color1!=global.__('Partners')
+          h2.main_title.indented_title.color1!=global.__('Production')
         .col-lg-4
           img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
         .col-sm-12
-          .row
-            each partners_block in partners
-              .col-sm-12.partners_block
-                h4!=global.__('Partners')+ " / " +partners_block.category.name
-                .basic_divider
-                .row.partners_list_wrapper
-                  each partner in partners_block.users
-                    .col-sm-2
-                      .partner_box_wrapper
-                        a(href="/"+partner.slug, title=partner.stagename)
-                          if partner.imageFormats                          
-                            img.card-img-top.img-fluid(
-                              src=partner.imageFormats.large
-                              alt=partner.title
-                            )
-                        p.partner_stagename
-                          a(href="/"+partner.slug, title=partner.stagename)
-                            span=partner.stagename
+          .row.partners_list_wrapper
+            each partner in data.users
+              .col-sm-2
+                .partner_box_wrapper
+                  a(href="/"+partner.slug+"/", title=partner.stagename)
+                    if partner.imageFormats                          
+                      img.card-img-top.img-fluid(
+                        src=partner.imageFormats.large
+                        alt=partner.title
+                      )
+                  p.partner_stagename
+                    a(href="/"+partner.slug+"/", title=partner.stagename)
+                      span=partner.stagename
+
+  if data.partners.length
+    .partners_event_wrapper_bkg
+      .container
+        section.row.partners_event_wrapper
+          .col-lg-8
+            h2.main_title.indented_title.color1!=global.__('Partners')
+          .col-lg-4
+            img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
+          .col-sm-12
+            .row
+              each partners_block in data.partners
+                .col-sm-12.partners_block
+                  h4!=global.__('Partners')+ " / " +partners_block.category.name
+                  .basic_divider
+                  .row.partners_list_wrapper
+                    each partner in partners_block.users
+                      .col-sm-2
+                        .partner_box_wrapper
+                          a(href="/"+partner.slug+"/", title=partner.stagename)
+                            if partner.imageFormats                          
+                              img.card-img-top.img-fluid(
+                                src=partner.imageFormats.large
+                                alt=partner.title
+                              )
+                          p.partner_stagename
+                            a(href="/"+partner.slug+"/", title=partner.stagename)
+                              span=partner.stagename
     
   

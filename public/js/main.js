@@ -1,5 +1,5 @@
 $(document).ready(function(){
- 
+    $('[data-toggle="tooltip"]').tooltip();
     $( ".event_main_image_wrapper" ).click(function() {
     //   $( ".event_main_image_wrapper" ).toggleClass("expanded");
     $( ".event_main_image_wrapper" ).addClass("expanded");    

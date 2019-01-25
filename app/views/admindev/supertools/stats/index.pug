@@ -3,8 +3,8 @@ block content
   .container.mb-2
     form(action=formUrl, method="post")
       textarea(name="q").form-control.mb-2
-        if body
-          !=body
+        if body && body.q
+          !=body.q
         else 
           !='["3dmotion","4youreye"]'
       .text-right

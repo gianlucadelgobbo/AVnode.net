@@ -1,12 +1,12 @@
 .footage_item_wrapper
   if item && item.imageFormats && item.imageFormats.large
-    a(href="/footage/"+item.slug, title=item.title)
+    a(href="/footage/"+item.slug+"/", title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.small
         alt=item.title
       )
   .footage_item_info_wrapper
-    a(href="/footage/"+item.slug, title=item.title)
+    a(href="/footage/"+item.slug+"/", title=item.title)
       h4.footage_item_title=item.title
     if item.tags
       ul.list-inline.category_footage_item

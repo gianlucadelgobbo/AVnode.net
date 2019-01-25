@@ -175,11 +175,13 @@ const eventSchema = new Schema({
 eventSchema.virtual('programmebydayvenue').get(function (req) {
   //let programmebydayvenue = [];
   let programmebydayvenueObj = {};
+  let ret = false;
   if (this.program && this.program.length) {
     const lang = global.getLocale();
     for(let a=0;a<this.program.length;a++){
       for(let b=0;b<this.program[a].schedule.length;b++){
         if (this.program[a].schedule[b].starttime) {
+          ret = true;
           if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
             let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
             if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
@@ -230,7 +232,7 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
         }
       }
     }
-    return programmebydayvenueObj;
+    return ret ? Object.values(programmebydayvenueObj) : undefined;
   }
 });
 
@@ -251,11 +253,22 @@ eventSchema.virtual('artists').get(function (req) {
     for(let a=0;a<this.program.length;a++){
       if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
       for(let b=0;b<this.program[a].performance.users.length;b++){
-        artists.artistsCount+= this.program[a].performance.users[b].members ? this.program[a].performance.users[b].members.length : 1;
-        artists.artistsN+= 1;
-        for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
-          if (artistsN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) artistsN.push(this.program[a].performance.users[b].members[d]._id);
+        //artists.artistsCount+= this.program[a].performance.users[b].members.length ? this.program[a].performance.users[b].members.length : 1;
+        console.log(artists.artistsCount);
+        //artists.artistsN+= 1;
+        if (this.program[a].performance.users[b].members.length) {
+          for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
+            if (artistsN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) artistsN.push(this.program[a].performance.users[b].members[d]._id);
+          }
+        } else {
+          if (artistsN.indexOf(this.program[a].performance.users[b]._id)===-1) artistsN.push(this.program[a].performance.users[b]._id);
         }
+        if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) {
+          artistsA.push(this.program[a].performance.users[b]._id);
+          artists.artists.push(this.program[a].performance.users[b]);
+        }
+
+
         if (this.program[a].performance.users[b].addresses) {
           for(let c=0;c<this.program[a].performance.users[b].addresses.length;c++){
             if (artists.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) artists.countries.push(this.program[a].performance.users[b].addresses[c].country);
@@ -265,8 +278,7 @@ eventSchema.virtual('artists').get(function (req) {
           if (this.program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && artists.acts.indexOf(this.program[a].performance.categories[c].name)===-1) artists.acts.push(this.program[a].performance.categories[c].name);
         }
         //if (artists.artists.length<15)
-        if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) artists.artists.push(this.program[a].performance.users[b]);
-        if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) artistsA.push(this.program[a].performance.users[b]._id);
+        //if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) artistsA.push(this.program[a].performance.users[b]._id);
       }
     }
     artists.artistsN = artistsA.length;

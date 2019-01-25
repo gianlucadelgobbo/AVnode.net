@@ -116,7 +116,7 @@ block content
                     label.form-check-label(for='status'+status._id+subscription.subscriber_id._id)=status.name
             td
               b!=item.performance.title
-                a.badge.badge-primary.ml-2(href="/performance/"+item.performance.slug, target="_blank")="VIEW"
+                a.badge.badge-primary.ml-2(href="/performance/"+item.performance.slug+"/", target="_blank")="VIEW"
               br
               !=item.reference.name+" "+item.reference.surname
               br

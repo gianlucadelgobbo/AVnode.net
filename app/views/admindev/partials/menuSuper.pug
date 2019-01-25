@@ -90,6 +90,7 @@
       a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
       - var obj = {link:"/wpimport/organizations", title:"Organizations"}
       a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+    
     a.bg-dark.list-group-item.list-group-item-action.flex-column.align-items-start(href='#submenu6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/admindev/supertools/categories")===0 ? "true" : "false")
       .d-flex.w-100.justify-content-start.align-items-center
         span.fa.fa-tags.fa-fw.mr-3
@@ -98,6 +99,16 @@
     #submenu6.collapse.sidebar-submenu(class=currentUrl.indexOf("/admindev/supertools/categories")===0 ? " show" : "")
       - var obj = {link:"/categories/dbcheck", title:"Categories DB Check"}
       a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+    
+    a.bg-dark.list-group-item.list-group-item-action.flex-column.align-items-start(href='#submenu6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/admindev/supertools/categories")===0 ? "true" : "false")
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fa.fa-tags.fa-fw.mr-3
+        span.menu-collapsed Statistics
+    // Submenu content
+    #submenu6.collapse.sidebar-submenu(class=currentUrl.indexOf("/admindev/supertools/categories")===0 ? " show" : "")
+      - var obj = {link:"/stats/usersstatsupdate", title:"Users Update"}
+      a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+    
     a.bg-dark.list-group-item.list-group-item-action.flex-column.align-items-start(href='#', data-toggle='sidebar-colapse', style="padding-top:.5rem")
       .d-flex.w-100.justify-content-start.align-items-center
         span#collapse-icon.fa.fa-arrow-circle-o-left.fa-fw.mr-3

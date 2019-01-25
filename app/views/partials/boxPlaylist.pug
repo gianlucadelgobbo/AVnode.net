@@ -1,12 +1,12 @@
 .playlist_item_wrapper
   if item.imageFormats
-    a(href="/playlists/"+item.slug, title=item.title)
+    a(href="/playlists/"+item.slug+"/", title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.small
         alt=item.title
       )
   .playlist_item_info_wrapper
-    a(href="/playlists/"+item.slug, title=item.title)
+    a(href="/playlists/"+item.slug+"/", title=item.title)
       h4.playlist_item_title=item.title
 
     if item.stats

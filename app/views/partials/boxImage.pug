@@ -1,12 +1,12 @@
 .video_item_wrapper
   if item.imageFormats
-    a(href="/galleries/"+data.slug+"/img/"+item.slug, title=item.title)
+    a(href="/galleries/"+data.slug+"/img/"+item.slug+"/", title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.large
         alt=item.title
       )
   .video_item_info_wrapper
-    a(href="/galleries/"+data.slug+"/"+item.slug, title=item.title)
+    a(href="/galleries/"+data.slug+"/img/"+item.slug+"/", title=item.title)
       h4.video_item_title=item.title
     if item.users
       .users_video_item_wrapper

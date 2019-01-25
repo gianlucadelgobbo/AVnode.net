@@ -1,12 +1,12 @@
 .video_item_wrapper
   if item.imageFormats
-    a(href="/videos/"+item.slug, title=item.title)
+    a(href="/videos/"+item.slug+"/", title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.large
         alt=item.title
       )
   .video_item_info_wrapper
-    a(href="/videos/"+item.slug, title=item.title)
+    a(href="/videos/"+item.slug+"/", title=item.title)
       h4.video_item_title=item.title
     if item.categories
       ul.list-inline.category_video_item
