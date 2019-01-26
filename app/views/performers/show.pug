@@ -44,7 +44,7 @@ block title
 
 block content
   .container
-    if data.events.length
+    if data.events && data.events.length
       section#events.row.performer_events_wrapper
         .col-lg-12
           h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
@@ -57,7 +57,7 @@ block content
               span.button_more_bkg
           
   
-    if data.partnerships.length
+    if data.partnerships && data.partnerships.length
       section#partnerships.row.performer_partnerships_wrapper
         .col-lg-12
           h2.main_title.indented_title.color1!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
@@ -70,7 +70,7 @@ block content
               span.button_more_bkg
           
   
-  if data.performances.length
+  if data.performances && data.performances.length
     .polygon_divider_top
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
         g#layer2
@@ -100,7 +100,7 @@ block content
             polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
             polygon(fill='#0f8fcf' points='0,0 1920,0 1920,100.5 		')                  
 
-  if data.crews.length
+  if data.crews && data.crews.length
     section#crews.performer_crew_wrapper
       .container
         .row
@@ -116,7 +116,7 @@ block content
               .col-sm-6
                 img.img-fluid(src="/images/logo_avnode_symbol.svg")
 
-  if data.members.length
+  if data.members && data.members.length
     section#members.performer_crew_wrapper
       .container
         .row
@@ -132,7 +132,7 @@ block content
               .col-sm-6
                 img.img-fluid(src="/images/logo_avnode_symbol.svg")
 
-  if data.footage.length || data.videos.length || data.playlists.length
+  if (data.footage && data.footage.length) || (data.videos && data.videos.length) || (data.playlists && data.playlists.length)
     .polygon_divider_top
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
         g#layer2
@@ -143,7 +143,7 @@ block content
     section.performer_videos_wrapper
       .content_wrapper
         .container
-          if data.footage.length
+          if data.footage && data.footage.length
             #footage.row.performer_footage.bottom60
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
@@ -155,7 +155,7 @@ block content
                     span.button_more_label!=global.__('+ All the footages')
                     span.button_more_bkg                     
 
-          if data.videos.length
+          if data.videos && data.videos.length
             #videos.row.performer_video
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
@@ -167,7 +167,7 @@ block content
                     span.button_more_label!=global.__('+ All the videos')
                     span.button_more_bkg                    
 
-          if data.playlists.length
+          if data.playlists && data.playlists.length
             #playlists.row.performer_playlist
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
@@ -181,7 +181,7 @@ block content
 
 
   
-  if data.galleries.length    
+  if data.galleries && data.galleries.length    
     section#galleries.performer_galleries_wrapper
       .content_wrapper
         .container
@@ -197,7 +197,7 @@ block content
                   span.button_more_label!=global.__('+ All the galleries')
                   span.button_more_bkg                        
 
-  if data.news.length
+  if data.events && data.news.length
     section#news.performer_news_wrapper
       .content_wrapper
         .container
