@@ -37,6 +37,17 @@ class SignUp extends Component {
     return geocodeByAddress(address).then(results => getLatLng(results[0]));
   };
 
+  getInitialValues() {
+    const { model } = this.props;
+
+    if (!model) {
+      return {};
+    }
+
+    let v = {};
+    return v;
+  }
+
   onSubmit(values) {
     const { showModal, saveModel } = this.props;
 
@@ -115,6 +126,7 @@ class SignUp extends Component {
             option={option}
             _onOptionChange={this._onOptionChange.bind(this)}
             height={height}
+            initialValues={this.getInitialValues()}
           />
         </div>
       </div>

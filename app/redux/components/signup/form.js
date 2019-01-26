@@ -15,6 +15,15 @@ import validate from "./validate";
 import { getFormSyncErrors } from "redux-form";
 
 class SignUpForm extends Component {
+  submitForm(data) {
+    const { onSubmit, reset } = this.props;
+
+    // reset form after submit
+    return onSubmit(data).then(() => {
+      reset();
+    });
+  }
+
   render() {
     const {
       submitting,
@@ -28,14 +37,14 @@ class SignUpForm extends Component {
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(this.submitForm.bind(this))}>
         <Field
           name="subscribe"
           component={CollapsedPanel}
           placeholder="Subscribe as"
           options={options}
           height={height}
-          _onOptionChange={(e)=>_onOptionChange(e)}
+          _onOptionChange={e => _onOptionChange(e)}
           optionValue={option}
         />
 
@@ -45,7 +54,12 @@ class SignUpForm extends Component {
           placeholder="Stage name"
         />
 
-        <Field name="slug" component={inputText} placeholder="Profile Url" help="To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)" />
+        <Field
+          name="slug"
+          component={inputText}
+          placeholder="Profile Url"
+          help="To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)"
+        />
 
         <Field
           name="birthday"
