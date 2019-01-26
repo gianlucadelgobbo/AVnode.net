@@ -9,7 +9,7 @@ import { saveModel } from "./actions";
 import { fetchModel } from "../public/actions";
 //import { fetchList as fetchUsers } from "./actions";
 import { getList as getUsers } from "./selectors";
-import { loadSuggestionAuthors } from "../../../api";
+import { loadSuggestionAuthors, fetchPerformancePublic } from "../../../api";
 import ErrorMessage from "../../errorMessage";
 
 const getSuggestionValue = suggestion => suggestion.stagename;
@@ -84,10 +84,11 @@ class AddUsersPerformance extends Component {
   onSubmitForm(idusers) {
     const { fetchModel, saveModel, hideModal, _id } = this.props;
     const modelToSave = this.createModelToSave(idusers, _id);
+    console.log(modelToSave);
     return saveModel(modelToSave).then(response => {
+      console.log(response);
       if (response.model && response.model._id) {
-        fetchModel({ id: _id });
-        hideModal();
+        fetchPerformancePublic({ id: _id }).then(response=>hideModal());
       }
     });
   }
