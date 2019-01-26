@@ -9,6 +9,8 @@ export const INVALID_ADDRESS = "validation.error.invalid.address";
 export const INVALID_STRING_LENGTH = "validation.error.invalid.string.length";
 export const INVALID_IMAGE_SIZE = "validation.error.invalid.image.size";
 export const INVALID_STRING_3_20 = "validation.error.invalid.string.3.20";
+export const INVALID_STRING_0_5 = "validation.error.invalid.string.0.5";
+export const INVALID_STRING_0_10 = "validation.error.invalid.string.0.10";
 export const INVALID_STRING_1_5 = "validation.error.invalid.string.1.5";
 export const INVALID_STRING_1_3 = "validation.error.invalid.string.1.3";
 export const INVALID_STRING_3_50 = "validation.error.invalid.string.3.50";
@@ -19,6 +21,8 @@ export const INVALID_PASSWORD_CONTENT = "validation.error.invalid.passwordConten
 export const DEFINE_LEAST_EMAIL= "validation.error.define.least.email";
 export const MULTIPLE_PRIMARY_EMAIL = "validation.error.multiple.primary.email";
 export const NO_PRIMARY_EMAIL = "validation.error.no.primary.email";
+export const EMAIL_IS_TAKEN = "validation.error.email.is.take";
+export const DUPLICATED_EMAIL = "validation.error.email.duplicated";
 
 //export const IS_NAN = "validation.error.is_nan";
 //export const END_DATE_BEFORE_START_DATE = "validation.error.end_data_before_start_date";
@@ -68,6 +72,14 @@ defineMessages({
         id: INVALID_STRING_1_5,
         defaultMessage: "Invalid length: please insert 1 to 5 values"
     },
+    [INVALID_STRING_0_5]: {
+        id: INVALID_STRING_0_5,
+        defaultMessage: "Invalid length: max 5 values"
+    },
+    [INVALID_STRING_0_10]: {
+        id: INVALID_STRING_0_10,
+        defaultMessage: "Invalid length: max 10 values"
+    },
      [INVALID_STRING_1_3]: {
         id: INVALID_STRING_1_3,
         defaultMessage: "Invalid length: please insert 1 to 3 values"
@@ -103,5 +115,13 @@ defineMessages({
     [INVALID_PASSWORD_CONTENT]: {
         id: INVALID_PASSWORD_CONTENT,
         defaultMessage: "Password must contain at least number, a capital letter and a lower case letter"
+    },
+    [EMAIL_IS_TAKEN]: {
+        id: EMAIL_IS_TAKEN,
+        defaultMessage: "The email is already in use"
+    },
+    [DUPLICATED_EMAIL]: {
+        id: DUPLICATED_EMAIL,
+        defaultMessage: "Duplicated email"
     },
 });

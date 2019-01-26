@@ -55,6 +55,16 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
+    "id": "validation.error.invalid.string.0.5",
+    "defaultMessage": "Invalid length: max 5 values",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.invalid.string.0.10",
+    "defaultMessage": "Invalid length: max 10 values",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
     "id": "validation.error.invalid.string.1.3",
     "defaultMessage": "Invalid length: please insert 1 to 3 values",
     "filepath": "./app/redux/components/common/form/errors.js"
@@ -100,6 +110,16 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
+    "id": "validation.error.email.is.take",
+    "defaultMessage": "The email is already in use",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
+    "id": "validation.error.email.duplicated",
+    "defaultMessage": "Duplicated email",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
     "id": "label.form.stagename",
     "defaultMessage": "Stage Name",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -109,7 +129,7 @@
     "defaultMessage": "Profile Url",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
-  { 
+  {
     "id": "label.form.url.help",
     "defaultMessage": "To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)",
     "filepath": "./app/redux/components/common/form/labels.js"
