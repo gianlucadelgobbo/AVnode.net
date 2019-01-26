@@ -348,13 +348,6 @@ userSchema.pre('save', function (next) {
   let user = this;
   if (!user.isModified('password') || user.hashed) { if (user.hashed) delete user.hashed; return next(); }
   bcrypt.genSalt(10, (err, salt) => {
-    console.log("userSchema.pre('save' PASSWORD NOOOOOOOOOOOOOOOOOO");
-    console.log("userSchema.pre('save' PASSWORD NOOOOOOOOOOOOOOOOOO");
-    console.log("userSchema.pre('save' PASSWORD NOOOOOOOOOOOOOOOOOO");
-    console.log("userSchema.pre('save' PASSWORD NOOOOOOOOOOOOOOOOOO");
-    console.log("userSchema.pre('save' PASSWORD NOOOOOOOOOOOOOOOOOO");
-    console.log("userSchema.pre('save' PASSWORD NOOOOOOOOOOOOOOOOOO");
-    console.log("userSchema.pre('save' PASSWORD NOOOOOOOOOOOOOOOOOO");
     if (err) { return next(err); }
     bcrypt.hash(user.password, salt, null, (err, hash) => {
       if (err) { return next(err); }
