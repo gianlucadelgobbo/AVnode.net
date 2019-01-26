@@ -836,7 +836,10 @@ export const fetchPartnerCategories = () => {
   //     });
 };
 
-export const saveSignupPublic = model => axios.post(`signup`, model);
+export const saveSignupPublic = model =>
+  axios.post(`signup`, model).then(result => {
+    return result.data;
+  });
 
 export const verifyEmail = ({ email }) =>
   axios.get(encodeURI(`profile/emails/verify/${email}`));
