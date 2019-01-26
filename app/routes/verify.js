@@ -58,10 +58,12 @@ router.get('/:sez/:code', (req, res) => {
               } else {
                 if (!data.crewslug) {
                   console.log('NO crew');
-                  UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
-                    res.render('verify/signup', {
-                      title: __('Signup verify'),
-                      data: data
+                  router.updateSendy(user, user.email, (err) => {
+                    UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
+                      res.render('verify/signup', {
+                        title: __('Signup verify'),
+                        data: data
+                      });
                     });
                   });
                 } else {
@@ -104,10 +106,12 @@ router.get('/:sez/:code', (req, res) => {
                                 data: data
                               });
                             } else {
-                              UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
-                                res.render('verify/signup', {
-                                  title: __('Signup verify'),
-                                  data: data
+                              router.updateSendy(user, user.email, (err) => {
+                                UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
+                                  res.render('verify/signup', {
+                                    title: __('Signup verify'),
+                                    data: data
+                                  });
                                 });
                               });
                             }
@@ -143,6 +147,7 @@ router.get('/:sez/:code', (req, res) => {
       if (user) {
         for(let item=0;item<user.emails.length;item++) {
           if (user.emails[item].confirm === req.params.code) {
+            var sendyemail = user.emails[item].email;
             user.emails[item].is_confirmed = true;
             user.emails[item].mailinglists = { livevisuals: 1 };
             delete user.emails[item].confirm;
@@ -155,15 +160,17 @@ router.get('/:sez/:code', (req, res) => {
               err: true,
             });
           } else {
-            if (req.user) {
-              req.flash('success', { msg: __('Email verificated with success.') });
-              res.redirect('/admin/profile/emails');
-            } else {
-              res.render('verify/email', {
-                title: __('Email verify'),
-                err: false,
-              });  
-            }
+            router.updateSendy(user, sendyemail, (err) => {
+              if (req.user) {
+                req.flash('success', { msg: __('Email verificated with success.') });
+                res.redirect('/admin/profile/emails');
+              } else {
+                res.render('verify/email', {
+                  title: __('Email verify'),
+                  err: false,
+                });  
+              }
+            });
           }
         });  
       } else {
@@ -175,6 +182,36 @@ router.get('/:sez/:code', (req, res) => {
     });
   }
 });
+
+router.updateSendy = (user, email, cb) => {
+  let formData = {
+    list: 'AXRGq2Ftn2Fiab3skb5E892g',
+    email: email,
+    avnode_slug: user.slug,
+    Topics: "flxer,livevisuals",
+    avnode_id: user._id.toString()
+  };
+  if (user.name) formData.Name = user.name;
+  if (user.surname) formData.Surname = user.surname;
+  if (user.stagename) formData.Stagename = user.stagename;
+  if (user.addresses && user.addresses[0] && user.addresses[0].locality) formData.Location = user.addresses[0].locality;
+  if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
+  if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
+  if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
+  console.log("formData");
+  console.log(formData);
+
+  request.post({
+    url: 'https://ml.avnode.net/subscribe',
+    form: formData,
+    function (error, response, body) {
+      console.log("Newsletter");
+      console.log(error);
+      console.log(body);
+      cb(error);
+    }
+  });
+}
 
 router.signupVerifyValidator = (put, cb) => {
   console.log('signupVerifyValidatorsignupVerifyValidatorsignupVerifyValidatorsignupVerifyValidatorsignupVerifyValidator');
