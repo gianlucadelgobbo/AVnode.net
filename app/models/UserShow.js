@@ -41,6 +41,8 @@ const userSchema = new Schema({
   stats: {
     crews: Number,
     members: Number,
+    events: Number,
+    partnerships: Number,
     performances: Number,
     galleries: Number,
     'lights-installation': Number,
