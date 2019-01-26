@@ -31,9 +31,10 @@ router.get('/:sez/:code', (req, res) => {
             let user = new User();
             user.stagename = data.stagename;
             user.slug = data.slug;
+            user.hashed = true;
             user.lang = data.lang;
             user.birthday = data.birthday;
-            user.addresses = data.addresses;
+            user.addresses = [ { geometry: data.addresses[0].geometry, locality: data.addresses[0].locality, country: data.addresses[0].country } ];
             user.password = data.password;
             user.email = data.email;
             user.emails = [{
@@ -44,6 +45,8 @@ router.get('/:sez/:code', (req, res) => {
               mailinglists: {livevisuals: 1}
             }];
             user.is_crew = false;
+            console.log('user');
+            console.log(user);
             user.save((err) => {
               if (err) {
                 console.log('err');
@@ -65,18 +68,18 @@ router.get('/:sez/:code', (req, res) => {
                   console.log('Create crew');
                   User
                   .findOne({slug:data.slug})
-                  .exec((err, user) => {
+                  .exec((err, uuuu) => {
                     let crew = new User();
                     crew.stagename = data.crewname;
                     crew.slug = data.crewslug;
                     crew.addresses = data.addresses;
                     crew.is_crew = true;
-                    crew.members = [user._id];
+                    crew.members = [uuuu];
                     crew.stats = {members: 1},
-                    crew.emails = [{
+                    /* crew.emails = [{
                       is_primary: true,
                       is_confirmed: true
-                    }];
+                    }]; */
                     crew.save((err) => {
                       if (err) {
                         console.log('err');
