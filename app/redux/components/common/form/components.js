@@ -2249,7 +2249,8 @@ export const uploadComponent = ({
                     </div>
                 </div>
             )}
-            <div>{renderSubField()}</div>
+            <div>{(!media || !media.original) ? renderSubField() : <br/>}</div>
+
             {/* if array of video */}
             {media && Array.isArray(media) && media.length > 0 && (
                 <div className="row">
