@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { showModal } from "../modal/actions";
 import { bindActionCreators } from "redux";
-import { MODAL_SIGN_UP_SUCCESS } from "../modal/constants";
+import { MODAL_SIGN_UP_SUCCESS, MODAL_SAVED } from "../modal/constants";
 import { OPTIONS } from "./constants";
 import { saveModel } from "./actions";
 import ErrorMessage from "../errorMessage";
@@ -15,12 +15,10 @@ import moment from "moment";
 import { inputCheckbox } from "../common/form/components";
 
 class SignUp extends Component {
-
   constructor(props) {
     super(props);
-    this.state = {option:'single'};
+    this.state = { option: "single" };
   }
-
 
   componentDidMount() {
     //const {fetchModel} = this.props;
@@ -43,12 +41,13 @@ class SignUp extends Component {
     const { showModal, saveModel } = this.props;
 
     let data = Object.assign({}, values);
-    
-    if(!values.crewUrl){
-      data.subscribe = "single"
-    }
-    else{
-      data.subscribe = "group"
+
+    console.log(data);
+
+    if (!values.crewUrl) {
+      data.subscribe = "single";
+    } else {
+      data.subscribe = "group";
     }
 
     data.addresses = [];
@@ -87,22 +86,22 @@ class SignUp extends Component {
       console.log(modelToSave);
       //dispatch the action to save the model here
       return saveModel(modelToSave).then(response => {
-        if (response.model && response.model_id) {
+        if (response.model && response.model._id) {
           showModal({
-            type: MODAL_SIGN_UP_SUCCESS,
+            type: MODAL_SIGN_UP_SUCCESS
           });
         }
       });
     });
   }
 
-  _onOptionChange(e){
-    this.setState({option:e.target.value})
+  _onOptionChange(e) {
+    this.setState({ option: e.target.value });
   }
 
   render() {
     const { showModal, errorMessage } = this.props;
-    const {option} = this.state;
+    const { option } = this.state;
     const height = 50;
     return (
       <div className="row">
