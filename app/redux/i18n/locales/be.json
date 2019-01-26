@@ -136,6 +136,8 @@
   "validation.error.invalid.password": "Passwords don't match",
   "validation.error.invalid.passwordContent": "Password must contain at least number, a capital letter and a lower case letter",
   "validation.error.invalid.passwordLength": "Your password is too short",
+  "validation.error.invalid.string.0.10": "Invalid length: max 10 values",
+  "validation.error.invalid.string.0.5": "Invalid length: max 5 values",
   "validation.error.invalid.string.1.3": "Invalid length: please insert 1 to 3 values",
   "validation.error.invalid.string.1.5": "Invalid length: please insert 1 to 5 values",
   "validation.error.invalid.string.3.20": "Invalid length: please insert 3 to 20 values",
@@ -150,7 +152,5 @@
   "videos": "Videos",
   "videos.public.data": "VIDEOS PUBLIC DATA",
   "videosEvents": "Videos",
-  "videosPerformances": "Videos",
-  "To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)": "To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)"
-
+  "videosPerformances": "Videos"
 }
