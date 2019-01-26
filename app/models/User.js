@@ -35,6 +35,8 @@ const userSchema = new Schema({
   stats: {
     crews: Number,
     members: Number,
+    events: Number,
+    partnerships: Number,
     performances: Number,
     galleries: Number,
     'lights-installation': Number,
@@ -150,7 +152,7 @@ const userSchema = new Schema({
     validate: [{
       validator : function(password) {
         console.log("passwordpasswordpasswordpasswordpasswordpassword");
-        console.log(this);
+        //console.log(this);
         console.log(password && password.length > 10);
         return this.flxermigrate || (password && password.length > 10);
       }, msg: 'INVALID_PASSWORD_LENGTH'
@@ -322,17 +324,19 @@ userSchema.pre('validate', function (next) {
 });
 userSchema.pre('save', function (next) {
   console.log("userSchema.pre('save' CREW ADRESSES");
+  //console.log(this.members);
   if (this.crews) {
     this.stats.crews = this.crews.length;
-    console.log(this.stats);
   }
-  if (this.members) {
+  if (this.members && this.members.length) {
     if (this.stats) this.stats.members = this.members.length;
     let addressesO = {};
-    for(let a=0;a<this.members.length;a++) 
-      for(let b=0;b<this.members[a].addresses.length;b++) 
-        if (!addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country]) addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country] = this.members[a].addresses[b]
-    this.addresses = Object.values(addressesO);
+    for(let a=0;a<this.members.length;a++)
+      if (this.members[a].addresses && this.members[a].addresses.length)
+        for(let b=0;b<this.members[a].addresses.length;b++) 
+          if (!addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country]) addressesO[this.members[a].addresses[b].locality+this.members[a].addresses[b].country] = this.members[a].addresses[b]
+    let addresses = Object.values(addressesO);
+    if (addresses.length) this.addresses = addresses;
     next();
   } else {
     next();
@@ -342,7 +346,7 @@ userSchema.pre('save', function (next) {
 userSchema.pre('save', function (next) {
   console.log("userSchema.pre('save' PASSWORD");
   let user = this;
-  if (!user.isModified('password')) { return next(); }
+  if (!user.isModified('password') || user.hashed) { if (user.hashed) delete user.hashed; return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
     bcrypt.hash(user.password, salt, null, (err, hash) => {
@@ -355,7 +359,7 @@ userSchema.pre('save', function (next) {
 
 userSchema.pre('save', function (next) {
   console.log("userSchema.pre('save' EMAILS");
-  if (this.emails && this.emails.length) {
+  if (this.emails && this.emails.length && !this.is_crew) {
     let query = { _id:{$ne:this._id}, $or : [] };
     for (let item=0 ;item< this.emails.length; item++) {
       query.$or.push({ "email" : this.emails[item].email });

@@ -1,7 +1,7 @@
 extends ../../layout_admin
 block content
   .container.mb-2
-    form(action=formUrl, method="post")
+    form(action=formUrl.split("?")[0], method="post")
       textarea(name="q").form-control.mb-2
         if body
           !=body

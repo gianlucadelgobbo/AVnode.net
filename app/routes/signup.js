@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
   console.log('signupsignupsignupsignupsignupsignupsignupsignupsignup');
   console.log(req.body);
   if (req.body.crewName) req.body.crewname = req.body.crewName;
-  if (req.body.CrewProfile) req.body.crewslug = req.body.CrewProfile;
+  if (req.body.crewUrl) req.body.crewslug = req.body.crewUrl;
   req.body.lang = global.getLocale();
 
   let data = new UserTemp();

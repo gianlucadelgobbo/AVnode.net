@@ -7,7 +7,10 @@ const Address = new Schema({
   formatted_address: String,
   locality: String,
   country: String,
-  geometry: Object,
+  geometry: { 
+    lat: Number,
+    lng: Number
+  }
 },{ _id : false });
 
 Address.virtual('mapUrl').get(function () {
