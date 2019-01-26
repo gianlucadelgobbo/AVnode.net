@@ -9,6 +9,8 @@ export const INVALID_ADDRESS = "validation.error.invalid.address";
 export const INVALID_STRING_LENGTH = "validation.error.invalid.string.length";
 export const INVALID_IMAGE_SIZE = "validation.error.invalid.image.size";
 export const INVALID_STRING_3_20 = "validation.error.invalid.string.3.20";
+export const INVALID_STRING_0_5 = "validation.error.invalid.string.0.5";
+export const INVALID_STRING_0_10 = "validation.error.invalid.string.0.10";
 export const INVALID_STRING_1_5 = "validation.error.invalid.string.1.5";
 export const INVALID_STRING_1_3 = "validation.error.invalid.string.1.3";
 export const INVALID_STRING_3_50 = "validation.error.invalid.string.3.50";
@@ -69,6 +71,14 @@ defineMessages({
     [INVALID_STRING_1_5]: {
         id: INVALID_STRING_1_5,
         defaultMessage: "Invalid length: please insert 1 to 5 values"
+    },
+    [INVALID_STRING_0_5]: {
+        id: INVALID_STRING_0_5,
+        defaultMessage: "Invalid length: max 5 values"
+    },
+    [INVALID_STRING_0_10]: {
+        id: INVALID_STRING_0_10,
+        defaultMessage: "Invalid length: max 10 values"
     },
      [INVALID_STRING_1_3]: {
         id: INVALID_STRING_1_3,

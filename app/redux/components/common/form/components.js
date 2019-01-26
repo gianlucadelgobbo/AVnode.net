@@ -292,6 +292,7 @@ const inputField = ({
                     <FormattedMessage id={help}/>
                 </div>
             )}
+
             {meta.error && meta.touched && (
                 <span className="error-message">
           <FormattedMessage id={meta.error}/>
