@@ -1,26 +1,30 @@
 import {validateProfileEmail} from "../../common/form/validators";
 
+const parseErrors = ({errorArray}) => Array.isArray(errorArray) && !errorArray.length ? null : {emails: errorArray};
+
 const asyncValidate = (values) => {
     const promises = [];
     const {emails = []} = values;
     const errorArray = [];
 
     emails.forEach((email, index) => {
-        validateProfileEmail({
-            value: email,
-            promises,
-            result: {},
-            index,
-            errorArray
-        });
+        if (!email.stored) {
+            validateProfileEmail({
+                value: email,
+                promises,
+                result: {},
+                index,
+                errorArray
+            });
+        }
     });
 
     return Promise.all(promises)
         .then(() => {
-            return {emails: errorArray};
+            return parseErrors({errorArray})
         })
         .catch(() => {
-            return {emails: errorArray};
+            return parseErrors({errorArray})
         });
 };
 

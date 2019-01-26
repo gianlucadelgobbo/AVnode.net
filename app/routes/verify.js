@@ -1,5 +1,6 @@
 const router = require('./router')();
 const uuid = require('uuid');
+const request = require('request');
 
 const mongoose = require('mongoose');
 const UserTemp = mongoose.model('UserTemp');
