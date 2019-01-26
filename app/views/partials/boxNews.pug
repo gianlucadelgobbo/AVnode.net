@@ -1,6 +1,6 @@
 .news_item_wrapper
   p.news_date=item.creation_dateFormatted
   a(href="/news/"+item.slug+"/", title=item.title)
-    h4.news_item_title=item.title
-  p.news_excerpt=item.description
+    h4.news_item_title!=item.title
+  p.news_excerpt!=item.description
   

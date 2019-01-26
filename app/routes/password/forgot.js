@@ -9,7 +9,8 @@ const _ = require('lodash');
 
 router.get('/', (req, res) => {
   res.render('password/forgot', {
-    title: __('Reset password')
+    title: __('Reset password'),
+    email: req.query.email
   });
 });
 
