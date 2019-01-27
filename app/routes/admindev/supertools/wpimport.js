@@ -370,7 +370,7 @@ router.get('/events', (req, res) => {
         wp_id: body.ID,
         wp_users: body.capauthors,
         wp_tags: body.tags,
-        creation_date: new Date(body.date),
+        createdAt: new Date(body.date),
         stats: {
           visits: Math.floor(Math.random() * 1000)+1000,
           likes: Math.floor(Math.random() * 100)+100
@@ -519,7 +519,7 @@ router.get('/eventsupdate', (req, res) => {
           wp_id: body.ID,
           //wp_users: body.capauthors,
           //wp_tags: body.tags,
-          creation_date: new Date(body.date),
+          createdAt: new Date(body.date),
           stats: {
             visits: Math.floor(Math.random() * 1000)+1000,
             likes: Math.floor(Math.random() * 100)+100
@@ -867,7 +867,7 @@ router.post('/news_import', (req, res) => {
         //console.log(news);
         let tmp = {
           old_id: news.id,
-          creation_date: news.date,
+          createdAt: news.date,
           slug: news.slug,
           title: news.title.rendered,
           is_public: true,
@@ -1039,7 +1039,7 @@ router.get('/news_import', (req, res) => {
           console.log(news);
           let tmp = {
             old_id: news.ID,
-            creation_date: news.date,
+            createdAt: news.date,
             slug: news.post_name,
             title: news.post_title,
             is_public: true,

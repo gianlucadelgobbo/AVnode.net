@@ -102,14 +102,14 @@ router.setStatsAndActivity = function(query) {
         Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000019f"}),
         Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc396100000001a1"}),
 
-        Performance.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Event.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Event.countDocuments({"partners.users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Footage.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Playlist.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Video.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Gallery.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        News.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Event.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Event.countDocuments({"partners.users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Footage.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Playlist.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Video.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Gallery.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        News.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
 
       ]).then( ([ events, partnerships, performances, galleries, videos, news, footage, playlists, lightsinstallation,mapping,vjset,workshop,avperformance,projectshowcase,djset,videoinstallation,lecture, recent_events, recent_partnerships, recent_performances, recent_galleries, recent_videos, recent_news, recent_footage, recent_playlists ]) => {
         e.events = events;
@@ -210,14 +210,14 @@ router.setCrewAdresses = function(query) {
         Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc3961000000019f"}),
         Performance.countDocuments({"users": {$in: myids}, "is_public": true, "type": "5be8708afc396100000001a1"}),
 
-        Performance.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Event.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Event.countDocuments({"partners.users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Footage.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Playlist.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Video.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        Gallery.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
-        News.countDocuments({"users": {$in: myids}, "is_public": true, creation_date:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
+        Performance.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Event.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Event.countDocuments({"partners.users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Footage.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Playlist.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Video.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        Gallery.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}}),
+        News.countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
 
       ]).then( ([ events, partnerships, performances, galleries, videos, news, footage, playlists, lightsinstallation,mapping,vjset,workshop,avperformance,projectshowcase,djset,videoinstallation,lecture, recent_events, recent_partnerships, recent_performances, recent_galleries, recent_videos, recent_news, recent_footage, recent_playlists ]) => {
         e.events = events;

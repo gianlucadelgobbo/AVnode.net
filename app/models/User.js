@@ -31,7 +31,7 @@ const userSchema = new Schema({
   activity_as_performer: Number,
   activity_as_organization: Number,
   is_public: Boolean,
-  creation_date: Date,
+  createdAt: Date,
   stats: {
     crews: Number,
     members: Number,
@@ -39,6 +39,7 @@ const userSchema = new Schema({
     partnerships: Number,
     performances: Number,
     galleries: Number,
+    videos: Number,
     'lights-installation': Number,
     mapping: Number,
     'vj-set': Number,
@@ -407,8 +408,11 @@ userSchema.pre('save', function (next) {
           email: this.emails[item].email,
           Topics: mailinglists.join(','),
           avnode_id: this._id.toString(),
+          avnode_slug: this.slug,
+          avnode_email: this.email,
           boolean: true
         };
+        if (this.old_id) formData.flxer_id = this.old_id;
         if (this.name) formData.name = this.name;
         if (this.surname) formData.Surname = this.surname;
         if (this.stagename) formData.Stagename = this.stagename;

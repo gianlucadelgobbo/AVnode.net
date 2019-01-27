@@ -15,14 +15,17 @@ const adminsez = 'news';
 const newsSchema = new Schema({
   old_id : String,
 
-  creation_date: Date,
+  createdAt: Date,
   slug: { type: String, unique: true },
   title: String,
   is_public: { type: Boolean, default: false },
   image: MediaImage,
   media: Media,
   abouts: [About],
-  stats: {},
+  stats: {
+    visits: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
+  },
   web: [Link],
   social: [Link],
 
@@ -127,7 +130,7 @@ newsSchema.virtual('imageFormats').get(function () {
 newsSchema.virtual('creation_dateFormatted').get(function () {
   const lang = global.getLocale();
   moment.locale(lang);
-  return moment(this.creation_date).format(config.dateFormat[lang].single);
+  return moment(this.createdAt).format(config.dateFormat[lang].single);
 });
 /*
 newsSchema.virtual('teaserImageFormats').get(function () {

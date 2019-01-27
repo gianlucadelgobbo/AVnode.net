@@ -1,5 +1,5 @@
 const router = require('./router')();
-const uuid = require('uuid');
+const request = require('request');
 
 const mongoose = require('mongoose');
 const UserTemp = mongoose.model('UserTemp');
@@ -150,7 +150,7 @@ router.get('/:sez/:code', (req, res) => {
             var sendyemail = user.emails[item].email;
             user.emails[item].is_confirmed = true;
             user.emails[item].mailinglists = { livevisuals: 1 };
-            delete user.emails[item].confirm;
+            //delete user.emails[item].confirm;
           }
         }
         user.save((err) => {
@@ -187,9 +187,11 @@ router.updateSendy = (user, email, cb) => {
   let formData = {
     list: 'AXRGq2Ftn2Fiab3skb5E892g',
     email: email,
-    avnode_slug: user.slug,
     Topics: "flxer,livevisuals",
-    avnode_id: user._id.toString()
+    avnode_id: user._id.toString(),
+    avnode_slug: user.slug,
+    avnode_email: user.email,
+    boolean: true
   };
   if (user.name) formData.Name = user.name;
   if (user.surname) formData.Surname = user.surname;
@@ -198,10 +200,51 @@ router.updateSendy = (user, email, cb) => {
   if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
   if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
   if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
-  console.log("formData");
+  console.log("formData request.post");
   console.log(formData);
 
-  request.post({
+  var https = require('https');
+  var querystring = require('querystring');
+  
+  // form data
+  var postData = querystring.stringify(formData);
+  
+  // request option
+  var options = {
+    host: 'ml.avnode.net',
+    port: 443,
+    method: 'POST',
+    path: '/subscribe',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': postData.length
+    }
+  };
+  
+  // request object
+  var req = https.request(options, function (res) {
+    var result = '';
+    res.on('data', function (chunk) {
+      result += chunk;
+    });
+    res.on('end', function () {
+      cb();
+    });
+    res.on('error', function (err) {
+      cb(error);
+    })
+  });
+  
+  // req error
+  req.on('error', function (err) {
+    console.log(err);
+  });
+  
+  //send request witht the postData form
+  req.write(postData);
+  req.end();
+  
+/*   request.post({
     url: 'https://ml.avnode.net/subscribe',
     form: formData,
     function (error, response, body) {
@@ -210,7 +253,7 @@ router.updateSendy = (user, email, cb) => {
       console.log(body);
       cb(error);
     }
-  });
+  }); */
 }
 
 router.signupVerifyValidator = (put, cb) => {

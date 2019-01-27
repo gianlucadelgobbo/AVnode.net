@@ -53,7 +53,7 @@ router.get('/userimages', (req, res) => {
   find({"image.file": {$exists: true}}).
   //limit(1).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, users) => {
     for (let user in users) {
       users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file);
@@ -109,7 +109,7 @@ router.get('/userformatsgenerator', (req, res) => {
   limit(limit).
   skip(skip).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, users) => {
     for (let user in users) {
       users[user].image.exists = fs.existsSync(global.appRoot+users[user].image.file);
@@ -166,7 +166,7 @@ router.get('/performanceimages', (req, res) => {
   Performance.
   find({"image.file": {$exists: true}}).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, performances) => {
     for (let performance in performances) {
       performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
@@ -217,7 +217,7 @@ router.get('/performanceformatsgenerator', (req, res) => {
   limit(limit).
   skip(skip).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, performances) => {
     for (let performance in performances) {
       performances[performance].image.exists = fs.existsSync(global.appRoot+performances[performance].image.file);
@@ -271,7 +271,7 @@ router.get('/eventimages', (req, res) => {
   Event.
   find({"image.file": {$exists: true}}).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, events) => {
     for (let event in events) {
       events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
@@ -318,7 +318,7 @@ router.get('/eventformatsgenerator', (req, res) => {
   limit(limit).
   skip(skip).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, events) => {
     for (let event in events) {
       events[event].image.exists = fs.existsSync(global.appRoot+events[event].image.file);
@@ -379,7 +379,7 @@ router.get('/newsimages', (req, res) => {
   News.
   find({"image.file": {$exists: true}}).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, newss) => {
     for (let news in newss) {
       newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
@@ -426,7 +426,7 @@ router.get('/newsformatsgenerator', (req, res) => {
   limit(limit).
   skip(skip).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, newss) => {
     for (let news in newss) {
       newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
@@ -483,7 +483,7 @@ router.get('/playlistimages', (req, res) => {
   Playlist.
   find({"image.file": {$exists: true}}).
   lean().
-  select({image: 1, creation_date: 1}).
+  select({image: 1, createdAt: 1}).
   exec((err, playlists) => {
     for (let playlist in playlists) {
       playlists[playlist].image.exists = fs.existsSync(global.appRoot+playlists[playlist].image.file);
@@ -519,7 +519,7 @@ router.get('/footagefiles', (req, res) => {
   find({"media.file": {$exists: true}}).
   lean().
 
-  select({media: 1, creation_date: 1}).
+  select({media: 1, createdAt: 1}).
   exec((err, footages) => {
     for (let footage in footages) {
       footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
@@ -632,7 +632,7 @@ router.get('/footagerenamer', (req, res) => {
   find({"media.file": {$exists: true}}).
   lean().
 
-  select({media: 1, creation_date: 1}).
+  select({media: 1, createdAt: 1}).
   exec((err, footages) => {
     for (let footage in footages) {
      if (footages[footage].media.preview) {
@@ -682,7 +682,7 @@ router.get('/footageformatsgenerator', (req, res) => {
   lean().
   limit(limit).
   skip(skip).
-  select({media: 1, creation_date: 1}).
+  select({media: 1, createdAt: 1}).
   exec((err, footages) => {
     for (let footage in footages) {
       footages[footage].media.exists = fs.existsSync(global.appRoot+footages[footage].media.file);
@@ -783,7 +783,7 @@ router.get('/videofiles', (req, res) => {
   Video.
   find({"media.file": {$exists: true}}).
   lean().
-  select({media: 1, creation_date: 1}).
+  select({media: 1, createdAt: 1}).
   exec((err, videos) => {
     for (let video in videos) {
       videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
@@ -896,7 +896,7 @@ router.get('/videoformatsgenerator', (req, res) => {
   lean().
   limit(limit).
   skip(skip).
-  select({media: 1, creation_date: 1}).
+  select({media: 1, createdAt: 1}).
   exec((err, videos) => {
     for (let video in videos) {
       videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
@@ -988,7 +988,7 @@ router.get('/galleryimages', (req, res) => {
   find({"medias.0": {$exists: true}}).
   lean().
   //limit(1).
-  select({medias:1, creation_date: 1}).
+  select({medias:1, createdAt: 1}).
   exec((err, galleries) => {
     for (let gallery=0; gallery<galleries.length; gallery++) {
       for (let media=0; media<galleries[gallery].medias.length; media++) {
@@ -1046,7 +1046,7 @@ router.get('/gallerygenerator', (req, res) => {
   lean().
   limit(limit).
   skip(skip).
-  select({medias:1, creation_date: 1}).
+  select({medias:1, createdAt: 1}).
   exec((err, galleries) => {
     logger.debug(galleries);
     if (galleries.length) {

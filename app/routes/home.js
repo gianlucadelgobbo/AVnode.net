@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
       //const query = config.sections[section].categoriesQueries[config.sections[section].categories[0]];
       let select = config.sections[section].list_fields;
       select.abouts = 1;
-      const query = {"categories": "5be8708afc3961000000011b","image.file": {$exists: true},"abouts.abouttext": {$exists: true},"bookings.0": {$exists: true},"creation_date": {$gte: new Date(new Date().setYear(new Date().getFullYear()-2))}};
+      const query = {"categories": "5be8708afc3961000000011b","image.file": {$exists: true},"abouts.abouttext": {$exists: true},"bookings.0": {$exists: true},"createdAt": {$gte: new Date(new Date().setYear(new Date().getFullYear()-2))}};
 
       dataprovider.fetchRandomPerformance(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
         homedata.performances = data;

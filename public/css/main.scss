@@ -1201,11 +1201,14 @@ section.performer_news_wrapper {
     margin-bottom: 15px;    
 }
 
-.performer_item_wrapper.svg {
+.performer_item_wrapper img.svg {
+    background-color: #fff;
+}
+
+.performer_item_wrapper img {
     max-width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: #fff;
     margin-right: 30px;
     width: 100px;
 }

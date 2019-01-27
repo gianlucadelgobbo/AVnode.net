@@ -83,12 +83,12 @@ callSchema.virtual('end_date_formatted').get(function () {
 });
 
 const eventSchema = new Schema({
+  createdAt: Date,
   wp_id: String,
   wp_users: [],
   wp_tags: [],
   
   old_id: String,
-  creation_date: Date,
 
   slug: { type: String, unique: true },
   title: String,
@@ -103,7 +103,10 @@ const eventSchema = new Schema({
   is_public: { type: Boolean, default: false },
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
-  stats: {},
+  stats: {
+    visits: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
+  },
   schedule: [scheduleSchema],
   partners: [partnershipSchema],
   program: [programSchema],

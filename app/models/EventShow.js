@@ -90,8 +90,9 @@ callSchema.virtual('end_date_formatted').get(function () {
 });
 
 const eventSchema = new Schema({
+  createdAt: Date,
   old_id: String,
-  creation_date: Date,
+  createdAt: Date,
 
   slug: { type: String, unique: true },
   title: String,
@@ -107,7 +108,10 @@ const eventSchema = new Schema({
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },
   participate: { type: Boolean, default: false },
-  stats: {},
+  stats: {
+    visits: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
+  },
   schedule: [datevenueSchema],
   partners: [partnershipSchema],
   program: [programSchema],

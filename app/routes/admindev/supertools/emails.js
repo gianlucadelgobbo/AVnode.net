@@ -23,7 +23,7 @@ const logger = require('../../../utilities/logger');
 
 router.get('/', (req, res) => {
   logger.debug('/admindev/supertools/emails');
-  User.find({is_crew: false}).
+  User.find({email:{$exists:true}, "emails.email":{$exists:true}, is_crew:false}).
   select({name: 1, slug: 1, old_id: 1, activity: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   lean().
   sort('name').
@@ -45,10 +45,11 @@ router.get('/', (req, res) => {
         console.log(e.slug);
       } */
       let email = {
+        list: 'AXRGq2Ftn2Fiab3skb5E892g',
+        //email: e.email,
         avnode_id: e._id.toString(),
         avnode_slug: e.slug,
         avnode_email: e.email,
-        list: 'AXRGq2Ftn2Fiab3skb5E892g',
         boolean: 'true'
       };
       if (e.old_id) email.flxer_id = e.old_id;
@@ -90,7 +91,7 @@ router.get('/updateSendy', (req, res) => {
   const skip = req.query.skip ? parseFloat(req.query.skip) : 0;
 
   logger.debug('/admindev/supertools/emails');
-  User.find({is_crew: false}).
+  User.find({email:{$exists:true}, "emails.email":{$exists:true}, is_crew:false}).
   select({name: 1, slug: 1, old_id: 1, activity: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
   lean().
   limit(limit).
@@ -109,10 +110,10 @@ router.get('/updateSendy', (req, res) => {
       results.forEach(function(e) {
         console.log(e);
         let email = {
+          list: 'AXRGq2Ftn2Fiab3skb5E892g',
           avnode_id: e._id.toString(),
           avnode_slug: e.slug,
           avnode_email: e.email,
-          list: 'AXRGq2Ftn2Fiab3skb5E892g',
           boolean: 'true'
         };
         if (e.old_id) email.flxer_id = e.old_id;
