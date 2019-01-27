@@ -2,6 +2,7 @@
   if item.imageFormats
     a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
       img.card-img-top.img-fluid(
+        class=item.imageFormats.large.substring(item.imageFormats.large.lastIndexOf(".")+1)
         src=item.imageFormats.large
         alt=item.stagename
       )

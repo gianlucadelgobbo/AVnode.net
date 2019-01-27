@@ -142,9 +142,9 @@ block content
                       img.img-fluid(src=event.imageFormats.small, alt=event.title)
                   .col-md-8
                     a(href="/events/"+event.slug+"/")=event.title
-    if data.medias2.length 
+    if data.medias.length 
       h2.mt-5.main_title.indented_title.color1=__("Images")
       .row.mb-5
-        each item in data.medias2
+        each item in data.medias
           .col-md-4
             include ../partials/boxImage

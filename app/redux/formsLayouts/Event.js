@@ -1,7 +1,7 @@
 const NO_FORM = {
     old_id: String,
     stats: {},
-    creation_date: Date,
+    createdAt: Date,
 };
 
 const PUBLIC = {

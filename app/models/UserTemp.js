@@ -8,7 +8,7 @@ const uid = require('uuid');
 const adminsez = 'signup';
 
 const userSchema = new Schema({
-  creation_date: Date,
+  createdAt: Date,
   crewname: { type: String, trim: true, minlength: 3, maxlength: 50 },
   crewslug: { type: String, trim: true, minlength: 3, maxlength: 50 },
   stagename: { type: String, trim: true, required: true, minlength: 3, maxlength: 50 },

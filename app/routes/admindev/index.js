@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
   Event.
   find({"users": {$in: myids},"organizationsettings.call.calls.0":{$exists:true}}).
   //lean().
-  select({title: 1, creation_date: 1}).
+  select({title: 1, createdAt: 1}).
   exec((err, data) => {
     results.events = data;
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {

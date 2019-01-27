@@ -2,7 +2,9 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Media = new Schema({
+adminsez = "galleries";
+
+const GalleryItem = new Schema({
   url: String,
   slug: { type: String/* , unique: true */ },
   file: String,
@@ -24,11 +26,16 @@ const Media = new Schema({
   },
   title: String,
 }, {
-  _id : false
+  _id : false,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
 });
 
-/*
-Media.virtual('imageFormats').get(function () {
+GalleryItem.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   //if (this.medias && this.medias.length && this.medias[0].file) {
@@ -53,7 +60,8 @@ Media.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-Media.virtual('imageFormats').get(function () {
+/*
+GalleryItem.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   //if (this.medias && this.medias.length && this.medias[0].file) {
@@ -79,4 +87,4 @@ Media.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 */
-module.exports = Media;
+module.exports = GalleryItem;

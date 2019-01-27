@@ -24,12 +24,15 @@ router.getList = (req, res) => {
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
     const ids = [req.params.id].concat(req.user.crews);
     const query = req.params.sez == "crews" ? {members: req.params.id} : {users:{$in: ids}};
+    console.log(query);
+    console.log(select);
+    console.log(populate);
 
     Models[config.cpanel[req.params.sez].list.model]
     .find(query)
     .select(select)
     .populate(populate)
-    .sort({creation_date:-1})
+    .sort({createdAt:-1})
     .exec((err, data) => {
       if (err) {
         res.status(500).json({ error: `${JSON.stringify(err)}` });

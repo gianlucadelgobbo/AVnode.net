@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MediaImage = require('./shared/MediaImage');
-const Media = require('./shared/Media');
+const GalleryItem = require('./shared/GalleryItem');
 const About = require('./shared/About');
 
 const adminsez = 'galleries';
@@ -11,7 +11,7 @@ const adminsez = 'galleries';
 const gallerySchema = new Schema({
   old_id : String,
 
-  creation_date: Date,
+  createdAt: Date,
   slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
   title: { type: String, trim: true, required: true, maxlength: 50 },
   is_public: { type: Boolean, default: false },
@@ -19,12 +19,15 @@ const gallerySchema = new Schema({
   teaserImage: MediaImage,
   //  file: {file: String},
   abouts: [About],
-  stats: {},
+  stats: {
+    visits: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
+  },
 
   users: [{ type : Schema.ObjectId, ref : 'User' }], 
   performances: [{ type : Schema.ObjectId, ref : 'Performance' }], 
   events: [{ type : Schema.ObjectId, ref : 'EventShow' }], 
-  medias: [Media]
+  medias: [GalleryItem]
 }, {
   timestamps: true,
   toObject: {
@@ -61,6 +64,7 @@ gallerySchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
+/*
 gallerySchema.virtual('medias2').get(function () {
   if (this.medias) {
     let mediaFormats = [];
@@ -92,7 +96,7 @@ gallerySchema.virtual('medias2').get(function () {
     return mediaFormats;  
   }
 });
-/*
+
 gallerySchema.virtual('teaserImageFormats').get(function () {
   let teaserImageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.teaserImage);

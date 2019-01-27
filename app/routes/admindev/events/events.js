@@ -141,7 +141,7 @@ router.get('/', (req, res) => {
   Event.
   find({"users": {$in: myids},"organizationsettings.call.calls.0":{$exists:true}}).
   //lean().
-  select({title: 1, creation_date: 1}).
+  select({title: 1, createdAt: 1}).
   exec((err, data) => {
     results.events = data;
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
@@ -164,7 +164,7 @@ router.get('/:event', (req, res) => {
   Event.
   findOne({"_id": req.params.event}).
   //lean().
-  select({title: 1, creation_date: 1}).
+  select({title: 1, createdAt: 1}).
   exec((err, event) => {
     data.event = event;
     data.status = status;
@@ -189,7 +189,7 @@ router.get('/:event', (req, res) => {
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
-  select({title: 1, creation_date: 1, program: 1,organizationsettings: 1}).
+  select({title: 1, createdAt: 1, program: 1,organizationsettings: 1}).
   populate(populate_event).
   exec((err, event) => {
     if (err) {
@@ -223,7 +223,7 @@ router.get('/:event/peoples', (req, res) => {
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
-  select({title: 1, creation_date: 1, program: 1,organizationsettings: 1}).
+  select({title: 1, createdAt: 1, program: 1,organizationsettings: 1}).
   populate(populate_event).
   exec((err, event) => {
     if (err) {

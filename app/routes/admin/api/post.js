@@ -215,8 +215,12 @@ router.updateSendy = function (req, res) {
       list: 'AXRGq2Ftn2Fiab3skb5E892g',
       email: req.body.email,
       Topics: mailinglists.join(','),
-      avnode_id: req.user._id.toString()
+      avnode_id: req.user._id.toString(),
+      avnode_slug: e.slug,
+      avnode_email: e.email,
+      boolean: true
     };
+    if (req.user.old_id) formData.flxer_id = req.user.old_id;
     if (req.user.name) formData.Name = req.user.name;
     if (req.user.surname) formData.Surname = req.user.surname;
     if (req.user.stagename) formData.Stagename = req.user.stagename;
@@ -227,6 +231,47 @@ router.updateSendy = function (req, res) {
     console.log("formData");
     console.log(formData);
   
+    var https = require('https');
+    var querystring = require('querystring');
+    
+    // form data
+    var postData = querystring.stringify(formData);
+    
+    // request option
+    var options = {
+      host: 'ml.avnode.net',
+      port: 443,
+      method: 'POST',
+      path: '/subscribe',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': postData.length
+      }
+    };
+    
+    // request object
+    var req = https.request(options, function (res) {
+      var result = '';
+      res.on('data', function (chunk) {
+        result += chunk;
+      });
+      res.on('end', function () {
+        res.json(error);
+      });
+      res.on('error', function (err) {
+        res.json(err);
+      })
+    });
+    
+    // req error
+    req.on('error', function (err) {
+      console.log(err);
+    });
+    
+    //send request witht the postData form
+    req.write(postData);
+    req.end();
+
     request.post({
       url: 'https://ml.avnode.net/subscribe',
       form: formData,

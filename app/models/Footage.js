@@ -12,13 +12,16 @@ const adminsez = "footage";
 const footageSchema = new Schema(
   {
     old_id: String,
-    creation_date: Date,
+    createdAt: Date,
     slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
     title: { type: String, trim: true, required: true, maxlength: 50 },
     is_public: { type: Boolean, default: false },
     media: Media,
     abouts: [About],
-    stats: {},
+    stats: {
+      visits: { type: Number, default: 0 },
+      likes: { type: Number, default: 0 }
+    },
     users: [{ type: Schema.ObjectId, ref: "UserShow" }],
     playlists: [{ type: Schema.ObjectId, ref: "Playlist" }],
     tags: [

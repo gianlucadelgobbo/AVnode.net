@@ -13,13 +13,16 @@ const adminsez = 'performances';
 const performanceSchema = new Schema({
   old_id : String,
 
-  creation_date: Date,
+  createdAt: Date,
   slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
   title: { type: String, trim: true, required: true, maxlength: 50 },
   is_public: { type: Boolean, default: false },
   image: MediaImage,
   abouts: [About],
-  stats: {},
+  stats: {
+    visits: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
+  },
   price: String,
   duration: String,
   tech_arts: [About], // what the artist brings

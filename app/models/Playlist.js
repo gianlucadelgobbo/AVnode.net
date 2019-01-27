@@ -12,13 +12,16 @@ const adminsez = 'playlists';
 const playlistSchema = new Schema({
   old_id : String,
 
-  creation_date: Date,
+  createdAt: Date,
   slug: { type: String, unique: true },
   title: String,
   is_public: { type: Boolean, default: false },
   //image: MediaImage,
   abouts: [About],
-  stats: {},
+  stats: {
+    visits: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
+  },
   media: Media,
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   footage: [{ type : Schema.ObjectId, ref : 'Footage' }],
