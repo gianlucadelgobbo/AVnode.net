@@ -598,7 +598,7 @@ export const saveGalleriesMedia = model => {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
   return axios
-    .put(`galleries/${model.id}/media`, formBox, config)
+    .put(`galleries/${model.id}/public`, formBox, config)
     .then(result => {
       return result.data;
     });
