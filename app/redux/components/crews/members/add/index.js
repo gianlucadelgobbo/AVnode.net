@@ -66,8 +66,8 @@ class AddCrewMember extends Component {
     const { id } = this.props;
     const { fetchModel, saveModel, hideModal } = this.props;
     const modelToSave = this.createModelToSave(idmember, id);
-    return saveModel(modelToSave).then(model => {
-      if (model && model.id) {
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model._id) {
         fetchModel({ id: id });
         hideModal();
       }
