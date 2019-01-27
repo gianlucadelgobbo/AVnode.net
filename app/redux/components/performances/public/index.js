@@ -99,7 +99,7 @@ class PerformancePublic extends Component {
       return {};
     }
 
-    const { abouts } = model;
+    const { abouts, tech_reqs, tech_arts } = model;
     let v = {};
 
     //Convert slug for redux-form
@@ -115,8 +115,8 @@ class PerformancePublic extends Component {
     v.users = model.users || [];
     v.price = model.price;
     v.duration = model.duration;
-    v.tech_arts = createMultiLanguageInitialObject("tech_arts");
-    v.tech_reqs = createMultiLanguageInitialObject("tech_reqs");
+    v.tech_arts = populateMultiLanguageObject("tech_arts", tech_arts);
+    v.tech_reqs = populateMultiLanguageObject("tech_reqs", tech_reqs);
 
     return v;
   }
