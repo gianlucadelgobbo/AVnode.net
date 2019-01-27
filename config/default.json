@@ -3279,7 +3279,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "News"
         }, {
           "path": "footage",
@@ -3292,7 +3292,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Footage"
         }, {
           "path": "playlists",
@@ -3304,7 +3304,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Playlist"
         }, {
           "path": "galleries",
@@ -3316,7 +3316,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Gallery"
         }, {
           "path": "videos",
@@ -3329,7 +3329,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Video"
         }, {
           "path": "performances",
@@ -3337,12 +3337,12 @@
           "select": {
             "title": 1,
             "slug": 1,
-            "categories": 1,
+            "type": 1,
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "type", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {
           "path": "events",
@@ -3486,7 +3486,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Footage"
         }, {
           "path": "categories",
@@ -3521,7 +3521,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Playlist"
         }, {
           "path": "categories",
@@ -3557,7 +3557,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {
           "path": "categories",
@@ -3593,7 +3593,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Video"
         }, {
           "path": "categories",
@@ -3630,7 +3630,7 @@
             "image.file": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "News"
         }, {
           "path": "categories",
@@ -3665,7 +3665,7 @@
             "image.file": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Gallery"
         }, {
           "path": "categories",
@@ -3839,7 +3839,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "News"
         }, {
           "path": "footage",
@@ -3852,7 +3852,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Footage"
         }, {
           "path": "playlists",
@@ -3864,7 +3864,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Playlist"
         }, {
           "path": "galleries",
@@ -3876,7 +3876,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Gallery"
         }, {
           "path": "videos",
@@ -3889,7 +3889,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Video"
         }, {
           "path": "performances",
@@ -3902,7 +3902,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {
           "path": "events",
@@ -4046,7 +4046,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Footage"
         }, {
           "path": "categories",
@@ -4081,7 +4081,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "footage", "match": { "is_public": true}, "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Playlist"
         }, {
           "path": "categories",
@@ -4117,7 +4117,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {
           "path": "categories",
@@ -4153,7 +4153,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Video"
         }, {
           "path": "categories",
@@ -4190,7 +4190,7 @@
             "image.file": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "News"
         }, {
           "path": "categories",
@@ -4225,7 +4225,7 @@
             "image.file": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Gallery"
         }, {
           "path": "categories",
@@ -4639,7 +4639,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Video"
         }, {
           "path": "galleries",
@@ -4650,7 +4650,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Gallery"
         }]
       }
@@ -4743,7 +4743,7 @@
             "image": 1
           },
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {
           "path": "events",
@@ -4983,7 +4983,7 @@
             "media": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Footage"
         }]
      }
@@ -5076,7 +5076,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename image", "model": "UserShow"},
-          "options": { "limit": 21,"sort": { "created_at": -1 }},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }]
      }

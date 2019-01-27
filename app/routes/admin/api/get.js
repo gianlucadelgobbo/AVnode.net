@@ -1,5 +1,6 @@
 const router = require('../../router')();
 let config = require('getconfig');
+let helpers = require('./helpers');
 
 const mongoose = require('mongoose');
 const Models = {
@@ -643,6 +644,23 @@ router.removeMember = (req, res) => {
           "path":"id"
         }
       });
+    } else if (crew.members.length===1) {
+      res.status(404).json({
+        "message": "LEAST_ONE_MEMBER_IS_REQUIRED",
+        "name": "MongoError",
+        "stringValue":"\"LEAST_ONE_MEMBER_IS_REQUIRED\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"LEAST_ONE_MEMBER_IS_REQUIRED",
+          "name":"MongoError",
+          "stringValue":"\"LEAST_ONE_MEMBER_IS_REQUIRED\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
     } else {
       crew.members.splice(crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member), 1);
       console.log("crew.members");
@@ -684,8 +702,14 @@ router.removeMember = (req, res) => {
 }
 
 router.addUser = (req, res) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
   Models[config.cpanel[req.params.sez].model]
-  .findOne({_id: req.params.id, users:req.user.id},'_id, users', (err, item) => {
+  .findOne(query)
+  .select({_id:1, stagename:1, stats:1, users:1})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
@@ -726,17 +750,50 @@ router.addUser = (req, res) => {
     } else {
       item.users.push(req.params.user);
       item.save(function(err){
-        //res.json(item);
-        req.params.form = 'public';
-        router.getData(req, res);
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.user};
+          var select = {_id:1, stats:1, crews:1}
+          select[req.params.sez] = 1;
+          Models["User"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, user) => {
+            user[req.params.sez].push(req.params.id);
+            user.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                Promise.all(
+                  [helpers.setStatsAndActivity(query)]
+                ).then( (results) => {
+                  //res.json(item);
+                  req.params.form = 'public';
+                  router.getData(req, res);
+                });
+              
+              }
+            });
+          });
+        }
       });
     }
   });
 }
 
 router.removeUser = (req, res) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
   Models[config.cpanel[req.params.sez].model]
-  .findOne({_id: req.params.id, users:req.user.id},'_id, users', (err, item) => {
+  .findOne(query)
+  .select({_id:1, stagename:1, stats:1, users:1,})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
@@ -774,13 +831,55 @@ router.removeUser = (req, res) => {
           "path":"id"
         }
       });
+    } else if (item.users.length===1) {
+      res.status(404).json({
+        "message": "LEAST_ONE_AUTHOR_IS_REQUIRED",
+        "name": "MongoError",
+        "stringValue":"\"LEAST_ONE_AUTHOR_IS_REQUIRED\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"LEAST_ONE_AUTHOR_IS_REQUIRED",
+          "name":"MongoError",
+          "stringValue":"\"LEAST_ONE_AUTHOR_IS_REQUIRED\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
     } else {
       item.users.splice(item.users.indexOf(req.params.user), 1);
       //res.json(item);
       item.save(function(err){
-        //res.json(item);
-        req.params.form = 'public';
-        router.getData(req, res);
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.user};
+          var select = {_id:1, stats:1, crews:1}
+          select[req.params.sez] = 1;
+          Models["User"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, user) => {
+            user[req.params.sez].splice(user[req.params.sez].indexOf(req.params.id), 1);
+            user.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                Promise.all(
+                  [helpers.setStatsAndActivity(query)]
+                ).then( (results) => {
+                  req.params.form = 'public';
+                  router.getData(req, res);
+                });
+              }
+            });
+          });
+        }
       });
     }
   });
