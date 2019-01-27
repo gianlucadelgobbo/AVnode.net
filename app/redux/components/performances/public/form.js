@@ -48,7 +48,8 @@ class PerformancePublicForm extends Component {
       handleChange,
       getGenre,
       model,
-      selectedType
+      selectedType,
+      removeModel
     } = this.props;
 
     return (
@@ -109,6 +110,8 @@ class PerformancePublicForm extends Component {
           placeholder={this.getIntlString({ id: AUTHORS })}
           showModal={showModal}
           _id={_id}
+          removeModel={removeModel}
+          users={model.users}
         />
 
         <br />

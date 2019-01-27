@@ -11,6 +11,7 @@ import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
 import { PERFORMANCE_NAME } from "./constants";
+import { removeModel } from "../users/actions";
 import {
   getModel,
   getModelIsFetching,
@@ -148,7 +149,8 @@ class PerformancePublic extends Component {
       },
       isFetching,
       errorMessage,
-      categories
+      categories,
+      removeModel
     } = this.props;
 
     const { selectedType, selectedTechnique, selectedGenre } = this.state;
@@ -246,6 +248,7 @@ class PerformancePublic extends Component {
             handleChange={e => this.handleChange("selectedType", e.target.id)}
             getGenre={getGenre()}
             selectedType={selectedType}
+            removeModel={removeModel}
           />
         </div>
       </div>
@@ -274,6 +277,7 @@ const mapDispatchToProps = dispatch =>
       saveModel,
       fetchModel,
       showModal,
+      removeModel,
       fetchCategories
     },
     dispatch
