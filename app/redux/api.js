@@ -93,6 +93,12 @@ export const saveProfileEmails = model => {
   });
 };
 
+export const getProfileEmailValidation = ({ email }) => {
+  return axios.get(`profile/emails/email/${email}`).then(result => {
+    return result.data;
+  });
+};
+
 // - connections
 
 export const fetchProfileConnections = () => {
@@ -531,9 +537,11 @@ export const saveVideosMedia = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put(`videos/${model.id}/media`, formBox, config).then(result => {
-    return result.data;
-  });
+  return axios
+    .put(`videos/${model.id}/public`, formBox, config)
+    .then(result => {
+      return result.data;
+    });
 };
 
 export const fetchSlugNewVideos = slug => {
@@ -627,9 +635,13 @@ export const fetchPerformanceUsers = () => {
       */
 };
 
-/*export const savePerformanceUsers = model => (
-  `performances/${model._id}/users`, model
-);*/
+export const removePerformanceUsers = model =>
+  axios
+    .get(`performances/${model._id}/users/remove/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+
 export const savePerformanceUsers = model =>
   axios
     .get(`performances/${model._id}/users/add/${model.idusers}`, model)

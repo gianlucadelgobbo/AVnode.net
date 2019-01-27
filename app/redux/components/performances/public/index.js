@@ -11,6 +11,7 @@ import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
 import { PERFORMANCE_NAME } from "./constants";
+import { removeModel } from "../users/actions";
 import {
   getModel,
   getModelIsFetching,
@@ -98,7 +99,7 @@ class PerformancePublic extends Component {
       return {};
     }
 
-    const { abouts } = model;
+    const { abouts, tech_reqs, tech_arts } = model;
     let v = {};
 
     //Convert slug for redux-form
@@ -114,8 +115,8 @@ class PerformancePublic extends Component {
     v.users = model.users || [];
     v.price = model.price;
     v.duration = model.duration;
-    v.tech_arts = createMultiLanguageInitialObject("tech_arts");
-    v.tech_reqs = createMultiLanguageInitialObject("tech_reqs");
+    v.tech_arts = populateMultiLanguageObject("tech_arts", tech_arts);
+    v.tech_reqs = populateMultiLanguageObject("tech_reqs", tech_reqs);
 
     return v;
   }
@@ -148,7 +149,8 @@ class PerformancePublic extends Component {
       },
       isFetching,
       errorMessage,
-      categories
+      categories,
+      removeModel
     } = this.props;
 
     const { selectedType, selectedTechnique, selectedGenre } = this.state;
@@ -246,6 +248,7 @@ class PerformancePublic extends Component {
             handleChange={e => this.handleChange("selectedType", e.target.id)}
             getGenre={getGenre()}
             selectedType={selectedType}
+            removeModel={removeModel}
           />
         </div>
       </div>
@@ -274,6 +277,7 @@ const mapDispatchToProps = dispatch =>
       saveModel,
       fetchModel,
       showModal,
+      removeModel,
       fetchCategories
     },
     dispatch

@@ -3,7 +3,8 @@ import { arrayOfUsers } from "./schema";
 import { performance } from "../schema";
 import {
   fetchList as generateFetchList,
-  saveModel as generateSaveModel
+  saveModel as generateSaveModel,
+  removeModel as generateRemoveModel
 } from "../../../actions/";
 import * as selectors from "./selectors";
 import * as constants from "../constants";
@@ -21,6 +22,15 @@ export const saveModel = model =>
     selectors,
     constants,
     request: api.savePerformanceUsers,
+    schema: performance,
+    model
+  });
+
+export const removeModel = model =>
+  generateRemoveModel({
+    selectors,
+    constants,
+    request: api.removePerformanceUsers,
     schema: performance,
     model
   });

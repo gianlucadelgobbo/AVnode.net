@@ -1,6 +1,6 @@
 import React from "react";
 import Textarea from "react-textarea-autosize";
-import { Button, ButtonGroup, Image, Radio } from "react-bootstrap";
+import { Button, ButtonGroup, Image } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select, { Async } from "react-select";
@@ -29,7 +29,6 @@ import { Collapse } from "react-collapse";
 import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 import { Player } from "video-react";
-import LightBox from "../../lightboxGallery";
 import "video-react/dist/video-react.css";
 
 export const autocompleteComponent = ({
@@ -279,7 +278,8 @@ const inputField = ({
   placeholder,
   isChild,
   help,
-  handleSelect
+  handleSelect,
+  disabled
 }) => {
   const field = (
     <div className="form-group">
@@ -287,6 +287,7 @@ const inputField = ({
         type={type}
         className="form-control"
         {...input}
+        disabled={disabled}
         placeholder={placeholder}
       />
       {help && (
@@ -294,6 +295,7 @@ const inputField = ({
           <FormattedMessage id={help} />
         </div>
       )}
+
       {meta.error && meta.touched && (
         <span className="error-message">
           <FormattedMessage id={meta.error} />
@@ -346,8 +348,15 @@ export const inputTel = ({ input, meta, placeholder, isChild }) => {
   );
 };
 
-export const inputEmail = ({ input, meta, placeholder, isChild }) => {
-  return inputField({ input, type: "email", meta, placeholder, isChild });
+export const inputEmail = ({ input, meta, placeholder, isChild, disabled }) => {
+  return inputField({
+    input,
+    type: "email",
+    meta,
+    placeholder,
+    isChild,
+    disabled
+  });
 };
 
 export const inputCheckbox = ({ input, meta, placeholder, isChild }) => {
@@ -534,6 +543,8 @@ export const fieldWithLabel = ({
   _id,
   showModal,
   placeholder,
+  removeModel,
+  users,
   meta: { error }
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
@@ -554,7 +565,7 @@ export const fieldWithLabel = ({
               showModal({
                 type: MODAL_REMOVE,
                 props: {
-                  onRemove: () => fields.remove(index)
+                  onRemove: () => removeModel({ idusers: users[index].id, _id: _id })
                 }
               })
             }
@@ -612,10 +623,11 @@ export const multiInputEmailWithDetails = ({
   title,
   showModal,
   placeholder,
-  meta: { error },
+  meta,
   onVerifyEmail,
   modelEmails
 }) => {
+  const { error } = meta;
   const renderSubField = (member, index, fields, showModal) => {
     const field = fields.get(index);
     const { is_confirmed, stored } = field;
@@ -629,7 +641,7 @@ export const multiInputEmailWithDetails = ({
     return (
       <div
         className={"container-fluid " + (index % 2 === 0 ? "even" : "odd")}
-        key={stored || index}
+        key={index}
       >
         <div className="row ">
           <div className="col-md-5 offset-1">
@@ -638,6 +650,7 @@ export const multiInputEmailWithDetails = ({
               component={inputEmail}
               placeholder={placeholder}
               isChild={true}
+              disabled={!isNewEmail}
             />
           </div>
 
@@ -756,6 +769,7 @@ export const multiInputEmailWithDetails = ({
     );
   };
   const label = <div className="labelField">{placeholder}</div>;
+
   return (
     <div className="card">
       <div className="card-header">
@@ -2247,7 +2261,8 @@ export const uploadComponent = ({
           </div>
         </div>
       )}
-      <div>{renderSubField()}</div>
+      <div>{!media || !media.original ? renderSubField() : <br />}</div>
+
       {/* if array of video */}
       {media && Array.isArray(media) && media.length > 0 && (
         <div className="row">

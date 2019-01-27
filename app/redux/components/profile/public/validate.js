@@ -1,5 +1,7 @@
 import {isValidName, isValidSlug, validateLength, validateMultiLang} from "../../common/form/validators";
-import { INVALID_STRING_1_5, INVALID_STRING_3_50} from "../../common/form/errors";
+import {
+  INVALID_STRING_0_10,
+  INVALID_STRING_3_50} from "../../common/form/errors";
 
 const profilePublicValidate = values => {
 
@@ -18,13 +20,13 @@ const profilePublicValidate = values => {
   validateMultiLang({values, name: "abouts", value: "value", errors, max: 5000});
 
   // web
-  validateLength({values, name: "web", min: 1, max: 5, errorKey: INVALID_STRING_1_5, errors});
+  validateLength({values, name: "web", min: 0, max: 10, errorKey: INVALID_STRING_0_10, errors});
 
   // social
-  validateLength({values, name: "social", min: 1, max: 5, errorKey: INVALID_STRING_1_5, errors});
+  validateLength({values, name: "social", min: 0, max: 10, errorKey: INVALID_STRING_0_10, errors});
 
   // addresses
-  validateLength({values, name: "addresses", min: 1, max: 5, errorKey: INVALID_STRING_1_5, errors});
+  validateLength({values, name: "addresses", min: 0, max: 10, errorKey: INVALID_STRING_0_10, errors});
 
   return errors;
 };

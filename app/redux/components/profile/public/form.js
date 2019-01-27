@@ -42,7 +42,6 @@ class ProfilePublicForm extends Component {
                     name="slug"
                     component={inputText}
                     placeholder={this.getIntlString({id:PROFILE_URL})}
-                    /* help={this.getIntlString({id:PROFILE_URL_HELP})} */
                 />
 
                 <FieldArray
