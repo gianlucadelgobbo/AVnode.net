@@ -23,6 +23,7 @@ export const MULTIPLE_PRIMARY_EMAIL = "validation.error.multiple.primary.email";
 export const NO_PRIMARY_EMAIL = "validation.error.no.primary.email";
 export const EMAIL_IS_TAKEN = "validation.error.email.is.take";
 export const DUPLICATED_EMAIL = "validation.error.email.duplicated";
+export const START_IS_BEFORE_END = "validation.error.start.is.before.end";
 
 //export const IS_NAN = "validation.error.is_nan";
 //export const END_DATE_BEFORE_START_DATE = "validation.error.end_data_before_start_date";
@@ -123,5 +124,9 @@ defineMessages({
     [DUPLICATED_EMAIL]: {
         id: DUPLICATED_EMAIL,
         defaultMessage: "Duplicated email"
+    },
+    [START_IS_BEFORE_END]: {
+        id: START_IS_BEFORE_END,
+        defaultMessage: "End time must be after start time"
     },
 });
