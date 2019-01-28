@@ -4,16 +4,17 @@ import moment from "moment";
 import validatorsObj from "../../../../utilities/validators.js";
 import {DATE_FORMAT, UPLOAD_IMAGE_MAX_SIZE} from "../../../conf";
 import {
+    EMAIL_IS_TAKEN,
     INVALID_ADDRESS,
     INVALID_CITY,
-    EMAIL_IS_TAKEN,
     INVALID_IMAGE_SIZE,
     INVALID_STRING_LENGTH,
     INVALID_STRING_MIN_MAX,
     NOT_ALLOWED,
     REQUIRED,
     SLUG_IS_TAKEN,
-    SLUG_REQUIRED
+    SLUG_REQUIRED,
+    START_IS_BEFORE_END
 } from "./errors";
 import {
     fetchSlug,
@@ -291,7 +292,7 @@ export const isValidDate = date => {
     if (!date) {
         return false;
     }
-    const wrapper = typeof date === "string" ? moment(date, DATE_FORMAT) : date;
+    const wrapper = typeof date === "string" ? moment(date, DATE_FORMAT).clone() : date;
     return wrapper.isValid();
 };
 
@@ -397,19 +398,43 @@ export const validateImageSize = ({image, name, errors}) => {
     }
 };
 
-export const validateSchedule = ({values, name, errors, date = "date"}) => {
+export const validateSchedule = ({values, name, errors, date = [ "startdate", "enddate"]}) => {
+
     const schedule = values[name];
+
     if (Array.isArray(schedule)) {
         const scheduleErrors = [];
         const fields = Array.isArray(date) ? date : [date];
+
         schedule.forEach((s, i) => {
             const modelErrors = {};
+
             fields.forEach(f => {
+
                 if (!s[f] || !isValidDate(s[f])) {
-                    modelErrors[s[f]] = REQUIRED;
+                    modelErrors[f] = REQUIRED;
                     scheduleErrors[i] = modelErrors;
                 }
             });
+
+            const start = moment(s.startdate).clone().startOf("day");
+            const end = moment(s.enddate).clone().startOf("day");
+
+            if (start.isAfter(end)) {
+                modelErrors["enddate"] = START_IS_BEFORE_END;
+                scheduleErrors[i] = modelErrors;
+            }
+
+            if (start.isSame(end)) {
+                const sTime = moment(s.starttime).year(2020).month(9).date(31);
+                const eTime = moment(s.endtime).year(2020).month(9).date(31);
+
+                if (sTime.isAfter(eTime)) {
+                    modelErrors["enddate"] = START_IS_BEFORE_END;
+                    scheduleErrors[i] = modelErrors;
+                }
+            }
+
         });
 
         if (scheduleErrors.length) {
