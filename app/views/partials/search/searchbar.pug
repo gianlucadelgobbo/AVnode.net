@@ -4,6 +4,6 @@
       .col-lg-6.offset-lg-3
         form(action="/search" method="GET")
           .input-group
-            input#q.form-control.mb-2.mr-sm-2(type="text", value=q, name="q", placeholder=global.__("Performer name, events, performance..."))
+            input#q.form-control.mb-2(type="text", value=q, name="q", placeholder=global.__("Performer name, events, performance..."))
             .input-group-append
               button(type="submit", class="btn btn-primary mb-2")=global.__("Search")

@@ -1,4 +1,4 @@
-nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar-inverse.bg-inverse
+nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar-inverse.bg-inverse.navbar-expand-lg 
   .container
     button.navbar-toggler.navbar-toggler-right(type="button", data-toggle="collapse", data-target="#navbar-collapse_performer_template")
       span.lnr.lnr-menu.toggle_icon
@@ -7,43 +7,40 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
 
     .collapse.navbar-collapse#navbar-collapse_performer_template
       include menuSections
-      ul.user_navbar
+      ul.user_navbar.navbar-nav
         if user
-          li.nav-item.dropdown.user_menu.user_menu_logged                  
-            a#userDropdown.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+          //li.nav-item.dropdown.user_menu.user_menu_logged                  
+          li.nav-item.dropdown.user_menu.user_menu_logged
+            a#userDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
               span.lnr.lnr-user
             .dropdown-menu(aria-labelledby='userDropdown')
-              ul
-                li.nav-item
-                  a(href='/'+user.slug)                    
-                    span.lnr.lnr-eye
-                    !=" "+global.__('Profile')
-                li.nav-item
-                  a(href='/admin/profile/public')                    
-                    span.lnr.lnr-cog
-                    !=" "+global.__('Control Panel')
-                li.nav-item
-                  a(href='/logout')                    
-                    span.lnr.lnr-exit
-                    !=" "+global.__('Log out')
+              a.dropdown-item(href='/'+user.slug)                    
+                span.pr-2.lnr.lnr-eye
+                !=" "+global.__('Profile')
+              a.dropdown-item(href='/admin/profile/public')                    
+                span.pr-2.lnr.lnr-cog
+                !=" "+global.__('Control Panel')
+              a.dropdown-item(href='/logout')                    
+                span.pr-2.lnr.lnr-exit
+                !=" "+global.__('Log out')
         else
-          li.nav-item.user_menu
-            ul
-              span.lnr.lnr-user
-              li.nav-item
-                a(href='/login', title=global.__('Login'))=global.__('Login')
-              li.nav-item
-                a(href='/signup', title=global.__('Sign up'))=global.__('Sign up')
-        li.nav-item
+          li.nav-item.signup_ico
+            span.pr-2.lnr.lnr-user
+          li.nav-item.login
+            a.nav-link(href='/login', title=global.__('Login'))
+              !=global.__('Login')
+          li.nav-item.signup
+            a.nav-link(href='/signup', title=global.__('Sign up'))=global.__('Sign up')
+        li.nav-item.search
           if url && url.indexOf("/search")===0
-            a(href='#')
+            a.nav-link(href='#')
               i.fa.fa-search.fa-lg.fa-fw
           else
-            a(href='#searchbar', title=__('Search'), data-toggle="collapse", role="button", aria-expanded="false", aria-controls="searchbar")
+            a.nav-link(href='#searchbar', title=__('Search'), data-toggle="collapse", role="button", aria-expanded="false", aria-controls="searchbar")
               i.fa.fa-search.fa-lg.fa-fw
-        li.nav-item.dropdown
+        li.nav-item.dropdown.lang
           a#langDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             b=session.current_lang.toUpperCase()
           .dropdown-menu(aria-labelledby='langDropdown')
             each lang,slug in config.locales_labels
-              a.dropdown-item(href='//'+(slug!='en' ? slug+'.' : '')+basehost+current_url)=lang
+              a.dropdown-item(href='//'+(slug!='en' ? slug+'.' : '')+basehost+current_url class=slug!='en' ? 'disabled' : '')=lang
