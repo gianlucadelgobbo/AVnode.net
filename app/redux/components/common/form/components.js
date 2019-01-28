@@ -1321,14 +1321,25 @@ export const renderDropzoneInput = field => {
 };
 
 export const multiSchedule = ({
-  fields,
-  title,
-  meta: { error },
-  placeholder,
-  showModal
-}) => {
-  const label = <div className="labelField">{placeholder}</div>;
-  const renderSubField = ({ member, index, fields }) => {
+                                  fields,
+                                  title,
+                                  meta: {error},
+                                  placeholder,
+                                  showModal
+                              }) => {
+    const label = <div className="labelField">{placeholder}</div>;
+    const renderSubField = ({member, index, fields}) => {
+        return (
+            <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
+                <div className="col-md-9 offset-1">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Field
+                                name={`${member}.startdate`}
+                                component={renderDatePicker}
+                                placeholder="Date"
+                                isChild={true}
+                            />
     return (
       <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
         <div className="col-md-9 offset-1">
