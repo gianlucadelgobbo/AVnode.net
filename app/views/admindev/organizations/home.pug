@@ -4,20 +4,23 @@ block content
     thead
       tr
         td="ID"
-        td=global.__("title")
-        td=global.__("Production")
+        td=global.__("Organization")
+        td=global.__("Members")
         td=global.__("Web")
         td=global.__("Socials")
     tbody
-      if data.events.length
-        each item, index in data.events
+      if data.length
+        each item, index in data
           tr
             td=index+1
             td
-              a(href="/admindev/events/"+item._id)!=item.title
+              h3!=item.stagename
+              a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+              !=" | "
+              a(href="/"+item.slug, target="_blank")!=global.__("view")
             td
-              each user in item.users
-                div
+              each user in item.members
+                .text-nowrap
                   a(href="/"+user.slug, target="_blank")!=user.stagename
             td
               each web in item.web
