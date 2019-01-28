@@ -77,11 +77,11 @@ $(document).ready(function(){
     $('.mono').owlCarousel({
       //center: true,    
       items:0,
-      loop: false,
+      loop: true,
       margin:30,
       dots: false,
       nav: true,
-      //autoplay: true,
+      autoplay: true,
       navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
       "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
       responsive:{
