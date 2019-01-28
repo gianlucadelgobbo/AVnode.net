@@ -122,17 +122,21 @@ router.signupValidator = (put, cb) => {
   //put = {};
   //put.birthday="01-09-2018";
   const birthdayA = put.birthday.split("/");
-  const day = parseInt(birthdayA[0]);
-  const month = parseInt(birthdayA[1])-1;
+  const day = parseInt(birthdayA[1]);
+  const month = parseInt(birthdayA[0])-1;
   const year = parseInt(birthdayA[2]);
   const birthday = new Date(Date.UTC(year,month,day));
   console.log('birthday');
+  console.log(birthday);
   console.log("day");
   console.log(day);
+  console.log(birthday.getDate());
   console.log("month");
   console.log(month);
+  console.log(birthday.getMonth());
   console.log("year");
   console.log(year);
+  console.log(birthday.getFullYear());
   if (year !== birthday.getFullYear() || month !== birthday.getMonth() || day !== birthday.getDate()) {
     errors.errors.birthday = {
       "message": "Cast to Date failed for value \"Invalid Date\" at path \"birthday\"",
