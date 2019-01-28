@@ -3,9 +3,16 @@ import {reduxForm, Field} from "redux-form";
 import {FORM_NAME} from './constants'
 import {inputText} from "../../common/form/components";
 import validate from './validate';
+import {CREW_NAME, CREW_URL, CREW_URL_PRE, CREW_URL_HELP} from "../../common/form/labels";
+import {injectIntl} from 'react-intl';
 import asyncValidate from './asyncValidate';
 
 class AddCrewForm extends Component {
+
+    getIntlString = (obj) => {
+        const {intl} = this.props;
+        return intl.formatMessage(obj)
+    };
 
     render() {
 
@@ -21,13 +28,15 @@ class AddCrewForm extends Component {
                 <Field
                     name="stagename"
                     component={inputText}
-                    placeholder="Name"
+                    placeholder={this.getIntlString({id:CREW_NAME})}
                 />
 
                 <Field
                     name="slug"
                     component={inputText}
-                    placeholder="Slug"
+                    placeholder={this.getIntlString({id:CREW_URL})}
+                    pre={this.getIntlString({ id: CREW_URL_PRE })}
+                    help={this.getIntlString({ id: CREW_URL_HELP })}
                 />
 
 
@@ -47,7 +56,7 @@ class AddCrewForm extends Component {
 
 }
 
-export default reduxForm({
+AddCrewForm = reduxForm({
     form: FORM_NAME,
     enableReinitialize: true,
     keepDirtyOnReinitialize: true,
@@ -55,3 +64,8 @@ export default reduxForm({
     asyncValidate,
     asyncBlurFields: ['slug']
 })(AddCrewForm);
+
+AddCrewForm = injectIntl(AddCrewForm);
+
+
+export default AddCrewForm;

@@ -4,15 +4,34 @@ import { FORM_NAME } from "./constants";
 import { inputText } from "../../common/form/components";
 import validate from "./validate";
 import { asyncValidate } from "./asyncValidate";
+import {injectIntl} from 'react-intl';
+import {PLAYLIST_NAME, PLAYLIST_URL, PLAYLIST_URL_PRE, PLAYLIST_URL_HELP} from "../../common/form/labels";
 
 class AddFootageForm extends Component {
+
+  getIntlString = (obj) => {
+    const {intl} = this.props;
+    return intl.formatMessage(obj)
+};
+
   render() {
     const { submitting, handleSubmit, onSubmit } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Field name="name" component={inputText} placeholder="Title" />
-        <Field name="slug" component={inputText} placeholder="Slug" />
+                <Field
+                    name="title"
+                    component={inputText}
+                    placeholder={this.getIntlString({id:PLAYLIST_NAME})}
+                          />
+
+                <Field
+                    name="slug"
+                    component={inputText}
+                    placeholder={this.getIntlString({id:PLAYLIST_URL})}
+                    pre={this.getIntlString({ id: PLAYLIST_URL_PRE })}
+                    help={this.getIntlString({ id: PLAYLIST_URL_HELP })}
+                />
 
         <hr />
 
@@ -28,7 +47,7 @@ class AddFootageForm extends Component {
   }
 }
 
-export default reduxForm({
+AddFootageForm = reduxForm({
   form: FORM_NAME,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
@@ -36,3 +55,7 @@ export default reduxForm({
   asyncValidate,
   asyncBlurFields: ["slug"]
 })(AddFootageForm);
+
+AddFootageForm = injectIntl(AddFootageForm);
+
+export default AddFootageForm;

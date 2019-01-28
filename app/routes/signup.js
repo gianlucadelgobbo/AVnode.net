@@ -122,11 +122,12 @@ router.signupValidator = (put, cb) => {
   //put = {};
   //put.birthday="01-09-2018";
   const birthdayA = put.birthday.split("/");
-  const day = parseInt(birthdayA[1]);
-  const month = parseInt(birthdayA[0])-1;
+  const day = parseInt(birthdayA[0]);
+  const month = parseInt(birthdayA[1])-1;
   const year = parseInt(birthdayA[2]);
-  const birthday = new Date(Date.UTC(year,month,day));
+  const birthday = new Date(year,month,day);
   console.log('birthday');
+  console.log(put.birthday);
   console.log(birthday);
   console.log("day");
   console.log(day);

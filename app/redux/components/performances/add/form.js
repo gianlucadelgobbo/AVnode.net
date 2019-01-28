@@ -4,15 +4,39 @@ import { FORM_NAME } from "./constants";
 import { inputText } from "../../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
+import {
+  PERFORMANCE_URL,
+  PERFORMANCE_URL_PRE,
+  PERFORMANCE_URL_HELP,
+  TITLE
+} from "../../common/form/labels";
+import { injectIntl } from "react-intl";
 
 class AddPerformanceForm extends Component {
+  getIntlString = obj => {
+    const { intl } = this.props;
+    return intl.formatMessage(obj);
+  };
+
   render() {
     const { submitting, handleSubmit, onSubmit } = this.props;
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Field name="title" component={inputText} placeholder="Title" />
-        <Field name="slug" component={inputText} placeholder="Slug" />
+        <Field
+          name="title"
+          component={inputText}
+          placeholder={this.getIntlString({ id: TITLE })}
+        />
+
+        <Field
+          name="slug"
+          component={inputText}
+          placeholder={this.getIntlString({ id: PERFORMANCE_URL })}
+          pre={this.getIntlString({ id: PERFORMANCE_URL_PRE })}
+          help={this.getIntlString({ id: PERFORMANCE_URL_HELP })}
+
+        />
 
         <hr />
 
@@ -28,7 +52,7 @@ class AddPerformanceForm extends Component {
   }
 }
 
-export default reduxForm({
+AddPerformanceForm = reduxForm({
   form: FORM_NAME,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
@@ -36,3 +60,7 @@ export default reduxForm({
   asyncValidate,
   asyncBlurFields: ["slug"]
 })(AddPerformanceForm);
+
+AddPerformanceForm = injectIntl(AddPerformanceForm);
+
+export default AddPerformanceForm;

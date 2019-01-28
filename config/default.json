@@ -755,7 +755,7 @@
         },
         "public": {
           "components": {
-            "categories": [
+            "type": [
               {
                 "comp": "simpleselect",
                 "label": "Event name",
@@ -909,8 +909,12 @@
             }
           },
           "select": {
-            "categories": 1,
+            "type": 1,
             "schedule": 1,
+            "schedule.starttime": 1,
+            "schedule.endtime": 1,
+            "schedule.venue": 1,
+            "users": 1,
             "slug": 1,
             "title": 1,
             "subtitles": 1,
@@ -922,7 +926,7 @@
           },
           "selectaddon": {
           },
-          "populate": [{ "path": "categories" , "select": "name" }]
+          "populate": [{ "path": "type" , "select": "name" },{ "path": "users" , "select": "stagename image" }]
         },
         "image": {
           "components": {
@@ -4465,11 +4469,13 @@
           "image": 1,
           "schedule": 1,
           "program": 1,
+          "type": 1,
           "organizationsettings": 1,
           "tobescheduled": 1,
           "partners": 1
         },
-        "populate": [{
+        "populate": [
+          {
           "path": "program.performance",
           "select": {
             "title": 1,
@@ -4546,6 +4552,12 @@
           "populate": [{ "path": "users", "select": "stagename image", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": {},
           "model": "Video"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
         }, {
           "path": "galleries",
           "select": {
