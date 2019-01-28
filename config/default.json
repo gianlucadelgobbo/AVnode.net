@@ -86,8 +86,8 @@
     "gr"
   ],
   "locales_labels": {
-    "it":"Italiano",
     "en":"English",
+    "it":"Italiano",
     "es":"Español",
     "fr":"Français",
     "pl":"Polski",
@@ -2688,6 +2688,77 @@
             "title": 1
           },
           "populate": [{ "path": "videos", "match": { "is_public": true}, "select": "title image imageFormats", "model": "Video"}]
+        },
+        "bookings": {
+          "components": {
+            "bookings": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "filetypes": ["mp4","mov","m4v","avi"],
+                "storage": "/glacier/videos_originals/",
+                "maxsize": 2147483648,
+                "minwidth": 1000,
+                "minheight": 1000,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "rel_obj": "Video",
+              "list_fields": [
+                "Video name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Video name"
+              ],
+              "view_sort_modes": [
+                "Video name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Videos",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
+          "select": {
+            "bookings": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "title": 1
+          },
+          "populate": [{ "path": "bookings.event", "select": "title image imageFormats", "model": "Event"},{ "path": "bookings.schedule.status", "select": "name", "model": "Category"}]
         }
       },
       "list": {

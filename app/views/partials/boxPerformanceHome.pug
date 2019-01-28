@@ -11,7 +11,7 @@
   
             .performance_item_info_wrapper
                 a(href="/performances/"+item.slug+"/", title=item.title)
-                    h4.performance_item_title=item.title
+                    h4=item.title
                 if item.categories
                     ul.list-inline.category_performance_item
                         each category in item.categories
