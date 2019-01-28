@@ -50,7 +50,7 @@ class VideosPublicForm extends Component {
           placeholder={this.getIntlString({ id: VIDEOS_URL })}
           pre={this.getIntlString({ id: VIDEOS_URL_PRE })}
           help={this.getIntlString({ id: VIDEOS_URL_HELP })}
-/>
+        />
 
         <Field
           name="video"

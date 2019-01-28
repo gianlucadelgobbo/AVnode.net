@@ -111,6 +111,7 @@ const eventSchema = new Schema({
   partners: [partnershipSchema],
   program: [programSchema],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
+  type: { type: Schema.ObjectId, ref: 'Category' },
   users:  [{ type: Schema.ObjectId, ref: 'UserShow' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
   videos: [{ type: Schema.ObjectId, ref: 'Video' }],

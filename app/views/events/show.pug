@@ -39,12 +39,18 @@ block title
                           !=' ' + global.__('Likes')                      
               .col-lg-3.share_like_list_column
                 include ../partials/share_like
-            if data.dateFormatted
-              p.subtitle=data.dateFormatted
-            if data.subtitle  
-              p.subtitle=data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
-            if data.boxVenue
-              p.boxVenue=data.boxVenue
+            p.subtitle=data.subtitle && data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
+            .row
+              .col-lg-9
+                if data.boxVenue
+                  p.boxVenue=data.boxVenue
+              .col-lg-3
+                if data.type
+                  p.text-right
+                    i(class="fa fa-cube")
+                    =" "
+                    !=data.type.name
+
       .row
         .col
           ul.event_social_list.list-inline

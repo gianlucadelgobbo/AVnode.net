@@ -48,7 +48,7 @@ class VideosPublicForm extends Component {
           name="slug"
           component={inputText}
           placeholder={this.getIntlString({ id: GALLERIES_URL })}
-          pre={this.getIntlString({ id: GALLERIES_URLPRE })}
+          pre={this.getIntlString({ id: GALLERIES_URL_PRE })}
           help={this.getIntlString({ id: GALLERIES_URL_HELP })}
         />
 
