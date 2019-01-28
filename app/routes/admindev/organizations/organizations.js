@@ -1,9 +1,8 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Event = mongoose.model('Event');
-const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
+const ObjectId = Schema.ObjectId;
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
@@ -58,70 +57,6 @@ const populate_program = [
   }
 ];
 
-/* let populate_event = [
-  { 
-    "path": "program.performance" , 
-    "select": "title image abouts stats duration tech_arts tech_reqs",
-    "model": "Performance",
-    "populate": [
-      { 
-        "path": "users" , 
-        "select": "stagename image abouts addresses social web",
-        "model": "UserShow"
-      },{ 
-        "path": "videos" , 
-        "select": "title media",
-        "model": "Video"
-      },{ 
-        "path": "galleries" , 
-        "select": "title image",
-        "model": "Gallery"
-      },{ 
-        "path": "categories" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      }
-    ]
-  },{ 
-        "path": "program.schedule.categories" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      },{ 
-        "path": "organizationsettings.call.calls.admitted" , 
-        "select": "name slug",
-        "model": "Category"
-      },{ 
-        "path": "program.subscription_id" , 
-        //"select": "name slug",
-        "model": "Program",
-        "populate": [
-          { 
-            "path": "subscriptions.subscriber_id" , 
-            "select": "stagename slug",
-            "model": "UserShow"
-          },{ 
-            "path": "reference" , 
-            "select": "stagename name surname email mobile",
-            "model": "UserShow"
-          }
-        ]
-      }
-    ];
- */
 const status = [
   { "_id" : "5c38c57d9d426a9522c15ba5", "name" : "to be evaluated" },
   { "_id" : "5be8708afc3961000000019e", "name" : "accepted - waiting for payment" },
@@ -131,39 +66,35 @@ const status = [
   { "_id" : "5be8708afc39610000000221", "name" : "refused from user" }
 ];
 
-// V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
-// V {"addresses.country": "Italy", "addresses.locality":{$in: ["Rome","Roma"]}},{addresses:1}
-
 router.get('/', (req, res) => {
-  logger.debug('/events');
+  logger.debug('/organizations');
   let results = {};
   const myids = req.user.crews.concat([req.user._id.toString()]);
-  Event.
-  find({"users": {$in: myids}/* ,"organizationsettings.call.calls.0":{$exists:true} */}).
+  User.
+  findOne({"_id": req.user._id}).
   //lean().
-  select({title: 1, createdAt: 1, organizationsettings:1, social:1, web:1}).
-  populate({path: "users", select: {stagename:1}}).
-  sort({"schedule.starttime":1}).
+  select({stagename: 1, createdAt: 1, crews:1}).
+  populate({path: "crews", select: {stagename:1, slug:1, social:1, web:1}, model:"User", populate: {path: "members", select: {stagename:1}, options:{sort:{stagename:1}}, model:"User"}}).
   exec((err, data) => {
-    results.events = data;
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(results);
+      res.json(data.crews);
     } else {
       console.log(data);
-      res.render('admindev/events/home', {
+      res.render('admindev/organizations/home', {
         title: 'Events',
         currentUrl: req.originalUrl,
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-        data: results,
+        data: data.crews,
         script: false
       });
     }
   });
 });
+
 router.get('/:event', (req, res) => {
-  logger.debug('/events/'+req.params.event);
+  logger.debug('/organizations/'+req.params.event);
   let data = {};
-  Event.
+  User.
   findOne({"_id": req.params.event}).
   //lean().
   select({title: 1, createdAt: 1}).
@@ -174,7 +105,7 @@ router.get('/:event', (req, res) => {
       res.json(data);
     } else {
       console.log(data);
-      res.render('admindev/events/dett', {
+      res.render('admindev/organizations/dett', {
         title: 'Events: '+data.event.title,
         currentUrl: req.originalUrl,
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -184,79 +115,12 @@ router.get('/:event', (req, res) => {
     }
   });
 });
-/* router.get('/:event/acts', (req, res) => {
-  logger.debug('/events/'+req.params.event+'/acts');
-  populate_event[0].match = { "../subscription_id.call": 1};
 
-  let data = {};
-  Event.
-  findOne({"_id": req.params.event}).
-  select({title: 1, createdAt: 1, program: 1,organizationsettings: 1}).
-  populate(populate_event).
-  exec((err, event) => {
-    if (err) {
-      console.log(err);
-    }
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(event);
-    } else {
-      let admittedO = {};
-      for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
-      let admitted = [];
-      for(let adm in admittedO) admitted.push(admittedO[adm]);
-      console.log(admittedO);
-      res.render('admindev/events/acts', {
-        title: 'Events',
-        status: status,
-        admitted: admitted,
-        currentUrl: req.originalUrl,
-        get: req.query,
-        data: event.toJSON(),
-        script: false
-      });
-    }
-  });
-}); 
-
-router.get('/:event/peoples', (req, res) => {
-  logger.debug('/events/'+req.params.event+'/peoples');
-  populate_event[0].match = { "../subscription_id.call": 1};
-
-  let data = {};
-  Event.
-  findOne({"_id": req.params.event}).
-  select({title: 1, createdAt: 1, program: 1,organizationsettings: 1}).
-  populate(populate_event).
-  exec((err, event) => {
-    if (err) {
-      console.log(err);
-    }
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(event);
-    } else {
-      let admittedO = {};
-      for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
-      let admitted = [];
-      for(let adm in admittedO) admitted.push(admittedO[adm]);
-      console.log(admittedO);
-      res.render('admindev/events/acts', {
-        title: 'Events',
-        status: status,
-        admitted: admitted,
-        currentUrl: req.originalUrl,
-        get: req.query,
-        data: event.toJSON(),
-        script: false
-      });
-    }
-  });
-});
-*/
 router.get('/:event/acts', (req, res) => {
-  logger.debug('/events/'+req.params.event+'/acts');
+  logger.debug('/organizations/'+req.params.event+'/acts');
   console.log(req.query)
   let data = {};
-  Event.
+  User.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, organizationsettings: 1}).
   //populate(populate_event).
@@ -289,7 +153,7 @@ router.get('/:event/acts', (req, res) => {
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
-            res.render('admindev/events/acts', {
+            res.render('admindev/organizations/acts', {
               title: 'Events',
               data: data,
               currentUrl: req.originalUrl,
@@ -303,10 +167,10 @@ router.get('/:event/acts', (req, res) => {
 });
 
 router.get('/:event/peoples', (req, res) => {
-  logger.debug('/events/'+req.params.event+'/peoples');
+  logger.debug('/organizations/'+req.params.event+'/peoples');
   console.log(req.query)
   let data = {};
-  Event.
+  User.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, organizationsettings: 1}).
   //populate(populate_event).
@@ -353,7 +217,7 @@ router.get('/:event/peoples', (req, res) => {
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
-            res.render('admindev/events/peoples', {
+            res.render('admindev/organizations/peoples', {
               title: 'Events',
               data: data,
               currentUrl: req.originalUrl,
@@ -367,10 +231,10 @@ router.get('/:event/peoples', (req, res) => {
 });
 
 router.get('/:event/program', (req, res) => {
-  logger.debug('/events/'+req.params.event+'/program');
+  logger.debug('/organizations/'+req.params.event+'/program');
 
   let data = {};
-  Event.
+  User.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, organizationsettings: 1}).
   //populate(populate_event).
@@ -398,7 +262,7 @@ router.get('/:event/program', (req, res) => {
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
-            res.render('admindev/events/program', {
+            res.render('admindev/organizations/program', {
               title: 'Events',
               data: data,
               currentUrl: req.originalUrl,

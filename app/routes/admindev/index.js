@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const Event = mongoose.model('Event');
 
 const events =      require('./events/events');
+const organizations =      require('./organizations/organizations');
 
 const supertools =  require('./supertools/index');
 const wpimport =    require('./supertools/wpimport');
@@ -24,6 +25,7 @@ if (process.env.DEBUG) {
 }
 
 router.use('/events', events);
+router.use('/organizations', organizations);
 
 router.use('/supertools/wpimport', wpimport);
 router.use('/supertools/addresses', addresses);
