@@ -120,6 +120,11 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
+    "id": "validation.error.start.is.before.end",
+    "defaultMessage": "End time must be after start time",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
     "id": "label.form.stagename",
     "defaultMessage": "Stage Name",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -580,11 +585,6 @@
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "partnersEvents",
-    "defaultMessage": "Partners",
-    "filepath": "./app/redux/components/events/lateralMenu/index.js"
-  },
-  {
     "id": "programEvents",
     "defaultMessage": "Program",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
@@ -597,11 +597,6 @@
   {
     "id": "videosEvents",
     "defaultMessage": "Videos",
-    "filepath": "./app/redux/components/events/lateralMenu/index.js"
-  },
-  {
-    "id": "callsEvents",
-    "defaultMessage": "Calls",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
