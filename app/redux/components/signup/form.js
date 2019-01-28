@@ -46,6 +46,8 @@ class SignUpForm extends Component {
           height={height}
           _onOptionChange={e => _onOptionChange(e)}
           optionValue={option}
+          pre="https://avnode.net/"
+          help="To have your crew profile at https://avnode.net/mybeautyfulcrewprofile, please insert mybeautyfulcrewprofile (lower case, no spaces, no special characters)"
         />
 
         <Field
@@ -58,13 +60,14 @@ class SignUpForm extends Component {
           name="slug"
           component={inputText}
           placeholder="Profile Url"
+          pre="https://avnode.net/"
           help="To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)"
         />
 
         <Field
           name="birthday"
           component={renderDatePicker}
-          placeholder="birthday"
+          placeholder="Birthday"
         />
 
         <Field name="email" component={inputEmail} placeholder="Email" />
@@ -91,9 +94,9 @@ class SignUpForm extends Component {
         <button
           type="submit"
           disabled={submitting}
-          className="btn btn-primary pull-right btn-lg"
+          className="btn btn-primary pull-right btn-lg mb-3"
         >
-          {submitting ? "Saving..." : "Save"}
+          {submitting ? "Saving..." : "SIGNUP"}
         </button>
       </form>
     );

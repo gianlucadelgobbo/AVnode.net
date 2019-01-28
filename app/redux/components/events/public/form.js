@@ -41,6 +41,18 @@ class EventPublicForm extends Component {
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
+                    name="title"
+                    component={inputText}
+                    placeholder={this.getIntlString({id:TITLE})}
+                />
+
+                <Field
+                    name="slug"
+                    component={inputText}
+                    placeholder={this.getIntlString({id:EVENT_URL})}
+                />
+
+                <Field
                     name="categories"
                     component={renderList}
                     placeholder={this.getIntlString({id:CATEGORY})}
@@ -56,18 +68,6 @@ class EventPublicForm extends Component {
                 />
 
                 <br/>
-
-                <Field
-                    name="slug"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:EVENT_URL})}
-                />
-
-                <Field
-                    name="title"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:TITLE})}
-                />
 
                 <FieldArray
                     name="subtitles"

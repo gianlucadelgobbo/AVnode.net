@@ -9,7 +9,7 @@ import {
 } from "../../common/form/components";
 import validate from './validate';
 import {injectIntl} from 'react-intl';
-import {ABOUT, PLAYLIST_NAME, PLAYLIST_URL, AUTHORS} from "../../common/form/labels";
+import {ABOUT, PLAYLIST_NAME, PLAYLIST_URL, PLAYLIST_URL_PRE, PLAYLIST_URL_HELP, AUTHORS} from "../../common/form/labels";
 
 class PlaylistPublicForm extends Component {
 
@@ -37,12 +37,14 @@ class PlaylistPublicForm extends Component {
                     name="title"
                     component={inputText}
                     placeholder={this.getIntlString({id:PLAYLIST_NAME})}
-                />
+                          />
 
                 <Field
                     name="slug"
                     component={inputText}
                     placeholder={this.getIntlString({id:PLAYLIST_URL})}
+                    pre={this.getIntlString({ id: PLAYLIST_URL_PRE })}
+                    help={this.getIntlString({ id: PLAYLIST_URL_HELP })}
                 />
 
                 <FieldArray

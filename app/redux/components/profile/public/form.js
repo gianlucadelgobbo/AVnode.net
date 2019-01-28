@@ -7,7 +7,7 @@ import {inputText, textareaMultiTab, multiInputUrl, multiGoogleCityCountry} from
 import validate from './validate';
 import asyncValidate from './asyncValidate';
 import {getFormSyncErrors} from 'redux-form';
-import {STAGE_NAME, PROFILE_URL, PROFILE_URL_HELP, ABOUT, WEB, SOCIAL, ADDRESS} from "../../common/form/labels";
+import {STAGE_NAME, PROFILE_URL, PROFILE_URL_PRE, PROFILE_URL_HELP, ABOUT, WEB, SOCIAL, ADDRESS} from "../../common/form/labels";
 import {injectIntl} from 'react-intl';
 
 class ProfilePublicForm extends Component {
@@ -42,6 +42,9 @@ class ProfilePublicForm extends Component {
                     name="slug"
                     component={inputText}
                     placeholder={this.getIntlString({id:PROFILE_URL})}
+                    pre={this.getIntlString({ id: PROFILE_URL_PRE })}
+                    help={this.getIntlString({ id: PROFILE_URL_HELP })}
+
                 />
 
                 <FieldArray

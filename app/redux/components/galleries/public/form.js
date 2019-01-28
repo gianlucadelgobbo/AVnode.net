@@ -13,6 +13,8 @@ import {
   ABOUT,
   GALLERIES_NAME,
   GALLERIES_URL,
+  GALLERIES_URL_PRE,
+  GALLERIES_URL_HELP,
   AUTHORS
 } from "../../common/form/labels";
 
@@ -46,6 +48,8 @@ class VideosPublicForm extends Component {
           name="slug"
           component={inputText}
           placeholder={this.getIntlString({ id: GALLERIES_URL })}
+          pre={this.getIntlString({ id: GALLERIES_URLPRE })}
+          help={this.getIntlString({ id: GALLERIES_URL_HELP })}
         />
 
         <Field

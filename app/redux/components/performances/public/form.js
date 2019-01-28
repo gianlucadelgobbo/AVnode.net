@@ -15,6 +15,8 @@ import { getFormSyncErrors } from "redux-form";
 import asyncValidate from "./asyncValidate";
 import {
   PERFORMANCE_URL,
+  PERFORMANCE_URL_PRE,
+  PERFORMANCE_URL_HELP,
   TITLE,
   ABOUT,
   IS_PUBLIC,
@@ -22,6 +24,7 @@ import {
   AUTHORS,
   PRICE,
   DURATION,
+  DURATION_HELP,
   TECHNOLOGIES_ARTISTS,
   TECNICAL_REQUIREMENT
 } from "../../common/form/labels";
@@ -55,15 +58,18 @@ class PerformancePublicForm extends Component {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <Field
-          name="slug"
-          component={inputText}
-          placeholder={this.getIntlString({ id: PERFORMANCE_URL })}
-        />
-
-        <Field
           name="title"
           component={inputText}
           placeholder={this.getIntlString({ id: TITLE })}
+        />
+
+        <Field
+          name="slug"
+          component={inputText}
+          placeholder={this.getIntlString({ id: PERFORMANCE_URL })}
+          pre={this.getIntlString({ id: PERFORMANCE_URL_PRE })}
+          help={this.getIntlString({ id: PERFORMANCE_URL_HELP })}
+
         />
 
         <FieldArray
@@ -116,16 +122,17 @@ class PerformancePublicForm extends Component {
 
         <br />
 
-        <Field
+        {/* <Field
           name="price"
           component={inputText}
           placeholder={this.getIntlString({ id: PRICE })}
-        />
+        /> */}
 
         <Field
           name="duration"
           component={inputText}
           placeholder={this.getIntlString({ id: DURATION })}
+          help={this.getIntlString({ id: DURATION_HELP })}
         />
 
         <FieldArray

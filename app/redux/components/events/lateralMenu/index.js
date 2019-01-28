@@ -19,14 +19,14 @@ const items = [
             defaultMessage="Images"/>
 
     },
-    {
+   /*  {
         href: "/admin/events/:_id/partners",
         label: <FormattedMessage
             id="partnersEvents"
             defaultMessage="Partners"
         />
 
-    },
+    }, */
     {
         href: "/admin/events/:_id/program",
         label: <FormattedMessage
@@ -50,14 +50,14 @@ const items = [
         />
 
     },
-    {
+    /* {
         href: "/admin/events/:_id/calls",
         label: <FormattedMessage
             id="callsEvents"
             defaultMessage="Calls"
         />
 
-    },
+    }, */
     {
         href: "/admin/events/:_id/settings",
         label: <FormattedMessage

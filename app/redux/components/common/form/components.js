@@ -277,23 +277,28 @@ const inputField = ({
   meta,
   placeholder,
   isChild,
+  pre,
   help,
   handleSelect,
   disabled
 }) => {
   const field = (
-    <div className="form-group">
-      <input
-        type={type}
-        className="form-control"
-        {...input}
-        disabled={disabled}
-        placeholder={placeholder}
-      />
+    <div>
+      <div className="input-group">
+        {pre && (
+          <div className="input-group-prepend"><span className="input-group-text">{pre}</span></div>
+        )}
+        <input
+          type={type}
+          className="form-control"
+          {...input}
+          disabled={disabled}
+          placeholder={placeholder}
+          aria-describedby="slugHelpInline" //make it based on field name
+        />
+      </div>
       {help && (
-        <div>
-          <FormattedMessage id={help} />
-        </div>
+        <small className="help" id="slugHelpInline">{help}</small> //make it based on field name 
       )}
 
       {meta.error && meta.touched && (
@@ -314,8 +319,8 @@ const inputField = ({
   );
 };
 
-export const inputText = ({ input, meta, placeholder, isChild, help }) => {
-  return inputField({ input, type: "text", meta, placeholder, isChild, help });
+export const inputText = ({ input, meta, placeholder, isChild, pre, help }) => {
+  return inputField({ input, type: "text", meta, placeholder, isChild, pre, help });
 };
 
 export const inputPassword = ({ input, meta, placeholder, isChild }) => {
@@ -587,7 +592,7 @@ export const fieldWithLabel = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           //onClick={() => fields.unshift({})}
           onClick={() =>
             showModal({
@@ -643,7 +648,7 @@ export const multiInputEmailWithDetails = ({
         className={"container-fluid " + (index % 2 === 0 ? "even" : "odd")}
         key={index}
       >
-        <div className="row ">
+        <div className="row">
           <div className="col-md-5 offset-1">
             <Field
               name={`${member}.email`}
@@ -776,7 +781,7 @@ export const multiInputEmailWithDetails = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -919,7 +924,7 @@ const multiInput = ({
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields, render, key = "text" }) => (
-    <div className="row" key={index}>
+    <div className="row mb-3" key={index}>
       <div className="col-md-9 offset-1">
         <Field
           name={`${member}.${key}`}
@@ -957,7 +962,7 @@ const multiInput = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -1410,7 +1415,7 @@ export const multiSchedule = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -1563,7 +1568,7 @@ export const multiProgram = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -1717,7 +1722,7 @@ export const multiPackages = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift(v)}
         >
           <i
@@ -1812,7 +1817,7 @@ export const multiTopic = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift(v)}
         >
           <i
@@ -1980,7 +1985,7 @@ export const multiCall = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -2166,7 +2171,7 @@ export const multiContacts = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -2505,7 +2510,7 @@ export const multiActivities = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -2622,7 +2627,7 @@ export const multiLegalOrganization = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right"
+          className="pull-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -2682,6 +2687,8 @@ export const CollapsedPanel = ({
   options,
   height,
   isChild,
+  pre,
+  help,
   _onOptionChange,
   optionValue
 }) => {
@@ -2696,28 +2703,38 @@ export const CollapsedPanel = ({
         _onOptionChange={_onOptionChange}
         optionValue={optionValue}
       />
-      <Collapse isOpened={optionValue === "group"}>
-        <div style={{ height }} />
-        <Field name="crewName" component={inputText} placeholder="Crew Name" />
-        <Field name="crewUrl" component={inputText} placeholder="Crew Url" />
-        <h4>YOU AS MEMBER OF THE CREW</h4>
-        <p>You will be able to add more once you confirmed your account</p>
-      </Collapse>
       {meta.error && meta.touched && (
         <span className="error-message">
           <FormattedMessage id={meta.error} />
         </span>
       )}
-    </div>
+      </div>
+);
+  const collapse = (
+      <Collapse isOpened={optionValue === "group"}>
+        <Field name="crewName" component={inputText} placeholder="Crew Name" />
+        <Field
+          name="crewUrl"
+          component={inputText}
+          placeholder="Crew Url"
+          pre={pre}
+          help={help}
+        />
+        <h4 className="mt-2">YOU AS MEMBER OF THE CREW</h4>
+        <div className="mb-4">You will be able to add crew members once you confirmed your account</div>
+      </Collapse>
   );
   const label = <div className="labelSignup">{placeholder}</div>;
   return !!isChild ? (
     field
   ) : (
-    <dl className="row">
-      <dt className="col-sm-2">{label}</dt>
-      <dd className="col-sm-10"> {field} </dd>
-    </dl>
+    <div>
+      <dl className="row">
+        <dt className="col-sm-2">{label}</dt>
+        <dd className="col-sm-10"> {field} </dd>
+      </dl>
+      {collapse}
+    </div>
   );
 };
 
