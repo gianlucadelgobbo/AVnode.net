@@ -13,6 +13,8 @@ import {
 } from "../common/form/components";
 import validate from "./validate";
 import { getFormSyncErrors } from "redux-form";
+import {STAGE_NAME, PROFILE_URL, PROFILE_URL_PRE, PROFILE_URL_HELP, BIRTHDAY, ADDRESS} from "../common/form/labels";
+import {injectIntl} from 'react-intl';
 
 class SignUpForm extends Component {
   submitForm(data) {
@@ -23,6 +25,11 @@ class SignUpForm extends Component {
       reset();
     });
   }
+
+  getIntlString = (obj) => {
+    const {intl} = this.props;
+    return intl.formatMessage(obj)
+  };
 
   render() {
     const {
@@ -51,23 +58,24 @@ class SignUpForm extends Component {
         />
 
         <Field
-          name="stagename"
-          component={inputText}
-          placeholder="Stage name"
+            name="stagename"
+            component={inputText}
+            placeholder={this.getIntlString({id:STAGE_NAME})}
         />
 
         <Field
-          name="slug"
-          component={inputText}
-          placeholder="Profile Url"
-          pre="https://avnode.net/"
-          help="To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)"
+            name="slug"
+            component={inputText}
+            placeholder={this.getIntlString({id:PROFILE_URL})}
+            pre={this.getIntlString({ id: PROFILE_URL_PRE })}
+            help={this.getIntlString({ id: PROFILE_URL_HELP })}
+
         />
 
         <Field
           name="birthday"
           component={renderDatePicker}
-          placeholder="Birthday"
+          placeholder={this.getIntlString({ id: BIRTHDAY })}
         />
 
         <Field name="email" component={inputEmail} placeholder="Email" />
@@ -75,7 +83,7 @@ class SignUpForm extends Component {
         <Field
           name="addresses"
           component={singleGoogleCityCountry}
-          placeholder="Addresses"
+          placeholder={this.getIntlString({id:ADDRESS})}
           showModal={showModal}
         />
 
@@ -123,5 +131,8 @@ SignUpForm = connect(
   mapStateToProps,
   mapDispatchToProps
 )(SignUpForm);
+
+SignUpForm = injectIntl(SignUpForm);
+
 
 export default SignUpForm;
