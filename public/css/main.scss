@@ -1894,6 +1894,7 @@ ul.user_navbar {
 }
 .user_navbar .dropdown-toggle::after {
     color: $color3;
+    vertical-align: .055em;
 }
 .user_navbar .signup .nav-link {
     padding: .4rem 1rem .4rem 0;
