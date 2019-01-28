@@ -1841,8 +1841,9 @@ span.seeall_label {
     .navbar-inverse .user_navbar .nav-link.login a, .navbar-inverse .user_navbar .nav-link.signup a {
         color: rgba(255,255,255,0.5);
     }
-    .user_navbar .signup_ico {
+    .user_navbar .signup_ico .disabled{
         color: $color1;
+        padding-right: 0;
     }
     .user_navbar .login .nav-link {
         padding: .4rem 0;
