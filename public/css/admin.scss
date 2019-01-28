@@ -224,6 +224,17 @@ textarea#styled {
   color: #636c72;
   font-weight: 600;
 }
+.help {
+  color: #636c72;
+  line-height: 1.6;
+  font-size: 80%;
+  display: inline-block;
+}
+.signup-container .help, .signup-container .labelField{
+  color: #FFF;
+
+}
+
 .labelFieldUpload {
   color: #636c72;
   font-weight: 400;
@@ -247,6 +258,7 @@ textarea#styled {
   font-size: 14px;
   padding-left: 10px;
   text-transform: capitalize;
+  display: block;
 }
 #PlacesAutocomplete__autocomplete-container {
   z-index: 999;

@@ -8,7 +8,7 @@ import {
     checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl,
 } from "../../common/form/components";
 import validate from './validate';
-import {CREW_NAME, CREW_URL, ABOUT, WEB, SOCIAL} from "../../common/form/labels";
+import {CREW_NAME, CREW_URL, CREW_URL_PRE, CREW_URL_HELP, ABOUT, WEB, SOCIAL} from "../../common/form/labels";
 import {injectIntl} from 'react-intl';
 import asyncValidate from './asyncValidate';
 
@@ -34,15 +34,17 @@ class CrewPublicForm extends Component {
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <Field
-                    name="slug"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:CREW_URL})}
-                />
-
-                <Field
                     name="stagename"
                     component={inputText}
                     placeholder={this.getIntlString({id:CREW_NAME})}
+                />
+
+                <Field
+                    name="slug"
+                    component={inputText}
+                    placeholder={this.getIntlString({id:CREW_URL})}
+                    pre={this.getIntlString({ id: CREW_URL_PRE })}
+                    help={this.getIntlString({ id: CREW_URL_HELP })}
                 />
 
                 <FieldArray

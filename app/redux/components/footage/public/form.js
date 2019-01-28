@@ -15,6 +15,8 @@ import {
   ABOUT,
   FOOTAGE_NAME,
   FOOTAGE_URL,
+  FOOTAGE_URL_PRE,
+  FOOTAGE_URL_HELP,
   AUTHORS,
   TAGS
 } from "../../common/form/labels";
@@ -54,6 +56,8 @@ class FootagePublicForm extends Component {
           name="slug"
           component={inputText}
           placeholder={this.getIntlString({ id: FOOTAGE_URL })}
+          pre={this.getIntlString({ id: FOOTAGE_URL_PRE })}
+          help={this.getIntlString({ id: FOOTAGE_URL_HELP })}
         />
 
         <Field

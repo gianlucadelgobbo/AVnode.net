@@ -130,7 +130,12 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
-    "id": "label.form.url.help",
+    "id": "label.form.url_pre",
+    "defaultMessage": "https://avnode.net/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.url_help",
     "defaultMessage": "To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
@@ -240,6 +245,16 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.crew.url_pre",
+    "defaultMessage": "https://avnode.net/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.crew.url_help",
+    "defaultMessage": "To have your crew profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.file.upload",
     "defaultMessage": "Drop files here, or click to select files to upload.",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -247,6 +262,16 @@
   {
     "id": "label.form.performance.url",
     "defaultMessage": "Performance Url",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.performance.url_pre",
+    "defaultMessage": "https://avnode.org/performances/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.performance.url_help",
+    "defaultMessage": "To have your performance at https://avnode.net/performances/mybeautyfulperformance, please insert mybeautifulperformance (lower case, no spaces, no special characters)",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -280,6 +305,11 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.duration_help",
+    "defaultMessage": "Please insert a number representing the duration in minutes",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.tecnologies.artists",
     "defaultMessage": "Technologies with the artists",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -307,6 +337,16 @@
   {
     "id": "label.form.event.url",
     "defaultMessage": "Event Url",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.event.url_pre",
+    "defaultMessage": "https://avnode.org/events/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.event.url_help",
+    "defaultMessage": "To have your event at https://avnode.net/events/mybeautyfulevent, please insert mybeautyfulevent (lower case, no spaces, no special characters)",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -395,6 +435,16 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.footage.url_pre",
+    "defaultMessage": "https://avnode.org/footage/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.footage.url_help",
+    "defaultMessage": "To have your footage at https://avnode.net/footage/mybeautyfulfootage, please insert mybeautyfulfootage (lower case, no spaces, no special characters)",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.tags",
     "defaultMessage": "Tags",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -410,6 +460,16 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.playlist.url_pre",
+    "defaultMessage": "https://avnode.org/playlists/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.playlist.url_help",
+    "defaultMessage": "To have your playlist at https://avnode.net/footage/mybeautyfulplaylist, please insert mybeautyfulplaylist (lower case, no spaces, no special characters)",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.videos.name",
     "defaultMessage": "Video Name",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -420,6 +480,16 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.videos.url_pre",
+    "defaultMessage": "https://avnode.org/videos/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.videos.url_help",
+    "defaultMessage": "To have your video at https://avnode.net/videos/mybeautyfulvideo, please insert mybeautyfulvideo (lower case, no spaces, no special characters)",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.galleries.name",
     "defaultMessage": "Gallery Name",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -427,6 +497,16 @@
   {
     "id": "label.form.galleries.url",
     "defaultMessage": "Gallery Url",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.galleries.url_pre",
+    "defaultMessage": "https://avnode.org/galleries/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.galleries.url_help",
+    "defaultMessage": "To have your gallery at https://avnode.net/galleries/mybeautyfulgallery, please insert mybeautyfulgallery (lower case, no spaces, no special characters)",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {

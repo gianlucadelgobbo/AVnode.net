@@ -3,7 +3,8 @@ import { defineMessages } from "react-intl";
 //Profile Public
 export const STAGE_NAME = "label.form.stagename";
 export const PROFILE_URL = "label.form.url";
-export const PROFILE_URL_HELP = "label.form.url.help";
+export const PROFILE_URL_PRE = "label.form.url_pre";
+export const PROFILE_URL_HELP = "label.form.url_help";
 export const ABOUT = "label.form.about";
 export const WEB = "label.form.web";
 export const SOCIAL = "label.form.social";
@@ -28,23 +29,30 @@ export const NEW_PASSWORD = "label.form.newpassword";
 export const CONFIRM_PASSWORD = "label.form.confirmpassword";
 //Crew Public
 export const CREW_URL = "label.form.crew.url";
+export const CREW_URL_PRE = "label.form.crew.url_pre";
+export const CREW_URL_HELP = "label.form.crew.url_help";
 export const CREW_NAME = "label.form.crew.name";
 //Crew Image
 export const FILE_UPLOAD = "label.form.file.upload";
 //Performance Public
 export const PERFORMANCE_URL = "label.form.performance.url";
+export const PERFORMANCE_URL_PRE = "label.form.performance.url_pre";
+export const PERFORMANCE_URL_HELP = "label.form.performance.url_help";
 export const TITLE = "label.form.title";
 export const IS_PUBLIC = "label.form.is.public";
 export const CATEGORY = "label.form.category";
 export const AUTHORS = "label.form.authors";
 export const PRICE = "label.form.price";
 export const DURATION = "label.form.duration";
+export const DURATION_HELP = "label.form.duration_help";
 export const TECHNOLOGIES_ARTISTS = "label.form.tecnologies.artists";
 export const TECNICAL_REQUIREMENT = "label.form.tecnical.requirement";
 //Event Public
 export const SCHEDULE = "label.form.event.schedule";
 export const SUBTITLES = "label.form.event.subtitles";
 export const EVENT_URL = "label.form.event.url";
+export const EVENT_URL_PRE = "label.form.event.url_pre";
+export const EVENT_URL_HELP = "label.form.event.url_help";
 //Event Program
 export const PROGRAM = "label.form.event.program";
 //Event Calls
@@ -68,16 +76,24 @@ export const SETTINGS = "label.form.settings";
 //Footage
 export const FOOTAGE_NAME = "label.form.footage.name";
 export const FOOTAGE_URL = "label.form.footage.url";
+export const FOOTAGE_URL_PRE = "label.form.footage.url_pre";
+export const FOOTAGE_URL_HELP = "label.form.footage.url_help";
 export const TAGS = "label.form.tags";
 //Playlist
 export const PLAYLIST_NAME = "label.form.playlist.name";
 export const PLAYLIST_URL = "label.form.playlist.url";
+export const PLAYLIST_URL_PRE = "label.form.playlist.url_pre";
+export const PLAYLIST_URL_HELP = "label.form.playlist.url_help";
 //Videos
 export const VIDEOS_NAME = "label.form.videos.name";
 export const VIDEOS_URL = "label.form.videos.url";
+export const VIDEOS_URL_PRE = "label.form.videos.url_pre";
+export const VIDEOS_URL_HELP = "label.form.videos.url_help";
 //Galleries
 export const GALLERIES_NAME = "label.form.galleries.name";
 export const GALLERIES_URL = "label.form.galleries.url";
+export const GALLERIES_URL_PRE = "label.form.galleries.url_pre";
+export const GALLERIES_URL_HELP = "label.form.galleries.url_help";
 /*
  * Define i18n Form Label
  * */
@@ -89,6 +105,10 @@ defineMessages({
   [PROFILE_URL]: {
     id: PROFILE_URL,
     defaultMessage: "Profile Url"
+  },
+  [PROFILE_URL_PRE]: {
+    id: PROFILE_URL_PRE,
+    defaultMessage: "https://avnode.net/"
   },
   [PROFILE_URL_HELP]: {
     id: PROFILE_URL_HELP,
@@ -178,6 +198,14 @@ defineMessages({
     id: CREW_URL,
     defaultMessage: "Crew Url"
   },
+  [CREW_URL_PRE]: {
+    id: CREW_URL_PRE,
+    defaultMessage: "https://avnode.net/"
+  },
+  [CREW_URL_HELP]: {
+    id: CREW_URL_HELP,
+    defaultMessage: "To have your crew profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)"
+  },
   [FILE_UPLOAD]: {
     id: FILE_UPLOAD,
     defaultMessage: "Drop files here, or click to select files to upload."
@@ -185,6 +213,14 @@ defineMessages({
   [PERFORMANCE_URL]: {
     id: PERFORMANCE_URL,
     defaultMessage: "Performance Url"
+  },
+  [PERFORMANCE_URL_PRE]: {
+    id: PERFORMANCE_URL_PRE,
+    defaultMessage: "https://avnode.org/performances/"
+  },
+  [PERFORMANCE_URL_HELP]: {
+    id: PERFORMANCE_URL_HELP,
+    defaultMessage: "To have your performance at https://avnode.net/performances/mybeautyfulperformance, please insert mybeautifulperformance (lower case, no spaces, no special characters)"
   },
   [TITLE]: {
     id: TITLE,
@@ -210,6 +246,10 @@ defineMessages({
     id: DURATION,
     defaultMessage: "Duration"
   },
+  [DURATION_HELP]: {
+    id: DURATION_HELP,
+    defaultMessage: "Please insert a number representing the duration in minutes"
+  },
   [TECHNOLOGIES_ARTISTS]: {
     id: TECHNOLOGIES_ARTISTS,
     defaultMessage: "Technologies with the artists"
@@ -233,6 +273,14 @@ defineMessages({
   [EVENT_URL]: {
     id: EVENT_URL,
     defaultMessage: "Event Url"
+  },
+  [EVENT_URL_PRE]: {
+    id: EVENT_URL_PRE,
+    defaultMessage: "https://avnode.org/events/"
+  },
+  [EVENT_URL_HELP]: {
+    id: EVENT_URL_HELP,
+    defaultMessage: "To have your event at https://avnode.net/events/mybeautyfulevent, please insert mybeautyfulevent (lower case, no spaces, no special characters)"
   },
   [PROGRAM]: {
     id: PROGRAM,
@@ -302,6 +350,14 @@ defineMessages({
     id: FOOTAGE_URL,
     defaultMessage: "Footage Url"
   },
+  [FOOTAGE_URL_PRE]: {
+    id: FOOTAGE_URL_PRE,
+    defaultMessage: "https://avnode.org/footage/"
+  },
+  [FOOTAGE_URL_HELP]: {
+    id: FOOTAGE_URL_HELP,
+    defaultMessage: "To have your footage at https://avnode.net/footage/mybeautyfulfootage, please insert mybeautyfulfootage (lower case, no spaces, no special characters)"
+  },
   [TAGS]: {
     id: TAGS,
     defaultMessage: "Tags"
@@ -314,6 +370,14 @@ defineMessages({
     id: PLAYLIST_URL,
     defaultMessage: "Playlist Url"
   },
+  [PLAYLIST_URL_PRE]: {
+    id: PLAYLIST_URL_PRE,
+    defaultMessage: "https://avnode.org/playlists/"
+  },
+  [PLAYLIST_URL_HELP]: {
+    id: PLAYLIST_URL_HELP,
+    defaultMessage: "To have your playlist at https://avnode.net/footage/mybeautyfulplaylist, please insert mybeautyfulplaylist (lower case, no spaces, no special characters)"
+  },
   [VIDEOS_NAME]: {
     id: VIDEOS_NAME,
     defaultMessage: "Video Name"
@@ -322,6 +386,14 @@ defineMessages({
     id: VIDEOS_URL,
     defaultMessage: "Video Url"
   },
+  [VIDEOS_URL_PRE]: {
+    id: VIDEOS_URL_PRE,
+    defaultMessage: "https://avnode.org/videos/"
+  },
+  [VIDEOS_URL_HELP]: {
+    id: VIDEOS_URL_HELP,
+    defaultMessage: "To have your video at https://avnode.net/videos/mybeautyfulvideo, please insert mybeautyfulvideo (lower case, no spaces, no special characters)"
+  },
   [GALLERIES_NAME]: {
     id: GALLERIES_NAME,
     defaultMessage: "Gallery Name"
@@ -329,5 +401,13 @@ defineMessages({
   [GALLERIES_URL]: {
     id: GALLERIES_URL,
     defaultMessage: "Gallery Url"
-  }
+  },
+  [GALLERIES_URL_PRE]: {
+    id: GALLERIES_URL_PRE,
+    defaultMessage: "https://avnode.org/galleries/"
+  },
+  [GALLERIES_URL_HELP]: {
+    id: GALLERIES_URL_HELP,
+    defaultMessage: "To have your gallery at https://avnode.net/galleries/mybeautyfulgallery, please insert mybeautyfulgallery (lower case, no spaces, no special characters)"
+  },
 });

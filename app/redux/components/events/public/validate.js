@@ -18,10 +18,10 @@ const profilePublicValidate = values => {
     validateLength({values, name: "title", min: 3, max: 50, errorKey:INVALID_STRING_3_50, errors});
 
     //subtitles
-    validateMultiLang({values, name: "subtitles", value: "value", errors, max: 5000});
+    validateMultiLang({values, name: "subtitles", value: "value", errors, max: 50});
 
     //abouts
-    validateMultiLang({values, name: "abouts", value: "value", errors, max: 5000});
+    validateMultiLang({values, name: "abouts", value: "value", errors, max: 15000});
 
     // web
     validateLength({values, name: "web", min: 1, max: 5, errorKey:INVALID_STRING_1_5, errors});
