@@ -25,7 +25,8 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
                 !=" "+global.__('Log out')
         else
           li.nav-item.signup_ico
-            span.pr-2.lnr.lnr-user
+            a.nav-link.disabled(href='#')
+              span.pr-2.lnr.lnr-user
           li.nav-item.login
             a.nav-link(href='/login', title=global.__('Login'))
               !=global.__('Login')
