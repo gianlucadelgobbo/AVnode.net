@@ -44,8 +44,8 @@ gallerySchema.virtual('imageFormats').get(function () {
   //console.log(config.cpanel[adminsez].sizes.image);
   //if (this.medias && this.medias.length && this.medias[0].file) {
   if (this.image && this.image.file) {
-    for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].default;
+    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
     }
     //const serverPath = this.medias[0].file;
     const serverPath = this.image.file;
@@ -54,12 +54,12 @@ gallerySchema.virtual('imageFormats').get(function () {
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
   } else {
-    for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-      imageFormats[format] = `${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].default}`;
+    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default}`;
     }
   }
   return imageFormats;
@@ -73,8 +73,8 @@ gallerySchema.virtual('medias2').get(function () {
       //console.log(config.cpanel[adminsez].sizes.image);
       //if (this.medias && this.medias.length && this.medias[0].file) {
       if (this.medias[image] && this.medias[image].file) {
-        for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-          imageFormats[format] = config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].default;
+        for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+          imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
         }
         //const serverPath = this.medias[0].file;
         const serverPath = this.medias[image].file;
@@ -83,12 +83,12 @@ gallerySchema.virtual('medias2').get(function () {
         const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
         const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
         // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-          imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+          imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
         }
       } else {
-        for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-          imageFormats[format] = `${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].default}`;
+        for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+          imageFormats[format] = `${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default}`;
         }
       }
       mediaFormats.push({title:this.medias[image].title,slug:this.medias[image].slug,imageFormats:imageFormats});

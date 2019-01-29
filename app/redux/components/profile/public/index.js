@@ -16,6 +16,7 @@ import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
 import { PROFILE_NAME } from "./constants";
+import { SHOW } from "./constants";
 import { MODAL_SAVED } from "../../modal/constants";
 import { sortByLanguage } from "../../common/form";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
@@ -188,7 +189,7 @@ class ProfilePublic extends Component {
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          <TitleComponent title={model.stagename} type={PROFILE_NAME} />
+          <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
 
           <Form
             initialValues={this.getInitialValues()}

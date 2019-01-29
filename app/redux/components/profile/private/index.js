@@ -22,6 +22,10 @@ import moment from "moment";
 import axios from "axios";
 import { DATE_FORMAT } from "../../../conf";
 
+import TitleComponent from "../../titleComponent";
+import { PROFILE_NAME } from "./constants";
+import { SHOW } from "./constants";
+
 /*
  * Responsabilita'
  * - Get form's initial values from redux state here
@@ -182,20 +186,13 @@ class ProfilePrivate extends Component {
           <LateralMenu />
         </div>
         <div className="col-md-10">
-          <h2 className="labelField">
-            <FormattedMessage
-              id="AccountPrivateData"
-              defaultMessage="My Account Private data"
-            />
-          </h2>
-
-          <br />
-
           {isFetching && !model && <Loading />}
 
           {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
+          
+          <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
 
           <Form
             initialValues={this.getInitialValues()}
