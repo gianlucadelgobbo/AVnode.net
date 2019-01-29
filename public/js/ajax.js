@@ -24,12 +24,12 @@ function getCookie(cname) {
 }
 
 function checkCookie() {
-  var firsttime = getCookie("firsttime");
+  var firsttime = getCookie("firsttime2");
   if (!firsttime) {
     $('#msg_modal').modal({
       backdrop: true
     });
-    setCookie("firsttime", true, 10);
+    setCookie("firsttime2", true, 10);
   }
 }
 

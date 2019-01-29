@@ -48,6 +48,7 @@ router.get('/', (req, res) => {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',
         //email: e.email,
         avnode_id: e._id.toString(),
+        SiteFrom: "AVnode.net",
         avnode_slug: e.slug,
         avnode_email: e.email,
         boolean: 'true'
@@ -112,6 +113,7 @@ router.get('/updateSendy', (req, res) => {
         let email = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
           avnode_id: e._id.toString(),
+          SiteFrom: "AVnode.net",
           avnode_slug: e.slug,
           avnode_email: e.email,
           boolean: 'true'
