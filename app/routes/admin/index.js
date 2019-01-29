@@ -28,6 +28,7 @@ router.put('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+    req.params.comp = req.params.form;
     upload.uploader(req, res, (err, data) => {
       if (err) {
         res.status(500).json(err);
@@ -68,7 +69,8 @@ router.get('/api/:sez/:id/:form/', (req, res) => {
 });
 
 router.put('/api/:sez/:id/:form/', (req, res) => {
-  if (['profile/image','crews/image','events/image','performances/image','footage/media','galleries/public','videos/media'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+  if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/public','videos/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+    req.params.comp = ['footage/public','galleries/public','videos/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : req.params.form;
     upload.uploader(req, res, (err, data) => {
       console.log("uploaderuploaderuploaderuploader");
       if (err) {

@@ -17,6 +17,10 @@ import { MODAL_SAVED } from "../../modal/constants";
 import { getErrorMessage, getIsFetching } from "../../events/selectors";
 import { FormattedMessage } from "react-intl";
 
+import TitleComponent from "../../titleComponent";
+import { PROFILE_NAME } from "./constants";
+import { SHOW } from "./constants";
+
 /*
  * Responsabilita'
  * - Get form's initial values from redux state here
@@ -82,20 +86,13 @@ class ProfilePassword extends Component {
           <LateralMenu />
         </div>
         <div className="col-md-10">
-          <h2 className="labelField">
-            <FormattedMessage
-              id="AccountPublicPassword"
-              defaultMessage="MY PASSWORD"
-            />
-          </h2>
-
-          <br />
-
           {isFetching && !model && <Loading />}
 
           {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
+
+          <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
 
           <Form
             initialValues={this.getInitialValues(this)}

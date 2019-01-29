@@ -419,6 +419,10 @@
             "password": 1,
             "newpassword": 1
           },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1
+          },
           "populate": []
         },
         "connections": {
@@ -2011,7 +2015,7 @@
                 "validators": {}
               }
             ],
-            "medias": {
+            "media": {
               "config":{
                 "fields": {
                   "name": "image",
@@ -3090,7 +3094,7 @@
             "media": {
               "config":{
                 "fields": {
-                  "name": "image",
+                  "name": "media",
                   "maxCount": 1
                 },
                 "filetypes": ["mp4","mov","m4v","avi"],

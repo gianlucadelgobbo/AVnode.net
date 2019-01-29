@@ -9,28 +9,27 @@ import ImageForm from '../../image';
 import {FormattedMessage} from 'react-intl';
 import properties from "../../../../../config/default.json";
 
+import TitleComponent from "../../titleComponent";
+import { PROFILE_NAME } from "./constants";
+import { SHOW } from "./constants";
+
 class ProfileImage extends Component {
 
     render() {
 
-        const {model, isFetching, errorMessage, fetchModel, saveModel} = this.props;
+        const {model = {}, isFetching, errorMessage, fetchModel, saveModel} = this.props;
 
         const {components} = properties.cpanel.profile.forms.image;
 
         return (
+
             <div className="row">
                 <div className="col-md-2">
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">
-                        <FormattedMessage
-                            id="AccountPublicImage"
-                            defaultMessage="PROFILE IMAGE"
-                        />
-                    </h2>
 
-                    <br/>
+                    <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
 
                     <ImageForm
                         model={model}

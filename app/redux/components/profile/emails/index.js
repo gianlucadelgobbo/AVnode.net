@@ -10,6 +10,10 @@ import ItemNotFound from '../../itemNotFound';
 import {fetchModel, saveModel, verifyEmail} from "./actions";
 import {MODAL_EMAIL_VERIFICATION_ERROR, MODAL_EMAIL_VERIFICATION_SUCCESS, MODAL_SAVED} from "../../modal/constants";
 
+import TitleComponent from "../../titleComponent";
+import { PROFILE_NAME } from "./constants";
+import { SHOW } from "./constants";
+
 import {
     getDefaultModel,
     getDefaultModelErrorMessage,
@@ -104,20 +108,13 @@ class ProfileEmails extends Component {
                     <LateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">
-                        <FormattedMessage
-                            id="AccountPublicEmail"
-                            defaultMessage="MY EMAIL"
-                        />
-                    </h2>
-
-                    <br/>
-
                     {isFetching && !model && <Loading/>}
 
                     {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
                     {!errorMessage && !isFetching && !model && <ItemNotFound/>}
+
+                    <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
 
                     <Form
                         initialValues={this.getInitialValues()}

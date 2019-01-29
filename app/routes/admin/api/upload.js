@@ -37,7 +37,7 @@ upload.getServerpath = storage => {
 upload.uploader = (req, res, done) => {
   console.log(req.params.sez);
   console.log(req.params.form);
-  const options = config.cpanel[req.params.sez].forms[req.params.form].components[req.params.form].config;
+  const options = config.cpanel[req.params.sez].forms[req.params.form].components[req.params.comp].config;
   console.log(options.maxsize);
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
