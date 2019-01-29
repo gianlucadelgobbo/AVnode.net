@@ -71,7 +71,7 @@ router.get('/', (req, res) => {
                       "@type": "WebSite",
                       "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl,
                       "description": __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
-                      "image": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/avnode_mainimg.jpg",
+                      "image": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/sez/avnode.net-home.jpg",
                       "potentialAction": {
                         "@type": "SearchAction",
                         "target": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"search?&q={q}",

@@ -72,7 +72,7 @@ dataprovider.getPerformanceByIds = (req, ids, cb) => {
   });
 }; */
 
-dataprovider.getJsonld = (data, req, title) => {
+dataprovider.getJsonld = (data, req, title, section) => {
   let jsonld = {
     "@context": "http://schema.org",
   }
@@ -196,6 +196,8 @@ dataprovider.getJsonld = (data, req, title) => {
     jsonld["@type"] = "ItemList";
     jsonld.itemListElement = [];
     jsonld.name = title;
+    jsonld.image = "/images/sez/avnode.net-"+section+".jpg";
+    console.log(jsonld.image);
     jsonld.description = __("The list of "+jsonld.name);
     jsonld.itemListElement = [];
     for(let a=0;a<data.length;a++) {
@@ -445,7 +447,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
 
         res.render(section + '/' + subsection, {
           title: data.stagename ? data.stagename : data.title,
-          jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title),
+          jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section),
           canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
           editable: editable,
           data: data,
@@ -482,6 +484,7 @@ dataprovider.list = (req, res, section, model) => {
     const query = config.sections[section].categoriesQueries[filter];
     dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
       console.log(req.originalUrl);
+      const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         if (process.env.DEBUG) {
           res.render('json', {data: {total:total, skip:skip, data:data}});
@@ -502,14 +505,13 @@ dataprovider.list = (req, res, section, model) => {
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
         });
       } else {
-        const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
         let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
         let link = '/' + section + '/' + filter + '/' + sorting + '/';
         let pages = helper.getPagination(link, skip, config.sections[section].limit, total);
         res.render(config.sections[section].view_list, {
           title: title,
           section: section,
-          jsonld:dataprovider.getJsonld(data, req, title),
+          jsonld:dataprovider.getJsonld(data, req, title, section),
           canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
           sort: sorting,
           total: total,
