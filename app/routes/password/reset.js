@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
       } else {
         // FIXME Validate password…
         if (req.body.password !== req.body.retypePassword) {
-          req.flash('errors', {msg: __('Passwords are not equal. Try again…')});
+          req.flash('errors', {msg: __('Password and Password confirm does not match. Try again...')});
           res.redirect('/password/reset/'+user.passwordResetToken);
         } else {
           user.passwordResetExpires = null;
