@@ -148,7 +148,7 @@ router.get('/events_import', (req, res) => {
           if (user && user._id) {
             event.users = [user._id];
           } else {
-            event.users = [ObjectId("5be87f15fc3961000a669")];
+            event.users = [ObjectId("5be87f15fc3961000000a669")];
           }
           //console.log(event);
           Event.
