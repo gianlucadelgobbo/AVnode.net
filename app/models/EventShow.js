@@ -451,12 +451,12 @@ eventSchema.virtual('boxDate').get(function () {
         boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single);
       } else {
         if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].single);
+          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].single);
         } else {
           if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
-            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].daymonth2);
+            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonth2);
           } else {
-            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].day2);
+            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
           }
         }
       }
@@ -464,12 +464,12 @@ eventSchema.virtual('boxDate').get(function () {
       //console.log(new Date(enddate));
     } else {
       if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
-        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].single);
+        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].single);
       } else {
         if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].daymonth2);
+          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonth2);
         } else {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].day2);
+          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
         }
       }
     }
