@@ -154,9 +154,9 @@ const userSchema = new Schema({
       validator : function(password) {
         console.log("passwordpasswordpasswordpasswordpasswordpassword");
         //console.log(this);
-        console.log(password && password.length > 10);
-        return this.flxermigrate || (password && password.length > 10);
-      }, msg: 'INVALID_PASSWORD_LENGTH'
+        console.log(password && password.length > 7);
+        return this.flxermigrate || (password && password.length > 7);
+      }, msg: "Password is too shorth, the minimum length is 8 characters. Try again..." //'INVALID_PASSWORD_LENGTH'
     },
     {
       validator : function(password) {
@@ -164,7 +164,7 @@ const userSchema = new Schema({
         console.log(password);
         console.log(hasNumber(password) && hasLowerCase(password) && hasUpperCase(password));
         return this.flxermigrate || (hasNumber(password) && hasLowerCase(password) && hasUpperCase(password));
-      }, msg: 'INVALID_PASSWORD_CHR'
+      }, msg: "Password is not valid, have to contain at least 1 number, 1 lower case and 1 uppercase characters. Try again..." //'INVALID_PASSWORD_CHR'
     }]
   },
   newpassword: String,

@@ -10,6 +10,7 @@ block content
             .form-group
               label(for='password')=global.__('New Password')
               input.form-control(type='password', name='password', id='password', placeholder=global.__('New Password'), required)
+              small=global.__("Password minimum length is 8 characters and have to contain at least 1 number, 1 lower case and 1 uppercase characters")
             .form-group
               label(for='retypePassword')=global.__('Confirm Password')
               input.form-control(type='password', name='retypePassword', id='retypePassword', placeholder=global.__('Confirm Password'), required)
