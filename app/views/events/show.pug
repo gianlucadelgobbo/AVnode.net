@@ -143,6 +143,18 @@ block content
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.videos            
                     include ../partials/boxVideo
+                    
+  if data.programmenotscheduled
+    .program_event_wrapper_bkg
+      section.row.program_event_wrapper
+          .col-lg-12
+            .container
+              h2.main_title.indented_title.color1!=global.__('Performances')+(data.programmebydayvenue ? " "+global.__('to be scheduled') : "")
+                .owl-carousel.loop.owl-theme
+                  each item in data.programmenotscheduled
+                    include ../partials/boxPerformance
+
+
   if data.programmebydayvenue
     .program_event_wrapper_bkg
       section.row.program_event_wrapper

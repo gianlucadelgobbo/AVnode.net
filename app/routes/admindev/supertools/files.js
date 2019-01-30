@@ -271,6 +271,7 @@ router.get('/eventimages', (req, res) => {
   Event.
   find({"image.file": {$exists: true}}).
   lean().
+  sort({_id:-1}).
   select({image: 1, createdAt: 1}).
   exec((err, events) => {
     for (let event in events) {
@@ -300,7 +301,7 @@ router.get('/eventimages', (req, res) => {
     res.render('admindev/supertools/files/showall', {
       title: 'Event images',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
+      currentUrl: req.originalUrl,
       data: data,
       script: false
     });
@@ -315,6 +316,7 @@ router.get('/eventformatsgenerator', (req, res) => {
   let adminsez = "events";
   Event.
   find({"image.file": {$exists: true}}).
+  sort({_id:-1}).
   limit(limit).
   skip(skip).
   lean().
