@@ -19,15 +19,11 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.getList = (req, res) => {
-  console.log("getList");
   if (config.cpanel[req.params.sez] && req.params.id) {
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
     const ids = [req.params.id].concat(req.user.crews);
     const query = req.params.sez == "crews" ? {members: req.params.id} : {users:{$in: ids}};
-    console.log(query);
-    console.log(select);
-    console.log(populate);
 
     Models[config.cpanel[req.params.sez].list.model]
     .find(query)
