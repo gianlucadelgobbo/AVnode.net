@@ -178,7 +178,7 @@ const eventSchema = new Schema({
 });*/
 
 eventSchema.virtual('programmenotscheduled').get(function (req) {
-  return this.program.map((item)=>{return item.performance});
+  if (this.program && this.program.length) return this.program.map((item)=>{return item.performance});
 });
 
 eventSchema.virtual('programmebydayvenue').get(function (req) {
