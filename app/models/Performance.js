@@ -194,6 +194,11 @@ performanceSchema.pre('remove', function(next) {
     next
   );
 });
+performanceSchema.pre('save', function(next) {
+  console.log(this);
+  next();
+});
+
 
 /*
 // FIXME: Rename in performer?

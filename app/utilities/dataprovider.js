@@ -197,7 +197,6 @@ dataprovider.getJsonld = (data, req, title, section) => {
     jsonld.itemListElement = [];
     jsonld.name = title;
     jsonld.image = "/images/sez/avnode.net-"+section+".jpg";
-    console.log(jsonld.image);
     jsonld.description = __("The list of "+jsonld.name);
     jsonld.itemListElement = [];
     for(let a=0;a<data.length;a++) {

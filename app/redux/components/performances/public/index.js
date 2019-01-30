@@ -10,7 +10,7 @@ import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
-import { PERFORMANCE_NAME } from "./constants";
+import { PERFORMANCE_NAME, SHOW } from "./constants";
 import { removeModel } from "../users/actions";
 import {
   getModel,
@@ -86,7 +86,25 @@ class PerformancePublic extends Component {
       });
     }
     // Convert tech_reqs for API
-    model.tech_reqs = model.tech_reqs.filter(w => w.value);
+    //model.tech_reqs = model.tech_reqs.filter(w => w.value);
+    if (Array.isArray(model.tech_reqs)) {
+      model.tech_reqs = model.tech_reqs.map(x => {
+        const splitted = x.key.split(".");
+        return {
+          lang: splitted[splitted.length - 1],
+          abouttext: x.value
+        };
+      });
+    }
+    if (Array.isArray(model.tech_arts)) {
+      model.tech_arts = model.tech_arts.map(x => {
+        const splitted = x.key.split(".");
+        return {
+          lang: splitted[splitted.length - 1],
+          abouttext: x.value
+        };
+      });
+    }
     console.log(model);
     return model;
   }
@@ -232,7 +250,7 @@ class PerformancePublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={PERFORMANCE_NAME} />
+            <TitleComponent title={model.title} type={PERFORMANCE_NAME} link={"/performances/"+model.slug} show={SHOW} />
           )}
 
           <Form

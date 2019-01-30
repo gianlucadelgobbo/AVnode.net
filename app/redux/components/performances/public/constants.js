@@ -6,3 +6,8 @@ export const PERFORMANCE_NAME = <FormattedMessage
                                     id="performance.public.data"
                                     defaultMessage="PERFORMANCE PUBLIC DATA"
                                 />
+                                
+export const SHOW = <FormattedMessage
+                                id="show"
+                                defaultMessage="SHOW"
+                            />
