@@ -881,6 +881,164 @@ router.removeUser = (req, res) => {
   });
 }
 
+router.addPerformance = (req, res) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  Models['Event']
+  .findOne(query)
+  .select({_id:1, title:1, stats:1, program:1})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.performance)!==-1) {
+      res.status(404).json({
+        "message": "PERFORMANCE_IS_ALREADY_IN",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_IS_ALREADY_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_IS_ALREADY_IN",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_IS_ALREADY_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.program.push({performance:req.params.performance});
+      item.save(function(err){
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.performance};
+          var select = {_id:1, bookings:1}
+          Models["Performance"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, performance) => {
+            performance.bookings.push({event:req.params.id});
+            performance.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'events';
+                req.params.form = 'program';
+                router.getData(req, res);            
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}
+
+router.removePerformance = (req, res) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  Models['Event']
+  .findOne(query)
+  .select({_id:1, program:1,})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.performance)===-1) {
+      res.status(404).json({
+        "message": "PERFORMANCE_IS_NOT_IN",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_IS_NOT_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_IS_NOT_IN",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_IS_NOT_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.program.splice(item.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.performance), 1);
+      //res.json(item);
+      item.save(function(err){
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.performance};
+          var select = {_id:1, bookings:1}
+          //select[req.params.sez] = 1;
+          Models["Performance"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, performance) => {
+            performance.bookings.splice(performance.bookings.map((item)=>{return item.event.toString()}).indexOf(req.params.id), 1);
+            performance.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'events';
+                req.params.form = 'program';
+                router.getData(req, res);
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}
+
 router.getCountries = (req, res) => {
   const allCountries = require('node-countries-list');
   const R = require('ramda');

@@ -177,6 +177,10 @@ const eventSchema = new Schema({
   }  
 });*/
 
+eventSchema.virtual('programmenotscheduled').get(function (req) {
+  return this.program.map((item)=>{return item.performance});
+});
+
 eventSchema.virtual('programmebydayvenue').get(function (req) {
   //let programmebydayvenue = [];
   let programmebydayvenueObj = {};

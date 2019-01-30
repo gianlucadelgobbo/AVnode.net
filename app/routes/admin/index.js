@@ -150,6 +150,14 @@ router.get('/api/:sez/:id/users/remove/:user', (req, res)=>{
   get.removeUser(req, res);
 });
 
+router.get('/api/events/:id/performance/add/:performance', (req, res)=>{
+  get.addPerformance(req, res);
+});
+
+router.get('/api/events/:id/performance/remove/:performance', (req, res)=>{
+  get.removePerformance(req, res);
+});
+
 router.get('/api/:sez', (req, res) => {
   req.params.id = req.user.id;
   get.getList(req, res);
