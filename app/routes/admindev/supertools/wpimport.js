@@ -58,7 +58,7 @@ router.get('/events_import', (req, res) => {
         console.log("enddate");
         console.log(enddate);
         console.log(enddate.toISOString());
-      var locations = [];
+        var locations = [];
         for (var item in body['wpcf-location']) {
           var arr = body['wpcf-location'][item].split(";");
           var venue = {
@@ -160,15 +160,34 @@ router.get('/events_import', (req, res) => {
             } else {
               result = event;
             }
-            res.render('admindev/supertools/import', {
-              title: 'WP Events',
-              currentUrl: req.originalUrl,
-              body: req.session.events,
-              formUrl: req.originalUrl,
-              data: result,
-              //script: false
-              script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/events_import?page=' + (page) + '"},100);</script>'
-            });
+            console.log('saveoutputsaveoutputsaveoutputsaveoutputsaveoutputsaveoutput ');
+            console.log(body.featured);
+            if (body.featured && body.featured.full) {
+              router.download(body.featured.full, global.appRoot+event.image.file, (p1,p2,p3) => {
+  
+                console.log('saveoutput ');
+                res.render('admindev/supertools/import', {
+                  title: 'WP Events',
+                  currentUrl: req.originalUrl,
+                  body: req.session.events,
+                  formUrl: req.originalUrl,
+                  data: result,
+                  //script: false
+                  script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/events_import?page=' + (page) + '"},100);</script>'
+                });
+    
+              });          
+            } else {
+              res.render('admindev/supertools/import', {
+                title: 'WP Events',
+                currentUrl: req.originalUrl,
+                body: req.session.events,
+                formUrl: req.originalUrl,
+                data: result,
+                //script: false
+                script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/events_import?page=' + (page) + '"},100);</script>'
+              });
+            }
           });
         });
       } else {
@@ -594,22 +613,58 @@ router.get('/news_import', (req, res) => {
 
 
 router.download = (source, dest, callback) => {
-  request.head(source, function(err, res, body){
-    if (err) {
-      console.log(err);
+  //router.mkdirRecursive(dest.substring(0, dest.lastIndexOf("/")), () => {
+    var pathToFile = dest.substring(0, dest.lastIndexOf("/"));
+    if (!fs.existsSync(pathToFile)) {
+      var dirName = "/";
+      var filePathSplit = pathToFile.split('/');
+      for (var index = 0; index < filePathSplit.length; index++) {
+          dirName += filePathSplit[index]+'/';
+          if (!fs.existsSync(dirName))
+              fs.mkdirSync(dirName);
+      }
     }
-    if (res) {
-      console.log('content-type:', res.headers['content-type']);
-      console.log('content-length:', res.headers['content-length']);
-    }
-    //dest = dest.substring(0, dest.lastIndexOf("/"));
-    console.log("source ");
-    console.log(source);
-    console.log("dest ");
-    console.log(dest);
-    request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
-  });
+    request.head(source, function(err, res, body){
+      if (err) {
+        console.log(err);
+      }
+      if (res) {
+        console.log('content-type:', res.headers['content-type']);
+        console.log('content-length:', res.headers['content-length']);
+      }
+      //dest = dest.substring(0, dest.lastIndexOf("/"));
+      console.log("source ");
+      console.log(source);
+      console.log("dest ");
+      console.log(dest);
+      request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
+    });
+  //});
 };
+
+router.mkdirRecursive = (path, callback) => {
+  let controlledPaths = []
+  let paths = path.split(
+    '/' // Put each path in an array
+  ).filter(
+    p => p != '.' // Skip root path indicator (.)
+  ).reduce((memo, item) => {
+    // Previous item prepended to each item so we preserve realpaths
+    const prevItem = memo.length > 0 ? memo.join('/').replace(/\.\//g, '')+'/' : ''
+    controlledPaths.push('./'+prevItem+item)
+    return [...memo, './'+prevItem+item]
+  }, []).map(dir => {
+    fs.mkdir(dir, err => {
+      if (err && err.code != 'EEXIST') throw err
+      // Delete created directory (or skipped) from controlledPath
+      controlledPaths.splice(controlledPaths.indexOf(dir), 1)
+      if (controlledPaths.length === 0) {
+        return callback()
+      }
+    })
+  })
+}
+
 /* router.get('/news_import', (req, res) => {
   logger.debug('/admin/tools/wpimport/news');
   let page = req.query.page ? parseFloat(req.query.page) : 1;
