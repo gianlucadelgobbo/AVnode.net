@@ -2,7 +2,7 @@ const router = require('../../router')();
 const request = require('request');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
+const ObjectId = mongoose.Types.ObjectId;
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const News = mongoose.model('News');
@@ -45,16 +45,20 @@ router.get('/events_import', (req, res) => {
         url: url,
         json: true
     }, function (error, response, body) {
-      if (!error && response.statusCode === 20, body.ID) {
+      if (!error && response.statusCode === 200, body.ID) {
         let data = [];
         let contapost = 0;
         let contaposttotal = 0;
         console.log(body);
-        var startdate = new Date(parseInt(body['wpcf-startdate'])*100);
+        var startdate = new Date(parseInt(body['wpcf-startdate'])*1000);
+        var enddate = new Date(parseInt(body['wpcf-enddate'])*1000);
+        console.log("startdate");
         console.log(startdate);
-        var enddate = new Date(parseInt(body['wpcf-enddate'])*100);
+        console.log(startdate.toISOString());
+        console.log("enddate");
         console.log(enddate);
-        var locations = [];
+        console.log(enddate.toISOString());
+      var locations = [];
         for (var item in body['wpcf-location']) {
           var arr = body['wpcf-location'][item].split(";");
           var venue = {
@@ -124,8 +128,8 @@ router.get('/events_import', (req, res) => {
             for (var b=0;b<locations.length;b++) {
               var schedule = {
                 date: new Date(body.date),
-                starttime: startdate+a,
-                endtime: enddate+a,
+                starttime: new Date(startdate+a),
+                endtime: new Date(enddate+a),
                 venue: locations[b]
               };
               event.schedule.push(schedule);
@@ -133,8 +137,8 @@ router.get('/events_import', (req, res) => {
           } else {
             var schedule = {
               date: new Date(body.date),
-              starttime: startdate,
-              endtime: enddate
+              starttime: new Date(startdate),
+              endtime: new Date(enddate)
             };
             event.schedule.push(schedule);
           }
@@ -146,7 +150,7 @@ router.get('/events_import', (req, res) => {
           } else {
             event.users = [ObjectId("5be87f15fc3961000a669")];
           }
-          console.log(event);
+          //console.log(event);
           Event.
           findOneAndUpdate({slug: event.slug}, event, { upsert: true, new: true, setDefaultsOnInsert: true }, (err) => {
             let result;
@@ -232,7 +236,7 @@ router.get('/organizations_import', (req, res) => {
       console.log(response.statusCode);
       console.log("body.ID");
       console.log(body.ID);
-      if (!error && response.statusCode === 20) {
+      if (!error && response.statusCode === 200) {
         page++;
         if (body.organisation) {
           console.log({"slug": body.user_login});
@@ -403,7 +407,209 @@ router.post('/news_import', (req, res) => {
   res.redirect(req.originalUrl);
 });
 
+router.get('/news_import', (req, res) => {
+  logger.debug('/admin/tools/import/news_import');
+  logger.debug(req.session.news);
+  let news = JSON.parse('{"q": '+req.session.news+'}').q;
+  logger.debug(news);
+  let page = req.query.page ? parseFloat(req.query.page) : 0;
+  logger.debug(news[page]);
+  if (news[page]) {
+    const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/news/"+news[page];
+    console.log({"url": url});
 
+    request({
+        url: url,
+        json: true
+    }, function (error, response, body) {
+      console.log({"error": error});
+      console.log({"response": response});
+      console.log({"body": body});
+      if (!error && response.statusCode === 200) {
+        page++;
+        if (body.ID) {
+          let news = body;
+          console.log("News "+news.post_title);
+          console.log(news);
+          let tmp = {
+            old_id: news.ID,
+            createdAt: news.date,
+            slug: news.post_name,
+            title: news.post_title,
+            is_public: true,
+            abouts: [{
+              lang: 'en',
+              abouttext: news.post_content
+            }],
+            stats: {
+              views: 10+Math.floor((Math.random() * 100) + 1),
+              likes: 10+Math.floor((Math.random() * 100) + 1)
+            },
+            web: [],
+            social: [],
+            users: []
+          };
+          if (news.video_thumbnail && news.video_thumbnail !== '') {
+            tmp.media = {url: news.video_thumbnail};
+          }
+          for (let web_site in news.web_site) {
+            if (
+              news.web_site[web_site].indexOf("facebook.com")!==-1 ||
+              news.web_site[web_site].indexOf("fb.com")!==-1 ||
+              news.web_site[web_site].indexOf("twitter.com")!==-1 ||
+              news.web_site[web_site].indexOf("instagram.com")!==-1 ||      
+              news.web_site[web_site].indexOf("youtube.com")!==-1 ||      
+              news.web_site[web_site].indexOf("vimeo.com")!==-1      
+            ) {
+              tmp.social.push({
+                url: news.web_site[web_site],
+                type: 'social'
+              });
+            } else {
+              tmp.web.push({
+                url: news.web_site[web_site],
+                type: 'web'
+              });
+            }
+          }
+          var slugs = [];
+          for (let user in news.capauthors) {
+            slugs.push(news.capauthors[user].user_login);
+          }
+          User.find({"slug": {$in: slugs}}).exec((err, persons) => {
+            console.log("slugs");
+            console.log(slugs);
+            var usersA = persons.map(function(item){ return item._id; });
+            console.log("usersA");
+            if (!usersA.length) usersA = [ObjectId("5be8772bfc39610000007065")];
+            tmp.users = usersA;
+            console.log(usersA);
+            if (news.featured && news.featured.full) {
+              let filename = '';
+              let dest = '';
+              const source = news.featured.full;
+              filename = source.substring(source.lastIndexOf('/') + 1);
+    
+              news.date = new Date(news.date);
+              let month = news.date.getMonth() + 1;
+              month = month < 10 ? '0' + month : month;
+              dest = `${global.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
+              if (!fs.existsSync(dest)) {
+                logger.debug(fs.mkdirSync(dest));
+              }
+              dest += month;
+              if (!fs.existsSync(dest)) {
+                logger.debug(fs.mkdirSync(dest));
+              }
+              dest += `/${filename}`;
+              //console.log(dest.replace(global.appRoot, '')+filename);
+              tmp.image = {
+                file: dest.replace(global.appRoot, ''),
+                filename: filename,
+                originalname: source
+              };
+              router.download(source, dest, (p1,p2,p3) => {
+  
+                console.log('saveoutput ');
+                console.log(tmp);
+                News.
+                update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
+                  let result;
+                  if (err) {
+                    console.log('error '+err);
+                    result = err;
+                  } else {
+                    result = tmp;
+                  }
+                  res.render('admindev/supertools/import', {
+                    title: 'WP News',
+                    currentUrl: req.originalUrl,
+                    body: req.session.news,
+                    formUrl: req.originalUrl,
+                    data: error || result,
+                    //script: false
+                    script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/news_import?page=' + (page) + '"},100);</script>'
+                  });
+              });
+    
+              });          
+            } else {
+              console.log('saveoutput ');
+              console.log(tmp);
+              News.
+              update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
+                let result;
+                if (err) {
+                  console.log('error '+err);
+                  result = err;
+                } else {
+                  result = tmp;
+                }
+                res.render('admindev/supertools/import', {
+                  title: 'WP News',
+                  currentUrl: req.originalUrl,
+                  body: req.session.news,
+                  formUrl: req.originalUrl,
+                  data: error || result,
+                  //script: false
+                  script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/news_import?page=' + (page) + '"},100);</script>'
+                });
+              });
+            }
+          });
+        } else {
+          res.render('admindev/supertools/import', {
+            title: 'WP News',
+            currentUrl: req.originalUrl,
+            body: req.session.news,
+            formUrl: req.originalUrl,
+            data: {msg: ['ERROR: '+news[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
+            //script: false
+            //script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},100);</script>'
+          });
+        }
+      } else {
+        res.render('admindev/supertools/import', {
+          title: 'WP Organizations',
+          currentUrl: req.originalUrl,
+          body: req.session.news,
+          formUrl: req.originalUrl,
+          data: {msg: ['ERROR: '+news[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
+          script: false
+        });
+      }
+    });
+  } else {
+    //req.session.news = undefined;
+    res.render('admindev/supertools/import', {
+      title: 'WP Organizations',
+      currentUrl: req.originalUrl,
+      body: req.session.news,
+      formUrl: req.originalUrl,
+      data: {msg: ['End']},
+      script: false
+    });
+  }
+});
+
+
+router.download = (source, dest, callback) => {
+  request.head(source, function(err, res, body){
+    if (err) {
+      console.log(err);
+    }
+    if (res) {
+      console.log('content-type:', res.headers['content-type']);
+      console.log('content-length:', res.headers['content-length']);
+    }
+    //dest = dest.substring(0, dest.lastIndexOf("/"));
+    console.log("source ");
+    console.log(source);
+    console.log("dest ");
+    console.log(dest);
+    request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
+  });
+};
 /* router.get('/news_import', (req, res) => {
   logger.debug('/admin/tools/wpimport/news');
   let page = req.query.page ? parseFloat(req.query.page) : 1;
@@ -414,7 +620,7 @@ router.post('/news_import', (req, res) => {
       url: url,
       json: true
   }, function (error, response, body) {
-    if (!error && response.statusCode === 20, body.length) {
+    if (!error && response.statusCode === 200, body.length) {
       let data = [];
       let contapost = 0;
       let contaposttotal = 0;
@@ -585,7 +791,7 @@ router.get('/eventsupdate', (req, res) => {
         url: url,
         json: true
     }, function (error, response, body) {
-      if (!error && response.statusCode === 20, body.ID) {
+      if (!error && response.statusCode === 200, body.ID) {
         //console.log(body);
         var startdatetime = new Date((parseInt(body['wpcf-startdate'])*100));
         //console.log(startdatetime);
@@ -724,205 +930,4 @@ router.get('/eventsupdate', (req, res) => {
 
 
 */
-router.get('/news_import', (req, res) => {
-  logger.debug('/admin/tools/import/news_import');
-  logger.debug(req.session.news);
-  let news = JSON.parse('{"q": '+req.session.news+'}').q;
-  logger.debug(news);
-  let page = req.query.page ? parseFloat(req.query.page) : 0;
-  logger.debug(news[page]);
-  if (news[page]) {
-    const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/news/"+news[page];
-    console.log({"url": url});
-
-    request({
-        url: url,
-        json: true
-    }, function (error, response, body) {
-      if (!error && response.statusCode === 20) {
-        page++;
-        if (body.ID) {
-          let news = body;
-          console.log("News "+news.post_title);
-          console.log(news);
-          let tmp = {
-            old_id: news.ID,
-            createdAt: news.date,
-            slug: news.post_name,
-            title: news.post_title,
-            is_public: true,
-            abouts: [{
-              lang: 'en',
-              abouttext: news.post_content
-            }],
-            stats: {
-              views: 10+Math.floor((Math.random() * 100) + 1),
-              likes: 10+Math.floor((Math.random() * 100) + 1)
-            },
-            web: [],
-            social: [],
-            users: []
-          };
-          if (news.video_thumbnail && news.video_thumbnail !== '') {
-            tmp.media = {url: news.video_thumbnail};
-          }
-          for (let web_site in news.web_site) {
-            if (
-              news.web_site[web_site].indexOf("facebook.com")!==-1 ||
-              news.web_site[web_site].indexOf("fb.com")!==-1 ||
-              news.web_site[web_site].indexOf("twitter.com")!==-1 ||
-              news.web_site[web_site].indexOf("instagram.com")!==-1 ||      
-              news.web_site[web_site].indexOf("youtube.com")!==-1 ||      
-              news.web_site[web_site].indexOf("vimeo.com")!==-1      
-            ) {
-              tmp.social.push({
-                url: news.web_site[web_site],
-                type: 'social'
-              });
-            } else {
-              tmp.web.push({
-                url: news.web_site[web_site],
-                type: 'web'
-              });
-            }
-          }
-          var slugs = [];
-          for (let user in news.capauthors) {
-            slugs.push(news.capauthors[user].user_login);
-          }
-          User.find({"slug": {$in: slugs}}).exec((err, persons) => {
-            console.log("slugs");
-            console.log(slugs);
-            var usersA = persons.map(function(item){ return item._id; });
-            console.log("usersA");
-            if (!usersA.length) usersA = ['5be8772bfc39610007065'];
-            tmp.users = usersA;
-            console.log(usersA);
-            if (news.featured && news.featured.full) {
-              let filename = '';
-              let dest = '';
-              const source = news.featured.full;
-              filename = source.substring(source.lastIndexOf('/') + 1);
-    
-              news.date = new Date(news.date);
-              let month = news.date.getMonth() + 1;
-              month = month < 10 ? '0' + month : month;
-              dest = `${global.appRoot}/glacier/news_originals/${news.date.getFullYear()}/`;
-              if (!fs.existsSync(dest)) {
-                logger.debug(fs.mkdirSync(dest));
-              }
-              dest += month;
-              if (!fs.existsSync(dest)) {
-                logger.debug(fs.mkdirSync(dest));
-              }
-              dest += `/${filename}`;
-              //console.log(dest.replace(global.appRoot, '')+filename);
-              tmp.image = {
-                file: dest.replace(global.appRoot, ''),
-                filename: filename,
-                originalname: source
-              };
-              router.download(source, dest, (p1,p2,p3) => {
-  
-                console.log('saveoutput ');
-                console.log(tmp);
-                News.
-                update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
-                  let result;
-                  if (err) {
-                    console.log('error '+err);
-                    result = err;
-                  } else {
-                    result = tmp;
-                  }
-                  res.render('admindev/supertools/import', {
-                    title: 'WP News',
-                    currentUrl: req.originalUrl,
-                    body: req.session.news,
-                    formUrl: req.originalUrl,
-                    data: error || result,
-                    //script: false
-                    script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/news_import?page=' + (page) + '"},100);</script>'
-                  });
-              });
-    
-              });          
-            } else {
-              console.log('saveoutput ');
-              console.log(tmp);
-              News.
-              update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
-                let result;
-                if (err) {
-                  console.log('error '+err);
-                  result = err;
-                } else {
-                  result = tmp;
-                }
-                res.render('admindev/supertools/import', {
-                  title: 'WP News',
-                  currentUrl: req.originalUrl,
-                  body: req.session.news,
-                  formUrl: req.originalUrl,
-                  data: error || result,
-                  //script: false
-                  script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/news_import?page=' + (page) + '"},100);</script>'
-                });
-              });
-            }
-          });
-        } else {
-          res.render('admindev/supertools/import', {
-            title: 'WP News',
-            currentUrl: req.originalUrl,
-            body: req.session.news,
-            formUrl: req.originalUrl,
-            data: {msg: ['ERROR: '+news[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
-            //script: false
-            //script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/organizations_import?page=' + (page) + '"},100);</script>'
-          });
-        }
-      } else {
-        res.render('admindev/supertools/import', {
-          title: 'WP Organizations',
-          currentUrl: req.originalUrl,
-          body: req.session.news,
-          formUrl: req.originalUrl,
-          data: {msg: ['ERROR: '+news[(page-1)]+" http://flyer.dev.flyer.it/wp-admin/user-edit.php?user_id="+body.ID+"&action=edit"]},
-          script: false
-        });
-      }
-    });
-  } else {
-    //req.session.news = undefined;
-    res.render('admindev/supertools/import', {
-      title: 'WP Organizations',
-      currentUrl: req.originalUrl,
-      body: req.session.news,
-      formUrl: req.originalUrl,
-      data: {msg: ['End']},
-      script: false
-    });
-  }
-});
-
-
-router.download = (source, dest, callback) => {
-  request.head(source, function(err, res, body){
-    if (err) {
-      console.log(err);
-    }
-    if (res) {
-      console.log('content-type:', res.headers['content-type']);
-      console.log('content-length:', res.headers['content-length']);
-    }
-    //dest = dest.substring(0, dest.lastIndexOf("/"));
-    console.log("source ");
-    console.log(source);
-    console.log("dest ");
-    console.log(dest);
-    request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
-  });
-};
-
 module.exports = router;
