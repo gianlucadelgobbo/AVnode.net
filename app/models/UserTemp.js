@@ -39,7 +39,7 @@ const userSchema = new Schema({
 
 userSchema.pre('save', function (next) {
   const user = this;
-  console.log(user);
+  //console.log(user);
   //console.log('userSchema.pre(save) user:' + JSON.stringify(user.linkSocial));
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
@@ -47,7 +47,7 @@ userSchema.pre('save', function (next) {
       if (err) { return next(err); }
       user.password = hash;
       user.confirm = uid.v4();
-      console.log(user);
+      //console.log(user);
       next();
     });
   });

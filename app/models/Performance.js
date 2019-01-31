@@ -195,7 +195,7 @@ performanceSchema.pre('remove', function(next) {
   );
 });
 performanceSchema.pre('save', function(next) {
-  console.log(this);
+  //console.log(this);
   next();
 });
 
