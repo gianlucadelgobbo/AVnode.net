@@ -61,7 +61,7 @@
                   each email in data.publicEmails
                     li.list-inline-item
                       a(href="mailto:"+email)
-                        span.lnr.lnr-envelope
+                        i.fa.fa-envelope-o
                 if data.web && data.web.length
                   each link in data.web
                     li.list-inline-item
@@ -74,6 +74,7 @@
           .performer_image_wrapper
             //.performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
             img.rounded-circle.img-fluid(
+              class=data.imageFormats.large.substring(item.imageFormats.large.lastIndexOf(".")+1)
               src=data.imageFormats.large
               alt=data.stagename
               )
