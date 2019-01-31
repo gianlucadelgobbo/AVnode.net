@@ -33,13 +33,13 @@ router.post('/events_import', (req, res) => {
 
 router.get('/events_import', (req, res) => {
   logger.debug('/admin/tools/import/events_import');
-  logger.debug(req.session.events);
+  //logger.debug(req.session.events);
   let events = JSON.parse('{"q": '+req.session.events+'}').q;
-  logger.debug(events);
+  //logger.debug(events);
   let page = req.query.page ? parseFloat(req.query.page) : 0;
   if (events[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/events/"+events[page];
-    console.log({"url": url});
+    //console.log({"url": url});
     page++;
     request({
         url: url,
@@ -82,21 +82,21 @@ router.get('/events_import', (req, res) => {
           wp_tags: body.tags,
           createdAt: new Date(body.date),
           stats: {
-            visits: 0,
-            likes: 0
+            visits: 10,
+            likes: 10
           },
           slug: body.post_name,
           title: body.post_title,
           subtitles: [{
             lang : "en", 
-            abouttext: body.data_evento
+            abouttext: body.data_evento.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
           }], 
           image : body.featured && body.featured.full ? {
             file: "/glacier/events_originals/"+body.featured.full.replace("https://flyer.dev.flyer.it/files/", ""), 
           } : undefined, 
           abouts: [{
             lang : "en", 
-            abouttext: body.post_content
+            abouttext: body.post_content.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
           }], 
           web: [], 
           schedule: [], 
