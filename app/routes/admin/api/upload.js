@@ -55,31 +55,23 @@ upload.uploader = (req, res, done) => {
       fileSize: options.maxsize
     },
     fileFilter: function(req, file, cb) {
-      const extnameok =
-        options.filetypes.indexOf(
-          path
-            .extname(file.originalname)
-            .toLowerCase()
-            .replace(".", "")
-        ) !== -1;
-      let mimetypeok = false;
-      for (let filetype in options.filetypes)
-        if (file.mimetype.indexOf(options.filetypes[filetype]) !== -1)
-          mimetypeok = true;
+      const extnameok = options.fileext.indexOf(path.extname(file.originalname).toLowerCase().replace(".", "") ) !== -1;
+      const mimetypeok = options.filetypes.indexOf(file.mimetype) !== -1;;
+      logger.debug("file.mimetype");
+      logger.debug(file.mimetype);
+      logger.debug("options.filetypes");
+      logger.debug(options.filetypes);
+      logger.debug(options.filetypes.indexOf(file.mimetype));
       if (mimetypeok && extnameok) {
         logger.debug("mime ok");
         cb(null, true);
       } else {
-        logger.debug(
-          __("File upload only supports the following filetypes") +
-            ": " +
-            options.filetypes.join(", ")
-        );
-        cb(
-          __("File upload only supports the following filetypes") +
-            ": " +
-            options.filetypes.join(", ")
-        );
+        logger.debug( __("File upload only supports the following filetypes") + ": " + options.fileext.join(", "));
+        const e = {
+          "fieldname":"image",
+          "err": __("File upload only supports the following filetypes") + ": " + options.fileext.join(", ")
+        };
+        cb(e);
       }
     }
   });
@@ -97,20 +89,20 @@ upload.uploader = (req, res, done) => {
     if (err) {
       logger.debug("upload err");
       logger.debug(err);
-      done({ errors: { form_error: err } }, null);
+      done({ errors: { form_error: [err] } }, null);
     } else if (!options) {
       // MANCA ELSE
-      done({ errors: { form_error: "UPLOAD_CONFIG_ERROR" } }, null);
-    } else if (
-      req.files[options.fields.name] &&
-      req.files[options.fields.name].length
-    ) {
+      done({ errors: { form_error: [{
+        "fieldname":"image",
+        "err": "UPLOAD_CONFIG_ERROR"
+      }] } }, null);
+    } else if (req.files && req.files[options.fields.name] && req.files[options.fields.name].length) {
       // MANCA ELSE
       let conta = 0;
       /* 
       { errors: {form_error: } }
        */
-      if (options.filetypes.indexOf("jpg") != -1) {
+      if (options.filetypes.indexOf("image/jpeg") !== -1) {
         for (let a = 0; a < req.files[options.fields.name].length; a++) {
           const dimensions = sizeOf(req.files[options.fields.name][a].path);
 
@@ -121,24 +113,10 @@ upload.uploader = (req, res, done) => {
           logger.debug("dimensions.height " + dimensions.height);
           logger.debug("options.minwidth " + options.minwidth);
           logger.debug("options.minheight " + options.minheight);
-          if (
-            dimensions.width < options.minwidth ||
-            dimensions.height < options.minheight
-          ) {
+          if (dimensions.width < options.minwidth || dimensions.height < options.minheight) {
             error = true;
-            req.files[options.fields.name][a].err =
-              __("Images minimum size is") +
-              ": " +
-              options.minwidth +
-              " x " +
-              options.minheight;
-            logger.debug(
-              __("Images minimum size is") +
-                ": " +
-                options.minwidth +
-                " x " +
-                options.minheight
-            );
+            req.files[options.fields.name][a].err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
+            logger.debug( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
           } else {
             logger.debug("Image minimum size is ok");
           }
@@ -166,7 +144,7 @@ upload.uploader = (req, res, done) => {
           }
         }, null); */
       } else {
-        if (options.filetypes.indexOf("jpg") != -1) {
+        if (options.filetypes.indexOf("image/jpeg") !== -1) {
           imageUtil.resizer(
             req.files[options.fields.name],
             options,
@@ -206,11 +184,7 @@ upload.uploader = (req, res, done) => {
                     };
                   } else {
                     put[options.fields.name] = [];
-                    for (
-                      let a = 0;
-                      a < req.files[options.fields.name].length;
-                      a++
-                    ) {
+                    for (let a = 0; a < req.files[options.fields.name].length; a++) {
                       const ins = {
                         file: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
                         originalname: req.files[options.fields.name][a].originalname,
@@ -267,10 +241,7 @@ upload.uploader = (req, res, done) => {
         }
       }
     } else {
-      done(
-        { errors: { form_error: "Missing req.files." + options.fields.name } },
-        null
-      );
+      done({ errors: { form_error: [{err: "Missing req.files." + options.fields.name}] } }, null);
     }
   });
 };
