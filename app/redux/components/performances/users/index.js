@@ -17,7 +17,7 @@ const getSuggestionValue = suggestion => suggestion.stagename;
 const getSuggestionID = suggestion => suggestion.id;
 
 const renderSuggestion = suggestion => (
-  <div id={suggestion.id}>{suggestion.stagename}</div>
+  <span id={suggestion.id}>{suggestion.stagename}</span>
 );
 
 class AddUsersPerformance extends Component {
@@ -30,16 +30,20 @@ class AddUsersPerformance extends Component {
     };
   }
 
-  componentDidMount() {
-    //const {fetchUsers} = this.props;
-    //fetchUsers();
-  }
+  componentDidMount() {}
 
   onChange = (event, { newValue }) => {
-    this.setState({
-      value: newValue,
-      idusers: event.target.id
-    });
+    if (event.target.children.length !== 0) {
+      this.setState({
+        value: newValue,
+        idusers: event.target.children[0].id
+      });
+    } else {
+      this.setState({
+        value: newValue,
+        idusers: event.target.id
+      });
+    }
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -88,7 +92,7 @@ class AddUsersPerformance extends Component {
     return saveModel(modelToSave).then(response => {
       console.log(response);
       if (response.model && response.model._id) {
-        fetchPerformancePublic({ id: _id }).then(response=>hideModal());
+        fetchPerformancePublic({ id: _id }).then(response => hideModal());
       }
     });
   }
