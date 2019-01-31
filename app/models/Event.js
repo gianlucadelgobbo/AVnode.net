@@ -205,53 +205,6 @@ eventSchema.virtual('imageFormats').get(function () {
   return imageFormats;
 });
 
-eventSchema.virtual('boxDate').get(function () {
-  let boxDate;
-  if (this.schedule && this.schedule.length) {
-    const lang = global.getLocale();
-    moment.locale(lang);
-    if (this.schedule.length == 1) {
-      const startdate = new Date(new Date(this.schedule[0].starttime).setUTCHours(0,0,0,0));
-      const enddate = new Date(new Date(this.schedule[0].endtime).setUTCHours(0,0,0,0));
-      console.log("this.schedule[0].starttime");
-      console.log(this.schedule[0].starttime);
-      if(startdate==enddate) {
-        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single);
-      } else {
-        if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].single);
-        } else {
-          if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
-            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].daymonth2);
-          } else {
-            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].day2);
-          }
-        }
-      }
-      console.log("this.schedule[0].endtime");
-      //console.log(new Date(enddate));
-    } else {
-      if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
-        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].single);
-      } else {
-        if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].daymonth2);
-        } else {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime).format(config.dateFormat[lang].day2);
-        }
-      }
-    }
-  }
-  return boxDate;
-});
-
-eventSchema.virtual('boxVenue').get(function () {
-  let boxVenue;
-  if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {
-    boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
-  }
-  return boxVenue;
-});
 
 /* C
 eventSchema.virtual('teaserImageFormats').get(function () {

@@ -407,5 +407,7 @@
 	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts:",
 	"Please send any bug and suggestion to:": "Please send any bug and suggestion to:",
 	"Password minimum length is 8 characters and have to contain at least 1 number, 1 lower case and 1 uppercase characters": "Password minimum length is 8 characters and have to contain at least 1 number, 1 lower case and 1 uppercase characters",
-	"Password and Password confirm does not match. Try again...": "Password and Password confirm does not match. Try again..."
+	"Password and Password confirm does not match. Try again...": "Password and Password confirm does not match. Try again...",
+	"to be scheduled": "to be scheduled",
+	"Full schedule": "Full schedule"
 }

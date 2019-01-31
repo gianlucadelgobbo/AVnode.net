@@ -173,7 +173,7 @@ userSchema.virtual('addressesFormatted').get(function () {
     for(let country in addresses) {
       addressesFormatted.push(" <b>"+country+"</b> "+addresses[country].join(", "));
     }
-    console.log(addressesFormatted);
+    //console.log(addressesFormatted);
     return addressesFormatted/* .join(", ") */;
   }
 });

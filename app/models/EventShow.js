@@ -446,26 +446,11 @@ eventSchema.virtual('boxDate').get(function () {
   if (this.schedule && this.schedule.length) {
     const lang = global.getLocale();
     moment.locale(lang);
-    if (this.schedule.length == 1) {
-      const startdate = new Date(new Date(this.schedule[0].starttime).setUTCHours(0,0,0,0));
-      const enddate = new Date(new Date(this.schedule[0].endtime).setUTCHours(0,0,0,0));
-      console.log("this.schedule[0].starttime");
-      console.log(this.schedule[0].starttime);
-      if(startdate==enddate) {
-        boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single);
-      } else {
-        if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
-          boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].single);
-        } else {
-          if (this.schedule[0].starttime.getMonth()!==this.schedule[this.schedule.length-1].endtime.getMonth()) {
-            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonth2);
-          } else {
-            boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
-          }
-        }
-      }
-      console.log("this.schedule[0].endtime");
-      //console.log(new Date(enddate));
+    const startdate = new Date(new Date(this.schedule[0].starttime).setUTCHours(0,0,0,0));
+    const enddate = new Date(new Date(this.schedule[this.schedule.length-1].endtime).setUTCHours(0,0,0,0));
+    const enddatefake = new Date(new Date(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
+    if(startdate.toString()===enddatefake.toString()) {
+      boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single);
     } else {
       if (this.schedule[0].starttime.getFullYear()!==this.schedule[this.schedule.length-1].endtime.getFullYear()) {
         boxDate = moment(this.schedule[0].starttime).format(config.dateFormat[lang].single) + ' // ' + moment(this.schedule[this.schedule.length-1].endtime-(10*60*60*1000)).format(config.dateFormat[lang].single);
@@ -482,12 +467,171 @@ eventSchema.virtual('boxDate').get(function () {
 });
 
 eventSchema.virtual('boxVenue').get(function () {
-  let boxVenue;
+  /* let boxVenue;
   if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {
     boxVenue = this.schedule[0].venue.name + ' ' + this.schedule[0].venue.location.locality + ' ' + this.schedule[0].venue.location.country;
+  } */
+  let boxVenueO = {};
+  for (let schedule=0;schedule<this.schedule.length; schedule++) {
+    //for (let venue in schedulebydayvenueObjGrouped[item].venues) {
+      let v = this.schedule[schedule].venue;
+      if (!boxVenueO[v.location.country]) boxVenueO[v.location.country] = {};
+      if (!boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
+      if (!boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
+      if (v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
+    //}
   }
+  let boxVenue = "";
+  for (let country in boxVenueO) {
+    boxVenue = country+" "+boxVenue;
+    for (let city in boxVenueO[country]) {
+      boxVenue = city+", "+boxVenue;
+      for (let venue in boxVenueO[country][city]) {
+        boxVenue = venue+", "+boxVenue;
+        /* for (let room in boxVenueO[country][city][venue]) {
+          boxVenue = room+", "+boxVenue;
+        } */
+      }
+    }
+  }
+
   return boxVenue;
 });
+
+eventSchema.virtual('fullSchedule').get(function (req) {
+  //let schedulebydayvenue = [];
+  let schedulebydayvenueObj = {};
+  let ret = false;
+  if (this.schedule && this.schedule.length) {
+    const lang = global.getLocale();
+    for(let a=0;a<this.schedule.length;a++){
+      const startdate = new Date(new Date(this.schedule[a].starttime).setUTCHours(0,0,0,0));
+      const enddate = new Date(new Date(this.schedule[a].endtime).setUTCHours(0,0,0,0));
+      const enddatefake = new Date(new Date(this.schedule[a].endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
+      console.log(this.schedule[0]);
+      console.log("startdate");
+      console.log(startdate);
+      console.log("enddate");
+      console.log(enddate);
+      console.log("enddatefake");
+      console.log(enddatefake);
+      console.log((enddatefake-startdate)/(24*60*60*1000));
+      let hs = ('0'+this.schedule[a].starttime.getUTCHours()).substr(-2);;
+      let ms = ('0'+this.schedule[a].starttime.getUTCMinutes()).substr(-2);;
+      let he = ('0'+this.schedule[a].endtime.getUTCHours()).substr(-2);;
+      let me = ('0'+this.schedule[a].endtime.getUTCMinutes()).substr(-2);;
+      for(let b=0;b<=(enddatefake-startdate)/(24*60*60*1000);b++){
+        console.log(b);
+        console.log(startdate.getTime());
+        console.log();
+        let day = new Date(startdate.getTime()+((24*60*60*1000)*b));
+        let d = ('0'+day.getUTCDate()).substr(-2);;
+        let m = ('0'+(day.getUTCMonth()+1)).substr(-2);      
+        let y = day.getUTCFullYear();
+/*         if (!schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me]) schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me] = {};
+        if (!schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me][this.schedule[a].venue.name+"-"+this.schedule[a].venue.room]) schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me][this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = {};
+        schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me][this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = this.schedule[a].venue;
+ */
+        if (!schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room]) schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = {dates:[], venue:this.schedule[a].venue};
+        schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room].dates.push(y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me);
+      }
+    }
+    let schedulebydayvenueObjSorted = {};
+    for (let item in schedulebydayvenueObj) {
+      console.log("STOCAZZO");
+      console.log(schedulebydayvenueObj[item]);
+      schedulebydayvenueObj[item].dates = schedulebydayvenueObj[item].dates.sort();
+      if (!schedulebydayvenueObjSorted[schedulebydayvenueObj[item].dates.join("-")]) schedulebydayvenueObjSorted[schedulebydayvenueObj[item].dates.join("-")] = [];
+      schedulebydayvenueObjSorted[schedulebydayvenueObj[item].dates.join("-")].push(schedulebydayvenueObj[item]);
+    }
+    let schedulebydayvenueObjGrouped = [];
+    for (let item in schedulebydayvenueObjSorted) {
+      var tmp = {
+        start: schedulebydayvenueObjSorted[item][0].dates[0],
+        end: schedulebydayvenueObjSorted[item][0].dates[schedulebydayvenueObjSorted[item][0].dates.length-1],
+        venues: []
+      };
+      for (let venue in schedulebydayvenueObjSorted[item]) {
+        tmp.venues.push(schedulebydayvenueObjSorted[item][venue].venue);
+      }
+      schedulebydayvenueObjGrouped.push(tmp);
+    }
+    let boxDates = [];
+    for (let item in schedulebydayvenueObjGrouped) {
+      let date = schedulebydayvenueObjGrouped[item].start.split("-");
+      let starttime = new Date(date[0],date[1]-1,date[2],date[3],date[4],date[5],date[6]);
+      date = schedulebydayvenueObjGrouped[item].end.split("-");
+      let endtime = new Date(date[0],date[1]-1,date[2],date[3],date[4],date[5],date[6]);
+      let boxVenueO = {};
+      for (let venue in schedulebydayvenueObjGrouped[item].venues) {
+        let v = schedulebydayvenueObjGrouped[item].venues[venue];
+        if (!boxVenueO[v.location.country]) boxVenueO[v.location.country] = {};
+        if (!boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
+        if (!boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
+        if (v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
+      }
+      let boxVenue = "";
+      for (let country in boxVenueO) {
+        boxVenue = country+" "+boxVenue;
+        for (let city in boxVenueO[country]) {
+          boxVenue = city+", "+boxVenue;
+          for (let venue in boxVenueO[country][city]) {
+            boxVenue = venue+", "+boxVenue;
+            for (let room in boxVenueO[country][city][venue]) {
+              boxVenue = room+", "+boxVenue;
+            }
+          }
+        }
+      }
+      boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
+    }
+    console.log(boxDates);
+    /* 
+      let ordered = {};
+      Object.keys(schedulebydayvenueObj[item]).sort().forEach(function(key) {
+        if (!schedulebydayvenueObjSorted[item]) schedulebydayvenueObjSorted[item] = {};
+        schedulebydayvenueObjSorted[item][key] = schedulebydayvenueObj[item][key];
+      });
+    let schedulebydayvenueObjGrouped = {};
+    for (let item in schedulebydayvenueObjSorted) {
+      console.log((schedulebydayvenueObjSorted[item]));
+      console.log(Object.keys(schedulebydayvenueObjSorted[item]).join("-"));
+      let itmname = item+"-"+Object.keys(schedulebydayvenueObjSorted[item]).join("-");
+      if (!schedulebydayvenueObjGrouped[itmname]) schedulebydayvenueObjGrouped[itmname] = Object.keys(schedulebydayvenueObjSorted[item]).map((key)=>{return schedulebydayvenueObjSorted[item][key]});
+
+    }
+    let schedulebydayvenueObjGroupedSorted = {};
+    Object.keys(schedulebydayvenueObjGrouped).sort().forEach(function(key) {
+      schedulebydayvenueObjGroupedSorted[key] = schedulebydayvenueObjGrouped[key];
+    }); */
+    return boxDates;
+//    return ret ? Object.values(schedulebydayvenueObj) : undefined;
+  }
+});
+
+eventSchema.boxDateCreator = (starttime, endtime, boxVenue) => {
+  let boxDate;
+  const lang = global.getLocale();
+  moment.locale(lang);
+  const startdate = new Date(new Date(starttime).setUTCHours(0,0,0,0));
+  const enddate = new Date(new Date(endtime).setUTCHours(0,0,0,0));
+  const enddatefake = new Date(new Date(endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
+  if(startdate.toString()===enddatefake.toString()) {
+    boxDate = moment(starttime).format(config.dateFormat[lang].single);
+  } else {
+    if (starttime.getFullYear()!==endtime.getFullYear()) {
+      boxDate = moment(starttime).format(config.dateFormat[lang].single) + ' // ' + moment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].single);
+    } else {
+      if (starttime.getMonth()!==endtime.getMonth()) {
+        boxDate = moment(starttime).format(config.dateFormat[lang].daymonth1) + ' // ' + moment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].daymonth2);
+      } else {
+        boxDate = moment(starttime).format(config.dateFormat[lang].day1) + ' // ' + moment(endtime-(10*60*60*1000)).format(config.dateFormat[lang].day2);
+      }
+    }
+  }
+  return boxDate+" | "+boxVenue;
+}
+
 
 /* C
 eventSchema.virtual('teaserImageFormats').get(function () {
