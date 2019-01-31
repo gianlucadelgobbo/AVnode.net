@@ -29,26 +29,28 @@ block content
   .container
     .row
       .col-md-8
-        .embed-responsive.embed-responsive-16by9
-          video.embed-responsive-item#my-video.video-js(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{aspectRatio:"16:9", fluid: true}')
-            source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
-            //source(src='MY_VIDEO.webm', type='video/webm')
-            p.vjs-no-js
-              !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
-              a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
+        if data.media && data.media.file
+          .embed-responsive.embed-responsive-16by9
+            video.embed-responsive-item#my-video.video-js(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{aspectRatio:"16:9", fluid: true}')
+              source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
+              //source(src='MY_VIDEO.webm', type='video/webm')
+              p.vjs-no-js
+                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
+                a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
 
       .col-md-4.data_footage_video
         .data_footage_video_wrapper
           h3=__("Data")
-          ul
-            li=global.__('File name')+": "
-              b=data.media.file.substring(data.media.file.lastIndexOf("/")+1)
-            li=global.__('File size')+": "
-              b=( data.media.filesize / Math.pow(1024, Math.floor( Math.log(data.media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.media.filesize) / Math.log(1024) )]
-            li=global.__('File duration')+": "
-              b=data.media.duration
-            li=global.__('File type')+": "
-              b=ext
+          if data.media && data.media.file
+            ul
+              li=global.__('File name')+": "
+                b=data.media.file.substring(data.media.file.lastIndexOf("/")+1)
+              li=global.__('File size')+": "
+                b=( data.media.filesize / Math.pow(1024, Math.floor( Math.log(data.media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.media.filesize) / Math.log(1024) )]
+              li=global.__('File duration')+": "
+                b=data.media.duration
+              li=global.__('File type')+": "
+                b=ext
         if data.tags
           .data_footage_video_wrapper
             h3=__("Tags")
@@ -71,13 +73,13 @@ block content
 
 
       
-    if data.events.length 
+    if data.events && data.events.length 
       h2.mt-5.main_title.indented_title.color1=__("Events")
       .row.mb-5
         each item in data.events
           .col-md-4
             include ../partials/boxEvent
-    if data.performances
+    if data.performances && data.performances.length 
       h2.mt-5.main_title.indented_title.color1=__("Performances")
       .row.mb-5
         each item in data.performances
