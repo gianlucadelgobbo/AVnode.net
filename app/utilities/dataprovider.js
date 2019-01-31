@@ -395,6 +395,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           data.liked = true;
         }
       } else {
+        console.log("sto qui");
         if (!req.session[data._id]) {
           req.session[data._id] = true;
           if (!data.stats) data.stats = {};
