@@ -2212,6 +2212,7 @@ export const uploadComponent = ({
                                   placeholder,
                                   showModal,
                                   uploadButton,
+                                  maxSize,
                                   accept,
                                   uploadFile,
                                   media,
@@ -2229,6 +2230,7 @@ export const uploadComponent = ({
                 name="video"
                 component={renderDropzoneInput}
                 accept={accept}
+                maxSize={maxSize}
                 showModal={showModal}
                 className="enableBorder"
                 uploadFile={uploadFile}
@@ -2322,6 +2324,7 @@ export const uploadGallery = ({
                                 showModal,
                                 uploadButton,
                                 accept,
+                                maxSize,
                                 uploadFile,
                                 media,
                                 multiple
@@ -2335,6 +2338,7 @@ export const uploadGallery = ({
             <Field
                 name="gallery"
                 component={renderDropzoneInput}
+                maxSize={maxSize}
                 accept={accept}
                 showModal={showModal}
                 className="enableBorder"
@@ -2402,6 +2406,7 @@ export const multiActivities = ({
                                   meta: {error},
                                   placeholder,
                                   showModal,
+                                  maxSize,
                                   tabs,
                                   labels,
                                   seasons
@@ -2434,6 +2439,7 @@ export const multiActivities = ({
                 <Field
                     name="logo"
                     component={renderDropzoneInput}
+                    maxSize={maxSize}
                     placeholder="Activity logo (.svg only)"
                     isChild={true}
                     showModal={showModal}
