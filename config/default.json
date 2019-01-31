@@ -247,7 +247,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/users_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1000,
@@ -559,7 +560,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/users_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1000,
@@ -940,7 +942,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/events_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1280,
@@ -1164,7 +1167,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/galleries_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1280,
@@ -1235,7 +1239,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["mp4","mov","m4v","avi"],
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
                 "maxsize": 2147483648,
                 "minwidth": 1280,
@@ -1751,7 +1756,8 @@
                   "name": "media",
                   "maxCount": 1
                 },
-                "filetypes": ["mp4","mov","m4v","avi"],
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
                 "maxsize": 2147483648,
                 "minwidth": 1280,
@@ -1841,7 +1847,8 @@
                   "name": "media",
                   "maxCount": 1
                 },
-                "filetypes": ["mp4","mov","m4v","avi"],
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
                 "maxsize": 2147483648,
                 "minwidth": 1280,
@@ -2021,7 +2028,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/galleries_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1280,
@@ -2206,7 +2214,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/news_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1280,
@@ -2516,7 +2525,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/performances_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1280,
@@ -2563,7 +2573,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["jpg","jpeg","png","gif","svg"],
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
                 "storage": "/glacier/galleries_originals/",
                 "maxsize": 20971520,
                 "minwidth": 1280,
@@ -2634,7 +2645,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["mp4","mov","m4v","avi"],
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/videos_originals/",
                 "maxsize": 2147483648,
                 "minwidth": 1280,
@@ -2705,7 +2717,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["mp4","mov","m4v","avi"],
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/videos_originals/",
                 "maxsize": 2147483648,
                 "minwidth": 1280,
@@ -2888,7 +2901,8 @@
                   "name": "image",
                   "maxCount": 1
                 },
-                "filetypes": ["mp4","mov","m4v","avi"],
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/footage_originals/",
                 "maxsize": 2147483648,
                 "minwidth": 1280,
@@ -3097,7 +3111,8 @@
                   "name": "media",
                   "maxCount": 1
                 },
-                "filetypes": ["mp4","mov","m4v","avi"],
+                "fileext": ["mp4","mov","m4v","avi"],
+                "filetypes": ["video/mp4","video/quicktime","video/mpeg","video/x-msvideo","video/mpeg","video/x-m4v"],
                 "storage": "/glacier/videos_originals/",
                 "maxsize": 2147483648,
                 "minwidth": 1280,
