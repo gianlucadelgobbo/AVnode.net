@@ -169,11 +169,11 @@ export const fetchEventImages = ({ id }) => {
   });
 };
 
-export const saveEventImages = model => {
+/*export const saveEventImages = model => {
   return axios.post(`events/${model._id}/image`, model).then(result => {
     return result.data;
   });
-};
+};*/
 
 // - users
 
@@ -358,7 +358,19 @@ export const savePerformanceImages = model => {
       return result.data;
     });
 };
-//axios.post(`performances/${model._id}/image`, model);
+
+export const saveEventImages = model => {
+  // convert image to Form Data
+  let formBox = new FormData();
+  formBox.append("image", model.image);
+
+  // define request headers
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+  return axios.put(`events/${model.id}/image`, formBox, config).then(result => {
+    return result.data;
+  });
+};
 
 // - galleries
 
