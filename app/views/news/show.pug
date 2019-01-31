@@ -44,9 +44,9 @@ block content
         if data.web
           .mb-3
             each url in data.web
-              a(href=url.url)=url.url
+              a(href=url.url target="_blank")=url.url
         if data.social
           .mb-3
             each url in data.social
-              a(href=url.url)=url.url
+              a(href=url.url target="_blank")=url.url
 

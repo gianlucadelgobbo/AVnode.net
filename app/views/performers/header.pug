@@ -91,7 +91,7 @@
                   each email in data.publicEmails
                     li.list-inline-item.mb-3
                       a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
-                        span.lnr.lnr-envelope
+                        i.fa.fa-envelope-o.about_button
                         
 
     .col-lg-5
@@ -100,6 +100,7 @@
           .performer_image_wrapper
             //.performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
             img.rounded-circle.img-fluid(
+              class=data.imageFormats.large.substring(item.imageFormats.large.lastIndexOf(".")+1)
               src=data.imageFormats.large
               alt=data.stagename
               )
