@@ -9,7 +9,13 @@ const MediaImage = require('./shared/MediaImage');
 const Booking = require('./shared/Booking');
 
 const adminsez = 'performances';
-
+function ignoreEmpty (val) {
+  if ("" === val) {
+    return undefined;
+  } else {
+    return val
+  }
+}
 const performanceSchema = new Schema({
   old_id : String,
 
@@ -34,8 +40,8 @@ const performanceSchema = new Schema({
   videos: [{ type: Schema.ObjectId, ref: 'Video' }],
   categories: [{ type : Schema.ObjectId, ref : 'Category' }],
   type: { type : Schema.ObjectId, ref : 'Category' },
-  tecnique: { type : Schema.ObjectId, ref : 'Category' },
-  genre: { type : Schema.ObjectId, ref : 'Category' }
+  tecnique: { type : Schema.ObjectId, set: ignoreEmpty, ref : 'Category' },
+  genre: { type : Schema.ObjectId, set: ignoreEmpty, ref : 'Category' }
 }, {
   timestamps: true,
   toObject: {
@@ -194,8 +200,13 @@ performanceSchema.pre('remove', function(next) {
     next
   );
 });
-performanceSchema.pre('save', function(next) {
-  //console.log(this);
+performanceSchema.pre('validate', function(next) {
+ /*  console.log("performanceSchema.pre('save', function(next) {");
+  console.log(this);
+  if (this.tecnique == '') this.tecnique = undefined;
+  if (this.genre == '') this.genre = undefined;
+  console.log("performanceSchema.pre('save', function(next) {");
+  console.log(this); */
   next();
 });
 

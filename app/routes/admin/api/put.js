@@ -34,7 +34,8 @@ router.putData = (req, res) => {
           logger.debug(data);
           logger.debug('select');
           logger.debug(select);
-          for (const item in select) if(req.body[item]) {
+          for (const item in select) if(item in req.body) {
+            logger.debug(item);
             put[item] = req.body[item];
           }
           logger.debug('putputputputputput');
