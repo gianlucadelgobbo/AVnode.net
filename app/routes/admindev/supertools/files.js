@@ -970,14 +970,18 @@ router.get('/videoformatsgenerator', (req, res) => {
       }
       data.push(videos[video].media);
     }
-    console.log(req.path);
-    res.render('admindev/supertools/files/showall', {
-      title: 'Video images generator',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
-      data: data,
-      script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/videoformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
-    });
+    if (req.query.api==1) {
+      res.json(data);
+    } else {
+      console.log(req.path);
+      res.render('admindev/supertools/files/videos', {
+        title: 'Video images generator',
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        currentUrl: req.originalUrl,
+        data: data,
+        script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/videoformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
+      });
+    }
   });
 });
 
