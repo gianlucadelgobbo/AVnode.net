@@ -51,12 +51,13 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
           const options = config.cpanel[req.params.sez].forms.public.components.media.config;
 
           imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (resizeerr, info) => {
+            console.log((resizeerr || info));
             if (resizeerr || !info) {
               if (resizeerr) {
-                logger.debug(`Image resize ERROR: ${resizeerr}`);
+                console.log(`Image resize ERROR: ${resizeerr}`);
                 res.json({error: `Image resize ERROR: ${resizeerr}`});
               } else if (!info) {
-                logger.debug("Image resize ERROR: info undefined");
+                console.log("Image resize ERROR: info undefined");
                 res.json({error: `Image resize ERROR: ${resizeerr}`});
               }
             } else {
