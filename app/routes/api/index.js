@@ -29,6 +29,8 @@ router.get('/tobeencoded/:sez', (req, res) => {
 });
 
 router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
+  console.log('/setencodingstatus/:sez/:id/:encoding');
+  console.log(req.params.encoding);
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   if (req.params.encoding == 1) {
     Model
@@ -42,6 +44,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
         data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
         data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
         data.is_public = 1;
+        data.media.encoded = req.params.encoding;
         console.log(global.appRoot+data.media.preview);
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
@@ -57,6 +60,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
                 res.json({error: `Image resize ERROR: ${resizeerr}`});
               }
             } else {
+              data.media.encoded = req.params.encoding;
               data.save((err) => {
                 if (err) {
                   res.json(err);
