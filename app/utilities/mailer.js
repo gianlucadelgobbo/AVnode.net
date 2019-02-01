@@ -9,6 +9,7 @@ aws.config.loadFromPath('./config/ses.json');
 var params = {
   Destination: { /* required */
     /* CcAddresses: [ 'g.delgobbo@flyer.it' ], */
+    CcAddresses: [],
     ToAddresses: []
   },
   Message: { /* required */
@@ -43,6 +44,7 @@ module.exports.mySendMailer = (data, cb) => {
   logger.info('TEXT_FORMAT_BODY');
   logger.info(TEXT_FORMAT_BODY);
 
+  if (data.message.cc) params.Destination.CcAddresses = [ data.message.cc ];
   params.Destination.ToAddresses = [ data.message.to ];
   params.Message.Body.Html.Data = HTML_FORMAT_BODY;
   params.Message.Body.Text.Data = TEXT_FORMAT_BODY;
