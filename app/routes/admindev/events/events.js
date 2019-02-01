@@ -35,7 +35,29 @@ const populate_program = [
           }
         ]
       },{ 
-        "path": "categories" , 
+        "path": "type" , 
+        "select": "name slug",
+        "model": "Category",
+        "populate": [
+          { 
+            "path": "ancestor" , 
+            "select": "name slug",
+            "model": "Category"
+          }
+        ]
+      },{ 
+        "path": "tecnique" , 
+        "select": "name slug",
+        "model": "Category",
+        "populate": [
+          { 
+            "path": "ancestor" , 
+            "select": "name slug",
+            "model": "Category"
+          }
+        ]
+      },{ 
+        "path": "genre" , 
         "select": "name slug",
         "model": "Category",
         "populate": [

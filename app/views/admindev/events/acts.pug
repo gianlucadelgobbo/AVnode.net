@@ -95,13 +95,13 @@ block content
           td
             h2!=item.performance.title
             p
-              !="TYPE: "+item.performance.categories.filter(word => word.ancestor.slug == "type")[0].name
+              !="TYPE: "+item.performance.type.name
               br
-              if item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug).length
-                !="STYLE: "+item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug)[0].name
+              if item.performance.tecnique
+                !="STYLE: "+item.performance.tecnique.name
                 br
-              if item.performance.categories.filter(word => word.ancestor.slug == "genre").length
-                !="GENRE: "+item.performance.categories.filter(word => word.ancestor.slug == "genre")[0].name
+              if item.performance.genre
+                !="GENRE: "+item.performance.genre.name
           td
             if item.subscription_id
               !=item.subscription_id.topics.join("<br />")
