@@ -45,7 +45,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
         console.log(global.appRoot+data.media.preview);
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-          const options = config.cpanel[req.params.sez].forms.media.components.media.config;
+          const options = config.cpanel[req.params.sez].forms.public.components.media.config;
 
           imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (resizeerr, info) => {
             if (resizeerr || !info) {
