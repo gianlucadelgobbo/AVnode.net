@@ -119,6 +119,7 @@ router.signupValidator = (put, cb) => {
     "message":"",
     "name":""
   };
+  /*
   //put = {};
   //put.birthday="01-09-2018";
   const birthdayA = put.birthday.split("/");
@@ -160,6 +161,7 @@ router.signupValidator = (put, cb) => {
   } else {
     put.birthday = birthday;
   }
+  */
   if (put.crewslug && put.slug.trim() === put.crewslug.trim()) {
     errors.errors.slug = {
       "message": "Crew Profile URL can not be the equal to the Profile URL",
