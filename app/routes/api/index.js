@@ -56,7 +56,8 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
           console.log(imageUtil.resizer);
 
           imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (resizeerr, info) => {
-            console.log((resizeerr || info));
+            console.log("resizeerr || info");
+            console.log(resizeerr || info);
             if (resizeerr || !info) {
               if (resizeerr) {
                 console.log(`Image resize ERROR: ${resizeerr}`);
