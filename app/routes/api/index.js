@@ -52,6 +52,8 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
           const options = config.cpanel[req.params.sez].forms.public.components.media.config;
           console.log("data.media.filesize");
           console.log(data.media.filesize);
+          console.log(imageUtil);
+          console.log(imageUtil.resizer);
 
           imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (resizeerr, info) => {
             console.log((resizeerr || info));
