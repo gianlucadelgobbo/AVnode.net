@@ -29,8 +29,8 @@ router.get('/tobeencoded/:sez', (req, res) => {
 });
 
 router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
-  console.log('/setencodingstatus/:sez/:id/:encoding');
-  console.log(req.params.encoding);
+  logger.debug('/setencodingstatus/:sez/:id/:encoding');
+  logger.debug(req.params.encoding);
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   if (req.params.encoding == 1) {
     Model
@@ -39,31 +39,31 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
       if (err) {
         res.status(500).json({ error: `${JSON.stringify(err)}` });
       } else {
-        console.log(data.media.original);
+        logger.debug(data.media.original);
         const ext = data.media.original.substring(data.media.original.lastIndexOf(".")+1);
         data.media.file = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "/").replace("/glacier/", "/warehouse/")+"_"+ext+".mp4";
         data.media.preview = data.media.original.substring(0, data.media.original.lastIndexOf(".")).replace("_originals/", "_previews/")+"_"+ext+".png";
         data.is_public = 1;
         data.media.encoded = req.params.encoding;
-        console.log(global.appRoot+data.media.preview);
-        console.log(global.appRoot+data.media.file);
+        logger.debug(global.appRoot+data.media.preview);
+        logger.debug(global.appRoot+data.media.file);
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
           const options = config.cpanel[req.params.sez].forms.public.components.media.config;
-          console.log("data.media.filesize");
-          console.log(data.media.filesize);
-          console.log(imageUtil);
-          console.log(imageUtil.resizer);
+          logger.debug("data.media.filesize");
+          logger.debug(data.media.filesize);
+          logger.debug(imageUtil);
+          logger.debug(imageUtil.resizer);
 
           imageUtil.resizer([{path:global.appRoot+data.media.preview}], options, (resizeerr, info) => {
-            console.log("resizeerr || info");
-            console.log(resizeerr || info);
+            logger.debug("resizeerr || info");
+            logger.debug(resizeerr || info);
             if (resizeerr || !info) {
               if (resizeerr) {
-                console.log(`Image resize ERROR: ${resizeerr}`);
+                logger.debug(`Image resize ERROR: ${resizeerr}`);
                 res.json({error: `Image resize ERROR: ${resizeerr}`});
               } else if (!info) {
-                console.log("Image resize ERROR: info undefined");
+                logger.debug("Image resize ERROR: info undefined");
                 res.json({error: `Image resize ERROR: ${resizeerr}`});
               }
             } else {
