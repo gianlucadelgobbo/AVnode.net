@@ -723,7 +723,7 @@ router.get('/footageformatsgenerator', (req, res) => {
           const previewFile = footages[footage].media.preview;
           const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
           const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-          const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage_previews/"); // /warehouse/2017/03
           const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
           const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
           // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
@@ -827,7 +827,7 @@ router.get('/videofiles', (req, res) => {
         const previewFile = videos[video].media.preview;
         const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
         const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-        const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos/"); // /warehouse/2017/03
+        const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos_previews/"); // /warehouse/2017/03
         const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
         const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
         if (!videos[video].media.previewexists) {
@@ -938,7 +938,7 @@ router.get('/videoformatsgenerator', (req, res) => {
           const previewFile = videos[video].media.preview;
           const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
           const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-          const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos/"); // /warehouse/2017/03
+          const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos_previews/"); // /warehouse/2017/03
           const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
           const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
           // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
