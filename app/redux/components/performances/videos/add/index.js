@@ -38,7 +38,7 @@ class AddPerformancesVideos extends Component {
       if (response.model && response.model.id) {
         hideModal();
         history.push(
-          "/admin/videos/" + `${response.model.id}` + "/public"
+          "/admin/videos/" + `${response.model.id}` + "/video"
         );
       }
     });

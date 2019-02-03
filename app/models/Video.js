@@ -46,8 +46,8 @@ videoSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   //console.log(config.cpanel[adminsez].sizes.image);
   if (this.media && this.media.preview) {
-    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
+    for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+      imageFormats[format] = config.cpanel[adminsez].forms.video.components.media.config.sizes[format].default;
     }
     const serverPath = this.media.preview;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -56,12 +56,12 @@ videoSchema.virtual('imageFormats').get(function () {
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
     // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+    for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
   } else {
-    for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = `${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default}`;
+    for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+      imageFormats[format] = `${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].default}`;
     }
   }
   return imageFormats;

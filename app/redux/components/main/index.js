@@ -52,6 +52,7 @@ import PlaylistPublic from "../playlists/public";
 // // Videos
 import Videos from "../videos/index.js";
 import VideosPublic from "../videos/public";
+import VideosVideo from "../videos/video";
 
 // // Galleries
 import Galleries from "../galleries/index.js";
@@ -180,6 +181,10 @@ class MainApp extends Component {
                 <Route
                   path="/admin/videos/:_id/public/"
                   component={VideosPublic}
+                />
+                <Route
+                  path="/admin/videos/:_id/video/"
+                  component={VideosVideo}
                 />
                 <Route path="/admin/videos" component={Videos} />
 

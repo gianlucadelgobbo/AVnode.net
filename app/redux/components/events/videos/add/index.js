@@ -37,7 +37,7 @@ class AddEventsVideos extends Component {
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model.id) {
         hideModal();
-        history.push("/admin/videos/" + `${response.model.id}` + "/public");
+        history.push("/admin/videos/" + `${response.model.id}` + "/video");
       }
     });
   }

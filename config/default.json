@@ -3105,6 +3105,41 @@
               "unique": false,
               "validators": {}
             },
+            "categories": [
+              {
+                "comp": "simpleselect",
+                "label": "Footage categories",
+                "required": true,
+                "unique": true,
+                "validators": {
+                  "Array_max_length": 2
+                }
+              }
+            ],
+            "users": [
+              {
+                "comp": "simpleselect",
+                "label": "Authors",
+                "required": true,
+                "unique": true,
+                "validators": {}
+              }
+            ]
+          },
+          "select": {
+            "slug": 1,
+            "title": 1,
+            "abouts": 1,
+            "is_public": 1,
+            "categories": 1,
+            "users": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
+        },
+        "video": {
+          "components": {
             "media": {
               "config":{
                 "fields": {
@@ -3139,40 +3174,16 @@
                 "Weight": {},
                 "Size": {}
               }
-            },
-            "categories": [
-              {
-                "comp": "simpleselect",
-                "label": "Footage categories",
-                "required": true,
-                "unique": true,
-                "validators": {
-                  "Array_max_length": 2
-                }
-              }
-            ],
-            "users": [
-              {
-                "comp": "simpleselect",
-                "label": "Authors",
-                "required": true,
-                "unique": true,
-                "validators": {}
-              }
-            ]
+            }
           },
           "select": {
-            "slug": 1,
-            "title": 1,
-            "abouts": 1,
-            "is_public": 1,
-            "media": 1,
-            "categories": 1,
-            "users": 1
+            "media": 1
           },
           "selectaddon": {
+            "slug": 1,
+            "title": 1
           },
-          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
+          "populate": []
         },
         "events": {
           "components": {

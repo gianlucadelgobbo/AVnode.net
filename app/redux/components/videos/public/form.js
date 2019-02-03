@@ -52,19 +52,6 @@ class VideosPublicForm extends Component {
           help={this.getIntlString({ id: VIDEOS_URL_HELP })}
         />
 
-        <Field
-          name="video"
-          component={uploadComponent}
-          showModal={showModal}
-          accept="video/mp4, video/mpg, video/quicktime, video/x-flv, video/x-ms-wmv, video/x-msvideo"
-          maxSize={21474836480}
-          uploadFile={uploadFile}
-          uploadButton={true}
-          media={media}
-          multiple={false}
-          //accept={this.renderImageType()}
-        />
-
         <FieldArray
           name="abouts"
           component={textareaMultiTab}
