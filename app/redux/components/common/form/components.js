@@ -1242,6 +1242,10 @@ export const renderDropzoneInput = field => {
     }
   };
 
+    function showSpinner() {
+      field.status = !field.status;
+    };
+
   function formatBytes(bytes, decimals) {
     if (bytes === 0) return "0 Bytes";
     let k = 1000,
@@ -1294,10 +1298,15 @@ export const renderDropzoneInput = field => {
                 <button
                   type="button"
                   className="btn btn-success"
-                  onClick={() => field.uploadFile(field.input.value)}
+                  onClick={() => {/* field.uploadFile(field.input.value);  */showSpinner()}}
                 >
                   <i
                     className="fa fa-upload"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                  <i
+                    className={field.status ? "fa fa-upload" : "fa fa-upload ml-5"} 
                     data-toggle="tooltip"
                     data-placement="top"
                   />
