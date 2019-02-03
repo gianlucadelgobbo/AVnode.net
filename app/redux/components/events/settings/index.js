@@ -11,6 +11,8 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {FormattedMessage} from 'react-intl';
+import { EVENT_NAME, SHOW } from "./constants";
+import TitleComponent from "../../titleComponent";
 
 class EventPublic extends Component {
 
@@ -71,7 +73,7 @@ class EventPublic extends Component {
 
     render() {
 
-        const {model, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
+        const {model = {}, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
 
         return (
             <div className="row">
@@ -81,14 +83,7 @@ class EventPublic extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">
-                        <FormattedMessage
-                            id="EventsPublicSettings"
-                            defaultMessage="EVENT SETTINGS"
-                        />
-                    </h2>
-
-                    <br/>
+                    <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
 
                     {isFetching && !model && <Loading/>}
 

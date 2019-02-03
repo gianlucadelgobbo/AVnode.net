@@ -86,16 +86,6 @@ class TopMenu extends Component {
         label: <FormattedMessage id="events" defaultMessage="Events" />
       },
       {
-        href: "/admin/footage",
-        counter: footage.length,
-        label: <FormattedMessage id="footage" defaultMessage="Footage" />
-      },
-      {
-        href: "/admin/playlists",
-        counter: playlists.length,
-        label: <FormattedMessage id="playlists" defaultMessage="Playlists" />
-      },
-      {
         href: "/admin/videos",
         counter: videos.length,
         label: <FormattedMessage id="videos" defaultMessage="Videos" />
@@ -104,7 +94,17 @@ class TopMenu extends Component {
         href: "/admin/galleries",
         counter: galleries.length,
         label: <FormattedMessage id="galleries" defaultMessage="Galleries" />
-      }
+      }/* ,
+      {
+        href: "/admin/footage",
+        counter: footage.length,
+        label: <FormattedMessage id="footage" defaultMessage="Footage" />
+      },
+      {
+        href: "/admin/playlists",
+        counter: playlists.length,
+        label: <FormattedMessage id="playlists" defaultMessage="Playlists" />
+      } */
     ];
 
     return (

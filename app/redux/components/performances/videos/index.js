@@ -10,11 +10,13 @@ import {
 } from "../../events/selectors";
 import Video from "../../video";
 import { FormattedMessage } from "react-intl";
+import TitleComponent from "../../titleComponent";
+import { PERFORMANCE_NAME, SHOW } from "./constants";
 
 class PerformaceVideo extends Component {
   render() {
     const {
-      model,
+      model = {},
       isFetching,
       errorMessage,
       fetchModel,
@@ -32,13 +34,7 @@ class PerformaceVideo extends Component {
           <LateralMenu _id={_id} />
         </div>
         <div className="col-md-10">
-          <h2 className="labelField">
-            <FormattedMessage
-              id="PerformancePublicVideos"
-              defaultMessage="PERFORMANCE VIDEOS"
-            />
-          </h2>
-
+          <TitleComponent title={model.title} type={PERFORMANCE_NAME} link={"/performances/"+model.slug} show={SHOW} />
           <Video
             model={model}
             isFetching={isFetching}

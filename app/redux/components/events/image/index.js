@@ -12,11 +12,13 @@ import ImageForm from "../../image";
 import { withRouter } from "react-router";
 import { FormattedMessage } from "react-intl";
 import properties from "../../../../../config/default.json";
+import { EVENT_NAME, SHOW } from "./constants";
+import TitleComponent from "../../titleComponent";
 
 class EventImages extends Component {
   render() {
     const {
-      model,
+      model =  {},
       isFetching,
       errorMessage,
       match: {
@@ -34,12 +36,7 @@ class EventImages extends Component {
           <LateralMenu _id={_id} />
         </div>
         <div className="col-md-10">
-          <h2 className="labelField">
-            <FormattedMessage id="EventPublicImage" defaultMessage="MY IMAGE" />
-          </h2>
-
-          <br />
-
+          <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
           <ImageForm
             model={model}
             isFetching={isFetching}

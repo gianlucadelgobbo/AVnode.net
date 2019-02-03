@@ -10,7 +10,7 @@ import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
-import { CREW_NAME } from "./constants";
+import { CREW_NAME, SHOW } from "./constants";
 import {
   getModel,
   getModelIsFetching,
@@ -133,7 +133,7 @@ class CrewPublic extends Component {
           {!errorMessage &&
             !isFetching &&
             model && (
-              <TitleComponent title={model.stagename} type={CREW_NAME} />
+              <TitleComponent title={model.stagename} type={CREW_NAME} link={"/"+model.slug} show={SHOW} />
             )}
 
           <Form

@@ -10,7 +10,7 @@ import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
-import { FOOTAGE_NAME, FOOTAGE_CODES_TAGS } from "./constants";
+import { FOOTAGE_NAME, FOOTAGE_CODES_TAGS, SHOW } from "./constants";
 import {
   getModel,
   getModelIsFetching,
@@ -174,7 +174,7 @@ class FootagePublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={FOOTAGE_NAME} />
+            <TitleComponent title={model.title} type={FOOTAGE_NAME} link={"/footage/"+model.slug} show={SHOW} />
           )}
 
           <Form

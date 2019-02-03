@@ -3,8 +3,8 @@ import {FormattedMessage} from 'react-intl';
 
 export const FORM_NAME = "CREWS.PUBLIC";                    
 export const CREW_NAME =    <FormattedMessage
-                                id="crew.public.data"
-                                defaultMessage="CREW PUBLIC DATA"
+                                id="crew.image"
+                                defaultMessage="CREW IMAGE"
                             />
 export const SHOW = <FormattedMessage
                         id="show"

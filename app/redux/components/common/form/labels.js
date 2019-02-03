@@ -94,6 +94,7 @@ export const GALLERIES_NAME = "label.form.galleries.name";
 export const GALLERIES_URL = "label.form.galleries.url";
 export const GALLERIES_URL_PRE = "label.form.galleries.url_pre";
 export const GALLERIES_URL_HELP = "label.form.galleries.url_help";
+export const NO_GALLERIES_TO_SHOW = "label.form.galleries.no.show";
 /*
  * Define i18n Form Label
  * */

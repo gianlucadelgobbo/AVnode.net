@@ -27,11 +27,6 @@ class EventSettingsForm extends Component {
 
         return (
             <form onSubmit={handleSubmit(onSubmit)}>
-
-                <h4>{this.getIntlString({id:SETTINGS})}</h4>
-
-                <hr/>
-
                 <Field
                     name="is_public"
                     component={checkboxField}

@@ -133,6 +133,22 @@ class MainApp extends Component {
                 <Route path="/admin/performances" component={Performances} />
 
                 <Route
+                  path="/admin/videos/:_id/public/"
+                  component={VideosPublic}
+                />
+                <Route
+                  path="/admin/videos/:_id/video/"
+                  component={VideosVideo}
+                />
+                <Route path="/admin/videos" component={Videos} />
+
+                <Route
+                  path="/admin/galleries/:_id/public/"
+                  component={GalleriesPublic}
+                />
+                <Route path="/admin/galleries" component={Galleries} />
+
+                <Route
                   path="/admin/events/:_id/public/"
                   component={EventPublic}
                 />
@@ -177,22 +193,6 @@ class MainApp extends Component {
                   component={PlaylistPublic}
                 />
                 <Route path="/admin/playlists" component={Playlist} />
-
-                <Route
-                  path="/admin/videos/:_id/public/"
-                  component={VideosPublic}
-                />
-                <Route
-                  path="/admin/videos/:_id/video/"
-                  component={VideosVideo}
-                />
-                <Route path="/admin/videos" component={Videos} />
-
-                <Route
-                  path="/admin/galleries/:_id/public/"
-                  component={GalleriesPublic}
-                />
-                <Route path="/admin/galleries" component={Galleries} />
 
                 <Route path="*" component={PageNotFound} />
               </Switch>

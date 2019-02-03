@@ -17,7 +17,7 @@ import {
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
-import { GALLERIES_NAME } from "./constants";
+import { GALLERIES_NAME, SHOW } from "./constants";
 
 class GalleriesPublic extends Component {
   componentDidMount() {
@@ -128,7 +128,7 @@ class GalleriesPublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={GALLERIES_NAME} />
+            <TitleComponent title={model.title} type={GALLERIES_NAME} link={"/galleries/"+model.slug} show={SHOW} />
           )}
 
           <Form

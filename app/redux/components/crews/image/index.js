@@ -8,11 +8,13 @@ import { fetchModel, saveModel } from "./actions";
 import ImageForm from "../../image";
 import { FormattedMessage } from "react-intl";
 import properties from "../../../../../config/default.json";
+import TitleComponent from "../../titleComponent";
+import { CREW_NAME, SHOW } from "./constants";
 
 class CrewImage extends Component {
   render() {
     const {
-      model,
+      model = {},
       isFetching,
       match: {
         params: { _id }
@@ -22,21 +24,14 @@ class CrewImage extends Component {
       saveModel
     } = this.props;
     const { components } = properties.cpanel.crews.forms.image;
-    //console.log(components)
+    console.log(model);
     return (
       <div className="row">
         <div className="col-md-2">
           <LateralMenu _id={_id} />
         </div>
         <div className="col-md-10">
-          <h2 className="labelField">
-            <FormattedMessage
-              id="CrewPublicImage"
-              defaultMessage="CREW IMAGE"
-            />
-          </h2>
-
-          <br />
+          <TitleComponent title={model.stagename} type={CREW_NAME} link={"/"+model.slug} show={SHOW} />
 
           <ImageForm
             model={model}

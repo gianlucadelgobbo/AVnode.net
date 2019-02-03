@@ -49,11 +49,11 @@ class ModelTable extends Component {
             Cell: props => {
               const { row, original } = props;
               return (
-                <Link to={`/admin/galleries/${original._id}/public`}>
+                <Link to={`/admin/galleries/${row._id}/public`}>
                   <img
                     height={140}
                     className="image-responsive"
-                    src={original.imageFormats.small}
+                    src={row.imageFormats.small}
                   />
                   <p>{row.title}</p>
                 </Link>

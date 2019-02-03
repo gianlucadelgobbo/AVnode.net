@@ -8,14 +8,16 @@ import ImageForm from '../../image';
 import {withRouter} from 'react-router';
 import {FormattedMessage} from 'react-intl';
 import properties from "../../../../../config/default.json";
+import TitleComponent from "../../titleComponent";
+import { PERFORMANCE_NAME, SHOW } from "./constants";
 
 class PerformanceImages extends Component {
 
     render() {
 
-        const {model, isFetching, errorMessage, match: {params: {_id}}, fetchModel, saveModel} = this.props;
+        const {model = {}, isFetching, errorMessage, match: {params: {_id}}, fetchModel, saveModel} = this.props;
 
-         const { components } = properties.cpanel.performances.forms.image;
+        const { components } = properties.cpanel.performances.forms.image;
 
         return (
             <div className="row">
@@ -25,15 +27,7 @@ class PerformanceImages extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">
-                        <FormattedMessage
-                        id="PerformancePublicImage"
-                        defaultMessage="MY IMAGE"
-                    />
-                    </h2>
-
-                    <br/>
-
+                    <TitleComponent title={model.title} type={PERFORMANCE_NAME} link={"/performances/"+model.slug} show={SHOW} />
                     <ImageForm
                         model={model}
                         isFetching={isFetching}

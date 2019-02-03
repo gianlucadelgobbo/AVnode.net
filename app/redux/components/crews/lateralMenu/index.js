@@ -16,7 +16,7 @@ const items = [
         href: "/admin/crews/:_id/images",
         label: <FormattedMessage
             id="imagesCrews"
-            defaultMessage="Images"
+            defaultMessage="Image"
         />
     },
     {

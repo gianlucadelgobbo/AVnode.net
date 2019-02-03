@@ -10,11 +10,13 @@ import {
 } from "../../events/selectors";
 import Gallery from "../../gallery";
 import { FormattedMessage } from "react-intl";
+import { EVENT_NAME, SHOW } from "./constants";
+import TitleComponent from "../../titleComponent";
 
 class EventsImage extends Component {
   render() {
     const {
-      model,
+      model = {},
       isFetching,
       errorMessage,
       match: {
@@ -32,12 +34,7 @@ class EventsImage extends Component {
           <LateralMenu _id={_id} />
         </div>
         <div className="col-md-10">
-          <h2 className="labelField">
-            <FormattedMessage
-              id="EventsPublicGalleries"
-              defaultMessage="EVENT GALLERY"
-            />
-          </h2>
+          <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
 
           <Gallery
             model={model}

@@ -14,7 +14,10 @@ class Footage extends Component {
       <div className="row">
         <div className="col-md-12">
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-10">
+              <h2 className="labelField">FOOTAGE</h2>
+            </div>
+            <div className="col-md-2">
               <Button
                 bsStyle="success"
                 className="pull-right"

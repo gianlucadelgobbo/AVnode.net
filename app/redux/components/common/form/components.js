@@ -2413,12 +2413,10 @@ export const uploadGallery = ({
         <div className="row">
           {media.map((image, i) => (
             <div className="col-sm-3" key={i}>
+              <Image src={image.imageFormats.small} className="img-fluid" rounded />
               <div style={containerVideo}>
                 <div className="labelField">
                   <p>{image.title}</p>
-                </div>
-                <div className="col-sm-11">
-                  <Image src={image.file} responsive rounded />
                 </div>
                 {/*<div className="col-sm-1">
                   <Button
