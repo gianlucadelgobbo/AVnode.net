@@ -705,6 +705,11 @@
     "filepath": "./app/redux/components/performances/public/constants.js"
   },
   {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/performances/public/constants.js"
+  },
+  {
     "id": "PerformancesTitle",
     "defaultMessage": "Performances Name",
     "filepath": "./app/redux/components/performances/table/index.js"
@@ -730,14 +735,24 @@
     "filepath": "./app/redux/components/playlists/table/index.js"
   },
   {
-    "id": "AccountPublicEmail",
-    "defaultMessage": "MY EMAIL",
-    "filepath": "./app/redux/components/profile/emails/index.js"
+    "id": "account.emails",
+    "defaultMessage": "MY PROFILE EMAILS",
+    "filepath": "./app/redux/components/profile/emails/constants.js"
   },
   {
-    "id": "AccountPublicImage",
-    "defaultMessage": "PROFILE IMAGE",
-    "filepath": "./app/redux/components/profile/image/index.js"
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/profile/emails/constants.js"
+  },
+  {
+    "id": "account.image",
+    "defaultMessage": "MY PROFILE IMAGE",
+    "filepath": "./app/redux/components/profile/image/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/profile/image/constants.js"
   },
   {
     "id": "publicDataProfile",
@@ -770,18 +785,33 @@
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
   {
-    "id": "AccountPublicPassword",
-    "defaultMessage": "MY PASSWORD",
-    "filepath": "./app/redux/components/profile/password/index.js"
+    "id": "account.ppassword",
+    "defaultMessage": "MY PROFILE PASSWORD",
+    "filepath": "./app/redux/components/profile/password/constants.js"
   },
   {
-    "id": "AccountPrivateData",
-    "defaultMessage": "My Account Private data",
-    "filepath": "./app/redux/components/profile/private/index.js"
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/profile/password/constants.js"
+  },
+  {
+    "id": "account.private.data",
+    "defaultMessage": "MY PROFILE PRIVATE DATA",
+    "filepath": "./app/redux/components/profile/private/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/profile/private/constants.js"
   },
   {
     "id": "account.public.data",
     "defaultMessage": "MY ACCOUNT PUBLIC DATA",
+    "filepath": "./app/redux/components/profile/public/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
     "filepath": "./app/redux/components/profile/public/constants.js"
   },
   {
@@ -835,6 +865,11 @@
     "filepath": "./app/redux/components/videos/lateralMenu/index.js"
   },
   {
+    "id": "videoVideos",
+    "defaultMessage": "Video",
+    "filepath": "./app/redux/components/videos/lateralMenu/index.js"
+  },
+  {
     "id": "videos.public.data",
     "defaultMessage": "VIDEO PUBLIC DATA",
     "filepath": "./app/redux/components/videos/public/constants.js"
@@ -843,5 +878,10 @@
     "id": "VideosTitle",
     "defaultMessage": "Videos Name",
     "filepath": "./app/redux/components/videos/table/index.js"
+  },
+  {
+    "id": "videos.video",
+    "defaultMessage": "VIDEO FILE",
+    "filepath": "./app/redux/components/videos/video/constants.js"
   }
 ]

@@ -69,8 +69,8 @@ router.get('/api/:sez/:id/:form/', (req, res) => {
 });
 
 router.put('/api/:sez/:id/:form/', (req, res) => {
-  if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/public','videos/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
-    req.params.comp = ['footage/public','galleries/public','videos/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : req.params.form;
+  if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+    req.params.comp = ['footage/public','galleries/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : req.params.form;
     upload.uploader(req, res, (err, data) => {
       console.log("uploaderuploaderuploaderuploader");
       if (err) {

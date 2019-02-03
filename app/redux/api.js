@@ -541,6 +541,20 @@ export const removeVideosPublic = model => {
   });
 };
 
+export const fetchSlugNewVideos = slug => {
+  return axios.get(`videos/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+
+// - video
+export const fetchVideosVideo = ({ id }) => {
+  return axios.get(`videos/${id}/video`).then(result => {
+    return result.data;
+  });
+};
+
+
 export const saveVideosMedia = model => {
   // convert image to Form Data
   let formBox = new FormData();
@@ -550,17 +564,12 @@ export const saveVideosMedia = model => {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
   return axios
-    .put(`videos/${model.id}/public`, formBox, config)
+    .put(`videos/${model.id}/video`, formBox, config)
     .then(result => {
       return result.data;
     });
 };
 
-export const fetchSlugNewVideos = slug => {
-  return axios.get(`videos/new/slugs/${slug}`).then(result => {
-    return result.data;
-  });
-};
 
 // ============ GALLERIES
 

@@ -10,7 +10,13 @@ const items = [
     label: (
       <FormattedMessage id="publicDataVideos" defaultMessage="Public data" />
     )
+  },  {
+    href: "/admin/videos/:_id/video",
+    label: (
+      <FormattedMessage id="videoVideos" defaultMessage="Video" />
+    )
   }
+
 ];
 
 class MyLateralMenu extends Component {

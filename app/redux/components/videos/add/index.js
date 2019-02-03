@@ -36,7 +36,7 @@ class AddVideos extends Component {
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model.id) {
-        history.push("/admin/videos/" + `${response.model.id}` + "/public");
+        history.push("/admin/videos/" + `${response.model.id}` + "/video");
         hideModal();
       }
     });
