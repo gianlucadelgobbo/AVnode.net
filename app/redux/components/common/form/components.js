@@ -1214,6 +1214,7 @@ export const fieldInColumn = ({
 
 export const renderDropzoneInput = field => {
   let files = field.input.value;
+  let spinner = false;
   let myClassName = field.className === undefined ? "" : field.className;
   const getExtensionIcon = (name = "") => {
     let extension =
@@ -1243,7 +1244,9 @@ export const renderDropzoneInput = field => {
   };
 
     function showSpinner() {
-      field.status = !field.status;
+      console.log(spinner);
+      spinner = !spinner;
+      console.log(spinner);
     };
 
   function formatBytes(bytes, decimals) {
@@ -1298,18 +1301,20 @@ export const renderDropzoneInput = field => {
                 <button
                   type="button"
                   className="btn btn-success"
-                  onClick={() => {/* field.uploadFile(field.input.value);  */showSpinner()}}
+                  onClick={() => {field.uploadFile(field.input.value); showSpinner();}}
                 >
                   <i
-                    className="fa fa-upload"
+                    className={!spinner ? "fa fa-upload" : "fa fa-upload d-none"}
                     data-toggle="tooltip"
                     data-placement="top"
                   />
-                  <i
-                    className={field.status ? "fa fa-upload" : "fa fa-upload ml-5"} 
-                    data-toggle="tooltip"
-                    data-placement="top"
-                  />
+                  <span className={spinner ? "myspinner" : "myspinner d-none"}> {/* d-none d-inline */}
+                    <i
+                      className="fa fa-refresh fa-spin fa-fw"
+                    >
+                    </i>
+                    <span>Uploading...</span>
+                  </span>
                 </button>
               )}
               <button
@@ -2239,6 +2244,7 @@ export const uploadComponent = ({
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
   const mediaIsAnObj = typeof media === "object";
+  const mediaIsEncoded = mediaIsAnObj && typeof media.file === "string";
 
   const renderSubField = () => {
     return (
@@ -2253,6 +2259,7 @@ export const uploadComponent = ({
             className="enableBorder"
             uploadFile={uploadFile}
             uploadButton={uploadButton}
+            spinner={false}
             multiple={multiple}
           />
         </div>
@@ -2261,7 +2268,7 @@ export const uploadComponent = ({
   };
   return (
     <div>
-      {mediaIsAnObj && (
+      {mediaIsAnObj && mediaIsEncoded && (
         <div className="container-video">
           <div className="row">
             <div className="col-sm-12">
@@ -2272,7 +2279,7 @@ export const uploadComponent = ({
           </div>
           <div className="row">
             <div className="col-sm-6">
-              <Player playsInline src={media.original} />
+              <Player playsInline src={media.file} />
             </div>
             <div className="col-sm-6">
               <table className="table-video-detail">
@@ -2291,6 +2298,29 @@ export const uploadComponent = ({
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+      )}
+      {mediaIsAnObj && !mediaIsEncoded && (
+        <div className="container-video">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="labelField">
+                <h4>Video</h4>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="labelField">
+                Encoding in progress
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="labelField">
+                Encoding in progress
+              </div>
             </div>
           </div>
         </div>
