@@ -18,8 +18,7 @@ import { getErrorMessage, getIsFetching } from "../../events/selectors";
 import { FormattedMessage } from "react-intl";
 
 import TitleComponent from "../../titleComponent";
-import { PROFILE_NAME } from "./constants";
-import { SHOW } from "./constants";
+import { PROFILE_NAME, SHOW } from "./constants";
 
 /*
  * Responsabilita'

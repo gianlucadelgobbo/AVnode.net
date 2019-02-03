@@ -8,3 +8,7 @@ export const GALLERIES_NAME = (
     defaultMessage="GALLERY PUBLIC DATA"
   />
 );
+export const SHOW = <FormattedMessage
+                        id="show"
+                        defaultMessage="SHOW"
+                    />

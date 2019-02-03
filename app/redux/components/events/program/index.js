@@ -14,6 +14,8 @@ import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import {FormattedMessage} from 'react-intl';
+import { EVENT_NAME, SHOW } from "./constants";
+import TitleComponent from "../../titleComponent";
 
 class EventProgram extends Component {
 
@@ -80,14 +82,7 @@ class EventProgram extends Component {
                     />
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">
-                    <FormattedMessage
-                        id="EventsPublicProgram"
-                        defaultMessage="EVENT PROGRAM"
-                    />
-                    </h2>
-
-                    <br/>
+                    <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
 
                     {isFetching && !model && <Loading/>}
 

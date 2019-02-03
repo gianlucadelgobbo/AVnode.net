@@ -10,7 +10,7 @@ import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
-import {EVENT_NAME} from "./constants";
+import {EVENT_NAME, SHOW} from "./constants";
 import {getModel, getModelErrorMessage, getModelIsFetching} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
 import {fetchList as fetchCategories} from "../../categories/actions";
@@ -225,7 +225,7 @@ class EventPublic extends Component {
             {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
             {!errorMessage && !isFetching && model && (
-                <TitleComponent title={model.title} type={EVENT_NAME}/>
+                <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
             )}
 
             <Form

@@ -11,8 +11,7 @@ import {fetchModel, saveModel, verifyEmail} from "./actions";
 import {MODAL_EMAIL_VERIFICATION_ERROR, MODAL_EMAIL_VERIFICATION_SUCCESS, MODAL_SAVED} from "../../modal/constants";
 
 import TitleComponent from "../../titleComponent";
-import { PROFILE_NAME } from "./constants";
-import { SHOW } from "./constants";
+import { PROFILE_NAME, SHOW } from "./constants";
 
 import {
     getDefaultModel,

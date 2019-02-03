@@ -16,6 +16,8 @@ import { injectIntl, FormattedMessage } from "react-intl";
 import LateralMenu from "../lateralMenu";
 import { ACTION, ERROR_MEMBERS_TO_DISPLAY } from "../../common/form/labels";
 import ErrorMessage from "../../errorMessage";
+import TitleComponent from "../../titleComponent";
+import { CREW_NAME, SHOW } from "./constants";
 
 class MembersTable extends Component {
   componentDidMount() {
@@ -125,6 +127,7 @@ class MembersTable extends Component {
 
   render() {
     const {
+      model = {},
       list = [],
       showModal,
       match: {
@@ -141,6 +144,7 @@ class MembersTable extends Component {
             <LateralMenu _id={_id} />
           </div>
           <div className="col-md-10">
+            <TitleComponent title={model.stagename} type={CREW_NAME} link={"/"+model.slug} show={SHOW} />
             <div className="row marginBottom">
               <div className="col-md-6">
                 <h2 className="labelField">
@@ -194,6 +198,7 @@ const mapStateToProps = (
     }
   }
 ) => ({
+  model: getModel(state, _id),
   list: getModel(state, _id),
   isFetching: getIsFetching(state, _id),
   errorMessage: getErrorMessage(state, _id)

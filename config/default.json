@@ -2022,7 +2022,7 @@
                 "validators": {}
               }
             ],
-            "media": {
+            "image": {
               "config":{
                 "fields": {
                   "name": "image",

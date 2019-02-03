@@ -17,7 +17,10 @@ class Playlist extends Component {
                 <div className="col-md-12">
 
                     <div className="row">
-                        <div className="col-md-12">
+                        <div className="col-md-10">
+                            <h2 className="labelField">PLAYLISTS</h2>
+                        </div>
+                        <div className="col-md-2">
                             <Button
                                 bsStyle="success"
                                 className="pull-right"

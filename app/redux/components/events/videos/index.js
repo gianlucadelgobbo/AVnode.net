@@ -10,6 +10,8 @@ import {
 } from "../../events/selectors";
 import Video from "../../video";
 import { FormattedMessage } from "react-intl";
+import { EVENT_NAME, SHOW } from "./constants";
+import TitleComponent from "../../titleComponent";
 
 class EventsVideo extends Component {
   render() {
@@ -31,12 +33,7 @@ class EventsVideo extends Component {
           <LateralMenu _id={_id} />
         </div>
         <div className="col-md-10">
-          <h2 className="labelField">
-            <FormattedMessage
-              id="EventsPublicVideos"
-              defaultMessage="EVENT VIDEOS"
-            />
-          </h2>
+          <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
 
           <Video
             model={model}

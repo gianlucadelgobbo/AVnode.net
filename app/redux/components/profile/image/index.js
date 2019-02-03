@@ -10,8 +10,7 @@ import {FormattedMessage} from 'react-intl';
 import properties from "../../../../../config/default.json";
 
 import TitleComponent from "../../titleComponent";
-import { PROFILE_NAME } from "./constants";
-import { SHOW } from "./constants";
+import { PROFILE_NAME, SHOW } from "./constants";
 
 class ProfileImage extends Component {
 

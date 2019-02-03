@@ -11,3 +11,7 @@ export const FOOTAGE_CODES_TAGS = {
     comma: 188,
     enter: 13
 }
+export const SHOW = <FormattedMessage
+                            id="show"
+                            defaultMessage="SHOW"
+                            />
