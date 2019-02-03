@@ -59,12 +59,13 @@ class ProfilePublic extends Component {
 
     // Convert addresses
     model.addresses = model.addresses.map(a => {
-      const originalString = a.text;
+      /* const originalString = a.text;
       const split = originalString.split(",");
       const country = split[split.length - 1].trim();
       const locality = split[0].trim();
-      const geometry = a.geometry;
-      return { originalString, locality, country, geometry };
+      const geometry = a.geometry; */
+      //return { originalString, locality, country, geometry };
+      return a.loc;
     });
 
     return model;
@@ -132,7 +133,18 @@ class ProfilePublic extends Component {
   }
 
   createLatLongToSave = address => {
-    return geocodeByAddress(address).then(results => getLatLng(results[0]));
+    return  geocodeByAddress(address).then(function(results) {
+      return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+    }).then(function([results, geometry]) {
+      let loc = {};
+      results[0].address_components.forEach(address_component => {
+        if (address_component.types.indexOf('country')!==-1) loc.country = address_component.long_name;
+        if (address_component.types.indexOf('locality')!==-1) loc.locality = address_component.long_name;
+      });
+      loc.formatted_address = results[0].formatted_address;
+      loc.geometry = geometry;
+      return loc;
+    });
   };
 
   onSubmit(values) {
@@ -145,13 +157,13 @@ class ProfilePublic extends Component {
     addrs.forEach(a => {
       promises.push(
         this.createLatLongToSave(a.text)
-          .then(result => {
-            // add to a model
-            a.geometry = result;
-          })
-          .catch(() => {
-            console.log("ciao da google!");
-          })
+        .then(result => {
+          // add to a model
+          a.loc = result;
+        })
+        .catch(() => {
+          console.log("ciao da google!");
+        })
       );
     });
 
