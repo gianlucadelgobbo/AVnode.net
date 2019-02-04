@@ -18,6 +18,7 @@ import {
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
 import { VIDEOS_NAME, SHOW } from "./constants";
+import { removeModel } from "../users/actions";
 
 class VideosPublic extends Component {
   componentDidMount() {
@@ -90,7 +91,7 @@ class VideosPublic extends Component {
   }
 
   onSubmit(values) {
-    const { showModal, saveModel, model } = this.props;
+    const { showModal, saveModel, model, removeModel } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     modelToSave._id = model._id;
@@ -113,7 +114,8 @@ class VideosPublic extends Component {
         params: { _id }
       },
       isFetching,
-      errorMessage
+      errorMessage,
+      removeModel
     } = this.props;
     return (
       <div className="row">
@@ -139,6 +141,9 @@ class VideosPublic extends Component {
             tabs={locales}
             labels={locales_labels}
             uploadFile={this.uploadFile.bind(this)}
+            _id={_id}
+            removeModel={removeModel}
+            model={model}
           />
         </div>
       </div>
@@ -165,6 +170,7 @@ const mapDispatchToProps = dispatch =>
     {
       saveModel,
       fetchModel,
+      removeModel,
       showModal,
       uploadModel
     },

@@ -25,6 +25,7 @@ class ModelTable extends Component {
 
   renderTable() {
     const { showModal, removeModel, list } = this.props;
+    console.log(list)
     const GalleriesItem = {
       label: (
         <FormattedMessage id="GalleriesTitle" defaultMessage="Galleries Name" />
@@ -49,13 +50,13 @@ class ModelTable extends Component {
             Cell: props => {
               const { row, original } = props;
               return (
-                <Link to={`/admin/galleries/${row._id}/public`}>
+                <Link to={`/admin/galleries/${original._id}/public`}>
                   <img
                     height={140}
                     className="image-responsive"
-                    src={row.imageFormats.small}
+                    src={original.imageFormats.small}
                   />
-                  <p>{row.title}</p>
+                  <p>{original.title}</p>
                 </Link>
               );
             }
