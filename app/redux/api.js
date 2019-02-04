@@ -669,6 +669,34 @@ export const savePerformanceUsers = model =>
     .then(result => {
       return result.data;
     });
+
+export const removeVideoUsers = model =>
+  axios
+    .get(`videos/${model._id}/users/remove/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+  
+export const saveVideoUsers = model =>
+  axios
+    .get(`videos/${model._id}/users/add/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+
+export const removeGalleriesUsers = model =>
+  axios
+    .get(`galleries/${model._id}/users/remove/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+  
+export const saveGalleriesUsers = model =>
+  axios
+    .get(`galleries/${model._id}/users/add/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
 // ============ Crews
 
 export const fetchCrews = () => {

@@ -5,6 +5,8 @@ import Remove from "./remove";
 import AddEvent from "../events/add";
 import AddPerformance from "../performances/add";
 import AddUserPerformance from "../performances/users";
+import AddUserVideos from "../videos/users";
+import AddUserGalleries from "../galleries/users";
 import AddMediaModal from "./media/add";
 import AddPartnerModal from "./partners/add";
 import AddCrewModal from "./crews/add";
@@ -32,6 +34,8 @@ import {
   MODAL_ADD_EVENT,
   MODAL_ADD_PERFORMANCE,
   MODAL_ADD_USER_PERFORMANCE,
+  MODAL_ADD_USER_VIDEOS,
+  MODAL_ADD_USER_GALLERIES,
   MODAL_ADD_MEDIA,
   MODAL_ADD_PARTNER,
   MODAL_ADD_CREW,
@@ -65,6 +69,8 @@ const MODAL_COMPONENTS = {
   [MODAL_ADD_EVENT]: AddEvent,
   [MODAL_ADD_PERFORMANCE]: AddPerformance,
   [MODAL_ADD_USER_PERFORMANCE]: AddUserPerformance,
+  [MODAL_ADD_USER_VIDEOS]:AddUserVideos,
+  [MODAL_ADD_USER_GALLERIES]:AddUserGalleries,
   [MODAL_ADD_MEDIA]: AddMediaModal,
   [MODAL_ADD_PARTNER]: AddPartnerModal,
   [MODAL_ADD_CREW]: AddCrewModal,
@@ -91,6 +97,8 @@ const MODAL_TITLES = {
   [MODAL_ADD_EVENT]: "Add Event",
   [MODAL_ADD_PERFORMANCE]: "Add Performance",
   [MODAL_ADD_USER_PERFORMANCE]: "Add Users",
+  [MODAL_ADD_USER_VIDEOS]: "Add Users",
+  [MODAL_ADD_USER_GALLERIES]:"Add Users",
   [MODAL_ADD_MEDIA]: "Add Media",
   [MODAL_ADD_PARTNER]: "Add Partner",
   [MODAL_ADD_CREW]: "Add Crew",

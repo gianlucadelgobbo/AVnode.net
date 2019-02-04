@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { reduxForm, Field, FieldArray } from "redux-form";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { FORM_NAME } from "./constants";
+import { FORM_NAME, SECTION } from "./constants";
 import {
   renderRadioButton,
   inputText,
@@ -118,6 +118,7 @@ class PerformancePublicForm extends Component {
           _id={_id}
           removeModel={removeModel}
           users={model.users}
+          SECTION={SECTION}
         />
 
         <br />
