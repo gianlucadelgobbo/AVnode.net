@@ -562,6 +562,7 @@ export const fieldWithLabel = ({
   placeholder,
   removeModel,
   users,
+  SECTION,
   meta: { error }
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
@@ -609,7 +610,7 @@ export const fieldWithLabel = ({
           //onClick={() => fields.unshift({})}
           onClick={() =>
             showModal({
-              type: MODAL_ADD_USER_PERFORMANCE,
+              type: "MODAL_ADD_USER_"+`${SECTION}`,
               props: { _id }
             })
           }

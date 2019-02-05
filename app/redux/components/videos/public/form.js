@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { reduxForm, Field, FieldArray } from "redux-form";
-import { FORM_NAME } from "./constants";
+import { FORM_NAME, SECTION } from "./constants";
 import {
   inputText,
   textareaMultiTab,
@@ -33,7 +33,10 @@ class VideosPublicForm extends Component {
       showModal,
       onSubmit,
       uploadFile,
-      media
+      media,
+      _id,
+      removeModel,
+      model
     } = this.props;
 
     return (
@@ -67,6 +70,10 @@ class VideosPublicForm extends Component {
           component={fieldWithLabel}
           placeholder={this.getIntlString({ id: AUTHORS })}
           showModal={showModal}
+          _id={_id}
+          removeModel={removeModel}
+          users={model.users}
+          SECTION={SECTION}
         />
 
         <br />
