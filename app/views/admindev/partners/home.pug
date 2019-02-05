@@ -1,0 +1,35 @@
+extends ../layout_admin
+block content
+  table.table
+    thead
+      tr
+        td="ID"
+        td=global.__("Brand")
+        td=global.__("AVnode user")
+        td=global.__("Partnerships")
+        td=global.__("Channels")
+        td=global.__("Contacts")
+    tbody
+      if data.length
+        each item, index in data
+          tr
+            td=index+1
+            td
+              b!=item.brand
+            td
+              b!=item.user_id.stagename
+              //a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+                !=" | "
+                a(href="/"+item.slug, target="_blank")!=global.__("view")
+            td
+              each user in item.partnerships
+                .text-nowrap
+                  a(href="/"+user.slug, target="_blank")!=user.name
+            td
+              each web in item.channels
+                div
+                  a(href=web.url, target="_blank")!=web.url
+            td
+              each contact in item.contacts
+                div
+                  a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname

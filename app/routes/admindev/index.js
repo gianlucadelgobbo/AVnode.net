@@ -7,6 +7,7 @@ const Event = mongoose.model('Event');
 
 const events =      require('./events/events');
 const organizations =      require('./organizations/organizations');
+const partners =      require('./partners/partners');
 
 const supertools =  require('./supertools/index');
 const wpimport =    require('./supertools/wpimport');
@@ -26,6 +27,7 @@ if (process.env.DEBUG) {
 
 router.use('/events', events);
 router.use('/organizations', organizations);
+router.use('/partners', partners);
 
 router.use('/supertools/wpimport', wpimport);
 router.use('/supertools/addresses', addresses);

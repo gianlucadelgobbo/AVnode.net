@@ -9,5 +9,6 @@
   .performer_item_info_wrapper
     a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
       h4.performer_item_title=item.stagename
-    ul.list-inline.performer_infos_list
-      li!=item.addressesFormatted.join(", ")
+    if item.addressesFormatted
+      ul.list-inline.performer_infos_list
+        li!=item.addressesFormatted.join(", ")

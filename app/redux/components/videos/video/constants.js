@@ -8,3 +8,7 @@ export const VIDEOS_NAME = (
     defaultMessage="VIDEO FILE"
   />
 );
+export const SHOW = <FormattedMessage
+                        id="show"
+                        defaultMessage="SHOW"
+                    />
