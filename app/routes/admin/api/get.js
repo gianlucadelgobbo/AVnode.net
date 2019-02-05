@@ -510,7 +510,8 @@ router.removeVenueDB = (req, res, cb) => {
 
 router.addMember = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = req.user._id;
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.members = req.user._id;
+  console.log();
   Models["User"]
   .findOne(query)
   .select({_id:1, stats:1, stagename:1, members:1})
@@ -595,7 +596,7 @@ router.addMember = (req, res) => {
 
 router.removeMember = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = req.user._id;
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.members = req.user._id;
   console.log(query);
   Models["User"]
   .findOne(query)
