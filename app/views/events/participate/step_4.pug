@@ -1,21 +1,54 @@
 // Availability
 - var count = 0;
+- var peoples = [];
 - call.performance = parseInt(call.performance)
 - for (var b=0;b<call.admitted[call.performance].users.length;b++)
   - if (call.admitted[call.performance].users[b].members && call.admitted[call.performance].users[b].members.length)
     - for (var c=0;c<call.admitted[call.performance].users[b].members.length;c++)
+      - if (peoples.indexOf(call.admitted[call.performance].users[b].members[c].slug)==-1)
+        - peoples.push(call.admitted[call.performance].users[b].members[c].slug)
+          .row.mb-3
+            .col-1
+              .text-center
+                input.switch(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.admitted[call.performance].users[b].members[c]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].members[c].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined))
+                input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.admitted[call.performance].users[b].members[c].stagename)
+                if (call.subscriptions[count].freezed)
+                  input(name="subscriptions[" + count + "][freezed]", type="hidden", value='true')
+                  input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.admitted[call.performance].users[b].members[c]._id)
+            .col-11
+              label(for="subscription"+b+"_"+c)
+                h3(class=call.subscriptions[count].freezed ? "mb-0" : undefined)
+                  !=call.admitted[call.performance].users[b].members[c].stagename
+              if (call.subscriptions[count].freezed)
+                p!=global.__("This person is already in with another act and can not be edited")
+              else
+                .subscription(style=!call.subscriptions || !call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
+                  - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []
+                  - for (var d=0;d<dett.schedule.length;d++)
+                    - var stringdate = dett.schedule[d].date.getFullYear()+"-"+(("0" + (dett.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (dett.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z"
+                    .form-check
+                      input.form-check-input(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=dett.schedule[d].date,    type="checkbox", checked=(dates.length && dates.indexOf(stringdate)!=-1) ? "checked" : undefined)
+                      label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
+                        !=" "+dett.schedule[d].date_formatted
+                      if (call.subscriptions[count].freezed)
+                        input(name="subscriptions[" + count + "][days][" + d + "]", value=dett.schedule[d].date, type="hidden")
+          - count++
+  - else
+    - if (peoples.indexOf(call.admitted[call.performance].users[b].slug)==-1)
+      - peoples.push(call.admitted[call.performance].users[b].slug)
+
       .row.mb-3
         .col-1
           .text-center
-            input.switch(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.admitted[call.performance].users[b].members[c]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].members[c].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined))
-            input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.admitted[call.performance].users[b].members[c].stagename)
+            input.switch(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.admitted[call.performance].users[b]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined))
+            input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.admitted[call.performance].users[b].stagename)
             if (call.subscriptions[count].freezed)
               input(name="subscriptions[" + count + "][freezed]", type="hidden", value='true')
-              input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.admitted[call.performance].users[b].members[c]._id)
+              input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.admitted[call.performance].users[b]._id)
         .col-11
           label(for="subscription"+b+"_"+c)
             h3(class=call.subscriptions[count].freezed ? "mb-0" : undefined)
-              !=call.admitted[call.performance].users[b].members[c].stagename
+              !=call.admitted[call.performance].users[b].stagename
           if (call.subscriptions[count].freezed)
             p!=global.__("This person is already in with another act and can not be edited")
           else
@@ -29,31 +62,4 @@
                     !=" "+dett.schedule[d].date_formatted
                   if (call.subscriptions[count].freezed)
                     input(name="subscriptions[" + count + "][days][" + d + "]", value=dett.schedule[d].date, type="hidden")
-      - count++
-  - else
-    .row.mb-3
-      .col-1
-        .text-center
-          input.switch(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.admitted[call.performance].users[b]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.admitted[call.performance].users[b].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[count] && call.subscriptions[count].subscriber_id ? "checked" : undefined))
-          input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.admitted[call.performance].users[b].stagename)
-          if (call.subscriptions[count].freezed)
-            input(name="subscriptions[" + count + "][freezed]", type="hidden", value='true')
-            input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.admitted[call.performance].users[b]._id)
-      .col-11
-        label(for="subscription"+b+"_"+c)
-          h3(class=call.subscriptions[count].freezed ? "mb-0" : undefined)
-            !=call.admitted[call.performance].users[b].stagename
-        if (call.subscriptions[count].freezed)
-          p!=global.__("This person is already in with another act and can not be edited")
-        else
-          .subscription(style=!call.subscriptions || !call.subscriptions[count] || !call.subscriptions[count].subscriber_id ? "display: none" : undefined)
-            - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []
-            - for (var d=0;d<dett.schedule.length;d++)
-              - var stringdate = dett.schedule[d].date.getFullYear()+"-"+(("0" + (dett.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (dett.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z"
-              .form-check
-                input.form-check-input(disabled=call.subscriptions[count].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[count].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=dett.schedule[d].date,    type="checkbox", checked=(dates.length && dates.indexOf(stringdate)!=-1) ? "checked" : undefined)
-                label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
-                  !=" "+dett.schedule[d].date_formatted
-                if (call.subscriptions[count].freezed)
-                  input(name="subscriptions[" + count + "][days][" + d + "]", value=dett.schedule[d].date, type="hidden")
-      - count++
+        - count++
