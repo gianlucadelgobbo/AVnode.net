@@ -516,7 +516,6 @@ router.addMember = (req, res) => {
   .select({_id:1, stats:1, stagename:1, members:1})
   .populate({ "path": "members", "select": "addresses", "model": "User"})
   .exec((err, crew) => {
-    console.log(crew.members.map((item)=>{return item._id}));
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
