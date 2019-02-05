@@ -64,7 +64,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  console.log(req.session.call);
+  logger.debug(req.session.call);
   if (req.session.call.saved || !req.body || !req.session.call) {
     if (req.body && req.body.step) delete req.body.step;
     delete req.session.call;
@@ -196,11 +196,11 @@ router.post('/', (req, res) => {
               req.session.call.performance = parseInt(req.body.performance);
               let perfpeoples = [];
               let allsubscriptions = [];
-              console.log("req.session.call.admitted[req.session.call.performance].users");
-              console.log(req.session.call.admitted[req.session.call.performance].users);
+              logger.debug("req.session.call.admitted[req.session.call.performance].users");
+              logger.debug(req.session.call.admitted[req.session.call.performance].users);
               for (var b=0;b<req.session.call.admitted[req.session.call.performance].users.length;b++) {
                 if (req.session.call.admitted[req.session.call.performance].users[b].members && req.session.call.admitted[req.session.call.performance].users[b].members.length){
-                  //console.log(call.admitted[call.performance].users[b].members);
+                  //logger.debug(call.admitted[call.performance].users[b].members);
                   for (var c=0;c<req.session.call.admitted[req.session.call.performance].users[b].members.length;c++) {
                     perfpeoples.push(req.session.call.admitted[req.session.call.performance].users[b].members[c]._id);
                     allsubscriptions.push({subscriber_id: req.session.call.admitted[req.session.call.performance].users[b].members[c]._id,stagename: req.session.call.admitted[req.session.call.performance].users[b].members[c].stagename});
@@ -210,8 +210,8 @@ router.post('/', (req, res) => {
                   allsubscriptions.push({subscriber_id: req.session.call.admitted[req.session.call.performance].users[b]._id,stagename: req.session.call.admitted[req.session.call.performance].users[b].stagename});
                 }          
               }
-              console.log("perfpeoples");
-              console.log(perfpeoples);
+              logger.debug("perfpeoples");
+              logger.debug(perfpeoples);
               myasync = false;
               Program.find({"subscriptions.subscriber_id":{$in:perfpeoples}}).
               lean().
@@ -219,8 +219,8 @@ router.post('/', (req, res) => {
                 let subscriptionsfound = [];
                 for (var b=0;b<subscriptions.length;b++) {
                   subscriptionsfound = subscriptionsfound.concat(subscriptions[b].subscriptions);
-                  console.log(subscriptions[b].subscriptions);
-                  console.log(subscriptionsfound);
+                  logger.debug(subscriptions[b].subscriptions);
+                  logger.debug(subscriptionsfound);
                 }
                 for (var b=0;b<allsubscriptions.length;b++) {
                   for (var d=0;d<subscriptionsfound.length;d++) {
@@ -233,8 +233,8 @@ router.post('/', (req, res) => {
                 }
                 for (var b=0;b<allsubscriptions.length;b++) if (!allsubscriptions[b].freezed) delete allsubscriptions[b].subscriber_id;
                 req.session.call.subscriptions = allsubscriptions;
-                console.log("allsubscriptions");
-                console.log(allsubscriptions);
+                logger.debug("allsubscriptions");
+                logger.debug(allsubscriptions);
                 res.render('events/participate', {
                   title: data.title,
                   canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
@@ -258,8 +258,8 @@ router.post('/', (req, res) => {
             }
             break;
           case 4 :
-            console.log("req.body.subscriptions");
-            console.log(req.body.subscriptions);
+            logger.debug("req.body.subscriptions");
+            logger.debug(req.body.subscriptions);
             if (data && req.body.subscriptions && req.body.subscriptions.length) {
               let days_check = true;
               for (var a=0; a<req.body.subscriptions.length; a++) {

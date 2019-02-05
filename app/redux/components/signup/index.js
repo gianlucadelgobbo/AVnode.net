@@ -53,8 +53,6 @@ class SignUp extends Component {
 
     let data = Object.assign({}, values);
 
-    console.log(data);
-
     if (!values.crewUrl) {
       data.subscribe = "single";
     } else {
@@ -94,7 +92,6 @@ class SignUp extends Component {
       modelToSave.addresses = addrs;
       // Add auth user _id
       modelToSave.id = "1";
-      console.log(modelToSave);
       //dispatch the action to save the model here
       return saveModel(modelToSave).then(response => {
         if (response.model && response.model._id) {

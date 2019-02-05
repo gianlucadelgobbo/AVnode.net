@@ -21,7 +21,6 @@ router.get('/', (req, res, next) => {
   }])
   .exec((err, crew) => {
     if (err || crew === null) {
-      console.log('routes/crews/show err:' + err);
       return next(err);
     }
     res.render('crews/show', {

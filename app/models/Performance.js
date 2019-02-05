@@ -135,7 +135,6 @@ performanceSchema.virtual('tech_art').get(function (req) {
 // Return thumbnail
 performanceSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
@@ -145,7 +144,6 @@ performanceSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/performances_originals/', process.env.WAREHOUSE+'/warehouse/performances/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
@@ -156,39 +154,7 @@ performanceSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-/*
-performanceSchema.virtual('teaserImageFormats').get(function () {
-  let teaserImageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.teaserImage);
-  if (this.teaserImage && this.teaserImage.file) {
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = config.cpanel[adminsez].media.teaserImage.sizes[format].default;
-    }
-    const serverPath = this.teaserImage.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-    }
-  } else {
-    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
-    }
-  }
-  return teaserImageFormats;
-});
 
-performanceSchema.virtual('editUrl').get(function () {
-  return `/admin/performances/public/${this.slug}`;
-});
-
-performanceSchema.virtual('publicUrl').get(function () {
-  return `/performances/${this.slug}`;
-});
-*/
 performanceSchema.pre('remove', function(next) {
   const performance = this;
   performance.model('User').updateMany(
@@ -200,76 +166,15 @@ performanceSchema.pre('remove', function(next) {
     next
   );
 });
+ /*  
 performanceSchema.pre('validate', function(next) {
- /*  console.log("performanceSchema.pre('save', function(next) {");
-  console.log(this);
   if (this.tecnique == '') this.tecnique = undefined;
   if (this.genre == '') this.genre = undefined;
-  console.log("performanceSchema.pre('save', function(next) {");
-  console.log(this); */
   next();
 });
+ */
 
-
-/*
-// FIXME: Rename in performer?
-performanceSchema.virtual('performers', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: 'performances'
-});
-
-performanceSchema.virtual('crews', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: 'performances'
-});
-// return thumbnail
-performanceSchema.virtual('squareThumbnailUrl').get(function () {
-  let squareThumbnailUrl = '/images/profile-default.svg';
-
-  if (this.file && this.file.file) {
-    const serverPath = this.file.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    squareThumbnailUrl = `${process.env.WAREHOUSE}/${localPath}/55x55/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-  }
-  return squareThumbnailUrl;
-});
-// return card img
-performanceSchema.virtual('cardUrl').get(function () {
-  let cardUrl = '/images/profile-default.svg';
-
-  if (this.file && this.file.file) {
-    const serverPath = this.file.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(1, serverPath.lastIndexOf('/')); // warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    cardUrl = `${process.env.WAREHOUSE}/${localPath}/400x300/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-  }
-  return cardUrl;
-});
-
-// return original image
-performanceSchema.virtual('imageUrl').get(function () {
-  let image = '/images/profile-default.svg';
-  if (this.image) {
-    image = `/storage/${this.image}/512/200`;
-  }
-  if (this.file && this.file.file) {
-    image = `${process.env.WAREHOUSE}${this.file.file}`;
-  }
-  // console.log(image);
-  return image;
-});
-*/
-
-performanceSchema.plugin(indexPlugin());
+//performanceSchema.plugin(indexPlugin());
 
 const Performance = mongoose.model('Performance', performanceSchema);
 

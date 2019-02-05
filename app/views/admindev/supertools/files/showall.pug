@@ -4,12 +4,9 @@ block content
   - var mkdir = []
   if data.length
     each item, index in data
-      - console.log(mkdir.indexOf(item.mkdir))
       if !item.exists && item.mkdir && mkdir.indexOf(item.mkdir)===-1
         - mkdir.push(item.mkdir)
     - mkdir.sort()
-    - console.log("mkdir")
-    - console.log(mkdir)
     p=mkdir.length
     ol
       if mkdir.length

@@ -24,14 +24,12 @@ router.post('/', (req, res) => {
       res.redirect('/password/forgot');
     } else {
       const token = uuid.v4();
-      console.log();
       const expiresInHours = _.parseInt(process.env.PASSWORD_RESET_EXPIRES);
       user.passwordResetToken = token;
       user.passwordResetExpires = moment().add(expiresInHours, 'hours').toDate();
 
       user.save((err) => {
         if (err) {
-          console.log(err);
           req.flash('errors', {msg: __('Password not generated, please retry.')});
           res.redirect('/password/forgot');
         } else {

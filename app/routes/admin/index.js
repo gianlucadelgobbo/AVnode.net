@@ -72,7 +72,6 @@ router.put('/api/:sez/:id/:form/', (req, res) => {
   if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     req.params.comp = ['footage/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
     upload.uploader(req, res, (err, data) => {
-      console.log("uploaderuploaderuploaderuploader");
       if (err) {
         res.status(500).json(err);
       } else {

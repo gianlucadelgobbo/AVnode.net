@@ -152,17 +152,11 @@ const userSchema = new Schema({
     type: String,
     validate: [{
       validator : function(password) {
-        console.log("passwordpasswordpasswordpasswordpasswordpassword");
-        //console.log(this);
-        console.log(password && password.length > 7);
         return this.flxermigrate || (password && password.length > 7);
       }, msg: "Password is too shorth, the minimum length is 8 characters. Try again..." //'INVALID_PASSWORD_LENGTH'
     },
     {
       validator : function(password) {
-        console.log("passwordpasswordpasswordpasswordpasswordpassword2");
-        console.log(password);
-        console.log(hasNumber(password) && hasLowerCase(password) && hasUpperCase(password));
         return this.flxermigrate || (hasNumber(password) && hasLowerCase(password) && hasUpperCase(password));
       }, msg: "Password is not valid, have to contain at least 1 number, 1 lower case and 1 uppercase characters. Try again..." //'INVALID_PASSWORD_CHR'
     }]
@@ -183,49 +177,6 @@ const userSchema = new Schema({
   }
 });
 
-/*
-userSchema.methods.toJSON = function() {
-  var obj = this.toObject();
-  delete obj.image;
-  return obj;
-}
-userSchema.virtual('crews', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: '_id'
-}); */
-
-// Crews only
-
-
-
-/* BL FIXME later for crews
-userSchema.pre('remove', function(next) {
-  const crew = this;
-  crew.model('User').updateMany(
-    { $pull: { crews: crew._id } },
-    next
-  );
-});
-
-userSchema.virtual('publicUrl').get(function () {
-  if (this.slug) return `/${this.slug}`;
-});
-userSchema.virtual('editUrl').get(function () {
-  if (this.slug) {
-    if (this.is_crew) {
-      return `/admin/crew/${this.slug}`;
-    } else {
-      return `/admin/${this.slug}`;
-    } 
-  } 
-});
-userSchema.path('slug').validate(function(n) {
-  //return !!n && n.length >= 3 && n.length < 25;
-  return !n=='gianlucadelgobbo';
-}, 'Invalid Slug');
-*/
-
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
     const lang = global.getLocale();
@@ -237,7 +188,6 @@ userSchema.virtual('birthdayFormatted').get(function () {
 // Return thumbnail
 userSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
@@ -247,7 +197,6 @@ userSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/users_originals/', process.env.WAREHOUSE+'/warehouse/users/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
@@ -258,47 +207,16 @@ userSchema.virtual('imageFormats').get(function () {
   }
   return imageFormats;
 });
-/*
-userSchema.virtual('teaserImageFormats').get(function () {
-  let teaserImageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.teaserImage);
-  if (this.teaserImage && this.teaserImage.file) {
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = config.cpanel[adminsez].media.teaserImage.sizes[format].default;
-    }
-    const serverPath = this.teaserImage.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-    }
-  } else {
-    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
-    }
-  }
-  return teaserImageFormats;
-});
-*/
 
 userSchema.pre('validate', function (next) {
-  console.log("userSchema.pre('validate' PASSWORD");
   let user = this;
   if ((user.oldpassword || user.oldpassword === "") && (user.newpassword || user.newpassword === "")) {
     user.comparePassword(user.oldpassword, (err, isMatch) => {
       if (err) return next(err);
       if (isMatch) {
         user.password = user.newpassword;
-        console.log('userSchema.pre(validate) password:' + (user.password));
-        console.log(user);
         user.set("oldpassword", undefined, {strict: false});
         user.set("newpassword", undefined, {strict: false});
-        console.log('userSchema.pre(validate) password:' + (user.password));
-        console.log(user);
-        //console.log('userSchema.pre(validate) user:' + JSON.stringify(user.linkSocial));
         next();
       } else {
         var err = {
@@ -324,8 +242,6 @@ userSchema.pre('validate', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
-  console.log("userSchema.pre('save' CREW ADRESSES");
-  //console.log(this.members);
   if (this.crews) {
     this.stats.crews = this.crews.length;
   }
@@ -345,7 +261,6 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre('save', function (next) {
-  console.log("userSchema.pre('save' PASSWORD");
   let user = this;
   if (!user.isModified('password') || user.hashed) { if (user.hashed) delete user.hashed; return next(); }
   bcrypt.genSalt(10, (err, salt) => {
@@ -359,7 +274,6 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre('save', function (next) {
-  console.log("userSchema.pre('save' EMAILS");
   if (this.emails && this.emails.length && !this.is_crew) {
     let query = { _id:{$ne:this._id}, $or : [] };
     for (let item=0 ;item< this.emails.length; item++) {
@@ -370,7 +284,6 @@ userSchema.pre('save', function (next) {
       if (!user){
           next();
       }else{                
-          console.log('EMAIL IS NOT YOUR');
           const err = {
             "message": "EMAIL IS NOT YOUR",
             "name": "MongoError",
@@ -395,7 +308,6 @@ userSchema.pre('save', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
-  console.log("userSchema.pre('save' NEWSLETTER");
   if (this.emails && this.emails.length) {
     const emailwithmailinglists = this.emails.filter(item => item.mailinglists)
     if (emailwithmailinglists.length>0) {
@@ -471,8 +383,6 @@ userSchema.pre('save', function (next) {
   }
 });
 userSchema.pre('save', function (next) {
-  console.log("userSchema.pre('save' PRIMARY");
-  //console.log(this.stats);
   if (this.emails && this.emails.length) {
     if (this.emails.filter(item => item.is_primary).length===0) {
       const err = {
@@ -531,7 +441,7 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
   });
 };
 
-userSchema.plugin(indexPlugin());
+//userSchema.plugin(indexPlugin());
 userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model('User', userSchema);

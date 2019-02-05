@@ -107,10 +107,6 @@ block content
             td
               form(action="")
                 each status in data.status
-                  -   console.log("ddd")
-                  -   console.log(item.schedule.categories[0])
-                  -   console.log(status._id)
-                  -   console.log(item.schedule.categories[0].toString()==status._id.toString())
                   .form-check.text-nowrap
                     input.form-check-input(id='status'+status._id+subscription.subscriber_id._id, name='status'+subscription.subscriber_id._id, type='radio', value=status.id, checked=item.schedule.categories[0].toString()==status._id.toString() ? "checked" : undefined)
                     label.form-check-label(for='status'+status._id+subscription.subscriber_id._id)=status.name

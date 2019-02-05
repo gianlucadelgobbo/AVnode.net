@@ -1,5 +1,4 @@
 ul.navbar-nav.mr-auto
-  - console.log (event)
   if currentUrl.indexOf("/admindev/events/")===0 && currentUrl.length>40
     li.nav-item
       a.nav-link.text-white(href='/admindev/events/'+data.event._id)=data.event.title

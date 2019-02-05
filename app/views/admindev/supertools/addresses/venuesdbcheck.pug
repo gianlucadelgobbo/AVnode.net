@@ -99,8 +99,5 @@ block content
         data: { db: "venues", name: name, country: country, locality: locality, field:field, action:action, old:old, new:neww }
       })
       .done(function( msg ) {
-        console.log("."+field);
-        console.log($(elem).find("."+field).html());
-        console.log(msg);
       });
     }

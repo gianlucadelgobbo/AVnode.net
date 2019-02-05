@@ -44,8 +44,8 @@ router.postData = (req, res) => {
     Models[config.cpanel[req.params.sez].model]
     .create(post, (err, data) => {
       if (!err) {
-        console.log('create success');
-        console.log(data);
+        logger.debug('create success');
+        logger.debug(data);
         const id = req.user.id;
         Models['User']
         .findById(id, req.params.sez, (err, user) => {
@@ -58,8 +58,8 @@ router.postData = (req, res) => {
               logger.debug(user);
               user.save((err) => {
                 if (err) {
-                  console.log('save user err');
-                  console.log(err);
+                  logger.debug('save user err');
+                  logger.debug(err);
                   res.status(400).json(err);
                 } else {
                   logger.debug('save user success');
@@ -70,13 +70,13 @@ router.postData = (req, res) => {
                       ancestor[req.params.sez].push(data._id);
                       ancestor.save((err) => {
                         if (err) {
-                          console.log('save ancestor err');
-                          console.log(err);
+                          logger.debug('save ancestor err');
+                          logger.debug(err);
                           res.status(400).json(err);
                         } else {
-                          console.log("data");
-                          console.log(data);
-                          console.log(data);
+                          logger.debug("data");
+                          logger.debug(data);
+                          logger.debug(data);
                           res.json(data);                    
                         }
                       });
@@ -97,8 +97,8 @@ router.postData = (req, res) => {
                     } else {
                       let send = {_id: data._id};
                       for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-                      console.log('sendsendsendsendsendsendsend');
-                      console.log(send);
+                      logger.debug('sendsendsendsendsendsendsend');
+                      logger.debug(send);
                       res.json(send);
                     }
                   }); */
@@ -112,8 +112,8 @@ router.postData = (req, res) => {
           }
         });
       } else {
-        console.log('create err');
-        console.log(err);
+        logger.debug('create err');
+        logger.debug(err);
         res.status(400).json(err);
       }
     });
@@ -228,8 +228,8 @@ router.updateSendy = function (req, res) {
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].country) formData.Country = req.req.user.addresses[0].country;
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lat) formData.LATITUDE = req.user.addresses[0].geometry.lat;
     if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].geometry && req.user.addresses[0].geometry.lng) formData.LONGITUDE = req.user.addresses[0].geometry.lng;
-    console.log("formData");
-    console.log(formData);
+    logger.debug("formData");
+    logger.debug(formData);
   
     var https = require('https');
     var querystring = require('querystring');
@@ -265,7 +265,7 @@ router.updateSendy = function (req, res) {
     
     // req error
     req.on('error', function (err) {
-      console.log(err);
+      logger.debug(err);
     });
     
     //send request witht the postData form
@@ -276,13 +276,13 @@ router.updateSendy = function (req, res) {
       url: 'https://ml.avnode.net/subscribe',
       form: formData,
       function (error, response, body) {
-        console.log("Newsletter");
-        console.log(error);
-        console.log(body);
+        logger.debug("Newsletter");
+        logger.debug(error);
+        logger.debug(body);
         res.json(error);
       }
     });
-    //console.log(mailinglists.join(','));  }
+    //logger.debug(mailinglists.join(','));  }
   //}
 }
 

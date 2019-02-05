@@ -38,7 +38,7 @@ export function calcTotal(x = 3, y = 2, z = 1) {
   const rec = n => (n >= 0 ? x * y ** n-- + rec(n) : 0);
   return rec(z + 1);
 }
-//console.log('总节点数（单个tree）：', calcTotal());
+
 export const gData = generateData();
 
 export function generateTreeNodes(treeNode) {
@@ -118,7 +118,6 @@ function isPositionPrefix(smallPos, bigPos) {
   }
   return bigPos.substr(0, smallPos.length) === smallPos;
 }
-// console.log(isPositionPrefix("0-1", "0-10-1"));
 
 export function getFilterValue(val, sVal, delVal) {
   const allPos = [];
