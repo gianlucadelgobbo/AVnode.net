@@ -46,17 +46,17 @@ router.getList = (req, res) => {
 }
 
 router.getData = (req, res) => {
-  //console.log(req.params);
+  //logger.debug(req.params);
   for (let item in config.cpanel) {
-    //console.log("http://localhost:8006/admin/api/"+item+"?pure=1")
+    //logger.debug("http://localhost:8006/admin/api/"+item+"?pure=1")
     for (let item2 in config.cpanel[item].forms) {
-      //console.log("http://localhost:8006/admin/api/"+item+"/"+item2);
-      //console.log("http://localhost:8006/admin/api/"+item+"/:ID/"+item2+"?pure=1");
+      //logger.debug("http://localhost:8006/admin/api/"+item+"/"+item2);
+      //logger.debug("http://localhost:8006/admin/api/"+item+"/:ID/"+item2+"?pure=1");
       //config.cpanel[item].forms[item2].populate = [];
       //config.cpanel[item].forms[item2].select = {};
       for (let item3 in config.cpanel[item].forms[item2].validators) {
         //config.cpanel[item].forms[item2].select[item3] = 1;
-        //console.log(item+"/"+item2+"/"+item3);
+        //logger.debug(item+"/"+item2+"/"+item3);
       } 
     }
   }
@@ -244,7 +244,7 @@ router.getAuthors = (req, res) => {
 
 router.removeAddress = (req, res) => {
   if (req.query.db === "users") {
-    console.log(req.query);
+    logger.debug(req.query);
     router.removeAddressUsers(req, res, () => {
       router.removeAddressDB(req, res, () => {
         res.json(req.query);
@@ -252,12 +252,12 @@ router.removeAddress = (req, res) => {
     });
   }
   if (req.query.db === "venues") {
-    console.log(req.query);
+    logger.debug(req.query);
     router.removeVenueDB(req, res, (newaddr) => {
-      console.log("newaddr");
-      //console.log(newaddr);
+      logger.debug("newaddr");
+      //logger.debug(newaddr);
       router.removeAddressEvents(req, res, newaddr, () => {
-        console.log("stocazzo END");
+        logger.debug("stocazzo END");
         res.json(req.query);
       });
     });
@@ -265,14 +265,14 @@ router.removeAddress = (req, res) => {
 }
 
 router.removeAddressUsers = (req, res, cb) => {
-  console.log("removeAddressUsers");
+  logger.debug("removeAddressUsers");
   var conta = 0;
   //res.json(req.query);
   Models.User
   .find({"addresses.country": req.query.country, "addresses.locality": req.query.locality},'_id, addresses', (err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     if (users.length) {
-      console.log("stocazzo");
+      logger.debug("stocazzo");
       for(var a=0;a<users.length;a++){
         for(var b=0;b<users[a].addresses.length;b++){
           if (users[a].addresses[b].country === req.query.country && users[a].addresses[b].locality === req.query.locality) {
@@ -281,10 +281,10 @@ router.removeAddressUsers = (req, res, cb) => {
                 users[a].addresses[b].locality = undefined;
               }
               if (req.query.field === "country") {
-                console.log("stocazzzooooooooooo USERS");
-                console.log(users[a]);
+                logger.debug("stocazzzooooooooooo USERS");
+                logger.debug(users[a]);
                 users[a].addresses.splice(b, 1);
-                console.log(users[a]);
+                logger.debug(users[a]);
               }
             }
             if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
@@ -292,14 +292,14 @@ router.removeAddressUsers = (req, res, cb) => {
             }
           }
         }
-        console.log("stocazzzooooooooooo USERS");
-        console.log(users[a]);
+        logger.debug("stocazzzooooooooooo USERS");
+        logger.debug(users[a]);
         Models.User.updateOne({_id: users[a]._id}, { $set: {addresses: users[a].addresses}}, function(err, res) {
           conta++;
           if (err) {
-            console.log(err);
+            logger.debug(err);
           } else {
-            console.log(res);
+            logger.debug(res);
           }
           if (conta === users.length) cb();
         });
@@ -311,7 +311,7 @@ router.removeAddressUsers = (req, res, cb) => {
 }
 
 router.removeAddressDB = (req, res, cb) => {
-  console.log("removeAddressDB");
+  logger.debug("removeAddressDB");
   var collection;
   var rel;
   var q;
@@ -331,14 +331,14 @@ router.removeAddressDB = (req, res, cb) => {
       if (req.query.action === "REMOVE") {
         if (req.query.field === "locality") {
           addresses[b].locality = undefined;
-          console.log("stocazzzooooooooooo AddressDB");
-          console.log(addresses[b]);
+          logger.debug("stocazzzooooooooooo AddressDB");
+          logger.debug(addresses[b]);
           collection.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
-            console.log(err);
-            console.log(res);
+            logger.debug(err);
+            logger.debug(res);
             if (err && err.code == "11000") {
               collection.deleteOne(q, function (err) {
-                if (err) console.log(err);
+                if (err) logger.debug(err);
                 cb();
                 // deleted at most one tank document
               });
@@ -349,7 +349,7 @@ router.removeAddressDB = (req, res, cb) => {
         }
         if (req.query.field === "country") {
           collection.deleteOne(q, function (err) {
-            if (err) console.log(err);
+            if (err) logger.debug(err);
             cb();
           });
         }
@@ -358,11 +358,11 @@ router.removeAddressDB = (req, res, cb) => {
         var update = {};
         update[req.query.field] = req.query.new;
         collection.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
-          console.log(err);
-          console.log(res);
+          logger.debug(err);
+          logger.debug(res);
           if (err && err.code == "11000") {
             collection.deleteOne(q, function (err) {
-              if (err) console.log(err);
+              if (err) logger.debug(err);
               cb();
               // deleted at most one tank document
             });
@@ -378,14 +378,14 @@ router.removeAddressDB = (req, res, cb) => {
 }
 
 router.removeAddressEvents = (req, res, newaddr, cb) => {
-  console.log("removeAddressEvents");
+  logger.debug("removeAddressEvents");
   var conta = 0;
   Models.Event
   .find({$or: [{"schedule.venue.name": req.query.name, "schedule.venue.location.country": req.query.country, "schedule.venue.location.locality": req.query.locality},{"program.schedule.venue.name": req.query.name}]},{schedule:1,title:1,program:1}, (err, events) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     if (events.length) {
       for(var a=0;a<events.length;a++){
-        console.log(events[a].title);
+        logger.debug(events[a].title);
         for(var b=0;b<events[a].schedule.length;b++){
           if (events[a].schedule[b].venue.name === req.query.name && events[a].schedule[b].venue.location.country === req.query.country && events[a].schedule[b].venue.location.locality === req.query.locality) {
             /* if (req.query.action === "REMOVE") {
@@ -413,10 +413,10 @@ router.removeAddressEvents = (req, res, newaddr, cb) => {
                   events[a].program[b].schedule.venue.location.locality = undefined;
                 }
                 if (req.query.field === "country") {
-                  console.log("stocazzzooooooooooo events");
-                  console.log(events[a]);
+                  logger.debug("stocazzzooooooooooo events");
+                  logger.debug(events[a]);
                   events[a].program.splice(b, 1);
-                  console.log(events[a]);
+                  logger.debug(events[a]);
                 }
               } */
               if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
@@ -430,13 +430,13 @@ router.removeAddressEvents = (req, res, newaddr, cb) => {
           }
         }
         var set = events[a].program ? {schedule: events[a].schedule,program: events[a].program} : {schedule: events[a].schedule};
-        console.log(set);
+        logger.debug(set);
         Models.Event.updateOne({_id: events[a]._id}, set, function(err, res) {
           conta++;
           if (err) {
-            console.log(err);
+            logger.debug(err);
           } else {
-            console.log(res);
+            logger.debug(res);
           }
           if (conta === events.length) cb();
         });
@@ -448,7 +448,7 @@ router.removeAddressEvents = (req, res, newaddr, cb) => {
 }
 
 router.removeVenueDB = (req, res, cb) => {
-  console.log("removeVenueDB");
+  logger.debug("removeVenueDB");
   var rel;
   var q;
   q = {"name": req.query.name, "country": req.query.country, "locality": req.query.locality};
@@ -460,14 +460,14 @@ router.removeVenueDB = (req, res, cb) => {
       /* if (req.query.action === "REMOVE") {
         if (req.query.field === "locality") {
           addresses[b].locality = undefined;
-          console.log("stocazzzooooooooooo AddressDB");
-          console.log(addresses[b]);
+          logger.debug("stocazzzooooooooooo AddressDB");
+          logger.debug(addresses[b]);
           Models.VenueDB.findByIdAndUpdate(addresses[b]._id, { $unset: {locality:1}}, { new: false }, function (err, res) {
-            console.log(err);
-            console.log(res);
+            logger.debug(err);
+            logger.debug(res);
             if (err && err.code == "11000") {
               Models.VenueDB.deleteOne(q, function (err) {
-                if (err) console.log(err);
+                if (err) logger.debug(err);
                 cb();
                 // deleted at most one tank document
               });
@@ -478,7 +478,7 @@ router.removeVenueDB = (req, res, cb) => {
         }
         if (req.query.field === "country") {
           Models.VenueDB.deleteOne(q, function (err) {
-            if (err) console.log(err);
+            if (err) logger.debug(err);
             cb();
           });
         }
@@ -486,13 +486,13 @@ router.removeVenueDB = (req, res, cb) => {
       if (req.query.action === "CHANGE" && req.query.old && req.query.new) {
         var update = {};
         update[req.query.field] = req.query.new;
-        console.log(update);
+        logger.debug(update);
         Models.VenueDB.findByIdAndUpdate(addresses[b]._id, update, { new: false }, function (err, res) {
-          //console.log(err);
-          //console.log(res);
+          //logger.debug(err);
+          //logger.debug(res);
           if (err && err.code == "11000") {
             Models.VenueDB.deleteOne(q, function (err) {
-              if (err) console.log(err);
+              if (err) logger.debug(err);
               cb(res);
               // deleted at most one tank document
             });
@@ -502,7 +502,7 @@ router.removeVenueDB = (req, res, cb) => {
         });
       }
     } else {
-      console.log("stocazzostocazzostocazzostocazzostocazzo");
+      logger.debug("stocazzostocazzostocazzostocazzostocazzo");
       cb();
     }
   });
@@ -511,7 +511,7 @@ router.removeVenueDB = (req, res, cb) => {
 router.addMember = (req, res) => {
   var query = {_id: req.params.id};
   if (config.superusers.indexOf(req.user._id.toString())===-1) query.members = req.user._id;
-  console.log();
+  logger.debug();
   Models["User"]
   .findOne(query)
   .select({_id:1, stats:1, stagename:1, members:1})
@@ -556,11 +556,11 @@ router.addMember = (req, res) => {
       });
     } else {
       crew.members.push(req.params.member);
-      console.log("crew.members");
-      console.log(crew.members);
-      console.log(crew.members.length);
+      logger.debug("crew.members");
+      logger.debug(crew.members);
+      logger.debug(crew.members.length);
       crew.stats.members = crew.members.length;
-      console.log(crew);
+      logger.debug(crew);
       crew.save(function(err){
         var query = {_id: req.params.member};
         Models["User"]
@@ -573,9 +573,9 @@ router.addMember = (req, res) => {
             res.status(404).json({ error: err });
           } else {
             member.crews.push(req.params.id);
-            console.log("member.crews");
-            console.log(member.crews);
-            console.log(member.crews.length);
+            logger.debug("member.crews");
+            logger.debug(member.crews);
+            logger.debug(member.crews.length);
             member.stats.crews = member.crews.length;
             member.save(function(err){
               if (err) {
@@ -597,7 +597,7 @@ router.addMember = (req, res) => {
 router.removeMember = (req, res) => {
   var query = {_id: req.params.id};
   if (config.superusers.indexOf(req.user._id.toString())===-1) query.members = req.user._id;
-  console.log(query);
+  logger.debug(query);
   Models["User"]
   .findOne(query)
   .select({_id:1, stagename:1, stats:1, members:1})
@@ -659,9 +659,9 @@ router.removeMember = (req, res) => {
       });
     } else {
       crew.members.splice(crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member), 1);
-      console.log("crew.members");
-      console.log(crew.members);
-      console.log(crew.members.length);
+      logger.debug("crew.members");
+      logger.debug(crew.members);
+      logger.debug(crew.members.length);
       crew.stats.members = crew.members.length;
 
       crew.save(function(err){
@@ -676,9 +676,9 @@ router.removeMember = (req, res) => {
           //.populate({ "path": "members", "select": "addresses", "model": "User"})
           .exec((err, member) => {
             member.crews.splice(member.crews.indexOf(req.params.id), 1);
-            console.log("member.crews");
-            console.log(member.crews);
-            console.log(member.crews.length);
+            logger.debug("member.crews");
+            logger.debug(member.crews);
+            logger.debug(member.crews.length);
             member.stats.crews = member.crews.length;
             member.save(function(err){
               if (err) {
@@ -1060,42 +1060,42 @@ router.getCountries = (req, res) => {
 }
 
 router.sendEmailVericaition = (req, res) => {
-  console.log("sendEmailVericaition");
-  console.log(req.headers.host);
+  logger.debug("sendEmailVericaition");
+  logger.debug(req.headers.host);
   const uid = require('uuid');
   //const request = require('request');
   const mongoose = require('mongoose');
   const User = mongoose.model('User');
   User.findOne({"emails.email": req.params.email}, "emails", (err, user) => {
-    console.log(user._id.toString());
-    console.log(req.params.id);
+    logger.debug(user._id.toString());
+    logger.debug(req.params.id);
     if (err) { 
-      console.log("MAIL SEARCH ERROR");
+      logger.debug("MAIL SEARCH ERROR");
       res.json({error: true, msg: "MAIL SEARCH ERROR"});
     } else if (!user) {
-      console.log("USER NOT FOUND");     
+      logger.debug("USER NOT FOUND");     
       res.json({error: true, msg: "USER NOT FOUND"});
     } else if (req.params.id !== user._id.toString()) {
-      console.log("EMAIL IS NOT YOUR");     
+      logger.debug("EMAIL IS NOT YOUR");     
       res.json({error: true, msg: "EMAIL IS NOT YOUR"});
     } else {
-      console.log("Email OK");
+      logger.debug("Email OK");
       let nothingToDo = true;
       for(let item=0;item<user.emails.length;item++) {
         if (user.emails[item].email === req.params.email && !user.emails[item].is_confirmed) {
           nothingToDo = false;
           const mailer = require('../../../utilities/mailer');
           user.emails[item].confirm = uid.v4();
-          console.log(user.emails[item]);
-          console.log(user);
+          logger.debug(user.emails[item]);
+          logger.debug(user);
           user.save((err) => {
             if (err) {
-              console.log("Save failure");
-              console.log(err);
+              logger.debug("Save failure");
+              logger.debug(err);
               res.json({error: true, msg: "Save failure"});
             } else {
-              console.log("Save success");
-              console.log("mySendMailer");
+              logger.debug("Save success");
+              logger.debug("mySendMailer");
               mailer.mySendMailer({
                 template: 'confirm-email',
                 message: {
@@ -1115,10 +1115,10 @@ router.sendEmailVericaition = (req, res) => {
                 }
               }, function (err){
                 if (err) {
-                  console.log("Email sending failure");
+                  logger.debug("Email sending failure");
                   res.json({error: true, msg: "Email sending failure"});
                 } else {
-                  console.log("Email sending OK");
+                  logger.debug("Email sending OK");
                   res.json({error: false, msg: "Email sending success"});
                 }
               });
@@ -1127,7 +1127,7 @@ router.sendEmailVericaition = (req, res) => {
         }
       }
       if(nothingToDo) {
-        console.log("Nothing to do");
+        logger.debug("Nothing to do");
         res.json({error: true, msg: "Nothing to do"});          
       }
     }
@@ -1157,12 +1157,12 @@ router.sendEmailVericaition = (req, res) => {
             url: 'https://ml.avnode.net/subscribe',
             formData:formData,
             function (error, response, body) {
-              console.log("Newsletter");
-              console.log(error);
-              console.log(body);
+              logger.debug("Newsletter");
+              logger.debug(error);
+              logger.debug(body);
             }
           });
-          //console.log(mailinglists.join(','));
+          //logger.debug(mailinglists.join(','));
  */
 
 /**/
