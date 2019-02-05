@@ -84,6 +84,7 @@ router.get('/', (req, res) => {
   Partner.
   find({"users": {$in:myids}}).
   lean().
+  sort({brand: 1}).
   //select({stagename: 1, createdAt: 1, crews:1}).
   populate({path: "user_id", select: {stagename:1, slug:1, social:1, web:1}, model:"User"}).
   exec((err, data) => {

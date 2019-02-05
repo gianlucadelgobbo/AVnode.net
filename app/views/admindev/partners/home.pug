@@ -17,19 +17,26 @@ block content
             td
               b!=item.brand
             td
-              b!=item.user_id.stagename
-              //a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
-                !=" | "
-                a(href="/"+item.slug, target="_blank")!=global.__("view")
+              if item.user_id
+                if item.user_id.stagename != item.brand
+                  b!=item.user_id.stagename
+                  //a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+                    !=" | "
+                    a(href="/"+item.slug, target="_blank")!=global.__("view")
+              else
+                .badge.badge-danger!="EXTERNAL"
             td
-              each user in item.partnerships
-                .text-nowrap
-                  a(href="/"+user.slug, target="_blank")!=user.name
+              if item.partnerships
+                each user in item.partnerships
+                  .text-nowrap
+                    a(href="/"+user.slug, target="_blank")!=user.name
             td
-              each web in item.channels
-                div
-                  a(href=web.url, target="_blank")!=web.url
+              if item.channels
+                each web in item.channels
+                  div
+                    a(href=web.url, target="_blank")!=web.url
             td
-              each contact in item.contacts
-                div
-                  a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+              if item.contacts
+                each contact in item.contacts
+                  div
+                    a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname

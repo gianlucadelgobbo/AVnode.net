@@ -239,28 +239,30 @@ eventSchema.virtual('artists').get(function (req) {
   let actsN = [];
   if (this.program && this.program.length) {
     for(let a=0;a<this.program.length;a++){
-      if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
-      for(let b=0;b<this.program[a].performance.users.length;b++){
-        if (this.program[a].performance.users[b].members.length) {
-          for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
-            if (artistsN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) artistsN.push(this.program[a].performance.users[b].members[d]._id);
+      if(this.program[a].performance) {
+        if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
+        for(let b=0;b<this.program[a].performance.users.length;b++){
+          if (this.program[a].performance.users[b].members.length) {
+            for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
+              if (artistsN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) artistsN.push(this.program[a].performance.users[b].members[d]._id);
+            }
+          } else {
+            if (artistsN.indexOf(this.program[a].performance.users[b]._id)===-1) artistsN.push(this.program[a].performance.users[b]._id);
           }
-        } else {
-          if (artistsN.indexOf(this.program[a].performance.users[b]._id)===-1) artistsN.push(this.program[a].performance.users[b]._id);
-        }
-        if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) {
-          artistsA.push(this.program[a].performance.users[b]._id);
-          artists.artists.push(this.program[a].performance.users[b]);
-        }
+          if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) {
+            artistsA.push(this.program[a].performance.users[b]._id);
+            artists.artists.push(this.program[a].performance.users[b]);
+          }
 
 
-        if (this.program[a].performance.users[b].addresses) {
-          for(let c=0;c<this.program[a].performance.users[b].addresses.length;c++){
-            if (artists.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) artists.countries.push(this.program[a].performance.users[b].addresses[c].country);
-          }  
-        }
-        for(let c=0;c<this.program[a].performance.categories.length;c++){
-          if (this.program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && artists.acts.indexOf(this.program[a].performance.categories[c].name)===-1) artists.acts.push(this.program[a].performance.categories[c].name);
+          if (this.program[a].performance.users[b].addresses) {
+            for(let c=0;c<this.program[a].performance.users[b].addresses.length;c++){
+              if (artists.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) artists.countries.push(this.program[a].performance.users[b].addresses[c].country);
+            }  
+          }
+          for(let c=0;c<this.program[a].performance.categories.length;c++){
+            if (this.program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && artists.acts.indexOf(this.program[a].performance.categories[c].name)===-1) artists.acts.push(this.program[a].performance.categories[c].name);
+          }
         }
       }
     }
