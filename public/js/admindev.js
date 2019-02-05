@@ -50,7 +50,6 @@ $("#liker").on('click', function(ev) {
   }
 
   request(url, method, payload, (data) => {
-    console.log(data);
     if(data.err) {
       alert(data.msg);
     } else {
@@ -71,9 +70,6 @@ $("#liker").on('click', function(ev) {
 });
 
 const request = (url, method, payload, cb) => {
-  console.log(url);
-  console.log(method);
-  console.log(payload);
   $.ajax({
     url: url,
     method: method,

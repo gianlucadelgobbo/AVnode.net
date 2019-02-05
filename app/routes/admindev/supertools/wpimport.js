@@ -39,7 +39,7 @@ router.get('/events_import', (req, res) => {
   let page = req.query.page ? parseFloat(req.query.page) : 0;
   if (events[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/events/"+events[page];
-    //console.log({"url": url});
+    //logger.debug({"url": url});
     page++;
     request({
         url: url,
@@ -49,15 +49,15 @@ router.get('/events_import', (req, res) => {
         let data = [];
         let contapost = 0;
         let contaposttotal = 0;
-        console.log(body);
+        logger.debug(body);
         var startdate = new Date(parseInt(body['wpcf-startdate'])*1000);
         var enddate = new Date(parseInt(body['wpcf-enddate'])*1000);
-        console.log("startdate");
-        console.log(startdate);
-        console.log(startdate.toISOString());
-        console.log("enddate");
-        console.log(enddate);
-        console.log(enddate.toISOString());
+        logger.debug("startdate");
+        logger.debug(startdate);
+        logger.debug(startdate.toISOString());
+        logger.debug("enddate");
+        logger.debug(enddate);
+        logger.debug(enddate.toISOString());
         var locations = [];
         for (var item in body['wpcf-location']) {
           var arr = body['wpcf-location'][item].split(";");
@@ -74,7 +74,7 @@ router.get('/events_import', (req, res) => {
           }
           locations.push(venue);
         }
-        console.log(locations);
+        logger.debug(locations);
         
         var event = {
           wp_id: body.ID,
@@ -114,16 +114,16 @@ router.get('/events_import', (req, res) => {
             "5be8708afc396100000001de"
           ]
         };
-        console.log(body.web_site);
+        logger.debug(body.web_site);
         for (var item in body.web_site) {
           var web = {
             url : body.web_site[item],
           }
           event.web.push(web);
         }
-        console.log("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
+        logger.debug("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
         for (var a=0;a<=enddate.getDate()-startdate.getDate();a++) {
-          console.log("locations.length "+locations.length);
+          logger.debug("locations.length "+locations.length);
           if (locations.length) {
             for (var b=0;b<locations.length;b++) {
               var schedule = {
@@ -150,22 +150,22 @@ router.get('/events_import', (req, res) => {
           } else {
             event.users = [ObjectId("5be87f15fc3961000000a669")];
           }
-          //console.log(event);
+          //logger.debug(event);
           Event.
           findOneAndUpdate({slug: event.slug}, event, { upsert: true, new: true, setDefaultsOnInsert: true }, (err) => {
             let result;
             if (err) {
-              console.log('error '+err);
+              logger.debug('error '+err);
               result = err;
             } else {
               result = event;
             }
-            console.log('saveoutputsaveoutputsaveoutputsaveoutputsaveoutputsaveoutput ');
-            console.log(body.featured);
+            logger.debug('saveoutputsaveoutputsaveoutputsaveoutputsaveoutputsaveoutput ');
+            logger.debug(body.featured);
             if (body.featured && body.featured.full) {
               router.download(body.featured.full, global.appRoot+event.image.file, (p1,p2,p3) => {
   
-                console.log('saveoutput ');
+                logger.debug('saveoutput ');
                 res.render('admindev/supertools/import', {
                   title: 'WP Events',
                   currentUrl: req.originalUrl,
@@ -244,23 +244,23 @@ router.get('/organizations_import', (req, res) => {
   let page = req.query.page ? parseFloat(req.query.page) : 0;
   if (organizations[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/author/avnode/"+organizations[page];
-    console.log({"url": url});
+    logger.debug({"url": url});
 
     request({
         url: url,
         json: true
     }, function (error, response, body) {
-      console.log({"slug": body.user_login});
-      console.log(error);
-      console.log(response.statusCode);
-      console.log("body.ID");
-      console.log(body.ID);
+      logger.debug({"slug": body.user_login});
+      logger.debug(error);
+      logger.debug(response.statusCode);
+      logger.debug("body.ID");
+      logger.debug(body.ID);
       if (!error && response.statusCode === 200) {
         page++;
         if (body.organisation) {
-          console.log({"slug": body.user_login});
-          console.log(url);
-          console.log(body.organisation);
+          logger.debug({"slug": body.user_login});
+          logger.debug(url);
+          logger.debug(body.organisation);
           User.findOne({"slug": body.user_login}, function(error, result) {
             if (result) {
               result.organizationData = JSON.parse(JSON.stringify(body.organisation));
@@ -286,7 +286,7 @@ router.get('/organizations_import', (req, res) => {
                   var obj = {source: result.organizationData.logo.toString()};
                   const ext = result.organizationData.logo.substring(result.organizationData.logo.lastIndexOf("."));
                   obj.dest = result.organizationData.logo = "/warehouse/organizations/logos/LOGO-"+result.slug+ext;
-                  console.log(obj);
+                  logger.debug(obj);
                   row.push(obj);
                 }
                 if (result.organizationData.statute) {
@@ -327,12 +327,12 @@ router.get('/organizations_import', (req, res) => {
                   });          
                 }
               } else {
-                console.log('saveoutput ');
-                console.log({"result": result});
-                console.log(body.organisation);
+                logger.debug('saveoutput ');
+                logger.debug({"result": result});
+                logger.debug(body.organisation);
                 result.save(function(error) {
-                  console.log("salvato");
-                  console.log(error || result);
+                  logger.debug("salvato");
+                  logger.debug(error || result);
                   res.render('admindev/supertools/import', {
                     title: 'WP Organizations',
                     currentUrl: req.originalUrl,
@@ -435,21 +435,21 @@ router.get('/news_import', (req, res) => {
   logger.debug(news[page]);
   if (news[page]) {
     const url = "https://flyer.dev.flyer.it/wp-json/wp/v2/news/"+news[page];
-    console.log({"url": url});
+    logger.debug({"url": url});
 
     request({
         url: url,
         json: true
     }, function (error, response, body) {
-      console.log({"error": error});
-      console.log({"response": response});
-      console.log({"body": body});
+      logger.debug({"error": error});
+      logger.debug({"response": response});
+      logger.debug({"body": body});
       if (!error && response.statusCode === 200) {
         page++;
         if (body.ID) {
           let news = body;
-          console.log("News "+news.post_title);
-          console.log(news);
+          logger.debug("News "+news.post_title);
+          logger.debug(news);
           let tmp = {
             old_id: news.ID,
             createdAt: news.date,
@@ -496,13 +496,13 @@ router.get('/news_import', (req, res) => {
             slugs.push(news.capauthors[user].user_login);
           }
           User.find({"slug": {$in: slugs}}).exec((err, persons) => {
-            console.log("slugs");
-            console.log(slugs);
+            logger.debug("slugs");
+            logger.debug(slugs);
             var usersA = persons.map(function(item){ return item._id; });
-            console.log("usersA");
+            logger.debug("usersA");
             if (!usersA.length) usersA = [ObjectId("5be8772bfc39610000007065")];
             tmp.users = usersA;
-            console.log(usersA);
+            logger.debug(usersA);
             if (news.featured && news.featured.full) {
               let filename = '';
               let dest = '';
@@ -521,7 +521,7 @@ router.get('/news_import', (req, res) => {
                 logger.debug(fs.mkdirSync(dest));
               }
               dest += `/${filename}`;
-              //console.log(dest.replace(global.appRoot, '')+filename);
+              //logger.debug(dest.replace(global.appRoot, '')+filename);
               tmp.image = {
                 file: dest.replace(global.appRoot, ''),
                 filename: filename,
@@ -529,13 +529,13 @@ router.get('/news_import', (req, res) => {
               };
               router.download(source, dest, (p1,p2,p3) => {
   
-                console.log('saveoutput ');
-                console.log(tmp);
+                logger.debug('saveoutput ');
+                logger.debug(tmp);
                 News.
                 update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
                   let result;
                   if (err) {
-                    console.log('error '+err);
+                    logger.debug('error '+err);
                     result = err;
                   } else {
                     result = tmp;
@@ -553,13 +553,13 @@ router.get('/news_import', (req, res) => {
     
               });          
             } else {
-              console.log('saveoutput ');
-              console.log(tmp);
+              logger.debug('saveoutput ');
+              logger.debug(tmp);
               News.
               update({slug: tmp.slug}, tmp, {upsert: true}, (err) => {
                 let result;
                 if (err) {
-                  console.log('error '+err);
+                  logger.debug('error '+err);
                   result = err;
                 } else {
                   result = tmp;
@@ -626,17 +626,17 @@ router.download = (source, dest, callback) => {
     }
     request.head(source, function(err, res, body){
       if (err) {
-        console.log(err);
+        logger.debug(err);
       }
       if (res) {
-        console.log('content-type:', res.headers['content-type']);
-        console.log('content-length:', res.headers['content-length']);
+        logger.debug('content-type:', res.headers['content-type']);
+        logger.debug('content-length:', res.headers['content-length']);
       }
       //dest = dest.substring(0, dest.lastIndexOf("/"));
-      console.log("source ");
-      console.log(source);
-      console.log("dest ");
-      console.log(dest);
+      logger.debug("source ");
+      logger.debug(source);
+      logger.debug("dest ");
+      logger.debug(dest);
       request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
     });
   //});
@@ -680,9 +680,9 @@ router.mkdirRecursive = (path, callback) => {
       let contapost = 0;
       let contaposttotal = 0;
       body.forEach((news, index) => {
-        console.log("News "+index);
-        console.log("News "+news.title.rendered);
-        //console.log(news);
+        logger.debug("News "+index);
+        logger.debug("News "+news.title.rendered);
+        //logger.debug(news);
         let tmp = {
           old_id: news.id,
           createdAt: news.date,
@@ -729,13 +729,13 @@ router.mkdirRecursive = (path, callback) => {
           slugs.push(news.capauthors[user].user_login);
         }
         User.find({"slug": {$in: slugs}}).exec((err, persons) => {
-          console.log("slugs");
-          console.log(slugs);
+          logger.debug("slugs");
+          logger.debug(slugs);
           var usersA = persons.map(function(item){ return item._id; });
-          console.log("usersA");
+          logger.debug("usersA");
           if (!usersA.length) usersA = ['5be8772bfc39610007065'];
           tmp.users = usersA;
-          console.log(usersA);
+          logger.debug(usersA);
           if (news.featured && news.featured.full) {
             let filename = '';
             let dest = '';
@@ -755,7 +755,7 @@ router.mkdirRecursive = (path, callback) => {
               logger.debug(fs.mkdirSync(dest));
             }
             dest += `/${filename}`;
-            //console.log(dest.replace(global.appRoot, '')+filename);
+            //logger.debug(dest.replace(global.appRoot, '')+filename);
             tmp.image = {
               file: dest.replace(global.appRoot, ''),
               filename: filename,
@@ -764,20 +764,20 @@ router.mkdirRecursive = (path, callback) => {
             data.push(tmp);
             router.download(source, dest, (p1,p2,p3) => {
               contapost++;
-              console.log('contapost download ');
-              console.log(data.length);
-              console.log(body.length);
-              console.log(contapost);
+              logger.debug('contapost download ');
+              logger.debug(data.length);
+              logger.debug(body.length);
+              logger.debug(contapost);
 
               if (contapost == body.length) {
-                console.log('saveoutput ');
-                console.log(data.length);
-                console.log(data);
+                logger.debug('saveoutput ');
+                logger.debug(data.length);
+                logger.debug(data);
                 News.
                 create(data, (err) => {
                   let result;
                   if (err) {
-                    console.log('error '+err);
+                    logger.debug('error '+err);
                     result = err;
                   } else {
                     result = data;
@@ -795,19 +795,19 @@ router.mkdirRecursive = (path, callback) => {
             });          
           } else {
             contapost++;
-            console.log('contapost NO download ');
-            console.log(data.length);
-            console.log(body.length);
-            console.log(contapost);
+            logger.debug('contapost NO download ');
+            logger.debug(data.length);
+            logger.debug(body.length);
+            logger.debug(contapost);
             if (contapost == body.length) {
-              console.log('saveoutput ');
-              console.log(data.length);
-              console.log(data);
+              logger.debug('saveoutput ');
+              logger.debug(data.length);
+              logger.debug(data);
               News.
               create(data, (err) => {
                 let result;
                 if (err) {
-                  console.log('error '+err);
+                  logger.debug('error '+err);
                   result = err;
                 } else {
                   result = data;
@@ -847,11 +847,11 @@ router.get('/eventsupdate', (req, res) => {
         json: true
     }, function (error, response, body) {
       if (!error && response.statusCode === 200, body.ID) {
-        //console.log(body);
+        //logger.debug(body);
         var startdatetime = new Date((parseInt(body['wpcf-startdate'])*100));
-        //console.log(startdatetime);
+        //logger.debug(startdatetime);
         var enddatetime = new Date((parseInt(body['wpcf-enddate'])*100));
-        //console.log(enddatetime);
+        //logger.debug(enddatetime);
         
         var locations = [];
         for (var item in body['wpcf-location']) {
@@ -869,7 +869,7 @@ router.get('/eventsupdate', (req, res) => {
           }
           locations.push(venue);
         }
-        //console.log(locations);
+        //logger.debug(locations);
 
         var event = {
           wp_id: body.ID,
@@ -908,7 +908,7 @@ router.get('/eventsupdate', (req, res) => {
               ("5be8708afc396100001de")
           ]
         };
-        ////console.log(body.web_site);
+        ////logger.debug(body.web_site);
         for (var item in body.web_site) {
           var web = {
             txt : body.web_site[item],
@@ -917,10 +917,10 @@ router.get('/eventsupdate', (req, res) => {
           }
           event.web.push(web);
         }
-        //console.log("enddate.getDate()-startdate.getDate() "+router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*100), new Date(parseInt(body['wpcf-enddate'])*100) ));
+        //logger.debug("enddate.getDate()-startdate.getDate() "+router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*100), new Date(parseInt(body['wpcf-enddate'])*100) ));
         var daysBetween = router.daysBetween( new Date(parseInt(body['wpcf-startdate'])*100), new Date(parseInt(body['wpcf-enddate'])*100) )
         for (var a=0;a<=daysBetween;a++) {
-          console.log(a);
+          logger.debug(a);
           if (locations.length) {
             for (var b=0;b<locations.length;b++) {
               var schedule = {
@@ -929,7 +929,7 @@ router.get('/eventsupdate', (req, res) => {
                 endtime: new Date((parseInt(body['wpcf-enddate'])*100)-((daysBetween-a)*(100*60*60*24))),
                 venue: locations[b]
               };
-              ////console.log(schedule);
+              ////logger.debug(schedule);
               event.schedule.push(schedule);
             }
           } else {
@@ -941,18 +941,18 @@ router.get('/eventsupdate', (req, res) => {
             event.schedule.push(schedule);
           }
         }
-        //console.log("original");
-        //console.log(original);
+        //logger.debug("original");
+        //logger.debug(original);
 
         Event.findOneAndUpdate({"slug": body.post_name}, event, { upsert: true, new: false, setDefaultsOnInsert: true }, function(error, result) {
           if (error) {
-            console.log(error);
+            logger.debug(error);
           } else if (!result) {
             // Create it
             //result = new Model();
             //result = Object.assign(result, event);
-            console.log("insert");
-            console.log(events[page]);
+            logger.debug("insert");
+            logger.debug(events[page]);
             // If the document doesn't exist
             // Save the document
           } 

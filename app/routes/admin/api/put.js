@@ -53,8 +53,6 @@ router.putData = (req, res) => {
           }
           data.save((err) => {
             if (err) {
-              console.log('err');
-              console.log(err);
               res.status(400).json(err);
             } else {
               select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
@@ -75,9 +73,6 @@ router.putData = (req, res) => {
                     for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
                     res.json(send);
                     /* if (data.emails && data.emails.filter(item => item.mailinglists) && data.emails.filter(item => item.mailinglists).length) {
-                      console.log("req.user");
-                      console.log(req.user);
-                      console.log("emailwithmailinglists");
                       router.updateSendy(data, req, (err) => {
                         let send = {_id: data._id};
                         for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];

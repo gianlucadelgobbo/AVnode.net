@@ -28,7 +28,7 @@ router.checkAndCreate = (folder, cb) => {
   if (folderA.length) {
     for (let a=1; a<folderA.length;a++) {
       subfolder +=  `/${folderA[a]}`;
-      console.log(subfolder);
+      logger.debug(subfolder);
       if (!fs.existsSync(global.appRoot + subfolder)) {
         fs.mkdirSync(global.appRoot + subfolder);
       }
@@ -39,8 +39,8 @@ router.checkAndCreate = (folder, cb) => {
 
 router.download = (source, dest, callback) => {
   request.head(source, function(err, res, body){
-    console.log('content-type:', res.headers['content-type']);
-    console.log('content-length:', res.headers['content-length']);
+    logger.debug('content-type:', res.headers['content-type']);
+    logger.debug('content-length:', res.headers['content-length']);
     request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
   });
 };
@@ -60,7 +60,7 @@ router.get('/userimages', (req, res) => {
       users[user].image.imageFormats = {};
       users[user].image.imageFormatsExists = {};
       logger.debug(users[user]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       //if (users[user].image.exists) {
         const file = users[user].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -69,7 +69,7 @@ router.get('/userimages', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         logger.debug(config.cpanel[adminsez].forms.image.components.image);
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
@@ -86,7 +86,7 @@ router.get('/userimages', (req, res) => {
       //}
       data.push(users[user].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'User images',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -116,7 +116,7 @@ router.get('/userformatsgenerator', (req, res) => {
       users[user].image.imageFormats = {};
       users[user].image.imageFormatsExists = {};
       logger.debug(users[user]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       if (users[user].image.exists) {
         const file = users[user].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -124,7 +124,7 @@ router.get('/userformatsgenerator', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -148,7 +148,7 @@ router.get('/userformatsgenerator', (req, res) => {
       }
       data.push(users[user].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'User images generator',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -173,7 +173,7 @@ router.get('/performanceimages', (req, res) => {
       performances[performance].image.imageFormats = {};
       performances[performance].image.imageFormatsExists = {};
       logger.debug(performances[performance]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       //if (performances[performance].image.exists) {
         const file = performances[performance].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -182,7 +182,7 @@ router.get('/performanceimages', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -195,7 +195,7 @@ router.get('/performanceimages', (req, res) => {
         }
       data.push(performances[performance].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Performance images',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -224,7 +224,7 @@ router.get('/performanceformatsgenerator', (req, res) => {
       performances[performance].image.imageFormats = {};
       performances[performance].image.imageFormatsExists = {};
       logger.debug(performances[performance]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       if (performances[performance].image.exists) {
         const file = performances[performance].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -232,7 +232,7 @@ router.get('/performanceformatsgenerator', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/performances_originals/", "/warehouse/performances/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           performances[performance].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -253,7 +253,7 @@ router.get('/performanceformatsgenerator', (req, res) => {
       }
       data.push(performances[performance].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Performance images generator',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -279,7 +279,7 @@ router.get('/eventimages', (req, res) => {
       events[event].image.imageFormats = {};
       events[event].image.imageFormatsExists = {};
       logger.debug(events[event]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       //if (events[event].image.exists) {
         const file = events[event].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -287,7 +287,7 @@ router.get('/eventimages', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -297,7 +297,7 @@ router.get('/eventimages', (req, res) => {
       //}
       data.push(events[event].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Event images',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -327,7 +327,7 @@ router.get('/eventformatsgenerator', (req, res) => {
       events[event].image.imageFormats = {};
       events[event].image.imageFormatsExists = {};
       //logger.debug(events[event]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       if (events[event].image.exists) {
         const file = events[event].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -335,7 +335,7 @@ router.get('/eventformatsgenerator', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/events_originals/", "/warehouse/events/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           events[event].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -363,7 +363,7 @@ router.get('/eventformatsgenerator', (req, res) => {
       }
       data.push(events[event].image);
     }
-    //console.log(req.path);
+    //logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Event images generator',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -388,7 +388,7 @@ router.get('/newsimages', (req, res) => {
       newss[news].image.imageFormats = {};
       newss[news].image.imageFormatsExists = {};
       logger.debug(newss[news]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       //if (newss[news].image.exists) {
         const file = newss[news].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -396,7 +396,7 @@ router.get('/newsimages', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
           newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -406,7 +406,7 @@ router.get('/newsimages', (req, res) => {
       //}
       data.push(newss[news].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'News images',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -439,7 +439,7 @@ router.get('/newsformatsgenerator', (req, res) => {
       newss[news].image.imageFormats = {};
       newss[news].image.imageFormatsExists = {};
       logger.debug(newss[news]);
-      //console.log(config.cpanel[adminsez].config.sizes.image);
+      //logger.debug(config.cpanel[adminsez].config.sizes.image);
       if (newss[news].image.exists) {
         const file = newss[news].image.file;
         const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
@@ -447,7 +447,7 @@ router.get('/newsformatsgenerator', (req, res) => {
         const publicPath = fileFolder.replace("/glacier/news_originals/", "/warehouse/news/"); // /warehouse/2017/03
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        // console.log('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
+        // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
         for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
           newss[news].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -468,7 +468,7 @@ router.get('/newsformatsgenerator', (req, res) => {
       }
       data.push(newss[news].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'News images generator',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -491,7 +491,7 @@ router.get('/playlistimages', (req, res) => {
       playlists[playlist].image.exists = fs.existsSync(global.appRoot+playlists[playlist].image.file);
       data.push(playlists[playlist].image);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Performance images',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -548,18 +548,18 @@ router.get('/footagefiles', (req, res) => {
       }
       /*
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-        console.log(footages[footage].media);
+        logger.debug(footages[footage].media);
         footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
         footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
       }
       */
-      console.log("stocazzo1 "+footages[footage].media.preview);
+      logger.debug("stocazzo1 "+footages[footage].media.preview);
       if (footages[footage].media.preview) {
-        console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
+        logger.debug("stocazzo2 "+global.appRoot+footages[footage].media.preview);
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
-        console.log("stocazzo3 "+footages[footage].media.preview);
+        logger.debug("stocazzo3 "+footages[footage].media.preview);
         const previewFile = footages[footage].media.preview;
         const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
         const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
@@ -576,7 +576,7 @@ router.get('/footagefiles', (req, res) => {
           }
         }
         if (footages[footage].media.previewexists) {
-          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
           for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
             footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
@@ -604,7 +604,7 @@ router.get('/footagefiles', (req, res) => {
       }
       data.push(footages[footage].media);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Footage images',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -707,26 +707,26 @@ router.get('/footageformatsgenerator', (req, res) => {
       }
       /*
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-        console.log(footages[footage].media);
+        logger.debug(footages[footage].media);
         footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
         footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
       }
       */
-     console.log("stocazzo1 "+footages[footage].media.preview);
+     logger.debug("stocazzo1 "+footages[footage].media.preview);
      if (footages[footage].media.preview) {
-        console.log("stocazzo2 "+global.appRoot+footages[footage].media.preview);
+        logger.debug("stocazzo2 "+global.appRoot+footages[footage].media.preview);
         footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         if (footages[footage].media.previewexists) {
-          console.log("stocazzo3 "+footages[footage].media.preview);
+          logger.debug("stocazzo3 "+footages[footage].media.preview);
           const previewFile = footages[footage].media.preview;
           const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
           const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
           const publicPath = previewFileFolder.replace("/glacier/footage_previews/", "/warehouse/footage_previews/"); // /warehouse/2017/03
           const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
           const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
           for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
             footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
@@ -735,7 +735,7 @@ router.get('/footageformatsgenerator', (req, res) => {
             if (!footages[footage].media.imageFormatsExists[format]) {
               let folder = footages[footage].media.imageFormats[format].substring(0, footages[footage].media.imageFormats[format].lastIndexOf('/'))
               router.checkAndCreate(folder, () => {
-                console.log("stocazzo "+global.appRoot+previewFile);
+                logger.debug("stocazzo "+global.appRoot+previewFile);
                 sharp(global.appRoot+previewFile)
                 .resize(config.cpanel[adminsez].forms.public.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.media.config.sizes[format].h)
                 .toFile(global.appRoot+footages[footage].media.imageFormats[format], (err, info) => {
@@ -756,7 +756,7 @@ router.get('/footageformatsgenerator', (req, res) => {
       }
       data.push(footages[footage].media);
     }
-    console.log(req.path);
+    logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Footage images generator',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -812,18 +812,18 @@ router.get('/videofiles', (req, res) => {
       }
       /*
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-        console.log(videos[video].media);
+        logger.debug(videos[video].media);
         videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
         videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
       }
       */
-     console.log("stocazzo1 "+videos[video].media.preview);
+     logger.debug("stocazzo1 "+videos[video].media.preview);
      if (videos[video].media.preview) {
-        console.log("stocazzo2 "+global.appRoot+videos[video].media.preview);
+        logger.debug("stocazzo2 "+global.appRoot+videos[video].media.preview);
         videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
-        console.log("stocazzo3 "+videos[video].media.preview);
+        logger.debug("stocazzo3 "+videos[video].media.preview);
         const previewFile = videos[video].media.preview;
         const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
         const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
@@ -839,7 +839,7 @@ router.get('/videofiles', (req, res) => {
           }
         }
         if (videos[video].media.previewexists) {
-          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
           for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
             videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
@@ -868,7 +868,7 @@ router.get('/videofiles', (req, res) => {
     if (req.query.api==1) {
       res.json(data);
     } else {
-      console.log(req.path);
+      logger.debug(req.path);
       res.render('admindev/supertools/files/videos', {
         title: 'Video images',
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -925,7 +925,7 @@ router.get('/videoformatsgenerator', (req, res) => {
       }
       /*
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-        console.log(videos[video].media);
+        logger.debug(videos[video].media);
         videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
@@ -941,7 +941,7 @@ router.get('/videoformatsgenerator', (req, res) => {
           const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos_previews/"); // /warehouse/2017/03
           const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
           const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-          // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+          // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
           for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
             videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
@@ -973,7 +973,7 @@ router.get('/videoformatsgenerator', (req, res) => {
     if (req.query.api==1) {
       res.json(data);
     } else {
-      console.log(req.path);
+      logger.debug(req.path);
       res.render('admindev/supertools/files/videos', {
         title: 'Video images generator',
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -1031,7 +1031,7 @@ router.get('/galleryimages', (req, res) => {
         //logger.debug("galleries.length "+ galleries.length+" "+ gallery);
         //logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
         if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
-          console.log(req);
+          logger.debug(req);
           res.render('admindev/supertools/files/galleryShow', {
             title: 'Gallery images',
             superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -1062,7 +1062,7 @@ router.get('/gallerygenerator', (req, res) => {
     if (galleries.length) {
       for (let gallery=0; gallery<galleries.length; gallery++) {
         for (let media=0; media<galleries[gallery].medias.length; media++) {
-          //console.log(galleries[gallery].medias[media].file);
+          //logger.debug(galleries[gallery].medias[media].file);
           galleries[gallery].medias[media].exists = fs.existsSync(global.appRoot+galleries[gallery].medias[media].file);
           if (galleries[gallery].medias[media].exists) {
             galleries[gallery].medias[media].imageFormats = {};
@@ -1073,7 +1073,7 @@ router.get('/gallerygenerator', (req, res) => {
             const publicPath = previewFileFolder.replace("/glacier/galleries_originals/", "/warehouse/galleries/"); // /warehouse/2017/03
             const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
             const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-            // console.log('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
+            // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
             for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
               galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
             }
@@ -1096,7 +1096,7 @@ router.get('/gallerygenerator', (req, res) => {
           logger.debug("galleries.length "+ galleries.length+" "+ gallery);
           logger.debug("medias.length "+ galleries[gallery].medias.length+" "+ media);
           if (gallery+1 == galleries.length && media+1 == galleries[gallery].medias.length) {
-            console.log(req.path);
+            logger.debug(req.path);
             res.render('admindev/supertools/files/galleryShow', {
               title: 'Gallery images generator',
               superuser:config.superusers.indexOf(req.user._id.toString())!==-1,

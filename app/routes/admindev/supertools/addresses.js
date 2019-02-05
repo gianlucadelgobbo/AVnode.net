@@ -42,11 +42,11 @@ router.get('/updatedb', (req, res) => {
   });
 });
 router.get('/getgeometry', (req, res) => {
-  console.log('/addresses/getgeometry');
+  logger.debug('/addresses/getgeometry');
   getgeometry(req, res, cb = (data) => {
-    console.log('getgeometry');
+    logger.debug('getgeometry');
     const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
-    console.log(script);
+    logger.debug(script);
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/getgeometry',
       currentUrl: '/admindev/supertools/addresses'+req.path,
@@ -57,9 +57,9 @@ router.get('/getgeometry', (req, res) => {
 });
 
 router.get('/setgeometry', (req, res) => {
-  console.log(req.query.skip);
+  logger.debug(req.query.skip);
   var skip = req.query.skip ? parseFloat(req.query.skip)+1 : 0;
-  console.log(skip);
+  logger.debug(skip);
   setgeometry(req, res, skip, cb = (data) => {
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/setgeometry',
@@ -97,11 +97,11 @@ router.get('/venuesdbimport', (req, res) => {
 });
 
 router.get('/venuesgetgeometry', (req, res) => {
-  console.log('/addresses/venuesgetgeometry');
+  logger.debug('/addresses/venuesgetgeometry');
   venuesgetgeometry(req, res, cb = (data) => {
-    console.log('venuesgetgeometry');
+    logger.debug('venuesgetgeometry');
     const script = !data.length || data[0].error_message  || data[0].status == 'OVER_QUERY_LIMIT' ? false : '<script>var timeout = setTimeout("location.reload(true);",10000);</script>';
-    console.log(script);
+    logger.debug(script);
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/venuesgetgeometry',
       currentUrl: '/admindev/supertools/addresses'+req.path,
@@ -112,9 +112,9 @@ router.get('/venuesgetgeometry', (req, res) => {
 });
 
 router.get('/venuessetgeometry', (req, res) => {
-  console.log(req.query.skip);
+  logger.debug(req.query.skip);
   var skip = req.query.skip ? parseFloat(req.query.skip)+1 : 0;
-  console.log(skip);
+  logger.debug(skip);
   venuessetgeometry(req, res, skip, cb = (data) => {
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/venuessetgeometry',
@@ -126,13 +126,13 @@ router.get('/venuessetgeometry', (req, res) => {
 });
 
 const setgeometry = (req, res, s, cb) => {
-  console.log(s);
+  logger.debug(s);
   AddressDB.find({status: "OK"}).
   skip(s).
   limit(100).
   sort({"country": 1, "locality": 1}).
   exec((err, addressesA) => {
-    console.log(addressesA);
+    logger.debug(addressesA);
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
@@ -144,8 +144,8 @@ const setgeometry = (req, res, s, cb) => {
           if (data.length) {
             data.forEach ((user, indexsave) => {
               data[indexsave].addresses.forEach ((useraddress, indexaddress) => {
-                console.log('addresssave pre');
-                console.log(data[indexsave].addresses);
+                logger.debug('addresssave pre');
+                logger.debug(data[indexsave].addresses);
                 if (addressesA[index].locality && data[indexsave].addresses[indexaddress].country == addressesA[index].country && addressesA[index].locality == data[indexsave].addresses[indexaddress].locality) {
                   data[indexsave].addresses[indexaddress].country = addressesA[index].country;
                   data[indexsave].addresses[indexaddress].locality = addressesA[index].locality;
@@ -158,17 +158,17 @@ const setgeometry = (req, res, s, cb) => {
                   data[indexsave].addresses[indexaddress].formatted_address = addressesA[index].formatted_address;
                 }
               });
-              console.log('addresssave after');
-              console.log(data[indexsave].addresses);
+              logger.debug('addresssave after');
+              logger.debug(data[indexsave].addresses);
               data[indexsave].save((err, todo) => {
                 if (err) {
-                  console.log('addresssave error');
+                  logger.debug('addresssave error');
                 } else {
-                  console.log('addresssave OK');
+                  logger.debug('addresssave OK');
                 }
                 conta++;
-                console.log('conta '+conta);
-                console.log('data.length + addressesA.length '+(data.length + addressesA.length - 1));
+                logger.debug('conta '+conta);
+                logger.debug('data.length + addressesA.length '+(data.length + addressesA.length - 1));
                 if (conta === data.length + addressesA.length - 1 ) {
                   cb(data);
                 }
@@ -196,20 +196,20 @@ const getgeometry = (req, res, cb) => {
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
-        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
+        logger.debug(process.env.GOOGLEMAPSAPIURL+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
         request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country), (error, response, body) => {
-          console.log("requestrequestrequestrequest");
-          console.log(element);
-          console.log(error);
-          console.log(body);
+          logger.debug("requestrequestrequestrequest");
+          logger.debug(element);
+          logger.debug(error);
+          logger.debug(body);
           conta++;
           if (error) {
-            console.log(error);
+            logger.debug(error);
           } else {
             try {
-              console.log("ADDRESS try");
+              logger.debug("ADDRESS try");
               let json = JSON.parse(body);
-              console.log(json.results[0].address_components);
+              logger.debug(json.results[0].address_components);
               if (json.results.length) {
                 addressesA[index].formatted_address = json.results[0].formatted_address;
                 addressesA[index].status = json.status;
@@ -227,18 +227,18 @@ const getgeometry = (req, res, cb) => {
               }
               AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                 if (err) {
-                  console.log(err);
+                  logger.debug(err);
                 } else {
                   AddressDB.find({_id: addressesA[index]._id}).
                   then(function(resres) {
                     if (err) {
-                      console.log(err);
+                      logger.debug(err);
                     } else {
                       allres = allres.concat(resres);
                     }
-                    console.log("update end");
+                    logger.debug("update end");
                     if (conta === addressesA.length) {
-                      console.log("update end");
+                      logger.debug("update end");
                       cb(allres);
                     }
                 });
@@ -246,19 +246,19 @@ const getgeometry = (req, res, cb) => {
               });
             } catch(e) {
               const error = JSON.parse(body);
-              console.log("ADDRESS catch");
-              console.log(error);
+              logger.debug("ADDRESS catch");
+              logger.debug(error);
 
               if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
                 addressesA[index].status = error.status;
                 AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                   if (err) {
-                    console.log(err);
+                    logger.debug(err);
                   } else {
                     AddressDB.find({_id: addressesA[index]._id}).
                     then(function(resres) {
                       if (err) {
-                        console.log(err);
+                        logger.debug(err);
                       } else {
                         allres = allres.concat(resres);
                       }
@@ -269,7 +269,7 @@ const getgeometry = (req, res, cb) => {
                   }
                 });
               } else {
-                //console.log(JSON.parse(body));
+                //logger.debug(JSON.parse(body));
                 allres = allres.concat([error]);
                 if (conta === addressesA.length) {
                   cb(allres);
@@ -289,13 +289,13 @@ const getgeometry = (req, res, cb) => {
                       //elementsave.addresses.forEach((addresssave, indexaddress) => {
                         if (data[indexsave].addresses[indexaddress].country == addressesA[index].newAddress.country && addressesA[index].localityOld.indexOf(data[indexsave].addresses[indexaddress].locality)!==-1) {
                           data[indexsave].addresses[indexaddress] = addressesA[index].newAddress;
-                          console.log('addresssave');
-                          console.log(data[indexsave].addresses[indexaddress]);
+                          logger.debug('addresssave');
+                          logger.debug(data[indexsave].addresses[indexaddress]);
                           data[indexsave].save((err, todo) => {
                             if (err) {
-                              console.log('addresssave error');
+                              logger.debug('addresssave error');
                             } else {
-                              console.log('addresssave OK');
+                              logger.debug('addresssave OK');
                             }
                           });
                         }
@@ -338,7 +338,7 @@ const showall = (req, res, save, cb) => {
       let create = [];
 
       for (const item in data) {
-        console.log(data[item].slug);
+        logger.debug(data[item].slug);
         for (const address in data[item].addresses) {
           const country = data[item].addresses[address].country;
           const localityOld = data[item].addresses[address].locality;
@@ -365,7 +365,7 @@ const showall = (req, res, save, cb) => {
               } else {
                 addressOKobj[country+"_"+locality].status = 'TO ADD';
               }
-              //console.log(country);
+              //logger.debug(country);
               //addresses[country].sort();
             } else if(addressOKobj[country+"_"+locality].localityOld.indexOf(localityOld) === -1) {
               addressOKobj[country+"_"+locality].localityOld.push(localityOld);
@@ -396,11 +396,11 @@ const showall = (req, res, save, cb) => {
       if (save) {
         for (let item in create) {
           AddressDB.create(create[item], function(err, res) {
-            console.log("createcreatecreate ");
-            console.log(create[item]);
-            console.log("salvatoooooo ");
-            console.log(err);
-            console.log(res);
+            logger.debug("createcreatecreate ");
+            logger.debug(create[item]);
+            logger.debug("salvatoooooo ");
+            logger.debug(err);
+            logger.debug(res);
           });
         }
         create.sort(function(a, b) {
@@ -435,11 +435,11 @@ const showall = (req, res, save, cb) => {
 
       const request = require('request');
       addressesA.forEach((element, index) => {
-        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+element.newAddress.locality+','+element.newAddress.country);
+        logger.debug(process.env.GOOGLEMAPSAPIURL+'&address='+element.newAddress.locality+','+element.newAddress.country);
         request.get(process.env.GOOGLEMAPSAPIURL+'&address='+element.newAddress.locality+','+element.newAddress.country, (error, response, body) => {
-          console.log(error);
+          logger.debug(error);
           if (error) {
-            console.log(error);
+            logger.debug(error);
           } else {
             try {
               let json = JSON.parse(body);
@@ -456,13 +456,13 @@ const showall = (req, res, save, cb) => {
                       //elementsave.addresses.forEach((addresssave, indexaddress) => {
                         if (data[indexsave].addresses[indexaddress].country == addressesA[index].newAddress.country && addressesA[index].localityOld.indexOf(data[indexsave].addresses[indexaddress].locality)!==-1) {
                           data[indexsave].addresses[indexaddress] = addressesA[index].newAddress;
-                          console.log('addresssave');
-                          console.log(data[indexsave].addresses[indexaddress]);
+                          logger.debug('addresssave');
+                          logger.debug(data[indexsave].addresses[indexaddress]);
                           data[indexsave].save((err, todo) => {
                             if (err) {
-                              console.log('addresssave error');
+                              logger.debug('addresssave error');
                             } else {
-                              console.log('addresssave OK');
+                              logger.debug('addresssave OK');
                             }
                           });
                         }
@@ -472,8 +472,8 @@ const showall = (req, res, save, cb) => {
                 }
               }
             } catch(e) {
-              console.log(error);
-              console.log(body);
+              logger.debug(error);
+              logger.debug(body);
             }
           }
           if (index === addressesA.length-1) {
@@ -534,7 +534,7 @@ const venuesdbimport = (req, res, cb) => {
 };
 
 const venuesgetgeometry = (req, res, cb) => {
-  console.log("venuesgetgeometry");
+  logger.debug("venuesgetgeometry");
   let allres = [];
   //AddressDB.find({country_new: {$exists: false}, status: {$not:{$in: ['OK', 'CHECK', 'ZERO_RESULTS', 'INVALID_REQUEST']}}}).
   //AddressDB.find({status: {$not:{$in: ['ZERO_RESULTS', 'INVALID_REQUEST']}}}).
@@ -546,34 +546,34 @@ const venuesgetgeometry = (req, res, cb) => {
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
-        console.log("S");
-        console.log(element);
-        console.log(process.env.GOOGLEMAPSAPIURL+'&address='+(element.name ? element.name+',' : '')+(element.route_new ? element.route_new+',' : '')+(element.street_number_new ? element.street_number_new+',' : '')+(element.locality ? element.locality+',' : '')+element.country);
+        logger.debug("S");
+        logger.debug(element);
+        logger.debug(process.env.GOOGLEMAPSAPIURL+'&address='+(element.name ? element.name+',' : '')+(element.route_new ? element.route_new+',' : '')+(element.street_number_new ? element.street_number_new+',' : '')+(element.locality ? element.locality+',' : '')+element.country);
         request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent((element.name ? element.name+',' : '')+(element.route ? element.route+',' : '')+(element.street_number ? element.street_number+',' : '')+(element.locality ? element.locality+',' : '')+element.country), (error, response, b) => {
-          console.log("requestrequestrequestrequest");
-          console.log(error);
-          //console.log(b);
+          logger.debug("requestrequestrequestrequest");
+          logger.debug(error);
+          //logger.debug(b);
           if (error) {
-            console.log(error);
+            logger.debug(error);
           } else {
             try {
-              console.log("ADDRESS try");
+              logger.debug("ADDRESS try");
               let eee = JSON.parse(b).results[0];
-              console.log(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id);
+              logger.debug(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id);
               request.get(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id, (error, response, body) => {
-                console.log("requestrequestrequestrequest");
-                //console.log(element);
-                //console.log(error);
-                //console.log(body);
+                logger.debug("requestrequestrequestrequest");
+                //logger.debug(element);
+                //logger.debug(error);
+                //logger.debug(body);
                 conta++;
                 if (error) {
-                  console.log(error);
+                  logger.debug(error);
                 } else {
                   try {
-                    console.log("ADDRESS try");
+                    logger.debug("ADDRESS try");
                     let json = JSON.parse(body);
                     if (json.result) {
-                      console.log(json.result.address_components);
+                      logger.debug(json.result.address_components);
                       addressesA[index].name_new = json.result.name;
                       addressesA[index].formatted_address = json.result.formatted_address;
                       addressesA[index].status = json.status;
@@ -589,26 +589,26 @@ const venuesgetgeometry = (req, res, cb) => {
                       }
                       addressesA[index].geometry_new = json.result.geometry.location;
                       if (!addressesA[index].geometry && addressesA[index].geometry_new) addressesA[index].geometry = addressesA[index].geometry_new
-                      console.log("addressesA[index]");
-                      console.log(addressesA[index]);
+                      logger.debug("addressesA[index]");
+                      logger.debug(addressesA[index]);
                     } else {
                       addressesA[index].formatted_address = "";
                       addressesA[index].status = json.status;
                     }
                     VenueDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                       if (err) {
-                        console.log(err);
+                        logger.debug(err);
                       } else {
                         VenueDB.find({_id: addressesA[index]._id}).
                         then(function(resres) {
                           if (err) {
-                            console.log(err);
+                            logger.debug(err);
                           } else {
                             allres = allres.concat(resres);
                           }
-                          console.log("update end");
+                          logger.debug("update end");
                           if (conta === addressesA.length) {
-                            console.log("update end");
+                            logger.debug("update end");
                             cb(allres);
                           }
                         });
@@ -616,8 +616,8 @@ const venuesgetgeometry = (req, res, cb) => {
                     });
                   } catch(e) {
                     const error = JSON.parse(body);
-                    console.log("ADDRESS catch");
-                    console.log(error);
+                    logger.debug("ADDRESS catch");
+                    logger.debug(error);
                   }
                 }
               });    
@@ -634,13 +634,13 @@ const venuesgetgeometry = (req, res, cb) => {
 };
 
 const venuessetgeometry = (req, res, s, cb) => {
-  console.log(s);
+  logger.debug(s);
   VenueDB.find({status: "OK"}).
   skip(s).
   limit(10).
   sort({"name": 1, "country": 1, "locality": 1}).
   exec((err, addressesA) => {
-    console.log(addressesA);
+    logger.debug(addressesA);
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
@@ -653,8 +653,8 @@ const venuessetgeometry = (req, res, s, cb) => {
             data.forEach ((user, indexsave) => {
               data[indexsave].schedule.forEach ((useraddress, indexaddress) => {
                 if (data[indexsave].schedule[indexaddress].venue.location.country == addressesA[index].country && addressesA[index].locality == data[indexsave].schedule[indexaddress].venue.location.locality) {
-                  console.log('addresssave pre');
-                  console.log(data[indexsave].schedule[indexaddress].venue);
+                  logger.debug('addresssave pre');
+                  logger.debug(data[indexsave].schedule[indexaddress].venue);
                   data[indexsave].schedule[indexaddress].venue.name = addressesA[index].name;
                   data[indexsave].schedule[indexaddress].venue.location.postal_code = addressesA[index].postal_code_new;
                   data[indexsave].schedule[indexaddress].venue.location.street_number = addressesA[index].street_number_new;
@@ -663,19 +663,19 @@ const venuessetgeometry = (req, res, s, cb) => {
                   data[indexsave].schedule[indexaddress].venue.location.locality = addressesA[index].locality;
                   data[indexsave].schedule[indexaddress].venue.location.geometry = addressesA[index].geometry;
                   data[indexsave].schedule[indexaddress].venue.location.formatted_address = addressesA[index].formatted_address;
-                  console.log('addresssave after');
-                  console.log(data[indexsave].schedule[indexaddress].venue);
+                  logger.debug('addresssave after');
+                  logger.debug(data[indexsave].schedule[indexaddress].venue);
                 }
               });
               data[indexsave].save((err, todo) => {
                 if (err) {
-                  console.log('addresssave error');
+                  logger.debug('addresssave error');
                 } else {
-                  console.log('addresssave OK');
+                  logger.debug('addresssave OK');
                 }
                 conta++;
-                console.log('conta '+conta);
-                console.log('data.length + addressesA.length '+(data.length + addressesA.length - 1));
+                logger.debug('conta '+conta);
+                logger.debug('data.length + addressesA.length '+(data.length + addressesA.length - 1));
                 if (conta === data.length + addressesA.length - 1 ) {
                   cb(data);
                 }
@@ -685,8 +685,8 @@ const venuessetgeometry = (req, res, s, cb) => {
             addressesA[index].status = "NOT IN USE";
             addressesA[index].save((err, todo) => {
               conta++;
-              console.log('conta '+conta);
-              console.log('data.length + addressesA.length '+(data.length + addressesA.length - 1));
+              logger.debug('conta '+conta);
+              logger.debug('data.length + addressesA.length '+(data.length + addressesA.length - 1));
               if (conta === data.length + addressesA.length - 1 ) {
                 cb(data);
               }

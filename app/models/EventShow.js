@@ -159,23 +159,6 @@ const eventSchema = new Schema({
     }
   }
 });
-/*eventSchema.virtual('partners2').get(function (req) {
-  if (!this.partners || !this.partners.length) {
-    Category.findOne({"_id":"5be8708afc3961000000005d"}, function (err, category) {
-      console.log("5be8708afc3961000000005d");
-      console.log(category);
-      let partners2 = [{
-        "category" : {
-          _id: category._id,
-          name: category.name
-        },
-        "users" : this.users
-      }];
-      console.log(partners2);
-      return partners2;
-    });
-  }  
-});*/
 
 eventSchema.virtual('programmenotscheduled').get(function (req) {
   if (this.program && this.program.length) return this.program.map((item)=>{return item.performance});
@@ -213,11 +196,7 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
             programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
           } else {
             var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-/*             console.log("this.program[a].schedule[b].starttime");
-            console.log(this.program[a].schedule[b].starttime);
-            console.log(this.program[a].schedule[b].endtime);
-            console.log(days);
- */            for(let c=0;c<days;c++){
+             for(let c=0;c<days;c++){
               let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
               let d = date.getUTCDate();
               let m = date.getUTCMonth()+1;      
@@ -262,9 +241,6 @@ eventSchema.virtual('artists').get(function (req) {
     for(let a=0;a<this.program.length;a++){
       if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
       for(let b=0;b<this.program[a].performance.users.length;b++){
-        //artists.artistsCount+= this.program[a].performance.users[b].members.length ? this.program[a].performance.users[b].members.length : 1;
-        console.log(artists.artistsCount);
-        //artists.artistsN+= 1;
         if (this.program[a].performance.users[b].members.length) {
           for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
             if (artistsN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) artistsN.push(this.program[a].performance.users[b].members[d]._id);
@@ -286,8 +262,6 @@ eventSchema.virtual('artists').get(function (req) {
         for(let c=0;c<this.program[a].performance.categories.length;c++){
           if (this.program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && artists.acts.indexOf(this.program[a].performance.categories[c].name)===-1) artists.acts.push(this.program[a].performance.categories[c].name);
         }
-        //if (artists.artists.length<15)
-        //if (artistsA.indexOf(this.program[a].performance.users[b]._id)===-1) artistsA.push(this.program[a].performance.users[b]._id);
       }
     }
     artists.artistsN = artistsA.length;
@@ -419,7 +393,6 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 eventSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
@@ -429,7 +402,6 @@ eventSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/events_originals/', process.env.WAREHOUSE+'/warehouse/events/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
@@ -508,38 +480,21 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       const startdate = new Date(new Date(this.schedule[a].starttime).setUTCHours(0,0,0,0));
       const enddate = new Date(new Date(this.schedule[a].endtime).setUTCHours(0,0,0,0));
       const enddatefake = new Date(new Date(this.schedule[a].endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
-      console.log(this.schedule[0]);
-      console.log("startdate");
-      console.log(startdate);
-      console.log("enddate");
-      console.log(enddate);
-      console.log("enddatefake");
-      console.log(enddatefake);
-      console.log((enddatefake-startdate)/(24*60*60*1000));
       let hs = ('0'+this.schedule[a].starttime.getUTCHours()).substr(-2);;
       let ms = ('0'+this.schedule[a].starttime.getUTCMinutes()).substr(-2);;
       let he = ('0'+this.schedule[a].endtime.getUTCHours()).substr(-2);;
       let me = ('0'+this.schedule[a].endtime.getUTCMinutes()).substr(-2);;
       for(let b=0;b<=(enddatefake-startdate)/(24*60*60*1000);b++){
-        console.log(b);
-        console.log(startdate.getTime());
-        console.log();
         let day = new Date(startdate.getTime()+((24*60*60*1000)*b));
         let d = ('0'+day.getUTCDate()).substr(-2);;
         let m = ('0'+(day.getUTCMonth()+1)).substr(-2);      
         let y = day.getUTCFullYear();
-/*         if (!schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me]) schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me] = {};
-        if (!schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me][this.schedule[a].venue.name+"-"+this.schedule[a].venue.room]) schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me][this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = {};
-        schedulebydayvenueObj[y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me][this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = this.schedule[a].venue;
- */
         if (!schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room]) schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = {dates:[], venue:this.schedule[a].venue};
         schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room].dates.push(y+"-"+m+"-"+d+"-"+hs+"-"+ms+"-"+he+"-"+me);
       }
     }
     let schedulebydayvenueObjSorted = {};
     for (let item in schedulebydayvenueObj) {
-      console.log("STOCAZZO");
-      console.log(schedulebydayvenueObj[item]);
       schedulebydayvenueObj[item].dates = schedulebydayvenueObj[item].dates.sort();
       if (!schedulebydayvenueObjSorted[schedulebydayvenueObj[item].dates.join("-")]) schedulebydayvenueObjSorted[schedulebydayvenueObj[item].dates.join("-")] = [];
       schedulebydayvenueObjSorted[schedulebydayvenueObj[item].dates.join("-")].push(schedulebydayvenueObj[item]);
@@ -585,27 +540,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       }
       boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
     }
-    console.log(boxDates);
-    /* 
-      let ordered = {};
-      Object.keys(schedulebydayvenueObj[item]).sort().forEach(function(key) {
-        if (!schedulebydayvenueObjSorted[item]) schedulebydayvenueObjSorted[item] = {};
-        schedulebydayvenueObjSorted[item][key] = schedulebydayvenueObj[item][key];
-      });
-    let schedulebydayvenueObjGrouped = {};
-    for (let item in schedulebydayvenueObjSorted) {
-      console.log((schedulebydayvenueObjSorted[item]));
-      console.log(Object.keys(schedulebydayvenueObjSorted[item]).join("-"));
-      let itmname = item+"-"+Object.keys(schedulebydayvenueObjSorted[item]).join("-");
-      if (!schedulebydayvenueObjGrouped[itmname]) schedulebydayvenueObjGrouped[itmname] = Object.keys(schedulebydayvenueObjSorted[item]).map((key)=>{return schedulebydayvenueObjSorted[item][key]});
-
-    }
-    let schedulebydayvenueObjGroupedSorted = {};
-    Object.keys(schedulebydayvenueObjGrouped).sort().forEach(function(key) {
-      schedulebydayvenueObjGroupedSorted[key] = schedulebydayvenueObjGrouped[key];
-    }); */
     return boxDates;
-//    return ret ? Object.values(schedulebydayvenueObj) : undefined;
   }
 });
 
@@ -632,93 +567,7 @@ eventSchema.boxDateCreator = (starttime, endtime, boxVenue) => {
   return boxDate+" | "+boxVenue;
 }
 
-
-/* C
-eventSchema.virtual('teaserImageFormats').get(function () {
-  let teaserImageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.teaserImage);
-  if (this.teaserImage && this.teaserImage.file) {
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = config.cpanel[adminsez].media.teaserImage.sizes[format].default;
-    }
-    const serverPath = this.teaserImage.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-    }
-  } else {
-    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
-    }
-  }
-  return teaserImageFormats;
-});
-
-eventSchema.virtual('editUrl').get(function () {
-  return `/admin/events/public/${this.slug}`;
-});
-
-eventSchema.virtual('publicUrl').get(function () {
-  return `/events/${this.slug}`;
-});
-
-eventSchema.virtual('organizers',{
-  ref: 'UserShow',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('organizing_crews',{
-  ref: 'UserShow',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('performances',{
-  ref: 'Performance',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('startsFormatted').get(function () {
-  return moment(this.starts).format(config.dateFormat);
-});
-
-eventSchema.virtual('endsFormatted').get(function () {
-  return moment(this.ends).format(config.dateFormat);
-});
-
-eventSchema.virtual('organizers',{
-  ref: 'UserShow',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('dateFormatted').get(function () {
-  let date = '';
-  if (this.ends && this.startsFormatted !== this.endsFormatted) {
-    date = moment(this.starts).format('MMMM Do');
-    date += ' - ' + moment(this.ends).format('MMMM Do YYYY');
-  } else {
-    date = moment(this.starts).format('MMMM Do YYYY');
-  }
-  return date;
-});
-
-eventSchema.pre('remove',function(next) {
-  const event = this;
-  event.model('UserShow').updateMany(
-    { $pull: { events: event._id } },
-    next
-  );
-});
-*/
-
-eventSchema.plugin(indexPlugin());
+//eventSchema.plugin(indexPlugin());
 
 const EventShow = mongoose.model('EventShow', eventSchema);
 

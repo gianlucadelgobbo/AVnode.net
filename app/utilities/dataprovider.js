@@ -240,7 +240,6 @@ dataprovider.getJsonld = (data, req, title, section) => {
 
 dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, skip, sorting, cb) => {
   query.is_public = true;
-  console.log(query);
   Performance.countDocuments(query, function(error, total) {
     var random = Math.floor(Math.random() * total)
     Performance.find(query)
@@ -286,9 +285,9 @@ dataprovider.makeTextPlainToRich = (str) => {
 }
 
 dataprovider.show = (req, res, section, subsection, model) => {
-  console.log(section);
-  console.log(subsection);
-  //console.log(config.sections[section]);
+  logger.debug(section);
+  logger.debug(subsection);
+  //logger.debug(config.sections[section]);
   let populate = config.sections[section][subsection].populate;
   for(let item in populate) {
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
@@ -314,7 +313,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
   const select = config.sections[section][subsection].select;
 
   dataprovider.fetchShow(req, section, subsection, model, populate, select, (err, data, total) => {
-    //console.log(err);
     if (err || data === null) {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
@@ -376,8 +374,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
               if (!data.medias[item].stats) data.medias[item].stats = {}
               data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
               model.updateOne({_id:data._id},{"medias":data.medias}, (err, raw) => {
-                //if (err) c
-                //console.log('The raw response from Mongo was ', raw);
               });
             }
             data.img = data.medias[item];
@@ -395,14 +391,11 @@ dataprovider.show = (req, res, section, subsection, model) => {
           data.liked = true;
         }
       } else {
-        console.log("sto qui");
         if (!req.session[data._id]) {
           req.session[data._id] = true;
           if (!data.stats) data.stats = {};
           data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
           model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
-            //if (err) c
-            //console.log('The raw response from Mongo was ', raw);
           });
         }  
         if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
@@ -483,7 +476,6 @@ dataprovider.list = (req, res, section, model) => {
     //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
     const query = config.sections[section].categoriesQueries[filter];
     dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
-      console.log(req.originalUrl);
       const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         if (process.env.DEBUG) {

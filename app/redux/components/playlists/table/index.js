@@ -25,7 +25,6 @@ class ModelTable extends Component {
 
   renderTable() {
     const { showModal, removeModel, list } = this.props;
-    console.log(list);
     const PlaylistItem = {
       label: (
         <FormattedMessage id="PlaylistItem" defaultMessage="Playlist Name" />

@@ -183,7 +183,6 @@ eventSchema.virtual('subtitle').get(function (req) {
 
 eventSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.image);
   if (this.image && this.image.file) {
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
@@ -193,7 +192,6 @@ eventSchema.virtual('imageFormats').get(function () {
     const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/glacier/events_originals/', process.env.WAREHOUSE+'/warehouse/events/'); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
       imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
     }
@@ -206,92 +204,8 @@ eventSchema.virtual('imageFormats').get(function () {
 });
 
 
-/* C
-eventSchema.virtual('teaserImageFormats').get(function () {
-  let teaserImageFormats = {};
-  //console.log(config.cpanel[adminsez].sizes.teaserImage);
-  if (this.teaserImage && this.teaserImage.file) {
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = config.cpanel[adminsez].media.teaserImage.sizes[format].default;
-    }
-    const serverPath = this.teaserImage.file;
-    const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf('/')).replace('/warehouse/', process.env.WAREHOUSE+'/warehouse/'); // /warehouse/2017/03
-    const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
-    const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
-    // console.log('localFileName:' + localFileName + ' localPath:' + localPath + ' localFileNameWithoutExtension:' + localFileNameWithoutExtension);
-    for(let format in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[format] = `${localPath}/${config.cpanel[adminsez].media.teaserImage.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
-    }
-  } else {
-    for(let teaserFormat in config.cpanel[adminsez].media.teaserImage.sizes) {
-      teaserImageFormats[teaserFormat] = `${config.cpanel[adminsez].media.teaserImage.sizes[teaserFormat].default}`;
-    }
-  }
-  return teaserImageFormats;
-});
 
-eventSchema.virtual('editUrl').get(function () {
-  return `/admin/events/public/${this.slug}`;
-});
-
-eventSchema.virtual('publicUrl').get(function () {
-  return `/events/${this.slug}`;
-});
-
-eventSchema.virtual('organizers',{
-  ref: 'UserShow',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('organizing_crews',{
-  ref: 'UserShow',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('performances',{
-  ref: 'Performance',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('startsFormatted').get(function () {
-  return moment(this.starts).format(config.dateFormat);
-});
-
-eventSchema.virtual('endsFormatted').get(function () {
-  return moment(this.ends).format(config.dateFormat);
-});
-
-eventSchema.virtual('organizers',{
-  ref: 'UserShow',
-  localField: '_id',
-  foreignField: 'events'
-});
-
-eventSchema.virtual('dateFormatted').get(function () {
-  let date = '';
-  if (this.ends && this.startsFormatted !== this.endsFormatted) {
-    date = moment(this.starts).format('MMMM Do');
-    date += ' - ' + moment(this.ends).format('MMMM Do YYYY');
-  } else {
-    date = moment(this.starts).format('MMMM Do YYYY');
-  }
-  return date;
-});
-
-eventSchema.pre('remove',function(next) {
-  const event = this;
-  event.model('UserShow').updateMany(
-    { $pull: { events: event._id } },
-    next
-  );
-});
-*/
-
-eventSchema.plugin(indexPlugin());
+//eventSchema.plugin(indexPlugin());
 
 const Event = mongoose.model('Event', eventSchema);
 

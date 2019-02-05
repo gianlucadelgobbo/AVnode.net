@@ -29,8 +29,6 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res) => {
-  console.log('signupsignupsignupsignupsignupsignupsignupsignupsignup');
-  console.log(req.body);
   if (req.body.crewName) req.body.crewname = req.body.crewName;
   if (req.body.crewUrl) req.body.crewslug = req.body.crewUrl;
   req.body.lang = global.getLocale();
@@ -40,17 +38,12 @@ router.post('/', (req, res) => {
   let put = {};
   for (const item in select) if(req.body[item]) put[item] = req.body[item];
   router.signupValidator(put, (put, errors) => {
-    console.log('signupValidator CB');
-    console.log(errors.errors);
     if (errors.message === "") {
-      console.log('signupValidator CB');
       Object.assign(data, put);
                 
       UserTemp.deleteMany({ email: data.email }, function (err) {
         data.save((err) => {
           if (err) {
-            console.log('err');
-            console.log(err);
             res.status(400).json(err);
           } else {
             select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
@@ -60,8 +53,6 @@ router.post('/', (req, res) => {
             .findById(data._id)
             .select(select)
             .exec((err, data) => {
-              console.log('findByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindByIdfindById');
-              console.log(data);
               if (err) {
                 res.status(500).json({ error: `${JSON.stringify(err)}` });
               } else {
@@ -91,9 +82,7 @@ router.post('/', (req, res) => {
                       text_sign:  "The AVnode.net Team"
                     }
                   }, function(){
-                    console.log("stocazzo");
                   });
-                  console.log("stocazzo2");
                   let send = {_id: data._id};
                   for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
                   res.json(send);
@@ -104,15 +93,12 @@ router.post('/', (req, res) => {
         });
       });
     } else {
-      console.log('signupValidator CB errors');
       res.status(400).json(errors);  
     }
   });
 });
 
-router.signupValidator = (put, cb) => {
-  console.log('signupValidatorsignupValidatorsignupValidatorsignupValidatorsignupValidator');
- 
+router.signupValidator = (put, cb) => { 
   let errors = {
     "errors":{},
     "_message":"",
@@ -127,18 +113,18 @@ router.signupValidator = (put, cb) => {
   const month = parseInt(birthdayA[1])-1;
   const year = parseInt(birthdayA[2]);
   const birthday = new Date(year,month,day);
-  console.log('birthday');
-  console.log(put.birthday);
-  console.log(birthday);
-  console.log("day");
-  console.log(day);
-  console.log(birthday.getDate());
-  console.log("month");
-  console.log(month);
-  console.log(birthday.getMonth());
-  console.log("year");
-  console.log(year);
-  console.log(birthday.getFullYear());
+  logger.debug('birthday');
+  logger.debug(put.birthday);
+  logger.debug(birthday);
+  logger.debug("day");
+  logger.debug(day);
+  logger.debug(birthday.getDate());
+  logger.debug("month");
+  logger.debug(month);
+  logger.debug(birthday.getMonth());
+  logger.debug("year");
+  logger.debug(year);
+  logger.debug(birthday.getFullYear());
   if (year !== birthday.getFullYear() || month !== birthday.getMonth() || day !== birthday.getDate()) {
     errors.errors.birthday = {
       "message": "Cast to Date failed for value \"Invalid Date\" at path \"birthday\"",
@@ -185,8 +171,6 @@ router.signupValidator = (put, cb) => {
   }
   User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id", function(err, docs) {
     if (err) {
-      console.log('err');
-      console.log(err);
       errors.errors.err = err;
       cb(put, errors);
     } else {
@@ -213,8 +197,6 @@ router.signupValidator = (put, cb) => {
       }
       User.find({ 'slug': put.slug }, "_id", function(err, docs) {
         if (err) {
-          console.log('err');
-          console.log(err);
           errors.errors.err = err;
           cb(put, errors);
         } else {
@@ -242,8 +224,6 @@ router.signupValidator = (put, cb) => {
           if (put.crewslug) {
             User.find({ 'slug': put.crewslug }, "_id", function(err, docs) {
               if (err) {
-                console.log('err');
-                console.log(err);
                 errors.errors.err = err;
                 cb(put, errors);
               } else {
@@ -268,12 +248,10 @@ router.signupValidator = (put, cb) => {
                   errors.message += "E11000 duplicate key error collection: avnode.usertemp index: crewslug_1 dup key: { : \""+put.crewslug+"\" }"+"<br/>",
                   errors.name += "MongoError"+"<br/>"
                 } 
-                console.log('CB 1');
                 cb(put, errors);
               }
             });        
           } else {
-            console.log('CB 2');
             cb(put, errors);
           }
         }
@@ -296,7 +274,6 @@ router.post('/', (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
-        console.log(existingUser);
         req.flash('errors', { msg: __('Account already exists.') });
         return res.redirect('/signup');
       }
@@ -314,7 +291,6 @@ router.post('/', (req, res, next) => {
 
       user.save((err) => {
         if (err) {
-          console.log('user.save error:' + err);
           return next(err);
         }
         mailer.signup({ to: user.email }, { uuid: user.confirm }, (err) => {

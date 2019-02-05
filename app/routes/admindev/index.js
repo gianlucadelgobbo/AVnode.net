@@ -50,7 +50,6 @@ router.get('/', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(results);
     } else {
-      console.log(data);
       res.render('admindev/home', {
         title: 'Advanced Tools',
         currentUrl: req.originalUrl,
@@ -123,7 +122,6 @@ router.get('/api/:sez/:id/:form/', (req, res) => {
 router.put('/api/:sez/:id/:form/', (req, res) => {
   if (['profile/image','crews/image','events/image','performances/image','footage/media','galleries/public','videos/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     upload.uploader(req, res, (err, data) => {
-      console.log("uploaderuploaderuploaderuploader");
       if (err) {
         res.status(500).json(err);
       } else {

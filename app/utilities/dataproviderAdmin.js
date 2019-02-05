@@ -95,7 +95,6 @@ dataproviderAdmin.fetchUser = (id, cb) => {
 };
 
 dataproviderAdmin.getUser = (id, s, populate, cb) => {
-  console.log(s);
   User.
   findById(id)
   .select(s)

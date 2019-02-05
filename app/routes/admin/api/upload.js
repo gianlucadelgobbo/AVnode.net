@@ -35,10 +35,10 @@ upload.getServerpath = storage => {
 };
 
 upload.uploader = (req, res, done) => {
-  console.log(req.params.sez);
-  console.log(req.params.form);
+  logger.debug(req.params.sez);
+  logger.debug(req.params.form);
   const options = config.cpanel[req.params.sez].forms[req.params.form].components[req.params.comp].config;
-  console.log(options.maxsize);
+  logger.debug(options.maxsize);
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       logger.debug(upload.getServerpath(options.storage));
@@ -80,10 +80,10 @@ upload.uploader = (req, res, done) => {
 
   up(req, res, (err, r) => {
     error = false;
-    console.log(err);
-    console.log("req.files");
-    console.log(req.files);
-    console.log(options.fields.name);
+    logger.debug(err);
+    logger.debug("req.files");
+    logger.debug(req.files);
+    logger.debug(options.fields.name);
 
     // if (err instanceof multer.MulterError) {
     if (err) {

@@ -20,10 +20,10 @@ router.unflatten = function( array, parent, tree ){
   parent = typeof parent !== 'undefined' ? parent : { _id: 0 };
 
   var children = array.filter(child => child.ancestor == parent._id || !child.ancestor);
-  console.log("children");
-  console.log(children);
-  console.log("parent");
-  console.log(parent);
+  logger.debug("children");
+  logger.debug(children);
+  logger.debug("parent");
+  logger.debug(parent);
 
   if( children.length!==0  ){
       if( parent._id == 0 ){
@@ -32,11 +32,11 @@ router.unflatten = function( array, parent, tree ){
          parent['children'] = children;
       }
       for(let child in children){ 
-        console.log(child);
+        logger.debug(child);
         router.unflatten( array, child ) 
       }                    
   }
-  console.log(tree);
+  logger.debug(tree);
 
   return tree;
 }
@@ -55,7 +55,7 @@ router.get('/usersstatsupdate', (req, res) => {
 
 router.post('/usersstatsupdate', (req, res) => {
   let query = JSON.parse('{"q": '+req.body.q+'}').q;
-  console.log(query);
+  logger.debug(query);
   var promises = [];
   for (item in query) promises.push(router.setStatsAndActivity(query[item]));
   Promise.all(

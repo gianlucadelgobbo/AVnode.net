@@ -79,7 +79,7 @@ router.get('/', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data.crews);
     } else {
-      console.log(data);
+      logger.debug(data);
       res.render('admindev/organizations/home', {
         title: 'Events',
         currentUrl: req.originalUrl,
@@ -104,7 +104,7 @@ router.get('/:event', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
-      console.log(data);
+      logger.debug(data);
       res.render('admindev/organizations/dett', {
         title: 'Events: '+data.event.title,
         currentUrl: req.originalUrl,
@@ -118,7 +118,7 @@ router.get('/:event', (req, res) => {
 
 router.get('/:event/acts', (req, res) => {
   logger.debug('/organizations/'+req.params.event+'/acts');
-  console.log(req.query)
+  logger.debug(req.query)
   let data = {};
   User.
   findOne({"_id": req.params.event}).
@@ -133,13 +133,13 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      console.log(query);
+      logger.debug(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
-        console.log(program);
+        logger.debug(program);
         if (err) {
           res.json(err);
         } else {
@@ -168,7 +168,7 @@ router.get('/:event/acts', (req, res) => {
 
 router.get('/:event/peoples', (req, res) => {
   logger.debug('/organizations/'+req.params.event+'/peoples');
-  console.log(req.query)
+  logger.debug(req.query)
   let data = {};
   User.
   findOne({"_id": req.params.event}).
@@ -183,14 +183,14 @@ router.get('/:event/peoples', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      console.log(query);
+      logger.debug(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
 
-        console.log(program);
+        logger.debug(program);
         if (err) {
           res.json(err);
         } else {

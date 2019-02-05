@@ -79,7 +79,6 @@ module.exports.mySendMailer = (data, cb) => {
     transport: getTransporter(),
     views: { root: 'app/views/emails' }
   });
-  console.log('to:' + data.to + ' msg: ' + data.msg);
 
   email.send(data)
   .then(info => logger.info('sendMsgEmail sent', info))
@@ -98,7 +97,6 @@ module.exports.mySendMailer = (data, cb) => {
     transport: getTransporter(),
     views: { root: 'app/views/emails' }
   });
-  // console.log('to:' + options.to + ' uuid: ' + data.uuid);
 
   email.send({
     template: 'templates/add-crew-member',

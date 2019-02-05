@@ -38,11 +38,11 @@ router.get('/', (req, res) => {
     
     results.forEach(function(e) {
       /* if (e.emails.filter(item => item.email=e.email).length===0 && e.activity==0) {
-        console.log("e.emails.filter(item => item.email=e.email).length");
-        console.log(e.emails.filter(item => item.email=e.email).length);
-        console.log(e.email);
-        console.log(e.emails);
-        console.log(e.slug);
+        logger.debug("e.emails.filter(item => item.email=e.email).length");
+        logger.debug(e.emails.filter(item => item.email=e.email).length);
+        logger.debug(e.email);
+        logger.debug(e.emails);
+        logger.debug(e.slug);
       } */
       let email = {
         list: 'AXRGq2Ftn2Fiab3skb5E892g',
@@ -109,7 +109,7 @@ router.get('/updateSendy', (req, res) => {
       });
       
       results.forEach(function(e) {
-        console.log(e);
+        logger.debug(e);
         let email = {
           list: 'AXRGq2Ftn2Fiab3skb5E892g',
           avnode_id: e._id.toString(),
@@ -135,7 +135,7 @@ router.get('/updateSendy', (req, res) => {
   
           for (const mailinglist in ee.mailinglists) if (ee.mailinglists[mailinglist]) topics.push(mailinglist);
           email.Topics = topics.join(',');
-          //console.log(email);
+          //logger.debug(email);
           //email.mailinglists = ee.mailinglists;
           mailinglists.push(email);
   
@@ -144,8 +144,8 @@ router.get('/updateSendy', (req, res) => {
               formData: email
           }, function (error, response, body) {
             conta++;
-            console.log(error);
-            console.log(body);
+            logger.debug(error);
+            logger.debug(body);
             if (conta === fatto) {
               res.render('admindev/supertools/emails/showall', {
                 title: 'Emails',

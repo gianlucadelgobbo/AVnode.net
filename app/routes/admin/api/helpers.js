@@ -20,13 +20,10 @@ const logger = require('../../../utilities/logger');
 router.setStatsAndActivity = function(query) {
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
-    console.log("router.setStatsAndActivity 1");
-    console.log(query);
     Models['User'].
     findOne(query).
     exec((err, e) => {
       var myids = [e._id];
-      console.log("router.setStatsAndActivity 2");
       Promise.all([
         Models['Event'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
         Models['Event'].find({"partners.users": {$in: myids}, "is_public": true}).select("_id"),
@@ -127,21 +124,15 @@ router.setStatsAndActivity = function(query) {
         e.stats.recent.footage = recent_footage;
         e.stats.recent.playlists = recent_playlists;
 
-        console.log("router.setStatsAndActivity 3");
-        console.log(e.stats);
         e.activity = router.getActivity(e.stats);
         e.activity_as_performer = router.getActivityAsPerformer(e.stats);
         e.activity_as_organization = router.getActivityAsOrganization(e.stats);
         e.save((err) => {
           if (err) {
-            console.log('save user err');
-            console.log(err);
             setTimeout(function() {
               resolve(err);
             }, 1000);
           } else {
-            console.log("router.setStatsAndActivity 4");
-            console.log(e.stats);
             setTimeout(function() {
               resolve(e.stats);
             }, 1000);
@@ -155,14 +146,11 @@ router.setStatsAndActivity = function(query) {
 router.setCrewAdresses = function(query) {
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
-    console.log("router.setStatsAndActivity 1");
-    console.log(query);
     Models['User'].
     findOne(query).
     populate({ "path": "categories", "select": "name slug", "model": "Category"})
     exec((err, e) => {
       var myids = [e._id];
-      console.log("router.setStatsAndActivity 2");
       Promise.all([
         Models['Event'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
         Models['Event'].find({"partners.users": {$in: myids}, "is_public": true}).select("_id"),
@@ -263,21 +251,15 @@ router.setCrewAdresses = function(query) {
         e.stats.recent.footage = recent_footage;
         e.stats.recent.playlists = recent_playlists;
 
-        console.log("router.setStatsAndActivity 3");
-        console.log(e.stats);
         e.activity = router.getActivity(e.stats);
         e.activity_as_performer = router.getActivityAsPerformer(e.stats);
         e.activity_as_organization = router.getActivityAsOrganization(e.stats);
         e.save((err) => {
           if (err) {
-            console.log('save user err');
-            console.log(err);
             setTimeout(function() {
               resolve(err);
             }, 1000);
           } else {
-            console.log("router.setStatsAndActivity 4");
-            console.log(e.stats);
             setTimeout(function() {
               resolve(e.stats);
             }, 1000);

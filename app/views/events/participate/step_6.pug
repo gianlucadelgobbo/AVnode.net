@@ -84,8 +84,6 @@ table.table
       table.table(style="background:none;")
         - var total = 0;
         each subscription in call.subscriptions
-          - console.log("STOCAZZO")
-          - console.log(subscription.days)
           if subscription.subscriber_id
             - var subscriber_total = 0;
             tr
@@ -98,7 +96,6 @@ table.table
             else
               each package in subscription.packages
                 tr
-                  - console.log(package)
                   - if (dett.organizationsettings.call.calls[call.index].packages[package.id].daily)
                     - total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length
                     - subscriber_total+=dett.organizationsettings.call.calls[call.index].packages[package.id].price*subscription.days.length

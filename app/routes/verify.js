@@ -13,22 +13,13 @@ const logger = require('../utilities/logger');
 let config = require('getconfig');
 
 router.get('/:sez/:code', (req, res) => {
-  console.log("VERIFY");
-  console.log(req.params.code);
-  /*if (req.user) {
-    return res.redirect('/admin/profile/public');
-  }*/
   if (req.params.sez == 'signup' && req.params.code) {
     UserTemp
     .findOne({confirm:req.params.code})
     .exec((err, put) => {
       if (put) {
         router.signupVerifyValidator(put, (data, errors) => {
-          console.log('signupValidator CB');
-          console.log(errors.errors);
-          console.log(data);
           if (errors.message === "") {
-            console.log('signupValidator CB');
             let user = new User();
             user.stagename = data.stagename;
             user.slug = data.slug;
@@ -46,11 +37,8 @@ router.get('/:sez/:code', (req, res) => {
               mailinglists: {livevisuals: 1}
             }];
             user.is_crew = false;
-            console.log('user');
-            console.log(user);
             user.save((err) => {
               if (err) {
-                console.log('err');
                 res.render('verify/signup', {
                   title: __('Signup verify'),
                   err: err,
@@ -58,7 +46,6 @@ router.get('/:sez/:code', (req, res) => {
                 });
               } else {
                 if (!data.crewslug) {
-                  console.log('NO crew');
                   router.updateSendy(user, user.email, (err) => {
                     UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
                       res.render('verify/signup', {
@@ -68,7 +55,6 @@ router.get('/:sez/:code', (req, res) => {
                     });
                   });
                 } else {
-                  console.log('Create crew');
                   User
                   .findOne({slug:data.slug})
                   .exec((err, uuuu) => {
@@ -85,8 +71,6 @@ router.get('/:sez/:code', (req, res) => {
                     }]; */
                     crew.save((err) => {
                       if (err) {
-                        console.log('err');
-                        console.log(err);
                         res.render('verify/signup', {
                           title: __('Signup verify'),
                           err: err,
@@ -100,7 +84,6 @@ router.get('/:sez/:code', (req, res) => {
                           user.stats = {crews: 1},
                           user.save((err) => {
                             if (err) {
-                              console.log('err');
                               res.render('verify/signup', {
                                 title: __('Signup verify'),
                                 err: err,
@@ -201,8 +184,6 @@ router.updateSendy = (user, email, cb) => {
   if (user.addresses && user.addresses[0] && user.addresses[0].country) formData.Country = user.addresses[0].country;
   if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lat) formData.LATITUDE = user.addresses[0].geometry.lat;
   if (user.addresses && user.addresses[0] && user.addresses[0].geometry && user.addresses[0].geometry.lng) formData.LONGITUDE = user.addresses[0].geometry.lng;
-  console.log("formData request.post");
-  console.log(formData);
 
   var https = require('https');
   var querystring = require('querystring');
@@ -238,28 +219,16 @@ router.updateSendy = (user, email, cb) => {
   
   // req error
   req.on('error', function (err) {
-    console.log(err);
+    logger.debug(err);
   });
   
   //send request witht the postData form
   req.write(postData);
   req.end();
   
-/*   request.post({
-    url: 'https://ml.avnode.net/subscribe',
-    form: formData,
-    function (error, response, body) {
-      console.log("Newsletter");
-      console.log(error);
-      console.log(body);
-      cb(error);
-    }
-  }); */
 }
 
 router.signupVerifyValidator = (put, cb) => {
-  console.log('signupVerifyValidatorsignupVerifyValidatorsignupVerifyValidatorsignupVerifyValidatorsignupVerifyValidator');
-  console.log(put);
   let errors = {
     "errors":{},
     "_message":"",
@@ -268,8 +237,6 @@ router.signupVerifyValidator = (put, cb) => {
   };
   User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id", function(err, docs) {
     if (err) {
-      console.log('err');
-      console.log(err);
       errors.errors.err = err;
       cb(put, errors);
     } else {
@@ -296,8 +263,6 @@ router.signupVerifyValidator = (put, cb) => {
       }
       User.find({ 'slug': put.slug }, "_id", function(err, docs) {
         if (err) {
-          console.log('err');
-          console.log(err);
           errors.errors.err = err;
           cb(put, errors);
         } else {
@@ -325,8 +290,6 @@ router.signupVerifyValidator = (put, cb) => {
           if (put.crewslug) {
             User.find({ 'slug': put.crewslug }, "_id", function(err, docs) {
               if (err) {
-                console.log('err');
-                console.log(err);
                 errors.errors.err = err;
                 cb(put, errors);
               } else {
@@ -351,12 +314,10 @@ router.signupVerifyValidator = (put, cb) => {
                   errors.message += "E11000 duplicate key error collection: avnode.user index: crewslug_1 dup key: { : \""+put.crewslug+"\" }"+"<br/>",
                   errors.name += "MongoError"+"<br/>"
                 } 
-                console.log('CB 1');
                 cb(put, errors);
               }
             });        
           } else {
-            console.log('CB 2');
             cb(put, errors);
           }
         }

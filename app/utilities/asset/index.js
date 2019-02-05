@@ -32,13 +32,11 @@ module.exports.createImageAsset = (params, done) => {
 };
 module.exports.createImageAssetFromUrl = (params, done) => {
   const identifier = helper.setIdentifier();
-  console.log(`createImageAssetFromUrl dld: ${process.env.WAREHOUSE}${params.originalname}`);
   const localImage = `${process.cwd()}/storage/${identifier}.jpg`;
   const file = fs.createWriteStream(localImage);
   const request = https.get(`${process.env.WAREHOUSE}${params.originalname}`, function (response) {
     response.pipe(file);
     file.on('finish', function () {
-      console.log('The file was saved:' + localImage);
       file.close();
       return new Asset({
         type: 'image',

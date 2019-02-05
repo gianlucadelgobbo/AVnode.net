@@ -171,7 +171,7 @@ router.get('/', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(results);
     } else {
-      console.log(data);
+      logger.debug(data);
       res.render('admindev/events/home', {
         title: 'Events',
         currentUrl: req.originalUrl,
@@ -195,7 +195,7 @@ router.get('/:event', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
-      console.log(data);
+      logger.debug(data);
       res.render('admindev/events/dett', {
         title: 'Events: '+data.event.title,
         currentUrl: req.originalUrl,
@@ -217,7 +217,7 @@ router.get('/:event', (req, res) => {
   populate(populate_event).
   exec((err, event) => {
     if (err) {
-      console.log(err);
+      logger.debug(err);
     }
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(event);
@@ -226,7 +226,7 @@ router.get('/:event', (req, res) => {
       for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
       let admitted = [];
       for(let adm in admittedO) admitted.push(admittedO[adm]);
-      console.log(admittedO);
+      logger.debug(admittedO);
       res.render('admindev/events/acts', {
         title: 'Events',
         status: status,
@@ -251,7 +251,7 @@ router.get('/:event/peoples', (req, res) => {
   populate(populate_event).
   exec((err, event) => {
     if (err) {
-      console.log(err);
+      logger.debug(err);
     }
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(event);
@@ -260,7 +260,7 @@ router.get('/:event/peoples', (req, res) => {
       for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
       let admitted = [];
       for(let adm in admittedO) admitted.push(admittedO[adm]);
-      console.log(admittedO);
+      logger.debug(admittedO);
       res.render('admindev/events/acts', {
         title: 'Events',
         status: status,
@@ -276,7 +276,7 @@ router.get('/:event/peoples', (req, res) => {
 */
 router.get('/:event/acts', (req, res) => {
   logger.debug('/events/'+req.params.event+'/acts');
-  console.log(req.query)
+  logger.debug(req.query)
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
@@ -291,13 +291,13 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      console.log(query);
+      logger.debug(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
-        console.log(program);
+        logger.debug(program);
         if (err) {
           res.json(err);
         } else {
@@ -326,7 +326,7 @@ router.get('/:event/acts', (req, res) => {
 
 router.get('/:event/peoples', (req, res) => {
   logger.debug('/events/'+req.params.event+'/peoples');
-  console.log(req.query)
+  logger.debug(req.query)
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
@@ -341,14 +341,14 @@ router.get('/:event/peoples', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      console.log(query);
+      logger.debug(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
 
-        console.log(program);
+        logger.debug(program);
         if (err) {
           res.json(err);
         } else {
