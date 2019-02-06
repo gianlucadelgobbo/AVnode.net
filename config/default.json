@@ -157,6 +157,61 @@
         }
       }
     },
+    "subscriptions": {
+      "title": "Subscriptions",
+      "limit": 1,
+      "basepath": "signup",
+      "model": "UserTemp",
+      "forms": {
+        "subscriptions": {
+          "components": {
+          },
+          "select": {
+            "topics": 1,
+            "call": 1,
+            "createdAt": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        }
+      },
+      "list": {
+        "model": "User",
+        "select": {
+          "topics": 1,
+          "call": 1,
+          "subscriptions": 1,
+          "createdAt": 1
+        },
+        "selectaddon": {
+          "createdAt": -1
+        },
+        "populate": [
+          { "path": "event", "select": "title", "model": "Event"},
+          { "path": "performance", "select": "title", "model": "Performance"},
+          { "path": "subscriptions.subscriber_id", "select": "stagename", "model": "User"},
+          { "path": "reference", "select": "stagename", "model": "User"},
+          { "path": "event", "select": "title", "model": "User"}        
+        ],
+        "orders": [
+          "mostrecent",
+          "mostactive"
+        ],
+        "ordersQueries": {
+          "mostrecent": {
+            "createdAt": -1
+          },
+          "mostactive": {
+            "activity": -1
+          }
+        },
+        "labels": {
+          "mostrecent":"Most recent",
+          "mostactive":"Most active"
+        }
+      }
+    },
     "profile": {
       "title": "Profile",
       "limit": 1,

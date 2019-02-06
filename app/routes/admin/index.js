@@ -175,6 +175,12 @@ router.get('/api', (req, res) => {
   res.status(404).json({ error: `API_NOT_FOUND` });
 });
 
+router.get('/subscriptions', (req, res) => {
+  req.params.id = req.user.id;
+  req.params.sez = 'subscriptions';
+  get.getSubscriptions(req, res);
+});
+
 router.get('/*', (req, res) => {
   res.render('admin/index', {
     title: __('Your Account'),
