@@ -14,10 +14,35 @@ const Models = {
   'Playlist': mongoose.model('Playlist'),
   'Video': mongoose.model('Video'),
   'VenueDB': mongoose.model('VenueDB'),
-  'AddressDB': mongoose.model('AddressDB')
+  'AddressDB': mongoose.model('AddressDB'),
+  'Program': mongoose.model('Program')
 }
 const logger = require('../../../utilities/logger');
 
+router.getSubscriptions = (req, res) => {
+  if (config.cpanel[req.params.sez] && req.params.id) {
+    //const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
+    const select = config.cpanel[req.params.sez].list.select;
+    const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
+    const ids = [req.params.id].concat(req.user.crews);
+    const query = {"subscriptions.subscriber_id" :  req.params.id};
+
+    Models["Program"]
+    .find(query)
+    .select(select)
+    .populate(populate)
+    .sort({createdAt:-1})
+    .exec((err, data) => {
+      if (err) {
+        res.status(500).json({ error: `${JSON.stringify(err)}` });
+      } else {
+        res.json(data);
+      }
+    });
+  } else {
+    res.status(404).json({ error: `API_NOT_FOUND` });
+  }
+}
 router.getList = (req, res) => {
   if (config.cpanel[req.params.sez] && req.params.id) {
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);

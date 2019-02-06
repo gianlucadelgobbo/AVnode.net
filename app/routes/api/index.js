@@ -1,4 +1,4 @@
-//const config = require('getconfig');
+const config = require('getconfig');
 const router = require('../router')();
 //const dataprovider = require('../../utilities/dataprovider');
 const fs = require("fs");

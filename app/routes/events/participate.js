@@ -271,10 +271,12 @@ router.post('/', (req, res) => {
               }
               if (days_check) {
                 req.session.call.step = parseInt(req.body.step)+1;
+                let people = [];
                 for (var a=0; a<req.body.subscriptions.length; a++) {
                   if (req.body.subscriptions[a].subscriber_id && req.body.subscriptions[a].freezed != 'true'){
                     for (var b=0; b<req.session.call.subscriptions.length; b++) {
-                      if (req.session.call.subscriptions[b].stagename === req.body.subscriptions[a].stagename){
+                      if (req.session.call.subscriptions[b].stagename === req.body.subscriptions[a].stagename && people.indexOf(req.body.subscriptions[a].subscriber_id)===-1){
+                        people.push(req.body.subscriptions[a].subscriber_id);
                         req.session.call.subscriptions[b].subscriber_id = req.body.subscriptions[a].subscriber_id;
                         req.session.call.subscriptions[b].days = req.body.subscriptions[a].days;
                       }
