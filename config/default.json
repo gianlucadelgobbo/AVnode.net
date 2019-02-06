@@ -1,5 +1,5 @@
 {
-  "superusers": ["5be881a7fc3961000000b69b"],
+  "superusers": [""],
   "imageWidth": 400,
   "imageHeight": 300,
   "teaserWidth": 1920,
@@ -188,11 +188,11 @@
           "createdAt": -1
         },
         "populate": [
-          { "path": "event", "select": "title", "model": "Event"},
-          { "path": "performance", "select": "title", "model": "Performance"},
+          { "path": "event", "select": "title slug organizationsettings", "model": "Event"},
+          { "path": "performance", "select": "title users", "model": "Performance", "populate": [{"path": "users", "select": "stagename", "model": "User"}]},
           { "path": "subscriptions.subscriber_id", "select": "stagename", "model": "User"},
-          { "path": "reference", "select": "stagename", "model": "User"},
-          { "path": "event", "select": "title", "model": "User"}        
+          { "path": "schedule.status", "select": "name", "model": "Category"},
+          { "path": "reference", "select": "stagename", "model": "User"}
         ],
         "orders": [
           "mostrecent",

@@ -318,7 +318,7 @@ router.post('/', (req, res) => {
               topics:       req.session.call.topics,
               performance:  req.session.call.admitted[req.session.call.performance]._id,
               performance_categories:  req.session.call.admitted[req.session.call.performance].type,/*filter(function (el) {return el.ancestor.slug=="type";})[0]._id,*/
-              schedule:     {categories : ["5c38c57d9d426a9522c15ba5"]},
+              schedule:     {status : "5c38c57d9d426a9522c15ba5"},
               reference:    req.user._id,
               subscriptions:[]
             };
