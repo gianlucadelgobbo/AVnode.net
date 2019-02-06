@@ -1,0 +1,210 @@
+extends ../layout
+
+block title
+block teaser
+  #app
+    div
+      div
+        .jumbotron.jumbotron-fluid
+          .container
+            h1.display-4
+              span Control panel
+        div
+          .container-fluid.account-nav-wrap
+            .container
+              nav#account-nav.nav.nav-pills.nav-justified
+                a.nav-link(aria-current='false', href='/admin/profile/public')
+                  span Profile
+                a.nav-link(aria-current='false', href='/admin/crews')
+                  span Crews
+                a.nav-link(aria-current='false', href='/admin/performances')
+                  span Performances
+                a.nav-link(aria-current='false', href='/admin/events')
+                  span Events
+                a.nav-link(aria-current='true', href='/admin/videos')
+                  span Videos
+                a.nav-link(aria-current='false', href='/admin/galleries')
+                  span Galleries
+                a.nav-link.active(aria-current='true', href='/admin/videos')
+                  span Subscriptions
+          .container
+            #accordion.accordion.pb-3.mb-3.border-bottom(style="color:#000")
+              .pb-2.mb-3.border-bottom
+                .row
+                  .col-md-5
+                    b=global.__('CALL/EVENT')
+                  .col-md-3
+                    b=global.__('PERFORMANCE')
+                  .col-md-2
+                    b=global.__('STATUS')
+                  .col-md-2
+                    b=global.__('ACTION')
+              if data.length
+                each item, index in data
+                  .row(id='heading'+index)
+                    .col-md-5
+                      span.mr-2!=(index+1)
+                      button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('MORE')
+                      span
+                        !=item.event.organizationsettings.call.calls[item.call].title
+                        !=" "
+                        !=global.__('by')
+                        !=" "
+                        a(href="/events/"+item.event.slug, target="_blank")=item.event.title
+                    .col-md-3
+                        a(href="/performances/"+item.performance.slug, target="_blank")=item.performance.title
+
+                    .col-md-2
+                      if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
+                        .badge.badge-info=item.schedule.status.name
+                    .col-md-2
+                      if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
+                        .badge.badge-info=item.schedule.status.name
+                  .collapse(id='collapse'+index, aria-labelledby='heading'+index, data-parent='#accordion')
+                    .mt-3
+                      table.table
+                        tr
+                          th(scope="row")
+                            .text-right
+                              b=global.__('Call')
+                          td
+                            h4=item.event.organizationsettings.call.calls[item.call].title
+                            //p=global.__("Start date")+": "+item.event.organizationsettings.call.calls[item.call].start_date_formatted+" | "+global.__("End date")+": "+item.event.organizationsettings.call.calls[item.call].end_date+" | "+global.__("Email")+": "+item.event.organizationsettings.call.calls[item.call].email
+                              - var admitted = []
+                              - for(var b=0;b<item.event.organizationsettings.call.calls[item.call].admitted.length;b++)
+                                - admitted.push(item.event.organizationsettings.call.calls[item.call].admitted[b])
+                              - var topics = []
+                              - for(var b=0;b<item.event.organizationsettings.call.calls[item.call].topics.length;b++)
+                                - topics.push(item.event.organizationsettings.call.calls[item.call].topics[b].name)
+                              p=global.__("Admitted projects") + ": "
+                              ul
+                                each cat in admitted
+                                  li=cat.name
+                              p=global.__("Topics") + ": " + topics.join(", ")
+                              p=item.event.organizationsettings.call.calls[item.call].excerpt
+
+                        tr
+                          th(scope="row")
+                            .text-right
+                              b=global.__('Topics')
+                          td
+                            p=item.topics.join(", ")
+                        tr
+                          th(scope="row")
+                            .text-right
+                              b=global.__('Proposal Name')
+                          td
+                            h5=item.performance.title
+                        tr
+                          th(scope="row")
+                            .text-right
+                              if item.performance.users.lenght>1
+                                b=global.__('Authors')
+                              else
+                                b=global.__('Author')
+                          td
+                            ul.mb-0
+                              each performer in item.performance.users
+                                li=performer.stagename
+                        tr
+                          th(scope="row")
+                            .text-right
+                              b=global.__('Reference')
+                          td=user.name+" "+user.surname
+                        tr
+                          th(scope="row")
+                            .text-right
+                              b=global.__('Reference Email')
+                          td=user.email
+                        tr
+                          th(scope="row")
+                            .text-right
+                              b=global.__('Reference Mobile')
+                          td=user.mobile.map(function(item) {return item.url}).join(", ")
+                        tr
+                          th(scope="row")
+                            .text-right
+                              if item.subscriptions.lenght>1
+                                b=global.__('Authors') + " " + global.__('availability')
+                              else
+                                b=global.__('Author') + " " + global.__('availability')
+                          td
+                            each subscription in item.subscriptions
+                              if subscription.subscriber_id
+                                li
+                                  b=subscription.subscriber_id.stagename
+                                  ul
+                                    each day in subscription.days
+                                      - var d = new Date(day)
+                                      - var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                      - var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                                      li= days[d.getDay()] + " " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear()
+                        tr
+                          th(scope="row")
+                            .text-right
+                              b=global.__('Packages')
+                          td
+                            table.table(style="background:none;")
+                              - var total = 0;
+                              each subscription in item.subscriptions
+                                if subscription.subscriber_id
+                                  - var subscriber_total = 0;
+                                  tr
+                                    td(colspan="3",style="border-top:0;")
+                                      h4.mb-0=subscription.subscriber_id.stagename
+                                  if subscription.freezed
+                                    tr
+                                      td(colspan="3")
+                                        b!=global.__("This person is already in with another act and already choose his packages")
+                                  else
+                                    each package in subscription.packages
+                                      tr
+                                        - if (package.daily)
+                                          - total+=package.price*subscription.days.length
+                                          - subscriber_total+=package.price*subscription.days.length
+                                        - else 
+                                          - total+=package.price
+                                          - subscriber_total+=package.price
+                                        td
+                                          h5!=package.name + (package.requested ? " ("+global.__("requested")+")" : "")
+                                          div!=package.description
+                                          - if (package.allow_options)
+                                            p=package.options_name+": "+package.option
+                                        td
+                                          .text-right
+                                            if package.personal && package.daily
+                                              div=global.__("per person/per day")
+                                            else if package.personal 
+                                              div=global.__("per person")
+                                            else if package.daily 
+                                              div=global.__("per day")
+                                        td
+                                          .text-right="€ "+package.price
+                                      if package.daily
+                                        tr
+                                          td(style="border-top:0;")
+                                            if subscription.days.length == 1
+                                              !=subscription.days.length + " " + global.__('day')
+                                            else
+                                              !=subscription.days.length + " " + global.__('days')
+                                          td(style="border-top:0;")
+                                            .text-right
+                                              !=global.__("Total")
+                                          td(style="border-top:0;")
+                                            .text-right
+                                              !="€ "+(package.price*subscription.days.length)
+                                    tr
+                                      td(colspan="2")
+                                        b=global.__('Total amount for')+" "+subscription.subscriber_id.stagename
+                                      td
+                                        .text-right
+                                          b="€ "+subscriber_total
+                                              
+                              tr
+                                td(colspan="2", style="border-top:0;")=global.__("Amount to pay if the submission will be approved")
+                                td(style="border-top:0;")
+                                  .text-right="€ "+total
+
+
+
+

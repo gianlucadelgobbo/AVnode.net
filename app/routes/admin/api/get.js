@@ -36,7 +36,18 @@ router.getSubscriptions = (req, res) => {
       if (err) {
         res.status(500).json({ error: `${JSON.stringify(err)}` });
       } else {
-        res.json(data);
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('admin/subscriptions', {
+            title: 'Subscriptions',
+            is_admin: true,
+            currentUrl: req.originalUrl,
+            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            data: data,
+            script: false
+          });
+        }
       }
     });
   } else {

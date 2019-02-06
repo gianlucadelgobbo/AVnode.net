@@ -412,5 +412,11 @@
 	"Full schedule": "Full schedule",
 	"Brand": "Brand",
 	"AVnode user": "AVnode user",
-	"Channels": "Channels"
+	"Channels": "Channels",
+	"MORE": "MORE",
+	"by": "by",
+	"CALL/EVENT": "CALL/EVENT",
+	"PERFORMANCE": "PERFORMANCE",
+	"STATUS": "STATUS",
+	"ACTION": "ACTION"
 }

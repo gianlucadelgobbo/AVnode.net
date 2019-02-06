@@ -17,6 +17,7 @@ import { getList as getFootage } from "../footage/selectors";
 import { getList as getPlaylists } from "../playlists/selectors";
 import { getList as getVideos } from "../videos/selectors";
 import { getList as getGalleries } from "../galleries/selectors";
+import { Link } from "react-router-dom";
 
 class TopMenu extends Component {
   componentDidMount() {
@@ -110,6 +111,7 @@ class TopMenu extends Component {
     return (
       <nav id="account-nav" className="nav nav-pills nav-justified">
         {items.map((model, index) => this.createMenuItem({ model, index }))}
+        <a class="nav-link" aria-current="false" href="/admin/subscriptions"><span>Subscriptions</span> <span class="badge badge-pill badge-info"></span></a>
       </nav>
     );
   }
