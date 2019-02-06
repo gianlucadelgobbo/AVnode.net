@@ -355,7 +355,7 @@ router.post('/', (req, res) => {
                 });
               } else {
                 if (!data.program) data.program = [];
-                data.program.push({subscription_id: sub._id, schedule : {categories : ["5c38c57d9d426a9522c15ba5"]}, performance : req.session.call.admitted[req.session.call.performance]._id});
+                data.program.push({subscription_id: sub._id, schedule : {status : "5c38c57d9d426a9522c15ba5"}, performance : req.session.call.admitted[req.session.call.performance]._id});
                 data.save((err) => {
                   if (err) {
                     msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
