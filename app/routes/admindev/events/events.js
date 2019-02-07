@@ -165,7 +165,7 @@ router.get('/', (req, res) => {
   //lean().
   select({title: 1, createdAt: 1, organizationsettings:1, social:1, web:1}).
   populate({path: "users", select: {stagename:1}}).
-  sort({"schedule.starttime":1}).
+  sort({"schedule.starttime":-1}).
   exec((err, data) => {
     results.events = data;
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
