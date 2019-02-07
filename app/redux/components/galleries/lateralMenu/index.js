@@ -10,6 +10,12 @@ const items = [
     label: (
       <FormattedMessage id="publicDataGalleries" defaultMessage="Public data" />
     )
+  },
+  {
+    href: "/admin/galleries/:_id/gallery",
+    label: (
+      <FormattedMessage id="galleryInGalleries" defaultMessage="Gallery" />
+    )
   }
 ];
 

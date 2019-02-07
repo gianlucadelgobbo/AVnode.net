@@ -225,6 +225,20 @@ textarea#styled {
   color: #636c72;
   font-weight: 600;
 }
+.labelField p{
+  margin-right: 10px;
+  display: inline-block;
+}
+.labelField i{
+  padding: 5px;
+  font-size: 18px;
+  float: right;
+}
+.labelField i:hover{
+  color: #d70000;
+  cursor: pointer;
+
+}
 .help {
   color: #636c72;
   line-height: 1.6;

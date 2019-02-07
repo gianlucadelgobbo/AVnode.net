@@ -2365,6 +2365,62 @@ export const uploadComponent = ({
   );
 };
 
+export const listGallery = ({
+  fields,
+  title,
+  meta: { error },
+  placeholder,
+  showModal,
+  media,
+  onRemove,
+  removeImage
+}) => {
+  const label = <div className="labelField">{placeholder}</div>;
+  const containerVideo = { marginBottom: "20px" };
+  return (
+    <div>
+      {/* if array of images */}
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="labelField">
+            <h4>Gallery</h4>
+          </div>
+        </div>
+      </div>
+      {media && Array.isArray(media) && media.length > 0 && (
+        <div className="row">
+          {media.map((image, i) => (
+            <div className="col-sm-3" key={i}>
+              <Image src={image.imageFormats.small} className="img-fluid" rounded />
+              <div style={containerVideo}>
+                <div className="labelField">
+                  <p>{image.title}</p>
+                  <i
+                      onClick={() =>
+                        showModal({
+                          type: MODAL_REMOVE,
+                          props: {
+                            onRemove: () =>
+                              removeImage({id:image.slug})
+                          }
+                        })
+                      }
+                      className="fa fa-trash"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    />
+                </div>
+               
+
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export const uploadGallery = ({
   fields,
   title,

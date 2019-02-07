@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import LateralMenu from "../lateralMenu";
-import Form from "./form";
 import { connect } from "react-redux";
-import { saveModel, fetchModel, uploadModel } from "./actions";
-import { showModal } from "../../modal/actions";
 import { bindActionCreators } from "redux";
+import LateralMenu from "../lateralMenu";
+import { showModal } from "../../modal/actions";
+import Form from "./form";
+import { saveModel, fetchModel, uploadModel, removeModel } from "./actions";
 import { MODAL_SAVED } from "../../modal/constants";
 import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
@@ -17,11 +17,9 @@ import {
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
-import { GALLERIES_NAME, SHOW } from "./constants";
-import { removeModel } from "../users/actions";
-import {removeImage} from "../gallery/actions";
- 
-class GalleriesPublic extends Component {
+import { VIDEOS_NAME, SHOW } from "./constants";
+
+class GalleriesGallery extends Component {
   componentDidMount() {
     const {
       fetchModel,
@@ -70,7 +68,7 @@ class GalleriesPublic extends Component {
     //Convert stagename
     f.title = model.title;
     //Convert Video
-    f.medias = model.medias;
+    f.media = model.media;
     // Convert about format for FieldArray redux-form
     f.abouts = populateMultiLanguageObject("abouts", abouts);
 
@@ -81,7 +79,7 @@ class GalleriesPublic extends Component {
 
   uploadFile(files) {
     const { model, uploadModel, showModal } = this.props;
-    model.medias = files;
+    model.video = files;
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
         showModal({
@@ -92,7 +90,7 @@ class GalleriesPublic extends Component {
   }
 
   onSubmit(values) {
-    const { showModal, saveModel, model, removeModel } = this.props;
+    const { showModal, saveModel, model } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     modelToSave._id = model._id;
@@ -116,8 +114,7 @@ class GalleriesPublic extends Component {
       },
       isFetching,
       errorMessage,
-      removeModel,
-      removeImage
+      removeModel
     } = this.props;
     return (
       <div className="row">
@@ -132,21 +129,18 @@ class GalleriesPublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={GALLERIES_NAME} link={"/galleries/"+model.slug} show={SHOW} />
+            <TitleComponent title={model.title} type={VIDEOS_NAME} link={"/videos/"+model.slug} show={SHOW} />
           )}
 
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}
-            media={model.medias}
+            media={model.media}
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
             uploadFile={this.uploadFile.bind(this)}
-            _id={_id}
-            removeModel={removeModel}
-            removeImage={removeImage}
-            model={model}
+            removeModel={removeModel} 
           />
         </div>
       </div>
@@ -175,15 +169,14 @@ const mapDispatchToProps = dispatch =>
       fetchModel,
       showModal,
       uploadModel,
-      removeModel,
-      removeImage
+      removeModel
     },
     dispatch
   );
 
-GalleriesPublic = connect(
+GalleriesGallery = connect(
   mapStateToProps,
   mapDispatchToProps
-)(GalleriesPublic);
+)(GalleriesGallery);
 
-export default GalleriesPublic;
+export default GalleriesGallery;
