@@ -57,6 +57,7 @@ import VideosVideo from "../videos/video";
 // // Galleries
 import Galleries from "../galleries/index.js";
 import GalleriesPublic from "../galleries/public";
+import GalleriesGallery from "../galleries/gallery";
 
 class MainApp extends Component {
   render() {
@@ -146,6 +147,12 @@ class MainApp extends Component {
                   path="/admin/galleries/:_id/public/"
                   component={GalleriesPublic}
                 />
+
+                <Route
+                  path="/admin/galleries/:_id/gallery"
+                  component={GalleriesGallery}
+                />
+
                 <Route path="/admin/galleries" component={Galleries} />
 
                 <Route
