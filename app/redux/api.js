@@ -625,6 +625,10 @@ export const saveGalleriesMedia = model => {
     });
 };
 
+export const removeGalleriesMedia = img => {
+  console.log(img);
+}
+
 export const fetchSlugNewGalleries = slug => {
   return axios.get(`galleries/new/slugs/${slug}`).then(result => {
     return result.data;
