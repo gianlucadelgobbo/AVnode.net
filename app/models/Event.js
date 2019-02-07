@@ -53,6 +53,8 @@ const programSchema = new Schema({
 const callSchema = new Schema({
   title: String,
   email: String,
+  imgalt: String,
+  imghead: String,
   permalink: String,
   start_date: Date,
   end_date: Date,

@@ -71,7 +71,7 @@ block content
     thead
       tr
         th="ID"
-        th="SCHEDULE"
+        th="STATUS"
         th="ACT"
         th="TOPICS"
         th="AUTHORS"
@@ -82,16 +82,22 @@ block content
         tr
           td!=index
           td
-            if item.schedule.date
-              pre=item.schedule.boxDate
-              p=item.schedule.venue.room
-              if item.schedule.categories
-                each cat in item.schedule.categories
-                  if cat.ancestor.slug == "status"
-                    p=cat.name
-              //pre=item.schedule
-            else
-              .badge.badge-danger NOT EVALUATED
+            form(action="")
+              .border-bottom.pb-1.mb-1
+                h4=global.__('STATUS')
+                each status in data.status
+                  .form-check.text-nowrap
+                    input.form-check-input(id='status'+status._id+item._id, name='status'+item._id, type='radio', value=status.id, checked=item.schedule.status._id.toString()==status._id.toString() ? "checked" : undefined)
+                    label.form-check-label(for='status'+status._id+item._id)=status.name
+              .border-bottom.pb-1.mb-1
+                h4=global.__('SCHEDULE')
+                if item.schedule.starttime
+                  div=item.schedule.starttime
+                  div=item.schedule.endtime
+                else
+                  .badge.badge-danger=global.__('TO BE SCHEDULED')
+              .text-right.pb-1.mb-1
+                button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Delete')
           td
             h2!=item.performance.title
             p
@@ -103,8 +109,10 @@ block content
               if item.performance.genre
                 !="GENRE: "+item.performance.genre.name
           td
-            if item.subscription_id
-              !=item.subscription_id.topics.join("<br />")
+            !=data.event.organizationsettings.call.calls[item.call].title
+            br
+            if item.topics
+              !=item.topics.join("<br />")
             else
               .badge.badge-danger MISSING
           td!=item.performance.users.map((item) => {return item.stagename}).join("<br />")
@@ -113,33 +121,32 @@ block content
           - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
           td!=addressesaddresses.sort().join(", ")
           td
-            if item.subscription_id
-              p
-                b!="CALL: "
-                !=data.organizationsettings.call.calls[item.subscription_id.call].title
-              p
-                b!="AVAILABILITY"
-              ol
-                each subscription in item.subscription_id.subscriptions
-                  li
-                    b!=subscription.subscriber_id.stagename
-                    br
+            p
+              b!="CALL: "
+              !=data.event.organizationsettings.call.calls[item.call].title
+            p
+              b!="AVAILABILITY"
+            ol
+              each subscription in item.subscriptions
+                li
+                  b!=subscription.subscriber_id.stagename
+                  br
+                  if subscription.daysFormatted
                     !=subscription.daysFormatted.join(" | ")
-                    br
-                    u!="PACKAGES"
-                    ul
-                      each pack in subscription.packages
-                        li!=pack.name
-              p
-                b!="REFERENCE"
-                br
-                !=item.subscription_id.reference.name+" "+item.subscription_id.reference.surname
-                br
-                !='<a href="mailto:'+item.subscription_id.reference.email+'">'+item.subscription_id.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.subscription_id.reference.email+'">SEARCH MESSAGES</a>'
-                br
-                !=item.subscription_id.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
-            else
-              .badge.badge-danger MISSING
+                  br
+                  u!="PACKAGES"
+                  ul
+                    each pack in subscription.packages
+                      li!=pack.name
+            p
+              b!="REFERENCE"
+              br
+              !=item.reference.name+" "+item.reference.surname
+              br
+              !='<a href="mailto:'+item.reference.email+'">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'">SEARCH MESSAGES</a>'
+              br
+              !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+
         if get.fullinfo
           tr
             td!=index
@@ -168,5 +175,14 @@ block content
               !='<a href="mailto:'+item.subscription_id.reference.email+'">'+item.subscription_id.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.subscription_id.reference.email+'">SEARCH MESSAGES</a>'
               br
               !=item.subscription_id.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+              if item.schedule.date
+                pre=item.schedule.boxDate
+                p=item.schedule.venue.room
+                if item.schedule.categories
+                  each cat in item.schedule.categories
+                    if cat.ancestor.slug == "status"
+                      p=cat.name
+                //pre=item.schedule
+
 
   //pre=JSON.stringify(data, null, 2)

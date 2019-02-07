@@ -418,5 +418,11 @@
 	"CALL/EVENT": "CALL/EVENT",
 	"PERFORMANCE": "PERFORMANCE",
 	"STATUS": "STATUS",
-	"ACTION": "ACTION"
+	"ACTION": "ACTION",
+	"Pleas wait for the evaluation": "Pleas wait for the evaluation",
+	"Cancel your proposal": "Cancel your proposal",
+	"ACTIONS": "ACTIONS",
+	"Wait for the evaluation": "Wait for the evaluation",
+	"Delete": "Delete",
+	"SCHEDULE": "SCHEDULE"
 }

@@ -10,6 +10,7 @@ const Models = {
   'Gallery': mongoose.model('Gallery'),
   'News': mongoose.model('News'),
   'Playlist': mongoose.model('Playlist'),
+  'Program': mongoose.model('Program'),
   'Video': mongoose.model('Video')
 }
 const logger = require('../../../utilities/logger');
@@ -160,6 +161,28 @@ router.addGallery = (req, res) => {
         }
       });
     }
+  });
+}
+
+router.cancelSubscription = (req, res) => {
+  logger.debug(req.body);
+  Models.Program
+  .findOne({_id: req.body.id/* , members:req.user.id */},'_id, event', (err, sub) => {
+    logger.debug(sub.event);
+    Models.Event
+    .findOne({_id: sub.event},'_id, program', (err, event) => {
+      logger.debug(event);
+      event.program.forEach((program, index) => {
+        if (program.subscription_id == req.body.id) {
+          event.program.splice(index, 1);
+        }
+      });
+      event.save(function(err){
+        sub.remove(function(err){
+          res.json(true);
+        });
+      });  
+    });
   });
 }
 
