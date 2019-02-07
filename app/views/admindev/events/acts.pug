@@ -79,7 +79,7 @@ block content
         th="SUBSCRIPTION"
     tbody
       each item, index in data.program
-        tr
+        tr(id='sub'+item._id) 
           td!=index
           td
             form(action="")
