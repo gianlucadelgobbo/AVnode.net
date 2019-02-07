@@ -271,7 +271,7 @@
   },
   {
     "id": "label.form.performance.url_pre",
-    "defaultMessage": "https://avnode.org/performances/",
+    "defaultMessage": "https://avnode.net/performances/",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -346,7 +346,7 @@
   },
   {
     "id": "label.form.event.url_pre",
-    "defaultMessage": "https://avnode.org/events/",
+    "defaultMessage": "https://avnode.net/events/",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -441,7 +441,7 @@
   },
   {
     "id": "label.form.footage.url_pre",
-    "defaultMessage": "https://avnode.org/footage/",
+    "defaultMessage": "https://avnode.net/footage/",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -466,7 +466,7 @@
   },
   {
     "id": "label.form.playlist.url_pre",
-    "defaultMessage": "https://avnode.org/playlists/",
+    "defaultMessage": "https://avnode.net/playlists/",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -486,7 +486,7 @@
   },
   {
     "id": "label.form.videos.url_pre",
-    "defaultMessage": "https://avnode.org/videos/",
+    "defaultMessage": "https://avnode.net/videos/",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -506,7 +506,7 @@
   },
   {
     "id": "label.form.galleries.url_pre",
-    "defaultMessage": "https://avnode.org/galleries/",
+    "defaultMessage": "https://avnode.net/galleries/",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {

@@ -217,7 +217,7 @@ defineMessages({
   },
   [PERFORMANCE_URL_PRE]: {
     id: PERFORMANCE_URL_PRE,
-    defaultMessage: "https://avnode.org/performances/"
+    defaultMessage: "https://avnode.net/performances/"
   },
   [PERFORMANCE_URL_HELP]: {
     id: PERFORMANCE_URL_HELP,
@@ -277,7 +277,7 @@ defineMessages({
   },
   [EVENT_URL_PRE]: {
     id: EVENT_URL_PRE,
-    defaultMessage: "https://avnode.org/events/"
+    defaultMessage: "https://avnode.net/events/"
   },
   [EVENT_URL_HELP]: {
     id: EVENT_URL_HELP,
@@ -353,7 +353,7 @@ defineMessages({
   },
   [FOOTAGE_URL_PRE]: {
     id: FOOTAGE_URL_PRE,
-    defaultMessage: "https://avnode.org/footage/"
+    defaultMessage: "https://avnode.net/footage/"
   },
   [FOOTAGE_URL_HELP]: {
     id: FOOTAGE_URL_HELP,
@@ -373,7 +373,7 @@ defineMessages({
   },
   [PLAYLIST_URL_PRE]: {
     id: PLAYLIST_URL_PRE,
-    defaultMessage: "https://avnode.org/playlists/"
+    defaultMessage: "https://avnode.net/playlists/"
   },
   [PLAYLIST_URL_HELP]: {
     id: PLAYLIST_URL_HELP,
@@ -389,7 +389,7 @@ defineMessages({
   },
   [VIDEOS_URL_PRE]: {
     id: VIDEOS_URL_PRE,
-    defaultMessage: "https://avnode.org/videos/"
+    defaultMessage: "https://avnode.net/videos/"
   },
   [VIDEOS_URL_HELP]: {
     id: VIDEOS_URL_HELP,
@@ -405,7 +405,7 @@ defineMessages({
   },
   [GALLERIES_URL_PRE]: {
     id: GALLERIES_URL_PRE,
-    defaultMessage: "https://avnode.org/galleries/"
+    defaultMessage: "https://avnode.net/galleries/"
   },
   [GALLERIES_URL_HELP]: {
     id: GALLERIES_URL_HELP,
