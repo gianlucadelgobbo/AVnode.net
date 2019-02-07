@@ -385,7 +385,7 @@ router.post('/', (req, res) => {
                         imgalt:  data.organizationsettings.call.calls[req.session.call.index].imgalt,
                         html_sign:  data.organizationsettings.call.calls[req.session.call.index].html_sign,
                         text_sign:  data.organizationsettings.call.calls[req.session.call.index].text_sign,
-                        title:   data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
+                        title:   req.session.call.admitted[req.session.call.performance].title + " | " + data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
                         subject: data.organizationsettings.call.calls[req.session.call.index].title + " | " + __("Call Submission"),
                         block_1:  __("We’ve received a request to participate to") + " <b>" + data.organizationsettings.call.calls[req.session.call.index].title + "</b> "+__("from")+" <b>"+req.user.stagename+"</b>",
                         block_1_plain:  __("We’ve received a request to participate to") + " " + data.organizationsettings.call.calls[req.session.call.index].title + " "+__("from")+" "+req.user.stagename+"",
