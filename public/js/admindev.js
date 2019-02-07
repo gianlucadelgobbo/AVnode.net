@@ -1,6 +1,18 @@
-/* $(function() {
-  checkCookie()
+$(function() {
+  $(".cancel-sub").on('click', function(ev) {
+    const id = $(this).data("id");
+    console.log($(this).data("id"));
+    $.ajax({
+      url: "/admin/api/cancelsubscription",
+      method: "post",
+      data: {id:id}
+    }).done(function(data) {
+      console.log("#"+id);
+      $("#sub"+id).remove();
+    });
+  });
 });
+/* 
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
