@@ -34,16 +34,19 @@ function checkCookie() {
 }
 
 $(".cancel-sub").on('click', function(ev) {
-  const id = $(this).data("id");
-  console.log($(this).data("id"));
-  $.ajax({
-    url: "/admin/api/cancelsubscription",
-    method: "post",
-    data: {id:id}
-  }).done(function(data) {
-    console.log("#"+id);
-    $("#sub"+id).remove();
-  });
+  var result = confirm("Want to delete?");
+  if (result) {
+    const id = $(this).data("id");
+    console.log($(this).data("id"));
+    $.ajax({
+      url: "/admin/api/cancelsubscription",
+      method: "post",
+      data: {id:id}
+    }).done(function(data) {
+      console.log("#"+id);
+      $("#sub"+id).remove();
+    });
+  } 
 });
 
 $("#liker").on('click', function(ev) {
