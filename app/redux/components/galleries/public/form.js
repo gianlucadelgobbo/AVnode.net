@@ -5,7 +5,7 @@ import {
   inputText,
   textareaMultiTab,
   fieldWithLabel,
-  uploadGallery
+  listGallery
 } from "../../common/form/components";
 import validate from "./validate";
 import { injectIntl } from "react-intl";
@@ -18,7 +18,7 @@ import {
   AUTHORS
 } from "../../common/form/labels";
 
-class VideosPublicForm extends Component {
+class GalleriesPublicForm extends Component {
   getIntlString = obj => {
     const { intl } = this.props;
     return intl.formatMessage(obj);
@@ -32,7 +32,7 @@ class VideosPublicForm extends Component {
       labels,
       showModal,
       onSubmit,
-      uploadFile,
+      removeImage,
       media,
       _id,
       removeModel,
@@ -55,7 +55,7 @@ class VideosPublicForm extends Component {
           help={this.getIntlString({ id: GALLERIES_URL_HELP })}
         />
 
-        <Field
+        {/*<Field
           name="galleries"
           component={uploadGallery}
           showModal={showModal}
@@ -65,6 +65,14 @@ class VideosPublicForm extends Component {
           uploadButton={true}
           media={media}
           multiple={true}
+        />*/}
+
+        <Field
+          name="galleries"
+          component={listGallery}
+          media={media}   
+          showModal={showModal} 
+          removeImage={removeImage}  
         />
 
         <FieldArray
@@ -104,15 +112,15 @@ class VideosPublicForm extends Component {
   }
 }
 
-VideosPublicForm = reduxForm({
+GalleriesPublicForm = reduxForm({
   form: FORM_NAME,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
   validate
   //asyncValidate,
   //asyncBlurFields: ['slug', 'addresses[]']
-})(VideosPublicForm);
+})(GalleriesPublicForm);
 
-VideosPublicForm = injectIntl(VideosPublicForm);
+GalleriesPublicForm = injectIntl(GalleriesPublicForm);
 
-export default VideosPublicForm;
+export default GalleriesPublicForm;
