@@ -33,6 +33,19 @@ function checkCookie() {
   }
 }
 
+$(".cancel-sub").on('click', function(ev) {
+  const id = $(this).data("id");
+  console.log($(this).data("id"));
+  $.ajax({
+    url: "/admin/api/cancelsubscription",
+    method: "post",
+    data: {id:id}
+  }).done(function(data) {
+    console.log("#"+id);
+    $("#sub"+id).remove();
+  });
+});
+
 $("#liker").on('click', function(ev) {
   ///likes/?section=performances&id=5a9c32c3606624000000bccb
   ev.preventDefault();

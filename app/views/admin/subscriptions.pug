@@ -38,29 +38,31 @@ block teaser
                   .col-md-2
                     b=global.__('STATUS')
                   .col-md-2
-                    b=global.__('ACTION')
+                    b=global.__('ACTIONS')
               if data.length
                 each item, index in data
-                  .row(id='heading'+index)
-                    .col-md-5
-                      span.mr-2!=(index+1)
-                      button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('MORE')
-                      span
-                        !=item.event.organizationsettings.call.calls[item.call].title
-                        !=" "
-                        !=global.__('by')
-                        !=" "
-                        a(href="/events/"+item.event.slug, target="_blank")=item.event.title
-                    .col-md-3
-                        a(href="/performances/"+item.performance.slug, target="_blank")=item.performance.title
+                  div(id='sub'+item._id)                  
+                    .row(id='heading'+index)
+                      .col-md-5
+                        span.mr-2!=(index+1)
+                        button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('MORE')
+                        span
+                          !=item.event.organizationsettings.call.calls[item.call].title
+                          !=" "
+                          !=global.__('by')
+                          !=" "
+                          a(href="/events/"+item.event.slug, target="_blank")=item.event.title
+                      .col-md-3
+                          a(href="/performances/"+item.performance.slug, target="_blank")=item.performance.title
 
-                    .col-md-2
-                      if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
-                        .badge.badge-info=item.schedule.status.name
-                    .col-md-2
-                      if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
-                        .badge.badge-info=item.schedule.status.name
-                  .collapse(id='collapse'+index, aria-labelledby='heading'+index, data-parent='#accordion')
+                      .col-md-2
+                        if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
+                          .badge.badge-info=item.schedule.status.name
+                      .col-md-2
+                        if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
+                          .badge.badge-info=global.__('Wait for the evaluation')
+                          button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel your proposal')
+                    .collapse(id='collapse'+index, aria-labelledby='heading'+index, data-parent='#accordion')
                     .mt-3
                       table.table
                         tr

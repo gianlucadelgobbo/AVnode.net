@@ -33,6 +33,10 @@ function checkCookie() {
   }
 }
 
+$(".cancel-sub").on('click', function(ev) {
+  console.log($(this).data("id"));
+});
+
 $("#liker").on('click', function(ev) {
   ///likes/?section=performances&id=5a9c32c3606624000000bccb
   ev.preventDefault();
