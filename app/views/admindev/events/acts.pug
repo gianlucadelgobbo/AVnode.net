@@ -91,7 +91,7 @@ block content
                     label.form-check-label(for='status'+status._id+item._id)=status.name
               .border-bottom.pb-1.mb-1
                 h4=global.__('SCHEDULE')
-                if item.schedule.starttime
+                if item.schedule && item.schedule.starttime
                   div=item.schedule.starttime
                   div=item.schedule.endtime
                 else
