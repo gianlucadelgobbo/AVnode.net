@@ -2,6 +2,8 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import reducer from './reducers';
 
+import { loadingBarMiddleware } from 'react-redux-loading-bar'
+
 //import createLogger from 'redux-logger';
 //const loggerMiddleware = createLogger();
 //loggerMiddleware
@@ -12,7 +14,8 @@ const store = createStore(
     reducer,
     composeEnhancers(
         applyMiddleware(
-            thunkMiddleware
+            thunkMiddleware,
+            loadingBarMiddleware(), // manages loading bar
         )
     )
 );
