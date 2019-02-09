@@ -42,10 +42,6 @@ router.put('/api/profile/:form/', (req, res) => {
   }
 });
 
-router.post('/api/cancelsubscription', (req, res)=>{
-  post.cancelSubscription(req, res);
-});
-
 router.get('/api/profile/emails/verify/:email', (req, res)=>{
   req.params.id = req.user.id;
   req.params.sez = 'profile';
@@ -116,6 +112,13 @@ router.post('/api/events/:id/galleries', (req, res)=>{
   get.addGallery(req, res);
 });
 
+router.post('/api/subscriptionupdate', (req, res)=>{
+  post.updateSubscription(req, res);
+});
+
+router.post('/api/cancelsubscription', (req, res)=>{
+  post.cancelSubscription(req, res);
+});
 
 router.get('/api/countries', (req, res) => {
   get.getCountries(req, res);
@@ -161,12 +164,18 @@ router.get('/api/events/:id/performance/remove/:performance', (req, res)=>{
   get.removePerformance(req, res);
 });
 
+router.get('/api/subscriptions', (req, res) => {
+  req.params.id = req.user.id;
+  req.params.sez = 'subscriptions';
+  req.query.api = true;
+  get.getSubscriptions(req, res);
+});
+
+
 router.get('/api/:sez', (req, res) => {
   req.params.id = req.user.id;
   get.getList(req, res);
 });
-
-
 
 
 

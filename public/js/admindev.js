@@ -14,6 +14,36 @@ $(function() {
       });
     } 
   });
+  $(".change-status").on('click', function(ev) {
+    var result = confirm("Want to change status?");
+    if (result) {
+      const id = $(this).data("id");
+      const status = $(this).data("status");
+      console.log({id:id, status:status});
+      $.ajax({
+        url: "/admin/api/subscriptionupdate",
+        method: "post",
+        data: {id:id, status:status}
+      }).done(function(data) {
+        console.log("#"+id);
+      });
+    } 
+  });
+  $(".confirm-sub").on('click', function(ev) {
+    var result = confirm("Want to confirm your subscription?");
+    if (result) {
+      const id = $(this).data("id");
+      const status = $(this).data("status");
+      console.log({id:id, status:status});
+      $.ajax({
+        url: "/admin/api/subscriptionupdate",
+        method: "post",
+        data: {id:id, status:status}
+      }).done(function(data) {
+        console.log("#"+id);
+      });
+    } 
+  });
 });
 /* 
 function setCookie(cname, cvalue, exdays) {

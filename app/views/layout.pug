@@ -39,6 +39,9 @@ html(lang=session.current_lang)
       link(rel='stylesheet', href='/css/admin.css')
     script(type="application/ld+json")
       !=JSON.stringify(jsonld)
+    if paypal
+      script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
+
   body
     #top
     a#to_top(href="#top", title=global.__('Back to the top'))

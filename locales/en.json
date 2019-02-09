@@ -424,5 +424,16 @@
 	"ACTIONS": "ACTIONS",
 	"Wait for the evaluation": "Wait for the evaluation",
 	"Delete": "Delete",
-	"SCHEDULE": "SCHEDULE"
+	"SCHEDULE": "SCHEDULE",
+	"Submission ACCEPTED": "Submission ACCEPTED",
+	"Submission UPDATES": "Submission UPDATES",
+	"Waiting your confirm": "Waiting your confirm",
+	"Confirm": "Confirm",
+	"Amount to pay to confirm you participation": "Amount to pay to confirm you participation",
+	"subscription to": "subscription to",
+	"with": "with",
+	"Peoples:": "Peoples:",
+	"Amount paid": "Amount paid",
+	"scheduled": "scheduled",
+	"To be scheduled": "To be scheduled"
 }

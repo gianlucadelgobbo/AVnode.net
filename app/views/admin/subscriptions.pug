@@ -28,7 +28,7 @@ block teaser
                 a.nav-link.active(aria-current='true', href='/admin/videos')
                   span Subscriptions
           .container
-            #accordion.accordion.pb-3.mb-3.border-bottom(style="color:#000")
+            #accordion.accordion.pb-3.mb-3(style="color:#000")
               .pb-2.mb-3.border-bottom
                 .row
                   .col-md-5
@@ -41,8 +41,8 @@ block teaser
                     b=global.__('ACTIONS')
               if data.length
                 each item, index in data
-                  div(id='sub'+item._id)                  
-                    .row(id='heading'+index)
+                  .border-bottom.mb-3(id='sub'+item._id)                  
+                    .row.pb-3(id='heading'+index)
                       .col-md-5
                         span.mr-2!=(index+1)
                         button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('MORE')
@@ -56,14 +56,26 @@ block teaser
                           a(href="/performances/"+item.performance.slug, target="_blank")=item.performance.title
 
                       .col-md-2
-                        if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
-                          .badge.badge-info=item.schedule.status.name
+                        //!=item.status._id
+                        if item.status._id=="5c38c57d9d426a9522c15ba5"
+                          .badge.badge-info=item.status.name
+                        if item.status._id=="5be8708afc3961000000019e"
+                          .badge.badge-warning=item.status.name
+                        if item.status._id=="5be8708afc39610000000013"
+                          .badge.badge-success.mr-1=item.status.name
+                          if (item.schedule && item.schedule.length && item.schedule[0].starttime)
+                            .badge.badge-success=global.__('scheduled')
+                          else
+                            .badge.badge-warning=global.__('To be scheduled')
+
                       .col-md-2
-                        if item.schedule.status._id=="5c38c57d9d426a9522c15ba5"
+                        if item.status._id=="5c38c57d9d426a9522c15ba5"
                           .badge.badge-info=global.__('Wait for the evaluation')
-                          button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel your proposal')
+                        if item.status._id=="5be8708afc3961000000019e"
+                          .badge.badge-info=global.__('Waiting your confirm')
+                          a.mr-2.btn.btn-success.btn-sm.btn-inline(href='#pay'+index, data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('Confirm')
+                        button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel your proposal')
                     .collapse(id='collapse'+index, aria-labelledby='heading'+index, data-parent='#accordion')
-                    .mt-3
                       table.table
                         tr
                           th(scope="row")
@@ -131,8 +143,10 @@ block teaser
                               else
                                 b=global.__('Author') + " " + global.__('availability')
                           td
+                            - var subscribers = []
                             each subscription in item.subscriptions
-                              if subscription.subscriber_id
+                              if subscription.subscriber_id && subscribers.indexOf(subscription.subscriber_id)==-1
+                                - subscribers.push(subscription.subscriber_id)
                                 li
                                   b=subscription.subscriber_id.stagename
                                   ul
@@ -148,8 +162,12 @@ block teaser
                           td
                             table.table(style="background:none;")
                               - var total = 0;
+                              - var subscribers = []
+                              - var itemdescriptions = []
+                              - itemdescriptions[index] = item.event.title +" " + global.__('subscription to') + " " + item.event.organizationsettings.call.calls[item.call].title +" " + global.__('with') + " " + item.performance.title +"\\n" + global.__('Peoples:')
                               each subscription in item.subscriptions
-                                if subscription.subscriber_id
+                                if subscription.subscriber_id && subscribers.indexOf(subscription.subscriber_id)==-1
+                                  - subscribers.push(subscription.subscriber_id)
                                   - var subscriber_total = 0;
                                   tr
                                     td(colspan="3",style="border-top:0;")
@@ -159,6 +177,7 @@ block teaser
                                       td(colspan="3")
                                         b!=global.__("This person is already in with another act and already choose his packages")
                                   else
+                                    - itemdescriptions[index]+= "\\n"+subscription.subscriber_id.stagename+""
                                     each package in subscription.packages
                                       tr
                                         - if (package.daily)
@@ -168,9 +187,12 @@ block teaser
                                           - total+=package.price
                                           - subscriber_total+=package.price
                                         td
+                                          - //itemdescriptions[index]+= "\\n"+package.name
+                                          //+"\\n"+package.description
                                           h5!=package.name + (package.requested ? " ("+global.__("requested")+")" : "")
                                           div!=package.description
                                           - if (package.allow_options)
+                                            - //itemdescriptions[index]+= "\\n"+package.options_name+": "+package.option
                                             p=package.options_name+": "+package.option
                                         td
                                           .text-right
@@ -202,10 +224,57 @@ block teaser
                                         .text-right
                                           b="€ "+subscriber_total
                                               
-                              tr
-                                td(colspan="2", style="border-top:0;")=global.__("Amount to pay if the submission will be approved")
+                              tr(id='pay'+index)
+                                td(colspan="2", style="border-top:0;")
+                                  if item.status._id=="5c38c57d9d426a9522c15ba5"
+                                    !=global.__("Amount to pay if the submission will be approved")
+                                  if item.status._id=="5be8708afc3961000000019e"
+                                    !=global.__("Amount to pay to confirm you participation")
+                                  if item.status._id=="5be8708afc39610000000013"
+                                    !=global.__("Amount paid")
                                 td(style="border-top:0;")
                                   .text-right="€ "+total
+                                  if item.status._id=="5be8708afc3961000000019e"
+                                    div(id='paybutton'+index)
+                                    script.
+                                      paypal.Buttons({
+                                        createOrder: function(data, actions) {
+                                          return actions.order.create({
+                                            "intent": "CAPTURE",
+                                            "application_context": {
+                                              "brand_name": "Company Name",
+                                              "shipping_preference": "NO_SHIPPING"
+                                            },
+
+                                            "purchase_units": [
+                                              {
+                                                "reference_id": "#{item.id}",
+                                                "description": "#{itemdescriptions[index]}",
+                                                "amount": {
+                                                  "currency": "EURO",
+                                                  "value": "#{total}"
+                                                }
+                                              }
+                                            ]
+                                          });
+                                        },
+                                        onApprove: function(data, actions) {
+                                          return actions.order.capture().then(function(details) {
+                                            alert('Transaction completed by ' + details.payer.name.given_name);
+                                            return fetch('/admin/api/subscriptionupdate', {
+                                              method: 'post',
+                                              headers: {
+                                                'Content-Type': 'application/json'
+                                              },
+                                              body: JSON.stringify({
+                                                orderID: data.orderID,
+                                                id: "#{item.id}",
+                                                status: "5be8708afc39610000000013"
+                                              })
+                                            });
+                                          });
+                                        }
+                                      }).render('#paybutton#{index}');
 
 
 

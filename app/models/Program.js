@@ -8,6 +8,7 @@ const Package = require('./shared/Package');
 
 const subSchema = new Schema({
   subscriber_id: { type: Schema.ObjectId, ref: 'User' },
+  freezed: { type: Boolean, default: false },
   days: { type: [Date], minlength: 1},
   packages: [Package]
 },
@@ -29,6 +30,7 @@ const programSchema = new Schema({
   performance: { type: Schema.ObjectId, ref: 'Performance', required: true },
   performance_category: { type : Schema.ObjectId, ref : 'Category' },
   reference: { type: Schema.ObjectId, ref: 'User', required: true },
+  status: { type: Schema.ObjectId, ref: 'Category' },
   subscriptions: {
     type: [subSchema],
     minlength: 1

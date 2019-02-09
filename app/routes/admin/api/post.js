@@ -186,6 +186,117 @@ router.cancelSubscription = (req, res) => {
   });
 }
 
+router.updateSubscription = (req, res) => {
+  console.log("updateSubscription");
+  console.log(req.body.orderID);
+  console.log(req.query);
+  console.log(req.params);
+  console.log(req.body);
+  console.log(req);
+/*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
+
+  // 1b. Import the PayPal SDK client that was created in `Set up the Server SDK`.
+  // * PayPal HTTP client dependency
+  const payPalClient = require('./paypalClient');
+  
+  // 2. Set up your server to receive a call from the client
+  module.exports = async function handleRequest(req, res) {
+  
+    // 2a. Get the order ID from the request body
+    const orderID = req.body.orderID;
+  
+    // 3. Call PayPal to get the transaction details
+    let request = new checkoutNodeJssdk.orders.OrdersGetRequest(orderID);
+  
+    let order;
+    try {
+      order = await payPalClient.client().execute(request);
+    } catch (err) {
+  
+      // 4. Handle any errors from the call
+      console.error(err);
+      return res.send(500);
+    }
+  
+    // 5. Validate the transaction details are as expected
+    if (order.result.purchase_units[0].amount.value !== '220.00') {
+      return res.send(400);
+    }
+  
+    // 6. Save the transaction in your database
+    // await database.saveTransaction(orderID);
+  
+    // 7. Return a successful response to the client
+    return res.send(200);
+  } */
+    
+  if (req.body.id && req.body.status) {
+    const gmailer = require('../../../utilities/gmailer');
+    Models.Program
+    .findOne({_id: req.body.id/* , members:req.user.id */})
+    .select({schedule: 1, call: 1, event: 1})
+    .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
+    .exec((err, sub) => {
+      Models.Event
+      .findOne({_id: sub.event})
+      .select({program: 1, organizationsettings: 1})
+      .exec((err, event) => {
+        /* logger.debug(event.organizationsettings.call.calls[sub.call].email);
+        event.program.forEach((program, index) => {
+          logger.debug(program);
+          if (program.subscription_id == req.body.id) {
+            //event.program[index].schedule.status = req.body.status;
+            program.status = req.body.status;
+          }
+          logger.debug(program);
+        }); */
+        const auth = {
+          user: event.organizationsettings.call.calls[sub.call].email,
+          pass: event.organizationsettings.call.calls[sub.call].emailpassword
+        };
+        const status = {
+          "5c38c57d9d426a9522c15ba5": "to be evaluated" ,
+          "5be8708afc3961000000019e": "accepted - waiting for payment" ,
+          "5be8708afc39610000000013": "accepted" ,
+          "5be8708afc39610000000097": "to be completed" ,
+          "5be8708afc3961000000011a": "not_accepted" ,
+          "5be8708afc39610000000221": "refused from user"
+        };
+        let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
+        if (req.body.status == "5be8708afc3961000000019e") {
+          email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
+        } else {
+          email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
+        }
+        email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
+        const mail = {
+          from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
+          to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
+          subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
+          text: email
+        };
+        sub.status = req.body.status;
+        sub.save(function(err){
+          //event.save(function(err){
+            gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+              res.json({err:err, res:result});
+              /* if (err) {
+                logger.debug("Email sending failure");
+                res.json({error: true, msg: "Email sending failure"});
+              } else {
+                logger.debug("Email sending OK");
+                res.json({error: false, msg: "Email sending success"});
+              } */
+            });
+          //});  
+        });  
+      });
+    });
+  } else {
+    res.json(req);
+  }
+}
+
 router.addVideos = (req, res) => {
   Models[req.params.model]
   .findOne({_id: req.params.id/* , members:req.user.id */},'_id, videos', (err, result) => {

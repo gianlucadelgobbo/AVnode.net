@@ -161,7 +161,7 @@
       "title": "Subscriptions",
       "limit": 1,
       "basepath": "signup",
-      "model": "UserTemp",
+      "model": "Program",
       "forms": {
         "subscriptions": {
           "components": {
@@ -177,10 +177,11 @@
         }
       },
       "list": {
-        "model": "User",
+        "model": "Program",
         "select": {
           "topics": 1,
           "call": 1,
+          "schedule": 1,
           "subscriptions": 1,
           "createdAt": 1
         },
@@ -190,8 +191,8 @@
         "populate": [
           { "path": "event", "select": "title slug organizationsettings schedule", "model": "Event"},
           { "path": "performance", "select": "title users", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses", "model": "User"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"}]},
-          { "path": "subscriptions.subscriber_id", "select": "stagename", "model": "User"},
-          { "path": "schedule.status", "select": "name", "model": "Category"},
+          { "path": "subscriptions.subscriber_id", "select": "stagename name surname email mobile", "model": "User"},
+          { "path": "status", "select": "name", "model": "Category"},
           { "path": "reference", "select": "stagename name surname email mobile", "model": "User"}
         ],
         "orders": [

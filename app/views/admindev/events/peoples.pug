@@ -71,7 +71,7 @@ block content
     thead
       tr
         th="ID"
-        th="Act"
+        th="Status"
         th="Submission"
         th="Person"
         th="Packages"
@@ -105,11 +105,12 @@ block content
           tr
             td=conta
             td
-              form(action="")
+              .badge.badge-danger=item.status.name
+              //form(action="")
                 each status in data.status
                   .form-check.text-nowrap
-                    input.form-check-input(id='status'+status._id+subscription.subscriber_id._id, name='status'+subscription.subscriber_id._id, type='radio', value=status.id, checked=item.schedule.categories[0].toString()==status._id.toString() ? "checked" : undefined)
-                    label.form-check-label(for='status'+status._id+subscription.subscriber_id._id)=status.name
+                    input.form-check-input(id='status'+status._id+item._id, name='status'+item._id, type='radio', value=status.id, checked=item.status._id.toString()==status._id.toString() ? "checked" : undefined)
+                    label.form-check-label(for='status'+status._id+item._id)=status.name
             td
               b!=item.performance.title
                 a.badge.badge-primary.ml-2(href="/performance/"+item.performance.slug+"/", target="_blank")="VIEW"
@@ -168,14 +169,14 @@ block content
           //tr
             td!=index
             td
-              if item.schedule.date
-                pre=item.schedule.boxDate
-                p=item.schedule.venue.room
-                if item.schedule.categories
-                  each cat in item.schedule.categories
+              if item.date
+                pre=item.boxDate
+                p=item.venue.room
+                if item.categories
+                  each cat in item.categories
                     if cat.ancestor.slug == "status"
                       p=cat.name
-                //pre=item.schedule
+                //pre=item
               else
                 .badge.badge-danger NOT EVALUATED
             td

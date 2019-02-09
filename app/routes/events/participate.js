@@ -318,7 +318,7 @@ router.post('/', (req, res) => {
               topics:       req.session.call.topics,
               performance:  req.session.call.admitted[req.session.call.performance]._id,
               performance_categories:  req.session.call.admitted[req.session.call.performance].type,/*filter(function (el) {return el.ancestor.slug=="type";})[0]._id,*/
-              schedule:     {status : "5c38c57d9d426a9522c15ba5"},
+              status:       "5c38c57d9d426a9522c15ba5",
               reference:    req.user._id,
               subscriptions:[]
             };
@@ -355,7 +355,7 @@ router.post('/', (req, res) => {
                 });
               } else {
                 if (!data.program) data.program = [];
-                data.program.push({subscription_id: sub._id, schedule : {status : "5c38c57d9d426a9522c15ba5"}, performance : req.session.call.admitted[req.session.call.performance]._id});
+                data.program.push({subscription_id: sub._id, performance : req.session.call.admitted[req.session.call.performance]._id});
                 data.save((err) => {
                   if (err) {
                     msg = {e:[{name:'index', m:__('Unable to submit the proposal, please try again.')},{name:'index', m:err}]};
