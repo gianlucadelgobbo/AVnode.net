@@ -187,12 +187,6 @@ router.cancelSubscription = (req, res) => {
 }
 
 router.updateSubscription = (req, res) => {
-  console.log("updateSubscription");
-  console.log(req.body.orderID);
-  console.log(req.query);
-  console.log(req.params);
-  console.log(req.body);
-  console.log(req);
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 
   // 1b. Import the PayPal SDK client that was created in `Set up the Server SDK`.

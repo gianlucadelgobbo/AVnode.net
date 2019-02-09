@@ -312,7 +312,6 @@ router.get('/:event/acts', (req, res) => {
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
-            for(let pp in data.program) for(let ss in data.program[pp].subscriptions) console.log(data.program[pp].subscriptions[ss].daysFormatted);
             res.render('admindev/events/acts', {
               title: 'Events',
               data: data,
