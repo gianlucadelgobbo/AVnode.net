@@ -1,25 +1,23 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import LateralMenu from "../lateralMenu";
 import Form from "./form";
-import { connect } from "react-redux";
-import {
-  getDefaultModel,
-  getDefaultModelErrorMessage,
-  getDefaultModelIsFetching
-} from "../selectors";
-import { locales, locales_labels } from "../../../../../config/default.json";
-import { fetchModel, saveModel } from "./actions";
-import { showModal } from "../../modal/actions";
-import { bindActionCreators } from "redux";
+import {connect} from "react-redux";
+import {getDefaultModel, getDefaultModelErrorMessage, getDefaultModelIsFetching} from "../selectors";
+import {locales, locales_labels} from "../../../../../config/default.json";
+import {fetchModel, saveModel} from "./actions";
+import {showModal} from "../../modal/actions";
+import {bindActionCreators} from "redux";
 import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
-import { PROFILE_NAME, SHOW } from "./constants";
-import { MODAL_SAVED } from "../../modal/constants";
-import { sortByLanguage } from "../../common/form";
-import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import {PROFILE_NAME, SHOW} from "./constants";
+import {MODAL_SAVED} from "../../modal/constants";
+import {sortByLanguage} from "../../common/form";
+import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 import axios from "axios";
+// 1. LOADING BAR add actions generators
+import {hideLoading, showLoading} from 'react-redux-loading-bar'
 
 /*
  * Responsabilita'
@@ -30,7 +28,7 @@ import axios from "axios";
 
 class ProfilePublic extends Component {
   componentDidMount() {
-    const { fetchModel } = this.props;
+    const {fetchModel} = this.props;
     fetchModel();
   }
 
@@ -72,7 +70,7 @@ class ProfilePublic extends Component {
 
   // Modify model from API to create form initial values
   getInitialValues() {
-    const { model } = this.props;
+    const {model} = this.props;
 
     if (!model) {
       return {};
@@ -110,35 +108,35 @@ class ProfilePublic extends Component {
 
     // Social: Add one item if value empty
     v.social =
-      Array.isArray(model.social) && model.social.length > 0
-        ? model.social
-        : [{ url: "" }];
+        Array.isArray(model.social) && model.social.length > 0
+            ? model.social
+            : [{url: ""}];
 
     // Web: Add one item if value empty
     v.web =
-      Array.isArray(model.web) && model.web.length > 0
-        ? model.web
-        : [{ url: "" }];
+        Array.isArray(model.web) && model.web.length > 0
+            ? model.web
+            : [{url: ""}];
 
     // Addresses: Add one item if value empty
     v.addresses =
-      Array.isArray(model.addresses) && model.addresses.length > 0
-        ? model.addresses.map(a => ({
-            text: `${a.locality}, ${a.country}`
-          }))
-        : [{ text: "" }];
+        Array.isArray(model.addresses) && model.addresses.length > 0
+            ? model.addresses.map(a => ({
+              text: `${a.locality}, ${a.country}`
+            }))
+            : [{text: ""}];
 
     return v;
   }
 
   createLatLongToSave = address => {
-    return  geocodeByAddress(address).then(function(results) {
+    return geocodeByAddress(address).then(function (results) {
       return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
-    }).then(function([results, geometry]) {
+    }).then(function ([results, geometry]) {
       let loc = {};
       results[0].address_components.forEach(address_component => {
-        if (address_component.types.indexOf('country')!==-1) loc.country = address_component.long_name;
-        if (address_component.types.indexOf('locality')!==-1) loc.locality = address_component.long_name;
+        if (address_component.types.indexOf('country') !== -1) loc.country = address_component.long_name;
+        if (address_component.types.indexOf('locality') !== -1) loc.locality = address_component.long_name;
       });
       loc.formatted_address = results[0].formatted_address;
       loc.geometry = geometry;
@@ -147,24 +145,30 @@ class ProfilePublic extends Component {
   };
 
   onSubmit(values) {
-    const { showModal, saveModel, model } = this.props;
+    // 3. LOADING BAR get action from props
+    const {showModal, saveModel, model, showLoading, hideLoading} = this.props;
 
     let promises = [];
 
     const addrs = values.addresses;
 
+
+
     addrs.forEach(a => {
       promises.push(
-        this.createLatLongToSave(a.text)
-        .then(result => {
-          // add to a model
-          a.loc = result;
-        })
-        .catch(() => {
-          console.log("ciao da google!");
-        })
+          this.createLatLongToSave(a.text)
+              .then(result => {
+                // add to a model
+                a.loc = result;
+              })
+              .catch(() => {
+                console.log("ciao da google!");
+              })
       );
     });
+
+    // 4. LOADING BAR show loading bar
+    showLoading();
 
     return axios.all(promises).then(() => {
       //dispatch the action to save the model here
@@ -172,46 +176,50 @@ class ProfilePublic extends Component {
 
       modelToSave._id = model._id;
 
-      return saveModel(modelToSave).then(response => {
-        if (response.model && response.model._id) {
-          showModal({
-            type: MODAL_SAVED
+      return saveModel(modelToSave)
+          .then(response => {
+            if (response.model && response.model._id) {
+              showModal({
+                type: MODAL_SAVED
+              });
+            }
+
+            // 5. LOADING BAR hide loading bar
+            //hideLoading();
           });
-        }
-      });
     });
   }
 
   render() {
-    const { model = {}, showModal, isFetching, errorMessage } = this.props;
+    const {model = {}, showModal, isFetching, errorMessage} = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu />
-        </div>
-        <div className="col-md-10">
-          {/*<h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
+        <div className="row">
+          <div className="col-md-2">
+            <LateralMenu/>
+          </div>
+          <div className="col-md-10">
+            {/*<h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
                     <br/>*/}
 
-          {isFetching && !model && <Loading />}
+            {isFetching && !model && <Loading/>}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+            {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+            {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-          <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
+            <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/" + model.slug} show={SHOW}/>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            tabs={locales}
-            labels={locales_labels}
-            showModal={showModal}
-            //handleSelect={this.createLatLongToSave()}
-          />
+            <Form
+                initialValues={this.getInitialValues()}
+                onSubmit={this.onSubmit.bind(this)}
+                tabs={locales}
+                labels={locales_labels}
+                showModal={showModal}
+                //handleSelect={this.createLatLongToSave()}
+            />
+          </div>
         </div>
-      </div>
     );
   }
 }
@@ -224,18 +232,21 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      saveModel,
-      fetchModel,
-      showModal
-    },
-    dispatch
-  );
+    bindActionCreators(
+        {
+          saveModel,
+          fetchModel,
+          showModal,
+          // 2. LOADING BAR map actions to props
+          showLoading,
+          hideLoading
+        },
+        dispatch
+    );
 
 ProfilePublic = connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ProfilePublic);
 
 export default ProfilePublic;

@@ -59,10 +59,16 @@ import Galleries from "../galleries/index.js";
 import GalleriesPublic from "../galleries/public";
 import GalleriesGallery from "../galleries/gallery";
 
+import LoadingBar from 'react-redux-loading-bar'
+
+
 class MainApp extends Component {
   render() {
     return (
       <div>
+
+        <LoadingBar />
+
         <div className="jumbotron jumbotron-fluid">
           <div className="container">
             <h1 className="display-4">
