@@ -17,7 +17,7 @@ import {sortByLanguage} from "../../common/form";
 import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
 import axios from "axios";
 // 1. LOADING BAR add actions generators
-import {hideLoading, showLoading} from 'react-redux-loading-bar'
+import {hideLoading, showLoading} from 'react-redux-loading-bar';
 
 /*
  * Responsabilita'
@@ -185,7 +185,7 @@ class ProfilePublic extends Component {
             }
 
             // 5. LOADING BAR hide loading bar
-            //hideLoading();
+            hideLoading();
           });
     });
   }

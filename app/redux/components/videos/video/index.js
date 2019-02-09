@@ -18,6 +18,8 @@ import {
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
 import { VIDEOS_NAME, SHOW } from "./constants";
+// 1. LOADING BAR add actions generators
+import {hideLoading, showLoading} from 'react-redux-loading-bar';
 
 class VideosVideo extends Component {
   componentDidMount() {
@@ -90,10 +92,12 @@ class VideosVideo extends Component {
   }
 
   onSubmit(values) {
-    const { showModal, saveModel, model } = this.props;
+    const { showModal, saveModel, model, showLoading, hideLoading } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     modelToSave._id = model._id;
+    // 4. LOADING BAR show loading bar
+    showLoading();
 
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
@@ -101,6 +105,8 @@ class VideosVideo extends Component {
         showModal({
           type: MODAL_SAVED
         });
+        // 5. LOADING BAR hide loading bar
+        hideLoading();
       }
     });
   }
@@ -166,7 +172,10 @@ const mapDispatchToProps = dispatch =>
       saveModel,
       fetchModel,
       showModal,
-      uploadModel
+      uploadModel,
+      // 2. LOADING BAR map actions to props
+      showLoading,
+      hideLoading
     },
     dispatch
   );
