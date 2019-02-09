@@ -60,6 +60,8 @@ const programSchema = new Schema({
 const callSchema = new Schema({
   title: String,
   email: String,
+  emailname: String,
+  emailpassword: String,
   imgalt: String,
   imghead: String,
   permalink: String,

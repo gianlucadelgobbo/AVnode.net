@@ -20,19 +20,23 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.getSubscriptions = (req, res) => {
+  logger.debug("getSubscriptions");
   if (config.cpanel[req.params.sez] && req.params.id) {
     //const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const select = config.cpanel[req.params.sez].list.select;
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
-    const ids = [req.params.id].concat(req.user.crews);
-    const query = {"subscriptions.subscriber_id" :  req.params.id};
-
+    //const ids = [req.params.id].concat(req.user.crews);
+    const query = {"reference" :  req.params.id};
+    logger.debug(query);
+    logger.debug(select);
+    logger.debug(populate);
     Models["Program"]
     .find(query)
     .select(select)
     .populate(populate)
     .sort({createdAt:-1})
     .exec((err, data) => {
+      logger.debug(data);
       if (err) {
         res.status(500).json({ error: `${JSON.stringify(err)}` });
       } else {
@@ -41,6 +45,7 @@ router.getSubscriptions = (req, res) => {
         } else {
           res.render('admin/subscriptions', {
             title: 'Subscriptions',
+            paypal: true,
             is_admin: true,
             currentUrl: req.originalUrl,
             superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -54,8 +59,8 @@ router.getSubscriptions = (req, res) => {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
 }
-router.getList = (req, res) => {
-  if (config.cpanel[req.params.sez] && req.params.id) {
+
+router.getList = (req, res) => {  if (config.cpanel[req.params.sez] && req.params.id) {
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
     const ids = [req.params.id].concat(req.user.crews);

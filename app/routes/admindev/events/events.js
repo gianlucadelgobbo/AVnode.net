@@ -288,7 +288,7 @@ router.get('/:event/acts', (req, res) => {
     } else {
       const select = config.cpanel["subscriptions"].list.select;
       const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
-      const query = {"event": req.params.event};
+      let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
       logger.debug(query);
@@ -340,14 +340,16 @@ router.get('/:event/peoples', (req, res) => {
     } else {
       data.event = event;
       data.status = status;
+      const select = config.cpanel["subscriptions"].list.select;
+      const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
       logger.debug(query);
       Program.
       find(query).
-      //select({title: 1, organizationsettings: 1}).
-      populate(populate_program).
+      select(select).
+      populate(populate).
       exec((err, program) => {
 
         logger.debug(program);

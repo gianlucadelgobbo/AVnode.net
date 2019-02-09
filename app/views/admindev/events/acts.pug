@@ -80,14 +80,14 @@ block content
     tbody
       each item, index in data.program
         tr(id='sub'+item._id) 
-          td!=index
+          td!=(index+1)
           td
             form(action="")
               .border-bottom.pb-1.mb-1
                 h4=global.__('STATUS')
                 each status in data.status
                   .form-check.text-nowrap
-                    input.form-check-input(id='status'+status._id+item._id, name='status'+item._id, type='radio', value=status.id, checked=item.schedule.status._id.toString()==status._id.toString() ? "checked" : undefined)
+                    input.form-check-input.change-status(id='status'+status._id+item._id, data-id=item._id, data-status=status._id, name='status'+item._id, type='radio', value=status._id, checked=item.status._id.toString()==status._id.toString() ? "checked" : undefined)
                     label.form-check-label(for='status'+status._id+item._id)=status.name
               .border-bottom.pb-1.mb-1
                 h4=global.__('SCHEDULE')

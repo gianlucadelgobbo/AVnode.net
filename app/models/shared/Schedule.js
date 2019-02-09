@@ -15,8 +15,7 @@ const Schedule = new Schema({
   confirm: String,
   day: String,
   venue: Venue,
-  categories: [{ type: Schema.ObjectId, ref: 'Category' }],
-  status: { type: Schema.ObjectId, ref: 'Category' }
+  categories: [{ type: Schema.ObjectId, ref: 'Category' }]
 },{
   _id : false,
   toObject: {
