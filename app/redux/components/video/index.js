@@ -19,6 +19,9 @@ import { NO_VIDEO_TO_SHOW } from "../common/form/labels";
 import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
+// 1. LOADING BAR add actions generators
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
+
 class Video extends Component {
   componentDidMount() {
     const { fetchModel, id } = this.props;
@@ -51,14 +54,22 @@ class Video extends Component {
   }
 
   onSubmit(values) {
-    const { showModal, saveModel, model } = this.props;
+    // 3. LOADING BAR get action from props
+    const { showModal, saveModel, model,  showLoading, hideLoading } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     // Add auth user _id
     modelToSave._id = model._id;
 
+    // 4. LOADING BAR show loading bar
+    showLoading();
+
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(() => {
+
+      // 5. LOADING BAR hide loading bar
+      hideLoading();
+
       showModal({
         type: MODAL_SAVED
       });
@@ -196,7 +207,10 @@ const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      showModal
+      showModal,
+      // 2. LOADING BAR map actions to props
+      showLoading,
+      hideLoading
     },
     dispatch
   );
