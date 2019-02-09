@@ -79,7 +79,7 @@ class GalleriesGallery extends Component {
 
   uploadFile(files) {
     const { model, uploadModel, showModal } = this.props;
-    model.video = files;
+    model.galleries = files;
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
         showModal({
@@ -129,7 +129,12 @@ class GalleriesGallery extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={GALLERY_NAME} link={"/galleries/"+model.slug} show={SHOW} />
+            <TitleComponent
+              title={model.title}
+              type={GALLERY_NAME}
+              link={"/galleries/" + model.slug}
+              show={SHOW}
+            />
           )}
 
           <Form
@@ -140,7 +145,7 @@ class GalleriesGallery extends Component {
             tabs={locales}
             labels={locales_labels}
             uploadFile={this.uploadFile.bind(this)}
-            removeModel={removeModel} 
+            removeModel={removeModel}
           />
         </div>
       </div>

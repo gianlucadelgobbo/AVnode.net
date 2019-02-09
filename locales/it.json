@@ -76,5 +76,11 @@
 	"The database will be resetted more than once in the alpha phase, you could loose some data you insert": "The database will be resetted more than once in the alpha phase, you could loose some data you insert",
 	"Control panel is still under development, some features are still not fully working": "Control panel is still under development, some features are still not fully working",
 	"Please send any suggestion to:": "Please send any suggestion to:",
-	"I have read, continue": "I have read, continue"
+	"I have read, continue": "I have read, continue",
+	"404: Page not found": "404: Page not found",
+	"Control Panel": "Control Panel",
+	"We can't seem to find the page you're looking for.": "We can't seem to find the page you're looking for.",
+	"Here some useful links:": "Here some useful links:",
+	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts:",
+	"Please send any bug and suggestion to:": "Please send any bug and suggestion to:"
 }
