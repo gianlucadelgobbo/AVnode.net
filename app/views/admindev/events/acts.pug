@@ -167,8 +167,6 @@ block content
                     div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
             - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
             - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
-            - console.log(addresses)
-            - console.log(addressesaddresses)
             td
               !=item.subscription_id.reference.name+" "+item.subscription_id.reference.surname
               br
