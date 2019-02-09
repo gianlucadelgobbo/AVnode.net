@@ -80,18 +80,24 @@ class VideosVideo extends Component {
   }
 
   uploadFile(files) {
-    const { model, uploadModel, showModal } = this.props;
+    const { model, uploadModel, showModal, showLoading, hideLoading } = this.props;
     model.video = files;
+    // 4. LOADING BAR show loading bar
+    showLoading();
+
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
         showModal({
           type: MODAL_SAVED
         });
+        // 5. LOADING BAR hide loading bar
+        hideLoading();
       }
     });
   }
 
   onSubmit(values) {
+    // 3. LOADING BAR get action from props
     const { showModal, saveModel, model, showLoading, hideLoading } = this.props;
     const modelToSave = this.createModelToSave(values);
 
