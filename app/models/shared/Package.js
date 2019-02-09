@@ -10,6 +10,7 @@ const Package = new Schema({
   allow_options: { type: Boolean, default: false },
   options_name: String,
   options: String,
+  option: String,
   daily: { type: Boolean, default: false },
   start_date: Date,
   end_date: Date
