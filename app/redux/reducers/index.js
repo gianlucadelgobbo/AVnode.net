@@ -15,6 +15,7 @@ import playlists from "../components/playlists/reducers";
 import signup from "../components/signup/reducers";
 import videos from "../components/videos/reducers";
 import galleries from "../components/galleries/reducers";
+import { loadingBarReducer } from 'react-redux-loading-bar'
 
 const reducer = combineReducers({
   events,
@@ -31,7 +32,10 @@ const reducer = combineReducers({
   playlists,
   signup,
   videos,
-  galleries
+  galleries,
+
+  loadingBar: loadingBarReducer,
+
 });
 
 export default reducer;
