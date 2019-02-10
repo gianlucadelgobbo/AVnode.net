@@ -5,9 +5,14 @@ export const FORM_NAME = "VIDEOS.PUBLIC";
 
 export const SECTION = "VIDEOS";
 
-export const VIDEOS_NAME = (
+export const VIDEO_NAME = (
   <FormattedMessage
     id="videos.public.data"
     defaultMessage="VIDEO PUBLIC DATA"
   />
 );
+
+export const SHOW = <FormattedMessage
+                        id="show"
+                        defaultMessage="SHOW"
+                    />

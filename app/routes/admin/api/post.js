@@ -16,10 +16,10 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.postData = (req, res) => {
-  logger.debug('postData');
+  logger.debug('req.body');
   logger.debug(req.body);
-  logger.debug('req.params.sez');
-  logger.debug(req.params.sez);
+  logger.debug('req.params');
+  logger.debug(req.params);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
     let select = config.cpanel[req.params.sez].forms.new.select;
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
@@ -34,13 +34,16 @@ router.postData = (req, res) => {
     for (const item in selectaddon) {
       post[item] = selectaddon[item];
     }
-    logger.debug('postpostpostpostpostpost');
-    logger.debug(post);
     if (req.params.sez == "crews") {
       post.members = [req.user.id];
     } else {
       post.users = [req.user.id];
     }
+    if (req.params.ancestor && req.params.id) {
+      post[req.params.ancestor] = [req.params.id];
+    }
+    logger.debug('postpostpostpostpostpost');
+    logger.debug(post);
 
     Models[config.cpanel[req.params.sez].model]
     .create(post, (err, data) => {
@@ -75,7 +78,7 @@ router.postData = (req, res) => {
                           logger.debug(err);
                           res.status(400).json(err);
                         } else {
-                          logger.debug("data");
+                          logger.debug("save ancestor success");
                           logger.debug(data);
                           logger.debug(data);
                           res.json(data);                    
@@ -121,47 +124,6 @@ router.postData = (req, res) => {
   } else {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
-}
-
-router.addGallery = (req, res) => {
-  Models[req.params.model]
-  .findOne({_id: req.params.id/* , members:req.user.id */},'_id, galleries', (err, result) => {
-    if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
-    } else if (!result) {
-      res.status(404).json({
-        "message": "USER_NOT_ALLOWED_TO_EDIT",
-        "name": "MongoError",
-        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"USER_NOT_ALLOWED_TO_EDIT",
-          "name":"MongoError",
-          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-          "kind":"string",
-          "value":null,
-          "path":"id"
-        }
-      });
-    } else {
-      Models.Gallery
-      .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
-        if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
-        } else {
-          result.galleries.push(data._id);
-          result.save(function(err){
-            //res.json(result);
-            res.json(data);
-          });
-        }
-      });
-    }
-  });
 }
 
 router.cancelSubscription = (req, res) => {
@@ -291,47 +253,6 @@ router.updateSubscription = (req, res) => {
   }
 }
 
-router.addVideos = (req, res) => {
-  Models[req.params.model]
-  .findOne({_id: req.params.id/* , members:req.user.id */},'_id, videos', (err, result) => {
-    if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
-    } else if (!result) {
-      res.status(404).json({
-        "message": "USER_NOT_ALLOWED_TO_EDIT",
-        "name": "MongoError",
-        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"USER_NOT_ALLOWED_TO_EDIT",
-          "name":"MongoError",
-          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-          "kind":"string",
-          "value":null,
-          "path":"id"
-        }
-      });
-    } else {
-      Models.Video
-      .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
-        if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
-        } else {
-          result.videos.push(data._id);
-          result.save(function(err){
-            //res.json(result);
-            res.json(data);
-          });
-        }
-      });
-    }
-  });
-}
-
 router.updateSendy = function (req, res) {
   let err = [];
   /*let conta = 0;
@@ -413,7 +334,5 @@ router.updateSendy = function (req, res) {
     //logger.debug(mailinglists.join(','));  }
   //}
 }
-
-
 
 module.exports = router;

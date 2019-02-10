@@ -17,7 +17,7 @@ import {
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
-import { VIDEOS_NAME, SHOW } from "./constants";
+import { VIDEO_NAME, SHOW } from "./constants";
 import { removeModel } from "../users/actions";
 
 class VideosPublic extends Component {
@@ -130,7 +130,7 @@ class VideosPublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={VIDEOS_NAME} link={"/videos/"+model.slug} show={SHOW} />
+            <TitleComponent title={model.title} type={VIDEO_NAME} link={"/videos/"+model.slug} show={SHOW} />
           )}
 
           <Form

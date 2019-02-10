@@ -2763,7 +2763,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "videos", "match": { "is_public": true}, "select": "title image imageFormats", "model": "Video"}]
+          "populate": [{ "path": "videos", "select": "title media imageFormats", "model": "Video"}]
         },
         "bookings": {
           "components": {
