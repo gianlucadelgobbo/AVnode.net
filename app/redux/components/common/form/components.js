@@ -30,6 +30,7 @@ import { FormattedMessage } from "react-intl";
 import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 import { Player } from "video-react";
 import "video-react/dist/video-react.css";
+import LightBox from "../../lightboxGallery";
 
 export const autocompleteComponent = ({
   inputProps,
@@ -610,7 +611,7 @@ export const fieldWithLabel = ({
           //onClick={() => fields.unshift({})}
           onClick={() =>
             showModal({
-              type: "MODAL_ADD_USER_"+`${SECTION}`,
+              type: "MODAL_ADD_USER_" + `${SECTION}`,
               props: { _id }
             })
           }
@@ -1289,16 +1290,20 @@ export const renderDropzoneInput = field => {
           {files.map((file, i) => (
             <li className="mt-3 list-upload row" key={i}>
               <div className="col mt-2">
-                {/* getExtensionIcon(file.name) */} 
+                {/* getExtensionIcon(file.name) */}
                 {file.name}
-                <span className="file-size ml-2">({formatBytes(file.size)})</span>
+                <span className="file-size ml-2">
+                  ({formatBytes(file.size)})
+                </span>
               </div>
               <div className="pull-right mr-3">
                 {field.uploadButton && (
                   <button
                     type="button"
                     className="btn btn-success"
-                    onClick={() => {field.uploadFile(field.input.value);}}
+                    onClick={() => {
+                      field.uploadFile(field.input.value);
+                    }}
                   >
                     <i
                       className={"fa fa-upload"}
@@ -2304,14 +2309,10 @@ export const uploadComponent = ({
           </div>
           <div className="row">
             <div className="col-sm-6">
-              <div className="labelField">
-                Encoding in progress
-              </div>
+              <div className="labelField">Encoding in progress</div>
             </div>
             <div className="col-sm-6">
-              <div className="labelField">
-                Encoding in progress
-              </div>
+              <div className="labelField">Encoding in progress</div>
             </div>
           </div>
         </div>
@@ -2372,36 +2373,52 @@ export const listGallery = ({
       {/* if array of images */}
       <div className="row">
         <div className="col-sm-12">
-          <div className="labelField">
+          <div className="gallery-list labelField">
             <h4>Gallery</h4>
+            {media && Array.isArray(media) && media.length > 0 && (
+              <LightBox
+                images={media.map(x => x.imageFormats.large)}
+                Button={
+                  <Button bsStyle="primary" className="pull-right">
+                    <i
+                      className="fa fa-image"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    />
+                  </Button>
+                }
+              />
+            )}
           </div>
         </div>
       </div>
+
       {media && Array.isArray(media) && media.length > 0 && (
         <div className="row">
           {media.map((image, i) => (
             <div className="col-sm-3" key={i}>
-              <Image src={image.imageFormats.small} className="img-fluid" rounded />
+              <Image
+                src={image.imageFormats.small}
+                className="img-fluid"
+                rounded
+              />
               <div style={containerVideo}>
                 <div className="labelField">
                   <p>{image.title}</p>
                   <i
-                      onClick={() =>
-                        showModal({
-                          type: MODAL_REMOVE,
-                          props: {
-                            onRemove: () =>
-                              removeImage({id:image.slug})
-                          }
-                        })
-                      }
-                      className="fa fa-trash"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                    />
+                    onClick={() =>
+                      showModal({
+                        type: MODAL_REMOVE,
+                        props: {
+                          onRemove: () => removeImage({ id: image.slug })
+                        }
+                      })
+                    }
+                    className="fa fa-trash"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
                 </div>
-               
-
               </div>
             </div>
           ))}
@@ -2409,7 +2426,7 @@ export const listGallery = ({
       )}
     </div>
   );
-}
+};
 
 export const uploadGallery = ({
   fields,
@@ -2460,7 +2477,11 @@ export const uploadGallery = ({
         <div className="row">
           {media.map((image, i) => (
             <div className="col-sm-3" key={i}>
-              <Image src={image.imageFormats.small} className="img-fluid" rounded />
+              <Image
+                src={image.imageFormats.small}
+                className="img-fluid"
+                rounded
+              />
               <div style={containerVideo}>
                 <div className="labelField">
                   <p>{image.title}</p>
