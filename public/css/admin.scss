@@ -225,19 +225,18 @@ textarea#styled {
   color: #636c72;
   font-weight: 600;
 }
-.labelField p{
+.labelField p {
   margin-right: 10px;
   display: inline-block;
 }
-.labelField i{
+.labelField i {
   padding: 5px;
   font-size: 18px;
   float: right;
 }
-.labelField i:hover{
+.labelField i:hover {
   color: #d70000;
   cursor: pointer;
-
 }
 .help {
   color: #636c72;
@@ -245,9 +244,9 @@ textarea#styled {
   font-size: 80%;
   display: inline-block;
 }
-.signup-container .help, .signup-container .labelField{
-  color: #FFF;
-
+.signup-container .help,
+.signup-container .labelField {
+  color: #fff;
 }
 
 .labelFieldUpload {
@@ -621,5 +620,12 @@ div.ReactTags__selected a.ReactTags__remove {
     margin: 5px 0 0 0;
   }
 }
-
-
+.gallery-list {
+  h4 {
+    display: inline-block;
+  }
+  .image-preview {
+    padding-bottom: 10px;
+    float: right;
+  }
+}
