@@ -18,7 +18,7 @@ import {
   getModelErrorMessage
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
-import { fetchList as fetchCategories } from "../../categories/actions";
+import { fetchList as fetchPerformancesCategories } from "../../categories/actions";
 import { getList as getCategories } from "../../categories/selectors";
 import {
   populateMultiLanguageObject,
@@ -42,12 +42,12 @@ class PerformancePublic extends Component {
       match: {
         params: { _id }
       },
-      fetchCategories
+      fetchPerformancesCategories
     } = this.props;
     fetchModel({
       id: _id
     });
-    fetchCategories();
+    fetchPerformancesCategories();
     fetchPerformancePublic({ id: _id }).then(result => {
       this.setState({
         selectedType: result.type !== undefined || null ? result.type._id : "",
@@ -296,7 +296,7 @@ const mapDispatchToProps = dispatch =>
       fetchModel,
       showModal,
       removeModel,
-      fetchCategories
+      fetchPerformancesCategories
     },
     dispatch
   );

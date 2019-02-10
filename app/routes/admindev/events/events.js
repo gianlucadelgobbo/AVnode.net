@@ -112,7 +112,7 @@ const populate_program = [
       }
     ]
   },{ 
-        "path": "program.schedule.categories" , 
+        "path": "program.status" , 
         "select": "name slug",
         "model": "Category",
         "populate": [
@@ -290,7 +290,7 @@ router.get('/:event/acts', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
-      if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
       logger.debug(query);
       Program.
       find(query).
@@ -300,13 +300,15 @@ router.get('/:event/acts', (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          data.event = event;
+          data.event = program[0].event;
           data.status = status;
           data.program = JSON.parse(JSON.stringify(program));
           let admittedO = {};
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
+          console.log("admittedO");
           data.admitted = [];
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+          console.log(populate);
           data.rooms = [];
           for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room) data.rooms.push(data.event.schedule[a].venue.room);
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
@@ -343,7 +345,7 @@ router.get('/:event/peoples', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
-      if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
       logger.debug(query);
       Program.
       find(query).

@@ -11,7 +11,7 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound';
 import {getModel, getErrorMessage, getIsFetching} from "../selectors";
 import {MODAL_SAVED} from "../../modal/constants";
-import {fetchList as fetchCategories} from "../../categories/actions";
+import {fetchList as fetchPerformancesCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import {locales, locales_labels, main_season} from "../../../../../config/default";
 /*
@@ -25,9 +25,9 @@ class CrewOrganization extends Component {
 
 
     componentDidMount() {
-        const {fetchModel, fetchCategories, match: {params: {_id}}} = this.props;
+        const {fetchModel, fetchPerformancesCategories, match: {params: {_id}}} = this.props;
         fetchModel({id: _id});
-        fetchCategories();
+        fetchPerformancesCategories("performances", "type");
     }
 
 
@@ -141,7 +141,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchModel,
     saveModel,
     showModal,
-    fetchCategories
+    fetchPerformancesCategories
 }, dispatch);
 
 CrewOrganization = connect(

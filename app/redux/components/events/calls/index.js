@@ -11,7 +11,7 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels, locales_labels_short} from "../../../../../config/default";
-import {fetchList as fetchCategories} from "../../categories/actions";
+import {fetchList as fetchEventsCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import {createMultiLanguageInitialObject} from "../../common/form";
 import {FormattedMessage} from 'react-intl';
@@ -19,11 +19,11 @@ import {FormattedMessage} from 'react-intl';
 class EventCalls extends Component {
 
     componentDidMount() {
-        const {fetchModel, match: {params: {_id}}, fetchCategories} = this.props;
+        const {fetchModel, match: {params: {_id}}, fetchEventsCategories} = this.props;
         fetchModel({
             id: _id
         });
-        fetchCategories();
+        fetchEventsCategories();
     }
 
     // Convert form values to API model
@@ -143,7 +143,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     saveModel,
     fetchModel,
     showModal,
-    fetchCategories
+    fetchEventsCategories
 }, dispatch);
 
 EventCalls = connect(

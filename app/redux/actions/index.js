@@ -34,6 +34,38 @@ export const fetchList = ({ constants, selectors, request, schema }) => (
   );
 };
 
+export const fetchEventList = ({ constants, selectors, request, schema }) => (
+  dispatch,
+  getState
+) => {
+  if (selectors.getIsFetching(getState())) {
+    return;
+  }
+
+  dispatch({
+    type: constants.FETCH_LIST_REQUEST
+  });
+
+  return request().then(
+    response => {
+      dispatch({
+        type: constants.FETCH_LIST_SUCCESS,
+        response: normalize(response || [], schema)
+      });
+    },
+    error => {
+      const response = error.response || {};
+      const data = response.data || {};
+      const message = data.message || {};
+
+      dispatch({
+        type: constants.FETCH_LIST_ERROR,
+        errorMessage: message || "Something went wrong."
+      });
+    }
+  );
+};
+
 // ==== Modal
 
 export const fetchModel = ({

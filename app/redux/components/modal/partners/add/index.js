@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {fetchList as fetchCategories} from "../../../categories/actions";
+import {fetchList as fetchPerformancesCategories} from "../../../categories/actions";
 import {getList as getCategories} from "../../../categories/selectors";
 import Form from './form'
 import {MODAL_SAVED} from "../../constants";
@@ -9,8 +9,8 @@ import {MODAL_SAVED} from "../../constants";
 class AddPartnerModal extends Component {
 
     componentDidMount() {
-        const {fetchCategories} = this.props;
-        fetchCategories();
+        const {fetchPerformancesCategories} = this.props;
+        fetchPerformancesCategories("performances", "type");
     }
 
 
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    fetchCategories
+    fetchPerformancesCategories
 }, dispatch);
 
 AddPartnerModal = connect(

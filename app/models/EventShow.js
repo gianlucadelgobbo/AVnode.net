@@ -158,7 +158,7 @@ const eventSchema = new Schema({
       delete ret.abouts;
       delete ret.subtitles;
       delete ret.__v;
-      delete ret._id;
+      //delete ret._id;
       delete ret.program;
     }
   }

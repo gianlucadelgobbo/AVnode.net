@@ -25,10 +25,10 @@ block content
           label.mr-sm-3(for='not4') NOT
 
 
-      select.form-control.mr-sm-2(name='schedule.categories', style='max-width:100px')
+      select.form-control.mr-sm-2(name='status', style='max-width:100px')
         option(value='0') Status
         each stat in data.status
-          option(value=stat._id, selected=get["schedule.categories"]==stat._id ? "selected" : undefined)=stat.name
+          option(value=stat._id, selected=get["status"]==stat._id ? "selected" : undefined)=stat.name
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
         input.mr-sm-1#not0(type='checkbox', name='program.schedule.categoriesNOT', value='1', checked=get.fullinfo ? "checked" : undefinded)
         label.mr-sm-3(for='not0') NOT
@@ -176,8 +176,8 @@ block content
               if item.schedule.date
                 pre=item.schedule.boxDate
                 p=item.schedule.venue.room
-                if item.schedule.categories
-                  each cat in item.schedule.categories
+                if item.status
+                  each cat in item.status
                     if cat.ancestor.slug == "status"
                       p=cat.name
                 //pre=item.schedule

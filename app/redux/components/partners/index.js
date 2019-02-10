@@ -8,7 +8,7 @@ import ErrorMessage from '../errorMessage'
 import ItemNotFound from '../itemNotFound'
 import Form from './form'
 import {Button} from 'react-bootstrap';
-import {fetchList as fetchCategories} from "../partnerCategories/actions";
+import {fetchList as fetchPerformancesCategories} from "../partnerCategories/actions";
 import {getList as getCategories} from "../partnerCategories/selectors";
 
 class Partners extends Component {
@@ -38,9 +38,9 @@ class Partners extends Component {
     }
 
     componentDidMount() {
-        const {fetchModel, id, fetchCategories} = this.props;
+        const {fetchModel, id, fetchPerformancesCategories} = this.props;
         fetchModel({id});
-        fetchCategories()
+        fetchPerformancesCategories("performances", "type")
     }
 
     // Modify model from API to create form initial values
@@ -174,7 +174,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     showModal,
-    fetchCategories
+    fetchPerformancesCategories
 }, dispatch);
 
 Partners = connect(
