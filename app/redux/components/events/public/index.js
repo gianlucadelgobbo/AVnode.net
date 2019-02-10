@@ -13,7 +13,7 @@ import TitleComponent from "../../titleComponent";
 import {EVENT_NAME, SHOW} from "./constants";
 import {getModel, getModelErrorMessage, getModelIsFetching} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
-import {fetchList as fetchCategories} from "../../categories/actions";
+import {fetchEventList as fetchEventsCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import moment from "moment";
 import {populateMultiLanguageObject} from "../../common/form";
@@ -26,12 +26,12 @@ class EventPublic extends Component {
       match: {
         params: {_id}
       },
-      fetchCategories
+      fetchEventsCategories
     } = this.props;
     fetchModel({
       id: _id
     });
-    fetchCategories();
+    fetchEventsCategories();
   }
 
   // Convert form values to API model
@@ -264,7 +264,7 @@ const mapDispatchToProps = dispatch =>
           saveModel,
           fetchModel,
           showModal,
-          fetchCategories
+          fetchEventsCategories
         },
         dispatch
     );

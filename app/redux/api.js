@@ -847,7 +847,7 @@ export const fetchCountries = () => {
 
 // categories
 
-export const fetchCategories = () => {
+export const fetchPerformancesCategories = () => {
   return axios.get("/getcategories/performances/slug/type").then(result => {
     return result.data.children;
   });
@@ -861,6 +861,12 @@ export const fetchCategories = () => {
 
     fulfil(items);
   });*/
+};
+
+export const fetchEventsCategories = () => {
+  return axios.get("/getcategories/events/slug/event-type").then(result => {
+    return result.data.children;
+  });
 };
 
 export const fetchPartnerCategories = () => {

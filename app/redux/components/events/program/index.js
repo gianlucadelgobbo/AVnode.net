@@ -11,7 +11,7 @@ import ErrorMessage from '../../errorMessage'
 import ItemNotFound from '../../itemNotFound'
 import {getModel, getModelIsFetching, getModelErrorMessage} from "../selectors";
 import {locales, locales_labels} from "../../../../../config/default";
-import {fetchList as fetchCategories} from "../../categories/actions";
+import {fetchList as fetchEventsCategories} from "../../categories/actions";
 import {getList as getCategories} from "../../categories/selectors";
 import {FormattedMessage} from 'react-intl';
 import { EVENT_NAME, SHOW } from "./constants";
@@ -20,11 +20,11 @@ import TitleComponent from "../../titleComponent";
 class EventProgram extends Component {
 
     componentDidMount() {
-        const {fetchModel, match: {params: {_id}}, fetchCategories} = this.props;
+        const {fetchModel, match: {params: {_id}}, fetchEventsCategories} = this.props;
         fetchModel({
             id: _id
         });
-        fetchCategories();
+        fetchEventsCategories();
 
     }
 
@@ -117,7 +117,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     saveModel,
     fetchModel,
     showModal,
-    fetchCategories
+    fetchEventsCategories
 }, dispatch);
 
 EventProgram = connect(
