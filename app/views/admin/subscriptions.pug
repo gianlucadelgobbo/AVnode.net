@@ -164,7 +164,10 @@ block teaser
                               - var total = 0;
                               - var subscribers = []
                               - var itemdescriptions = []
-                              - itemdescriptions[index] = item.event.title +" " + global.__('subscription to') + " " + item.event.organizationsettings.call.calls[item.call].title +" " + global.__('with') + " " + item.performance.title +"\\n" + global.__('Peoples:')
+                              - itemdescriptions[index] = global.__('Subscription to') + " " + item.event.title 
+                              - //itemdescriptions[index]+= " call " + item.event.organizationsettings.call.calls[item.call].title
+                              - itemdescriptions[index]+= " " + global.__('with') + " " + item.performance.title
+                              - //itemdescriptions[index]+= "\\n" + global.__('Peoples:')
                               each subscription in item.subscriptions
                                 if subscription.subscriber_id && subscribers.indexOf(subscription.subscriber_id)==-1
                                   - subscribers.push(subscription.subscriber_id)
