@@ -9,7 +9,7 @@ import {
 import { showModal, hideModal } from "../../../modal/actions";
 import { bindActionCreators } from "redux";
 import { fetchModel, saveModel } from "../actions";
-import { loadSuggestion } from "../../../../api";
+import { loadSuggestion, fetchCrewMembers } from "../../../../api";
 import ErrorMessage from "../../../errorMessage";
 
 const getSuggestionValue = suggestion => suggestion.stagename;
@@ -31,10 +31,17 @@ class AddCrewMember extends Component {
   }
 
   onChange = (event, { newValue }) => {
-    this.setState({
-      value: newValue,
-      idmember: event.target.id
-    });
+    if (event.target.children.length !== 0) {
+      this.setState({
+        value: newValue,
+        idmember: event.target.children[0].id
+      });
+    } else {
+      this.setState({
+        value: newValue,
+        idmember: event.target.id
+      });
+    }
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -64,12 +71,11 @@ class AddCrewMember extends Component {
 
   onSubmitForm(idmember) {
     const { id } = this.props;
-    const { fetchModel, saveModel, hideModal } = this.props;
+    const { saveModel, hideModal } = this.props;
     const modelToSave = this.createModelToSave(idmember, id);
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model._id) {
-        fetchModel({ id: id });
-        hideModal();
+        fetchCrewMembers({ id: id }).then(response => hideModal());
       }
     });
   }
