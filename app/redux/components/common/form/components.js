@@ -1215,7 +1215,6 @@ export const fieldInColumn = ({
 
 export const renderDropzoneInput = field => {
   let files = field.input.value;
-  let spinner = false;
   let myClassName = field.className === undefined ? "" : field.className;
   const getExtensionIcon = (name = "") => {
     let extension =
@@ -1243,12 +1242,6 @@ export const renderDropzoneInput = field => {
         );
     }
   };
-
-    function showSpinner() {
-      console.log(spinner);
-      spinner = !spinner;
-      console.log(spinner);
-    };
 
   function formatBytes(bytes, decimals) {
     if (bytes === 0) return "0 Bytes";
@@ -1291,55 +1284,52 @@ export const renderDropzoneInput = field => {
           <FormattedMessage id={field.meta.error} />
         </span>
       )}
-      {console.log(files)}
       {files && Array.isArray(files) && (
-        <ul className="list-unstyled attached-file">
+        <ul className="list-group attached-file">
           {files.map((file, i) => (
-            <li className="list-upload" key={i}>
-              {getExtensionIcon(file.name)} {file.name}
-              <span className="file-size">({formatBytes(file.size)})</span>
-              {field.uploadButton && (
+            <li className="mt-3 list-upload row" key={i}>
+              <div className="col mt-2">
+                {/* getExtensionIcon(file.name) */} 
+                {file.name}
+                <span className="file-size ml-2">({formatBytes(file.size)})</span>
+              </div>
+              <div className="pull-right mr-3">
+                {field.uploadButton && (
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={() => {field.uploadFile(field.input.value);}}
+                  >
+                    <i
+                      className={"fa fa-upload"}
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    />
+                  </button>
+                )}
                 <button
                   type="button"
-                  className="btn btn-success"
-                  onClick={() => {field.uploadFile(field.input.value); showSpinner();}}
+                  className="btn btn-danger ml-2 clear-attachment"
+                  onClick={() => {
+                    field.showModal({
+                      type: MODAL_REMOVE,
+                      props: {
+                        onRemove: () => {
+                          let result = [...files];
+                          result.splice(i, 1);
+                          field.input.onChange(result);
+                        }
+                      }
+                    });
+                  }}
                 >
                   <i
-                    className={!spinner ? "fa fa-upload" : "fa fa-upload d-none"}
+                    className="fa fa-trash"
                     data-toggle="tooltip"
                     data-placement="top"
                   />
-                  <span className={spinner ? "myspinner" : "myspinner d-none"}> {/* d-none d-inline */}
-                    <i
-                      className="fa fa-refresh fa-spin fa-fw"
-                    >
-                    </i>
-                    <span>Uploading...</span>
-                  </span>
                 </button>
-              )}
-              <button
-                type="button"
-                className="btn btn-danger clear-attachment"
-                onClick={() => {
-                  field.showModal({
-                    type: MODAL_REMOVE,
-                    props: {
-                      onRemove: () => {
-                        let result = [...files];
-                        result.splice(i, 1);
-                        field.input.onChange(result);
-                      }
-                    }
-                  });
-                }}
-              >
-                <i
-                  className="fa fa-trash"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                />
-              </button>
+              </div>
             </li>
           ))}
         </ul>
