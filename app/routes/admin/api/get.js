@@ -60,7 +60,8 @@ router.getSubscriptions = (req, res) => {
   }
 }
 
-router.getList = (req, res) => {  if (config.cpanel[req.params.sez] && req.params.id) {
+router.getList = (req, res) => {
+  if (config.cpanel[req.params.sez] && req.params.id) {
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
     const ids = [req.params.id].concat(req.user.crews);
@@ -126,6 +127,7 @@ router.getData = (req, res) => {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
 }
+
 router.getOwnresIds = (req, res,cb) => {
   Models.User
   .findById(req.params.id)
@@ -135,6 +137,7 @@ router.getOwnresIds = (req, res,cb) => {
     cb(data.crews);
   });
 }
+
 router.getSlug = (req, res) => {
   Models[config.cpanel[req.params.sez].model]
   .findOne({ slug : req.params.slug },'_id', (err, user) => {
@@ -1174,8 +1177,92 @@ router.sendEmailVericaition = (req, res) => {
     }
   });
 }
+
+
 /* 
-          let mailinglists = [];
+router.addGallery = (req, res) => {
+  Models[req.params.model]
+  .findOne({_id: req.params.id},'_id, galleries', (err, result) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!result) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      Models.Gallery
+      .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          result.galleries.push(data._id);
+          result.save(function(err){
+            //res.json(result);
+            res.json(data);
+          });
+        }
+      });
+    }
+  });
+}
+
+router.addVideos = (req, res) => {
+  Models[req.params.model]
+  .findOne({_id: req.params.id},'_id, videos', (err, result) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!result) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      Models.Video
+      .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          result.videos.push(data._id);
+          result.save(function(err){
+            //res.json(result);
+            res.json(data);
+          });
+        }
+      });
+    }
+  });
+}
+
+  let mailinglists = [];
 
           for (mailinglist in user.emails[item].mailinglists) if (user.emails[item].mailinglists[mailinglist]) mailinglists.push(mailinglist);
 

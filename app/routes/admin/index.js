@@ -19,27 +19,11 @@ router.get('/api/profile/public/slugs/:slug', (req, res)=>{
   req.params.sez = 'profile';
   get.getSlug(req, res);
 });
+
 router.get('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   get.getData(req, res);
-});
-router.put('/api/profile/:form/', (req, res) => {
-  req.params.id = req.user.id;
-  req.params.sez = 'profile';
-  if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
-    req.params.comp = req.params.form;
-    upload.uploader(req, res, (err, data) => {
-      if (err) {
-        res.status(500).json(err);
-      } else {
-        for (const item in data) req.body[item] = data[item];
-        put.putData(req, res);
-      }
-    });
-  } else {
-    put.putData(req, res);
-  }
 });
 
 router.get('/api/profile/emails/verify/:email', (req, res)=>{
@@ -52,10 +36,6 @@ router.get('/api/profile/emails/email/:email', (req, res)=>{
   get.getEmail(req, res);
 });
 
-router.post('/api/profile/emails/updateSendy', (req, res)=>{
-  post.updateSendy(req, res);
-});
-
 router.get('/api/:sez/new/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
@@ -66,58 +46,6 @@ router.get('/api/:sez/:id/public/slugs/:slug', (req, res)=>{
 
 router.get('/api/:sez/:id/:form/', (req, res) => {
   get.getData(req, res);
-});
-
-router.put('/api/:sez/:id/:form/', (req, res) => {
-  if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
-    req.params.comp = ['footage/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
-    upload.uploader(req, res, (err, data) => {
-      if (err) {
-        res.status(500).json(err);
-      } else {
-        for (const item in data) req.body[item] = data[item];
-        put.putData(req, res);
-      }
-    });
-  } else {
-    put.putData(req, res);
-  }
-});
-
-router.post('/api/:sez/new/', (req, res) => {
-  post.postData(req, res);
-});
-
-router.post('/api/:ancestor/:id/:sez/', (req, res) => {
-  post.postData(req, res);
-});
-
-router.post('/api/performances/:id/videos', (req, res)=>{
-  req.params.model = 'Performance';
-  get.addVideo(req, res);
-});
-
-router.post('/api/performances/:id/galleries', (req, res)=>{
-  req.params.model = 'Performance';
-  get.addGallery(req, res);
-});
-
-router.post('/api/events/:id/videos', (req, res)=>{
-  req.params.model = 'Event';
-  get.addVideo(req, res);
-});
-
-router.post('/api/events/:id/galleries', (req, res)=>{
-  req.params.model = 'Event';
-  get.addGallery(req, res);
-});
-
-router.post('/api/subscriptionupdate', (req, res)=>{
-  post.updateSubscription(req, res);
-});
-
-router.post('/api/cancelsubscription', (req, res)=>{
-  post.cancelSubscription(req, res);
 });
 
 router.get('/api/countries', (req, res) => {
@@ -177,9 +105,6 @@ router.get('/api/:sez', (req, res) => {
   get.getList(req, res);
 });
 
-
-
-
 router.get('/api/*', (req, res) => {
   res.status(404).json({ error: `API_NOT_FOUND` });
 });
@@ -199,6 +124,81 @@ router.get('/*', (req, res) => {
     title: __('Your Account'),
     is_admin: true
   });
+});
+
+router.post('/api/profile/emails/updateSendy', (req, res)=>{
+  post.updateSendy(req, res);
+});
+
+router.post('/api/:sez/new/', (req, res) => {
+  post.postData(req, res);
+});
+
+router.post('/api/:ancestor/:id/:sez/', (req, res) => {
+  post.postData(req, res);
+});
+
+/* router.post('/api/performances/:id/videos', (req, res)=>{
+  console.log('/api/performances/:id/videos');
+  req.params.model = 'Performance';
+  get.addVideo(req, res);
+});
+
+router.post('/api/performances/:id/galleries', (req, res)=>{
+  req.params.model = 'Performance';
+  get.addGallery(req, res);
+});
+
+router.post('/api/events/:id/videos', (req, res)=>{
+  req.params.model = 'Event';
+  get.addVideo(req, res);
+});
+
+router.post('/api/events/:id/galleries', (req, res)=>{
+  req.params.model = 'Event';
+  get.addGallery(req, res);
+}); */
+
+router.post('/api/subscriptionupdate', (req, res)=>{
+  post.updateSubscription(req, res);
+});
+
+router.post('/api/cancelsubscription', (req, res)=>{
+  post.cancelSubscription(req, res);
+});
+
+router.put('/api/profile/:form/', (req, res) => {
+  req.params.id = req.user.id;
+  req.params.sez = 'profile';
+  if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+    req.params.comp = req.params.form;
+    upload.uploader(req, res, (err, data) => {
+      if (err) {
+        res.status(500).json(err);
+      } else {
+        for (const item in data) req.body[item] = data[item];
+        put.putData(req, res);
+      }
+    });
+  } else {
+    put.putData(req, res);
+  }
+});
+
+router.put('/api/:sez/:id/:form/', (req, res) => {
+  if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+    req.params.comp = ['footage/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
+    upload.uploader(req, res, (err, data) => {
+      if (err) {
+        res.status(500).json(err);
+      } else {
+        for (const item in data) req.body[item] = data[item];
+        put.putData(req, res);
+      }
+    });
+  } else {
+    put.putData(req, res);
+  }
 });
 
 module.exports = router;

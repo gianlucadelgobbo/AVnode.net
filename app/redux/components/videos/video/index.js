@@ -17,7 +17,7 @@ import {
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
-import { VIDEOS_NAME, SHOW } from "./constants";
+import { VIDEO_NAME, SHOW } from "./constants";
 // 1. LOADING BAR add actions generators
 import {hideLoading, showLoading} from 'react-redux-loading-bar';
 
@@ -140,7 +140,7 @@ class VideosVideo extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={VIDEOS_NAME} link={"/videos/"+model.slug} show={SHOW} />
+            <TitleComponent title={model.title} type={VIDEO_NAME} link={"/videos/"+model.slug} show={SHOW} />
           )}
 
           <Form
