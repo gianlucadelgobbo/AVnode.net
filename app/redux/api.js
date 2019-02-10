@@ -554,7 +554,6 @@ export const fetchVideosVideo = ({ id }) => {
   });
 };
 
-
 export const saveVideosMedia = model => {
   // convert image to Form Data
   let formBox = new FormData();
@@ -563,13 +562,10 @@ export const saveVideosMedia = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios
-    .put(`videos/${model.id}/video`, formBox, config)
-    .then(result => {
-      return result.data;
-    });
+  return axios.put(`videos/${model.id}/video`, formBox, config).then(result => {
+    return result.data;
+  });
 };
-
 
 // ============ GALLERIES
 
@@ -613,7 +609,7 @@ export const removeGalleriesPublic = model => {
 export const saveGalleriesMedia = model => {
   // convert image to Form Data
   let formBox = new FormData();
-  formBox.append("image", model);
+  formBox.append("image", model.galleries[0]);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
@@ -627,7 +623,7 @@ export const saveGalleriesMedia = model => {
 
 export const removeGalleriesMedia = img => {
   console.log(img);
-}
+};
 
 export const fetchSlugNewGalleries = slug => {
   return axios.get(`galleries/new/slugs/${slug}`).then(result => {
@@ -680,7 +676,7 @@ export const removeVideoUsers = model =>
     .then(result => {
       return result.data;
     });
-  
+
 export const saveVideoUsers = model =>
   axios
     .get(`videos/${model._id}/users/add/${model.idusers}`, model)
@@ -694,7 +690,7 @@ export const removeGalleriesUsers = model =>
     .then(result => {
       return result.data;
     });
-  
+
 export const saveGalleriesUsers = model =>
   axios
     .get(`galleries/${model._id}/users/add/${model.idusers}`, model)
