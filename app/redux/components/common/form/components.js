@@ -9,6 +9,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Dropzone from "react-dropzone";
+import { NavLink } from 'react-router-dom';
+
 import {
   MODAL_ADD_USER_PERFORMANCE,
   MODAL_REMOVE
@@ -2363,6 +2365,7 @@ export const listGallery = ({
   placeholder,
   showModal,
   media,
+  _id,
   onRemove,
   removeImage
 }) => {
@@ -2372,24 +2375,29 @@ export const listGallery = ({
     <div>
       {/* if array of images */}
       <div className="row">
-        <div className="col-sm-12">
+        <div className="col-sm-9">
           <div className="gallery-list labelField">
             <h4>Gallery</h4>
-            {media && Array.isArray(media) && media.length > 0 && (
-              <LightBox
-                images={media.map(x => x.imageFormats.large)}
-                Button={
-                  <Button bsStyle="primary" className="pull-right">
-                    <i
-                      className="fa fa-image"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                    />
-                  </Button>
-                }
-              />
-            )}
           </div>
+        </div>
+        <div className="col-sm-3 text-right">
+          <NavLink to={"/admin/galleries/"+_id+"/gallery"} className="btn btn-success btn-inline mr-3">
+            <FormattedMessage id="galleryInGalleries" defaultMessage="Add images" />
+          </NavLink>);
+          {media && Array.isArray(media) && media.length > 0 && (
+            <LightBox
+              images={media.map(x => x.imageFormats.large)}
+              Button={
+                <Button bsStyle="primary" className="btn-inline">
+                  <i
+                    className="fa fa-image"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </Button>
+              }
+            />
+          )}
         </div>
       </div>
 

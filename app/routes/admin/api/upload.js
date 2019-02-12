@@ -170,20 +170,8 @@ upload.uploader = (req, res, done) => {
                   done({ errors: req.files }, null);
                 } else {
                   let put = {};
-                  if (req.files[options.fields.name].length == 1) {
-                    put[options.fields.name] = {
-                      file: req.files[options.fields.name][0].path.replace(global.appRoot,""),
-                      originalname: req.files[options.fields.name][0].originalname,
-                      encoding: req.files[options.fields.name][0].encoding,
-                      mimetype: req.files[options.fields.name][0].mimetype,
-                      folder: req.files[options.fields.name][0].destination,
-                      filename: req.files[options.fields.name][0].filename,
-                      size: req.files[options.fields.name][0].size,
-                      width: req.files[options.fields.name][0].width,
-                      height: req.files[options.fields.name][0].height
-                    };
-                  } else {
-                    put[options.fields.name] = [];
+                  if (['galleries/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+                    put.medias = [];
                     for (let a = 0; a < req.files[options.fields.name].length; a++) {
                       const ins = {
                         file: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
@@ -196,7 +184,37 @@ upload.uploader = (req, res, done) => {
                         width: req.files[options.fields.name][a].width,
                         height: req.files[options.fields.name][a].height
                       };
-                      put[options.fields.name].push(ins);
+                      put.medias.push(ins);
+                    }
+                  } else {
+                    if (req.files[options.fields.name].length == 1) {
+                      put[options.fields.name] = {
+                        file: req.files[options.fields.name][0].path.replace(global.appRoot,""),
+                        originalname: req.files[options.fields.name][0].originalname,
+                        encoding: req.files[options.fields.name][0].encoding,
+                        mimetype: req.files[options.fields.name][0].mimetype,
+                        folder: req.files[options.fields.name][0].destination,
+                        filename: req.files[options.fields.name][0].filename,
+                        size: req.files[options.fields.name][0].size,
+                        width: req.files[options.fields.name][0].width,
+                        height: req.files[options.fields.name][0].height
+                      };
+                    } else {
+                      put[options.fields.name] = [];
+                      for (let a = 0; a < req.files[options.fields.name].length; a++) {
+                        const ins = {
+                          file: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                          originalname: req.files[options.fields.name][a].originalname,
+                          encoding: req.files[options.fields.name][a].encoding,
+                          mimetype: req.files[options.fields.name][a].mimetype,
+                          folder: req.files[options.fields.name][a].destination,
+                          filename: req.files[options.fields.name][a].filename,
+                          size: req.files[options.fields.name][a].size,
+                          width: req.files[options.fields.name][a].width,
+                          height: req.files[options.fields.name][a].height
+                        };
+                        put[options.fields.name].push(ins);
+                      }
                     }
                   }
                   logger.debug("SALVAAAAAAAAA");

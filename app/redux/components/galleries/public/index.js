@@ -131,7 +131,7 @@ class GalleriesPublic extends Component {
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage && !isFetching && model && (
+          {model && (
             <TitleComponent title={model.title} type={GALLERIES_NAME} link={"/galleries/"+model.slug} show={SHOW} />
           )}
 

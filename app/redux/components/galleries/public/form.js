@@ -69,6 +69,7 @@ class GalleriesPublicForm extends Component {
 
         <Field
           name="galleries"
+          _id={_id}
           component={listGallery}
           media={media}   
           showModal={showModal} 
