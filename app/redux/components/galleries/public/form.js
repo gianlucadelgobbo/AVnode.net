@@ -73,7 +73,8 @@ class GalleriesPublicForm extends Component {
           component={listGallery}
           media={media}   
           showModal={showModal} 
-          removeImage={removeImage}  
+          removeImage={removeImage}
+          model={model}
         />
 
         <FieldArray

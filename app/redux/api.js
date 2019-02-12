@@ -606,6 +606,12 @@ export const removeGalleriesPublic = model => {
   });
 };
 
+export const fetchGalleriesMedia = ({ id }) => {
+  return axios.get(`galleries/${id}/medias`).then(result => {
+    return result.data;
+  });
+};
+
 export const saveGalleriesMedia = model => {
   // convert image to Form Data
   let formBox = new FormData();
@@ -615,14 +621,16 @@ export const saveGalleriesMedia = model => {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
   return axios
-    .put(`galleries/${model.id}/public`, formBox, config)
+    .put(`galleries/${model.id}/medias`, formBox, config)
     .then(result => {
       return result.data;
     });
 };
 
-export const removeGalleriesMedia = img => {
-  console.log(img);
+export const removeGalleriesMedia = data => {
+  return axios.get(`galleries/${data._id}/mediaremove${data.index}`, data).then(result => {
+    return result.data;
+  });
 };
 
 export const fetchSlugNewGalleries = slug => {

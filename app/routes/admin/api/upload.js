@@ -170,7 +170,9 @@ upload.uploader = (req, res, done) => {
                   done({ errors: req.files }, null);
                 } else {
                   let put = {};
-                  if (['galleries/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+                  console.log('galleries/medias galleries/medias galleries/medias galleries/medias');
+                  console.log(req.params.sez+'/'+req.params.form);
+                  if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
                     put.medias = [];
                     for (let a = 0; a < req.files[options.fields.name].length; a++) {
                       const ins = {

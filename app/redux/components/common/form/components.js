@@ -2367,7 +2367,8 @@ export const listGallery = ({
   media,
   _id,
   onRemove,
-  removeImage
+  removeImage,
+  model
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
@@ -2418,7 +2419,7 @@ export const listGallery = ({
                       showModal({
                         type: MODAL_REMOVE,
                         props: {
-                          onRemove: () => removeImage({ id: image.slug })
+                          onRemove: () => removeImage({ id: model.id, index:i })
                         }
                       })
                     }

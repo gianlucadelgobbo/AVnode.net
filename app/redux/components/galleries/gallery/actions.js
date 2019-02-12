@@ -12,7 +12,7 @@ export const fetchModel = ({ id } = {}) =>
   generateFetchModel({
     selectors,
     constants,
-    request: api.fetchVideosVideo,
+    request: api.fetchGalleriesMedia,
     schema: galleries,
     id
   });
@@ -26,11 +26,11 @@ export const fetchModel = ({ id } = {}) =>
     model
   });
 
-  export const removeImage = model =>
+  export const removeImage = data =>
   generateRemoveModel({
     selectors,
     constants,
     request: api.removeGalleriesMedia,
     schema: galleries,
-    model
+    data
   });
