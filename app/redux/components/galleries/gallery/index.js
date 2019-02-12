@@ -129,9 +129,9 @@ class GalleriesGallery extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {model && (
-            <TitleComponent title={model.title} type={GALLERIES_NAME} link={"/galleries/"+model.slug} show={SHOW} />
+            <TitleComponent title={model.title} type={GALLERY_NAME} link={"/galleries/"+model.slug} show={SHOW} />
           )}
-          
+
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}

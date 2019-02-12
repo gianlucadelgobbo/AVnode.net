@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 
 export const FORM_NAME = "GALLERIES.PUBLIC";
 export const SECTION = "GALLERIES";
-export const GALLERIES_NAME = (
+export const GALLERY_NAME = (
   <FormattedMessage
     id="galleries.public.data"
     defaultMessage="GALLERY PUBLIC DATA"
