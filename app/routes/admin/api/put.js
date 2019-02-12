@@ -36,7 +36,11 @@ router.putData = (req, res) => {
           logger.debug(select);
           for (const item in select) if(item in req.body) {
             logger.debug(item);
-            put[item] = req.body[item];
+            if (item == "medias" && data[item] && data[item].length) {
+              put[item] = data[item].concat(req.body[item]);
+            } else {
+              put[item] = req.body[item];
+            }
           }
           logger.debug('putputputputputput');
           logger.debug(put);

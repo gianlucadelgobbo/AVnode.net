@@ -43,7 +43,7 @@ export default class LightboxGallery extends Component {
         }
 
         return (
-            <div className="image-preview">
+            <span className="image-preview">
                 <span onClick={() => this.setState({isOpen: true})}>
                     {Trigger}
                 </span>
@@ -62,7 +62,7 @@ export default class LightboxGallery extends Component {
                     })}
                 />
                 }
-            </div>
+            </span>
         );
     }
 }

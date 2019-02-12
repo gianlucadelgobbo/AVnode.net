@@ -14,7 +14,7 @@ const items = [
   {
     href: "/admin/galleries/:_id/gallery",
     label: (
-      <FormattedMessage id="galleryInGalleries" defaultMessage="Gallery" />
+      <FormattedMessage id="galleryInGalleries" defaultMessage="Add images" />
     )
   }
 ];
