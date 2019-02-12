@@ -2384,7 +2384,7 @@ export const listGallery = ({
         <div className="col-sm-3 text-right">
           <NavLink to={"/admin/galleries/"+_id+"/gallery"} className="btn btn-success btn-inline mr-3">
             <FormattedMessage id="galleryInGalleries" defaultMessage="Add images" />
-          </NavLink>);
+          </NavLink>
           {media && Array.isArray(media) && media.length > 0 && (
             <LightBox
               images={media.map(x => x.imageFormats.large)}
