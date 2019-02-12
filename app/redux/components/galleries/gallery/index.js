@@ -19,6 +19,9 @@ import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
 import { GALLERY_NAME, SHOW } from "./constants";
 
+// 1. LOADING BAR add actions generators
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
+
 class GalleriesGallery extends Component {
   componentDidMount() {
     const {
@@ -90,14 +93,20 @@ class GalleriesGallery extends Component {
   }
 
   onSubmit(values) {
-    const { showModal, saveModel, model } = this.props;
+    // 3. LOADING BAR get action from props
+    const { showModal, saveModel, model,  showLoading, hideLoading } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     modelToSave._id = model._id;
 
+    // 4. LOADING BAR show loading bar
+    showLoading();
+
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model._id) {
+        // 5. LOADING BAR hide loading bar
+        hideLoading();
         showModal({
           type: MODAL_SAVED
         });
@@ -169,7 +178,10 @@ const mapDispatchToProps = dispatch =>
       fetchModel,
       showModal,
       uploadModel,
-      removeModel
+      removeModel,
+      // 2. LOADING BAR map actions to props
+      showLoading,
+      hideLoading
     },
     dispatch
   );
