@@ -2149,6 +2149,78 @@
           "selectaddon": {
           },
           "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}, { "path": "categories" , "select": "name" }]
+        },
+        "medias": {
+          "components": {
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/galleries_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1280,
+                "minheight": 720,
+                "sizes": {
+                  "small": {
+                    "w": 400,
+                    "h": 225,
+                    "folder": "400x225",
+                    "default": "/images/default-item.svg"
+                  },
+                  "large": {
+                    "w": 1140,
+                    "h": 641,
+                    "folder": "1140x641",
+                    "default": "/images/default-item.svg"
+                  }
+                }
+              },
+              "comp": "list_and_add_and_upload",
+              "list_fields": [
+                "Picture name",
+                "users",
+                "stats",
+                "slug"
+              ],
+              "list_actions": [
+                "add",
+                "upload",
+                "remove",
+                "sort",
+                "view_sort"
+              ],
+              "add_form_search": [
+                "Picture name"
+              ],
+              "view_sort_modes": [
+                "Picture name",
+                "category"
+              ],
+              "rel_api": "/admin/api/...",
+              "label": "Medias",
+              "validators": {
+                "Confirm": {},
+                "Upload": {
+                  "Mime": {},
+                  "Weight": {},
+                  "Size": {}
+                }
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "title": 1,
+            "users": 1,
+            "medias": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [{ "path": "users", "select": "stagename image imageFormats", "model": "User"}]
         }
       },
       "list": {
