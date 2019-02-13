@@ -83,11 +83,15 @@ class GalleriesGallery extends Component {
   uploadFile(files) {
     const { model, uploadModel, showModal } = this.props;
     model.galleries = files;
+    // 4. LOADING BAR show loading bar
+    showLoading();
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
         showModal({
           type: MODAL_SAVED
         });
+        // 5. LOADING BAR hide loading bar
+        hideLoading();
       }
     });
   }
