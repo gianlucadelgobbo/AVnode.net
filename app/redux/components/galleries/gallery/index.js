@@ -20,7 +20,7 @@ import { populateMultiLanguageObject } from "../../common/form";
 import { GALLERY_NAME, SHOW } from "./constants";
 
 // 1. LOADING BAR add actions generators
-import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 class GalleriesGallery extends Component {
   componentDidMount() {
@@ -81,7 +81,7 @@ class GalleriesGallery extends Component {
   }
 
   uploadFile(files) {
-    const { model, uploadModel, showModal } = this.props;
+    const { model, uploadModel, showModal, showLoading, hideLoading } = this.props;
     model.galleries = files;
     // 4. LOADING BAR show loading bar
     showLoading();
