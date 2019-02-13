@@ -18,6 +18,7 @@ import {
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
 import { VIDEO_NAME, SHOW } from "./constants";
+
 // 1. LOADING BAR add actions generators
 import {hideLoading, showLoading} from 'react-redux-loading-bar';
 
