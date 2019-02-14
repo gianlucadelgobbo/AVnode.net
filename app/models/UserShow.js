@@ -94,7 +94,10 @@ const userSchema = new Schema({
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
   videos: [{ type: Schema.ObjectId, ref: 'Video' }],
-  partnerships : [{ type: Schema.ObjectId, ref: 'EventShow' }],
+  partnerships : [{
+    category: { type: Schema.ObjectId, ref: 'Category' },
+    events: [{ type: Schema.ObjectId, ref: 'EventShow' }]
+  }],
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
   news : [{ type: Schema.ObjectId, ref: 'News' }],
