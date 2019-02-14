@@ -16,8 +16,6 @@ block title
       .col-sm-12
         .performer_map_wrapper         
           script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js')
-          script(src='https://cdn.mapkit.io/v1/infobox.js')
-          link(href='https://cdn.mapkit.io/v1/infobox.css', rel='stylesheet')
           script.
             var locations = !{JSON.stringify(data.locations)}
           script(src='/js/mymaps.js')
@@ -29,12 +27,13 @@ block title
       .container
         .row
           .col-sm-12
-              .about_wrapper
-                !=data.about
-                br
-                span#about_collapse.about_more.collapse="Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit? Qua ci devi piazzare il more Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid nunc honeste dicit? Hic nihil fuit, quod quaereremus. Ille enim occurrentia nescio quae comminiscebatur; Totum autem id externum est, et quod externum, id in casu est. Hic quoque suus est de summoque bono dissentiens dici vere Peripateticus non potest. Duo Reges: constructio interrete. Quid enim possumus hoc agere divinius? Hanc ergo intuens debet institutum illud quasi signum absolvere. Haec quo modo conveniant, non sane intellego. Qui autem esse poteris, nisi te amor ipse ceperit?"        
+            .about_wrapper
+              span#about_collapse.about_collapse.collapse.show!=data.about
+              if data.aboutFull.length > data.about.length
+                span#about_collapseFull.about_collapse.about_more.collapse!=data.aboutFull
+            if data.aboutFull.length > data.about.length
               .more_button
-                span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse')
+                span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', data-target=".about_collapse", href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse about_collapseFull')
   .polygon_divider_bottom
     svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
       g#layer2
@@ -45,7 +44,7 @@ block title
 
 block content
   .container
-    if data.events.length
+    if data.events && data.events.length
       section#events.row.performer_events_wrapper
         .col-lg-12
           h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
@@ -58,20 +57,22 @@ block content
               span.button_more_bkg
           
   
-    if data.partnerships.length
+    if data.partnerships && data.partnerships.length
       section#partnerships.row.performer_partnerships_wrapper
         .col-lg-12
           h2.main_title.indented_title.color1!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
           .owl-carousel.loop.owl-theme
-            each item in data.partnerships
-              include ../partials/boxEvent
+            each group in data.partnerships
+              - var category = group.category
+              each item in group.events
+                include ../partials/boxEvent
           .button_more.button_more_program
             a(href="/"+data.slug+"/partnerships", title=data.stagename)
               span.button_more_label!=global.__('+ All the partnerships')
               span.button_more_bkg
           
   
-  if data.performances.length
+  if data.performances && data.performances.length
     .polygon_divider_top
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
         g#layer2
@@ -101,7 +102,7 @@ block content
             polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
             polygon(fill='#0f8fcf' points='0,0 1920,0 1920,100.5 		')                  
 
-  if data.crews.length
+  if data.crews && data.crews.length
     section#crews.performer_crew_wrapper
       .container
         .row
@@ -117,7 +118,7 @@ block content
               .col-sm-6
                 img.img-fluid(src="/images/logo_avnode_symbol.svg")
 
-  if data.members.length
+  if data.members && data.members.length
     section#members.performer_crew_wrapper
       .container
         .row
@@ -133,7 +134,7 @@ block content
               .col-sm-6
                 img.img-fluid(src="/images/logo_avnode_symbol.svg")
 
-  if data.footage.length || data.videos.length || data.playlists.length
+  if (data.footage && data.footage.length) || (data.videos && data.videos.length) || (data.playlists && data.playlists.length)
     .polygon_divider_top
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
         g#layer2
@@ -144,7 +145,7 @@ block content
     section.performer_videos_wrapper
       .content_wrapper
         .container
-          if data.footage.length
+          if data.footage && data.footage.length
             #footage.row.performer_footage.bottom60
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
@@ -156,7 +157,7 @@ block content
                     span.button_more_label!=global.__('+ All the footages')
                     span.button_more_bkg                     
 
-          if data.videos.length
+          if data.videos && data.videos.length
             #videos.row.performer_video
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
@@ -168,7 +169,7 @@ block content
                     span.button_more_label!=global.__('+ All the videos')
                     span.button_more_bkg                    
 
-          if data.playlists.length
+          if data.playlists && data.playlists.length
             #playlists.row.performer_playlist
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
@@ -182,7 +183,7 @@ block content
 
 
   
-  if data.galleries.length    
+  if data.galleries && data.galleries.length    
     section#galleries.performer_galleries_wrapper
       .content_wrapper
         .container
@@ -198,7 +199,7 @@ block content
                   span.button_more_label!=global.__('+ All the galleries')
                   span.button_more_bkg                        
 
-  if data.news.length
+  if data.events && data.news.length
     section#news.performer_news_wrapper
       .content_wrapper
         .container
