@@ -17,9 +17,11 @@ block content
       .col-lg-12
         h2.main_title.indented_title.color1!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
         .row
-          each item in data.partnerships
-            .col-sm-4
-              include ../partials/boxEvent
+         each group in data.partnerships
+              - var category = group.category
+              each item in group.events
+                .col-sm-4
+                  include ../partials/boxEvent
     hr
     include ../partials/pagination
                   

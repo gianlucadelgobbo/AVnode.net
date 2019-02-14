@@ -3683,8 +3683,8 @@
           "organizationData.logo": 1
         },
         "populate": [{
-          "path": "partnerships",
-          "match": { "is_public": true}, 
+          "path": "partnerships.events",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -3694,13 +3694,12 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
+          "options": { "limit": 21},
           "model": "EventShow"
         }, {
-          "path": "categories",
+          "path": "partnerships.category",
           "select": {
-            "name": 1,
-            "slug": 1
+            "name": 1
           },
           "model": "Category"
         }]
@@ -4085,7 +4084,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
+          "options": { "limit": 21},
           "model": "EventShow"
         }, {
           "path": "partnerships.category",
@@ -4280,13 +4279,12 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
+          "options": { "limit": 21},
           "model": "EventShow"
         }, {
-          "path": "categories",
+          "path": "partnerships.category",
           "select": {
-            "name": 1,
-            "slug": 1
+            "name": 1
           },
           "model": "Category"
         }]
