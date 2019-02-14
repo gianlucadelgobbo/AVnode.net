@@ -267,9 +267,15 @@ router.getMembers = (req, res) => {
     { stagename : { "$regex": req.params.q, "$options": "i" } },
     { name : { "$regex": req.params.q, "$options": "i" } },
     { surname : { "$regex": req.params.q, "$options": "i" } }
-  ],is_crew: false},'_id, stagename', (err, users) => {
+  ],is_crew: false})
+  .select({'stagename':1})
+  //.select({'_id':1, 'stagename':1, 'name':1, 'surname':1, 'email': 1})
+  .collation({locale: "en" })
+  .sort({'stagename': 1})
+  .exec((err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
-    res.json(users);
+    //res.json(users.map(item => {delete item.imageFormats; return item;}));
+    res.json(users.map(item => {return {_id:item._id, stagename:item.stagename}}));
   });
 }
 

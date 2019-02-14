@@ -4018,16 +4018,22 @@
         "partners"
       ],
       "categoriesQueries": {
-        "all": {
+        "all_buttare": {
           "is_crew" : true,
           "$or":[{"events.0": {"$exists": true}},{"partnerships.0": {"$exists": true}}]
         },
+        "all": {
+          "is_crew" : true,
+          "activity_as_organization" : {"$gt": 0}
+        },
         "producers": {
           "is_crew" : true,
+          "activity_as_organization" : {"$gt": 0},
           "events.0": {"$exists": true}
         },
         "partners": {
           "is_crew" : true,
+          "activity_as_organization" : {"$gt": 0},
           "partnerships.0": {"$exists": true}
         }
       },
