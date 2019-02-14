@@ -1,4 +1,6 @@
 .event_item_wrapper
+  if category 
+    .time_schedule=category.name
   a(href="/events/"+item.slug+"/", title=item.title)
     img.img-fluid(
       src=item.imageFormats.large
