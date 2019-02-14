@@ -7,7 +7,6 @@ const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
-const Partner = mongoose.model('Partner');
 
 const request = require('request');
 const fs = require('fs');
@@ -81,17 +80,17 @@ router.get('/', (req, res) => {
   logger.debug('/partners');
   let results = {};
   const myids = req.user.crews.concat([req.user._id]);
-  Partner.
-  find({"users": {$in:myids}}).
+  User.
+  find({"partner_owner": {$in:myids}}).
   lean().
-  sort({brand: 1}).
+  sort({stagename: 1}).
   //select({stagename: 1, createdAt: 1, crews:1}).
-  populate({path: "user_id", select: {stagename:1, slug:1, social:1, web:1}, model:"User"}).
+  populate({path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, skype:1, slug:1, social:1, web:1}, model:"User"}).
   exec((err, data) => {
-    logger.debug(Object.keys(data[0]));
+    //logger.debug(Object.keys(data[0]));
 
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(data.crews);
+      res.json(data);
     } else {
       res.render('admindev/partners/home', {
         title: 'Partners',

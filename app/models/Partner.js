@@ -3,7 +3,51 @@ const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');
 
 const PartnerSchema = new Schema({
-  /* event: { type: Schema.ObjectId, ref: 'Event', required: true },
+  /*
+	"brand" : "Livincool",
+	"legalentity" : "",
+	"delegate" : "Chiara",
+	"selecta" : "",
+	"satellite" : "",
+	"event" : "",
+	"country" : "Italy",
+	"description" : "",
+	"address" : "",
+	"type" : "",
+	"websites" : [ ],
+	"contacts" : [
+		{
+			"name" : "Fabrizio",
+			"surname" : "Galati",
+			"email" : "fabri.galati@gmail.com",
+			"phone" : "",
+			"lang" : "it",
+			"types" : [
+				"Contact"
+			]
+		}
+	],
+	"partnerships" : [
+		{
+			"name" : "LPM-2017",
+			"status" : "NEW",
+			"group" : "6. Media Partners",
+			"notes" : "not for ZA"
+		},
+		{
+			"name" : "LCF-2017",
+			"status" : "NEW",
+			"group" : "6. Media Partners",
+			"notes" : "not for ZA"
+		}
+	],
+	"channels" : [ ],
+	"users" : [
+		ObjectId("5be87f15fc3961000000a669")
+	]
+  
+  
+  event: { type: Schema.ObjectId, ref: 'Event', required: true },
   call: { type: Number, required: true},
   topics: { type: [String], minlength: 1},
   schedule: Schedule,
