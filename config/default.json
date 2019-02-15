@@ -2156,7 +2156,7 @@
               "config":{
                 "fields": {
                   "name": "image",
-                  "maxCount": 1
+                  "maxCount": 100
                 },
                 "fileext": ["jpg","jpeg","png","gif","svg"],
                 "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
