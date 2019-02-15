@@ -4734,7 +4734,10 @@
             "slug": 1,
             "image": 1,
             "organizationData.logo": 1,
-            "stagename": 1
+            "stagename": 1,
+            "web": 1,
+            "activity": 1
+             
           },
           "model": "UserShow"
         }, {
