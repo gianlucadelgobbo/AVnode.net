@@ -75,7 +75,11 @@ const status = [
   'users',
   'user_id'
 ];
-
+var populate = [
+  {path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, skype:1, slug:1, social:1, web:1}, model:"User"},
+  {path: "partnerships.events", select: {title:1, slug:1}, model:"Event"},
+  {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
+];
 router.get('/', (req, res) => {
   logger.debug('/partners');
   let results = {};
@@ -85,7 +89,7 @@ router.get('/', (req, res) => {
   lean().
   sort({stagename: 1}).
   //select({stagename: 1, createdAt: 1, crews:1}).
-  populate([{path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, skype:1, slug:1, social:1, web:1}, model:"User"},{path: "partnerships", select: {title:1, slug:1}, model:"Event"},{path: "parnerships.category", model:"Category"}]).
+  populate(populate).
   exec((err, data) => {
     //logger.debug(Object.keys(data[0]));
 

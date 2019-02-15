@@ -25,8 +25,12 @@ block content
             td
               if item.partnerships && item.partnerships.length
                 each partnership in item.partnerships
-                  .text-nowrap
-                    a(href="/"+partnership.slug, target="_blank")!=partnership.title
+                  !=partnership.category.name
+                  each item in partnership.events
+                    .text-nowrap
+                      a(href="/"+item.slug, target="_blank")!=item.title
+                      !=" "
+                      
             td
               if item.web
                 each web in item.web

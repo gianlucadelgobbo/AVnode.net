@@ -264,16 +264,47 @@ block content
                   .basic_divider
                   .row.partners_list_wrapper
                     each partner in partners_block.users
-                      .col-sm-2
-                        .partner_box_wrapper
-                          a(href="/"+partner.slug+"/", title=partner.stagename)
-                            if partner.imageFormats                          
-                              img.card-img-top.img-fluid(
-                                src=partner.imageFormats.large
-                                alt=partner.title
-                              )
-                          p.partner_stagename
+                      if partner.web[0]
+                        - var url = partner.web[0].url;
+                      else
+                        - var url = null;
+                      if partner.activity > 0
+                        .col-sm-2
+                          .partner_box_wrapper
                             a(href="/"+partner.slug+"/", title=partner.stagename)
-                              span=partner.stagename
+                              if partner.imageFormats                          
+                                img.card-img-top.img-fluid(
+                                  src=partner.imageFormats.large
+                                  alt=partner.title
+                                )
+                            p.partner_stagename
+                              a(href="/"+partner.slug+"/", title=partner.stagename)
+                                span=partner.stagename
+                      else
+                        - console.log(url)
+                        if url
+                          .col-sm-2
+                            .partner_box_wrapper
+                              a(href=url, target="_blank", title=partner.stagename)
+                                if partner.imageFormats                          
+                                  img.card-img-top.img-fluid(
+                                    src=partner.imageFormats.large
+                                    alt=partner.title
+                                  )
+                              p.partner_stagename
+                                a(href=url, target="_blank", title=partner.stagename)
+                                  span=partner.stagename
+                        else
+                          .col-sm-2
+                            .partner_box_wrapper
+                              if partner.imageFormats                          
+                                img.card-img-top.img-fluid(
+                                  src=partner.imageFormats.large
+                                  alt=partner.title
+                                )
+                              p.partner_stagename
+                                span=partner.stagename
+                      
+
     
   
