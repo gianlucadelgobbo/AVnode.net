@@ -1297,23 +1297,7 @@ export const renderDropzoneInput = field => {
                 <span className="file-size ml-2">
                   ({formatBytes(file.size)})
                 </span>
-              </div>
-              <div className="pull-right mr-3">
-                {field.uploadButton && (
-                  <button
-                    type="button"
-                    className="btn btn-success"
-                    onClick={() => {
-                      field.uploadFile(field.input.value);
-                    }}
-                  >
-                    <i
-                      className={"fa fa-upload"}
-                      data-toggle="tooltip"
-                      data-placement="top"
-                    />
-                  </button>
-                )}
+              {!field.uploadButton && (
                 <button
                   type="button"
                   className="btn btn-danger ml-2 clear-attachment"
@@ -1336,9 +1320,52 @@ export const renderDropzoneInput = field => {
                     data-placement="top"
                   />
                 </button>
+              )}
               </div>
+             
             </li>
           ))}
+             <div className="pull-right mr-3">
+                {field.uploadButton && files.length > 0 && (
+                  <div>
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={() => {
+                      field.uploadFile(field.input.value);
+                    }}
+                  >
+                    <i
+                      className={"fa fa-upload"}
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger ml-2 clear-attachment"
+                    onClick={() => {
+                      field.showModal({
+                        type: MODAL_REMOVE,
+                        props: {
+                          onRemove: () => {
+                            let result = [...files];
+                            result = [];
+                            field.input.onChange(result);
+                          }
+                        }
+                      });
+                    }}
+                  >
+                    <i
+                      className="fa fa-trash"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                    />
+                  </button>
+                </div>
+              )}
+              </div>
         </ul>
       )}
     </div>
