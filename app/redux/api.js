@@ -615,7 +615,11 @@ export const fetchGalleriesMedia = ({ id }) => {
 export const saveGalleriesMedia = model => {
   // convert image to Form Data
   let formBox = new FormData();
-  formBox.append("image", model.galleries[0]);
+
+  for (var i = 0; i < model.galleries.length; i++) {
+    formBox.append('image', model.galleries[i]);
+  }
+  //formBox.append("image", model.galleries[0]);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
