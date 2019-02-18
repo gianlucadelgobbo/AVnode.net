@@ -10,4 +10,8 @@ router.get('/', (req, res) => {
   dataprovider.show(req, res, section, 'show', Model);
 });
 
+router.get('/partners', (req, res) => {
+  dataprovider.show(req, res, section, 'partners', Model);
+});
+
 module.exports = router;

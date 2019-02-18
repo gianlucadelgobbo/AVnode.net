@@ -4860,6 +4860,47 @@
           "options": {},
           "model": "Gallery"
         }]
+      },
+      "partners": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "slug": 1,
+          "image": 1,
+          "partners": 1
+        },
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "members": 1,
+            "addresses.country": 1,
+            "addresses.locality": 1,
+            "stats": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+        "path": "partners.category",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "partners.users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "stagename": 1,
+            "web": 1,
+            "activity": 1
+             
+          },
+          "model": "UserShow"
+        }]
       }
     },
     "performances": {
