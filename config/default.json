@@ -775,6 +775,87 @@
         }
       }
     },
+    "partner": {
+      "title": "Partner",
+      "limit": 1,
+      "basepath": "partner",
+      "model": "User",
+      "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Crew url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "stagename": {
+              "comp": "simpletext",
+              "label": "Crew name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "is_partner": 1,
+            "is_public": 1,
+            "partner_data": 1,
+            "partner_owner": 1,
+            "social": 1,
+            "web": 1
+          },
+          "selectaddon": {
+            "is_crew": true
+          },
+          "populate": []
+        }
+      },
+      "list": {
+        "model": "User",
+        "select": {
+          "stagename": 1,
+          "slug": 1,
+          "image": 1,
+          "imageFormats": 1
+        },
+        "selectaddon": {
+          "createdAt": 1
+        },
+        "populate": [{ "path": "members" , "select": "stagename"}],
+        "orders": [
+          "mostrecent",
+          "mostactive"
+        ],
+        "ordersQueries": {
+          "mostrecent": {
+            "createdAt": -1
+          },
+          "mostactive": {
+            "activity": -1
+          }
+        },
+        "labels": {
+          "mostrecent":"Most recent",
+          "mostactive":"Most active"
+        }
+      }
+    },
     "events": {
       "model": "Event",
       "forms": {

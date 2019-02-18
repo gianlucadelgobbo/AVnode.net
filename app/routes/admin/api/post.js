@@ -57,57 +57,61 @@ router.postData = (req, res) => {
           logger.debug(user);
           if (!err) {
             if (user) {
-              user[req.params.sez].push(data._id);
-              logger.debug('save user');
-              logger.debug(user);
-              user.save((err) => {
-                if (err) {
-                  logger.debug('save user err');
-                  logger.debug(err);
-                  res.status(400).json(err);
-                } else {
-                  logger.debug('save user success');
-                  if (req.params.ancestor && req.params.id) {
-                    Models[config.cpanel[req.params.ancestor].model]
-                    .findById(req.params.id)
-                    .exec((err, ancestor) => {
-                      ancestor[req.params.sez].push(data._id);
-                      ancestor.save((err) => {
-                        if (err) {
-                          logger.debug('save ancestor err');
-                          logger.debug(err);
-                          res.status(400).json(err);
-                        } else {
-                          logger.debug("save ancestor success");
-                          logger.debug(data);
-                          logger.debug(data);
-                          res.json(data);                    
-                        }
-                      });
-                    });
+              if (req.params.sez==="partner") {
+                res.json(data);                    
+              } else {
+                user[req.params.sez].push(data._id);
+                logger.debug('save user');
+                logger.debug(user);
+                user.save((err) => {
+                  if (err) {
+                    logger.debug('save user err');
+                    logger.debug(err);
+                    res.status(400).json(err);
                   } else {
-                    res.json(data);                    
-                  }
-                  /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
-                  const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
-                    
-                  Models[config.cpanel[req.params.sez].list.model]
-                  .findById(id)
-                  .select(select)
-                  .populate(populate)
-                  .exec((err, data) => {
-                    if (err) {
-                      res.status(500).json({ error: `${JSON.stringify(err)}` });
+                    logger.debug('save user success');
+                    if (req.params.ancestor && req.params.id) {
+                      Models[config.cpanel[req.params.ancestor].model]
+                      .findById(req.params.id)
+                      .exec((err, ancestor) => {
+                        ancestor[req.params.sez].push(data._id);
+                        ancestor.save((err) => {
+                          if (err) {
+                            logger.debug('save ancestor err');
+                            logger.debug(err);
+                            res.status(400).json(err);
+                          } else {
+                            logger.debug("save ancestor success");
+                            logger.debug(data);
+                            logger.debug(data);
+                            res.json(data);                    
+                          }
+                        });
+                      });
                     } else {
-                      let send = {_id: data._id};
-                      for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-                      logger.debug('sendsendsendsendsendsendsend');
-                      logger.debug(send);
-                      res.json(send);
+                      res.json(data);                    
                     }
-                  }); */
-                }
-              });
+                    /* select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
+                    const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
+                      
+                    Models[config.cpanel[req.params.sez].list.model]
+                    .findById(id)
+                    .select(select)
+                    .populate(populate)
+                    .exec((err, data) => {
+                      if (err) {
+                        res.status(500).json({ error: `${JSON.stringify(err)}` });
+                      } else {
+                        let send = {_id: data._id};
+                        for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
+                        logger.debug('sendsendsendsendsendsendsend');
+                        logger.debug(send);
+                        res.json(send);
+                      }
+                    }); */
+                  }
+                });  
+              }
             } else {
               res.status(204).json({ error: `DOC_NOT_FOUND` });
             }
@@ -145,6 +149,85 @@ router.cancelSubscription = (req, res) => {
         });
       });  
     });
+  });
+}
+
+router.unlinkPartner = (req, res) => {
+  logger.debug(req.body);
+  Models.User
+  .findOne({_id: req.body.id, is_crew: true, partner_owner: req.body.owner},'_id event partner_owner members', (err, partner) => {
+    logger.debug(partner);
+    if (partner.members && partner.members.length) {
+      partner.partner_owner = undefined;
+      partner.save(err => {
+        res.json(true);
+      });
+    } else {
+      partner.remove(err => {
+        res.json(true);
+      });
+    }
+  });
+}
+
+router.updatePartnerships = (req, res) => {
+  logger.debug(req.body);
+
+  Models.User
+  .findOne({_id: req.body.partner},'partnerships', (err, partner) => {
+    logger.debug(partner._id);
+    logger.debug("partnerships");
+    logger.debug(partner.partnerships);
+    var toadd = true;
+    for (var a=0;a<partner.partnerships.length;a++) {
+      logger.debug(partner.partnerships[a]);
+      for (var b=0;b<partner.partnerships[a].events.length;b++) {
+        if(partner.partnerships[a].events[b].toString() === req.body.event) {
+          partner.partnerships[a].events.splice(b, 1);
+/*           if(!partner.partnerships[a].events.length) {
+            partner.partnerships.splice(a, 1);
+          }
+ */        }
+      }
+      if (req.body.category && partner.partnerships[a].category.toString() === req.body.category) {
+        partner.partnerships[a].events.push(req.body.event);
+        toadd = false;
+      }
+    }
+    a=0;
+    while (a<partner.partnerships.length) {
+      if(!partner.partnerships[a].events.length) {
+        partner.partnerships.splice(a, 1);
+      }
+      a++
+    }
+    if (req.body.category && toadd) {
+      var partnership = {
+        category: req.body.category,
+        events: [req.body.event]
+      }
+      partner.partnerships.push(partnership);
+    }
+    logger.debug("partnerships");
+    logger.debug(partner.partnerships);
+
+    partner.save(err => {
+
+
+
+      Models.Event
+      .findOne({_id: req.body.event},'partnerships', (err, event) => {
+        event.partnerships = req.body.partnerships;
+        partner.save(err => {
+          res.json(true);
+        });
+      });
+    
+
+
+
+    });
+
   });
 }
 

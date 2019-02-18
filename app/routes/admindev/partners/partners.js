@@ -2,8 +2,8 @@ const router = require('../../router')();
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const User = mongoose.model('User');
-const ObjectId = Schema.ObjectId;
-const Performance = mongoose.model('Performance');
+const ObjectId = mongoose.Types.ObjectId;
+const Event = mongoose.model('Event');
 const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
@@ -81,15 +81,11 @@ var populate = [
   {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
 ];
 router.get('/', (req, res) => {
-  logger.debug('/partners');
-  let results = {};
   const myids = req.user.crews.concat([req.user._id]);
   User.
-  find({"partner_owner": {$in:myids}}).
-  lean().
+  find({"_id": {$in:myids}}).
   sort({stagename: 1}).
-  //select({stagename: 1, createdAt: 1, crews:1}).
-  populate(populate).
+  select({stagename:1}).
   exec((err, data) => {
     //logger.debug(Object.keys(data[0]));
 
@@ -107,28 +103,133 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/:event', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
-  let data = {};
+router.get('/:id', (req, res) => {
+  logger.debug('/partners/'+req.params.id);
   User.
-  findOne({"_id": req.params.event}).
-  //lean().
-  select({title: 1, createdAt: 1}).
-  exec((err, event) => {
-    data.event = event;
-    data.status = status;
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(data);
-    } else {
-      logger.debug(data);
-      res.render('admindev/organizations/dett', {
-        title: 'Events: '+data.event.title,
-        currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-        data: data,
-        script: false
+  find({"partner_owner": req.params.id}).
+  lean().
+  sort({stagename: 1}).
+  //select({stagename: 1, createdAt: 1, crews:1}).
+  populate(populate).
+  exec((err, data) => {
+    Event.
+    find({"users": req.params.id}).
+    select({title: 1}).
+    sort({title: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    exec((err, events) => {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        res.render('admindev/partners/organization_partners', {
+          title: 'Partners',
+          currentUrl: req.originalUrl,
+          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          owner: req.params.id,
+          events: events,
+          data: data,
+          script: false
+        });
+      }
+    });
+  });
+});
+
+router.get('/:id/:event', (req, res) => {
+  logger.debug('/organizations/'+req.params.event);
+  const query = {"partner_owner": req.params.id, "partnerships.events":req.params.event};
+  logger.debug(query);
+  User.
+  find(query).
+  lean().
+  sort({stagename: 1}).
+  //select({stagename: 1, createdAt: 1, crews:1}).
+  populate(populate).
+  exec((err, data) => {
+    Event.
+    find({"users": req.params.id}).
+    select({title: 1}).
+    sort({title: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    exec((err, events) => {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        res.render('admindev/partners/organization_partners', {
+          title: 'Partners',
+          currentUrl: req.originalUrl,
+          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          owner: req.params.id,
+          events: events,
+          event: req.params.event,
+          data: data,
+          script: false
+        });
+      }
+    });
+  });
+});
+
+router.get('/:id/:event/manage', (req, res) => {
+  logger.debug('/organizations/'+req.params.event);
+  const query = {"partner_owner": req.params.id};
+  logger.debug(query);
+  Category.
+  find({ancestor: "5be8708afc396100000001eb"}).
+  lean().
+  exec((err, categories) => {
+    const query = {"partner_owner": req.params.id};
+    logger.debug(query);
+    User.
+    find(query).
+    lean().
+    sort({stagename: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    populate(populate).
+    exec((err, data) => {
+      Event.
+      find({"users": req.params.id}).
+      select({title: 1}).
+      sort({title: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      exec((err, events) => {
+        var partnerships = {};
+        var notassigned = [];
+        var notassignedID = [];
+        for (var item in data) {
+          for (var item2 in data[item].partnerships) {
+            if (data[item].partnerships[item2].events.map(event => {return event._id.toString()}).indexOf(req.params.event)!==-1) {
+              if (!partnerships[data[item].partnerships[item2].category._id]) partnerships[data[item].partnerships[item2].category._id] = {category:data[item].partnerships[item2].category, users:[]};
+              partnerships[data[item].partnerships[item2].category._id].users.push(data[item]);
+            } else {
+              if (notassignedID.indexOf(data[item]._id.toString())===-1) {
+                notassignedID.push(data[item]._id.toString());
+                notassigned.push(data[item]);
+              }
+            }
+          }
+        }
+        for (var item in categories) {
+          if (!partnerships[categories[item]._id]) partnerships[categories[item]._id] = {category:categories[item], users:[]};
+        }
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('admindev/partners/partners_manager', {
+            title: 'Partners',
+            currentUrl: req.originalUrl,
+            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            owner: req.params.id,
+            events: events,
+            notassigned: notassigned,
+  
+            event: req.params.event,
+            partnerships: partnerships,
+            script: false
+          });
+        }
       });
-    }
+    });
   });
 });
 

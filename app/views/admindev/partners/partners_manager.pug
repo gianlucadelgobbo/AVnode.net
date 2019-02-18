@@ -1,0 +1,31 @@
+extends ../layout_admin
+block content
+  script.
+    var event = "#{event}"
+  table.table
+    thead
+      tr
+        th
+          h5="Not assigned"
+        each item, index in partnerships
+          th
+            h5=item.category.name
+    tbody
+      tr
+        td
+          ul.list-group.connectedSortable(id="sortable0")
+            each item in notassigned
+              li.list-group-item
+                !=item.stagename
+                input(type="hidden", name="users", value=item._id)
+        - var conta = 1
+        each item, index in partnerships
+          td
+            form(id="form"+conta)
+              input(type="hidden", name="category", value=item.category._id)
+              ul.list-group.connectedSortable(id="sortable"+conta)
+                - conta++
+                each uuu, index in item.users
+                  li.list-group-item
+                    !=uuu.stagename
+                    input(type="hidden", name="users", value=uuu._id)
