@@ -289,11 +289,11 @@ userSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};
   if (this.organizationData && this.organizationData.logo) {
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-      imageFormats[format] = this.organizationData.logo;
+      imageFormats[format] = process.env.WAREHOUSE+this.organizationData.logo;
     }
   } else if (this.image && this.image.file) {
     for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
+      imageFormats[format] = process.env.WAREHOUSE+config.cpanel[adminsez].forms.image.components.image.config.sizes[format].default;
     }
     const serverPath = this.image.file;
     const localFileName = serverPath.substring(serverPath.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
