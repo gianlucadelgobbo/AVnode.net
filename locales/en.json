@@ -437,5 +437,19 @@
 	"scheduled": "scheduled",
 	"To be scheduled": "To be scheduled",
 	"authors": "authors",
-	"Subscription to": "Subscription to"
+	"Subscription to": "Subscription to",
+	"Add partner": "Add partner",
+	"Web channels": "Web channels",
+	"one per line": "one per line",
+	"Social channels": "Social channels",
+	"Close": "Close",
+	"Save": "Save",
+	"Add contact": "Add contact",
+	"Surname": "Surname",
+	"Contact": "Contact",
+	"Legal Rapresentative": "Legal Rapresentative",
+	"unlink": "unlink",
+	"Filter by events": "Filter by events",
+	"Manage event partnerships types": "Manage event partnerships types",
+	"Filter by event": "Filter by event"
 }

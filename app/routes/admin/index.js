@@ -134,6 +134,14 @@ router.post('/api/:sez/new/', (req, res) => {
   post.postData(req, res);
 });
 
+router.post('/api/partner/unlink/', (req, res) => {
+  post.unlinkPartner(req, res);
+});
+
+router.post('/api/partnershipsupdate', (req, res) => {
+  post.updatePartnerships(req, res);
+});
+
 router.post('/api/:ancestor/:id/:sez/', (req, res) => {
   post.postData(req, res);
 });

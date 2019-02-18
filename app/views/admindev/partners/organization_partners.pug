@@ -1,0 +1,136 @@
+extends ../layout_admin
+block content
+  form.form-inline
+    select.form-control.mb-3.mr-sm-2( onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value")
+      option(value=0)=global.__("Filter by event")
+      each item, index in events
+        option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
+    if event
+      a.btn.btn-primary.mb-3(href="/admindev/partners/"+owner+"/"+event+"/manage")=global.__("Manage event partnerships types")
+  table.table
+    thead
+      tr
+        td="ID"
+        td=global.__("Brand")
+          !=" | "
+          button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD"
+
+        td=global.__("Partnerships")
+        td=global.__("Channels")
+        td=global.__("Contacts")
+    tbody
+      if data.length
+        each item, index in data
+          tr
+            td=index+1
+            td
+              b!=item.stagename
+              !=" "
+              a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+              !=" | "
+              a.unlink(href="#", data-owner=owner, data-partner=item._id)!=global.__("unlink")
+              !=" | "
+              if item.members && item.members.length
+                a(href="/"+item.slug, target="_blank")!=global.__("view")
+              else
+                .badge.badge-danger!="EXTERNAL"
+            td
+              if item.partnerships && item.partnerships.length
+                each partnership in item.partnerships
+                  !=partnership.category.name
+                  each item in partnership.events
+                    .text-nowrap
+                      a(href="/"+item.slug, target="_blank")!=item.title
+                      !=" "
+                      
+            td
+              if item.web
+                each web in item.web
+                  div
+                    a(href=web.url, target="_blank")!=web.url
+              if item.social
+                each web in item.social
+                  div
+                    a(href=web.url, target="_blank")!=web.url
+            td
+              h5
+                !="Contacts"
+                !=" "
+                // Button trigger modal
+                button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
+              if item.partner_data && item.partner_data.contacts
+                each contact in item.partner_data.contacts
+                  div
+                    a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+              if item.members && item.members.length
+                h5="Members"
+                each contact in item.members
+                  div
+                    a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+
+  // Modal
+  #modalAddPartner.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          input(type='hidden', name="partner_owner", value=owner)
+          input(type='hidden', name="delegate", value=user.name)
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .alert.d-none
+            .form-group
+              label(for='formPartnerAddName')=global.__("Brand")
+              input#formPartnerAddName.form-control(type='text', name="stagename", placeholder='')
+            .form-group
+              label(for='formPartnerAddSurname')=global.__("Web channels")
+                !=" "
+                small=global.__("one per line")
+              textarea#formPartnerAddSurname.form-control(name="web")
+            .form-group
+              label(for='formPartnerAddSurname')=global.__("Social channels")
+                !=" "
+                small=global.__("one per line")
+              textarea#formPartnerAddSurname.form-control(name="social")
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+
+  // Modal
+  #modalAddContact.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddContactLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Add contact")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+              .form-group
+                label(for='formContactAddName')=global.__("Name")
+                input#formContactAddName.form-control(type='text', name="name", placeholder='')
+              .form-group
+                label(for='formContactAddSurname')=global.__("Surname")
+                input#formContactAddSurname.form-control(type='text', name="surname", placeholder='')
+              .form-group
+                label(for='formContactAddEmail')=global.__("Email")
+                input#formContactAddEmail.form-control(type='email', name="email", placeholder='name@example.com')
+              .form-group
+                label(for='formContactAddMobile')=global.__("Mobile")
+                input#formContactAddMobile.form-control(type='text', name="mobile", placeholder='')
+              .form-group
+                label(for='formContactAddFacebook')="Facebook"
+                input#formContactAddFacebook.form-control(type='text', name="facebook", placeholder='')
+              .form-group
+                label(for='formContactAddType')=global.__("Type")
+                select#formContactAddType.form-control(name="type")
+                  option=global.__("Contact")
+                  option=global.__("Legal Rapresentative")
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+

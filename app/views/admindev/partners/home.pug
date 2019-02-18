@@ -1,54 +1,7 @@
 extends ../layout_admin
 block content
-  table.table
-    thead
-      tr
-        td="ID"
-        td=global.__("Brand")
-        td=global.__("Partnerships")
-        td=global.__("Channels")
-        td=global.__("Contacts")
-    tbody
-      if data.length
-        each item, index in data
-          tr
-            td=index+1
-            td
-              b!=item.stagename
-              !=" "
-              a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
-              !=" | "
-              if item.members && item.members.length
-                a(href="/"+item.slug, target="_blank")!=global.__("view")
-              else
-                .badge.badge-danger!="EXTERNAL"
-            td
-              if item.partnerships && item.partnerships.length
-                each partnership in item.partnerships
-                  !=partnership.category.name
-                  each item in partnership.events
-                    .text-nowrap
-                      a(href="/"+item.slug, target="_blank")!=item.title
-                      !=" "
-                      
-            td
-              if item.web
-                each web in item.web
-                  div
-                    a(href=web.url, target="_blank")!=web.url
-              if item.social
-                each web in item.social
-                  div
-                    a(href=web.url, target="_blank")!=web.url
-            td
-              if item.partner_data && item.partner_data.contacts
-                h5="Contacts"
-                each contact in item.partner_data.contacts
-                  div
-                    a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-              if item.members && item.members.length
-                h5="Members"
-                each contact in item.members
-                  div
-                    a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-
+  if data.length
+    ol
+    each item, index in data
+      li
+        a(href="/admindev/partners/"+item._id)!=item.stagename
