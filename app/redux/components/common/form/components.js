@@ -9,7 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Dropzone from "react-dropzone";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 
 import {
   MODAL_ADD_USER_PERFORMANCE,
@@ -1297,50 +1297,7 @@ export const renderDropzoneInput = field => {
                 <span className="file-size ml-2">
                   ({formatBytes(file.size)})
                 </span>
-              {!field.uploadButton && (
-                <button
-                  type="button"
-                  className="btn btn-danger ml-2 clear-attachment"
-                  onClick={() => {
-                    field.showModal({
-                      type: MODAL_REMOVE,
-                      props: {
-                        onRemove: () => {
-                          let result = [...files];
-                          result.splice(i, 1);
-                          field.input.onChange(result);
-                        }
-                      }
-                    });
-                  }}
-                >
-                  <i
-                    className="fa fa-trash"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                  />
-                </button>
-              )}
-              </div>
-             
-            </li>
-          ))}
-             <div className="pull-right mr-3">
-                {field.uploadButton && files.length > 0 && (
-                  <div>
-                  <button
-                    type="button"
-                    className="btn btn-success"
-                    onClick={() => {
-                      field.uploadFile(field.input.value);
-                    }}
-                  >
-                    <i
-                      className={"fa fa-upload"}
-                      data-toggle="tooltip"
-                      data-placement="top"
-                    />
-                  </button>
+                {!field.uploadButton && (
                   <button
                     type="button"
                     className="btn btn-danger ml-2 clear-attachment"
@@ -1350,7 +1307,7 @@ export const renderDropzoneInput = field => {
                         props: {
                           onRemove: () => {
                             let result = [...files];
-                            result = [];
+                            result.splice(i, 1);
                             field.input.onChange(result);
                           }
                         }
@@ -1363,9 +1320,51 @@ export const renderDropzoneInput = field => {
                       data-placement="top"
                     />
                   </button>
-                </div>
-              )}
+                )}
               </div>
+            </li>
+          ))}
+          <div className="pull-right mr-3">
+            {field.uploadButton && files.length > 0 && (
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() => {
+                    field.uploadFile(field.input.value);
+                  }}
+                >
+                  <i
+                    className={"fa fa-upload"}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger ml-2 clear-attachment"
+                  onClick={() => {
+                    field.showModal({
+                      type: MODAL_REMOVE,
+                      props: {
+                        onRemove: () => {
+                          let result = [...files];
+                          result = [];
+                          field.input.onChange(result);
+                        }
+                      }
+                    });
+                  }}
+                >
+                  <i
+                    className="fa fa-trash"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </button>
+              </div>
+            )}
+          </div>
         </ul>
       )}
     </div>
@@ -2409,8 +2408,14 @@ export const listGallery = ({
           </div>
         </div>
         <div className="col-sm-3 text-right">
-          <NavLink to={"/admin/galleries/"+_id+"/gallery"} className="btn btn-success btn-inline mr-3">
-            <FormattedMessage id="galleryInGalleries" defaultMessage="Add images" />
+          <NavLink
+            to={"/admin/galleries/" + _id + "/gallery"}
+            className="btn btn-success btn-inline mr-3"
+          >
+            <FormattedMessage
+              id="galleryInGalleries"
+              defaultMessage="Add images"
+            />
           </NavLink>
           {media && Array.isArray(media) && media.length > 0 && (
             <LightBox
@@ -2446,7 +2451,8 @@ export const listGallery = ({
                       showModal({
                         type: MODAL_REMOVE,
                         props: {
-                          onRemove: () => removeImage({ id: model.id, index:i })
+                          onRemove: () =>
+                            removeImage({ id: model.id, imgId: image.id })
                         }
                       })
                     }

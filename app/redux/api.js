@@ -617,7 +617,7 @@ export const saveGalleriesMedia = model => {
   let formBox = new FormData();
 
   for (var i = 0; i < model.galleries.length; i++) {
-    formBox.append('image', model.galleries[i]);
+    formBox.append("image", model.galleries[i]);
   }
   //formBox.append("image", model.galleries[0]);
 
@@ -631,10 +631,12 @@ export const saveGalleriesMedia = model => {
     });
 };
 
-export const removeGalleriesMedia = data => {
-  return axios.get(`galleries/${data._id}/mediaremove${data.index}`, data).then(result => {
-    return result.data;
-  });
+export const removeGalleriesMedia = model => {
+  return axios
+    .get(`galleries/${model.id}/mediaremove/${model.imgId}`, model)
+    .then(result => {
+      return result.data;
+    });
 };
 
 export const fetchSlugNewGalleries = slug => {
