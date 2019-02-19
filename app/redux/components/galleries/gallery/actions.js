@@ -17,7 +17,7 @@ export const fetchModel = ({ id } = {}) =>
     id
   });
 
-  export const uploadModel = model =>
+export const uploadModel = model =>
   generateSaveModel({
     selectors,
     constants,
@@ -26,11 +26,11 @@ export const fetchModel = ({ id } = {}) =>
     model
   });
 
-  export const removeImage = data =>
+export const removeImage = model =>
   generateRemoveModel({
     selectors,
     constants,
     request: api.removeGalleriesMedia,
     schema: galleries,
-    data
+    model
   });
