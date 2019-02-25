@@ -16,8 +16,12 @@ const News = mongoose.model('News');
 
 const logger = require('./logger');
 
-dataprovider.fetchShow = (req, section, subsection, model, populate, select, cb) => {
+dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
+  console.log(select);
+  let assign = JSON.parse(JSON.stringify(select));
+  console.log(assign);
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
+
     const nolimit = JSON.parse(JSON.stringify(populate));
     delete nolimit[0].options;
     model.
@@ -35,6 +39,10 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, cb)
       populate(populate).
       select(select).
       exec((err, data) => {
+        /* const res = Object.assign(select, data);
+        console.log(select);
+        console.log(Object.keys(res));
+        cb(err, res, total); */
         cb(err, data, total);
       });
     });
@@ -47,7 +55,15 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, cb)
     populate(populate).
     select(select).
     exec((err, data) => {
-      cb(err, data);
+      console.log(select);
+      let res = {};
+      if (output) {
+        for(var item in output) res[item] = data[item];
+      } else {
+        res = data;
+      }
+      cb(err, res);
+      //cb(err, data);
     });
   }
 
@@ -311,8 +327,10 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News;
   }
   const select = config.sections[section][subsection].select;
+  const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
+  logger.debug(select);
 
-  dataprovider.fetchShow(req, section, subsection, model, populate, select, (err, data, total) => {
+  dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
     if (err || data === null) {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {

@@ -4861,6 +4861,185 @@
           "model": "Gallery"
         }]
       },
+      "artists": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "abouts": 1,
+          "slug": 1,
+          "image": 1
+        },
+        "output": {
+          "_id": 1,
+          "stats": 1,
+          "title": 1,
+          "description": 1,
+          "subtitle": 1,
+          "slug": 1,
+          "imageFormats": 1,
+          "artists": 1
+        },
+        "populate": [
+          {
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "categories": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "Performance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "UserShow"
+          }, {
+            "path": "categories",
+            "select": {
+              "name": 1,
+              "ancestor": 1
+            },
+            "model": "Category"
+          }]
+        }, {
+          "path": "program.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "program.schedule.status",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "program": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "slug": 1,
+          "image": 1,
+          "program": 1,
+          "abouts": 1
+        },
+        "output": {
+          "_id": 1,
+          "stats": 1,
+          "title": 1,
+          "description": 1,
+          "subtitle": 1,
+          "slug": 1,
+          "imageFormats": 1,
+          "programmebydayvenue": 1,
+          "programmenotscheduled": 1
+        },
+        "populate": [
+          {
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "categories": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "Performance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "UserShow"
+          }, {
+            "path": "categories",
+            "select": {
+              "name": 1,
+              "ancestor": 1
+            },
+            "model": "Category"
+          }]
+        }, {
+          "path": "program.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "program.schedule.status",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }]
+      },
+      "galleries": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "slug": 1,
+          "abouts": 1,
+          "image": 1,
+          "galleries": 1
+        },
+        "populate": [
+          {
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": {},
+          "model": "Gallery"
+        }]
+      },
+      "videos": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "slug": 1,
+          "abouts": 1,
+          "image": 1,
+          "videos": 1
+        },
+        "populate": [
+          {
+          "path": "videos",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": {},
+          "model": "Video"
+        }]
+      },
       "partners": {
         "select": {
           "title": 1,

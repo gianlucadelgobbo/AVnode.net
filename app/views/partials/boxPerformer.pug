@@ -2,8 +2,8 @@
   if item.imageFormats
     a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
       img.card-img-top.img-fluid(
-        class=item.imageFormats.large.substring(item.imageFormats.large.lastIndexOf(".")+1)
-        src=item.imageFormats.large
+        class=item.imageFormats.small.substring(item.imageFormats.small.lastIndexOf(".")+1)
+        src=item.imageFormats.small
         alt=item.stagename
       )
   .performer_item_info_wrapper

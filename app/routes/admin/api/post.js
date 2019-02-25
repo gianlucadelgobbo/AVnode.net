@@ -175,9 +175,6 @@ router.updatePartnerships = (req, res) => {
 
   Models.User
   .findOne({_id: req.body.partner},'partnerships', (err, partner) => {
-    logger.debug(partner._id);
-    logger.debug("partnerships");
-    logger.debug(partner.partnerships);
     var toadd = true;
     for (var a=0;a<partner.partnerships.length;a++) {
       logger.debug(partner.partnerships[a]);
@@ -208,8 +205,11 @@ router.updatePartnerships = (req, res) => {
       }
       partner.partnerships.push(partnership);
     }
-    logger.debug("partnerships");
-    logger.debug(partner.partnerships);
+    partner.stats.partnerships = 0;
+    for (var a=0;a<partner.partnerships.length;a++) {
+      partner.stats.partnerships+=partner.partnerships[a].events.length;
+    }
+
 
     partner.save(err => {
 
@@ -217,9 +217,14 @@ router.updatePartnerships = (req, res) => {
 
       Models.Event
       .findOne({_id: req.body.event},'partnerships', (err, event) => {
-        event.partnerships = req.body.partnerships;
-        partner.save(err => {
-          res.json(true);
+        event.partners = req.body.partnerships;
+        for (var a=0;a<event.partners.length;a++) {
+          logger.debug(event.partners[a].users);
+        }
+    
+    
+        event.save(err => {
+          res.json(err);
         });
       });
     

@@ -169,7 +169,7 @@ eventSchema.virtual('programmenotscheduled').get(function (req) {
 });
 
 eventSchema.virtual('programmebydayvenue').get(function (req) {
-  //let programmebydayvenue = [];
+  //
   let programmebydayvenueObj = {};
   let ret = false;
   if (this.program && this.program.length) {
@@ -181,11 +181,12 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
           if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
             let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
             if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
-            let d = date.getUTCDate();
-            let m = date.getUTCMonth()+1;      
+            let d = ('0'+date.getUTCDate()).substr(-2);
+            let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
             let y = date.getUTCFullYear();
             let newdate = moment(date).format(config.dateFormat[lang].single);
             if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+              day: y+"-"+m+"-"+d,
               date: newdate,
               rooms: {}
             };
@@ -202,11 +203,12 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
             var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
              for(let c=0;c<days;c++){
               let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
-              let d = date.getUTCDate();
-              let m = date.getUTCMonth()+1;      
+              let d = ('0'+date.getUTCDate()).substr(-2);
+              let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
               let y = date.getUTCFullYear();
               let newdate = moment(date).format(config.dateFormat[lang].single);
               if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+                day: y+"-"+m+"-"+d,
                 date: newdate,
                 rooms: {}
               };
@@ -224,7 +226,9 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
         }
       }
     }
-    return ret ? Object.values(programmebydayvenueObj) : undefined;
+    let programmebydayvenue = ret ? Object.values(programmebydayvenueObj) : undefined;
+    if (programmebydayvenue) programmebydayvenue.sort((a,b) => (a.day > b.day) ? 1 : ((b.day > a.day) ? -1 : 0)); 
+    return programmebydayvenue;
   }
 });
 
@@ -487,13 +491,13 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       const startdate = new Date(new Date(this.schedule[a].starttime).setUTCHours(0,0,0,0));
       const enddate = new Date(new Date(this.schedule[a].endtime).setUTCHours(0,0,0,0));
       const enddatefake = new Date(new Date(this.schedule[a].endtime-(10*60*60*1000)).setUTCHours(0,0,0,0));
-      let hs = ('0'+this.schedule[a].starttime.getUTCHours()).substr(-2);;
-      let ms = ('0'+this.schedule[a].starttime.getUTCMinutes()).substr(-2);;
-      let he = ('0'+this.schedule[a].endtime.getUTCHours()).substr(-2);;
-      let me = ('0'+this.schedule[a].endtime.getUTCMinutes()).substr(-2);;
+      let hs = ('0'+this.schedule[a].starttime.getUTCHours()).substr(-2);
+      let ms = ('0'+this.schedule[a].starttime.getUTCMinutes()).substr(-2);
+      let he = ('0'+this.schedule[a].endtime.getUTCHours()).substr(-2);
+      let me = ('0'+this.schedule[a].endtime.getUTCMinutes()).substr(-2);
       for(let b=0;b<=(enddatefake-startdate)/(24*60*60*1000);b++){
         let day = new Date(startdate.getTime()+((24*60*60*1000)*b));
-        let d = ('0'+day.getUTCDate()).substr(-2);;
+        let d = ('0'+day.getUTCDate()).substr(-2);
         let m = ('0'+(day.getUTCMonth()+1)).substr(-2);      
         let y = day.getUTCFullYear();
         if (!schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room]) schedulebydayvenueObj[this.schedule[a].venue.name+"-"+this.schedule[a].venue.room] = {dates:[], venue:this.schedule[a].venue};
@@ -547,6 +551,7 @@ eventSchema.virtual('fullSchedule').get(function (req) {
       }
       boxDates.push(eventSchema.boxDateCreator(starttime, endtime, boxVenue));
     }
+
     return boxDates;
   }
 });

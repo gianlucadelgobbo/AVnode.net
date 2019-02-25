@@ -241,7 +241,8 @@ block content
                   a(href="/"+partner.slug+"/", title=partner.stagename)
                     if partner.imageFormats                          
                       img.card-img-top.img-fluid(
-                        src=partner.imageFormats.large
+                        class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
+                        src=partner.imageFormats.small
                         alt=partner.title
                       )
                   p.partner_stagename
@@ -274,7 +275,8 @@ block content
                             a(href="/"+partner.slug+"/", title=partner.stagename)
                               if partner.imageFormats                          
                                 img.card-img-top.img-fluid(
-                                  src=partner.imageFormats.large
+                                  class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
+                                  src=partner.imageFormats.small
                                   alt=partner.title
                                 )
                             p.partner_stagename
@@ -287,7 +289,8 @@ block content
                               a(href=url, target="_blank", title=partner.stagename)
                                 if partner.imageFormats                          
                                   img.card-img-top.img-fluid(
-                                    src=partner.imageFormats.large
+                                    class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
+                                    src=partner.imageFormats.small
                                     alt=partner.title
                                   )
                               p.partner_stagename
@@ -298,7 +301,8 @@ block content
                             .partner_box_wrapper
                               if partner.imageFormats                          
                                 img.card-img-top.img-fluid(
-                                  src=partner.imageFormats.large
+                                  class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
+                                  src=partner.imageFormats.small
                                   alt=partner.title
                                 )
                               p.partner_stagename
