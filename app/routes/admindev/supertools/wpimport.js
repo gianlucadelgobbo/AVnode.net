@@ -122,27 +122,27 @@ router.get('/events_import', (req, res) => {
           event.web.push(web);
         }
         logger.debug("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
-        for (var a=0;a<=enddate.getDate()-startdate.getDate();a++) {
+        //for (var a=0;a<=enddate.getDate()-startdate.getDate();a++) {
           logger.debug("locations.length "+locations.length);
           if (locations.length) {
             for (var b=0;b<locations.length;b++) {
               var schedule = {
-                date: new Date(body.date),
-                starttime: new Date(startdate+a),
-                endtime: new Date(enddate+a),
+                //date: new Date(body.date),
+                starttime: new Date(startdate),
+                endtime: new Date(enddate),
                 venue: locations[b]
               };
               event.schedule.push(schedule);
             }
           } else {
             var schedule = {
-              date: new Date(body.date),
+              //date: new Date(startdate),
               starttime: new Date(startdate),
               endtime: new Date(enddate)
             };
             event.schedule.push(schedule);
           }
-        }
+        //}
         //result = event;
         User.findOne({"slug": body.capauthors[0].user_login}, function(error, user) {
           if (user && user._id) {
