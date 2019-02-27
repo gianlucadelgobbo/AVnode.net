@@ -19,7 +19,6 @@ const logger = require('./logger');
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
   console.log(select);
   let assign = JSON.parse(JSON.stringify(select));
-  console.log(assign);
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
 
     const nolimit = JSON.parse(JSON.stringify(populate));
@@ -48,20 +47,80 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     });
   
   } else {
+    if (subsection === "program") {
+      if (req.params.performance) {
+        for(let a=0; a<populate.length;a++) {
+          if (populate[a].path==="program.performance") {
+            populate[a].match = { "slug": req.params.performance};
+          }
+        }
+      }
+      if (req.params.day) {
+        /*
+        const date = new Date(req.params.day);
+        console.log(date);
+        select['program.schedule.date.$'] = date;
+        populate.push({
+          "path": "program.schedule",
+          "match": {day: req.params.day}
+        }); */
+      }
+    }
+    console.log(populate);
     model.
-    findOne({slug: req.params.slug}).
+    findOne({slug: req.params.sub ? req.params.sub : req.params.slug}).
     // lean({ virtuals: true }).
     // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
     populate(populate).
     select(select).
     exec((err, data) => {
-      console.log(select);
+      console.log(err);
       let res = {};
       if (output) {
-        for(var item in output) res[item] = data[item];
+        for(var item in output) if (data[item]) res[item] = data[item];
       } else {
         res = data;
       }
+      if (res.programmebydayvenue && req.params.day) {
+        let programmebydayvenue = [];
+        for(let a=0; a<res.programmebydayvenue.length;a++) {
+          if (res.programmebydayvenue[a].day===req.params.day) {
+            programmebydayvenue.push(res.programmebydayvenue[a]);
+          }
+        }
+        res.programmebydayvenue = programmebydayvenue;
+      }
+
+      if (res.programmebydayvenue && req.params.type) {
+        for(let a=0; a<res.programmebydayvenue.length;a++) {
+          for(let b=0; b<res.programmebydayvenue[a].rooms.length;b++) {
+            let performances = [];
+            for(let c=0; c<res.programmebydayvenue[a].rooms[b].performances.length;c++) {
+              if (res.programmebydayvenue[a].rooms[b].performances[c].performance.type.slug===req.params.type) {
+                performances.push(res.programmebydayvenue[a].rooms[b].performances[c]);
+              }
+            }
+            res.programmebydayvenue[a].rooms[b].performances = performances;
+          }
+        }
+        let a=0;
+        while(a<res.programmebydayvenue.length) {
+          let b=0;
+          while(b<res.programmebydayvenue[a].rooms.length) {
+            if (!res.programmebydayvenue[a].rooms[b].performances.length) {
+              res.programmebydayvenue[a].rooms.splice(b, 1);
+            } else {
+              b++;
+            }
+          }
+          if (!res.programmebydayvenue[a].rooms.length) {
+            res.programmebydayvenue.splice(a, 1);
+          } else {
+            a++;
+          }
+        }
+      }
+
       cb(err, res);
       //cb(err, data);
     });
@@ -306,6 +365,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
   //logger.debug(config.sections[section]);
   let populate = config.sections[section][subsection].populate;
   for(let item in populate) {
+    logger.debug(populate[item].model);
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
     
     if (populate[item].model === 'UserShow') populate[item].model = UserShow;
@@ -328,7 +388,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
   }
   const select = config.sections[section][subsection].select;
   const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
-  logger.debug(select);
 
   dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
     if (err || data === null) {

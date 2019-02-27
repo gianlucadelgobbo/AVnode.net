@@ -175,34 +175,13 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
   if (this.program && this.program.length) {
     const lang = global.getLocale();
     for(let a=0;a<this.program.length;a++){
-      for(let b=0;b<this.program[a].schedule.length;b++){
-        if (this.program[a].schedule[b].starttime) {
-          ret = true;
-          if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
-            let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-            if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
-            let d = ('0'+date.getUTCDate()).substr(-2);
-            let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
-            let y = date.getUTCFullYear();
-            let newdate = moment(date).format(config.dateFormat[lang].single);
-            if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
-              day: y+"-"+m+"-"+d,
-              date: newdate,
-              rooms: {}
-            };
-            if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room] = {
-              venue: this.program[a].schedule[b].venue.name,
-              room: this.program[a].schedule[b].venue.room,
-              performances: []
-            };
-            let clone = JSON.parse(JSON.stringify(this.program[a]));
-            clone.schedule = this.program[a].schedule[b];
-            //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
-            programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
-          } else {
-            var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-             for(let c=0;c<days;c++){
-              let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+      if (this.program[a].performance) {
+        for(let b=0;b<this.program[a].schedule.length;b++){
+          if (this.program[a].schedule[b].starttime) {
+            ret = true;
+            if ((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
+              let date = new Date(this.program[a].schedule[b].starttime);  // dateStr you get from mongodb
+              if (date.getUTCHours()<10) date = new Date(this.program[a].schedule[b].starttime-(24*60*60*1000));
               let d = ('0'+date.getUTCDate()).substr(-2);
               let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
               let y = date.getUTCFullYear();
@@ -221,13 +200,57 @@ eventSchema.virtual('programmebydayvenue').get(function (req) {
               clone.schedule = this.program[a].schedule[b];
               //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
               programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
+            } else {
+              var days = Math.floor((this.program[a].schedule[b].endtime-this.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+              for(let c=0;c<days;c++){
+                let date = new Date((this.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+                let d = ('0'+date.getUTCDate()).substr(-2);
+                let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                let y = date.getUTCFullYear();
+                let newdate = moment(date).format(config.dateFormat[lang].single);
+                if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
+                  day: y+"-"+m+"-"+d,
+                  date: newdate,
+                  rooms: {}
+                };
+                if (!programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room]) programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room] = {
+                  venue: this.program[a].schedule[b].venue.name,
+                  room: this.program[a].schedule[b].venue.room,
+                  performances: []
+                };
+                let clone = JSON.parse(JSON.stringify(this.program[a]));
+                clone.schedule = this.program[a].schedule[b];
+                //if (programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.length<5) 
+                programmebydayvenueObj[y+"-"+m+"-"+d].rooms[this.program[a].schedule[b].venue.name+this.program[a].schedule[b].venue.room].performances.push(clone);  
+              }
             }
           }
         }
       }
     }
+/*     if (req.params.day) {
+      programmebydayvenue = [programmebydayvenueObj[y+"-"+m+"-"+d]];
+      const date = new Date(req.params.day);
+      let program = [];
+      for(let a=0; a<res.program.length;a++) {
+        if (res.program[a].schedule && res.program[a].schedule!=date) {
+          program.push(res.program[a]);
+        }
+      }
+      res = program;
+    } else {
+      programmebydayvenue = Object.values(programmebydayvenueObj);
+    }
+ */
     let programmebydayvenue = ret ? Object.values(programmebydayvenueObj) : undefined;
-    if (programmebydayvenue) programmebydayvenue.sort((a,b) => (a.day > b.day) ? 1 : ((b.day > a.day) ? -1 : 0)); 
+    if (programmebydayvenue) programmebydayvenue.sort((a,b) => (a.day > b.day) ? 1 : ((b.day > a.day) ? -1 : 0));
+    for(let a=0;a<programmebydayvenue.length;a++){
+      let rooms = [];
+      for(let b in programmebydayvenue[a].rooms){
+        rooms.push(programmebydayvenue[a].rooms[b]);
+      }
+      programmebydayvenue[a].rooms = rooms;
+    }
     return programmebydayvenue;
   }
 });

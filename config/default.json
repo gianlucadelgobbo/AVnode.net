@@ -4953,7 +4953,7 @@
             "title": 1,
             "stats": 1,
             "users": 1,
-            "categories": 1,
+            "type": 1,
             "image": 1,
             "slug": 1
           },
@@ -4972,10 +4972,10 @@
             },
             "model": "UserShow"
           }, {
-            "path": "categories",
+            "path": "type",
             "select": {
               "name": 1,
-              "ancestor": 1
+              "slug": 1
             },
             "model": "Category"
           }]

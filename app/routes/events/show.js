@@ -26,12 +26,25 @@ router.get('/program', (req, res) => {
   dataprovider.show(req, res, section, 'program', Model);
 });
 
+router.get('/program/:performance', (req, res) => {
+  dataprovider.show(req, res, section, 'program', Model);
+});
+
+router.get('/program/day/:day', (req, res) => {
+  dataprovider.show(req, res, section, 'program', Model);
+});
+
+router.get('/program/type/:type', (req, res) => {
+  dataprovider.show(req, res, section, 'program', Model);
+});
+
 router.get('/program/:sub', (req, res) => {
   const sub = new Date(req.params.sub);
   if (sub.getFullYear()+"-"+(("0" + (sub.getMonth()+1)).slice(-2))+"-"+(("0" + (sub.getDate())).slice(-2)) == sub) {
     dataprovider.show(req, res, section, 'program', Model);
   } else {
-    dataprovider.show(req, res, "performances", 'show', Model);
+    console.log("stocazzo");
+    dataprovider.show(req, res, "performances", 'show', require('mongoose').model('Performance'));
   }
 });
 
