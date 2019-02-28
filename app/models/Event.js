@@ -82,9 +82,11 @@ const callSchema = new Schema({
   }
 });
 callSchema.virtual('start_date_formatted').get(function () {
+  moment.locale('en');
   return moment(this.start_date).utc().format('MMMM Do YYYY');
 });
 callSchema.virtual('end_date_formatted').get(function () {
+  moment.locale('en');
   return moment(this.end_date).utc().format('MMMM Do YYYY, HH:mm');
 });
 
