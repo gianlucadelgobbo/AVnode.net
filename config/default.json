@@ -5015,8 +5015,7 @@
             "users": 1,
             "type": 1,
             "image": 1,
-            "slug": 1,
-            "abouts": 1
+            "slug": 1
           },
           "model": "Performance",
           "populate": [{
@@ -5039,32 +5038,6 @@
               "slug": 1
             },
             "model": "Category"
-          }, {
-            "path": "bookings.event",
-            "select": {
-              "title": 1,
-              "image": 1,
-              "slug": 1
-            },
-            "model": "EventShow"
-          }, {
-            "path": "galleries",
-            "select": {
-              "title": 1,
-              "stats": 1,
-              "image": 1,
-              "slug": 1
-            },
-            "model": "Gallery"
-          }, {
-            "path": "videos",
-            "select": {
-              "title": 1,
-              "stats": 1,
-              "image": 1,
-              "slug": 1
-            },
-            "model": "Video"
           }]
         }, {
           "path": "program.schedule.categories",

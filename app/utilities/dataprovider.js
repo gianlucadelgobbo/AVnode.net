@@ -6,11 +6,13 @@ const helper = require('./helper');
 const mongoose = require('mongoose');
 const UserShow = mongoose.model('UserShow');
 const Event = mongoose.model('Event');
+const EventShow = mongoose.model('EventShow');
 const Footage = mongoose.model('Footage');
 // const Crew = mongoose.model('Crew');
 const Performance = mongoose.model('Performance');
 const Category = mongoose.model('Category');
 const Playlist = mongoose.model('Playlist');
+const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
 
@@ -51,7 +53,37 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         for(let a=0; a<populate.length;a++) {
           if (populate[a].path==="program.performance") {
             populate[a].match = { "slug": req.params.performance};
+            populate[a].select.abouts = 1;
             populate[a].select.bookings = 1;
+            populate[a].populate.push({
+              "path": "bookings.event",
+              "select": {
+                "title": 1,
+                "image": 1,
+                "slug": 1
+              },
+              "model": "EventShow"
+            });
+            populate[a].populate.push({
+              "path": "galleries",
+              "select": {
+                "title": 1,
+                "stats": 1,
+                "image": 1,
+                "slug": 1
+              },
+              "model": "Gallery"
+            });
+            populate[a].populate.push({
+              "path": "videos",
+              "select": {
+                "title": 1,
+                "stats": 1,
+                "image": 1,
+                "slug": 1
+              },
+              "model": "Video"
+            });
           }
         }
       }
