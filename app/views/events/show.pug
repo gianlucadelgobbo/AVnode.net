@@ -56,6 +56,21 @@ block title
                     i(class="fa fa-cube")
                     =" "
                     !=data.type.name
+            if data.advanced
+              .text-right.mb-3
+                each item in data.advanced.menu
+                  if item.days || item.types
+                    .btn-group.ml-3
+                      a.btn.btn-primary(href="/events/"+data.slug+"/"+item.slug+"/")=item.name
+                      a.btn.btn-primary.dropdown-toggle.dropdown-toggle-split( data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                        .sr-only Toggle Dropdown
+                      .dropdown-menu
+                        each item2 in item.days
+                          a.dropdown-item(href="/events/"+data.slug+"/program/day/"+item2.slug+"/")=item2.name
+                        each item2 in item.types
+                          a.dropdown-item(href="/events/"+data.slug+"/program/type/"+item2.slug+"/")=item2.name
+                  else
+                    a.btn.btn-primary.ml-3(href="/events/"+data.slug+"/"+item.slug+"/")=item.name
 
       .row
         .col
@@ -149,14 +164,14 @@ block content
                   each item in data.videos            
                     include ../partials/boxVideo
                     
-  if data.programmenotscheduled
+  if data.advanced.programmenotscheduled
     .program_event_wrapper_bkg
       section.row.program_event_wrapper
           .col-lg-12
             .container
-              h2.main_title.indented_title.color1!=global.__('Performances')+(data.programmebydayvenue ? " "+global.__('to be scheduled') : "")
+              h2.main_title.indented_title.color1!=global.__('Performances') + " " + global.__('to be scheduled')
                 .owl-carousel.loop.owl-theme
-                  each item in data.programmenotscheduled
+                  each item in data.advanced.programmenotscheduled
                     if item
                       include ../partials/boxPerformance
                     else 
@@ -164,15 +179,15 @@ block content
                         pre=item
 
 
-  if data.programmebydayvenue
+  if data.advanced.programmebydayvenue
     .program_event_wrapper_bkg
       section.row.program_event_wrapper
           .col-lg-12
             .container
               h2.main_title.indented_title.color1!=global.__('Program')
               - addtit = false;
-              each day, index in data.programmebydayvenue
-                if data.programmebydayvenue[index+1] && JSON.stringify(data.programmebydayvenue[index].rooms) == JSON.stringify(data.programmebydayvenue[index+1].rooms)
+              each day, index in data.advanced.programmebydayvenue
+                if data.advanced.programmebydayvenue[index+1] && JSON.stringify(data.advanced.programmebydayvenue[index].rooms) == JSON.stringify(data.advanced.programmebydayvenue[index+1].rooms)
                   - if (!addtit) titstart = day.date
                   - addtit = true;
                 else
@@ -195,20 +210,20 @@ block content
           g
             polygon(fill='#232323' points='1927.4,99.5 0,99.5 0,-1 		')
             polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
-  if data.artists
+  if data.advanced.performers
     .performers_event_wrapper_bkg
       .container
         section.row.performers_event_wrapper
           .col-lg-12
-            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.artists.artistsN+")</small>"
+            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.advanced.performers.performersN+")</small>"
             h3.performers_infos
-              b=data.artists.artistsN
-              !=" "+global.__('performers')+" ("+data.artists.artistsCount + " " + global.__('artists') +") "
-              !=global.__('from') + " " + data.artists.countries.join(', ')+ " " + global.__('playing')+ " "
-              b=data.artists.actsN
-              !=" " + data.artists.acts.join(', ') + "."      
+              b=data.advanced.performers.performersN
+              !=" "+global.__('performers')+" ("+data.advanced.performers.performersCount + " " + global.__('performers') +") "
+              !=global.__('from') + " " + data.advanced.performers.countries.join(', ')+ " " + global.__('playing')+ " "
+              b=data.advanced.performers.actsN
+              !=" " + data.advanced.performers.acts.join(', ') + "."      
             .row
-              each item, i in data.artists.artists
+              each item, i in data.advanced.performers.performers
                 .col-sm-4
                   include ../partials/boxPerformerEvent
     .polygon_divider_bottom

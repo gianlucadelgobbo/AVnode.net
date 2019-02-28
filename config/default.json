@@ -2688,7 +2688,7 @@
             "tech_arts": {
               "schema": "shared/About",
               "comp": "textarea_multilang",
-              "label": "Technologies with the artists",
+              "label": "Technologies with the performers",
               "validators": {
                 "String": {
                   "min": 0,
@@ -4755,8 +4755,38 @@
           "program": 1,
           "type": 1,
           "organizationsettings": 1,
-          "tobescheduled": 1,
           "partners": 1
+        },
+        "output": {
+          "_id": 1,
+          "title": 1,
+          "description": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "slug": 1,
+          "type": 1,
+          "subtitle": 1,
+          "imageFormats": 1,
+          "boxDate": 1,
+          "boxVenue": 1,
+          "fullSchedule": 1,
+          "participate": 1,
+          "about": 1,
+          "aboutFull": 1,
+          "call_is_active": 1,
+          "locations": 1,
+          "users": 1,
+          "partners": 1,
+          "galleries": 1,
+          "videos": 1,
+          "advanced": {
+            "menu": 1,
+            "programmenotscheduled": 1,
+            "programmebydayvenue": 1,
+            "performers": 1
+          }
         },
         "populate": [
           {
@@ -4765,7 +4795,7 @@
             "title": 1,
             "stats": 1,
             "users": 1,
-            "categories": 1,
+            "type": 1,
             "image": 1,
             "slug": 1
           },
@@ -4784,10 +4814,10 @@
             },
             "model": "UserShow"
           }, {
-            "path": "categories",
+            "path": "type",
             "select": {
               "name": 1,
-              "ancestor": 1
+              "slug": 1
             },
             "model": "Category"
           }]
@@ -4861,23 +4891,44 @@
           "model": "Gallery"
         }]
       },
-      "artists": {
+      "performers": {
         "select": {
           "title": 1,
           "subtitles": 1,
           "abouts": 1,
           "slug": 1,
-          "image": 1
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "image": 1,
+          "schedule": 1,
+          "program": 1,
+          "galleries": 1,
+          "type": 1,
+          "organizationsettings": 1,
+          "partners": 1
         },
         "output": {
           "_id": 1,
-          "stats": 1,
           "title": 1,
           "description": 1,
-          "subtitle": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
           "slug": 1,
+          "type": 1,
+          "subtitle": 1,
           "imageFormats": 1,
-          "artists": 1
+          "boxDate": 1,
+          "boxVenue": 1,
+          "fullSchedule": 1,
+          "participate": 1,
+          "advanced": {
+            "menu": 1,
+            "performers": 1
+          }
         },
         "populate": [
           {
@@ -4886,7 +4937,7 @@
             "title": 1,
             "stats": 1,
             "users": 1,
-            "categories": 1,
+            "type": 1,
             "image": 1,
             "slug": 1
           },
@@ -4905,12 +4956,115 @@
             },
             "model": "UserShow"
           }, {
-            "path": "categories",
+            "path": "type",
             "select": {
               "name": 1,
-              "ancestor": 1
+              "slug": 1
             },
             "model": "Category"
+          }]
+
+        }]
+      },
+      "program": {
+        "select": {
+          "title": 1,
+          "subtitles": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "image": 1,
+          "schedule": 1,
+          "program": 1,
+          "galleries": 1,
+          "type": 1,
+          "organizationsettings": 1,
+          "partners": 1
+        },
+        "output": {
+          "_id": 1,
+          "title": 1,
+          "description": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "slug": 1,
+          "type": 1,
+          "subtitle": 1,
+          "imageFormats": 1,
+          "boxDate": 1,
+          "boxVenue": 1,
+          "fullSchedule": 1,
+          "participate": 1,
+          "advanced": {
+            "menu": 1,
+            "programmenotscheduled": 1,
+            "programmebydayvenue": 1
+          }
+        },
+        "populate": [
+          {
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1,
+            "abouts": 1
+          },
+          "model": "Performance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "UserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }, {
+            "path": "bookings.event",
+            "select": {
+              "title": 1,
+              "image": 1,
+              "slug": 1
+            },
+            "model": "EventShow"
+          }, {
+            "path": "galleries",
+            "select": {
+              "title": 1,
+              "stats": 1,
+              "image": 1,
+              "slug": 1
+            },
+            "model": "Gallery"
+          }, {
+            "path": "videos",
+            "select": {
+              "title": 1,
+              "stats": 1,
+              "image": 1,
+              "slug": 1
+            },
+            "model": "Video"
           }]
         }, {
           "path": "program.schedule.categories",
@@ -4924,27 +5078,52 @@
             "name": 1
           },
           "model": "Category"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
         }]
       },
-      "program": {
+      "galleries": {
         "select": {
           "title": 1,
           "subtitles": 1,
+          "abouts": 1,
           "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
           "image": 1,
+          "schedule": 1,
           "program": 1,
-          "abouts": 1
+          "galleries": 1,
+          "type": 1,
+          "organizationsettings": 1,
+          "partners": 1
         },
         "output": {
           "_id": 1,
-          "stats": 1,
           "title": 1,
           "description": 1,
-          "subtitle": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
           "slug": 1,
+          "type": 1,
+          "subtitle": 1,
           "imageFormats": 1,
-          "programmebydayvenue": 1,
-          "programmenotscheduled": 1
+          "boxDate": 1,
+          "boxVenue": 1,
+          "fullSchedule": 1,
+          "participate": 1,
+          "galleries": 1,
+          "advanced": {
+            "menu": 1
+          }
         },
         "populate": [
           {
@@ -4980,30 +5159,12 @@
             "model": "Category"
           }]
         }, {
-          "path": "program.schedule.categories",
+          "path": "type",
           "select": {
             "name": 1
           },
           "model": "Category"
         }, {
-          "path": "program.schedule.status",
-          "select": {
-            "name": 1
-          },
-          "model": "Category"
-        }]
-      },
-      "galleries": {
-        "select": {
-          "title": 1,
-          "subtitles": 1,
-          "slug": 1,
-          "abouts": 1,
-          "image": 1,
-          "galleries": 1
-        },
-        "populate": [
-          {
           "path": "galleries",
           "select": {
             "title": 1,
@@ -5020,13 +5181,75 @@
         "select": {
           "title": 1,
           "subtitles": 1,
-          "slug": 1,
           "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
           "image": 1,
-          "videos": 1
+          "schedule": 1,
+          "program": 1,
+          "galleries": 1,
+          "type": 1,
+          "organizationsettings": 1,
+          "partners": 1
+        },
+        "output": {
+          "_id": 1,
+          "title": 1,
+          "description": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "slug": 1,
+          "type": 1,
+          "subtitle": 1,
+          "imageFormats": 1,
+          "boxDate": 1,
+          "boxVenue": 1,
+          "fullSchedule": 1,
+          "participate": 1,
+          "videos": 1,
+          "advanced": {
+            "menu": 1
+          }
         },
         "populate": [
           {
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "Performance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "UserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        }, {
           "path": "videos",
           "select": {
             "title": 1,
@@ -5038,29 +5261,89 @@
           "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": {},
           "model": "Video"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
         }]
       },
       "partners": {
         "select": {
           "title": 1,
           "subtitles": 1,
+          "abouts": 1,
           "slug": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
           "image": 1,
+          "schedule": 1,
+          "program": 1,
+          "galleries": 1,
+          "type": 1,
+          "organizationsettings": 1,
           "partners": 1
         },
-        "populate": [{
-          "path": "users",
+        "output": {
+          "_id": 1,
+          "title": 1,
+          "description": 1,
+          "stats": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "slug": 1,
+          "type": 1,
+          "subtitle": 1,
+          "imageFormats": 1,
+          "boxDate": 1,
+          "boxVenue": 1,
+          "fullSchedule": 1,
+          "participate": 1,
+          "users": 1,
+          "partners": 1,
+          "advanced": {
+            "menu": 1
+          }
+        },
+        "populate": [
+          {
+          "path": "program.performance",
           "select": {
-            "slug": 1,
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
             "image": 1,
-            "organizationData.logo": 1,
-            "stagename": 1,
-            "web": 1,
-            "social": 1             
+            "slug": 1
           },
-          "model": "UserShow"
+          "model": "Performance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "UserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
         }, {
-        "path": "partners.category",
+          "path": "partners.category",
           "select": {
             "name": 1
           },
@@ -5073,7 +5356,17 @@
             "organizationData.logo": 1,
             "stagename": 1,
             "web": 1,
-            "social": 1             
+            "activity": 1
+             
+          },
+          "model": "UserShow"
+        }, {
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "stagename": 1
           },
           "model": "UserShow"
         }]

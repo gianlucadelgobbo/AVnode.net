@@ -1,0 +1,278 @@
+extends ../layout
+block title
+  if data.imageFormats
+    .container
+      .event_main_image_wrapper
+        img.img-fluid.event_main_image(src=data.imageFormats.large, alt=data.title)
+        img.expand_image_event(src="/images/expand_image_event.svg")
+
+  
+  .wrapper_header_evento
+    .container
+      .row
+        .col-lg-12
+          header.header_event
+            .row
+              .col-lg-9
+                h1.main_title=data.title
+                  if editable
+                    !="  "
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                if data.stats
+                  .performance_stat_container
+                    .performance_stat_wrapper
+                      ul
+                        if data.stats.visits
+                          li=data.stats.visits + ' ' + global.__('Views')
+                        li
+                          span.likes_count=data.stats.likes ? data.stats.likes : 0
+                          !=' ' + global.__('Likes')                      
+              .col-lg-3.share_like_list_column
+                include ../partials/share_like
+            p.subtitle=data.subtitle && data.subtitle!= "Text is missing" ? data.subtitle : data.boxDate
+            .row
+              .col-lg-9
+                if data.boxVenue
+                  p.boxVenue=data.boxVenue
+                  p
+                    a(data-toggle='collapse', href="javascript:void(0);", data-target='#fullSchedule', role='button', aria-expanded='false', aria-controls='fullSchedule')=global.__("Full schedule")
+                  #fullSchedule.collapse
+                    ul
+                      each fullSchedule in data.fullSchedule
+                        li=fullSchedule
+              .col-lg-3
+                if data.type
+                  p.text-right
+                    i(class="fa fa-cube")
+                    =" "
+                    !=data.type.name
+            if data.advanced
+              .text-right.mb-3
+                each item in data.advanced.menu
+                  if item.days || item.types
+                    .btn-group.ml-3
+                      a.btn.btn-primary(href="/events/"+data.slug+"/"+item.slug+"/")=item.name
+                      a.btn.btn-primary.dropdown-toggle.dropdown-toggle-split( data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                        .sr-only Toggle Dropdown
+                      .dropdown-menu
+                        each item2 in item.days
+                          a.dropdown-item(href="/events/"+data.slug+"/program/day/"+item2.slug+"/")=item2.name
+                        each item2 in item.types
+                          a.dropdown-item(href="/events/"+data.slug+"/program/type/"+item2.slug+"/")=item2.name
+                  else
+                    a.btn.btn-primary.ml-3(href="/events/"+data.slug+"/"+item.slug+"/")=item.name
+
+      .row
+        .col
+          ul.event_social_list.list-inline
+            each item in data.web
+              li.list-inline-item.mb-3
+                a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                  span.lnr.lnr-link.about_button
+            each item in data.social
+              if item.url.indexOf('instagram.com/')!=-1
+                li.list-inline-item.mb-3
+                  - var tooltip = item.url.replace("http://","").replace("https://","").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.fa.fa-instagram.about_button
+              else if item.url.indexOf('twitter.com/')!=-1
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                    i.fa.fa-twitter.about_button
+              else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                    i.fa.fa-facebook.about_button
+              else if item.url.indexOf('vimeo.com/')!=-1
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                    i.fa.fa-vimeo.about_button
+              else if item.url.indexOf('youtube.com/')!=-1
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                    i.fa.fa-youtube.about_button
+              else
+                li.list-inline-item.mb-3
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                    span.lnr.lnr-link.about_button
+        if data.participate
+          .col            
+            p.text-right
+              a.participate.btn.btn-primary(href="/events/"+data.slug+"/participate/")=global.__('Participate')
+block content
+  if data.advanced.programmenotscheduled
+    .program_event_wrapper_bkg
+      section.row.program_event_wrapper
+          .col-lg-12
+            .container
+              h2.main_title.indented_title.color1!=global.__('Performances') + " " + global.__('to be scheduled')
+                .owl-carousel.loop.owl-theme
+                  each item in data.advanced.programmenotscheduled
+                    if item
+                      include ../partials/boxPerformance
+                    else 
+                      .badge.badge-danger
+                        pre=item
+
+
+  if data.advanced.programmebydayvenue
+    .program_event_wrapper_bkg
+      section.row.program_event_wrapper
+          .col-lg-12
+            .container
+              h2.main_title.indented_title.color1!=global.__('Program')
+              - addtit = false;
+              each day, index in data.advanced.programmebydayvenue
+                if data.advanced.programmebydayvenue[index+1] && JSON.stringify(data.advanced.programmebydayvenue[index].rooms) == JSON.stringify(data.advanced.programmebydayvenue[index+1].rooms)
+                  - if (!addtit) titstart = day.date
+                  - addtit = true;
+                else
+                  h3.date_schedule_title=addtit ? titstart+" // "+day.date : day.date
+                  - addtit = false;
+                  .data_program_divider
+                  each venueroom in day.rooms              
+                    h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
+                    .owl-carousel.loop.owl-theme
+                      if venueroom.performances
+                        each item in venueroom.performances
+                          include ../partials/boxPerformanceScheduled
+          //.button_more.button_more_program
+            span.button_more_label!=global.__('+ All the program')
+            span.button_more_bkg
+    .polygon_divider_top
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='#232323' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='transparent' points='0,0 1920,0 1920,100.5 		')
+    
+  if data.performance
+    if data.performance.title
+      .container
+        .row.performer_title
+          .col-lg-9
+            h1.main_title=data.performance.title
+              if editable
+                !="  "
+                a.badge.badge-danger(href="/admin/performances/"+data.performance._id+"/public")=global.__("EDIT")
+            if data.performance.stats
+              .performance_stat_container
+                .performance_stat_wrapper
+                  ul
+                    if data.performance.stats.visits
+                      li=data.performance.stats.visits + ' ' + global.__('Views')
+                    li
+                      span.likes_count=data.performance.stats.likes ? data.performance.stats.likes : 0
+                      !=' ' + global.__('Likes')                      
+          .col-lg-3.share_like_list_column
+            include ../partials/share_like
+
+            
+
+
+    .container
+      .row
+        .col-sm-12
+          if data.performance.imageFormats
+            img.img-fluid.perfomance_image.bottom60(
+              src=data.performance.imageFormats.large
+              alt=data.performance.title
+            )
+      .row
+        .col-sm-8        
+          ul.nav.nav-tabs.tabs_single_performance(role='tablist')
+            if data.performance.about
+              li.nav-item
+                a.tab_link.nav-link.active(href='#about', role='tab', data-toggle='tab') 
+                  =global.__('About')
+            li.nav-item
+              a.tab_link.nav-link(href='#technical_specifications', role='tab', data-toggle='tab')    
+                =global.__('Technical specifications')
+          // Tab panes
+          .tab-content
+            //if data.performance.about
+            #about.tab-pane.in.active(role='tabpanel')
+              .pt-2.pb-2!=data.performance.about
+            #technical_specifications.tab-pane(role='tabpanel')
+              if data.performance.duration
+                .tech_info_wrapper
+                  h4.tech_info_title=global.__('Duration (minutes)')
+                  p!=data.performance.duration
+              if data.performance.tech_req
+                .tech_info_wrapper
+                  h4.tech_info_title=global.__('What is needed')
+                  p!=data.performance.tech_req
+              if data.performance.tech_art
+                .tech_info_wrapper
+                  h4.tech_info_title=global.__('What the artists brings')
+                  p!=data.performance.tech_art
+
+        .col-sm-4.performance_info_sidebar
+          if data.performance.type
+            ul.list-inline.category_performance_item.single_performance
+              li.list-inline-item
+                  span=data.performance.type.name
+              if data.performance.tecnique
+                li.list-inline-item
+                  span=data.performance.tecnique.name
+              if data.performance.genre
+                li.list-inline-item
+                  span=data.performance.genre.name
+          .performance_users_item_wrapper
+            .row
+              each user in data.performance.users
+                .col-sm-12
+                  .performance_user_wrapper
+                    .user_perfomance_image
+                      a.performance_event_title(href="/"+user.slug)
+                        img(src=user.imageFormats.small, alt=user.stagename)
+                    .user_perfomance_country_city
+                      a.performance_event_title(href="/"+user.slug).users_performance_item_name=user.stagename
+                      p.users_performance_item_country!=user.addressesFormatted.join(", ")
+          .performance_events_wrapper
+            if data.performance.bookings.length
+              h3=global.__('Events')  
+              .row.performance_event_wrapper
+                each booking in data.performance.bookings
+                  .col-sm-3
+                    .performance_event_image
+                      a.performance_event_title(href="/events/"+booking.event.slug)
+                        img.img-fluid(src=booking.event.imageFormats.small, alt=booking.event.title)
+                  .col-sm-9
+                    .performance_event_info
+                      a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
+                      br
+                      each schedule in booking.schedule
+                        !=schedule.boxDate
+                        br
+                        !=schedule.venue.name + " | " + schedule.venue.room + " | " + schedule.venue.location.locality + ", " + schedule.venue.location.country
+    if data.performance.galleries.length || data.performance.videos.length
+      .divider_gallery
+        svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
+          polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
+    if data.performance.galleries.length  
+      .gallery_event_wrapper_bkg
+        section.event_galleries_wrapper
+          .content_wrapper
+            .container
+              .row
+                .col-lg-12
+                  h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.performance.galleries.length+"</span>)</small>"  
+                  .performance_divider.basic_divider
+                  .owl-carousel.loop_3items.owl-theme
+                    each item in data.performance.galleries                    
+                      include ../partials/boxGallery
+    if data.performance.videos.length  
+      .video_event_wrapper_bkg
+        section.event_video_wrapper
+          .content_wrapper
+            .container
+              .row
+                .col-lg-12
+                  h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.performance.videos.length+"</span>)</small>"  
+                  .performance_divider.basic_divider
+                  .owl-carousel.loop_3items.owl-theme
+                    each item in data.performance.videos            
+                      include ../partials/boxVideo
+

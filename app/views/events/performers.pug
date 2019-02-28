@@ -100,88 +100,29 @@ block title
             p.text-right
               a.participate.btn.btn-primary(href="/events/"+data.slug+"/participate/")=global.__('Participate')
 
-  .partners_event_wrapper_bkg
-    .container
-      section.row.partners_event_wrapper
-        .col-lg-8
-          h2.main_title.indented_title.color1!=global.__('Production')
-        .col-lg-4
-          img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
-        .col-sm-12
-          .row.partners_list_wrapper
-            each partner in data.users
-              .col-sm-2
-                .partner_box_wrapper
-                  a(href="/"+partner.slug+"/", title=partner.stagename)
-                    if partner.imageFormats                          
-                      img.card-img-top.img-fluid(
-                        class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
-                        src=partner.imageFormats.small
-                        alt=partner.title
-                      )
-                  p.partner_stagename
-                    a(href="/"+partner.slug+"/", title=partner.stagename)
-                      span=partner.stagename
-
-  if data.partners.length
-    .partners_event_wrapper_bkg
+block content
+  if data.advanced.performers
+    .performers_event_wrapper_bkg
       .container
-        section.row.partners_event_wrapper
-          .col-lg-8
-            h2.main_title.indented_title.color1!=global.__('Partners')
-          .col-lg-4
-            img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
-          .col-sm-12
+        section.row.performers_event_wrapper
+          .col-lg-12
+            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.advanced.performers.performersN+")</small>"
+            h3.performers_infos
+              b=data.advanced.performers.performersN
+              !=" "+global.__('performers')+" ("+data.advanced.performers.performersCount + " " + global.__('performers') +") "
+              !=global.__('from') + " " + data.advanced.performers.countries.join(', ')+ " " + global.__('playing')+ " "
+              b=data.advanced.performers.actsN
+              !=" " + data.advanced.performers.acts.join(', ') + "."      
             .row
-              each partners_block in data.partners
-                .col-sm-12.partners_block
-                  h4!=global.__('Partners')+ " / " +partners_block.category.name
-                  .basic_divider
-                  .row.partners_list_wrapper
-                    each partner in partners_block.users
-                      if partner.web[0]
-                        - var url = partner.web[0].url;
-                      else
-                        - var url = null;
-                      if partner.activity > 0
-                        .col-sm-2
-                          .partner_box_wrapper
-                            a(href="/"+partner.slug+"/", title=partner.stagename)
-                              if partner.imageFormats                          
-                                img.card-img-top.img-fluid(
-                                  class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
-                                  src=partner.imageFormats.small
-                                  alt=partner.title
-                                )
-                            p.partner_stagename
-                              a(href="/"+partner.slug+"/", title=partner.stagename)
-                                span=partner.stagename
-                      else
-                        if url
-                          .col-sm-2
-                            .partner_box_wrapper
-                              a(href=url, target="_blank", title=partner.stagename)
-                                if partner.imageFormats                          
-                                  img.card-img-top.img-fluid(
-                                    class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
-                                    src=partner.imageFormats.small
-                                    alt=partner.title
-                                  )
-                              p.partner_stagename
-                                a(href=url, target="_blank", title=partner.stagename)
-                                  span=partner.stagename
-                        else
-                          .col-sm-2
-                            .partner_box_wrapper
-                              if partner.imageFormats                          
-                                img.card-img-top.img-fluid(
-                                  class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
-                                  src=partner.imageFormats.small
-                                  alt=partner.title
-                                )
-                              p.partner_stagename
-                                span=partner.stagename
-                      
-
+              each item, i in data.advanced.performers.performers
+                .col-sm-4
+                  include ../partials/boxPerformerEvent
+    .polygon_divider_bottom
+      svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
+        g#layer2
+        g#Layer_1
+          g
+            polygon(fill='transparent' points='1927.4,99.5 0,99.5 0,-1 		')
+            polygon(fill='#232323' points='0,0 1920,0 1920,100.5 		')
     
-  
+

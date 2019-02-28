@@ -17,8 +17,7 @@ const News = mongoose.model('News');
 const logger = require('./logger');
 
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
-  console.log(select);
-  let assign = JSON.parse(JSON.stringify(select));
+  //let assign = JSON.parse(JSON.stringify(select));
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
 
     const nolimit = JSON.parse(JSON.stringify(populate));
@@ -39,8 +38,8 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       select(select).
       exec((err, data) => {
         /* const res = Object.assign(select, data);
-        console.log(select);
-        console.log(Object.keys(res));
+        logger.debug(select);
+        logger.debug(Object.keys(res));
         cb(err, res, total); */
         cb(err, data, total);
       });
@@ -52,13 +51,14 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         for(let a=0; a<populate.length;a++) {
           if (populate[a].path==="program.performance") {
             populate[a].match = { "slug": req.params.performance};
+            populate[a].select.bookings = 1;
           }
         }
       }
       if (req.params.day) {
         /*
         const date = new Date(req.params.day);
-        console.log(date);
+        logger.debug(date);
         select['program.schedule.date.$'] = date;
         populate.push({
           "path": "program.schedule",
@@ -66,61 +66,84 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }); */
       }
     }
-    console.log(populate);
     model.
     findOne({slug: req.params.sub ? req.params.sub : req.params.slug}).
     // lean({ virtuals: true }).
     // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
     populate(populate).
     select(select).
-    exec((err, data) => {
-      console.log(err);
+    exec((err, ddd) => {
+      let data = JSON.parse(JSON.stringify(ddd));
       let res = {};
+      if (data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
+        data.participate = true;
+      }
       if (output) {
-        for(var item in output) if (data[item]) res[item] = data[item];
+        for(var item in output) {
+          if (data[item]) {
+            if (output[item] === 1) {
+              res[item] = data[item];
+            } else {
+              for(var item2 in output[item]) {
+                if (!res[item]) res[item] = {};
+                if (data[item][item2]) {
+                  res[item][item2] = data[item][item2];
+                }
+              }
+            }
+          }
+        }
       } else {
         res = data;
       }
-      if (res.programmebydayvenue && req.params.day) {
+      if (res && res.advanced && res.advanced.programmebydayvenue && req.params.day) {
         let programmebydayvenue = [];
-        for(let a=0; a<res.programmebydayvenue.length;a++) {
-          if (res.programmebydayvenue[a].day===req.params.day) {
-            programmebydayvenue.push(res.programmebydayvenue[a]);
+        for(let a=0; a<res.advanced.programmebydayvenue.length;a++) {
+          if (res.advanced.programmebydayvenue[a].day===req.params.day) {
+            programmebydayvenue.push(res.advanced.programmebydayvenue[a]);
           }
         }
-        res.programmebydayvenue = programmebydayvenue;
+        res.advanced.programmebydayvenue = programmebydayvenue;
+        res.advanced.programmenotscheduled = undefined;
       }
 
-      if (res.programmebydayvenue && req.params.type) {
-        for(let a=0; a<res.programmebydayvenue.length;a++) {
-          for(let b=0; b<res.programmebydayvenue[a].rooms.length;b++) {
+      if (res && res.advanced && res.advanced.programmebydayvenue && req.params.type) {
+        for(let a=0; a<res.advanced.programmebydayvenue.length;a++) {
+          for(let b=0; b<res.advanced.programmebydayvenue[a].rooms.length;b++) {
             let performances = [];
-            for(let c=0; c<res.programmebydayvenue[a].rooms[b].performances.length;c++) {
-              if (res.programmebydayvenue[a].rooms[b].performances[c].performance.type.slug===req.params.type) {
-                performances.push(res.programmebydayvenue[a].rooms[b].performances[c]);
+            for(let c=0; c<res.advanced.programmebydayvenue[a].rooms[b].performances.length;c++) {
+              if (res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type.slug===req.params.type) {
+                performances.push(res.advanced.programmebydayvenue[a].rooms[b].performances[c]);
               }
             }
-            res.programmebydayvenue[a].rooms[b].performances = performances;
+            res.advanced.programmebydayvenue[a].rooms[b].performances = performances;
           }
         }
         let a=0;
-        while(a<res.programmebydayvenue.length) {
+        while(a<res.advanced.programmebydayvenue.length) {
           let b=0;
-          while(b<res.programmebydayvenue[a].rooms.length) {
-            if (!res.programmebydayvenue[a].rooms[b].performances.length) {
-              res.programmebydayvenue[a].rooms.splice(b, 1);
+          while(b<res.advanced.programmebydayvenue[a].rooms.length) {
+            if (!res.advanced.programmebydayvenue[a].rooms[b].performances.length) {
+              res.advanced.programmebydayvenue[a].rooms.splice(b, 1);
             } else {
               b++;
             }
           }
-          if (!res.programmebydayvenue[a].rooms.length) {
-            res.programmebydayvenue.splice(a, 1);
+          if (!res.advanced.programmebydayvenue[a].rooms.length) {
+            res.advanced.programmebydayvenue.splice(a, 1);
           } else {
             a++;
           }
         }
+        res.advanced.programmenotscheduled = undefined;
       }
 
+      if (res && res.advanced && res.advanced.programmebydayvenue && req.params.performance) {
+        res.performance = res.advanced.programmebydayvenue[0].rooms[0].performances[0].performance;
+        delete res.advanced.programmebydayvenue;
+        res.advanced.programmenotscheduled = undefined;
+      }
+      logger.debug("fetchShow END");
       cb(err, res);
       //cb(err, data);
     });
@@ -365,7 +388,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
   //logger.debug(config.sections[section]);
   let populate = config.sections[section][subsection].populate;
   for(let item in populate) {
-    logger.debug(populate[item].model);
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
     
     if (populate[item].model === 'UserShow') populate[item].model = UserShow;
@@ -390,13 +412,10 @@ dataprovider.show = (req, res, section, subsection, model) => {
   const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 
   dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
+    logger.debug("fetchShow END");
     if (err || data === null) {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
-      if (data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
-        data.participate = true;
-        data.organizationsettings = undefined;
-      }
       if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
         const locations = data.schedule.map(obj =>{
           if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
@@ -419,6 +438,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             if (locations[item]) data.locations.push(locations[item]);
           }
         }
+        data.schedule = undefined;
       }
       if (data.addresses) {
         const locations = data.addresses.map(obj =>{
@@ -501,6 +521,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
       }
       if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
+        logger.debug("fetchShow END");
         if (process.env.DEBUG) {
           res.render('json', {data: data});
         } else {

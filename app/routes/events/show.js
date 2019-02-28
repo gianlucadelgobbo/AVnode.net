@@ -14,11 +14,11 @@ router.get('/partners', (req, res) => {
   dataprovider.show(req, res, section, 'partners', Model);
 });
 
-router.get('/artists', (req, res) => {
-  dataprovider.show(req, res, section, 'artists', Model);
+router.get('/performers', (req, res) => {
+  dataprovider.show(req, res, section, 'performers', Model);
 });
 
-router.get('/artists/:artist', (req, res) => {
+router.get('/performers/:performer', (req, res) => {
   dataprovider.show(req, res, "performers", 'show', Model);
 });
 
@@ -38,7 +38,7 @@ router.get('/program/type/:type', (req, res) => {
   dataprovider.show(req, res, section, 'program', Model);
 });
 
-router.get('/program/:sub', (req, res) => {
+/* router.get('/program/:sub', (req, res) => {
   const sub = new Date(req.params.sub);
   if (sub.getFullYear()+"-"+(("0" + (sub.getMonth()+1)).slice(-2))+"-"+(("0" + (sub.getDate())).slice(-2)) == sub) {
     dataprovider.show(req, res, section, 'program', Model);
@@ -46,7 +46,7 @@ router.get('/program/:sub', (req, res) => {
     console.log("stocazzo");
     dataprovider.show(req, res, "performances", 'show', require('mongoose').model('Performance'));
   }
-});
+}); */
 
 router.get('/galleries', (req, res) => {
   dataprovider.show(req, res, section, 'galleries', Model);
