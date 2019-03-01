@@ -107,7 +107,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     exec((err, ddd) => {
       let data = JSON.parse(JSON.stringify(ddd));
       let res = {};
-      if (data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
+      if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
         data.participate = true;
       }
       if (output) {

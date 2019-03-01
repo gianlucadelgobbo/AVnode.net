@@ -12,7 +12,7 @@
         alt=item.performance.title
       )
   .performance_item_info_wrapper
-    a(href="/performances/"+item.performance.slug+"/", title=item.performance.title)
+    a(href="/events/"+data.slug+"/program/"+item.performance.slug+"/", title=item.performance.title)
       h4.performance_item_title=item.performance.title
     if item.performance.categories
       ul.list-inline.category_performance_item
