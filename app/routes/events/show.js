@@ -19,7 +19,7 @@ router.get('/performers', (req, res) => {
 });
 
 router.get('/performers/:performer', (req, res) => {
-  dataprovider.show(req, res, "performers", 'show', Model);
+  dataprovider.show(req, res, section, 'performers', Model);
 });
 
 router.get('/program', (req, res) => {

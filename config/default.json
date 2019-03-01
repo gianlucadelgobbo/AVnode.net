@@ -4963,7 +4963,13 @@
             },
             "model": "Category"
           }]
-
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
         }]
       },
       "program": {
@@ -5342,6 +5348,13 @@
             "stagename": 1
           },
           "model": "UserShow"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
         }]
       }
     },
