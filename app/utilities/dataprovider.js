@@ -63,6 +63,17 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
                 "slug": 1
               },
               "model": "EventShow"
+            }, {
+              "path": "users",
+              "select": {
+                "stagename": 1,
+                "image": 1,
+                "slug": 1,
+                "about": 1,
+                "web": 1,
+                "social": 1
+              },
+              "model": "UserShow"
             });
             populate[a].populate.push({
               "path": "galleries",
