@@ -71,6 +71,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
                 "image": 1,
                 "slug": 1,
                 "abouts": 1,
+                "addresses": 1,
                 "web": 1,
                 "social": 1
               },
