@@ -195,7 +195,7 @@ eventSchema.virtual('advanced').get(function (req) {
       if (this.program[a].performance && this.program[a].performance.users && this.program[a].performance.users.length) {
         if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
         for(let b=0;b<this.program[a].performance.users.length;b++){
-          if (this.program[a].performance.users[b].members.length) {
+          if (this.program[a].performance.users[b].members && this.program[a].performance.users[b].members.length) {
             for(let d=0;d<this.program[a].performance.users[b].members.length;d++){
               if (performersN.indexOf(this.program[a].performance.users[b].members[d]._id)===-1) performersN.push(this.program[a].performance.users[b].members[d]._id);
             }
