@@ -63,7 +63,8 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
                 "slug": 1
               },
               "model": "EventShow"
-            }, {
+            });
+            populate[a].populate.push({
               "path": "users",
               "select": {
                 "stagename": 1,
