@@ -258,20 +258,22 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
             res.performer = res.advanced.performers.performers[a];
           }
         }
-        let a=0;
-        while(a<res.performer.performances.length) {
-          let b=0;
-          while(b<res.performer.performances[a].bookings.length) {
-            if (!res.performer.performances[a].bookings[b].event/* .slug != req.params.slug */) {
-              res.performer.performances[a].bookings.splice(b, 1);
-            } else {
-              b++;
+        if (res.performer) {
+          let a=0;
+          while(a<res.performer.performances.length) {
+            let b=0;
+            while(b<res.performer.performances[a].bookings.length) {
+              if (!res.performer.performances[a].bookings[b].event/* .slug != req.params.slug */) {
+                res.performer.performances[a].bookings.splice(b, 1);
+              } else {
+                b++;
+              }
             }
-          }
-          if (!res.performer.performances[a].bookings.length) {
-            res.performer.performances.splice(a, 1);
-          } else {
-            a++;
+            if (!res.performer.performances[a].bookings.length) {
+              res.performer.performances.splice(a, 1);
+            } else {
+              a++;
+            }
           }
         }
         delete res.advanced.performers;
