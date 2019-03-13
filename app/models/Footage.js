@@ -51,21 +51,21 @@ footageSchema.virtual("imageFormats").get(function() {
   let imageFormats = {};
   if (this.media && (!this.media.encoded || this.media.encoded === 0)) {
     for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].tobeencoded;
+      imageFormats[format] = process.env.WAREHOUSE + config.cpanel[adminsez].forms.public.components.media.config.sizes[format].tobeencoded;
     }  
   } else {
     for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
+      imageFormats[format] = process.env.WAREHOUSE + config.cpanel[adminsez].forms.public.components.media.config.sizes[format].default;
     }  
   }
   if (this.media && this.media.preview) {
     const serverPath = this.media.preview;
     const localFileName = serverPath.substring(serverPath.lastIndexOf("/") + 1); // file.jpg this.file.file.substr(19)
-    const localPath = serverPath.substring(0, serverPath.lastIndexOf("/")).replace("/glacier/footage_previews/", process.env.WAREHOUSE + "/warehouse/footage/"); // /warehouse/2017/03
+    const localPath = serverPath.substring(0, serverPath.lastIndexOf("/")).replace("/glacier/footage_previews/", "/warehouse/footage/"); // /warehouse/2017/03
     const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf("."));
     const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf(".") + 1);
     for (let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-      imageFormats[format] = `${localPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+      imageFormats[format] = process.env.WAREHOUSE + localPath+"/"+config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder+"/"+localFileNameWithoutExtension+"_"+localFileNameExtension+".jpg";
     }
   }
   return imageFormats;
