@@ -77,7 +77,7 @@ $("#liker").on('click', function(ev) {
   } else {
    */
   request(url, method, payload, (data) => {
-    boxPerformerEvent(data);
+    //boxPerformerEvent(data);
     if(data.err) {
       alert(data.msg);
     } else {
