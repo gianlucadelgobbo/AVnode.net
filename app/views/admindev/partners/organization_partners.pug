@@ -36,7 +36,7 @@ block content
               else
                 .badge.badge-danger!="EXTERNAL"
             td
-              if item.partnerships && item.partnerships.length
+              //if item.partnerships && item.partnerships.length
                 each partnership in item.partnerships
                   !=partnership.category.name
                   each item in partnership.events
