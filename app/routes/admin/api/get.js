@@ -275,7 +275,10 @@ router.getMembers = (req, res) => {
   .exec((err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     //res.json(users.map(item => {delete item.imageFormats; return item;}));
-    res.json(users.map(item => {return {_id:item._id, stagename:item.stagename}}));
+    let result = [];
+    logger.debug(users);
+    if (users && users.length) result = users.map(item => {return {_id:item._id, stagename:item.stagename}});
+    res.json(result);
   });
 }
 
