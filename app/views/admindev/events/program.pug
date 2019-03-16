@@ -6,7 +6,7 @@ block content
       #external-events
         each prg in data.program
           if !prg.schedule || !prg.schedule.starttime
-            .fc-event.ui-draggable.ui-draggable-handle( data-event='{ title: "my event", duration: "02:00" }')
+            .fc-event.ui-draggable.ui-draggable-handle( data-event='{ "title": "'+prg.performance.title+'", "duration": "'+prg.performance.duration+'" }')
               !=prg.performance.title
               //!=prg.performance.categories.filter(function (el) {return el.ancestor.slug=="type";})[0].name
     .col-md-9(style="height: 100%;overflow-y: scroll;")

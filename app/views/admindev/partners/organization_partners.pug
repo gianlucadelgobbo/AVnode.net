@@ -7,6 +7,7 @@ block content
         option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
     if event
       a.btn.btn-primary.mb-3(href="/admindev/partners/"+owner+"/"+event+"/manage")=global.__("Manage event partnerships types")
+    button.btn.btn-primary.form-control.mb-3.mr-sm-2(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD"
   table.table
     thead
       tr
@@ -68,7 +69,7 @@ block content
                   div
                     a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
 
-  // Modal
+  // Modal Add Partner
   #modalAddPartner.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
     .modal-dialog(role='document')
       .modal-content
@@ -98,8 +99,29 @@ block content
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
             button.btn.btn-primary(type='submit')=global.__("Save")
+  
+  // Modal Link Partner
+  #modalLinkPartner.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalLinkPartnerLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          input(type='hidden', name="partner_owner", value=owner)
+          input(type='hidden', name="delegate", value=user.name)
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .alert.d-none
+            .form-group
+              label(for='formPartnerLinkName')=global.__("Brand")
+              input#formPartnerLinkName.form-control(type='text', name="stagename", placeholder='')
 
-  // Modal
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+
+  // Modal Add Contact
   #modalAddContact.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddContactLabel', aria-hidden='true')
     .modal-dialog(role='document')
       .modal-content

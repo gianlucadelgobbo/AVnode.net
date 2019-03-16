@@ -89,6 +89,26 @@ html(lang='en')
           //script(src="/js/moment.min.js")
           //script(src="/js/jquery-ui.min.js")
           script.
+            $( "#formPartnerLinkName" ).autocomplete({
+              source: function( request, response ) {
+                $.ajax( {
+                  url: "/admin/api/getauthors/"+request.term,
+                  dataType: "jsonp",
+                  success: function( data ) {
+                    var dd = data.map(item=>{return item.stagename}) ;
+                    console.log(data);
+                    console.log(dd);
+                    response(dd );
+                  }
+                } );
+              },
+              minLength: 2,
+              select: function( event, ui ) {
+                console.log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+              }
+            });
+
+          script.
             // Hide submenus
             $('#body-row .collapse').collapse('hide'); 
 
@@ -129,8 +149,8 @@ html(lang='en')
                       header: false,
                       defaultView: 'agendaWeek',
                       validRange: {
-                        start: '2019-05-09',
-                        end: '2019-05-13'
+                        start: '2019-05-02',
+                        end: '2019-05-05'
                       },
                       //columnHeaderFormat: "dddd D",
                       minTime: "15:00",
@@ -142,6 +162,7 @@ html(lang='en')
                       editable: true,
                       droppable: true, // this allows things to be dropped onto the calendar
                       drop: function(info) {
+                        console.log("drop");
                         console.log(info);
                         // is the "remove after drop" checkbox checked?
                         if ($('#drop-remove').is(':checked')) {
@@ -151,7 +172,7 @@ html(lang='en')
                         info.draggedEl.parentNode.removeChild(info.draggedEl);
                       },
                       eventClick: function() {
-                        alert('a day has been clicked!');
+                        console.log('a day has been clicked!');
                       },
                       events: [
                         {
@@ -163,13 +184,19 @@ html(lang='en')
                         // more events here
                       ],
                       eventDrop: function(event, element) {  
+                        console.log("eventDrop");
                         console.log(event);
+                        console.log(element);
                       },
                       eventLeave: function(info) {
-                        console.log('event left!', info.event);
+                        console.log("eventLeave");
+                        console.log(info);
+                        console.log(info.event);
                       },
                       eventReceive: function(info) {
-                        console.log('event received!', info.event);
+                        console.log("eventReceive");
+                        console.log(info.draggedEl);
+                        console.log(info.event);
                       }
                     });
                     calendars['calendarroom#{i}'].render();
@@ -180,8 +207,8 @@ html(lang='en')
                       header: false,
                       defaultView: 'agendaWeek',
                       validRange: {
-                        start: '2019-05-10',
-                        end: '2019-05-14'
+                        start: '2019-05-02',
+                        end: '2019-05-05'
                       },
                       //columnHeaderFormat: "dddd D",
                       minTime: "00:00",
@@ -233,8 +260,12 @@ html(lang='en')
                   new FullCalendar.Draggable(exte, {
                     itemSelector: '.fc-event',
                     eventData: function(eventEl) {
+                        console.log("Draggable");
+                        console.log(eventEl.getAttribute("data-event"));
                       return {
-                        title: eventEl.innerText
+                        title: eventEl.innerText+"ssssss",
+                        duration: "00:20",
+                        datassss: eventEl.getAttribute("data-event")
                       };
                     }
                   });
