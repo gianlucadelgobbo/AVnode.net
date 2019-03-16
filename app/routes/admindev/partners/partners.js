@@ -127,6 +127,7 @@ router.get('/:id', (req, res) => {
           superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
           owner: req.params.id,
           events: events,
+          user: req.user,
           data: data,
           script: false
         });
