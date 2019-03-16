@@ -141,6 +141,42 @@ $(function() {
     var modal = $(this)
     // modal.find('.modal-title').text('New partner for ' + stagename)
   })
+
+
+  $( "#formPartnerLinkName" ).autocomplete({
+    source: function( request, response ) {
+      $.ajax( {
+        url: "/admin/api/getauthors/"+request.term,
+        success: function( data ) {
+          var dd = data.map(item=>{return {value:item.stagename, id: item.id}}) ;
+          response(dd );
+        }
+      } );
+    },
+    select: function( event, ui ) {
+      $("input[name='id']").val(ui.item.id);
+    }
+  });
+
+  $( "#modalLinkPartner form" ).submit(function( event ) {
+    event.preventDefault();
+    var post = {};
+    $( this ).serializeArray().map(n => {
+      post[n['name']] = n['value'].trim();
+    });
+    console.log(post);
+    $.ajax({
+      url: "/admin/api/partner/link/",
+      method: "post",
+      data: post
+    })
+    .done(function(data) {
+      $( this ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
+    })
+    .fail(function(err) {
+      $( "#modalLinkPartner form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
+    });
+})
   $( "#modalAddPartner form" ).submit(function( event ) {
     event.preventDefault();
     var post = {};
@@ -149,7 +185,6 @@ $(function() {
         var urls = n['value'].split(/\n/);
         post[n['name']] = [];
         for (url in urls) post[n['name']].push({url:urls[url].trim()});
-
       } else {
         post[n['name']] = n['value'].trim();
       }

@@ -152,6 +152,19 @@ router.cancelSubscription = (req, res) => {
   });
 }
 
+router.linkPartner = (req, res) => {
+  logger.debug(req.body);
+  Models.User
+  .findOne({_id: req.body.id, is_crew: true},'_id partner_owner', (err, partner) => {
+    partner.partner_owner = req.body.partner_owner;
+    partner.partner_data = {delegate: req.body.delegate};
+    logger.debug(partner);
+    partner.save(err => {
+      res.json(true);
+    });
+});
+}
+
 router.unlinkPartner = (req, res) => {
   logger.debug(req.body);
   Models.User

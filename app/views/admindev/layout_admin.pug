@@ -20,6 +20,7 @@ html(lang='en')
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='/css/admindev.css')
     link(rel='stylesheet', href='/css/video-js.min.css')
+    link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
 
     link(href="/js/fullcalendar.min.css" rel="stylesheet")
     //link(href="/js/fullcalendar.print.min.css" rel="stylesheet" media="print")
@@ -88,26 +89,6 @@ html(lang='en')
           script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
           //script(src="/js/moment.min.js")
           //script(src="/js/jquery-ui.min.js")
-          script.
-            $( "#formPartnerLinkName" ).autocomplete({
-              source: function( request, response ) {
-                $.ajax( {
-                  url: "/admin/api/getauthors/"+request.term,
-                  dataType: "jsonp",
-                  success: function( data ) {
-                    var dd = data.map(item=>{return item.stagename}) ;
-                    console.log(data);
-                    console.log(dd);
-                    response(dd );
-                  }
-                } );
-              },
-              minLength: 2,
-              select: function( event, ui ) {
-                console.log( "Selected: " + ui.item.value + " aka " + ui.item.id );
-              }
-            });
-
           script.
             // Hide submenus
             $('#body-row .collapse').collapse('hide'); 

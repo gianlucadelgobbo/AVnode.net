@@ -107,6 +107,7 @@ block content
         form
           input(type='hidden', name="partner_owner", value=owner)
           input(type='hidden', name="delegate", value=user.name)
+          input(type='hidden', name="id")
           .modal-header
             h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
             button.close(type='button', data-dismiss='modal', aria-label='Close')
@@ -115,7 +116,7 @@ block content
             .alert.d-none
             .form-group
               label(for='formPartnerLinkName')=global.__("Brand")
-              input#formPartnerLinkName.form-control(type='text', name="stagename", placeholder='')
+              input#formPartnerLinkName.form-control(type='text', name="brand", placeholder='')
 
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")

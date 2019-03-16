@@ -138,6 +138,10 @@ router.post('/api/partner/unlink/', (req, res) => {
   post.unlinkPartner(req, res);
 });
 
+router.post('/api/partner/link/', (req, res) => {
+  post.linkPartner(req, res);
+});
+
 router.post('/api/partnershipsupdate', (req, res) => {
   post.updatePartnerships(req, res);
 });
