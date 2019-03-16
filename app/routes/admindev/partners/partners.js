@@ -163,6 +163,7 @@ router.get('/:id/:event', (req, res) => {
           owner: req.params.id,
           events: events,
           event: req.params.event,
+          user: req.user,
           data: data,
           script: false
         });
