@@ -57,7 +57,7 @@ block content
         option(value='sortby_name') sort by perf name
         option(value='sortby_submissiondate') sort by sub date
 
-      input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.fullinfo ? "checked" : undefinded)
+      input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefinded)
       label.mr-sm-3(for='unlink') Performance suspect
       br
       input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
@@ -100,9 +100,10 @@ block content
           td
             h2!=item.performance.title
             .row
-              .col-md-6
-                img.img-fluid(src=item.performance.imageFormats.small)
-              .col-md-6
+              if get.fullinfo
+                .col-md-6
+                  img.img-fluid(src=item.performance.imageFormats.small)
+              div(class=get.fullinfo ? "col-md-6" : "col-md-12")
                 p
                   !="TYPE: "
                   b=item.performance.type.name
@@ -132,17 +133,19 @@ block content
           td
             each user in item.performance.users
               .row
-                .col-md-6
-                  img.img-fluid(src=user.imageFormats.small)
-                .col-md-6
+                if get.fullinfo
+                  .col-md-6
+                    img.img-fluid(src=user.imageFormats.small)
+                div(class=get.fullinfo ? "col-md-6" : "col-md-12")
                   h3!=user.stagename
                   if user.addressesFormatted
                     div!=user.addressesFormatted.join(", ")
-              .mt-2!=user.about
-              if user.web
-                div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
-              if user.social
-                div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+              if get.fullinfo
+                .mt-2!=user.about
+                if user.web
+                  div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                if user.social
+                  div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
 
               
               //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
