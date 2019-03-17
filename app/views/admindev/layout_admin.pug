@@ -120,10 +120,11 @@ html(lang='en')
             }
           if currentUrl.indexOf("/program")!==-1
             script(src="/js/fullcalendar.min.js")
+            script.
+              var calendars = {};
             each room,i in data.rooms
               script.
                 document.addEventListener('DOMContentLoaded', function() {
-                  var calendars = {};
                   var cal1 = document.getElementById('calendarroom#{i}');
                   if (cal1) {
                     calendars['calendarroom#{i}'] = new FullCalendar.Calendar(cal1, {
@@ -166,8 +167,10 @@ html(lang='en')
                       ],
                       eventDrop: function(event, element) {  
                         console.log("eventDrop");
+                        console.log(event.title);
+                        console.log(event.start);
+                        console.log(event.end);
                         console.log(event);
-                        console.log(element);
                       },
                       eventLeave: function(info) {
                         console.log("eventLeave");

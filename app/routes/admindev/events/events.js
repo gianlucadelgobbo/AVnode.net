@@ -291,7 +291,13 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
-      logger.debug(query);
+      if (req.query['performance_category'] && req.query['performance_category']!='0') {
+        for(var item in populate) {
+          if (populate[item].path == "performance") {
+            populate[item].match = {type: req.query['performance_category']};
+          }
+        }
+      }
       Program.
       find(query).
       select(select).
@@ -300,9 +306,17 @@ router.get('/:event/acts', (req, res) => {
         if (err) {
           res.json(err);
         } else {
+          logger.debug(data);
           data.event = program[0].event;
           data.status = status;
           data.program = JSON.parse(JSON.stringify(program));
+          //if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            let prg = [];
+            for(let a=0;a<data.program.length;a++) {
+              if (data.program[a].performance) prg.push(data.program[a]);
+            }
+            data.program = prg;
+          //}
           let admittedO = {};
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
           console.log("admittedO");
@@ -387,6 +401,72 @@ router.get('/:event/peoples', (req, res) => {
               get: req.query
             });
           }
+        }
+      });
+    }
+  });
+});
+
+router.post('/:event/program', (req, res) => {
+  req.body.event = req.params.event;
+  logger.debug(req.body);
+  Event.
+  findOne({"_id": req.params.event}).
+  select({title: 1, program: 1}).
+  //populate(populate_event).
+  exec((err, event) => {
+    if (err) {
+      res.json(err);
+    } else {
+      for(var item in event.program) {
+        if(event.program[item].performance == req.body.performance) {
+          if (event.program[item].schedule && event.program[item].schedule.length) {
+            // TODO
+          } else {
+            if (!event.program[item].schedule) event.program[item].schedule = [];
+            event.program[item].schedule.push(req.body.schedule);
+          }
+        }
+      }
+      console.log(event.program);
+      event.save((err) => {
+        if (err) {
+          res.json(err);
+        } else {
+          Performance.
+          findOne({"_id": req.body.performance}).
+          select({title: 1, bookings: 1}).
+          //populate(populate_event).
+          exec((err, performance) => {
+            if (err) {
+              res.json(err);
+            } else {
+              let add = true;
+              if(performance.bookings) {
+                for(var item in performance.bookings) {
+                  if(performance.bookings[item].event == req.body.event) {
+                    add = false;
+                    if (performance.bookings[item].schedule && performance.bookings[item].schedule.length) {
+                      // TODO
+                    } else {
+                      if (!performance.bookings[item].schedule) performance.bookings[item].schedule = [];
+                      performance.bookings[item].schedule.push(req.body.schedule);
+                    }
+                  }
+                }
+              }
+              if (add) {
+                performance.bookings = [{schedule:req.body.schedule, event: req.params.event}];
+              }
+            }
+            performance.save((err) => {
+              if (err) {
+                res.json(err);
+              } else {
+                res.json(performance);
+              }
+            });
+          });
         }
       });
     }

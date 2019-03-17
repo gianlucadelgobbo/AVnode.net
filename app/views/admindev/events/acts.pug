@@ -36,7 +36,7 @@ block content
       select.form-control.mr-sm-2(name='performance_category', style='max-width:100px')
         option(value='0') Type
         each cat in data.admitted
-          option(value=cat._id)=cat.name
+          option(value=cat._id, selected=get.performance_category==cat._id ? "selected" : undefinded)=cat.name
 
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
         input.mr-sm-1#not2(type='checkbox', name='not2', value='1', checked=get.fullinfo ? "checked" : undefinded)
