@@ -189,8 +189,8 @@
           "createdAt": -1
         },
         "populate": [
-          { "path": "event", "select": "title slug schedule", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]},
-          { "path": "performance", "select": "title users", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses", "model": "User"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"}]},
+          { "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]},
+          { "path": "performance", "select": "title users duration abouts image bookings", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses image abouts", "model": "UserShow"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"}]},
           { "path": "subscriptions.subscriber_id", "select": "stagename name surname email mobile", "model": "User"},
           { "path": "status", "select": "name", "model": "Category"},
           { "path": "reference", "select": "stagename name surname email mobile", "model": "User"}

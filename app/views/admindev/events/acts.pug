@@ -73,9 +73,7 @@ block content
         th="ID"
         th="STATUS"
         th="ACT"
-        th="TOPICS"
         th="AUTHORS"
-        th="COUNTRY"
         th="SUBSCRIPTION"
     tbody
       each item, index in data.program
@@ -91,35 +89,67 @@ block content
                     label.form-check-label(for='status'+status._id+item._id)=status.name
               .border-bottom.pb-1.mb-1
                 h4=global.__('SCHEDULE')
-                if item.schedule && item.schedule.starttime
-                  div=item.schedule.starttime
-                  div=item.schedule.endtime
+                if item.schedule && item.schedule.length
+                  each schedule in item.schedule
+                    div=schedule.venue.room
+                    div=schedule.boxDate+" > "+schedule.endtimeTime
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
               .text-right.pb-1.mb-1
                 button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Delete')
           td
             h2!=item.performance.title
-            p
-              !="TYPE: "+item.performance.type.name
-              br
-              if item.performance.tecnique
-                !="STYLE: "+item.performance.tecnique.name
-                br
-              if item.performance.genre
-                !="GENRE: "+item.performance.genre.name
+            .row
+              .col-md-6
+                img.img-fluid(src=item.performance.imageFormats.small)
+              .col-md-6
+                p
+                  !="TYPE: "
+                  b=item.performance.type.name
+                  br
+                  !="DURATION: "
+                  b=item.performance.duration
+                  br
+                  if item.performance.tecnique
+                    !="STYLE: "
+                    b=item.performance.tecnique.name
+                    br
+                  if item.performance.genre
+                    !="GENRE: "
+                    b=item.performance.genre.name
+                    br
+                  !="CALL: "
+                  b!=data.event.organizationsettings.call.calls[item.call].title
+                  br
+                  !="TOPICS: "
+                  if item.topics
+                    b!=item.topics.join(", ")
+                  else
+                    .badge.badge-danger MISSING
+                  br
+            if get.fullinfo && item.performance.about
+              .mt-2!=item.performance.about
           td
-            !=data.event.organizationsettings.call.calls[item.call].title
-            br
-            if item.topics
-              !=item.topics.join("<br />")
-            else
-              .badge.badge-danger MISSING
-          td!=item.performance.users.map((item) => {return item.stagename}).join("<br />")
-          //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
-          - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
-          - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
-          td!=addressesaddresses.sort().join(", ")
+            each user in item.performance.users
+              .row
+                .col-md-6
+                  img.img-fluid(src=user.imageFormats.small)
+                .col-md-6
+                  h3!=user.stagename
+                  if user.addressesFormatted
+                    div!=user.addressesFormatted.join(", ")
+              .mt-2!=user.about
+              if user.web
+                div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+              if user.social
+                div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+
+              
+              //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
+                - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
+                - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
+                p!=addressesaddresses.sort().join(", ")
+
           td
             p
               b!="CALL: "
@@ -147,33 +177,24 @@ block content
               br
               !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
 
-        if get.fullinfo
+        //if get.fullinfo
           tr
-            td!=index
-            td(colspan="2")
+            td!=(index+1)
+            td
               img.img-fluid(src=item.performance.imageFormats.small)
               !=item.performance.about
-            td(colspan="2")
+            td(colspan="3")
               each user, i in item.performance.users
-                .media
-                  .mr-3
-                    img.img-fluid(src=user.imageFormats.small)
-                  .media-body
-                    h3!=user.stagename
-                    div
-                    div!=user.addressesFormatted.join(", ")
-                    div!=user.about
-                    div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
-                    div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
             - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
             - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
             td
-              !=item.subscription_id.reference.name+" "+item.subscription_id.reference.surname
-              br
-              !='<a href="mailto:'+item.subscription_id.reference.email+'">'+item.subscription_id.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.subscription_id.reference.email+'">SEARCH MESSAGES</a>'
-              br
-              !=item.subscription_id.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
-              if item.schedule.date
+              if subscription_id
+                !=item.subscription_id.reference.name+" "+item.subscription_id.reference.surname
+                br
+                !='<a href="mailto:'+item.subscription_id.reference.email+'">'+item.subscription_id.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.subscription_id.reference.email+'">SEARCH MESSAGES</a>'
+                br
+                !=item.subscription_id.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+              if item.schedule && item.schedule.date
                 pre=item.schedule.boxDate
                 p=item.schedule.venue.room
                 if item.status

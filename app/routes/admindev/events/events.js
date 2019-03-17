@@ -280,7 +280,7 @@ router.get('/:event/acts', (req, res) => {
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
-  select({title: 1, schedule: 1, organizationsettings: 1}).
+  select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
   //populate(populate_event).
   exec((err, event) => {
     if (err) {
@@ -306,10 +306,17 @@ router.get('/:event/acts', (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          logger.debug(data);
           data.event = program[0].event;
           data.status = status;
           data.program = JSON.parse(JSON.stringify(program));
+          console.log("program");
+          for(let a=0;a<data.program.length;a++) {
+            for(let b=0; b<event.program.length;b++) {
+              if(data.program[a].performance && data.program[a].performance._id == event.program[b].performance) {
+                data.program[a].schedule = event.program[b].schedule;
+              }
+            }
+          }
           //if (req.query['performance_category'] && req.query['performance_category']!='0') {
             let prg = [];
             for(let a=0;a<data.program.length;a++) {
@@ -366,8 +373,6 @@ router.get('/:event/peoples', (req, res) => {
       select(select).
       populate(populate).
       exec((err, program) => {
-
-        logger.debug(program);
         if (err) {
           res.json(err);
         } else {
