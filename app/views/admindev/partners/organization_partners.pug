@@ -59,11 +59,11 @@ block content
                 !=" "
                 // Button trigger modal
                 button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-              if item.partner_data && item.partner_data.contacts
+              //if item.partner_data && item.partner_data.contacts
                 each contact in item.partner_data.contacts
                   div
                     a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-              if item.members && item.members.length
+              //if item.members && item.members.length
                 h5="Members"
                 each contact in item.members
                   div
@@ -75,7 +75,7 @@ block content
       .modal-content
         form
           input(type='hidden', name="partner_owner", value=owner)
-          input(type='hidden', name="delegate", value=user.name)
+          //input(type='hidden', name="delegate", value=user.name)
           .modal-header
             h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
             button.close(type='button', data-dismiss='modal', aria-label='Close')
@@ -106,7 +106,7 @@ block content
       .modal-content
         form
           input(type='hidden', name="partner_owner", value=owner)
-          input(type='hidden', name="delegate", value=user.name)
+          //input(type='hidden', name="delegate", value=user.name)
           input(type='hidden', name="id")
           .modal-header
             h5#modalAddPartnerLabel.modal-title=global.__("Add partner")

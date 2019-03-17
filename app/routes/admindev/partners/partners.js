@@ -189,6 +189,7 @@ router.get('/:id/:event/manage', (req, res) => {
     //select({stagename: 1, createdAt: 1, crews:1}).
     populate(populate).
     exec((err, data) => {
+      console.log(data.map(item=>{return item.stagename;}));
       Event.
       find({"users": req.params.id}).
       select({title: 1}).
@@ -199,15 +200,23 @@ router.get('/:id/:event/manage', (req, res) => {
         var notassigned = [];
         var notassignedID = [];
         for (var item in data) {
-          for (var item2 in data[item].partnerships) {
-            if (data[item].partnerships[item2].events.map(event => {return event._id.toString()}).indexOf(req.params.event)!==-1) {
-              if (!partnerships[data[item].partnerships[item2].category._id]) partnerships[data[item].partnerships[item2].category._id] = {category:data[item].partnerships[item2].category, users:[]};
-              partnerships[data[item].partnerships[item2].category._id].users.push(data[item]);
-            } else {
-              if (notassignedID.indexOf(data[item]._id.toString())===-1) {
-                notassignedID.push(data[item]._id.toString());
-                notassigned.push(data[item]);
+          if (data[item].stagename=="Smode Tech") console.log(data[item]);
+          if (data[item].partnerships && data[item].partnerships.length) {
+            for (var item2 in data[item].partnerships) {
+              if (data[item].partnerships[item2].events.map(event => {return event._id.toString()}).indexOf(req.params.event)!==-1) {
+                if (!partnerships[data[item].partnerships[item2].category._id]) partnerships[data[item].partnerships[item2].category._id] = {category:data[item].partnerships[item2].category, users:[]};
+                partnerships[data[item].partnerships[item2].category._id].users.push(data[item]);
+              } else {
+                if (notassignedID.indexOf(data[item]._id.toString())===-1) {
+                  notassignedID.push(data[item]._id.toString());
+                  notassigned.push(data[item]);
+                }
               }
+            }  
+          } else {
+            if (notassignedID.indexOf(data[item]._id.toString())===-1) {
+              notassignedID.push(data[item]._id.toString());
+              notassigned.push(data[item]);
             }
           }
         }

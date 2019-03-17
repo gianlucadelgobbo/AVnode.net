@@ -4772,6 +4772,7 @@
           "boxDate": 1,
           "boxVenue": 1,
           "fullSchedule": 1,
+          "schedule": 1,
           "participate": 1,
           "about": 1,
           "aboutFull": 1,

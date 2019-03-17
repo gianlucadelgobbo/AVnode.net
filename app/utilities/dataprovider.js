@@ -551,6 +551,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (err || data === null) {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
+      logger.debug(select);
       if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
         const locations = data.schedule.map(obj =>{
           if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
@@ -573,6 +574,8 @@ dataprovider.show = (req, res, section, subsection, model) => {
             if (locations[item]) data.locations.push(locations[item]);
           }
         }
+        logger.debug("locations");
+        logger.debug(locations);
         data.schedule = undefined;
       }
       if (data.addresses) {
