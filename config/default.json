@@ -5022,6 +5022,8 @@
             "users": 1,
             "type": 1,
             "image": 1,
+            "paypal": 1,
+            "price": 1,
             "slug": 1
           },
           "model": "Performance",

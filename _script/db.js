@@ -427,9 +427,41 @@ event.schedule = sc;
 db.events.save(event);
 printjson(event.schedule);
 
+// Resolume Arena 6
 var performance = db.performances.findOne({_id:ObjectId('5c767241b561247a3a0411cc')});
-printjson(performance);
 performance.price = 150;
 performance.paypal = "YA755Z7E7326W";
 db.performances.save(performance);
 printjson(performance);
+
+// Smode
+var performance = db.performances.findOne({_id:ObjectId('5c77fb13b561247a3a041287')});
+performance.price = 150;
+performance.paypal = "RDVKT8SUMUB4A";
+db.performances.save(performance);
+printjson(performance);
+
+// Raymarching: livecoding with OpenFrameworks
+var performance = db.performances.findOne({_id:ObjectId('5c152e3f61768fe6ce7e5581')});
+performance.price = 150;
+performance.paypal = "XD575FE9EGTTL";
+db.performances.save(performance);
+printjson(performance);
+
+
+// TouchDesigner - 2D GLSL - Procedural Graphics
+var performance = db.performances.findOne({_id:ObjectId('5c152e0d61768fe6ce7e5580')});
+performance.price = 150;
+performance.paypal = "8H5RVMHU6VM8W";
+db.performances.save(performance);
+printjson(performance);
+
+
+// Video Mapping with Telenoika
+var performance = db.performances.findOne({_id:ObjectId('5be99fe1f6fa498e11000e43')});
+performance.price = 150;
+performance.paypal = "UYFHJL8ZWZ8G8";
+db.performances.save(performance);
+printjson(performance);
+
+
