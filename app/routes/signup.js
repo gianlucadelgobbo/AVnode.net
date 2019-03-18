@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
 
 
 router.post('/', (req, res) => {
+  logger.debug(req.body);
   if (req.body.crewName) req.body.crewname = req.body.crewName;
   if (req.body.crewUrl) req.body.crewslug = req.body.crewUrl;
   req.body.lang = global.getLocale();
@@ -105,14 +106,13 @@ router.signupValidator = (put, cb) => {
     "message":"",
     "name":""
   };
-  /*
   //put = {};
   //put.birthday="01-09-2018";
   const birthdayA = put.birthday.split("/");
   const day = parseInt(birthdayA[0]);
   const month = parseInt(birthdayA[1])-1;
   const year = parseInt(birthdayA[2]);
-  const birthday = new Date(year,month,day);
+  const birthday = new Date(year,month,day,2,0,0);
   logger.debug('birthday');
   logger.debug(put.birthday);
   logger.debug(birthday);
@@ -147,6 +147,7 @@ router.signupValidator = (put, cb) => {
   } else {
     put.birthday = birthday;
   }
+  /*
   */
   if (put.crewslug && put.slug.trim() === put.crewslug.trim()) {
     errors.errors.slug = {
