@@ -309,11 +309,13 @@ router.get('/:event/acts', (req, res) => {
           data.event = program[0].event;
           data.status = status;
           data.program = JSON.parse(JSON.stringify(program));
-          console.log("program");
           for(let a=0;a<data.program.length;a++) {
             for(let b=0; b<event.program.length;b++) {
               if(data.program[a].performance && data.program[a].performance._id == event.program[b].performance) {
                 data.program[a].schedule = event.program[b].schedule;
+              } else if (!data.program[a].performance && !req.query['performance_category']){
+                if (!data.performnce_missing) data.performnce_missing = []; 
+                data.performnce_missing.push(data.program[a]);
               }
             }
           }
