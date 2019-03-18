@@ -30,6 +30,7 @@ const performanceSchema = new Schema({
     likes: { type: Number, default: 0 }
   },
   price: String,
+  paypal: String,
   duration: String,
   tech_arts: [About], // what the artist brings
   tech_reqs: [About], // what the artist need

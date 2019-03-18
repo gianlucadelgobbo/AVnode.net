@@ -1,3 +1,5 @@
+import { objectTypeIndexer } from "babel-types";
+
 var sc = [
 	{
 		"date" : ISODate("2019-05-02T00:00:00Z"),
@@ -424,3 +426,10 @@ var event = db.events.findOne({slug:'lpm-2019-rome'});
 event.schedule = sc;
 db.events.save(event);
 printjson(event.schedule);
+
+var performance = db.performances.findOne({_id:ObjectId('5c767241b561247a3a0411cc')});
+printjson(performance);
+performance.price = 150;
+performance.paypal = "YA755Z7E7326W";
+db.performances.save(performance);
+printjson(performance);

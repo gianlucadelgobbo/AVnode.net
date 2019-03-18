@@ -45,6 +45,10 @@ block content
           li.nav-item
             a.tab_link.nav-link(href='#technical_specifications', role='tab', data-toggle='tab')    
               =global.__('Technical specifications')
+          if data.paypal
+            li.nav-item
+              a.tab_link.nav-link(href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id='+data.paypal, target='_blank')    
+                =global.__('BUY NOW')
         // Tab panes
         .tab-content
           //if data.about
