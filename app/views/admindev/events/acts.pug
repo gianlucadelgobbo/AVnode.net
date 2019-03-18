@@ -102,9 +102,9 @@ block content
             h2!=item.performance.title
               small
                 !=" "
-                a(href="/admin/performances/"+item._id+"/public", target="_blank")!=global.__("edit")
+                a(href="/admin/performances/"+item.performance._id+"/public", target="_blank")!=global.__("edit")
                 !=" | "
-                a(href="/performances/"+item.slug, target="_blank")!=global.__("view")
+                a(href="/performances/"+item.performance.slug, target="_blank")!=global.__("view")
             .row
               if get.fullinfo
                 .col-md-6
