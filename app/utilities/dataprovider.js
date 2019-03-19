@@ -279,7 +279,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         delete res.advanced.performers;
       }
       logger.debug("res.partnershipaaaaaaa");
-      if(res.partnerships && res.partnerships_ordered) {
+      if(res && res.partnerships && res.partnerships_ordered) {
         delete res.partnerships;
         logger.debug(res.partnerships);
       }

@@ -217,7 +217,7 @@ eventSchema.virtual('advanced').get(function (req) {
           /* for(let c=0;c<this.program[a].performance.categories.length;c++){
             if (this.program[a].performance.categories[c].ancestor.toString()==='5be8708afc3961000000008f' && performers.acts.indexOf(this.program[a].performance.categories[c].name)===-1) performers.acts.push(this.program[a].performance.categories[c].name);
           } */
-          if (performers.acts.indexOf(this.program[a].performance.type.name)===-1) performers.acts.push(this.program[a].performance.type.name);
+          if (this.program[a].performance && this.program[a].performance.type && this.program[a].performance.type.name && performers.acts.indexOf(this.program[a].performance.type.name)===-1) performers.acts.push(this.program[a].performance.type.name);
         }
         if (this.program[a].schedule.length) {
           for(let b=0;b<this.program[a].schedule.length;b++){
