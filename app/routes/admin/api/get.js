@@ -164,11 +164,11 @@ router.getCategoryByAncestor = (cat, cb) => {
 }
 
 router.getCategories = (req, res) => {
-  if (req.params.rel == "performances" && req.params.q == "type") {
+  if (req.params.rel == "performances" && 'gianluca' == "type") {
     router.getPerfCategories(req, res);
   } else {
     let conta = 0;
-    Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+    Models.Category.findOne({slug: 'gianluca', rel: req.params.rel })
     .select({name:1 , slug:1})
     .exec( (err, category) => {
       if (err) logger.debug(`${JSON.stringify(err)}`);
@@ -199,7 +199,7 @@ router.getPerfCategories = (req, res) => {
   .select({name:1 , slug:1})
   .exec( (err, genre) => {
     let conta = 0;
-    Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
+    Models.Category.findOne({slug: 'gianluca', rel: req.params.rel })
     .select({name:1 , slug:1})
     .exec( (err, category) => {
       if (err) logger.debug(`${JSON.stringify(err)}`);
@@ -263,14 +263,14 @@ router.getPerfCategories = (req, res) => {
 router.getMembers = (req, res) => {
   Models.User
   .find({$or:[
-    { slug : { "$regex": req.params.q, "$options": "i" } },
-    { stagename : { "$regex": req.params.q, "$options": "i" } },
-    { name : { "$regex": req.params.q, "$options": "i" } },
-    { surname : { "$regex": req.params.q, "$options": "i" } }
+    { slug : { "$regex": 'gianluca', "$options": "i" } },
+    { stagename : { "$regex": 'gianluca', "$options": "i" } },
+    { name : { "$regex": 'gianluca', "$options": "i" } },
+    { surname : { "$regex": 'gianluca', "$options": "i" } }
   ],is_crew: false})
   .select({'stagename':1})
   //.select({'_id':1, 'stagename':1, 'name':1, 'surname':1, 'email': 1})
-  .collation({locale: "en" })
+  //.collation({locale: "en" })
   .sort({'stagename': 1})
   .exec((err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
@@ -285,10 +285,10 @@ router.getMembers = (req, res) => {
 router.getAuthors = (req, res) => {
   Models.User
   .find({$or:[
-    { slug : { "$regex": req.params.q, "$options": "i" } },
-    { stagename : { "$regex": req.params.q, "$options": "i" } },
-    { name : { "$regex": req.params.q, "$options": "i" } },
-    { surname : { "$regex": req.params.q, "$options": "i" } }
+    { slug : { "$regex": 'gianluca', "$options": "i" } },
+    { stagename : { "$regex": 'gianluca', "$options": "i" } },
+    { name : { "$regex": 'gianluca', "$options": "i" } },
+    { surname : { "$regex": 'gianluca', "$options": "i" } }
   ]},'_id, stagename', (err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     res.json(users);

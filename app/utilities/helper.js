@@ -1,3 +1,5 @@
+const logger = require('./logger');
+
 const uuid = require('uuid');
 
 const youtubeRegex = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
@@ -6,6 +8,31 @@ const vimeoRegex = /(?:https?\:\/\/)?(?:www\.)?(?:vimeo\.com\/)([0-9]+)/;
 
 const isYoutube = (url) => {
   return youtubeRegex.test(url);
+};
+
+const dateFix = (date) => { 
+  const dateA = date.split("/");
+  const day = parseInt(dateA[0]);
+  const month = parseInt(dateA[1])-1;
+  const year = parseInt(dateA[2]);
+  const dateO = new Date(year,month,day,2,0,0);
+  logger.debug('birthday');
+  logger.debug(date);
+  logger.debug(dateO);
+  logger.debug("day");
+  logger.debug(day);
+  logger.debug(dateO.getDate());
+  logger.debug("month");
+  logger.debug(month);
+  logger.debug(dateO.getMonth());
+  logger.debug("year");
+  logger.debug(year);
+  logger.debug(dateO.getFullYear());
+  if (year !== dateO.getFullYear() || month !== dateO.getMonth() || day !== dateO.getDate()) {
+    return false;
+  } else {
+    return dateO;
+  }
 };
 
 const youtubeParser = (url) => {
@@ -136,6 +163,7 @@ module.exports = {
   getStorageFolder,
   isYoutube,
   youtubeParser,
+  dateFix,
   isVimeo,
   vimeoParser,
   getVideoType,

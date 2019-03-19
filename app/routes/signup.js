@@ -1,5 +1,6 @@
 const router = require('./router')();
 const mailer = require('../utilities/mailer');
+const helper = require('../utilities/helper');
 
 const mongoose = require('mongoose');
 const UserTemp = mongoose.model('UserTemp');
@@ -108,24 +109,8 @@ router.signupValidator = (put, cb) => {
   };
   //put = {};
   //put.birthday="01-09-2018";
-  const birthdayA = put.birthday.split("/");
-  const day = parseInt(birthdayA[0]);
-  const month = parseInt(birthdayA[1])-1;
-  const year = parseInt(birthdayA[2]);
-  const birthday = new Date(year,month,day,2,0,0);
-  logger.debug('birthday');
-  logger.debug(put.birthday);
-  logger.debug(birthday);
-  logger.debug("day");
-  logger.debug(day);
-  logger.debug(birthday.getDate());
-  logger.debug("month");
-  logger.debug(month);
-  logger.debug(birthday.getMonth());
-  logger.debug("year");
-  logger.debug(year);
-  logger.debug(birthday.getFullYear());
-  if (year !== birthday.getFullYear() || month !== birthday.getMonth() || day !== birthday.getDate()) {
+  const birthday = helper.dateFix(put.birthday);
+  if (!birthday) {
     errors.errors.birthday = {
       "message": "Cast to Date failed for value \"Invalid Date\" at path \"birthday\"",
       "name": "CastError",
