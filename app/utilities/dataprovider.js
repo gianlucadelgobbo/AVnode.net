@@ -156,6 +156,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
+      console.log(ddd);
       let data = JSON.parse(JSON.stringify(ddd));
       console.log("data");
       console.log({slug: req.params.sub ? req.params.sub : req.params.slug});
