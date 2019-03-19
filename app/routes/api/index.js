@@ -49,8 +49,6 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
         logger.debug(global.appRoot+data.media.file);
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-          console.log(req.params.sez);
-          console.log(req.params.sez);
           const options = config.cpanel[req.params.sez].forms.video.components.media.config;
           logger.debug("data.media.filesize");
           logger.debug(data.media.filesize);

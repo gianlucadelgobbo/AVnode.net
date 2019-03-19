@@ -121,6 +121,7 @@ const eventSchema = new Schema({
   program: [programSchema],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
   type: { type: Schema.ObjectId, ref: 'Category' },
+  partnership_type: { type: Schema.ObjectId, ref: 'Category' },
   users:  [{ type: Schema.ObjectId, ref: 'UserShow' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
   videos: [{ type: Schema.ObjectId, ref: 'Video' }],
@@ -169,7 +170,7 @@ const eventSchema = new Schema({
 }); */
 
 eventSchema.virtual('advanced').get(function (req) {
-  logger.debug("virtual advanced");
+  //logger.debug("virtual advanced");
   //let programmebydayvenue = [];
   let performers = {
     performersN: 0,

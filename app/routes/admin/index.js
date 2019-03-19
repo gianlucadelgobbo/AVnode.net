@@ -151,7 +151,6 @@ router.post('/api/:ancestor/:id/:sez/', (req, res) => {
 });
 
 /* router.post('/api/performances/:id/videos', (req, res)=>{
-  console.log('/api/performances/:id/videos');
   req.params.model = 'Performance';
   get.addVideo(req, res);
 });

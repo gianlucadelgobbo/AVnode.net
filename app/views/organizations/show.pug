@@ -57,15 +57,13 @@ block content
               span.button_more_bkg
           
   
-    if data.partnerships && data.partnerships.length
+    if data.partnerships_ordered && data.partnerships_ordered.length
       section#partnerships.row.performer_partnerships_wrapper
         .col-lg-12
           h2.main_title.indented_title.color1!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
           .owl-carousel.loop.owl-theme
-            each group in data.partnerships
-              - var category = group.category
-              each item in group.events
-                include ../partials/boxEvent
+            each item in data.partnerships_ordered
+              include ../partials/boxEvent
           .button_more.button_more_program
             a(href="/"+data.slug+"/partnerships", title=data.stagename)
               span.button_more_label!=global.__('+ All the partnerships')

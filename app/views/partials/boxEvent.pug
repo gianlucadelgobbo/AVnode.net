@@ -1,6 +1,6 @@
 .event_item_wrapper
-  if category 
-    .time_schedule=category.name
+  if item.partnership_type 
+    .time_schedule=item.partnership_type.name
   a(href="/events/"+item.slug+"/", title=item.title)
     img.img-fluid(
       src=item.imageFormats.small

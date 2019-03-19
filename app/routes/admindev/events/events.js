@@ -328,10 +328,8 @@ router.get('/:event/acts', (req, res) => {
           //}
           let admittedO = {};
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
-          console.log("admittedO");
           data.admitted = [];
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
-          console.log(populate);
           data.rooms = [];
           for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room) data.rooms.push(data.event.schedule[a].venue.room);
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
@@ -435,7 +433,6 @@ router.post('/:event/program', (req, res) => {
           }
         }
       }
-      console.log(event.program);
       event.save((err) => {
         if (err) {
           res.json(err);

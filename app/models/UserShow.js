@@ -180,6 +180,19 @@ userSchema.virtual('addressesFormatted').get(function () {
   }
 });
 
+userSchema.virtual('partnerships_ordered').get(function () {
+  if (this.partnerships && this.partnerships.length) {
+    let partnerships_ordered = [];
+    for(let partnership=0; partnership< this.partnerships.length; partnership++) {
+      for(let event=0; event<  this.partnerships[partnership].events.length; event++) {
+        this.partnerships[partnership].events[event].partnership_type = this.partnerships[partnership].category;
+        partnerships_ordered.push(this.partnerships[partnership].events[event]);
+      }
+    }
+    return partnerships_ordered.sort(function(a,b){return b.schedule[0].starttime.getTime() - a.schedule[0].starttime.getTime()});
+  }
+});
+
 userSchema.virtual('about').get(function (req) {
   let about = __('Text is missing');
   let aboutA = [];

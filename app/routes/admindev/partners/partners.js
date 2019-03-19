@@ -189,7 +189,6 @@ router.get('/:id/:event/manage', (req, res) => {
     //select({stagename: 1, createdAt: 1, crews:1}).
     populate(populate).
     exec((err, data) => {
-      console.log(data.map(item=>{return item.stagename;}));
       Event.
       find({"users": req.params.id}).
       select({title: 1}).

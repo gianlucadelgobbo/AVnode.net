@@ -43,7 +43,6 @@ router.get('/program/type/:type', (req, res) => {
   if (sub.getFullYear()+"-"+(("0" + (sub.getMonth()+1)).slice(-2))+"-"+(("0" + (sub.getDate())).slice(-2)) == sub) {
     dataprovider.show(req, res, section, 'program', Model);
   } else {
-    console.log("stocazzo");
     dataprovider.show(req, res, "performances", 'show', require('mongoose').model('Performance'));
   }
 }); */

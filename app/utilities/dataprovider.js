@@ -21,7 +21,6 @@ const logger = require('./logger');
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
   //let assign = JSON.parse(JSON.stringify(select));
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
-
     const nolimit = JSON.parse(JSON.stringify(populate));
     delete nolimit[0].options;
     model.
@@ -43,6 +42,11 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         logger.debug(select);
         logger.debug(Object.keys(res));
         cb(err, res, total); */
+        logger.debug("res.partnershipaaaaaaa");
+        if(data.partnerships && data.partnerships_ordered) {
+          delete data.partnerships;
+          logger.debug(data.partnerships);
+        }
         cb(err, data, total);
       });
     });
@@ -117,8 +121,6 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
           if (populate[a].path==="program.performance") {
             for(let b=0; b<populate[a].populate.length;b++) {
               if (populate[a].populate[b].path==="users") {
-                console.log("STOCAZZO");
-                console.log(req.params.performer);
                 //populate[a].match = { "users": req.params.performer};
                 populate[a].populate[b].select.abouts = 1;
                 populate[a].populate[b].populate = [{
@@ -156,10 +158,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
-      console.log(ddd);
       let data = JSON.parse(JSON.stringify(ddd));
-      console.log("data");
-      console.log({slug: req.params.sub ? req.params.sub : req.params.slug});
       let res = {};
       if (data && data.organizationsettings && data.organizationsettings.call && data.organizationsettings.call.calls && data.organizationsettings.call.calls.length) {
         data.participate = true;
@@ -278,6 +277,11 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
           }
         }
         delete res.advanced.performers;
+      }
+      logger.debug("res.partnershipaaaaaaa");
+      if(res.partnerships && res.partnerships_ordered) {
+        delete res.partnerships;
+        logger.debug(res.partnerships);
       }
       logger.debug("fetchShow END");
       cb(err, res);
