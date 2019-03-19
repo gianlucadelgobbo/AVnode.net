@@ -3580,7 +3580,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "partnerships.category",
@@ -3775,7 +3775,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "partnerships.category",
@@ -4165,7 +4165,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "partnerships.category",
@@ -4360,7 +4360,7 @@
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
-          "options": { "limit": 21},
+          "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
           "model": "EventShow"
         }, {
           "path": "partnerships.category",
