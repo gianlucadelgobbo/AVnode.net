@@ -14,10 +14,10 @@ import ErrorMessage from "../../../errorMessage";
 
 const getSuggestionValue = suggestion => suggestion.stagename;
 
-const getSuggestionID = suggestion => suggestion.id;
+const getSuggestionID = suggestion => suggestion._id;
 
 const renderSuggestion = suggestion => (
-  <div id={suggestion.id}>{suggestion.stagename}</div>
+  <div id={suggestion._id}>{suggestion.stagename}</div>
 );
 
 class AddCrewMember extends Component {
@@ -37,6 +37,10 @@ class AddCrewMember extends Component {
         idmember: event.target.children[0].id
       });
     } else {
+      console.log("event");
+      console.log(newValue);
+      console.log(event.target);
+      console.log(event.target.id);
       this.setState({
         value: newValue,
         idmember: event.target.id

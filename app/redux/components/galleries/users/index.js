@@ -14,10 +14,10 @@ import ErrorMessage from "../../errorMessage";
 
 const getSuggestionValue = suggestion => suggestion.stagename;
 
-const getSuggestionID = suggestion => suggestion.id;
+const getSuggestionID = suggestion => suggestion._id;
 
 const renderSuggestion = suggestion => (
-  <span id={suggestion.id}>{suggestion.stagename}</span>
+  <span id={suggestion._id}>{suggestion.stagename}</span>
 );
 
 class AddUsersGalleries extends Component {
