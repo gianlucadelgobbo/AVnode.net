@@ -185,9 +185,9 @@ block content
               br
               !=item.reference.name+" "+item.reference.surname
               br
-              !='<a href="mailto:'+item.reference.email+'">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'">SEARCH MESSAGES</a>'
+              !='<a href="mailto:'+item.reference.email+'" target="_blank">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'" target="_blank">SEARCH MESSAGES</a>'
               br
-              !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+              !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">WP</a>'})
 
         //if get.fullinfo
           tr

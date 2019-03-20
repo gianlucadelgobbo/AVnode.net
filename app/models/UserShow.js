@@ -168,7 +168,7 @@ userSchema.virtual('addressesFormatted').get(function () {
   let addressesFormatted = [];
   if (this.addresses && this.addresses.length) {
     this.addresses.forEach((address) => {
-      if (address.country) {
+      if (address && address.country) {
         if (!addresses[address.country.trim()]) addresses[address.country.trim()] = [];
         if (address.locality && addresses[address.country.trim()].indexOf(address.locality)===-1) addresses[address.country.trim()].push(address.locality.trim());
       }
