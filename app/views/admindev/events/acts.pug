@@ -165,18 +165,21 @@ block content
               !=data.event.organizationsettings.call.calls[item.call].title
             p
               b!="AVAILABILITY"
-            ol
-              each subscription in item.subscriptions
-                li
-                  b!=subscription.subscriber_id.stagename
-                  br
-                  if subscription.daysFormatted
-                    !=subscription.daysFormatted.join(" | ")
-                  br
-                  u!="PACKAGES"
-                  ul
-                    each pack in subscription.packages
-                      li!=pack.name
+            if !item.subscriptions || !item.subscriptions.length
+              .badge.badge-danger MISSING
+            else
+              ol
+                each subscription in item.subscriptions
+                  li
+                    b!=subscription.subscriber_id.stagename
+                    br
+                    if subscription.daysFormatted
+                      !=subscription.daysFormatted.join(" | ")
+                    br
+                    u!="PACKAGES"
+                    ul
+                      each pack in subscription.packages
+                        li!=pack.name
             p
               b!="REFERENCE"
               br
