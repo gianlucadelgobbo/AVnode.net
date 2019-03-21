@@ -583,9 +583,9 @@ dataprovider.show = (req, res, section, subsection, model) => {
         logger.debug(locations);
         data.schedule = undefined;
       }
-      if (data.addresses) {
+      if (data.addresses && data.addresses.length) {
         const locations = data.addresses.map(obj =>{
-          if (obj.geometry && obj.geometry.lat && obj.geometry.lng) {
+          if (obj && obj.geometry && obj.geometry.lat && obj.geometry.lng) {
             var rObj = {
               "marker":{
                 "url":"/images/avnode_marker.svg",
