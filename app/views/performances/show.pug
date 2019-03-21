@@ -89,7 +89,8 @@ block content
                       img(src=user.imageFormats.small, alt=user.stagename)
                   .user_perfomance_country_city
                     a.performance_event_title(href="/"+user.slug).users_performance_item_name=user.stagename
-                    p.users_performance_item_country!=user.addressesFormatted.join(", ")
+                    if user.addressesFormatted && user.addressesFormatted.length
+                      p.users_performance_item_country!=user.addressesFormatted.join(", ")
         .performance_events_wrapper
           if data.bookings.length
             h3=global.__('Events')  

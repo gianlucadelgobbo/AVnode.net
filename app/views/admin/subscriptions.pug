@@ -124,17 +124,23 @@ block teaser
                           th(scope="row")
                             .text-right
                               b=global.__('Reference')
-                          td=user.name+" "+user.surname
+                          td
+                            if user.mobile && user.mobile.length
+                              !=user.name+" "+user.surname
                         tr
                           th(scope="row")
                             .text-right
                               b=global.__('Reference Email')
-                          td=user.email
+                          td
+                            if user.mobile && user.mobile.length
+                              !=user.email
                         tr
                           th(scope="row")
                             .text-right
                               b=global.__('Reference Mobile')
-                          td=user.mobile.map(function(item) {return item.url}).join(", ")
+                          td
+                            if user.mobile && user.mobile.length
+                              !=user.mobile.map(function(item) {return item.url}).join(", ")
                         tr
                           th(scope="row")
                             .text-right
