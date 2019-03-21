@@ -298,7 +298,7 @@ eventSchema.virtual('advanced').get(function (req) {
       for (var item in  programmebydayvenue) {
         for (var item2 in  programmebydayvenue[item].rooms) {
           for (var item3 in  programmebydayvenue[item].rooms[item2].performances) {
-            if (!types.length || (programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug && types.map(i => {return i.slug}).indexOf(programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug)===-1)) {
+            if (!types.length || (programmebydayvenue[item].rooms[item2].performances[item3].performance && programmebydayvenue[item].rooms[item2].performances[item3].performance.type && programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug && types.map(i => {return i.slug}).indexOf(programmebydayvenue[item].rooms[item2].performances[item3].performance.type.slug)===-1)) {
               types.push(programmebydayvenue[item].rooms[item2].performances[item3].performance.type);
             }
           }
