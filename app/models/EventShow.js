@@ -211,7 +211,7 @@ eventSchema.virtual('advanced').get(function (req) {
 
           if (this.program[a].performance.users[b].addresses) {
             for(let c=0;c<this.program[a].performance.users[b].addresses.length;c++){
-              if (performers.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) performers.countries.push(this.program[a].performance.users[b].addresses[c].country);
+              if (this.program[a].performance.users[b].addresses[c] && this.program[a].performance.users[b].addresses[c].country && performers.countries.indexOf(this.program[a].performance.users[b].addresses[c].country)===-1) performers.countries.push(this.program[a].performance.users[b].addresses[c].country);
             }  
           }
           /* for(let c=0;c<this.program[a].performance.categories.length;c++){
