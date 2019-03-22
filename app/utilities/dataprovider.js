@@ -233,20 +233,22 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
             }
           }
         }
-        let a=0;
-        while(a<res.performance.bookings.length) {
-          /* let b=0;
-          while(b<res.performer.performances[a].bookings.length) {
-            if (!res.performer.performances[a].bookings[b].event) {
-              res.performer.performances[a].bookings.splice(b, 1);
+        if (res.performance.bookings && res.performance.bookings.length) {
+          let a=0;
+          while(a<res.performance.bookings.length) {
+            /* let b=0;
+            while(b<res.performer.performances[a].bookings.length) {
+              if (!res.performer.performances[a].bookings[b].event) {
+                res.performer.performances[a].bookings.splice(b, 1);
+              } else {
+                b++;
+              }
+            } */
+            if (res.performance.bookings[a].event.slug!=req.params.slug) {
+              res.performance.bookings.splice(a, 1);
             } else {
-              b++;
+              a++;
             }
-          } */
-          if (res.performance.bookings[a].event.slug!=req.params.slug) {
-            res.performance.bookings.splice(a, 1);
-          } else {
-            a++;
           }
         }
         delete res.advanced.programmebydayvenue;

@@ -144,7 +144,7 @@ block content
                     img.img-fluid(src=user.imageFormats.small)
                 div(class=get.fullinfo ? "col-md-6" : "col-md-12")
                   h3!=user.stagename
-                  if user.addressesFormatted
+                  if user.addressesFormatted && user.addressesFormatted.length
                     div!=user.addressesFormatted.join(", ")
               if get.fullinfo
                 .mt-2!=user.about
