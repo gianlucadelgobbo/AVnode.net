@@ -125,9 +125,9 @@ block title
             .col-sm-12
               .about_wrapper
                 span#about_collapse.about_collapse.collapse.show!=data.about
-                if data.aboutFull.length > data.about.length
+                if data.aboutFull && data.aboutFull.length > data.about.length
                   span#about_collapseFull.about_collapse.about_more.collapse!=data.aboutFull
-              if data.aboutFull.length > data.about.length
+              if data.aboutFull && data.aboutFull.length > data.about.length
                 .more_button
                   span.color1.lnr.lnr-plus-circle.collapsed(data-toggle='collapse', data-target=".about_collapse", href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse about_collapseFull')
     .polygon_divider_bottom

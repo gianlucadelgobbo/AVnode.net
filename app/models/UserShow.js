@@ -259,7 +259,6 @@ userSchema.virtual('aboutFull').get(function (req) {
     //str = str.replace(new RegExp(/<br \/><br \/>+/gi), "<br />");
 
     str = str.replace(truncatise(str, options),"");
-  
 
     return str;
   }
