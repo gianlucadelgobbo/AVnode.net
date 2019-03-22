@@ -233,7 +233,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
             }
           }
         }
-        if (res.performance.bookings && res.performance.bookings.length) {
+        if (res.performance && res.performance.bookings && res.performance.bookings.length) {
           let a=0;
           while(a<res.performance.bookings.length) {
             /* let b=0;
