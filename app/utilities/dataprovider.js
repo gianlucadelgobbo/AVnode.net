@@ -556,11 +556,11 @@ dataprovider.show = (req, res, section, subsection, model) => {
 
   dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
     logger.debug("fetchShow END");
-    if (err || data === null) {
+    if (err || !data || data === null) {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
       logger.debug(select);
-      if (data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
+      if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
         const locations = data.schedule.map(obj =>{
           if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
             var rObj = {
@@ -586,7 +586,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         logger.debug(locations);
         data.schedule = undefined;
       }
-      if (data.addresses && data.addresses.length) {
+      if (data && data.addresses && data.addresses.length) {
         const locations = data.addresses.map(obj =>{
           if (obj && obj.geometry && obj.geometry.lat && obj.geometry.lng) {
             var rObj = {
@@ -609,7 +609,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           }
         }
       }
-      if (req.params.img) {
+      if (data && data.medias && req.params.img) {
         for (let item in data.medias) {
           if (data.medias[item].slug===req.params.img) {
             if (!req.session[data._id+"#IMG:"+data.medias[item].slug]) {
