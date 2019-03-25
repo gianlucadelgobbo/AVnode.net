@@ -44,6 +44,10 @@ router.get('/api/:sez/:id/public/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
 
+router.get('/api/:sez/:id/delete', (req, res) => {
+  get.getDelete(req, res);
+});
+
 router.get('/api/:sez/:id/:form/', (req, res) => {
   get.getData(req, res);
 });
@@ -99,6 +103,10 @@ router.get('/api/subscriptions', (req, res) => {
   get.getSubscriptions(req, res);
 });
 
+router.get('/api/:sez/:id/delete', (req, res) => {
+  console.log(stocazzo)
+  get.getDelete(req, res);
+});
 
 router.get('/api/:sez', (req, res) => {
   req.params.id = req.user.id;

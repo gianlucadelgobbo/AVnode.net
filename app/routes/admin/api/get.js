@@ -19,6 +19,42 @@ const Models = {
 }
 const logger = require('../../../utilities/logger');
 
+router.getDelete = (req, res) => {
+  logger.debug("getDelete");
+  if (config.cpanel[req.params.sez] && req.params.id) {
+      const id = req.params.id;
+      Models[config.cpanel[req.params.sez].model]
+      .findById(id)
+      .lean()
+      .exec((err, data) => {
+        if (err) {
+          res.status(404).json({ error: `${JSON.stringify(err)}` });
+        } else {
+          if (!data) {
+            res.status(404).json({ error: `DOC_NOT_FOUND` });
+          } else {
+            if (req.query.delete!="1") {
+              res.json(data);
+            } else {
+              switch (req.params.sez) {
+                case "galleries" :
+                Models["Performance"].update( {_id: { $in: data.performances}}, { $pullAll: {galleries: [data._id] } }, function(err){
+                  Models["Event"].update( {_id: { $in: data.events}}, { $pullAll: {galleries: [data._id] } }, function(err){
+                    Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id} , function(err, result){
+                      res.json(err || result);
+                    });
+                  });
+                });
+                break;
+              }
+            }
+          }
+        }
+      });
+    } else {
+    res.status(404).json({ error: `API_NOT_FOUND` });
+  }
+}
 router.getSubscriptions = (req, res) => {
   logger.debug("getSubscriptions");
   if (config.cpanel[req.params.sez] && req.params.id) {
@@ -88,20 +124,6 @@ router.getList = (req, res) => {
 }
 
 router.getData = (req, res) => {
-  //logger.debug(req.params);
-  for (let item in config.cpanel) {
-    //logger.debug("http://localhost:8006/admin/api/"+item+"?pure=1")
-    for (let item2 in config.cpanel[item].forms) {
-      //logger.debug("http://localhost:8006/admin/api/"+item+"/"+item2);
-      //logger.debug("http://localhost:8006/admin/api/"+item+"/:ID/"+item2+"?pure=1");
-      //config.cpanel[item].forms[item2].populate = [];
-      //config.cpanel[item].forms[item2].select = {};
-      for (let item3 in config.cpanel[item].forms[item2].validators) {
-        //config.cpanel[item].forms[item2].select[item3] = 1;
-        //logger.debug(item+"/"+item2+"/"+item3);
-      } 
-    }
-  }
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
