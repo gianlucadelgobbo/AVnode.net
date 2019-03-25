@@ -88,6 +88,11 @@ router.get('/api/:sez/:id/users/remove/:user', (req, res)=>{
   get.removeUser(req, res);
 });
 
+router.get('/api/galleries/:id/mediaremove/:image', (req, res)=>{
+  req.params.sez = 'galleries';
+  get.removeImage(req, res);
+});
+
 router.get('/api/events/:id/performance/add/:performance', (req, res)=>{
   get.addPerformance(req, res);
 });

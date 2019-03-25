@@ -55,6 +55,21 @@ router.getDelete = (req, res) => {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
 }
+router.removeImage = (req, res) => {
+  var query = {
+    _id: req.params.id,
+    "medias.slug": req.params.image
+  };
+  console.log(query);
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  Models[config.cpanel[req.params.sez].model].update( query , { $pull: {"medias": {"slug": req.params.image } } }, function(err){
+    req.params.form = 'public';
+    router.getData(req, res);
+  });
+
+}
+  
 router.getSubscriptions = (req, res) => {
   logger.debug("getSubscriptions");
   if (config.cpanel[req.params.sez] && req.params.id) {

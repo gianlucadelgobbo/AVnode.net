@@ -2447,14 +2447,16 @@ export const listGallery = ({
                 <div className="labelField">
                   <p>{image.title}</p>
                   <i
-                    onClick={() =>
+                    onClick={() => {
+                      //console.log(image);
                       showModal({
                         type: MODAL_REMOVE,
                         props: {
                           onRemove: () =>
-                            removeImage({ id: model.id, imgId: image.id })
+                            removeImage({ id: model.id, imgId: image.slug })
                         }
                       })
+                    }
                     }
                     className="fa fa-trash"
                     data-toggle="tooltip"
