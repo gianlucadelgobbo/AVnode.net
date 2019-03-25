@@ -122,8 +122,9 @@ block content
                   img(src=user.imageFormats.small, alt=user.stagename)
                 div.user_perfomance_country_city
                   p.users_performance_item_name=user.stagename
-                  p.users_performance_item_country!=user.addressesFormatted.join(", ")
-          if (data.performances.length)
+                  if user.addressesFormatted && user.addressesFormatted.length
+                    p.users_performance_item_country!=user.addressesFormatted.join(", ")
+          if (data.performances && data.performances.length)
             .data_footage_video_wrapper
               h3=__("Performances")
               each performances in data.performances
@@ -133,7 +134,7 @@ block content
                       img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
                   .col-md-8
                     a(href="/performances/"+performances.slug+"/")=performances.title
-          if (data.events.length)
+          if (data.events && data.events.length)
             .data_performances_event_wrapper
               h3=__("Events")
               each event in data.events
