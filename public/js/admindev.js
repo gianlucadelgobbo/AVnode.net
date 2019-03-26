@@ -1,4 +1,18 @@
 $(function() {
+  $(".edit-availability").on('click', function(ev) {
+    ev.preventDefault();
+    const id = $(this).data("program");
+    console.log($(this).data("program"));
+    $('#modalEdit').modal();
+    $.ajax({
+      url: "/admin/api/editsubscription",
+      method: "post",
+      data: {id:id}
+    }).done(function(data) {
+      console.log(data);
+      $('#modalEdit .content').html(data);
+    });
+  });
   $(".cancel-sub").on('click', function(ev) {
     var result = confirm("Want to delete?");
     if (result) {

@@ -151,6 +151,42 @@ router.cancelSubscription = (req, res) => {
     });
   });
 }
+router.editSubscription = (req, res) => {
+  logger.debug(req.body);
+  let populate = [
+    { "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]},
+    { "path": "performance", "select": "title slug users duration abouts image bookings", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses image abouts members", "populate": [{"path": "members", "select": "stagename addresses image abouts", "model": "UserShow"}], "model": "UserShow"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"}]},
+    { "path": "subscriptions.subscriber_id", "select": "stagename name surname email mobile", "model": "User"},
+    { "path": "status", "select": "name", "model": "Category"},
+    { "path": "reference", "select": "stagename name surname email mobile", "model": "User"}
+  ];
+
+  Models.Program
+  .findOne({_id: req.body.id/* , members:req.user.id */})
+  .populate(populate)
+  .exec((err, sub) => {
+    res.render('admindev/events/acts-edit-sub', {call: sub}, function(err, body) {
+      console.log(err);
+      console.log(body);
+      res.json(body);
+    });
+    
+    /* Models.Event
+    .findOne({_id: sub.event},'_id, program', (err, event) => {
+      logger.debug(event);
+      event.program.forEach((program, index) => {
+        if (program.subscription_id == req.body.id) {
+          event.program.splice(index, 1);
+        }
+      });
+      event.save(function(err){
+        sub.remove(function(err){
+          res.json(true);
+        });
+      });  
+    }); */
+  });
+}
 
 router.linkPartner = (req, res) => {
   logger.debug(req.body);

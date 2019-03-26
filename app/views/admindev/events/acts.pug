@@ -165,6 +165,7 @@ block content
               !=data.event.organizationsettings.call.calls[item.call].title
             p
               b!="AVAILABILITY"
+              a.btn.btn-primary.btn-small.edit-availability(data-program=item._id, href="#")="Edit"
             if !item.subscriptions || !item.subscriptions.length
               .badge.badge-danger MISSING
             else
@@ -215,5 +216,24 @@ block content
                       p=cat.name
                 //pre=item.schedule
 
+  // Modal Add Partner
+  #modalEdit.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
+    .modal-dialog.modal-lg(role='document')
+      .modal-content
+        form
+          input(type='hidden', name="partner_owner", value=owner)
+          //input(type='hidden', name="delegate", value=user.name)
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Edit subscription")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .alert.d-none
+            .content
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+  
 
   //pre=JSON.stringify(data, null, 2)

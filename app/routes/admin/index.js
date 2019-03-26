@@ -191,6 +191,10 @@ router.post('/api/cancelsubscription', (req, res)=>{
   post.cancelSubscription(req, res);
 });
 
+router.post('/api/editsubscription', (req, res)=>{
+  post.editSubscription(req, res);
+});
+
 router.put('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';

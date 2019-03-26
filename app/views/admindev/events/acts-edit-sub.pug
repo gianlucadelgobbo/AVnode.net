@@ -1,0 +1,90 @@
+// Availability
+- var count = 0;
+- console.log("Availability")
+- var subscriptionsIndex = call.subscriptions.map(item => {return item.subscriber_id._id.toString()})
+- var peoples = [];
+- call.performance = parseInt(call.performance)
+- for (var b=0;b<call.performance.users.length;b++)
+  //-  console.log(call.performance.users[b])
+  - if (call.performance.users[b].members && call.performance.users[b].members.length)
+    - for (var c=0;c<call.performance.users[b].members.length;c++)
+      - var index = subscriptionsIndex.indexOf(call.performance.users[b].members[c]._id.toString())
+      - console.log("index " +index)
+        //- if (peoples.indexOf(call.performance.users[b].members[c].slug)==-1)
+          - peoples.push(call.performance.users[b].members[c].slug)
+        .row.mb-3
+          .col-1
+            .text-center
+              input.switch(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.performance.users[b].members[c]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.performance.users[b].members[c].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[index] && call.subscriptions[index].subscriber_id ? "checked" : undefined))
+              input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.performance.users[b].members[c].stagename)
+              if (call.subscriptions[index] && call.subscriptions[index].freezed)
+                input(name="subscriptions[" + count + "][freezed]", type="hidden", value='true')
+                input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.performance.users[b].members[c]._id)
+          .col-11
+            label(for="subscription"+b+"_"+c)
+              h3(class=call.subscriptions[index] && call.subscriptions[index].freezed ? "mb-0" : undefined)
+                !=call.performance.users[b].members[c].stagename
+            if (call.subscriptions[index] && call.subscriptions[index].freezed)
+              p!=global.__("This person is already in with another act and can not be edited")
+            else
+              .subscription(style=!call.subscriptions || !call.subscriptions[index] || !call.subscriptions[index].subscriber_id ? "display: none" : undefined)
+                - var dates = call.subscriptions && call.subscriptions[index] &&  call.subscriptions[index].days ? call.subscriptions[index].days : []
+                - var days = [];
+                - for (var d=0;d<call.event.schedule.length;d++)
+                  - if (days.indexOf(call.event.schedule[d].date_formatted) == -1)
+                    - days.push(call.event.schedule[d].date_formatted)
+                    - var stringdate = new Date(call.event.schedule[d].date.getFullYear()+"-"+(("0" + (call.event.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (call.event.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z")
+                    -  console.log(stringdate+"bella")
+                    - var datesindex = dates.findIndex(function(x) { 
+                    -  return x.valueOf() === stringdate.valueOf(); 
+                    - });
+                    -  console.log(datesindex)
+                    .form-check
+                      input.form-check-input(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=call.event.schedule[d].date,    type="checkbox", checked=datesindex!=-1 ? "checked" : undefined)
+                      label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
+                        !=" "+call.event.schedule[d].date_formatted
+                      if (call.subscriptions[index] && call.subscriptions[index].freezed)
+                        input(name="subscriptions[" + count + "][days][" + d + "]", value=call.event.schedule[d].date, type="hidden")
+        - count++
+  - else
+    //- if (peoples.indexOf(call.performance.users[b].slug)==-1)
+      - peoples.push(call.performance.users[b].slug)
+    - var index = subscriptionsIndex.indexOf(call.performance.users[b]._id.toString())
+    - console.log("index " +index)
+
+      .row.mb-3
+        .col-1
+          .text-center
+            input.switch(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c, name=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "subscriptions[" + count + "][subscriber_id]" : undefined, value=call.performance.users[b]._id, onchange="$(this).parent().parent().parent().find('.subscription').slideToggle('slide');var stagename = this.checked ? '"+call.performance.users[b].stagename+"' : '';$(this).parent().find('.stagename').val(stagename);",type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[index] && call.subscriptions[index].subscriber_id ? "checked" : undefined))
+            input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.performance.users[b].stagename)
+            if (call.subscriptions[index] && call.subscriptions[index].freezed)
+              input(name="subscriptions[" + count + "][freezed]", type="hidden", value='true')
+              input(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.performance.users[b]._id)
+        .col-11
+          label(for="subscription"+b+"_"+c)
+            h3(class=call.subscriptions[index] && call.subscriptions[index].freezed ? "mb-0" : undefined)
+              !=call.performance.users[b].stagename
+          if (call.subscriptions[index] && call.subscriptions[index].freezed)
+            p!=global.__("This person is already in with another act and can not be edited")
+          else
+            .subscription(style=!call.subscriptions || !call.subscriptions[index] || !call.subscriptions[index].subscriber_id ? "display: none" : undefined)
+              - var dates = call.subscriptions && call.subscriptions[index] &&  call.subscriptions[index].days ? call.subscriptions[index].days : []
+              -  console.log(count)
+              -  console.log(dates[0]+"bella")
+              - var days = [];
+              - for (var d=0;d<call.event.schedule.length;d++)
+                - if (days.indexOf(call.event.schedule[d].date_formatted) == -1)
+                  - days.push(call.event.schedule[d].date_formatted)
+                  - var stringdate = new Date(call.event.schedule[d].date.getFullYear()+"-"+(("0" + (call.event.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (call.event.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z")
+                  -  console.log(stringdate+"bella")
+                  - var datesindex = dates.findIndex(function(x) { 
+                  -  return x.valueOf() === stringdate.valueOf(); 
+                  - });
+                  -  console.log(datesindex)
+                  .form-check
+                    input.form-check-input(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=call.event.schedule[d].date,    type="checkbox", checked=datesindex!=-1 ? "checked" : undefined)
+                    label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
+                      !=" "+call.event.schedule[d].date_formatted
+                    if (call.subscriptions[index] && call.subscriptions[index].freezed)
+                      input(name="subscriptions[" + count + "][days][" + d + "]", value=call.event.schedule[d].date, type="hidden")
+        - count++
