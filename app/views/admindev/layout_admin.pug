@@ -25,6 +25,9 @@ html(lang='en')
     link(href="/js/fullcalendar.min.css" rel="stylesheet")
     //link(href="/js/fullcalendar.print.min.css" rel="stylesheet" media="print")
   body
+    #top
+    a#to_top(href="#top", title=global.__('Back to the top'))
+      span.lnr.lnr-arrow-up-circle
     nav.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
       a.navbar-brand(href='/admindev', title="AVnode.net")
         img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')

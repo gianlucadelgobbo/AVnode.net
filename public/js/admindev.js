@@ -1,4 +1,13 @@
 $(function() {
+  $(window).scroll(function() {    
+    var scroll = $(window).scrollTop();
+
+    if (scroll >= 800) {
+        $("#to_top").addClass("to_top_visibile");
+    } else {
+        $("#to_top").removeClass("to_top_visibile");
+    }
+  });  
   $(".edit-availability").on('click', function(ev) {
     ev.preventDefault();
     const id = $(this).data("program");
