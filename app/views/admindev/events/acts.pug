@@ -74,7 +74,7 @@ block content
       tr
         th="ID"
         th="STATUS"
-        th="ACT"
+        th(style="width: 500px;")="ACT"
         th="AUTHORS"
         th="SUBSCRIPTION"
     tbody
@@ -99,7 +99,7 @@ block content
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
               .text-right.pb-1.mb-1
                 button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Delete')
-          td
+          td(style="width: 500px;")
             h2!=item.performance.title
               small
                 !=" "
