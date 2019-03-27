@@ -54,7 +54,8 @@ block content
       select.form-control.mr-sm-3(name='sortby')
         option(value='0') Sort by
         //option(value='day') group by day
-        option(value='sortby_name', selected=get.sortby=="sortby_name" ? "selected" : undefinded) sort by perf name
+        option(value='sortby_perf_name', selected=get.sortby=="sortby_perf_name" ? "selected" : undefinded) sort by perf name
+        option(value='sortby_ref_name', selected=get.sortby=="sortby_ref_name" ? "selected" : undefinded) sort by ref name
         option(value='0', selected=get.sortby=="0" ? "selected" : undefinded) sort by sub date
 
       input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefinded)
@@ -143,9 +144,15 @@ block content
                   .col-md-6
                     img.img-fluid(src=user.imageFormats.small)
                 div(class=get.fullinfo ? "col-md-6" : "col-md-12")
-                  h3!=user.stagename + " " + (user.is_crew ? "stocazzo" : "")
+                  h3
+                    !=user.stagename
+                    if user.is_crew
+                      !=" "
+                      .badge.badge-info CREW
                   if user.addressesFormatted && user.addressesFormatted.length
                     div!=user.addressesFormatted.join(", ")
+                  else
+                    .badge.badge-danger MISSING ADDRESS
               if get.fullinfo
                 .mt-2!=user.about
                 if user.web
@@ -165,14 +172,20 @@ block content
               !=data.event.organizationsettings.call.calls[item.call].title
             p
               b!="AVAILABILITY"
-              a.btn.btn-primary.btn-small.edit-availability(data-program=item._id, href="#")="Edit"
+              !=" | "
+              b
+                a.edit-availability(data-program=item._id, href="#")="EDIT"
             if !item.subscriptions || !item.subscriptions.length
               .badge.badge-danger MISSING
             else
               ol
                 each subscription in item.subscriptions
                   li
-                    b!=subscription.subscriber_id.stagename+ " "+(subscription.freezed ? "freezed" : "")
+                    b!=subscription.subscriber_id.stagename
+                    !=" "+subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
+                    if subscription.freezed
+                      !=" "
+                      .badge.badge-info freezed
                     br
                     if subscription.daysFormatted
                       !=subscription.daysFormatted.join(" | ")

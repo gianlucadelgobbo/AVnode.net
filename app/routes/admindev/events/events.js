@@ -326,7 +326,10 @@ router.get('/:event/acts', (req, res) => {
             }
             data.program = prg;
           //}
-          if (req.query.sortby && req.query.sortby!='0') {
+          if (req.query.sortby && req.query.sortby=='sortby_ref_name') {
+            data.program = data.program.sort((a,b) => (a.reference.stagename > b.reference.stagename) ? 1 : ((b.reference.stagename > a.reference.stagename) ? -1 : 0));
+          }
+          if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
             data.program = data.program.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
           }
           let admittedO = {};

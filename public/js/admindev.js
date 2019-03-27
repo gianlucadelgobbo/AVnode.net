@@ -40,12 +40,13 @@ $(function() {
         $(this).parent().parent().parent().find('.block_active input').removeAttr('disabled');
         $(this).parent().find('.stagename').val(stagename);
         $(this).parent().find('.subscriber_id').val(subscriber_id);
+        $(this).parent().parent().parent().find('.block_active').slideDown('slide');
       } else {
         $(this).parent().parent().parent().find('.block_active input').attr('disabled', 'disabled');
         $(this).parent().find('.stagename').removeAttr('value');
         $(this).parent().find('.subscriber_id').removeAttr('value');
+        $(this).parent().parent().parent().find('.block_active').slideUp('slide');
       }
-      $(this).parent().parent().parent().find('.block_active').slideToggle('slide');
     });
     $(".freezed").change(function(ev) {
       const count = $(this).data("count");

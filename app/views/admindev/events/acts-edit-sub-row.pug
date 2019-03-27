@@ -10,7 +10,7 @@
         !=user.stagename
     p.block_freezed(class=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "d-none" : "")
       !=global.__("This person is already in with another act and can not be edited")
-    .row.block_active(class=!call.subscriptions || !call.subscriptions[index] || !call.subscriptions[index].subscriber_id ? "d-none" : "")
+    .row.block_active(style=!call.subscriptions || !call.subscriptions[index] || !call.subscriptions[index].subscriber_id ? "display: none" : "")
       .col-md-6
         - var dates = call.subscriptions && call.subscriptions[index] &&  call.subscriptions[index].days ? call.subscriptions[index].days : []
         - var days = [];
