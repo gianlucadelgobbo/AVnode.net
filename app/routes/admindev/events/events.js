@@ -326,6 +326,9 @@ router.get('/:event/acts', (req, res) => {
             }
             data.program = prg;
           //}
+          if (req.query.sortby && req.query.sortby!='0') {
+            data.program = data.program.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
+          }
           let admittedO = {};
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
           data.admitted = [];

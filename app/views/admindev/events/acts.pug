@@ -53,9 +53,9 @@ block content
       
       select.form-control.mr-sm-3(name='sortby')
         option(value='0') Sort by
-        option(value='day') group by day
-        option(value='sortby_name') sort by perf name
-        option(value='sortby_submissiondate') sort by sub date
+        //option(value='day') group by day
+        option(value='sortby_name', selected=get.sortby=="sortby_name" ? "selected" : undefinded) sort by perf name
+        option(value='0', selected=get.sortby=="0" ? "selected" : undefinded) sort by sub date
 
       input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefinded)
       label.mr-sm-3(for='unlink') Performance suspect
@@ -143,7 +143,7 @@ block content
                   .col-md-6
                     img.img-fluid(src=user.imageFormats.small)
                 div(class=get.fullinfo ? "col-md-6" : "col-md-12")
-                  h3!=user.stagename
+                  h3!=user.stagename + " " + (user.is_crew ? "stocazzo" : "")
                   if user.addressesFormatted && user.addressesFormatted.length
                     div!=user.addressesFormatted.join(", ")
               if get.fullinfo
@@ -172,7 +172,7 @@ block content
               ol
                 each subscription in item.subscriptions
                   li
-                    b!=subscription.subscriber_id.stagename
+                    b!=subscription.subscriber_id.stagename+ " "+(subscription.freezed ? "freezed" : "")
                     br
                     if subscription.daysFormatted
                       !=subscription.daysFormatted.join(" | ")
@@ -220,9 +220,7 @@ block content
   #modalEdit.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
     .modal-dialog.modal-lg(role='document')
       .modal-content
-        form
-          input(type='hidden', name="partner_owner", value=owner)
-          //input(type='hidden', name="delegate", value=user.name)
+        form#editSubscription
           .modal-header
             h5#modalAddPartnerLabel.modal-title=global.__("Edit subscription")
             button.close(type='button', data-dismiss='modal', aria-label='Close')

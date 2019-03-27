@@ -195,6 +195,10 @@ router.post('/api/editsubscription', (req, res)=>{
   post.editSubscription(req, res);
 });
 
+router.post('/api/editsubscriptionsave', (req, res)=>{
+  post.editSubscriptionSave(req, res);
+});
+
 router.put('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';

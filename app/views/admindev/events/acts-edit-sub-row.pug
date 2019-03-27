@@ -1,0 +1,40 @@
+.row.mb-3
+  .col-1
+    .text-center
+      input.switch(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, value="1", data-subscriber_id=user._id, data-stagename=user.stagename, data-count=count, type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[index] && call.subscriptions[index].subscriber_id ? "checked" : undefined))
+      input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.subscriptions[index] ? user.stagename : undefined)
+      input.subscriber_id(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.subscriptions[index] ? user._id : undefined)
+  .col-10
+    label(for="subscription"+b+"_"+c)
+      h3(class=call.subscriptions[index] && call.subscriptions[index].freezed ? "mb-0" : undefined)
+        !=user.stagename
+    p.block_freezed(class=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "d-none" : "")
+      !=global.__("This person is already in with another act and can not be edited")
+    .row.block_active(class=!call.subscriptions || !call.subscriptions[index] || !call.subscriptions[index].subscriber_id ? "d-none" : "")
+      .col-md-6
+        - var dates = call.subscriptions && call.subscriptions[index] &&  call.subscriptions[index].days ? call.subscriptions[index].days : []
+        - var days = [];
+        - for (var d=0;d<call.event.schedule.length;d++)
+          - if (days.indexOf(call.event.schedule[d].date_formatted) == -1)
+            - days.push(call.event.schedule[d].date_formatted)
+            - var stringdate = new Date(call.event.schedule[d].date.getFullYear()+"-"+(("0" + (call.event.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (call.event.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z")
+            - var datesindex = dates.findIndex(function(x) { 
+            -  return x.valueOf() === stringdate.valueOf(); 
+            - });
+            .form-check
+              input.form-check-input(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=call.event.schedule[d].date,    type="checkbox", checked=datesindex!=-1 ? "checked" : undefined)
+              label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
+                !=" "+call.event.schedule[d].date_formatted
+              if (call.subscriptions[index] && call.subscriptions[index].freezed)
+                input(name="subscriptions[" + count + "][days][" + d + "]", value=call.event.schedule[d].date, type="hidden")
+      .col-md-6
+        - var packs = call.subscriptions[index] && call.subscriptions[index].packages ? call.subscriptions[index].packages.map(item => {return item.name}) : []
+        - console.log(packs)
+        each pack, d in call.event.organizationsettings.call.calls[call.call].packages
+          .form-check
+            input.form-check-input(id="subscription_pack"+b+"_"+c+"_"+d, name="subscriptions[" + count + "][packages][" + d + "]" : undefined, value=JSON.stringify(pack), type="checkbox", disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, checked=packs.indexOf(pack.name)!=-1 ? "checked" : undefined)
+            label.form-check-label(for="subscription_pack"+b+"_"+c+"_"+d)
+              !=" "+pack.name
+  .col-1
+    .text-center
+      input.freezed(checked=call.subscriptions[index] && call.subscriptions[index].freezed ? "checked" : undefined, name="subscriptions[" + count + "][freezed]", value="1", data-b=b, data-count=count, type="checkbox",autocomplete="off")

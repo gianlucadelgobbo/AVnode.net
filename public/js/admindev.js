@@ -9,10 +9,60 @@ $(function() {
       method: "post",
       data: {id:id}
     }).done(function(data) {
-      console.log(data);
+      //console.log(data);
       $('#modalEdit .content').html(data);
+      bindEditSubscription();
     });
   });
+  $("#editSubscription").submit(function(ev) {
+    ev.preventDefault();
+    var datastring = $("#editSubscription").serialize();
+    $.ajax({
+        type: "POST",
+        url: "/admin/api/editsubscriptionsave",
+        data: datastring,
+        success: function(data) {
+          console.log(data);
+          //var obj = jQuery.parseJSON(data); if the dataType is not specified as json uncomment this
+          // do what ever you want with the server response
+        },
+        error: function() {
+            alert('error handling here');
+        }
+    });
+  });
+  function bindEditSubscription(){
+    $(".switch").change(function(ev) {
+      const stagename = $(this).data("stagename");
+      const count = $(this).data("count");
+      const subscriber_id = $(this).data("subscriber_id");
+      if (this.checked) {
+        $(this).parent().parent().parent().find('.block_active input').removeAttr('disabled');
+        $(this).parent().find('.stagename').val(stagename);
+        $(this).parent().find('.subscriber_id').val(subscriber_id);
+      } else {
+        $(this).parent().parent().parent().find('.block_active input').attr('disabled', 'disabled');
+        $(this).parent().find('.stagename').removeAttr('value');
+        $(this).parent().find('.subscriber_id').removeAttr('value');
+      }
+      $(this).parent().parent().parent().find('.block_active').slideToggle('slide');
+    });
+    $(".freezed").change(function(ev) {
+      const count = $(this).data("count");
+      if (this.checked) {
+        $(this).parent().parent().parent().find('.switch').attr('disabled', 'disabled');
+        $(this).parent().parent().parent().find('.block_freezed').removeClass('d-none');
+        $(this).parent().parent().parent().find('.block_active input').attr('disabled', 'disabled');
+        //$(this).parent().parent().parent().find('.block_active').addClass('d-none');
+        
+      } else {
+        $(this).parent().parent().parent().find('.block_active input').removeAttr('disabled');
+        $(this).parent().parent().parent().find('.switch').removeAttr('disabled');
+        $(this).parent().parent().parent().find('.block_freezed').addClass('d-none');
+        //$(this).parent().parent().parent().find('.block_active').removeClass('d-none');
+      }
+    });
+  }
   $(".cancel-sub").on('click', function(ev) {
     var result = confirm("Want to delete?");
     if (result) {

@@ -151,6 +151,30 @@ router.cancelSubscription = (req, res) => {
     });
   });
 }
+router.editSubscriptionSave = (req, res) => {
+  var obj = {
+    subscriptions: req.body.subscriptions.filter(item => item.subscriber_id!=""),
+    reference: req.body.reference
+  }
+  logger.debug(req.body.subscriptions[0].packages);
+  /* Models.Program.findOneAndUpdate({_id: req.body.program}, obj, {upsert: false}, function(err){
+    logger.debug(err);
+    res.json({err:err} || {success: true});
+  }); */
+  Models.Program.findOne({_id: req.body.program})
+  .exec((err, program) => {
+    logger.debug(program);
+    var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id!="");
+    for (var item in subscriptions) subscriptions[item].packages = JSON.parse("["+subscriptions[item].packages+"]");
+    logger.debug(subscriptions[0].packages);
+    program.reference = req.body.reference;
+    program.subscriptions = subscriptions;
+    program.save(function(err){
+      logger.debug(err);
+      res.json({err:err} || {success: true});
+    });  
+  });
+}
 router.editSubscription = (req, res) => {
   logger.debug(req.body);
   let populate = [
@@ -163,28 +187,34 @@ router.editSubscription = (req, res) => {
 
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
-  .populate(populate)
-  .exec((err, sub) => {
-    res.render('admindev/events/acts-edit-sub', {call: sub}, function(err, body) {
-      console.log(err);
-      console.log(body);
-      res.json(body);
-    });
-    
-    /* Models.Event
-    .findOne({_id: sub.event},'_id, program', (err, event) => {
-      logger.debug(event);
-      event.program.forEach((program, index) => {
-        if (program.subscription_id == req.body.id) {
-          event.program.splice(index, 1);
-        }
+  .exec((err, subbba) => {
+    Models.Program
+    .findOne({_id: req.body.id/* , members:req.user.id */})
+    .populate(populate)
+    .exec((err, sub) => {
+      res.render('admindev/events/acts-edit-sub', {call: sub}, function(err, body) {
+        console.log(sub);
+        console.log(err);
+        console.log(body);
+        res.json(body);
       });
-      event.save(function(err){
-        sub.remove(function(err){
-          res.json(true);
+      
+      /* Models.Event
+      .findOne({_id: sub.event},'_id, program', (err, event) => {
+        logger.debug(event);
+        event.program.forEach((program, index) => {
+          if (program.subscription_id == req.body.id) {
+            event.program.splice(index, 1);
+          }
         });
-      });  
-    }); */
+        event.save(function(err){
+          sub.remove(function(err){
+            res.json(true);
+          });
+        });  
+      }); */
+    });
+  
   });
 }
 
