@@ -184,6 +184,11 @@ block content
                   li
                     b!=subscription.subscriber_id.stagename
                     !=" "+subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
+                    br
+                    if subscription.subscriber_id.addressesFormatted && subscription.subscriber_id.addressesFormatted.length
+                      div!=subscription.subscriber_id.addressesFormatted.join(", ")
+                    else
+                      .badge.badge-danger MISSING ADDRESS
                     if subscription.freezed
                       !=" "
                       .badge.badge-info freezed
@@ -208,9 +213,17 @@ block content
               br
               !=item.reference.name+" "+item.reference.surname
               br
-              !='<a href="mailto:'+item.reference.email+'" target="_blank">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'" target="_blank">SEARCH MESSAGES</a>'
+              if item.reference.email
+                !='<a href="mailto:'+item.reference.email+'" target="_blank">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'" target="_blank">SEARCH MESSAGES</a>'
+              else
+                !=" "
+                .badge.badge-danger MISSING EMAIL
               br
-              !=item.reference.mobile.map((item) => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">WP</a>'})
+              if item.reference.mobile.length
+                !=item.reference.mobile.map((item) => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>'})
+              else
+                !=" "
+                .badge.badge-danger MISSING MOBILE
 
         //if get.fullinfo
           tr

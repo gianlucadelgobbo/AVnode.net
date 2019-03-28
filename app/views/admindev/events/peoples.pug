@@ -100,132 +100,77 @@ block content
       each item, index in data.program
         //pre=JSON.stringify(item, null, 2)
         each subscription in item.subscriptions
-          - conta++
+          if !subscription.freezed
+            - conta++
 
-          tr
-            td=conta
-            td
-              .badge.badge-danger=item.status.name
-              //form(action="")
-                each status in data.status
-                  .form-check.text-nowrap
-                    input.form-check-input(id='status'+status._id+item._id, name='status'+item._id, type='radio', value=status.id, checked=item.status._id.toString()==status._id.toString() ? "checked" : undefined)
-                    label.form-check-label(for='status'+status._id+item._id)=status.name
-            td
-              b!=item.performance.title
-                a.badge.badge-primary.ml-2(href="/performance/"+item.performance.slug+"/", target="_blank")="VIEW"
-              br
-              !=item.reference.name+" "+item.reference.surname
-              br
-              a(href="mailto:"+item.reference.email)=item.reference.email
-              a.badge.badge-primary.ml-2(href="https://mail.google.com/mail/u/0/#search/"+item.reference.email)="SEARCH MESSAGES"
-              br
-              !=item.reference.mobile.map((item) => {return item.url+' '+'<a class="badge badge-primary ml-2" href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WA</a>'})
-            td
-              !=subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
-              br
-              !='<a href="mailto:'+subscription.subscriber_id.email+'">'+subscription.subscriber_id.email+'</a>'
-              //<a href="https://mail.google.com/mail/u/0/#search/'+subscription.subscriber_id.email+'">SEARCH MESSAGES</a>'
+            tr
+              td=conta
+              td
+                .badge.badge-danger=item.status.name
+                //form(action="")
+                  each status in data.status
+                    .form-check.text-nowrap
+                      input.form-check-input(id='status'+status._id+item._id, name='status'+item._id, type='radio', value=status.id, checked=item.status._id.toString()==status._id.toString() ? "checked" : undefined)
+                      label.form-check-label(for='status'+status._id+item._id)=status.name
+              td
+                b!=item.performance.title
+                  a.badge.badge-primary.ml-2(href="/performance/"+item.performance.slug+"/", target="_blank")="VIEW"
                 br
-                !=subscription.subscriber_id.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
-                pre=subscription.subscriber_id
-            td(style="border-right: 2px solid #dee2e6;")
-              table
-                - var tot = 0
-                each pack in subscription.packages
+                !=item.reference.name+" "+item.reference.surname
+                br
+                if item.reference.email
+                  !='<a href="mailto:'+item.reference.email+'" target="_blank">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'" target="_blank">SEARCH MESSAGES</a>'
+                else
+                  !=" "
+                  .badge.badge-danger MISSING EMAIL
+                br
+                if item.reference.mobile.length
+                  !=item.reference.mobile.map((item) => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>'})
+                else
+                  !=" "
+                  .badge.badge-danger MISSING MOBILE
+              td
+                !=subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
+                br
+                !='<a href="mailto:'+subscription.subscriber_id.email+'">'+subscription.subscriber_id.email+'</a>'
+                //<a href="https://mail.google.com/mail/u/0/#search/'+subscription.subscriber_id.email+'">SEARCH MESSAGES</a>'
+                  br
+                  !=subscription.subscriber_id.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
+                  pre=subscription.subscriber_id
+              td(style="border-right: 2px solid #dee2e6;")
+                table
+                  - var tot = 0
+                  each pack in subscription.packages
+                    tr
+                      td(style="white-space: nowrap;")
+                        !=pack.name
+                        if (pack.daily)
+                          br
+                          !="Days"
+                          br
+                      td.text-right
+                        !=pack.price
+                        if (pack.daily)
+                          br
+                          !=subscription.days.length
+                          br
+                          !=subscription.days.length*pack.price
+                          - tot+= subscription.days.length*pack.price
+                        else
+                          - tot+= pack.price
                   tr
                     td(style="white-space: nowrap;")
-                      !=pack.name
-                      if (pack.daily)
-                        br
-                        !="Days"
-                        br
+                      b!="Total"
                     td.text-right
-                      !=pack.price
-                      if (pack.daily)
-                        br
-                        !=subscription.days.length
-                        br
-                        !=subscription.days.length*pack.price
-                        - tot+= subscription.days.length*pack.price
-                      else
-                        - tot+= pack.price
-                tr
-                  td(style="white-space: nowrap;")
-                    b!="Total"
-                  td.text-right
-                    !=tot
+                      !=tot
 
-                //pre=subscription.packages
-            - for(let a=0;a<=data.daysN;a++)
-              - var d = new Date(data.days[0])
-              - var dd = new Date(d.setDate(d.getDate() + a))
-              - var present = "#000000"
-              - for(let b=0;b<subscription.days.length;b++) {
-              -   var ddd = new Date(subscription.days[b])
-              -   if (ddd.toString() == dd.toString()) present = "#FF0000"
-              - }
-              td(style="border-right: 2px solid #dee2e6;background-color:"+present)
-          //tr
-            td!=index
-            td
-              if item.date
-                pre=item.boxDate
-                p=item.venue.room
-                if item.categories
-                  each cat in item.categories
-                    if cat.ancestor.slug == "status"
-                      p=cat.name
-                //pre=item
-              else
-                .badge.badge-danger NOT EVALUATED
-            td
-              h2!=item.performance.title
-              p
-                !="TYPE: "+item.performance.categories.filter(word => word.ancestor.slug == "type")[0].name
-                br
-                if item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug).length
-                  !="STYLE: "+item.performance.categories.filter(word => word.ancestor.slug == item.performance.categories.filter(word => word.ancestor.slug == "type")[0].slug)[0].name
-                  br
-                if item.performance.categories.filter(word => word.ancestor.slug == "genre").length
-                  !="GENRE: "+item.performance.categories.filter(word => word.ancestor.slug == "genre")[0].name
-            td
-              if item
-                !=item.topics.join("<br />")
-              else
-                .badge.badge-danger MISSING
-            td!=item.performance.users.map((item) => {return item.stagename}).join("<br />")
-            //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
-            - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
-            - var addressesaddresses = Array.from(new Set([].concat.apply([], addresses)))
-            td!=addressesaddresses.sort().join(", ")
-            td
-              if item
-                p
-                  b!="CALL: "
-                  !=data.organizationsettings.call.calls[item.call].title
-                p
-                  b!="AVAILABILITY"
-                ol
-                  each subscription in item.subscriptions
-                    li
-                      b!=subscription.subscriber_id.stagename
-                      br
-                      !=subscription.daysFormatted.join(" | ")
-                      br
-                      u!="PACKAGES"
-                      ul
-                        each pack in subscription.packages
-                          li!=pack.name
-                p
-                  b!="REFERENCE"
-                  br
-                  !=item.reference.name+" "+item.reference.surname
-                  br
-                  !='<a href="mailto:'+item.reference.email+'">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'">SEARCH MESSAGES</a>'
-                  br
-                  !=item.reference.mobile.map((item) => {return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
-              else
-                .badge.badge-danger MISSING
-
-  //pre=JSON.stringify(data, null, 2)
+                  //pre=subscription.packages
+              - for(let a=0;a<=data.daysN;a++)
+                - var d = new Date(data.days[0])
+                - var dd = new Date(d.setDate(d.getDate() + a))
+                - var present = "#000000"
+                - for(let b=0;b<subscription.days.length;b++) {
+                -   var ddd = new Date(subscription.days[b])
+                -   if (ddd.toString() == dd.toString()) present = "#FF0000"
+                - }
+                td(style="border-right: 2px solid #dee2e6;background-color:"+present)
