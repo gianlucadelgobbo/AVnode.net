@@ -69,6 +69,7 @@ block content
       input.btn.btn-primary(type='submit', name='submit_search', value='FILTER')
   if data.performnce_missing
     pre=data.performnce_missing
+  - var people = []
   table.table
     thead
       tr
@@ -186,6 +187,14 @@ block content
                     if subscription.freezed
                       !=" "
                       .badge.badge-info freezed
+                    if people.indexOf(subscription.subscriber_id._id.toString())==-1
+                      - people.push(subscription.subscriber_id._id.toString())
+                      if subscription.freezed
+                        !=" "
+                        .badge.badge-danger WRONG FREEZED?
+                    else if !subscription.freezed
+                      !=" "
+                      .badge.badge-danger MISSING FREEZED?
                     br
                     if subscription.daysFormatted
                       !=subscription.daysFormatted.join(" | ")
