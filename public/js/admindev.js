@@ -12,6 +12,9 @@ $(function() {
     ev.preventDefault();
     const id = $(this).data("program");
     console.log($(this).data("program"));
+    $('#modalEdit .content').html("Loading data...");
+    $('#modalEdit .alert-danger').addClass('d-none');
+    $('#modalEdit .alert-success').addClass('d-none');
     $('#modalEdit').modal();
     $.ajax({
       url: "/admin/api/editsubscription",
@@ -27,17 +30,23 @@ $(function() {
     ev.preventDefault();
     var datastring = $("#editSubscription").serialize();
     $.ajax({
-        type: "POST",
-        url: "/admin/api/editsubscriptionsave",
-        data: datastring,
-        success: function(data) {
-          console.log(data);
-          //var obj = jQuery.parseJSON(data); if the dataType is not specified as json uncomment this
-          // do what ever you want with the server response
-        },
-        error: function() {
-            alert('error handling here');
-        }
+      type: "POST",
+      url: "/admin/api/editsubscriptionsave",
+      data: datastring
+    }).
+    done(function(data) {
+      if (data.errors) {
+        $('#modalEdit .alert-danger').html(data.errors.subscriptions.message);
+        $('#modalEdit .alert-danger').removeClass('d-none');
+      } else {
+        $('#modalEdit .alert-success').html("Data saved with success.");
+        $('#modalEdit .alert-success').removeClass('d-none');
+      }
+      //console.log(data);
+    })
+    .fail(function (jqXHR, textStatus) {
+      $('#modalEdit .alert-danger').html("Internal Server Error");
+      $('#modalEdit .alert-danger').removeClass('d-none');
     });
   });
   function bindEditSubscription(){
