@@ -203,37 +203,16 @@ router.editSubscription = (req, res) => {
     { "path": "status", "select": "name", "model": "Category"},
     { "path": "reference", "select": "stagename name surname email mobile", "model": "User"}
   ];
-
   Models.Program
   .findOne({_id: req.body.id/* , members:req.user.id */})
-  .exec((err, subbba) => {
-    Models.Program
-    .findOne({_id: req.body.id/* , members:req.user.id */})
-    .populate(populate)
-    .exec((err, sub) => {
-      res.render('admindev/events/acts-edit-sub', {call: sub}, function(err, body) {
-        console.log(sub);
-        console.log(err);
-        console.log(body);
-        res.json(body);
-      });
-      
-      /* Models.Event
-      .findOne({_id: sub.event},'_id, program', (err, event) => {
-        logger.debug(event);
-        event.program.forEach((program, index) => {
-          if (program.subscription_id == req.body.id) {
-            event.program.splice(index, 1);
-          }
-        });
-        event.save(function(err){
-          sub.remove(function(err){
-            res.json(true);
-          });
-        });  
-      }); */
+  .populate(populate)
+  .exec((err, sub) => {
+    res.render('admindev/events/acts-edit-sub', {call: sub}, function(err, body) {
+      console.log(sub);
+      console.log(err);
+      console.log(body);
+      res.json(body);
     });
-  
   });
 }
 

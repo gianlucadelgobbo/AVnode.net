@@ -4,10 +4,10 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
-const morgan = require('morgan');
+//const morgan = require('morgan');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
-const expressStatusMonitor = require('express-status-monitor');
+//const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 
 // Require mongoose models once!
@@ -34,15 +34,15 @@ app.set('view engine', 'pug');
 app.set('view options', {debug: true});
 app.set('trust proxy', 'loopback');
 
-app.use(morgan('short'));
-app.use(expressStatusMonitor());
+//app.use(morgan('short'));
+//app.use(expressStatusMonitor());
 app.use(compression());
-app.use(sass({
+/* app.use(sass({
     src: path.join(__dirname, 'public'),
     dest: path.join(__dirname, 'public'),
     debug: true,
     outputStyle: 'compressed'
-}));
+})); */
 
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: 84600}));
 app.use(bodyParser.json());

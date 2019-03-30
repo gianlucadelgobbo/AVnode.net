@@ -281,7 +281,7 @@ router.get('/:event/acts', (req, res) => {
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
-  //populate(populate_event).
+  populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
   exec((err, event) => {
     if (err) {
       res.json(err);
@@ -298,6 +298,7 @@ router.get('/:event/acts', (req, res) => {
           }
         }
       }
+      logger.debug(query);
       Program.
       find(query).
       select(select).
@@ -306,7 +307,7 @@ router.get('/:event/acts', (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          data.event = program[0].event;
+          data.event = event;
           data.status = status;
           data.program = JSON.parse(JSON.stringify(program));
           for(let a=0;a<data.program.length;a++) {
@@ -319,6 +320,7 @@ router.get('/:event/acts', (req, res) => {
               }
             }
           }
+          if (data.performnce_missing) data.performnce_missing = JSON.stringify(performnce_missing);
           //if (req.query['performance_category'] && req.query['performance_category']!='0') {
             let prg = [];
             for(let a=0;a<data.program.length;a++) {
@@ -360,19 +362,24 @@ router.get('/:event/peoples', (req, res) => {
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
-  select({title: 1, schedule: 1, organizationsettings: 1}).
-  //populate(populate_event).
+  select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
+  populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
   exec((err, event) => {
     if (err) {
       res.json(err);
     } else {
-      data.event = event;
-      data.status = status;
       const select = config.cpanel["subscriptions"].list.select;
       const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
+      if (req.query['performance_category'] && req.query['performance_category']!='0') {
+        for(var item in populate) {
+          if (populate[item].path == "performance") {
+            populate[item].match = {type: req.query['performance_category']};
+          }
+        }
+      }
       logger.debug(query);
       Program.
       find(query).
@@ -382,7 +389,27 @@ router.get('/:event/peoples', (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          data.program = program;
+          data.event = event;
+          data.status = status;
+          data.program = JSON.parse(JSON.stringify(program));
+          for(let a=0;a<data.program.length;a++) {
+            for(let b=0; b<event.program.length;b++) {
+              if(data.program[a].performance && data.program[a].performance._id == event.program[b].performance) {
+                data.program[a].schedule = event.program[b].schedule;
+              } else if (!data.program[a].performance && !req.query['performance_category']){
+                if (!data.performnce_missing) data.performnce_missing = []; 
+                data.performnce_missing.push(data.program[a]);
+              }
+            }
+          }
+          if (data.performnce_missing) data.performnce_missing = JSON.stringify(performnce_missing);
+          //if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            let prg = [];
+            for(let a=0;a<data.program.length;a++) {
+              if (data.program[a].performance) prg.push(data.program[a]);
+            }
+            data.program = prg;
+          //}
           let days = [];
           for(let a=0;a<program.length;a++) {
             for(let b=0; b<program[a].subscriptions.length;b++) {
@@ -397,9 +424,35 @@ router.get('/:event/peoples', (req, res) => {
           data.days = days;
           data.daysN = (data.days[data.days.length-1]-data.days[0])/(24*60*60*1000);
           let admittedO = {};
-          for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
+          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
           data.admitted = [];
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+          data.subscriptions = [];
+          for(let a=0;a<program.length;a++) {
+            let subscription = JSON.parse(JSON.stringify(program[a]));
+            delete subscription.subscriptions;
+            for(let b=0; b<program[a].subscriptions.length;b++) {
+              if (!program[a].subscriptions[b].freezed) {
+                subscription.subscription = program[a].subscriptions[b];
+                data.subscriptions.push(subscription);
+              }
+            }
+          }
+          if (req.query.sortby && req.query.sortby=='sortby_ref_name') {
+            data.subscriptions = data.subscriptions.sort((a,b) => (a.reference.stagename > b.reference.stagename) ? 1 : ((b.reference.stagename > a.reference.stagename) ? -1 : 0));
+          }
+          if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
+            data.subscriptions = data.subscriptions.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
+          }
+
+          if (req.query.sortby && req.query.sortby=='sortby_person_name') {
+            data.subscriptions = data.subscriptions.sort((a,b) => ((a.subscription.subscriber_id.name+" "+a.subscription.subscriber_id.surname) > (b.subscription.subscriber_id.name+" "+b.subscription.subscriber_id.surname)) ? 1 : (((b.subscription.subscriber_id.name+" "+b.subscription.subscriber_id.surname) > (a.subscription.subscriber_id.name+" "+a.subscription.subscriber_id.surname)) ? -1 : 0));
+          }
+
+          if (req.query.sortby && req.query.sortby=='sortby_arrival_date') {
+            data.subscriptions = data.subscriptions.sort((a,b) => ((a.subscription.days[0]) > (b.subscription.days[0])) ? 1 : (((b.subscription.days[0]) > (a.subscription.days[0])) ? -1 : 0));
+          }
+
           data.rooms = [];
           for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
