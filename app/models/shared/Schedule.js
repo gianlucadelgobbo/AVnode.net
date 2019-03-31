@@ -43,8 +43,7 @@ Schedule.virtual('boxDate').get(function () {
   let boxDate;
   if (this.starttime) {
     const lang = global.getLocale();
-    moment.locale(lang);
-    boxDate = moment.utc(this.starttime).format(config.dateFormat[lang].single);
+    boxDate = moment.utc(this.starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
     boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
   }
   return boxDate;
@@ -54,7 +53,6 @@ Schedule.virtual('starttimeTime').get(function () {
   let starttimeTime;
   if (this.starttime) {
     const lang = global.getLocale();
-    moment.locale(lang);
     starttimeTime = moment.utc(new Date(this.starttime)).format('HH:mm');
   }
   return starttimeTime;

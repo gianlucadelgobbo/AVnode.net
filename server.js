@@ -9,6 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 //const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
+const moment = require('moment');
 
 // Require mongoose models once!
 require('./app/models');
@@ -109,6 +110,7 @@ app.use((req, res, next) => {
         req.session.current_lang = lang;
     }
     global.setLocale(req.session.current_lang);
+    moment.locale(req.session.current_lang);
 
     if (/auth|login|logout|signup|images|fonts/i.test(path)) {
         return next();
@@ -142,8 +144,8 @@ app.use((req, res, next) => {
 // 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉
 
 // Temporary cors to have redux come in cross origin
-const cors = require('cors');
-app.use(cors());
+/* const cors = require('cors');
+app.use(cors()); */
 app.use(routes);
 
 app.use(function(err, req, res, next) {

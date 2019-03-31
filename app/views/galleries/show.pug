@@ -64,11 +64,12 @@ block content
           .data_footage_video_wrapper
             h3=__("Author")
             each user in data.users
-              .user_performance_wrapper
-                div.user_perfomance_image
-                  img(src=user.imageFormats.small, alt=user.stagename)
-                div.user_perfomance_country_city
-                  p.users_performance_item_name=user.stagename
+              .row.mb-3
+                .col-md-4
+                  a(href="/"+user.slug+"/")
+                    img.img-fluid(src=user.imageFormats.small, alt=user.stagename)
+                .col-md-8
+                  a(href="/"+user.slug+"/")=user.stagename
                   if user.addressesFormatted && user.addressesFormatted.length
                     p.users_performance_item_country!=user.addressesFormatted.join(", ")
           if (data.performances.length)
@@ -117,11 +118,12 @@ block content
           .data_footage_video_wrapper
             h3=__("Author")
             each user in data.users
-              .user_performance_wrapper
-                div.user_perfomance_image
-                  img(src=user.imageFormats.small, alt=user.stagename)
-                div.user_perfomance_country_city
-                  p.users_performance_item_name=user.stagename
+              .row.mb-3
+                .col-md-4
+                  a(href="/"+user.slug+"/")
+                    img.img-fluid(src=user.imageFormats.small, alt=user.stagename)
+                .col-md-8
+                  a(href="/"+user.slug+"/")=user.stagename
                   if user.addressesFormatted && user.addressesFormatted.length
                     p.users_performance_item_country!=user.addressesFormatted.join(", ")
           if (data.performances && data.performances.length)

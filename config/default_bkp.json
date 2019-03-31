@@ -11,63 +11,63 @@
     "en": {
       "single" : "MMMM DD YYYY",
       "daymonth1" : "MMMM DD",
-      "daymonth2" : "MMMM DD YYYY",
+      "daymonthyear" : "MMMM DD YYYY",
       "day1" : "MMMM DD",
       "day2" : "DD YYYY"
     },
     "it": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
     "es": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
     "fr": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
     "pl": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
     "ru": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
     "hu": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
     "by": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
     "gr": {
       "single" : "DD MMMM YYYY",
       "daymonth1" : "DD MMMM",
-      "daymonth2" : "DD MMMM YYYY",
+      "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     }

@@ -291,8 +291,7 @@ userSchema.virtual('description').get(function (req) {
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
     const lang = global.getLocale();
-    moment.locale(lang);
-    return moment(this.birthday).format(config.dateFormat[lang].single);
+    return moment(this.birthday).format(config.dateFormat[lang].weekdaydaymonthyear);
   }
 });
 

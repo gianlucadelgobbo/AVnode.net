@@ -109,7 +109,6 @@ router.get('/api/subscriptions', (req, res) => {
 });
 
 router.get('/api/:sez/:id/delete', (req, res) => {
-  console.log(stocazzo)
   get.getDelete(req, res);
 });
 

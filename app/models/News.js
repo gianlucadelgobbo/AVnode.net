@@ -123,8 +123,7 @@ newsSchema.virtual('imageFormats').get(function () {
 
 newsSchema.virtual('creation_dateFormatted').get(function () {
   const lang = global.getLocale();
-  moment.locale(lang);
-  return moment(this.createdAt).format(config.dateFormat[lang].single);
+  return moment(this.createdAt).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 
 /* newsSchema.pre('remove', function(next) {

@@ -208,9 +208,6 @@ router.editSubscription = (req, res) => {
   .populate(populate)
   .exec((err, sub) => {
     res.render('admindev/events/acts-edit-sub', {call: sub}, function(err, body) {
-      console.log(sub);
-      console.log(err);
-      console.log(body);
       res.json(body);
     });
   });

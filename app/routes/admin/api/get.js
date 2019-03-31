@@ -21,12 +21,14 @@ const logger = require('../../../utilities/logger');
 
 router.getDelete = (req, res) => {
   logger.debug("getDelete");
+  logger.debug(req.params.sez);
+  logger.debug(config.cpanel[req.params.sez].model);
   if (config.cpanel[req.params.sez] && req.params.id) {
       const id = req.params.id;
       Models[config.cpanel[req.params.sez].model]
       .findById(id)
       .lean()
-      .exec((err, data) => {
+      .exec(async (err, data) => {
         if (err) {
           res.status(404).json({ error: `${JSON.stringify(err)}` });
         } else {
@@ -36,15 +38,60 @@ router.getDelete = (req, res) => {
             if (req.query.delete!="1") {
               res.json(data);
             } else {
+              logger.debug("getDelete 2");
+              let results = {};
               switch (req.params.sez) {
                 case "galleries" :
-                Models["Performance"].update( {_id: { $in: data.performances}}, { $pullAll: {galleries: [data._id] } }, function(err){
-                  Models["Event"].update( {_id: { $in: data.events}}, { $pullAll: {galleries: [data._id] } }, function(err){
-                    Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id} , function(err, result){
-                      res.json(err || result);
-                    });
-                  });
+                  results.Galleries = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                  results.Performance = await Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {galleries: [data._id] } });
+                  results.Event = await Models["Event"].updateMany( {_id: { $in: data.events}}, { $pullAll: {galleries: [data._id] } });
+                  results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {galleries: [data._id] } });
+                  var promises = [];
+                  promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                  Promise.all(
+                    promises
+                  ).then( (resultsPromise) => {
+                    results.setStatsAndActivity = resultsPromise;
+                    res.json(results);
                 });
+                break;
+                case "videos" :
+                  results.Videos = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                  results.Performance = await Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {videos: [data._id] } });
+                  results.Event = await Models["Event"].updateMany( {_id: { $in: data.events}}, { $pullAll: {videos: [data._id] } });
+                  results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {videos: [data._id] } });
+                  console.log({_id: { $in: data.users}});
+                  console.log({$pullAll: {videos: [data._id] }});
+                  var promises = [];
+                  promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                  Promise.all(
+                    promises
+                  ).then( (resultsPromise) => {
+                    results.setStatsAndActivity = resultsPromise;
+                    res.json(results);
+                  });
+                break;
+                case "performances" :
+                  logger.debug("getDelete 3");
+                  if ((!data.bookings || !data.bookings.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
+                    results.Performance = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                    results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } });
+                    var promises = [];
+                    promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                    Promise.all(
+                      promises
+                    ).then( (resultsPromise) => {
+                      results.setStatsAndActivity = resultsPromise;
+                      res.json(results);
+                    });
+                  } else {
+                    logger.debug("getDelete 4");
+                    let errors = [];
+                    if (data.bookings && data.bookings.length) errors.push({error:"Performace is booked and can not be deleted", bookings: data.bookings});
+                    if (data.galleries && data.galleries.length) errors.push({error:"Performace own galleries and can not be deleted", galleries: data.galleries});
+                    if (data.videos && data.videos.length) errors.push({error:"Performace own videos and can not be deleted", videos: data.videos});
+                    res.json(errors);
+                  }
                 break;
               }
             }
