@@ -25,9 +25,7 @@ const scheduleSchema = new Schema({
 },{ _id : false });
 
 scheduleSchema.virtual('date_formatted').get(function () {
-  console.log('date_formatted');
-  logger.debug('global.getLocale after call: '+global.getLocale());
-  logger.debug('moment.getLocale after call: '+moment.locale());
+  const lang = global.getLocale();
   return moment(this.date).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 scheduleSchema.virtual('starttime_formatted').get(function () {

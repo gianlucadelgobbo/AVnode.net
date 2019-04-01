@@ -27,8 +27,8 @@ const datevenueSchema = new Schema({
 },{ _id : false });
 
 datevenueSchema.virtual('date_formatted').get(function () {
-  console.log('date_formatted');
-  return moment(this.date).format('MMMM Do YYYY');
+  const lang = global.getLocale();
+  return moment(this.date).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
 datevenueSchema.virtual('starttime_formatted').get(function () {
   return moment(this.starttime).format('h:mm');
