@@ -290,7 +290,7 @@ router.get('/:event/acts', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
-      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
       if (req.query['performance_category'] && req.query['performance_category']!='0') {
         for(var item in populate) {
           if (populate[item].path == "performance") {
