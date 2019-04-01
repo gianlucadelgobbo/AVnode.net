@@ -123,6 +123,7 @@ router.getSubscriptions = (req, res) => {
     //const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const select = config.cpanel[req.params.sez].list.select;
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
+    populate.push({ "path": "event", "select": "title slug schedule organizationsettings", "model": "Event", "populate":[{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]});
     //const ids = [req.params.id].concat(req.user.crews);
     const query = {"reference" :  req.params.id};
     logger.debug(query);
