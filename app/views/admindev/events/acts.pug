@@ -1,6 +1,10 @@
 extends ../layout_admin
 block content
   - var emails = []
+  - var emails_noimage = []
+  - var emails_noaddress = []
+  - var emails_notext = []
+  - var emails_noname = []
   .actsfilters.mt-2.mb-3
     .actsfilters-header Filters
     form.form-inline(method='get')
@@ -141,6 +145,12 @@ block content
               .mt-2!=item.performance.about
           td
             each user in item.performance.users
+              if user.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
+                - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
+                - if (emails_noimage.indexOf(str)==-1) emails_noimage.push(str)
+              if !user.about || !item.performance.about
+                - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
+                - if (emails_notext.indexOf(str)==-1) emails_notext.push(str)
               .row
                 if get.fullinfo
                   .col-md-6
@@ -185,11 +195,16 @@ block content
                   li
                     b!=subscription.subscriber_id.stagename
                     !=" "+subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
+                    if !subscription.subscriber_id.name || !subscription.subscriber_id.surname
+                      - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
+                      - if (emails_noname.indexOf(str)==-1) emails_noname.push(str)
                     br
                     if subscription.subscriber_id.addressesFormatted && subscription.subscriber_id.addressesFormatted.length
                       div!=subscription.subscriber_id.addressesFormatted.join(", ")
                     else
                       .badge.badge-danger MISSING ADDRESS
+                      - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
+                      - if (emails_noaddress.indexOf(str)==-1) emails_noaddress.push(str)
                     if subscription.freezed
                       !=" "
                       .badge.badge-info freezed
@@ -210,7 +225,7 @@ block content
                       each pack in subscription.packages
                         li!=pack.name
             p
-              - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performance.title+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+              - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
               - if (emails.indexOf(str)==-1) emails.push(str)
               b!="REFERENCE"
               br
@@ -276,6 +291,34 @@ block content
     .text-center
       br
       button.btn.btn-success(type='submit') Compose email
+  if emails_noimage.length
+    h3="emails_noimage"
+    form(method='post', action='http://localhost:8004/composer')
+      textarea.form-control(name='to')="["+emails_noimage.join(",")+"]"
+      .text-center
+        br
+        button.btn.btn-success(type='submit') Compose email
+  if emails_noaddress.length
+    h3="emails_noaddress"
+    form(method='post', action='http://localhost:8004/composer')
+      textarea.form-control(name='to')="["+emails_noaddress.join(",")+"]"
+      .text-center
+        br
+        button.btn.btn-success(type='submit') Compose email
+  if emails_notext.length
+    h3="emails_notext"
+    form(method='post', action='http://localhost:8004/composer')
+      textarea.form-control(name='to')="["+emails_notext.join(",")+"]"
+      .text-center
+        br
+        button.btn.btn-success(type='submit') Compose email
+  if emails_noname.length
+    h3="emails_noname"
+    form(method='post', action='http://localhost:8004/composer')
+      textarea.form-control(name='to')="["+emails_noname.join(",")+"]"
+      .text-center
+        br
+        button.btn.btn-success(type='submit') Compose email
   
 
   //pre=JSON.stringify(data, null, 2)
