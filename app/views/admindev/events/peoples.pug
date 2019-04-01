@@ -99,7 +99,8 @@ block content
                       label.form-check-label(for='status'+status._id+subscription._id)=status.name
               td
                 b!=subscription.performance.title
-                  a.badge.badge-primary.ml-2(href="/performance/"+subscription.performance.slug+"/", target="_blank")="VIEW"
+                  !=" "
+                  a.ml-2(href="/performances/"+subscription.performance.slug+"/", target="_blank")="VIEW"
                 br
                 !=subscription.reference.name+" "+subscription.reference.surname
                 br
@@ -158,4 +159,4 @@ block content
                 -   var ddd = new Date(subscription.subscription.days[b])
                 -   if (ddd.toString() == dd.toString()) present = "#FF0000"
                 - }
-                td(style="border-right: 2px solid #dee2e6;background-color:"+present)
+                td(style="border-right: 2px solid #dee2e6;background-color:"+present+";color:"+present)=present=="#FF0000" ? "X" : ""

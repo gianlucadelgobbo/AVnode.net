@@ -182,6 +182,7 @@
           "topics": 1,
           "call": 1,
           "schedule": 1,
+          "event": 1,
           "subscriptions": 1,
           "createdAt": 1
         },

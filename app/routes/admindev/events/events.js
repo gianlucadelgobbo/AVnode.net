@@ -427,13 +427,16 @@ router.get('/:event/peoples', (req, res) => {
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
           data.admitted = [];
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+          
           data.subscriptions = [];
           for(let a=0;a<program.length;a++) {
-            let subscription = JSON.parse(JSON.stringify(program[a]));
-            delete subscription.subscriptions;
+            if (program[a].subscriptions.length>1) console.log("======================================================================");
             for(let b=0; b<program[a].subscriptions.length;b++) {
               if (!program[a].subscriptions[b].freezed) {
+                let subscription = JSON.parse(JSON.stringify(program[a]));
+                delete subscription.subscriptions;
                 subscription.subscription = program[a].subscriptions[b];
+                if (program[a].subscriptions.length>1) console.log(program[a].subscriptions[b]);
                 data.subscriptions.push(subscription);
               }
             }
