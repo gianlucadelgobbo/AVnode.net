@@ -191,7 +191,7 @@
         },
         "populate": [
           { "path": "performance", "select": "title slug users duration abouts image bookings", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses image abouts is_crew lang", "model": "UserShow"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"}]},
-          { "path": "subscriptions.subscriber_id", "select": "stagename name surname addresses email mobile lang", "model": "UserShow"},
+          { "path": "subscriptions.subscriber_id", "select": "stagename name surname addresses email mobile lang gender", "model": "UserShow"},
           { "path": "status", "select": "name", "model": "Category"},
           { "path": "reference", "select": "stagename name surname email mobile lang", "model": "UserShow"}
         ],

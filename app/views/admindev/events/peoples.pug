@@ -119,6 +119,11 @@ block content
                 !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname
                 br
                 !='<a href="mailto:'+subscription.subscription.subscriber_id.email+'">'+subscription.subscription.subscriber_id.email+'</a>'
+                br
+                !='Gender: '+subscription.subscription.subscriber_id.gender
+                if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
+                  br
+                  !=subscription.subscription.subscriber_id.addressesFormatted.join(", ")
                 //<a href="https://mail.google.com/mail/u/0/#search/'+subscription.subscription.subscriber_id.email+'">SEARCH MESSAGES</a>'
                   br
                   !=subscription.subscription.subscriber_id.mobile.map((subscription) => {return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
