@@ -1,5 +1,6 @@
 extends ../layout_admin
 block content
+  - var emails = []
   .actsfilters.mt-2.mb-3
     .actsfilters-header Filters
     form.form-inline(method='get')
@@ -209,6 +210,8 @@ block content
                       each pack in subscription.packages
                         li!=pack.name
             p
+              - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performance.title+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+              - if (emails.indexOf(str)==-1) emails.push(str)
               b!="REFERENCE"
               br
               !=item.reference.name+" "+item.reference.surname
@@ -268,6 +271,11 @@ block content
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
             button.btn.btn-primary(type='submit')=global.__("Save")
+  form(method='post', action='http://localhost:8004/composer')
+    textarea.form-control(name='to')="["+emails.join(",")+"]"
+    .text-center
+      br
+      button.btn.btn-success(type='submit') Compose email
   
 
   //pre=JSON.stringify(data, null, 2)

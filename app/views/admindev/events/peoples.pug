@@ -1,5 +1,6 @@
 extends ../layout_admin
 block content
+  - var emails = []
   .actsfilters.mt-2.mb-3
     .actsfilters-header Filters
     form.form-inline(method='get')
@@ -98,6 +99,9 @@ block content
                       input.form-check-input(id='status'+status._id+subscription._id, name='status'+subscription._id, type='radio', value=status.id, checked=subscription.status._id.toString()==status._id.toString() ? "checked" : undefined)
                       label.form-check-label(for='status'+status._id+subscription._id)=status.name
               td
+                //["it","IED Roma","Luigi","Vernieri","l.vernieri@roma.ied.it","Alessia","Tuveri","a.tuveri@roma.ied.it"]
+                - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performance.title+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+                - if (emails.indexOf(str)==-1) emails.push(str)
                 b!=subscription.performance.title
                   !=" "
                   a.ml-2(href="/performances/"+subscription.performance.slug+"/", target="_blank")="VIEW"
@@ -165,3 +169,9 @@ block content
                 -   if (ddd.toString() == dd.toString()) present = "#FF0000"
                 - }
                 td(style="border-right: 2px solid #dee2e6;background-color:"+present+";color:"+present)=present=="#FF0000" ? "X" : ""
+  form(method='post', action='http://localhost:8004/composer')
+    textarea.form-control(name='to')="["+emails.join(",")+"]"
+    .text-center
+      br
+      button.btn.btn-success(type='submit') Compose email
+
