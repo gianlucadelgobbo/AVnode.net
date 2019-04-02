@@ -430,7 +430,6 @@ router.get('/:event/peoples', (req, res) => {
           
           data.subscriptions = [];
           for(let a=0;a<program.length;a++) {
-            if (program[a].subscriptions.length>1) console.log("======================================================================");
             for(let b=0; b<program[a].subscriptions.length;b++) {
               if (!program[a].subscriptions[b].freezed) {
                 let subscription = JSON.parse(JSON.stringify(program[a]));
@@ -438,13 +437,11 @@ router.get('/:event/peoples', (req, res) => {
                 delete subscription.performance;
                 subscription.performances = [program[a].performance];
                 subscription.subscription = program[a].subscriptions[b];
-                //if (program[a].subscriptions.length>1) console.log(program[a].subscriptions[b]);
                 data.subscriptions.push(subscription);
               }
             }
           }
           for(let a=0;a<program.length;a++) {
-            if (program[a].subscriptions.length>1) console.log("======================================================================");
             for(let b=0; b<program[a].subscriptions.length;b++) {
               if (program[a].subscriptions[b].freezed) {
                 let subscriber_id_map = data.subscriptions.map(subscriber => {return subscriber.subscription.subscriber_id._id.toString()});
@@ -452,14 +449,11 @@ router.get('/:event/peoples', (req, res) => {
                 if (subscriber_id_index!=-1) {
                   data.subscriptions[subscriber_id_index].performances.push(program[a].performance);
                 } else {
-                  console.log("WRONG FREEZED");
-                  console.log(program[a]);
                   let subscription = JSON.parse(JSON.stringify(program[a]));
                   delete subscription.subscriptions;
                   delete subscription.performance;
                   subscription.performances = [program[a].performance];
                   subscription.subscription = program[a].subscriptions[b];
-                  //if (program[a].subscriptions.length>1) console.log(program[a].subscriptions[b]);
                   data.subscriptions.push(subscription);
                 }
               }
@@ -469,7 +463,7 @@ router.get('/:event/peoples', (req, res) => {
             data.subscriptions = data.subscriptions.sort((a,b) => (a.reference.stagename > b.reference.stagename) ? 1 : ((b.reference.stagename > a.reference.stagename) ? -1 : 0));
           }
           if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
-            data.subscriptions = data.subscriptions.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
+            data.subscriptions = data.subscriptions.sort((a,b) => (a.performances[0].title > b.performances[0].title) ? 1 : ((b.performances[0].title > a.performances[0].title) ? -1 : 0));
           }
 
           if (req.query.sortby && req.query.sortby=='sortby_person_name') {
