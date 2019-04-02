@@ -86,6 +86,7 @@ block content
       - var conta = 0
       each subscription, index in data.subscriptions
           //pre=JSON.stringify(subscription, null, 2)
+          - console.log(subscription)
           if (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0" || (get.notaccommodation==1 && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])==-1) || (!get.notaccommodation && subscription.subscription.packages.map(subscription => {return subscription.name}).indexOf(get["subscriptions.packages.name"])!=-1))
             - conta++
 
@@ -100,12 +101,14 @@ block content
                       label.form-check-label(for='status'+status._id+subscription._id)=status.name
               td
                 //["it","IED Roma","Luigi","Vernieri","l.vernieri@roma.ied.it","Alessia","Tuveri","a.tuveri@roma.ied.it"]
-                - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performance.title+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+                - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performances.map(performance => {return performance.title}).join(" // ")+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
                 - if (emails.indexOf(str)==-1) emails.push(str)
-                b!=subscription.performance.title
-                  !=" "
-                  a.ml-2(href="/performances/"+subscription.performance.slug+"/", target="_blank")="VIEW"
-                br
+                .mb-1
+                  each performance in subscription.performances
+                    div
+                      b!=performance.title
+                        !=" "
+                        a.ml-2(href="/performances/"+performance.slug+"/", target="_blank")="VIEW"
                 !=subscription.reference.name+" "+subscription.reference.surname
                 br
                 if subscription.reference.email

@@ -435,9 +435,33 @@ router.get('/:event/peoples', (req, res) => {
               if (!program[a].subscriptions[b].freezed) {
                 let subscription = JSON.parse(JSON.stringify(program[a]));
                 delete subscription.subscriptions;
+                delete subscription.performance;
+                subscription.performances = [program[a].performance];
                 subscription.subscription = program[a].subscriptions[b];
-                if (program[a].subscriptions.length>1) console.log(program[a].subscriptions[b]);
+                //if (program[a].subscriptions.length>1) console.log(program[a].subscriptions[b]);
                 data.subscriptions.push(subscription);
+              }
+            }
+          }
+          for(let a=0;a<program.length;a++) {
+            if (program[a].subscriptions.length>1) console.log("======================================================================");
+            for(let b=0; b<program[a].subscriptions.length;b++) {
+              if (program[a].subscriptions[b].freezed) {
+                let subscriber_id_map = data.subscriptions.map(subscriber => {return subscriber.subscription.subscriber_id._id.toString()});
+                let subscriber_id_index = subscriber_id_map.indexOf(program[a].subscriptions[b].subscriber_id._id.toString());
+                if (subscriber_id_index!=-1) {
+                  data.subscriptions[subscriber_id_index].performances.push(program[a].performance);
+                } else {
+                  console.log("WRONG FREEZED");
+                  console.log(program[a]);
+                  let subscription = JSON.parse(JSON.stringify(program[a]));
+                  delete subscription.subscriptions;
+                  delete subscription.performance;
+                  subscription.performances = [program[a].performance];
+                  subscription.subscription = program[a].subscriptions[b];
+                  //if (program[a].subscriptions.length>1) console.log(program[a].subscriptions[b]);
+                  data.subscriptions.push(subscription);
+                }
               }
             }
           }
