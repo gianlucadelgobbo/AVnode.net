@@ -124,6 +124,9 @@ block content
                   .badge.badge-danger MISSING MOBILE
               td
                 !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname
+                if subscription.subscription.freezed
+                  !=" "
+                  .badge.badge-danger WRONG FREEZED?
                 br
                 !='<a href="mailto:'+subscription.subscription.subscriber_id.email+'">'+subscription.subscription.subscriber_id.email+'</a>'
                 br
