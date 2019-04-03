@@ -35,7 +35,7 @@ block content
                 if item.schedule && item.schedule.length
                   each schedule in item.schedule
                     div=schedule.venue.room
-                    div=schedule.boxDate+" > "+schedule.endtimeTime
+                    div=schedule.boxDate
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
               .text-right.pb-1.mb-1
