@@ -5022,6 +5022,9 @@
             "users": 1,
             "type": 1,
             "image": 1,
+            "duration": 1,
+            "tech_arts": 1,
+            "tech_reqs": 1,
             "paypal": 1,
             "price": 1,
             "slug": 1
