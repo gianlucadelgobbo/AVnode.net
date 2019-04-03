@@ -48,7 +48,7 @@ Schedule.virtual('boxDate').get(function () {
     const days = Math.ceil((end-(10*60*60*1000)-start)/(24*60*60*1000))
     if (days > 1) {
       let boxDateA = []
-      for(let a=0;a<days;a++) {
+      for(let a=0;a<=days;a++) {
         let boxDateTMP = "";
         boxDateTMP = moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
         boxDateTMP+= " | "+moment.utc(this.starttime).format('HH:mm');
