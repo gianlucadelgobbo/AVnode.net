@@ -12,7 +12,7 @@ import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
 import { FOOTAGE_NAME, FOOTAGE_CODES_TAGS, SHOW } from "./constants";
 import {
-  getModel,
+  getDefaultModel,
   getModelIsFetching,
   getModelErrorMessage
 } from "../selectors";
@@ -155,7 +155,7 @@ class FootagePublic extends Component {
       isFetching,
       errorMessage
     } = this.props;
-    console.log(model.media);
+    console.log(model);
     const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
     return (
       <div className="row">
@@ -174,7 +174,12 @@ class FootagePublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={FOOTAGE_NAME} link={"/footage/"+model.slug} show={SHOW} />
+            <TitleComponent
+              title={model.title}
+              type={FOOTAGE_NAME}
+              link={"/footage/" + model.slug}
+              show={SHOW}
+            />
           )}
 
           <Form

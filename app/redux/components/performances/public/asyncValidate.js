@@ -1,7 +1,4 @@
-import {
-  validateSlugWithID,
-  validateAddress
-} from "../../common/form/validators";
+import { validateSlugWithID } from "../../common/form/validators";
 import { checkIfError } from "../../common/form";
 
 const asyncValidate = (values, dispatch, state) => {
