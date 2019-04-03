@@ -1,6 +1,49 @@
 extends ../layout_admin
 block content
-  .row(style="height: 100vh;")
+  include ./_filters
+  table.table
+    //thead
+      tr
+        th
+        each room,i in data.rooms
+          th
+            h5=room
+    tbody
+      tr
+        td
+          //(rowspan=(Object.keys(data.programmebydayvenue).length*2)+1)
+          h2=global.__("TO BE SCHEDULED")
+          div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
+            ul.list-group.connectedSortable(id="sortable0")
+              each prg in data.program
+                if !prg.schedule || !prg.schedule.starttime
+                  li.list-group-item
+                    !=prg.performance.title
+                    input(type="hidden", name="performance", value=prg.performance._id)
+        td(style="padding:0;border:none;")
+          div(style="max-height: calc(100vh - 40px);overflow-y: scroll;")
+            table
+
+              - var conta = 1
+              each day in data.programmebydayvenue
+                tr
+                  td(colspan=Object.keys(day.rooms).length)
+                    h2=day.date
+                tr
+                  each room,i in day.rooms
+                    td(width=(100/Object.keys(day.rooms).length)+"%")
+                      b=room.schedule.venue.room
+                      div
+                        form(id="form"+conta)
+                          input(type="hidden", name="room", value=room)
+                          ul.list-group.connectedSortable(id="sortable"+conta)
+                            - conta++
+                            if room.performances
+                              each performance in room.performances
+                                li.list-group-item
+                                  !=performance.performance.title
+                                  input(type="hidden", name="performance", value=performance.performance._id)
+  //.row(style="height: 100vh;")
     .col-md-3(style="height: 100%;overflow-y: scroll;")
       h2=global.__("TO BE SCHEDULED")
       #external-events
@@ -15,4 +58,4 @@ block content
         div(id="calendarroom"+i)
         div(id="calendarroom2"+i)
         
-  pre=JSON.stringify(data.program, null, 2)
+  //pre=JSON.stringify(data.program, null, 2)

@@ -1,59 +1,7 @@
 extends ../layout_admin
 block content
   - var emails = []
-  .actsfilters.mt-2.mb-3
-    .actsfilters-header Filters
-    form.form-inline(method='get')
-      //input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
-        label.mr-sm-3(for='confirm') Confirm from user
-        select.form-control.mr-sm-2#confirm(name='confirm')
-          option(value='') Any status
-          option(value='0000-00-00') none
-          option(value='2019-01-11') before today
-        
-      select.form-control.mr-sm-3(name='call', style='max-width:150px')
-        option(value='none') Call
-        each call,i in data.event.organizationsettings.call.calls
-          option(value=i, selected=get.call==i ? "selected" : undefined)=call.title
-      //if get.call !== undefined && get.call !== "none"
-      - var packages = [];
-      - for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)  if (packages.indexOf(data.event.organizationsettings.call.calls[a].packages[b].name)==-1) packages.push(data.event.organizationsettings.call.calls[a].packages[b].name);
-      select.form-control.mr-sm-2(name='subscriptions.packages.name', style='max-width:100px')
-        option(value='0') Package
-        each pack,i in packages
-          option(value=pack, selected=get["subscriptions.packages.name"]==pack ? "selected" : undefined)=pack
-
-      small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.notaccommodation ? "checked" : undefinded)
-        label.mr-sm-3(for='not4') NOT
-
-
-      select.form-control.mr-sm-2(name='status', style='max-width:100px')
-        option(value='0') Status
-        each stat in data.status
-          option(value=stat._id, selected=get["status"]==stat._id ? "selected" : undefined)=stat.name
-      small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not0(type='checkbox', name='program.schedule.categoriesNOT', value='1', checked=get.fullinfo ? "checked" : undefinded)
-        label.mr-sm-3(for='not0') NOT
-      
-      select.form-control.mr-sm-3(name='sortby')
-        option(value='0') Sort by
-        //option(value='day') group by day
-        option(value='sortby_perf_name', selected=get.sortby=="sortby_perf_name" ? "selected" : undefinded) sort by perf name
-        option(value='sortby_ref_name', selected=get.sortby=="sortby_ref_name" ? "selected" : undefinded) sort by ref name
-        option(value='sortby_person_name', selected=get.sortby=="sortby_person_name" ? "selected" : undefinded) sort by person name
-        option(value='sortby_arrival_date', selected=get.sortby=="sortby_arrival_date" ? "selected" : undefinded) sort by arrival date
-        option(value='0', selected=get.sortby=="0" ? "selected" : undefinded) sort by sub date
-
-      input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefinded)
-      label.mr-sm-3(for='unlink') Performance suspect
-      br
-      input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
-      label.mr-sm-3(for='fullinfo') FULL INFO
-
-      input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
-      input.form-control.mr-sm-2(type='hidden', name='save', value='1')
-      input.btn.btn-primary(type='submit', name='submit_search', value='FILTER')
+  include ./_filters
   table.table
     thead
       tr
@@ -61,6 +9,7 @@ block content
         th="Status"
         th="Submission"
         th="Person"
+        th="Accommodation"
         th="Packages"
         - for(let a=0;a<=data.daysN;a++)
           - var d = new Date(data.days[0])
@@ -100,7 +49,6 @@ block content
                       input.form-check-input(id='status'+status._id+subscription._id, name='status'+subscription._id, type='radio', value=status.id, checked=subscription.status._id.toString()==status._id.toString() ? "checked" : undefined)
                       label.form-check-label(for='status'+status._id+subscription._id)=status.name
               td
-                //["it","IED Roma","Luigi","Vernieri","l.vernieri@roma.ied.it","Alessia","Tuveri","a.tuveri@roma.ied.it"]
                 - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performances.map(performance => {return performance.title}).join(" // ")+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
                 - if (emails.indexOf(str)==-1) emails.push(str)
                 .mb-1
@@ -123,7 +71,7 @@ block content
                   !=" "
                   .badge.badge-danger MISSING MOBILE
               td
-                !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname
+                !=subscription.subscription.subscriber_id.name+" "+subscription.subscription.subscriber_id.surname+" AKA "+subscription.subscription.subscriber_id.stagename
                 if subscription.subscription.freezed
                   !=" "
                   .badge.badge-danger WRONG FREEZED?
@@ -138,6 +86,14 @@ block content
                   br
                   !=subscription.subscription.subscriber_id.mobile.map((subscription) => {return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'">WP</a>'})
                   pre=subscription.subscription.subscriber_id
+              td
+                if data.hotels && data.hotels.length
+                  select.form-control.mr-sm-2(name='packages.option_selected_hotel')
+                    option(value='0') Hotels
+                    each hotel in data.hotels
+                      option(value=hotel, selected=get['packages.option_selected_hotel']==hotel ? "selected" : undefinded)=hotel
+                  label Room
+                  input.form-control(type="text")
               td(style="border-right: 2px solid #dee2e6;")
                 table
                   - var tot = 0

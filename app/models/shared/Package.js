@@ -11,6 +11,8 @@ const Package = new Schema({
   options_name: String,
   options: String,
   option: String,
+  option_selected: String,
+  option_value: String,
   daily: { type: Boolean, default: false },
   start_date: Date,
   end_date: Date

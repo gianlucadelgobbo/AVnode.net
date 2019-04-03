@@ -1,7 +1,7 @@
 const router = require('../../router')();
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Event = mongoose.model('Event');
+const Event = mongoose.model('EventShow');
 const ObjectId = Schema.ObjectId;
 const User = mongoose.model('User');
 const Performance = mongoose.model('Performance');
@@ -14,6 +14,7 @@ const request = require('request');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');
+const moment = require('moment');
 
 const logger = require('../../../utilities/logger');
 
@@ -171,7 +172,6 @@ router.get('/', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(results);
     } else {
-      logger.debug(data);
       res.render('admindev/events/home', {
         title: 'Events',
         currentUrl: req.originalUrl,
@@ -195,7 +195,6 @@ router.get('/:event', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
-      logger.debug(data);
       res.render('admindev/events/dett', {
         title: 'Events: '+data.event.title,
         currentUrl: req.originalUrl,
@@ -206,74 +205,7 @@ router.get('/:event', (req, res) => {
     }
   });
 });
-/* router.get('/:event/acts', (req, res) => {
-  logger.debug('/events/'+req.params.event+'/acts');
-  populate_event[0].match = { "../subscription_id.call": 1};
 
-  let data = {};
-  Event.
-  findOne({"_id": req.params.event}).
-  select({title: 1, createdAt: 1, program: 1,organizationsettings: 1}).
-  populate(populate_event).
-  exec((err, event) => {
-    if (err) {
-      logger.debug(err);
-    }
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(event);
-    } else {
-      let admittedO = {};
-      for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
-      let admitted = [];
-      for(let adm in admittedO) admitted.push(admittedO[adm]);
-      logger.debug(admittedO);
-      res.render('admindev/events/acts', {
-        title: 'Events',
-        status: status,
-        admitted: admitted,
-        currentUrl: req.originalUrl,
-        get: req.query,
-        data: event.toJSON(),
-        script: false
-      });
-    }
-  });
-}); 
-
-router.get('/:event/peoples', (req, res) => {
-  logger.debug('/events/'+req.params.event+'/peoples');
-  populate_event[0].match = { "../subscription_id.call": 1};
-
-  let data = {};
-  Event.
-  findOne({"_id": req.params.event}).
-  select({title: 1, createdAt: 1, program: 1,organizationsettings: 1}).
-  populate(populate_event).
-  exec((err, event) => {
-    if (err) {
-      logger.debug(err);
-    }
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(event);
-    } else {
-      let admittedO = {};
-      for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
-      let admitted = [];
-      for(let adm in admittedO) admitted.push(admittedO[adm]);
-      logger.debug(admittedO);
-      res.render('admindev/events/acts', {
-        title: 'Events',
-        status: status,
-        admitted: admitted,
-        currentUrl: req.originalUrl,
-        get: req.query,
-        data: event.toJSON(),
-        script: false
-      });
-    }
-  });
-});
-*/
 router.get('/:event/acts', (req, res) => {
   logger.debug('/events/'+req.params.event+'/acts');
   logger.debug(req.query)
@@ -291,10 +223,13 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
-      if (req.query['performance_category'] && req.query['performance_category']!='0') {
-        for(var item in populate) {
-          if (populate[item].path == "performance") {
+      for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['performance_category'] && req.query['performance_category']!='0') {
             populate[item].match = {type: req.query['performance_category']};
+          }
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
           }
         }
       }
@@ -334,12 +269,21 @@ router.get('/:event/acts', (req, res) => {
           if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
             data.program = data.program.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
           }
+
+          data.admitted = [];
           let admittedO = {};
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
-          data.admitted = [];
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+
           data.rooms = [];
-          for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room) data.rooms.push(data.event.schedule[a].venue.room);
+          for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
+          data.sortby = [
+            {value: 'sortby_perf_name', key: 'sort by perf name'},
+            {value: 'sortby_ref_name', key: 'sort by ref name'},
+            //{value: 'sortby_person_name', key: 'sort by person name'},
+            //{value: 'sortby_arrival_date', key: 'sort by arrival date'},
+            {value: '0', key: 'sort by sub date'}
+          ];
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
@@ -372,11 +316,18 @@ router.get('/:event/peoples', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
+        query['packages.options_name'] = 'hotels';
+        query['packages.option_selected'] = req.query['packages.option_selected_hotel'];
+      }
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
-      if (req.query['performance_category'] && req.query['performance_category']!='0') {
-        for(var item in populate) {
-          if (populate[item].path == "performance") {
+      for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['performance_category'] && req.query['performance_category']!='0') {
             populate[item].match = {type: req.query['performance_category']};
+          }
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
           }
         }
       }
@@ -391,7 +342,7 @@ router.get('/:event/peoples', (req, res) => {
         } else {
           data.event = event;
           data.status = status;
-          data.program = JSON.parse(JSON.stringify(program));
+          /* data.program = JSON.parse(JSON.stringify(program));
           for(let a=0;a<data.program.length;a++) {
             for(let b=0; b<event.program.length;b++) {
               if(data.program[a].performance && data.program[a].performance._id == event.program[b].performance) {
@@ -409,7 +360,7 @@ router.get('/:event/peoples', (req, res) => {
               if (data.program[a].performance) prg.push(data.program[a]);
             }
             data.program = prg;
-          //}
+          //} */
           let days = [];
           for(let a=0;a<program.length;a++) {
             for(let b=0; b<program[a].subscriptions.length;b++) {
@@ -423,10 +374,23 @@ router.get('/:event/peoples', (req, res) => {
           });
           data.days = days;
           data.daysN = (data.days[data.days.length-1]-data.days[0])/(24*60*60*1000);
+
+          
+          data.hotels = [];
+          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++)
+            for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)
+              if (data.event.organizationsettings.call.calls[a].packages[b].allow_options && data.event.organizationsettings.call.calls[a].packages[b].options_name)
+                data.hotels = data.event.organizationsettings.call.calls[a].packages[b].options.split(",");
+
+          /*
+          data.admitted = [];
           let admittedO = {};
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
-          data.admitted = [];
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+
+          data.rooms = [];
+          for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
+          */
           
           data.subscriptions = [];
           for(let a=0;a<program.length;a++) {
@@ -474,8 +438,13 @@ router.get('/:event/peoples', (req, res) => {
             data.subscriptions = data.subscriptions.sort((a,b) => ((a.subscription.days[0]) > (b.subscription.days[0])) ? 1 : (((b.subscription.days[0]) > (a.subscription.days[0])) ? -1 : 0));
           }
 
-          data.rooms = [];
-          for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
+          data.sortby = [
+            {value: 'sortby_perf_name', key: 'sort by perf name'},
+            {value: 'sortby_ref_name', key: 'sort by ref name'},
+            {value: 'sortby_person_name', key: 'sort by person name'},
+            {value: 'sortby_arrival_date', key: 'sort by arrival date'},
+            {value: '0', key: 'sort by sub date'}
+          ];
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
@@ -563,7 +532,7 @@ router.get('/:event/program', (req, res) => {
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
-  select({title: 1, schedule: 1, organizationsettings: 1}).
+  select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
   //populate(populate_event).
   exec((err, event) => {
     if (err) {
@@ -585,7 +554,62 @@ router.get('/:event/program', (req, res) => {
           data.admitted = [];
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
           data.rooms = [];
-          for(let a=0;a<event.schedule.length;a++)  if (event.schedule[a].venue && event.schedule[a].venue.room) data.rooms.push(event.schedule[a].venue.room);
+          for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
+          
+          data.programmebydayvenue = {}
+          for(let a=0;a<event.schedule.length;a++) {
+            let date = new Date(event.schedule[a].starttime);  // dateStr you get from mongodb
+            if (date.getUTCHours()<10) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
+            let d = ('0'+date.getUTCDate()).substr(-2);
+            let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+            let y = date.getUTCFullYear();
+            const lang = global.getLocale();
+            let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+            if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
+              data.programmebydayvenue[y+"-"+m+"-"+d] = {
+                day: y+"-"+m+"-"+d,
+                date: newdate,
+                rooms: {}
+              };
+              data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
+                schedule: event.schedule[a],
+                performances: []
+              };
+            }
+            if (!data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room]) {
+              data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
+                schedule: event.schedule[a],
+                performances: []
+              };
+            }
+          }
+          console.log("data.programmebydayvenue");
+          console.log(data.programmebydayvenue);
+          for(let a=0;a<data.program.length;a++) {
+            for(let b=0;b<data.program[a].schedule.length;b++) {
+              if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
+                if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
+                  let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
+                  if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
+                  let d = ('0'+date.getUTCDate()).substr(-2);
+                  let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                  let y = date.getUTCFullYear();
+                  console.log("data.program[a].schedule[b].venue.room");
+                  console.log(data.program[a].schedule[b].venue.room);
+                  data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].performances.push(data.program[a]);
+                } else {
+                  var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                  for(let c=0;c<days;c++){
+                    let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+                    let d = ('0'+date.getUTCDate()).substr(-2);
+                    let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                    let y = date.getUTCFullYear();
+                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].performances.push(data.program[a]);
+                  }
+                }
+              }
+            }
+          }
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {

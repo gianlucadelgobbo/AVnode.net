@@ -131,6 +131,7 @@ $(function() {
 // PARTNERS
   $( "#sortable0, #sortable1, #sortable2, #sortable3, #sortable4, #sortable5, #sortable6, #sortable7, #sortable8, #sortable9, #sortable10, #sortable11" ).sortable({
     remove: function( e, ui ) {
+      alert("stocazzo");
       var partnerships = [];
       var connectedSortable = $(".connectedSortable").parent();
       for (var a=1;a<connectedSortable.length;a++) {
