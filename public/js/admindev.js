@@ -202,7 +202,6 @@ $(function() {
 // PROGRAM
 $( ".program .connectedSortable" ).sortable({
   remove: function( e, ui ) {
-    console.log("stocazzo");
     var data = [];
     var connectedSortable = $(".connectedSortable").parent();
     for (var a=1;a<connectedSortable.length;a++) {
@@ -226,13 +225,10 @@ $( ".program .connectedSortable" ).sortable({
             $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
           }
           data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
-          console.log(day.program[b].performance.title);
-          console.log(day.program[b]);
         }
       }
       //
     }
-    console.log(data);
     $.ajax({
       url: "/admin/api/programupdate",
       method: "post",

@@ -16,7 +16,6 @@ block content
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
             ul.list-group.connectedSortable(id="sortable0")
               each program in data.program
-                - console.log(program)
                 if !program.schedule || !program.schedule.length
                   if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
                     li.list-group-item
