@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { reduxForm, Field, FieldArray, getFormSyncErrors } from "redux-form";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { FORM_NAME } from "./constants";
+import { FORM_NAME, SECTION } from "./constants";
 import {
   renderDropzoneInput,
   inputText,
@@ -44,7 +44,9 @@ class FootagePublicForm extends Component {
       handleAddition,
       tags,
       uploadFile,
-      media
+      model,
+      _id,
+      removeModel
     } = this.props;
 
     return (
@@ -71,7 +73,7 @@ class FootagePublicForm extends Component {
           maxSize={21474836480}
           uploadFile={uploadFile}
           uploadButton={true}
-          media={media}
+          media={model.media}
           multiple={false}
           //accept={this.renderImageType()}
         />
@@ -91,6 +93,10 @@ class FootagePublicForm extends Component {
           component={fieldWithLabel}
           placeholder={this.getIntlString({ id: AUTHORS })}
           showModal={showModal}
+          _id={_id}
+          removeModel={removeModel}
+          users={model.users}
+          SECTION={SECTION}
         />
 
         <br />

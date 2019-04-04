@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { reduxForm, Field, FieldArray } from "redux-form";
-import { FORM_NAME } from "./constants";
+import { FORM_NAME, SECTION } from "./constants";
 import {
   renderList,
   inputText,
@@ -37,7 +37,10 @@ class PlaylistPublicForm extends Component {
       tabs,
       labels,
       showModal,
-      onSubmit
+      onSubmit,
+      model,
+      _id,
+      removeModel
     } = this.props;
 
     return (
@@ -71,6 +74,10 @@ class PlaylistPublicForm extends Component {
           component={fieldWithLabel}
           placeholder={this.getIntlString({ id: AUTHORS })}
           showModal={showModal}
+          _id={_id}
+          removeModel={removeModel}
+          users={model.users}
+          SECTION={SECTION}
         />
 
         <br />

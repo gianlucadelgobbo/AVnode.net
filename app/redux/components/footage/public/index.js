@@ -12,12 +12,13 @@ import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
 import { FOOTAGE_NAME, FOOTAGE_CODES_TAGS, SHOW } from "./constants";
 import {
-  getDefaultModel,
+  getModel,
   getModelIsFetching,
   getModelErrorMessage
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
+import { removeModel } from "../users/actions";
 
 class FootagePublic extends Component {
   componentDidMount() {
@@ -149,6 +150,7 @@ class FootagePublic extends Component {
     const {
       model = {},
       showModal,
+      removeModel,
       match: {
         params: { _id }
       },
@@ -185,7 +187,9 @@ class FootagePublic extends Component {
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}
-            media={model.media}
+            model={model}
+            _id={_id}
+            removeModel={removeModel}
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
@@ -221,6 +225,7 @@ const mapDispatchToProps = dispatch =>
     {
       saveModel,
       fetchModel,
+      removeModel,
       showModal,
       uploadModel
     },
