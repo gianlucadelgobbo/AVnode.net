@@ -44,6 +44,7 @@ import CrewsOrganization from "../crews/organization";
 // // Footage
 import Footage from "../footage/index.js";
 import FootagePublic from "../footage/public";
+import FootageVideo from "../footage/video";
 
 // // Playlists
 import Playlist from "../playlists/index.js";
@@ -59,14 +60,12 @@ import Galleries from "../galleries/index.js";
 import GalleriesPublic from "../galleries/public";
 import GalleriesGallery from "../galleries/gallery";
 
-import LoadingBar from 'react-redux-loading-bar'
-
+import LoadingBar from "react-redux-loading-bar";
 
 class MainApp extends Component {
   render() {
     return (
       <div>
-
         <LoadingBar />
 
         <div className="jumbotron jumbotron-fluid">
@@ -198,6 +197,10 @@ class MainApp extends Component {
                 <Route
                   path="/admin/footage/:_id/public/"
                   component={FootagePublic}
+                />
+                <Route
+                  path="/admin/footage/:_id/video/"
+                  component={FootageVideo}
                 />
                 <Route path="/admin/footage" component={Footage} />
 
