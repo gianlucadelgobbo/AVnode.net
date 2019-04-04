@@ -23,6 +23,7 @@ const datevenueSchema = new Schema({
   date: Date,
   starttime: Date,
   endtime: Date,
+  breakduration: Number,
   venue: Venue
 },{ _id : false });
 

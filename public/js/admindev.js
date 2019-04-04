@@ -208,13 +208,12 @@ $( ".program .connectedSortable" ).sortable({
     for (var a=1;a<connectedSortable.length;a++) {
       var day = $(connectedSortable[a]).serializeJSON();
       day.room = JSON.parse(day.room);
-      day.room.breakduration = 10;
       if (day.program && day.program.length) {
         var boxes = $(connectedSortable[a]).find("li");
         var timing = new Date (day.room.starttime).getTime();
         for (var b=0;b<day.program.length;b++) {
           day.program[b] = JSON.parse(day.program[b]);
-          timing+= b> 0 ? (parseFloat(day.room.breakduration)*(60*1000)) : 0;
+          timing+= b> 0 ? (parseFloat(day.room.venue.breakduration)*(60*1000)) : 0;
           var start = new Date (timing);
           timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
           var end = new Date (timing);
