@@ -310,6 +310,60 @@ router.updatePartnerships = (req, res) => {
   });
 }
 
+router.updateProgram = (req, res) => {
+  logger.debug("req.body");
+  logger.debug(req.body);
+  //res.json(req.body);
+  var promises = [];
+  var eventProgram = [];
+  for (var a=0;a<req.body.data.length;a++) {
+    eventProgram.push({performance:req.body.data[a].performance,schedule: req.body.data[a].schedule});
+    promises.push(Models.Program.findOneAndUpdate({_id: req.body.data[a]._id}, req.body.data[a]));
+  }
+  Promise.all(
+    promises
+  ).then( (resultsPromise) => {
+    //console.log(resultsPromise);
+    var promisesPerf = [];
+    for (var a=0;a<req.body.data.length;a++) {
+      promisesPerf.push(Models.Performance.findOne({_id: req.body.data[a].performance}));
+    }
+    Promise.all(
+      promisesPerf
+    ).then( (resultsPromisePerf) => {
+      //console.log(resultsPromisePerf);
+      var promisesPerfSave = [];
+      for (var a=0;a<resultsPromisePerf.length;a++) {
+        console.log("req.body.data[a]");
+        console.log(req.body.data[a].performance);
+        console.log("resultsPromisePerf[a]");
+        console.log(resultsPromisePerf[a]._id);
+        if (resultsPromisePerf[a].bookings.length) {
+          let notfound = true;
+          for (var b=0;b<resultsPromisePerf[a].bookings.length;b++) {
+            if (resultsPromisePerf[a].bookings[b].event.toString()==req.body.data[a].event) {    
+              resultsPromisePerf[a].bookings[b].schedule = req.body.data[a].schedule;
+              notfound = false;
+            }
+          }
+          if (notfound) resultsPromisePerf[a].bookings.push({event:req.body.data[a].event,schedule: req.body.data[a].schedule});
+        } else {
+          resultsPromisePerf[a].bookings = [{event:req.body.data[a].event,schedule: req.body.data[a].schedule}];
+        }
+        promisesPerfSave.push(Models.Performance.updateOne({_id:resultsPromisePerf[a]._id}, resultsPromisePerf[a]));
+      }
+      Promise.all(
+        promisesPerfSave
+      ).then( (resultsPromisePerfSave) => {
+        Models.Event.findOneAndUpdate({_id:req.body.data[0].event}, {$set: {program: eventProgram}}).exec((err, result) => {
+          res.json(err || result);
+        });
+      });
+    });
+  });
+}
+
+
 router.updateSubscription = (req, res) => {
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 

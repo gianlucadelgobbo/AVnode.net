@@ -182,6 +182,10 @@ router.post('/api/events/:id/galleries', (req, res)=>{
   get.addGallery(req, res);
 }); */
 
+router.post('/api/programupdate', (req, res)=>{
+  post.updateProgram(req, res);
+});
+
 router.post('/api/subscriptionupdate', (req, res)=>{
   post.updateSubscription(req, res);
 });

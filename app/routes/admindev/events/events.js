@@ -573,19 +573,18 @@ router.get('/:event/program', (req, res) => {
               };
               data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
                 schedule: event.schedule[a],
-                performances: []
+                program: []
               };
             }
             if (!data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room]) {
               data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
                 schedule: event.schedule[a],
-                performances: []
+                program: []
               };
             }
           }
-          console.log("data.programmebydayvenue");
-          console.log(data.programmebydayvenue);
           for(let a=0;a<data.program.length;a++) {
+            var duration = data.program[a].performance.duration;
             for(let b=0;b<data.program[a].schedule.length;b++) {
               if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
                 if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
@@ -594,17 +593,18 @@ router.get('/:event/program', (req, res) => {
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
-                  console.log("data.program[a].schedule[b].venue.room");
-                  console.log(data.program[a].schedule[b].venue.room);
-                  data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].performances.push(data.program[a]);
+                  data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(data.program[a]);
                 } else {
                   var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                  console.log(days);
                   for(let c=0;c<days;c++){
                     let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
                     let d = ('0'+date.getUTCDate()).substr(-2);
                     let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                     let y = date.getUTCFullYear();
-                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].performances.push(data.program[a]);
+                    data.program[a].freezed = true;
+                    data.program[a].performance.duration = duration/days;
+                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(data.program[a]);
                   }
                 }
               }
