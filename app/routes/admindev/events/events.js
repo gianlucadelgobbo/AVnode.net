@@ -593,7 +593,6 @@ router.get('/:event/program', (req, res) => {
               daysdays.push(dayday);
             }
           }
-          console.log(daysdays);
           data.days = daysdays;
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
