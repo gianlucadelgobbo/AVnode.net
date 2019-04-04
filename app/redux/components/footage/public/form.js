@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { reduxForm, Field, FieldArray } from "redux-form";
-import { FORM_NAME } from "./constants";
+import { reduxForm, Field, FieldArray, getFormSyncErrors } from "redux-form";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { FORM_NAME, SECTION } from "./constants";
 import {
   renderDropzoneInput,
   inputText,
@@ -10,6 +12,7 @@ import {
   uploadComponent
 } from "../../common/form/components";
 import validate from "./validate";
+import asyncValidate from "./asyncValidate";
 import { injectIntl } from "react-intl";
 import {
   ABOUT,
@@ -41,7 +44,9 @@ class FootagePublicForm extends Component {
       handleAddition,
       tags,
       uploadFile,
-      media
+      model,
+      _id,
+      removeModel
     } = this.props;
 
     return (
@@ -68,7 +73,7 @@ class FootagePublicForm extends Component {
           maxSize={21474836480}
           uploadFile={uploadFile}
           uploadButton={true}
-          media={media}
+          media={model.media}
           multiple={false}
           //accept={this.renderImageType()}
         />
@@ -88,6 +93,10 @@ class FootagePublicForm extends Component {
           component={fieldWithLabel}
           placeholder={this.getIntlString({ id: AUTHORS })}
           showModal={showModal}
+          _id={_id}
+          removeModel={removeModel}
+          users={model.users}
+          SECTION={SECTION}
         />
 
         <br />
@@ -123,10 +132,21 @@ FootagePublicForm = reduxForm({
   form: FORM_NAME,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  validate
-  //asyncValidate,
-  //asyncBlurFields: ['slug', 'addresses[]']
+  validate,
+  asyncValidate,
+  asyncBlurFields: ["slug"]
 })(FootagePublicForm);
+
+//Get form's initial values from redux state here
+const mapStateToProps = state => ({
+  errors: getFormSyncErrors(FORM_NAME)(state)
+});
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+FootagePublicForm = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FootagePublicForm);
 
 FootagePublicForm = injectIntl(FootagePublicForm);
 

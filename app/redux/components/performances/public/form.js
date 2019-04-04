@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { reduxForm, Field, FieldArray } from "redux-form";
+import { reduxForm, Field, FieldArray, getFormSyncErrors } from "redux-form";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { FORM_NAME, SECTION } from "./constants";
@@ -11,7 +11,6 @@ import {
   fieldWithLabel
 } from "../../common/form/components";
 import validate from "./validate";
-import { getFormSyncErrors } from "redux-form";
 import asyncValidate from "./asyncValidate";
 import {
   PERFORMANCE_URL,
@@ -69,7 +68,6 @@ class PerformancePublicForm extends Component {
           placeholder={this.getIntlString({ id: PERFORMANCE_URL })}
           pre={this.getIntlString({ id: PERFORMANCE_URL_PRE })}
           help={this.getIntlString({ id: PERFORMANCE_URL_HELP })}
-
         />
 
         <FieldArray

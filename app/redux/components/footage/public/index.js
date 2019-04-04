@@ -18,6 +18,7 @@ import {
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
+import { removeModel } from "../users/actions";
 
 class FootagePublic extends Component {
   componentDidMount() {
@@ -149,13 +150,14 @@ class FootagePublic extends Component {
     const {
       model = {},
       showModal,
+      removeModel,
       match: {
         params: { _id }
       },
       isFetching,
       errorMessage
     } = this.props;
-    console.log(model.media);
+    console.log(model);
     const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
     return (
       <div className="row">
@@ -174,13 +176,20 @@ class FootagePublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={FOOTAGE_NAME} link={"/footage/"+model.slug} show={SHOW} />
+            <TitleComponent
+              title={model.title}
+              type={FOOTAGE_NAME}
+              link={"/footage/" + model.slug}
+              show={SHOW}
+            />
           )}
 
           <Form
             initialValues={this.getInitialValues()}
             onSubmit={this.onSubmit.bind(this)}
-            media={model.media}
+            model={model}
+            _id={_id}
+            removeModel={removeModel}
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
@@ -216,6 +225,7 @@ const mapDispatchToProps = dispatch =>
     {
       saveModel,
       fetchModel,
+      removeModel,
       showModal,
       uploadModel
     },
