@@ -17,7 +17,6 @@ block content
             ul.list-group.connectedSortable(id="sortable0")
               each program in data.program
                 if !program.schedule || !program.schedule.starttime
-                  - console.log(get)
                   if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
                     li.list-group-item
                       .timing.small
@@ -51,7 +50,6 @@ block content
                               - conta++
                               if room.program
                                 each program,ii in room.program
-                                  //- console.log(program)
                                   li.list-group-item(class=program.freezed ? "disabled" : "")
                                     .timing.small=program.schedule[0].starttimeTime+" - "+program.schedule[0].endtimeTime
                                     .title
@@ -64,19 +62,3 @@ block content
                                         each day in subscription.days.map(day => {return day.getDate()})
                                           span.ml-1.badge.badge-pill.badge-danger=day
                                     input(type="hidden", name="program[]", value=JSON.stringify(program))
-  //.row(style="height: 100vh;")
-    .col-md-3(style="height: 100%;overflow-y: scroll;")
-      h2=global.__("TO BE SCHEDULED")
-      #external-events
-        each program in data.program
-          if !program.schedule || !program.schedule.starttime
-            .fc-event.ui-draggable.ui-draggable-handle( data-event='{ "title": "'+program.performance.title+'", "duration": "'+program.performance.duration+'" }')
-              !=program.performance.title
-              //!=program.performance.categories.filter(function (el) {return el.ancestor.slug=="type";})[0].name
-    .col-md-9(style="height: 100%;overflow-y: scroll;")
-      each room,i in data.rooms
-        h2=room
-        div(id="calendarroom"+i)
-        div(id="calendarroom2"+i)
-        
-  //pre=JSON.stringify(data.program, null, 2)

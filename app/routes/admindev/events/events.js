@@ -379,7 +379,7 @@ router.get('/:event/peoples', (req, res) => {
           data.hotels = [];
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++)
             for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)
-              if (data.event.organizationsettings.call.calls[a].packages[b].allow_options && data.event.organizationsettings.call.calls[a].packages[b].options_name)
+              if (data.event.organizationsettings.call.calls[a].packages[b].options_name == "Hotels")
                 data.hotels = data.event.organizationsettings.call.calls[a].packages[b].options.split(",");
 
           /*
@@ -455,71 +455,6 @@ router.get('/:event/peoples', (req, res) => {
               get: req.query
             });
           }
-        }
-      });
-    }
-  });
-});
-
-router.post('/:event/program', (req, res) => {
-  req.body.event = req.params.event;
-  logger.debug(req.body);
-  Event.
-  findOne({"_id": req.params.event}).
-  select({title: 1, program: 1}).
-  //populate(populate_event).
-  exec((err, event) => {
-    if (err) {
-      res.json(err);
-    } else {
-      for(var item in event.program) {
-        if(event.program[item].performance == req.body.performance) {
-          if (event.program[item].schedule && event.program[item].schedule.length) {
-            // TODO
-          } else {
-            if (!event.program[item].schedule) event.program[item].schedule = [];
-            event.program[item].schedule.push(req.body.schedule);
-          }
-        }
-      }
-      event.save((err) => {
-        if (err) {
-          res.json(err);
-        } else {
-          Performance.
-          findOne({"_id": req.body.performance}).
-          select({title: 1, bookings: 1}).
-          //populate(populate_event).
-          exec((err, performance) => {
-            if (err) {
-              res.json(err);
-            } else {
-              let add = true;
-              if(performance.bookings) {
-                for(var item in performance.bookings) {
-                  if(performance.bookings[item].event == req.body.event) {
-                    add = false;
-                    if (performance.bookings[item].schedule && performance.bookings[item].schedule.length) {
-                      // TODO
-                    } else {
-                      if (!performance.bookings[item].schedule) performance.bookings[item].schedule = [];
-                      performance.bookings[item].schedule.push(req.body.schedule);
-                    }
-                  }
-                }
-              }
-              if (add) {
-                performance.bookings = [{schedule:req.body.schedule, event: req.params.event}];
-              }
-            }
-            performance.save((err) => {
-              if (err) {
-                res.json(err);
-              } else {
-                res.json(performance);
-              }
-            });
-          });
         }
       });
     }
@@ -623,7 +558,6 @@ router.get('/:event/program', (req, res) => {
                     data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(data.program[a]);
                   } else {
                     var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-                    console.log(days);
                     for(let c=0;c<days;c++){
                       let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
                       let d = ('0'+date.getUTCDate()).substr(-2);

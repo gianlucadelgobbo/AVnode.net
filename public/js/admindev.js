@@ -82,6 +82,37 @@ $(function() {
       }
     });
   }
+  $(".option_selected_hotel").change(function(ev) {
+    const data = {
+      id: $(this).data("id"),
+      subscriber_id: $(this).data("subscriber_id"),
+      hotel: $(this).val()
+    }
+    console.log(".option_selected_hotel");
+    console.log(data);
+    
+    $.ajax({
+      url: "/admin/api/subscriptionupdate",
+      method: "post",
+      data: data
+    }).done(function(res) {
+      console.log(res);
+    });
+  });
+  $(".option_selected_hotel_room").blur(function(ev) {
+    const data = {
+      id: $(this).data("id"),
+      subscriber_id: $(this).data("subscriber_id"),
+      hotel_room: $(this).val()
+    }
+    $.ajax({
+      url: "/admin/api/subscriptionupdate",
+      method: "post",
+      data: data
+    }).done(function(res) {
+      console.log(res);
+    });
+  });
   $(".cancel-sub").on('click', function(ev) {
     var result = confirm("Want to delete?");
     if (result) {
