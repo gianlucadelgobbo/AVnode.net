@@ -8,30 +8,31 @@
         option(value='0000-00-00') none
         option(value='2019-01-11') before today
       
-    select.form-control.mr-sm-3(name='call', style='max-width:150px')
-      option(value='none') Call
-      each call,i in data.event.organizationsettings.call.calls
-        option(value=i, selected=get.call==i ? "selected" : undefined)=call.title
-    //if get.call !== undefined && get.call !== "none"
-    - var packages = [];
-    - for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)  if (packages.indexOf(data.event.organizationsettings.call.calls[a].packages[b].name)==-1) packages.push(data.event.organizationsettings.call.calls[a].packages[b].name);
-    select.form-control.mr-sm-2(name='subscriptions.packages.name', style='max-width:100px')
-      option(value='0') Package
-      each pack,i in packages
-        option(value=pack, selected=get["subscriptions.packages.name"]==pack ? "selected" : undefined)=pack
-    small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.fullinfo ? "checked" : undefinded)
-        label.mr-sm-3(for='not4') NOT
+    if data.status && data.status.length
+      select.form-control.mr-sm-3(name='call', style='max-width:150px')
+        option(value='none') Call
+        each call,i in data.event.organizationsettings.call.calls
+          option(value=i, selected=get.call==i ? "selected" : undefined)=call.title
+      //if get.call !== undefined && get.call !== "none"
+      - var packages = [];
+      - for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)  if (packages.indexOf(data.event.organizationsettings.call.calls[a].packages[b].name)==-1) packages.push(data.event.organizationsettings.call.calls[a].packages[b].name);
+      select.form-control.mr-sm-2(name='subscriptions.packages.name', style='max-width:100px')
+        option(value='0') Package
+        each pack,i in packages
+          option(value=pack, selected=get["subscriptions.packages.name"]==pack ? "selected" : undefined)=pack
+      small.mr-sm-2(style="white-space: nowrap;display: contents;")
+          input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.fullinfo ? "checked" : undefinded)
+          label.mr-sm-3(for='not4') NOT
 
-    select.form-control.mr-sm-2(name='status', style='max-width:100px')
-      option(value='0') Status
-      each stat in data.status
-        option(value=stat._id, selected=get["status"]==stat._id ? "selected" : undefined)=stat.name
-    small.mr-sm-2(style="white-space: nowrap;display: contents;")
-      input.mr-sm-1#not0(type='checkbox', name='program.schedule.statusNOT', value='1', checked=get['program.schedule.statusNOT'] ? "checked" : undefinded)
-      label.mr-sm-3(for='not0') NOT
+      select.form-control.mr-sm-2(name='status', style='max-width:100px')
+        option(value='0') Status
+        each stat in data.status
+          option(value=stat._id, selected=get["status"]==stat._id ? "selected" : undefined)=stat.name
+      small.mr-sm-2(style="white-space: nowrap;display: contents;")
+        input.mr-sm-1#not0(type='checkbox', name='program.schedule.statusNOT', value='1', checked=get['program.schedule.statusNOT'] ? "checked" : undefinded)
+        label.mr-sm-3(for='not0') NOT
 
-    if data.rooms && data.rooms.length
+    if data.admitted && data.admitted.length
       select.form-control.mr-sm-2(name='performance_category', style='max-width:100px')
         option(value='0') Type
         each cat in data.admitted

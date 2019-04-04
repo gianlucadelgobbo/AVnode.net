@@ -17,18 +17,20 @@ block content
             ul.list-group.connectedSortable(id="sortable0")
               each program in data.program
                 if !program.schedule || !program.schedule.starttime
-                  li.list-group-item
-                    .timing.small
-                    .title
-                      b!=program.performance.title
-                      span.badge.badge-info.ml-1=program.performance.duration
-                    .type.small=program.performance.type.name
-                    .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
-                    .availability.text-right
-                      each subscription in program.subscriptions
-                        each day in subscription.days.map(day => {return day.getDate()})
-                          span.ml-1.badge.badge-pill.badge-danger=day
-                    input(type="hidden", name="program[]", value=JSON.stringify(program))
+                  - console.log(get)
+                  if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
+                    li.list-group-item
+                      .timing.small
+                      .title
+                        b!=program.performance.title
+                        span.badge.badge-info.ml-1=program.performance.duration
+                      .type.small=program.performance.type.name
+                      .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
+                      .availability.text-right
+                        each subscription in program.subscriptions
+                          each day in subscription.days.map(day => {return day.getDate()})
+                            span.ml-1.badge.badge-pill.badge-danger=day
+                      input(type="hidden", name="program[]", value=JSON.stringify(program))
         td(style="padding:0;border:none;")
           div(style="max-height: calc(100vh - 40px);overflow-y: scroll;")
             table
@@ -39,28 +41,29 @@ block content
                     h2=day.date
                 tr
                   each room,i in day.rooms
-                    td(width=(100/Object.keys(day.rooms).length)+"%")
-                      b=room.schedule.venue.room
-                      div
-                        form(id="form"+conta)
-                          input(type="hidden", name="room", value=JSON.stringify(room.schedule))
-                          ul.list-group.connectedSortable(id="sortable"+conta)
-                            - conta++
-                            if room.program
-                              each program,ii in room.program
-                                //- console.log(program)
-                                li.list-group-item(class=program.freezed ? "disabled" : "")
-                                  .timing.small=program.schedule[0].starttimeTime+" - "+program.schedule[0].endtimeTime
-                                  .title
-                                    b!=program.performance.title
-                                    span.badge.badge-info.ml-1=program.performance.duration
-                                  .type.small=program.performance.type.name
-                                  .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
-                                  .availability.text-right
-                                    each subscription in program.subscriptions
-                                      each day in subscription.days.map(day => {return day.getDate()})
-                                        span.ml-1.badge.badge-pill.badge-danger=day
-                                  input(type="hidden", name="program[]", value=JSON.stringify(program))
+                    if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
+                      td(width=(100/Object.keys(day.rooms).length)+"%")
+                        b=room.schedule.venue.room
+                        div
+                          form(id="form"+conta)
+                            input(type="hidden", name="room", value=JSON.stringify(room.schedule))
+                            ul.list-group.connectedSortable(id="sortable"+conta)
+                              - conta++
+                              if room.program
+                                each program,ii in room.program
+                                  //- console.log(program)
+                                  li.list-group-item(class=program.freezed ? "disabled" : "")
+                                    .timing.small=program.schedule[0].starttimeTime+" - "+program.schedule[0].endtimeTime
+                                    .title
+                                      b!=program.performance.title
+                                      span.badge.badge-info.ml-1=program.performance.duration
+                                    .type.small=program.performance.type.name
+                                    .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
+                                    .availability.text-right
+                                      each subscription in program.subscriptions
+                                        each day in subscription.days.map(day => {return day.getDate()})
+                                          span.ml-1.badge.badge-pill.badge-danger=day
+                                    input(type="hidden", name="program[]", value=JSON.stringify(program))
   //.row(style="height: 100vh;")
     .col-md-3(style="height: 100%;overflow-y: scroll;")
       h2=global.__("TO BE SCHEDULED")
