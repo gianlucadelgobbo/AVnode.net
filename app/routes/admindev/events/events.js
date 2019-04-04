@@ -287,6 +287,7 @@ router.get('/:event/acts', (req, res) => {
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
+            req.query.sez = "acts";
             res.render('admindev/events/acts', {
               title: 'Events',
               data: data,
@@ -448,6 +449,7 @@ router.get('/:event/peoples', (req, res) => {
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
+            req.query.sez = "peoples";
             res.render('admindev/events/peoples', {
               title: 'Events',
               data: data,
@@ -575,6 +577,7 @@ router.get('/:event/program', (req, res) => {
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {
+            req.query.sez = "program";
             res.render('admindev/events/program', {
               title: 'Events',
               data: data,
