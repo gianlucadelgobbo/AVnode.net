@@ -510,6 +510,18 @@ router.get('/:event/program', (req, res) => {
           if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
             data.program = data.program.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
           }
+/*           let daysdays = [];
+          for(let a=0;a<program.length;a++) {
+            for(let b=0; b<program[a].subscriptions.length;b++) {
+              daysdays = daysdays.concat(program[a].subscriptions[b].days);
+            }
+          }
+          daysdays = daysdays.sort(function(a, b) {
+            a = new Date(a);
+            b = new Date(b);
+            return a<b ? -1 : a>b ? 1 : 0;
+          });
+ */          
 
           data.sortby = [
             {value: 'sortby_perf_name', key: 'sort by perf name'},
@@ -574,6 +586,15 @@ router.get('/:event/program', (req, res) => {
               }
             }
           }
+          let daysdays = [];
+          for(let a=0;a<data.event.schedule.length;a++) {
+            let dayday = new Date(data.event.schedule[a].starttime.setUTCHours(0)).getTime();
+            if (daysdays.indexOf(dayday)===-1) {
+              daysdays.push(dayday);
+            }
+          }
+          console.log(daysdays);
+          data.days = daysdays;
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {

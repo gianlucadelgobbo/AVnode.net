@@ -10,11 +10,11 @@ block content
             h5=room
     tbody
       tr
-        td
-          //(rowspan=(Object.keys(data.programmebydayvenue).length*2)+1)
+        td(style="max-width: 230px;")
           h2=global.__("TO BE SCHEDULED")
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
             ul.list-group.connectedSortable(id="sortable0")
+              - 
               each program in data.program
                 if !program.schedule || !program.schedule.length
                   if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
@@ -26,9 +26,13 @@ block content
                       .type.small=program.performance.type.name
                       .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
                       .availability.text-right
+                        - var daydayA = []
                         each subscription in program.subscriptions
-                          each day in subscription.days.map(day => {return day.getDate()})
-                            span.ml-1.badge.badge-pill.badge-danger=day
+                          each day, i in data.days
+                            - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
+                        each day, i in daydayA
+                          span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                            !=new Date(data.days[i]).getDate()
                       input(type="hidden", name="program[]", value=JSON.stringify(program))
         td(style="padding:0;border:none;")
           div(style="max-height: calc(100vh - 40px);overflow-y: scroll;")
@@ -58,7 +62,11 @@ block content
                                     .type.small=program.performance.type.name
                                     .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
                                     .availability.text-right
+                                      - var daydayA = []
                                       each subscription in program.subscriptions
-                                        each day in subscription.days.map(day => {return day.getDate()})
-                                          span.ml-1.badge.badge-pill.badge-danger=day
+                                        each day, i in data.days
+                                          - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
+                                      each day, i in daydayA
+                                        span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                                          !=new Date(data.days[i]).getDate()
                                     input(type="hidden", name="program[]", value=JSON.stringify(program))
