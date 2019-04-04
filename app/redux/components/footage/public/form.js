@@ -64,7 +64,7 @@ class FootagePublicForm extends Component {
           pre={this.getIntlString({ id: FOOTAGE_URL_PRE })}
           help={this.getIntlString({ id: FOOTAGE_URL_HELP })}
         />
-
+        {/*
         <Field
           name="video"
           component={uploadComponent}
@@ -77,7 +77,7 @@ class FootagePublicForm extends Component {
           multiple={false}
           //accept={this.renderImageType()}
         />
-
+        */}
         <FieldArray
           name="abouts"
           component={textareaMultiTab}

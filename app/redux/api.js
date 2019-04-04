@@ -79,6 +79,15 @@ export const saveFootageVideo = model => {
     });
 };
 
+// ====== Footage Video
+/*
+export const fetchFootageVideo = ({ id }) => {
+  return axios.get(`footage/${id}/video`).then(result => {
+    return result.data;
+  });
+};
+*/
+
 // - emails
 
 export const fetchProfileEmails = () => {
@@ -584,6 +593,14 @@ export const removeGalleries = ({ id }) => {
 export const postGalleries = obj => {
   return axios.post(`galleries/new/`, obj).then(result => {
     return result.data;
+  });
+};
+
+// ====== Footage Video
+
+export const fetchFootageVideo = ({ id }) => {
+  return axios.get(`footage/${id}/public`).then(result => {
+    return result.data.media;
   });
 };
 
