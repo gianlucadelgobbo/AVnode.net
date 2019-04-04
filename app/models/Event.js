@@ -20,6 +20,7 @@ const scheduleSchema = new Schema({
   date: Date,
   starttime: Date,
   endtime: Date,
+  breakduration: Number,
   admitted: [{ type : Schema.ObjectId, ref : 'Category' }],
   venue: Venue
 },{ _id : false });

@@ -66,8 +66,9 @@
     //input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefinded)
       label.mr-sm-3(for='unlink') Performance suspect
       br
-    input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
-    label.mr-sm-3(for='fullinfo') FULL INFO
+    if get.sez == "acts"
+      input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
+      label.mr-sm-3(for='fullinfo') FULL INFO
 
     input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
     input.form-control.mr-sm-2(type='hidden', name='save', value='1')
