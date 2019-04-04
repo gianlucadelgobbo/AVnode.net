@@ -379,7 +379,7 @@ router.get('/:event/peoples', (req, res) => {
           data.hotels = [];
           for(let a=0;a<data.event.organizationsettings.call.calls.length;a++)
             for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)
-              if (data.event.organizationsettings.call.calls[a].packages[b].allow_options && data.event.organizationsettings.call.calls[a].packages[b].options_name)
+              if (data.event.organizationsettings.call.calls[a].packages[b].options_name == "Hotels")
                 data.hotels = data.event.organizationsettings.call.calls[a].packages[b].options.split(",");
 
           /*
@@ -461,100 +461,61 @@ router.get('/:event/peoples', (req, res) => {
   });
 });
 
-router.post('/:event/program', (req, res) => {
-  req.body.event = req.params.event;
-  logger.debug(req.body);
-  Event.
-  findOne({"_id": req.params.event}).
-  select({title: 1, program: 1}).
-  //populate(populate_event).
-  exec((err, event) => {
-    if (err) {
-      res.json(err);
-    } else {
-      for(var item in event.program) {
-        if(event.program[item].performance == req.body.performance) {
-          if (event.program[item].schedule && event.program[item].schedule.length) {
-            // TODO
-          } else {
-            if (!event.program[item].schedule) event.program[item].schedule = [];
-            event.program[item].schedule.push(req.body.schedule);
-          }
-        }
-      }
-      event.save((err) => {
-        if (err) {
-          res.json(err);
-        } else {
-          Performance.
-          findOne({"_id": req.body.performance}).
-          select({title: 1, bookings: 1}).
-          //populate(populate_event).
-          exec((err, performance) => {
-            if (err) {
-              res.json(err);
-            } else {
-              let add = true;
-              if(performance.bookings) {
-                for(var item in performance.bookings) {
-                  if(performance.bookings[item].event == req.body.event) {
-                    add = false;
-                    if (performance.bookings[item].schedule && performance.bookings[item].schedule.length) {
-                      // TODO
-                    } else {
-                      if (!performance.bookings[item].schedule) performance.bookings[item].schedule = [];
-                      performance.bookings[item].schedule.push(req.body.schedule);
-                    }
-                  }
-                }
-              }
-              if (add) {
-                performance.bookings = [{schedule:req.body.schedule, event: req.params.event}];
-              }
-            }
-            performance.save((err) => {
-              if (err) {
-                res.json(err);
-              } else {
-                res.json(performance);
-              }
-            });
-          });
-        }
-      });
-    }
-  });
-});
-
 router.get('/:event/program', (req, res) => {
   logger.debug('/events/'+req.params.event+'/program');
-
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
-  //populate(populate_event).
+  populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
   exec((err, event) => {
     if (err) {
       res.json(err);
     } else {
-      data.event = event;
-      data.status = status;
+      const select = config.cpanel["subscriptions"].list.select;
+      const populate = req.query.pure ? [] : config.cpanel["subscriptions"].list.populate;
+      let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
+      if (req.query.call && req.query.call!='none') query.call = req.query.call;
+/*       for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            populate[item].match = {type: req.query['performance_category']};
+          }
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
+          }
+        }
+      }
+ */      logger.debug(query);
       Program.
-      find({"event": req.params.event}).
+      find(query).
       //select({title: 1, organizationsettings: 1}).
-      populate(populate_program).
+      populate(populate).
       exec((err, program) => {
         if (err) {
           res.json(err);
         } else {
+          data.event = event;
+          //data.status = status;
           data.program = program;
-          let admittedO = {};
-          for(let a=0;a<event.organizationsettings.call.calls.length;a++) for(let b=0; b<event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (event.organizationsettings.call.calls[a].admitted[b]);
           data.admitted = [];
+          let admittedO = {};
+          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
           for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+
           data.rooms = [];
           for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
+          if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
+            data.program = data.program.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
+          }
+
+          data.sortby = [
+            {value: 'sortby_perf_name', key: 'sort by perf name'},
+            {value: 'sortby_ref_name', key: 'sort by ref name'},
+            //{value: 'sortby_person_name', key: 'sort by person name'},
+            //{value: 'sortby_arrival_date', key: 'sort by arrival date'},
+            {value: '0', key: 'sort by sub date'}
+          ];
           
           data.programmebydayvenue = {}
           for(let a=0;a<event.schedule.length;a++) {
@@ -573,38 +534,39 @@ router.get('/:event/program', (req, res) => {
               };
               data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
                 schedule: event.schedule[a],
-                performances: []
+                program: []
               };
             }
             if (!data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room]) {
               data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
                 schedule: event.schedule[a],
-                performances: []
+                program: []
               };
             }
           }
-          console.log("data.programmebydayvenue");
-          console.log(data.programmebydayvenue);
           for(let a=0;a<data.program.length;a++) {
-            for(let b=0;b<data.program[a].schedule.length;b++) {
-              if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
-                if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
-                  let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                  if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
-                  let d = ('0'+date.getUTCDate()).substr(-2);
-                  let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
-                  let y = date.getUTCFullYear();
-                  console.log("data.program[a].schedule[b].venue.room");
-                  console.log(data.program[a].schedule[b].venue.room);
-                  data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].performances.push(data.program[a]);
-                } else {
-                  var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-                  for(let c=0;c<days;c++){
-                    let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+            if (data.program[a].performance) {
+              var duration = data.program[a].performance.duration;
+              for(let b=0;b<data.program[a].schedule.length;b++) {
+                if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
+                  if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
+                    let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
+                    if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
                     let d = ('0'+date.getUTCDate()).substr(-2);
                     let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                     let y = date.getUTCFullYear();
-                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].performances.push(data.program[a]);
+                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(data.program[a]);
+                  } else {
+                    var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                    for(let c=0;c<days;c++){
+                      let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+                      let d = ('0'+date.getUTCDate()).substr(-2);
+                      let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                      let y = date.getUTCFullYear();
+                      data.program[a].freezed = true;
+                      data.program[a].performance.duration = duration/days;
+                      data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(data.program[a]);
+                    }
                   }
                 }
               }

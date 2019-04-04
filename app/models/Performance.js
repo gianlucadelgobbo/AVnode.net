@@ -7,6 +7,7 @@ const helper = require('../utilities/helper');
 const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
 const Booking = require('./shared/Booking');
+const moment = require('moment');
 
 const adminsez = 'performances';
 function ignoreEmpty (val) {
@@ -112,6 +113,12 @@ performanceSchema.virtual('tech_req').get(function (req) {
       }
     }
     return tech_req;
+  }
+});
+
+performanceSchema.virtual('humanDuration').get(function () {
+  if (this.duration) {
+    return moment.duration({"minutes": this.duration}).humanize()
   }
 });
 

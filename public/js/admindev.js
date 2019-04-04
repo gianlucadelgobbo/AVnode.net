@@ -82,6 +82,37 @@ $(function() {
       }
     });
   }
+  $(".option_selected_hotel").change(function(ev) {
+    const data = {
+      id: $(this).data("id"),
+      subscriber_id: $(this).data("subscriber_id"),
+      hotel: $(this).val()
+    }
+    console.log(".option_selected_hotel");
+    console.log(data);
+    
+    $.ajax({
+      url: "/admin/api/subscriptionupdate",
+      method: "post",
+      data: data
+    }).done(function(res) {
+      console.log(res);
+    });
+  });
+  $(".option_selected_hotel_room").blur(function(ev) {
+    const data = {
+      id: $(this).data("id"),
+      subscriber_id: $(this).data("subscriber_id"),
+      hotel_room: $(this).val()
+    }
+    $.ajax({
+      url: "/admin/api/subscriptionupdate",
+      method: "post",
+      data: data
+    }).done(function(res) {
+      console.log(res);
+    });
+  });
   $(".cancel-sub").on('click', function(ev) {
     var result = confirm("Want to delete?");
     if (result) {
@@ -129,9 +160,8 @@ $(function() {
   });
 
 // PARTNERS
-  $( "#sortable0, #sortable1, #sortable2, #sortable3, #sortable4, #sortable5, #sortable6, #sortable7, #sortable8, #sortable9, #sortable10, #sortable11" ).sortable({
+  $( ".partners .connectedSortable" ).sortable({
     remove: function( e, ui ) {
-      alert("stocazzo");
       var partnerships = [];
       var connectedSortable = $(".connectedSortable").parent();
       for (var a=1;a<connectedSortable.length;a++) {
@@ -169,7 +199,54 @@ $(function() {
     connectWith: ".connectedSortable"
   }).disableSelection();
 
-  $('#modalAddContact').on('show.bs.modal', function (event) {
+// PROGRAM
+$( ".program .connectedSortable" ).sortable({
+  remove: function( e, ui ) {
+    console.log("stocazzo");
+    var data = [];
+    var connectedSortable = $(".connectedSortable").parent();
+    for (var a=1;a<connectedSortable.length;a++) {
+      var day = $(connectedSortable[a]).serializeJSON();
+      day.room = JSON.parse(day.room);
+      day.room.breakduration = 10;
+      if (day.program && day.program.length) {
+        var boxes = $(connectedSortable[a]).find("li");
+        var timing = new Date (day.room.starttime).getTime();
+        for (var b=0;b<day.program.length;b++) {
+          day.program[b] = JSON.parse(day.program[b]);
+          timing+= b> 0 ? (parseFloat(day.room.breakduration)*(60*1000)) : 0;
+          var start = new Date (timing);
+          timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
+          var end = new Date (timing);
+          if (!$(boxes[b]).hasClass("disabled")) {
+            day.program[b].schedule = [{
+              starttime: start.toISOString(),
+              endtime: end.toISOString(),
+              venue: day.room.venue
+            }];
+            $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
+          }
+          data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
+          console.log(day.program[b].performance.title);
+          console.log(day.program[b]);
+        }
+      }
+      //
+    }
+    console.log(data);
+    $.ajax({
+      url: "/admin/api/programupdate",
+      method: "post",
+      data: {data: data}
+    }).done(function(data) {
+      console.log("#");
+      console.log(data);
+    });
+  },
+  connectWith: ".connectedSortable"
+}).disableSelection();
+
+$('#modalAddContact').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var id = button.data('id') // Extract info from data-* attributes
     var stagename = button.data('stagename') // Extract info from data-* attributes
