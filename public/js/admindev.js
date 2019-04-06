@@ -212,10 +212,17 @@ $( ".program .connectedSortable" ).sortable({
         var timing = new Date (day.room.starttime).getTime();
         for (var b=0;b<day.program.length;b++) {
           day.program[b] = JSON.parse(day.program[b]);
-          timing+= b> 0 ? (parseFloat(day.room.venue.breakduration)*(60*1000)) : 0;
+          if (day.room.venue.breakduration>-1) timing+= b> 0 ? (parseFloat(day.room.venue.breakduration)*(60*1000)) : 0;
           var start = new Date (timing);
-          timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
-          var end = new Date (timing);
+          if (parseFloat(day.program[b].performance.duration)>500 && day.program[b].performance.type.name=="Workshop") {
+            day.program[b].performance.duration = parseFloat(day.program[b].performance.duration)/4;
+          }
+          if (day.room.venue.breakduration>-1) {
+            timing+=(parseFloat(day.program[b].performance.duration)*(60*1000));
+            var end = new Date (timing);
+          } else {
+            var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
+          }
           if (!$(boxes[b]).hasClass("disabled")) {
             day.program[b].schedule = [{
               starttime: start.toISOString(),

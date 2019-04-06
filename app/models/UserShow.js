@@ -94,10 +94,11 @@ const userSchema = new Schema({
   events: [{ type: Schema.ObjectId, ref: 'Event' }],
   galleries: [{ type: Schema.ObjectId, ref: 'Gallery' }],
   videos: [{ type: Schema.ObjectId, ref: 'Video' }],
-  partnerships : [{
+  partnerships : [{type: Schema.ObjectId, ref: 'EventShow' }],
+/*   partnerships : [{
     category: { type: Schema.ObjectId, ref: 'Category' },
     events: [{ type: Schema.ObjectId, ref: 'EventShow' }]
-  }],
+  }], */
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
   news : [{ type: Schema.ObjectId, ref: 'News' }],
@@ -182,14 +183,15 @@ userSchema.virtual('addressesFormatted').get(function () {
 
 userSchema.virtual('partnerships_ordered').get(function () {
   if (this.partnerships && this.partnerships.length) {
-    let partnerships_ordered = [];
-    for(let partnership=0; partnership< this.partnerships.length; partnership++) {
+    console.log('partnerships_ordered');
+    /* let partnerships_ordered = [];
+    for(let partnership=0; partnership<this.partnerships.length; partnership++) {
       for(let event=0; event<  this.partnerships[partnership].events.length; event++) {
         this.partnerships[partnership].events[event].partnership_type = this.partnerships[partnership].category;
         partnerships_ordered.push(this.partnerships[partnership].events[event]);
       }
-    }
-    return partnerships_ordered.sort(function(a,b){return b.schedule[0].starttime.getTime() - a.schedule[0].starttime.getTime()});
+    } */
+    return this.partnerships.sort(function(a,b){return b.schedule[0].starttime.getTime() - a.schedule[0].starttime.getTime()});
   }
 });
 
