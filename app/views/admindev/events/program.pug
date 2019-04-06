@@ -13,27 +13,29 @@ block content
         td(style="max-width: 230px;")
           h2=global.__("TO BE SCHEDULED")
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
-            ul.list-group.connectedSortable(id="sortable0")
-              - 
-              each program in data.program
-                if !program.schedule || !program.schedule.length
-                  if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
-                    li.list-group-item(style="overflow: hidden;")
-                      .timing.small
-                      .title
-                        b!=program.performance.title
-                        span.badge.badge-info.ml-1=program.performance.duration
-                      .type.small=program.performance.type.name
-                      .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
-                      .availability.text-right
-                        - var daydayA = []
-                        each subscription in program.subscriptions
-                          each day, i in data.days
-                            - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
-                        each day, i in daydayA
-                          span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
-                            !=new Date(data.days[i]).getDate()
-                      input(type="hidden", name="program[]", value=JSON.stringify(program))
+            form(id="form"+conta)
+              ul.list-group.connectedSortable(id="sortable0")
+                - 
+                each program in data.program
+                  if !program.schedule || !program.schedule.length
+                    if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
+                      
+                      li.list-group-item(style="overflow: hidden;", class=(program.performance.duration != parseFloat(program.performance.duration) ? "disabled" : ""))
+                        .timing.small
+                        .title
+                          b!=program.performance.title
+                          span.badge.ml-1(class=(program.performance.duration == parseFloat(program.performance.duration) ? "badge-info" : "badge-danger"))=program.performance.duration
+                        .type.small=program.performance.type.name
+                        .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
+                        .availability.text-right
+                          - var daydayA = []
+                          each subscription in program.subscriptions
+                            each day, i in data.days
+                              - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
+                          each day, i in daydayA
+                            span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                              !=new Date(data.days[i]).getDate()
+                        input(type="hidden", name="program[]", value=JSON.stringify(program))
         td(style="padding:0;border:none;")
           div(style="max-height: calc(100vh - 40px);overflow-y: scroll;")
             table
@@ -45,7 +47,8 @@ block content
                 tr
                   each room,i in day.rooms
                     if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
-                      td(width=(100/Object.keys(day.rooms).length)+"%")
+                      //td(style="width:"+(100/Object.keys(day.rooms).length)+"%;overflow: hidden;")
+                      td(style="width:calc(100% / "+Object.keys(day.rooms).length+");overflow: hidden;")
                         b=room.schedule.venue.room
                         div
                           form(id="form"+conta)
@@ -54,8 +57,8 @@ block content
                               - conta++
                               if room.program
                                 each program,ii in room.program
-                                  li.list-group-item(style="overflow: hidden;")
-                                    .timing.small=program.schedule[0].starttimeTime+" - "+program.schedule[0].endtimeTime
+                                  li.list-group-item(style="")
+                                    .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
                                     .title
                                       b!=program.performance.title
                                       span.badge.badge-info.ml-1=program.performance.duration
@@ -65,7 +68,7 @@ block content
                                       - var daydayA = []
                                       each subscription in program.subscriptions
                                         each day, i in data.days
-                                          - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
+                                          - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
                                       each day, i in daydayA
                                         span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
                                           !=new Date(data.days[i]).getDate()

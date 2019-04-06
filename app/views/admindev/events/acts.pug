@@ -58,6 +58,9 @@ block content
                   br
                   !="DURATION: "
                   b=item.performance.duration
+                    if item.performance.duration != parseFloat(item.performance.duration)
+                      !=" "
+                      span.badge.badge-danger="WRONG DURATION"
                   br
                   if item.performance.tecnique
                     !="STYLE: "
@@ -157,10 +160,10 @@ block content
                       .badge.badge-info freezed
                     if people.indexOf(subscription.subscriber_id._id.toString())==-1
                       - people.push(subscription.subscriber_id._id.toString())
-                      if subscription.freezed
+                      if subscription.freezed && (!get.status || get.status=="0")
                         !=" "
                         .badge.badge-danger WRONG FREEZED?
-                    else if !subscription.freezed
+                    else if !subscription.freezed && (!get.status || get.status=="0")
                       !=" "
                       .badge.badge-danger MISSING FREEZED?
                     br

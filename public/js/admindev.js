@@ -201,7 +201,8 @@ $(function() {
 
 // PROGRAM
 $( ".program .connectedSortable" ).sortable({
-  remove: function( e, ui ) {
+  update: function( e, ui ) {
+    console.log("change");
     var data = [];
     var connectedSortable = $(".connectedSortable").parent();
     for (var a=1;a<connectedSortable.length;a++) {
@@ -236,6 +237,27 @@ $( ".program .connectedSortable" ).sortable({
       }
       //
     }
+
+
+
+
+
+
+    var day = $(connectedSortable[0]).serializeJSON();
+    console.log("day");
+    console.log(day);
+    var boxes = $(connectedSortable[0]).find("li");
+    if (day.program && day.program.length) {
+      for (var b=0;b<day.program.length;b++) {
+        $(boxes[b]).find(".timing").html("");
+        day.program[b] = JSON.parse(day.program[b]);
+        console.log(day.program[b]);
+        data.push({_id: day.program[b]._id, schedule: {}, performance: day.program[b].performance._id, event: day.program[b].event});
+      }
+    }
+
+
+
     $.ajax({
       url: "/admin/api/programupdate",
       method: "post",

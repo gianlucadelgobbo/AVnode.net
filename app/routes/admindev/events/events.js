@@ -572,29 +572,39 @@ router.get('/:event/program', (req, res) => {
           for(let a=0;a<data.program.length;a++) {
             if (data.program[a].performance) {
               var duration = data.program[a].performance.duration;
-              for(let b=0;b<data.program[a].schedule.length;b++) {
-                if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
-                  if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
-                    let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
-                    if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
-                    let d = ('0'+date.getUTCDate()).substr(-2);
-                    let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
-                    let y = date.getUTCFullYear();
-                    data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(data.program[a]);
-                  } else {
-                    var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
-                    for(let c=0;c<days;c++){
-                      let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+              if (data.program[a].schedule && data.program[a].schedule.length) {
+                for(let b=0;b<data.program[a].schedule.length;b++) {
+                  if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
+                    if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
+                      let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
+                      if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
                       let d = ('0'+date.getUTCDate()).substr(-2);
                       let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                       let y = date.getUTCFullYear();
-                      data.program[a].freezed = true;
-                      data.program[a].performance.duration = duration/days;
-                      data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(data.program[a]);
+                      let program = JSON.parse(JSON.stringify(data.program[a]));
+                      program.schedule = data.program[a].schedule[b];
+                      data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                    } else {
+                      var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                      for(let c=0;c<days;c++){
+                        let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+                        let d = ('0'+date.getUTCDate()).substr(-2);
+                        let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                        let y = date.getUTCFullYear();
+                        let program = JSON.parse(JSON.stringify(data.program[a]));
+                        program.schedule = data.program[a].schedule[b];
+                        data.program[a].performance.duration = duration/days;
+                        data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                      }
                     }
                   }
-                }
+                }  
               }
+            }
+          }
+          for(let item in data.programmebydayvenue) {
+            for(let room in data.programmebydayvenue[item].rooms) {
+              data.programmebydayvenue[item].rooms[room].program.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
             }
           }
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
