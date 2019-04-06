@@ -365,9 +365,27 @@ router.updateProgram = (req, res) => {
       Promise.all(
         promisesPerfSave
       ).then( (resultsPromisePerfSave) => {
-        Models.Event.findOneAndUpdate({_id:program[0].event}, {$set: {program: eventProgram}}).exec((err, result) => {
-          res.json(err || result);
-        });
+        const acceptedonly = false;
+        if (acceptedonly) {
+          Models.Event.findOneAndUpdate({_id:program[0].event}, {$set: {program: eventProgram}}).exec((err, result) => {
+            res.json(err || result);
+          });
+        } else {
+          Models.Event.findOne({_id:program[0].event}).exec((err, event) => {
+            for (var a=0;a<event.program.length;a++) {
+              for (var b=0;b<eventProgram.length;b++) {
+                if (event.program[a].performance.toString() === eventProgram[b].performance.toString()) {
+                  console.log("TROVATOOOOOOOOOOOO");
+                  console.log(eventProgram[b].schedule);
+                  event.program[a].schedule = eventProgram[b].schedule;
+                }
+              }
+            }
+            event.save((err) => {
+              res.json(err);
+            });
+          });
+        }
       }); 
     });
   });
