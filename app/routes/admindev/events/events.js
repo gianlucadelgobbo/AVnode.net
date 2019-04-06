@@ -255,7 +255,7 @@ router.get('/:event/acts', (req, res) => {
               }
             }
           }
-          if (data.performnce_missing) data.performnce_missing = JSON.stringify(performnce_missing);
+          if (data.performnce_missing) data.performnce_missing = JSON.stringify(data.performnce_missing);
           //if (req.query['performance_category'] && req.query['performance_category']!='0') {
             let prg = [];
             for(let a=0;a<data.program.length;a++) {
