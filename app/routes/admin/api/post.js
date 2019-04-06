@@ -312,21 +312,31 @@ router.updatePartnerships = (req, res) => {
 
 router.updateProgram = (req, res) => {
   logger.debug("req.body");
-  logger.debug(req.body);
-  //res.json(req.body);
-  var promises = [];
+  //logger.debug(req.body);
+  var performances = [];
+  var programIDS = [];
+  var program = [];
   var eventProgram = [];
+  var promises = [];
+  var promisesPerf = [];
   for (var a=0;a<req.body.data.length;a++) {
-    eventProgram.push({performance:req.body.data[a].performance,schedule: req.body.data[a].schedule});
-    promises.push(Models.Program.findOneAndUpdate({_id: req.body.data[a]._id}, req.body.data[a]));
+    var index = programIDS.indexOf(req.body.data[a]._id);
+    if (index===-1) {
+      programIDS.push(req.body.data[a]._id);
+      program.push(req.body.data[a]);
+    } else {
+      program[index].schedule.push(req.body.data[a].schedule[0]);
+    }
+  }  
+  for (var a=0;a<program.length;a++) {
+    eventProgram.push({performance:program[a].performance,schedule: program[a].schedule});
+    promises.push(Models.Program.findOneAndUpdate({_id: program[a]._id}, { $set: { schedule: program[a].schedule }}));
   }
   Promise.all(
     promises
   ).then( (resultsPromise) => {
-    //console.log(resultsPromise);
-    var promisesPerf = [];
-    for (var a=0;a<req.body.data.length;a++) {
-      promisesPerf.push(Models.Performance.findOne({_id: req.body.data[a].performance}));
+    for (var a=0;a<program.length;a++) {
+      promisesPerf.push(Models.Performance.findOne({_id: program[a].performance}));
     }
     Promise.all(
       promisesPerf
@@ -334,31 +344,31 @@ router.updateProgram = (req, res) => {
       //console.log(resultsPromisePerf);
       var promisesPerfSave = [];
       for (var a=0;a<resultsPromisePerf.length;a++) {
-        console.log("req.body.data[a]");
-        console.log(req.body.data[a].performance);
+        /* console.log("program[a]");
+        console.log(program[a].performance);
         console.log("resultsPromisePerf[a]");
-        console.log(resultsPromisePerf[a]._id);
+        console.log(resultsPromisePerf[a]._id); */
         if (resultsPromisePerf[a].bookings.length) {
           let notfound = true;
           for (var b=0;b<resultsPromisePerf[a].bookings.length;b++) {
-            if (resultsPromisePerf[a].bookings[b].event.toString()==req.body.data[a].event) {    
-              resultsPromisePerf[a].bookings[b].schedule = req.body.data[a].schedule;
+            if (resultsPromisePerf[a].bookings[b].event.toString()==program[a].event) {    
+              resultsPromisePerf[a].bookings[b].schedule = program[a].schedule;
               notfound = false;
             }
           }
-          if (notfound) resultsPromisePerf[a].bookings.push({event:req.body.data[a].event,schedule: req.body.data[a].schedule});
+          if (notfound) resultsPromisePerf[a].bookings.push({event:program[a].event,schedule: program[a].schedule});
         } else {
-          resultsPromisePerf[a].bookings = [{event:req.body.data[a].event,schedule: req.body.data[a].schedule}];
+          resultsPromisePerf[a].bookings = [{event:program[a].event,schedule: program[a].schedule}];
         }
         promisesPerfSave.push(Models.Performance.updateOne({_id:resultsPromisePerf[a]._id}, resultsPromisePerf[a]));
       }
       Promise.all(
         promisesPerfSave
       ).then( (resultsPromisePerfSave) => {
-        Models.Event.findOneAndUpdate({_id:req.body.data[0].event}, {$set: {program: eventProgram}}).exec((err, result) => {
+        Models.Event.findOneAndUpdate({_id:program[0].event}, {$set: {program: eventProgram}}).exec((err, result) => {
           res.json(err || result);
         });
-      });
+      }); 
     });
   });
 }

@@ -468,7 +468,7 @@ router.get('/:event/program', (req, res) => {
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
-  select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
+  select({title: 1, schedule: 1, organizationsettings: 1}).
   populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
   exec((err, event) => {
     if (err) {
@@ -507,6 +507,17 @@ router.get('/:event/program', (req, res) => {
 
           data.rooms = [];
           for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
+
+          let daysdays = [];
+          let schedule = JSON.parse(JSON.stringify(data.event.schedule));
+          for(let a=0;a<schedule.length;a++) {
+            let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+            if (daysdays.indexOf(dayday)===-1) {
+              daysdays.push(dayday);
+            }
+          }
+          data.days = daysdays;
+
           if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
             data.program = data.program.sort((a,b) => (a.performance.title > b.performance.title) ? 1 : ((b.performance.title > a.performance.title) ? -1 : 0));
           }
@@ -586,14 +597,6 @@ router.get('/:event/program', (req, res) => {
               }
             }
           }
-          let daysdays = [];
-          for(let a=0;a<data.event.schedule.length;a++) {
-            let dayday = new Date(data.event.schedule[a].starttime.setUTCHours(0)).getTime();
-            if (daysdays.indexOf(dayday)===-1) {
-              daysdays.push(dayday);
-            }
-          }
-          data.days = daysdays;
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(data);
           } else {

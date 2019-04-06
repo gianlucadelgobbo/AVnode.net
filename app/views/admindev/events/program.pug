@@ -18,7 +18,7 @@ block content
               each program in data.program
                 if !program.schedule || !program.schedule.length
                   if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
-                    li.list-group-item
+                    li.list-group-item(style="overflow: hidden;")
                       .timing.small
                       .title
                         b!=program.performance.title
@@ -54,7 +54,7 @@ block content
                               - conta++
                               if room.program
                                 each program,ii in room.program
-                                  li.list-group-item(class=program.freezed ? "disabled" : "")
+                                  li.list-group-item(style="overflow: hidden;")
                                     .timing.small=program.schedule[0].starttimeTime+" - "+program.schedule[0].endtimeTime
                                     .title
                                       b!=program.performance.title
