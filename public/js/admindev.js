@@ -204,6 +204,7 @@ $( ".program .connectedSortable" ).sortable({
   update: function( e, ui ) {
     console.log("change");
     var data = [];
+    var tobescheduled = [];
     var connectedSortable = $(".connectedSortable").parent();
     for (var a=1;a<connectedSortable.length;a++) {
       var day = $(connectedSortable[a]).serializeJSON();
@@ -238,22 +239,24 @@ $( ".program .connectedSortable" ).sortable({
       }
       //
     }
-
     var day = $(connectedSortable[0]).serializeJSON();
     var boxes = $(connectedSortable[0]).find("li");
     if (day.program && day.program.length) {
       for (var b=0;b<day.program.length;b++) {
+        console.log("stocazzo");
         $(boxes[b]).find(".timing").html("");
         $(boxes[b]).find(".index").html(b+1);
         day.program[b] = JSON.parse(day.program[b]);
-        data.push({_id: day.program[b]._id, schedule: {}, performance: day.program[b].performance._id, event: day.program[b].event});
+        tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
       }
     }
+    console.log("tobescheduled");
+    console.log(tobescheduled);
 
     $.ajax({
       url: "/admin/api/programupdate",
       method: "post",
-      data: {data: data}
+      data: {data: data, tobescheduled: tobescheduled}
     }).done(function(data) {
       console.log("#");
       console.log(data);

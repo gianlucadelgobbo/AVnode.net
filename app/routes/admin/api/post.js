@@ -319,7 +319,20 @@ router.updateProgram = (req, res) => {
   var eventProgram = [];
   var promises = [];
   var promisesPerf = [];
+  for (var a=0;a<req.body.tobescheduled.length;a++) {
+    console.log("req.body.tobescheduled[a]");
+    console.log(req.body.tobescheduled[a].schedule);
+    var index = programIDS.indexOf(req.body.tobescheduled[a]._id);
+    if (index===-1) {
+      programIDS.push(req.body.tobescheduled[a]._id);
+      program.push(req.body.tobescheduled[a]);
+    } else {
+      console.log("DOPPIO TO BE SCHEDULED!!!");
+    }
+  }  
   for (var a=0;a<req.body.data.length;a++) {
+    console.log("req.body.data[a]");
+    console.log(req.body.data[a].schedule);
     var index = programIDS.indexOf(req.body.data[a]._id);
     if (index===-1) {
       programIDS.push(req.body.data[a]._id);
