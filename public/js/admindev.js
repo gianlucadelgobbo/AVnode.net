@@ -231,6 +231,7 @@ $( ".program .connectedSortable" ).sortable({
               venue: day.room.venue
             }];
             $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
+            $(boxes[b]).find(".index").html(b+1);
           }
           data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
         }
@@ -238,25 +239,16 @@ $( ".program .connectedSortable" ).sortable({
       //
     }
 
-
-
-
-
-
     var day = $(connectedSortable[0]).serializeJSON();
-    console.log("day");
-    console.log(day);
     var boxes = $(connectedSortable[0]).find("li");
     if (day.program && day.program.length) {
       for (var b=0;b<day.program.length;b++) {
         $(boxes[b]).find(".timing").html("");
+        $(boxes[b]).find(".index").html(b+1);
         day.program[b] = JSON.parse(day.program[b]);
-        console.log(day.program[b]);
         data.push({_id: day.program[b]._id, schedule: {}, performance: day.program[b].performance._id, event: day.program[b].event});
       }
     }
-
-
 
     $.ajax({
       url: "/admin/api/programupdate",
@@ -280,6 +272,11 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
     modal.find('.modal-title').text('New contact for ' + stagename)
   });
   
+  $( ".duplicate" ).click(function( event ) {
+    console.log($(this).parent().parent());
+    $(this).parent().parent().clone().insertAfter($(this).parent().parent())
+  });
+
   $( ".unlink" ).click(function( event ) {
     var row = $(this).parent().parent();
     var result = confirm("Want to unlink this partner?");
