@@ -320,8 +320,6 @@ router.updateProgram = (req, res) => {
   var promises = [];
   var promisesPerf = [];
   for (var a=0;a<req.body.tobescheduled.length;a++) {
-    console.log("req.body.tobescheduled[a]");
-    console.log(req.body.tobescheduled[a].schedule);
     var index = programIDS.indexOf(req.body.tobescheduled[a]._id);
     if (index===-1) {
       programIDS.push(req.body.tobescheduled[a]._id);
@@ -331,8 +329,6 @@ router.updateProgram = (req, res) => {
     }
   }  
   for (var a=0;a<req.body.data.length;a++) {
-    console.log("req.body.data[a]");
-    console.log(req.body.data[a].schedule);
     var index = programIDS.indexOf(req.body.data[a]._id);
     if (index===-1) {
       programIDS.push(req.body.data[a]._id);
@@ -388,8 +384,6 @@ router.updateProgram = (req, res) => {
             for (var a=0;a<event.program.length;a++) {
               for (var b=0;b<eventProgram.length;b++) {
                 if (event.program[a].performance.toString() === eventProgram[b].performance.toString()) {
-                  console.log("TROVATOOOOOOOOOOOO");
-                  console.log(eventProgram[b].schedule);
                   event.program[a].schedule = eventProgram[b].schedule;
                 }
               }
