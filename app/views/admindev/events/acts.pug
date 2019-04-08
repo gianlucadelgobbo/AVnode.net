@@ -1,5 +1,6 @@
 extends ../layout_admin
 block content
+  - var del = []
   - var emails = []
   - var emails_noimage = []
   - var emails_noaddress = []
@@ -92,7 +93,30 @@ block content
               .mt-2
                 b TECHNICAL REQUIREMENTS
                 br
-                !=item.performance.tech_req             
+                !=item.performance.tech_req
+              if item.performance.videos && item.performance.videos.length
+                .mt-2
+                  b VIDEOS
+                  ul
+                  each video in item.performance.videos
+                    li
+                      a.video(href="#" data-video="https://avnode.net"+video.media.file)!=video.title            
+              if item.performance.galleries && item.performance.galleries.length
+                .mt-2
+                  b GALLERIES
+                  ul
+                    each gallery in item.performance.galleries
+                      li
+                        !=gallery.title
+                        if gallery.medias.length
+                          ul
+                            each media in gallery.medias
+                              li
+                                a.media(href="#" data-video=media.imageFormats.large)!=media.title
+                        else
+                          !=" "
+                          .badge.badge-danger MISSING MEDIAS
+                          - del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
           td(style="max-width: 23vw;overflow: hidden;")
             each user in item.performance.users
               if user.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
