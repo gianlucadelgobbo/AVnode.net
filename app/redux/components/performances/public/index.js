@@ -105,7 +105,6 @@ class PerformancePublic extends Component {
         };
       });
     }
-    console.log(model);
     return model;
   }
 
@@ -250,7 +249,12 @@ class PerformancePublic extends Component {
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
           {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={PERFORMANCE_NAME} link={"/performances/"+model.slug} show={SHOW} />
+            <TitleComponent
+              title={model.title}
+              type={PERFORMANCE_NAME}
+              link={"/performances/" + model.slug}
+              show={SHOW}
+            />
           )}
 
           <Form
