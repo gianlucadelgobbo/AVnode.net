@@ -19,8 +19,9 @@ html(lang='en')
     link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
     link(rel='stylesheet', href='/css/main.css')
     link(rel='stylesheet', href='/css/admindev.css')
-    link(rel='stylesheet', href='/css/video-js.min.css')
     link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
+    link(rel='stylesheet', href='/lightgallery/css/lightgallery.min.css')
+    link(rel='stylesheet', href='//vjs.zencdn.net/4.12/video-js.css')
 
   body
     #top
@@ -90,6 +91,9 @@ html(lang='en')
           script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
           script(src="/js/moment-with-locales.min.js")
           script(src="/js/jquery.serializejson.min.js")
+          script(src='//vjs.zencdn.net/4.12/video.js')
+          script(src='/lightgallery/js/lightgallery.min.js')
+          script(src='/lightgallery/js/lg-video.min.js')
           script.
             // Hide submenus
             $('#body-row .collapse').collapse('hide'); 

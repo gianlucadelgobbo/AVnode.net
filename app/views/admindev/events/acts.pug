@@ -97,10 +97,23 @@ block content
               if item.performance.videos && item.performance.videos.length
                 .mt-2
                   b VIDEOS
-                  ul
+                  ul.lightvideos
+                    each video in item.performance.videos
+                      if video.media && video.media.file
+                        li(data-html="#"+video._id, data-poster=video.imageFormats.large, data-sub-html=video.title )
+                          //!=video.title
+                          img(src=video.imageFormats.small)
+                      else
+                        !=" "
+                        .badge.badge-danger MISSING MEDIAS
+                        - del.push("db.videos.remove(_id:ObjectId('"+video._id+"')\n")
                   each video in item.performance.videos
-                    li
-                      a.video(href="#" data-video="https://avnode.net"+video.media.file)!=video.title            
+                    if video.media && video.media.file
+                      div(style='display:none;', id=video._id)
+                        video.lg-video-object.lg-html5.video-js.vjs-default-skin(controls='', preload='none')
+                          source(src="https://avnode.net"+video.media.file, type='video/mp4')
+                          !="Your browser does not support HTML5 video."
+    
               if item.performance.galleries && item.performance.galleries.length
                 .mt-2
                   b GALLERIES
@@ -109,10 +122,9 @@ block content
                       li
                         !=gallery.title
                         if gallery.medias.length
-                          ul
+                          .lightgallery
                             each media in gallery.medias
-                              li
-                                a.media(href="#" data-video=media.imageFormats.large)!=media.title
+                              a.media(href=media.imageFormats.large)
                         else
                           !=" "
                           .badge.badge-danger MISSING MEDIAS
@@ -212,7 +224,7 @@ block content
                 .badge.badge-danger MISSING EMAIL
               br
               if item.reference.mobile.length
-                !=item.reference.mobile.map((item) => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>'})
+                !=mobile=item.reference.mobile.map(item => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>';})
               else
                 !=" "
                 .badge.badge-danger MISSING MOBILE
@@ -260,6 +272,8 @@ block content
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
             button.btn.btn-primary(type='submit')=global.__("Save")
+  textarea.form-control(name='to')=del.join("\n")
+  br
   form(method='post', action='http://localhost:8004/composer')
     textarea.form-control(name='to')="["+emails.join(",")+"]"
     .text-center
