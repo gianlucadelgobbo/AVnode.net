@@ -376,7 +376,7 @@ export const validateMultiLang = ({
         array.forEach((item, index) => {
             const itemErrors = {};
 
-            if (!item || item[value].length > max) {
+            if (!item || !item[value] || item[value].length > max) {
                 itemErrors[value] = INVALID_STRING_LENGTH;
                 modelErrors[index] = itemErrors;
             }

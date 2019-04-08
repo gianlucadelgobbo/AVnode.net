@@ -17,6 +17,10 @@ import {fetchEventList as fetchEventsCategories} from "../../categories/actions"
 import {getList as getCategories} from "../../categories/selectors";
 import moment from "moment";
 import {populateMultiLanguageObject} from "../../common/form";
+import {geocodeByAddress, getLatLng} from "react-places-autocomplete";
+import axios from "axios";
+// 1. LOADING BAR add actions generators
+import {hideLoading, showLoading} from 'react-redux-loading-bar';
 
 class EventPublic extends Component {
 
@@ -115,32 +119,32 @@ class EventPublic extends Component {
     // Convert categories
     v.schedule = [];
     if (Array.isArray(model.schedule)) {
-      const createVenue = v => {
-        const {location = {}, name} = v;
-        const {locality, country} = location;
-        let venue = "";
-
-        if (name) {
-          venue += name;
-        }
-
-        if (locality) {
-          venue += `, ${locality}`;
-        }
-
-        if (country) {
-          venue += `, ${country}`;
-        }
-
-        return venue;
-      };
+      // const createVenue = v => {
+      //   const {location = {}, name} = v;
+      //   const {locality, country} = location;
+      //   let venue = "";
+      //
+      //   if (name) {
+      //     venue += name;
+      //   }
+      //
+      //   if (locality) {
+      //     venue += `, ${locality}`;
+      //   }
+      //
+      //   if (country) {
+      //     venue += `, ${country}`;
+      //   }
+      //
+      //   return venue;
+      // };
 
       v.schedule = model.schedule.map(x => ({
         startdate: moment(x.starttime),
         starttime: x.starttime,
         enddate: moment(x.endtime),
         endtime: x.endtime,
-        venue: x.venue ? createVenue(x.venue) : "",
+        venue: !!x.venue && !!x.venue.formatted_address ? x.venue.formatted_address : "",
         room: x.venue ? x.venue.room : ""
       }));
     }
@@ -183,22 +187,83 @@ class EventPublic extends Component {
     return v;
   }
 
-  onSubmit(values) {
-    const {showModal, saveModel, model} = this.props;
-    const modelToSave = this.createModelToSave(values);
-
-    modelToSave._id = model._id;
-
-    //dispatch the action to save the model here
-    return saveModel(modelToSave)
-        .then(model => {
-          if (model && model.id) {
-            showModal({
-              type: MODAL_SAVED
+    createLatLongToSave = address => {
+        return geocodeByAddress(address).then(function (results) {
+            return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+        }).then(function ([results, geometry]) {
+            let loc = {};
+            results[0].address_components.forEach(address_component => {
+                if (address_component.types.indexOf('country') !== -1) loc.country = address_component.long_name;
+                if (address_component.types.indexOf('locality') !== -1) loc.locality = address_component.long_name;
             });
-          }
+            loc.formatted_address = results[0].formatted_address;
+            loc.geometry = geometry;
+            return loc;
         });
-  }
+    };
+
+    onSubmit(values) {
+        // 3. LOADING BAR get action from props
+        const {showModal, saveModel, model, showLoading, hideLoading} = this.props;
+
+        let promises = [];
+
+        const schedule = values.schedule;
+
+        schedule.forEach(a => {
+            promises.push(
+                this.createLatLongToSave(a.venue)
+                    .then(result => {
+                        // add to a model
+                        a.venue = result;
+                    })
+                    .catch(() => {
+                        console.log("ciao da google!");
+                    })
+            );
+        });
+
+        // 4. LOADING BAR show loading bar
+        showLoading();
+
+        return axios.all(promises).then(() => {
+            //dispatch the action to save the model here
+            const modelToSave = this.createModelToSave(values);
+
+            modelToSave._id = model._id;
+            modelToSave.schedule = schedule;
+            console.log("About to save", modelToSave)
+
+            return saveModel(modelToSave)
+                .then(response => {
+                    if (response.model && response.model._id) {
+                        showModal({
+                            type: MODAL_SAVED
+                        });
+                    }
+
+                    // 5. LOADING BAR hide loading bar
+                    hideLoading();
+                });
+        });
+    }
+
+  //   onSubmit(values) {
+  //   const {showModal, saveModel, model} = this.props;
+  //   const modelToSave = this.createModelToSave(values);
+  //
+  //   modelToSave._id = model._id;
+  //
+  //   //dispatch the action to save the model here
+  //   return saveModel(modelToSave)
+  //       .then(model => {
+  //         if (model && model.id) {
+  //           showModal({
+  //             type: MODAL_SAVED
+  //           });
+  //         }
+  //       });
+  // }
 
   render() {
     const {
@@ -264,7 +329,9 @@ const mapDispatchToProps = dispatch =>
           saveModel,
           fetchModel,
           showModal,
-          fetchEventsCategories
+          fetchEventsCategories,
+            hideLoading,
+            showLoading
         },
         dispatch
     );

@@ -107,9 +107,12 @@ export const googleAutocompleteSelect = ({
     </div>
   );
 
+
   const field = (
     <div className="form-group">
-      <PlacesAutocomplete {...input} options={options}>
+      <PlacesAutocomplete
+          {...input}
+          searchOptions={options}>
         {renderFunc}
       </PlacesAutocomplete>
       {meta.error && meta.touched && (
@@ -1431,6 +1434,14 @@ export const multiSchedule = ({
                   types: ["establishment"]
                 }}
                 isChild={true}
+                format={v => {
+
+                  const parseVenue = v => {
+                    return v.formatted_address
+                  }
+
+                  return typeof v === 'object' ? parseVenue(v) : v;
+                }}
               />
             </div>
             <div className="col-md-6">
