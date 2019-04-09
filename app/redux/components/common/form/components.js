@@ -109,7 +109,7 @@ export const googleAutocompleteSelect = ({
 
   const field = (
     <div className="form-group">
-      <PlacesAutocomplete {...input} options={options}>
+      <PlacesAutocomplete {...input} searchOptions={options}>
         {renderFunc}
       </PlacesAutocomplete>
       {meta.error && meta.touched && (
@@ -587,7 +587,10 @@ export const fieldWithLabel = ({
                 type: MODAL_REMOVE,
                 props: {
                   onRemove: () =>
-                    removeModel({ idusers: users[index].id, _id: _id })
+                    removeModel({
+                      idusers: users[index]._id || users[index].id,
+                      _id: _id
+                    })
                 }
               })
             }
@@ -1431,6 +1434,13 @@ export const multiSchedule = ({
                   types: ["establishment"]
                 }}
                 isChild={true}
+                format={v => {
+                  const parseVenue = v => {
+                    return v.formatted_address;
+                  };
+
+                  return typeof v === "object" ? parseVenue(v) : v;
+                }}
               />
             </div>
             <div className="col-md-6">
@@ -2455,9 +2465,8 @@ export const listGallery = ({
                           onRemove: () =>
                             removeImage({ id: model.id, imgId: image.slug })
                         }
-                      })
-                    }
-                    }
+                      });
+                    }}
                     className="fa fa-trash"
                     data-toggle="tooltip"
                     data-placement="top"

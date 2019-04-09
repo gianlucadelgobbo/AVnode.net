@@ -26,10 +26,13 @@ class EventPublic extends Component {
     // Convert form values to API model
     createModelToSave(values) {
 
-        //clone obj
-        let model = Object.assign({}, values);
+        const {model} = this.props;
 
-        return model;
+        //clone obj
+        let toSave = Object.assign({}, model);
+        toSave.settings = Object.assign(toSave.settings, values);
+
+        return toSave;
     }
 
     // Modify model from API to create form initial values
@@ -63,7 +66,7 @@ class EventPublic extends Component {
         modelToSave._id = model._id;
 
         //dispatch the action to save the model here
-        return saveModel(model)
+        return saveModel(modelToSave)
             .then(() => {
                 showModal({
                     type: MODAL_SAVED

@@ -11,13 +11,6 @@ export const fetchProfilePublic = () => {
 };
 
 export const saveProfilePublic = model => {
-  /*return new Promise((fulfil, reject) => {
-
-          reject({
-              message: "Bella pie!!! sono a riga 21 di api.js"
-          })
-      })*/
-
   return axios.put("profile/public", model).then(result => {
     return result.data;
   });
@@ -284,7 +277,9 @@ export const fetchEventSettings = ({ id }) => {
 };
 
 export const saveEventSettings = model =>
-  axios.post(`events/${model._id}/settings`, model);
+  axios.put(`events/${model._id}/settings`, model).then(result => {
+    return result.data;
+  });
 
 export const fetchUserForSelect = () => {
   return axios.get("performances").then(result => {
@@ -680,11 +675,11 @@ export const fetchPerformanceUsers = () => {
   });
 
   /*
-      return axios.get(`performances/${id}/users`)
-          .then(result => {
-              return result.data;
-          });
-      */
+        return axios.get(`performances/${id}/users`)
+            .then(result => {
+                return result.data;
+            });
+        */
 };
 
 export const removePerformanceUsers = model =>
@@ -697,6 +692,20 @@ export const removePerformanceUsers = model =>
 export const savePerformanceUsers = model =>
   axios
     .get(`performances/${model._id}/users/add/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+
+export const removeEventUsers = model =>
+  axios
+    .get(`events/${model._id}/users/remove/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+
+export const saveEventUsers = model =>
+  axios
+    .get(`events/${model._id}/users/add/${model.idusers}`, model)
     .then(result => {
       return result.data;
     });
@@ -858,14 +867,14 @@ export const fetchCrewMembers = ({ id }) => {
 
 export const saveCrewMembers = model =>
   /*new Promise((fulfil, reject) => {
-    reject({
-      response: {
-        data: {
-          message: "Bella pie"
+      reject({
+        response: {
+          data: {
+            message: "Bella pie"
+          }
         }
-      }
-    });
-  });*/
+      });
+    });*/
   axios
     .get(`crews/${model.id}/members/add/${model.idmember}`, model)
     .then(result => {
@@ -911,18 +920,18 @@ export const fetchPerformancesCategories = () => {
   });
 
   /*return new Promise(fulfil => {
-    const items = [
-      { _id: "5a9bba1760662400000000ce", name: "Festival" },
-      { _id: "5a9bba176066240000000144", name: "CallOpen" },
-      { _id: "5a9bba1760662400000001c3", name: "Gallery open" }
-    ];
+      const items = [
+        { _id: "5a9bba1760662400000000ce", name: "Festival" },
+        { _id: "5a9bba176066240000000144", name: "CallOpen" },
+        { _id: "5a9bba1760662400000001c3", name: "Gallery open" }
+      ];
 
-    fulfil(items);
-  });*/
+      fulfil(items);
+    });*/
 };
 
 export const fetchEventsCategories = () => {
-  return axios.get("/getcategories/events/slug/event-type").then(result => {
+  return axios.get("/getcategories/performances/slug/type").then(result => {
     return result.data.children;
   });
 };
