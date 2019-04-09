@@ -42,18 +42,11 @@ block content
                   h3!=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime+" | "+program.performance.duration+" min. | "+program.performance.title
                 .type.small=program.performance.type.name
                 - var availables = program.subscriptions.map(subscription => {return subscription.subscriber_id._id.toString()})
-                - console.log("availablesavailablesavailablesavailablesavailablesavailablesavailablesavailablesavailablesavailablesavailables")
-                - console.log(availables)
                 each user in program.performance.users
                   if user.is_crew 
                     each member in user.members
                       if availables.indexOf(member.toString())!=-1
-                        - console.log("member")
-                        - console.log(member.toString())
-                        - console.log(availables.indexOf(member.toString()))
-                        - console.log(program.subscriptions[availables.indexOf(member.toString())])
                         - var uu = program.subscriptions[availables.indexOf(member.toString())].subscriber_id
-
                         p
                           b!=user.stagename
                           !=" | "+uu.name+" "+uu.surname+" AKA "+uu.stagename
@@ -67,10 +60,6 @@ block content
 
                   else
                     if availables.indexOf(user._id.toString())!=-1
-                      - console.log("user")
-                      - console.log(user._id.toString())
-                      - console.log(availables.indexOf(user._id.toString()))
-                      - console.log(program.subscriptions[availables.indexOf(user._id.toString())])
                       - var uu = program.subscriptions[availables.indexOf(user._id.toString())].subscriber_id
                       p!=uu.name+" "+uu.surname+" AKA "+uu.stagename
                         - var daydayA = []
