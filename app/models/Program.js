@@ -14,6 +14,7 @@ const subSchema = new Schema({
 },
 {
   _id: false,
+  id: false,
   toObject: {
     virtuals: true
   },
@@ -37,6 +38,7 @@ const programSchema = new Schema({
   }
 },
 {
+  id: false,
   timestamps: true,
   collection: 'program',
   toObject: {

@@ -32,6 +32,7 @@ const videoSchema = new Schema({
   categories: [{ type : Schema.ObjectId, ref : 'Category' }]
 }, {
   collection: 'videos',
+  id: false,
   timestamps: true,
   toObject: {
     virtuals: true

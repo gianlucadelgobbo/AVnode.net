@@ -9,6 +9,7 @@ const Link = new Schema({
   is_primary: { type: Boolean, default: false }
 },{
   _id : false,
+  id : false,
   timestamps: false,
   toObject: {
     virtuals: false

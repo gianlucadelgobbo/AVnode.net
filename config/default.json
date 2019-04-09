@@ -1801,6 +1801,168 @@
         }
       }
     },
+    "events_advanced": {
+      "model": "Event",
+      "forms": {
+        "acts": {
+          "select": {
+            "topics": 1,
+            "call": 1,
+            "schedule": 1,
+            "subscriptions.freezed": 1, 
+            "subscriptions.days": 1, 
+            "subscriptions.packages.name": 1, 
+            "subscriptions.packages.price": 1, 
+            "createdAt": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [
+            { 
+              "path": "performance",
+              "select": "title slug users duration abouts image bookings tech_arts tech_reqs videos",
+              "model": "Performance",
+              "populate": [
+                {"path": "users", "select": {"stagename": 1, "addresses.country": 1, "addresses.locality": 1, "image": 1, "abouts": 1, "is_crew": 1, "lang": 1}, "model": "UserShow"},
+                {"path": "type", "select": "name", "model": "Category"},
+                {"path": "tecnique", "select": "name", "model": "Category"},
+                {"path": "genre", "select": "name", "model": "Category"},
+                {"path": "galleries", "select": {"title": 1, "slug": 1, "image.file": 1, "medias.file":1}, "model": "Gallery"}, 
+                {"path": "videos", "select": {"title": 1, "slug": 1, "media.file": 1, "media.preview": 1}, "model": "Video"}
+              ]
+            },
+            {
+              "path": "subscriptions.subscriber_id", 
+              "select": {"stagename": 1, "name": 1, "surname": 1, "addresses.country": 1, "addresses.locality": 1, "email": 1, "mobile.url": 1, "lang": 1, "gender": 1},
+              "model": "UserShow"
+            },
+            { "path": "status", "select": "name", "model": "Category"},
+            { "path": "reference", "select": {"stagename": 1, "name": 1, "surname": 1, "email": 1, "mobile.url": 1, "lang": 1}, "model": "UserShow"}
+          ]
+        },
+        "peoples": {
+          "select": {
+            "subscriptions.freezed": 1, 
+            "subscriptions.days": 1, 
+            "subscriptions.packages.name": 1, 
+            "subscriptions.packages.price": 1, 
+            "createdAt": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [
+            { 
+              "path": "performance",
+              "select": "title slug",
+              "model": "Performance"
+            },
+            {
+              "path": "subscriptions.subscriber_id", 
+              "select": {"stagename": 1, "name": 1, "surname": 1, "addresses.country": 1, "addresses.locality": 1, "email": 1, "mobile.url": 1, "lang": 1, "gender": 1},
+              "model": "UserShow"
+            },
+            { "path": "status", "select": "name", "model": "Category"},
+            { "path": "reference", "select": {"stagename": 1, "name": 1, "surname": 1, "email": 1, "mobile.url": 1, "lang": 1}, "model": "UserShow"}
+          ]
+        },
+        "program": {
+          "select": {
+            "topics": 1,
+            "call": 1,
+            "schedule": 1,
+            "subscriptions.freezed": 1, 
+            "subscriptions.days": 1, 
+            "subscriptions.packages.name": 1, 
+            "subscriptions.packages.price": 1, 
+            "createdAt": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [
+            { 
+              "path": "performance",
+              "select": "title slug users duration",
+              "model": "Performance",
+              "populate": [
+                {"path": "type", "select": "name", "model": "Category"}
+              ]
+            },
+            { "path": "status", "select": "name", "model": "Category"}
+          ]
+        },
+        "technical-riders": {
+          "select": {
+            "topics": 1,
+            "call": 1,
+            "schedule": 1,
+            "subscriptions.freezed": 1, 
+            "subscriptions.days": 1, 
+            "subscriptions.packages.name": 1, 
+            "subscriptions.packages.price": 1, 
+            "createdAt": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [
+            { 
+              "path": "performance",
+              "select": "title slug users duration tech_arts tech_reqs",
+              "model": "Performance",
+              "populate": [
+                {"path": "users", "select": {"stagename": 1, "addresses.country": 1, "addresses.locality": 1, "image": 1, "abouts": 1, "is_crew": 1, "lang": 1, "members": 1}, "model": "UserShow"},
+                {"path": "type", "select": "name", "model": "Category"}
+              ]
+            },
+            {"path": "subscriptions.subscriber_id", "select": "stagename name surname addresses email mobile lang gender", "model": "UserShow"},
+            { "path": "status", "select": "name", "model": "Category"}
+          ]
+        }
+      },
+      "list": {
+        "model": "Program",
+        "select": {
+          "topics": 1,
+          "call": 1,
+          "schedule": 1,
+          "event": 1,
+          "subscriptions": 1,
+          "createdAt": 1
+        },
+        "selectaddon": {
+          "createdAt": -1
+        },
+        "populate": [
+          { "path": "performance", "select": "title slug users duration abouts image bookings tech_arts tech_reqs videos", "model": "Performance", "populate": [{"path": "users", "select": "stagename addresses image abouts is_crew lang", "model": "UserShow"},{"path": "type", "select": "name", "model": "Category"},{"path": "tecnique", "select": "name", "model": "Category"},{"path": "genre", "select": "name", "model": "Category"},{ "path": "galleries", "select": "title slug image medias", "model": "Gallery"}, { "path": "videos", "select": "title slug media", "model": "Video"}]},
+          { "path": "subscriptions.subscriber_id", "select": "stagename name surname addresses email mobile lang gender", "model": "UserShow"},
+          { "path": "status", "select": "name", "model": "Category"},
+          { "path": "reference", "select": "stagename name surname email mobile lang", "model": "UserShow"}
+        ],
+        "orders": [
+          "mostrecent",
+          "mostactive"
+        ],
+        "ordersQueries": {
+          "mostrecent": {
+            "createdAt": -1
+          },
+          "mostactive": {
+            "activity": -1
+          }
+        },
+        "labels": {
+          "mostrecent":"Most recent",
+          "mostactive":"Most active"
+        }
+      },
+      "status": [
+        { "_id" : "5c38c57d9d426a9522c15ba5", "name" : "to be evaluated" },
+        { "_id" : "5be8708afc3961000000019e", "name" : "accepted - waiting for payment" },
+        { "_id" : "5be8708afc39610000000013", "name" : "accepted" },
+        { "_id" : "5be8708afc39610000000097", "name" : "to be completed" },
+        { "_id" : "5be8708afc3961000000011a", "name" : "not_accepted" },
+        { "_id" : "5be8708afc39610000000221", "name" : "refused from user" }
+      ]
+    },
     "footage": {
       "model": "Footage",
       "forms": {

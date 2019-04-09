@@ -1,0 +1,90 @@
+extends ../layout_admin
+block content
+  include ./_filters
+  .list-group-item(style="color:#000")
+    if get.print=="1"
+      table.table
+        thead
+          tr
+            th="ID"
+            th="Item"
+            th="Day"
+            th="Room"
+            th="Performance"
+        - var conta = 1
+        tbody
+          each day in data.programmebydayvenue
+            each room,i in day.rooms
+              if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
+                if room.program
+                  if get.print=="1"
+                    each program,ii in room.program
+                      - var tech_reqs = program.performance.tech_req.split("- ")
+                      each tech_req,iii in tech_reqs
+                        tr
+                          td!=conta
+                          td!=tech_req
+                          td!=day.date
+                          td!=room.schedule.venue.room
+                          td!=program.performance.title
+                          - conta++
+    else
+
+      each day in data.programmebydayvenue
+        each room,i in day.rooms
+          if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
+            if room.program
+              h2=day.date+" | "+room.schedule.venue.room
+              - conta++
+              each program,ii in room.program
+                .index.badge.disabled=(ii+1)
+                .title
+                  h3!=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime+" | "+program.performance.duration+" min. | "+program.performance.title
+                .type.small=program.performance.type.name
+                - var availables = program.subscriptions.map(subscription => {return subscription.subscriber_id._id.toString()})
+                - console.log("availablesavailablesavailablesavailablesavailablesavailablesavailablesavailablesavailablesavailablesavailables")
+                - console.log(availables)
+                each user in program.performance.users
+                  if user.is_crew 
+                    each member in user.members
+                      if availables.indexOf(member.toString())!=-1
+                        - console.log("member")
+                        - console.log(member.toString())
+                        - console.log(availables.indexOf(member.toString()))
+                        - console.log(program.subscriptions[availables.indexOf(member.toString())])
+                        - var uu = program.subscriptions[availables.indexOf(member.toString())].subscriber_id
+
+                        p
+                          b!=user.stagename
+                          !=" | "+uu.name+" "+uu.surname+" AKA "+uu.stagename
+                          - var daydayA = []
+                          each day, i in data.days
+                            - if (daydayA[i]!=-1) daydayA[i] = program.subscriptions[availables.indexOf(member.toString())].days.map(item => {return new Date(item).getTime()}).indexOf(day)
+                          each day, i in daydayA
+                            span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                              !=new Date(data.days[i]).getDate()
+                          !=uu.addressesFormatted
+
+                  else
+                    if availables.indexOf(user._id.toString())!=-1
+                      - console.log("user")
+                      - console.log(user._id.toString())
+                      - console.log(availables.indexOf(user._id.toString()))
+                      - console.log(program.subscriptions[availables.indexOf(user._id.toString())])
+                      - var uu = program.subscriptions[availables.indexOf(user._id.toString())].subscriber_id
+                      p!=uu.name+" "+uu.surname+" AKA "+uu.stagename
+                        - var daydayA = []
+                        each day, i in data.days
+                          - if (daydayA[i]!=-1) daydayA[i] = program.subscriptions[availables.indexOf(user._id.toString())].days.map(item => {return new Date(item).getTime()}).indexOf(day)
+                        each day, i in daydayA
+                          span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                            !=new Date(data.days[i]).getDate()
+                        !=uu.addressesFormatted
+                .mt-2
+                  b TECHNOLOGIES WITH THE ARTISTS
+                  br
+                  !=program.performance.tech_art
+                .mt-2
+                  b TECHNICAL REQUIREMENTS
+                  br
+                  !=program.performance.tech_req

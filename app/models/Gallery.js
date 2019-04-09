@@ -29,6 +29,7 @@ const gallerySchema = new Schema({
   events: [{ type : Schema.ObjectId, ref : 'EventShow' }], 
   medias: [GalleryItem]
 }, {
+  id: false,
   timestamps: true,
   toObject: {
     virtuals: true

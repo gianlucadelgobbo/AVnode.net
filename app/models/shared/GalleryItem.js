@@ -27,6 +27,7 @@ const GalleryItem = new Schema({
   title: String,
 }, {
   _id : false,
+  id: false,
   toObject: {
     virtuals: true
   },

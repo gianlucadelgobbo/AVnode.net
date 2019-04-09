@@ -24,7 +24,8 @@ const Media = new Schema({
   },
   title: String,
 }, {
-  _id : false
+  _id : false,
+  id : false
 });
 
 module.exports = Media;

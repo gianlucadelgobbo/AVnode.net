@@ -69,6 +69,9 @@
     if get.sez == "acts"
       input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
       label.mr-sm-3(for='fullinfo') FULL INFO
+    if get.sez == "technical-riders"
+      input.mr-sm-2#fullinfo(type='checkbox', name='print', value='1', checked=get.print ? "checked" : undefinded)
+      label.mr-sm-3(for='print') PRINT
 
     input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
     input.form-control.mr-sm-2(type='hidden', name='save', value='1')
