@@ -1849,6 +1849,8 @@
             "subscriptions.days": 1, 
             "subscriptions.packages.name": 1, 
             "subscriptions.packages.price": 1, 
+            "subscriptions.packages.option_selected": 1, 
+            "subscriptions.packages.option_value": 1, 
             "subscriptions.packages.daily": 1, 
             "createdAt": 1
           },

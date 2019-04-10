@@ -106,9 +106,6 @@ block content
                       .input-group-append
                         button.btn.btn-success(type="button")
                           i.fa.fa-check
-                    .form-check.mt-1
-                      input.option_wepay.form-check-input(id="wepay"+subscription.subscription.subscriber_id._id, type="checkbox", value="1" checked=subscription.subscription.wepay ? "checked" : undefined, name='subscription.wepay', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
-                      label.form-check-label(for="wepay"+subscription.subscription.subscriber_id._id) WE PAY
               td(style="border-right: 2px solid #dee2e6;")
                 table
                   - var tot = 0
@@ -138,6 +135,11 @@ block content
                       b!="Total"
                     td.text-right
                       !=tot
+                  tr
+                    td(colspan=2)
+                      .form-check.mt-1
+                        input.option_wepay.form-check-input(id="wepay"+subscription.subscription.subscriber_id._id, type="checkbox", value="1" checked=subscription.subscription.wepay ? "checked" : undefined, name='subscription.wepay', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                        label.form-check-label(for="wepay"+subscription.subscription.subscriber_id._id) WE PAY
 
                   //pre=subscription.packages
               - for(let a=0;a<=data.daysN;a++)
