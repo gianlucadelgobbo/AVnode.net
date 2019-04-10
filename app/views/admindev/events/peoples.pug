@@ -1,6 +1,7 @@
 extends ../layout_admin
 block content
   - var emails = []
+  - var packagespackages = {standard: {}, wepay: {}}
   include ./_filters
   table.table
     thead
@@ -66,7 +67,7 @@ block content
                   .badge.badge-danger MISSING EMAIL
                 br
                 if subscription.reference.mobile.length
-                  !=subscription.reference.mobile.map((subscription) => {if (subscription.url) return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>'})
+                  !=subscription.reference.mobile.map((subscription) => {if (subscription.url) return subscription.url+' '+'<a href="https://web.whatsapp.com/send?phone='+subscription.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>';})
                 else
                   !=" "
                   .badge.badge-danger MISSING MOBILE
@@ -105,10 +106,14 @@ block content
                       .input-group-append
                         button.btn.btn-success(type="button")
                           i.fa.fa-check
+                    .form-check.mt-1
+                      input.option_wepay.form-check-input(id="wepay"+subscription.subscription.subscriber_id._id, type="checkbox", value="1" checked=subscription.subscription.wepay ? "checked" : undefined, name='subscription.wepay', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                      label.form-check-label(for="wepay"+subscription.subscription.subscriber_id._id) WE PAY
               td(style="border-right: 2px solid #dee2e6;")
                 table
                   - var tot = 0
                   each pack in subscription.subscription.packages
+                    - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
                     tr
                       td(style="white-space: nowrap;")
                         !=pack.name
@@ -122,9 +127,11 @@ block content
                           br
                           !=subscription.subscription.days.length
                           br
+                          - packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name].count+=subscription.subscription.days.length
                           !=subscription.subscription.days.length*pack.price
                           - tot+= subscription.subscription.days.length*pack.price
                         else
+                          - packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name].count+=1
                           - tot+= pack.price
                   tr
                     td(style="white-space: nowrap;")
@@ -142,6 +149,48 @@ block content
                 -   if (ddd.toString() == dd.toString()) present = "#FF0000"
                 - }
                 td(style="border-right: 2px solid #dee2e6;background-color:"+present+";color:"+present)=present=="#FF0000" ? "X" : ""
+      tr
+        td(colspan=3)
+        if get['subscriptions.packages.name'] == "Accommodation"
+          td
+        td(colspan=2)
+          table(style="width:100%;")
+            - var tot = 0
+            each pack in packagespackages["wepay"]
+              tr
+                td(style="white-space: nowrap;")
+                  !=pack.name
+                td.text-right
+                  !=pack.price+" €"
+                td.text-right
+                  !=pack.count
+                td.text-right
+                  - tot+=pack.count*pack.price
+                  !=(pack.count*pack.price)+" €"
+            tr
+              td(style="white-space: nowrap;")
+                b!="Total"
+              td(colspan=3).text-right
+                !=tot+" €"
+            - var tot = 0
+            each pack in packagespackages["standard"]
+              tr
+                td(style="white-space: nowrap;")
+                  !=pack.name
+                td.text-right
+                  !=pack.price+" €"
+                td.text-right
+                  !=pack.count
+                td.text-right
+                  - tot+=pack.count*pack.price
+                  !=(pack.count*pack.price)+" €"
+            tr
+              td(style="white-space: nowrap;")
+                b!="Total"
+              td(colspan=3).text-right
+                !=tot+" €"
+
+        td(colspan=data.daysN+1)
   form(method='post', action='http://localhost:8004/composer')
     textarea.form-control(name='to')="["+emails.join(",")+"]"
     .text-center

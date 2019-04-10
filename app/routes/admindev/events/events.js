@@ -701,7 +701,7 @@ router.get('/:event/technical-riders', (req, res) => {
           } else {
             req.query.sez = "technical-riders";
             res.render('admindev/events/technical-riders', {
-              title: 'Events: Technical Riders',
+              title: event.title+': Technical Riders',
               data: data,
               currentUrl: req.originalUrl,
               get: req.query

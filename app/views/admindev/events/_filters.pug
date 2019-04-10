@@ -1,4 +1,4 @@
-.actsfilters.mt-2.mb-3
+.actsfilters.mt-2.mb-3.d-print-none
   .actsfilters-header Filters
   form.form-inline(method='get')
     //input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
@@ -70,8 +70,9 @@
       input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
       label.mr-sm-3(for='fullinfo') FULL INFO
     if get.sez == "technical-riders"
-      input.mr-sm-2#fullinfo(type='checkbox', name='print', value='1', checked=get.print ? "checked" : undefinded)
-      label.mr-sm-3(for='print') PRINT
+      input.mr-sm-2#techonly(type='checkbox', name='techonly', value='1', checked=get.techonly ? "checked" : undefinded)
+      label.mr-sm-3(for='techonly') TECH ONLY
+      input.mr-sm-3.btn.btn-primary#print(type='button', value='PRINT')
 
     input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
     input.form-control.mr-sm-2(type='hidden', name='save', value='1')

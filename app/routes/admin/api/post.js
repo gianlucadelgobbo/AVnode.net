@@ -439,7 +439,23 @@ router.updateSubscription = (req, res) => {
     return res.send(200);
   } */
     
-  if (req.body.id && req.body.subscriber_id && (req.body.hotel || req.body.hotel_room)) {
+  if (req.body.id && req.body.subscriber_id && req.body.wepay) {
+    console.log(req.body);
+    Models.Program
+    .findOne({_id: req.body.id/* , members:req.user.id */})
+    //.select({schedule: 1, call: 1, event: 1})
+    //.populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
+    .exec((err, program) => {
+      for (var a=0;a<program.subscriptions.length;a++) {
+        if (program.subscriptions[a].subscriber_id == req.body.subscriber_id) {
+          program.subscriptions[a].wepay = req.body.wepay;
+        }
+      }
+      program.save(err => {
+        res.json({res: err ? err : true});
+      });
+    });
+  } else if (req.body.id && req.body.subscriber_id && (req.body.hotel || req.body.hotel_room)) {
     console.log(req.body);
     Models.Program
     .findOne({_id: req.body.id/* , members:req.user.id */})

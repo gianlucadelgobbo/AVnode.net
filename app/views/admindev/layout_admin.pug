@@ -25,9 +25,9 @@ html(lang='en')
 
   body
     #top
-    a#to_top(href="#top", title=global.__('Back to the top'))
+    a#to_top.d-print-none(href="#top", title=global.__('Back to the top'))
       span.lnr.lnr-arrow-up-circle
-    nav.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
+    nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
       a.navbar-brand(href='/admindev', title="AVnode.net")
         img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')
       button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
@@ -56,16 +56,17 @@ html(lang='en')
     .container-fluid
       .row
         // Sidebar
-        if currentUrl.indexOf("/admindev/events")===0
-          include partials/menuEvents
-        else if currentUrl.indexOf("/admindev/supertools")===0
-          include partials/menuSuper
-        else if currentUrl.indexOf("/admin")===0
-          include partials/menuHome
+        .d-print-none
+          if currentUrl.indexOf("/admindev/events")===0
+            include partials/menuEvents
+          else if currentUrl.indexOf("/admindev/supertools")===0
+            include partials/menuSuper
+          else if currentUrl.indexOf("/admin")===0
+            include partials/menuHome
         main.col(role='main')
           .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
             h1.h2=title
-            .btn-toolbar.mb-2.mb-md-0
+            .btn-toolbar.mb-2.mb-md-0.d-print-none
               .btn-group.mr-2
                 button.btn.btn-sm.btn-outline-secondary(type='button') Share
                 button.btn.btn-sm.btn-outline-secondary(type='button') Export

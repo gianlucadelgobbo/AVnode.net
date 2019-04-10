@@ -1,3 +1,22 @@
+@media print {
+  body {
+    color: #000;
+    background-color: #FFF;
+    padding: 0;
+  }
+  .page-break{
+    page-break-after: always
+  }
+}
+.page-break{
+  margin-bottom: 3rem !important;
+}
+
+.white-content{
+    color: #000;
+    background-color: #FFF;
+    padding: 20px;
+}
 .index {
   position: absolute;
   top: 0;

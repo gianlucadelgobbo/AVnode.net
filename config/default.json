@@ -1810,9 +1810,11 @@
             "call": 1,
             "schedule": 1,
             "subscriptions.freezed": 1, 
+            "subscriptions.wepay": 1, 
             "subscriptions.days": 1, 
             "subscriptions.packages.name": 1, 
             "subscriptions.packages.price": 1, 
+            "subscriptions.packages.daily": 1, 
             "createdAt": 1
           },
           "selectaddon": {
@@ -1843,9 +1845,11 @@
         "peoples": {
           "select": {
             "subscriptions.freezed": 1, 
+            "subscriptions.wepay": 1, 
             "subscriptions.days": 1, 
             "subscriptions.packages.name": 1, 
             "subscriptions.packages.price": 1, 
+            "subscriptions.packages.daily": 1, 
             "createdAt": 1
           },
           "selectaddon": {
@@ -1871,9 +1875,11 @@
             "call": 1,
             "schedule": 1,
             "subscriptions.freezed": 1, 
+            "subscriptions.wepay": 1, 
             "subscriptions.days": 1, 
             "subscriptions.packages.name": 1, 
             "subscriptions.packages.price": 1, 
+            "subscriptions.packages.daily": 1, 
             "createdAt": 1
           },
           "selectaddon": {
@@ -1896,9 +1902,11 @@
             "call": 1,
             "schedule": 1,
             "subscriptions.freezed": 1, 
+            "subscriptions.wepay": 1, 
             "subscriptions.days": 1, 
             "subscriptions.packages.name": 1, 
             "subscriptions.packages.price": 1, 
+            "subscriptions.packages.daily": 1, 
             "createdAt": 1
           },
           "selectaddon": {

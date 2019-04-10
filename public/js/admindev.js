@@ -1,4 +1,9 @@
 $(function() {
+  if (document.querySelector("#print")) {
+    document.querySelector("#print").addEventListener("click", function() {
+      window.print();
+    });
+  }
   $(".lightgallery").lightGallery(); 
   $(".lightvideos").lightGallery({
     videojs: true
@@ -109,6 +114,22 @@ $(function() {
       subscriber_id: $(this).data("subscriber_id"),
       hotel_room: $(this).val()
     }
+    $.ajax({
+      url: "/admin/api/subscriptionupdate",
+      method: "post",
+      data: data
+    }).done(function(res) {
+      console.log(res);
+    });
+  });
+  $(".option_wepay").change(function(ev) {
+    alert($(this).prop('checked'));
+    const data = {
+      id: $(this).data("id"),
+      subscriber_id: $(this).data("subscriber_id"),
+      wepay: $(this).prop('checked')
+    }
+    console.log(data);
     $.ajax({
       url: "/admin/api/subscriptionupdate",
       method: "post",
