@@ -186,7 +186,7 @@ block teaser
                                       td(colspan="3")
                                         b!=global.__("This person is already in with another act and already choose his packages")
                                   else
-                                    - itemdescriptions[index]+= "\\n"+subscription.subscriber_id.stagename+""
+                                    - itemdescriptions[index]+= " "+subscription.subscriber_id.stagename+""
                                     each package in subscription.packages
                                       tr
                                         - if (package.daily)
@@ -243,7 +243,7 @@ block teaser
                                     !=global.__("Amount paid")
                                 td(style="border-top:0;")
                                   .text-right="€ "+total
-                                  if item.status._id=="5be8708afc3961000000019e"
+                                  if item.status._id=="5be8708afc3961000000019e" && total>0
                                     div(id='paybutton'+index)
                                     script.
                                       paypal.Buttons({
@@ -251,13 +251,13 @@ block teaser
                                           return actions.order.create({
                                             "intent": "CAPTURE",
                                             "application_context": {
-                                              "brand_name": "Company Name",
+                                              "brand_name": "#{item.event.title}",
                                               "shipping_preference": "NO_SHIPPING"
                                             },
 
                                             "purchase_units": [
                                               {
-                                                "reference_id": "#{item.id}",
+                                                "reference_id": "#{item._id}",
                                                 "description": "#{itemdescriptions[index]}",
                                                 "amount": {
                                                   "currency": "EURO",
@@ -277,7 +277,7 @@ block teaser
                                               },
                                               body: JSON.stringify({
                                                 orderID: data.orderID,
-                                                id: "#{item.id}",
+                                                id: "#{item._id}",
                                                 status: "5be8708afc39610000000013"
                                               })
                                             });
