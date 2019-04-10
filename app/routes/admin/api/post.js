@@ -358,11 +358,12 @@ router.updateProgram = (req, res) => {
         /* console.log("program[a]");
         console.log(program[a].performance);
         console.log("resultsPromisePerf[a]");
+        console.log(resultsPromisePerf[a]);
         console.log(resultsPromisePerf[a]._id); */
         if (resultsPromisePerf[a].bookings.length) {
           let notfound = true;
           for (var b=0;b<resultsPromisePerf[a].bookings.length;b++) {
-            if (resultsPromisePerf[a].bookings[b].event.toString()==program[a].event) {    
+            if (resultsPromisePerf[a].bookings[b].event && resultsPromisePerf[a].bookings[b].event.toString()==program[a].event) {    
               resultsPromisePerf[a].bookings[b].schedule = program[a].schedule;
               notfound = false;
             }
@@ -382,7 +383,10 @@ router.updateProgram = (req, res) => {
             res.json(err || result);
           });
         } else {
-          Models.Event.findOne({_id:program[0].event}).exec((err, event) => {
+
+          console.log("req.body.event");
+          console.log(req.body.event);
+          Models.Event.findOne({_id:req.body.event}).exec((err, event) => {
             for (var a=0;a<event.program.length;a++) {
               for (var b=0;b<eventProgram.length;b++) {
                 if (event.program[a].performance.toString() === eventProgram[b].performance.toString()) {

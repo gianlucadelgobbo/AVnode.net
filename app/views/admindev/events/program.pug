@@ -16,6 +16,7 @@ block content
           h2=global.__("TO BE SCHEDULED")
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
             form(id="form"+conta)
+              input(type="hidden", name="event", value=data.event._id)
               ul.list-group.connectedSortable(id="sortable0")
                 each program, i in data.program
                   if !program.schedule || !program.schedule.length

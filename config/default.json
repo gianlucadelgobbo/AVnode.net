@@ -1889,9 +1889,10 @@
           "populate": [
             { 
               "path": "performance",
-              "select": "title slug users duration",
+              "select": "title slug duration",
               "model": "Performance",
               "populate": [
+                {"path": "users", "select": {"stagename": 1}, "model": "UserShow"},
                 {"path": "type", "select": "name", "model": "Category"}
               ]
             },

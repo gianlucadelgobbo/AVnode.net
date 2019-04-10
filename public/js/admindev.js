@@ -273,13 +273,13 @@ $( ".program .connectedSortable" ).sortable({
         tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
       }
     }
-    console.log("tobescheduled");
-    console.log(tobescheduled);
+    console.log("day.event");
+    console.log(day.event);
 
     $.ajax({
       url: "/admin/api/programupdate",
       method: "post",
-      data: {data: data, tobescheduled: tobescheduled}
+      data: {data: data, tobescheduled: tobescheduled, event: day.event}
     }).done(function(data) {
       console.log("#");
       console.log(data);
