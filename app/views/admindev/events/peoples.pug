@@ -1,7 +1,7 @@
 extends ../layout_admin
 block content
   - var emails = []
-  - var packagespackages = {standard: {}, wepay: {}}
+  - var packagespackages = {standard: {}, wepay: {}, options: {}}
   include ./_filters
   table.table
     thead
@@ -111,15 +111,29 @@ block content
                   - var tot = 0
                   each pack in subscription.subscription.packages
                     - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
+                    - if (pack.options_name && !packagespackages["options"][pack.options_name]) packagespackages["options"][pack.options_name] = {}
+
+                    - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
+                    - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]++
+                    - if (pack.options_name && pack.option_selected && !packagespackages["options"][pack.options_name][pack.option_selected]) packagespackages["options"][pack.options_name][pack.option_selected] = 0
+                    - if (pack.options_name && pack.option_selected) packagespackages["options"][pack.options_name][pack.option_selected]++
+                    
+                    
                     tr
                       td(style="white-space: nowrap;")
-                        !=pack.name
+                        b!=pack.name
+                        if pack.option
+                          br
+                          !=pack.options_name
                         if (pack.daily)
                           br
                           !="Days"
                           br
                       td.text-right
                         !=pack.price
+                        if pack.option
+                          br
+                          !=pack.option
                         if (pack.daily)
                           br
                           !=subscription.subscription.days.length
@@ -156,6 +170,7 @@ block content
         if get['subscriptions.packages.name'] == "Accommodation"
           td
         td(colspan=2)
+          
           table(style="width:100%;")
             - var tot = 0
             each pack in packagespackages["wepay"]
@@ -191,6 +206,18 @@ block content
                 b!="Total"
               td(colspan=3).text-right
                 !=tot+" €"
+            each pack,name in packagespackages["options"]
+              tr
+                td(style="white-space: nowrap;", colspan=4)
+                  b!=name
+              each value, item in pack
+                tr
+                  td(style="white-space: nowrap;")
+                    !=item
+                  td.text-right
+                  td.text-right
+                  td.text-right
+                    !=value
 
         td(colspan=data.daysN+1)
   form(method='post', action='http://localhost:8004/composer')

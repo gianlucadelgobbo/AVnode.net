@@ -1850,6 +1850,8 @@
             "subscriptions.packages.name": 1, 
             "subscriptions.packages.price": 1, 
             "subscriptions.packages.option_selected": 1, 
+            "subscriptions.packages.option": 1, 
+            "subscriptions.packages.options_name": 1, 
             "subscriptions.packages.option_value": 1, 
             "subscriptions.packages.daily": 1, 
             "createdAt": 1
