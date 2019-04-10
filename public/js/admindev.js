@@ -123,13 +123,11 @@ $(function() {
     });
   });
   $(".option_wepay").change(function(ev) {
-    alert($(this).prop('checked'));
     const data = {
       id: $(this).data("id"),
       subscriber_id: $(this).data("subscriber_id"),
       wepay: $(this).prop('checked')
     }
-    console.log(data);
     $.ajax({
       url: "/admin/api/subscriptionupdate",
       method: "post",
