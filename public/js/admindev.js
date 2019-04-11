@@ -20,7 +20,6 @@ $(function() {
   $(".edit-availability").on('click', function(ev) {
     ev.preventDefault();
     const id = $(this).data("program");
-    console.log($(this).data("program"));
     $('#modalEdit .content').html("Loading data...");
     $('#modalEdit .alert-danger').addClass('d-none');
     $('#modalEdit .alert-success').addClass('d-none');
@@ -30,7 +29,7 @@ $(function() {
       method: "post",
       data: {id:id}
     }).done(function(data) {
-      //console.log(data);
+      console.log(data);
       $('#modalEdit .content').html(data);
       bindEditSubscription();
     });
@@ -59,6 +58,13 @@ $(function() {
     });
   });
   function bindEditSubscription(){
+    $(".pack_main input").change(function(ev) {
+      if (this.checked) {
+        $(this).parent().parent().find(".pack_sub").slideDown('slide');
+      } else {
+        $(this).parent().parent().find(".pack_sub").slideUp('slide');
+      }
+    });  
     $(".switch").change(function(ev) {
       const stagename = $(this).data("stagename");
       const count = $(this).data("count");
@@ -97,8 +103,6 @@ $(function() {
       subscriber_id: $(this).data("subscriber_id"),
       hotel: $(this).val()
     }
-    console.log(".option_selected_hotel");
-    console.log(data);
     
     $.ajax({
       url: "/admin/api/subscriptionupdate",
@@ -140,13 +144,11 @@ $(function() {
     var result = confirm("Want to delete?");
     if (result) {
       const id = $(this).data("id");
-      console.log($(this).data("id"));
       $.ajax({
         url: "/admin/api/cancelsubscription",
         method: "post",
         data: {id:id}
       }).done(function(data) {
-        console.log("#"+id);
         $("#sub"+id).remove();
       });
     } 
@@ -156,7 +158,6 @@ $(function() {
     if (result) {
       const id = $(this).data("id");
       const status = $(this).data("status");
-      console.log({id:id, status:status});
       $.ajax({
         url: "/admin/api/subscriptionupdate",
         method: "post",
@@ -171,7 +172,6 @@ $(function() {
     if (result) {
       const id = $(this).data("id");
       const status = $(this).data("status");
-      console.log({id:id, status:status});
       $.ajax({
         url: "/admin/api/subscriptionupdate",
         method: "post",
@@ -206,11 +206,6 @@ $(function() {
         event: event,
         partnerships:partnerships
       }
-      console.log("category: "+data.category);
-      console.log("partner: "+data.partner);
-      console.log("event: "+data.event);
-      console.log("event partnerships: ");
-      console.log(data.partnerships);
       $.ajax({
         url: "/admin/api/partnershipsupdate",
         method: "post",
@@ -225,7 +220,6 @@ $(function() {
 // PROGRAM
 $( ".program .connectedSortable" ).sortable({
   update: function( e, ui ) {
-    console.log("change");
     var data = [];
     var tobescheduled = [];
     var connectedSortable = $(".connectedSortable").parent();
@@ -266,22 +260,17 @@ $( ".program .connectedSortable" ).sortable({
     var boxes = $(connectedSortable[0]).find("li");
     if (day.program && day.program.length) {
       for (var b=0;b<day.program.length;b++) {
-        console.log("stocazzo");
         $(boxes[b]).find(".timing").html("");
         $(boxes[b]).find(".index").html(b+1);
         day.program[b] = JSON.parse(day.program[b]);
         tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
       }
     }
-    console.log("day.event");
-    console.log(day.event);
-
     $.ajax({
       url: "/admin/api/programupdate",
       method: "post",
       data: {data: data, tobescheduled: tobescheduled, event: day.event}
     }).done(function(data) {
-      console.log("#");
       console.log(data);
     });
   },
@@ -299,7 +288,6 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
   });
   
   $( ".duplicate" ).click(function( event ) {
-    console.log($(this).parent().parent());
     $(this).parent().parent().clone().insertAfter($(this).parent().parent())
   });
 
@@ -321,6 +309,7 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
   });
   
   $( "#modalAddContact form" ).submit(function( event ) {
+    event.preventDefault();
     var post = {};
     $( this ).serializeArray().map(n => {
       if (n['name']=="type") {
@@ -337,8 +326,6 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
     }).done(function(data) {
       console.log("#"+id);
     });
-    console.log( post );
-    event.preventDefault();
   });
   $('#modalAddPartner').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
@@ -372,7 +359,6 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
     $( this ).serializeArray().map(n => {
       post[n['name']] = n['value'].trim();
     });
-    console.log(post);
     $.ajax({
       url: "/admin/api/partner/link/",
       method: "post",
@@ -403,7 +389,6 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
     post.partner_data = {delegate: post.delegate};
     delete post.delegate;
     post.slug = slugify(post.stagename);
-    console.log( post );
     $.ajax({
       url: "/admin/api/partner/new/",
       method: "post",

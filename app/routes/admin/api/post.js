@@ -152,36 +152,28 @@ router.cancelSubscription = (req, res) => {
   });
 }
 router.editSubscriptionSave = (req, res) => {
-  /* var obj = {
-    subscriptions: req.body.subscriptions.filter(item => item.subscriber_id!=""),
-    reference: req.body.reference
-  }
-  Models.Program.findOneAndUpdate({_id: req.body.program}, obj, {upsert: false}, function(err){
-    logger.debug(err);
-    res.json({err:err} || {success: true});
-  }); */
+  logger.debug("req.body");
+  logger.debug(req.body.subscriptions[0].packages);
   Models.Program.findOne({_id: req.body.program})
   .exec((err, program) => {
     logger.debug(req.body);
     var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed!="1");
     var subscriptions_freezed = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed=="1").map(item => {return item.subscriber_id.toString()});
-    logger.debug("subscriptions");
-    logger.debug(subscriptions);
-    logger.debug("subscriptions_freezed");
-    logger.debug(subscriptions_freezed);
     for (var item=0;item<subscriptions.length;item++) {
-      subscriptions[item].packages = JSON.parse("["+subscriptions[item].packages+"]");
+      for (var pack=0;pack<subscriptions[item].packages.length;pack++) {
+        var tmpPack = JSON.parse("["+subscriptions[item].packages[pack].package+"]");
+        tmpPack[0].option = subscriptions[item].packages[pack].option;
+        subscriptions[item].packages[pack] = tmpPack[0];
+      }
+      logger.debug("subscriptions[item].packages");
+      logger.debug(subscriptions[item].packages);
     }
     for (var item=0;item<program.subscriptions.length;item++) {
-      logger.debug("program.subscriptions");
-      logger.debug(program.subscriptions[item].subscriber_id);
       if (subscriptions_freezed.indexOf(program.subscriptions[item].subscriber_id.toString())!=-1) {
         program.subscriptions[item].freezed = true;
         subscriptions.push(program.subscriptions[item]);
       }
     }
-    logger.debug("subscriptions");
-    logger.debug(subscriptions);
     program.reference = req.body.reference;
     program.subscriptions = subscriptions;
     program.save(function(err){
@@ -191,7 +183,7 @@ router.editSubscriptionSave = (req, res) => {
       } else {
         res.json({success: true});
       }
-    });  
+    });   
   });
 }
 router.editSubscription = (req, res) => {
@@ -472,7 +464,7 @@ router.updateSubscription = (req, res) => {
             if (program.subscriptions[a].packages[b].name == "Accommodation") {
               console.log(program.subscriptions[a].packages[b]);
 
-              if (req.body.hotel) program.subscriptions[a].packages[b].option_selected = req.body.hotel;
+              if (req.body.hotel) program.subscriptions[a].packages[b].option = req.body.hotel;
               if (req.body.hotel_room) program.subscriptions[a].packages[b].option_value = req.body.hotel_room;
               console.log(program.subscriptions[a].packages[b]);
             }

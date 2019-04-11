@@ -312,7 +312,7 @@ router.get('/:event/peoples', (req, res) => {
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
         query['packages.options_name'] = 'hotels';
-        query['packages.option_selected'] = req.query['packages.option_selected_hotel'];
+        query['packages.option'] = req.query['packages.option_selected_hotel'];
       }
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
       for(var item in populate) {

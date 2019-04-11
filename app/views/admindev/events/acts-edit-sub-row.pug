@@ -29,12 +29,18 @@
                 input(name="subscriptions[" + count + "][days][" + d + "]", value=call.event.schedule[d].date, type="hidden")
       .col-md-6
         - var packs = call.subscriptions[index] && call.subscriptions[index].packages ? call.subscriptions[index].packages.map(item => {return item.name}) : []
-        - console.log(packs)
         each pack, d in call.event.organizationsettings.call.calls[call.call].packages
-          .form-check
-            input.form-check-input(id="subscription_pack"+b+"_"+c+"_"+d, name="subscriptions[" + count + "][packages][" + d + "]" : undefined, value=JSON.stringify(pack), type="checkbox", disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, checked=packs.indexOf(pack.name)!=-1 ? "checked" : undefined)
-            label.form-check-label(for="subscription_pack"+b+"_"+c+"_"+d)
-              !=" "+pack.name
+          .pack
+            .form-check.pack_main
+              input.form-check-input(id="subscription_pack"+b+"_"+c+"_"+d+"_package", name="subscriptions[" + count + "][packages][" + d + "][package]", value=JSON.stringify(pack), type="checkbox", disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, checked=packs.indexOf(pack.name)!=-1 ? "checked" : undefined)
+              label.form-check-label(for="subscription_pack"+b+"_"+c+"_"+d+"_package")
+                !=" "+pack.name
+            .form-check.pack_sub(style=packs.indexOf(pack.name)==-1 ? "display:none" : undefined)
+              each opt, e in pack.options.split(",")
+                div
+                  input.ml-4.mr-1(id="subscription_pack"+b+"_"+c+"_"+d+"_"+e+"_option", name="subscriptions[" + count + "][packages][" + d + "][option]", value=opt, type="checkbox", disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, checked=call.subscriptions[index].packages.map(item => {if(item.name==pack.name) return item.option}).indexOf(opt)!==-1 ? "checked" : undefined)
+                  label.form-check-label(for="subscription_pack"+b+"_"+c+"_"+d+"_"+e+"_option")
+                    !=" "+opt
   .col-1
     .text-center
       input.freezed(checked=call.subscriptions[index] && call.subscriptions[index].freezed ? "checked" : undefined, name="subscriptions[" + count + "][freezed]", value="1", data-b=b, data-count=count, type="checkbox",autocomplete="off")

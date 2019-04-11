@@ -210,7 +210,17 @@ block content
                     u!="PACKAGES"
                     ul
                       each pack in subscription.packages
-                        li!=pack.name
+                        li
+                          !=pack.name
+                          if pack.options_name
+                            br
+                            !=pack.options_name
+                            !=": "
+                            if pack.requested
+                              if pack.option
+                                !=pack.option
+                              else 
+                                .badge.badge-danger!="MISSING"+" "+pack.options_name
             p
               - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
               - if (emails.indexOf(str)==-1) emails.push(str)

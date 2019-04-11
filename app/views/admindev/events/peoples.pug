@@ -90,8 +90,8 @@ block content
               if get['subscriptions.packages.name'] == "Accommodation"
                 td
                   //- console.log("subscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscription")
-                  - var option_selected = "0";
-                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option_selected) option_selected = subscription.subscription.packages[b].option_selected
+                  - var option = "0";
+                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
 
                   - var option_value = "";
                   - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
@@ -100,7 +100,7 @@ block content
                     select.option_selected_hotel.form-control.form-control-sm.mr-sm-2(name='packages.option_selected_hotel', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
                       option(value='0') Hotel
                       each hotel in data.hotels
-                        option(value=hotel, selected=option_selected==hotel ? "selected" : undefined)=hotel
+                        option(value=hotel, selected=option==hotel ? "selected" : undefined)=hotel
                     .input-group.input-group-sm.mt-1
                       input.option_selected_hotel_room.form-control(type="text", placeholder="Room", aria-label="Room", value=option_value ? option_value : undefined, name='packages.option_selected_hotel_room', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
                       .input-group-append
@@ -115,8 +115,8 @@ block content
 
                     - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
                     - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]++
-                    - if (pack.options_name && pack.option_selected && !packagespackages["options"][pack.options_name][pack.option_selected]) packagespackages["options"][pack.options_name][pack.option_selected] = 0
-                    - if (pack.options_name && pack.option_selected) packagespackages["options"][pack.options_name][pack.option_selected]++
+                    - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
+                    - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]++
                     
                     
                     tr
