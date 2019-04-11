@@ -336,18 +336,21 @@ router.get('/:event/peoples', (req, res) => {
         } else {
           data.event = event;
           data.status = config.cpanel["events_advanced"].status;
-          let days = [];
-          for(let a=0;a<program.length;a++) {
-            for(let b=0; b<program[a].subscriptions.length;b++) {
-              days = days.concat(program[a].subscriptions[b].days);
+          let daysdays = [];
+          let schedule = JSON.parse(JSON.stringify(data.event.schedule));
+          for(let a=0;a<schedule.length;a++) {
+            let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+            if (daysdays.indexOf(dayday)===-1) {
+              daysdays.push(dayday);
             }
           }
-          days = days.sort(function(a, b) {
+          data.days = daysdays.sort(function(a, b) {
             a = new Date(a);
             b = new Date(b);
             return a<b ? -1 : a>b ? 1 : 0;
           });
-          data.days = days;
+          data.days.unshift(data.days[0]-(24*60*60*1000));
+          data.days.push(data.days[data.days.length-1]+(24*60*60*1000));
           data.daysN = (data.days[data.days.length-1]-data.days[0])/(24*60*60*1000);
 
           
@@ -402,12 +405,43 @@ router.get('/:event/peoples', (req, res) => {
           if (req.query.sortby && req.query.sortby=='sortby_arrival_date') {
             data.subscriptions = data.subscriptions.sort((a,b) => ((a.subscription.days[0]) > (b.subscription.days[0])) ? 1 : (((b.subscription.days[0]) > (a.subscription.days[0])) ? -1 : 0));
           }
+          
+          if (req.query.sortby && req.query.sortby=='sortby_hotel_room') {
+            propertyRetriever = program => {
+              for(let a=0;a<program.subscription.packages.length;a++) {
+                if (program.subscription.packages[a].name == "Accommodation") {
+                  if (program.subscription.packages[a].option) {
+                    if (program.subscription.packages[a].option_value) {
+                      return program.subscription.packages[a].option + program.subscription.packages[a].option_value;
+                    } else {
+                      return program.subscription.packages[a].option;
+                    }
+                  } else {
+                    return "ZZZZZZZ";
+                  }
+                }
+              }
+              return "ZZZZZZZ";
+            }
+            data.subscriptions = data.subscriptions.sort(function (a, b) {
+              var valueA = propertyRetriever(a);
+              var valueB = propertyRetriever(b);
+              if (valueA < valueB) {
+                  return -1;
+              } else if (valueA > valueB) {
+                  return 1;
+              } else {
+                  return 0;
+              }
+            });
+          }
 
           data.sortby = [
             {value: 'sortby_perf_name', key: 'sort by perf name'},
             {value: 'sortby_ref_name', key: 'sort by ref name'},
             {value: 'sortby_person_name', key: 'sort by person name'},
             {value: 'sortby_arrival_date', key: 'sort by arrival date'},
+            {value: 'sortby_hotel_room', key: 'sort by hotel/room'},
             {value: '0', key: 'sort by sub date'}
           ];
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {

@@ -1,5 +1,6 @@
 const router = require('../../router')();
 let config = require('getconfig');
+const moment = require('moment');
 
 const mongoose = require('mongoose');
 const Models = {
@@ -219,7 +220,24 @@ router.editSubscription = (req, res) => {
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .populate(populate)
   .exec((err, sub) => {
-    res.render('admindev/events/acts-edit-sub', {call: sub}, function(err, body) {
+    let daysdays = [];
+    let schedule = JSON.parse(JSON.stringify(sub.event.schedule));
+    for(let a=0;a<schedule.length;a++) {
+      let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+      if (daysdays.indexOf(dayday)===-1) {
+        daysdays.push(dayday);
+      }
+    }
+    daysdays = daysdays.sort(function(a, b) {
+      a = new Date(a);
+      b = new Date(b);
+      return a<b ? -1 : a>b ? 1 : 0;
+    });
+    daysdays.unshift(daysdays[0]-(24*60*60*1000));
+    daysdays.push(daysdays[daysdays.length-1]+(24*60*60*1000));
+    let days = [];
+    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)})
+    res.render('admindev/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
       res.json(body);
     });
   });
