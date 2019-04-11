@@ -79,7 +79,12 @@ block content
                 br
                 !='<a href="mailto:'+subscription.subscription.subscriber_id.email+'">'+subscription.subscription.subscriber_id.email+'</a>'
                 br
-                !='Gender: '+subscription.subscription.subscriber_id.gender
+                !='Gender: '
+                if subscription.subscription.subscriber_id.gender
+                  !=subscription.subscription.subscriber_id.gender
+                else
+                  !=" "
+                  .badge.badge-danger MISSING GENDER
                 if subscription.subscription.subscriber_id.addressesFormatted && subscription.subscription.subscriber_id.addressesFormatted.length
                   br
                   !=subscription.subscription.subscriber_id.addressesFormatted.join(", ")
@@ -107,7 +112,7 @@ block content
                         button.btn.btn-success(type="button")
                           i.fa.fa-check
               td(style="border-right: 2px solid #dee2e6;")
-                table
+                table(style="width:100%")
                   - var tot = 0
                   each pack in subscription.subscription.packages
                     - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
@@ -120,18 +125,19 @@ block content
                     tr
                       td(style="white-space: nowrap;")
                         b!=pack.name
-                        if pack.option
-                          br
-                          !=pack.options_name
+                        br
+                        !=pack.options_name
                         if (pack.daily)
                           br
                           !="Days"
                           br
                       td.text-right
                         !=pack.price
+                        br
                         if pack.option
-                          br
                           !=pack.option
+                        else
+                          .badge.badge-danger="MISSING "+pack.options_name
                         if (pack.daily)
                           br
                           !=subscription.subscription.days.length
