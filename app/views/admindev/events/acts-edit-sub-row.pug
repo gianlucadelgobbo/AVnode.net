@@ -4,7 +4,6 @@
       input.switch(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, value="1", data-subscriber_id=user._id, data-stagename=user.stagename, data-count=count, type="checkbox",autocomplete="off", checked=(call.subscriptions && call.subscriptions[index] && call.subscriptions[index].subscriber_id ? "checked" : undefined))
       input.stagename(name="subscriptions[" + count + "][stagename]", type="hidden", value=call.subscriptions[index] ? user.stagename : undefined)
       input.subscriber_id(name="subscriptions[" + count + "][subscriber_id]", type="hidden", value=call.subscriptions[index] ? user._id : undefined)
-      - console.log(call.subscriptions[index])
   .col-10
     label(for="subscription"+b+"_"+c)
       h3(class=call.subscriptions[index] && call.subscriptions[index].freezed ? "mb-0" : undefined)
