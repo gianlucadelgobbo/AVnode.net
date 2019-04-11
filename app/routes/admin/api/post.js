@@ -176,11 +176,32 @@ router.editSubscriptionSave = (req, res) => {
     program.reference = req.body.reference;
     program.subscriptions = subscriptions;
     program.save(function(err){
-      //logger.debug(err);
       if (err) {
         res.json(err);
       } else {
-        res.json({success: true});
+        Models.Program.find({_id: {$ne: program._id}, "subscriptions.subscriber_id": program.subscriptions.map(item => {return item.subscriber_id;})})
+        .exec((err, programs) => {
+          if (programs.length) {
+            let promises = [];
+            for (var item=0;item<programs.length;item++) { 
+              for (var subscription=0;subscription<programs[item].subscriptions.length;subscription++) { 
+                for (var subnew=0;subnew<program.subscriptions.length;subnew++) { 
+                  if (program.subscriptions[subnew].subscriber_id.toString() == programs[item].subscriptions[subscription].subscriber_id.toString()) {
+                    programs[item].subscriptions[subscription].packages = program.subscriptions[subnew].packages;
+                  }
+                }
+              }
+              promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]));
+            }
+            Promise.all(
+              promises
+            ).then( (resultsPromise) => {
+              res.json({success: true});
+            });          
+          } else {
+            res.json({success: true});
+          }
+        });
       }
     });   
   });
