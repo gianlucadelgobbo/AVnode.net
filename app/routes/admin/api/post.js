@@ -153,10 +153,9 @@ router.cancelSubscription = (req, res) => {
 }
 router.editSubscriptionSave = (req, res) => {
   logger.debug("req.body");
-  logger.debug(req.body.subscriptions[0].packages);
+  logger.debug(req.body);
   Models.Program.findOne({_id: req.body.program})
   .exec((err, program) => {
-    logger.debug(req.body);
     var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed!="1");
     var subscriptions_freezed = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed=="1").map(item => {return item.subscriber_id.toString()});
     for (var item=0;item<subscriptions.length;item++) {
@@ -375,9 +374,6 @@ router.updateProgram = (req, res) => {
             res.json(err || result);
           });
         } else {
-
-          console.log("req.body.event");
-          console.log(req.body.event);
           Models.Event.findOne({_id:req.body.event}).exec((err, event) => {
             for (var a=0;a<event.program.length;a++) {
               for (var b=0;b<eventProgram.length;b++) {
@@ -436,7 +432,6 @@ router.updateSubscription = (req, res) => {
   } */
     
   if (req.body.id && req.body.subscriber_id && req.body.wepay) {
-    console.log(req.body);
     Models.Program
     .findOne({_id: req.body.id/* , members:req.user.id */})
     //.select({schedule: 1, call: 1, event: 1})
@@ -452,7 +447,6 @@ router.updateSubscription = (req, res) => {
       });
     });
   } else if (req.body.id && req.body.subscriber_id && (req.body.hotel || req.body.hotel_room)) {
-    console.log(req.body);
     Models.Program
     .findOne({_id: req.body.id/* , members:req.user.id */})
     //.select({schedule: 1, call: 1, event: 1})
@@ -462,11 +456,8 @@ router.updateSubscription = (req, res) => {
         if (program.subscriptions[a].subscriber_id == req.body.subscriber_id) {
           for (var b=0;b<program.subscriptions[a].packages.length;b++) {
             if (program.subscriptions[a].packages[b].name == "Accommodation") {
-              console.log(program.subscriptions[a].packages[b]);
-
               if (req.body.hotel) program.subscriptions[a].packages[b].option = req.body.hotel;
               if (req.body.hotel_room) program.subscriptions[a].packages[b].option_value = req.body.hotel_room;
-              console.log(program.subscriptions[a].packages[b]);
             }
           }
         }

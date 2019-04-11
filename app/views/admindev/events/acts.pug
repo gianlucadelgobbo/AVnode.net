@@ -187,7 +187,7 @@ block content
                       - if (emails_noname.indexOf(str)==-1) emails_noname.push(str)
                     br
                     if subscription.subscriber_id.addressesFormatted && subscription.subscriber_id.addressesFormatted.length
-                      div!=subscription.subscriber_id.addressesFormatted.join(", ")
+                      !=subscription.subscriber_id.addressesFormatted.join(", ")
                     else
                       .badge.badge-danger MISSING ADDRESS
                       - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
@@ -205,6 +205,8 @@ block content
                       .badge.badge-danger MISSING FREEZED?
                     br
                     if subscription.daysFormatted
+                      u="Availability"
+                      !=": "
                       !=subscription.daysFormatted.join(" | ")
                     br
                     u!="PACKAGES"
@@ -216,11 +218,12 @@ block content
                             br
                             !=pack.options_name
                             !=": "
-                            if pack.requested
-                              if pack.option
-                                !=pack.option
-                              else 
-                                .badge.badge-danger!="MISSING"+" "+pack.options_name
+                            if pack.option
+                              !=pack.option
+                              if pack.option_value
+                                !=" | "+pack.option_value
+                            else 
+                              .badge.badge-danger!="MISSING"+" "+pack.options_name
             p
               - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
               - if (emails.indexOf(str)==-1) emails.push(str)

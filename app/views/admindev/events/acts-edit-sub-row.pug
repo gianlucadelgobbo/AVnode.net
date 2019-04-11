@@ -38,9 +38,10 @@
             .form-check.pack_sub(style=packs.indexOf(pack.name)==-1 ? "display:none" : undefined)
               each opt, e in pack.options.split(",")
                 div
-                  input.ml-4.mr-1(id="subscription_pack"+b+"_"+c+"_"+d+"_"+e+"_option", name="subscriptions[" + count + "][packages][" + d + "][option]", value=opt, type="checkbox", disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, checked=call.subscriptions[index].packages.map(item => {if(item.name==pack.name) return item.option}).indexOf(opt)!==-1 ? "checked" : undefined)
+                  input.ml-4.mr-1(id="subscription_pack"+b+"_"+c+"_"+d+"_"+e+"_option", name="subscriptions[" + count + "][packages][" + d + "][option]", value=opt, type="checkbox", disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, checked=call.subscriptions[index].packages.map(item => {if(item.name==pack.name) return item.option;}).indexOf(opt)!==-1 ? "checked" : undefined)
                   label.form-check-label(for="subscription_pack"+b+"_"+c+"_"+d+"_"+e+"_option")
                     !=" "+opt
   .col-1
     .text-center
       input.freezed(checked=call.subscriptions[index] && call.subscriptions[index].freezed ? "checked" : undefined, name="subscriptions[" + count + "][freezed]", value="1", data-b=b, data-count=count, type="checkbox",autocomplete="off")
+      input.wepay(name="subscriptions[" + count + "][wepay]", value=call.subscriptions[index].wepay ? "1" : "0", type="hidden")
