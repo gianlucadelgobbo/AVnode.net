@@ -245,7 +245,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
                 b++;
               }
             } */
-            if (res.performance.bookings[a].event.slug!=req.params.slug) {
+            if (!res.performance.bookings[a].event || res.performance.bookings[a].event.slug!=req.params.slug) {
               res.performance.bookings.splice(a, 1);
             } else {
               a++;

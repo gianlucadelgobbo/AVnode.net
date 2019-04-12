@@ -13,20 +13,19 @@
     .row.block_active(style=!call.subscriptions || !call.subscriptions[index] || !call.subscriptions[index].subscriber_id ? "display: none" : "")
       .col-md-6
         - var dates = call.subscriptions && call.subscriptions[index] &&  call.subscriptions[index].days ? call.subscriptions[index].days : []
-        - var days = [];
-        - for (var d=0;d<call.event.schedule.length;d++)
-          - if (days.indexOf(call.event.schedule[d].date_formatted) == -1)
-            - days.push(call.event.schedule[d].date_formatted)
-            - var stringdate = new Date(call.event.schedule[d].date.getFullYear()+"-"+(("0" + (call.event.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (call.event.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z")
-            - var datesindex = dates.findIndex(function(x) { 
-            -  return x.valueOf() === stringdate.valueOf(); 
-            - });
-            .form-check
-              input.form-check-input(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=call.event.schedule[d].date,    type="checkbox", checked=datesindex!=-1 ? "checked" : undefined)
-              label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
-                !=" "+call.event.schedule[d].date_formatted
-              if (call.subscriptions[index] && call.subscriptions[index].freezed)
-                input(name="subscriptions[" + count + "][days][" + d + "]", value=call.event.schedule[d].date, type="hidden")
+        - for (var d=0;d<days.length;d++)
+          - console.log()
+          - days[d].date = new Date(days[d].date)
+          - var stringdate = new Date(days[d].date.getFullYear()+"-"+(("0" + (days[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (days[d].date.getDate())).slice(-2))+"T00:00:00.000Z")
+          - var datesindex = dates.findIndex(function(x) { 
+          -  return x.valueOf() === stringdate.valueOf(); 
+          - });
+          .form-check
+            input.form-check-input(disabled=call.subscriptions[index] && call.subscriptions[index].freezed ? "disabled" : undefined, id="subscription"+b+"_"+c+"_"+d, name=!call.subscriptions[index] || !call.subscriptions[index].freezed ? "subscriptions[" + count + "][days][" + d + "]" : undefined, value=days[d].date,    type="checkbox", checked=datesindex!=-1 ? "checked" : undefined)
+            label.form-check-label(for="subscription"+b+"_"+c+"_"+d)
+              !=" "+days[d].date_formatted
+            if (call.subscriptions[index] && call.subscriptions[index].freezed)
+              input(name="subscriptions[" + count + "][days][" + d + "]", value=days[d].date, type="hidden")
       .col-md-6
         - var packs = call.subscriptions[index] && call.subscriptions[index].packages ? call.subscriptions[index].packages.map(item => {return item.name}) : []
         each pack, d in call.event.organizationsettings.call.calls[call.call].packages
