@@ -151,19 +151,18 @@ class EventPublic extends Component {
       //
       //   return venue;
       // };
-
+      console.log("First" + " " + model.schedule);
       v.schedule = model.schedule.map(x => ({
         startdate: moment(x.starttime),
         starttime: x.starttime,
         enddate: moment(x.endtime),
         endtime: x.endtime,
-        venue:
-          !!x.venue && !!x.venue.formatted_address
-            ? x.venue.formatted_address
-            : "",
+        venue: x.venue && x.venue.location ? x.venue.name : "",
         room: x.venue ? x.venue.room : ""
       }));
     }
+
+    console.log(v.schedule);
 
     //Convert slug for redux-form
     v.slug = model.slug;
