@@ -464,7 +464,13 @@ performance.paypal = "UYFHJL8ZWZ8G8";
 db.performances.save(performance);
 printjson(performance);
 
+SocietadiLamponi
 
+db.performances.findOne({_id:ObjectId('5c55bad464d4d470b343540f')});
+var event = db.events.findOne({"program.performance":ObjectId('5c55bad464d4d470b343540f')});
+printjson(event.program);
+
+db.program.findOne({"performance":ObjectId('5c55bad464d4d470b343540f')});
 
 
 
