@@ -1,5 +1,3 @@
-import { objectTypeIndexer } from "babel-types";
-
 var sc = [
 	{
 		"date" : ISODate("2019-05-02T00:00:00Z"),
@@ -8,6 +6,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 1",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -29,6 +28,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 1",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -50,6 +50,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 1",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -71,6 +72,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 1",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -92,6 +94,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 2",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -113,6 +116,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 2",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -134,6 +138,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 2",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -155,6 +160,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Classroom 2",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -175,7 +181,8 @@ var sc = [
 		"endtime" : ISODate("2019-05-03T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Galleria",
+			"room" : "Classroom 3",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -196,7 +203,8 @@ var sc = [
 		"endtime" : ISODate("2019-05-04T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Galleria",
+			"room" : "Classroom 3",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -217,7 +225,8 @@ var sc = [
 		"endtime" : ISODate("2019-05-05T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Galleria",
+			"room" : "Classroom 3",
+			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -238,7 +247,96 @@ var sc = [
 		"endtime" : ISODate("2019-05-06T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
+			"room" : "Classroom 3",
+			"breakduration" : 0,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-02T00:00:00Z"),
+		"starttime" : ISODate("2019-05-02T18:00:00Z"),
+		"endtime" : ISODate("2019-05-03T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
 			"room" : "Galleria",
+			"breakduration" : 10,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-03T00:00:00Z"),
+		"starttime" : ISODate("2019-05-03T18:00:00Z"),
+		"endtime" : ISODate("2019-05-04T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Galleria",
+			"breakduration" : 10,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-04T00:00:00Z"),
+		"starttime" : ISODate("2019-05-04T18:00:00Z"),
+		"endtime" : ISODate("2019-05-05T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Galleria",
+			"breakduration" : 10,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-05T00:00:00Z"),
+		"starttime" : ISODate("2019-05-05T18:00:00Z"),
+		"endtime" : ISODate("2019-05-06T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Galleria",
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -259,7 +357,8 @@ var sc = [
 		"endtime" : ISODate("2019-05-03T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Padiglione 9A",
+			"room" : "Meeting Area",
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -280,7 +379,8 @@ var sc = [
 		"endtime" : ISODate("2019-05-04T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Padiglione 9A",
+			"room" : "Meeting Area",
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -301,7 +401,8 @@ var sc = [
 		"endtime" : ISODate("2019-05-05T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Padiglione 9A",
+			"room" : "Meeting Area",
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -322,7 +423,184 @@ var sc = [
 		"endtime" : ISODate("2019-05-06T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Padiglione 9A",
+			"room" : "Meeting Area",
+			"breakduration" : 10,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-02T00:00:00Z"),
+		"starttime" : ISODate("2019-05-02T15:00:00Z"),
+		"endtime" : ISODate("2019-05-03T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Ateliers",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-03T00:00:00Z"),
+		"starttime" : ISODate("2019-05-03T15:00:00Z"),
+		"endtime" : ISODate("2019-05-04T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Ateliers",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-04T00:00:00Z"),
+		"starttime" : ISODate("2019-05-04T15:00:00Z"),
+		"endtime" : ISODate("2019-05-05T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Ateliers",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-05T00:00:00Z"),
+		"starttime" : ISODate("2019-05-05T15:00:00Z"),
+		"endtime" : ISODate("2019-05-06T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Ateliers",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-02T00:00:00Z"),
+		"starttime" : ISODate("2019-05-02T15:00:00Z"),
+		"endtime" : ISODate("2019-05-03T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-03T00:00:00Z"),
+		"starttime" : ISODate("2019-05-03T15:00:00Z"),
+		"endtime" : ISODate("2019-05-04T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-04T00:00:00Z"),
+		"starttime" : ISODate("2019-05-04T15:00:00Z"),
+		"endtime" : ISODate("2019-05-05T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-05T00:00:00Z"),
+		"starttime" : ISODate("2019-05-05T15:00:00Z"),
+		"endtime" : ISODate("2019-05-06T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -344,6 +622,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Atelier",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -365,6 +644,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Atelier",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -386,6 +666,7 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Atelier",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -407,6 +688,95 @@ var sc = [
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Atelier",
+			"breakduration" : -1,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-02T00:00:00Z"),
+		"starttime" : ISODate("2019-05-02T22:00:00Z"),
+		"endtime" : ISODate("2019-05-03T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Piazza Orazio Giustiniani",
+			"breakduration" : 10,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-03T00:00:00Z"),
+		"starttime" : ISODate("2019-05-03T22:00:00Z"),
+		"endtime" : ISODate("2019-05-04T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Piazza Orazio Giustiniani",
+			"breakduration" : 10,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-04T00:00:00Z"),
+		"starttime" : ISODate("2019-05-04T22:00:00Z"),
+		"endtime" : ISODate("2019-05-05T04:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Piazza Orazio Giustiniani",
+			"breakduration" : 10,
+			"location" : {
+				"country" : "Italy",
+				"locality" : "Roma",
+				"postal_code" : "00153",
+				"street_number" : "4",
+				"route" : "Piazza Orazio Giustiniani",
+				"geometry" : {
+					"lat" : 41.87645,
+					"lng" : 12.4732736
+				},
+				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
+			}
+		}
+	},
+	{
+		"date" : ISODate("2019-05-05T00:00:00Z"),
+		"starttime" : ISODate("2019-05-05T22:00:00Z"),
+		"endtime" : ISODate("2019-05-06T01:00:00Z"),
+		"venue" : {
+			"name" : "Mattatoio",
+			"room" : "Piazza Orazio Giustiniani",
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
