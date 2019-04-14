@@ -291,6 +291,7 @@ eventSchema.virtual('advanced').get(function (req) {
       for(let a=0;a<programmebydayvenue.length;a++){
         let rooms = [];
         for(let b in programmebydayvenue[a].rooms) {
+          programmebydayvenue[a].rooms[b].performances.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
           rooms.push(programmebydayvenue[a].rooms[b]);
         }
         programmebydayvenue[a].rooms = rooms;
