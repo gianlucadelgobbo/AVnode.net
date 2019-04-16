@@ -20,7 +20,7 @@ block content
               ul.list-group.connectedSortable(id="sortable0")
                 - var conta = 0
                 each program, i in data.program
-                  if !program.schedule || !program.schedule.length || !program.schedule[0].starttime
+                  if !program.schedule || !program.schedule.length || !program.schedule[0] || !program.schedule[0].starttime
                     if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
                       li.list-group-item(style="overflow: hidden;", class=(program.performance.duration != parseFloat(program.performance.duration) ? "disabled" : ""))
                         - conta++

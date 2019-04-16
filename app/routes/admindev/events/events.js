@@ -571,8 +571,12 @@ router.get('/:event/program', (req, res) => {
                       let y = date.getUTCFullYear();
                       let program = JSON.parse(JSON.stringify(data.program[a]));
                       program.schedule = data.program[a].schedule[b];
-                      logger.debug(data.program[a].schedule[b].venue.room);
-                      data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                      logger.debug(data.program[a].performance.title);
+                      if (data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
+                        data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                      } else {
+                        delete data.program[a].schedule[b];
+                      }
                     } else {
                       var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
                       for(let c=0;c<days;c++){
@@ -584,7 +588,11 @@ router.get('/:event/program', (req, res) => {
                         program.schedule = data.program[a].schedule[b];
                         data.program[a].performance.duration = duration/days;
                         logger.debug(data.program[a].schedule[b].venue.room);
-                        data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                        if (data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
+                          data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                        } else {
+                          delete data.program[a].schedule[b];
+                        }
                       }
                     }
                   }
