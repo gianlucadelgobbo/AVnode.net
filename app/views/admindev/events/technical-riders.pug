@@ -11,6 +11,7 @@ block content
             th="Day"
             th="Room"
             th="Performance"
+            th="EDIT"
         - var conta = 1
         tbody
           each day in data.programmebydayvenue
@@ -26,6 +27,8 @@ block content
                         td!=day.date
                         td!=room.schedule.venue.room
                         td!=program.performance.title
+                        td
+                          a(href="/admin/performances/"+program.performance._id+"/public", target="_blank")!="EDIT"
                         - conta++
     else
 
