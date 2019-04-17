@@ -463,8 +463,8 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-03T22:00:00Z"),
-		"endtime" : ISODate("2019-05-04T01:00:00Z"),
+		"starttime" : ISODate("2019-05-04T00:00:00Z"),
+		"endtime" : ISODate("2019-05-04T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Meeting Area",
@@ -485,8 +485,8 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T22:00:00Z"),
-		"endtime" : ISODate("2019-05-05T01:00:00Z"),
+		"starttime" : ISODate("2019-05-05T00:00:00Z"),
+		"endtime" : ISODate("2019-05-05T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Meeting Area",
@@ -617,7 +617,7 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-02T00:00:00Z"),
-		"starttime" : ISODate("2019-05-03T01:00:00Z"),
+		"starttime" : ISODate("2019-05-03T00:00:00Z"),
 		"endtime" : ISODate("2019-05-03T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
@@ -639,7 +639,7 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T01:00:00Z"),
+		"starttime" : ISODate("2019-05-04T00:00:00Z"),
 		"endtime" : ISODate("2019-05-04T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
@@ -661,7 +661,7 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T01:00:00Z"),
+		"starttime" : ISODate("2019-05-05T00:00:00Z"),
 		"endtime" : ISODate("2019-05-05T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
@@ -683,7 +683,7 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-05T00:00:00Z"),
-		"starttime" : ISODate("2019-05-06T01:00:00Z"),
+		"starttime" : ISODate("2019-05-06T00:00:00Z"),
 		"endtime" : ISODate("2019-05-06T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
@@ -705,7 +705,7 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-02T00:00:00Z"),
-		"starttime" : ISODate("2019-05-03T01:00:00Z"),
+		"starttime" : ISODate("2019-05-03T00:00:00Z"),
 		"endtime" : ISODate("2019-05-03T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
@@ -727,7 +727,7 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T01:00:00Z"),
+		"starttime" : ISODate("2019-05-04T00:00:00Z"),
 		"endtime" : ISODate("2019-05-04T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
@@ -749,7 +749,7 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T01:00:00Z"),
+		"starttime" : ISODate("2019-05-05T00:00:00Z"),
 		"endtime" : ISODate("2019-05-05T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
@@ -771,99 +771,11 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-05T00:00:00Z"),
-		"starttime" : ISODate("2019-05-06T01:00:00Z"),
+		"starttime" : ISODate("2019-05-06T00:00:00Z"),
 		"endtime" : ISODate("2019-05-06T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Galleria DJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-02T00:00:00Z"),
-		"starttime" : ISODate("2019-05-03T01:00:00Z"),
-		"endtime" : ISODate("2019-05-03T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria VJ-DJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T01:00:00Z"),
-		"endtime" : ISODate("2019-05-04T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria VJ-DJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T01:00:00Z"),
-		"endtime" : ISODate("2019-05-05T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria VJ-DJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-05T00:00:00Z"),
-		"starttime" : ISODate("2019-05-06T01:00:00Z"),
-		"endtime" : ISODate("2019-05-06T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria VJ-DJ Sets",
 			"breakduration" : 0,
 			"location" : {
 				"country" : "Italy",
@@ -972,6 +884,35 @@ var event = db.events.findOne({slug:'lpm-2019-rome'});
 event.schedule = sc;
 db.events.save(event);
 printjson(event.schedule);
+
+db.program.find({event:ObjectId('5c41c8a06b32ec637f343e1a'), status:ObjectId('5be8708afc39610000000013')}).forEach(function(program) {
+  var performance = db.performances.findOne({_id:program.performance});
+	if (performance.type.str=="5be8708afc39610000000016") {
+    printjson(performance.duration);  
+    db.performances.update({_id:program.performance},{$set: {duration:"5"}});
+	}
+});
+
+db.program.find({performance:ObjectId('5c8eb89259c1b55c31edab22')}).forEach(function(program) {
+  program.schedule = [];
+  db.program.save(program);
+  printjson(program);  
+});
+
+var event = db.events.findOne({slug:'lpm-2019-rome'});
+var found = true;
+event.program.forEach(function(program, i) {
+  if (program.performance.str == '5c6064bf91f19b3134a184f6') {
+    if (found) event.program.splice(i,1);
+    found = false;
+  }
+});
+event.program.forEach(function(program, i) {
+  if (program.performance.str == '5c6064bf91f19b3134a184f6') {
+    printjson(program);  
+  }
+});
+db.events.save(event);
 
 // Resolume Arena 6
 var performance = db.performances.findOne({_id:ObjectId('5c767241b561247a3a0411cc')});

@@ -43,21 +43,21 @@ Schedule.virtual('boxDate').get(function () {
   let boxDate;
   if (this.starttime) {
     const lang = global.getLocale();
-    const start = new Date(this.starttime).getTime()
-    const end = new Date(this.endtime).getTime()
-    const days = Math.ceil((end-(10*60*60*1000)-start)/(24*60*60*1000))
+    const start = new Date(this.starttime-(10*60*60*1000)).getTime()
+    const end = new Date(this.endtime-(10*60*60*1000)).getTime()
+    const days = Math.ceil((end-start)/(24*60*60*1000))
     if (days > 1) {
       let boxDateA = []
       for(let a=0;a<=days;a++) {
         let boxDateTMP = "";
-        boxDateTMP = moment.utc((new Date(this.starttime).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+        boxDateTMP = moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
         boxDateTMP+= " | "+moment.utc(this.starttime).format('HH:mm');
         boxDateTMP+= " > "+moment.utc(this.endtime).format('HH:mm');
         boxDateA.push(boxDateTMP);
       }
       boxDate = boxDateA.join("<br />");
     } else {
-      boxDate = moment.utc(this.starttime).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
       boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
       boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
     }

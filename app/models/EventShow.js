@@ -660,7 +660,7 @@ eventSchema.boxDateCreator = (starttime, endtime, boxVenue) => {
       }
     }
   }
-  return boxDate+" | "+boxVenue;
+  return boxDate+" | "+boxVenue+" stocazzo";
 }
 
 //eventSchema.plugin(indexPlugin());
