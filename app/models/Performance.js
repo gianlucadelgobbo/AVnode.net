@@ -105,13 +105,16 @@ performanceSchema.virtual('tech_req').get(function (req) {
   if (this.tech_reqs && this.tech_reqs.length) {
     tech_reqA = this.tech_reqs.filter(item => item.lang === global.getLocale());
     if (tech_reqA.length && tech_reqA[0].abouttext) {
-      tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />');
+      console.log(tech_reqA);
+      tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />').replace(/\n/g, '<br />');
     } else {
       tech_reqA = this.tech_reqs.filter(item => item.lang === config.defaultLocale);
       if (tech_reqA.length && tech_reqA[0].abouttext) {
-        tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />');
+        console.log(tech_reqA);
+        tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />').replace(/\n/g, '<br />');
       }
     }
+    console.log(tech_req);
     return tech_req;
   }
 });
