@@ -1,6 +1,7 @@
 extends ../layout_admin
 block content
   - var emails = []
+  - var emailsbypackages = {}
   - var packagespackages = {standard: {}, wepay: {}, options: {}}
   include ./_filters
   table.table
@@ -17,22 +18,6 @@ block content
           - var d = new Date(data.days[0])
           - var dd = new Date(d.setDate(d.getDate() + a))
           th=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
-
-        //th="Type"
-          th="type"
-          th="hotel"
-          th="Room"
-          th="T-Shirt size"
-          th="Arrival date"
-          th="Departure date"
-          th="Total"
-          th="2018-06-06"
-          th="2018-06-07"
-          th="2018-06-08"
-          th="2018-06-09"
-          th="2018-06-10"
-          th="2018-06-11"
-          th="Note"
     tbody
       - var conta = 0
       each subscription, index in data.subscriptions
@@ -52,6 +37,12 @@ block content
               td
                 - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performances.map(performance => {return performance.title}).join(" // ")+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
                 - if (emails.indexOf(str)==-1) emails.push(str)
+                - var option = "0";
+                - for (var b=0;b<subscription.subscription.packages.length;b++) {
+                -   if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                -   if (!emailsbypackages[option]) emailsbypackages[option] = []
+                -   emailsbypackages[option].push(str)
+                - }
                 .mb-1
                   each performance in subscription.performances
                     div
@@ -97,10 +88,8 @@ block content
                   //- console.log("subscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscription")
                   - var option = "0";
                   - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
-
-                  - var option_value = "";
-                  - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
-
+                  //- var option_value = "";
+                  //- for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option_value) option_value = subscription.subscription.packages[b].option_value
                   if data.hotels && data.hotels.length
                     select.option_selected_hotel.form-control.form-control-sm.mr-sm-2(name='packages.option_selected_hotel', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
                       option(value='0') Hotel
@@ -224,6 +213,14 @@ block content
                     !=value
 
         td(colspan=data.daysN+1)
+  - console.log(emailsbypackages)
+  each item, i in emailsbypackages
+    b=i
+    form(method='post', action='http://localhost:8004/composer')
+      textarea.form-control(name='to')="["+item.join(",")+"]"
+      .text-center
+        br
+        button.btn.btn-success(type='submit') Compose email
   form(method='post', action='http://localhost:8004/composer')
     textarea.form-control(name='to')="["+emails.join(",")+"]"
     .text-center
