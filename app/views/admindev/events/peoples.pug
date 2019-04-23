@@ -36,7 +36,15 @@ block content
                       label.form-check-label(for='status'+status._id+subscription._id)=status.name
               td
                 - var str = '["'+(subscription.reference.lang=="it" ? "it" : "en")+'","'+subscription.performances.map(performance => {return performance.title}).join(" // ")+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
-                - if (emails.indexOf(str)==-1) emails.push(str)
+                - if (!emailsbypackages.references) emailsbypackages.references = []
+                - if (emailsbypackages.references.indexOf(str)==-1) emailsbypackages.references.push(str)
+                - if (subscription.reference.email==subscription.subscription.subscriber_id.email) {
+                -   var str = '["'+(subscription.subscription.subscriber_id.lang=="it" ? "it" : "en")+'","'+subscription.subscription.subscriber_id.stagename+'","'+subscription.subscription.subscriber_id.name+'","'+subscription.subscription.subscriber_id.surname+'","'+subscription.subscription.subscriber_id.email+'"]'
+                - } else {
+                -   var str = '["'+(subscription.subscription.subscriber_id.lang=="it" ? "it" : "en")+'","'+subscription.subscription.subscriber_id.stagename+'","'+subscription.subscription.subscriber_id.name+'","'+subscription.subscription.subscriber_id.surname+'","'+subscription.subscription.subscriber_id.email+'","'+subscription.reference.name+'","'+subscription.reference.surname+'","'+subscription.reference.email+'"]'
+                - }
+                - if (!emailsbypackages.subscribers) emailsbypackages.subscribers = []
+                - if (emailsbypackages.subscribers.indexOf(str)==-1) emailsbypackages.subscribers.push(str)
                 - var option = "0";
                 - for (var b=0;b<subscription.subscription.packages.length;b++) {
                 -   if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
