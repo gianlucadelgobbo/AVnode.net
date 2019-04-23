@@ -40,9 +40,9 @@ block content
                 - var option = "0";
                 - for (var b=0;b<subscription.subscription.packages.length;b++) {
                 -   if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
+                - }
                 -   if (!emailsbypackages[option]) emailsbypackages[option] = []
                 -   emailsbypackages[option].push(str)
-                - }
                 .mb-1
                   each performance in subscription.performances
                     div
