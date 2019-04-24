@@ -1,66 +1,31 @@
-extends ../layout_admin
-block content
-  include ./_filters
-  .white-content
-    if get.techonly=="1"
-      table.table
-        thead
-          tr
-            th="ID"
-            th="Item"
-            th="Day"
-            th="Room"
-            th="Performance"
-            th="EDIT"
-        - var conta = 1
-        tbody
-          each day in data.programmebydayvenue
-            each room,i in day.rooms
-              if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
-                if room.program
-                  each program,ii in room.program
-                    - var tech_reqs = program.performance.tech_req.split("- ")
-                    each tech_req,iii in tech_reqs
-                      tr
-                        td!=conta
-                        td!=tech_req
-                        td!=day.date
-                        td!=room.schedule.venue.room
-                        td!=program.performance.title
-                        td
-                          a(href="/admin/performances/"+program.performance._id+"/public", target="_blank")!="EDIT"
-                        - conta++
-    else
-
-      each day in data.programmebydayvenue
-        each room,i in day.rooms
-          if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
-            if room.program
-              h2=day.date+" | "+room.schedule.venue.room
-              - conta++
-              each program,ii in room.program
-                .position-relative.mt-5
-                  .index.badge.disabled=(ii+1)
-                  if program.performance.imageFormats
-                    img.img-fluid.perfomance_image.bottom60(
-                      src=program.performance.imageFormats.large
-                      alt=program.performance.title
-                    )
-
-                  .title
-                    h3!=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime+" | "+program.performance.duration+" min. | "+program.performance.title
-                  .type.small=program.performance.type.name
-                  p!=program.performance.users.map(user => {return user.stagename+" | "+user.addressesFormatted}).join(" // ")
-                  p!=program.performance.about
-                  each user in program.performance.users
-                    p
-                      b!=user.stagename
-                    p!=user.about
-                    ul
-                      each item in user.web
-                        li
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))=item.url.replace("http://","").replace("https://","")
-                      each item in user.social
-                        li
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))=item.url.replace("http://","").replace("https://","")
-              .page-break
+style.
+  .about{line-height:1}
+each day in data.programmebydayvenue
+  each room,i in day.rooms
+    if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
+      if room.program
+        h2.day=day.date+" | "+room.schedule.venue.room
+        each program,ii in room.program
+          .img
+            if program.performance.imageFormats
+              img.img-fluid.perfomance_image.bottom60(
+                src=program.performance.imageFormats.large
+                alt=program.performance.title
+              )
+          h3.title!=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime+" | "+program.performance.duration+" min. | "+program.performance.title
+          p.type=program.performance.type.name
+          p.user!=program.performance.users.map(user => {return user.stagename+" | "+user.addressesFormatted}).join(" // ")
+          .about!=program.performance.about
+          each user in program.performance.users
+            p
+              b!=user.stagename
+              !=" | "+user.addressesFormatted
+            .about!=user.aboutFull
+            ul.link
+              each item in user.web
+                li
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))=item.url.replace("http://","").replace("https://","")
+              each item in user.social
+                li
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))=item.url.replace("http://","").replace("https://","")
+        .page-break
