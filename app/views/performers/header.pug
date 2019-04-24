@@ -54,7 +54,7 @@
               ul.performer_links_list.performer_links_list_2.list-inline                 
                 each item in data.web
                   li.list-inline-item.mb-3
-                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                       span.lnr.lnr-link.about_button
                 each item in data.social
                   if item.url.indexOf('instagram.com/')!=-1

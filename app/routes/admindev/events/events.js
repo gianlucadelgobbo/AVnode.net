@@ -757,4 +757,139 @@ router.get('/:event/technical-riders', (req, res) => {
   });
 });
 
+router.get('/:event/program-print', (req, res) => {
+  logger.debug('/events/'+req.params.event+'/program-print');
+  let data = {};
+  Event.
+  findOne({"_id": req.params.event}).
+  select({title: 1, schedule: 1, organizationsettings: 1}).
+  populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
+  exec((err, event) => {
+    if (err) {
+      res.json(err);
+    } else {
+      const select = config.cpanel["events_advanced"].forms["program-print"].select;
+      const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["program-print"].populate;
+      let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
+      if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      logger.debug(query);
+      Program.
+      find(query).
+      select(select).
+      populate(populate).
+      exec((err, program) => {
+        if (err) {
+          res.json(err);
+        } else {
+          data.event = event;
+          //data.status = config.cpanel["events_advanced"].status;
+          data.program = program;
+/*           data.admitted = [];
+          let admittedO = {};
+          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
+          for(let adm in admittedO) data.admitted.push(admittedO[adm]);
+ */
+          data.rooms = [];
+          for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
+
+          let daysdays = [];
+          let schedule = JSON.parse(JSON.stringify(data.event.schedule));
+          for(let a=0;a<schedule.length;a++) {
+            let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+            if (daysdays.indexOf(dayday)===-1) {
+              daysdays.push(dayday);
+            }
+          }
+          data.days = daysdays;
+
+          /* data.sortby = [
+            {value: 'sortby_perf_name', key: 'sort by perf name'},
+            {value: 'sortby_ref_name', key: 'sort by ref name'},
+            //{value: 'sortby_person_name', key: 'sort by person name'},
+            //{value: 'sortby_arrival_date', key: 'sort by arrival date'},
+            {value: '0', key: 'sort by sub date'}
+          ]; */
+          
+          data.programmebydayvenue = {}
+          for(let a=0;a<event.schedule.length;a++) {
+            let date = new Date(event.schedule[a].starttime);  // dateStr you get from mongodb
+            if (date.getUTCHours()<10) date = new Date(event.schedule[a].starttime-(24*60*60*1000));
+            let d = ('0'+date.getUTCDate()).substr(-2);
+            let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+            let y = date.getUTCFullYear();
+            const lang = global.getLocale();
+            let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+            if (!data.programmebydayvenue[y+"-"+m+"-"+d]) {
+              data.programmebydayvenue[y+"-"+m+"-"+d] = {
+                day: y+"-"+m+"-"+d,
+                date: newdate,
+                rooms: {}
+              };
+              data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
+                schedule: event.schedule[a],
+                program: []
+              };
+            }
+            if (!data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room]) {
+              data.programmebydayvenue[y+"-"+m+"-"+d].rooms[event.schedule[a].venue.room] = {
+                schedule: event.schedule[a],
+                program: []
+              };
+            }
+          }
+          for(let a=0;a<data.program.length;a++) {
+            if (data.program[a].performance) {
+              var duration = data.program[a].performance.duration;
+              if (data.program[a].schedule && data.program[a].schedule.length) {
+                for(let b=0;b<data.program[a].schedule.length;b++) {
+                  if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
+                    if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
+                      let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
+                      if (date.getUTCHours()<10) date = new Date(data.program[a].schedule[b].starttime-(24*60*60*1000));
+                      let d = ('0'+date.getUTCDate()).substr(-2);
+                      let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                      let y = date.getUTCFullYear();
+                      let program = JSON.parse(JSON.stringify(data.program[a]));
+                      program.schedule = data.program[a].schedule[b];
+                      data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                    } else {
+                      var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                      for(let c=0;c<days;c++){
+                        let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
+                        let d = ('0'+date.getUTCDate()).substr(-2);
+                        let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                        let y = date.getUTCFullYear();
+                        let program = JSON.parse(JSON.stringify(data.program[a]));
+                        program.schedule = data.program[a].schedule[b];
+                        data.program[a].performance.duration = duration/days;
+                        data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
+                      }
+                    }
+                  }
+                }  
+              }
+            }
+          }
+          for(let item in data.programmebydayvenue) {
+            for(let room in data.programmebydayvenue[item].rooms) {
+              data.programmebydayvenue[item].rooms[room].program.sort((a,b) => (a.schedule.starttime > b.schedule.starttime) ? 1 : ((b.schedule.starttime > a.schedule.starttime) ? -1 : 0));
+            }
+          }
+          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            res.json(data);
+          } else {
+            req.query.sez = "program-print";
+            res.render('admindev/events/program-print', {
+              title: event.title+': Program',
+              data: data,
+              currentUrl: req.originalUrl,
+              get: req.query
+            });
+          }
+        }
+      });
+    }
+  });
+});
+
 module.exports = router;

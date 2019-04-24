@@ -1932,6 +1932,35 @@
             {"path": "subscriptions.subscriber_id", "select": "stagename name surname addresses email mobile lang gender", "model": "UserShow"},
             { "path": "status", "select": "name", "model": "Category"}
           ]
+        },
+        "program-print": {
+          "select": {
+            "topics": 1,
+            "call": 1,
+            "schedule": 1,
+            "subscriptions.freezed": 1, 
+            "subscriptions.wepay": 1, 
+            "subscriptions.days": 1, 
+            "subscriptions.packages.name": 1, 
+            "subscriptions.packages.price": 1, 
+            "subscriptions.packages.daily": 1, 
+            "createdAt": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [
+            { 
+              "path": "performance",
+              "select": "title image slug users duration abouts",
+              "model": "Performance",
+              "populate": [
+                {"path": "users", "select": {"stagename": 1, "addresses.country": 1, "addresses.locality": 1, "image": 1, "abouts": 1, "is_crew": 1, "web": 1, "social": 1}, "model": "UserShow"},
+                {"path": "type", "select": "name", "model": "Category"}
+              ]
+            },
+            {"path": "subscriptions.subscriber_id", "select": "stagename name surname addresses email mobile lang gender", "model": "UserShow"},
+            { "path": "status", "select": "name", "model": "Category"}
+          ]
         }
       },
       "list": {

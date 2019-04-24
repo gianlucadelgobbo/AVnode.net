@@ -67,7 +67,7 @@ block title
           ul.event_social_list.list-inline
             each item in data.web
               li.list-inline-item.mb-3
-                a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                   span.lnr.lnr-link.about_button
             each item in data.social
               if item.url.indexOf('instagram.com/')!=-1
@@ -77,23 +77,23 @@ block title
                     i.fa.fa-instagram.about_button
               else if item.url.indexOf('twitter.com/')!=-1
                 li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                     i.fa.fa-twitter.about_button
               else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
                 li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                     i.fa.fa-facebook.about_button
               else if item.url.indexOf('vimeo.com/')!=-1
                 li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                     i.fa.fa-vimeo.about_button
               else if item.url.indexOf('youtube.com/')!=-1
                 li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                     i.fa.fa-youtube.about_button
               else
                 li.list-inline-item.mb-3
-                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                     span.lnr.lnr-link.about_button
         if data.participate
           .col            
@@ -158,7 +158,7 @@ block content
                   ul.performer_links_list.performer_links_list_2.list-inline                 
                     each item in data.performer.web
                       li.list-inline-item.mb-3
-                        a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://","").split("/")[0])
+                        a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                           span.lnr.lnr-link.about_button
                     each item in data.performer.social
                       if item.url.indexOf('instagram.com/')!=-1
