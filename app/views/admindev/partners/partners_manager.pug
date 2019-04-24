@@ -8,6 +8,8 @@ block content
         th
           h5="Not assigned"
         each item, index in partnerships
+          - console.log("item")
+          - console.log(item)
           th
             h5=item.category.name
     tbody

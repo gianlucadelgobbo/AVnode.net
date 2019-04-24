@@ -76,8 +76,8 @@ const status = [
   'user_id'
 ];
 var populate = [
-  {path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, skype:1, slug:1, social:1, web:1}, model:"User"},
-  {path: "partnerships.events", select: {title:1, slug:1}, model:"Event"},
+  {path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
+  {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
   {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
 ];
 router.get('/', (req, res) => {
@@ -138,7 +138,7 @@ router.get('/:id', (req, res) => {
 
 router.get('/:id/:event', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
-  const query = {"partner_owner": req.params.id, "partnerships.events":req.params.event};
+  const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
   logger.debug(query);
   User.
   find(query).
@@ -174,14 +174,11 @@ router.get('/:id/:event', (req, res) => {
 
 router.get('/:id/:event/manage', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
-  const query = {"partner_owner": req.params.id};
-  logger.debug(query);
   Category.
   find({ancestor: "5be8708afc396100000001eb"}).
   lean().
   exec((err, categories) => {
     const query = {"partner_owner": req.params.id};
-    logger.debug(query);
     User.
     find(query).
     lean().
@@ -189,38 +186,38 @@ router.get('/:id/:event/manage', (req, res) => {
     //select({stagename: 1, createdAt: 1, crews:1}).
     populate(populate).
     exec((err, data) => {
+      var populate = [
+        {path: "partners.users", select: {stagename:1}, model:"UserShow"},
+        {path: "partners.category", select: {name:1, slug:1}, model:"Category"}
+      ];
+
       Event.
-      find({"users": req.params.id}).
-      select({title: 1}).
-      sort({title: 1}).
+      //find({"users": req.params.id}).
+      findOne({_id: req.params.event}).
+      populate(populate).
+      select({title: 1, partners:1}).
+      //sort({title: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
-      exec((err, events) => {
-        var partnerships = {};
+      //exec((err, events) => {
+      exec((err, event) => {
+        var partnerships = event.partners.slice(0);
         var notassigned = [];
         var notassignedID = [];
+        var partnersID = [];
+        //console.log(partnerships);
+
+        for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
         for (var item in data) {
-          if (data[item].stagename=="Smode Tech") console.log(data[item]);
-          if (data[item].partnerships && data[item].partnerships.length) {
-            for (var item2 in data[item].partnerships) {
-              if (data[item].partnerships[item2].events.map(event => {return event._id.toString()}).indexOf(req.params.event)!==-1) {
-                if (!partnerships[data[item].partnerships[item2].category._id]) partnerships[data[item].partnerships[item2].category._id] = {category:data[item].partnerships[item2].category, users:[]};
-                partnerships[data[item].partnerships[item2].category._id].users.push(data[item]);
-              } else {
-                if (notassignedID.indexOf(data[item]._id.toString())===-1) {
-                  notassignedID.push(data[item]._id.toString());
-                  notassigned.push(data[item]);
-                }
-              }
-            }  
-          } else {
+          if (partnersID.indexOf(data[item]._id.toString())===-1) {
             if (notassignedID.indexOf(data[item]._id.toString())===-1) {
               notassignedID.push(data[item]._id.toString());
               notassigned.push(data[item]);
             }
           }
         }
+        var existingCat = partnerships.map(item => {return item.category._id.toString()});
         for (var item in categories) {
-          if (!partnerships[categories[item]._id]) partnerships[categories[item]._id] = {category:categories[item], users:[]};
+          if (existingCat.indexOf(categories[item]._id.toString()===-1)) partnerships.push({category:categories[item], users:[]});
         }
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
@@ -230,7 +227,7 @@ router.get('/:id/:event/manage', (req, res) => {
             currentUrl: req.originalUrl,
             superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
             owner: req.params.id,
-            events: events,
+            //events: events,
             notassigned: notassigned,
   
             event: req.params.event,
