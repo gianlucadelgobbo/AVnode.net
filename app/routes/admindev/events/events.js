@@ -892,4 +892,141 @@ router.get('/:event/program-print', (req, res) => {
   });
 });
 
+router.get('/:event/pass-sheet', (req, res) => {
+  logger.debug('/events/'+req.params.event+'/pass-sheet');
+  logger.debug(req.query)
+  let data = {};
+  Event.
+  findOne({"_id": req.params.event}).
+  select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
+  populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
+  exec((err, event) => {
+    if (err) {
+      res.json(err);
+    } else {
+      const select = config.cpanel["events_advanced"].forms["pass-sheet"].select;
+      const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["pass-sheet"].populate;
+      let query = {"event": req.params.event, status: '5be8708afc39610000000013'};
+      if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
+        query['packages.options_name'] = 'hotels';
+        query['packages.option'] = req.query['packages.option_selected_hotel'];
+      }
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
+      for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            populate[item].match = {type: req.query['performance_category']};
+          }
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
+          }
+        }
+      }
+      logger.debug(query);
+      Program.
+      find(query).
+      select(select).
+      populate(populate).
+      exec((err, program) => {
+        logger.debug(program);
+        if (err) {
+          res.json(err);
+        } else {
+          data.event = event;
+          data.status = config.cpanel["events_advanced"].status;
+          let daysdays = [];
+          let schedule = JSON.parse(JSON.stringify(data.event.schedule));
+          for(let a=0;a<schedule.length;a++) {
+            let dayday = new Date(new Date(schedule[a].starttime).setUTCHours(0)).getTime();
+            if (daysdays.indexOf(dayday)===-1) {
+              daysdays.push(dayday);
+            }
+          }
+          data.days = daysdays.sort(function(a, b) {
+            a = new Date(a);
+            b = new Date(b);
+            return a<b ? -1 : a>b ? 1 : 0;
+          });
+          //data.days.unshift(data.days[0]-(24*60*60*1000));
+          //data.days.push(data.days[data.days.length-1]+(24*60*60*1000));
+          data.daysN = ((data.days[data.days.length-1]-data.days[0])/(24*60*60*1000))-1;
+
+          
+          /* data.hotels = [];
+          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++)
+            for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)
+              if (data.event.organizationsettings.call.calls[a].packages[b].options_name == "Hotels")
+                data.hotels = data.event.organizationsettings.call.calls[a].packages[b].options.split(",");
+           */
+          data.subscriptions = [];
+          for(let a=0;a<program.length;a++) {
+            for(let b=0; b<program[a].subscriptions.length;b++) {
+              if (!program[a].subscriptions[b].freezed) {
+                let subscription = JSON.parse(JSON.stringify(program[a]));
+                console.log(subscription);
+                subscription.performance.schedule = subscription.schedule;
+                subscription.performances = [subscription.performance];
+                subscription.subscription = subscription.subscriptions[b];
+                delete subscription.subscriptions;
+                delete subscription.schedule;
+                delete subscription.performance;
+                data.subscriptions.push(subscription);
+              }
+            }
+          }
+          for(let a=0;a<program.length;a++) {
+            for(let b=0; b<program[a].subscriptions.length;b++) {
+              if (program[a].subscriptions[b].freezed) {
+                let subscriber_id_map = data.subscriptions.map(subscriber => {return subscriber.subscription.subscriber_id._id.toString()});
+                let subscriber_id_index = subscriber_id_map.indexOf(program[a].subscriptions[b].subscriber_id._id.toString());
+                let subscription = JSON.parse(JSON.stringify(program[a]));
+                subscription.performance.schedule = subscription.schedule;
+                if (subscriber_id_index!=-1) {
+                  data.subscriptions[subscriber_id_index].performances.push(subscription.performance);
+                } else {
+                  subscription.performances = [subscription.performance];
+                  subscription.subscription = subscription.subscriptions[b];
+                  delete subscription.subscriptions;
+                  delete subscription.schedule;
+                  delete subscription.performance;
+                  data.subscriptions.push(subscription);
+                  }
+              }
+            }
+          }
+          /* if (req.query.sortby && req.query.sortby=='sortby_ref_name') {
+            data.subscriptions = data.subscriptions.sort((a,b) => (a.reference.stagename > b.reference.stagename) ? 1 : ((b.reference.stagename > a.reference.stagename) ? -1 : 0));
+          } */
+          //if (req.query.sortby && req.query.sortby=='sortby_perf_name') {
+            data.subscriptions = data.subscriptions.sort((a,b) => (a.performances[0].title > b.performances[0].title) ? 1 : ((b.performances[0].title > a.performances[0].title) ? -1 : 0));
+          //}
+
+          /* if (req.query.sortby && req.query.sortby=='sortby_person_name') {
+            data.subscriptions = data.subscriptions.sort((a,b) => ((a.subscription.subscriber_id.name+" "+a.subscription.subscriber_id.surname) > (b.subscription.subscriber_id.name+" "+b.subscription.subscriber_id.surname)) ? 1 : (((b.subscription.subscriber_id.name+" "+b.subscription.subscriber_id.surname) > (a.subscription.subscriber_id.name+" "+a.subscription.subscriber_id.surname)) ? -1 : 0));
+          }
+
+          if (req.query.sortby && req.query.sortby=='sortby_arrival_date') {
+            data.subscriptions = data.subscriptions.sort((a,b) => ((a.subscription.days[0]) > (b.subscription.days[0])) ? 1 : (((b.subscription.days[0]) > (a.subscription.days[0])) ? -1 : 0));
+          } */
+          
+          data.sortby = [
+          ];
+          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            res.json(data);
+          } else {
+            req.query.sez = "pass-sheet";
+            res.render('admindev/events/pass-sheet', {
+              title: 'Events: Pass sheet',
+              data: data,
+              currentUrl: req.originalUrl,
+              get: req.query
+            });
+          }
+        }
+      });
+    }
+  });
+});
+
 module.exports = router;

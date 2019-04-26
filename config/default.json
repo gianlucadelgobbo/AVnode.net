@@ -1961,6 +1961,44 @@
             {"path": "subscriptions.subscriber_id", "select": "stagename name surname addresses email mobile lang gender", "model": "UserShow"},
             { "path": "status", "select": "name", "model": "Category"}
           ]
+        },
+        "pass-sheet": {
+          "select": {
+            "schedule": 1, 
+            "subscriptions.freezed": 1, 
+            "subscriptions.wepay": 1, 
+            "subscriptions.days": 1, 
+            "subscriptions.packages.name": 1, 
+            "subscriptions.packages.price": 1, 
+            "subscriptions.packages.option": 1, 
+            "subscriptions.packages.options_name": 1, 
+            "subscriptions.packages.option_value": 1, 
+            "subscriptions.packages.daily": 1, 
+            "createdAt": 1
+          },
+          "selectaddon": {
+          },
+          "populate": [
+            { 
+              "path": "performance",
+              "select": "title slug",
+              "model": "Performance",
+              "populate": [
+                { 
+                  "path": "users",
+                  "select": "stagename slug members is_crew",
+                  "model": "UserShow"
+                }
+              ]
+            },
+            {
+              "path": "subscriptions.subscriber_id", 
+              "select": {"stagename": 1, "name": 1, "surname": 1, "addresses.country": 1, "addresses.locality": 1, "email": 1, "mobile.url": 1, "lang": 1, "gender": 1},
+              "model": "UserShow"
+            },
+            { "path": "status", "select": "name", "model": "Category"},
+            { "path": "reference", "select": {"stagename": 1, "name": 1, "surname": 1, "email": 1, "mobile.url": 1, "lang": 1}, "model": "UserShow"}
+          ]
         }
       },
       "list": {
