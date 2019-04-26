@@ -934,7 +934,7 @@ router.get('/:event/pass-sheet', (req, res) => {
           res.json(err);
         } else {
           data.event = event;
-          data.status = config.cpanel["events_advanced"].status;
+          //data.status = config.cpanel["events_advanced"].status;
           let daysdays = [];
           let schedule = JSON.parse(JSON.stringify(data.event.schedule));
           for(let a=0;a<schedule.length;a++) {
@@ -1058,7 +1058,7 @@ router.get('/:event/pass', (req, res) => {
           res.json(err);
         } else {
           data.event = event;
-          data.status = config.cpanel["events_advanced"].status;
+          //data.status = config.cpanel["events_advanced"].status;
           let daysdays = [];
           let schedule = JSON.parse(JSON.stringify(data.event.schedule));
           for(let a=0;a<schedule.length;a++) {

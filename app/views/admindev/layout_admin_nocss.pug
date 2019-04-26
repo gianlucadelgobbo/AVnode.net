@@ -16,12 +16,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='152x152', href='/icons/apple-touch-icon-152x152.png')
     link(rel='apple-touch-icon', sizes='180x180', href='/icons/apple-touch-icon-180x180.png')
 
-    link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
-    link(rel='stylesheet', href='/css/main.css')
-    link(rel='stylesheet', href='/css/admindev.css')
-    link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
-    link(rel='stylesheet', href='/lightgallery/css/lightgallery.min.css')
-    link(rel='stylesheet', href='//vjs.zencdn.net/4.12/video-js.css')
+    link(rel='stylesheet', href='/css/nocss.css')
 
   body
     .header-top
@@ -78,9 +73,9 @@ html(lang='en')
                     line(x1='8', y1='2', x2='8', y2='6')
                     line(x1='3', y1='10', x2='21', y2='10')
                   |             This week
-
+            block filters
             include ../partials/flash
-    .container-fluid.main
+    .container-fluid
       .row
         .col
           block content

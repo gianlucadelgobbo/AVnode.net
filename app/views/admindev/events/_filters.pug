@@ -66,7 +66,7 @@
     //input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefinded)
       label.mr-sm-3(for='unlink') Performance suspect
       br
-    if get.sez == "acts"
+    if get.sez == "acts" || get.sez == "program-print"
       input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
       label.mr-sm-3(for='fullinfo') FULL INFO
     if get.sez == "technical-riders"

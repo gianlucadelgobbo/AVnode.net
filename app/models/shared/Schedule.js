@@ -75,11 +75,11 @@ Schedule.virtual('starttimeDay').get(function () {
       let boxDateA = []
       for(let a=0;a<=days;a++) {
         let boxDateTMP = "";
-        boxDateTMP = moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+        boxDateTMP = moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdayday);
       }
       boxDate = boxDateA.join("<br />");
     } else {
-      boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
+      boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdayday);
     }
   }
   return boxDate;

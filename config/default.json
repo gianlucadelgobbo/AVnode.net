@@ -11,6 +11,7 @@
   "dateFormat": {
     "en": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "MMMM DD",
@@ -18,6 +19,7 @@
     },
     "it": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -25,6 +27,7 @@
     },
     "es": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -32,6 +35,7 @@
     },
     "fr": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -39,6 +43,7 @@
     },
     "pl": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -46,6 +51,7 @@
     },
     "ru": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -53,6 +59,7 @@
     },
     "hu": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -60,6 +67,7 @@
     },
     "by": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
@@ -67,6 +75,7 @@
     },
     "gr": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
       "daymonthyear" : "DD MMMM YYYY",
       "day1" : "DD",
