@@ -19,6 +19,8 @@ block content
             - var dd = new Date(d.setDate(d.getDate() + a))
             th=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
           th="Performances"
+          th="Performances"
+          th="Performances"
       tbody
         - var conta = 0
         each subscription, index in data.subscriptions
@@ -82,10 +84,23 @@ block content
                     each performance in subscription.performances
                       if performance.schedule
                         each schedule in performance.schedule
+                          - console.log(schedule)
                           div
-                            b!=performance.title
-                            !=" | "+schedule.boxDate
-                            !=" | "+schedule.venue.room
+                            !=schedule.venue.room
+                td
+                  .mb-1
+                    each performance in subscription.performances
+                      if performance.schedule
+                        each schedule in performance.schedule
+                          div
+                            !=schedule.starttimeTime
+                td
+                  .mb-1
+                    each performance in subscription.performances
+                      if performance.schedule
+                        each schedule in performance.schedule
+                          div
+                            !=schedule.starttimeDay
         tr
           td(colspan=3)
           if get['subscriptions.packages.name'] == "Accommodation"

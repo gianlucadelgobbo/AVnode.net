@@ -64,6 +64,26 @@ Schedule.virtual('boxDate').get(function () {
   }
   return boxDate;
 });
+Schedule.virtual('starttimeDay').get(function () {
+  let boxDate;
+  if (this.starttime) {
+    const lang = global.getLocale();
+    const start = new Date(this.starttime-(10*60*60*1000)).getTime()
+    const end = new Date(this.endtime-(10*60*60*1000)).getTime()
+    const days = Math.ceil((end-start)/(24*60*60*1000))
+    if (days > 1) {
+      let boxDateA = []
+      for(let a=0;a<=days;a++) {
+        let boxDateTMP = "";
+        boxDateTMP = moment.utc((new Date(this.starttime-(10*60*60*1000)).getTime())+(a*(24*60*60*1000))).format(config.dateFormat[lang].weekdaydaymonthyear);
+      }
+      boxDate = boxDateA.join("<br />");
+    } else {
+      boxDate = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear);
+    }
+  }
+  return boxDate;
+});
 
 Schedule.virtual('starttimeTime').get(function () {
   let starttimeTime;
