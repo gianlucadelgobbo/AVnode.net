@@ -237,7 +237,7 @@ block content
                 !=" "
                 .badge.badge-danger MISSING EMAIL
               br
-              if item.reference.mobile.length
+              if item.reference.mobile && item.reference.mobile.length
                 !=mobile=item.reference.mobile.map(item => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>';})
               else
                 !=" "
