@@ -543,10 +543,12 @@ eventSchema.virtual('boxVenue').get(function () {
     for (let schedule=0;schedule<this.schedule.length; schedule++) {
       //for (let venue in schedulebydayvenueObjGrouped[item].venues) {
         let v = this.schedule[schedule].venue;
-        if (!boxVenueO[v.location.country]) boxVenueO[v.location.country] = {};
-        if (!boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
-        if (!boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
-        if (v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};
+        if (v.location && v.location.country && v.location.locality && v.name && v.room) {
+          if (!boxVenueO[v.location.country]) boxVenueO[v.location.country] = {};
+          if (!boxVenueO[v.location.country][v.location.locality]) boxVenueO[v.location.country][v.location.locality] = {};
+          if (!boxVenueO[v.location.country][v.location.locality][v.name]) boxVenueO[v.location.country][v.location.locality][v.name] = [];
+          if (v.room && !boxVenueO[v.location.country][v.location.locality][v.name][v.room]) boxVenueO[v.location.country][v.location.locality][v.name][v.room] = {};  
+        }
       //}
     }
     let boxVenue = "";
