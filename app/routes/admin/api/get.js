@@ -288,6 +288,12 @@ router.getCategories = (req, res) => {
               conta++;
               if (childrens.length == conta) {
                 category.childrens = childrens;
+                category = JSON.parse(JSON.stringify(category));
+                for (let b=0;b<category.childrens.length;b++){
+                  category.childrens[b].title = category.childrens[b].name;
+                  category.childrens[b].value = category.childrens[b].slug;
+                  category.childrens[b].key = category.childrens[b]._id;
+                }
                 res.json(category);
               }
             });

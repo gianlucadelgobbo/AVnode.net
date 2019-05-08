@@ -1447,7 +1447,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "videos", "match": { "is_public": true}, "select": "title image imageFormats users", "model": "Video", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
+          "populate": [{ "path": "videos", "select": "title image imageFormats users", "model": "Video", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
         },
         "calls": {
           "components": {

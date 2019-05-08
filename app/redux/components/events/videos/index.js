@@ -8,6 +8,9 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../../events/selectors";
+import {
+  MODAL_ADD_EVENTS_VIDEOS
+} from "../../modal/constants";
 import Video from "../../video";
 import { FormattedMessage } from "react-intl";
 import { EVENT_NAME, SHOW } from "./constants";
@@ -37,6 +40,7 @@ class EventsVideo extends Component {
 
           <Video
             model={model}
+            modal={MODAL_ADD_EVENTS_VIDEOS}
             isFetching={isFetching}
             errorMessage={errorMessage}
             id={_id}

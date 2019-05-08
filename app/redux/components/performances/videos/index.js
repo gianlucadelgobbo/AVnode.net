@@ -12,6 +12,9 @@ import Video from "../../video";
 import { FormattedMessage } from "react-intl";
 import TitleComponent from "../../titleComponent";
 import { PERFORMANCE_NAME, SHOW } from "./constants";
+import {
+  MODAL_ADD_PERFORMANCES_VIDEOS
+} from "../../modal/constants";
 
 class PerformaceVideo extends Component {
   render() {
@@ -37,6 +40,7 @@ class PerformaceVideo extends Component {
           <TitleComponent title={model.title} type={PERFORMANCE_NAME} link={"/performances/"+model.slug} show={SHOW} />
           <Video
             model={model}
+            modal={MODAL_ADD_PERFORMANCES_VIDEOS}
             isFetching={isFetching}
             errorMessage={errorMessage}
             id={_id}

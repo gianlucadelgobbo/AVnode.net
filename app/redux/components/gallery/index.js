@@ -82,7 +82,7 @@ class Gallery extends Component {
         <div className="row">
           <div className="col-sm-12">
             <h3>{img.title}</h3>
-            <Link to={`/admin/galleries/${img.id}/public`}>
+            <Link to={`/admin/galleries/${img._id}/public`}>
               <Image src={small} responsive rounded />
             </Link>
           </div>

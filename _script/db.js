@@ -269,94 +269,6 @@ var sc = [
 		"endtime" : ISODate("2019-05-03T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Meeting Area Lectures",
-			"breakduration" : 10,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-03T18:00:00Z"),
-		"endtime" : ISODate("2019-05-04T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Meeting Area Lectures",
-			"breakduration" : 10,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T18:00:00Z"),
-		"endtime" : ISODate("2019-05-05T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Meeting Area Lectures",
-			"breakduration" : 10,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-05T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T18:00:00Z"),
-		"endtime" : ISODate("2019-05-06T01:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Meeting Area Lectures",
-			"breakduration" : 10,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-02T00:00:00Z"),
-		"starttime" : ISODate("2019-05-02T18:00:00Z"),
-		"endtime" : ISODate("2019-05-03T01:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
 			"room" : "Galleria",
 			"breakduration" : 10,
 			"location" : {
@@ -441,12 +353,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-02T00:00:00Z"),
-		"starttime" : ISODate("2019-05-02T22:00:00Z"),
+		"starttime" : ISODate("2019-05-02T15:00:00Z"),
 		"endtime" : ISODate("2019-05-03T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Meeting Area",
-			"breakduration" : 0,
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -463,12 +375,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T00:00:00Z"),
+		"starttime" : ISODate("2019-05-03T15:00:00Z"),
 		"endtime" : ISODate("2019-05-04T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Meeting Area",
-			"breakduration" : 0,
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -485,12 +397,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T00:00:00Z"),
+		"starttime" : ISODate("2019-05-04T15:00:00Z"),
 		"endtime" : ISODate("2019-05-05T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Meeting Area",
-			"breakduration" : 0,
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -507,12 +419,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-05T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T22:00:00Z"),
+		"starttime" : ISODate("2019-05-05T15:00:00Z"),
 		"endtime" : ISODate("2019-05-06T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
 			"room" : "Meeting Area",
-			"breakduration" : 0,
+			"breakduration" : 10,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -617,12 +529,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-02T00:00:00Z"),
-		"starttime" : ISODate("2019-05-03T00:00:00Z"),
-		"endtime" : ISODate("2019-05-03T04:00:00Z"),
+		"starttime" : ISODate("2019-05-02T15:00:00Z"),
+		"endtime" : ISODate("2019-05-03T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Galleria VJ Sets",
-			"breakduration" : 0,
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -639,12 +551,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T00:00:00Z"),
+		"starttime" : ISODate("2019-05-03T15:00:00Z"),
 		"endtime" : ISODate("2019-05-04T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Galleria VJ Sets",
-			"breakduration" : 0,
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -661,12 +573,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T00:00:00Z"),
+		"starttime" : ISODate("2019-05-04T15:00:00Z"),
 		"endtime" : ISODate("2019-05-05T04:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Galleria VJ Sets",
-			"breakduration" : 0,
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -683,100 +595,12 @@ var sc = [
 	},
 	{
 		"date" : ISODate("2019-05-05T00:00:00Z"),
-		"starttime" : ISODate("2019-05-06T00:00:00Z"),
-		"endtime" : ISODate("2019-05-06T04:00:00Z"),
+		"starttime" : ISODate("2019-05-05T15:00:00Z"),
+		"endtime" : ISODate("2019-05-06T01:00:00Z"),
 		"venue" : {
 			"name" : "Mattatoio",
-			"room" : "Galleria VJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-02T00:00:00Z"),
-		"starttime" : ISODate("2019-05-03T00:00:00Z"),
-		"endtime" : ISODate("2019-05-03T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria DJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-03T00:00:00Z"),
-		"starttime" : ISODate("2019-05-04T00:00:00Z"),
-		"endtime" : ISODate("2019-05-04T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria DJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-04T00:00:00Z"),
-		"starttime" : ISODate("2019-05-05T00:00:00Z"),
-		"endtime" : ISODate("2019-05-05T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria DJ Sets",
-			"breakduration" : 0,
-			"location" : {
-				"country" : "Italy",
-				"locality" : "Roma",
-				"postal_code" : "00153",
-				"street_number" : "4",
-				"route" : "Piazza Orazio Giustiniani",
-				"geometry" : {
-					"lat" : 41.87645,
-					"lng" : 12.4732736
-				},
-				"formatted_address" : "Piazza Orazio Giustiniani, 4, 00153 Roma RM, Italy"
-			}
-		}
-	},
-	{
-		"date" : ISODate("2019-05-05T00:00:00Z"),
-		"starttime" : ISODate("2019-05-06T00:00:00Z"),
-		"endtime" : ISODate("2019-05-06T04:00:00Z"),
-		"venue" : {
-			"name" : "Mattatoio",
-			"room" : "Galleria DJ Sets",
-			"breakduration" : 0,
+			"room" : "Galleria VJ-DJ Sets",
+			"breakduration" : -1,
 			"location" : {
 				"country" : "Italy",
 				"locality" : "Roma",
@@ -885,35 +709,6 @@ event.schedule = sc;
 db.events.save(event);
 printjson(event.schedule);
 
-db.program.find({event:ObjectId('5c41c8a06b32ec637f343e1a'), status:ObjectId('5be8708afc39610000000013')}).forEach(function(program) {
-  var performance = db.performances.findOne({_id:program.performance});
-	if (performance.type.str=="5be8708afc39610000000016") {
-    printjson(performance.duration);  
-    db.performances.update({_id:program.performance},{$set: {duration:"5"}});
-	}
-});
-
-db.program.find({performance:ObjectId('5c8eb89259c1b55c31edab22')}).forEach(function(program) {
-  program.schedule = [];
-  db.program.save(program);
-  printjson(program);  
-});
-
-var event = db.events.findOne({slug:'lpm-2019-rome'});
-var found = true;
-event.program.forEach(function(program, i) {
-  if (program.performance.str == '5c6064bf91f19b3134a184f6') {
-    if (found) event.program.splice(i,1);
-    found = false;
-  }
-});
-event.program.forEach(function(program, i) {
-  if (program.performance.str == '5c6064bf91f19b3134a184f6') {
-    printjson(program);  
-  }
-});
-db.events.save(event);
-
 // Resolume Arena 6
 var performance = db.performances.findOne({_id:ObjectId('5c767241b561247a3a0411cc')});
 performance.price = 150;
@@ -956,9 +751,63 @@ SocietadiLamponi
 db.performances.findOne({_id:ObjectId('5c55bad464d4d470b343540f')});
 var event = db.events.findOne({"program.performance":ObjectId('5c55bad464d4d470b343540f')});
 printjson(event.program);
+var conta = 0;
+db.program.find({"performance":ObjectId('5c6064bf91f19b3134a184f6')}).forEach((program,i) =>{
+	printjson(conta);
+	printjson(program.schedule);
+	conta++;
+});
 
-db.program.findOne({"performance":ObjectId('5c55bad464d4d470b343540f')});
+var event = db.events.findOne({"program.performance":ObjectId('5c55bad464d4d470b343540f')});
+event.program.forEach((program,i) =>{
+	printjson(program);
+	if(program.performance.str == "5c55bad464d4d470b343540f") {
+	}
+});
 
 
 
+var program = {
+	"_id" : ObjectId("5c89290cb1312425911733fe"),
+	"topics" : [
+		"Live Cinema"
+	],
+	"event" : ObjectId("5c41c8a06b32ec637f343e1a"),
+	"call" : 0,
+	"performance" : ObjectId("5c6064bf91f19b3134a184f6"),
+	"status" : ObjectId("5be8708afc39610000000013"),
+	"reference" : ObjectId("5c6012e091f19b3134a184ee"),
+	"subscriptions" : [
+		{
+			"freezed" : false,
+			"wepay" : false,
+			"days" : [
+				ISODate("2019-05-03T00:00:00Z"),
+				ISODate("2019-05-04T00:00:00Z")
+			],
+			"subscriber_id" : ObjectId("5c6012e091f19b3134a184ee"),
+			"packages" : [
+				{
+					"personal" : true,
+					"requested" : true,
+					"allow_multiple" : true,
+					"allow_options" : true,
+					"daily" : false,
+					"name" : "Basic subscription",
+					"price" : 10,
+					"description" : "1 pass valid for all activities<br />1 drink per day<br />1 T-Shirt<br />1 Slot for your proposal",
+					"options_name" : "T-Shirt Size",
+					"options" : "S - Men,M - Men,L - Men,XL - Men,XXL - Men,S - Women,M - Women,L - Women",
+					"start_date" : ISODate("2019-01-21T00:00:00Z"),
+					"end_date" : ISODate("2019-03-18T23:59:59Z"),
+					"option" : "L - Men"
+				}
+			]
+		}
+	],
+	"createdAt" : ISODate("2019-03-13T16:00:12.361Z"),
+	"updatedAt" : ISODate("2019-04-14T23:36:02.617Z"),
+	"__v" : 5
+}
+db.program.save(program);
 

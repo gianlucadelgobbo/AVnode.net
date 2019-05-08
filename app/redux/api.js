@@ -931,8 +931,8 @@ export const fetchPerformancesCategories = () => {
 };
 
 export const fetchEventsCategories = () => {
-  return axios.get("/getcategories/performances/slug/type").then(result => {
-    return result.data.children;
+  return axios.get("/getcategories/events/slug/event-type").then(result => {
+    return result.data.childrens;
   });
 };
 

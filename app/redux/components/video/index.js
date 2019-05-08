@@ -101,7 +101,7 @@ class Video extends Component {
         <div className="row">
           <div className="col-sm-12">
             <h3>{v.title}</h3>
-            <Link to={`/admin/videos/${v.id}/public`}>
+            <Link to={`/admin/videos/${v._id}/public`}>
               <Image
                 src={v.imageFormats ? v.imageFormats.small : ""}
                 responsive
@@ -138,7 +138,7 @@ class Video extends Component {
   }
 
   render() {
-    const { model, showModal, isFetching, errorMessage, history, id } = this.props;
+    const { model, modal, showModal, isFetching, errorMessage, history, id } = this.props;
 
     return (
       <div>
@@ -149,7 +149,7 @@ class Video extends Component {
               className="pull-right"
               onClick={() =>
                 showModal({
-                  type: MODAL_ADD_PERFORMANCES_VIDEOS,
+                  type: modal,
                   props: {
                     id,
                     history
