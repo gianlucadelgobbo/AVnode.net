@@ -16,7 +16,7 @@ const gallerySchema = new Schema({
   title: { type: String, trim: true, required: true, maxlength: 50 },
   is_public: { type: Boolean, default: false },
   image: MediaImage,
-  teaserImage: MediaImage,
+  //teaserImage: MediaImage,
   //  file: {file: String},
   abouts: [About],
   stats: {
