@@ -2458,12 +2458,12 @@ export const listGallery = ({
                   <p>{image.title}</p>
                   <i
                     onClick={() => {
-                      //console.log(image);
+                      console.log(image);
                       showModal({
                         type: MODAL_REMOVE,
                         props: {
                           onRemove: () =>
-                            removeImage({ id: model.id, imgId: image.slug })
+                            removeImage({ id: model._id, imgId: image.slug })
                         }
                       });
                     }}

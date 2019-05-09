@@ -566,7 +566,7 @@ export const saveVideosMedia = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put(`videos/${model.id}/video`, formBox, config).then(result => {
+  return axios.put(`videos/${model._id}/video`, formBox, config).then(result => {
     return result.data;
   });
 };
@@ -637,13 +637,14 @@ export const saveGalleriesMedia = model => {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
   return axios
-    .put(`galleries/${model.id}/medias`, formBox, config)
+    .put(`galleries/${model._id}/medias`, formBox, config)
     .then(result => {
       return result.data;
     });
 };
 
 export const removeGalleriesMedia = model => {
+  console.log(model);
   return axios
     .get(`galleries/${model.id}/mediaremove/${model.imgId}`, model)
     .then(result => {

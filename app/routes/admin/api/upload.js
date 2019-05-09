@@ -181,6 +181,7 @@ upload.uploader = (req, res, done) => {
                         encoding: req.files[options.fields.name][a].encoding,
                         mimetype: req.files[options.fields.name][a].mimetype,
                         folder: req.files[options.fields.name][a].destination,
+                        slug: req.files[options.fields.name][a].filename.replace(".jpeg", ""),
                         filename: req.files[options.fields.name][a].filename,
                         size: req.files[options.fields.name][a].size,
                         width: req.files[options.fields.name][a].width,
