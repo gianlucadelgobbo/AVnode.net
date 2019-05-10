@@ -58,12 +58,12 @@ html(lang='en')
         .row
           // Sidebar
           .d-print-none
-            if currentUrl.indexOf("/admindev/events")===0
+            include partials/menuSuper
+            //if currentUrl.indexOf("/admindev/events")===0
               include partials/menuEvents
-            else if currentUrl.indexOf("/admindev/supertools")===0
-              include partials/menuSuper
-            else if currentUrl.indexOf("/admin")===0
-              include partials/menuHome
+              else if currentUrl.indexOf("/admindev/supertools")===0
+              else if currentUrl.indexOf("/admin")===0
+                include partials/menuHome
           main.col(role='main')
             .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
               h1.h2=title
@@ -87,44 +87,15 @@ html(lang='en')
                   if script
                       !=script
 
-                  footer.border-top.mt-3
-                    .container-fluid
-                      .text-muted.text-right=global.__('AVnode.net')
-                  script(src='/js/combo.min.js')
-                  script(src="/js/owl.carousel.min.js")
-                  script(src="/js/admindev.js")
-                  script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
-                  script(src="/js/moment-with-locales.min.js")
-                  script(src="/js/jquery.serializejson.min.js")
-                  script(src='//vjs.zencdn.net/4.12/video.js')
-                  script(src='/lightgallery/js/lightgallery.min.js')
-                  script(src='/lightgallery/js/lg-video.min.js')
-                  script.
-                    // Hide submenus
-                    $('#body-row .collapse').collapse('hide'); 
-
-                    // Collapse/Expand icon
-                    $('#collapse-icon').addClass('fa-angle-double-left'); 
-
-                    // Collapse click
-                    $('[data-toggle=sidebar-colapse]').click(function() {
-                        SidebarCollapse();
-                    });
-
-                    function SidebarCollapse () {
-                      $('.menu-collapsed').toggleClass('d-none');
-                      $('.sidebar-submenu').toggleClass('d-none');
-                      $('.submenu-icon').toggleClass('d-none');
-                      $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
-                      
-                      // Treating d-flex/d-none on separators with title
-                      var SeparatorTitle = $('.sidebar-separator-title');
-                      if ( SeparatorTitle.hasClass('d-flex') ) {
-                          SeparatorTitle.removeClass('d-flex');
-                      } else {
-                          SeparatorTitle.addClass('d-flex');
-                      }
-                      
-                      // Collapse/Expand icon
-                      $('#collapse-icon').toggleClass('fa-arrow-circle-o-left fa-arrow-circle-o-right');
-                    }
+            footer.border-top.mt-3
+              .container-fluid
+                .text-muted.text-right=global.__('AVnode.net')
+            script(src='/js/combo.min.js')
+            script(src="/js/owl.carousel.min.js")
+            script(src="/js/admindev.js")
+            script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+            script(src="/js/moment-with-locales.min.js")
+            script(src="/js/jquery.serializejson.min.js")
+            script(src='//vjs.zencdn.net/4.12/video.js')
+            script(src='/lightgallery/js/lightgallery.min.js')
+            script(src='/lightgallery/js/lg-video.min.js')

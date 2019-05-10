@@ -37,13 +37,13 @@ router.checkAndCreate = (folder, cb) => {
   cb();
 };
 
-router.download = (source, dest, callback) => {
+/* router.download = (source, dest, callback) => {
   request.head(source, function(err, res, body){
     logger.debug('content-type:', res.headers['content-type']);
     logger.debug('content-length:', res.headers['content-length']);
     request(source).pipe(fs.createWriteStream(dest)).on('close', callback);
   });
-};
+}; */
 
 router.get('/userimages', (req, res) => {
   logger.debug('/admindev/supertools/files/userimages');

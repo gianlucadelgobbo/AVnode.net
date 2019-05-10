@@ -10,7 +10,8 @@ const logger = require('../../../utilities/logger');
 router.get('/', (req, res) => {
   logger.debug('/admindev/supertools/');
   res.render('admindev/supertools/home', {
-    title: 'admindev/supertools',
+    title: 'SUPER Tools',
+    sez: 'admindev/supertools/home',
     superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
     currentUrl: req.originalUrl,
     data: 'LOAD DATA'

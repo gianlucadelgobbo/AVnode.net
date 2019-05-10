@@ -66,14 +66,15 @@
 
 /* Menu item*/
 #sidebar-container .list-group a {
-  height: 50px;
   color: white;
 }
 
 /* Submenu item*/
 #sidebar-container .list-group .sidebar-submenu a {
-  height: 45px;
   padding-left: 30px;
+}
+#sidebar-container .list-group .sidebar-subsubmenu a {
+  padding-left: 75px;
 }
 .sidebar-submenu {
   font-size: 0.9rem;
