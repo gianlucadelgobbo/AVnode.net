@@ -36,9 +36,9 @@ class AddEventsGalleries extends Component {
     modelToSave._id = id;
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
-      if (response.model && response.model.id) {
+      if (response.model && response.model._id) {
         hideModal();
-        history.push("/admin/galleries/" + `${response.model.id}` + "/public");
+        history.push("/admin/galleries/" + `${response.model._id}` + "/public");
       }
     });
   }
