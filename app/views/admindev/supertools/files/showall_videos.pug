@@ -57,6 +57,6 @@ block content
             !="<br />"
             if item.findoriginal
               !=item.findoriginal
-            else 
+            if item.original 
               !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
   //pre=JSON.stringify(data, null, 2)

@@ -87,14 +87,17 @@ router.get('/userimages', (req, res) => {
       data.push(users[user].image);
     }
     logger.debug(req.path);
-    res.render('admindev/supertools/files/showall', {
-      title: 'User images',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
-      data: data,
-      script: false
-    });
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      res.render('admindev/supertools/files/showall', {
+        title: 'User images',
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        currentUrl: req.originalUrl,
+        data: data,
+        script: false
+      });
+    }
   });
 });
 
@@ -196,13 +199,17 @@ router.get('/performanceimages', (req, res) => {
       data.push(performances[performance].image);
     }
     logger.debug(req.path);
-    res.render('admindev/supertools/files/showall', {
-      title: 'Performance images',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
-      data: data,
-      script: false
-    });
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      res.render('admindev/supertools/files/showall', {
+        title: 'Performance images',
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        currentUrl: req.originalUrl,
+        data: data,
+        script: false
+      });
+    }
   });
 });
 
@@ -257,7 +264,7 @@ router.get('/performanceformatsgenerator', (req, res) => {
     res.render('admindev/supertools/files/showall', {
       title: 'Performance images generator',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
+      currentUrl: req.originalUrl,
       data: data,
       script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/performanceformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
     });
@@ -605,13 +612,17 @@ router.get('/footagefiles', (req, res) => {
       data.push(footages[footage].media);
     }
     logger.debug(req.path);
-    res.render('admindev/supertools/files/showall', {
-      title: 'Footage images',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
-      data: data,
-      script: false
-    });
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      res.render('admindev/supertools/files/showall', {
+        title: 'Footage images',
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        currentUrl: req.originalUrl,
+        data: data,
+        script: false
+      });
+    }
   });
 });
 
@@ -869,7 +880,7 @@ router.get('/videofiles', (req, res) => {
       res.json(data);
     } else {
       logger.debug(req.path);
-      res.render('admindev/supertools/files/videos', {
+      res.render('admindev/supertools/files/showall_videos', {
         title: 'Video images',
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
         currentUrl: req.originalUrl,
@@ -974,7 +985,7 @@ router.get('/videoformatsgenerator', (req, res) => {
       res.json(data);
     } else {
       logger.debug(req.path);
-      res.render('admindev/supertools/files/videos', {
+      res.render('admindev/supertools/files/showall_videos', {
         title: 'Video images generator',
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
         currentUrl: req.originalUrl,

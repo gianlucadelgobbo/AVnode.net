@@ -1,13 +1,11 @@
 extends ../../layout_admin
 block content
-  h2=title
   - var mkdir = []
   if data.length
     each item, index in data
       if !item.exists && item.mkdir && mkdir.indexOf(item.mkdir)===-1
         - mkdir.push(item.mkdir)
     - mkdir.sort()
-    p=mkdir.length
     ol
       if mkdir.length
         each item in mkdir
@@ -38,7 +36,7 @@ block content
             !="<br />"
             if item.findoriginal
               !=item.findoriginal
-            else 
+            if item.original
               !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
   ol
     if data.length
@@ -59,6 +57,6 @@ block content
             !="<br />"
             if item.findoriginal
               !=item.findoriginal
-            else 
+            if item.original 
               !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
   //pre=JSON.stringify(data, null, 2)
