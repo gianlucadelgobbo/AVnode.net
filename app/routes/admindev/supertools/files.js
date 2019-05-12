@@ -557,11 +557,11 @@ router.get('/footagefiles', (req, res) => {
         originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
       }
       /*
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
         logger.debug(footages[footage].media);
-        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        footages[footage].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
         footages[footage].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+footages[footage].media.imageFormats[format]);
       }
       */
@@ -854,10 +854,10 @@ router.get('/videofiles', (req, res) => {
         }
         if (videos[video].media.previewexists) {
           // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
             videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
           }
         }
@@ -938,11 +938,11 @@ router.get('/videoformatsgenerator', (req, res) => {
         originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
       }
       /*
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
         logger.debug(videos[video].media);
-        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+        videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
       }
-      for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+      for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
         videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
       }
       */
@@ -956,16 +956,16 @@ router.get('/videoformatsgenerator', (req, res) => {
           const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
           const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
           // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
-            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+            videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
           }
-          for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
+          for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
             videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
             if (!videos[video].media.imageFormatsExists[format]) {
               let folder = videos[video].media.imageFormats[format].substring(0, videos[video].media.imageFormats[format].lastIndexOf('/'))
               router.checkAndCreate(folder, () => {
                 sharp(global.appRoot+previewFile)
-                .resize(config.cpanel[adminsez].forms.public.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.media.config.sizes[format].h)
+                .resize(config.cpanel[adminsez].forms.video.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.video.components.media.config.sizes[format].h)
                 .toFile(global.appRoot+videos[video].media.imageFormats[format], (err, info) => {
                   logger.debug(err);
                   logger.debug(info);
@@ -1028,10 +1028,10 @@ router.get('/galleryimages', (req, res) => {
         const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
         const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
         //logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-        for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-          galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
+          galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
         }
-        for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+        for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
           galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
         }
         if (!galleries[gallery].medias[media].exists) {
@@ -1088,16 +1088,16 @@ router.get('/gallerygenerator', (req, res) => {
             const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
             const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
             // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
-            for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
-              galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
+            for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
+              galleries[gallery].medias[media].imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.public.components.image.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
             }
-            for(let format in config.cpanel[adminsez].forms.public.components.medias.config.sizes) {
+            for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
               galleries[gallery].medias[media].imageFormatsExists[format] = fs.existsSync(global.appRoot+galleries[gallery].medias[media].imageFormats[format]);
               if (!galleries[gallery].medias[media].imageFormatsExists[format]) {
                 let folder = galleries[gallery].medias[media].imageFormats[format].substring(0, galleries[gallery].medias[media].imageFormats[format].lastIndexOf('/'))
                 router.checkAndCreate(folder, () => {
                   sharp(global.appRoot+previewFile)
-                  .resize(config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.medias.config.sizes[format].h)
+                  .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
                   .toFile(global.appRoot+galleries[gallery].medias[media].imageFormats[format], (err, info) => {
                     logger.debug(err);
                     logger.debug(info);

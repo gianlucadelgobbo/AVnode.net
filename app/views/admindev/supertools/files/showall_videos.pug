@@ -39,7 +39,7 @@ block content
             !="<br />"
             !="Original: "
             if item.original 
-              !=": "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              !=global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             else
               !='<span class="badge badge-danger">MISSING</span>'
 
