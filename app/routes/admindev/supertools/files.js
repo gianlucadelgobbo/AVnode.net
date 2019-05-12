@@ -615,7 +615,7 @@ router.get('/footagefiles', (req, res) => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
     } else {
-      res.render('admindev/supertools/files/showall', {
+      res.render('admindev/supertools/files/showall_videos', {
         title: 'Footage images',
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
         currentUrl: req.originalUrl,

@@ -6,57 +6,51 @@ block content
       if !item.exists && item.mkdir && mkdir.indexOf(item.mkdir)===-1
         - mkdir.push(item.mkdir)
     - mkdir.sort()
+    b="MK Dir"
     ol
       if mkdir.length
         each item in mkdir
           li=item
-
-  ol
-    if data.length
+    b="Find file"
+    ol
       each item, index in data
-        if !item.exists /*|| !item.previewexists */
-          li
-            if item.find
-              !=item.find
-              if item.find2
-                !="<br />"
-                !=item.find2
-            else 
-              !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-              if item.imageFormats
-                each image, format in item.imageFormats
-                  !="<br />"
-                  !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.preview
+        if item.find
+          li!=item.find
+            if item.find2
               !="<br />"
-              if item.findpreview
-                !=item.findpreview
-              else 
-                !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            !="<br />"
-            if item.findoriginal
-              !=item.findoriginal
-            else 
-              !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+              !=item.find2
+    b="Find preview"
+    ol
+      each item, index in data
+        if item.findpreview
+          li!=item.findpreview
+    b="Find Original"
+    ol
+      each item, index in data
+        if item.findoriginal
+          li!=item.findoriginal
+
   ol
     if data.length
       each item, index in data
         if item.exists
           li
             !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            !="<br />"
+            !="Original: "
+            if item.original 
+              !=": "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            else
+              !='<span class="badge badge-danger">MISSING</span>'
+
+            !="<br />"
+            !="Preview: "
+            if item.preview
+              !=global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+            else
+              !='<span class="badge badge-danger">MISSING</span>'
+
             if item.imageFormats
               each image, format in item.imageFormats
                 !="<br />"
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.preview
-              !="<br />"
-              if item.findpreview
-                !=item.findpreview
-              else 
-                !="Preview: "+global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            !="<br />"
-            if item.findoriginal
-              !=item.findoriginal
-            if item.original 
-              !="Original: "+global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-  //pre=JSON.stringify(data, null, 2)
