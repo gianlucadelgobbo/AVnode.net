@@ -541,6 +541,9 @@ router.get('/footagefiles', (req, res) => {
       const oldPath = fileFolder.replace("/glacier/footage_originals/", "/warehouse/"); // /warehouse/2017/03
       const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
       const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+      if (fileExtension == "swf" || fileExtension == "flv") {
+        footages[footage].media.original = footages[footage].media.file;
+      }
       let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
       let originalFileName = '';
       if (!footages[footage].media.exists) {
