@@ -597,7 +597,7 @@ router.get('/footagefiles', (req, res) => {
           //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find ${oldPath.replace("/warehouse/", "warehouse/")} -name '${previewFileName.replace('.png','*.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \\;`;
           //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse/ -name '${previewFileName.replace('.png','.jpg')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")} \\;`;
           //footages[footage].media.findpreview = `mkdir ${previewFileFolder.replace("/glacier/", "glacier/")}<br />find warehouse/ -name '${previewFileName.replace('.png','_flv.png')}' -exec cp "{}" ${previewFileFolder.replace("/glacier/", "glacier/")}/${previewFileName} \\;`;
-          //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
+          //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_previews/')+'/'+fileNameWithoutExtension+'.png';
           //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
         }
       }
@@ -761,7 +761,7 @@ router.get('/footageformatsgenerator', (req, res) => {
           }
         }
       } else {
-        //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_preview/')+'/'+fileNameWithoutExtension+'.png';
+        //footages[footage].media.preview = fileFolder.replace('/warehouse/footage/', '/warehouse/footage_previews/')+'/'+fileNameWithoutExtension+'.png';
         //footages[footage].media.previewexists = fs.existsSync(global.appRoot+footages[footage].media.preview);
       }
       if (fileExtension=="mp4") {
