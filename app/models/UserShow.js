@@ -183,7 +183,6 @@ userSchema.virtual('addressesFormatted').get(function () {
 
 userSchema.virtual('partnerships_ordered').get(function () {
   if (this.partnerships && this.partnerships.length) {
-    console.log('partnerships_ordered');
     /* let partnerships_ordered = [];
     for(let partnership=0; partnership<this.partnerships.length; partnership++) {
       for(let event=0; event<  this.partnerships[partnership].events.length; event++) {

@@ -969,7 +969,6 @@ router.get('/:event/pass-sheet', (req, res) => {
             for(let b=0; b<program[a].subscriptions.length;b++) {
               if (!program[a].subscriptions[b].freezed) {
                 let subscription = JSON.parse(JSON.stringify(program[a]));
-                console.log(subscription);
                 subscription.performance.schedule = subscription.schedule;
                 subscription.performances = [subscription.performance];
                 subscription.subscription = subscription.subscriptions[b];

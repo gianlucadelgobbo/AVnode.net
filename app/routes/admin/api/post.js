@@ -381,14 +381,8 @@ router.updateProgram = (req, res) => {
     Promise.all(
       promisesPerf
     ).then( (resultsPromisePerf) => {
-      //console.log(resultsPromisePerf);
       var promisesPerfSave = [];
       for (var a=0;a<resultsPromisePerf.length;a++) {
-        /* console.log("program[a]");
-        console.log(program[a].performance);
-        console.log("resultsPromisePerf[a]");
-        console.log(resultsPromisePerf[a]);
-        console.log(resultsPromisePerf[a]._id); */
         if (resultsPromisePerf[a].bookings.length) {
           let notfound = true;
           for (var b=0;b<resultsPromisePerf[a].bookings.length;b++) {

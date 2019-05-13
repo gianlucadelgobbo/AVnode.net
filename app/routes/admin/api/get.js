@@ -60,8 +60,6 @@ router.getDelete = (req, res) => {
                   results.Performance = await Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {videos: [data._id] } });
                   results.Event = await Models["Event"].updateMany( {_id: { $in: data.events}}, { $pullAll: {videos: [data._id] } });
                   results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {videos: [data._id] } });
-                  console.log({_id: { $in: data.users}});
-                  console.log({$pullAll: {videos: [data._id] }});
                   var promises = [];
                   promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
                   Promise.all(
