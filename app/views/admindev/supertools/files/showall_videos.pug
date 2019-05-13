@@ -1,5 +1,28 @@
 extends ../../layout_admin
 block content
+  ol
+    if data.length
+      each item, index in data
+        li
+          !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          !="<br />"
+          !="Original: "
+          if item.original 
+            !=global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          else
+            !='<span class="badge badge-danger">MISSING</span>'
+
+          !="<br />"
+          !="Preview: "
+          if item.preview
+            !=global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          else
+            !='<span class="badge badge-danger">MISSING</span>'
+
+          if item.imageFormats
+            each image, format in item.imageFormats
+              !="<br />"
+              !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
   - var mkdir = []
   if data.length
     each item, index in data
@@ -30,27 +53,3 @@ block content
         if item.findoriginal
           li!=item.findoriginal
 
-  ol
-    if data.length
-      each item, index in data
-        if item.exists
-          li
-            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            !="<br />"
-            !="Original: "
-            if item.original 
-              !=global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            else
-              !='<span class="badge badge-danger">MISSING</span>'
-
-            !="<br />"
-            !="Preview: "
-            if item.preview
-              !=global.appRoot+item.preview + " "+(item.previewexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            else
-              !='<span class="badge badge-danger">MISSING</span>'
-
-            if item.imageFormats
-              each image, format in item.imageFormats
-                !="<br />"
-                !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )

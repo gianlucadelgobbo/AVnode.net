@@ -774,7 +774,7 @@ router.get('/footageformatsgenerator', (req, res) => {
     res.render('admindev/supertools/files/showall', {
       title: 'Footage images generator',
       superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-    currentUrl: req.originalUrl,
+      currentUrl: req.originalUrl,
       data: data,
       script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/footageformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
     });

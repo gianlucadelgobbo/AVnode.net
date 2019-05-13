@@ -1,5 +1,14 @@
 extends ../../layout_admin
 block content
+  ol
+    each item, index in data
+      if item.exists
+        li
+          !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          if item.imageFormats
+            each image, format in item.imageFormats
+              !="<br />"
+              !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
   - var mkdir = []
   if data.length
     each item, index in data
@@ -19,13 +28,3 @@ block content
             if item.find2
               !="<br />"
               !=item.find2
-  ol
-    if data.length
-      each item, index in data
-        if item.exists
-          li
-            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
-            if item.imageFormats
-              each image, format in item.imageFormats
-                !="<br />"
-                !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )

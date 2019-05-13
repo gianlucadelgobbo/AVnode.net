@@ -24,10 +24,10 @@ const logger = require('../../../utilities/logger');
 router.get('/', (req, res) => {
   logger.debug('/admindev/supertools/emails');
   User.find({email:{$exists:true}, "emails.email":{$exists:true}, is_crew:false}).
-  select({name: 1, slug: 1, old_id: 1, activity: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
-  lean().
-  sort('name').
+  select({name: 1, slug: 1, surname: 1, stagename: 1, addresses: 1, emails: 1, email: 1}).
+  sort({name: 1}).
   exec((err, results) => {
+    logger.debug(results);
     let mailinglists = [];
     let conta = 0;
     let fatto = 0;
