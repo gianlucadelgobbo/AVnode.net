@@ -38,6 +38,8 @@ router.putData = (req, res) => {
             logger.debug(item);
             if (item == "medias" && data[item] && data[item].length && req.params.form == "medias") {
               put[item] = data[item].concat(req.body[item]);
+              put.image = data[item][0];
+              put.stats.img = data[item].length;
             } else {
               put[item] = req.body[item];
             }

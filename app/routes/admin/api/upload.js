@@ -257,7 +257,6 @@ upload.uploader = (req, res, done) => {
               put[options.fields.name].push(ins);
             }
           }
-          put.image = put[options.fields.name][0];
           logger.debug("SALVAAAAAAAAA");
           done(null, put);
         }

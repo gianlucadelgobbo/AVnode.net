@@ -21,7 +21,9 @@ const gallerySchema = new Schema({
   abouts: [About],
   stats: {
     visits: { type: Number, default: 0 },
-    likes: { type: Number, default: 0 }
+    likes: { type: Number, default: 0 },
+    shares: { type: Number, default: 0 },
+    img: { type: Number, default: 0 }
   },
 
   users: [{ type : Schema.ObjectId, ref : 'User' }], 

@@ -130,10 +130,20 @@ router.removeImage = (req, res) => {
   console.log(query);
   if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
-  Models[config.cpanel[req.params.sez].model].update( query , { $pull: {"medias": {"slug": req.params.image } } }, function(err){
+  Models.Gallery.findOne( query , (err, gallery) => {
+    gallery.medias.splice(gallery.medias.map(item=>{return item.slug;}).indexOf(req.params.image),1);
+    gallery.image = gallery.medias[0];
+    gallery.stats.img = gallery.medias.length;
+    gallery.save(function(err){
+      req.params.form = 'public';
+      router.getData(req, res);
+    });
+  });
+
+/*   Models[config.cpanel[req.params.sez].model].update( query , { $pull: {"medias": {"slug": req.params.image } } }, function(err){
     req.params.form = 'public';
     router.getData(req, res);
-  });
+  }); */
 
 }
   

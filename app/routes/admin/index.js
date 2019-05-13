@@ -108,10 +108,6 @@ router.get('/api/subscriptions', (req, res) => {
   get.getSubscriptions(req, res);
 });
 
-router.get('/api/:sez/:id/delete', (req, res) => {
-  get.getDelete(req, res);
-});
-
 router.get('/api/:sez', (req, res) => {
   req.params.id = req.user.id;
   get.getList(req, res);
@@ -223,6 +219,7 @@ router.put('/api/profile/:form/', (req, res) => {
 router.put('/api/:sez/:id/:form/', (req, res) => {
   if (['profile/image','crews/image','events/image','performances/image','footage/public','galleries/medias','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     req.params.comp = ['footage/public','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
+    console.log("stocaupload");
     upload.uploader(req, res, (err, data) => {
       if (err) {
         res.status(500).json(err);
