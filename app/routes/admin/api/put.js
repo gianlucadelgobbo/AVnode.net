@@ -38,8 +38,6 @@ router.putData = (req, res) => {
             logger.debug(item);
             if (item == "medias" && data[item] && data[item].length && req.params.form == "medias") {
               put[item] = data[item].concat(req.body[item]);
-              put.image = data[item][0];
-              put.stats.img = data[item].length;
             } else {
               put[item] = req.body[item];
             }
@@ -51,6 +49,9 @@ router.putData = (req, res) => {
           Object.assign(data, put);
           logger.debug('putDataputDataputDataputDataputDataputData');
           logger.debug(data);
+          if (data.medias){
+            put.stats.img = data.medias.length;
+          }
           if (data.emails){
             if (req.user.name) data.name = req.user.name;
             if (req.user.surname) data.surname = req.user.surname;
