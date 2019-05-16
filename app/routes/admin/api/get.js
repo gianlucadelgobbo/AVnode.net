@@ -91,7 +91,7 @@ router.getDelete = (req, res) => {
                     res.json(errors);
                   }
                 break;
-                case "users" :
+                case "profile" :
                   logger.debug("getDelete 3");
                   if (data.members && data.members.length) {
                     results.Crew = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
