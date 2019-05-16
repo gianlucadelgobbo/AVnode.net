@@ -51,6 +51,7 @@ router.putData = (req, res) => {
           logger.debug(data);
           if (data.medias){
             data.stats.img = data.medias.length;
+            data.image = data.medias[0];
           }
           if (data.emails){
             if (req.user.name) data.name = req.user.name;

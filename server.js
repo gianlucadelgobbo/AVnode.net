@@ -144,8 +144,8 @@ app.use((req, res, next) => {
 // 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉
 
 // Temporary cors to have redux come in cross origin
-/* const cors = require('cors');
-app.use(cors()); */
+const cors = require('cors');
+app.use(cors());
 app.use(routes);
 
 app.use(function(err, req, res, next) {
