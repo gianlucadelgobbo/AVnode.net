@@ -26,7 +26,7 @@ passport.deserializeUser((id, done) => {
 passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
   logger.debug('passport.use:' + email);
 
-  User.findOne({ $or: [{ "email": email.toLowerCase() }, { "slug": email.toLowerCase()}, { "emails.email": email.toLowerCase() }] }, 'stagename slug password email', (err, user) => {
+  User.findOne({ $or: [{ "email": { $regex : new RegExp(email, "i") } }, { "slug": { $regex : new RegExp(email, "i") }}, { "emails.email": { $regex : new RegExp(email, "i") } }] }, 'stagename slug password email', (err, user) => {
     logger.debug(user);
     if (err) {
       logger.debug('passport.use User.findOne error:' + email + ' ' +  JSON.stringify(err));
