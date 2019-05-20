@@ -27,7 +27,7 @@ const userSchema = new Schema({
   old_id: String,
   is_crew: Boolean,
   is_partner: Boolean,
-  partner_owner: { type: Schema.ObjectId, ref: 'User' },
+  partner_owner: [{ type: Schema.ObjectId, ref: 'User' }],
   partner_data: {},
   user_type : Number,
   activity: Number,
