@@ -12,7 +12,7 @@
       .d-flex.w-100.justify-content-start.align-items-center
         span.fa.fa-calendar.fa-fw.mr-3
         span.menu-collapsed="Events"
-    if data.event && data.event._id
+    if data && data.event && data.event._id
       #submenuEvent.collapse.sidebar-submenu(class=currentUrl.indexOf("/admindev/events")===0 ? " show" : "")
         .list-group-item.sidebar-separator-title.d-flex
           small.menu-collapsed=data.event.title
