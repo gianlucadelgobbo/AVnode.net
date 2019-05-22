@@ -23,6 +23,11 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     const nolimit = JSON.parse(JSON.stringify(populate));
     delete nolimit[0].options;
+    if (req.query.limit) {
+      for(let a=0; a<populate.length;a++) {
+        if (populate[a].options && populate[a].options.limit) populate[a].options.limit = parseInt(req.query.limit);
+      }
+    }
     model.
     findOne({slug: req.params.slug}).
     lean({ virtuals: false }).
@@ -42,7 +47,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         logger.debug(select);
         logger.debug(Object.keys(res));
         cb(err, res, total); */
-        logger.debug("res.partnershipaaaaaaa");
+        logger.debug("res.partnershipaaaaaaab");
         if(data && data.partnerships && data.partnerships_ordered) {
           delete data.partnerships;
           logger.debug(data.partnerships);
@@ -151,6 +156,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
       }
     }
+
     model.
     findOne({slug: req.params.sub ? req.params.sub : req.params.slug}).
     // lean({ virtuals: true }).
@@ -649,16 +655,15 @@ dataprovider.show = (req, res, section, subsection, model) => {
       }
       let pages;
       if (total) {
+        let limit = req.query.limit ? parseInt(req.query.limit) : config.sections[section].limit;
         let link = '/' + data.slug + '/' + subsection + '/page/';
         let page = (req.params.page ? parseFloat(req.params.page) : 1);
-        skip = (page - 1) * config.sections[section].limit;
-        pages = helper.getPagination(link, skip, config.sections[section].limit, total); 
+        skip = (page - 1) * limit;
+        pages = helper.getPagination(link, skip, limit, total); 
       } else {
         pages = false;
       }
       data.pages = pages;
-      console.log(pages);
-      console.log(pages);
       let editable = false;
       if (req.user && req.user._id) {
         if (config.superusers.indexOf(req.user._id.toString())!==-1) {

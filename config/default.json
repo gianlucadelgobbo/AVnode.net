@@ -4159,11 +4159,10 @@
           "select": {
             "title": 1,
             "slug": 1,
-            "categories": 1,
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "type", "select": "name slug", "model": "Category"}],
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {
