@@ -656,6 +656,9 @@ dataprovider.show = (req, res, section, subsection, model) => {
       } else {
         pages = false;
       }
+      data.pages = pages;
+      console.log(pages);
+      console.log(pages);
       let editable = false;
       if (req.user && req.user._id) {
         if (config.superusers.indexOf(req.user._id.toString())!==-1) {

@@ -102,7 +102,7 @@ const userSchema = new Schema({
   footage : [{ type: Schema.ObjectId, ref: 'Footage' }],
   playlists : [{ type: Schema.ObjectId, ref: 'Playlist' }],
   news : [{ type: Schema.ObjectId, ref: 'News' }],
-
+  pages: [],
   /* A todo
   videos : [{ type: Schema.ObjectId, ref: 'Gallery' }],
   */
