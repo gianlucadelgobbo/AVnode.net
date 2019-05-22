@@ -80,12 +80,10 @@ html(lang='en')
                   |             This week
 
             include ../partials/flash
-            .d-flex.main
-              .row
-                .col
-                  block content
-                  if script
-                      !=script
+            .main
+              block content
+              if script
+                  !=script
 
             footer.border-top.mt-3
               .container-fluid
