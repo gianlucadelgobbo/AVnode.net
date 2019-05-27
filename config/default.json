@@ -4224,11 +4224,11 @@
           "events": 1,
           "emails": 1,
           "image": 1,
+          "news": 1,
           "organizationData.logo": 1
         },
         "populate": [{
           "path": "news",
-          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,

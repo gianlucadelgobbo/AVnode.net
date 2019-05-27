@@ -69,9 +69,11 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     store: new MongoStore({
         url: process.env.MONGODB_URI,
-        autoReconnect: true
+        autoReconnect: true,
+        clear_interval: 3600
     })
 }));
 app.use(function(req,res,next){
