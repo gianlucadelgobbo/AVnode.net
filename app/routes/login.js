@@ -24,6 +24,10 @@ router.get('/', (req, res) => {
 //validationConfig.validate()
 router.post('/', (req, res, next) => {
   const returnTo = req.session.returnTo ? req.session.returnTo : req.body.returnTo ? req.body.returnTo : "/";
+  logger.debug("req.body");
+  logger.debug(req.body);
+  logger.debug(req.params);
+  logger.debug(req.query);
 
   logger.debug('passport.loginredirect req:' + req.body.returnTo);
   
@@ -32,26 +36,42 @@ router.post('/', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       logger.debug('passport.authenticate error:' + JSON.stringify(err));
-      return next(err);
+      if (req.body.api=="1") {
+        res.send(err);
+      } else {
+        return next(err);
+      }
     }
     if (!user) {
       logger.debug('passport.authenticate !user:' + JSON.stringify(info));
-      logger.debug('trying on flxer with email:' + JSON.stringify(req.body.email));
-
-      req.flash('errors', info);
-      return res.redirect(returnTo);
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        logger.debug('passport.authenticate req.logIn error:' + JSON.stringify(err));
-        return next(err);
+      logger.debug('trying on flxer with email:' + req.body.email);
+      if (req.body.api=="1") {
+        res.status(500).send(info);
+      } else {
+        req.flash('errors', info);
+        return res.redirect(returnTo);
       }
-      delete req.session.returnTo;
-      logger.info('passport.authenticate auth success');
-      logger.info(returnTo);
-      req.flash('success', { msg: __('You are logged in.') });
-      res.redirect(returnTo);
-    });
+    } else {
+      req.logIn(user, (err) => {
+        if (err) {
+          logger.debug('passport.authenticate req.logIn error:' + JSON.stringify(err));
+          if (req.body.api=="1") {
+            res.status(500).send(err);
+          } else {
+            return next(err);
+          }
+        }
+        delete req.session.returnTo;
+        logger.info('passport.authenticate auth success');
+        logger.info(returnTo);
+        if (req.body.api=="1") {
+          res.send(true);
+        } else {
+          req.flash('success', { msg: __('You are logged in.') });
+          res.redirect(returnTo);
+        }
+      });
+    }
   })(req, res, next);
 });
 

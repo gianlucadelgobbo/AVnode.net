@@ -21,6 +21,7 @@ const logger = require('./logger');
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
   //let assign = JSON.parse(JSON.stringify(select));
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
+    console.log("stocazzo");
     const nolimit = JSON.parse(JSON.stringify(populate));
     delete nolimit[0].options;
     if (req.query.limit) {
@@ -48,9 +49,6 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         logger.debug(Object.keys(res));
         cb(err, res, total); */
         logger.debug("res.partnershipaaaaaaab");
-        console.log(req.params);
-        console.log(populate);
-        console.log(data.events);
         if(data && data.partnerships && data.partnerships_ordered) {
           delete data.partnerships;
           logger.debug(data.partnerships);

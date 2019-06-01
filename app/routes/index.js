@@ -35,8 +35,8 @@ const organizations = require('./organizations');
 /*
 const user = require('./user');
 const storage = require('./storage');
-const crews = require('./crews');
 const fourOhFour = require('./404');
+const crews = require('./crews');
 router.get('/__webpack_hmr', function(){});
 */
 
@@ -45,6 +45,7 @@ router.use('/likes', likes);
 router.use('/contacts', pages);
 router.use('/terms', pages);
 router.use('/privacy', pages);
+router.use('/cookies-in-use-on-this-site', pages);
 
 // User.find({name: { $regex: '.*' + 'lex' + '.*' }})
 router.use('/performers', performers);
@@ -113,6 +114,7 @@ router.use('/', home);
 /*
 router.use('/user', user);
 router.use('/performers', performers);
+router.use('/*', fourOhFour);
 router.use('/storage', storage);
 router.use('/crews', crews);
 */

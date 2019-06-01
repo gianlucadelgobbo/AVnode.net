@@ -1,0 +1,14 @@
+#cookie-law-info-bar.d-none
+  span
+    !=global.__("This website uses cookies to improve your experience. We'll assume you're ok with this, but you can opt-out if you wish.")
+    a#cookie_action_close_header.medium.cli-plugin-button.cli-plugin-main-button(href='#', title=global.__('Accept'))=global.__('Accept')
+    a#CONSTANT_OPEN_URL.cli-plugin-main-link(href='/cookies-in-use-on-this-site/', title=global.__('Read More'))=global.__('Read More')
+script(type='text/javascript').
+  //<![Cresult[
+  jQuery(document).ready(function () {
+    cli_show_cookiebar({
+      settings: '{"animate_speed_hide":"500","animate_speed_show":"500","background":"#fff","border":"#444","border_on":true,"button_1_button_colour":"#000","button_1_button_hover":"#000000","button_1_link_colour":"#fff","button_1_as_button":true,"button_2_button_colour":"#333","button_2_button_hover":"#292929","button_2_link_colour":"#444","button_2_as_button":false,"font_family":"inherit","header_fix":false,"notify_animate_hide":true,"notify_animate_show":false,"notify_div_id":"#cookie-law-info-bar","notify_position_horizontal":"right","notify_position_vertical":"bottom","scroll_close":false,"scroll_close_reload":false,"showagain_tab":false,"showagain_background":"#fff","showagain_border":"#000","showagain_div_id":"#cookie-law-info-again","showagain_x_position":"100px","text":"#000","show_once_yn":false,"show_once":"10000"}'
+    });
+    $("#cookie-law-info-bar").removeClass("d-none");
+  });
+  //]]>

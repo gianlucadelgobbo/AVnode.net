@@ -28,6 +28,12 @@ dotenv.load({path: '.env.local'});
 global.appRoot = path.resolve(__dirname);
 
 const app = express();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+  res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
+  next();
+});
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'app/views'));
@@ -149,7 +155,6 @@ app.use((req, res, next) => {
 const cors = require('cors');
 app.use(cors());
 app.use(routes);
-
 app.use(function(err, req, res, next) {
   console.error("URL: "+req.headers.host+req.url); // URL of req made 
   console.error(err.message); // Log error message in our server's console

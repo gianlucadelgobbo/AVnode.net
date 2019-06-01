@@ -2,34 +2,15 @@ extends ../layout_admin_nocss
 block filters
   include ./_filters
 block content
-  each day in data.programmebydayvenue
-    each room,i in day.rooms
-      if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
-        if room.program
-          h2.day=day.date+" | "+room.schedule.venue.room
-          each program,ii in room.program
-            if get['fullinfo']
-              .img
-                if program.performance.imageFormats
-                  img.img-fluid.perfomance_image.bottom60(
-                    src=program.performance.imageFormats.large
-                    alt=program.performance.title
-                  )
-            h3.title!=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime+" | "+program.performance.duration+" min. | "+program.performance.title
-            p.type=program.performance.type.name
-            p.user!=program.performance.users.map(user => {return user.stagename+" | "+user.addressesFormatted}).join(" // ")
-            if get['fullinfo']
-              .about!=program.performance.about
-              each user in program.performance.users
-                p
-                  b!=user.stagename
-                  !=" | "+user.addressesFormatted
-                .about!=user.aboutFull
-                ul.link
-                  each item in user.web
-                    li
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))=item.url.replace("http://","").replace("https://","")
-                  each item in user.social
-                    li
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))=item.url.replace("http://","").replace("https://","")
-          .page-break
+  table
+    each day in data.programmebydayvenue
+      each room,i in day.rooms
+        if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
+          if room.program
+            each program,ii in room.program
+              tr
+                td!="LPM 2019 Rome"
+                td!=program.performance.title
+                td=day.date
+                td=day.date
+                td=program.performance.type.name

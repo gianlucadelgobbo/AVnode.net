@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
     }, function (error, response, body) {
       if (body) {
         res.render('pages/show', {
-          title: body.post_name,
+          title: body.post_title,
           data: body
         });
       } else {
