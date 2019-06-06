@@ -1,5 +1,6 @@
+- if (!basepath) basepath = ""
 .gallery_item_wrapper
-  a(href="/galleries/"+item.slug+"/", title=item.title)
+  a(href=basepath+"/galleries/"+item.slug+"/", title=item.title)
     if item.imageFormats
       img.card-img-top.img-fluid(src=item.imageFormats.small, alt=item.title)
     .gallery_item_info_wrapper

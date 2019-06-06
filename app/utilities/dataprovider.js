@@ -19,7 +19,9 @@ const News = mongoose.model('News');
 const logger = require('./logger');
 
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
-  //let assign = JSON.parse(JSON.stringify(select));
+  logger.debug("populate");
+  logger.debug(populate);
+  logger.debug(populate);
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     console.log("stocazzo");
     const nolimit = JSON.parse(JSON.stringify(populate));
@@ -157,6 +159,96 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
       }
     }
+    if (section === "performances") {
+      if (req.params.gallery || req.params.video) {
+        for(let a=0; a<populate.length;a++) {
+          if (populate[a].path==="galleries") {
+
+            populate[a].select.medias = 1;
+            populate[a].match = { "slug": req.params.gallery};           
+            populate[a].populate = [{
+              "path": "users",
+              "select": {
+                "slug": 1,
+                "image": 1,
+                "organizationData.logo": 1,
+                "members": 1,
+                "addresses.country": 1,
+                "addresses.locality": 1,
+                "stats": 1,
+                "stagename": 1
+              },
+              "model": "UserShow"
+            },{
+              "path": "performances",
+              "match": { "is_public": true},
+              "select": {
+                "title": 1,
+                "slug": 1,
+                "categories": 1,
+                "stats": 1,
+                "image": 1
+              },
+              "model": "Performance"
+            },{
+              "path": "events",
+              "match": { "is_public": true},
+              "select": {
+                "title": 1,
+                "slug": 1,
+                "categories": 1,
+                "stats": 1,
+                "image": 1
+              },
+              "model": "Event"
+            }];
+          }
+          if (populate[a].path==="videos") {
+
+            populate[a].match = { "slug": req.params.video};           
+            populate[a].populate = [{
+              "path": "users",
+              "select": {
+                "slug": 1,
+                "image": 1,
+                "organizationData.logo": 1,
+                "members": 1,
+                "addresses.country": 1,
+                "addresses.locality": 1,
+                "stats": 1,
+                "stagename": 1
+              },
+              "model": "UserShow"
+            },{
+              "path": "performances",
+              "match": { "is_public": true},
+              "select": {
+                "title": 1,
+                "slug": 1,
+                "categories": 1,
+                "stats": 1,
+                "image": 1
+              },
+              "model": "Performance"
+            },{
+              "path": "events",
+              "match": { "is_public": true},
+              "select": {
+                "title": 1,
+                "slug": 1,
+                "categories": 1,
+                "stats": 1,
+                "image": 1
+              },
+              "model": "Event"
+            }];
+          }
+        }
+      }
+    }
+    console.log("BINGOOOOO");
+    console.log(populate);
+    console.log({slug: req.params.sub ? req.params.sub : req.params.slug});
 
     model.
     findOne({slug: req.params.sub ? req.params.sub : req.params.slug}).
@@ -165,6 +257,9 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
+      console.log("err");
+      console.log(err);
+      console.log(ddd);
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
@@ -536,7 +631,8 @@ dataprovider.show = (req, res, section, subsection, model) => {
   logger.debug(section);
   logger.debug(subsection);
   //logger.debug(config.sections[section]);
-  let populate = config.sections[section][subsection].populate;
+  let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
+
   for(let item in populate) {
     if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
     
@@ -557,7 +653,20 @@ dataprovider.show = (req, res, section, subsection, model) => {
     if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
     if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
     if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News;
+    if (populate[item].populate) {
+      for(let a=0;a<populate[item].populate.length;a++) {
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'UserShow') populate[item].populate[a].model = UserShow;
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'Performance') populate[item].populate[a].model = Performance;
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'Event') populate[item].populate[a].model = Event;
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'Video') populate[item].populate[a].model = Video;
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'Footage') populate[item].populate[a].model = Footage;
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'Playlist') populate[item].populate[a].model = Playlist;
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'Category') populate[item].populate[a].model = Category;
+        if (populate[item].populate[a] && populate[item].populate[a].model === 'News') populate[item].populate[a].model = News;
+      }
+    }
   }
+  logger.debug(populate);
   const select = config.sections[section][subsection].select;
   const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 
@@ -633,6 +742,30 @@ dataprovider.show = (req, res, section, subsection, model) => {
         for (let item in data.medias2) {
           if (data.medias2[item].slug===req.params.img) {
             data.img.imageFormats = data.medias2[item].imageFormats;
+          }
+        }
+        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {
+          data.liked = false;
+        } else {
+          data.liked = true;
+        }
+      } else if (data && data.galleries && data.galleries[0] && data.galleries[0].medias && req.params.img) {
+        for (let item in data.galleries[0].medias) {
+          if (data.galleries[0].medias[item].slug===req.params.img) {
+            if (!req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug]) {
+              req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug] = true;
+              if (!data.galleries[0].medias[item].stats) data.galleries[0].medias[item].stats = {}
+              data.galleries[0].medias[item].stats.visits = data.galleries[0].medias[item].stats.visits ? data.galleries[0].medias[item].stats.visits+1 : 1;
+              model.updateOne({_id:data.galleries[0]._id},{"medias":data.galleries[0].medias}, (err, raw) => {
+              });
+            }
+            data.galleries[0].img = data.galleries[0].medias[item];
+            data.galleries[0].img.index = item;
+          }
+        }
+        for (let item in data.galleries[0].medias2) {
+          if (data.galleries[0].medias2[item].slug===req.params.img) {
+            data.galleries[0].img.imageFormats = data.galleries[0].medias2[item].imageFormats;
           }
         }
         if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {

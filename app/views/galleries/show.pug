@@ -67,7 +67,7 @@ block content
               .row.mb-3
                 .col-md-4
                   a(href="/"+user.slug+"/")
-                    img.img-fluid(src=user.imageFormats.small, alt=user.stagename)
+                    img.img-fluid(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
                 .col-md-8
                   a(href="/"+user.slug+"/")=user.stagename
                   if user.addressesFormatted && user.addressesFormatted.length
@@ -121,7 +121,7 @@ block content
               .row.mb-3
                 .col-md-4
                   a(href="/"+user.slug+"/")
-                    img.img-fluid(src=user.imageFormats.small, alt=user.stagename)
+                    img.img-fluid(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
                 .col-md-8
                   a(href="/"+user.slug+"/")=user.stagename
                   if user.addressesFormatted && user.addressesFormatted.length

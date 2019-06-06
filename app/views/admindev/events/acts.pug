@@ -141,7 +141,7 @@ block content
               .row
                 if get.fullinfo
                   .col-md-6
-                    img.img-fluid(src=user.imageFormats.small)
+                    img.img-fluid(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
                 div(class=get.fullinfo ? "col-md-6" : "col-md-12")
                   h3
                     !=user.stagename

@@ -226,7 +226,7 @@ block content
                   .performance_user_wrapper
                     .user_perfomance_image
                       a.performance_event_title(href="/"+user.slug)
-                        img(src=user.imageFormats.small, alt=user.stagename)
+                        img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
                     .user_perfomance_country_city
                       a.performance_event_title(href="/"+user.slug).users_performance_item_name=user.stagename
                       if user.addressesFormatted && user.addressesFormatted.length

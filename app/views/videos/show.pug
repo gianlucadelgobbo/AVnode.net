@@ -66,7 +66,7 @@ block content
           each user in data.users
             .user_performance_wrapper
               div.user_perfomance_image
-                img(src=user.imageFormats.small, alt=user.stagename)
+                img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
               div.user_perfomance_country_city
                 p.users_performance_item_name=user.stagename
                 if user.addressesFormatted && user.addressesFormatted.length

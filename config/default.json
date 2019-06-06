@@ -5791,6 +5791,80 @@
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Gallery"
         }]
+      },
+      "galleries": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "price": 1,
+          "paypal": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
+          "duration": 1,
+          "tech_arts": 1, 
+          "tech_reqs": 1,
+          "bookings":1
+        },
+        "populate": [
+        {
+          "path": "type",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "galleries",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": {},
+          "model": "Gallery"
+        }]
+      },
+      "videos": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "price": 1,
+          "paypal": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
+          "duration": 1,
+          "tech_arts": 1, 
+          "tech_reqs": 1,
+          "bookings":1
+        },
+        "populate": [{
+          "path": "videos",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": {},
+          "model": "Video"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }]
       }
     },
     "videos": {

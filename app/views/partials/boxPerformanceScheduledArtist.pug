@@ -34,7 +34,7 @@
           else              
             each user in item.users
               div
-                img(src=user.imageFormats.small, alt=user.stagename)
+                img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
               div
                 p.users_performance_item_name=user.stagename
                 p.users_performance_item_views=item.stats.visits+" "+global.__("views")
