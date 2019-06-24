@@ -105,7 +105,8 @@ block content
                   .performance_event_info
                     a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
                     br
-                    each schedule in booking.schedule
+                    !=booking.boxDate
+                    //each schedule in booking.schedule
                       !=schedule.boxDate
                       br
                       !=schedule.venue.name + " | " + schedule.venue.room + " | " + schedule.venue.location.locality + ", " + schedule.venue.location.country
