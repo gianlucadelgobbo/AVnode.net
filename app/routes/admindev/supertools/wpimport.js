@@ -47,126 +47,159 @@ router.get('/events_import', (req, res) => {
         json: true
     }, function (error, response, body) {
       if (!error && response.statusCode === 200, body.ID) {
-        let data = [];
-        let contapost = 0;
-        let contaposttotal = 0;
-        logger.debug(body);
-        var startdate = new Date(parseInt(body['wpcf-startdate'])*1000);
-        var enddate = new Date(parseInt(body['wpcf-enddate'])*1000);
-        logger.debug("startdate");
-        logger.debug(startdate);
-        logger.debug(startdate.toISOString());
-        logger.debug("enddate");
-        logger.debug(enddate);
-        logger.debug(enddate.toISOString());
-        var locations = [];
-        for (var item in body['wpcf-location']) {
-          var arr = body['wpcf-location'][item].split(";");
-          var venue = {
-            name : arr[0], 
-            location : {
-              locality : arr[1], 
-              country : arr[2], 
-              geometry : {
-                lat : arr[3], 
-                lng : arr[4]
+        Event
+        .findOne({slug: body.post_name})
+        .exec((err, e) => {
+          logger.debug(body);
+          var startdate = new Date(parseInt(body['wpcf-startdate'])*1000);
+          var enddate = new Date(parseInt(body['wpcf-enddate'])*1000);
+          logger.debug("startdate");
+          logger.debug(startdate);
+          logger.debug(startdate.toISOString());
+          logger.debug("enddate");
+          logger.debug(enddate);
+          logger.debug(enddate.toISOString());
+          var locations = [];
+          for (var item in body['wpcf-location']) {
+            var arr = body['wpcf-location'][item].split(";");
+            var venue = {
+              name : arr[0], 
+              location : {
+                locality : arr[1], 
+                country : arr[2], 
+                geometry : {
+                  lat : arr[3], 
+                  lng : arr[4]
+                }
               }
             }
+            locations.push(venue);
           }
-          locations.push(venue);
-        }
-        logger.debug(locations);
-        
-        var event = {
-          wp_id: body.ID,
-          wp_users: body.capauthors,
-          wp_tags: body.tags,
-          createdAt: new Date(body.date),
-          stats: {
-            visits: 10,
-            likes: 10
-          },
-          slug: body.post_name,
-          title: body.post_title,
-          subtitles: [{
-            lang : "en", 
-            abouttext: body.data_evento.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
-          }], 
-          image : body.featured && body.featured.full ? {
-            file: "/glacier/events_originals/"+body.featured.full.replace("https://flyer.dev.flyer.it/files/", ""), 
-          } : undefined, 
-          abouts: [{
-            lang : "en", 
-            abouttext: body.post_content.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
-          }], 
-          web: [], 
-          schedule: [], 
-          is_public: true,
-          gallery_is_public : false, 
-          is_freezed : false, 
-          organizationsettings : {
-            program_builder : 0, 
-            advanced_proposals_manager : 0, 
-            call : {}, 
-            permissions : {}
-          }, 
-          type: "5be8708afc396100000001de",
-          categories : [
-            "5be8708afc396100000001de"
-          ]
-        };
-        logger.debug(body.web_site);
-        for (var item in body.web_site) {
-          var web = {
-            url : body.web_site[item],
+          logger.debug(locations);
+          if (!e) {
+            logger.debug("NUOVOOOO");
+            var event = {
+              wp_id: body.ID,
+              wp_users: body.capauthors,
+              wp_tags: body.tags,
+              createdAt: new Date(body.date),
+              stats: {
+                visits: 10,
+                likes: 10
+              },
+              slug: body.post_name,
+              title: body.post_title,
+              subtitles: [{
+                lang : "en", 
+                abouttext: body.data_evento.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
+              }], 
+              image : body.featured && body.featured.full ? {
+                file: "/glacier/events_originals/"+body.featured.full.replace("https://flyer.dev.flyer.it/files/", ""), 
+              } : undefined, 
+              abouts: [{
+                lang : "en", 
+                abouttext: body.post_content.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
+              }], 
+              web: [], 
+              schedule: [], 
+              is_public: true,
+              gallery_is_public : false, 
+              is_freezed : false, 
+              organizationsettings : {
+                program_builder : 0, 
+                advanced_proposals_manager : 0, 
+                call : {}, 
+                permissions : {}
+              }, 
+              type: "5be8708afc396100000001de",
+              categories : [
+                "5be8708afc396100000001de"
+              ]
+            };
+          } else {
+            logger.debug("VECCHIO");
+            event = e;
+            event.subtitles = [{
+              lang : "en", 
+              abouttext: body.data_evento.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
+            }];
+            event.image = body.featured && body.featured.full ? {
+              file: "/glacier/events_originals/"+body.featured.full.replace("https://flyer.dev.flyer.it/files/", ""), 
+            } : undefined;
+            event.abouts = [{
+              lang : "en", 
+              abouttext: body.post_content.replace(/\r\n/g, '').replace(/\n/g, '').replace(/\r/g, '')
+            }];        
           }
-          event.web.push(web);
-        }
-        logger.debug("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
-        //for (var a=0;a<=enddate.getDate()-startdate.getDate();a++) {
-          logger.debug("locations.length "+locations.length);
-          if (locations.length) {
-            for (var b=0;b<locations.length;b++) {
+          logger.debug(body.web_site);
+          for (var item in body.web_site) {
+            if (event.web.map(url => {return url.url;}).indexOf(body.web_site[item])) {
+              var web = {
+                url : body.web_site[item],
+              }
+              event.web.push(web);
+            }
+          }
+          logger.debug("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
+          //for (var a=0;a<=enddate.getDate()-startdate.getDate();a++) {
+            logger.debug("locations.length "+locations.length);
+            if (locations.length) {
+              for (var b=0;b<locations.length;b++) {
+                var schedule = {
+                  //date: new Date(body.date),
+                  starttime: new Date(startdate),
+                  endtime: new Date(enddate),
+                  venue: locations[b]
+                };
+                event.schedule.push(schedule);
+              }
+            } else {
               var schedule = {
-                //date: new Date(body.date),
+                //date: new Date(startdate),
                 starttime: new Date(startdate),
-                endtime: new Date(enddate),
-                venue: locations[b]
+                endtime: new Date(enddate)
               };
               event.schedule.push(schedule);
             }
-          } else {
-            var schedule = {
-              //date: new Date(startdate),
-              starttime: new Date(startdate),
-              endtime: new Date(enddate)
-            };
-            event.schedule.push(schedule);
-          }
-        //}
-        //result = event;
-        User.findOne({"slug": body.capauthors[0].user_login}, function(error, user) {
-          if (user && user._id) {
-            event.users = [user._id];
-          } else {
-            event.users = [ObjectId("5be87f15fc3961000000a669")];
-          }
-          //logger.debug(event);
-          Event.
-          findOneAndUpdate({slug: event.slug}, event, { upsert: true, new: true, setDefaultsOnInsert: true }, (err) => {
-            let result;
-            if (err) {
-              logger.debug('error '+err);
-              result = err;
-            } else {
-              result = event;
+          //}
+          //result = event;
+          User.findOne({"slug": body.capauthors[0].user_login}, function(error, user) {
+            if (!event.users) {
+                if (user && user._id) {
+                event.users = [user._id];
+              } else {
+                event.users = [ObjectId("5be87f15fc3961000000a669")];
+              }
             }
-            logger.debug('saveoutputsaveoutputsaveoutputsaveoutputsaveoutputsaveoutput ');
-            logger.debug(body.featured);
-            if (body.featured && body.featured.full) {
-              router.download(body.featured.full, global.appRoot+event.image.file, (p1,p2,p3) => {
-  
-                logger.debug('saveoutput ');
+            logger.debug(event);
+            Event.
+            findOneAndUpdate({slug: event.slug}, event, { upsert: true, new: true, setDefaultsOnInsert: true }, (err) => {
+              let result;
+              if (err) {
+                logger.debug('error '+err);
+                result = err;
+              } else {
+                result = event;
+              }
+              logger.debug('saveoutputsaveoutputsaveoutputsaveoutputsaveoutputsaveoutput ');
+              logger.debug(body.featured);
+              if (body.featured && body.featured.full) {
+                router.download(body.featured.full, global.appRoot+event.image.file, (p1,p2,p3) => {
+    
+                  logger.debug('saveoutput ');
+                  res.render('admindev/supertools/import', {
+                    title: 'WP Events',
+                    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                    currentUrl: req.originalUrl,
+                    body: req.session.events,
+                    formUrl: req.originalUrl,
+                    data: result,
+                    //script: false
+                    script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/events_import?page=' + (page) + '"},100);</script>'
+                  });
+      
+                });          
+              } else {
                 res.render('admindev/supertools/import', {
                   title: 'WP Events',
                   superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
@@ -177,21 +210,10 @@ router.get('/events_import', (req, res) => {
                   //script: false
                   script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/events_import?page=' + (page) + '"},100);</script>'
                 });
-    
-              });          
-            } else {
-              res.render('admindev/supertools/import', {
-                title: 'WP Events',
-                superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
-                currentUrl: req.originalUrl,
-                body: req.session.events,
-                formUrl: req.originalUrl,
-                data: result,
-                //script: false
-                script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/wpimport/events_import?page=' + (page) + '"},100);</script>'
-              });
-            }
+              }
+            });
           });
+        
         });
       } else {
         res.render('admindev/supertools/import', {
