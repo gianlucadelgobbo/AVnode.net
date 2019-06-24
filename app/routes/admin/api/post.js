@@ -374,6 +374,7 @@ router.updateProgram = (req, res) => {
       programIDS.push(req.body.data[a]._id);
       program.push(req.body.data[a]);
     } else {
+      if (!program[index].schedule) program[index].schedule = [];
       program[index].schedule.push(req.body.data[a].schedule[0]);
     }
   }  
