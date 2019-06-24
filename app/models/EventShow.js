@@ -295,6 +295,7 @@ eventSchema.virtual('advanced').get(function (req) {
           rooms.push(programmebydayvenue[a].rooms[b]);
         }
         programmebydayvenue[a].rooms = rooms;
+        programmebydayvenue[a].rooms.sort((a,b) => (a.room > b.room) ? 1 : ((b.room > a.room) ? -1 : 0));
       }
       let dd = programmebydayvenue.map((item) => {return {name: item.date, slug:item.day}});
       let types = [];
