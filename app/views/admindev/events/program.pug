@@ -10,8 +10,10 @@ block content
             h5=room
     tbody
       tr
+        - var cols = 0
         each day in data.programmebydayvenue
-          - cols = Object.keys(day.rooms).length
+          if Object.keys(day.rooms).length > cols
+            - cols = Object.keys(day.rooms).length
         td(style="width:calc(100vw/"+(cols+3)+")")
           h2=global.__("TO BE SCHEDULED")
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
