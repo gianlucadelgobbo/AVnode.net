@@ -231,7 +231,7 @@ eventSchema.virtual('advanced').get(function (req) {
                 let d = ('0'+date.getUTCDate()).substr(-2);
                 let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                 let y = date.getUTCFullYear();
-                let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+                let newdate = moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
                 if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
                   day: y+"-"+m+"-"+d,
                   date: newdate,
@@ -253,7 +253,7 @@ eventSchema.virtual('advanced').get(function (req) {
                   let d = ('0'+date.getUTCDate()).substr(-2);
                   let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
                   let y = date.getUTCFullYear();
-                  let newdate = moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+                  let newdate = moment(date).utc().format(config.dateFormat[lang].weekdaydaymonthyear);
                   if (!programmebydayvenueObj[y+"-"+m+"-"+d]) programmebydayvenueObj[y+"-"+m+"-"+d] = {
                     day: y+"-"+m+"-"+d,
                     date: newdate,
