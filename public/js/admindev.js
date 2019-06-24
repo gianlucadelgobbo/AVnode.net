@@ -72,6 +72,7 @@ $(function() {
     }).
     done(function(data) {
       if (data.errors) {
+        console.log(data.errors);
         $('#modalEdit .alert-danger').html(data.errors.subscriptions.message);
         $('#modalEdit .alert-danger').removeClass('d-none');
       } else {

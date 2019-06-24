@@ -164,21 +164,6 @@ block content
                   each item in data.videos            
                     include ../partials/boxVideo
                     
-  if data.advanced.programmenotscheduled
-    .program_event_wrapper_bkg
-      section.row.program_event_wrapper
-          .col-lg-12
-            .container
-              h2.main_title.indented_title.color1!=global.__('Performances') + " " + global.__('to be scheduled')
-                .owl-carousel.loop.owl-theme
-                  each item in data.advanced.programmenotscheduled
-                    if item
-                      include ../partials/boxPerformance
-                    else 
-                      .badge.badge-danger
-                        pre=item
-
-
   if data.advanced.programmebydayvenue
     .program_event_wrapper_bkg
       section.row.program_event_wrapper
@@ -194,8 +179,9 @@ block content
                   h3.date_schedule_title=addtit ? titstart+" // "+day.date : day.date
                   - addtit = false;
                   .data_program_divider
-                  each venueroom in day.rooms              
-                    h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
+                  each venueroom in day.rooms
+                    if venueroom.room       
+                      h4.program_category_title=venueroom.venue+" // "+venueroom.room                      
                     .owl-carousel.loop.owl-theme
                       if venueroom.performances
                         each item in venueroom.performances
@@ -203,6 +189,21 @@ block content
           //.button_more.button_more_program
             span.button_more_label!=global.__('+ All the program')
             span.button_more_bkg
+  if data.advanced.programmenotscheduled
+    .program_event_wrapper_bkg
+      section.row.program_event_wrapper
+          .col-lg-12
+            .container
+              h2.main_title.indented_title.color1!=global.__('Performances') + (data.advanced.programmebydayvenue ?  " " + global.__('to be scheduled') : "")
+              .owl-carousel.loop.owl-theme
+                each item in data.advanced.programmenotscheduled
+                  if item
+                    include ../partials/boxPerformance
+                  else 
+                    .badge.badge-danger
+                      pre=item
+
+
     .polygon_divider_top
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
         g#layer2

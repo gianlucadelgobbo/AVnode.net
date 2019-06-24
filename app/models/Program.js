@@ -26,7 +26,7 @@ const subSchema = new Schema({
 
 const programSchema = new Schema({
   event: { type: Schema.ObjectId, ref: 'Event', required: true },
-  call: { type: Number, required: true},
+  call: { type: Number},
   topics: { type: [String], minlength: 1},
   schedule: [Schedule],
   performance: { type: Schema.ObjectId, ref: 'Performance', required: true },

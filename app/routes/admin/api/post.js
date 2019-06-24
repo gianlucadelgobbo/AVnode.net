@@ -160,13 +160,15 @@ router.editSubscriptionSave = (req, res) => {
     var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed!="1");
     var subscriptions_freezed = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed=="1").map(item => {return item.subscriber_id.toString()});
     for (var item=0;item<subscriptions.length;item++) {
-      for (var pack=0;pack<subscriptions[item].packages.length;pack++) {
-        var tmpPack = JSON.parse("["+subscriptions[item].packages[pack].package+"]");
-        tmpPack[0].option = subscriptions[item].packages[pack].option;
-        subscriptions[item].packages[pack] = tmpPack[0];
+      if (subscriptions[item].packages && subscriptions[item].packages.length) {
+        for (var pack=0;pack<subscriptions[item].packages.length;pack++) {
+          var tmpPack = JSON.parse("["+subscriptions[item].packages[pack].package+"]");
+          tmpPack[0].option = subscriptions[item].packages[pack].option;
+          subscriptions[item].packages[pack] = tmpPack[0];
+        }
+        logger.debug("subscriptions[item].packages");
+        logger.debug(subscriptions[item].packages);  
       }
-      logger.debug("subscriptions[item].packages");
-      logger.debug(subscriptions[item].packages);
     }
     for (var item=0;item<program.subscriptions.length;item++) {
       if (subscriptions_freezed.indexOf(program.subscriptions[item].subscriber_id.toString())!=-1) {
@@ -236,8 +238,10 @@ router.editSubscription = (req, res) => {
     daysdays.unshift(daysdays[0]-(24*60*60*1000));
     daysdays.push(daysdays[daysdays.length-1]+(24*60*60*1000));
     let days = [];
-    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)})
+    for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
+    
     res.render('admindev/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
+      console.log(err);
       res.json(body);
     });
   });
@@ -526,10 +530,6 @@ router.updateSubscription = (req, res) => {
           }
           logger.debug(program);
         }); */
-        const auth = {
-          user: event.organizationsettings.call.calls[sub.call].email,
-          pass: event.organizationsettings.call.calls[sub.call].emailpassword
-        };
         const status = {
           "5c38c57d9d426a9522c15ba5": "to be evaluated" ,
           "5be8708afc3961000000019e": "accepted - waiting for payment" ,
@@ -538,32 +538,40 @@ router.updateSubscription = (req, res) => {
           "5be8708afc3961000000011a": "not_accepted" ,
           "5be8708afc39610000000221": "refused from user"
         };
-        let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
-        if (req.body.status == "5be8708afc3961000000019e") {
-          email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
-        } else {
-          email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
-        }
-        email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
-        const mail = {
-          from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
-          to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
-          subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
-          text: email
-        };
         sub.status = req.body.status;
         sub.save(function(err){
           //event.save(function(err){
-            gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-              res.json({err:err, res:result});
-              /* if (err) {
-                logger.debug("Email sending failure");
-                res.json({error: true, msg: "Email sending failure"});
+            if (sub.call && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
+              const auth = {
+                user: event.organizationsettings.call.calls[sub.call].email,
+                pass: event.organizationsettings.call.calls[sub.call].emailpassword
+              };
+              let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
+              if (req.body.status == "5be8708afc3961000000019e") {
+                email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
               } else {
-                logger.debug("Email sending OK");
-                res.json({error: false, msg: "Email sending success"});
-              } */
-            });
+                email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
+              }
+              email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
+              const mail = {
+                from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
+                to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
+                subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
+                text: email
+              };
+              gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+                res.json({err:err, res:result});
+                /* if (err) {
+                  logger.debug("Email sending failure");
+                  res.json({error: true, msg: "Email sending failure"});
+                } else {
+                  logger.debug("Email sending OK");
+                  res.json({error: false, msg: "Email sending success"});
+                } */
+              });
+            } else {
+              res.json({err:err});
+            }
           //});  
         });  
       });

@@ -1121,9 +1121,33 @@ router.addPerformance = (req, res) => {
                 logger.debug(`${JSON.stringify(err)}`);
                 res.status(404).json({ error: err });
               } else {
-                req.params.sez = 'events';
-                req.params.form = 'program';
-                router.getData(req, res);            
+                query = {performance: req.params.performance, event: req.params.id};
+                Models["Program"]
+                .findOne(query)
+                .exec((err, program) => {
+                  if (!program) {
+                    program = {};
+                    program.performance = req.params.performance;
+                    program.reference = req.user._id;
+                    program.event = req.params.id;
+                    program.status = "5be8708afc39610000000013";
+                    Models["Program"]
+                    .create(program, function (err, program) {
+                      if (err) {
+                        logger.debug(`${JSON.stringify(err)}`);
+                        res.status(404).json({ error: err });
+                      } else {
+                        req.params.sez = 'events';
+                        req.params.form = 'program';
+                        router.getData(req, res);            
+                      }
+                    });
+                  } else {
+                    req.params.sez = 'events';
+                    req.params.form = 'program';
+                    router.getData(req, res);            
+                  }
+                });
               }
             });
           });
@@ -1201,9 +1225,18 @@ router.removePerformance = (req, res) => {
                 logger.debug(`${JSON.stringify(err)}`);
                 res.status(404).json({ error: err });
               } else {
-                req.params.sez = 'events';
-                req.params.form = 'program';
-                router.getData(req, res);
+                query = {performance: req.params.performance, event: req.params.id};
+                Models["Program"]
+                .findOneAndRemove(query, function (err, program) {
+                  if (err) {
+                    logger.debug(`${JSON.stringify(err)}`);
+                    res.status(404).json({ error: err });
+                  } else {
+                    req.params.sez = 'events';
+                    req.params.form = 'program';
+                    router.getData(req, res);            
+                  }
+                });
               }
             });
           });

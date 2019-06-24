@@ -72,9 +72,10 @@ block content
                     !="GENRE: "
                     b=item.performance.genre.name
                     br
-                  !="CALL: "
-                  b!=data.event.organizationsettings.call.calls[item.call].title
-                  br
+                  if (item.call && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
+                    !="CALL: "
+                    b!=data.event.organizationsettings.call.calls[item.call].title
+                    br
                   !="TOPICS: "
                   if item.topics
                     b!=item.topics.join(", ")
@@ -166,9 +167,10 @@ block content
                 p!=addressesaddresses.sort().join(", ")
 
           td
-            p
-              b!="CALL: "
-              !=data.event.organizationsettings.call.calls[item.call].title
+            if (item.call && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
+              p
+                b!="CALL: "
+                !=data.event.organizationsettings.call.calls[item.call].title
             p
               b!="AVAILABILITY"
               !=" | "
