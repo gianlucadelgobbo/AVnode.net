@@ -143,6 +143,7 @@ router.get('/events_import', (req, res) => {
           logger.debug("enddate.getDate()-startdate.getDate() "+(enddate.getDate()-startdate.getDate()));
           //for (var a=0;a<=enddate.getDate()-startdate.getDate();a++) {
             logger.debug("locations.length "+locations.length);
+            event.schedule = [];
             if (locations.length) {
               for (var b=0;b<locations.length;b++) {
                 var schedule = {
