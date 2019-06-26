@@ -566,9 +566,11 @@ export const saveVideosMedia = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put(`videos/${model._id}/video`, formBox, config).then(result => {
-    return result.data;
-  });
+  return axios
+    .put(`videos/${model._id}/video`, formBox, config)
+    .then(result => {
+      return result.data;
+    });
 };
 
 // ============ GALLERIES

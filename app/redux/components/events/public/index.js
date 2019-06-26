@@ -48,10 +48,7 @@ class EventPublic extends Component {
     let model = Object.assign({}, values);
 
     // Convert web
-    model.categories = model.categories.map(w => ({
-      id: w.value,
-      title: w.label
-    }));
+    model.type = model.type.value;
 
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
@@ -122,12 +119,11 @@ class EventPublic extends Component {
     }
 
     let v = {};
-    const { abouts, subtitles } = model;
+    const { abouts, subtitles, type } = model;
 
     // Convert categories
-    v.categories = [];
-    if (Array.isArray(model.categories)) {
-      v.categories = model.categories.map(x => x._id);
+    if (type) {
+      v.type = type._id;
     }
 
     // Convert categories
