@@ -84,26 +84,8 @@ videoSchema.virtual('about').get(function (req) {
 });
 
 videoSchema.virtual('description').get(function (req) {
-  let about = __('Text is missing');
-  let aboutA = [];
   if (this.abouts && this.abouts.length) {
-    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
-    if (aboutA.length && aboutA[0].abouttext) {
-      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-    } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
-      if (aboutA.length && aboutA[0].abouttext) {
-        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
-      }
-    }
-    about = about.replace(new RegExp(/<(?:.|\n)*?>/gm), "").trim().replace(/  /g , " ");
-
-    descriptionA = about.split(" ");
-    let descriptionShort = "";
-    for(let item in descriptionA) if ((descriptionShort+" "+descriptionA[item]).trim().length<300) descriptionShort+=descriptionA[item]+" ";
-    descriptionShort = descriptionShort.trim();
-    if (descriptionShort.length < about.length) descriptionShort+"..."
-    return descriptionShort;
+    return helper.makeDescription(this.abouts);
   }
 });
 
