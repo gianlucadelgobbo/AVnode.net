@@ -10,6 +10,27 @@ const isYoutube = (url) => {
   return youtubeRegex.test(url);
 };
 
+const makeDescription = (abouts) => {
+  let about = __('Text is missing');
+  let aboutA = abouts.filter(item => item.lang === global.getLocale());
+  if (aboutA.length && aboutA[0].abouttext) {
+    about = aboutA[0].abouttext.replace(/\r\n/g, ' ');
+  } else {
+    aboutA = abouts.filter(item => item.lang === config.defaultLocale);
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext;
+    }
+  }
+  about = about.replace(/\r\n/g, ' ').replace(new RegExp(/<(?:.|\n)*?>/gm), " ").trim().replace(/  /g , " ");
+
+  descriptionA = about.split(" ");
+  let descriptionShort = "";
+  for(let item in descriptionA) if ((descriptionShort+" "+descriptionA[item]).trim().length<300) descriptionShort+=descriptionA[item]+" ";
+  descriptionShort = descriptionShort.trim();
+  if (descriptionShort.length < about.length) descriptionShort+"...";
+  return descriptionShort;
+};
+
 const dateFix = (date) => { 
   const dateA = date.split("/");
   const day = parseInt(dateA[0]);
@@ -158,6 +179,7 @@ const dateoW3CString = (date) => {
 
 module.exports = {
   dateoW3CString,
+  makeDescription,
   linkify,
   setIdentifier,
   getStorageFolder,
