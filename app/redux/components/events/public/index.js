@@ -48,10 +48,7 @@ class EventPublic extends Component {
     let model = Object.assign({}, values);
 
     // Convert web
-    model.categories = model.categories.map(w => ({
-      id: w.value,
-      title: w.label
-    }));
+    model.type = model.type.value;
 
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
@@ -95,11 +92,12 @@ class EventPublic extends Component {
         .add(eTime.format("mm"), "minutes")
         .add(eTime.format("kk"))
         .format();
-
+      //const startTime = new Date(moment(s.starttime));
+      //const endTime = new Date(moment(s.endtime));
       const r = {
         ...s,
-        starttime,
-        endtime
+        startTime,
+        endTime
       };
 
       delete r.date;
@@ -121,43 +119,38 @@ class EventPublic extends Component {
     }
 
     let v = {};
-    const { abouts, subtitles } = model;
+    const { abouts, subtitles, type } = model;
 
     // Convert categories
-    v.categories = [];
-    if (Array.isArray(model.categories)) {
-      v.categories = model.categories.map(x => x._id);
+    if (type) {
+      v.type = type._id;
     }
 
     // Convert categories
     v.schedule = [];
     if (Array.isArray(model.schedule)) {
-      // const createVenue = v => {
-      //   const {location = {}, name} = v;
-      //   const {locality, country} = location;
-      //   let venue = "";
-      //
-      //   if (name) {
-      //     venue += name;
-      //   }
-      //
-      //   if (locality) {
-      //     venue += `, ${locality}`;
-      //   }
-      //
-      //   if (country) {
-      //     venue += `, ${country}`;
-      //   }
-      //
-      //   return venue;
-      // };
+      const createVenue = v => {
+        const { location = {}, name } = v;
+        const { locality, country } = location;
+        let venue = "";
+        if (name) {
+          venue += name;
+        }
+        if (locality) {
+          venue += `, ${locality}`;
+        }
+        if (country) {
+          venue += `, ${country}`;
+        }
+        return venue;
+      };
       console.log("First" + " " + model.schedule);
       v.schedule = model.schedule.map(x => ({
         startdate: moment(x.starttime),
         starttime: x.starttime,
         enddate: moment(x.endtime),
         endtime: x.endtime,
-        venue: x.venue && x.venue.location ? x.venue.name : "",
+        venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
         room: x.venue ? x.venue.room : ""
       }));
     }
@@ -206,22 +199,28 @@ class EventPublic extends Component {
   }
 
   createLatLongToSave = address => {
-    return geocodeByAddress(address)
-      .then(function(results) {
-        return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
-      })
-      .then(function([results, geometry]) {
-        let loc = {};
-        results[0].address_components.forEach(address_component => {
-          if (address_component.types.indexOf("country") !== -1)
-            loc.country = address_component.long_name;
-          if (address_component.types.indexOf("locality") !== -1)
-            loc.locality = address_component.long_name;
+    if (address && typeof address !== "object") {
+      let addressSplitted = address.split(",");
+      return geocodeByAddress(address)
+        .then(function(results) {
+          return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+        })
+        .then(function([results, geometry]) {
+          let venue = {};
+          let loc = {};
+          results[0].address_components.forEach(address_component => {
+            if (address_component.types.indexOf("country") !== -1)
+              loc.country = address_component.long_name;
+            if (address_component.types.indexOf("locality") !== -1)
+              loc.locality = address_component.long_name;
+          });
+          loc.formatted_address = results[0].formatted_address;
+          loc.geometry = geometry;
+          venue.location = loc;
+          venue.name = addressSplitted[0];
+          return venue;
         });
-        loc.formatted_address = results[0].formatted_address;
-        loc.geometry = geometry;
-        return loc;
-      });
+    }
   };
 
   onSubmit(values) {
@@ -239,16 +238,22 @@ class EventPublic extends Component {
     const schedule = values.schedule;
 
     schedule.forEach(a => {
-      promises.push(
-        this.createLatLongToSave(a.venue)
-          .then(result => {
-            // add to a model
-            a.venue = result;
-          })
-          .catch(() => {
-            console.log("ciao da google!");
-          })
-      );
+      if (typeof a.venue !== "object") {
+        if (a.venue !== "" || undefined) {
+          promises.push(
+            this.createLatLongToSave(a.venue)
+              .then(result => {
+                // add to a model
+                a.venue = { location: result.location, name: result.name };
+              })
+              .catch(() => {
+                console.log("ciao da google!");
+              })
+          );
+        } else {
+          a.venue = {};
+        }
+      }
     });
 
     // 4. LOADING BAR show loading bar

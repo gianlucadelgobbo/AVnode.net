@@ -66,10 +66,10 @@ class EventPublicForm extends Component {
         />
 
         <Field
-          name="categories"
+          name="type"
           component={renderList}
           placeholder={this.getIntlString({ id: CATEGORY })}
-          multiple={true}
+          multiple={false}
           options={categories}
         />
 
