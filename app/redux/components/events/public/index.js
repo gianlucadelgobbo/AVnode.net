@@ -112,15 +112,16 @@ class EventPublic extends Component {
     model.schedule = model.schedule.map(s => {
       let startArr = s.startdate.split("/");
       let endArr = s.enddate.split("/");
+      //let startTime = s.starttime !== undefined || null ? s.starttime.hour : new Date(s.starttime).getHours();
       const r = {
         starttime: new Date(
           startArr[2],
           startArr[1] - 1,
           startArr[0],
-          s.starttime.hour !== undefined
+          s.starttime.hour !== undefined || null
             ? s.starttime.hour
             : new Date(s.starttime).getHours(),
-          s.starttime.minute !== undefined
+          s.starttime.minute !== undefined || null
             ? s.starttime.minute
             : new Date(s.starttime).getMinutes(),
           0,
@@ -130,12 +131,12 @@ class EventPublic extends Component {
           endArr[2],
           endArr[1] - 1,
           endArr[0],
-          s.endtime.hour !== undefined
+          s.endtime.hour !== undefined || null
             ? s.endtime.hour
             : new Date(s.endtime).getHours(),
-          s.endtime.minute !== undefined
+          s.endtime.minute !== undefined || null
             ? s.endtime.minute
-            : new Data(s.endtime).getMinutes(),
+            : new Date(s.endtime).getMinutes(),
           0,
           0
         ),
@@ -186,11 +187,11 @@ class EventPublic extends Component {
         startdate: moment(x.starttime)
           .utc()
           .format("DD/MM/YYYY"),
-        starttime: x.starttime,
+        starttime: x.starttime ? x.starttime : "00:00",
         enddate: moment(x.endtime)
           .utc()
           .format("DD/MM/YYYY"),
-        endtime: x.endtime,
+        endtime: x.endtime ? x.endtime : "00:00",
         venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
         room: x.venue ? x.venue.room : ""
       }));
@@ -305,7 +306,7 @@ class EventPublic extends Component {
       const modelToSave = this.createModelToSave(values);
 
       modelToSave._id = model._id;
-      //modelToSave.schedule = schedule;
+
       console.log("About to save", modelToSave);
 
       return saveModel(modelToSave).then(response => {
