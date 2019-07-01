@@ -4018,6 +4018,8 @@
           "match": { "is_public": true},
           "select": {
             "title": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "slug": 1,
             "stats": 1,
             "schedule": 1,
@@ -4049,6 +4051,8 @@
           "match": { "is_public": true},
           "select": {
             "title": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "slug": 1,
             "stats": 1,
             "schedule": 1,
@@ -4081,6 +4085,8 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "tags": 1,
             "stats": 1,
             "media": 1
@@ -4118,6 +4124,8 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
             "image": 1
           },
@@ -4154,6 +4162,8 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
             "image": 1
           },
@@ -4190,6 +4200,8 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "categories": 1,
             "stats": 1,
             "media": 1
@@ -4227,6 +4239,8 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "categories": 1,
             "stats": 1,
             "media.file": 1,
@@ -4265,6 +4279,8 @@
           "select": {
             "title": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
             "image.file": 1
           },
@@ -4300,6 +4316,8 @@
           "select": {
             "stagename": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
             "image": 1,
             "organizationData.logo": 1
@@ -4335,6 +4353,8 @@
           "select": {
             "stagename": 1,
             "slug": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
             "image": 1,
             "organizationData.logo": 1
