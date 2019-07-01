@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   background-color: $gray-dark;
 }
 
@@ -32,7 +33,8 @@ footer {
   &-brand {
     padding-right: 1rem;
   }
-  .btn, .btn-link {
+  .btn,
+  .btn-link {
     cursor: pointer;
     -webkit-appearance: none;
   }
@@ -62,7 +64,7 @@ footer {
       &.active {
         background-color: $gray-lightest;
       }
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
     }
   }
   #account-sidenav {
@@ -74,7 +76,7 @@ footer {
       &.active {
         background-color: $gray-lightest;
       }
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
     }
   }
   fieldset {
@@ -85,8 +87,8 @@ footer {
   }
   label {
     color: $gray-light;
-    margin-bottom: .2rem;
-    font-size: .8rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
   }
   .list-group-item {
     background-color: transparent;
@@ -97,11 +99,11 @@ footer {
   position: fixed;
   left: 0;
   bottom: -4rem;
-  background-color: rgba($gray-dark, .9);
+  background-color: rgba($gray-dark, 0.9);
   width: 100%;
   height: 4rem;
-  padding: .5rem;
-  transition: top .5s ease;
+  padding: 0.5rem;
+  transition: top 0.5s ease;
   &.active {
     bottom: 0;
   }
@@ -116,12 +118,12 @@ footer {
 .teaser {
   border-radius: 3px;
   display: inline-block;
-  background-color: rgba($white, .7);
+  background-color: rgba($white, 0.7);
   padding: 1rem 3rem;
   margin: 3rem 0 3rem 3rem;
 }
 
-.input-error span{
+.input-error span {
   border: none;
   font-weight: 700;
   color: #700;
@@ -138,52 +140,55 @@ footer {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: '\F06A';
+  content: "\F06A";
   margin-right: 5px;
   margin-left: 5px;
 }
 
-  .tabparent{
-    ul{
-      li{
-        a{
-          margin-right: 10px;
-        }
+.tabparent {
+  ul {
+    li {
+      a {
+        margin-right: 10px;
       }
     }
   }
+}
 .deleteicon i {
-  color:#a7a7a7;
+  color: #a7a7a7;
   padding: 5px;
   float: right;
 }
 
 .fade {
   opacity: 1;
-  transition: opacity 0.15s linear; 
+  transition: opacity 0.15s linear;
 }
 .fade.show {
-  opacity: 1; 
+  opacity: 1;
 }
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
   color: #555;
   cursor: default;
   background-color: #fff;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
 }
-.nav>li>a {
+.nav > li > a {
   position: relative;
   display: block;
-  padding: 5px 15px;}
-.tab-content > .active{
+  padding: 5px 15px;
+}
+.tab-content > .active {
   background-color: #fff;
   padding: 10px;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
-.nav-tabs>li {
+.nav-tabs > li {
   float: left;
   margin-bottom: -1px;
 }
@@ -198,34 +203,35 @@ textarea#styled {
   height: 300px;
   border: none;
 }
-.input-group-btn:not(:first-child)>.btn, .input-group-btn:not(:first-child)>.btn-group{
-  margin-left:0;
+.input-group-btn:not(:first-child) > .btn,
+.input-group-btn:not(:first-child) > .btn-group {
+  margin-left: 0;
 }
-.input-group .form-control{
-  z-index:auto;
+.input-group .form-control {
+  z-index: auto;
 }
 .modal-close i {
-  position:absolute;
-  top:0;
-  right:0;
-  padding:5px;
-  cursor:pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  cursor: pointer;
 }
 .modal-backdrop.in {
-  opacity:0.5;
+  opacity: 0.5;
 }
-.modal-dialog{
-  margin-top:10%;
+.modal-dialog {
+  margin-top: 10%;
 }
 .modal-title {
   color: #0f8845;
-  margin:0 auto;
+  margin: 0 auto;
 }
-.modal-body h4{
-  text-align:center;
+.modal-body h4 {
+  text-align: center;
   color: #0f8845;
 }
-.publicUrl{
+.publicUrl {
   color: #545454;
   font-style: italic;
   font-size: 14px;

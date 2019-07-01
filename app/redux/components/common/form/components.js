@@ -1135,6 +1135,7 @@ export const renderTimePicker = ({
         timeMode={timeMode}
         theme="classic"
         withoutIcon={withoutIcon}
+        colorPalette="dark"
       />
       ,
       {meta.error && meta.touched && (
