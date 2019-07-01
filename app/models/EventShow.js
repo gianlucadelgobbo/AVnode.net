@@ -516,6 +516,10 @@ eventSchema.virtual('boxDate').get(function () {
   return boxDate;
 });
 
+/* eventSchema.virtual('dateISO').get(function () {
+  return this.updatedAt ? this.updatedAt : this.createdAt;
+}); */
+
 eventSchema.virtual('boxVenue').get(function () {
   /* let boxVenue;
   if (this.schedule && this.schedule.length && this.schedule[0].venue && this.schedule[0].venue.location) {

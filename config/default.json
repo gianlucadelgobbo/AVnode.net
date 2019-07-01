@@ -3805,6 +3805,8 @@
       "list_fields": {
         "stagename":1,
         "slug":1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "image":1,
         "organizationData.logo":1,
         "stats":1
@@ -4362,6 +4364,8 @@
       "list_fields": {
         "stagename": 1,
         "slug": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "image": 1,
         "organizationData.logo": 1,
         "stats": 1
@@ -4935,6 +4939,8 @@
         "title": 1,
         "slug": 1,
         "image": 1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "stats": 1,
         "call_is_active": 1,
         "schedule": 1
@@ -5006,6 +5012,8 @@
           "subtitles": 1,
           "abouts": 1,
           "slug": 1,
+          "createdAt": 1,
+          "updatedAt": 1,
           "stats": 1,
           "web": 1,
           "social": 1,
@@ -5030,6 +5038,7 @@
           "subtitle": 1,
           "imageFormats": 1,
           "boxDate": 1,
+          "dateISO": 1,
           "boxVenue": 1,
           "fullSchedule": 1,
           "schedule": 1,
@@ -5606,6 +5615,8 @@
         "title":1,
         "users":1,
         "slug":1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "image":1,
         "type":1,
         "tecnique":1,
@@ -5847,6 +5858,8 @@
       "view_list": "videos/list",
       "list_fields": {
         "title":1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "users":1,
         "slug":1,
         "media":1,
@@ -5954,7 +5967,8 @@
       "view_list": "news/list",
       "list_fields": {
         "title":1,
-        "createdAt":1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "users":1,
         "abouts":1,
         "slug":1,
@@ -6016,6 +6030,8 @@
       "view_list": "footage/list",
       "list_fields": {
         "title":1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "users":1,
         "slug":1,
         "media":1,
@@ -6101,6 +6117,8 @@
       "view_list": "playlists/list",
       "list_fields": {
         "title":1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "users":1,
         "slug":1,
         "footage":1,
@@ -6183,6 +6201,8 @@
       "view_list": "galleries/list",
       "list_fields": {
         "title":1,
+        "createdAt": 1,
+        "updatedAt": 1,
         "users":1,
         "slug":1,
         "image":1,

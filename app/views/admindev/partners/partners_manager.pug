@@ -8,10 +8,11 @@ block content
         th
           h5="Not assigned"
         each item, index in partnerships
-          - console.log("item")
-          - console.log(item)
           th
-            h5=item.category.name
+            h5
+              !=item.category.name
+              small
+                a.btn.btn-primary.btn-sm.sorter(data-target="sortable"+(index+1), href="#")="SORT"
     tbody
       tr
         td

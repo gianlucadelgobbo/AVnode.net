@@ -21,9 +21,7 @@ const logger = require('./logger');
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
   logger.debug("populate");
   logger.debug(populate);
-  logger.debug(populate);
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
-    console.log("stocazzo");
     const nolimit = JSON.parse(JSON.stringify(populate));
     delete nolimit[0].options;
     if (req.query.limit) {
@@ -246,9 +244,9 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
       }
     }
-    console.log("BINGOOOOO");
-    console.log(populate);
-    console.log({slug: req.params.sub ? req.params.sub : req.params.slug});
+    logger.debug("BINGOOOOO");
+    logger.debug(select);
+    logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
 
     model.
     findOne({slug: req.params.sub ? req.params.sub : req.params.slug}).
@@ -257,9 +255,9 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
-      console.log("err");
-      console.log(err);
-      console.log(ddd);
+      logger.debug("STOCAZZOOOOOOO");
+      logger.debug(err);
+      logger.debug(ddd);
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
@@ -598,6 +596,8 @@ dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, sk
 
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
   query.is_public = true;
+  logger.debug("BINGOOOOO");
+  logger.debug(select);
   model.countDocuments(query, function(error, total) {
     model.find(query)
     .populate(populate)
