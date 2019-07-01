@@ -48,7 +48,9 @@ class EventPublic extends Component {
     let model = Object.assign({}, values);
 
     // Convert web
-    model.type = model.type.value;
+    if (model.type) {
+      model.type = model.type.value;
+    }
 
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
@@ -75,7 +77,7 @@ class EventPublic extends Component {
       }));
 
     // Convert schedule
-    model.schedule = model.schedule.map(s => {
+    /*model.schedule = model.schedule.map(s => {
       const start = moment(s.startdate)
         .clone()
         .startOf("day");
@@ -104,6 +106,42 @@ class EventPublic extends Component {
       delete r.startdate;
       delete r.enddate;
 
+      return r;
+    });*/
+
+    model.schedule = model.schedule.map(s => {
+      let startArr = s.startdate.split("/");
+      let endArr = s.enddate.split("/");
+      //let startTime = s.starttime !== undefined || null ? s.starttime.hour : new Date(s.starttime).getHours();
+      const r = {
+        starttime: new Date(
+          startArr[2],
+          startArr[1] - 1,
+          startArr[0],
+          s.starttime.hour !== undefined || null
+            ? s.starttime.hour
+            : new Date(s.starttime).getHours(),
+          s.starttime.minute !== undefined || null
+            ? s.starttime.minute
+            : new Date(s.starttime).getMinutes(),
+          0,
+          0
+        ),
+        endtime: new Date(
+          endArr[2],
+          endArr[1] - 1,
+          endArr[0],
+          s.endtime.hour !== undefined || null
+            ? s.endtime.hour
+            : new Date(s.endtime).getHours(),
+          s.endtime.minute !== undefined || null
+            ? s.endtime.minute
+            : new Date(s.endtime).getMinutes(),
+          0,
+          0
+        ),
+        venue: s.venue
+      };
       return r;
     });
 
@@ -146,10 +184,14 @@ class EventPublic extends Component {
       };
       console.log("First" + " " + model.schedule);
       v.schedule = model.schedule.map(x => ({
-        startdate: moment(x.starttime),
-        starttime: x.starttime,
-        enddate: moment(x.endtime),
-        endtime: x.endtime,
+        startdate: moment(x.starttime)
+          .utc()
+          .format("DD/MM/YYYY"),
+        starttime: x.starttime ? x.starttime : "00:00",
+        enddate: moment(x.endtime)
+          .utc()
+          .format("DD/MM/YYYY"),
+        endtime: x.endtime ? x.endtime : "00:00",
         venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
         room: x.venue ? x.venue.room : ""
       }));
@@ -239,7 +281,7 @@ class EventPublic extends Component {
 
     schedule.forEach(a => {
       if (typeof a.venue !== "object") {
-        if (a.venue !== "" || undefined) {
+        if (a.venue !== undefined) {
           promises.push(
             this.createLatLongToSave(a.venue)
               .then(result => {
@@ -264,7 +306,7 @@ class EventPublic extends Component {
       const modelToSave = this.createModelToSave(values);
 
       modelToSave._id = model._id;
-      modelToSave.schedule = schedule;
+
       console.log("About to save", modelToSave);
 
       return saveModel(modelToSave).then(response => {
@@ -279,23 +321,6 @@ class EventPublic extends Component {
       });
     });
   }
-
-  //   onSubmit(values) {
-  //   const {showModal, saveModel, model} = this.props;
-  //   const modelToSave = this.createModelToSave(values);
-  //
-  //   modelToSave._id = model._id;
-  //
-  //   //dispatch the action to save the model here
-  //   return saveModel(modelToSave)
-  //       .then(model => {
-  //         if (model && model.id) {
-  //           showModal({
-  //             type: MODAL_SAVED
-  //           });
-  //         }
-  //       });
-  // }
 
   render() {
     const {
