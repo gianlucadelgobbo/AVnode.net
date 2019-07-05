@@ -201,6 +201,7 @@ router.get('/:id/:event/manage', (req, res) => {
       //exec((err, events) => {
       exec((err, event) => {
         var partnerships = event.partners.slice(0);
+        logger.debug(existingCat);
         var notassigned = [];
         var notassignedID = [];
         var partnersID = [];
@@ -217,7 +218,7 @@ router.get('/:id/:event/manage', (req, res) => {
         }
         var existingCat = partnerships.map(item => {return item.category._id.toString()});
         for (var item in categories) {
-          if (existingCat.indexOf(categories[item]._id.toString()===-1)) partnerships.push({category:categories[item], users:[]});
+          if (existingCat.indexOf(categories[item]._id.toString())===-1) partnerships.push({category:categories[item], users:[]});
         }
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
