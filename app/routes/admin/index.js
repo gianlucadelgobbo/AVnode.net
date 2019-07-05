@@ -101,6 +101,14 @@ router.get('/api/events/:id/performance/remove/:performance', (req, res)=>{
   get.removePerformance(req, res);
 });
 
+router.get('/api/events/:id/gallery/add/:gallery', (req, res)=>{
+  get.addGallery(req, res);
+});
+
+router.get('/api/events/:id/gallery/remove/:gallery', (req, res)=>{
+  get.removeGallery(req, res);
+});
+
 router.get('/api/subscriptions', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'subscriptions';

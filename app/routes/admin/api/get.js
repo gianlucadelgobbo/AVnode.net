@@ -1342,14 +1342,18 @@ router.sendEmailVericaition = (req, res) => {
 }
 
 
-/* 
 router.addGallery = (req, res) => {
-  Models[req.params.model]
-  .findOne({_id: req.params.id},'_id, galleries', (err, result) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  Models['Event']
+  .findOne(query)
+  .select({_id:1, title:1, stats:1, galleries:1})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
-    } else if (!result) {
+    } else if (!item) {
       res.status(404).json({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
@@ -1366,17 +1370,49 @@ router.addGallery = (req, res) => {
           "path":"id"
         }
       });
+    } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)!==-1) {
+      console.log(item.galleries.map((item)=>{return item.toString()}));
+      res.status(404).json({
+        "message": "GALLERY_IS_ALREADY_IN",
+        "name": "MongoError",
+        "stringValue":"\"GALLERY_IS_ALREADY_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"GALLERY_IS_ALREADY_IN",
+          "name":"MongoError",
+          "stringValue":"\"GALLERY_IS_ALREADY_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
     } else {
-      Models.Gallery
-      .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
+      item.galleries.push(req.params.gallery);
+      item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
           res.status(404).json({ error: err });
         } else {
-          result.galleries.push(data._id);
-          result.save(function(err){
-            //res.json(result);
-            res.json(data);
+          var query = {_id: req.params.gallery};
+          var select = {_id:1, events:1}
+          Models["Gallery"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, gallery) => {
+            gallery.events.push(req.params.id);
+            gallery.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'events';
+                req.params.form = 'galleries';
+                router.getData(req, res);            
+              }
+            });
           });
         }
       });
@@ -1384,6 +1420,87 @@ router.addGallery = (req, res) => {
   });
 }
 
+router.removeGallery = (req, res) => {
+  var query = {_id: req.params.id};
+  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  Models['Event']
+  .findOne(query)
+  .select({_id:1, galleries:1,})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)===-1) {
+      res.status(404).json({
+        "message": "GALLERY_IS_NOT_IN",
+        "name": "MongoError",
+        "stringValue":"\"GALLERY_IS_NOT_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"GALLERY_IS_NOT_IN",
+          "name":"MongoError",
+          "stringValue":"\"GALLERY_IS_NOT_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.galleries.splice(item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery), 1);
+      //res.json(item);
+      item.save(function(err){
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.gallery};
+          var select = {_id:1, events:1}
+          //select[req.params.sez] = 1;
+          Models["Gallery"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, gallery) => {
+            gallery.events.splice(gallery.events.map((item)=>{return item.toString()}).indexOf(req.params.id), 1);
+            gallery.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'events';
+                req.params.form = 'galleries';
+                router.getData(req, res);            
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}
+
+/*
 router.addVideos = (req, res) => {
   Models[req.params.model]
   .findOne({_id: req.params.id},'_id, videos', (err, result) => {
