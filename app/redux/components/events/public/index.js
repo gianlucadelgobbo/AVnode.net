@@ -112,7 +112,6 @@ class EventPublic extends Component {
     model.schedule = model.schedule.map(s => {
       let startArr = s.startdate.split("/");
       let endArr = s.enddate.split("/");
-      //let startTime = s.starttime !== undefined || null ? s.starttime.hour : new Date(s.starttime).getHours();
       const r = {
         starttime: new Date(
           startArr[2],
@@ -193,11 +192,9 @@ class EventPublic extends Component {
           .format("DD/MM/YYYY"),
         endtime: x.endtime ? x.endtime : "00:00",
         venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
-        room: x.venue ? x.venue.room : ""
+        room: x.venue.room
       }));
     }
-
-    console.log(v.schedule);
 
     //Convert slug for redux-form
     v.slug = model.slug;
@@ -286,7 +283,11 @@ class EventPublic extends Component {
             this.createLatLongToSave(a.venue)
               .then(result => {
                 // add to a model
-                a.venue = { location: result.location, name: result.name };
+                a.venue = {
+                  location: result.location,
+                  name: result.name,
+                  room: a.room !== undefined || null || "" ? a.room : ""
+                };
               })
               .catch(() => {
                 console.log("ciao da google!");
