@@ -8,6 +8,7 @@ import {
   multiSchedule,
   inputText,
   textareaMultiTab,
+  checkboxField,
   multiInputUrl,
   multiInputEmail,
   multiInputTel,
@@ -18,6 +19,7 @@ import asyncValidate from "./asyncValidate";
 import {
   SCHEDULE,
   ABOUT,
+  IS_PUBLIC,
   CATEGORY,
   SUBTITLES,
   EVENT_URL,
@@ -114,6 +116,12 @@ class EventPublicForm extends Component {
           SECTION={SECTION}
         />
         <br />
+
+        <Field
+          name="is_public"
+          component={checkboxField}
+          placeholder={this.getIntlString({ id: IS_PUBLIC })}
+        />
 
         <FieldArray
           name="web"
