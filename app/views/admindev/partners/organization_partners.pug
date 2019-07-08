@@ -36,13 +36,13 @@ block content
               else
                 .badge.badge-danger!="EXTERNAL"
             td
-              //if item.partnerships && item.partnerships.length
+              if item.partnerships && item.partnerships.length
+                - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+
                 each partnership in item.partnerships
-                  !=partnership.category.name
-                  each item in partnership.events
-                    .text-nowrap
-                      a(href="/"+item.slug, target="_blank")!=item.title
-                      !=" "
+                  .text-nowrap
+                    a(href="/"+partnership.slug, target="_blank")!=partnership.title
+                    !=" "
                       
             td
               if item.web
@@ -59,11 +59,11 @@ block content
                 !=" "
                 // Button trigger modal
                 button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-              //if item.partner_data && item.partner_data.contacts
+              if item.partner_data && item.partner_data.contacts
                 each contact in item.partner_data.contacts
                   div
                     a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-              //if item.members && item.members.length
+              if item.members && item.members.length
                 h5="Members"
                 each contact in item.members
                   div
