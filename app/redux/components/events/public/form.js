@@ -75,6 +75,12 @@ class EventPublicForm extends Component {
           options={categories}
         />
 
+        <Field
+          name="is_public"
+          component={checkboxField}
+          placeholder={this.getIntlString({ id: IS_PUBLIC })}
+        />
+
         <FieldArray
           name="schedule"
           component={multiSchedule}
@@ -116,12 +122,6 @@ class EventPublicForm extends Component {
           SECTION={SECTION}
         />
         <br />
-
-        <Field
-          name="is_public"
-          component={checkboxField}
-          placeholder={this.getIntlString({ id: IS_PUBLIC })}
-        />
 
         <FieldArray
           name="web"
