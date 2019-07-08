@@ -225,7 +225,6 @@ router.get('/:event/acts', (req, res) => {
           }
         }
       }
-      logger.debug(query);
       Program.
       find(query).
       select(select).

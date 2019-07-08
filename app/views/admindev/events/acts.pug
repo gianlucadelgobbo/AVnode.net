@@ -58,6 +58,12 @@ block content
                   !="TYPE: "
                   b=item.performance.type.name
                   br
+                  !="PUBLIC: "
+                  if item.performance.is_public
+                    span.badge.badge-success="OK"
+                  else
+                    span.badge.badge-danger="MISSING PUBLIC"
+                  br
                   !="DURATION: "
                   b=item.performance.duration
                     if item.performance.duration != parseFloat(item.performance.duration)
