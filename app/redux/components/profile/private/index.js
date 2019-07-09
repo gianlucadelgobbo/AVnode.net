@@ -60,7 +60,7 @@ class ProfilePrivate extends Component {
       const split = originalString.split(",");
       const country = split[split.length - 1].trim();
       const street = split[0].trim();
-      const locality = split[1].trim();
+      const locality = split[split.length - 3].trim();
       const formatted_address = originalString;
       const geometry = a.geometry;
       return { formatted_address, street, locality, country, geometry };

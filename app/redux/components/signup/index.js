@@ -64,12 +64,12 @@ class SignUp extends Component {
     data.addresses.push(values.addresses);
 
     data.addresses = data.addresses.map(a => {
-      const originalString = a;
-      const split = originalString.split(",");
+      const formatted_address = a;
+      const split = formatted_address.split(",");
       const country = split[split.length - 1].trim();
-      const locality = split[0].trim();
+      const locality = split[split.length - 3].trim();
       const geometry = a.geometry;
-      return { originalString, locality, country, geometry };
+      return { formatted_address, locality, country, geometry };
     });
 
     let promises = [];
@@ -77,7 +77,7 @@ class SignUp extends Component {
     const addrs = data.addresses;
     addrs.forEach(a => {
       promises.push(
-        this.createLatLongToSave(a.originalString)
+        this.createLatLongToSave(a.formatted_address)
           .then(result => {
             a.geometry = result;
           })

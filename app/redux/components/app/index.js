@@ -12,7 +12,7 @@ class App extends Component {
         const location = window.location.pathname;
         return (
         <div>
-            {location === "/signup" ? (
+            {location.indexOf("/signup")===0 ? (
                 <MainSignUp/>
             ) : (
                 <MainApp/>

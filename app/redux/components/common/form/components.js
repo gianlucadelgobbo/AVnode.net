@@ -861,7 +861,7 @@ export const multiGoogleCityCountry = ({
     render: googleAutocompleteSelect,
     key: "text",
     options: {
-      types: ["(city)"]
+      types: ['locality', 'country']
     },
     isChild: true
   });
@@ -883,7 +883,7 @@ export const singleGoogleCityCountry = ({
     render: googleAutocompleteSelect,
     key: "text",
     options: {
-      types: ["(city)"]
+      types: ['locality', 'country']
     },
     isChild: false
   });
