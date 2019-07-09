@@ -241,6 +241,79 @@ router.get('/:id/:event/manage', (req, res) => {
   });
 });
 
+router.post('/contacts/add/', (req, res) => {
+  logger.debug('/contacts/add/');
+  logger.debug(req.body);
+  /*Category.
+  find({ancestor: "5be8708afc396100000001eb"}).
+  lean().
+  exec((err, categories) => {
+    const query = {"partner_owner": req.params.id};
+    User.
+    find(query).
+    lean().
+    sort({stagename: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    populate(populate).
+    exec((err, data) => {
+      var populate = [
+        {path: "partners.users", select: {stagename:1}, model:"UserShow"},
+        {path: "partners.category", select: {name:1, slug:1}, model:"Category"}
+      ];
+
+      Event.
+      //find({"users": req.params.id}).
+      findOne({_id: req.params.event}).
+      populate(populate).
+      select({title: 1, partners:1}).
+      //sort({title: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      //exec((err, events) => {
+      exec((err, event) => {
+        var partnerships = event.partners.slice(0);
+        logger.debug(existingCat);
+        var notassigned = [];
+        var notassignedID = [];
+        var partnersID = [];
+        //console.log(partnerships);
+
+        for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
+        for (var item in data) {
+          if (partnersID.indexOf(data[item]._id.toString())===-1) {
+            if (notassignedID.indexOf(data[item]._id.toString())===-1) {
+              notassignedID.push(data[item]._id.toString());
+              notassigned.push(data[item]);
+            }
+          }
+        }
+        var existingCat = partnerships.map(item => {return item.category._id.toString()});
+        for (var item in categories) {
+          if (existingCat.indexOf(categories[item]._id.toString())===-1) partnerships.push({category:categories[item], users:[]});
+        }
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('admindev/partners/partners_manager', {
+            title: 'Partners',
+            currentUrl: req.originalUrl,
+            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            owner: req.params.id,
+            //events: events,
+            notassigned: notassigned,
+  
+            event: req.params.event,
+            partnerships: partnerships,
+            script: false
+          });
+        }
+      });
+    });
+  });*/
+});
+
+
+
+/*
 router.get('/:event/acts', (req, res) => {
   logger.debug('/organizations/'+req.params.event+'/acts');
   logger.debug(req.query)
@@ -398,6 +471,6 @@ router.get('/:event/program', (req, res) => {
       });
     }
   });
-});
+});*/
 
 module.exports = router;

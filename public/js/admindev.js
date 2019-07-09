@@ -347,6 +347,7 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     var modal = $(this)
     modal.find('.modal-title').text('New contact for ' + stagename)
+    modal.find('.modal-id').val(id)
   });
   
   $( ".duplicate" ).click(function( event ) {
@@ -382,13 +383,14 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
       }
     });
     $.ajax({
-      url: "/admin/api/crews/new/",
+      url: "/admindev/partners/contacts/add/",
       method: "post",
       data: post
     }).done(function(data) {
       console.log("#"+id);
     });
   });
+  
   $('#modalAddPartner').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var id = button.data('id') // Extract info from data-* attributes
