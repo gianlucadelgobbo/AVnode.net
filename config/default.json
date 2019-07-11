@@ -4983,12 +4983,12 @@
       ],
       "categoriesQueries": {
         "all":  {},
-        "clubbing": {"categories": "5be8708afc396100000000d8" },
-        "corporate": {"categories": "5be8708afc39610000000054" },
-        "festival": {"categories": "5be8708afc396100000001de" },
-        "one-night": {"categories": "5be8708afc39610000000262" },
-        "television": {"categories": "5be8708afc396100000001df" },
-        "workshops-learning": {"categories": "5be8708afc3961000000015b" }
+        "clubbing": {"type": "5be8708afc396100000000d8" },
+        "corporate": {"type": "5be8708afc39610000000054" },
+        "festival": {"type": "5be8708afc396100000001de" },
+        "one-night": {"type": "5be8708afc39610000000262" },
+        "television": {"type": "5be8708afc396100000001df" },
+        "workshops-learning": {"type": "5be8708afc3961000000015b" }
       },
       "ordersQueries": {
         "mostrecent": {
