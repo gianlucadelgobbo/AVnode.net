@@ -138,6 +138,11 @@ class ProfilePublic extends Component {
         if (address_component.types.indexOf('country') !== -1) loc.country = address_component.long_name;
         if (address_component.types.indexOf('locality') !== -1) loc.locality = address_component.long_name;
       });
+      if (!loc.locality) {
+        results[0].address_components.forEach(address_component => {
+          if (address_component.types.indexOf("administrative_area_level_1") !== -1) loc.locality = address_component.long_name;
+        });
+      }
       loc.formatted_address = results[0].formatted_address;
       loc.geometry = geometry;
       return loc;
