@@ -1839,7 +1839,7 @@
               "select": "title slug users duration abouts image bookings tech_arts tech_reqs videos is_public",
               "model": "Performance",
               "populate": [
-                {"path": "users", "select": {"stagename": 1, "addresses.country": 1, "addresses.locality": 1, "image": 1, "abouts": 1, "is_crew": 1, "lang": 1}, "model": "UserShow"},
+                {"path": "users", "select": {"stagename": 1, "addresses.country": 1, "addresses.locality": 1, "image": 1, "abouts": 1, "is_crew": 1, "lang": 1, "web": 1, "social": 1}, "model": "UserShow"},
                 {"path": "type", "select": "name", "model": "Category"},
                 {"path": "tecnique", "select": "name", "model": "Category"},
                 {"path": "genre", "select": "name", "model": "Category"},

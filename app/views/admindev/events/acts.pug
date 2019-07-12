@@ -160,12 +160,19 @@ block content
                   else
                     .badge.badge-danger MISSING ADDRESS
               if get.fullinfo
-                .mt-2!=user.about
+                .mt-2!=user.aboutFull
                 if user.web
-                  div!=user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                  .mt-3
+                    b!="WEB"
+                  ul
+                    each web in user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                      li!=web
                 if user.social
-                  div!=user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
-
+                  .mt-3
+                    b!="SOCIAL"
+                  ul
+                    each social in user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                      li!=social
               
               //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
                 - var addresses = item.performance.users.map((item) => {return item.addresses.map((item) => {return item.country})})
