@@ -144,7 +144,12 @@ class MembersTable extends Component {
             <LateralMenu _id={_id} />
           </div>
           <div className="col-md-10">
-            <TitleComponent title={model.stagename} type={CREW_NAME} link={"/"+model.slug} show={SHOW} />
+            <TitleComponent
+              title={model.stagename}
+              type={CREW_NAME}
+              link={"/" + model.slug}
+              show={SHOW}
+            />
             <div className="row marginBottom">
               <div className="col-md-6">
                 <h2 className="labelField">

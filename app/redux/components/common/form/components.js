@@ -861,7 +861,7 @@ export const multiGoogleCityCountry = ({
     render: googleAutocompleteSelect,
     key: "text",
     options: {
-      types: ['locality', 'country']
+      types: ["locality", "country"]
     },
     isChild: true
   });
@@ -883,7 +883,7 @@ export const singleGoogleCityCountry = ({
     render: googleAutocompleteSelect,
     key: "text",
     options: {
-      types: ['locality', 'country']
+      types: ["locality", "country"]
     },
     isChild: false
   });
@@ -1052,7 +1052,7 @@ export const tagsInput = ({
   isChild,
   tags,
   delimiters,
-  handleTagClick,
+  handleDrag,
   handleDelete,
   handleAddition
 }) => {
@@ -1063,7 +1063,7 @@ export const tagsInput = ({
         //suggestions={suggestions}
         handleAddition={handleAddition}
         handleDelete={handleDelete}
-        handleTagClick={handleTagClick}
+        handleDrag={handleDrag}
         delimiters={delimiters}
       />
       {meta.error && meta.touched && (

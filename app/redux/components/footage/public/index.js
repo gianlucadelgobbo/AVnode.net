@@ -19,8 +19,19 @@ import {
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
 import { removeModel } from "../users/actions";
+import { fetchFootagePublic } from "../../../api";
 
 class FootagePublic extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tags: [],
+      suggestions: []
+    };
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddition = this.handleAddition.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+  }
   componentDidMount() {
     const {
       fetchModel,
@@ -31,6 +42,17 @@ class FootagePublic extends Component {
     fetchModel({
       id: _id
     });
+    fetchFootagePublic({ id: _id }).then(result => {
+      this.setState({
+        tags:
+          result.tags !== undefined || null
+            ? result.tags.map(t => ({
+                id: t.old_id || t._id,
+                text: t.tag
+              }))
+            : []
+      });
+    });
   }
 
   // Convert form values to API model
@@ -38,7 +60,9 @@ class FootagePublic extends Component {
     //clone obj
     let model = Object.assign({}, values) || {};
 
-    model.tags = values.tags;
+    const { tags } = this.state;
+
+    model.tags = tags.map(m => ({ old_id: m.id, tag: m.text }));
 
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
@@ -105,17 +129,25 @@ class FootagePublic extends Component {
     return tags;
   }
   handleDelete(i) {
-    let tags = this.tags;
-    tags.splice(i, 1);
-    return tags;
+    const { tags } = this.state;
+    this.setState({
+      tags: tags.filter((tag, index) => index !== i)
+    });
   }
-  handleTagClick(index) {
-    console.log("The tag at index " + index + " was clicked");
+
+  handleDrag(tag, currPos, newPos) {
+    const tags = [...this.state.tags];
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    this.setState({ tags: newTags });
   }
+
   handleAddition(tag) {
-    let tags = this.tags;
-    tags.push(tag);
-    return tags;
+    this.setState(state => ({ tags: [...state.tags, tag] }));
   }
 
   uploadFile(files) {
@@ -157,7 +189,7 @@ class FootagePublic extends Component {
       isFetching,
       errorMessage
     } = this.props;
-    console.log(model);
+    const { tags } = this.state;
     const delimiters = [FOOTAGE_CODES_TAGS.comma, FOOTAGE_CODES_TAGS.enter];
     return (
       <div className="row">
@@ -193,11 +225,11 @@ class FootagePublic extends Component {
             showModal={showModal}
             tabs={locales}
             labels={locales_labels}
-            tags={this.getFormattedTags() || []}
+            tags={tags || []}
             delimiters={delimiters}
             handleDelete={this.handleDelete}
-            handleTagClick={this.handleTagClick}
             handleAddition={this.handleAddition}
+            handleDrag={this.handleDrag}
             uploadFile={this.uploadFile.bind(this)}
           />
         </div>
