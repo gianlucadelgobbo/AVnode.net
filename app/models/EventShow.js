@@ -281,7 +281,7 @@ eventSchema.virtual('advanced').get(function (req) {
     performers.performersN = performersA.length;
     performers.performersCount = performersN.length;
     performers.actsN = actsN.length;
-    performers.performers.sort((a,b) => (a.stagename > b.stagename) ? 1 : ((b.stagename > a.stagename) ? -1 : 0));
+    performers.performers.sort((a,b) => (a.stagename.toLowerCase() > b.stagename.toLowerCase()) ? 1 : ((b.stagename.toLowerCase() > a.stagename.toLowerCase()) ? -1 : 0));
     advanced.performers = performers;
 
     if (advanced.performers) advanced.menu.push({slug: "performers", name: global.__("Performers")});
