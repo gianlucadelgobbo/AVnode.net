@@ -4,12 +4,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { FORM_NAME, SECTION } from "./constants";
 import {
-  renderDropzoneInput,
   inputText,
   textareaMultiTab,
   tagsInput,
-  fieldWithLabel,
-  uploadComponent
+  fieldWithLabel
 } from "../../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
@@ -40,10 +38,9 @@ class FootagePublicForm extends Component {
       onSubmit,
       delimiters,
       handleDelete,
-      handleTagClick,
+      handleDrag,
       handleAddition,
       tags,
-      uploadFile,
       model,
       _id,
       removeModel
@@ -107,7 +104,7 @@ class FootagePublicForm extends Component {
           tags={tags}
           delimiters={delimiters}
           handleDelete={handleDelete}
-          handleTagClick={handleTagClick}
+          handleDrag={handleDrag}
           handleAddition={handleAddition}
           placeholder={this.getIntlString({ id: TAGS })}
         />
