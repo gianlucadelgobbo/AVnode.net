@@ -47,10 +47,11 @@ block teaser
                         span.mr-2!=(index+1)
                         button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('MORE')
                         span
-                          !=item.event.organizationsettings.call.calls[item.call].title
-                          !=" "
-                          !=global.__('by')
-                          !=" "
+                          if item.call && item.event.organizationsettings.call.calls && item.event.organizationsettings.call.calls[item.call]
+                            !=item.event.organizationsettings.call.calls[item.call].title
+                            !=" "
+                            !=global.__('by')
+                            !=" "
                           a(href="/events/"+item.event.slug, target="_blank")=item.event.title
                       .col-md-3
                           a(href="/performances/"+item.performance.slug, target="_blank")=item.performance.title
@@ -74,7 +75,8 @@ block teaser
                         if item.status._id=="5be8708afc3961000000019e"
                           .badge.badge-info=global.__('Waiting your confirm')
                           a.mr-2.btn.btn-success.btn-sm.btn-inline(href='#pay'+index, data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('Confirm')
-                        button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel your proposal')
+                        if item.status._id!="5be8708afc39610000000013"
+                          button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel your proposal')
                     .collapse(id='collapse'+index, aria-labelledby='heading'+index, data-parent='#accordion')
                       table.table
                         tr
@@ -82,7 +84,10 @@ block teaser
                             .text-right
                               b=global.__('Call')
                           td
-                            h4=item.event.organizationsettings.call.calls[item.call].title
+                            if item.call && item.event.organizationsettings.call.calls && item.event.organizationsettings.call.calls[item.call]
+                              h4=item.event.organizationsettings.call.calls[item.call].title
+                            else 
+                              h4=item.event.title
                             //p=global.__("Start date")+": "+item.event.organizationsettings.call.calls[item.call].start_date_formatted+" | "+global.__("End date")+": "+item.event.organizationsettings.call.calls[item.call].end_date+" | "+global.__("Email")+": "+item.event.organizationsettings.call.calls[item.call].email
                               - var admitted = []
                               - for(var b=0;b<item.event.organizationsettings.call.calls[item.call].admitted.length;b++)

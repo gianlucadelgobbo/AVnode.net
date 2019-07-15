@@ -93,6 +93,11 @@ router.get('/api/galleries/:id/mediaremove/:image', (req, res)=>{
   get.removeImage(req, res);
 });
 
+router.get('/api/playlists/:id/footageremove/:footage', (req, res)=>{
+  req.params.sez = 'playlists';
+  get.removeFootage(req, res);
+});
+
 router.get('/api/events/:id/performance/add/:performance', (req, res)=>{
   get.addPerformance(req, res);
 });
@@ -225,8 +230,6 @@ router.put('/api/profile/:form/', (req, res) => {
 });
 
 router.put('/api/:sez/:id/:form/', (req, res) => {
-  console.log("stocaupload");
-  console.log(req.params.sez+'/'+req.params.form);
   if (['profile/image','crews/image','events/image','performances/image','footage/media','galleries/medias','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     req.params.comp = ['footage/media','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
     console.log("stocaupload");
