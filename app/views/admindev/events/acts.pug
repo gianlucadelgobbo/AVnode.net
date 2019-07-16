@@ -160,7 +160,7 @@ block content
                   else
                     .badge.badge-danger MISSING ADDRESS
               if get.fullinfo
-                .mt-2!=user.aboutFull
+                .mt-2!=user.aboutFull ? user.aboutFull : user.about
                 if user.web
                   .mt-3
                     b!="WEB"
