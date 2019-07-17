@@ -46,6 +46,11 @@ import Footage from "../footage/index.js";
 import FootagePublic from "../footage/public";
 import FootageVideo from "../footage/video";
 
+// // News
+import News from "../news/index.js";
+import NewsPublic from "../news/public";
+import NewsImages from "../news/image";
+
 // // Playlists
 import Playlist from "../playlists/index.js";
 import PlaylistPublic from "../playlists/public";
@@ -203,6 +208,17 @@ class MainApp extends Component {
                   component={FootageVideo}
                 />
                 <Route path="/admin/footage" component={Footage} />
+
+                <Route
+                  path="/admin/news/:_id/public/"
+                  component={NewsPublic}
+                />
+
+                <Route
+                  path="/admin/news/:_id/images/"
+                  component={NewsImages}
+                />
+                <Route path="/admin/news" component={News} />
 
                 <Route
                   path="/admin/playlists/:_id/public/"

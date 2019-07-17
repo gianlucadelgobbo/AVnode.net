@@ -467,6 +467,72 @@ export const fetchSlugNewFootage = slug => {
   });
 };
 
+// ============ News
+
+export const fetchNews = () => {
+  return axios.get("news").then(result => {
+    return result.data.news;
+  });
+};
+
+export const removeNews = ({ id }) => {
+  return axios.delete(`news/${id}`).then(result => {
+    return result.data;
+  });
+};
+
+export const postNews = obj => {
+  return axios.post(`news/new/`, obj).then(result => {
+    return result.data;
+  });
+};
+
+// - public
+
+export const fetchNewsPublic = ({ id }) => {
+  return axios.get(`news/${id}/public`).then(result => {
+    return result.data;
+  });
+};
+
+export const saveNewsPublic = model => {
+  return axios.put(`news/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+
+export const removeNewsPublic = model => {
+  return axios.delete(`news/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+
+export const fetchSlugNewNews = slug => {
+  return axios.get(`news/new/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+// - images
+
+export const fetchNewsImages = ({ id }) => {
+  return axios.get(`news/${id}/image`).then(result => {
+    return result.data;
+  });
+};
+
+export const saveNewsImages = model => {
+  // convert image to Form Data
+  let formBox = new FormData();
+  formBox.append("image", model.image);
+
+  // define request headers
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+
+  return axios.put(`news/${model.id}/image`, formBox, config).then(result => {
+    return result.data;
+  });
+};
+
 // ============ Playlist
 
 export const fetchPlaylists = () => {
@@ -754,7 +820,13 @@ export const saveFootageUsers = model =>
     .then(result => {
       return result.data;
     });
-export const removePlaylistsUsers = model =>
+export const saveNewsUsers = model =>
+  axios
+    .get(`news/${model._id}/users/add/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+  export const removePlaylistsUsers = model =>
   axios
     .get(`playlists/${model._id}/users/remove/${model.idusers}`, model)
     .then(result => {

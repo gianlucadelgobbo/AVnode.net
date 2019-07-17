@@ -89,7 +89,7 @@ const user = getDefaultModel(state) || {};
 class Main extends Component {
 
     render() {
-        console.log(getLocale(user));
+        //console.log(getLocale(user));
         return (<IntlProvider locale={getLocale(user)} key={getLocale(user)} messages={getMessages(user)}>
             <Provider store={store}>
                 <App/>

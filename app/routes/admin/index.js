@@ -230,7 +230,7 @@ router.put('/api/profile/:form/', (req, res) => {
 });
 
 router.put('/api/:sez/:id/:form/', (req, res) => {
-  if (['profile/image','crews/image','events/image','performances/image','footage/media','galleries/medias','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+  if (['profile/image','crews/image','events/image','news/image','performances/image','footage/media','galleries/medias','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     req.params.comp = ['footage/media','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
     console.log("stocaupload");
     upload.uploader(req, res, (err, data) => {

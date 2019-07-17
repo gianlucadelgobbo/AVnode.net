@@ -11,6 +11,7 @@ import crews from "../components/crews/reducers";
 import users from "../components/performances/users/reducers";
 import partnerCategories from "../components/partnerCategories/reducers";
 import footage from "../components/footage/reducers";
+import news from "../components/news/reducers";
 import playlists from "../components/playlists/reducers";
 import signup from "../components/signup/reducers";
 import videos from "../components/videos/reducers";
@@ -29,6 +30,7 @@ const reducer = combineReducers({
   modal,
   partnerCategories,
   footage,
+  news,
   playlists,
   signup,
   videos,

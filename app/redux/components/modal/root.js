@@ -9,12 +9,14 @@ import AddUserEvent from "../events/users";
 import AddUserVideos from "../videos/users";
 import AddUserGalleries from "../galleries/users";
 import AddUserFootage from "../footage/users";
+import AddUserNews from "../news/users";
 import AddUserPlaylists from "../playlists/users";
 import AddMediaModal from "./media/add";
 import AddPartnerModal from "./partners/add";
 import AddCrewModal from "./crews/add";
 import AddMembersModal from "./members/add";
 import AddFootageModal from "./footage/add";
+import AddNewsModal from "./news/add";
 import AddPlaylistModal from "./playlists/add";
 import AddVideosModal from "./videos/add";
 import AddGalleriesModal from "./galleries/add";
@@ -41,12 +43,14 @@ import {
   MODAL_ADD_USER_VIDEOS,
   MODAL_ADD_USER_GALLERIES,
   MODAL_ADD_USER_FOOTAGE,
+  MODAL_ADD_USER_NEWS,
   MODAL_ADD_USER_PLAYLISTS,
   MODAL_ADD_MEDIA,
   MODAL_ADD_PARTNER,
   MODAL_ADD_CREW,
   MODAL_ADD_MEMBERS,
   MODAL_ADD_FOOTAGE,
+  MODAL_ADD_NEWS,
   MODAL_ADD_PLAYLIST,
   MODAL_ADD_VIDEOS,
   MODAL_ADD_GALLERIES,
@@ -79,12 +83,14 @@ const MODAL_COMPONENTS = {
   [MODAL_ADD_USER_VIDEOS]: AddUserVideos,
   [MODAL_ADD_USER_GALLERIES]: AddUserGalleries,
   [MODAL_ADD_USER_FOOTAGE]: AddUserFootage,
+  [MODAL_ADD_USER_NEWS]: AddUserNews,
   [MODAL_ADD_USER_PLAYLISTS]: AddUserPlaylists,
   [MODAL_ADD_MEDIA]: AddMediaModal,
   [MODAL_ADD_PARTNER]: AddPartnerModal,
   [MODAL_ADD_CREW]: AddCrewModal,
   [MODAL_ADD_MEMBERS]: AddMembersModal,
   [MODAL_ADD_FOOTAGE]: AddFootageModal,
+  [MODAL_ADD_NEWS]: AddNewsModal,
   [MODAL_ADD_PLAYLIST]: AddPlaylistModal,
   [MODAL_ADD_VIDEOS]: AddVideosModal,
   [MODAL_ADD_GALLERIES]: AddGalleriesModal,
@@ -110,12 +116,14 @@ const MODAL_TITLES = {
   [MODAL_ADD_USER_VIDEOS]: "Add Users",
   [MODAL_ADD_USER_GALLERIES]: "Add Users",
   [MODAL_ADD_USER_FOOTAGE]: "Add Users",
+  [MODAL_ADD_USER_NEWS]: "Add Users",
   [MODAL_ADD_USER_PLAYLISTS]: "Add Users",
   [MODAL_ADD_MEDIA]: "Add Media",
   [MODAL_ADD_PARTNER]: "Add Partner",
   [MODAL_ADD_CREW]: "Add Crew",
   [MODAL_ADD_MEMBERS]: "Add Members",
   [MODAL_ADD_FOOTAGE]: "Add Footage",
+  [MODAL_ADD_NEWS]: "Add News",
   [MODAL_ADD_PLAYLIST]: "Add Playlist",
   [MODAL_ADD_VIDEOS]: "Add Video",
   [MODAL_ADD_GALLERIES]: "Add Gallery",

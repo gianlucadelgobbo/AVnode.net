@@ -79,6 +79,11 @@ export const FOOTAGE_URL = "label.form.footage.url";
 export const FOOTAGE_URL_PRE = "label.form.footage.url_pre";
 export const FOOTAGE_URL_HELP = "label.form.footage.url_help";
 export const TAGS = "label.form.tags";
+//NEWS
+export const NEWS_NAME = "label.form.news.name";
+export const NEWS_URL = "label.form.news.url";
+export const NEWS_URL_PRE = "label.form.news.url_pre";
+export const NEWS_URL_HELP = "label.form.news.url_help";
 //Playlist
 export const PLAYLIST_NAME = "label.form.playlist.name";
 export const PLAYLIST_URL = "label.form.playlist.url";
@@ -359,6 +364,22 @@ defineMessages({
     id: FOOTAGE_URL_HELP,
     defaultMessage: "To have your footage at https://avnode.net/footage/mybeautyfulfootage, please insert mybeautyfulfootage (lower case, no spaces, no special characters)"
   },
+  [NEWS_NAME]: {
+    id: NEWS_NAME,
+    defaultMessage: "News Name"
+  },
+  [NEWS_URL]: {
+    id: NEWS_URL,
+    defaultMessage: "News Url"
+  },
+  [NEWS_URL_PRE]: {
+    id: NEWS_URL_PRE,
+    defaultMessage: "https://avnode.net/news/"
+  },
+  [NEWS_URL_HELP]: {
+    id: NEWS_URL_HELP,
+    defaultMessage: "To have your news at https://avnode.net/news/mybeautyfulnews, please insert mybeautyfulnews (lower case, no spaces, no special characters)"
+  },
   [TAGS]: {
     id: TAGS,
     defaultMessage: "Tags"
@@ -377,7 +398,7 @@ defineMessages({
   },
   [PLAYLIST_URL_HELP]: {
     id: PLAYLIST_URL_HELP,
-    defaultMessage: "To have your playlist at https://avnode.net/footage/mybeautyfulplaylist, please insert mybeautyfulplaylist (lower case, no spaces, no special characters)"
+    defaultMessage: "To have your playlist at https://avnode.net/playlist/mybeautyfulplaylist, please insert mybeautyfulplaylist (lower case, no spaces, no special characters)"
   },
   [VIDEOS_NAME]: {
     id: VIDEOS_NAME,

@@ -5,6 +5,11 @@
     "filepath": "./app/redux/components/comingSoon/index.js"
   },
   {
+    "id": "galleryInGalleries",
+    "defaultMessage": "Add images",
+    "filepath": "./app/redux/components/common/form/components.js"
+  },
+  {
     "id": "validation.error.required",
     "defaultMessage": "Required",
     "filepath": "./app/redux/components/common/form/errors.js"
@@ -450,6 +455,26 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.news.name",
+    "defaultMessage": "News Name",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.news.url",
+    "defaultMessage": "News Url",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.news.url_pre",
+    "defaultMessage": "https://avnode.net/news/",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
+    "id": "label.form.news.url_help",
+    "defaultMessage": "To have your news at https://avnode.net/news/mybeautyfulnews, please insert mybeautyfulnews (lower case, no spaces, no special characters)",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.tags",
     "defaultMessage": "Tags",
     "filepath": "./app/redux/components/common/form/labels.js"
@@ -471,7 +496,7 @@
   },
   {
     "id": "label.form.playlist.url_help",
-    "defaultMessage": "To have your playlist at https://avnode.net/footage/mybeautyfulplaylist, please insert mybeautyfulplaylist (lower case, no spaces, no special characters)",
+    "defaultMessage": "To have your playlist at https://avnode.net/playlist/mybeautyfulplaylist, please insert mybeautyfulplaylist (lower case, no spaces, no special characters)",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
@@ -515,9 +540,14 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
-    "id": "CrewPublicImage",
+    "id": "crew.image",
     "defaultMessage": "CREW IMAGE",
-    "filepath": "./app/redux/components/crews/image/index.js"
+    "filepath": "./app/redux/components/crews/image/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/crews/image/constants.js"
   },
   {
     "id": "publicDataCrews",
@@ -526,13 +556,28 @@
   },
   {
     "id": "imagesCrews",
-    "defaultMessage": "Images",
+    "defaultMessage": "Image",
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
   },
   {
     "id": "membersCrews",
     "defaultMessage": "Members",
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
+  },
+  {
+    "id": "organization",
+    "defaultMessage": "Organization",
+    "filepath": "./app/redux/components/crews/lateralMenu/index.js"
+  },
+  {
+    "id": "crew.members",
+    "defaultMessage": "CREW MEMBERS",
+    "filepath": "./app/redux/components/crews/members/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/crews/members/constants.js"
   },
   {
     "id": "MembersTitle",
@@ -555,6 +600,11 @@
     "filepath": "./app/redux/components/crews/public/constants.js"
   },
   {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/crews/public/constants.js"
+  },
+  {
     "id": "CrewTitle",
     "defaultMessage": "Crew Name",
     "filepath": "./app/redux/components/crews/table/index.js"
@@ -565,14 +615,24 @@
     "filepath": "./app/redux/components/events/calls/index.js"
   },
   {
-    "id": "EventsPublicGalleries",
-    "defaultMessage": "EVENT GALLERY",
-    "filepath": "./app/redux/components/events/galleries/index.js"
+    "id": "event.galleries",
+    "defaultMessage": "EVENT GALLERIES",
+    "filepath": "./app/redux/components/events/galleries/constants.js"
   },
   {
-    "id": "EventPublicImage",
-    "defaultMessage": "MY IMAGE",
-    "filepath": "./app/redux/components/events/image/index.js"
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/events/galleries/constants.js"
+  },
+  {
+    "id": "event.image",
+    "defaultMessage": "EVENT IMAGE",
+    "filepath": "./app/redux/components/events/image/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/events/image/constants.js"
   },
   {
     "id": "publicDataEvents",
@@ -581,7 +641,7 @@
   },
   {
     "id": "imagesEvents",
-    "defaultMessage": "Images",
+    "defaultMessage": "Image",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
@@ -610,9 +670,14 @@
     "filepath": "./app/redux/components/events/partners/index.js"
   },
   {
-    "id": "EventsPublicProgram",
+    "id": "event.public.data",
     "defaultMessage": "EVENT PROGRAM",
-    "filepath": "./app/redux/components/events/program/index.js"
+    "filepath": "./app/redux/components/events/program/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/events/program/constants.js"
   },
   {
     "id": "event.public.data",
@@ -620,9 +685,19 @@
     "filepath": "./app/redux/components/events/public/constants.js"
   },
   {
-    "id": "EventsPublicSettings",
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/events/public/constants.js"
+  },
+  {
+    "id": "event.settings",
     "defaultMessage": "EVENT SETTINGS",
-    "filepath": "./app/redux/components/events/settings/index.js"
+    "filepath": "./app/redux/components/events/settings/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/events/settings/constants.js"
   },
   {
     "id": "EventTitle",
@@ -630,13 +705,23 @@
     "filepath": "./app/redux/components/events/table/index.js"
   },
   {
-    "id": "EventsPublicVideos",
+    "id": "event.videos",
     "defaultMessage": "EVENT VIDEOS",
-    "filepath": "./app/redux/components/events/videos/index.js"
+    "filepath": "./app/redux/components/events/videos/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/events/videos/constants.js"
   },
   {
     "id": "publicDataFootage",
     "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/footage/lateralMenu/index.js"
+  },
+  {
+    "id": "videoVideos",
+    "defaultMessage": "Video",
     "filepath": "./app/redux/components/footage/lateralMenu/index.js"
   },
   {
@@ -645,9 +730,34 @@
     "filepath": "./app/redux/components/footage/public/constants.js"
   },
   {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/footage/public/constants.js"
+  },
+  {
     "id": "FootageTitle",
     "defaultMessage": "Footage Name",
     "filepath": "./app/redux/components/footage/table/index.js"
+  },
+  {
+    "id": "videos.video",
+    "defaultMessage": "VIDEO FILE",
+    "filepath": "./app/redux/components/footage/video/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/footage/video/constants.js"
+  },
+  {
+    "id": "crew.image",
+    "defaultMessage": "GALLERY IMAGES",
+    "filepath": "./app/redux/components/galleries/gallery/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/galleries/gallery/constants.js"
   },
   {
     "id": "publicDataGalleries",
@@ -655,8 +765,18 @@
     "filepath": "./app/redux/components/galleries/lateralMenu/index.js"
   },
   {
+    "id": "galleryInGalleries",
+    "defaultMessage": "Add images",
+    "filepath": "./app/redux/components/galleries/lateralMenu/index.js"
+  },
+  {
     "id": "galleries.public.data",
     "defaultMessage": "GALLERY PUBLIC DATA",
+    "filepath": "./app/redux/components/galleries/public/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
     "filepath": "./app/redux/components/galleries/public/constants.js"
   },
   {
@@ -670,14 +790,59 @@
     "filepath": "./app/redux/components/main/index.js"
   },
   {
-    "id": "PerformancePublicGallery",
-    "defaultMessage": "PERFORMANCE GALLERY",
-    "filepath": "./app/redux/components/performances/galleries/index.js"
+    "id": "news.image",
+    "defaultMessage": "CREW IMAGE",
+    "filepath": "./app/redux/components/news/image/constants.js"
   },
   {
-    "id": "PerformancePublicImage",
-    "defaultMessage": "MY IMAGE",
-    "filepath": "./app/redux/components/performances/image/index.js"
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/news/image/constants.js"
+  },
+  {
+    "id": "publicDataNews",
+    "defaultMessage": "Public data",
+    "filepath": "./app/redux/components/news/lateralMenu/index.js"
+  },
+  {
+    "id": "imagesNews",
+    "defaultMessage": "Image",
+    "filepath": "./app/redux/components/news/lateralMenu/index.js"
+  },
+  {
+    "id": "news.public.data",
+    "defaultMessage": "NEWS PUBLIC DATA",
+    "filepath": "./app/redux/components/news/public/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/news/public/constants.js"
+  },
+  {
+    "id": "NewsTitle",
+    "defaultMessage": "News Name",
+    "filepath": "./app/redux/components/news/table/index.js"
+  },
+  {
+    "id": "performance.image",
+    "defaultMessage": "PERFORMANCE GALLERIES",
+    "filepath": "./app/redux/components/performances/galleries/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/performances/galleries/constants.js"
+  },
+  {
+    "id": "performance.image",
+    "defaultMessage": "PERFORMANCE IMAGE",
+    "filepath": "./app/redux/components/performances/image/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/performances/image/constants.js"
   },
   {
     "id": "publicDataPerformances",
@@ -686,7 +851,7 @@
   },
   {
     "id": "imagesPerformances",
-    "defaultMessage": "Images",
+    "defaultMessage": "Image",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
   {
@@ -715,9 +880,14 @@
     "filepath": "./app/redux/components/performances/table/index.js"
   },
   {
-    "id": "PerformancePublicVideos",
+    "id": "performance.image",
     "defaultMessage": "PERFORMANCE VIDEOS",
-    "filepath": "./app/redux/components/performances/videos/index.js"
+    "filepath": "./app/redux/components/performances/videos/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/performances/videos/constants.js"
   },
   {
     "id": "publicDataPlaylists",
@@ -761,7 +931,7 @@
   },
   {
     "id": "imagesProfile",
-    "defaultMessage": "Images",
+    "defaultMessage": "Image",
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
   {
@@ -840,13 +1010,8 @@
     "filepath": "./app/redux/components/topMenu/index.js"
   },
   {
-    "id": "footage",
-    "defaultMessage": "Footage",
-    "filepath": "./app/redux/components/topMenu/index.js"
-  },
-  {
-    "id": "playlists",
-    "defaultMessage": "Playlists",
+    "id": "news",
+    "defaultMessage": "News",
     "filepath": "./app/redux/components/topMenu/index.js"
   },
   {
@@ -857,6 +1022,16 @@
   {
     "id": "galleries",
     "defaultMessage": "Galleries",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "footage",
+    "defaultMessage": "Footage",
+    "filepath": "./app/redux/components/topMenu/index.js"
+  },
+  {
+    "id": "playlists",
+    "defaultMessage": "Playlists",
     "filepath": "./app/redux/components/topMenu/index.js"
   },
   {
@@ -875,6 +1050,11 @@
     "filepath": "./app/redux/components/videos/public/constants.js"
   },
   {
+    "id": "show",
+    "defaultMessage": "SHOW",
+    "filepath": "./app/redux/components/videos/public/constants.js"
+  },
+  {
     "id": "VideosTitle",
     "defaultMessage": "Videos Name",
     "filepath": "./app/redux/components/videos/table/index.js"
@@ -882,6 +1062,11 @@
   {
     "id": "videos.video",
     "defaultMessage": "VIDEO FILE",
+    "filepath": "./app/redux/components/videos/video/constants.js"
+  },
+  {
+    "id": "show",
+    "defaultMessage": "SHOW",
     "filepath": "./app/redux/components/videos/video/constants.js"
   }
 ]

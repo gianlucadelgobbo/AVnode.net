@@ -7,6 +7,7 @@ import { fetchList as fetchCrews } from "../crews/actions";
 import { fetchList as fetchPerformances } from "../performances/actions";
 import { fetchList as fetchEvents } from "../events/actions";
 import { fetchList as fetchFootage } from "../footage/actions";
+import { fetchList as fetchNews } from "../news/actions";
 import { fetchList as fetchPlaylists } from "../playlists/actions";
 import { fetchList as fetchVideos } from "../videos/actions";
 import { fetchList as fetchGalleries } from "../galleries/actions";
@@ -14,6 +15,7 @@ import { getList as getCrews } from "../crews/selectors";
 import { getList as getPerformances } from "../performances/selectors";
 import { getList as getEvents } from "../events/selectors";
 import { getList as getFootage } from "../footage/selectors";
+import { getList as getNews } from "../news/selectors";
 import { getList as getPlaylists } from "../playlists/selectors";
 import { getList as getVideos } from "../videos/selectors";
 import { getList as getGalleries } from "../galleries/selectors";
@@ -25,6 +27,7 @@ class TopMenu extends Component {
       fetchPerformances,
       fetchEvents,
       fetchFootage,
+      fetchNews,
       fetchPlaylists,
       fetchVideos,
       fetchGalleries
@@ -33,6 +36,7 @@ class TopMenu extends Component {
     fetchPerformances();
     fetchEvents();
     fetchFootage();
+    fetchNews();
     fetchPlaylists();
     fetchVideos();
     fetchGalleries();
@@ -58,6 +62,7 @@ class TopMenu extends Component {
       performances,
       events,
       footage,
+      news,
       playlists,
       videos,
       galleries
@@ -84,6 +89,11 @@ class TopMenu extends Component {
         href: "/admin/events",
         counter: events.length,
         label: <FormattedMessage id="events" defaultMessage="Events" />
+      },
+      {
+        href: "/admin/news",
+        counter: news.length,
+        label: <FormattedMessage id="news" defaultMessage="News" />
       },
       {
         href: "/admin/videos",
@@ -129,6 +139,7 @@ const mapStateToProps = state => ({
   performances: getPerformances(state),
   events: getEvents(state),
   footage: getFootage(state),
+  news: getNews(state),
   playlists: getPlaylists(state),
   videos: getVideos(state),
   galleries: getGalleries(state)
@@ -141,6 +152,7 @@ const mapDispatchToProps = dispatch =>
       fetchPerformances,
       fetchEvents,
       fetchFootage,
+      fetchNews,
       fetchPlaylists,
       fetchVideos,
       fetchGalleries
