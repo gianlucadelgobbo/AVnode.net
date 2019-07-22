@@ -120,6 +120,7 @@ class EventPublicForm extends Component {
           removeModel={removeModel}
           users={model.users}
           SECTION={SECTION}
+          param="stagename"
         />
         <br />
 
