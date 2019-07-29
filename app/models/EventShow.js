@@ -195,6 +195,7 @@ eventSchema.virtual('advanced').get(function (req) {
   const lang = global.getLocale();
   if (this.program && this.program.length) {
     for(let a=0;a<this.program.length;a++){
+      // Artists
       if (this.program[a].performance && this.program[a].performance.users && this.program[a].performance.users.length) {
         if(actsN.indexOf(this.program[a].performance._id)===-1) actsN.push(this.program[a].performance._id);
         for(let b=0;b<this.program[a].performance.users.length;b++){
@@ -278,8 +279,8 @@ eventSchema.virtual('advanced').get(function (req) {
         }
       }
     }
-    performers.performersN = performersA.length;
-    performers.performersCount = performersN.length;
+    performers.performersA = performersA.length;
+    performers.performersN = performersN.length;
     performers.actsN = actsN.length;
     performers.performers.sort((a,b) => (a.stagename.toLowerCase() > b.stagename.toLowerCase()) ? 1 : ((b.stagename.toLowerCase() > a.stagename.toLowerCase()) ? -1 : 0));
     advanced.performers = performers;

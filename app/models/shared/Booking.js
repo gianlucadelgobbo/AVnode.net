@@ -15,6 +15,7 @@ const Booking = new Schema({
     virtuals: true
   }
 });
+
 Booking.virtual('boxDate').get(function () {
   let boxDate;
   if (this.schedule && this.schedule.length) {

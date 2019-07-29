@@ -39,7 +39,7 @@ const Schedule = new Schema({
   }
 });
 
-Schedule.virtual('boxDate').get(function () {
+Schedule.virtual('boxDateFull').get(function () {
   let boxDate;
   if (this.starttime) {
     const lang = global.getLocale();
@@ -61,6 +61,25 @@ Schedule.virtual('boxDate').get(function () {
       boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
       boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
     }
+  }
+  return boxDate;
+});
+Schedule.virtual('boxDate').get(function () {
+  let boxDate;
+  if (this.starttime) {
+    const lang = global.getLocale();
+    const start = new Date(this.starttime-(10*60*60*1000)).getTime()
+    const end = new Date(this.endtime-(10*60*60*1000)).getTime()
+    const days = Math.ceil((end-start)/(24*60*60*1000))
+    let startformattedA = moment.utc(this.starttime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear).split(" ");
+    let endformattedA = moment.utc(this.endtime-(10*60*60*1000)).format(config.dateFormat[lang].weekdaydaymonthyear).split(" ");
+    if (startformattedA[startformattedA.length-1] == endformattedA[startformattedA.length-1]) startformattedA.pop()
+    if (startformattedA[startformattedA.length-1] == endformattedA[startformattedA.length-1]) startformattedA.pop()
+    boxDate = startformattedA.join(" ");
+    boxDate+= " > ";
+    boxDate+= endformattedA.join(" ");
+    boxDate+= " | "+moment.utc(this.starttime).format('HH:mm');
+    boxDate+= " > "+moment.utc(this.endtime).format('HH:mm');
   }
   return boxDate;
 });

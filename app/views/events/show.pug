@@ -216,10 +216,10 @@ block content
       .container
         section.row.performers_event_wrapper
           .col-lg-12
-            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.advanced.performers.performersN+")</small>"
+            h2.main_title.indented_title.color1!=global.__('Performers')+" <small>("+data.advanced.performers.performersA+")</small>"
             h3.performers_infos
-              b=data.advanced.performers.performersN
-              !=" "+global.__('performers')+" ("+data.advanced.performers.performersCount + " " + global.__('performers') +") "
+              b=data.advanced.performers.performersA
+              !=" "+global.__('performers')+" ("+data.advanced.performers.performersN + " " + global.__('peoples') +") "
               !=global.__('from') + " " + data.advanced.performers.countries.join(', ')+ " " + global.__('playing')+ " "
               b=data.advanced.performers.actsN
               !=" " + data.advanced.performers.acts.join(', ') + "."      
