@@ -74,6 +74,8 @@ class PlaylistPublic extends Component {
 
     f.users = model.users || [];
 
+    f.footage = model.footage || [];
+
     return f;
   }
 

@@ -2,15 +2,10 @@ import React, { Component } from "react";
 import { reduxForm, Field, FieldArray } from "redux-form";
 import { FORM_NAME, SECTION } from "./constants";
 import {
-  renderList,
   inputText,
   textareaMultiTab,
-  tagsInput,
-  checkboxField,
-  multiInputText,
-  multiGoogleCityCountry,
-  multiInputUrl,
-  fieldWithLabel
+  fieldWithLabel,
+  fieldWithLabelNoModal
 } from "../../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
@@ -21,7 +16,8 @@ import {
   PLAYLIST_URL,
   PLAYLIST_URL_PRE,
   PLAYLIST_URL_HELP,
-  AUTHORS
+  AUTHORS,
+  FOOTAGE_NAME
 } from "../../common/form/labels";
 
 class PlaylistPublicForm extends Component {
@@ -78,6 +74,22 @@ class PlaylistPublicForm extends Component {
           removeModel={removeModel}
           users={model.users}
           SECTION={SECTION}
+          param="stagename"
+        />
+
+        <br />
+
+        <FieldArray
+          name="footage"
+          component={fieldWithLabel}
+          placeholder={this.getIntlString({ id: FOOTAGE_NAME })}
+          showModal={showModal}
+          _id={_id}
+          removeModel={removeModel}
+          users={model.footage}
+          SECTION={SECTION}
+          hidemodal={true}
+          param="title"
         />
 
         <br />

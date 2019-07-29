@@ -18,7 +18,7 @@ import {
   NEWS_URL,
   NEWS_URL_PRE,
   NEWS_URL_HELP,
-  AUTHORS/* ,
+  AUTHORS /* ,
   TAGS */
 } from "../../common/form/labels";
 
@@ -81,6 +81,7 @@ class NewsPublicForm extends Component {
           removeModel={removeModel}
           users={model.users}
           SECTION={SECTION}
+          param="stagename"
         />
 
         <br />

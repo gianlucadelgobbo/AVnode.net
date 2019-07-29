@@ -566,6 +566,8 @@ export const fieldWithLabel = ({
   removeModel,
   users,
   SECTION,
+  hidemodal,
+  param,
   meta: { error }
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
@@ -573,7 +575,7 @@ export const fieldWithLabel = ({
       <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
         <div className="col-md-10">
           <Field
-            name={`${member}.stagename`}
+            name={`${member}.${param}`}
             component={fieldInColumn}
             placeholder={placeholder}
             isChild={true}
@@ -610,23 +612,114 @@ export const fieldWithLabel = ({
     <div className="card">
       <div className="card-header">
         <h4>{label}</h4>
-        <Button
-          bsStyle="success"
-          className="pull-right mb-2 btn-sm"
-          //onClick={() => fields.unshift({})}
-          onClick={() =>
-            showModal({
-              type: "MODAL_ADD_USER_" + `${SECTION}`,
-              props: { _id }
-            })
-          }
-        >
-          <i
-            className="fa fa-plus"
-            data-toggle="tooltip"
-            data-placement="top"
+        {!hidemodal && (
+          <Button
+            bsStyle="success"
+            className="pull-right mb-2 btn-sm"
+            onClick={() =>
+              showModal({
+                type: "MODAL_ADD_USER_" + `${SECTION}`,
+                props: { _id }
+              })
+            }
+          >
+            <i
+              className="fa fa-plus"
+              data-toggle="tooltip"
+              data-placement="top"
+            />
+          </Button>
+        )}
+      </div>
+      <div className="card-body">
+        <br />
+        {error && (
+          <span className="error-message">
+            <FormattedMessage id={error} />
+          </span>
+        )}
+        {fields.map((member, index, fields) =>
+          renderSubField(member, index, fields, showModal)
+        )}
+      </div>
+    </div>
+  );
+};
+
+export const fieldWithLabelNoModal = ({
+  fields,
+  _id,
+  showModal,
+  placeholder,
+  removeModel,
+  users,
+  SECTION,
+  hidemodal,
+  meta: { error }
+}) => {
+  const renderSubField = (member, index, fields, showModal) => {
+    console.log(member);
+    console.log(fields);
+    return (
+      <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
+        <div className="col-md-10">
+          <Field
+            name={`${member}.title`}
+            component={fieldInColumn}
+            placeholder={placeholder}
+            isChild={true}
           />
-        </Button>
+        </div>
+        <div className="col-md-2">
+          <Button
+            bsStyle="danger"
+            onClick={() =>
+              showModal({
+                type: MODAL_REMOVE,
+                props: {
+                  onRemove: () =>
+                    removeModel({
+                      idusers: users[index]._id || users[index].id,
+                      _id: _id
+                    })
+                }
+              })
+            }
+          >
+            <i
+              className="fa fa-trash"
+              data-toggle="tooltip"
+              data-placement="top"
+            />
+          </Button>
+        </div>
+      </div>
+    );
+  };
+  const label = <div className="labelField">{placeholder}</div>;
+  return (
+    <div className="card">
+      <div className="card-header">
+        <h4>{label}</h4>
+        {!hidemodal && (
+          <Button
+            bsStyle="success"
+            className="pull-right mb-2 btn-sm"
+            //onClick={() => fields.unshift({})}
+            onClick={() =>
+              showModal({
+                type: "MODAL_ADD_USER_" + `${SECTION}`,
+                props: { _id }
+              })
+            }
+          >
+            <i
+              className="fa fa-plus"
+              data-toggle="tooltip"
+              data-placement="top"
+            />
+          </Button>
+        )}
       </div>
       <div className="card-body">
         <br />

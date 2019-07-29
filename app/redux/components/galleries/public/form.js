@@ -71,8 +71,8 @@ class GalleriesPublicForm extends Component {
           name="galleries"
           _id={_id}
           component={listGallery}
-          media={media}   
-          showModal={showModal} 
+          media={media}
+          showModal={showModal}
           removeImage={removeImage}
           model={model}
         />
@@ -96,6 +96,7 @@ class GalleriesPublicForm extends Component {
           removeModel={removeModel}
           users={model.users}
           SECTION={SECTION}
+          param="stagename"
         />
 
         <br />

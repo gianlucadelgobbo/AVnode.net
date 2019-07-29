@@ -94,6 +94,7 @@ class FootagePublicForm extends Component {
           removeModel={removeModel}
           users={model.users}
           SECTION={SECTION}
+          param="stagename"
         />
 
         <br />
