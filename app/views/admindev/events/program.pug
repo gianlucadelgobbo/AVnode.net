@@ -110,18 +110,39 @@ block content
             //.alert.alert-danger bella
             //.alert.alert-success bella
             .content
+              - var lastdaystr
+              - var days = []
               each day,index in data.programmebydayvenue
+                - days.push(day.day)
                 .row
                   .col
                     .form-check
                       input.form-check-input(type="radio" id="startday"+index value=day.day name="startday")
                       label.form-check-label(for="startday"+index)=day.day
-                    - console.log(day)
                   .col
                     .form-check
                       input.form-check-input(type="radio" id="endday"+index value=day.day name="endday")
                       label.form-check-label(for="endday"+index)=day.day
-                    - console.log(day)
+              - days = days.sort();
+              - lastdaystr = days[days.length-1]
+              - console.log(days  )
+              - console.log("lastdaystr")
+              - console.log(lastdaystr)
+              - var lastday = new Date(lastdaystr)
+              - var nextday = new Date(lastdaystr)
+              - console.log(nextday)
+              - var nextday = new Date(lastday.setDate(lastday.getDate()+1));
+              - console.log(nextday)
+              - var nextstr = nextday.getFullYear()+"-"+("0"+(nextday.getMonth()+1)).substr(-2)+"-"+("0"+(nextday.getDate())).substr(-2)
+              .row
+                .col
+                  .form-check
+                    input.form-check-input(type="radio" id="startday"+data.programmebydayvenue.length value=nextstr name="startday")
+                    label.form-check-label(for="startday"+data.programmebydayvenue.length)=nextstr
+                .col
+                  .form-check
+                    input.form-check-input(type="radio" id="endday"+data.programmebydayvenue.length value=nextstr name="endday")
+                    label.form-check-label(for="endday"+data.programmebydayvenue.length)=nextstr
               .row
                 .col
                   .form-group
