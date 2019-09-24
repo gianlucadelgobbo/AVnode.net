@@ -110,6 +110,18 @@ block content
             //.alert.alert-danger bella
             //.alert.alert-success bella
             .content
+              each day,index in data.programmebydayvenue
+                .row
+                  .col
+                    .form-check
+                      input.form-check-input(type="radio" id="startday"+index value=day.day name="startday")
+                      label.form-check-label(for="startday"+index)=day.day
+                    - console.log(day)
+                  .col
+                    .form-check
+                      input.form-check-input(type="radio" id="endday"+index value=day.day name="endday")
+                      label.form-check-label(for="endday"+index)=day.day
+                    - console.log(day)
               .row
                 .col
                   .form-group
