@@ -3,6 +3,7 @@ const Venue = require('./Venue');
 const moment = require('moment');
 
 const Schedule = new Schema({
+  disableautoschedule: Boolean,
   date: Date,
   starttime: Date,
   endtime: Date,

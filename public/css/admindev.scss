@@ -18,6 +18,9 @@
     background-color: #FFF;
     padding: 20px;
 }
+.list-group-item.disabled .edit-schedule, .list-group-item:disabled .edit-schedule, .list-group-item.disabled .duplicate, .list-group-item:disabled .duplicate {
+  pointer-events: auto;
+}
 .index {
   position: absolute;
   top: 0;
