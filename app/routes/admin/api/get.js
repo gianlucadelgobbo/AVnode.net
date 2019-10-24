@@ -19,6 +19,148 @@ const Models = {
 }
 const logger = require('../../../utilities/logger');
 
+router.getDuplicate = (req, res) => {
+  logger.debug("getDuplicate");
+  logger.debug(req.params);
+  logger.debug(req.query);
+  // http://localhost:8006/admin/api/events/5c41c8a06b32ec637f343e1a/duplicate?title=bella&slug=bella&exclude=partners,schedule,call,program,galleries,videos
+  if (config.cpanel[req.params.sez] && req.params.id) {
+    if (req.query.title && req.query.slug) {
+      let newrec = new Models[config.cpanel[req.params.sez].model](req.query);
+      newrec.save(function (err) {
+        if (!err) {
+          const id = req.params.id;
+          Models[config.cpanel[req.params.sez].model]
+          .findById(id)
+          .lean()
+          .exec(async (err, data) => {
+            if (err) {
+              res.status(404).json({ error: `${JSON.stringify(err)}` });
+            } else {
+              if (!data) {
+                res.status(404).json({ error: `DOC_NOT_FOUND` });
+              } else {
+                let exclude = req.query.exclude ? req.query.exclude.split(",") : [];
+                // Events
+                newrec.users = data.users;
+                newrec.subtitles = data.subtitles;
+                newrec.abouts = data.abouts;
+                newrec.social = data.social;
+                newrec.emails = data.emails;
+                newrec.web = data.web;
+                if (exclude.indexOf("partners")===-1) newrec.partners = data.partners;
+                if (exclude.indexOf("schedule")===-1) newrec.schedule = data.schedule;
+                if (exclude.indexOf("call")===-1) newrec.organizationsettings = data.organizationsettings;
+                if (exclude.indexOf("videos")===-1) newrec.videos = data.videos;
+                if (exclude.indexOf("galleries")===-1) newrec.galleries = data.galleries;
+                if (exclude.indexOf("program")===-1) newrec.program = data.program;
+                //newrec = Object.assign(newrec, data);
+                logger.debug(newrec);
+                newrec.save(function (err) {
+                  if (!err) {
+                    res.json(data);
+                  } else {
+                    res.json(err);
+                  }
+                });
+                /* if (req.query.delete!="1") {
+                  res.json(data);
+                } else {
+                  logger.debug("getDelete 2");
+                  let results = {};
+                  switch (req.params.sez) {
+                    case "galleries" :
+                      results.Galleries = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                      results.Performance = await Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {galleries: [data._id] } });
+                      results.Event = await Models["Event"].updateMany( {_id: { $in: data.events}}, { $pullAll: {galleries: [data._id] } });
+                      results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {galleries: [data._id] } });
+                      var promises = [];
+                      promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                      Promise.all(
+                        promises
+                      ).then( (resultsPromise) => {
+                        results.setStatsAndActivity = resultsPromise;
+                        res.json(results);
+                    });
+                    break;
+                    case "videos" :
+                      results.Videos = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                      results.Performance = await Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {videos: [data._id] } });
+                      results.Event = await Models["Event"].updateMany( {_id: { $in: data.events}}, { $pullAll: {videos: [data._id] } });
+                      results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {videos: [data._id] } });
+                      var promises = [];
+                      promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                      Promise.all(
+                        promises
+                      ).then( (resultsPromise) => {
+                        results.setStatsAndActivity = resultsPromise;
+                        res.json(results);
+                      });
+                    break;
+                    case "performances" :
+                      logger.debug("getDelete 3");
+                      if ((!data.bookings || !data.bookings.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
+                        results.Performance = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                        results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } });
+                        var promises = [];
+                        promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                        Promise.all(
+                          promises
+                        ).then( (resultsPromise) => {
+                          results.setStatsAndActivity = resultsPromise;
+                          res.json(results);
+                        });
+                      } else {
+                        logger.debug("getDelete 4");
+                        let errors = [];
+                        if (data.bookings && data.bookings.length) errors.push({error:"Performace is booked and can not be deleted", bookings: data.bookings});
+                        if (data.galleries && data.galleries.length) errors.push({error:"Performace own galleries and can not be deleted", galleries: data.galleries});
+                        if (data.videos && data.videos.length) errors.push({error:"Performace own videos and can not be deleted", videos: data.videos});
+                        res.json(errors);
+                      }
+                    break;
+                    case "profile" :
+                      logger.debug("getDelete 3");
+                      if (data.members && data.members.length) {
+                        results.Crew = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                        results.User = await Models["User"].updateMany( {_id: { $in: data.members}}, { $pullAll: {crews: [data._id] } });
+                        var promises = [];
+                        promises.push(helpers.setStatsAndActivity({_id: { $in: data.members}}));
+                        Promise.all(
+                          promises
+                        ).then( (resultsPromise) => {
+                          results.setStatsAndActivity = resultsPromise;
+                          res.json(results);
+                        });
+                      } else {
+                        logger.debug("getDelete 4");
+                        let errors = [];
+                        if (data.bookings && data.bookings.length) errors.push({error:"Performace is booked and can not be deleted", bookings: data.bookings});
+                        if (data.galleries && data.galleries.length) errors.push({error:"Performace own galleries and can not be deleted", galleries: data.galleries});
+                        if (data.videos && data.videos.length) errors.push({error:"Performace own videos and can not be deleted", videos: data.videos});
+                        res.json(errors);
+                      }
+                      break;
+                  }
+                } */
+              }
+            }
+          });
+        } else {
+          res.status(404).json({ error: err });
+        }
+      });
+    } else {
+      let error = [];
+      if (!req.query.title) error.push(`MISSING TITLE`);
+      if (!req.query.slug) error.push(`MISSING SLUG`);
+      res.status(404).json({ error: error});
+    } 
+  } else {
+    res.status(404).json({ error: `API_NOT_FOUND` });
+  } 
+}
+
 router.getDelete = (req, res) => {
   logger.debug("getDelete");
   logger.debug(req.params.sez);
@@ -122,6 +264,7 @@ router.getDelete = (req, res) => {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
 }
+
 router.removeImage = (req, res) => {
   var query = {
     _id: req.params.id,
