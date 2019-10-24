@@ -13,7 +13,7 @@ const playlistSchema = new Schema({
   old_id : String,
 
   createdAt: Date,
-  slug: { type: String, unique: true },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
   title: String,
   is_public: { type: Boolean, default: false },
   //image: MediaImage,

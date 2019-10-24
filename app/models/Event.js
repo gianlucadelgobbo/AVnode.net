@@ -98,7 +98,7 @@ const eventSchema = new Schema({
   
   old_id: String,
 
-  slug: { type: String, unique: true },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
   title: String,
   subtitles: [About],
   image: MediaImage,

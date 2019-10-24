@@ -20,7 +20,7 @@ const adminsez = 'profile';
 const userSchema = new Schema({
   old_id: String,
 
-  slug: { type: String, unique: true },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
   stagename: { type: String, /*unique: true TODO TO CHECK*/},
   username: { type: String, /*unique: true TODO TO CHECK*/},
   email: { type: String, /*unique: true TODO TO CHECK*/ },

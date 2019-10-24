@@ -48,6 +48,10 @@ router.get('/api/:sez/:id/delete', (req, res) => {
   get.getDelete(req, res);
 });
 
+router.get('/api/:sez/:id/duplicate', (req, res) => {
+  get.getDuplicate(req, res);
+});
+
 router.get('/api/:sez/:id/:form/', (req, res) => {
   get.getData(req, res);
 });
