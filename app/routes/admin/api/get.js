@@ -48,17 +48,36 @@ router.getDuplicate = (req, res) => {
                 newrec.social = data.social;
                 newrec.emails = data.emails;
                 newrec.web = data.web;
+                newrec.type = data.type;
+                newrec.categories = data.categories;
                 if (exclude.indexOf("partners")===-1) newrec.partners = data.partners;
                 if (exclude.indexOf("schedule")===-1) newrec.schedule = data.schedule;
                 if (exclude.indexOf("call")===-1) newrec.organizationsettings = data.organizationsettings;
                 if (exclude.indexOf("videos")===-1) newrec.videos = data.videos;
                 if (exclude.indexOf("galleries")===-1) newrec.galleries = data.galleries;
-                if (exclude.indexOf("program")===-1) newrec.program = data.program;
+                // TODO
+                //if (exclude.indexOf("program")===-1) newrec.program = data.program;
                 //newrec = Object.assign(newrec, data);
-                logger.debug(newrec);
-                newrec.save(function (err) {
+                
+                newrec.save(async function (err) {
                   if (!err) {
-                    res.json(data);
+                    let results = {};
+                    results.User = await Models["User"].updateMany( {_id: { $in: newrec.users}}, { $push: {events: [newrec._id] } });                      
+                    if (exclude.indexOf("partners")===-1) {
+                      let partners = [];
+                      newrec.partners.forEach(function (item) {
+                        partners = partners.concat(item.users);
+                      });
+                      logger.debug(partners);
+                      results.User = await Models["User"].updateMany( {_id: { $in: partners}}, { $push: {partnerships: [newrec._id] } });                      
+                    }
+                    if (exclude.indexOf("videos")===-1) {
+                      results.Videos = await Models["Video"].updateMany( {_id: { $in: newrec.videos}}, { $push: {events: [newrec._id] } });                      
+                    }
+                    if (exclude.indexOf("videos")===-1) {
+                      results.Videos = await Models["Gallery"].updateMany( {_id: { $in: newrec.galleries}}, { $push: {events: [newrec._id] } });                      
+                    }
+                    res.json(newrec);
                   } else {
                     res.json(err);
                   }
