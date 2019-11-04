@@ -64,7 +64,7 @@ passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true
 flxer.flxerLogin = (req, existingUser, email, password, done) => {
   // try with flxer api
   request.post({
-    uri: 'https://flxer.net/api/login',
+    uri: 'https://old.flxer.net/api/login',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     body: querystring.stringify({ email: email, password: password })
   }, function (err, res, body) {
