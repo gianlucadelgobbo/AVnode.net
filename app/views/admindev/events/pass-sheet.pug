@@ -57,7 +57,6 @@ block content
                 each performance in subscription.performances
                   if performance.schedule
                     each schedule in performance.schedule
-                      - console.log(schedule)
                       div
                         !=schedule.venue.room.replace("Piazza Orazio Giustiniani", "Piazza").replace("Meeting Area Lectures", "Meeting Area").replace(" Sets", "")
             td

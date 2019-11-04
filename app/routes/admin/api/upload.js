@@ -162,16 +162,11 @@ upload.uploader = (req, res, done) => {
                   req.files[options.fields.name][a].err = "Image resize ERROR: info undefined";
                 }
               }
-              console.log('galleries/medias galleries/medias galleries/medias galleries/medias');
-              console.log(conta);
-              console.log(req.files[options.fields.name].length);
               if (conta === conta) {
                 if (error) {
                   done({ errors: req.files }, null);
                 } else {
                   let put = {};
-                  console.log('galleries/medias galleries/medias galleries/medias galleries/medias');
-                  console.log(req.params.sez+'/'+req.params.form);
                   if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
                     put.medias = [];
                     for (let a = 0; a < req.files[options.fields.name].length; a++) {

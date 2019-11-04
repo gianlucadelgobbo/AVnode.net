@@ -7,8 +7,6 @@ block content
         each address in item.addresses
           if address.geometry
             - locations.push(address.geometry)
-            //- console.log(address.geometry)
-    - console.log(locations)
     -  locations = JSON.stringify(locations)
   #map(style="width: 100%;height: 500px;")
   form.form-inline

@@ -712,7 +712,6 @@ export const saveGalleriesMedia = model => {
 };
 
 export const removeGalleriesMedia = model => {
-  console.log(model);
   return axios
     .get(`galleries/${model.id}/mediaremove/${model.imgId}`, model)
     .then(result => {

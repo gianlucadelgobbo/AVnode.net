@@ -93,7 +93,6 @@ block content
                   pre=subscription.subscription.subscriber_id
               if get['subscriptions.packages.name'] == "Accommodation"
                 td
-                  //- console.log("subscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscriptionsubscription")
                   - var option = "0";
                   - for (var b=0;b<subscription.subscription.packages.length;b++) if (subscription.subscription.packages[b].name == "Accommodation" && subscription.subscription.packages[b].option) option = subscription.subscription.packages[b].option
                   //- var option_value = "";
@@ -221,7 +220,6 @@ block content
                     !=value
 
         td(colspan=data.daysN+1)
-  - console.log(emailsbypackages)
   each item, i in emailsbypackages
     b=i
     form(method='post', action='http://localhost:8004/composer')

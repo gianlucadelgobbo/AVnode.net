@@ -241,7 +241,6 @@ router.editSubscription = (req, res) => {
     for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
     
     res.render('admindev/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
-      console.log(err);
       res.json(body);
     });
   });

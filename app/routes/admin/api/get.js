@@ -289,7 +289,6 @@ router.removeImage = (req, res) => {
     _id: req.params.id,
     "medias.slug": req.params.image
   };
-  console.log(query);
   if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
   Models.Gallery.findOne( query , (err, gallery) => {
@@ -1636,7 +1635,6 @@ router.addGallery = (req, res) => {
         }
       });
     } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)!==-1) {
-      console.log(item.galleries.map((item)=>{return item.toString()}));
       res.status(404).json({
         "message": "GALLERY_IS_ALREADY_IN",
         "name": "MongoError",

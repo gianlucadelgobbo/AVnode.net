@@ -14,7 +14,6 @@
       .col-md-6
         - var dates = call.subscriptions && call.subscriptions[index] &&  call.subscriptions[index].days ? call.subscriptions[index].days : []
         - for (var d=0;d<days.length;d++)
-          - console.log()
           - days[d].date = new Date(days[d].date)
           - var stringdate = new Date(days[d].date.getFullYear()+"-"+(("0" + (days[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (days[d].date.getDate())).slice(-2))+"T00:00:00.000Z")
           - var datesindex = dates.findIndex(function(x) { 

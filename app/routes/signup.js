@@ -13,6 +13,7 @@ let config = require('getconfig');
 const logger = require('../utilities/logger');
 
 router.get('/', (req, res) => {
+  logger.debug('global.getLocale: '+global.getLocale());
   if (req.user) {
     return res.redirect('/admin/profile/public');
   }
@@ -20,14 +21,7 @@ router.get('/', (req, res) => {
     title: __('Create Account'),
     is_admin: true
   });
-  /*
-  res.render('signup', {
-    title: __('Create Account')
-  });
-  */
 });
-
-
 
 router.post('/', (req, res) => {
   logger.debug(req.body);

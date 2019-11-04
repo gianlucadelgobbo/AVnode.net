@@ -768,7 +768,6 @@ dataprovider.show = (req, res, section, subsection, model) => {
             data.galleries[0].img.imageFormats = data.galleries[0].medias2[item].imageFormats;
           }
         }
-        console.log(data);
         if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+req.params.img).toString())===-1) {
           data.liked = false;
         } else {

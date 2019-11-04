@@ -125,14 +125,9 @@ block content
                       label.form-check-label(for="endday"+index)=day.day
               - days = days.sort();
               - lastdaystr = days[days.length-1]
-              - console.log(days  )
-              - console.log("lastdaystr")
-              - console.log(lastdaystr)
               - var lastday = new Date(lastdaystr)
               - var nextday = new Date(lastdaystr)
-              - console.log(nextday)
               - var nextday = new Date(lastday.setDate(lastday.getDate()+1));
-              - console.log(nextday)
               - var nextstr = nextday.getFullYear()+"-"+("0"+(nextday.getMonth()+1)).substr(-2)+"-"+("0"+(nextday.getDate())).substr(-2)
               .row
                 .col

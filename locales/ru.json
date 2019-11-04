@@ -13,5 +13,20 @@
 	"example@foo.bar": "example@foo.bar",
 	"Password": "Password",
 	"Use at least eight characters": "Use at least eight characters",
-	"Forgot your password?": "Forgot your password?"
+	"Forgot your password?": "Forgot your password?",
+	"Create Account": "Create Account",
+	"Organizations": "Organizations",
+	"Performer name, events, performance...": "Performer name, events, performance...",
+	"Search": "Search",
+	"Terms": "Terms",
+	"Privacy": "Privacy",
+	"Contacts": "Contacts",
+	"Alert": "Alert",
+	"AVnode.net is now in Beta Version, feel free to test it but read the following alerts:": "AVnode.net is now in Beta Version, feel free to test it but read the following alerts:",
+	"Control panel is still under development, some features are still not fully working": "Control panel is still under development, some features are still not fully working",
+	"Please send any bug and suggestion to:": "Please send any bug and suggestion to:",
+	"I have read, continue": "I have read, continue",
+	"This website uses cookies to improve your experience. We'll assume you're ok with this, but you can opt-out if you wish.": "This website uses cookies to improve your experience. We'll assume you're ok with this, but you can opt-out if you wish.",
+	"Accept": "Accept",
+	"Read More": "Read More"
 }

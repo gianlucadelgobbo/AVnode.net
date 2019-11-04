@@ -205,7 +205,6 @@ router.get('/:id/:event/manage', (req, res) => {
         var notassigned = [];
         var notassignedID = [];
         var partnersID = [];
-        //console.log(partnerships);
 
         for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
         for (var item in data) {
@@ -275,7 +274,6 @@ router.post('/contacts/add/', (req, res) => {
         var notassigned = [];
         var notassignedID = [];
         var partnersID = [];
-        //console.log(partnerships);
 
         for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
         for (var item in data) {

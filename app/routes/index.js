@@ -90,6 +90,14 @@ router.get('/sitemap.xml', (req, res) => {
     });
 });
 
+router.get('/testlocale', (req, res) => {
+  res.send('global.getLocale: '+global.getLocale());
+});
+
+router.post('/testlocale', (req, res) => {
+  res.send('global.getLocale: '+global.getLocale());
+});
+
 router.get('/:section-page-:page-sitemap.xml', (req, res) => {
   const section = req.params.section;
   const Model = require('mongoose').model(config.sections[section].model);
