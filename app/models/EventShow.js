@@ -20,7 +20,6 @@ const logger = require('../utilities/logger');
 const helper = require('../utilities/helper');
 
 const datevenueSchema = new Schema({
-  date: Date,
   starttime: Date,
   endtime: Date,
   breakduration: Number,
@@ -29,8 +28,15 @@ const datevenueSchema = new Schema({
 
 datevenueSchema.virtual('date_formatted').get(function () {
   const lang = global.getLocale();
-  return moment(this.date).format(config.dateFormat[lang].weekdaydaymonthyear);
+  const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
+  return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
 });
+datevenueSchema.virtual('date').get(function () {
+  const lang = global.getLocale();
+  const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
+  return startdatefake;
+});
+
 datevenueSchema.virtual('starttime_formatted').get(function () {
   return moment(this.starttime).format('h:mm');
 });

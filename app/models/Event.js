@@ -16,8 +16,7 @@ const Package = require('./shared/Package');
 const adminsez = 'events';
 const logger = require('../utilities/logger');
 
-const scheduleSchema = new Schema({
-  date: Date,
+const datevenueSchema = new Schema({
   starttime: Date,
   endtime: Date,
   breakduration: Number,
@@ -25,14 +24,22 @@ const scheduleSchema = new Schema({
   venue: Venue
 },{ _id : false });
 
-scheduleSchema.virtual('date_formatted').get(function () {
+datevenueSchema.virtual('date').get(function () {
   const lang = global.getLocale();
-  return moment(this.date).format(config.dateFormat[lang].weekdaydaymonthyear);
+  const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
+  return startdatefake;
 });
-scheduleSchema.virtual('starttime_formatted').get(function () {
+
+datevenueSchema.virtual('date_formatted').get(function () {
+  const lang = global.getLocale();
+  const startdatefake = new Date(new Date(this.starttime-(10*60*60*1000)).setUTCHours(0,0,0,0));
+  return moment(startdatefake).format(config.dateFormat[lang].weekdaydaymonthyear);
+});
+
+datevenueSchema.virtual('starttime_formatted').get(function () {
   return moment(this.starttime).format('h:mm');
 });
-scheduleSchema.virtual('endtime_formatted').get(function () {
+datevenueSchema.virtual('endtime_formatted').get(function () {
   return moment(this.endtime).format('h:mm');
 });
 
@@ -115,7 +122,7 @@ const eventSchema = new Schema({
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 }
   },
-  schedule: [scheduleSchema],
+  schedule: [datevenueSchema],
   partners: [partnershipSchema],
   program: [programSchema],
   categories: [{ type: Schema.ObjectId, ref: 'Category' }],
