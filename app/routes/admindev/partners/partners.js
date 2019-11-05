@@ -190,6 +190,8 @@ router.get('/:id/:event/grantsdata', (req, res) => {
         title: 'Partners',
         currentUrl: req.originalUrl,
         superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        owner: req.params.id,
+        event: req.params.event,
         user: req.user,
         printable: true,
         data: data,

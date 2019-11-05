@@ -1,15 +1,15 @@
 extends ../layout_admin
 block content
-  if data.length
-    - var locations = []
-    each item in data
-      if item.addresses
-        each address in item.addresses
-          if address.geometry
-            - locations.push(address.geometry)
-    -  locations = JSON.stringify(locations)
-  #map(style="width: 100%;height: 500px;")
-  form.form-inline
+  .mb-3
+    if data.length
+      - var locations = []
+      each item in data
+        if item.addresses
+          each address in item.addresses
+            if address.geometry
+              - locations.push(address.geometry)
+      -  locations = JSON.stringify(locations)
+    #map(style="width: 100%;height: 500px;")
     script(type='text/javascript').
       function initMap() {
 
@@ -36,16 +36,21 @@ block content
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        }
-        var locations = !{locations};
+      }
+      var locations = !{locations};
     script(src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js")
     script(async defer src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&callback=initMap")
-    select.form-control.mb-3.mr-sm-2( onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value")
-      option(value=0)=global.__("Filter by event")
-      each item, index in events
-        option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
+
+
+  form.form-inline.d-print-none
+    if events
+      select.form-control.mb-3.mr-sm-2( onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value")
+        option(value=0)=global.__("Filter by event")
+        each item, index in events
+          option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
     if event
       a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/manage")=global.__("Manage event partnerships types")
+      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata")=global.__("Grants data")
     button.btn.btn-primary.form-control.mb-3.mr-2(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD"
   table.table
     thead

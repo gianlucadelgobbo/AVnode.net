@@ -1,15 +1,17 @@
 extends ../layout_admin
 block content
-  form.form-inline
-    //select.form-control.mb-3.mr-sm-2( onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value")
-      option(value=0)=global.__("Filter by event")
-      each item, index in events
-        option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
+  form.form-inline.d-print-none
+    if events
+      select.form-control.mb-3.mr-sm-2( onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value")
+        option(value=0)=global.__("Filter by event")
+        each item, index in events
+          option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
     if event
       a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/manage")=global.__("Manage event partnerships types")
+      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata")=global.__("Grants data")
     button.btn.btn-primary.form-control.mb-3.mr-2(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD"
   table.table
-    thead
+    thead.d-print-none
       tr
         td.text-right(width="30%")!="ID"
         td!=global.__("Brand")
@@ -31,16 +33,17 @@ block content
           tr
             td!=""+(index+1)
             td
-              b!=item.stagename
-              !=" "
-              a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
-              !=" | "
-              a.unlink(href="#", data-owner=owner, data-partner=item._id)!=global.__("unlink")
-              !=" | "
-              if item.members && item.members.length
-                a(href="/"+item.slug, target="_blank")!=global.__("view")
-              else
-                .badge.badge-badge badge-danger!="EXTERNAL"
+              h3!=item.stagename
+              span.d-print-none
+                !=" "
+                a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+                !=" | "
+                a.unlink(href="#", data-owner=owner, data-partner=item._id)!=global.__("unlink")
+                !=" | "
+                if item.members && item.members.length
+                  a(href="/"+item.slug, target="_blank")!=global.__("view")
+                else
+                  .badge.badge-badge badge-danger!="EXTERNAL"
           //tr
             td!="_id"
             td!=item._id
@@ -203,7 +206,7 @@ block content
           
           if item.organizationData
 
-            tr
+            //tr
               td.text-right!="Organization name"
               td!=(item.organizationData.name ? item.organizationData.name : "<span class='badge badge-danger'>MISSING</span>")
 
