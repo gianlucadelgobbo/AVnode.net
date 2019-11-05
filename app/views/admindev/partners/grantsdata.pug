@@ -21,7 +21,8 @@ block content
               button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD"
 
         tbody
-          if item.stagename == "Elastic Eye"
+          - console.log(item.slug)
+          //if item.stagename == "Elastic Eye"
             each item1, index1 in item
               //- console.log("          tr\n            td!=\""+index1+"\"\n"+"            td!=item."+index1+"\n")
             each item2, index2 in item.organizationData
@@ -43,7 +44,7 @@ block content
                 if item.members && item.members.length
                   a(href="/"+item.slug, target="_blank")!=global.__("view")
                 else
-                  .badge.badge-badge badge-danger!="EXTERNAL"
+                  .badge.badge-badge!="EXTERNAL"
           //tr
             td!="_id"
             td!=item._id
@@ -209,6 +210,22 @@ block content
             //tr
               td.text-right!="Organization name"
               td!=(item.organizationData.name ? item.organizationData.name : "<span class='badge badge-danger'>MISSING</span>")
+            each item2, index2 in grantevents[item.slug]
+              tr
+                td.text-right!="Name of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
+                td!=item2["Event Name"] ? item2["Event Name"] : "<span class='badge badge-danger'>MISSING</span>"
+              tr
+                td.text-right!="Month of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
+                td!=item2["Event Month"] ? item2["Event Month"] : "<span class='badge badge-danger'>MISSING</span>"
+              tr
+                td.text-right!="Event City"
+                td!=item2["Event City"] ? item2["Event City"] : "<span class='badge badge-danger'>MISSING</span>"
+              tr
+                td.text-right!="Event Country"
+                td!=item2["Event Country"] ? item2["Event Country"] : "<span class='badge badge-danger'>MISSING</span>"
+              tr
+                td.text-right!="Event Description"
+                td!=item2["Description"] ? item2["Description"] : "<span class='badge badge-danger'>MISSING</span>"
 
             tr
               td.text-right!="Organization legal name"
