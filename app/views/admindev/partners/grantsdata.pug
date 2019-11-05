@@ -225,6 +225,18 @@ block content
                 td!=item2["Event Country"] ? item2["Event Country"] : "<span class='badge badge-danger'>MISSING</span>"
               tr
                 td.text-right!="Event Description"
+                  br
+                  small!="Min length 800, Max length 1000 chr ("+(item2["Description"] && item2["Description"].length ? item2["Description"].length : 0)+")"
+                  br
+                  if item2["Description"] && item2["Description"].length
+                    if item2["Description"].length < 800
+                      !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
+                    else if item2["Description"].length > 1000
+                      !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO LONG</span>"
+                    else
+                      !="<span class='badge badge-info'>EVENT DESCRIPTION IS OK</span>"
+                  else
+                    !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
                 td!=item2["Description"] ? item2["Description"] : "<span class='badge badge-danger'>MISSING</span>"
 
             tr
@@ -284,7 +296,17 @@ block content
               td.text-right
                 !="Organization description"
                 br
-                small!="Max length 1000 chr ("+(item.organizationData.description && item.organizationData.description.length ? item.organizationData.description.length : 0)+")"
+                small!="Min length 800, Max length 1000 chr ("+(item.organizationData.description && item.organizationData.description.length ? item.organizationData.description.length : 0)+")"
+                br
+                if item.organizationData.description && item.organizationData.description.length
+                  if item.organizationData.description.length < 800
+                    !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO SHORT</span>"
+                  else if item.organizationData.description.length > 1000
+                    !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO LONG</span>"
+                  else
+                    !="<span class='badge badge-info'>ORGANIZATION DESCRIPTION IS OK</span>"
+                else
+                  !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO SHORT</span>"
               td!=(item.organizationData.description ? item.organizationData.description.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MISSING</span>")
 
             tr
