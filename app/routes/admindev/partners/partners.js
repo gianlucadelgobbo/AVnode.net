@@ -172,6 +172,33 @@ router.get('/:id/:event', (req, res) => {
   });
 });
 
+router.get('/:id/:event/grantsdata', (req, res) => {
+  logger.debug('/organizations/'+req.params.event);
+  const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+  logger.debug(query);
+  User.
+  find(query).
+  lean().
+  sort({"organizationData.legal_name": 1}).
+  //select({stagename: 1, createdAt: 1, crews:1}).
+  populate(populate).
+  exec((err, data) => {
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      res.render('admindev/partners/grantsdata', {
+        title: 'Partners',
+        currentUrl: req.originalUrl,
+        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        user: req.user,
+        printable: true,
+        data: data,
+        script: false
+      });
+    }
+  });
+});
+
 router.get('/:id/:event/manage', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
   Category.

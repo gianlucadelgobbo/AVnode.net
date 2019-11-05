@@ -80,7 +80,7 @@ html(lang='en')
                   |             This week
 
             include ../partials/flash
-            .main
+            .main(class=printable ? "printable" : undefined)
               block content
               if script
                   !=script
