@@ -16,7 +16,11 @@
     color: #000;
     background-color: #FFF;
 }
-
+@media print {
+  .page-break-after-always { 
+    page-break-after: always;
+  }
+}
 .white-content{
     color: #000;
     background-color: #FFF;
