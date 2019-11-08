@@ -15,6 +15,7 @@ __IMPORT SCRIPTS
 ___MAINTENANCE_SCRIPTS
 /.db/
 /.elasticsearch/
+config/ses.json
 
 glacier/events_originals/*
 glacier/footage_originals/*
