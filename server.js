@@ -44,12 +44,12 @@ app.set('trust proxy', 'loopback');
 //app.use(morgan('short'));
 //app.use(expressStatusMonitor());
 app.use(compression());
-/* app.use(sass({
+app.use(sass({
     src: path.join(__dirname, 'public'),
     dest: path.join(__dirname, 'public'),
     debug: true,
     outputStyle: 'compressed'
-})); */
+}));
 
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: 84600}));
 app.use(bodyParser.json({limit: '50mb'}));
