@@ -589,7 +589,7 @@ router.get('/:event/program', (req, res) => {
                         program.schedule = data.program[a].schedule[b];
                         data.program[a].performance.duration = duration/days;
                         logger.debug(data.program[a].schedule[b].venue.room);
-                        if (data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
+                        if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
                           data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                         } else {
                           delete data.program[a].schedule[b];
