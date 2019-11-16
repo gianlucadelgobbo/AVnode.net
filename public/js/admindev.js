@@ -368,7 +368,21 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   event.preventDefault();
   var formdata = getFormData($( this ));
   var currentObj = JSON.parse(current.val());
-  currentObj.schedule.starttime = new Date(currentObj.schedule.starttime);
+  currentObj.schedule.starttime = new Date(Date.UTC(
+    parseFloat(formdata.startday.split("-")[0]),
+    parseFloat(formdata.startday.split("-")[1])-1),
+    parseFloat(formdata.startday.split("-")[2]),
+    parseFloat(formdata.starttime_hours),
+    parseFloat(formdata.starttime_minutes)
+  );
+  currentObj.schedule.endtime = new Date(Date.UTC(
+    parseFloat(formdata.endday.split("-")[0]),
+    parseFloat(formdata.endday.split("-")[1])-1),
+    parseFloat(formdata.endday.split("-")[2]),
+    parseFloat(formdata.endtime_hours),
+    parseFloat(formdata.endtime_minutes)
+  );
+/*   currentObj.schedule.starttime = new Date(currentObj.schedule.starttime);
   currentObj.schedule.starttime.setUTCYear(formdata.startday.split("-")[0]);
   currentObj.schedule.starttime.setUTCMonth(parseFloat(formdata.startday.split("-")[1])-1);
   currentObj.schedule.starttime.setUTCDate(parseFloat(formdata.startday.split("-")[2]));
@@ -380,7 +394,7 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   currentObj.schedule.endtime.setUTCDate(parseFloat(formdata.endday.split("-")[2]));
   currentObj.schedule.endtime.setUTCHours(formdata.endtime_hours);
   currentObj.schedule.endtime.setUTCMinutes(formdata.endtime_minutes);
-  var timestr = "";
+ */  var timestr = "";
   timestr+= ("0"+formdata.starttime_hours).substr(-2)+":"+("0"+formdata.starttime_minutes).substr(-2);
   timestr+= " - ";
   timestr+= ("0"+formdata.endtime_hours).substr(-2)+":"+("0"+formdata.endtime_minutes).substr(-2);
