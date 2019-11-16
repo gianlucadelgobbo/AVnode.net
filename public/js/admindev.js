@@ -370,18 +370,18 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   var currentObj = JSON.parse(current.val());
   currentObj.schedule.starttime = new Date(Date.UTC(
     parseFloat(formdata.startday.split("-")[0]),
-    parseFloat(formdata.startday.split("-")[1])-1),
+    parseFloat(formdata.startday.split("-")[1])-1,
     parseFloat(formdata.startday.split("-")[2]),
     parseFloat(formdata.starttime_hours),
     parseFloat(formdata.starttime_minutes)
-  );
+  ));
   currentObj.schedule.endtime = new Date(Date.UTC(
     parseFloat(formdata.endday.split("-")[0]),
-    parseFloat(formdata.endday.split("-")[1])-1),
+    parseFloat(formdata.endday.split("-")[1])-1,
     parseFloat(formdata.endday.split("-")[2]),
     parseFloat(formdata.endtime_hours),
     parseFloat(formdata.endtime_minutes)
-  );
+  ));
 /*   currentObj.schedule.starttime = new Date(currentObj.schedule.starttime);
   currentObj.schedule.starttime.setUTCYear(formdata.startday.split("-")[0]);
   currentObj.schedule.starttime.setUTCMonth(parseFloat(formdata.startday.split("-")[1])-1);
