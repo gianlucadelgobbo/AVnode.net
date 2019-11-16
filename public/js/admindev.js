@@ -368,13 +368,16 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   event.preventDefault();
   var formdata = getFormData($( this ));
   var currentObj = JSON.parse(current.val());
-  currentObj.schedule.starttime = new Date(currentObj.schedule.starttime)
-  currentObj.schedule.starttime.setYear(formdata.startday.split("-")[0]);
-  currentObj.schedule.starttime.setMonth(parseFloat(formdata.startday.split("-")[1])-1);
-  currentObj.schedule.starttime.setDate(parseFloat(formdata.startday.split("-")[2]));
+  currentObj.schedule.starttime = new Date(currentObj.schedule.starttime);
+  currentObj.schedule.starttime.setUTCYear(formdata.startday.split("-")[0]);
+  currentObj.schedule.starttime.setUTCMonth(parseFloat(formdata.startday.split("-")[1])-1);
+  currentObj.schedule.starttime.setUTCDate(parseFloat(formdata.startday.split("-")[2]));
   currentObj.schedule.starttime.setUTCHours(formdata.starttime_hours);
   currentObj.schedule.starttime.setUTCMinutes(formdata.starttime_minutes);
   currentObj.schedule.endtime = new Date(currentObj.schedule.endtime)
+  currentObj.schedule.endtime.setUTCYear(formdata.endday.split("-")[0]);
+  currentObj.schedule.endtime.setUTCMonth(parseFloat(formdata.endday.split("-")[1])-1);
+  currentObj.schedule.endtime.setUTCDate(parseFloat(formdata.endday.split("-")[2]));
   currentObj.schedule.endtime.setUTCHours(formdata.endtime_hours);
   currentObj.schedule.endtime.setUTCMinutes(formdata.endtime_minutes);
   var timestr = "";
