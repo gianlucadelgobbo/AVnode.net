@@ -100,7 +100,11 @@ performanceSchema.virtual('tech_req').get(function (req) {
 
 performanceSchema.virtual('humanDuration').get(function () {
   if (this.duration) {
-    return moment.duration({"minutes": this.duration}).humanize()
+    if (this.duration > 59) {
+      return moment.duration({"minutes": this.duration}).humanize()
+    } else {
+      return this.duration + " min."
+    }
   }
 });
 
