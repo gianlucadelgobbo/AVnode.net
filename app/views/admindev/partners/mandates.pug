@@ -49,8 +49,9 @@ block content
             != (data[pl_index].organizationData.legal_name ? data[pl_index].organizationData.legal_name : "<span class='badge badge-danger'>MISSING legal_name</span>")
             != "<br>"
             != (data[pl_index].organizationData.type ? data[pl_index].organizationData.type : "<span class='badge badge-danger'>MISSING type</span>")
-            != "<br>"
-            != (data[pl_index].organizationData.official_registration_number ? data[pl_index].organizationData.official_registration_number : "<span class='badge badge-danger'>MISSING official_registration_number</span>")
+            if item.organizationData.official_registration_number
+              != "<br>"
+              != (data[pl_index].organizationData.official_registration_number ? data[pl_index].organizationData.official_registration_number : "<span class='badge badge-danger'>MISSING official_registration_number</span>")
             != "<br>"
             != (data[pl_index].organizationData.address && data[pl_index].organizationData.address.route ? data[pl_index].organizationData.address.route : "<span class='badge badge-danger'>MISSING</span>")
             != " "
