@@ -224,7 +224,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
       "Event Month": "November (second week)",
       "Event City": "Bucharest",
       "Event Country": "Romania",
-      "Description": ""
+      "Description": "SIMULTAN is an annual festival dedicated to media art and artistic experiment, creating a bond between different media.\n\nInitiated by a group of artists, the festival was born as an artistic project having the goal to create a cultural context of the ‘here and now’ on the local scene, encouraging new and innovative forms of artistic expression, as visual and sound language.\n\nThe festival’s perspective has shifted over the years – going from challenging our audiovisual comprehension experience to exploring the human-machine interactions and experimenting with various tools and technologies to question their social implications and overall impact on our daily lives.\n\nSIMULTAN festival approaches new aesthetics and showcases video art and live events whose main themes include: stylistic eclecticism, the relationship between humans and machine, recycle-environmental themes, dry lyricism, acoustic and electronic instrumental fusion, expanded cinema, jovial live sound collages, and the reflection on the political valences of sonic practice."
     }],
     qvrtv: [{
       "Event Name": "Thetaversal",
