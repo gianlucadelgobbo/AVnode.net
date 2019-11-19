@@ -265,7 +265,7 @@ block content
                     br
                     !="https://avnode.net"+item.organizationData.logo
                   else 
-                    !="<span class='badge badge-danger'>USEFULL</span>"
+                    !="<span class='badge badge-warning'>USEFULL</span>"
 
               tr
                 td.text-right!="Organization Web site"
@@ -286,7 +286,7 @@ block content
                         li
                           a(href=web.url)=web.url
                   else 
-                    !="<span class='badge badge-danger'>USEFULL</span>"
+                    !="<span class='badge badge-warning'>USEFULL</span>"
               tr
                 td.text-right!="Organization Social Media for shares"
                 td
@@ -296,7 +296,7 @@ block content
                         li
                           a(href=web.url)=web.url
                   else 
-                    !="<span class='badge badge-danger'>USEFULL</span>"
+                    !="<span class='badge badge-warning'>USEFULL</span>"
 
               tr
                 td.text-right!="Organization Public Email"
@@ -374,14 +374,14 @@ block content
                   !="Organization statute"
                   br
                   small!="PDF FILE ONLY"
-                td!=(item.organizationData.statute ? "<a href=\"https://avnode.net"+item.organizationData.statute+"\" target=\"_blank\">https://avnode.net"+item.organizationData.statute+"</a>" : "<span class='badge badge-danger'>USEFULL</span>")
+                td!=(item.organizationData.statute ? "<a href=\"https://avnode.net"+item.organizationData.statute+"\" target=\"_blank\">https://avnode.net"+item.organizationData.statute+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
 
               tr
                 td.text-right
                   !="Organization members cv"
                   br
                   small!="PDF FILE ONLY"
-                td!=(item.organizationData.members_cv ? "<a href=\"https://avnode.net"+item.organizationData.members_cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.members_cv+"</a>" : "<span class='badge badge-danger'>USEFULL</span>")
+                td!=(item.organizationData.members_cv ? "<a href=\"https://avnode.net"+item.organizationData.members_cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.members_cv+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
 
               tr
                 td.text-right!="Summary of members cv"
@@ -392,7 +392,7 @@ block content
                   !="Organization Activities report "
                   br
                   small!="PDF FILE ONLY"
-                td!=(item.organizationData.cv ? "<a href=\"https://avnode.net"+item.organizationData.cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.cv+"</a>" : "<span class='badge badge-danger'>USEFULL</span>")
+                td!=(item.organizationData.cv ? "<a href=\"https://avnode.net"+item.organizationData.cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.cv+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
 
               tr
                 td.text-right!="Organization permanent employers number"
@@ -453,13 +453,13 @@ block content
                           !="language: "+(contact.language ? contact.language : "<span class='badge badge-danger'>MANDATORY</span>")
                           br
 
-                          !="mobile_phone: "+(contact.mobile_phone ? contact.mobile_phone : "<span class='badge badge-danger'>USEFULL</span>")
+                          !="mobile_phone: "+(contact.mobile_phone ? contact.mobile_phone : "<span class='badge badge-warning'>USEFULL</span>")
                           br
 
-                          !="skype: "+(contact.skype ? contact.skype : "<span class='badge badge-danger'>USEFULL</span>")
+                          !="skype: "+(contact.skype ? contact.skype : "<span class='badge badge-warning'>USEFULL</span>")
                           br
 
-                          !="facebook: "+(contact.facebook ? "<a href=\""+contact.facebook+"\" target=\"_blank\">"+contact.facebook+"</a>" : "<span class='badge badge-danger'>USEFULL</span>")
+                          !="facebook: "+(contact.facebook ? "<a href=\""+contact.facebook+"\" target=\"_blank\">"+contact.facebook+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
                   else 
                     !="title: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
                     br
@@ -479,13 +479,13 @@ block content
                     !="language: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
                     br
 
-                    !="mobile_phone: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="mobile_phone: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
                     br
 
-                    !="skype: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="skype: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
                     br
 
-                    !="facebook: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="facebook: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
 
               tr
                 td.text-right!="Organization legal representative"
@@ -509,13 +509,13 @@ block content
                     !="language: "+(item.organizationData.legal_representative.language ? item.organizationData.legal_representative.language : "<span class='badge badge-danger'>MANDATORY</span>")
                     br
 
-                    !="mobile_phone: "+(item.organizationData.legal_representative.mobile_phone ? item.organizationData.legal_representative.mobile_phone : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="mobile_phone: "+(item.organizationData.legal_representative.mobile_phone ? item.organizationData.legal_representative.mobile_phone : "<span class='badge badge-warning'>USEFULL</span>")
                     br
 
-                    !="skype: "+(item.organizationData.legal_representative.skype ? item.organizationData.legal_representative.skype : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="skype: "+(item.organizationData.legal_representative.skype ? item.organizationData.legal_representative.skype : "<span class='badge badge-warning'>USEFULL</span>")
                     br
 
-                    !="facebook: "+(item.organizationData.legal_representative.facebook ? "<a href=\""+item.organizationData.legal_representative.facebook+"\" target=\"_blank\">"+item.organizationData.legal_representative.facebook+"</a>" : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="facebook: "+(item.organizationData.legal_representative.facebook ? "<a href=\""+item.organizationData.legal_representative.facebook+"\" target=\"_blank\">"+item.organizationData.legal_representative.facebook+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
                   else 
                     !="title: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
                     br
@@ -535,13 +535,13 @@ block content
                     !="language: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
                     br
 
-                    !="mobile_phone: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="mobile_phone: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
                     br
 
-                    !="skype: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="skype: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
                     br
 
-                    !="facebook: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>USEFULL</span>")
+                    !="facebook: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
 
               //td
                 if item.partnerships && item.partnerships.length
