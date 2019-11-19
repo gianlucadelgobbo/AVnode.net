@@ -224,7 +224,7 @@ table.table.page-break-after-always
                   !="<span class='badge badge-info'>EVENT DESCRIPTION IS OK</span>"
               else
                 !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
-            td!=item2["Description"] ? item2["Description"] : "<span class='badge badge-danger'>MANDATORY</span>"
+            td!=item2["Description"] ? item2["Description"].replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>"
       else
         tr
           td.text-right!="Name of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
