@@ -172,6 +172,10 @@ router.get('/:id/:event', (req, res) => {
   });
 });
 
+
+
+
+
 router.get('/:id/:event/grantsdata', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
   var grantevents = {
@@ -180,33 +184,33 @@ router.get('/:id/:event/grantsdata', (req, res) => {
       "Event Month": "September (second week)",
       "Event City": "Rome",
       "Event Country": "Italy",
-      "Description": "Live Cinema Festival aims to offer the audience an overview of different ways of interpreting Live Cinema, from analogic of projectors 16mm to the last digital experiments."
+      "Description": "Live Cinema Festival is a live performing exhibition that explores and promotes all the artistic trends which is classified as “Live Cinema”, with performances by artists using this narrative technique as their stylistic code.\n\nLive Cinema Festival is an artistic project that includes, among its main objectives, the enhancement of the territory and the promotion of artistic contents that can actively involve young people by creating inputs that can positively influence their lives.\n\nLive Cinema Festival is an event that reflects the spirit of our era in which the technology has totally invaded every aspect of our lives: in this event machines, arts and technology melt together in order to spread new messages and new perspectives, proposing a new imaginary, breaking down the borders between the medium and the content, manipulating images and using different approaches to make the final content clearly relied on the artists’ improvisation and ability."
     },{
       "Event Name": "Fotonica Festival",
       "Event Month": "December",
       "Event City": "Rome",
       "Event Country": "Italy",
-      "Description": "Fotonica is an Audio Visual Digital Art Festival that wants to explore the art forms related to the light element in the contemporary context."
+      "Description": "FOTONICA from photon, historically as light, from Greek φωτός (photòs), is an event that investigates art forms related to the light element, in particular digital light by italian artists.\n\nThe other objectives of the event are no less important:\n.The creation of network of exchanges\n.Become part of an International program\n.Promote the local territory and its cultural program\n.Improve the skills of the public, experts and professionals\n\nFOTONICA is an event capable of interpreting the creative power of light in a thousand different facets, of making the photon, the smallest and brightest fragment of the universe, the original particle of a sparkling creative universe."
     },{
       "Event Name": "LPM Live Performers Meeting",
       "Event Month": "February",
       "Event City": "DECIDED YEARLY BY THE COMMUNITY",
       "Event Country": "",
-      "Description": "LPM Live Performers Meeting with 18 editions, is a nomade artists meeting open to the audience that offers the unique opportunity to experience 4 days of audiovisual performances, VJing, workshops, panel discussion, product showcases from over 400 artists from 42 countries with more than 250 show for every edition."
+      "Description": "The event features a full programme of live video performances open to the public, applied in combination with the most varied forms of artistic expression, and a number of initiatives particularly for guests of the meeting.\n\nThe “On” area allows the audience to attend the different applications in live video through the performances of artists and groups from the international scene.\n\nThe “Off” area, aimed at the Meeting, is an occasion of confrontation between vj and video artists working in the themes of Live Visuals Performances and is conceived as a separate area, frequented mainly by “insiders” with a program that alternates spaces meeting, workshops and showcase projects and products.\n\nLPM is a space open to freedom of expression, research and experimentation; the programme flexibility, the openness to new members and contributions, the freedom to participate and the opportunity to perform during the event, are an intrinsic characteristic."
     }],
     telenoika: [{
       "Event Name": "Visual Brasil",
       "Event Month": "September (fourth week)",
       "Event City": "Barcelona",
       "Event Country": "Spain",
-      "Description": "The Visual Brasil Festival celebrates together with local and international artists a research meeting in the field of contemporary audiovisual: video art, mapping, audiovisual performances, workshops, installations and VJs. An activity that focuses on the production of video in real time, the culture of free creation and new collaborative formats."
+      "Description": "The Visual Brasil Festival celebrates together with local and international artists a research\n\nmeeting in the field of contemporary audiovisual: video art, mapping, audiovisual performances, workshops, installations and VJs. An activity that focuses on the production of video in real time, the culture of free creation and new collaborative formats.\n\nStarted in 2006, the festival has 17 editions (http://www.festivalvisualbrasil.com/ediciones), and it has become a reference for the world audiovisual community. Every year, between 40 and 68 artists meet in the space of the Park of the Industrial Spain, in Barcelona city and they celebrate an innovative and experimental music and audiovisual shows during 3 days, normally at the end of september.\n\nThe Visual Brasil festival count on the support of the Sants District of the city of Barcelona and the Multimedia Point of Sants neighborough."
     }],
     photon: [{
       "Event Name": "Patchlab Festival",
       "Event Month": "October (second week)",
       "Event City": "Cracow",
       "Event Country": "Poland",
-      "Description": "The International Digital Art Festival Patchlab is an annual event, which combines interdisciplinary digital works created on the border of arts, new technologies and creative programming."
+      "Description": "Patchlab Digital Art Festival is an annual event for art based on the latest technologies and new media. We are interested in the creative potential in machines, algorithms, programming and databases. We explore key phenomena in contemporary culture and art, including VR, augmented reality, artificial intelligence, hacking and digital identities.\n\nPatchlab is exhibitions, performances and audiovisual concerts, films, workshops with artists and technology specialists, meetings and discussions.\n\nThe festival has been held in Krakow since 2012.\n\nPatchlab is organised by the Photon Foundation. It is part of the AVnode international platform of artists and events, presenting contemporary audiovisual art. It is supported by the Creative Europe European Union program. In 2019 Patchlab Festival received the ‘EFFE Label 2019-2020’ – a quality stamp of European Festivals Association (EFA) given for outstanding and innovative approaches, remarkable arts festivals attributed for their work in the field of the arts, community involvement and international openness."
     }],
     lunchmeat: [{
       "Event Name": "Lunchmeat Festival",
@@ -227,7 +231,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
       "Event Month": "November (fourth week)",
       "Event City": "Galway",
       "Event Country": "Ireland",
-      "Description": "ThetaVersal Audiovisual Festival will be a brand new event in Ireland with the aim to be a new platform for AV, VJs, Video and sound artists."
+      "Description": "ThetaVersal is an Audiovisual Festival and will be a brand new event in Ireland with the aim to be a Platform for live Audiovisual Performance Art, VJing, Video Mapping, Video and sound art.\n\nThetaVersal which comes from the idea of a universal connection among artists creating imaginative work in new and innovative ways, while implementing Emerging Technologies and how they can be used in the creation of art. It involves immersive events, exhibitions, performances, workshops, happenings, live demonstrations and performances throughout the course of each year. The goal of the project is to expand and work with artists in other countries as well as across Ireland and to connect artists in the community, leading to cross country artist transfers.\n\nThe team members have years of experience in multiple areas including New Media Artists and technicians from groups across Ireland.\nThetaVersal events include skill sharing workshops, as well as providing a way for artists to showcase their work."
     }],
     jetztkultur: [{
       "Event Name": "B-Seite Festival",

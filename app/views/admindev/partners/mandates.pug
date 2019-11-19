@@ -33,8 +33,9 @@ block content
             != (item.organizationData.address && item.organizationData.address.locality ? item.organizationData.address.locality : "<span class='badge badge-danger'>MISSING</span>")
             != " "
             != (item.organizationData.address && item.organizationData.address.country ? item.organizationData.address.country : "<span class='badge badge-danger'>MISSING</span>")
-            != "<br>"
-            != (item.organizationData.vat_number ? item.organizationData.vat_number : "<span class='badge badge-danger'>MISSING</span>")
+            if item.organizationData.vat_number
+              != "<br>"
+              != (item.organizationData.vat_number ? item.organizationData.vat_number : "<span class='badge badge-danger'>MISSING</span>")
           p!= "‘the beneficiary’, "
           p
             != "for the purposes of signing and implementing the grant agreement"
