@@ -204,34 +204,54 @@ block content
               //tr
                 td.text-right!="Organization name"
                 td!=(item.organizationData.name ? item.organizationData.name : "<span class='badge badge-danger'>MISSING</span>")
-              each item2, index2 in grantevents[item.slug]
+              if grantevents && grantevents[item.slug]
+                each item2, index2 in grantevents[item.slug]
+                  tr
+                    td.text-right!="Name of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
+                    td!=item2["Event Name"] ? item2["Event Name"] : "<span class='badge badge-danger'>MISSING</span>"
+                  tr
+                    td.text-right!="Month of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
+                    td!=item2["Event Month"] ? item2["Event Month"] : "<span class='badge badge-danger'>MISSING</span>"
+                  tr
+                    td.text-right!="Event City"
+                    td!=item2["Event City"] ? item2["Event City"] : "<span class='badge badge-danger'>MISSING</span>"
+                  tr
+                    td.text-right!="Event Country"
+                    td!=item2["Event Country"] ? item2["Event Country"] : "<span class='badge badge-danger'>MISSING</span>"
+                  tr
+                    td.text-right!="Event Description"
+                      br
+                      small!="Min length 800, Max length 1000 chr ("+(item2["Description"] && item2["Description"].length ? item2["Description"].length : 0)+")"
+                      br
+                      if item2["Description"] && item2["Description"].length
+                        if item2["Description"].length < 800
+                          !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
+                        else if item2["Description"].length > 1000
+                          !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO LONG</span>"
+                        else
+                          !="<span class='badge badge-info'>EVENT DESCRIPTION IS OK</span>"
+                      else
+                        !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
+                    td!=item2["Description"] ? item2["Description"] : "<span class='badge badge-danger'>MISSING</span>"
+              else
                 tr
                   td.text-right!="Name of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
-                  td!=item2["Event Name"] ? item2["Event Name"] : "<span class='badge badge-danger'>MISSING</span>"
+                  td!="<span class='badge badge-danger'>MISSING</span>"
                 tr
                   td.text-right!="Month of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
-                  td!=item2["Event Month"] ? item2["Event Month"] : "<span class='badge badge-danger'>MISSING</span>"
+                  td!="<span class='badge badge-danger'>MISSING</span>"
                 tr
                   td.text-right!="Event City"
-                  td!=item2["Event City"] ? item2["Event City"] : "<span class='badge badge-danger'>MISSING</span>"
+                  td!="<span class='badge badge-danger'>MISSING</span>"
                 tr
                   td.text-right!="Event Country"
-                  td!=item2["Event Country"] ? item2["Event Country"] : "<span class='badge badge-danger'>MISSING</span>"
+                  td!="<span class='badge badge-danger'>MISSING</span>"
                 tr
                   td.text-right!="Event Description"
                     br
-                    small!="Min length 800, Max length 1000 chr ("+(item2["Description"] && item2["Description"].length ? item2["Description"].length : 0)+")"
-                    br
-                    if item2["Description"] && item2["Description"].length
-                      if item2["Description"].length < 800
-                        !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
-                      else if item2["Description"].length > 1000
-                        !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO LONG</span>"
-                      else
-                        !="<span class='badge badge-info'>EVENT DESCRIPTION IS OK</span>"
-                    else
-                      !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
-                  td!=item2["Description"] ? item2["Description"] : "<span class='badge badge-danger'>MISSING</span>"
+                    small!="Min length 800, Max length 1000 chr ("+(0)+")"
+                  td!="<span class='badge badge-danger'>MISSING</span>"
+
 
               tr
                 td.text-right!="Organization legal name"

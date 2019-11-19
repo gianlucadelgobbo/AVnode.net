@@ -259,11 +259,20 @@ router.get('/:id/:event/grantsdata', (req, res) => {
     }],
     avnode: [{
       "Event Name": "AVnode Meeting",
-      "Event Month": "July",
+      "Event Month": "July (first week)",
       "Event City": "Amsterdam",
       "Event Country": "Netherlands",
       "Description": "Annual meeting of the partners of the project in Amsterdam. 3 Days of full immersion on project development and report during the day and a selection of artists from every partner will follow in the evening."
+    }],
+    "debreceni-campus": [{
+      "Event Name": "Campus fesztival",
+      "Event Month": "July (third week)",
+      "Event City": "Debrecen",
+      "Event Country": "Hungary",
+      "Description": "The Campus Festival is a light music event in Debrecen, held every July. Officially known as Campus Festival, it first appeared in 2007, before that it was Lake Vekeri Festival between 2002 and 2006. In 2007, Debrecen won the right to organize the EFOTT Festival, so they wanted to organize this event at Lake Vekeri, and then moved the Lake Vekeri Festival to the Great Forest of Debrecen, giving it a new name, the Campus Festival. Accompanying the festival is the Campus Olympia, where three sports - mini-football, basketball and beach volleyball - are organized.\n\nIn 2014, the event had over seventy thousand participants, which set a record in festival history. Eighty-five thousand in 2015 and in ninety-eight thousand in 2016.\n\nEach year the festival offers a number of celebrities from abroad, including Rasmus, Madcon, Apocalyptica, DJ Antoine, Clean Bandit, Jess Glynne, Irish Therapy? and Kensington in the Netherlands.\n\nIn 2017, EFFE (Europe for Festivals, Festivals for Europe) awarded the event the highest rating."
     }]};
+
+
   const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
   logger.debug(query);
   User.
