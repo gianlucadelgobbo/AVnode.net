@@ -8,5 +8,7 @@
     if event
       a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/manage")=global.__("Manage event partnerships types")
       a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata")=global.__("Grants data")
+      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata_table")=global.__("Grants data table")
+      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata_events")=global.__("Grants events data")
       a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/mandates")=global.__("Mandates")
     button.btn.btn-primary.form-control.mb-3.mr-2(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD"

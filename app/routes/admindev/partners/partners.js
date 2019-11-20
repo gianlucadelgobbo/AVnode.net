@@ -379,6 +379,142 @@ router.get('/:id/:event/grantsdata_table', (req, res) => {
     });
   });
 });
+
+router.get('/:id/:event/grantsdata_events', (req, res) => {
+  var grantevents = {
+    flyer: [{
+      "Event Name": "Live Cinema Festival",
+      "Event Month": "September (second week)",
+      "Event City": "Rome",
+      "Event Country": "Italy",
+      "Description": "Live Cinema Festival is a live performing exhibition that explores and promotes all the artistic trends which is classified as “Live Cinema”, with performances by artists using this narrative technique as their stylistic code.\n\nLive Cinema Festival is an artistic project that includes, among its main objectives, the enhancement of the territory and the promotion of artistic contents that can actively involve young people by creating inputs that can positively influence their lives.\n\nLive Cinema Festival is an event that reflects the spirit of our era in which the technology has totally invaded every aspect of our lives: in this event machines, arts and technology melt together in order to spread new messages and new perspectives, proposing a new imaginary, breaking down the borders between the medium and the content, manipulating images and using different approaches to make the final content clearly relied on the artists’ improvisation and ability."
+    },{
+      "Event Name": "Fotonica Festival",
+      "Event Month": "December",
+      "Event City": "Rome",
+      "Event Country": "Italy",
+      "Description": "FOTONICA from photon, historically as light, from Greek φωτός (photòs), is an event that investigates art forms related to the light element, in particular digital light by italian artists.\n\nThe main objective of FOTONICA is to create a place of reference for Audio Visual Digital Art from italy where to host more and more audience and the most famous italian artists, thanks to the many various activities in the program. \n\nThe other objectives of the event are no less important:\n.The creation of network of exchanges\n.Become part of an International program\n.Promote the local territory and its cultural program\n.Improve the skills of the public, experts and professionals\n\nFOTONICA is an event capable of interpreting the creative power of light in a thousand different facets, of making the photon, the smallest and brightest fragment of the universe, the original particle of a sparkling creative universe."
+    },{
+      "Event Name": "LPM Live Performers Meeting",
+      "Event Month": "February",
+      "Event City": "DECIDED YEARLY BY THE COMMUNITY",
+      "Event Country": "",
+      "Description": "The event features a full programme of live video performances open to the public, applied in combination with the most varied forms of artistic expression, and a number of initiatives particularly for guests of the meeting.\n\nThe “On” area allows the audience to attend the different applications in live video through the performances of artists and groups from the international scene.\n\nThe “Off” area, aimed at the Meeting, is an occasion of confrontation between vj and video artists working in the themes of Live Visuals Performances and is conceived as a separate area, frequented mainly by “insiders” with a program that alternates spaces meeting, workshops and showcase projects and products.\n\nLPM is a space open to freedom of expression, research and experimentation; the programme flexibility, the openness to new members and contributions, the freedom to participate and the opportunity to perform during the event, are an intrinsic characteristic."
+    }],
+    telenoika: [{
+      "Event Name": "Visual Brasil",
+      "Event Month": "September (fourth week)",
+      "Event City": "Barcelona",
+      "Event Country": "Spain",
+      "Description": "The Visual Brasil Festival celebrates together with local and international artists a research\n\nmeeting in the field of contemporary audiovisual: video art, mapping, audiovisual performances, workshops, installations and VJs. An activity that focuses on the production of video in real time, the culture of free creation and new collaborative formats.\n\nStarted in 2006, the festival has 17 editions (http://www.festivalvisualbrasil.com/ediciones), and it has become a reference for the world audiovisual community. Every year, between 40 and 68 artists meet in the space of the Park of the Industrial Spain, in Barcelona city and they celebrate an innovative and experimental music and audiovisual shows during 3 days, normally at the end of september.\n\nThe Visual Brasil festival count on the support of the Sants District of the city of Barcelona and the Multimedia Point of Sants neighborough."
+    }],
+    photon: [{
+      "Event Name": "Patchlab Festival",
+      "Event Month": "October (second week)",
+      "Event City": "Cracow",
+      "Event Country": "Poland",
+      "Description": "Patchlab Digital Art Festival is an annual event for art based on the latest technologies and new media, interested in the creative potential in machines, algorithms, programming and databases. Festival explores key phenomena in contemporary culture and art, including VR, augmented reality, artificial intelligence, hacking and digital identities.\n\nPatchlab is exhibitions, performances and audiovisual concerts, films, workshops with artists and technology specialists, meetings and discussions.\n\nThe festival has been held in Krakow since 2012.\n\nPatchlab is organised by the Photon Foundation\n\nIn 2019 Patchlab Festival received the ‘EFFE Label 2019-2020’ – a quality stamp of European Festivals Association (EFA) given for outstanding and innovative approaches, remarkable arts festivals attributed for their work in the field of the arts, community involvement and international openness."    }],
+    lunchmeat: [{
+      "Event Name": "Lunchmeat Festival",
+      "Event Month": "October (fourth week)",
+      "Event City": "Prague",
+      "Event Country": "Czech Republic",
+      "Description": "Lunchmeat is an annual international festival dedicated to advanced electronic music and new media art based in Prague, Czech Republic.\n\nIt brings carefully selected creators from different art spheres together on one stage, creating a truly synesthetic experience.\n\nLunchmeat Festival was born in 2010 and since then it presented more than four hundred artists and art projects from all over the world.\n\nLunchmeat Festival's main program has three nights and is taking place in the National Gallery Prague.\n\nIntegral part of the program is an artistic residency of one musician and visual artist who are brought together to create new audiovisual live act.\n\nThe accompanying program consists of permanent video projections in public space, exhibition, INPUT workshops and INPUT Symposium on Digital Arts.\n\nThe INPUT is an edutainment series for students and professionals in new media and digital arts.\n\nThe Lunchmeat Festival stands in the core of the Prague audiovisual community and is trying to moderate the discussion about the Czech audiovisual arts in the context of the scene worldwide."
+    }],
+    simultan: [{
+      "Event Name": "Simultan Festival",
+      "Event Month": "November (second week)",
+      "Event City": "Bucharest",
+      "Event Country": "Romania",
+      "Description": "SIMULTAN is an annual festival dedicated to media art and artistic experiment, creating a bond between different media.\n\nThe festival was born as an artistic project having the goal to create a cultural context of the ‘here and now’ on the local scene, encouraging new and innovative forms of artistic expression, as visual and sound language.\n\nThe festival’s perspective has shifted over the years – going from challenging our audiovisual comprehension experience to exploring the human-machine interactions and experimenting with various tools and technologies to question their social implications and overall impact on our daily lives.\n\nSIMULTAN festival approaches new aesthetics and showcases video art and live events whose main themes include: stylistic eclecticism, the relationship between humans and machine, recycle-environmental themes, dry lyricism, acoustic and electronic instrumental fusion, expanded cinema, jovial live sound collages, and the reflection on the political valences of sonic practice."
+    }],
+    qvrtv: [{
+      "Event Name": "Thetaversal",
+      "Event Month": "November (fourth week)",
+      "Event City": "Galway",
+      "Event Country": "Ireland",
+      "Description": "ThetaVersal is an Audiovisual Festival and will be a brand new event in Ireland with the aim to be a Platform for live Audiovisual Performance Art, VJing, Video Mapping, Video and sound art.\n\nThetaVersal which comes from the idea of a universal connection among artists creating imaginative work in new and innovative ways, while implementing Emerging Technologies and how they can be used in the creation of art. It involves immersive events, exhibitions, performances, workshops, happenings, live demonstrations and performances throughout the course of each year. The goal of the project is to expand and work with artists in other countries as well as across Ireland and to connect artists in the community, leading to cross country artist transfers.\n\nThe team members have years of experience in multiple areas including New Media Artists and technicians from groups across Ireland.\nThetaVersal events include skill sharing workshops, as well as providing a way for artists to showcase their work."
+    }],
+    jetztkultur: [{
+      "Event Name": "B-Seite Festival",
+      "Event Month": "March",
+      "Event City": "Mannheim",
+      "Event Country": "Germany",
+      "Description": "B-side Festival covers the entire spectrum audiovisual feeling of happiness from: Video Performance encounters musical delicacies, surprise interventions in public space and meet international artists in Mannheim scene icons."
+    }],
+    elasticeye: [{
+      "Event Name": "Splice Festival",
+      "Event Month": "April",
+      "Event City": "London",
+      "Event Country": "United Kingdom",
+      "Description": "Splice Festival, born in 2016 within AVnode 2015 > 2018 project, explores the overlapping fields of audio-visual art and culture through a collection of live performances, talks and workshops focused around live cinema, AV remixing, VJing, video art and projection mapping."
+    }],
+    multitrab: [{
+      "Event Name": "Athens Digital Art Festival",
+      "Event Month": "May",
+      "Event City": "Athens",
+      "Event Country": "Greece",
+      "Description": "Interactive works, audiovisual installations, video art, web art, digital image, creative workshops for adults and kids, artists’ talks, presentations of international festivals, AV performances and music events, highlighting the developments in new technologies and artistic practices."
+    }],
+    avmov: [{
+      "Event Name": "Amorphous Festival",
+      "Event Month": "June",
+      "Event City": "Caldas da Rainha",
+      "Event Country": "Portugal",
+      "Description": "Amorphous Festival wants to create an international AV event in Portugal, gathering national artists, both established and emerging ones, local students, programmers and teachers, at an event dedicated to audiovisual performance in Caldas da Rainha with workshops, Lectures, AV installations, micromapping, AV performances, vj/dj sets and live video mapping."
+    }],
+    avnode: [{
+      "Event Name": "AVnode Meeting",
+      "Event Month": "July (first week)",
+      "Event City": "Amsterdam",
+      "Event Country": "Netherlands",
+      "Description": "Annual meeting of the partners of the project in Amsterdam. 3 Days of full immersion on project development and report during the day and a selection of artists from every partner will follow in the evening."
+    }],
+    "debreceni-campus": [{
+      "Event Name": "Campus fesztival",
+      "Event Month": "July (third week)",
+      "Event City": "Debrecen",
+      "Event Country": "Hungary",
+      "Description": "The Campus Festival is a light music event in Debrecen, held every July. Officially known as Campus Festival, it first appeared in 2007, before that it was Lake Vekeri Festival between 2002 and 2006. In 2007, Debrecen won the right to organize the EFOTT Festival, so they wanted to organize this event at Lake Vekeri, and then moved the Lake Vekeri Festival to the Great Forest of Debrecen, giving it a new name, the Campus Festival. Accompanying the festival is the Campus Olympia, where three sports - mini-football, basketball and beach volleyball - are organized.\n\nIn 2014, the event had over seventy thousand participants, which set a record in festival history. Eighty-five thousand in 2015 and in ninety-eight thousand in 2016.\n\nEach year the festival offers a number of celebrities from abroad, including Rasmus, Madcon, Apocalyptica, DJ Antoine, Clean Bandit, Jess Glynne, Irish Therapy? and Kensington in the Netherlands.\n\nIn 2017, EFFE (Europe for Festivals, Festivals for Europe) awarded the event the highest rating."
+    }]};
+
+  logger.debug('/organizations/'+req.params.event);
+  Event.
+  findOne({"_id": req.params.event}).
+  select({title: 1}).
+  exec((err, event) => {
+    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+    const mandate = "";
+    logger.debug(query);
+    User.
+    find(query).
+    lean().
+    sort({"organizationData.legal_name": 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    populate(populate).
+    exec((err, data) => {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        res.render('admindev/partners/grantsdata_events', {
+          title: 'Partners',
+          currentUrl: req.originalUrl,
+          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          owner: req.params.id,
+          event: req.params.event,
+          grantevents: grantevents,
+          event_title: event.title,
+          mandate: mandate,
+          user: req.user,
+          printable: true,
+          data: data,
+          script: false
+        });
+      }
+    });
+  });
+});
+
 router.get('/:id/:event/manage', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
   Category.

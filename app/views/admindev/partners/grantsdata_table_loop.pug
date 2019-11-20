@@ -2,6 +2,7 @@ tr
   td!="P"+conta
   td!=item.stagename
   td!=(item.organizationData.legal_name ? item.organizationData.legal_name : "<span class='badge badge-danger'>MANDATORY</span>")
+  td!=(item.organizationData.address && item.organizationData.address.country ? item.organizationData.address.country : "<span class='badge badge-danger'>MANDATORY</span>")
 
 //if item.organizationData
 
