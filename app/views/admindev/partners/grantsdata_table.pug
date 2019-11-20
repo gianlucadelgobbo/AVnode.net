@@ -1,17 +1,26 @@
 extends ../layout_admin
 block content
   include submenu
-  if data.length
-    - var conta = 0
-    each item, index in data
-      if owner==item._id
-        - conta++
-        include grantsdata_table_loop
-    - var conta = 1
-    each item, index in data
-      if owner!=item._id
-        - conta++
-        include grantsdata_table_loop
+  table.table.page-break-after-always
+    thead.d-print-none
+      tr
+        td!="ID"
+        td!=global.__("Brand")
+        td!="Organization legal name"
+
+    tbody
+
+      if data.length
+        - var conta = 0
+        each item, index in data
+          if owner==item._id
+            - conta++
+            include grantsdata_table_loop
+        - var conta = 1
+        each item, index in data
+          if owner!=item._id
+            - conta++
+            include grantsdata_table_loop
   // Modal Add Partner
   //#modalAddPartner.modal.fade(tabindex='-1', role='dialog', aria-spanledby='modalAddPartnerspan', aria-hidden='true')
     .modal-dialog(role='document')

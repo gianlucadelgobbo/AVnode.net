@@ -1,457 +1,449 @@
-table.table.page-break-after-always
-  thead.d-print-none
+tr
+  td!="P"+conta
+  td!=item.stagename
+  td!=(item.organizationData.legal_name ? item.organizationData.legal_name : "<span class='badge badge-danger'>MANDATORY</span>")
+
+//if item.organizationData
+
+  //tr
+    td.text-right!="Organization name"
+    td!=(item.organizationData.name ? item.organizationData.name : "<span class='badge badge-danger'>MANDATORY</span>")
+  if grantevents && grantevents[item.slug]
+    each item2, index2 in grantevents[item.slug]
+      tr
+        td!=item2["Event Name"] ? item2["Event Name"] : "<span class='badge badge-danger'>MANDATORY</span>"
+      tr
+        td.text-right!="Month of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
+        td!=item2["Event Month"] ? item2["Event Month"] : "<span class='badge badge-danger'>MANDATORY</span>"
+      tr
+        td.text-right!="Event City"
+        td!=item2["Event City"] ? item2["Event City"] : "<span class='badge badge-danger'>MANDATORY</span>"
+      tr
+        td.text-right!="Event Country"
+        td!=item2["Event Country"] ? item2["Event Country"] : "<span class='badge badge-danger'>MANDATORY</span>"
+      tr
+        td.text-right!="Event Description"
+          br
+          small!="Min length 800, Max length 1000 chr ("+(item2["Description"] && item2["Description"].length ? item2["Description"].length : 0)+")"
+          br
+          if item2["Description"] && item2["Description"].length
+            if item2["Description"].length < 800
+              !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
+            else if item2["Description"].length > 1000
+              !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO LONG</span>"
+            else
+              !="<span class='badge badge-info'>EVENT DESCRIPTION IS OK</span>"
+          else
+            !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
+        td!=item2["Description"] ? item2["Description"].replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>"
+  else
     tr
-      td.text-right!="ID"
-      td!=global.__("Brand")
-      td.text-right!="Organization legal name"
-
-  tbody
+      td.text-right!="Name of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
+      td!="<span class='badge badge-danger'>MANDATORY</span>"
     tr
-      td!="P"+conta
-      td!=item.stagename
-      td!=(item.organizationData.legal_name ? item.organizationData.legal_name : "<span class='badge badge-danger'>MANDATORY</span>")
-    
-    //if item.organizationData
-
-      //tr
-        td.text-right!="Organization name"
-        td!=(item.organizationData.name ? item.organizationData.name : "<span class='badge badge-danger'>MANDATORY</span>")
-      if grantevents && grantevents[item.slug]
-        each item2, index2 in grantevents[item.slug]
-          tr
-            td!=item2["Event Name"] ? item2["Event Name"] : "<span class='badge badge-danger'>MANDATORY</span>"
-          tr
-            td.text-right!="Month of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
-            td!=item2["Event Month"] ? item2["Event Month"] : "<span class='badge badge-danger'>MANDATORY</span>"
-          tr
-            td.text-right!="Event City"
-            td!=item2["Event City"] ? item2["Event City"] : "<span class='badge badge-danger'>MANDATORY</span>"
-          tr
-            td.text-right!="Event Country"
-            td!=item2["Event Country"] ? item2["Event Country"] : "<span class='badge badge-danger'>MANDATORY</span>"
-          tr
-            td.text-right!="Event Description"
-              br
-              small!="Min length 800, Max length 1000 chr ("+(item2["Description"] && item2["Description"].length ? item2["Description"].length : 0)+")"
-              br
-              if item2["Description"] && item2["Description"].length
-                if item2["Description"].length < 800
-                  !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
-                else if item2["Description"].length > 1000
-                  !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO LONG</span>"
-                else
-                  !="<span class='badge badge-info'>EVENT DESCRIPTION IS OK</span>"
-              else
-                !="<span class='badge badge-danger'>EVENT DESCRIPTION IS TOO SHORT</span>"
-            td!=item2["Description"] ? item2["Description"].replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>"
-      else
-        tr
-          td.text-right!="Name of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
-          td!="<span class='badge badge-danger'>MANDATORY</span>"
-        tr
-          td.text-right!="Month of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
-          td!="<span class='badge badge-danger'>MANDATORY</span>"
-        tr
-          td.text-right!="Event City"
-          td!="<span class='badge badge-danger'>MANDATORY</span>"
-        tr
-          td.text-right!="Event Country"
-          td!="<span class='badge badge-danger'>MANDATORY</span>"
-        tr
-          td.text-right!="Event Description"
-            br
-            small!="Min length 800, Max length 1000 chr ("+(0)+")"
-          td!="<span class='badge badge-danger'>MANDATORY</span>"
-
-
-      tr
-
-      tr
-        td.text-right!="Organization vector logo"
-        td
-          if item.organizationData.logo
-            img(src="https://avnode.net"+item.organizationData.logo width="300" style="background-color:#FFF")
-            br
-            !="https://avnode.net"+item.organizationData.logo
-          else 
-            !="<span class='badge badge-warning'>USEFULL</span>"
-
-      tr
-        td.text-right!="Organization Web site"
-        td
-          if item.web && item.web[0] && item.web[0].url
-            ul
-              each web in item.web
-                li
-                  a(href=web.url)=web.url
-          else 
-            !="<span class='badge badge-danger'>MANDATORY</span>"
-      tr
-        td.text-right!="Organization Social Media"
-        td
-          if item.social && item.social[0] && item.social[0].url
-            ul
-              each web in item.social
-                li
-                  a(href=web.url)=web.url
-          else 
-            !="<span class='badge badge-warning'>USEFULL</span>"
-      tr
-        td.text-right!="Organization Social Media for shares"
-        td
-          if item.organizationData.social_share && item.organizationData.social_share[0] && item.organizationData.social_share[0].url
-            ul
-              each web in item.organizationData.social_share
-                li
-                  a(href=web.url)=web.url
-          else 
-            !="<span class='badge badge-warning'>USEFULL</span>"
-
-      tr
-        td.text-right!="Organization Public Email"
-        td!=(item.organizationData.public_email ? item.organizationData.public_email : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization phone"
-        td!=(item.organizationData.phone ? item.organizationData.phone : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Organization description"
-          br
-          small!="Min length 800, Max length 1000 chr ("+(item.organizationData.description && item.organizationData.description.length ? item.organizationData.description.length : 0)+")"
-          br
-          if item.organizationData.description && item.organizationData.description.length
-            if item.organizationData.description.length < 800
-              !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO SHORT</span>"
-            else if item.organizationData.description.length > 1000
-              !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO LONG</span>"
-            else
-              !="<span class='badge badge-info'>ORGANIZATION DESCRIPTION IS OK</span>"
-          else
-            !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO SHORT</span>"
-        td!=(item.organizationData.description ? item.organizationData.description.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Summary of your organisation's core missions as per statutes"
-          br
-          small!="Min length 100, Max length 200 chr ("+(item.organizationData.summary_core_missions_per_statutes && item.organizationData.summary_core_missions_per_statutes.length ? item.organizationData.summary_core_missions_per_statutes.length : 0)+")"
-          br
-          if item.organizationData.summary_core_missions_per_statutes && item.organizationData.summary_core_missions_per_statutes.length
-            if item.organizationData.summary_core_missions_per_statutes.length < 100
-              !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO SHORT</span>"
-            else if item.organizationData.summary_core_missions_per_statutes.length > 200
-              !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO LONG</span>"
-            else
-              !="<span class='badge badge-info'>Summary of your organisation's core missions IS OK</span>"
-          else
-            !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO SHORT</span>"
-        td!=(item.organizationData.summary_core_missions_per_statutes ? item.organizationData.summary_core_missions_per_statutes.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Objectives of the organisation"
-          br
-          small!="Please copy here below the unofficial translation in English, French or German of the aims and objectives of the organisation as per the statutes/articles of association of the organisation."
-          br
-          small!="Max length 2000 chr ("+(item.organizationData.objectives_per_statutes && item.organizationData.objectives_per_statutes.length ? item.organizationData.objectives_per_statutes.length : 0)+")"
-          br
-          if item.organizationData.objectives_per_statutes && item.organizationData.objectives_per_statutes.length
-            if item.organizationData.objectives_per_statutes.length > 2000
-              !="<span class='badge badge-danger'>Objectives of the organisation IS TOO LONG</span>"
-            else
-              !="<span class='badge badge-info'>Objectives of the organisation IS OK</span>"
-          else
-            !="<span class='badge badge-danger'>Objectives of the organisation IS TOO SHORT</span>"
-        td!=(item.organizationData.objectives_per_statutes ? item.organizationData.objectives_per_statutes.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Please explain how your organisation can be qualified as being active in the cultural and creative sector as defined in Art. 2 of the Regulation N° 1295/2013."
-          br
-          small!="Min length 1500, Max length 2000 chr ("+(item.organizationData.cultural_qualification && item.organizationData.cultural_qualification.length ? item.organizationData.cultural_qualification.length : 0)+")"
-          br
-          if item.organizationData.cultural_qualification && item.organizationData.cultural_qualification.length
-            if item.organizationData.cultural_qualification.length < 1500
-              !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO SHORT</span>"
-            else if item.organizationData.cultural_qualification.length > 2000
-              !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO LONG</span>"
-            else
-              !="<span class='badge badge-info'>Organisation cultural and creative sector qualification IS OK</span>"
-          else
-            !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO SHORT</span>"
-        td!=(item.organizationData.cultural_qualification ? item.organizationData.cultural_qualification.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Activities of the organisation in the cultural and creative sector: please describe the main activities in the cultural and creative sector implemented by your organisation in the last two years (including dates, title, short description and link to activity-specific website if any)."
-          br
-          small!="Min length 800, Max length 1000 chr ("+(item.organizationData.last_3_years_activities && item.organizationData.last_3_years_activities.length ? item.organizationData.last_3_years_activities.length : 0)+")"
-          br
-          if item.organizationData.last_3_years_activities && item.organizationData.last_3_years_activities.length
-            if item.organizationData.last_3_years_activities.length < 1500
-              !="<span class='badge badge-danger'>Organisation activities IS TOO SHORT</span>"
-            else if item.organizationData.last_3_years_activities.length > 2000
-              !="<span class='badge badge-danger'>Organisation activities IS TOO LONG</span>"
-            else
-              !="<span class='badge badge-info'>Organisation activities IS OK</span>"
-          else
-            !="<span class='badge badge-danger'>Organisation activities IS TOO SHORT</span>"
-        td!=(item.organizationData.last_3_years_activities ? item.organizationData.last_3_years_activities.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization foundation year"
-        td!=(item.organizationData.foundation_year ? item.organizationData.foundation_year : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization address"
-        td
-          !="Street: "+(item.organizationData.address && item.organizationData.address.route ? item.organizationData.address.route : "<span class='badge badge-danger'>MANDATORY</span>")
-          br
-
-          !="Postal code: "+(item.organizationData.address && item.organizationData.address.postal_code ? item.organizationData.address.postal_code : "<span class='badge badge-danger'>MANDATORY</span>")
-          br
-
-          !="City: "+(item.organizationData.address && item.organizationData.address.locality ? item.organizationData.address.locality : "<span class='badge badge-danger'>MANDATORY</span>")
-          br
-
-          !="Region: "+(item.organizationData.address && item.organizationData.address.region ? item.organizationData.address.region : "<span class='badge badge-danger'>MANDATORY</span>")
-          br
-
-          !="Country: "+(item.organizationData.address && item.organizationData.address.country ? item.organizationData.address.country : "<span class='badge badge-danger'>MANDATORY</span>")
-          //br
-            !="geometry: "+(item.organizationData.address && item.organizationData.address.geometry ? item.organizationData.address.geometry : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization VAT number"
-        td!=(item.organizationData.vat_number ? item.organizationData.vat_number : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization recuperate VAT?"
-        td!=(item.organizationData.recuperate_vat ? item.organizationData.recuperate_vat : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization official registration number"
-        td!=(item.organizationData.official_registration_number ? item.organizationData.official_registration_number : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization PIC code"
-        td!=(item.organizationData.pic ? item.organizationData.pic : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Organization type"
-          br
-          small!="One of this: Art association, Art gallery, Centre for Architecture, Choir, Concert hall, Dance Company, Design/Art centre, Festival (non Audiovisual), Group of young people active in youth work, Higher education institution (tertiary level), Library, Literature Foundation, Local Public body, Multimedia association, Museum, Music Centre, National Public body, Non-governmental organisation/association/social enterprise, Opera, Orchestra, Regional Public body, Research Institute/Centre, School/Institute/Educational centre – General education (secondary level), Street art association, Theatre"
-        td!=(item.organizationData.type ? item.organizationData.type : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Organization statute"
-          br
-          small!="PDF FILE ONLY"
-        td!=(item.organizationData.statute ? "<a href=\"https://avnode.net"+item.organizationData.statute+"\" target=\"_blank\">https://avnode.net"+item.organizationData.statute+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
-
-      tr
-        td.text-right
-          !="Organization members cv"
-          br
-          small!="PDF FILE ONLY"
-        td!=(item.organizationData.members_cv ? "<a href=\"https://avnode.net"+item.organizationData.members_cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.members_cv+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
-
-      tr
-        td.text-right!="Summary of members cv"
-        td!=(item.organizationData.summary_of_members_cv_cvs ? item.organizationData.summary_of_members_cv_cvs.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Organization Activities report "
-          br
-          small!="PDF FILE ONLY"
-        td!=(item.organizationData.cv ? "<a href=\"https://avnode.net"+item.organizationData.cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.cv+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
-
-      tr
-        td.text-right!="Organization permanent employers number"
-        td!=(item.organizationData.permanent_employers ? item.organizationData.permanent_employers : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization temporary employers number"
-        td!=(item.organizationData.temporary_employers ? item.organizationData.temporary_employers : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      //tr
-        td.text-right!="Organization relevance in the project"
-        td!=(item.organizationData.relevance_in_the_project ? item.organizationData.relevance_in_the_project : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right
-          !="Organization EU grants in the last 3 years"
-          br
-          small!="Please list the projects for which the organisation has received financial support from the EU Programme during the last three years."
-          br
-          small!="Programme or initiative // Reference number // Beneficiary Organisation // Title of the Project"
-        
-        td!=(item.organizationData.eu_grants ? item.organizationData.eu_grants : "<span class='badge badge-info'>NONE</span>")
-
-      tr
-        td.text-right!="Organization EU grants submitted in the last 3 years"
-        td!=(item.organizationData.eu_grants_submitted ? item.organizationData.eu_grants_submitted : "<span class='badge badge-info'>NONE</span>")
-
-      tr
-        td.text-right!="Organization annual turnover in EURO"
-        td!=(item.organizationData.annual_turnover ? item.organizationData.annual_turnover : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      //tr
-        td.text-right!="groups"
-        td!=(item.organizationData.groups ? item.organizationData.groups : "<span class='badge badge-danger'>MANDATORY</span>")
-
-      tr
-        td.text-right!="Organization contacts"
-        td
-          if item.organizationData.contacts
-            ol
-              each contact in item.organizationData.contacts
-                li
-                  !="title: "+(contact.title ? contact.title : "<span class='badge badge-danger'>MANDATORY</span>")
-                  br
-
-                  !="name: "+(contact.name ? contact.name : "<span class='badge badge-danger'>MANDATORY</span>")
-                  br
-
-                  !="surname: "+(contact.surname ? contact.surname : "<span class='badge badge-danger'>MANDATORY</span>")
-                  br
-
-                  !="role: "+(contact.role ? contact.role : "<span class='badge badge-danger'>MANDATORY</span>")
-                  br
-
-                  !="email: "+(contact.email ? contact.email : "<span class='badge badge-danger'>MANDATORY</span>")
-                  br
-
-                  !="language: "+(contact.language ? contact.language : "<span class='badge badge-danger'>MANDATORY</span>")
-                  br
-
-                  !="mobile_phone: "+(contact.mobile_phone ? contact.mobile_phone : "<span class='badge badge-warning'>USEFULL</span>")
-                  br
-
-                  !="skype: "+(contact.skype ? contact.skype : "<span class='badge badge-warning'>USEFULL</span>")
-                  br
-
-                  !="facebook: "+(contact.facebook ? "<a href=\""+contact.facebook+"\" target=\"_blank\">"+contact.facebook+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
-          else 
-            !="title: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="name: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="surname: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="role: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="email: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="language: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="mobile_phone: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
-            br
-
-            !="skype: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
-            br
-
-            !="facebook: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
-
-      tr
-        td.text-right!="Organization legal representative"
-        td
-          if item.organizationData.legal_representative
-            !="title: "+(item.organizationData.legal_representative.title ? item.organizationData.legal_representative.title : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="name: "+(item.organizationData.legal_representative.name ? item.organizationData.legal_representative.name : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="surname: "+(item.organizationData.legal_representative.surname ? item.organizationData.legal_representative.surname : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="role: "+(item.organizationData.legal_representative.role ? item.organizationData.legal_representative.role : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="email: "+(item.organizationData.legal_representative.email ? item.organizationData.legal_representative.email : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="language: "+(item.organizationData.legal_representative.language ? item.organizationData.legal_representative.language : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="mobile_phone: "+(item.organizationData.legal_representative.mobile_phone ? item.organizationData.legal_representative.mobile_phone : "<span class='badge badge-warning'>USEFULL</span>")
-            br
-
-            !="skype: "+(item.organizationData.legal_representative.skype ? item.organizationData.legal_representative.skype : "<span class='badge badge-warning'>USEFULL</span>")
-            br
-
-            !="facebook: "+(item.organizationData.legal_representative.facebook ? "<a href=\""+item.organizationData.legal_representative.facebook+"\" target=\"_blank\">"+item.organizationData.legal_representative.facebook+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
-          else 
-            !="title: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="name: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="surname: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="role: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="email: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="language: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
-            br
-
-            !="mobile_phone: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
-            br
-
-            !="skype: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
-            br
-
-            !="facebook: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
-
-      //td
-        if item.partnerships && item.partnerships.length
-          - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
-
-          each partnership in item.partnerships
-            .text-nowrap
-              a(href="/"+partnership.slug, target="_blank")!=partnership.title
-              !=" "
-    //tr
-                
-      td
-        if item.web
+      td.text-right!="Month of the yearly event your organization is going to organize in the framework of the project AVnode LPM 2020 > 2024"
+      td!="<span class='badge badge-danger'>MANDATORY</span>"
+    tr
+      td.text-right!="Event City"
+      td!="<span class='badge badge-danger'>MANDATORY</span>"
+    tr
+      td.text-right!="Event Country"
+      td!="<span class='badge badge-danger'>MANDATORY</span>"
+    tr
+      td.text-right!="Event Description"
+        br
+        small!="Min length 800, Max length 1000 chr ("+(0)+")"
+      td!="<span class='badge badge-danger'>MANDATORY</span>"
+
+
+  tr
+
+  tr
+    td.text-right!="Organization vector logo"
+    td
+      if item.organizationData.logo
+        img(src="https://avnode.net"+item.organizationData.logo width="300" style="background-color:#FFF")
+        br
+        !="https://avnode.net"+item.organizationData.logo
+      else 
+        !="<span class='badge badge-warning'>USEFULL</span>"
+
+  tr
+    td.text-right!="Organization Web site"
+    td
+      if item.web && item.web[0] && item.web[0].url
+        ul
           each web in item.web
-            div
-              a(href=web.url, target="_blank")!=web.url
-        if item.social
+            li
+              a(href=web.url)=web.url
+      else 
+        !="<span class='badge badge-danger'>MANDATORY</span>"
+  tr
+    td.text-right!="Organization Social Media"
+    td
+      if item.social && item.social[0] && item.social[0].url
+        ul
           each web in item.social
-            div
-              a(href=web.url, target="_blank")!=web.url
-      td
-        h5
-          !="Contacts"
+            li
+              a(href=web.url)=web.url
+      else 
+        !="<span class='badge badge-warning'>USEFULL</span>"
+  tr
+    td.text-right!="Organization Social Media for shares"
+    td
+      if item.organizationData.social_share && item.organizationData.social_share[0] && item.organizationData.social_share[0].url
+        ul
+          each web in item.organizationData.social_share
+            li
+              a(href=web.url)=web.url
+      else 
+        !="<span class='badge badge-warning'>USEFULL</span>"
+
+  tr
+    td.text-right!="Organization Public Email"
+    td!=(item.organizationData.public_email ? item.organizationData.public_email : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization phone"
+    td!=(item.organizationData.phone ? item.organizationData.phone : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Organization description"
+      br
+      small!="Min length 800, Max length 1000 chr ("+(item.organizationData.description && item.organizationData.description.length ? item.organizationData.description.length : 0)+")"
+      br
+      if item.organizationData.description && item.organizationData.description.length
+        if item.organizationData.description.length < 800
+          !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO SHORT</span>"
+        else if item.organizationData.description.length > 1000
+          !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO LONG</span>"
+        else
+          !="<span class='badge badge-info'>ORGANIZATION DESCRIPTION IS OK</span>"
+      else
+        !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO SHORT</span>"
+    td!=(item.organizationData.description ? item.organizationData.description.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Summary of your organisation's core missions as per statutes"
+      br
+      small!="Min length 100, Max length 200 chr ("+(item.organizationData.summary_core_missions_per_statutes && item.organizationData.summary_core_missions_per_statutes.length ? item.organizationData.summary_core_missions_per_statutes.length : 0)+")"
+      br
+      if item.organizationData.summary_core_missions_per_statutes && item.organizationData.summary_core_missions_per_statutes.length
+        if item.organizationData.summary_core_missions_per_statutes.length < 100
+          !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO SHORT</span>"
+        else if item.organizationData.summary_core_missions_per_statutes.length > 200
+          !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO LONG</span>"
+        else
+          !="<span class='badge badge-info'>Summary of your organisation's core missions IS OK</span>"
+      else
+        !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO SHORT</span>"
+    td!=(item.organizationData.summary_core_missions_per_statutes ? item.organizationData.summary_core_missions_per_statutes.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Objectives of the organisation"
+      br
+      small!="Please copy here below the unofficial translation in English, French or German of the aims and objectives of the organisation as per the statutes/articles of association of the organisation."
+      br
+      small!="Max length 2000 chr ("+(item.organizationData.objectives_per_statutes && item.organizationData.objectives_per_statutes.length ? item.organizationData.objectives_per_statutes.length : 0)+")"
+      br
+      if item.organizationData.objectives_per_statutes && item.organizationData.objectives_per_statutes.length
+        if item.organizationData.objectives_per_statutes.length > 2000
+          !="<span class='badge badge-danger'>Objectives of the organisation IS TOO LONG</span>"
+        else
+          !="<span class='badge badge-info'>Objectives of the organisation IS OK</span>"
+      else
+        !="<span class='badge badge-danger'>Objectives of the organisation IS TOO SHORT</span>"
+    td!=(item.organizationData.objectives_per_statutes ? item.organizationData.objectives_per_statutes.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Please explain how your organisation can be qualified as being active in the cultural and creative sector as defined in Art. 2 of the Regulation N° 1295/2013."
+      br
+      small!="Min length 1500, Max length 2000 chr ("+(item.organizationData.cultural_qualification && item.organizationData.cultural_qualification.length ? item.organizationData.cultural_qualification.length : 0)+")"
+      br
+      if item.organizationData.cultural_qualification && item.organizationData.cultural_qualification.length
+        if item.organizationData.cultural_qualification.length < 1500
+          !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO SHORT</span>"
+        else if item.organizationData.cultural_qualification.length > 2000
+          !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO LONG</span>"
+        else
+          !="<span class='badge badge-info'>Organisation cultural and creative sector qualification IS OK</span>"
+      else
+        !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO SHORT</span>"
+    td!=(item.organizationData.cultural_qualification ? item.organizationData.cultural_qualification.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Activities of the organisation in the cultural and creative sector: please describe the main activities in the cultural and creative sector implemented by your organisation in the last two years (including dates, title, short description and link to activity-specific website if any)."
+      br
+      small!="Min length 800, Max length 1000 chr ("+(item.organizationData.last_3_years_activities && item.organizationData.last_3_years_activities.length ? item.organizationData.last_3_years_activities.length : 0)+")"
+      br
+      if item.organizationData.last_3_years_activities && item.organizationData.last_3_years_activities.length
+        if item.organizationData.last_3_years_activities.length < 1500
+          !="<span class='badge badge-danger'>Organisation activities IS TOO SHORT</span>"
+        else if item.organizationData.last_3_years_activities.length > 2000
+          !="<span class='badge badge-danger'>Organisation activities IS TOO LONG</span>"
+        else
+          !="<span class='badge badge-info'>Organisation activities IS OK</span>"
+      else
+        !="<span class='badge badge-danger'>Organisation activities IS TOO SHORT</span>"
+    td!=(item.organizationData.last_3_years_activities ? item.organizationData.last_3_years_activities.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization foundation year"
+    td!=(item.organizationData.foundation_year ? item.organizationData.foundation_year : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization address"
+    td
+      !="Street: "+(item.organizationData.address && item.organizationData.address.route ? item.organizationData.address.route : "<span class='badge badge-danger'>MANDATORY</span>")
+      br
+
+      !="Postal code: "+(item.organizationData.address && item.organizationData.address.postal_code ? item.organizationData.address.postal_code : "<span class='badge badge-danger'>MANDATORY</span>")
+      br
+
+      !="City: "+(item.organizationData.address && item.organizationData.address.locality ? item.organizationData.address.locality : "<span class='badge badge-danger'>MANDATORY</span>")
+      br
+
+      !="Region: "+(item.organizationData.address && item.organizationData.address.region ? item.organizationData.address.region : "<span class='badge badge-danger'>MANDATORY</span>")
+      br
+
+      !="Country: "+(item.organizationData.address && item.organizationData.address.country ? item.organizationData.address.country : "<span class='badge badge-danger'>MANDATORY</span>")
+      //br
+        !="geometry: "+(item.organizationData.address && item.organizationData.address.geometry ? item.organizationData.address.geometry : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization VAT number"
+    td!=(item.organizationData.vat_number ? item.organizationData.vat_number : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization recuperate VAT?"
+    td!=(item.organizationData.recuperate_vat ? item.organizationData.recuperate_vat : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization official registration number"
+    td!=(item.organizationData.official_registration_number ? item.organizationData.official_registration_number : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization PIC code"
+    td!=(item.organizationData.pic ? item.organizationData.pic : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Organization type"
+      br
+      small!="One of this: Art association, Art gallery, Centre for Architecture, Choir, Concert hall, Dance Company, Design/Art centre, Festival (non Audiovisual), Group of young people active in youth work, Higher education institution (tertiary level), Library, Literature Foundation, Local Public body, Multimedia association, Museum, Music Centre, National Public body, Non-governmental organisation/association/social enterprise, Opera, Orchestra, Regional Public body, Research Institute/Centre, School/Institute/Educational centre – General education (secondary level), Street art association, Theatre"
+    td!=(item.organizationData.type ? item.organizationData.type : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Organization statute"
+      br
+      small!="PDF FILE ONLY"
+    td!=(item.organizationData.statute ? "<a href=\"https://avnode.net"+item.organizationData.statute+"\" target=\"_blank\">https://avnode.net"+item.organizationData.statute+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
+
+  tr
+    td.text-right
+      !="Organization members cv"
+      br
+      small!="PDF FILE ONLY"
+    td!=(item.organizationData.members_cv ? "<a href=\"https://avnode.net"+item.organizationData.members_cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.members_cv+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
+
+  tr
+    td.text-right!="Summary of members cv"
+    td!=(item.organizationData.summary_of_members_cv_cvs ? item.organizationData.summary_of_members_cv_cvs.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Organization Activities report "
+      br
+      small!="PDF FILE ONLY"
+    td!=(item.organizationData.cv ? "<a href=\"https://avnode.net"+item.organizationData.cv+"\" target=\"_blank\">https://avnode.net"+item.organizationData.cv+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
+
+  tr
+    td.text-right!="Organization permanent employers number"
+    td!=(item.organizationData.permanent_employers ? item.organizationData.permanent_employers : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization temporary employers number"
+    td!=(item.organizationData.temporary_employers ? item.organizationData.temporary_employers : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  //tr
+    td.text-right!="Organization relevance in the project"
+    td!=(item.organizationData.relevance_in_the_project ? item.organizationData.relevance_in_the_project : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right
+      !="Organization EU grants in the last 3 years"
+      br
+      small!="Please list the projects for which the organisation has received financial support from the EU Programme during the last three years."
+      br
+      small!="Programme or initiative // Reference number // Beneficiary Organisation // Title of the Project"
+    
+    td!=(item.organizationData.eu_grants ? item.organizationData.eu_grants : "<span class='badge badge-info'>NONE</span>")
+
+  tr
+    td.text-right!="Organization EU grants submitted in the last 3 years"
+    td!=(item.organizationData.eu_grants_submitted ? item.organizationData.eu_grants_submitted : "<span class='badge badge-info'>NONE</span>")
+
+  tr
+    td.text-right!="Organization annual turnover in EURO"
+    td!=(item.organizationData.annual_turnover ? item.organizationData.annual_turnover : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  //tr
+    td.text-right!="groups"
+    td!=(item.organizationData.groups ? item.organizationData.groups : "<span class='badge badge-danger'>MANDATORY</span>")
+
+  tr
+    td.text-right!="Organization contacts"
+    td
+      if item.organizationData.contacts
+        ol
+          each contact in item.organizationData.contacts
+            li
+              !="title: "+(contact.title ? contact.title : "<span class='badge badge-danger'>MANDATORY</span>")
+              br
+
+              !="name: "+(contact.name ? contact.name : "<span class='badge badge-danger'>MANDATORY</span>")
+              br
+
+              !="surname: "+(contact.surname ? contact.surname : "<span class='badge badge-danger'>MANDATORY</span>")
+              br
+
+              !="role: "+(contact.role ? contact.role : "<span class='badge badge-danger'>MANDATORY</span>")
+              br
+
+              !="email: "+(contact.email ? contact.email : "<span class='badge badge-danger'>MANDATORY</span>")
+              br
+
+              !="language: "+(contact.language ? contact.language : "<span class='badge badge-danger'>MANDATORY</span>")
+              br
+
+              !="mobile_phone: "+(contact.mobile_phone ? contact.mobile_phone : "<span class='badge badge-warning'>USEFULL</span>")
+              br
+
+              !="skype: "+(contact.skype ? contact.skype : "<span class='badge badge-warning'>USEFULL</span>")
+              br
+
+              !="facebook: "+(contact.facebook ? "<a href=\""+contact.facebook+"\" target=\"_blank\">"+contact.facebook+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
+      else 
+        !="title: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="name: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="surname: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="role: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="email: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="language: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="mobile_phone: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
+        br
+
+        !="skype: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
+        br
+
+        !="facebook: "+(item.organizationData.contacts ? item.organizationData.contacts : "<span class='badge badge-warning'>USEFULL</span>")
+
+  tr
+    td.text-right!="Organization legal representative"
+    td
+      if item.organizationData.legal_representative
+        !="title: "+(item.organizationData.legal_representative.title ? item.organizationData.legal_representative.title : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="name: "+(item.organizationData.legal_representative.name ? item.organizationData.legal_representative.name : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="surname: "+(item.organizationData.legal_representative.surname ? item.organizationData.legal_representative.surname : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="role: "+(item.organizationData.legal_representative.role ? item.organizationData.legal_representative.role : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="email: "+(item.organizationData.legal_representative.email ? item.organizationData.legal_representative.email : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="language: "+(item.organizationData.legal_representative.language ? item.organizationData.legal_representative.language : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="mobile_phone: "+(item.organizationData.legal_representative.mobile_phone ? item.organizationData.legal_representative.mobile_phone : "<span class='badge badge-warning'>USEFULL</span>")
+        br
+
+        !="skype: "+(item.organizationData.legal_representative.skype ? item.organizationData.legal_representative.skype : "<span class='badge badge-warning'>USEFULL</span>")
+        br
+
+        !="facebook: "+(item.organizationData.legal_representative.facebook ? "<a href=\""+item.organizationData.legal_representative.facebook+"\" target=\"_blank\">"+item.organizationData.legal_representative.facebook+"</a>" : "<span class='badge badge-warning'>USEFULL</span>")
+      else 
+        !="title: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="name: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="surname: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="role: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="email: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="language: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-danger'>MANDATORY</span>")
+        br
+
+        !="mobile_phone: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
+        br
+
+        !="skype: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
+        br
+
+        !="facebook: "+(item.organizationData.legal_representative ? item.organizationData.legal_representative : "<span class='badge badge-warning'>USEFULL</span>")
+
+  //td
+    if item.partnerships && item.partnerships.length
+      - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+
+      each partnership in item.partnerships
+        .text-nowrap
+          a(href="/"+partnership.slug, target="_blank")!=partnership.title
           !=" "
-          // Button trigger modal
-          button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-        if item.partner_data && item.partner_data.contacts
-          each contact in item.partner_data.contacts
-            div
-              a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-        if item.members && item.members.length
-          h5="Members"
-          each contact in item.members
-            div
-              a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+//tr
+            
+  td
+    if item.web
+      each web in item.web
+        div
+          a(href=web.url, target="_blank")!=web.url
+    if item.social
+      each web in item.social
+        div
+          a(href=web.url, target="_blank")!=web.url
+  td
+    h5
+      !="Contacts"
+      !=" "
+      // Button trigger modal
+      button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
+    if item.partner_data && item.partner_data.contacts
+      each contact in item.partner_data.contacts
+        div
+          a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+    if item.members && item.members.length
+      h5="Members"
+      each contact in item.members
+        div
+          a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
 
