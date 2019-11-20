@@ -1,0 +1,103 @@
+extends ../layout_admin
+block content
+  include submenu
+  if data.length
+    - var conta = 0
+    each item, index in data
+      if owner==item._id
+        - conta++
+        include grantsdata_table_loop
+    - var conta = 1
+    each item, index in data
+      if owner!=item._id
+        - conta++
+        include grantsdata_table_loop
+  // Modal Add Partner
+  //#modalAddPartner.modal.fade(tabindex='-1', role='dialog', aria-spanledby='modalAddPartnerspan', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          input(type='hidden', name="partner_owner", value=owner)
+          //input(type='hidden', name="delegate", value=user.name)
+          .modal-header
+            h5#modalAddPartnerspan.modal-title=global.__("Add partner")
+            button.close(type='button', data-dismiss='modal', aria-span='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .alert.d-none
+            .form-group
+              span(for='formPartnerAddName')=global.__("Brand")
+              input#formPartnerAddName.form-control(type='text', name="stagename", placeholder='')
+            .form-group
+              span(for='formPartnerAddSurname')=global.__("Web channels")
+                !=" "
+                small=global.__("one per line")
+              textarea#formPartnerAddSurname.form-control(name="web")
+            .form-group
+              span(for='formPartnerAddSurname')=global.__("Social channels")
+                !=" "
+                small=global.__("one per line")
+              textarea#formPartnerAddSurname.form-control(name="social")
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+  
+  // Modal Link Partner
+  //#modalLinkPartner.modal.fade(tabindex='-1', role='dialog', aria-spanledby='modalLinkPartnerspan', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          input(type='hidden', name="partner_owner", value=owner)
+          //input(type='hidden', name="delegate", value=user.name)
+          input(type='hidden', name="id")
+          .modal-header
+            h5#modalAddPartnerspan.modal-title=global.__("Add partner")
+            button.close(type='button', data-dismiss='modal', aria-span='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .alert.d-none
+            .form-group
+              span(for='formPartnerLinkName')=global.__("Brand")
+              input#formPartnerLinkName.form-control(type='text', name="brand", placeholder='')
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+
+  // Modal Add Contact
+  //#modalAddContact.modal.fade(tabindex='-1', role='dialog', aria-spanledby='modalAddContactspan', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          .modal-header
+            h5#modalAddPartnerspan.modal-title=global.__("Add contact")
+            button.close(type='button', data-dismiss='modal', aria-span='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+              .form-group
+                input.modal-id(type='hidden', name="crew")
+                span(for='formContactAddName')=global.__("Name")
+                input#formContactAddName.form-control(type='text', name="name", placeholder='')
+              .form-group
+                span(for='formContactAddSurname')=global.__("Surname")
+                input#formContactAddSurname.form-control(type='text', name="surname", placeholder='')
+              .form-group
+                span(for='formContactAddEmail')=global.__("Email")
+                input#formContactAddEmail.form-control(type='email', name="email", placeholder='name@example.com')
+              .form-group
+                span(for='formContactAddMobile')=global.__("Mobile")
+                input#formContactAddMobile.form-control(type='text', name="mobile", placeholder='')
+              .form-group
+                span(for='formContactAddFacebook')="Facebook"
+                input#formContactAddFacebook.form-control(type='text', name="facebook", placeholder='')
+              .form-group
+                span(for='formContactAddType')=global.__("Type")
+                select#formContactAddType.form-control(name="type")
+                  option=global.__("Contact")
+                  option=global.__("Legal Rapresentative")
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+

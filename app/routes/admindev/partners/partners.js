@@ -342,6 +342,43 @@ router.get('/:id/:event/mandates', (req, res) => {
   });
 });
 
+
+router.get('/:id/:event/grantsdata_table', (req, res) => {
+  logger.debug('/organizations/'+req.params.event);
+  Event.
+  findOne({"_id": req.params.event}).
+  select({title: 1}).
+  exec((err, event) => {
+    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+    const mandate = "";
+    logger.debug(query);
+    User.
+    find(query).
+    lean().
+    sort({"organizationData.legal_name": 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    populate(populate).
+    exec((err, data) => {
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(data);
+      } else {
+        res.render('admindev/partners/grantsdata_table', {
+          title: 'Partners',
+          currentUrl: req.originalUrl,
+          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          owner: req.params.id,
+          event: req.params.event,
+          event_title: event.title,
+          mandate: mandate,
+          user: req.user,
+          printable: true,
+          data: data,
+          script: false
+        });
+      }
+    });
+  });
+});
 router.get('/:id/:event/manage', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
   Category.
