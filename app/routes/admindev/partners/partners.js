@@ -216,7 +216,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
       "Event Month": "October (fourth week)",
       "Event City": "Prague",
       "Event Country": "Czech Republic",
-      "Description": "Lunchmeat is an annual international festival dedicated to advanced electronic music and new media art based in Prague, Czech Republic. It brings carefully selected creators from different art spheres together on one stage, creating a truly synesthetic experience."
+      "Description": "Lunchmeat is an annual international festival dedicated to advanced electronic music and new media art based in Prague, Czech Republic.\n\nIt brings carefully selected creators from different art spheres together on one stage, creating a truly synesthetic experience.\n\nLunchmeat Festival was born in 2010 and since then it presented more than four hundred artists and art projects from all over the world.\n\nLunchmeat Festival's main program has three nights and is taking place in the National Gallery Prague.\n\nIntegral part of the program is an artistic residency of one musician and visual artist who are brought together to create new audiovisual live act.\n\nThe accompanying program consists of permanent video projections in public space, exhibition, INPUT workshops and INPUT Symposium on Digital Arts.\n\nThe INPUT is an edutainment series for students and professionals in new media and digital arts.\n\nThe Lunchmeat Festival stands in the core of the Prague audiovisual community and is trying to moderate the discussion about the Czech audiovisual arts in the context of the scene worldwide."
     }],
     simultan: [{
       "Event Name": "Simultan Festival",
