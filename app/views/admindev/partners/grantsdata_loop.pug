@@ -11,7 +11,7 @@ table.table.page-break-after-always
     //if item.stagename == "Elastic Eye"
       each item1, index1 in item
         //- console.log("          tr\n            td!=\""+index1+"\"\n"+"            td!=item."+index1+"\n")
-      each item2, index2 in item.organizationData
+      each item2, index2 in item.organizationData.
         //- console.log("          tr\n            td!=\""+index2+"\"\n"+"            td!=(item.organizationData."+index2+" ? item.organizationData."+index2+" : \"<span class='badge badge-danger'>MANDATORY</span>\")\n")
       each item3, index3 in item.organizationData.address
         //- console.log("                  !=\""+index3+": \"+(item.organizationData.address && item.organizationData.address."+index3+" ? item.organizationData.address."+index3+" : \"<span class='badge badge-danger'>MANDATORY</span>\")\n                  br\n")
@@ -153,7 +153,7 @@ table.table.page-break-after-always
 
     //tr
       td!="organizationData"
-      td!=item.organizationData
+      td!=item.organizationData.
 
     //tr
       td!="phone"
@@ -314,6 +314,74 @@ table.table.page-break-after-always
           else
             !="<span class='badge badge-danger'>ORGANIZATION DESCRIPTION IS TOO SHORT</span>"
         td!=(item.organizationData.description ? item.organizationData.description.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+      tr
+        td.text-right
+          !="Summary of your organisation's core missions as per statutes"
+          br
+          small!="Min length 100, Max length 200 chr ("+(item.organizationData.summary_core_missions_per_statutes && item.organizationData.summary_core_missions_per_statutes.length ? item.organizationData.summary_core_missions_per_statutes.length : 0)+")"
+          br
+          if item.organizationData.summary_core_missions_per_statutes && item.organizationData.summary_core_missions_per_statutes.length
+            if item.organizationData.summary_core_missions_per_statutes.length < 100
+              !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO SHORT</span>"
+            else if item.organizationData.summary_core_missions_per_statutes.length > 200
+              !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO LONG</span>"
+            else
+              !="<span class='badge badge-info'>Summary of your organisation's core missions IS OK</span>"
+          else
+            !="<span class='badge badge-danger'>Summary of your organisation's core missions IS TOO SHORT</span>"
+        td!=(item.organizationData.summary_core_missions_per_statutes ? item.organizationData.summary_core_missions_per_statutes.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+      tr
+        td.text-right
+          !="Objectives of the organisation"
+          br
+          small!="Please copy here below the unofficial translation in English, French or German of the aims and objectives of the organisation as per the statutes/articles of association of the organisation."
+          br
+          small!="Max length 2000 chr ("+(item.organizationData.objectives_per_statutes && item.organizationData.objectives_per_statutes.length ? item.organizationData.objectives_per_statutes.length : 0)+")"
+          br
+          if item.organizationData.objectives_per_statutes && item.organizationData.objectives_per_statutes.length
+            if item.organizationData.objectives_per_statutes.length > 2000
+              !="<span class='badge badge-danger'>Objectives of the organisation IS TOO LONG</span>"
+            else
+              !="<span class='badge badge-info'>Objectives of the organisation IS OK</span>"
+          else
+            !="<span class='badge badge-danger'>Objectives of the organisation IS TOO SHORT</span>"
+        td!=(item.organizationData.objectives_per_statutes ? item.organizationData.objectives_per_statutes.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+      tr
+        td.text-right
+          !="Please explain how your organisation can be qualified as being active in the cultural and creative sector as defined in Art. 2 of the Regulation N° 1295/2013."
+          br
+          small!="Min length 1500, Max length 2000 chr ("+(item.organizationData.cultural_qualification && item.organizationData.cultural_qualification.length ? item.organizationData.cultural_qualification.length : 0)+")"
+          br
+          if item.organizationData.cultural_qualification && item.organizationData.cultural_qualification.length
+            if item.organizationData.cultural_qualification.length < 1500
+              !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO SHORT</span>"
+            else if item.organizationData.cultural_qualification.length > 2000
+              !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO LONG</span>"
+            else
+              !="<span class='badge badge-info'>Organisation cultural and creative sector qualification IS OK</span>"
+          else
+            !="<span class='badge badge-danger'>Organisation cultural and creative sector qualification IS TOO SHORT</span>"
+        td!=(item.organizationData.cultural_qualification ? item.organizationData.cultural_qualification.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
+
+      tr
+        td.text-right
+          !="Activities of the organisation in the cultural and creative sector: please describe the main activities in the cultural and creative sector implemented by your organisation in the last two years (including dates, title, short description and link to activity-specific website if any)."
+          br
+          small!="Min length 800, Max length 1000 chr ("+(item.organizationData.last_3_years_activities && item.organizationData.last_3_years_activities.length ? item.organizationData.last_3_years_activities.length : 0)+")"
+          br
+          if item.organizationData.last_3_years_activities && item.organizationData.last_3_years_activities.length
+            if item.organizationData.last_3_years_activities.length < 1500
+              !="<span class='badge badge-danger'>Organisation activities IS TOO SHORT</span>"
+            else if item.organizationData.last_3_years_activities.length > 2000
+              !="<span class='badge badge-danger'>Organisation activities IS TOO LONG</span>"
+            else
+              !="<span class='badge badge-info'>Organisation activities IS OK</span>"
+          else
+            !="<span class='badge badge-danger'>Organisation activities IS TOO SHORT</span>"
+        td!=(item.organizationData.last_3_years_activities ? item.organizationData.last_3_years_activities.replace(/\n/gi, "<br>") : "<span class='badge badge-danger'>MANDATORY</span>")
 
       tr
         td.text-right!="Organization foundation year"
