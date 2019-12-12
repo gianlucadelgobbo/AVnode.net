@@ -237,7 +237,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
       "Event Month": "March",
       "Event City": "Mannheim",
       "Event Country": "Germany",
-      "Description": "B-side Festival covers the entire spectrum audiovisual feeling of happiness from: Video Performance encounters musical delicacies, surprise interventions in public space and meet international artists in Mannheim scene icons."
+      "Description": "The B-Seite Festival covers the entire spectrum of audiovisual culture, new media art and digital art. Audiovisual performances, surprise interventions in public space, an curated exhibition and workshops among other co-operations bring international, national and local artists toghether and offer the Mannheim audience the most relevant festival of this kind in Germany.\n\nMore than 10 editions established a cultural icon, where multiple disciplines melt together. The focus was always on the \"flipside of a vinyl\", the B-side. The curators search for new talents and offer a laboratory and the stage for the latest state of creativity.\n \nThe festival nowadays toggles annually between a full week festival and a year of selective showcases. The Jungbusch area and Mannheim, as a figurehead of a modern multicultural european and global city, is the perfect spot and a strong partner to establish this type of art. The association is the perfect independant host to curate the raw diamonds."
     }],
     elasticeye: [{
       "Event Name": "Splice Festival",
@@ -269,10 +269,10 @@ router.get('/:id/:event/grantsdata', (req, res) => {
     }],
     "debreceni-campus": [{
       "Event Name": "Campus fesztival",
-      "Event Month": "July (third week)",
+      "Event Month": "July (fourth week)",
       "Event City": "Debrecen",
       "Event Country": "Hungary",
-      "Description": "The Campus Festival is a light music event in Debrecen, held every July. Officially known as Campus Festival, it first appeared in 2007, before that it was Lake Vekeri Festival between 2002 and 2006. In 2007, Debrecen won the right to organize the EFOTT Festival, so they wanted to organize this event at Lake Vekeri, and then moved the Lake Vekeri Festival to the Great Forest of Debrecen, giving it a new name, the Campus Festival. Accompanying the festival is the Campus Olympia, where three sports - mini-football, basketball and beach volleyball - are organized.\n\nIn 2014, the event had over seventy thousand participants, which set a record in festival history. Eighty-five thousand in 2015 and in ninety-eight thousand in 2016.\n\nEach year the festival offers a number of celebrities from abroad, including Rasmus, Madcon, Apocalyptica, DJ Antoine, Clean Bandit, Jess Glynne, Irish Therapy? and Kensington in the Netherlands.\n\nIn 2017, EFFE (Europe for Festivals, Festivals for Europe) awarded the event the highest rating."
+      "Description": "Campus Festival is an annual open-air popular music and multi-art festival held in the Great Forest Park of Debrecen, Hungary.\n\nWith a four-day attendance of 113.000 in 2019, Campus is the biggest open-air youth cultural event in Eastern Hungary.\n\nThe venue is a beloved city park with emblematic buildings like the new stadium and the old water tower.\n\nThe festival has its own accompanying events at the same time: Campus Art is a showcase of local art organizations, Campus Kid is for families and kids and the Campus Olympics are for university sport teams.\n\nToday Campus usually runs with 18 stages and programme venues, representing a wide range of popular music genres and also other branches of art as theatre, literature, cinema, dance and circus art.\n\nWe also welcome several NGO’s to add their activities to our programme.\n\nIn 2017 and 2019, the event got the EFFE (Europe For Festivals, Festivals For Europe) Quality Label and also it recently won the ARTISJUS prize for the best event."
     }]};
 
 
@@ -440,7 +440,7 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
       "Event Month": "March",
       "Event City": "Mannheim",
       "Event Country": "Germany",
-      "Description": "B-side Festival covers the entire spectrum audiovisual feeling of happiness from: Video Performance encounters musical delicacies, surprise interventions in public space and meet international artists in Mannheim scene icons."
+      "Description": "The B-Seite Festival covers the entire spectrum of audiovisual culture, new media art and digital art. Audiovisual performances, surprise interventions in public space, an curated exhibition and workshops among other co-operations bring international, national and local artists toghether and offer the Mannheim audience the most relevant festival of this kind in Germany.\n\nMore than 10 editions established a cultural icon, where multiple disciplines melt together. The focus was always on the \"flipside of a vinyl\", the B-side. The curators search for new talents and offer a laboratory and the stage for the latest state of creativity.\n \nThe festival nowadays toggles annually between a full week festival and a year of selective showcases. The Jungbusch area and Mannheim, as a figurehead of a modern multicultural european and global city, is the perfect spot and a strong partner to establish this type of art. The association is the perfect independant host to curate the raw diamonds."
     }],
     elasticeye: [{
       "Event Name": "Splice Festival",
@@ -472,10 +472,10 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
     }],
     "debreceni-campus": [{
       "Event Name": "Campus fesztival",
-      "Event Month": "July (third week)",
+      "Event Month": "July (fourth week)",
       "Event City": "Debrecen",
       "Event Country": "Hungary",
-      "Description": "The Campus Festival is a light music event in Debrecen, held every July. Officially known as Campus Festival, it first appeared in 2007, before that it was Lake Vekeri Festival between 2002 and 2006. In 2007, Debrecen won the right to organize the EFOTT Festival, so they wanted to organize this event at Lake Vekeri, and then moved the Lake Vekeri Festival to the Great Forest of Debrecen, giving it a new name, the Campus Festival. Accompanying the festival is the Campus Olympia, where three sports - mini-football, basketball and beach volleyball - are organized.\n\nIn 2014, the event had over seventy thousand participants, which set a record in festival history. Eighty-five thousand in 2015 and in ninety-eight thousand in 2016.\n\nEach year the festival offers a number of celebrities from abroad, including Rasmus, Madcon, Apocalyptica, DJ Antoine, Clean Bandit, Jess Glynne, Irish Therapy? and Kensington in the Netherlands.\n\nIn 2017, EFFE (Europe for Festivals, Festivals for Europe) awarded the event the highest rating."
+      "Description": "Campus Festival is an annual open-air popular music and multi-art festival held in the Great Forest Park of Debrecen, Hungary.\n\nWith a four-day attendance of 113.000 in 2019, Campus is the biggest open-air youth cultural event in Eastern Hungary.\n\nThe venue is a beloved city park with emblematic buildings like the new stadium and the old water tower.\n\nThe festival has its own accompanying events at the same time: Campus Art is a showcase of local art organizations, Campus Kid is for families and kids and the Campus Olympics are for university sport teams.\n\nToday Campus usually runs with 18 stages and programme venues, representing a wide range of popular music genres and also other branches of art as theatre, literature, cinema, dance and circus art.\n\nWe also welcome several NGO’s to add their activities to our programme.\n\nIn 2017 and 2019, the event got the EFFE (Europe For Festivals, Festivals For Europe) Quality Label and also it recently won the ARTISJUS prize for the best event."
     }]};
 
   logger.debug('/organizations/'+req.params.event);
