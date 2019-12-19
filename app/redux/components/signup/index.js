@@ -27,14 +27,38 @@ class SignUp extends Component {
 
   // Convert form values to API model
   createModelToSave(values) {
+    console.log("createModelToSave");
+    console.log(values);
     //clone obj
     let model = Object.assign({}, values);
+
+    // Convert addresses
+    model.addresses = model.addresses.map(a => {
+      //return { originalString, locality, country, geometry };
+      return a.loc;
+    });
 
     return model;
   }
 
   createLatLongToSave = address => {
-    return geocodeByAddress(address).then(results => getLatLng(results[0]));
+    return geocodeByAddress(address).then(function (results) {
+      return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+    }).then(function ([results, geometry]) {
+      let loc = {};
+      results[0].address_components.forEach(address_component => {
+        if (address_component.types.indexOf('country') !== -1) loc.country = address_component.long_name;
+        if (address_component.types.indexOf('locality') !== -1) loc.locality = address_component.long_name;
+      });
+      if (!loc.locality) {
+        results[0].address_components.forEach(address_component => {
+          if (address_component.types.indexOf("administrative_area_level_1") !== -1) loc.locality = address_component.long_name;
+        });
+      }
+      loc.formatted_address = results[0].formatted_address;
+      loc.geometry = geometry;
+      return loc;
+    });
   };
 
   getInitialValues() {
@@ -59,7 +83,7 @@ class SignUp extends Component {
       data.subscribe = "group";
     }
 
-    data.addresses = [];
+    /* data.addresses = [];
 
     data.addresses.push(values.addresses);
 
@@ -70,35 +94,42 @@ class SignUp extends Component {
       const locality = split[split.length - 3].trim();
       const geometry = a.geometry;
       return { formatted_address, locality, country, geometry };
-    });
+    }); */
 
     let promises = [];
 
-    const addrs = data.addresses;
+    const addrs = [{text: values.addresses}];
     addrs.forEach(a => {
       promises.push(
-        this.createLatLongToSave(a.formatted_address)
-          .then(result => {
-            a.geometry = result;
-          })
-          .catch(() => {
-            console.log("ciao da google!");
-          })
+          this.createLatLongToSave(a.text)
+            .then(result => {
+              // add to a model
+              a.loc = result;
+            })
+            .catch(() => {
+              console.log("ciao da google!");
+            })
       );
     });
+    console.log("onSubmit");
+    console.log(data);
+    console.log(addrs);
 
     return axios.all(promises).then(() => {
-      const modelToSave = this.createModelToSave(values);
-      modelToSave.addresses = addrs;
+      data.addresses = addrs;
+      const modelToSave = this.createModelToSave(data);
       // Add auth user _id
       modelToSave.id = "1";
       //dispatch the action to save the model here
+      console.log("modelToSave");
+      console.log(modelToSave);
       return saveModel(modelToSave).then(response => {
-        if (response.model && response.model._id) {
+        if (response && response.model && response.model._id) {
           showModal({
             type: MODAL_SIGN_UP_SUCCESS
           });
         }
+        return response;
       });
     });
   }

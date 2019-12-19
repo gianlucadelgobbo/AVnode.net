@@ -19,10 +19,11 @@ import {injectIntl} from 'react-intl';
 class SignUpForm extends Component {
   submitForm(data) {
     const { onSubmit, reset } = this.props;
-
+    console.log("submitForm");
+    console.log(data);
     // reset form after submit
-    return onSubmit(data).then(() => {
-      reset();
+    return onSubmit(data).then((response) => {
+      if (response) reset();
     });
   }
 

@@ -106,14 +106,14 @@ router.signupValidator = (put, cb) => {
   const birthday = helper.dateFix(put.birthday);
   if (!birthday) {
     errors.errors.birthday = {
-      "message": "Cast to Date failed for value \"Invalid Date\" at path \"birthday\"",
+      "message": "Birthday is in a wrong date format",
       "name": "CastError",
       "stringValue":"\"Invalid Date\"",
       "kind":"Date",
       "value":null,
       "path":"birthday",
       "reason":{
-        "message":"Cast to date failed for value \"Invalid Date\" at path \"birthday\"",
+        "message":"Birthday is in a wrong date format",
         "name":"CastError","stringValue":"\"Invalid Date\"",
         "kind":"date",
         "value":null,
@@ -121,7 +121,7 @@ router.signupValidator = (put, cb) => {
       }
     };
     errors._message += "UserTemp validation failed"+"<br/>";
-    errors.message += "UserTemp validation failed: birthday: Cast to Date failed for value \"Invalid Date\" at path \"birthday\""+"<br/>";
+    errors.message += "Birthday is in a wrong date format"+"<br/>";
     errors.name += "ValidationError"+"<br/>";
   } else {
     put.birthday = birthday;
@@ -156,14 +156,14 @@ router.signupValidator = (put, cb) => {
     } else {
       if (docs.length) {
         errors.errors.email = {
-          "message": "E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }",
+          "message": "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
           "name": "MongoError",
           "stringValue":"\"Duplicate Key\"",
           "kind":"Date",
           "value":null,
           "path":"email",
           "reason":{
-            "message":"E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }",
+            "message":"There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
             "name":"MongoError",
             "stringValue":"\"Duplicate Key\"",
             "kind":"string",
@@ -172,7 +172,7 @@ router.signupValidator = (put, cb) => {
           }
         };
         errors._message += "UserTemp validation failed"+"<br/>",
-        errors.message += "E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }"+"<br/>",
+        errors.message += "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>"+"<br/>",
         errors.name += "MongoError"+"<br/>"
       }
       User.find({ 'slug': put.slug }, "_id", function(err, docs) {
@@ -182,14 +182,14 @@ router.signupValidator = (put, cb) => {
         } else {
           if (docs.length) {
             errors.errors.slug = {
-              "message": "E11000 duplicate key error collection: avnode.usertemp index: slug_1 dup key: { : \""+put.slug+"\" }",
+              "message": "Profile Url \""+put.slug+"\" is in use",
               "name": "MongoError",
               "stringValue":"\"Duplicate Key\"",
               "kind":"Date",
               "value":null,
               "path":"slug",
               "reason":{
-                "message":"E11000 duplicate key error collection: avnode.usertemp index: slug_1 dup key: { : \""+put.slug+"\" }",
+                "message": "Profile Url \""+put.slug+"\" is in use",
                 "name":"MongoError",
                 "stringValue":"\"Duplicate Key\"",
                 "kind":"string",
@@ -198,7 +198,7 @@ router.signupValidator = (put, cb) => {
               }
             };
             errors._message += "UserTemp validation failed"+"<br/>",
-            errors.message += "E11000 duplicate key error collection: avnode.usertemp index: slug_1 dup key: { : \""+put.slug+"\" }"+"<br/>",
+            errors.message += "Profile Url \""+put.slug+"\" is in use"+"<br/>",
             errors.name += "MongoError"+"<br/>"
           }
           if (put.crewslug) {
@@ -209,14 +209,14 @@ router.signupValidator = (put, cb) => {
               } else {
                 if (docs.length) {
                   errors.errors.crewslug = {
-                    "message": "E11000 duplicate key error collection: avnode.usertemp index: crewslug_1 dup key: { : \""+put.crewslug+"\" }",
+                    "message": "Crew Url \""+put.crewslug+"\" is in use",
                     "name": "MongoError",
                     "stringValue":"\"Duplicate Key\"",
                     "kind":"Date",
                     "value":null,
                     "path":"crewslug",
                     "reason":{
-                      "message":"E11000 duplicate key error collection: avnode.usertemp index: crewslug_1 dup key: { : \""+put.crewslug+"\" }",
+                      "message":"Crew Url \""+put.crewslug+"\" is in use",
                       "name":"MongoError",
                       "stringValue":"\"Duplicate Key\"",
                       "kind":"string",
@@ -225,7 +225,7 @@ router.signupValidator = (put, cb) => {
                     }
                   };
                   errors._message += "UserTemp validation failed"+"<br/>",
-                  errors.message += "E11000 duplicate key error collection: avnode.usertemp index: crewslug_1 dup key: { : \""+put.crewslug+"\" }"+"<br/>",
+                  errors.message += "Crew Url \""+put.crewslug+"\" is in use"+"<br/>",
                   errors.name += "MongoError"+"<br/>"
                 } 
                 cb(put, errors);

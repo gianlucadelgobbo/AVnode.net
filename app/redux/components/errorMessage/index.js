@@ -10,8 +10,7 @@ class ErrorMessage extends Component {
 
   printError(message) {
     return (
-      <div className="alert alert-danger" role="alert">
-        Ops... {message}
+      <div className="alert alert-danger" role="alert" dangerouslySetInnerHTML={{__html: message}}>
       </div>
     );
   }

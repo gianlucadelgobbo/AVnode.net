@@ -6,17 +6,17 @@ if messages.errors
           for item in error.msg
             if item instanceof Object
               for err in item
-                div=err.message
+                div!=err.message
         else
-          div=error.msg
+          div!=error.msg
 
 if messages.info
   .container.mt-3
     .alert.alert-info
       for info in messages.info
-        div=info.msg
+        div!=info.msg
 if messages.success
   .container.mt-3
     .alert.alert-success
       for success in messages.success
-        div=success.msg
+        div!=success.msg

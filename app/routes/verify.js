@@ -26,7 +26,8 @@ router.get('/:sez/:code', (req, res) => {
             user.hashed = true;
             user.lang = data.lang;
             user.birthday = data.birthday;
-            user.addresses = [ { geometry: data.addresses[0].geometry, locality: data.addresses[0].locality, country: data.addresses[0].country } ];
+            if (data.addresses && data.addresses[0])
+              user.addresses = [ { geometry: data.addresses[0].geometry, locality: data.addresses[0].locality, country: data.addresses[0].country } ];
             user.password = data.password;
             user.email = data.email;
             user.emails = [{

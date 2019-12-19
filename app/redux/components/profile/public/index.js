@@ -156,9 +156,6 @@ class ProfilePublic extends Component {
     let promises = [];
 
     const addrs = values.addresses;
-
-
-
     addrs.forEach(a => {
       promises.push(
           this.createLatLongToSave(a.text)
@@ -180,6 +177,8 @@ class ProfilePublic extends Component {
       const modelToSave = this.createModelToSave(values);
 
       modelToSave._id = model._id;
+      console.log("modelToSave");
+      console.log(modelToSave);
 
       return saveModel(modelToSave)
           .then(response => {
