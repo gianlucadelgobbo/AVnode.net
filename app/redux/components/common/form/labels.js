@@ -134,7 +134,7 @@ defineMessages({
   },
   [ADDRESS]: {
     id: ADDRESS,
-    defaultMessage: "Address"
+    defaultMessage: "City, country"
   },
   [EMAILS]: {
     id: EMAILS,

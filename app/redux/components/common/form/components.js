@@ -83,7 +83,7 @@ export const googleAutocompleteSelect = ({
     <div className="autocomplete-root">
       <input
         {...getInputProps({
-          placeholder: "Search Places ...",
+          placeholder: "City, country",
           className: "form-control location-search-input"
         })}
       />
@@ -1185,12 +1185,12 @@ export const renderDatePicker = ({ input, meta, placeholder, isChild }) => {
         value={null}
         dateFormat={DATE_FORMAT}
         className="form-control"
-        peekNextMonth
+        //peekNextMonth
         showMonthDropdown
         showYearDropdown
         dropdownMode="select"
         selected={input.value ? moment(input.value, DATE_FORMAT) : null}
-        placeholderText={placeholder}
+        placeholderText={DATE_FORMAT}
       />
       {meta.error && meta.touched && (
         <span className="error-message">

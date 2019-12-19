@@ -126,6 +126,26 @@ router.signupValidator = (put, cb) => {
   } else {
     put.birthday = birthday;
   }
+  if (!put.addresses || !put.addresses[0] || !put.addresses[0].geometry) {
+    errors.errors.address = {
+      "message": "City, Country is in a wrong format, please select one from the results list on the bottom of the field",
+      "name": "CastError",
+      "stringValue":"\"Invalid Date\"",
+      "kind":"Date",
+      "value":null,
+      "path":"birthday",
+      "reason":{
+        "message":"City, Country is in a wrong format, please select one from the results list on the bottom of the field",
+        "name":"CastError","stringValue":"\"Invalid Date\"",
+        "kind":"date",
+        "value":null,
+        "path":"birthday"
+      }
+    };
+    errors._message += "UserTemp validation failed"+"<br/>";
+    errors.message += "City, Country is in a wrong format, please select one from the results list on the bottom of the field"+"<br/>";
+    errors.name += "ValidationError"+"<br/>";
+  } 
   /*
   */
   if (put.crewslug && put.slug.trim() === put.crewslug.trim()) {
