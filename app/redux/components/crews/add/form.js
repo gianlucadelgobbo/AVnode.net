@@ -31,15 +31,6 @@ class AddCrewForm extends Component {
                     placeholder={this.getIntlString({id:CREW_NAME})}
                 />
 
-                <Field
-                    name="slug"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:CREW_URL})}
-                    pre={this.getIntlString({ id: CREW_URL_PRE })}
-                    help={this.getIntlString({ id: CREW_URL_HELP })}
-                />
-
-
                 <hr/>
 
                 <button

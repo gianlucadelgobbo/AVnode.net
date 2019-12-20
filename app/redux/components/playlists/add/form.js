@@ -19,19 +19,11 @@ class AddFootageForm extends Component {
 
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
-                <Field
-                    name="title"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:PLAYLIST_NAME})}
-                          />
-
-                <Field
-                    name="slug"
-                    component={inputText}
-                    placeholder={this.getIntlString({id:PLAYLIST_URL})}
-                    pre={this.getIntlString({ id: PLAYLIST_URL_PRE })}
-                    help={this.getIntlString({ id: PLAYLIST_URL_HELP })}
-                />
+        <Field
+            name="title"
+            component={inputText}
+            placeholder={this.getIntlString({id:PLAYLIST_NAME})}
+        />
 
         <hr />
 

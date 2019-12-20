@@ -30,13 +30,6 @@ class AddGalleriesForm extends Component {
           placeholder={this.getIntlString({ id: GALLERIES_NAME })}
         />
 
-        <Field
-          name="slug"
-          component={inputText}
-          placeholder={this.getIntlString({ id: GALLERIES_URL })}
-          pre={this.getIntlString({ id: GALLERIES_URL_PRE })}
-          help={this.getIntlString({ id: GALLERIES_URL_HELP })}
-        />
         <hr />
         <button
           type="submit"

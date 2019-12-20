@@ -30,14 +30,6 @@ class AddFootageForm extends Component {
           placeholder={this.getIntlString({ id: FOOTAGE_NAME })}
         />
 
-        <Field
-          name="slug"
-          component={inputText}
-          placeholder={this.getIntlString({ id: FOOTAGE_URL })}
-          pre={this.getIntlString({ id: FOOTAGE_URL_PRE })}
-          help={this.getIntlString({ id: FOOTAGE_URL_HELP })}
-        />
-
         <hr />
         <button
           type="submit"

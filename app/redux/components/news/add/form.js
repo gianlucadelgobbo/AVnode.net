@@ -30,14 +30,6 @@ class AddNewsForm extends Component {
           placeholder={this.getIntlString({ id: NEWS_NAME })}
         />
 
-        <Field
-          name="slug"
-          component={inputText}
-          placeholder={this.getIntlString({ id: NEWS_URL })}
-          pre={this.getIntlString({ id: NEWS_URL_PRE })}
-          help={this.getIntlString({ id: NEWS_URL_HELP })}
-        />
-
         <hr />
         <button
           type="submit"

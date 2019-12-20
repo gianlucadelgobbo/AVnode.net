@@ -29,15 +29,6 @@ class AddPerformanceForm extends Component {
           placeholder={this.getIntlString({ id: TITLE })}
         />
 
-        <Field
-          name="slug"
-          component={inputText}
-          placeholder={this.getIntlString({ id: PERFORMANCE_URL })}
-          pre={this.getIntlString({ id: PERFORMANCE_URL_PRE })}
-          help={this.getIntlString({ id: PERFORMANCE_URL_HELP })}
-
-        />
-
         <hr />
 
         <button

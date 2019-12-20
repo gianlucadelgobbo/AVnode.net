@@ -12,7 +12,6 @@ class AddEventsVideosForm extends Component {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <Field name="title" component={inputText} placeholder="Title" />
-        <Field name="slug" component={inputText} placeholder="Slug" />
 
         <hr />
 
