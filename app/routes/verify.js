@@ -20,6 +20,9 @@ router.get('/:sez/:code', (req, res) => {
       if (put) {
         router.signupVerifyValidator(put, (data, errors) => {
           if (errors.message === "") {
+            logger.debug("signupVerifyValidator");
+            logger.debug(data.crewslug);
+            logger.debug(data);
             let user = new User();
             user.stagename = data.stagename;
             user.slug = data.slug;
@@ -38,6 +41,19 @@ router.get('/:sez/:code', (req, res) => {
               mailinglists: {livevisuals: 1}
             }];
             user.is_crew = false;
+            let crew;
+            if (data.crewslug) {
+              crew = new User();
+              crew.stagename = data.crewname;
+              crew.slug = data.crewslug;
+              crew.addresses = data.addresses;
+              crew.is_crew = true;
+              crew.members = [user._id];
+              crew.stats = {members: 1},
+
+              user.crews = [crew._id];
+              user.stats = {crews: 1};
+            }
             user.save((err) => {
               if (err) {
                 res.render('verify/signup', {
@@ -46,63 +62,32 @@ router.get('/:sez/:code', (req, res) => {
                   data: data
                 });
               } else {
-                if (!data.crewslug) {
+                if (data.crewslug) {
+                  crew.save((err) => {
+                    if (err) {
+                      res.render('verify/signup', {
+                        title: __('Signup verify'),
+                        err: err,
+                        data: data
+                      });
+                    } else {
+                      router.updateSendy(user, user.email, (err) => {
+                        UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
+                          res.render('verify/signup', {
+                            title: __('Signup verify'),
+                            data: data
+                          });
+                        });
+                      });
+                    } 
+                  });
+              } else {
                   router.updateSendy(user, user.email, (err) => {
                     UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
                       res.render('verify/signup', {
                         title: __('Signup verify'),
                         data: data
                       });
-                    });
-                  });
-                } else {
-                  User
-                  .findOne({slug:data.slug})
-                  .exec((err, uuuu) => {
-                    let crew = new User();
-                    crew.stagename = data.crewname;
-                    crew.slug = data.crewslug;
-                    crew.addresses = data.addresses;
-                    crew.is_crew = true;
-                    crew.members = [uuuu];
-                    crew.stats = {members: 1},
-                    /* crew.emails = [{
-                      is_primary: true,
-                      is_confirmed: true
-                    }]; */
-                    crew.save((err) => {
-                      if (err) {
-                        res.render('verify/signup', {
-                          title: __('Signup verify'),
-                          err: err,
-                          data: data
-                        });
-                      } else {
-                        User
-                        .findOne({slug:data.crewslug})
-                        .exec((err, crew) => {
-                          user.crews = [crew._id];
-                          user.stats = {crews: 1},
-                          user.save((err) => {
-                            if (err) {
-                              res.render('verify/signup', {
-                                title: __('Signup verify'),
-                                err: err,
-                                data: data
-                              });
-                            } else {
-                              router.updateSendy(user, user.email, (err) => {
-                                UserTemp.deleteMany({ confirm:req.params.code }, function (err) {
-                                  res.render('verify/signup', {
-                                    title: __('Signup verify'),
-                                    data: data
-                                  });
-                                });
-                              });
-                            }
-                          });
-                        });
-                      } 
                     });
                   });
                 }

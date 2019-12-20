@@ -1,5 +1,6 @@
 const router = require('../../router')();
 let config = require('getconfig');
+let slugify = require('slugify');
 
 const mongoose = require('mongoose');
 const Models = {
@@ -143,21 +144,24 @@ router.setStatsAndActivity = function(query) {
   });
 }
 
-let slugify = require('slugify');
 
 router.mySlugify = function (model, str, cb) {
   console.log("mySlugify");
   console.log(str);
-  let slug = slugify(str);
-  model
-  .count({slug: slug}, function (err, count) {
-    if (count) {
-      console.log("mySlugify 2");
-      router.mySlugify(model, slug+"_1", cb);
-    } else {
-      cb(slug);
-    }
-  });
+  if (str) {
+    let slug = slugify(str);
+    console.log(slug);
+    model.countDocuments({slug: slug}, function (err, count) {
+      if (count) {
+        console.log("mySlugify 2");
+        router.mySlugify(model, slug+"_1", cb);
+      } else {
+        cb(slug);
+      }
+    });
+  } else {
+    cb(str);
+  }
 }
 
 router.setCrewAdresses = function(query) {

@@ -64,14 +64,14 @@ class SignUpForm extends Component {
             placeholder={this.getIntlString({id:STAGE_NAME})}
         />
 
-        <Field
+        {/* <Field
             name="slug"
             component={inputText}
             placeholder={this.getIntlString({id:PROFILE_URL})}
             pre={this.getIntlString({ id: PROFILE_URL_PRE })}
             help={this.getIntlString({ id: PROFILE_URL_HELP })}
 
-        />
+        /> */}
 
         <Field
           name="birthday"

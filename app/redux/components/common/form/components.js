@@ -2989,13 +2989,13 @@ export const CollapsedPanel = ({
   const collapse = (
     <Collapse isOpened={optionValue === "group"}>
       <Field name="crewName" component={inputText} placeholder="Crew Name" />
-      <Field
+      {/* <Field
         name="crewUrl"
         component={inputText}
         placeholder="Crew Url"
         pre={pre}
         help={help}
-      />
+      /> */}
       <h4 className="mt-2">YOU AS MEMBER OF THE CREW</h4>
       <div className="mb-4">
         You will be able to add crew members once you confirmed your account

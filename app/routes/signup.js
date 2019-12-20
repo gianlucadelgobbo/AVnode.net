@@ -1,6 +1,7 @@
 const router = require('./router')();
 const mailer = require('../utilities/mailer');
 const helper = require('../utilities/helper');
+const helpers = require('./admin/api/helpers');
 
 const mongoose = require('mongoose');
 const UserTemp = mongoose.model('UserTemp');
@@ -33,65 +34,72 @@ router.post('/', (req, res) => {
   let select = config.cpanel.signup.forms.signup.select;
   let put = {};
   for (const item in select) if(req.body[item]) put[item] = req.body[item];
-  router.signupValidator(put, (put, errors) => {
-    if (errors.message === "") {
-      Object.assign(data, put);
-                
-      UserTemp.deleteMany({ email: data.email }, function (err) {
-        data.save((err) => {
-          if (err) {
-            res.status(400).json(err);
-          } else {
-            select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
-            //let populate = config.cpanel.signup.forms.signup.populate;      
-            //.populate(populate)
-            UserTemp
-            .findById(data._id)
-            .select(select)
-            .exec((err, data) => {
+  helpers.mySlugify(User, put.stagename, (slug) => {
+    put.slug = slug;
+    helpers.mySlugify(User, put.crewname, (crewslug) => {
+      put.crewslug = crewslug;
+      router.signupValidator(put, (put, errors) => {
+        if (errors.message === "") {
+          Object.assign(data, put);
+                    
+          UserTemp.deleteMany({ email: data.email }, function (err) {
+            data.save((err) => {
               if (err) {
-                res.status(500).json({ error: `${JSON.stringify(err)}` });
+                res.status(400).json(err);
               } else {
-                if (!data) {
-                  res.status(204).json({ error: `DOC_NOT_FOUND` });
-                } else {
-                  mailer.mySendMailer({
-                    template: 'signup',
-                    message: {
-                      to: data.email
-                    },
-                    locals: {
-                    },
-                    email_content: {
-                      site: 'http://'+req.headers.host,
-                      link: 'http://'+req.headers.host+'/verify/signup/'+data.confirm,
-                      stagename: data.stagename,
-                      email: data.email,
-                      confirm: data.confirm,
-                      title:    __("Welcome!"),
-                      subject:  __("Welcome!")+' | AVnode.net',
-                      block_1:  __("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
-                      button:   __("Confirm Account"),
-                      block_2:  __("If that doesn't work, copy and paste the following link in your browser:"),
-                      block_3:  __("If you have any questions, just reply to this email, we're always happy to help out."),
-                      html_sign: "The AVnode.net Team",
-                      text_sign:  "The AVnode.net Team"
+                select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
+                //let populate = config.cpanel.signup.forms.signup.populate;      
+                //.populate(populate)
+                UserTemp
+                .findById(data._id)
+                .select(select)
+                .exec((err, data) => {
+                  if (err) {
+                    res.status(500).json({ error: `${JSON.stringify(err)}` });
+                  } else {
+                    if (!data) {
+                      res.status(204).json({ error: `DOC_NOT_FOUND` });
+                    } else {
+                      mailer.mySendMailer({
+                        template: 'signup',
+                        message: {
+                          to: data.email
+                        },
+                        locals: {
+                        },
+                        email_content: {
+                          site: 'http://'+req.headers.host,
+                          link: 'http://'+req.headers.host+'/verify/signup/'+data.confirm,
+                          stagename: data.stagename,
+                          email: data.email,
+                          confirm: data.confirm,
+                          title:    __("Welcome!"),
+                          subject:  __("Welcome!")+' | AVnode.net',
+                          block_1:  __("We're excited to have you get started. First, you need to confirm your account. Just press the button below."),
+                          button:   __("Confirm Account"),
+                          block_2:  __("If that doesn't work, copy and paste the following link in your browser:"),
+                          block_3:  __("If you have any questions, just reply to this email, we're always happy to help out."),
+                          html_sign: "The AVnode.net Team",
+                          text_sign:  "The AVnode.net Team"
+                        }
+                      }, function(){
+                      });
+                      let send = {_id: data._id};
+                      for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
+                      res.json(send);
                     }
-                  }, function(){
-                  });
-                  let send = {_id: data._id};
-                  for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
-                  res.json(send);
-                }
+                  }
+                });
               }
             });
-          }
-        });
-      });
-    } else {
-      res.status(400).json(errors);  
-    }
+          });
+        } else {
+          res.status(400).json(errors);  
+        }
+      });      
+    });
   });
+
 });
 
 router.signupValidator = (put, cb) => { 
@@ -195,67 +203,7 @@ router.signupValidator = (put, cb) => {
         errors.message += "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>"+"<br/>",
         errors.name += "MongoError"+"<br/>"
       }
-      User.find({ 'slug': put.slug }, "_id", function(err, docs) {
-        if (err) {
-          errors.errors.err = err;
-          cb(put, errors);
-        } else {
-          if (docs.length) {
-            errors.errors.slug = {
-              "message": "Profile Url \""+put.slug+"\" is in use",
-              "name": "MongoError",
-              "stringValue":"\"Duplicate Key\"",
-              "kind":"Date",
-              "value":null,
-              "path":"slug",
-              "reason":{
-                "message": "Profile Url \""+put.slug+"\" is in use",
-                "name":"MongoError",
-                "stringValue":"\"Duplicate Key\"",
-                "kind":"string",
-                "value":null,
-                "path":"slug"
-              }
-            };
-            errors._message += "UserTemp validation failed"+"<br/>",
-            errors.message += "Profile Url \""+put.slug+"\" is in use"+"<br/>",
-            errors.name += "MongoError"+"<br/>"
-          }
-          if (put.crewslug) {
-            User.find({ 'slug': put.crewslug }, "_id", function(err, docs) {
-              if (err) {
-                errors.errors.err = err;
-                cb(put, errors);
-              } else {
-                if (docs.length) {
-                  errors.errors.crewslug = {
-                    "message": "Crew Url \""+put.crewslug+"\" is in use",
-                    "name": "MongoError",
-                    "stringValue":"\"Duplicate Key\"",
-                    "kind":"Date",
-                    "value":null,
-                    "path":"crewslug",
-                    "reason":{
-                      "message":"Crew Url \""+put.crewslug+"\" is in use",
-                      "name":"MongoError",
-                      "stringValue":"\"Duplicate Key\"",
-                      "kind":"string",
-                      "value":null,
-                      "path":"crewslug"
-                    }
-                  };
-                  errors._message += "UserTemp validation failed"+"<br/>",
-                  errors.message += "Crew Url \""+put.crewslug+"\" is in use"+"<br/>",
-                  errors.name += "MongoError"+"<br/>"
-                } 
-                cb(put, errors);
-              }
-            });        
-          } else {
-            cb(put, errors);
-          }
-        }
-      });        
+      cb(put, errors);
     }
   });
 }
