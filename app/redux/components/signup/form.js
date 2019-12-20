@@ -6,15 +6,22 @@ import { FORM_NAME } from "./constants";
 import {
   inputText,
   CollapsedPanel,
-  renderDatePicker,
+  renderDatePickerSignup,
   inputEmail,
   singleGoogleCityCountry,
   inputPassword
 } from "../common/form/components";
 import validate from "./validate";
 import { getFormSyncErrors } from "redux-form";
-import {STAGE_NAME, PROFILE_URL, PROFILE_URL_PRE, PROFILE_URL_HELP, BIRTHDAY, ADDRESS} from "../common/form/labels";
-import {injectIntl} from 'react-intl';
+import {
+  STAGE_NAME,
+  PROFILE_URL,
+  PROFILE_URL_PRE,
+  PROFILE_URL_HELP,
+  BIRTHDAY,
+  ADDRESS
+} from "../common/form/labels";
+import { injectIntl } from "react-intl";
 
 class SignUpForm extends Component {
   submitForm(data) {
@@ -22,14 +29,14 @@ class SignUpForm extends Component {
     console.log("submitForm");
     console.log(data);
     // reset form after submit
-    return onSubmit(data).then((response) => {
+    return onSubmit(data).then(response => {
       if (response) reset();
     });
   }
 
-  getIntlString = (obj) => {
-    const {intl} = this.props;
-    return intl.formatMessage(obj)
+  getIntlString = obj => {
+    const { intl } = this.props;
+    return intl.formatMessage(obj);
   };
 
   render() {
@@ -38,6 +45,7 @@ class SignUpForm extends Component {
       handleSubmit,
       showModal,
       onSubmit,
+      handleChange,
       options,
       height,
       _onOptionChange,
@@ -59,9 +67,9 @@ class SignUpForm extends Component {
         />
 
         <Field
-            name="stagename"
-            component={inputText}
-            placeholder={this.getIntlString({id:STAGE_NAME})}
+          name="stagename"
+          component={inputText}
+          placeholder={this.getIntlString({ id: STAGE_NAME })}
         />
 
         {/* <Field
@@ -75,8 +83,9 @@ class SignUpForm extends Component {
 
         <Field
           name="birthday"
-          component={renderDatePicker}
+          component={renderDatePickerSignup}
           placeholder={this.getIntlString({ id: BIRTHDAY })}
+          onChange={e => handleChange(e)}
         />
 
         <Field name="email" component={inputEmail} placeholder="Email" />
@@ -84,7 +93,7 @@ class SignUpForm extends Component {
         <Field
           name="addresses"
           component={singleGoogleCityCountry}
-          placeholder={this.getIntlString({id:ADDRESS})}
+          placeholder={this.getIntlString({ id: ADDRESS })}
           showModal={showModal}
         />
 
@@ -128,12 +137,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-SignUpForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignUpForm);
+SignUpForm = connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
 
 SignUpForm = injectIntl(SignUpForm);
-
 
 export default SignUpForm;

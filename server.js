@@ -1,90 +1,105 @@
-const express = require('express');
-const compression = require('compression');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const path = require('path');
+const express = require("express");
+const compression = require("compression");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const path = require("path");
 //const morgan = require('morgan');
-const MongoStore = require('connect-mongo')(session);
-const flash = require('express-flash');
+const MongoStore = require("connect-mongo")(session);
+const flash = require("express-flash");
 //const expressStatusMonitor = require('express-status-monitor');
-const sass = require('node-sass-middleware');
-const moment = require('moment');
+const sass = require("node-sass-middleware");
+const moment = require("moment");
 
 // Require mongoose models once!
-require('./app/models');
+require("./app/models");
 
-const i18n = require('./app/utilities/i18n');
-const passport = require('./app/utilities/passport');
-const routes = require('./app/routes');
-const logger = require('./app/utilities/logger');
+const i18n = require("./app/utilities/i18n");
+const passport = require("./app/utilities/passport");
+const routes = require("./app/routes");
+const logger = require("./app/utilities/logger");
 
-const config = require('getconfig');
+const config = require("getconfig");
 global.config = config;
 
 // FIXME Kids say not cool
-const dotenv = require('dotenv');
-dotenv.load({path: '.env.local'});
+const dotenv = require("dotenv");
+dotenv.load({ path: ".env.local" });
 global.appRoot = path.resolve(__dirname);
 
 const app = express();
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, authorization"
+  );
   res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
   next();
 });
 
-app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'app/views'));
-app.set('view engine', 'pug');
-app.set('view options', {debug: true});
-app.set('trust proxy', 'loopback');
+app.set("port", process.env.PORT || 3000);
+app.set("views", path.join(__dirname, "app/views"));
+app.set("view engine", "pug");
+app.set("view options", { debug: true });
+app.set("trust proxy", "loopback");
 
 //app.use(morgan('short'));
 //app.use(expressStatusMonitor());
+/*
 app.use(compression());
-/* app.use(sass({
-    src: path.join(__dirname, 'public'),
-    dest: path.join(__dirname, 'public'),
+app.use(
+  sass({
+    src: path.join(__dirname, "public"),
+    dest: path.join(__dirname, "public"),
     debug: true,
-    outputStyle: 'compressed'
-})); */
-
-app.use(express.static(path.join(__dirname, 'public'), {maxAge: 84600}));
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit:50000}));
+    outputStyle: "compressed"
+  })
+);
+*/
+app.use(express.static(path.join(__dirname, "public"), { maxAge: 84600 }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000
+  })
+);
 app.use(cookieParser());
 app.use(flash());
-app.use('/storage', express.static(path.join(__dirname, 'storage')));
-app.use('/warehouse', express.static(path.join(__dirname, 'warehouse')));
+app.use("/storage", express.static(path.join(__dirname, "storage")));
+app.use("/warehouse", express.static(path.join(__dirname, "warehouse")));
 
 app.use(i18n.init);
-app.use( function ( req, res, next ) {
-    // ADD VARS TO JADE
-    res.locals.current_url = req.url;
-    res.locals.protocol = (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/;
-    if (req.headers && req.headers.host) {
-      let hostA = req.headers.host.split('.');
-      if (config.locales.indexOf(hostA[0])>=0) hostA.shift();
-      res.locals.basehost = hostA.join('.');
-    }
-    next();
-} );
-app.use(session({
+app.use(function(req, res, next) {
+  // ADD VARS TO JADE
+  res.locals.current_url = req.url;
+  res.locals.protocol =
+    req.get("host") === "localhost:8006" ? "http" : "https" /*req.protocol*/;
+  if (req.headers && req.headers.host) {
+    let hostA = req.headers.host.split(".");
+    if (config.locales.indexOf(hostA[0]) >= 0) hostA.shift();
+    res.locals.basehost = hostA.join(".");
+  }
+  next();
+});
+app.use(
+  session({
     resave: true,
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     store: new MongoStore({
-        url: process.env.MONGODB_URI,
-        autoReconnect: true,
-        clear_interval: 3600
+      url: process.env.MONGODB_URI,
+      autoReconnect: true,
+      clear_interval: 3600
     })
-}));
-app.use(function(req,res,next){
-    res.locals.session = req.session;
-    next();
+  })
+);
+app.use(function(req, res, next) {
+  res.locals.session = req.session;
+  next();
 });
 // FIXME
 // This blocks mocha testing, so we disable it
@@ -103,27 +118,33 @@ app.use(function(req,res,next){
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
-    res.locals.user = req.user;
-    next();
+  res.locals.user = req.user;
+  next();
 });
-logger.debug('global.getLocale: '+global.getLocale());
+logger.debug("global.getLocale: " + global.getLocale());
 app.use((req, res, next) => {
-    const path = req.path.split('/')[1];
-    const lang = req.headers.host.split('.')[0] != req.headers.host && req.headers.host.split('.')[0] != 'avnode' && req.headers.host.split('.')[0] != 'dev' && req.headers.host.split('.')[0] != 'api' ? req.headers.host.split('.')[0] : 'en';
-    //logger.debug('req.headers.host: '+req.headers.host.split('.')[0]);
-    if (!req.session.current_lang) {
-        req.session.current_lang = config.defaultLocale;
-    }
-    if (req.session.current_lang != lang) {
-        req.session.current_lang = lang;
-    }
-    global.setLocale(req.session.current_lang);
-    moment.locale(req.session.current_lang);
+  const path = req.path.split("/")[1];
+  const lang =
+    req.headers.host.split(".")[0] != req.headers.host &&
+    req.headers.host.split(".")[0] != "avnode" &&
+    req.headers.host.split(".")[0] != "dev" &&
+    req.headers.host.split(".")[0] != "api"
+      ? req.headers.host.split(".")[0]
+      : "en";
+  //logger.debug('req.headers.host: '+req.headers.host.split('.')[0]);
+  if (!req.session.current_lang) {
+    req.session.current_lang = config.defaultLocale;
+  }
+  if (req.session.current_lang != lang) {
+    req.session.current_lang = lang;
+  }
+  global.setLocale(req.session.current_lang);
+  moment.locale(req.session.current_lang);
 
-    if (/auth|login|logout|signup|images|fonts/i.test(path)) {
-        return next();
-    }
-    /*if (!req.user &&
+  if (/auth|login|logout|signup|images|fonts/i.test(path)) {
+    return next();
+  }
+  /*if (!req.user &&
       req.path !== '/login' &&
       req.path !== '/signup' &&
       !req.path.match(/^\/auth/) &&
@@ -134,15 +155,19 @@ app.use((req, res, next) => {
           req.session.returnTo = req.path;
         }
     } else */
-    //logger.debug('req.path: '+req.path);
+  //logger.debug('req.path: '+req.path);
 
-    if (!req.user && req.path.indexOf('/admin') === 0 && req.path !== '/admin/api/signup') {
-        //logger.debug(req);
-        req.session.returnTo = req.path;
-        res.redirect('/login');
-    } else {
-        next();
-    }
+  if (
+    !req.user &&
+    req.path.indexOf("/admin") === 0 &&
+    req.path !== "/admin/api/signup"
+  ) {
+    //logger.debug(req);
+    req.session.returnTo = req.path;
+    res.redirect("/login");
+  } else {
+    next();
+  }
 });
 
 // not needed because in public/
@@ -152,11 +177,11 @@ app.use((req, res, next) => {
 // 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉 🔥🐉
 
 // Temporary cors to have redux come in cross origin
-const cors = require('cors');
+const cors = require("cors");
 app.use(cors());
 app.use(routes);
 app.use(function(err, req, res, next) {
-  console.error("URL: "+req.headers.host+req.url); // URL of req made 
+  console.error("URL: " + req.headers.host + req.url); // URL of req made
   console.error(err.message); // Log error message in our server's console
   if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
   next(err);
@@ -186,16 +211,19 @@ app.use(function onerror(err, req, res, next) {
   }
 });
 */
-const webpack = require('webpack');
-const webpackConfig = require('./webpack.config');
+const webpack = require("webpack");
+const webpackConfig = require("./webpack.config");
 const compiler = webpack(webpackConfig);
-app.use(require('webpack-dev-middleware')(compiler, {
+app.use(
+  require("webpack-dev-middleware")(compiler, {
     noInfo: true,
-    publicPath:
-    webpackConfig.output.publicPath
-}));
-app.use(require('webpack-hot-middleware')(compiler, {
+    publicPath: webpackConfig.output.publicPath
+  })
+);
+app.use(
+  require("webpack-hot-middleware")(compiler, {
     log: console.log
-}));
+  })
+);
 
 module.exports = app;

@@ -1210,6 +1210,48 @@ export const renderDatePicker = ({ input, meta, placeholder, isChild }) => {
   );
 };
 
+export const renderDatePickerSignup = ({
+  input,
+  meta,
+  placeholder,
+  onChange,
+  isChild
+}) => {
+  const field = (
+    <div className="form-group">
+      <DatePicker
+        {...input}
+        value={null}
+        dateFormat={DATE_FORMAT}
+        className="form-control"
+        //peekNextMonth
+        onChange={value => {
+          input.onChange(value);
+        }}
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
+        selected={input.value ? moment(input.value, DATE_FORMAT) : null}
+        placeholderText={DATE_FORMAT}
+      />
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          <FormattedMessage id={meta.error} />
+        </span>
+      )}
+    </div>
+  );
+  const label = <div className="labelField">{placeholder}</div>;
+  return !!isChild ? (
+    field
+  ) : (
+    <dl className="row">
+      <dt className="col-sm-2">{label}</dt>
+      <dd className="col-sm-10"> {field} </dd>
+    </dl>
+  );
+};
+
 export const renderTimePicker = ({
   input,
   meta,
@@ -2723,7 +2765,10 @@ export const multiActivities = ({
                 name={`${member}.activity_running`}
                 component={renderListRadio}
                 placeholder="Activity is running?"
-                options={[["act-yes", "Yes"], ["act-no", "No"]]}
+                options={[
+                  ["act-yes", "Yes"],
+                  ["act-no", "No"]
+                ]}
                 value=""
               />
             </div>
