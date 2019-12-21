@@ -18,11 +18,13 @@ const items = [
   {
     href: "/admin/crews/:_id/members",
     label: <FormattedMessage id="membersCrews" defaultMessage="Members" />
-  },
+  }
+  /*
   {
     href: "/admin/crews/:_id/organization",
     label: <FormattedMessage id="organization" defaultMessage="Organization" />
   }
+  */
 ];
 
 class MyLateralMenu extends Component {
@@ -37,9 +39,6 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-MyLateralMenu = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MyLateralMenu);
+MyLateralMenu = connect(mapStateToProps, mapDispatchToProps)(MyLateralMenu);
 
 export default injectIntl(MyLateralMenu);
