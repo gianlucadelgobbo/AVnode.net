@@ -295,7 +295,7 @@ export const validateSlugNewGalleries = ({
 };
 
 export const validateAddress = ({ values, promises, result }) => {
-  // addresses
+  // multi addresses
   const addressesToCheck = values || [];
   const addressesErrorArray = [];
   addressesToCheck.forEach((a, index) => {
@@ -307,12 +307,32 @@ export const validateAddress = ({ values, promises, result }) => {
         })
         .then(result => {
           if (Array.isArray(result) && result.length !== 1) {
-            addressesErrorArray[index] = { text: { _error: INVALID_ADDRESS } };
+            addressesErrorArray[index] = {
+              text: { _error: INVALID_ADDRESS }
+            };
             result.addresses_private = addressesErrorArray;
           }
         })
     );
   });
+};
+
+export const validateSingleAddress = ({ values, promises, result }) => {
+  const addressesToCheck = values || "";
+  let addressesError = "";
+  promises.push(
+    geocodeByAddress(addressesToCheck)
+      .catch(error => {
+        addressesError = INVALID_CITY;
+        result.addresses = addressesError;
+      })
+      .then(result => {
+        if (!Array.isArray(result) && result.length === 1) {
+          addressesError = INVALID_ADDRESS;
+          result.addresses_private = addressesError;
+        }
+      })
+  );
 };
 
 export const isValidDate = date => {
@@ -351,7 +371,7 @@ export const validateLength = ({
     value = value.trim();
   }
 
-  if (!value || (value.length < min || value.length > max)) {
+  if (!value || value.length < min || value.length > max) {
     errors[name] = { _error: errorKey };
   }
 

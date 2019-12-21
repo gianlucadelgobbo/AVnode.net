@@ -12,6 +12,7 @@ import {
   inputPassword
 } from "../common/form/components";
 import validate from "./validate";
+import asyncValidate from "./asyncValidate";
 import { getFormSyncErrors } from "redux-form";
 import {
   STAGE_NAME,
@@ -125,9 +126,9 @@ SignUpForm = reduxForm({
   form: FORM_NAME,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true,
-  validate
-  //asyncValidate,
-  //asyncBlurFields: ['slug', 'city[].text']
+  validate,
+  asyncValidate,
+  asyncBlurFields: ["slug", "addresses[].text"]
 })(SignUpForm);
 
 //Get form's initial values from redux state here
