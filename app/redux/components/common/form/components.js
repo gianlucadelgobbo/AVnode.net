@@ -1020,7 +1020,6 @@ const singleInput = ({
       placeholder={placeholder}
       component={render}
       isChild={false}
-      autoComplete="off"
     />
   );
 
