@@ -35,11 +35,9 @@ class AddPerformancesVideos extends Component {
     modelToSave._id = id;
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
-      if (response.model && response.model.id) {
+      if (response.model && response.model._id) {
         hideModal();
-        history.push(
-          "/admin/videos/" + `${response.model.id}` + "/video"
-        );
+        history.push("/admin/videos/" + `${response.model._id}` + "/public");
       }
     });
   }

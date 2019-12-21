@@ -20,7 +20,7 @@ import { injectIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
 // 1. LOADING BAR add actions generators
-import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 
 class Video extends Component {
   componentDidMount() {
@@ -55,7 +55,13 @@ class Video extends Component {
 
   onSubmit(values) {
     // 3. LOADING BAR get action from props
-    const { showModal, saveModel, model,  showLoading, hideLoading } = this.props;
+    const {
+      showModal,
+      saveModel,
+      model,
+      showLoading,
+      hideLoading
+    } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     // Add auth user _id
@@ -66,7 +72,6 @@ class Video extends Component {
 
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(() => {
-
       // 5. LOADING BAR hide loading bar
       hideLoading();
 
@@ -138,7 +143,16 @@ class Video extends Component {
   }
 
   render() {
-    const { model, modal, showModal, isFetching, errorMessage, history, id } = this.props;
+    const {
+      model,
+      modal,
+      showModal,
+      isFetching,
+      errorMessage,
+      history,
+      id,
+      type
+    } = this.props;
 
     return (
       <div>
@@ -149,11 +163,8 @@ class Video extends Component {
               className="pull-right"
               onClick={() =>
                 showModal({
-                  type: modal,
-                  props: {
-                    id,
-                    history
-                  }
+                  type: `MODAL_ADD_${type}_VIDEOS`,
+                  props: { history, id }
                 })
               }
             >
@@ -215,10 +226,7 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-Video = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Video);
+Video = connect(mapStateToProps, mapDispatchToProps)(Video);
 
 Video = injectIntl(Video);
 

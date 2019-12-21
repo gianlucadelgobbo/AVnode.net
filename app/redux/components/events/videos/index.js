@@ -8,9 +8,7 @@ import {
   getModelIsFetching,
   getModelErrorMessage
 } from "../../events/selectors";
-import {
-  MODAL_ADD_EVENTS_VIDEOS
-} from "../../modal/constants";
+import { MODAL_ADD_EVENTS_VIDEOS } from "../../modal/constants";
 import Video from "../../video";
 import { FormattedMessage } from "react-intl";
 import { EVENT_NAME, SHOW } from "./constants";
@@ -27,7 +25,8 @@ class EventsVideo extends Component {
         params: { _id }
       },
       saveModel,
-      removeModel
+      removeModel,
+      history
     } = this.props;
 
     return (
@@ -36,7 +35,12 @@ class EventsVideo extends Component {
           <LateralMenu _id={_id} />
         </div>
         <div className="col-md-10">
-          <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
+          <TitleComponent
+            title={model.title}
+            type={EVENT_NAME}
+            link={"/events/" + model.slug}
+            show={SHOW}
+          />
 
           <Video
             model={model}
@@ -46,7 +50,9 @@ class EventsVideo extends Component {
             id={_id}
             fetchModel={fetchModel}
             saveModel={saveModel}
+            history={history}
             removeModel={removeModel}
+            type="EVENTS"
           />
         </div>
       </div>
@@ -78,9 +84,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-EventsVideo = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventsVideo);
+EventsVideo = connect(mapStateToProps, mapDispatchToProps)(EventsVideo);
 
 export default EventsVideo;
