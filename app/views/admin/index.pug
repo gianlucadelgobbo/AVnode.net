@@ -1,7 +1,12 @@
-extends ../layout
+extends layout
 
-block title
-block teaser
+block content
+  //extends ../admindev/layout_admin
+  //block content
+
   div#app
+    .maincontent(style="height:100vh")
+      .spinner
+        i.fas.fa-spinner.fa-spin
   script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&libraries=places')
   script(src='/js/bundle.js')

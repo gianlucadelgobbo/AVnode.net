@@ -30,31 +30,24 @@ class EventsVideo extends Component {
     } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          <TitleComponent
-            title={model.title}
-            type={EVENT_NAME}
-            link={"/events/" + model.slug}
-            show={SHOW}
-          />
+      <div>
+        <TitleComponent title={model.title} link={"/events/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{EVENT_NAME}</h3>
 
-          <Video
-            model={model}
-            modal={MODAL_ADD_EVENTS_VIDEOS}
-            isFetching={isFetching}
-            errorMessage={errorMessage}
-            id={_id}
-            fetchModel={fetchModel}
-            saveModel={saveModel}
-            history={history}
-            removeModel={removeModel}
-            type="EVENTS"
-          />
-        </div>
+        <Video
+          model={model}
+          modal={MODAL_ADD_EVENTS_VIDEOS}
+          isFetching={isFetching}
+          errorMessage={errorMessage}
+          id={_id}
+          fetchModel={fetchModel}
+          saveModel={saveModel}
+          history={history}
+          removeModel={removeModel}
+          type="EVENTS"
+        />
       </div>
     );
   }

@@ -129,7 +129,7 @@ class Gallery extends Component {
           <div className="col-md-12">
             <Button
               bsStyle="success"
-              className="pull-right"
+              className="float-right"
               onClick={() =>
                 showModal({
                   type: `MODAL_ADD_${type}_GALLERIES`,
@@ -151,7 +151,7 @@ class Gallery extends Component {
                 <LightBox
                   images={model.galleries.map(x => x.imageFormats.small)}
                   Button={
-                    <Button bsStyle="primary" className="pull-right">
+                    <Button bsStyle="primary" className="float-right">
                       <i
                         className="fa fa-image"
                         data-toggle="tooltip"

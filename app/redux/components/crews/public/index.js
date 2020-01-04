@@ -119,22 +119,17 @@ class CrewPublic extends Component {
     } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
+        <div>
           {isFetching && !model && <Loading />}
 
           {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
           {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage &&
-            !isFetching &&
-            model && (
-              <TitleComponent title={model.stagename} type={CREW_NAME} link={"/"+model.slug} show={SHOW} />
-            )}
+          <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
+          <LateralMenu _id={_id} />
+          <hr />
+          <h3 className="labelField mb-3">{CREW_NAME}</h3>
 
           <Form
             initialValues={this.getInitialValues()}
@@ -145,7 +140,6 @@ class CrewPublic extends Component {
             labels={locales_labels}
           />
         </div>
-      </div>
     );
   }
 }

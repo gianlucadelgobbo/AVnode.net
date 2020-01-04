@@ -26,23 +26,21 @@ class NewsImage extends Component {
     const { components } = properties.cpanel.news.forms.image;
     console.log(model);
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          <TitleComponent title={model.title} type={NEWS_NAME} link={"/"+model.slug} show={SHOW} />
+      <div>
+        <TitleComponent title={model.title} link={"/news/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{NEWS_NAME}</h3>
 
-          <ImageForm
-            model={model}
-            isFetching={isFetching}
-            errorMessage={errorMessage}
-            fetchModel={fetchModel}
-            saveModel={saveModel}
-            id={_id}
-            properties={components}
-          />
-        </div>
+        <ImageForm
+          model={model}
+          isFetching={isFetching}
+          errorMessage={errorMessage}
+          fetchModel={fetchModel}
+          saveModel={saveModel}
+          id={_id}
+          properties={components}
+        />
       </div>
     );
   }

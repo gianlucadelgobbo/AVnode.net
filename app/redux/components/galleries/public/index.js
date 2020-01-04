@@ -120,35 +120,31 @@ class GalleriesPublic extends Component {
       removeImage
     } = this.props;
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {model && (
-            <TitleComponent title={model.title} type={GALLERY_NAME} link={"/galleries/"+model.slug} show={SHOW} />
-          )}
+        <TitleComponent title={model.title} link={"/galleries/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{GALLERY_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            media={model.medias}
-            showModal={showModal}
-            tabs={locales}
-            labels={locales_labels}
-            uploadFile={this.uploadFile.bind(this)}
-            _id={_id}
-            removeModel={removeModel}
-            removeImage={removeImage}
-            model={model}
-          />
-        </div>
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          media={model.medias}
+          showModal={showModal}
+          tabs={locales}
+          labels={locales_labels}
+          uploadFile={this.uploadFile.bind(this)}
+          _id={_id}
+          removeModel={removeModel}
+          removeImage={removeImage}
+          model={model}
+        />
       </div>
     );
   }

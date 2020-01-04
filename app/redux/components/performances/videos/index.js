@@ -32,24 +32,22 @@ class PerformaceVideo extends Component {
     } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          <TitleComponent title={model.title} type={PERFORMANCE_NAME} link={"/performances/"+model.slug} show={SHOW} />
-          <Video
-            model={model}
-            modal={MODAL_ADD_PERFORMANCES_VIDEOS}
-            isFetching={isFetching}
-            errorMessage={errorMessage}
-            id={_id}
-            fetchModel={fetchModel}
-            saveModel={saveModel}
-            removeModel={removeModel}
-            history={history}
-          />
-        </div>
+      <div>
+        <TitleComponent title={model.title} link={"/performances/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{PERFORMANCE_NAME}</h3>
+        <Video
+          model={model}
+          modal={MODAL_ADD_PERFORMANCES_VIDEOS}
+          isFetching={isFetching}
+          errorMessage={errorMessage}
+          id={_id}
+          fetchModel={fetchModel}
+          saveModel={saveModel}
+          removeModel={removeModel}
+          history={history}
+        />
       </div>
     );
   }

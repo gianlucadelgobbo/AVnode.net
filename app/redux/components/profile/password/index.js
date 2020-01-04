@@ -80,26 +80,24 @@ class ProfilePassword extends Component {
     const { model = {}, showModal, isFetching, errorMessage } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
+        <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
+        <LateralMenu />
+        <hr />
+        <h3 className="labelField mb-3">{PROFILE_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues(this)}
-            onSubmit={this.onSubmit.bind(this)}
-            user={model}
-            showModal={showModal}
-          />
-        </div>
+        <Form
+          initialValues={this.getInitialValues(this)}
+          onSubmit={this.onSubmit.bind(this)}
+          user={model}
+          showModal={showModal}
+        />
       </div>
     );
   }

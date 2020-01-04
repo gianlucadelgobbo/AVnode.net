@@ -79,28 +79,25 @@ class EventPublic extends Component {
         const {model = {}, showModal, match: {params: {_id}}, isFetching, errorMessage} = this.props;
 
         return (
-            <div className="row">
-                <div className="col-md-2">
-                    <LateralMenu
-                        _id={_id}
-                    />
-                </div>
-                <div className="col-md-10">
-                    <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
+            <div>
+                <TitleComponent title={model.title} link={"/events/"+model.slug} show={SHOW} />
+                <LateralMenu _id={_id} />
+                <hr />
+                <h3 className="labelField mb-3">{EVENT_NAME}</h3>
+    
+    
+                {isFetching && !model && <Loading/>}
 
-                    {isFetching && !model && <Loading/>}
+                {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
 
-                    {errorMessage && <ErrorMessage errorMessage={errorMessage}/>}
+                {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-                    {!errorMessage && !isFetching && !model && <ItemNotFound/>}
-
-                    {!errorMessage && !isFetching && model && <Form
-                        initialValues={this.getInitialValues()}
-                        onSubmit={this.onSubmit.bind(this)}
-                        model={model}
-                        showModal={showModal}
-                    />}
-                </div>
+                {!errorMessage && !isFetching && model && <Form
+                    initialValues={this.getInitialValues()}
+                    onSubmit={this.onSubmit.bind(this)}
+                    model={model}
+                    showModal={showModal}
+                />}
             </div>
         );
     }

@@ -198,11 +198,7 @@ class ProfilePublic extends Component {
     const {model = {}, showModal, isFetching, errorMessage} = this.props;
 
     return (
-        <div className="row">
-          <div className="col-md-2">
-            <LateralMenu/>
-          </div>
-          <div className="col-md-10">
+          <div>
             {/*<h1 className="labelField">MY ACCOUNT PUBLIC DATA</h1>
                     <br/>*/}
 
@@ -212,7 +208,10 @@ class ProfilePublic extends Component {
 
             {!errorMessage && !isFetching && !model && <ItemNotFound/>}
 
-            <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/" + model.slug} show={SHOW}/>
+            <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
+            <LateralMenu />
+            <hr />
+            <h3 className="labelField mb-3">{PROFILE_NAME}</h3>
 
             <Form
                 initialValues={this.getInitialValues()}
@@ -223,7 +222,6 @@ class ProfilePublic extends Component {
                 //handleSelect={this.createLatLongToSave()}
             />
           </div>
-        </div>
     );
   }
 }

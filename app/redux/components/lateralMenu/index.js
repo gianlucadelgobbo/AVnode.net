@@ -13,7 +13,7 @@ class LateralMenu extends Component {
     createMenuItem = ({model, index}) => {
 
         return (
-            <NavLink to={this.createHref({href: model.href})} activeClassName="active" className="nav-link" key={index}>
+            <NavLink to={this.createHref({href: model.href})} activeClassName="disabled" className="btn btn-primary btn-sm mr-3" key={index}>
                 {model.label}
             </NavLink>);
     };
@@ -23,10 +23,10 @@ class LateralMenu extends Component {
         const {items = []} = this.props;
 
         return (
-            <nav id="account-sidenav" className="nav-justified pull-left">
-                {items.map((model, index) => this.createMenuItem({model, index}))}
+            <nav>
+              {items.map((model, index) => this.createMenuItem({model, index}))}
             </nav>)
-    }
+          }
 
 }
 

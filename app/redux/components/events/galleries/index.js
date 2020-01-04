@@ -29,25 +29,23 @@ class EventsImage extends Component {
     } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          <TitleComponent title={model.title} type={EVENT_NAME}  link={"/events/"+model.slug} show={SHOW}/>
+      <div>
+        <TitleComponent title={model.title} link={"/events/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{EVENT_NAME}</h3>
 
-          <Gallery
-            model={model}
-            isFetching={isFetching}
-            errorMessage={errorMessage}
-            removeModel={removeModel}
-            saveModel={saveModel}
-            id={_id}
-            fetchModel={fetchModel}
-            history={history}
-            type="EVENTS"
-          />
-        </div>
+        <Gallery
+          model={model}
+          isFetching={isFetching}
+          errorMessage={errorMessage}
+          removeModel={removeModel}
+          saveModel={saveModel}
+          id={_id}
+          fetchModel={fetchModel}
+          history={history}
+          type="EVENTS"
+        />
       </div>
     );
   }

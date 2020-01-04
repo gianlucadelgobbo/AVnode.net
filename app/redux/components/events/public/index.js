@@ -340,38 +340,30 @@ class EventPublic extends Component {
     } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage && !isFetching && model && (
-            <TitleComponent
-              title={model.title}
-              type={EVENT_NAME}
-              link={"/events/" + model.slug}
-              show={SHOW}
-            />
-          )}
+        <TitleComponent title={model.title} link={"/events/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{EVENT_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            model={model}
-            showModal={showModal}
-            tabs={locales}
-            labels={locales_labels}
-            categories={categories}
-            removeModel={removeModel}
-            _id={_id}
-          />
-        </div>
+
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          model={model}
+          showModal={showModal}
+          tabs={locales}
+          labels={locales_labels}
+          categories={categories}
+          removeModel={removeModel}
+          _id={_id}
+        />
       </div>
     );
   }

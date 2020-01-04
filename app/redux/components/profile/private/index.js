@@ -180,26 +180,24 @@ class ProfilePrivate extends Component {
     } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
-          
-          <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        
+        <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
+        <LateralMenu />
+        <hr />
+        <h3 className="labelField mb-3">{PROFILE_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            showModal={showModal}
-            countries={countries}
-          />
-        </div>
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          showModal={showModal}
+          countries={countries}
+        />
       </div>
     );
   }

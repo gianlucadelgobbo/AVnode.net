@@ -9,3 +9,7 @@ export const PLAYLISTS_NAME = (
     defaultMessage="PLAYLIST PUBLIC DATA"
   />
 );
+export const SHOW = <FormattedMessage
+                                id="show"
+                                defaultMessage="SHOW"
+                            />

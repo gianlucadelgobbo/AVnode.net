@@ -138,18 +138,15 @@ class MembersTable extends Component {
     } = this.props;
     console.log(errorMessage);
     return (
-      <div>
-        <div className="row">
-          <div className="col-md-2">
-            <LateralMenu _id={_id} />
-          </div>
-          <div className="col-md-10">
+          <div>
             <TitleComponent
               title={model.stagename}
-              type={CREW_NAME}
               link={"/" + model.slug}
               show={SHOW}
             />
+            <LateralMenu _id={_id} />
+            <hr />
+            <h3 className="labelField mb-3">{CREW_NAME}</h3>
             <div className="row marginBottom">
               <div className="col-md-6">
                 <h2 className="labelField">
@@ -159,7 +156,7 @@ class MembersTable extends Component {
               <div className="col-md-6">
                 <Button
                   bsStyle="success"
-                  className="pull-right"
+                  className="float-right"
                   onClick={() =>
                     showModal({
                       type: MODAL_ADD_MEMBERS,
@@ -187,10 +184,6 @@ class MembersTable extends Component {
               </div>
             </div>
           </div>
-        </div>
-
-        <br />
-      </div>
     );
   }
 }

@@ -20,7 +20,7 @@ class Videos extends Component {
             <div className="col-md-2">
               <Button
                 bsStyle="success"
-                className="pull-right"
+                className="float-right"
                 onClick={() =>
                   showModal({
                     type: MODAL_ADD_VIDEOS,

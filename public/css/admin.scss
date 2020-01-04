@@ -17,9 +17,25 @@ $input-color-placeholder: $gray-light;
 .marginBottom {
   margin-bottom: 5px;
 }
+#navbar-collapse_admin .nav-item .fa, #navbar-collapse_admin .nav-item .fas, #navbar-collapse_admin .nav-item .far, #navbar-collapse_admin .nav-item.active {
+  color: #fff;
+}
+
+#sidebar-container .list-group-item {
+  padding: .75rem 1.65rem;
+}
+
+#app .maincontent{
+  background-color: $gray-lightest;
+}
+.spinner {
+  display: flex;
+  padding: 50vh 50%;
+  color: #000;
+  font-size: 3em;
+}
 
 #app {
-  background-color: $gray-lightest;
   padding-bottom: 1rem;
   margin-bottom: -1rem;
   .account-nav-wrap {
@@ -30,7 +46,12 @@ $input-color-placeholder: $gray-light;
   h3 {
     color: $gray-dark;
   }
-  #account-nav {
+  #account-nav .list-group-item.active {
+    background-color: #000 !important;
+    border: none;
+    border-bottom: #000 solid 1px;
+  }
+  /* #account-nav {
     .nav-link {
       background-color: $gray-lighter;
       color: $gray-dark;
@@ -53,7 +74,7 @@ $input-color-placeholder: $gray-light;
       }
       padding: 0.5rem 1rem;
     }
-  }
+  } */
   fieldset {
     margin-top: 2rem;
   }
@@ -330,9 +351,6 @@ textarea#styled {
 }
 .rt-resizable-header-content span i {
   padding-left: 10px;
-}
-footer {
-  margin-top: 40px;
 }
 .titleComponent {
   margin-bottom: 20px;

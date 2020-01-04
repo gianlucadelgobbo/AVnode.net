@@ -237,42 +237,33 @@ class PerformancePublic extends Component {
       );
     };
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage && !isFetching && model && (
-            <TitleComponent
-              title={model.title}
-              type={PERFORMANCE_NAME}
-              link={"/performances/" + model.slug}
-              show={SHOW}
-            />
-          )}
+        <TitleComponent title={model.title} link={"/performances/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{PERFORMANCE_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            model={model}
-            showModal={showModal}
-            tabs={locales}
-            labels={locales_labels}
-            categories={categories}
-            _id={_id}
-            getTechnique={getTechnique()}
-            handleChange={e => this.handleChange("selectedType", e.target.id)}
-            getGenre={getGenre()}
-            selectedType={selectedType}
-            removeModel={removeModel}
-          />
-        </div>
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          model={model}
+          showModal={showModal}
+          tabs={locales}
+          labels={locales_labels}
+          categories={categories}
+          _id={_id}
+          getTechnique={getTechnique()}
+          handleChange={e => this.handleChange("selectedType", e.target.id)}
+          getGenre={getGenre()}
+          selectedType={selectedType}
+          removeModel={removeModel}
+        />
       </div>
     );
   }

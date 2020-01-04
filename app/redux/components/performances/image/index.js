@@ -20,25 +20,21 @@ class PerformanceImages extends Component {
         const { components } = properties.cpanel.performances.forms.image;
 
         return (
-            <div className="row">
-                <div className="col-md-2">
-                    <LateralMenu
-                        _id={_id}
-                    />
-                </div>
-                <div className="col-md-10">
-                    <TitleComponent title={model.title} type={PERFORMANCE_NAME} link={"/performances/"+model.slug} show={SHOW} />
-                    <ImageForm
-                        model={model}
-                        isFetching={isFetching}
-                        errorMessage={errorMessage}
-                        fetchModel={fetchModel}
-                        saveModel={saveModel}
-                        id={_id}
-                        properties={components}
-                    />
+            <div>
+                <TitleComponent title={model.title} link={"/performances/"+model.slug} show={SHOW} />
+                <LateralMenu _id={_id} />
+                <hr />
+                <h3 className="labelField mb-3">{PERFORMANCE_NAME}</h3>
+                <ImageForm
+                    model={model}
+                    isFetching={isFetching}
+                    errorMessage={errorMessage}
+                    fetchModel={fetchModel}
+                    saveModel={saveModel}
+                    id={_id}
+                    properties={components}
+                />
 
-                </div>
             </div>
         );
     }

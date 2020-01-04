@@ -113,7 +113,7 @@ class SignUpForm extends Component {
         <button
           type="submit"
           disabled={submitting}
-          className="btn btn-primary pull-right btn-lg mb-3"
+          className="btn btn-primary float-right btn-lg mb-3"
         >
           {submitting ? "Saving..." : "SIGNUP"}
         </button>

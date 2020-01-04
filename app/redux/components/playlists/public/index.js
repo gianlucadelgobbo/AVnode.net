@@ -10,7 +10,7 @@ import Loading from "../../loading";
 import ErrorMessage from "../../errorMessage";
 import ItemNotFound from "../../itemNotFound";
 import TitleComponent from "../../titleComponent";
-import { PLAYLISTS_NAME } from "./constants";
+import { PLAYLISTS_NAME, SHOW } from "./constants";
 import {
   getModel,
   getModelIsFetching,
@@ -108,33 +108,29 @@ class PlaylistPublic extends Component {
     } = this.props;
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={PLAYLISTS_NAME} />
-          )}
+        <TitleComponent title={model.title} link={"/playlists/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{PLAYLISTS_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            model={model}
-            showModal={showModal}
-            tabs={locales}
-            labels={locales_labels}
-            model={model}
-            _id={_id}
-            removeModel={removeModel}
-          />
-        </div>
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          model={model}
+          showModal={showModal}
+          tabs={locales}
+          labels={locales_labels}
+          model={model}
+          _id={_id}
+          removeModel={removeModel}
+        />
       </div>
     );
   }

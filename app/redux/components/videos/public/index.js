@@ -118,34 +118,30 @@ class VideosPublic extends Component {
       removeModel
     } = this.props;
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          {!errorMessage && !isFetching && model && (
-            <TitleComponent title={model.title} type={VIDEO_NAME} link={"/videos/"+model.slug} show={SHOW} />
-          )}
+        <TitleComponent title={model.title} link={"/videos/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{VIDEO_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            media={model.media}
-            showModal={showModal}
-            tabs={locales}
-            labels={locales_labels}
-            uploadFile={this.uploadFile.bind(this)}
-            _id={_id}
-            removeModel={removeModel}
-            model={model}
-          />
-        </div>
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          media={model.media}
+          showModal={showModal}
+          tabs={locales}
+          labels={locales_labels}
+          uploadFile={this.uploadFile.bind(this)}
+          _id={_id}
+          removeModel={removeModel}
+          model={model}
+        />
       </div>
     );
   }

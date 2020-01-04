@@ -22,25 +22,23 @@ class ProfileImage extends Component {
 
         return (
 
-            <div className="row">
-                <div className="col-md-2">
-                    <LateralMenu/>
-                </div>
-                <div className="col-md-10">
+            <div>
 
-                    <TitleComponent title={model.stagename} type={PROFILE_NAME} link={"/"+model.slug} show={SHOW} />
+                <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
+                <LateralMenu />
+                <hr />
+                <h3 className="labelField mb-3">{PROFILE_NAME}</h3>
 
-                    <ImageForm
-                        model={model}
-                        isFetching={isFetching}
-                        errorMessage={errorMessage}
-                        fetchModel={fetchModel}
-                        saveModel={saveModel}
-                        properties={components}
-                        multiple={false}
-                    />
+                <ImageForm
+                    model={model}
+                    isFetching={isFetching}
+                    errorMessage={errorMessage}
+                    fetchModel={fetchModel}
+                    saveModel={saveModel}
+                    properties={components}
+                    multiple={false}
+                />
 
-                </div>
             </div>
         );
     }

@@ -44,7 +44,7 @@ const items = [
         />
 
 
-    },
+    }/* ,
     {
         href: "/admin/profile/connections",
         label: <FormattedMessage
@@ -53,7 +53,7 @@ const items = [
         />
 
 
-    },
+    }, */
 ];
 
 class MyLateralMenu extends Component {

@@ -1,34 +1,31 @@
-extends ../layout
+extends ./layout
 
-block title
-block teaser
+block content
   #app
     div
-      div
-        .jumbotron.jumbotron-fluid
-          .container
-            h1.display-4
-              span Control panel
-        div
-          .container-fluid.account-nav-wrap
-            .container
-              nav#account-nav.nav.nav-pills.nav-justified
-                a.nav-link(aria-current='false', href='/admin/profile/public')
-                  span Profile
-                a.nav-link(aria-current='false', href='/admin/crews')
-                  span Crews
-                a.nav-link(aria-current='false', href='/admin/performances')
-                  span Performances
-                a.nav-link(aria-current='false', href='/admin/events')
-                  span Events
-                a.nav-link(aria-current='true', href='/admin/videos')
-                  span Videos
-                a.nav-link(aria-current='false', href='/admin/galleries')
-                  span Galleries
-                a.nav-link.active(aria-current='true', href='/admin/videos')
-                  span Subscriptions
-          .container
-            #accordion.accordion.pb-3.mb-3(style="color:#000")
+      include ../partials/menuHeaderAdmin
+      .container-fluid
+        .row.pb-3.maincontent
+          .d-print-none
+            nav#sidebar-container.sidebar-expanded.d-none.d-lg-block
+              #account-nav.list-group
+                .list-group-item.sidebar-separator-title.d-flex
+                  small.menu-collapsed Control panel
+                each menuitem in config.adminMenu
+                  a.bg-dark.list-group-item.list-group-item-action(href=menuitem.href class=currentUrl==menuitem.href ? "active" : undefined)
+                    span(class=menuitem.icon)
+                    span.menu-collapsed=menuitem.label.defaultMessage
+                a.bg-dark.list-group-item(href='#', data-toggle='sidebar-collapse')
+                  .d-flex.w-100.justify-content-start.align-items-center
+                    span.fa.fa-arrow-alt-circle-left.fa-fw.mr-3
+                    span.menu-collapsed Collapse
+          .col
+            .row.mt-4
+              .col-md-10
+                h2.labelField Subscriptions
+              .col-md-2
+            hr
+            .pr-sm-3.pl-sm-3.pb-3.mb-3(style="color:#000")
               .pb-2.mb-3.border-bottom
                 .row
                   .col-md-5

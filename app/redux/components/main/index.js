@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { FormattedMessage, injectIntl } from "react-intl";
 
+import TopBar from "../topBar";
 import TopMenu from "../topMenu/index";
 import ModalRoot from "../modal/root";
 
@@ -72,162 +73,153 @@ class MainApp extends Component {
     return (
       <div>
         <LoadingBar />
-
-        <div className="jumbotron jumbotron-fluid">
-          <div className="container">
-            <h1 className="display-4">
-              <FormattedMessage id="admin" defaultMessage="Control panel" />
-            </h1>
-          </div>
-        </div>
-
         <Router>
-          <div>
-            <div className="container-fluid account-nav-wrap">
-              <div className="container">
+        <div>
+            <TopBar />
+            <div className="container-fluid">
+              <div className="row pb-3 maincontent">
                 <TopMenu />
+                <div className="col">
+                  <Switch>
+                    <Route path="/admin/profile/public" component={ProfilePublic} />
+                    <Route path="/admin/profile/images" component={ProfileImages} />
+                    <Route path="/admin/profile/emails" component={ProfileEmails} />
+                    <Route
+                      path="/admin/profile/private"
+                      component={ProfilePrivate}
+                    />
+                    <Route
+                      path="/admin/profile/password"
+                      component={ProfilePassword}
+                    />
+                    <Route
+                      path="/admin/profile/connections"
+                      component={ProfileConnections}
+                    />
+
+                    <Route
+                      path="/admin/crews/:_id/public/"
+                      component={CrewsPublic}
+                    />
+                    <Route
+                      path="/admin/crews/:_id/images/"
+                      component={CrewsImages}
+                    />
+                    <Route
+                      path="/admin/crews/:_id/members/"
+                      component={CrewsMembers}
+                    />
+                    <Route
+                      path="/admin/crews/:_id/organization/"
+                      component={CrewsOrganization}
+                    />
+                    <Route path="/admin/crews" component={Crews} />
+
+                    <Route
+                      path="/admin/performances/:_id/public/"
+                      component={PerformancesPublic}
+                    />
+                    <Route
+                      path="/admin/performances/:_id/images/"
+                      component={PerformancesImages}
+                    />
+                    <Route
+                      path="/admin/performances/:_id/galleries/"
+                      component={PerformancesGalleries}
+                    />
+                    <Route
+                      path="/admin/performances/:_id/videos/"
+                      component={PerformancesVideos}
+                    />
+                    <Route path="/admin/performances" component={Performances} />
+
+                    <Route
+                      path="/admin/videos/:_id/public/"
+                      component={VideosPublic}
+                    />
+                    <Route
+                      path="/admin/videos/:_id/video/"
+                      component={VideosVideo}
+                    />
+                    <Route path="/admin/videos" component={Videos} />
+
+                    <Route
+                      path="/admin/galleries/:_id/public/"
+                      component={GalleriesPublic}
+                    />
+
+                    <Route
+                      path="/admin/galleries/:_id/gallery"
+                      component={GalleriesGallery}
+                    />
+
+                    <Route path="/admin/galleries" component={Galleries} />
+
+                    <Route
+                      path="/admin/events/:_id/public/"
+                      component={EventPublic}
+                    />
+                    <Route
+                      path="/admin/events/:_id/images/"
+                      component={EventImages}
+                    />
+                    <Route
+                      path="/admin/events/:_id/partners/"
+                      component={EventPartners}
+                    />
+                    <Route
+                      path="/admin/events/:_id/program/"
+                      component={EventProgram}
+                    />
+                    <Route
+                      path="/admin/events/:_id/galleries/"
+                      component={EventGalleries}
+                    />
+                    <Route
+                      path="/admin/events/:_id/videos/"
+                      component={EventVideos}
+                    />
+                    <Route
+                      path="/admin/events/:_id/calls/"
+                      component={EventCalls}
+                    />
+                    <Route
+                      path="/admin/events/:_id/settings/"
+                      component={EventSettings}
+                    />
+                    <Route path="/admin/events" component={Events} />
+
+                    <Route
+                      path="/admin/footage/:_id/public/"
+                      component={FootagePublic}
+                    />
+                    <Route
+                      path="/admin/footage/:_id/video/"
+                      component={FootageVideo}
+                    />
+                    <Route path="/admin/footage" component={Footage} />
+
+                    <Route
+                      path="/admin/news/:_id/public/"
+                      component={NewsPublic}
+                    />
+
+                    <Route
+                      path="/admin/news/:_id/images/"
+                      component={NewsImages}
+                    />
+                    <Route path="/admin/news" component={News} />
+
+                    <Route
+                      path="/admin/playlists/:_id/public/"
+                      component={PlaylistPublic}
+                    />
+                    <Route path="/admin/playlists" component={Playlist} />
+
+                    <Route path="*" component={PageNotFound} />
+                  </Switch>
+                </div>
               </div>
-            </div>
-
-            <div className="container mb-3">
-              <Switch>
-                <Route path="/admin/profile/public" component={ProfilePublic} />
-                <Route path="/admin/profile/images" component={ProfileImages} />
-                <Route path="/admin/profile/emails" component={ProfileEmails} />
-                <Route
-                  path="/admin/profile/private"
-                  component={ProfilePrivate}
-                />
-                <Route
-                  path="/admin/profile/password"
-                  component={ProfilePassword}
-                />
-                <Route
-                  path="/admin/profile/connections"
-                  component={ProfileConnections}
-                />
-
-                <Route
-                  path="/admin/crews/:_id/public/"
-                  component={CrewsPublic}
-                />
-                <Route
-                  path="/admin/crews/:_id/images/"
-                  component={CrewsImages}
-                />
-                <Route
-                  path="/admin/crews/:_id/members/"
-                  component={CrewsMembers}
-                />
-                <Route
-                  path="/admin/crews/:_id/organization/"
-                  component={CrewsOrganization}
-                />
-                <Route path="/admin/crews" component={Crews} />
-
-                <Route
-                  path="/admin/performances/:_id/public/"
-                  component={PerformancesPublic}
-                />
-                <Route
-                  path="/admin/performances/:_id/images/"
-                  component={PerformancesImages}
-                />
-                <Route
-                  path="/admin/performances/:_id/galleries/"
-                  component={PerformancesGalleries}
-                />
-                <Route
-                  path="/admin/performances/:_id/videos/"
-                  component={PerformancesVideos}
-                />
-                <Route path="/admin/performances" component={Performances} />
-
-                <Route
-                  path="/admin/videos/:_id/public/"
-                  component={VideosPublic}
-                />
-                <Route
-                  path="/admin/videos/:_id/video/"
-                  component={VideosVideo}
-                />
-                <Route path="/admin/videos" component={Videos} />
-
-                <Route
-                  path="/admin/galleries/:_id/public/"
-                  component={GalleriesPublic}
-                />
-
-                <Route
-                  path="/admin/galleries/:_id/gallery"
-                  component={GalleriesGallery}
-                />
-
-                <Route path="/admin/galleries" component={Galleries} />
-
-                <Route
-                  path="/admin/events/:_id/public/"
-                  component={EventPublic}
-                />
-                <Route
-                  path="/admin/events/:_id/images/"
-                  component={EventImages}
-                />
-                <Route
-                  path="/admin/events/:_id/partners/"
-                  component={EventPartners}
-                />
-                <Route
-                  path="/admin/events/:_id/program/"
-                  component={EventProgram}
-                />
-                <Route
-                  path="/admin/events/:_id/galleries/"
-                  component={EventGalleries}
-                />
-                <Route
-                  path="/admin/events/:_id/videos/"
-                  component={EventVideos}
-                />
-                <Route
-                  path="/admin/events/:_id/calls/"
-                  component={EventCalls}
-                />
-                <Route
-                  path="/admin/events/:_id/settings/"
-                  component={EventSettings}
-                />
-                <Route path="/admin/events" component={Events} />
-
-                <Route
-                  path="/admin/footage/:_id/public/"
-                  component={FootagePublic}
-                />
-                <Route
-                  path="/admin/footage/:_id/video/"
-                  component={FootageVideo}
-                />
-                <Route path="/admin/footage" component={Footage} />
-
-                <Route
-                  path="/admin/news/:_id/public/"
-                  component={NewsPublic}
-                />
-
-                <Route
-                  path="/admin/news/:_id/images/"
-                  component={NewsImages}
-                />
-                <Route path="/admin/news" component={News} />
-
-                <Route
-                  path="/admin/playlists/:_id/public/"
-                  component={PlaylistPublic}
-                />
-                <Route path="/admin/playlists" component={Playlist} />
-
-                <Route path="*" component={PageNotFound} />
-              </Switch>
             </div>
           </div>
         </Router>

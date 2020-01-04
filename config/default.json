@@ -3869,6 +3869,226 @@
       }
     }
   },
+  "adminMenu": {
+    "profile": {
+      "href": "/admin/profile/public",
+      "icon": "fa fa-user fa-fw mr-3",
+      "counter": "me",
+      "label": {"id": "profile", "defaultMessage": "Profile"},
+      "submenu": [
+        {
+            "href": "/admin/profile/public",
+            "icon": "fa fa-info fa-fw mr-3",
+            "label": {"id": "publicDataProfile", "defaultMessage": "Public data"}
+        },
+        {
+            "href": "/admin/profile/images",
+            "icon": "fa fa-image fa-fw mr-3",
+            "label": {"id": "imagesProfile", "defaultMessage": "Image"}
+    
+        },
+        {
+            "href": "/admin/profile/emails",
+            "icon": "far fa-envelope fa-fw mr-3",
+            "label": {"id": "emailsProfile", "defaultMessage": "Emails"}
+    
+        },
+        {
+            "href": "/admin/profile/private",
+            "icon": "fa fa-user-shield fa-fw mr-3",
+            "label": {"id": "privateDataProfile", "defaultMessage": "Private data"}
+        },
+        {
+            "href": "/admin/profile/password",
+            "icon": "fa fa-key fa-fw mr-3",
+            "label": {"id": "passwordProfile", "defaultMessage": "Password"}
+        },
+        {
+            "href": "/admin/profile/connections",
+            "icon": "fa fa-exchange-alt fa-fw mr-3",
+            "label": {"id": "connectionsProfile", "defaultMessage": "Connections"}
+        }
+      ]
+    },
+    "crews": {
+      "href": "/admin/crews",
+      "icon": "fa fa-users fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "crews", "defaultMessage": "Crews"},
+      "submenu": [
+        {
+          "href": "/admin/crews/:_id/public",
+          "icon": "fa fa-info fa-fw mr-3",
+          "label": {"id": "publicDataCrews", "defaultMessage": "Public data"}
+        },
+        {
+          "href": "/admin/crews/:_id/images",
+          "icon": "fa fa-image fa-fw mr-3",
+          "label": {"id": "imagesCrews", "defaultMessage": "Image"}
+        },
+        {
+          "href": "/admin/crews/:_id/members",
+          "icon": "far fa-user fa-fw mr-3",
+          "label": {"id": "membersCrews", "defaultMessage": "Members"}
+        }
+      ]
+    },
+    "performances": {
+      "href": "/admin/performances",
+      "icon": "fa fa-theater-masks fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "performances", "defaultMessage": "Performances"},
+      "submenu": [
+        {
+            "href": "/admin/performances/:_id/public",
+            "icon": "fa fa-info fa-fw mr-3",
+            "label": {"id": "publicDataPerformances", "defaultMessage": "Public data"}
+        },
+        {
+            "href": "/admin/performances/:_id/images",
+            "icon": "fa fa-image fa-fw mr-3",
+            "label": {"id": "imagesPerformances", "defaultMessage": "Image"}
+        },
+        {
+            "href": "/admin/performances/:_id/galleries",
+            "icon": "fa fa-images fa-fw mr-3",
+            "label": {"id": "galleriesPerformances", "defaultMessage": "Galleries"}
+        },
+        {
+            "href": "/admin/performances/:_id/videos",
+            "icon": "fa fa-video fa-fw mr-3",
+            "label": {"id": "videosPerformances", "defaultMessage": "Videos"}
+    
+        }
+      ]
+    },
+    "events": {
+      "href": "/admin/events",
+      "icon": "far fa-calendar fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "events", "defaultMessage": "Events"},
+      "submenu": [
+        {
+            "href": "/admin/events/:_id/public",
+            "icon": "fa fa-info fa-fw mr-3",
+            "label": {"id": "publicDataEvents", "defaultMessage": "Public data"}
+        },
+        {
+            "href": "/admin/events/:_id/images",
+            "icon": "fa fa-image fa-fw mr-3",
+            "label": {"id": "imagesEvents", "defaultMessage": "Image"}
+    
+        },
+        {
+          "href": "/admin/events/:_id/galleries",
+          "label": {"id": "galleriesEvents", "defaultMessage": "Galleries"},
+          "icon": "fa fa-images fa-fw mr-3"
+        },
+        {
+          "href": "/admin/events/:_id/videos",
+          "label": {"id": "videosEvents", "defaultMessage": "Videos"},
+          "icon": "fa fa-video fa-fw mr-3"
+        },
+        {
+          "href": "/admin/events/:_id/settings",
+          "label": {"id": "settingEvents", "defaultMessage": "Settings"},
+          "icon": "fa fa-cog fa-fw mr-3"
+        }
+      ]
+    },
+    "news": {
+      "href": "/admin/news",
+      "icon": "fa fa-newspaper fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "news", "defaultMessage": "News"},
+      "submenu": [
+        {
+          "href": "/admin/news/:_id/public",
+          "icon": "fa fa-info fa-fw mr-3",
+          "label": {"id": "publicDataNews", "defaultMessage": "Public data"}
+        },
+        {
+          "href": "/admin/news/:_id/images",
+          "icon": "fa fa-image fa-fw mr-3",
+          "label": {"id": "imagesNews", "defaultMessage": "Image"}
+        }
+      ]
+    },
+    "videos": {
+      "href": "/admin/videos",
+      "icon": "fa fa-video fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "videos", "defaultMessage": "Videos"},
+      "submenu": [
+        {
+          "href": "/admin/videos/:_id/public",
+          "icon": "fa fa-info fa-fw mr-3",
+          "label": {"id": "publicDataVideos", "defaultMessage": "Public data"}
+        },  {
+          "href": "/admin/videos/:_id/video",
+          "icon": "fa fa-video fa-fw mr-3",
+          "label": {"id": "videoVideos", "defaultMessage": "Video"}
+        }
+      
+      ]
+    },
+    "galleries": {
+      "href": "/admin/galleries",
+      "icon": "fa fa-images fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "galleries", "defaultMessage": "Galleries"},
+      "submenu": [
+        {
+          "href": "/admin/galleries/:_id/public",
+          "icon": "fa fa-info fa-fw mr-3",
+          "label": {"id": "publicDataGalleries", "defaultMessage": "Public data"}
+        },
+        {
+          "href": "/admin/galleries/:_id/gallery",
+          "icon": "fa fa-images fa-fw mr-3",
+          "label": {"id": "galleryInGalleries", "defaultMessage": "Add images"}
+        }
+      ]
+    },
+    "footage": {
+      "href": "/admin/footage",
+      "icon": "fa fa-film fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "footage", "defaultMessage": "Footage"},
+      "submenu": [
+        {
+          "href": "/admin/footage/:_id/public",
+          "icon": "fa fa-info fa-fw mr-3",
+          "label": {"id": "publicDataFootage", "defaultMessage": "Public data"}
+        },
+        {
+          "href": "/admin/footage/:_id/video",
+          "icon": "fa fa-video fa-fw mr-3",
+          "label": {"id": "videoVideos", "defaultMessage": "Video"}
+        }
+      ]
+    },
+    "playlists": {
+      "href": "/admin/playlists",
+      "icon": "fa fa-clipboard-list fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "playlists", "defaultMessage": "Playlists"},
+      "submenu": [
+        {
+            "href": "/admin/playlists/:_id/public",
+            "icon": "fa fa-info fa-fw mr-3",
+            "label": {"id": "publicDataPlaylists", "defaultMessage": "Public data"}
+        }
+      ]
+    },
+    "subscriptions": {
+      "href": "/admin/subscriptions",
+      "icon": "fa fa-calendar-check fa-fw mr-3",
+      "counter": 0,
+      "label": {"id": "subscriptions", "defaultMessage": "Subscriptions"},
+      "submenu": []
+    }
+  },
   "sections": {
     "performers": {
       "title": "Performers",

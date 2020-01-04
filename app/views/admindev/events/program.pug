@@ -31,7 +31,7 @@ block content
                         .clearfix
                           .pull-left
                             .timing.small
-                          .pull-right
+                          .float-right
                             .small(class=(program.performance.duration == parseFloat(program.performance.duration) ? "" : "badge badge-danger"))=program.performance.duration+" min."
                         .title
                           b!=program.performance.title
@@ -42,7 +42,7 @@ block content
                             i.fa.fa-clone
                           a.pl-3.edit-schedule(href="#")
                             i.fa.fa-edit
-                        .pull-right
+                        .float-right
                           .availability.text-right
                             - var daydayA = []
                             each subscription in program.subscriptions
@@ -77,7 +77,7 @@ block content
                                     .clearfix
                                       .pull-left
                                         .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
-                                      .pull-right
+                                      .float-right
                                         .small=program.performance.duration+" min."
                                     .title
                                       b!=program.performance.title
@@ -88,7 +88,7 @@ block content
                                         i.fa.fa-clone
                                       a.pl-3.edit-schedule(href="#")
                                         i.fa.fa-edit
-                                    .pull-right
+                                    .float-right
                                       .availability.text-right
                                         - var daydayA = []
                                         each subscription in program.subscriptions

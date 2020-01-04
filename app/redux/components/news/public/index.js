@@ -190,47 +190,38 @@ class NewsPublic extends Component {
     /* const { tags } = this.state;
     const delimiters = [NEWS_CODES_TAGS.comma, NEWS_CODES_TAGS.enter]; */
     return (
-      <div className="row">
-        <div className="col-md-2">
-          <LateralMenu _id={_id} />
-        </div>
-        <div className="col-md-10">
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && (
-            <ErrorMessage
-              errorMessage={errorMessage[Object.keys(errorMessage)]}
-            />
-          )}
-
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
-
-          {!errorMessage && !isFetching && model && (
-            <TitleComponent
-              title={model.title}
-              type={NEWS_NAME}
-              link={"/news/" + model.slug}
-              show={SHOW}
-            />
-          )}
-
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            model={model}
-            _id={_id}
-            removeModel={removeModel}
-            showModal={showModal}
-            tabs={locales}
-            labels={locales_labels}
-            /* tags={tags || []}
-            delimiters={delimiters} */
-           /*  handleDelete={this.handleDelete}
-            handleAddition={this.handleAddition}
-            handleDrag={this.handleDrag}
-            uploadFile={this.uploadFile.bind(this)} */
+        {errorMessage && (
+          <ErrorMessage
+            errorMessage={errorMessage[Object.keys(errorMessage)]}
           />
-        </div>
+        )}
+
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
+
+        <TitleComponent title={model.title} link={"/news/"+model.slug} show={SHOW} />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{NEWS_NAME}</h3>
+
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          model={model}
+          _id={_id}
+          removeModel={removeModel}
+          showModal={showModal}
+          tabs={locales}
+          labels={locales_labels}
+          /* tags={tags || []}
+          delimiters={delimiters} */
+          /*  handleDelete={this.handleDelete}
+          handleAddition={this.handleAddition}
+          handleDrag={this.handleDrag}
+          uploadFile={this.uploadFile.bind(this)} */
+        />
       </div>
     );
   }

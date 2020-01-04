@@ -125,7 +125,7 @@ class Partners extends Component {
 
                         <Button
                             bsStyle="success"
-                            className="pull-right"
+                            className="float-right"
                             onClick={() => showModal({
                                 type: MODAL_ADD_PARTNER,
                                 props: {

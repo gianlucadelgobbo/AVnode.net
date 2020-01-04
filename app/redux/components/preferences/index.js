@@ -13,12 +13,12 @@ class Preferences extends Component {
 
     render() {
         return(
-            <div className="row">
+            <div className="row mt-3">
                 <div className="col-md-2">
                     <ProfileLateralMenu/>
                 </div>
                 <div className="col-md-10">
-                    <h2 className="labelField">PREFERENCES</h2>
+                    <h3 className="labelField">PREFERENCES</h3>
                     <br/>
                     <Form
                         initialValues={this.getInitialValues()}

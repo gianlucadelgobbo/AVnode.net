@@ -615,7 +615,7 @@ export const fieldWithLabel = ({
         {!hidemodal && (
           <Button
             bsStyle="success"
-            className="pull-right mb-2 btn-sm"
+            className="float-right mb-2 btn-sm"
             onClick={() =>
               showModal({
                 type: "MODAL_ADD_USER_" + `${SECTION}`,
@@ -704,7 +704,7 @@ export const fieldWithLabelNoModal = ({
         {!hidemodal && (
           <Button
             bsStyle="success"
-            className="pull-right mb-2 btn-sm"
+            className="float-right mb-2 btn-sm"
             //onClick={() => fields.unshift({})}
             onClick={() =>
               showModal({
@@ -894,7 +894,7 @@ export const multiInputEmailWithDetails = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -1075,7 +1075,7 @@ const multiInput = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -1463,7 +1463,7 @@ export const renderDropzoneInput = field => {
               </div>
             </li>
           ))}
-          <div className="pull-right mr-3">
+          <div className="float-right mr-3">
             {field.uploadButton && files.length > 0 && (
               <div>
                 <button
@@ -1623,7 +1623,7 @@ export const multiSchedule = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -1770,7 +1770,7 @@ export const multiProgram = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -1924,7 +1924,7 @@ export const multiPackages = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift(v)}
         >
           <i
@@ -2019,7 +2019,7 @@ export const multiTopic = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift(v)}
         >
           <i
@@ -2187,7 +2187,7 @@ export const multiCall = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -2373,7 +2373,7 @@ export const multiContacts = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -2831,7 +2831,7 @@ export const multiActivities = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i
@@ -2948,7 +2948,7 @@ export const multiLegalOrganization = ({
         <h4>{label}</h4>
         <Button
           bsStyle="success"
-          className="pull-right mb-2 btn-sm"
+          className="float-right mb-2 btn-sm"
           onClick={() => fields.unshift({})}
         >
           <i

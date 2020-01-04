@@ -16,14 +16,14 @@ class Crews extends Component {
             <div className="row">
                 <div className="col-md-12">
 
-                    <div className="row">
+                    <div className="row mt-3">
                         <div className="col-md-10">
-                            <h2 className="labelField">CREWS</h2>
+                            <h3 className="labelField">CREWS</h3>
                         </div>
                         <div className="col-md-2">
                             <Button
                                 bsStyle="success"
-                                className="pull-right"
+                                className="float-right"
                                 onClick={() => showModal({
                                     type: MODAL_ADD_CREW,
                                     props: { history }
