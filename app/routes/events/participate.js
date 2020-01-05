@@ -65,7 +65,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   logger.debug(req.session.call);
-  if (req.session.call.saved || !req.body || !req.session.call) {
+  if ((req.session.call && req.session.call.saved) || !req.body || !req.session.call) {
     if (req.body && req.body.step) delete req.body.step;
     delete req.session.call;
     res.redirect((req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]);
