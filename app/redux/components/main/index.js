@@ -77,9 +77,9 @@ class MainApp extends Component {
         <div>
             <TopBar />
             <div className="container-fluid">
-              <div className="row pb-3 maincontent">
+              <div className="row pb-3">
                 <TopMenu />
-                <div className="col">
+                <div className="col maincontent">
                   <Switch>
                     <Route path="/admin/profile/public" component={ProfilePublic} />
                     <Route path="/admin/profile/images" component={ProfileImages} />
