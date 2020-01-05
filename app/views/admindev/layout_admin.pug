@@ -18,7 +18,7 @@ html(lang='en')
 
     link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
     link(rel='stylesheet', href='/css/main.css')
-    link(rel='stylesheet', href='/css/admindev.css')
+    link(rel='stylesheet', href='/css/admin.css')
     link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
     link(rel='stylesheet', href='/lightgallery/css/lightgallery.min.css')
     link(rel='stylesheet', href='//vjs.zencdn.net/4.12/video-js.css')
@@ -54,7 +54,7 @@ html(lang='en')
                     a(href='/logout')                    
                       span.lnr.lnr-exit
                       !=" "+global.__('Log out')
-      .container-fluid
+      .container-fluid#app
         .row
           // Sidebar
           .d-print-none
@@ -64,7 +64,7 @@ html(lang='en')
               else if currentUrl.indexOf("/admindev/supertools")===0
               else if currentUrl.indexOf("/admin")===0
                 include partials/menuHome
-          main.col(role='main')
+          main.col.maincontent(role='main')
             .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
               h1.h2=title
               .btn-toolbar.mb-2.mb-md-0.d-print-none
