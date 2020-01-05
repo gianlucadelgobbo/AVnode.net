@@ -3947,7 +3947,7 @@
         {
             "href": "/admin/performances/:_id/images",
             "icon": "fa fa-image fa-fw mr-3",
-            "label": {"id": "imagesPerformances", "defaultMessage": "Image"}
+            "label": {"id": "imagePerformances", "defaultMessage": "Image"}
         },
         {
             "href": "/admin/performances/:_id/galleries",

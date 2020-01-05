@@ -3,7 +3,7 @@ import {FormattedMessage} from 'react-intl';
 
 export const FORM_NAME = "PERFORMANCES.VIDEOS";                    
 export const PERFORMANCE_NAME = <FormattedMessage
-                                    id="performance.image"
+                                    id="performance.videos"
                                     defaultMessage="PERFORMANCE VIDEOS"
                                 />
                                 

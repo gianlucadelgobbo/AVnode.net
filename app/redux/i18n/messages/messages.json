@@ -825,7 +825,7 @@
     "filepath": "./app/redux/components/news/table/index.js"
   },
   {
-    "id": "performance.image",
+    "id": "performance.galleries",
     "defaultMessage": "PERFORMANCE GALLERIES",
     "filepath": "./app/redux/components/performances/galleries/constants.js"
   },
@@ -850,7 +850,7 @@
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
   {
-    "id": "imagesPerformances",
+    "id": "imagePerformances",
     "defaultMessage": "Image",
     "filepath": "./app/redux/components/performances/lateralMenu/index.js"
   },
@@ -880,7 +880,7 @@
     "filepath": "./app/redux/components/performances/table/index.js"
   },
   {
-    "id": "performance.image",
+    "id": "performance.videos",
     "defaultMessage": "PERFORMANCE VIDEOS",
     "filepath": "./app/redux/components/performances/videos/constants.js"
   },
