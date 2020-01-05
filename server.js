@@ -57,6 +57,7 @@ app.use(
   })
 );
 */
+
 app.use(express.static(path.join(__dirname, "public"), { maxAge: 84600 }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(
