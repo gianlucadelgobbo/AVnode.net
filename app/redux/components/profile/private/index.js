@@ -56,14 +56,15 @@ class ProfilePrivate extends Component {
     model.citizenship = model.citizenship.filter(a => a).map(a => a.value);
     // Convert addresses_private
     model.addresses_private = model.addresses_private.map(a => {
-      const originalString = a.text;
+      /* const originalString = a.text;
       const split = originalString.split(",");
       const country = split[split.length - 1].trim();
       const street = split[0].trim();
       const locality = split[split.length - 3].trim();
       const formatted_address = originalString;
       const geometry = a.geometry;
-      return { formatted_address, street, locality, country, geometry };
+      return { formatted_address, street, locality, country, geometry }; */
+      return a.loc;
     });
     // Convert Phone Number
     model.phone = model.phone
@@ -110,13 +111,12 @@ class ProfilePrivate extends Component {
     v.citizenship = model.citizenship ? model.citizenship : "";
     // Addresses_private: Add one item if value empty
     v.addresses_private =
-      Array.isArray(model.addresses_private) &&
-      model.addresses_private.length > 0
+      Array.isArray(model.addresses_private) && model.addresses_private.length > 0
         ? model.addresses_private.map(a => ({
-            text: `${a.formatted_address}`
-          }))
-        : [{ text: "" }];
-    // Phone: Add one item if value empty
+          text: `${a.locality}, ${a.country}`
+        }))
+        : [{text: ""}];
+// Phone: Add one item if value empty
     v.phone =
       Array.isArray(model.phone) && model.phone.length > 0
         ? model.phone.filter(a => a).map(p => ({ tel: p.url }))
@@ -136,7 +136,23 @@ class ProfilePrivate extends Component {
   }
 
   createLatLongToSave = address => {
-    return geocodeByAddress(address).then(results => getLatLng(results[0]));
+    return geocodeByAddress(address).then(function (results) {
+      return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+    }).then(function ([results, geometry]) {
+      let loc = {};
+      results[0].address_components.forEach(address_component => {
+        if (address_component.types.indexOf('country') !== -1) loc.country = address_component.long_name;
+        if (address_component.types.indexOf('locality') !== -1) loc.locality = address_component.long_name;
+      });
+      if (!loc.locality) {
+        results[0].address_components.forEach(address_component => {
+          if (address_component.types.indexOf("administrative_area_level_1") !== -1) loc.locality = address_component.long_name;
+        });
+      }
+      loc.formatted_address = results[0].formatted_address;
+      loc.geometry = geometry;
+      return loc;
+    });
   };
 
   onSubmit(values) {
@@ -148,9 +164,14 @@ class ProfilePrivate extends Component {
 
     addrs.forEach(a => {
       promises.push(
-        this.createLatLongToSave(a.text).then(result => {
-          a.geometry = result;
-        })
+          this.createLatLongToSave(a.text)
+              .then(result => {
+                // add to a model
+                a.loc = result;
+              })
+              .catch(() => {
+                console.log("ciao da google!");
+              })
       );
     });
 
