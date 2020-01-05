@@ -6,7 +6,6 @@ logs/*
 .vscode/
 package-lock.json
 .eslintrc.json
-font-awesome.css
 *.iml
 .idea/
 AVnode.net.code-workspace
