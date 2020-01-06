@@ -111,3 +111,39 @@
 2020-01-06T17:34:13: 
 2020-01-06T17:34:13: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
 2020-01-06T17:34:13: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T17:34:36: (node:4838) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:34:36: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:34:36:   Press CTRL-C to stop
+2020-01-06T17:34:36: 
+2020-01-06T17:34:36: webpack built 229398f5d9df4fbbf3e0 in 68ms
+2020-01-06T17:34:36: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T17:34:36: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:34:36: Time: [1m68[39m[22mms
+2020-01-06T17:34:36: Built at: 01/06/2020 [1m5:34:36 PM[39m[22m
+2020-01-06T17:34:36: 
+2020-01-06T17:34:36: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T17:34:36: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T17:36:31: (node:4873) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:36:31: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:36:31:   Press CTRL-C to stop
+2020-01-06T17:36:31: 
+2020-01-06T17:36:31: webpack built 229398f5d9df4fbbf3e0 in 67ms
+2020-01-06T17:36:31: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T17:36:31: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:36:31: Time: [1m67[39m[22mms
+2020-01-06T17:36:31: Built at: 01/06/2020 [1m5:36:31 PM[39m[22m
+2020-01-06T17:36:31: 
+2020-01-06T17:36:31: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T17:36:31: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T17:37:32: (node:4885) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:37:32: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:37:32:   Press CTRL-C to stop
+2020-01-06T17:37:32: 
+2020-01-06T17:37:32: webpack built 229398f5d9df4fbbf3e0 in 69ms
+2020-01-06T17:37:32: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T17:37:32: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:37:32: Time: [1m69[39m[22mms
+2020-01-06T17:37:32: Built at: 01/06/2020 [1m5:37:32 PM[39m[22m
+2020-01-06T17:37:32: 
+2020-01-06T17:37:32: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T17:37:32: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
