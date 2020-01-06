@@ -119,27 +119,31 @@ class CrewPublic extends Component {
     } = this.props;
 
     return (
-        <div>
-          {isFetching && !model && <Loading />}
+      <div>
+        {isFetching && !model && <Loading />}
 
-          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+        {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-          {!errorMessage && !isFetching && !model && <ItemNotFound />}
+        {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-          <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
-          <LateralMenu _id={_id} />
-          <hr />
-          <h3 className="labelField mb-3">{CREW_NAME}</h3>
+        <TitleComponent
+          title={model.stagename}
+          link={"/" + model.slug}
+          show={SHOW}
+        />
+        <LateralMenu _id={_id} />
+        <hr />
+        <h3 className="labelField mb-3">{CREW_NAME}</h3>
 
-          <Form
-            initialValues={this.getInitialValues()}
-            onSubmit={this.onSubmit.bind(this)}
-            model={model}
-            showModal={showModal}
-            tabs={locales}
-            labels={locales_labels}
-          />
-        </div>
+        <Form
+          initialValues={this.getInitialValues()}
+          onSubmit={this.onSubmit.bind(this)}
+          model={model}
+          showModal={showModal}
+          tabs={locales}
+          labels={locales_labels}
+        />
+      </div>
     );
   }
 }
@@ -168,9 +172,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-CrewPublic = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CrewPublic);
+CrewPublic = connect(mapStateToProps, mapDispatchToProps)(CrewPublic);
 
 export default CrewPublic;

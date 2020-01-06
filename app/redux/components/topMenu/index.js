@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { bindActionCreators } from "redux";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
+import { fetchModel } from "../profile/actions";
 import { fetchList as fetchCrews } from "../crews/actions";
 import { fetchList as fetchPerformances } from "../performances/actions";
 import { fetchList as fetchEvents } from "../events/actions";
@@ -19,10 +20,12 @@ import { getList as getNews } from "../news/selectors";
 import { getList as getPlaylists } from "../playlists/selectors";
 import { getList as getVideos } from "../videos/selectors";
 import { getList as getGalleries } from "../galleries/selectors";
+import { getDefaultModel } from "../profile/selectors";
 
 class TopMenu extends Component {
   componentDidMount() {
     const {
+      fetchModel,
       fetchCrews,
       fetchPerformances,
       fetchEvents,
@@ -32,6 +35,7 @@ class TopMenu extends Component {
       fetchVideos,
       fetchGalleries
     } = this.props;
+
     fetchCrews();
     fetchPerformances();
     fetchEvents();
@@ -62,6 +66,7 @@ class TopMenu extends Component {
 
   render() {
     const {
+      profile,
       crews,
       performances,
       events,
@@ -71,10 +76,10 @@ class TopMenu extends Component {
       videos,
       galleries
     } = this.props;
-
+    const id = profile !== undefined ? profile._id : "";
     const items = [
       {
-        href: "/admin/profile/public",
+        href: `/admin/profile/${id}/public`,
         icon: "fa fa-user fa-fw mr-3",
         counter: "me",
         label: <FormattedMessage id="profile" defaultMessage="Profile" />
@@ -179,6 +184,7 @@ class TopMenu extends Component {
 }
 
 const mapStateToProps = state => ({
+  profile: getDefaultModel(state),
   crews: getCrews(state),
   performances: getPerformances(state),
   events: getEvents(state),
@@ -192,6 +198,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
+      fetchModel,
       fetchCrews,
       fetchPerformances,
       fetchEvents,
@@ -204,9 +211,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-TopMenu = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopMenu);
+TopMenu = connect(mapStateToProps, mapDispatchToProps)(TopMenu);
 
 export default TopMenu;

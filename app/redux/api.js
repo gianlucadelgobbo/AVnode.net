@@ -4,46 +4,63 @@ import axios from "./conf/axios";
 // ============ Profile
 
 // - public
-export const fetchProfilePublic = () => {
+export const fetchProfile = () => {
   return axios.get("profile/public").then(result => {
     return result.data;
   });
 };
 
-export const saveProfilePublic = model => {
-  return axios.put("profile/public", model).then(result => {
+export const fetchProfilePublic = ({ id }) => {
+  return axios.get(`profile/${id}/public`).then(result => {
     return result.data;
   });
 };
 
+export const saveProfilePublic = model => {
+  return axios.put(`profile/${model._id}/public`, model).then(result => {
+    return result.data;
+  });
+};
+/*
 export const fetchSlug = slug => {
   return axios.get(`profile/public/slugs/${slug}`).then(result => {
+    return result.data;
+  });
+};
+*/
+export const fetchSlug = (slug, id) => {
+  return axios.get(`profile/${id}/public/slugs/${slug}`).then(result => {
     return result.data;
   });
 };
 
 // - private
 
-export const fetchProfilePrivate = () => {
-  return axios.get("profile/private").then(result => {
+export const fetchProfilePrivate = ({ id }) => {
+  return axios.get(`profile/${id}/private`).then(result => {
     return result.data;
   });
 };
 
 export const saveProfilePrivate = model => {
-  return axios.put("profile/private", model).then(result => {
+  return axios.put(`profile/${model._id}/private`, model).then(result => {
     return result.data;
   });
 };
 
 // - images
-
+/*
 export const fetchProfileImages = () => {
   return axios.get("profile/image").then(result => {
     return result.data;
   });
 };
-
+*/
+export const fetchProfileImages = ({ id }) => {
+  return axios.get(`profile/${id}/image`).then(result => {
+    return result.data;
+  });
+};
 export const saveProfileImages = model => {
   // convert image to Form Data
   let formBox = new FormData();
@@ -52,9 +69,11 @@ export const saveProfileImages = model => {
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-  return axios.put("profile/image", formBox, config).then(result => {
-    return result.data;
-  });
+  return axios
+    .put(`profile/${model.id}/image`, formBox, config)
+    .then(result => {
+      return result.data;
+    });
 };
 
 export const saveFootageVideo = model => {
@@ -82,15 +101,21 @@ export const fetchFootageVideo = ({ id }) => {
 */
 
 // - emails
-
+/*
 export const fetchProfileEmails = () => {
   return axios.get("profile/emails").then(result => {
     return result.data;
   });
 };
+*/
+export const fetchProfileEmails = ({ id }) => {
+  return axios.get(`profile/${id}/emails`).then(result => {
+    return result.data;
+  });
+};
 
 export const saveProfileEmails = model => {
-  return axios.put("profile/emails", model).then(result => {
+  return axios.put(`profile/${model._id}/emails`, model).then(result => {
     return result.data;
   });
 };
@@ -117,14 +142,14 @@ export const saveProfileConnections = model => {
 
 // - password
 
-export const fetchProfilePassword = () => {
-  return axios.get("profile/password").then(result => {
+export const fetchProfilePassword = ({ id }) => {
+  return axios.get(`profile/${id}/password`).then(result => {
     return result.data;
   });
 };
 
 export const saveProfilePassword = model => {
-  return axios.put("profile/password", model).then(result => {
+  return axios.put(`profile/${model._id}/password`, model).then(result => {
     return result.data;
   });
 };
@@ -825,7 +850,7 @@ export const saveNewsUsers = model =>
     .then(result => {
       return result.data;
     });
-  export const removePlaylistsUsers = model =>
+export const removePlaylistsUsers = model =>
   axios
     .get(`playlists/${model._id}/users/remove/${model.idusers}`, model)
     .then(result => {

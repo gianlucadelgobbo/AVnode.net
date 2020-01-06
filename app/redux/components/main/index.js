@@ -74,26 +74,35 @@ class MainApp extends Component {
       <div>
         <LoadingBar />
         <Router>
-        <div>
+          <div>
             <TopBar />
             <div className="container-fluid">
               <div className="row">
                 <TopMenu />
                 <div className="col maincontent pb-3">
                   <Switch>
-                    <Route path="/admin/profile/public" component={ProfilePublic} />
-                    <Route path="/admin/profile/images" component={ProfileImages} />
-                    <Route path="/admin/profile/emails" component={ProfileEmails} />
                     <Route
-                      path="/admin/profile/private"
+                      path="/admin/profile/:_id/public"
+                      component={ProfilePublic}
+                    />
+                    <Route
+                      path="/admin/profile/:_id/images"
+                      component={ProfileImages}
+                    />
+                    <Route
+                      path="/admin/profile/:_id/emails"
+                      component={ProfileEmails}
+                    />
+                    <Route
+                      path="/admin/profile/:_id/private"
                       component={ProfilePrivate}
                     />
                     <Route
-                      path="/admin/profile/password"
+                      path="/admin/profile/:_id/password"
                       component={ProfilePassword}
                     />
                     <Route
-                      path="/admin/profile/connections"
+                      path="/admin/profile/:_id/connections"
                       component={ProfileConnections}
                     />
 
@@ -131,7 +140,10 @@ class MainApp extends Component {
                       path="/admin/performances/:_id/videos/"
                       component={PerformancesVideos}
                     />
-                    <Route path="/admin/performances" component={Performances} />
+                    <Route
+                      path="/admin/performances"
+                      component={Performances}
+                    />
 
                     <Route
                       path="/admin/videos/:_id/public/"
