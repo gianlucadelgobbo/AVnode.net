@@ -11,6 +11,7 @@ const dataprovider = require('../utilities/dataprovider');
 const logger = require('../utilities/logger');
 
 router.get('/', (req, res) => {
+
   if (req.originalUrl.indexOf("sitemap.xml")!==-1) {
   } else {
     let homedata = {stats:{}};
@@ -50,43 +51,41 @@ router.get('/', (req, res) => {
         dataprovider.fetchLists(model, query, select, populate, limit, skip, sorting, (err, data, total) => {
           homedata.news = data;
           homedata.stats.news = total;
-      
-
-  
-                if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-                  if (process.env.DEBUG) {
-                    res.render('json', {data:homedata});
-                  } else {
-                    res.json({data:homedata});
+          console.log(req.session);
+          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            if (process.env.DEBUG) {
+              res.render('json', {data:homedata});
+            } else {
+              res.json({data:homedata});
+            }
+            //return next(err);
+          } else {
+            res.render('home', {
+              title: __('Welcome to AVnode network'),
+              subtitle: __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
+              data: homedata,
+              canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              jsonld: {
+                "@context": "http://schema.org",
+                "@type": "WebSite",
+                "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl,
+                "description": __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
+                "image": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/sez/avnode.net-home.jpg",
+                "potentialAction": {
+                  "@type": "SearchAction",
+                  "target": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"search?&q={q}",
+                  "query-input": {
+                    "@type": "PropertyValueSpecification",
+                    "valueRequired": false,
+                    "valueName": "q"
                   }
-                  //return next(err);
-                } else {
-                  res.render('home', {
-                    title: __('Welcome to AVnode network'),
-                    subtitle: __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
-                    data: homedata,
-                    canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
-                    jsonld: {
-                      "@context": "http://schema.org",
-                      "@type": "WebSite",
-                      "url": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl,
-                      "description": __('AVnode is an international network and database of artists and professionals organising activities in the field of audio visual performing arts.'),
-                      "image": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"images/sez/avnode.net-home.jpg",
-                      "potentialAction": {
-                        "@type": "SearchAction",
-                        "target": (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl+"search?&q={q}",
-                        "query-input": {
-                          "@type": "PropertyValueSpecification",
-                          "valueRequired": false,
-                          "valueName": "q"
-                        }
-                      }
-                    }          
-                  });
                 }
-              });
+              }          
             });
-          });
+          }
+        });
+      });
+    });
   }
 });
 

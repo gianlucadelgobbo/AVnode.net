@@ -118,6 +118,10 @@ router.get('/api/events/:id/gallery/remove/:gallery', (req, res)=>{
   get.removeGallery(req, res);
 });
 
+router.get('/api/loggeduser', (req, res) => {
+  res.json(req.user);
+});
+
 router.get('/api/subscriptions', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'subscriptions';
@@ -143,6 +147,7 @@ router.get('/subscriptions', (req, res) => {
   req.params.sez = 'subscriptions';
   get.getSubscriptions(req, res);
 });
+
 
 router.get('/*', (req, res) => {
   res.render('admin/index', {
@@ -215,7 +220,7 @@ router.post('/api/editsubscriptionsave', (req, res)=>{
   post.editSubscriptionSave(req, res);
 });
 
-router.put('/api/profile/:form/', (req, res) => {
+/* router.put('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
@@ -231,7 +236,7 @@ router.put('/api/profile/:form/', (req, res) => {
   } else {
     put.putData(req, res);
   }
-});
+}); */
 
 router.put('/api/:sez/:id/:form/', (req, res) => {
   if (['profile/image','crews/image','events/image','news/image','performances/image','footage/media','galleries/medias','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
