@@ -800,7 +800,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
       data.pages = pages;
       let editable = false;
       if (req.user && req.user._id) {
-        if (config.superusers.indexOf(req.user._id.toString())!==-1) {
+        if (req.user.is_admin) {
           editable = true;
         } else if (data.users) {
           for(let a=0;a<data.users.length;a++) if (data.users[a]._id.toString() === req.user._id.toString() || req.user.crews.indexOf(data.users[a]._id.toString())!==-1) editable = true;

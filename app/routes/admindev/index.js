@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
       res.render('admindev/home', {
         title: 'Advanced Tools',
         currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         data: results,
         script: false
       });

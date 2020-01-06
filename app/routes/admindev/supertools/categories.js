@@ -79,7 +79,7 @@ router.get('/dbcheck', (req, res) => {
     }); */
     res.render('admindev/supertools/categories/showall', {
       title: 'Categories',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       data: catO,
       script: false

@@ -44,7 +44,7 @@ router.unflatten = function( array, parent, tree ){
 router.get('/usersstatsupdate', (req, res) => {
   res.render('admindev/supertools/stats', {
     title: 'Users Update',
-    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+    
     currentUrl: req.originalUrl,
     body: {q:'[{"slug":"gianlucadelgobbo"},{"slug":"liz"}]'},
     //data: catO,
@@ -63,7 +63,7 @@ router.post('/usersstatsupdate', (req, res) => {
   ).then( (results) => {
     res.render('admindev/supertools/stats', {
       title: 'Users Update',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       body: req.body,
       data: results,

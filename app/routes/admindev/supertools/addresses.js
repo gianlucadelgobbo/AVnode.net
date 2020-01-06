@@ -25,7 +25,7 @@ router.get('/usersdbcheck', (req, res) => {
   usersdbcheck(req, res, cb = (data) => {
     res.render('admindev/supertools/addresses/usersdbcheck', {
       title: 'admindev/supertools/addresses/usersdbcheck',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
@@ -37,7 +37,7 @@ router.get('/updatedb', (req, res) => {
   showall(req, res, true, cb = (data) => {
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/updatedb',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
@@ -51,7 +51,7 @@ router.get('/getgeometry', (req, res) => {
     logger.debug(script);
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/getgeometry',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
       script: script
@@ -66,7 +66,7 @@ router.get('/setgeometry', (req, res) => {
   setgeometry(req, res, skip, cb = (data) => {
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/setgeometry',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
       script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/addresses/setgeometry?skip=' + (skip) + '"},1000);</script>' : ""
@@ -82,7 +82,7 @@ router.get('/venuesdbcheck', (req, res) => {
     logger.debug(data);
     res.render('admindev/supertools/addresses/venuesdbcheck', {
       title: 'admindev/supertools/addresses/venuesdbcheck',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
@@ -95,7 +95,7 @@ router.get('/venuesdbimport', (req, res) => {
     //logger.debug(data);
     res.render('admindev/supertools/addresses/venuesdbcheck', {
       title: 'admindev/supertools/addresses/venuesdbimport',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data
     });
@@ -110,7 +110,7 @@ router.get('/venuesgetgeometry', (req, res) => {
     logger.debug(script);
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/venuesgetgeometry',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
       script: script
@@ -125,7 +125,7 @@ router.get('/venuessetgeometry', (req, res) => {
   venuessetgeometry(req, res, skip, cb = (data) => {
     res.render('admindev/supertools', {
       title: 'admindev/supertools/addresses/venuessetgeometry',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: '/admindev/supertools/addresses'+req.path,
       data: data,
       script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/addresses/venuessetgeometry?skip=' + (skip) + '"},1000);</script>' : ""

@@ -18,7 +18,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   User.findOne({_id:id}).
-  select('name surname stagename slug image crews email mobile addresses likes').
+  select('name surname stagename slug image crews email mobile addresses likes is_pro is_admin').
   exec((err, user) => {
     done(err, user);
   });

@@ -316,7 +316,7 @@ router.removeImage = (req, res) => {
     _id: req.params.id,
     "medias.slug": req.params.image
   };
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
   Models.Gallery.findOne( query , (err, gallery) => {
     gallery.medias.splice(gallery.medias.map(item=>{return item.slug;}).indexOf(req.params.image),1);
@@ -337,7 +337,7 @@ router.removeImage = (req, res) => {
   
 router.removeFootage = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.members = req.user._id;
+  if (req.user.is_admin) query.members = req.user._id;
   logger.debug(query);
   Models["Playlist"]
   .findOne(query)
@@ -468,7 +468,7 @@ router.getSubscriptions = (req, res) => {
             paypal: true,
             is_admin: true,
             currentUrl: req.originalUrl,
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            
             data: data,
             script: false
           });
@@ -523,9 +523,14 @@ router.getData = (req, res) => {
         if (!data) {
           res.status(204).json({ error: `DOC_NOT_FOUND` });
         } else {
-          let send = {_id: data._id};
-          for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
-          res.json(send);
+          if (helpers.editable(req, data, id)) {
+            let send = {_id: data._id};
+            for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+            send.is_admin=req.user.is_admin;
+            res.json(send);
+          } else {
+            res.status(204).json({ error: `DOC_NOT_OWNED` });
+          }
         }
       }
     });
@@ -975,7 +980,7 @@ router.removeVenueDB = (req, res, cb) => {
 
 router.addMember = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.members = req.user._id;
+  if (req.user.is_admin) query.members = req.user._id;
   logger.debug();
   Models["User"]
   .findOne(query)
@@ -1061,7 +1066,7 @@ router.addMember = (req, res) => {
 
 router.removeMember = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.members = req.user._id;
+  if (req.user.is_admin) query.members = req.user._id;
   logger.debug(query);
   Models["User"]
   .findOne(query)
@@ -1164,7 +1169,7 @@ router.removeMember = (req, res) => {
 
 router.addUser = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
   Models[config.cpanel[req.params.sez].model]
   .findOne(query)
@@ -1248,7 +1253,7 @@ router.addUser = (req, res) => {
 
 router.removeUser = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
   Models[config.cpanel[req.params.sez].model]
   .findOne(query)
@@ -1348,7 +1353,7 @@ router.removeUser = (req, res) => {
 
 router.addPerformance = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
   Models['Event']
   .findOne(query)
@@ -1450,7 +1455,7 @@ router.addPerformance = (req, res) => {
 
 router.removePerformance = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
   Models['Event']
   .findOne(query)
@@ -1635,7 +1640,7 @@ router.sendEmailVericaition = (req, res) => {
 
 router.addGallery = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
   Models['Event']
   .findOne(query)
   .select({_id:1, title:1, stats:1, galleries:1})
@@ -1712,7 +1717,7 @@ router.addGallery = (req, res) => {
 
 router.removeGallery = (req, res) => {
   var query = {_id: req.params.id};
-  if (config.superusers.indexOf(req.user._id.toString())===-1) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
   Models['Event']
   .findOne(query)

@@ -92,7 +92,7 @@ router.get('/userimages', (req, res) => {
     } else {
       res.render('admindev/supertools/files/showall', {
         title: 'User images',
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         currentUrl: req.originalUrl,
         data: data,
         script: false
@@ -154,7 +154,7 @@ router.get('/userformatsgenerator', (req, res) => {
     logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'User images generator',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
     currentUrl: req.originalUrl,
       data: data,
       script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/userformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
@@ -204,7 +204,7 @@ router.get('/performanceimages', (req, res) => {
     } else {
       res.render('admindev/supertools/files/showall', {
         title: 'Performance images',
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         currentUrl: req.originalUrl,
         data: data,
         script: false
@@ -263,7 +263,7 @@ router.get('/performanceformatsgenerator', (req, res) => {
     logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Performance images generator',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       data: data,
       script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/performanceformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
@@ -307,7 +307,7 @@ router.get('/eventimages', (req, res) => {
     logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Event images',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       data: data,
       script: false
@@ -373,7 +373,7 @@ router.get('/eventformatsgenerator', (req, res) => {
     //logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Event images generator',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
     currentUrl: req.originalUrl,
       data: data,
       script: '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/eventformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
@@ -416,7 +416,7 @@ router.get('/newsimages', (req, res) => {
     logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'News images',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
     currentUrl: req.originalUrl,
       data: data,
       script: false
@@ -478,7 +478,7 @@ router.get('/newsformatsgenerator', (req, res) => {
     logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'News images generator',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
     currentUrl: req.originalUrl,
       data: data,
       script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/newsformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
@@ -501,7 +501,7 @@ router.get('/playlistimages', (req, res) => {
     logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Performance images',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
     currentUrl: req.originalUrl,
       data: data,
       script: false
@@ -620,7 +620,7 @@ router.get('/footagefiles', (req, res) => {
     } else {
       res.render('admindev/supertools/files/showall_videos', {
         title: 'Footage images',
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         currentUrl: req.originalUrl,
         data: data,
         script: false
@@ -668,7 +668,7 @@ router.get('/footagerenamer', (req, res) => {
     }
     res.render('admindev/supertools/files/renamer', {
       title: 'Footage renamer',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
     currentUrl: req.originalUrl,
       data: data,
       script: false
@@ -773,7 +773,7 @@ router.get('/footageformatsgenerator', (req, res) => {
     logger.debug(req.path);
     res.render('admindev/supertools/files/showall', {
       title: 'Footage images generator',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       data: data,
       script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/footageformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
@@ -885,7 +885,7 @@ router.get('/videofiles', (req, res) => {
       logger.debug(req.path);
       res.render('admindev/supertools/files/showall_videos', {
         title: 'Video images',
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         currentUrl: req.originalUrl,
         data: data,
         script: false
@@ -990,7 +990,7 @@ router.get('/videoformatsgenerator', (req, res) => {
       logger.debug(req.path);
       res.render('admindev/supertools/files/showall_videos', {
         title: 'Video images generator',
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         currentUrl: req.originalUrl,
         data: data,
         script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/videoformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
@@ -1048,7 +1048,7 @@ router.get('/galleryimages', (req, res) => {
           logger.debug(req);
           res.render('admindev/supertools/files/galleryShow', {
             title: 'Gallery images',
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            
             currentUrl: req.originalUrl,
             data: data,
             script: false
@@ -1113,7 +1113,7 @@ router.get('/gallerygenerator', (req, res) => {
             logger.debug(req.path);
             res.render('admindev/supertools/files/galleryShow', {
               title: 'Gallery images generator',
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               currentUrl: req.originalUrl,
               data: data,
               script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/gallerygenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
@@ -1124,7 +1124,7 @@ router.get('/gallerygenerator', (req, res) => {
     } else {
       res.render('admindev/supertools/files/galleryShow', {
         title: 'Gallery images generator',
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         currentUrl: req.originalUrl,
         data: data,
         script: data.length ? '<script>var timeout = setTimeout(function(){location.href="/admindev/supertools/files/gallerygenerator?skip=' + (skip+limit) + '"},1000);</script>' : ''
@@ -1159,7 +1159,7 @@ router.get('/filescopy', (req, res) => {
   }
   res.render('admindev/supertools/files/filescopy', {
     title: 'User images',
-    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+    
     currentUrl: req.originalUrl,
     data: mkdirs,
     script: false

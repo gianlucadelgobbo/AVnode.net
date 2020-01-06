@@ -95,7 +95,7 @@ router.get('/', (req, res) => {
       res.render('admindev/partners/home', {
         title: 'Partners',
         currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         data: data,
         script: false
       });
@@ -124,7 +124,7 @@ router.get('/:id', (req, res) => {
         res.render('admindev/partners/organization_partners', {
           title: 'Partners',
           currentUrl: req.originalUrl,
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           owner: req.params.id,
           events: events,
           user: req.user,
@@ -159,7 +159,7 @@ router.get('/:id/:event', (req, res) => {
         res.render('admindev/partners/organization_partners', {
           title: 'Partners',
           currentUrl: req.originalUrl,
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           owner: req.params.id,
           events: events,
           event: req.params.event,
@@ -291,7 +291,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
       res.render('admindev/partners/grantsdata', {
         title: 'Partners',
         currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         owner: req.params.id,
         event: req.params.event,
         grantevents: grantevents,
@@ -327,7 +327,7 @@ router.get('/:id/:event/mandates', (req, res) => {
         res.render('admindev/partners/mandates', {
           title: 'Partners',
           currentUrl: req.originalUrl,
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           owner: req.params.id,
           event: req.params.event,
           event_title: event.title,
@@ -365,7 +365,7 @@ router.get('/:id/:event/grantsdata_table', (req, res) => {
         res.render('admindev/partners/grantsdata_table', {
           title: 'Partners',
           currentUrl: req.originalUrl,
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           owner: req.params.id,
           event: req.params.event,
           event_title: event.title,
@@ -499,7 +499,7 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
         res.render('admindev/partners/grantsdata_events', {
           title: 'Partners',
           currentUrl: req.originalUrl,
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           owner: req.params.id,
           event: req.params.event,
           grantevents: grantevents,
@@ -568,7 +568,7 @@ router.get('/:id/:event/manage', (req, res) => {
           res.render('admindev/partners/partners_manager', {
             title: 'Partners',
             currentUrl: req.originalUrl,
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            
             owner: req.params.id,
             //events: events,
             notassigned: notassigned,
@@ -637,7 +637,7 @@ router.post('/contacts/add/', (req, res) => {
           res.render('admindev/partners/partners_manager', {
             title: 'Partners',
             currentUrl: req.originalUrl,
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            
             owner: req.params.id,
             //events: events,
             notassigned: notassigned,

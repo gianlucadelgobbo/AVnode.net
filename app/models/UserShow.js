@@ -116,6 +116,8 @@ const userSchema = new Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
   is_confirmed: { type: Boolean, default: false },
+  is_pro: { type: Boolean, default: false },
+  is_admin: { type: Boolean, default: false },
   confirm: String,
   tokens: Array
 }, {

@@ -164,6 +164,15 @@ router.mySlugify = function (model, str, cb) {
   }
 }
 
+router.editable = function(req, data, id) {
+  const meandcrews = req.user.crews.map((item)=>{return item});
+  meandcrews.push(req.user._id);
+  const editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id}).some(v=> meandcrews.indexOf(v) !== -1)));
+  console.log("editable");
+  console.log(editable);
+  return editable;
+}
+
 router.setCrewAdresses = function(query) {
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;

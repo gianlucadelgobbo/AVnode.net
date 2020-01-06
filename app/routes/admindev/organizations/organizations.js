@@ -83,7 +83,7 @@ router.get('/', (req, res) => {
       res.render('admindev/organizations/home', {
         title: 'Events',
         currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         data: data.crews,
         script: false
       });
@@ -108,7 +108,7 @@ router.get('/:event', (req, res) => {
       res.render('admindev/organizations/dett', {
         title: 'Events: '+data.event.title,
         currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         data: data,
         script: false
       });

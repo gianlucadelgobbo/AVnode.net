@@ -76,7 +76,7 @@ router.get('/', (req, res) => {
         if (conta === fatto) {
           res.render('admindev/supertools/emails/showall', {
             title: 'Emails',
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            
             currentUrl: req.originalUrl,
             skip: 0,
             data: mailinglists,
@@ -149,7 +149,7 @@ router.get('/updateSendy', (req, res) => {
             if (conta === fatto) {
               res.render('admindev/supertools/emails/showall', {
                 title: 'Emails',
-                superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                
                 currentUrl: req.originalUrl,
                 data: mailinglists,
                 skip: skip,
@@ -162,7 +162,7 @@ router.get('/updateSendy', (req, res) => {
     } else {
       res.render('admindev/supertools/emails/showall', {
         title: 'Emails',
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         currentUrl: req.originalUrl,
         data: {msg: "FINISHED"},
         script: false

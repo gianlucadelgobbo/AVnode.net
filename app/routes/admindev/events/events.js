@@ -167,7 +167,7 @@ router.get('/', (req, res) => {
       res.render('admindev/events/home', {
         title: 'Events',
         currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         data: results,
         script: false
       });
@@ -190,7 +190,7 @@ router.get('/:event', (req, res) => {
       res.render('admindev/events/dett', {
         title: 'Events: '+data.event.title,
         currentUrl: req.originalUrl,
-        superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+        
         data: data,
         script: false
       });
@@ -284,7 +284,7 @@ router.get('/:event/acts', (req, res) => {
               title: 'Events: Acts',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }
@@ -452,7 +452,7 @@ router.get('/:event/peoples', (req, res) => {
               title: 'Events: Peoples',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }
@@ -614,7 +614,7 @@ router.get('/:event/program', (req, res) => {
               title: 'Events: Program',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }
@@ -750,7 +750,7 @@ router.get('/:event/technical-riders', (req, res) => {
               title: event.title+': Technical Riders',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }
@@ -886,7 +886,7 @@ router.get('/:event/program-print', (req, res) => {
               title: event.title+': Program',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }
@@ -1023,7 +1023,7 @@ router.get('/:event/program-social', (req, res) => {
               title: event.title+': Program',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }
@@ -1147,7 +1147,7 @@ router.get('/:event/pass-sheet', (req, res) => {
               title: 'Events: Pass sheet',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }
@@ -1269,7 +1269,7 @@ router.get('/:event/pass', (req, res) => {
               title: 'Events: Pass List',
               data: data,
               currentUrl: req.originalUrl,
-              superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+              
               get: req.query
             });
           }

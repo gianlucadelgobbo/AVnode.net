@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   res.render('admindev/supertools/home', {
     title: 'SUPER Tools',
     sez: 'admindev/supertools/home',
-    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+    
     currentUrl: req.originalUrl,
     data: 'LOAD DATA'
   });

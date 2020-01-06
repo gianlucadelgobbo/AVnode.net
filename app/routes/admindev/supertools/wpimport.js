@@ -15,7 +15,7 @@ router.get('/events', (req, res) => {
   logger.debug('/admin/tools/import/events');
   res.render('admindev/supertools/import', {
     title: 'WP Events',
-    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+    
     currentUrl: req.originalUrl,
     formUrl: req.originalUrl+"_import",
     body: "[\"onn-frame-musei-in-musica-2018\"]",
@@ -190,7 +190,7 @@ router.get('/events_import', (req, res) => {
                   logger.debug('saveoutput ');
                   res.render('admindev/supertools/import', {
                     title: 'WP Events',
-                    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                    
                     currentUrl: req.originalUrl,
                     body: req.session.events,
                     formUrl: req.originalUrl,
@@ -203,7 +203,7 @@ router.get('/events_import', (req, res) => {
               } else {
                 res.render('admindev/supertools/import', {
                   title: 'WP Events',
-                  superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                  
                   currentUrl: req.originalUrl,
                   body: req.session.events,
                   formUrl: req.originalUrl,
@@ -219,7 +219,7 @@ router.get('/events_import', (req, res) => {
       } else {
         res.render('admindev/supertools/import', {
           title: 'WP Events',
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           currentUrl: req.originalUrl,
           body: req.session.events,
           formUrl: req.originalUrl,
@@ -232,7 +232,7 @@ router.get('/events_import', (req, res) => {
     req.session.events = undefined;
     res.render('admindev/supertools/import', {
       title: 'WP Events',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       body: req.session.events,
       formUrl: req.originalUrl,
@@ -249,7 +249,7 @@ router.get('/organizations', (req, res) => {
   logger.debug('/admin/tools/import/organizations');
   res.render('admindev/supertools/import', {
     title: 'WP Organizations',
-    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+    
     currentUrl: req.originalUrl,
     formUrl: req.originalUrl+"_import",
     data: {},
@@ -344,7 +344,7 @@ router.get('/organizations_import', (req, res) => {
                       result.save(function(error) {
                         res.render('admindev/supertools/import', {
                           title: 'WP Organizations',
-                          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                          
                           currentUrl: req.originalUrl,
                           body: req.session.organizations,
                           formUrl: req.originalUrl,
@@ -365,7 +365,7 @@ router.get('/organizations_import', (req, res) => {
                   logger.debug(error || result);
                   res.render('admindev/supertools/import', {
                     title: 'WP Organizations',
-                    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                    
                     currentUrl: req.originalUrl,
                     body: req.session.organizations,
                     formUrl: req.originalUrl,
@@ -378,7 +378,7 @@ router.get('/organizations_import', (req, res) => {
             } else {
               res.render('admindev/supertools/import', {
                 title: 'WP Organizations',
-                superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                
                 currentUrl: req.originalUrl,
                 body: req.session.organizations,
                 formUrl: req.originalUrl,
@@ -391,7 +391,7 @@ router.get('/organizations_import', (req, res) => {
         } else {
           res.render('admindev/supertools/import', {
             title: 'WP Organizations',
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            
             currentUrl: req.originalUrl,
             body: req.session.organizations,
             formUrl: req.originalUrl,
@@ -403,7 +403,7 @@ router.get('/organizations_import', (req, res) => {
       } else {
         res.render('admindev/supertools/import', {
           title: 'WP Organizations',
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           currentUrl: req.originalUrl,
           body: req.session.organizations,
           formUrl: req.originalUrl,
@@ -416,7 +416,7 @@ router.get('/organizations_import', (req, res) => {
     req.session.organizations = undefined;
     res.render('admindev/supertools/import', {
       title: 'WP Organizations',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       body: req.session.organizations,
       formUrl: req.originalUrl,
@@ -446,7 +446,7 @@ router.get('/news', (req, res) => {
   logger.debug('/admin/tools/import/news');
   res.render('admindev/supertools/import', {
     title: 'WP News',
-    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+    
     currentUrl: req.originalUrl,
     formUrl: req.originalUrl+"_import",
     data: {},
@@ -578,7 +578,7 @@ router.get('/news_import', (req, res) => {
                   }
                   res.render('admindev/supertools/import', {
                     title: 'WP News',
-                    superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                    
                     currentUrl: req.originalUrl,
                     body: req.session.news,
                     formUrl: req.originalUrl,
@@ -603,7 +603,7 @@ router.get('/news_import', (req, res) => {
                 }
                 res.render('admindev/supertools/import', {
                   title: 'WP News',
-                  superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+                  
                   currentUrl: req.originalUrl,
                   body: req.session.news,
                   formUrl: req.originalUrl,
@@ -617,7 +617,7 @@ router.get('/news_import', (req, res) => {
         } else {
           res.render('admindev/supertools/import', {
             title: 'WP News',
-            superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+            
             currentUrl: req.originalUrl,
             body: req.session.news,
             formUrl: req.originalUrl,
@@ -629,7 +629,7 @@ router.get('/news_import', (req, res) => {
       } else {
         res.render('admindev/supertools/import', {
           title: 'WP Organizations',
-          superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+          
           currentUrl: req.originalUrl,
           body: req.session.news,
           formUrl: req.originalUrl,
@@ -642,7 +642,7 @@ router.get('/news_import', (req, res) => {
     //req.session.news = undefined;
     res.render('admindev/supertools/import', {
       title: 'WP Organizations',
-      superuser:config.superusers.indexOf(req.user._id.toString())!==-1,
+      
       currentUrl: req.originalUrl,
       body: req.session.news,
       formUrl: req.originalUrl,
