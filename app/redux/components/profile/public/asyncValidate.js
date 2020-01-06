@@ -10,7 +10,8 @@ const asyncValidate = (values, dispatch, state) => {
     value: values.slug,
     previousValue: state.initialValues.slug,
     promises,
-    result
+    result,
+    id: state.model._id
   });
 
   // address

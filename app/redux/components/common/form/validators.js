@@ -38,13 +38,14 @@ export const validateSlug = ({
   promises,
   result,
   index,
-  errorArray
+  errorArray,
+  id
 }) => {
   // slug
   let slugFromValues = value;
   if (slugFromValues !== previousValue) {
     promises.push(
-      fetchSlug(slugFromValues)
+      fetchSlug(slugFromValues, id)
         .then(response => {
           if (response.exist) {
             Object.assign(result, { slug: SLUG_IS_TAKEN });

@@ -15,7 +15,10 @@ import { MODAL_SAVED } from "../../modal/constants";
 import {
   getDefaultModel,
   getDefaultModelErrorMessage,
-  getDefaultModelIsFetching
+  getDefaultModelIsFetching,
+  getModel,
+  getModelIsFetching,
+  getModelErrorMessage
 } from "../selectors";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from "moment";
@@ -34,8 +37,16 @@ import { PROFILE_NAME, SHOW } from "./constants";
 
 class ProfilePrivate extends Component {
   componentDidMount() {
-    const { fetchModel, fetchCountries } = this.props;
-    fetchModel();
+    const {
+      fetchModel,
+      fetchCountries,
+      match: {
+        params: { _id }
+      }
+    } = this.props;
+    fetchModel({
+      id: _id
+    });
     fetchCountries();
   }
 
@@ -111,12 +122,13 @@ class ProfilePrivate extends Component {
     v.citizenship = model.citizenship ? model.citizenship : "";
     // Addresses_private: Add one item if value empty
     v.addresses_private =
-      Array.isArray(model.addresses_private) && model.addresses_private.length > 0
+      Array.isArray(model.addresses_private) &&
+      model.addresses_private.length > 0
         ? model.addresses_private.map(a => ({
-          text: `${a.locality}, ${a.country}`
-        }))
-        : [{text: ""}];
-// Phone: Add one item if value empty
+            text: `${a.locality}, ${a.country}`
+          }))
+        : [{ text: "" }];
+    // Phone: Add one item if value empty
     v.phone =
       Array.isArray(model.phone) && model.phone.length > 0
         ? model.phone.filter(a => a).map(p => ({ tel: p.url }))
@@ -136,23 +148,31 @@ class ProfilePrivate extends Component {
   }
 
   createLatLongToSave = address => {
-    return geocodeByAddress(address).then(function (results) {
-      return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
-    }).then(function ([results, geometry]) {
-      let loc = {};
-      results[0].address_components.forEach(address_component => {
-        if (address_component.types.indexOf('country') !== -1) loc.country = address_component.long_name;
-        if (address_component.types.indexOf('locality') !== -1) loc.locality = address_component.long_name;
-      });
-      if (!loc.locality) {
+    return geocodeByAddress(address)
+      .then(function(results) {
+        return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+      })
+      .then(function([results, geometry]) {
+        let loc = {};
         results[0].address_components.forEach(address_component => {
-          if (address_component.types.indexOf("administrative_area_level_1") !== -1) loc.locality = address_component.long_name;
+          if (address_component.types.indexOf("country") !== -1)
+            loc.country = address_component.long_name;
+          if (address_component.types.indexOf("locality") !== -1)
+            loc.locality = address_component.long_name;
         });
-      }
-      loc.formatted_address = results[0].formatted_address;
-      loc.geometry = geometry;
-      return loc;
-    });
+        if (!loc.locality) {
+          results[0].address_components.forEach(address_component => {
+            if (
+              address_component.types.indexOf("administrative_area_level_1") !==
+              -1
+            )
+              loc.locality = address_component.long_name;
+          });
+        }
+        loc.formatted_address = results[0].formatted_address;
+        loc.geometry = geometry;
+        return loc;
+      });
   };
 
   onSubmit(values) {
@@ -164,14 +184,14 @@ class ProfilePrivate extends Component {
 
     addrs.forEach(a => {
       promises.push(
-          this.createLatLongToSave(a.text)
-              .then(result => {
-                // add to a model
-                a.loc = result;
-              })
-              .catch(() => {
-                console.log("ciao da google!");
-              })
+        this.createLatLongToSave(a.text)
+          .then(result => {
+            // add to a model
+            a.loc = result;
+          })
+          .catch(() => {
+            console.log("ciao da google!");
+          })
       );
     });
 
@@ -197,7 +217,10 @@ class ProfilePrivate extends Component {
       countries,
       showModal,
       errorMessage,
-      isFetching
+      isFetching,
+      match: {
+        params: { _id }
+      }
     } = this.props;
 
     return (
@@ -207,9 +230,13 @@ class ProfilePrivate extends Component {
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
         {!errorMessage && !isFetching && !model && <ItemNotFound />}
-        
-        <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
-        <LateralMenu />
+
+        <TitleComponent
+          title={model.stagename}
+          link={"/" + model.slug}
+          show={SHOW}
+        />
+        <LateralMenu _id={_id} />
         <hr />
         <h3 className="labelField mb-3">{PROFILE_NAME}</h3>
 
@@ -225,11 +252,21 @@ class ProfilePrivate extends Component {
 }
 
 //Get form's initial values from redux state here
-const mapStateToProps = state => ({
-  model: getDefaultModel(state),
+const mapStateToProps = (
+  state,
+  {
+    match: {
+      params: { _id }
+    }
+  }
+) => ({
+  //model: getDefaultModel(state),
+  //isFetching: getDefaultModelIsFetching(state),
+  //errorMessage: getDefaultModelErrorMessage(state),
   countries: getCountries(state),
-  isFetching: getDefaultModelIsFetching(state),
-  errorMessage: getDefaultModelErrorMessage(state)
+  model: getModel(state, _id),
+  isFetching: getModelIsFetching(state, _id),
+  errorMessage: getModelErrorMessage(state, _id)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -243,9 +280,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-ProfilePrivate = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProfilePrivate);
+ProfilePrivate = connect(mapStateToProps, mapDispatchToProps)(ProfilePrivate);
 
 export default ProfilePrivate;

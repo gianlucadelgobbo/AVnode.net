@@ -10,7 +10,10 @@ import ItemNotFound from "../../itemNotFound";
 import {
   getDefaultModel,
   getDefaultModelErrorMessage,
-  getDefaultModelIsFetching
+  getDefaultModelIsFetching,
+  getModel,
+  getModelIsFetching,
+  getModelErrorMessage
 } from "../selectors";
 import { fetchModel, saveModel } from "./actions";
 import { MODAL_SAVED } from "../../modal/constants";
@@ -29,8 +32,13 @@ import { PROFILE_NAME, SHOW } from "./constants";
 
 class ProfilePassword extends Component {
   componentDidMount() {
-    const { fetchModel } = this.props;
-    fetchModel();
+    const {
+      fetchModel,
+      match: {
+        params: { _id }
+      }
+    } = this.props;
+    fetchModel({ id: _id });
   }
 
   // Convert form values to API model
@@ -77,7 +85,15 @@ class ProfilePassword extends Component {
   }
 
   render() {
-    const { model = {}, showModal, isFetching, errorMessage } = this.props;
+    const {
+      model = {},
+      showModal,
+      isFetching,
+      errorMessage,
+      match: {
+        params: { _id }
+      }
+    } = this.props;
 
     return (
       <div>
@@ -87,8 +103,12 @@ class ProfilePassword extends Component {
 
         {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-        <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />
-        <LateralMenu />
+        <TitleComponent
+          title={model.stagename}
+          link={"/" + model.slug}
+          show={SHOW}
+        />
+        <LateralMenu _id={_id} />
         <hr />
         <h3 className="labelField mb-3">{PROFILE_NAME}</h3>
 
@@ -103,10 +123,20 @@ class ProfilePassword extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  model: getDefaultModel(state),
-  isFetching: getDefaultModelIsFetching(state),
-  errorMessage: getDefaultModelErrorMessage(state)
+const mapStateToProps = (
+  state,
+  {
+    match: {
+      params: { _id }
+    }
+  }
+) => ({
+  //model: getDefaultModel(state),
+  //isFetching: getDefaultModelIsFetching(state),
+  //errorMessage: getDefaultModelErrorMessage(state)
+  model: getModel(state, _id),
+  isFetching: getModelIsFetching(state, _id),
+  errorMessage: getModelErrorMessage(state, _id)
 });
 
 const mapDispatchToProps = dispatch =>
@@ -119,9 +149,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-ProfilePassword = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProfilePassword);
+ProfilePassword = connect(mapStateToProps, mapDispatchToProps)(ProfilePassword);
 
 export default ProfilePassword;
