@@ -76,7 +76,9 @@ class TopMenu extends Component {
       videos,
       galleries
     } = this.props;
+
     const id = profile !== undefined ? profile._id : "";
+    
     const items = [
       {
         href: `/admin/profile/${id}/public`,

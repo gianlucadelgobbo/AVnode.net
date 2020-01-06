@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { bindActionCreators } from "redux";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
+import { fetchModel } from "../profile/actions";
 import { fetchList as fetchCrews } from "../crews/actions";
 import { fetchList as fetchPerformances } from "../performances/actions";
 import { fetchList as fetchEvents } from "../events/actions";
@@ -19,6 +20,7 @@ import { getList as getNews } from "../news/selectors";
 import { getList as getPlaylists } from "../playlists/selectors";
 import { getList as getVideos } from "../videos/selectors";
 import { getList as getGalleries } from "../galleries/selectors";
+import { getDefaultModel } from "../profile/selectors";
 
 class TopBar extends Component {
   componentDidMount() {
@@ -62,6 +64,7 @@ class TopBar extends Component {
 
   render() {
     const {
+      profile,
       crews,
       performances,
       events,
@@ -72,9 +75,13 @@ class TopBar extends Component {
       galleries
     } = this.props;
 
+    const id = profile !== undefined ? profile._id : "";
+    
+    const profile_url = profile !== undefined ? "/"+profile.slug : "/";
+
     const items = [
       {
-        href: "/admin/profile/public",
+        href: `/admin/profile/${id}/public`,
         icon: "fa fa-user fa-fw mr-3",
         counter: "me",
         label: <FormattedMessage id="profile" defaultMessage="Profile" />
@@ -169,9 +176,9 @@ class TopBar extends Component {
                 <a className="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span className="lnr lnr-user"></span></a>
                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a className="dropdown-item" href="/gianlucadelgobbo">
+                    <a className="dropdown-item" href={profile_url}>
                       <span className="pr-2 lnr lnr-eye"></span> Profile</a>
-                    <a className="dropdown-item" href="/admin/profile/public">
+                    <a className="dropdown-item" href={items[0].href}>
                         <span className="pr-2 lnr lnr-cog"></span> Control Panel</a>
                     <a className="dropdown-item" href="/logout">
                         <span className="pr-2 lnr lnr-exit"></span> Log out</a>
@@ -185,6 +192,7 @@ class TopBar extends Component {
 }
 
 const mapStateToProps = state => ({
+  profile: getDefaultModel(state),
   crews: getCrews(state),
   performances: getPerformances(state),
   events: getEvents(state),
@@ -198,6 +206,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
+      fetchModel,
       fetchCrews,
       fetchPerformances,
       fetchEvents,

@@ -6,18 +6,9 @@ html(lang=session.current_lang)
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
     title #{title} - AVnode.net
+
     meta(name="robots" content="index, follow")
     link(href=canonical rel="canonical")
-    if jsonld
-      meta(name="description" content=jsonld.description)
-      meta(property="og:title" content=title)
-      meta(property="fb:app_id" content="1243968378972425")
-      meta(property="og:url" content=canonical)
-      meta(property="og:type" content=jsonld["@type"]==="Person" || jsonld["@type"]==="PerformingGroup" ? "profile" : "website")
-      meta(property="og:description" content=jsonld.description)
-      meta(property="og:image" content=jsonld.image)
-      meta(property="og:site_name" content="AVnode.net")
-      meta(property="og:locale" content=session.current_lang+"_"+session.current_lang.toUpperCase())
 
     link(rel='shortcut icon', href='/icons/favicon.ico', type='image/x-icon')
     link(rel='apple-touch-icon', href='/icons/apple-touch-icon.png')
@@ -32,18 +23,12 @@ html(lang=session.current_lang)
 
     link(rel='stylesheet', href='/css/font-awesome/font-awesome.css')
     link(rel='stylesheet', href='/css/main.css')
-    link(rel='stylesheet', href='/css/admindev.css')
     link(rel="stylesheet", href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
     link(rel='stylesheet', href='/lightgallery/css/lightgallery.min.css')
     link(rel='stylesheet', href='//vjs.zencdn.net/4.12/video-js.css')
 
-    if is_admin
-      link(rel='stylesheet', href='/css/admin.css')
-      link(rel='stylesheet', href='/css/admindev.css')
-    script(type="application/ld+json")
-      !=JSON.stringify(jsonld)
-    if paypal
-      script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
+    link(rel='stylesheet', href='/css/admin.css')
+    link(rel='stylesheet', href='/css/admindev.css')
 
   body
     #top

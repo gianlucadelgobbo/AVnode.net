@@ -3,16 +3,12 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
     span.lnr.lnr-menu.toggle_icon
   a.navbar-brand(href='/', title="AVnode.net")
     img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')
-  - console.log("currentUrl")
-  - console.log(currentUrl)
-  - console.log(config.adminMenu)
   .collapse.navbar-collapse#navbar-collapse_admin
     ul.navbar-nav.mr-auto
       li.nav-item.mt-2.mb-2.d-block.d-lg-none
         b="Control panel"
       each menuitem in config.adminMenu
         li.nav-item.mt-2.mb-2.d-block.d-lg-none(class=currentUrl==menuitem.href ? "active" : undefined)
-          - console.log(menuitem.href)
           a.nav-link(href=menuitem.href)
             span(class=menuitem.icon)
             span=menuitem.label.defaultMessage
@@ -30,7 +26,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
             a.dropdown-item(href='/'+user.slug)                    
               span.pr-2.lnr.lnr-eye
               !=" "+global.__('Profile')
-            a.dropdown-item(href='/admin/profile/public')                    
+            a.dropdown-item(href='/admin/profile/'+user._id+'/public')                    
               span.pr-2.lnr.lnr-cog
               !=" "+global.__('Control Panel')
             a.dropdown-item(href='/logout')                    

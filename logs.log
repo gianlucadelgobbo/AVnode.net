@@ -147,3 +147,269 @@
 2020-01-06T17:37:32: 
 2020-01-06T17:37:32: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
 2020-01-06T17:37:32: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T17:41:06: (node:5021) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:41:06: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:41:06:   Press CTRL-C to stop
+2020-01-06T17:41:06: 
+2020-01-06T17:41:17: webpack built 5dd4b2feb89e58d104cc in 10368ms
+2020-01-06T17:41:17: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:41:17: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:41:17: Time: [1m10368[39m[22mms
+2020-01-06T17:41:17: Built at: 01/06/2020 [1m5:41:17 PM[39m[22m
+2020-01-06T17:41:17:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:41:17: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:41:17: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:41:17:     + 2055 hidden modules
+2020-01-06T17:41:17: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:44:50: (node:5050) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:44:50: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:44:50:   Press CTRL-C to stop
+2020-01-06T17:44:50: 
+2020-01-06T17:44:59: [34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /js/bundle.js
+2020-01-06T17:45:00: webpack built 5dd4b2feb89e58d104cc in 10347ms
+2020-01-06T17:45:00: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:45:00: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:45:00: Time: [1m10347[39m[22mms
+2020-01-06T17:45:00: Built at: 01/06/2020 [1m5:45:00 PM[39m[22m
+2020-01-06T17:45:00:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:45:00: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:45:00: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:00:     + 2055 hidden modules
+2020-01-06T17:45:00: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:45:35: (node:5063) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:45:35: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:45:35:   Press CTRL-C to stop
+2020-01-06T17:45:35: 
+2020-01-06T17:45:38: [34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /js/bundle.js
+2020-01-06T17:45:46: webpack built 5dd4b2feb89e58d104cc in 10823ms
+2020-01-06T17:45:46: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:45:46: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:45:46: Time: [1m10823[39m[22mms
+2020-01-06T17:45:46: Built at: 01/06/2020 [1m5:45:46 PM[39m[22m
+2020-01-06T17:45:46:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:45:46: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:45:46: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:45:46:     + 2055 hidden modules
+2020-01-06T17:45:46: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:47:16: (node:5082) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:47:16: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:47:16:   Press CTRL-C to stop
+2020-01-06T17:47:16: 
+2020-01-06T17:47:26: webpack built 5dd4b2feb89e58d104cc in 10272ms
+2020-01-06T17:47:26: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:47:26: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:47:26: Time: [1m10272[39m[22mms
+2020-01-06T17:47:26: Built at: 01/06/2020 [1m5:47:26 PM[39m[22m
+2020-01-06T17:47:26:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:47:26: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:47:26: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:47:26:     + 2055 hidden modules
+2020-01-06T17:47:26: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:48:22: (node:5099) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:48:22: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:48:22:   Press CTRL-C to stop
+2020-01-06T17:48:22: 
+2020-01-06T17:48:31: webpack built 5dd4b2feb89e58d104cc in 9539ms
+2020-01-06T17:48:32: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:48:32: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:48:32: Time: [1m9539[39m[22mms
+2020-01-06T17:48:32: Built at: 01/06/2020 [1m5:48:31 PM[39m[22m
+2020-01-06T17:48:32:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:48:32: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:48:32: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:48:32:     + 2055 hidden modules
+2020-01-06T17:48:32: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:49:36: (node:5107) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:49:36: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:49:36:   Press CTRL-C to stop
+2020-01-06T17:49:36: 
+2020-01-06T17:49:46: webpack built 5dd4b2feb89e58d104cc in 9520ms
+2020-01-06T17:49:46: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:49:46: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:49:46: Time: [1m9520[39m[22mms
+2020-01-06T17:49:46: Built at: 01/06/2020 [1m5:49:46 PM[39m[22m
+2020-01-06T17:49:46:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:49:46: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:49:46: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:49:46:     + 2055 hidden modules
+2020-01-06T17:49:46: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:50:04: (node:5115) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:50:04: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:50:04:   Press CTRL-C to stop
+2020-01-06T17:50:04: 
+2020-01-06T17:50:13: webpack built 5dd4b2feb89e58d104cc in 9466ms
+2020-01-06T17:50:13: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:50:13: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:50:13: Time: [1m9466[39m[22mms
+2020-01-06T17:50:13: Built at: 01/06/2020 [1m5:50:13 PM[39m[22m
+2020-01-06T17:50:13:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:50:13: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:50:13: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:50:13:     + 2055 hidden modules
+2020-01-06T17:50:13: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:56:35: (node:5163) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:56:35: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:56:35:   Press CTRL-C to stop
+2020-01-06T17:56:35: 
+2020-01-06T17:56:36: [34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /js/bundle.js
+2020-01-06T17:56:45: [34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /js/bundle.js
+2020-01-06T17:56:46: webpack built 5dd4b2feb89e58d104cc in 11473ms
+2020-01-06T17:56:47: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:56:47: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:56:47: Time: [1m11473[39m[22mms
+2020-01-06T17:56:47: Built at: 01/06/2020 [1m5:56:46 PM[39m[22m
+2020-01-06T17:56:47:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:56:47: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:56:47: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:56:47:     + 2055 hidden modules
+2020-01-06T17:56:47: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T17:57:08: (node:5175) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:57:08: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:57:08:   Press CTRL-C to stop
+2020-01-06T17:57:08: 
+2020-01-06T17:57:13: [34mℹ[39m [90m｢wdm｣[39m: wait until bundle finished: /js/bundle.js
+2020-01-06T17:57:18: webpack built 5dd4b2feb89e58d104cc in 10805ms
+2020-01-06T17:57:19: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1m5dd4b2feb89e58d104cc[39m[22m
+2020-01-06T17:57:19: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:57:19: Time: [1m10805[39m[22mms
+2020-01-06T17:57:19: Built at: 01/06/2020 [1m5:57:18 PM[39m[22m
+2020-01-06T17:57:19:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T17:57:19: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T17:57:19: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T17:57:19:     + 2055 hidden modules
+2020-01-06T17:57:19: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.

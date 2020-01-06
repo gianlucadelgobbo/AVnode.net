@@ -3,7 +3,7 @@ extends ./layout
 block content
   #app
     div
-      include ../partials/menuHeaderAdmin
+      include partials/menuHeaderAdmin
       .container-fluid
         .row.pb-3
           .d-print-none
@@ -20,11 +20,8 @@ block content
                     span.fa.fa-arrow-alt-circle-left.fa-fw.mr-3
                     span.menu-collapsed Collapse
           .col.maincontent
-            .row.mt-4
-              .col-md-10
-                h2.labelField Subscriptions
-              .col-md-2
-            hr
+            .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+              h1.h2="Subscriptions"
             .pr-sm-3.pl-sm-3.pb-3.mb-3(style="color:#000")
               .pb-2.mb-3.border-bottom
                 .row

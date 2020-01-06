@@ -1,0 +1,26 @@
+nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
+  a.navbar-brand(href='/admindev', title="AVnode.net")
+    img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')
+  button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
+    span.lnr.lnr-menu.toggle_icon
+  .collapse.navbar-collapse(id="navbar-collapse_performer_template")
+    include partials/menuHeaderEvents
+
+    ul.user_navbar
+      li.nav-item.dropdown.user_menu.user_menu_logged                  
+        a#userDropdown.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+          span.lnr.lnr-user
+        .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
+          ul
+            li.nav-item
+              a(href='/'+user.slug)                    
+                span.lnr.lnr-eye
+                !=" "+global.__('Profile')
+            li.nav-item
+              a(href='/admin/profile/'+user._id+'/public')                    
+                span.lnr.lnr-cog
+                !=" "+global.__('Control Panel')
+            li.nav-item
+              a(href='/logout')                    
+                span.lnr.lnr-exit
+                !=" "+global.__('Log out')

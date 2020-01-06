@@ -8,6 +8,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
     .collapse.navbar-collapse#navbar-collapse_performer_template
       include menuSections
       ul.user_navbar.navbar-nav
+        - console.log(user)
         if user
           //li.nav-item.dropdown.user_menu.user_menu_logged                  
           li.nav-item.dropdown.user_menu.user_menu_logged
@@ -17,7 +18,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
               a.dropdown-item(href='/'+user.slug)                    
                 span.pr-2.lnr.lnr-eye
                 !=" "+global.__('Profile')
-              a.dropdown-item(href='/admin/profile/public')                    
+              a.dropdown-item(href='/admin/profile/'+user._id+'/public')                    
                 span.pr-2.lnr.lnr-cog
                 !=" "+global.__('Control Panel')
               a.dropdown-item(href='/logout')                    
