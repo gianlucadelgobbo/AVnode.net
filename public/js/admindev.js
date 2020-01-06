@@ -47,7 +47,13 @@ $(function() {
     $('.menu-collapsed').toggleClass('d-none');
     $('.sidebar-submenu').toggleClass('d-none');
     $('.submenu-icon').toggleClass('d-none');
+    $('#sidebar-container .badge').toggleClass('d-none');
     $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
+    if ($('#sidebar-container .fa-arrow-alt-circle-left')) {
+      $('#sidebar-container .fa-arrow-alt-circle-left').addClass('fa-arrow-alt-circle-right').removeClass('fa-arrow-alt-circle-left');
+    } else {
+      $('#sidebar-container .fa-arrow-alt-circle-right').addClass('fa-arrow-alt-circle-left').removeClass('fa-arrow-alt-circle-right');
+    }
     
     // Treating d-flex/d-none on separators with title
     var SeparatorTitle = $('.sidebar-separator-title');

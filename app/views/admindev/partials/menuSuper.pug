@@ -80,7 +80,7 @@
         span.menu-collapsed="Organizations"
     a.bg-dark.list-group-item.list-group-item-action(href='/admindev/partners/')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-handshake-o.fa-fw.mr-3
+        span.fa.fa-handshake.fa-fw.mr-3
         span.menu-collapsed="Partners"
     if superuser
       a.bg-dark.list-group-item.list-group-item-action(href='#submenuSuper', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/admindev/supertools/emails")===0 ? "true" : "false")
@@ -189,8 +189,13 @@
           - var obj = {link:"/stats/usersstatsupdate", title:"Users Update"}
           a.list-group-item.list-group-item-action.text-white(href='/admindev/supertools'+obj.link, class=currentUrl.indexOf("/admindev/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
         
+    a.bg-dark.list-group-item.list-group-item-action(href='/admin/profile/'+user._id+'/public')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.lnr.lnr-cog.mr-3
+        span.menu-collapsed="Control Panel"
+
     a.bg-dark.list-group-item(href='#', data-toggle='sidebar-collapse')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-arrow-circle-o-left.fa-fw.mr-3
+        span.fa.fa-arrow-circle-left.fa-fw.mr-3
         span.menu-collapsed Collapse
             
