@@ -1,3 +1,4 @@
+// pm2 start index.js --name AVnode.net --watch --log /Users/gianlucadelgobbo/GitHub/AVnode3.net/logs.log --time 
 {
   "name": "avnode",
   "version": "1.0.0",

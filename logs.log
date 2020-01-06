@@ -1,0 +1,113 @@
+2020-01-06T01:34:37: (node:3258) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T01:34:37: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T01:34:37:   Press CTRL-C to stop
+2020-01-06T01:34:37: 
+2020-01-06T01:34:47: webpack built de1cf62042266e2c91cb in 10065ms
+2020-01-06T01:34:47: [34mℹ[39m [90m｢wdm｣[39m: Hash: [1mde1cf62042266e2c91cb[39m[22m
+2020-01-06T01:34:47: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T01:34:47: Time: [1m10065[39m[22mms
+2020-01-06T01:34:47: Built at: 01/06/2020 [1m1:34:47 AM[39m[22m
+2020-01-06T01:34:47:     [1mAsset[39m[22m      [1mSize[39m[22m  [1mChunks[39m[22m  [1m[39m[22m           [1m[39m[22m[1mChunk Names[39m[22m
+2020-01-06T01:34:47: [1m[32mbundle.js[39m[22m  10.1 MiB    [1mmain[39m[22m  [1m[32m[emitted][39m[22m  main
+2020-01-06T01:34:47: Entrypoint [1mmain[39m[22m = [1m[32mbundle.js[39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-dom/cjs/react-dom.development.js] [1m./node_modules/react-dom/cjs/react-dom.development.js[39m[22m 947 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-dom/index.js] [1m./node_modules/react-dom/index.js[39m[22m 1.33 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/lib/index.es.js] [1m./node_modules/react-intl/lib/index.es.js[39m[22m 55.3 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/be.js] [1m./node_modules/react-intl/locale-data/be.js[39m[22m 4.92 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/de.js] [1m./node_modules/react-intl/locale-data/de.js[39m[22m 2.87 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/el.js] [1m./node_modules/react-intl/locale-data/el.js[39m[22m 3.39 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/en.js] [1m./node_modules/react-intl/locale-data/en.js[39m[22m 18.2 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/es.js] [1m./node_modules/react-intl/locale-data/es.js[39m[22m 17.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/fr.js] [1m./node_modules/react-intl/locale-data/fr.js[39m[22m 9.02 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/hu.js] [1m./node_modules/react-intl/locale-data/hu.js[39m[22m 2.9 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/it.js] [1m./node_modules/react-intl/locale-data/it.js[39m[22m 2.69 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react-intl/locale-data/pl.js] [1m./node_modules/react-intl/locale-data/pl.js[39m[22m 3.8 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [../../node_modules/react/index.js] [1m./node_modules/react/index.js[39m[22m 190 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [./index.js] [1m./app/redux/index.js[39m[22m 432 bytes {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47: [./main.js] [1m./app/redux/main.js[39m[22m 4.84 KiB {[1m[33mmain[39m[22m}[1m[32m [built][39m[22m
+2020-01-06T01:34:47:     + 2054 hidden modules
+2020-01-06T01:34:47: [34mℹ[39m [90m｢wdm｣[39m: Compiled successfully.
+2020-01-06T01:47:49: (node:3862) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T01:47:49: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T01:47:49:   Press CTRL-C to stop
+2020-01-06T01:47:49: 
+2020-01-06T01:47:49: webpack built 229398f5d9df4fbbf3e0 in 74ms
+2020-01-06T01:47:49: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T01:47:49: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T01:47:49: Time: [1m74[39m[22mms
+2020-01-06T01:47:49: Built at: 01/06/2020 [1m1:47:49 AM[39m[22m
+2020-01-06T01:47:49: 
+2020-01-06T01:47:49: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T01:47:49: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T01:48:54: (node:3880) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T01:48:54: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T01:48:54:   Press CTRL-C to stop
+2020-01-06T01:48:54: 
+2020-01-06T01:48:54: webpack built 229398f5d9df4fbbf3e0 in 67ms
+2020-01-06T01:48:54: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T01:48:54: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T01:48:54: Time: [1m67[39m[22mms
+2020-01-06T01:48:54: Built at: 01/06/2020 [1m1:48:54 AM[39m[22m
+2020-01-06T01:48:54: 
+2020-01-06T01:48:54: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T01:48:54: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T15:04:54: (node:4288) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T15:04:54: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T15:04:54:   Press CTRL-C to stop
+2020-01-06T15:04:54: 
+2020-01-06T15:04:54: webpack built 229398f5d9df4fbbf3e0 in 69ms
+2020-01-06T15:04:54: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T15:04:54: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T15:04:54: Time: [1m69[39m[22mms
+2020-01-06T15:04:54: Built at: 01/06/2020 [1m3:04:54 PM[39m[22m
+2020-01-06T15:04:54: 
+2020-01-06T15:04:54: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T15:04:54: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T15:08:09: (node:4305) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T15:08:09: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T15:08:09:   Press CTRL-C to stop
+2020-01-06T15:08:09: 
+2020-01-06T15:08:09: webpack built 229398f5d9df4fbbf3e0 in 67ms
+2020-01-06T15:08:09: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T15:08:09: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T15:08:09: Time: [1m67[39m[22mms
+2020-01-06T15:08:09: Built at: 01/06/2020 [1m3:08:09 PM[39m[22m
+2020-01-06T15:08:09: 
+2020-01-06T15:08:09: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T15:08:09: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T15:10:39: (node:4368) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T15:10:39: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T15:10:39:   Press CTRL-C to stop
+2020-01-06T15:10:39: 
+2020-01-06T15:10:39: webpack built 229398f5d9df4fbbf3e0 in 65ms
+2020-01-06T15:10:39: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T15:10:39: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T15:10:39: Time: [1m65[39m[22mms
+2020-01-06T15:10:39: Built at: 01/06/2020 [1m3:10:39 PM[39m[22m
+2020-01-06T15:10:39: 
+2020-01-06T15:10:39: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T15:10:39: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T17:33:44: (node:4768) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:33:44: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:33:44:   Press CTRL-C to stop
+2020-01-06T17:33:44: 
+2020-01-06T17:33:44: webpack built 229398f5d9df4fbbf3e0 in 66ms
+2020-01-06T17:33:44: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T17:33:44: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:33:44: Time: [1m66[39m[22mms
+2020-01-06T17:33:44: Built at: 01/06/2020 [1m5:33:44 PM[39m[22m
+2020-01-06T17:33:44: 
+2020-01-06T17:33:44: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T17:33:44: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.
+2020-01-06T17:34:13: (node:4781) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-06T17:34:13: ✓ App is running at http://localhost:8006 in development mode
+2020-01-06T17:34:13:   Press CTRL-C to stop
+2020-01-06T17:34:13: 
+2020-01-06T17:34:13: webpack built 229398f5d9df4fbbf3e0 in 67ms
+2020-01-06T17:34:13: [31m✖[39m [90m｢wdm｣[39m: Hash: [1m229398f5d9df4fbbf3e0[39m[22m
+2020-01-06T17:34:13: Version: webpack [1m4.41.5[39m[22m
+2020-01-06T17:34:13: Time: [1m67[39m[22mms
+2020-01-06T17:34:13: Built at: 01/06/2020 [1m5:34:13 PM[39m[22m
+2020-01-06T17:34:13: 
+2020-01-06T17:34:13: [1m[31mERROR in Entry module not found: SyntaxError: /Users/gianlucadelgobbo/GitHub/AVnode3.net/package.json (directory description file): SyntaxError: Unexpected token / in JSON at position 0[39m[22m
+2020-01-06T17:34:13: [34mℹ[39m [90m｢wdm｣[39m: Failed to compile.

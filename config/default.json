@@ -3884,7 +3884,7 @@
         {
             "href": "/admin/profile/images",
             "icon": "fa fa-image fa-fw mr-3",
-            "label": {"id": "imagesProfile", "defaultMessage": "Image"}
+            "label": {"id": "imageProfile", "defaultMessage": "Image"}
     
         },
         {
@@ -3924,7 +3924,7 @@
         {
           "href": "/admin/crews/:_id/images",
           "icon": "fa fa-image fa-fw mr-3",
-          "label": {"id": "imagesCrews", "defaultMessage": "Image"}
+          "label": {"id": "imageCrews", "defaultMessage": "Image"}
         },
         {
           "href": "/admin/crews/:_id/members",
@@ -3976,7 +3976,7 @@
         {
             "href": "/admin/events/:_id/images",
             "icon": "fa fa-image fa-fw mr-3",
-            "label": {"id": "imagesEvents", "defaultMessage": "Image"}
+            "label": {"id": "imageEvents", "defaultMessage": "Image"}
     
         },
         {
@@ -4010,7 +4010,7 @@
         {
           "href": "/admin/news/:_id/images",
           "icon": "fa fa-image fa-fw mr-3",
-          "label": {"id": "imagesNews", "defaultMessage": "Image"}
+          "label": {"id": "imageNews", "defaultMessage": "Image"}
         }
       ]
     },

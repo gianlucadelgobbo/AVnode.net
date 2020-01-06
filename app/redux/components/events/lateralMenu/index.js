@@ -13,7 +13,7 @@ const items = [
   },
   {
     href: "/admin/events/:_id/images",
-    label: <FormattedMessage id="imagesEvents" defaultMessage="Image" />
+    label: <FormattedMessage id="imageEvents" defaultMessage="Image" />
   },
   /*  {
         href: "/admin/events/:_id/partners",

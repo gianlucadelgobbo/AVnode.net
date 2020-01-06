@@ -555,7 +555,7 @@
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
   },
   {
-    "id": "imagesCrews",
+    "id": "imageCrews",
     "defaultMessage": "Image",
     "filepath": "./app/redux/components/crews/lateralMenu/index.js"
   },
@@ -640,7 +640,7 @@
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
   {
-    "id": "imagesEvents",
+    "id": "imageEvents",
     "defaultMessage": "Image",
     "filepath": "./app/redux/components/events/lateralMenu/index.js"
   },
@@ -750,7 +750,7 @@
     "filepath": "./app/redux/components/footage/video/constants.js"
   },
   {
-    "id": "crew.image",
+    "id": "galleries.gallery",
     "defaultMessage": "GALLERY IMAGES",
     "filepath": "./app/redux/components/galleries/gallery/constants.js"
   },
@@ -805,7 +805,7 @@
     "filepath": "./app/redux/components/news/lateralMenu/index.js"
   },
   {
-    "id": "imagesNews",
+    "id": "imageNews",
     "defaultMessage": "Image",
     "filepath": "./app/redux/components/news/lateralMenu/index.js"
   },
@@ -930,7 +930,7 @@
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
   {
-    "id": "imagesProfile",
+    "id": "imageProfile",
     "defaultMessage": "Image",
     "filepath": "./app/redux/components/profile/lateralMenu/index.js"
   },
