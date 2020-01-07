@@ -35,8 +35,6 @@ html(lang=session.current_lang)
     link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
     link(rel='stylesheet', type='text/css', href='/css/owl/owl.carousel.min.css')    
     link(rel='stylesheet', type='text/css', href='/css/owl/owl.theme.default.min.css')
-    if is_admin
-      link(rel='stylesheet', href='/css/admin.css')
     script(type="application/ld+json")
       !=JSON.stringify(jsonld)
     if paypal

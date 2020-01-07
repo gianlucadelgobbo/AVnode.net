@@ -19,8 +19,7 @@ router.get('/', (req, res) => {
     return res.redirect('/admin/profile/public');
   }
   res.render('admin/index', {
-    title: __('Create Account'),
-    is_admin: true
+    title: __('Create Account')
   });
 });
 

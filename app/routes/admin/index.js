@@ -151,8 +151,7 @@ router.get('/subscriptions', (req, res) => {
 
 router.get('/*', (req, res) => {
   res.render('admin/index', {
-    title: __('Your Account'),
-    is_admin: true
+    title: __('Your Account')
   });
 });
 

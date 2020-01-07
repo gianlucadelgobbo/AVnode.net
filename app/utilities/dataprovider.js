@@ -2,6 +2,7 @@ const dataprovider = {};
 
 const config = require('getconfig');
 const helper = require('./helper');
+const helpers = require('../routes/admin/api/helpers');
 
 const mongoose = require('mongoose');
 const UserShow = mongoose.model('UserShow');
@@ -798,7 +799,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         pages = false;
       }
       data.pages = pages;
-      let editable = false;
+      /* let editable = false;
       if (req.user && req.user._id) {
         if (req.user.is_admin) {
           editable = true;
@@ -807,7 +808,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
         } else if (data._id.toString() === req.user._id.toString()) {
           editable = true;
         }
-      }
+      } */
       if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
         logger.debug("fetchShow END");
         if (process.env.DEBUG) {
@@ -828,7 +829,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           title: data.stagename ? data.stagename : data.title,
           jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section),
           canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
-          editable: editable,
+          editable: helpers.editable(req, data, data._id),
           data: data,
           pages: pages,
           section: section,
