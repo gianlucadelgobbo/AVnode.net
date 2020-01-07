@@ -1,51 +1,8 @@
 import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
-import { bindActionCreators } from "redux";
 import { NavLink } from "react-router-dom";
-import { connect } from "react-redux";
-import { fetchModel } from "../profile/actions";
-import { fetchList as fetchCrews } from "../crews/actions";
-import { fetchList as fetchPerformances } from "../performances/actions";
-import { fetchList as fetchEvents } from "../events/actions";
-import { fetchList as fetchFootage } from "../footage/actions";
-import { fetchList as fetchNews } from "../news/actions";
-import { fetchList as fetchPlaylists } from "../playlists/actions";
-import { fetchList as fetchVideos } from "../videos/actions";
-import { fetchList as fetchGalleries } from "../galleries/actions";
-import { getList as getCrews } from "../crews/selectors";
-import { getList as getPerformances } from "../performances/selectors";
-import { getList as getEvents } from "../events/selectors";
-import { getList as getFootage } from "../footage/selectors";
-import { getList as getNews } from "../news/selectors";
-import { getList as getPlaylists } from "../playlists/selectors";
-import { getList as getVideos } from "../videos/selectors";
-import { getList as getGalleries } from "../galleries/selectors";
-import { getDefaultModel } from "../profile/selectors";
 
 class TopMenu extends Component {
-  componentDidMount() {
-    const {
-      fetchModel,
-      fetchCrews,
-      fetchPerformances,
-      fetchEvents,
-      fetchFootage,
-      fetchNews,
-      fetchPlaylists,
-      fetchVideos,
-      fetchGalleries
-    } = this.props;
-
-    fetchCrews();
-    fetchPerformances();
-    fetchEvents();
-    fetchFootage();
-    fetchNews();
-    fetchPlaylists();
-    fetchVideos();
-    fetchGalleries();
-  }
-
   createMenuItem = ({ model, index }) => {
     return (
       <NavLink
@@ -65,23 +22,21 @@ class TopMenu extends Component {
   };
 
   render() {
-    const {
-      profile,
-      crews,
-      performances,
-      events,
-      footage,
-      news,
-      playlists,
-      videos,
-      galleries
-    } = this.props;
+    const { user } = this.props;
 
-    const id = profile !== undefined ? profile._id : "";
-    
+    const _id = user !== undefined ? user._id : "";
+    const _crews = user !== undefined ? user.stats.crews : "";
+    const _performances = user !== undefined ? user.stats.performances : "";
+    const _events = user !== undefined ? user.stats.events : "";
+    const _footage = user !== undefined ? user.stats.footage : "";
+    const _news = user !== undefined ? user.stats.news : "";
+    const _playlists = user !== undefined ? user.stats.playlists : "";
+    const _videos = user !== undefined ? user.stats.videos : "";
+    const _galleries = user !== undefined ? user.stats.galleries : "";
+
     const items = [
       {
-        href: `/admin/profile/${id}/public`,
+        href: `/admin/profile/${_id}/public`,
         icon: "fa fa-user fa-fw mr-3",
         counter: "me",
         label: <FormattedMessage id="profile" defaultMessage="Profile" />
@@ -90,14 +45,14 @@ class TopMenu extends Component {
       {
         href: "/admin/crews",
         icon: "fa fa-users fa-fw mr-3",
-        counter: crews.length,
+        counter: _crews,
         label: <FormattedMessage id="crews" defaultMessage="Crews" />
         /* submenu: subitems[1] */
       },
       {
         href: "/admin/performances",
         icon: "fa fa-theater-masks fa-fw mr-3",
-        counter: performances.length,
+        counter: _performances,
         label: (
           <FormattedMessage id="performances" defaultMessage="Performances" />
         )
@@ -106,42 +61,42 @@ class TopMenu extends Component {
       {
         href: "/admin/events",
         icon: "far fa-calendar fa-fw mr-3",
-        counter: events.length,
+        counter: _events,
         label: <FormattedMessage id="events" defaultMessage="Events" />
         /* submenu: subitems[3] */
       },
       {
         href: "/admin/news",
         icon: "fa fa-newspaper fa-fw mr-3",
-        counter: news.length,
+        counter: _news,
         label: <FormattedMessage id="news" defaultMessage="News" />
         /* submenu: subitems[4] */
       },
       {
         href: "/admin/videos",
         icon: "fa fa-video fa-fw mr-3",
-        counter: videos.length,
+        counter: _videos,
         label: <FormattedMessage id="videos" defaultMessage="Videos" />
         /* submenu: subitems[5] */
       },
       {
         href: "/admin/galleries",
         icon: "fa fa-images fa-fw mr-3",
-        counter: galleries.length,
+        counter: _galleries,
         label: <FormattedMessage id="galleries" defaultMessage="Galleries" />
         /* submenu: subitems[6] */
       },
       {
         href: "/admin/footage",
         icon: "fa fa-film fa-fw mr-3",
-        counter: footage.length,
+        counter: _footage,
         label: <FormattedMessage id="footage" defaultMessage="Footage" />
         /* submenu: subitems[7] */
       },
       {
         href: "/admin/playlists",
         icon: "fa fa-clipboard-list fa-fw mr-3",
-        counter: playlists.length,
+        counter: _playlists,
         label: <FormattedMessage id="playlists" defaultMessage="Playlists" />
         /* submenu: subitems[8] */
       }
@@ -184,35 +139,5 @@ class TopMenu extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  profile: getDefaultModel(state),
-  crews: getCrews(state),
-  performances: getPerformances(state),
-  events: getEvents(state),
-  footage: getFootage(state),
-  news: getNews(state),
-  playlists: getPlaylists(state),
-  videos: getVideos(state),
-  galleries: getGalleries(state)
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      fetchModel,
-      fetchCrews,
-      fetchPerformances,
-      fetchEvents,
-      fetchFootage,
-      fetchNews,
-      fetchPlaylists,
-      fetchVideos,
-      fetchGalleries
-    },
-    dispatch
-  );
-
-TopMenu = connect(mapStateToProps, mapDispatchToProps)(TopMenu);
 
 export default TopMenu;

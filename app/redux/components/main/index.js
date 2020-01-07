@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { FormattedMessage, injectIntl } from "react-intl";
-
 import TopBar from "../topBar";
 import TopMenu from "../topMenu/index";
 import ModalRoot from "../modal/root";
@@ -70,15 +69,16 @@ import LoadingBar from "react-redux-loading-bar";
 
 class MainApp extends Component {
   render() {
+    const { user } = this.props;
     return (
       <div>
         <LoadingBar />
         <Router>
           <div>
-            <TopBar />
+            <TopBar user={user} />
             <div className="container-fluid">
               <div className="row">
-                <TopMenu />
+                <TopMenu user={user} />
                 <div className="col maincontent pb-3">
                   <Switch>
                     <Route

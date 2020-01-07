@@ -1,5 +1,5 @@
 import * as api from "../../api";
-import { profile } from "./schema";
+import { user } from "./schema";
 import { fetchModel as generateFetchModel } from "../../actions";
 import * as selectors from "./selectors";
 import * as constants from "./constants";
@@ -9,5 +9,5 @@ export const fetchModel = ({ id } = {}) =>
     selectors,
     constants,
     request: api.fetchUser,
-    schema: profile
+    schema: user
   });

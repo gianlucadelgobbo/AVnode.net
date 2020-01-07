@@ -4,11 +4,6 @@ import axios from "./conf/axios";
 // ============ Profile
 
 // - public
-export const fetchProfile = () => {
-  return axios.get("profile/public").then(result => {
-    return result.data;
-  });
-};
 
 export const fetchProfilePublic = ({ id }) => {
   return axios.get(`profile/${id}/public`).then(result => {
@@ -1002,6 +997,13 @@ export const saveCrewOrganization = model => {
 };
 
 // ============ CODE LISTS
+
+// user-profile
+export const fetchUser = () => {
+  return axios.get("/loggeduser").then(result => {
+    return result.data;
+  });
+};
 
 // countries
 
