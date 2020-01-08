@@ -1047,7 +1047,6 @@ const multiInput = ({
         />
       </div>
       <div className="col-md-2">
-        >
         <Button
           bsStyle="danger"
           onClick={() =>

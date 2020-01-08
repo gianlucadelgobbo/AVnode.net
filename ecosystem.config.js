@@ -23,7 +23,7 @@ module.exports = {
       user : 'hyo',
       host : [{host : '176.9.142.221',port : '9922'}],
       ref  : 'origin/master',
-      repo : 'git@github.com:repo.git',
+      repo : 'git@github.com:gianlucadelgobbo/AVnode.net.git',
       path : '/sites/avnode.net',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     }
