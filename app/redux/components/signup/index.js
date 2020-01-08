@@ -26,8 +26,8 @@ class SignUp extends Component {
 
   // Convert form values to API model
   createModelToSave(values) {
-    console.log("createModelToSave");
-    console.log(values);
+    //console.log("createModelToSave");
+    //console.log(values);
 
     const { startDate } = this.state;
     //clone obj
@@ -129,7 +129,7 @@ class SignUp extends Component {
       // Add auth user _id
       modelToSave.id = "1";
       //dispatch the action to save the model here
-      console.log(modelToSave);
+      //console.log(modelToSave);
       return saveModel(modelToSave).then(response => {
         if (response && response.model && response.model._id) {
           showModal({
@@ -145,7 +145,7 @@ class SignUp extends Component {
     this.setState({ option: e.target.value });
   }
   handleChange(value) {
-    console.log(value);
+    //console.log(value);
     this.setState({ startDate: moment(value).format(DATE_FORMAT) });
   }
 

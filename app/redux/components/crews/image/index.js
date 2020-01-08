@@ -24,7 +24,7 @@ class CrewImage extends Component {
       saveModel
     } = this.props;
     const { components } = properties.cpanel.crews.forms.image;
-    console.log(model);
+    //console.log(model);
     return (
       <div>
         <TitleComponent title={model.stagename} link={"/"+model.slug} show={SHOW} />

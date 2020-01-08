@@ -658,8 +658,8 @@ export const fieldWithLabelNoModal = ({
   meta: { error }
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
-    console.log(member);
-    console.log(fields);
+    //console.log(member);
+    //console.log(fields);
     return (
       <div className={"row " + (index % 2 === 0 ? "even" : "odd")} key={index}>
         <div className="col-md-10">
@@ -2593,7 +2593,7 @@ export const listGallery = ({
                   <p>{image.title}</p>
                   <i
                     onClick={() => {
-                      console.log(image);
+                      //console.log(image);
                       showModal({
                         type: MODAL_REMOVE,
                         props: {

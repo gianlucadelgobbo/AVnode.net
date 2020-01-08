@@ -7,16 +7,6 @@ table.table.page-break-after-always
         button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD"
 
   tbody
-    - console.log(item.slug)
-    //if item.stagename == "Elastic Eye"
-      each item1, index1 in item
-        //- console.log("          tr\n            td!=\""+index1+"\"\n"+"            td!=item."+index1+"\n")
-      each item2, index2 in item.organizationData.
-        //- console.log("          tr\n            td!=\""+index2+"\"\n"+"            td!=(item.organizationData."+index2+" ? item.organizationData."+index2+" : \"<span class='badge badge-danger'>MANDATORY</span>\")\n")
-      each item3, index3 in item.organizationData.address
-        //- console.log("                  !=\""+index3+": \"+(item.organizationData.address && item.organizationData.address."+index3+" ? item.organizationData.address."+index3+" : \"<span class='badge badge-danger'>MANDATORY</span>\")\n                  br\n")
-      each item4, index4 in item.organizationData.contacts[0]
-        - console.log("                  !=\""+index4+": \"+(contact."+index4+" ? contact."+index4+" : \"<span class='badge badge-danger'>MANDATORY</span>\")\n                  br\n")
     tr
       td(width="30%")!="P"+conta
       td(width="70%")

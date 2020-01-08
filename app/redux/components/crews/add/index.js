@@ -37,7 +37,7 @@ class AddCrew extends Component {
     const { saveModel, history, hideModal } = this.props;
     const modelToSave = this.createModelToSave(values);
 
-    console.log(saveModel, saveModel.then);
+    //console.log(saveModel, saveModel.then);
     modelToSave.id = "1";
 
     //dispatch the action to save the model here

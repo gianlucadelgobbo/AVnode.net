@@ -202,8 +202,8 @@ class ProfilePublic extends Component {
       const modelToSave = this.createModelToSave(values);
 
       modelToSave._id = model._id;
-      console.log("modelToSave");
-      console.log(modelToSave);
+      //console.log("modelToSave");
+      //console.log(modelToSave);
 
       return saveModel(modelToSave).then(response => {
         if (response.model && response.model._id) {

@@ -96,7 +96,6 @@ $(function() {
       method: "post",
       data: {id:id}
     }).done(function(data) {
-      console.log(data);
       $('#modalEdit .content').html(data);
       bindEditSubscription();
     });
@@ -111,7 +110,6 @@ $(function() {
     }).
     done(function(data) {
       if (data.errors) {
-        console.log(data.errors);
         $('#modalEdit .alert-danger').html(data.errors.subscriptions.message);
         $('#modalEdit .alert-danger').removeClass('d-none');
       } else {
@@ -177,7 +175,7 @@ $(function() {
       method: "post",
       data: data
     }).done(function(res) {
-      console.log(res);
+      //console.log(res);
     });
   });
   $(".option_selected_hotel_room").blur(function(ev) {
@@ -191,7 +189,7 @@ $(function() {
       method: "post",
       data: data
     }).done(function(res) {
-      console.log(res);
+      //console.log(res);
     });
   });
   $(".option_wepay").change(function(ev) {
@@ -205,7 +203,7 @@ $(function() {
       method: "post",
       data: data
     }).done(function(res) {
-      console.log(res);
+      //console.log(res);
     });
   });
   $(".cancel-sub").on('click', function(ev) {
@@ -231,7 +229,7 @@ $(function() {
         method: "post",
         data: {id:id, status:status}
       }).done(function(data) {
-        console.log("#"+id);
+        //console.log("#"+id);
       });
     } 
   });
@@ -245,7 +243,7 @@ $(function() {
         method: "post",
         data: {id:id, status:status}
       }).done(function(data) {
-        console.log("#"+id);
+        //console.log("#"+id);
       });
     } 
   });
@@ -279,7 +277,7 @@ $(function() {
         method: "post",
         data: data
       }).done(function(data) {
-        console.log("#");
+        //console.log("#");
       });
     },
     connectWith: ".connectedSortable"
@@ -320,9 +318,9 @@ $( ".program .connectedSortable" ).sortable({
             $(boxes[b]).find(".index").html(b+1);
           } else {
             day.program[b].schedule = [day.program[b].schedule]
-            console.log("disabled");
+            //console.log("disabled");
           }
-          console.log(day.program[b]);
+          //console.log(day.program[b]);
           data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
         }
       }
@@ -343,7 +341,7 @@ $( ".program .connectedSortable" ).sortable({
       method: "post",
       data: {data: data, tobescheduled: tobescheduled, event: day.event}
     }).done(function(data) {
-      console.log(data);
+      //console.log(data);
     });
   },
   connectWith: ".connectedSortable"
@@ -352,13 +350,13 @@ var current;
 $( ".edit-schedule" ).click(function( event ) {
   current = $(this).parent().parent().find("input");
   var schedule = JSON.parse(current.val()).schedule;
-  console.log(schedule);
-  console.log(schedule.starttime);
-  console.log(schedule.endtime);
-  console.log(new Date(schedule.starttime).getUTCHours());
-  console.log(new Date(schedule.starttime).getUTCMinutes());
-  console.log(new Date(schedule.endtime).getUTCHours());
-  console.log(new Date(schedule.endtime).getUTCMinutes());
+  //console.log(schedule);
+  //console.log(schedule.starttime);
+  //console.log(schedule.endtime);
+  //console.log(new Date(schedule.starttime).getUTCHours());
+  //console.log(new Date(schedule.starttime).getUTCMinutes());
+  //console.log(new Date(schedule.endtime).getUTCHours());
+  //console.log(new Date(schedule.endtime).getUTCMinutes());
   //const id = $(this).data("program");
   $('#modalEditSchedule .starttime_hours').val(new Date(schedule.starttime).getUTCHours())
   $('#modalEditSchedule .starttime_minutes').val(new Date(schedule.starttime).getUTCMinutes())
@@ -404,19 +402,19 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   timestr+= ("0"+formdata.starttime_hours).substr(-2)+":"+("0"+formdata.starttime_minutes).substr(-2);
   timestr+= " - ";
   timestr+= ("0"+formdata.endtime_hours).substr(-2)+":"+("0"+formdata.endtime_minutes).substr(-2);
-  console.log(formdata);
-  console.log(currentObj.schedule);
-  console.log(currentObj.schedule.starttime);
-  console.log(currentObj.schedule.endtime);
-  console.log(new Date(currentObj.schedule.starttime).getUTCHours());
-  console.log(new Date(currentObj.schedule.starttime).getUTCMinutes());
-  console.log(new Date(currentObj.schedule.endtime).getUTCHours());
-  console.log(new Date(currentObj.schedule.endtime).getUTCMinutes());
-  console.log((current.val()));
+  //console.log(formdata);
+  //console.log(currentObj.schedule);
+  //console.log(currentObj.schedule.starttime);
+  //console.log(currentObj.schedule.endtime);
+  //console.log(new Date(currentObj.schedule.starttime).getUTCHours());
+  //console.log(new Date(currentObj.schedule.starttime).getUTCMinutes());
+  //console.log(new Date(currentObj.schedule.endtime).getUTCHours());
+  //console.log(new Date(currentObj.schedule.endtime).getUTCMinutes());
+  //console.log((current.val()));
   current.val(JSON.stringify(currentObj));
   $(current.parent().parent().find(".timing")).html(timestr);
   $(current.parent().parent()).addClass("disabled");
-  console.log((current.val()));
+  //console.log((current.val()));
   programSortableUpdate();
   //const id = $(this).data("program");
   /*$('#modalEditSchedule .starttime-hours').val(new Date(schedule.starttime).getUTCHours())
@@ -458,9 +456,9 @@ function programSortableUpdate() {
         } else {
           day.program[b].schedule.disableautoschedule = true;
           day.program[b].schedule = [day.program[b].schedule]
-          console.log("disabled");
+          //console.log("disabled");
         }
-        console.log(day.program[b]);
+        //console.log(day.program[b]);
         data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
       }
     }
@@ -476,13 +474,13 @@ function programSortableUpdate() {
       tobescheduled.push({_id: day.program[b]._id, schedule: [], performance: day.program[b].performance._id, event: day.program[b].event});
     }
   }
-  console.log("pre ajax");
+  //console.log("pre ajax");
   $.ajax({
     url: "/admin/api/programupdate",
     method: "post",
     data: {data: data, tobescheduled: tobescheduled, event: day.event}
   }).done(function(data) {
-    console.log(data);
+    //console.log(data);
   });
 }
 function getFormData($form){
@@ -544,7 +542,7 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
       method: "post",
       data: post
     }).done(function(data) {
-      console.log("#"+id);
+      //console.log("#"+id);
     });
   });
   

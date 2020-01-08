@@ -88,9 +88,9 @@ class AddUsersPerformance extends Component {
   onSubmitForm(idusers) {
     const { fetchModel, saveModel, hideModal, _id } = this.props;
     const modelToSave = this.createModelToSave(idusers, _id);
-    console.log(modelToSave);
+    //console.log(modelToSave);
     return saveModel(modelToSave).then(response => {
-      console.log(response);
+      //console.log(response);
       if (response.model && response.model._id) {
         fetchPerformancePublic({ id: _id }).then(response => hideModal());
       }

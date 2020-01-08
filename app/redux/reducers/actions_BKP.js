@@ -121,8 +121,8 @@ export function fetchUser() {
 
 export function addEventCategory(id, category) {
     return dispatch => {
-        console.log('_______________ACTION addEventCategory __________________________________');
-        console.log('addEventCategory id: ' + id + 'category: ' + category);
+        //console.log('_______________ACTION addEventCategory __________________________________');
+        //console.log('addEventCategory id: ' + id + 'category: ' + category);
         dispatch({
             type: REQUEST_ADD_EVENT_CATEGORY,
             payload: {
@@ -140,8 +140,8 @@ export function addEventCategory(id, category) {
 
 export function removeEventCategory(dispatch) {
     return (eventId, categoryId) => {
-        console.log('_______________ACTION removeEventCategory __________________________________');
-        console.log('removeEventCategory eventId: ' + eventId + ' categoryId: ' + categoryId);
+        //console.log('_______________ACTION removeEventCategory __________________________________');
+        //console.log('removeEventCategory eventId: ' + eventId + ' categoryId: ' + categoryId);
         dispatch({
             type: REQUEST_DELETE_EVENT_CATEGORY,
             payload: {
@@ -158,8 +158,8 @@ export function removeEventCategory(dispatch) {
 
 export function editEvent(dispatch) {
     return data => {
-        console.log('_______________ACTION editEvent __________________________________');
-        console.log('editEvent data._id: ' + JSON.stringify(data._id));
+        //console.log('_______________ACTION editEvent __________________________________');
+        //console.log('editEvent data._id: ' + JSON.stringify(data._id));
         dispatch({
             type: REQUEST_EDIT_EVENT,
             id: data._id
@@ -348,8 +348,8 @@ export function suggestEventOrganizingCrew(eventId, q) {
 
 export function crewAboutDelete(dispatch) {
     return (crewId, aboutlanguage) => {
-        console.log('_______________ACTION crewAboutDelete __________________________________');
-        console.log('crewAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+        //console.log('_______________ACTION crewAboutDelete __________________________________');
+        //console.log('crewAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
         dispatch({
             type: REQUEST_CREW_DELETEABOUT,
             payload: {
@@ -422,8 +422,8 @@ export function deleteCrew(id) {
 
 export function editCrew(dispatch) {
     return data => {
-        console.log('_______________ACTION editCrew __________________________________');
-        console.log('editCrew data._id: ' + JSON.stringify(data._id));
+        //console.log('_______________ACTION editCrew __________________________________');
+        //console.log('editCrew data._id: ' + JSON.stringify(data._id));
         /* if (data._id) {
           // about, verify unique
           if (data.about) {
@@ -477,8 +477,8 @@ export function editCrew(dispatch) {
 export function suggestCrewMember(crewId, q) {
     const action = `actions, suggestCrewMember(crewId: ${crewId}, q: ${q}`;
     return dispatch => {
-        console.log('_______________ACTION suggestCrewMember __________________________________');
-        console.log(`${action}, q: ${q}`);
+        //console.log('_______________ACTION suggestCrewMember __________________________________');
+        //console.log(`${action}, q: ${q}`);
         dispatch({
             type: REQUEST_SUGGEST_CREWMEMBER,
             payload: {
@@ -604,7 +604,7 @@ export function deletePerformance(id) {
 
 export function aboutPerformanceMakePrimary(dispatch) {
     return (userId, perfId, aboutId) => {
-        console.log('aboutPerformanceMakePrimary userId: ' + userId + ' perfid: ' + perfid + ' aboutid: ' + aboutId);
+        //console.log('aboutPerformanceMakePrimary userId: ' + userId + ' perfid: ' + perfid + ' aboutid: ' + aboutId);
         dispatch({
             type: REQUEST_PERFORMANCE_MAKEABOUTPRIMARY,
             payload: {
@@ -673,8 +673,8 @@ export function editPerformance(dispatch) {
         .then(json => dispatch(gotUser(json)));
     }; */
     return data => {
-        console.log('_______________ACTION editPerformance __________________________________');
-        console.log('editPerformance data._id: ' + JSON.stringify(data._id));
+        //console.log('_______________ACTION editPerformance __________________________________');
+        //console.log('editPerformance data._id: ' + JSON.stringify(data._id));
         dispatch({
             type: REQUEST_EDIT_PERFORMANCE,
             id: data._id
@@ -690,8 +690,8 @@ export function editPerformance(dispatch) {
 
 export function performanceAboutEdit(id, aboutlanguage) {
     return dispatch => {
-        console.log('_______________ACTION performanceAboutEdit __________________________________');
-        console.log('performanceAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
+        //console.log('_______________ACTION performanceAboutEdit __________________________________');
+        //console.log('performanceAboutEdit aboutlanguage: ' + JSON.stringify(aboutlanguage));
         dispatch({
             type: REQUEST_PERFORMANCE_EDITABOUT,
             payload: {
@@ -708,8 +708,8 @@ export function performanceAboutEdit(id, aboutlanguage) {
 
 export function performanceAboutDelete(dispatch) {
     return (perfId, aboutlanguage) => {
-        console.log('_______________ACTION performanceAboutDelete __________________________________');
-        console.log('performanceAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+        //console.log('_______________ACTION performanceAboutDelete __________________________________');
+        //console.log('performanceAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
         dispatch({
             type: REQUEST_PERFORMANCE_DELETEABOUT,
             payload: {
@@ -727,8 +727,8 @@ export function performanceAboutDelete(dispatch) {
 // BL FIXME REQUEST_EVENT_DELETEABOUT not defined
 export function eventAboutDelete(dispatch) {
     return (eventId, aboutlanguage) => {
-        console.log('_______________ACTION eventAboutDelete __________________________________');
-        console.log('eventAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+        //console.log('_______________ACTION eventAboutDelete __________________________________');
+        //console.log('eventAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
         dispatch({
             type: REQUEST_EVENT_DELETEABOUT,
             payload: {
@@ -883,8 +883,8 @@ export function removePerformanceCrew(performanceId, crewId) {
 
 export function addPerformanceCategory(id, category) {
     return dispatch => {
-        console.log('_______________ACTION addPerformanceCategory __________________________________');
-        console.log('addPerformanceCategory id: ' + id + 'category: ' + category);
+        //console.log('_______________ACTION addPerformanceCategory __________________________________');
+        //console.log('addPerformanceCategory id: ' + id + 'category: ' + category);
         dispatch({
             type: REQUEST_ADD_PERFORMANCE_CATEGORY,
             payload: {
@@ -902,8 +902,8 @@ export function addPerformanceCategory(id, category) {
 
 export function removePerformanceCategory(dispatch) {
     return (performanceId, categoryId) => {
-        console.log('_______________ACTION removePerformanceCategory __________________________________');
-        console.log('removePerformanceCategory performanceId: ' + performanceId + 'categoryId: ' + categoryId);
+        //console.log('_______________ACTION removePerformanceCategory __________________________________');
+        //console.log('removePerformanceCategory performanceId: ' + performanceId + 'categoryId: ' + categoryId);
         dispatch({
             type: REQUEST_DELETE_PERFORMANCE_CATEGORY,
             payload: {
@@ -1021,8 +1021,8 @@ const wrapInFormData = (file) => {
 
 export function addUserProfileImage(dispatch) {
     return (id, file) => {
-        console.log('______ ACTION addUserProfileImage _______');
-        console.log('id: ' + id + ' file: ' + JSON.stringify(file));
+        //console.log('______ ACTION addUserProfileImage _______');
+        //console.log('id: ' + id + ' file: ' + JSON.stringify(file));
         dispatch({
             type: REQUEST_ADD_USERPROFILEIMAGE,
             payload: {
@@ -1055,7 +1055,7 @@ export function addUserTeaserImage(dispatch) {
 
 export function userEmailMakePrimary(dispatch) {
     return (userId, emailIndex) => {
-        console.log(userId + ' emailId: ' + emailIndex);
+        //console.log(userId + ' emailId: ' + emailIndex);
         dispatch({
             type: REQUEST_USER_MAKEEMAILPRIMARY,
             payload: {
@@ -1118,8 +1118,8 @@ export function userEmailMakePublic(dispatch) {
 } */
 export function userEmailConfirm(dispatch) {
     return (userId, emailIndex) => {
-        console.log('_______________ACTION userEmailConfirm __________________________________');
-        console.log('userEmailConfirm : ' + userId + ' ' + emailIndex);
+        //console.log('_______________ACTION userEmailConfirm __________________________________');
+        //console.log('userEmailConfirm : ' + userId + ' ' + emailIndex);
         dispatch({
             type: REQUEST_USER_EMAILCONFIRM,
             payload: {
@@ -1304,13 +1304,13 @@ export function editUserAddresses(dispatch) {
         let addressFound = false;
         let primaryAddress = true;
         let inputAddress = data.street_number + ', ' + data.route + ', ' + data.locality + ', ' + data.country;
-        // console.log('_______________ ACTION editUserAddresses __________________________________');
-        // console.log('editUserAddresses data id: ' + data._id);
-        // console.log('editUserAddresses data street_number: ' + data.street_number);
-        // console.log('editUserAddresses data route: ' + data.route);
-        // console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
-        // console.log('editUserAddresses data locality: ' + data.locality);
-        // console.log('editUserAddresses data country: ' + data.country);
+        // //console.log('_______________ ACTION editUserAddresses __________________________________');
+        // //console.log('editUserAddresses data id: ' + data._id);
+        // //console.log('editUserAddresses data street_number: ' + data.street_number);
+        // //console.log('editUserAddresses data route: ' + data.route);
+        // //console.log('editUserAddresses data administrative_area_level_1: ' + data.administrative_area_level_1);
+        // //console.log('editUserAddresses data locality: ' + data.locality);
+        // //console.log('editUserAddresses data country: ' + data.country);
 
         // init if first address
         if (!data.addresses) data.addresses = [];
@@ -1364,9 +1364,9 @@ export function editUserAddresses(dispatch) {
 
 export function userAboutDelete(dispatch) {
     return (userId, aboutlanguage) => {
-        console.log('_______________ACTION userAboutDelete __________________________________');
-        console.log('userAboutDelete userId: ' + JSON.stringify(userId));
-        console.log('userAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
+        //console.log('_______________ACTION userAboutDelete __________________________________');
+        //console.log('userAboutDelete userId: ' + JSON.stringify(userId));
+        //console.log('userAboutDelete aboutlanguage: ' + JSON.stringify(aboutlanguage));
 
         dispatch({
             type: REQUEST_USER_DELETEABOUT,
@@ -1400,8 +1400,8 @@ export function editUserImages(dispatch) {
 
 export function editUserLinks(dispatch) {
     return data => {
-        console.log('_______________ACTION editUserLinks __________________________________');
-        console.log('editUserLinks type: ' + JSON.stringify(data.linkType));
+        //console.log('_______________ACTION editUserLinks __________________________________');
+        //console.log('editUserLinks type: ' + JSON.stringify(data.linkType));
 
         dispatch({
             type: REQUEST_EDIT_USERLINKS,
@@ -1419,8 +1419,8 @@ export function editUserLinks(dispatch) {
 export function changeLanguage(dispatch) {
     // BL FIXME on loading Prefs page, should show this language in the DL
     return (language, userid) => {
-        // console.log('changeLanguage lng: ' + JSON.stringify(language) );
-        // console.log('changeLanguage user: ' + JSON.stringify(userid) );
+        // //console.log('changeLanguage lng: ' + JSON.stringify(language) );
+        // //console.log('changeLanguage user: ' + JSON.stringify(userid) );
         dispatch({
             type: CHANGE_LANGUAGE,
             payload: {
@@ -1644,6 +1644,6 @@ export function fetchSlug(slug, dispatch) {
 };
 
 export const onlyFetchSlug = (slug) => fetch(`/admin/api/user/slugs/${slug}`).then(json => {
-    console.log("jsonjsonjsonjsonjson", json)
+    //console.log("jsonjsonjsonjsonjson", json)
     return json
 });

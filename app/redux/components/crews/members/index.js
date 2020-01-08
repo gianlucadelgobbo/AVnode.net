@@ -27,7 +27,7 @@ class MembersTable extends Component {
         params: { _id }
       }
     } = this.props;
-    console.log(_id);
+    //console.log(_id);
     fetchModel({
       id: _id
     });
@@ -136,7 +136,7 @@ class MembersTable extends Component {
       isFetching,
       errorMessage
     } = this.props;
-    console.log(errorMessage);
+    //console.log(errorMessage);
     return (
           <div>
             <TitleComponent

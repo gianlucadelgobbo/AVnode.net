@@ -21,7 +21,7 @@ class ProfileImageForm extends Component {
   renderImageType() {
     let filetypes = ["jpeg, png"];
     let renderFiletypes = filetypes.map(filetype => `${"image/" + filetype}`);
-    console.log(renderFiletypes);
+    //console.log(renderFiletypes);
     return renderFiletypes;
   }
 

@@ -24,7 +24,7 @@ class NewsImage extends Component {
       saveModel
     } = this.props;
     const { components } = properties.cpanel.news.forms.image;
-    console.log(model);
+    //console.log(model);
     return (
       <div>
         <TitleComponent title={model.title} link={"/news/"+model.slug} show={SHOW} />

@@ -81,7 +81,7 @@ class GalleriesGallery extends Component {
   }
 
   uploadFile(files) {
-    console.log("uploadFileuploadFileuploadFileuploadFileuploadFileuploadFileuploadFile");
+    //console.log("uploadFileuploadFileuploadFileuploadFileuploadFileuploadFileuploadFile");
     const { model, uploadModel, showModal, showLoading, hideLoading } = this.props;
     model.galleries = files;
     // 4. LOADING BAR show loading bar

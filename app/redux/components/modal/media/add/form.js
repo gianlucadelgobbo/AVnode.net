@@ -25,7 +25,7 @@ class AddMediaForm extends Component {
   renderImageType(components) {
     let filetypes = components.galleries.config.filetypes;
     let renderFiletypes = filetypes.map(filetype => `${"image/" + filetype}`);
-    console.log(renderFiletypes);
+    //console.log(renderFiletypes);
     return renderFiletypes;
   }
 

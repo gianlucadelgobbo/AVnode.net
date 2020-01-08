@@ -37,10 +37,10 @@ class AddCrewMember extends Component {
         idmember: event.target.children[0].id
       });
     } else {
-      console.log("event");
-      console.log(newValue);
-      console.log(event.target);
-      console.log(event.target.id);
+      //console.log("event");
+      //console.log(newValue);
+      //console.log(event.target);
+      //console.log(event.target.id);
       this.setState({
         value: newValue,
         idmember: event.target.id

@@ -15,7 +15,7 @@ class App extends Component {
   }
   render() {
     const { user } = this.props;
-    console.log(user);
+    //console.log(user);
     const location = window.location.pathname;
     return (
       <div>

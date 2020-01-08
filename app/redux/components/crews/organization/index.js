@@ -71,7 +71,7 @@ class CrewOrganization extends Component {
     onSubmit(values) {
         const {showModal, saveModel, user} = this.props;
         const model = this.createModelToSave(values);
-        console.log(model);
+        //console.log(model);
 
         // Add auth user _id
         model._id = user._id;

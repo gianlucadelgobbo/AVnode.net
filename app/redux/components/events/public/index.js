@@ -181,7 +181,7 @@ class EventPublic extends Component {
         }
         return venue;
       };
-      console.log("First" + " " + model.schedule);
+      //console.log("First" + " " + model.schedule);
       v.schedule = model.schedule.map(x => ({
         startdate: moment(x.starttime)
           .utc()
@@ -311,7 +311,7 @@ class EventPublic extends Component {
 
       modelToSave._id = model._id;
 
-      console.log("About to save", modelToSave);
+      //console.log("About to save", modelToSave);
 
       return saveModel(modelToSave).then(response => {
         if (response.model && response.model._id) {
