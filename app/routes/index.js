@@ -100,9 +100,13 @@ router.post('/testlocale', (req, res) => {
 
 router.get('/:section-page-:page-sitemap.xml', (req, res) => {
   const section = req.params.section;
-  const Model = require('mongoose').model(config.sections[section].model);
-  req.params.sorting = config.sections[section].orders[0];
-  req.params.filter = config.sections[section].categories[0];
+  console.log(section);
+  let Model =  undefined;
+  if (config.sections[section] && config.sections[section].model) {
+    Model = require('mongoose').model(config.sections[section].model);
+    req.params.sorting = config.sections[section].orders[0];
+    req.params.filter = config.sections[section].categories[0];
+  }
   dataprovider.list(req, res, section, Model);
 });
 

@@ -6511,10 +6511,10 @@
       "title": "Galleries",
       "model": "Gallery",
       "limit": 21,
-      "basepath": "gallery",
+      "basepath": "galleries",
       "main_image": "/images/sez_gallery.jpg",
       "sitemap_pages": 20,
-      "coll": "gallery",
+      "coll": "galleries",
       "view_list": "galleries/list",
       "list_fields": {
         "title":1,

@@ -843,67 +843,72 @@ dataprovider.show = (req, res, section, subsection, model) => {
 
 dataprovider.list = (req, res, section, model) => {
 
-  const page = req.params.page;
-  const filter = req.params.filter;
-  const sorting = req.params.sorting;
-
-  let notfound = false;
-
-  if (config.sections[section].categories.indexOf(filter) === -1) notfound = true;
-  if (typeof config.sections[section].ordersQueries[sorting] === 'undefined') notfound = true;
-  if (parseInt(page).toString()!=page.toString()) notfound = true;
-
-  const skip = (page - 1) * config.sections[section].limit;
-  const select = config.sections[section].list_fields;
-  const populate = config.sections[section].list_populate;
-
-  if (notfound) {
+  if (!model) {
     res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
   } else {
-    //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
-    const query = config.sections[section].categoriesQueries[filter];
-    dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
-      const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        if (process.env.DEBUG) {
-          res.render('json', {data: {total:total, skip:skip, data:data}});
+    const page = req.params.page;
+    const filter = req.params.filter;
+    const sorting = req.params.sorting;
+  
+    let notfound = false;
+  
+    if (config.sections[section].categories.indexOf(filter) === -1) notfound = true;
+    if (typeof config.sections[section].ordersQueries[sorting] === 'undefined') notfound = true;
+    if (parseInt(page).toString()!=page.toString()) notfound = true;
+  
+    const skip = (page - 1) * config.sections[section].limit;
+    const select = config.sections[section].list_fields;
+    const populate = config.sections[section].list_populate;
+  
+    if (notfound) {
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+    } else {
+      //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
+      const query = config.sections[section].categoriesQueries[filter];
+      dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
+        const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          if (process.env.DEBUG) {
+            res.render('json', {data: {total:total, skip:skip, data:data}});
+          } else {
+            res.json({total:total, skip:skip, data:data});
+          }
+        } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
+          let lastmod = new Date();
+          lastmod.setHours( lastmod.getHours() -2 );
+          lastmod.setMinutes(0);
+          lastmod = helper.dateoW3CString(lastmod);
+          res.set('Content-Type', 'text/xml');
+          res.render('sitemaps/list', {
+            host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
+            data: data,
+            lastmod: lastmod,
+            basepath: config.sections[section].basepath,
+            nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+          });
         } else {
-          res.json({total:total, skip:skip, data:data});
+          let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
+          let link = '/' + section + '/' + filter + '/' + sorting + '/';
+          let pages = helper.getPagination(link, skip, config.sections[section].limit, total);
+          res.render(config.sections[section].view_list, {
+            title: title,
+            section: section,
+            jsonld:dataprovider.getJsonld(data, req, title, section),
+            canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+            sort: sorting,
+            total: total,
+            pages: pages,
+            filter: filter,
+            categories: config.sections[section].categories,
+            orderings: config.sections[section].orders,
+            labels: config.sections[section].labels,
+            data: data
+          });
         }
-      } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
-        let lastmod = new Date();
-        lastmod.setHours( lastmod.getHours() -2 );
-        lastmod.setMinutes(0);
-        lastmod = helper.dateoW3CString(lastmod);
-        res.set('Content-Type', 'text/xml');
-        res.render('sitemaps/list', {
-          host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
-          data: data,
-          lastmod: lastmod,
-          basepath: config.sections[section].basepath,
-          nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
-        });
-      } else {
-        let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
-        let link = '/' + section + '/' + filter + '/' + sorting + '/';
-        let pages = helper.getPagination(link, skip, config.sections[section].limit, total);
-        res.render(config.sections[section].view_list, {
-          title: title,
-          section: section,
-          jsonld:dataprovider.getJsonld(data, req, title, section),
-          canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
-          sort: sorting,
-          total: total,
-          pages: pages,
-          filter: filter,
-          categories: config.sections[section].categories,
-          orderings: config.sections[section].orders,
-          labels: config.sections[section].labels,
-          data: data
-        });
-      }
-    });
+      });
+    }
   }
+
 };
 
 module.exports = dataprovider;
