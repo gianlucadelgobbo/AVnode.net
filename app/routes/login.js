@@ -9,8 +9,6 @@ const User = mongoose.model('User');
 router.get('/', (req, res) => {
   var returnTo = req.query.returnTo ? req.query.returnTo : req.session.returnTo ? req.session.returnTo : "/";
   logger.debug('passport.loginredirect req:' + returnTo);
-  returnTo = returnTo.replace("/admin/api/loggeduser" , "/");
-  logger.debug('passport.loginredirect req:' + returnTo);
   if (req.user) {
     return res.redirect (returnTo);
   }
