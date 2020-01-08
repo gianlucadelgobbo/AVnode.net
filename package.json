@@ -4,7 +4,7 @@
   "description": "avnode rebuild",
   "scripts": {
     "start": "node index.js",
-    "pm2start": "pm2 start index.js --name AVnode.net --watch --log /Users/gianlucadelgobbo/GitHub/AVnode3.net/logs.log --time",
+    "pm2start": "pm2 start index.js --name AVnode.net --env production --watch --log logs.log --time",
     "forever": "NODE_ENV=production forever --uid 'avnode.net' -l /sites/avnode.net/avnode-forever.log -o /sites/avnode.net/avnode-out.log -e /sites/avnode.net/avnode-err.log start --append index.js",
     "test": "PORT=3002 NODE_ENV=testing mocha --reporter spec --recursive tests",
     "testwin": "set PORT=3002 && set NODE_ENV=testing && mocha --timeout 30000 --reporter spec --recursive tests",
