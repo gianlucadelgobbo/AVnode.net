@@ -16,7 +16,7 @@ const logger = require('../utilities/logger');
 router.get('/', (req, res) => {
   logger.debug('global.getLocale: '+global.getLocale());
   if (req.user) {
-    return res.redirect('/admin/profile/public');
+    return res.redirect('/admin/profile/'+req.user._id+'/public');
   }
   res.render('admin/index', {
     title: __('Create Account')

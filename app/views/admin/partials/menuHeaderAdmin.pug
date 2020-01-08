@@ -9,9 +9,9 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
         b="Control panel"
       each menuitem in config.adminMenu
         li.nav-item.mt-2.mb-2.d-block.d-lg-none(class=currentUrl==menuitem.href ? "active" : undefined)
-          a.nav-link(href=menuitem.href)
+          a.nav-link(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id))
             span(class=menuitem.icon)
-            span=menuitem.label.defaultMessage
+            span=menuitem.label.defaultMessage+"AAAA"
       li.nav-item.mt-4.mb-2.d-block.d-lg-none
         a.nav-link(href='/logout')      
           span.fas.fa-sign-out-alt.fa-fw.mr-3

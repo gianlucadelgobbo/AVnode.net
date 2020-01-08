@@ -133,7 +133,7 @@ router.get('/:sez/:code', (req, res) => {
             router.updateSendy(user, sendyemail, (err) => {
               if (req.user) {
                 req.flash('success', { msg: __('Email verificated with success.') });
-                res.redirect('/admin/profile/emails');
+                res.redirect('/admin/profile/'+req.user._id+'/emails');
               } else {
                 res.render('verify/email', {
                   title: __('Email verify'),
