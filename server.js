@@ -162,7 +162,6 @@ app.use((req, res, next) => {
     req.path.indexOf("/admin") === 0 &&
     req.path !== "/admin/api/signup"
   ) {
-    //logger.debug(req);
     req.session.returnTo = req.path;
     res.redirect("/login");
   } else {
