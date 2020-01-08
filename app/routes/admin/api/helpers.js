@@ -146,14 +146,10 @@ router.setStatsAndActivity = function(query) {
 
 
 router.mySlugify = function (model, str, cb) {
-  console.log("mySlugify");
-  console.log(str);
   if (str) {
     let slug = slugify(str);
-    console.log(slug);
     model.countDocuments({slug: slug}, function (err, count) {
       if (count) {
-        console.log("mySlugify 2");
         router.mySlugify(model, slug+"_1", cb);
       } else {
         cb(slug);
@@ -171,8 +167,6 @@ router.editable = function(req, data, id) {
     let meandcrews = req.user.crews && req.user.crews.length ? req.user.crews.map((item)=>{return item}) : [];
     meandcrews.push(req.user._id);
     const editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id}).some(v=> meandcrews.indexOf(v) !== -1)));
-    console.log("editable");
-    console.log(editable);
     return editable;
   }
 }

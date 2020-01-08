@@ -100,7 +100,6 @@ router.post('/testlocale', (req, res) => {
 
 router.get('/:section-page-:page-sitemap.xml', (req, res) => {
   const section = req.params.section;
-  console.log(section);
   let Model =  undefined;
   if (config.sections[section] && config.sections[section].model) {
     Model = require('mongoose').model(config.sections[section].model);
