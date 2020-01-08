@@ -16,14 +16,10 @@ class App extends Component {
   render() {
     const { user } = this.props;
     //console.log(user);
-    const location = window.location.pathname;
+    //const location = window.location.pathname;
     return (
       <div>
-        {location.indexOf("/signup") === 0 ? (
-          <MainSignUp />
-        ) : (
-          <MainApp user={user} />
-        )}
+        <MainApp user={user} />
       </div>
     );
   }
