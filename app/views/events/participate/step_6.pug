@@ -81,7 +81,7 @@ table.table.text-white
       .text-right
         b=global.__('Packages')
     td
-      table.table(style="background:none;")
+      table.table.text-white(style="background:none;")
         - var total = 0;
         each subscription in call.subscriptions
           if subscription.subscriber_id
