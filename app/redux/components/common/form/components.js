@@ -283,7 +283,8 @@ const inputField = ({
   pre,
   help,
   handleSelect,
-  disabled
+  disabled,
+  autocomplete
 }) => {
   const field = (
     <div>
@@ -298,7 +299,7 @@ const inputField = ({
           className="form-control"
           {...input}
           disabled={disabled}
-          autocomplete="new-password"
+          autoComplete={autocomplete}
           placeholder={placeholder}
           aria-describedby="slugHelpInline" //make it based on field name
         />
@@ -340,7 +341,7 @@ export const inputText = ({ input, meta, placeholder, isChild, pre, help }) => {
 };
 
 export const inputPassword = ({ input, meta, placeholder, isChild }) => {
-  return inputField({ input, type: "password", meta, placeholder, autocomplete: "new-password", isChild });
+  return inputField({ input, type: "password", meta, placeholder, isChild, autocomplete: "new-password" });
 };
 
 export const inputUrl = ({ input, meta, placeholder, isChild }) => {

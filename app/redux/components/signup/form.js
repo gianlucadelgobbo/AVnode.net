@@ -54,7 +54,7 @@ class SignUpForm extends Component {
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.submitForm.bind(this))} autocomplete="off">
+      <form onSubmit={handleSubmit(this.submitForm.bind(this))} autoComplete="off">
         <Field
           name="subscribe"
           component={CollapsedPanel}
