@@ -11,7 +11,7 @@ block content
   if data.performnce_missing
     pre=data.performnce_missing
   - var people = []
-  table.table
+  table.table.table-fixed
     thead
       tr
         th="ID"
@@ -285,7 +285,7 @@ block content
                 //pre=item.schedule
 
   // Modal Add Partner
-  #modalEdit.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
+  #modalEdit.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
     .modal-dialog.modal-lg(role='document')
       .modal-content
         form#editSubscription

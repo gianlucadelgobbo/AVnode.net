@@ -1,7 +1,7 @@
 extends ../layout
 block content
   include ./_filters
-  table.table.program
+  table.table.table-fixed.program
     //thead
       tr
         th
@@ -98,7 +98,7 @@ block content
                                           span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
                                             !=new Date(data.days[i]).getDate()
                                       input(type="hidden", name="program[]", value=JSON.stringify(program))
-  #modalEditSchedule.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalEditScheduleLabel', aria-hidden='true')
+  #modalEditSchedule.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalEditScheduleLabel', aria-hidden='true')
     .modal-dialog.modal-lg(role='document')
       .modal-content
         form#editSchedule

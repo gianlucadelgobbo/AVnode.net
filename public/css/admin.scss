@@ -226,12 +226,27 @@ textarea#styled {
   color: #0f8845;
   margin: 0 auto;
 }
+.table-fixed {
+  table-layout: fixed;
+}
+.table-fixed td:first-child {
+  width: 50px;
+}
+.table-fixed td {
+  overflow: hidden;
+}
+.admindevmodal .modal-title {
+  margin: 0;
+}
 .modal-body h4 {
   text-align: center;
   color: #0f8845;
 }
 .modal-header {
   display: inline;
+}
+.admindevmodal .modal-header {
+  display: flex;
 }
 .publicUrl {
   color: #545454;

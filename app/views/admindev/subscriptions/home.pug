@@ -44,7 +44,7 @@ block content
                     .badge.badge-info=cat.name
         .collapse(id='collapse'+index, aria-labelledby='heading'+index, data-parent='#accordion')
           .mt-3
-            table.table
+            table.table.table-fixed
               tr
                 th(scope="row")
                   .text-right
@@ -126,7 +126,7 @@ block content
                   .text-right
                     b=global.__('Packages')
                 td
-                  table.table(style="background:none;")
+                  table.table.table-fixed(style="background:none;")
                     - var total = 0;
                     each subscription in item.subscriptions
                       if subscription.subscriber_id
