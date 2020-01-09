@@ -97,17 +97,17 @@ router.post('/', (req, res) => {
         switch (parseInt(req.body.step)) {
           case 0 :
             logger.debug('case 0');
-            if (!req.user.name) {
+            if (req.user.name) {
               if (!msg || !msg.e) msg = {e:[]};
-              msg.e.push({name:'index', m:__('Warning: You have no name available. Please add your name in your profile and come back.')+" <a href=\"/admin/profile/"+user._id+"/private\">"+__("ADD NOW")+"</a>"});
+              msg.e.push({name:'index', m:__('Warning: You have no name available. Please add your name in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
             }
             if (!req.user.surname) {
               if (!msg || !msg.e) msg = {e:[]};
-              msg.e.push({name:'index', m:__('Warning: You have no surname available. Please add your surname in your profile and come back.')+" <a href=\"/admin/profile/"+user._id+"/private\">"+__("ADD NOW")+"</a>"});
+              msg.e.push({name:'index', m:__('Warning: You have no surname available. Please add your surname in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
             }
             if (!req.user.email) {
               if (!msg || !msg.e) msg = {e:[]};
-              msg.e.push({name:'index', m:__('Warning: You have no email available. We need your email for all the communications. Please add an email and come back.')+" <a href=\"/admin/profile/"+user._id+"/private\">"+__("ADD NOW")+"</a>"});
+              msg.e.push({name:'index', m:__('Warning: You have no email available. We need your email for all the communications. Please add an email and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
             }
             var results = req.user.mobile.reduce((results, item) => {
               if (item.url) results.push(item.url); // modify is a fictitious function that would apply some change to the items in the array
@@ -115,7 +115,7 @@ router.post('/', (req, res) => {
             }, [])
             if (!results.length) {
               if (!msg || !msg.e) msg = {e:[]};
-              msg.e.push({name:'index', m:__('Warning: You have no mobile phone available. We need your mobile phone in case of urgent issue. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/"+user._id+"/private\">"+__("ADD NOW")+"</a>"});
+              msg.e.push({name:'index', m:__('Warning: You have no mobile phone available. We need your mobile phone in case of urgent issue. Please add a mobile phone and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
             }
             if (!msg) {
               if (data && typeof req.body.index!='undefined') {
