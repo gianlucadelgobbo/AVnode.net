@@ -97,7 +97,7 @@ router.post('/', (req, res) => {
         switch (parseInt(req.body.step)) {
           case 0 :
             logger.debug('case 0');
-            if (req.user.name) {
+            if (!req.user.name) {
               if (!msg || !msg.e) msg = {e:[]};
               msg.e.push({name:'index', m:__('Warning: You have no name available. Please add your name in your profile and come back.')+" <a href=\"/admin/profile/"+req.user._id+"/private\">"+__("ADD NOW")+"</a>"});
             }
