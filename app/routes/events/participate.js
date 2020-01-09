@@ -394,8 +394,10 @@ router.post('/', (req, res) => {
                         call: req.session.call,
                         block_2:  __("You will receive a feedback on your proposal as soon."),
                         block_3:  __("Thanks."),
+                        link:  "",
+                        link_plain: ""/* 
                         link:  "<a href=\""+(req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"\">"+(req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]+"</a>",
-                        link_plain: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0]
+                        link_plain: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0] */
                       }
                     }, function (err){
                       if (err) {
