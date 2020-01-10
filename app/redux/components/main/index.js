@@ -4,10 +4,25 @@ import { FormattedMessage, injectIntl } from "react-intl";
 import TopBar from "../topBar";
 import TopMenu from "../topMenu/index";
 import ModalRoot from "../modal/root";
-
+//import lazy from "../../utils/lazyComponent";
 // 404 page
 import PageNotFound from "../pageNotFound";
 
+// Profile
+/*const ProfilePublic = lazy(() => import("../profile/public/index"));
+const ProfileEmails = lazy(() => import("../profile/emails/index"));
+const ProfileImages = lazy(() => import("../profile/image/index"));
+const ProfilePrivate = lazy(() => import("../profile/private/index"));
+const ProfilePassword = lazy(() => import("../profile/password/index"));
+const ProfileConnections = lazy(() => import("../profile/connections/index"));
+
+// Crews
+const Crews = lazy(() => import("../crews/index"));
+const CrewsPublic = lazy(() => import("../crews/public"));
+const CrewsImages = lazy(() => import("../crews/image"));
+const CrewsMembers = lazy(() => import("../crews/members"));
+const CrewsOrganization = lazy(() => import("../crews/organization"));
+*/
 // Profile
 import ProfilePublic from "../profile/public/index";
 import ProfileEmails from "../profile/emails/index";
@@ -15,6 +30,20 @@ import ProfileImages from "../profile/image/index";
 import ProfilePrivate from "../profile/private/index";
 import ProfilePassword from "../profile/password/index";
 import ProfileConnections from "../profile/connections/index";
+
+// Crews
+import Crews from "../crews/index.js";
+import CrewsPublic from "../crews/public";
+import CrewsImages from "../crews/image";
+import CrewsMembers from "../crews/members";
+import CrewsOrganization from "../crews/organization";
+
+// // Performances
+import Performances from "../performances/index.js";
+import PerformancesPublic from "../performances/public";
+import PerformancesImages from "../performances/image";
+import PerformancesGalleries from "../performances/galleries";
+import PerformancesVideos from "../performances/videos";
 
 // Events
 import Events from "../events/index.js";
@@ -26,20 +55,6 @@ import EventGalleries from "../events/galleries/";
 import EventVideos from "../events/videos/";
 import EventCalls from "../events/calls/";
 import EventSettings from "../events/settings/";
-
-// // Performances
-import Performances from "../performances/index.js";
-import PerformancesPublic from "../performances/public";
-import PerformancesImages from "../performances/image";
-import PerformancesGalleries from "../performances/galleries";
-import PerformancesVideos from "../performances/videos";
-
-// // Crews
-import Crews from "../crews/index.js";
-import CrewsPublic from "../crews/public";
-import CrewsImages from "../crews/image";
-import CrewsMembers from "../crews/members";
-import CrewsOrganization from "../crews/organization";
 
 // // Footage
 import Footage from "../footage/index.js";
