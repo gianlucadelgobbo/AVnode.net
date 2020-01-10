@@ -1,0 +1,24 @@
+.clearfix.pt-3.pb-2.mb-3.border-bottom
+  .float-left
+    h2.h2
+      if event
+        a(href="/admindev/partners/"+owner)
+          i.pr-1.fas.fa-caret-square-left
+          !=title
+      else
+        !=title
+    .float-right.mb-2.mb-md-0.d-print-none
+      //form.d-print-none.text-right
+        if events
+          select.float-left.form-control-sm.btn-outline-secondary.mb-3.mr-2(style="width:300px" onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value+'/'")
+            option(value=0)=global.__("Filter by event")
+            each item, index in events
+              option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
+        .btn-group.mr-2
+          button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
+          button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
+        if map
+          a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=0')="TABLE"
+        else 
+          a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=1')="MAP"
+        a.btn.btn-sm.btn-outline-secondary(href='?csv=1')="CSV"

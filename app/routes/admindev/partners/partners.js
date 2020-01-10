@@ -106,32 +106,39 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   logger.debug('/partners/'+req.params.id);
   User.
-  find({"partner_owner": req.params.id}).
+  findOne({"_id": req.params.id}).
   lean().
-  sort({stagename: 1}).
-  //select({stagename: 1, createdAt: 1, crews:1}).
-  populate(populate).
-  exec((err, data) => {
-    Event.
-    find({"users": req.params.id}).
-    select({title: 1}).
-    sort({title: 1}).
+  select({stagename: 1}).
+  exec((err, user) => {
+    User.
+    find({"partner_owner": req.params.id}).
+    lean().
+    sort({stagename: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).
-    exec((err, events) => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        res.json(data);
-      } else {
-        res.render('admindev/partners/organization_partners', {
-          title: 'Partners',
-          currentUrl: req.originalUrl,
-          
-          owner: req.params.id,
-          events: events,
-          user: req.user,
-          data: data,
-          script: false
-        });
-      }
+    populate(populate).
+    exec((err, data) => {
+      Event.
+      find({"users": req.params.id}).
+      select({title: 1}).
+      sort({title: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      exec((err, events) => {
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('admindev/partners/organization_partners', {
+            title: 'Partners: '+user.stagename,
+            currentUrl: req.originalUrl,
+            map: req.query.map,
+            
+            owner: req.params.id,
+            events: events,
+            user: req.user,
+            data: data,
+            script: false
+          });
+        }
+      });
     });
   });
 });
@@ -141,33 +148,39 @@ router.get('/:id/:event', (req, res) => {
   const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
   logger.debug(query);
   User.
-  find(query).
+  findOne({"_id": req.params.id}).
   lean().
-  sort({stagename: 1}).
-  //select({stagename: 1, createdAt: 1, crews:1}).
-  populate(populate).
-  exec((err, data) => {
-    Event.
-    find({"users": req.params.id}).
-    select({title: 1}).
-    sort({title: 1}).
+  select({stagename: 1}).
+  exec((err, user) => {
+    User.
+    find(query).
+    lean().
+    sort({stagename: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).
-    exec((err, events) => {
-      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        res.json(data);
-      } else {
-        res.render('admindev/partners/organization_partners', {
-          title: 'Partners',
-          currentUrl: req.originalUrl,
-          
-          owner: req.params.id,
-          events: events,
-          event: req.params.event,
-          user: req.user,
-          data: data,
-          script: false
-        });
-      }
+    populate(populate).
+    exec((err, data) => {
+      Event.
+      find({"users": req.params.id}).
+      select({title: 1}).
+      sort({title: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      exec((err, events) => {
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('admindev/partners/organization_partners', {
+            title: 'Partners: '+user.stagename,
+            currentUrl: req.originalUrl,
+            
+            owner: req.params.id,
+            events: events,
+            event: req.params.event,
+            user: req.user,
+            data: data,
+            script: false
+          });
+        }
+      });
     });
   });
 });
@@ -533,49 +546,63 @@ router.get('/:id/:event/manage', (req, res) => {
         {path: "partners.users", select: {stagename:1}, model:"UserShow"},
         {path: "partners.category", select: {name:1, slug:1}, model:"Category"}
       ];
-
       Event.
-      //find({"users": req.params.id}).
-      findOne({_id: req.params.event}).
-      populate(populate).
-      select({title: 1, partners:1}).
-      //sort({title: 1}).
+      find({"users": req.params.id}).
+      select({title: 1}).
+      sort({title: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
-      //exec((err, events) => {
-      exec((err, event) => {
-        var partnerships = event.partners.slice(0);
-        logger.debug(existingCat);
-        var notassigned = [];
-        var notassignedID = [];
-        var partnersID = [];
-
-        for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
-        for (var item in data) {
-          if (partnersID.indexOf(data[item]._id.toString())===-1) {
-            if (notassignedID.indexOf(data[item]._id.toString())===-1) {
-              notassignedID.push(data[item]._id.toString());
-              notassigned.push(data[item]);
-            }
-          }
-        }
-        var existingCat = partnerships.map(item => {return item.category._id.toString()});
-        for (var item in categories) {
-          if (existingCat.indexOf(categories[item]._id.toString())===-1) partnerships.push({category:categories[item], users:[]});
-        }
+      exec((err, events) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          res.render('admindev/partners/partners_manager', {
-            title: 'Partners',
-            currentUrl: req.originalUrl,
-            
-            owner: req.params.id,
-            //events: events,
-            notassigned: notassigned,
   
-            event: req.params.event,
-            partnerships: partnerships,
-            script: false
+          Event.
+          //find({"users": req.params.id}).
+          findOne({_id: req.params.event}).
+          populate(populate).
+          select({title: 1, partners:1}).
+          //sort({title: 1}).
+          //select({stagename: 1, createdAt: 1, crews:1}).
+          //exec((err, events) => {
+          exec((err, event) => {
+            var partnerships = event.partners.slice(0);
+            logger.debug(existingCat);
+            var notassigned = [];
+            var notassignedID = [];
+            var partnersID = [];
+
+            for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
+            for (var item in data) {
+              if (partnersID.indexOf(data[item]._id.toString())===-1) {
+                if (notassignedID.indexOf(data[item]._id.toString())===-1) {
+                  notassignedID.push(data[item]._id.toString());
+                  notassigned.push(data[item]);
+                }
+              }
+            }
+            var existingCat = partnerships.map(item => {return item.category._id.toString()});
+            var pp = partnerships.map(item => {return item});
+            
+            for (var item in categories) {
+              if (existingCat.indexOf(categories[item]._id.toString())===-1) pp.push({category:categories[item], users:[]});
+            }
+            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+              res.json(data);
+            } else {
+              res.render('admindev/partners/organization_partners_manager', {
+                title: 'Partners',
+                currentUrl: req.originalUrl,
+                hide: req.query.hide ? req.query.hide : [],
+                owner: req.params.id,
+                //events: events,
+                notassigned: notassigned,
+                
+                events: events,
+                event: req.params.event,
+                partnerships: pp,
+                script: false
+              });
+            }
           });
         }
       });
@@ -634,7 +661,7 @@ router.post('/contacts/add/', (req, res) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          res.render('admindev/partners/partners_manager', {
+          res.render('admindev/partners/organization_partners_manager', {
             title: 'Partners',
             currentUrl: req.originalUrl,
             

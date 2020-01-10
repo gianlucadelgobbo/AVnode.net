@@ -1,14 +1,16 @@
-.page-break-after-always
-  form.form-inline.d-print-none
+if event
+  .page-break-after-always.clearfix
     if events
-      select.form-control.mb-3.mr-sm-2( onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value")
-        option(value=0)=global.__("Filter by event")
-        each item, index in events
-          option(value=item._id, selected=item._id==event ? "selected" : undefined)=item.title
-    if event
-      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/manage")=global.__("Manage event partnerships types")
-      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata")=global.__("Grants data")
-      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata_table")=global.__("Grants data table")
-      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/grantsdata_events")=global.__("Grants events data")
-      a.btn.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/mandates")=global.__("Mandates")
-    button.btn.btn-primary.form-control.mb-3.mr-2(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD"
+      each item, index in events
+        if item._id==event
+          h3.float-left=item.title
+    .float-right
+      form.form-inline.d-print-none.text-right
+        a.btn.btn-sm.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/" class=currentUrl == "/admindev/partners/"+owner+"/"+event+"/" ? "active" : undefined)=global.__("List")
+        a.btn.btn-sm.btn-primary.mb-3.mr-2(href="/admindev/partners/"+owner+"/"+event+"/manage" class=currentUrl == "/admindev/partners/"+owner+"/"+event+"/manage" ? "active" : undefined)=global.__("By types")
+        select.float-left.form-control-sm.btn-primary.mb-3(style="width:150px" onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/"+event+"/'+this.value+'/'")
+          option(value=0)=global.__("Grant tools")
+          option(value="grantsdata" selected=(currentUrl == "/admindev/partners/"+owner+"/"+event+"/grantsdata" ? "selected" : undefined))=global.__("Grants data")
+          option(value="grantsdata_table" selected=(currentUrl == "/admindev/partners/"+owner+"/"+event+"/grantsdata_table" ? "selected" : undefined))=global.__("Grants data table")
+          option(value="grantsdata_events" selected=(currentUrl == "/admindev/partners/"+owner+"/"+event+"/grantsdata_events" ? "selected" : undefined))=global.__("Grants events data")
+          option(value="mandates" selected=(currentUrl == "/admindev/partners/"+owner+"/"+event+"/mandates" ? "selected" : undefined))=global.__("Mandates")

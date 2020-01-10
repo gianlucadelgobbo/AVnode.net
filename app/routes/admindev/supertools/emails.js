@@ -83,7 +83,7 @@ router.get('/', (req, res) => {
             script: false
           });
         }
-    });
+      });
     });
   });
 });

@@ -188,7 +188,7 @@ router.get('/:event', (req, res) => {
       res.json(data);
     } else {
       res.render('admindev/events/dett', {
-        title: 'Events: '+data.event.title,
+        title: 'Events | '+data.event.title,
         currentUrl: req.originalUrl,
         
         data: data,
@@ -281,7 +281,7 @@ router.get('/:event/acts', (req, res) => {
           } else {
             req.query.sez = "acts";
             res.render('admindev/events/acts', {
-              title: 'Events: Acts',
+              title: 'Events | '+data.event.title + ': Acts',
               data: data,
               currentUrl: req.originalUrl,
               
@@ -449,7 +449,7 @@ router.get('/:event/peoples', (req, res) => {
           } else {
             req.query.sez = "peoples";
             res.render('admindev/events/peoples', {
-              title: 'Events: Peoples',
+              title: 'Events | '+data.event.title + ': Peoples',
               data: data,
               currentUrl: req.originalUrl,
               
@@ -611,7 +611,7 @@ router.get('/:event/program', (req, res) => {
           } else {
             req.query.sez = "program";
             res.render('admindev/events/program', {
-              title: 'Events: Program',
+              title: 'Events | '+data.event.title + ': Program',
               data: data,
               currentUrl: req.originalUrl,
               
@@ -1144,7 +1144,7 @@ router.get('/:event/pass-sheet', (req, res) => {
           } else {
             req.query.sez = "pass-sheet";
             res.render('admindev/events/pass-sheet', {
-              title: 'Events: Pass sheet',
+              title: 'Events | '+data.event.title + ': Pass sheet',
               data: data,
               currentUrl: req.originalUrl,
               
@@ -1266,7 +1266,7 @@ router.get('/:event/pass', (req, res) => {
           } else {
             req.query.sez = "pass";
             res.render('admindev/events/pass', {
-              title: 'Events: Pass List',
+              title: 'Events | '+data.event.title + ': Pass List',
               data: data,
               currentUrl: req.originalUrl,
               

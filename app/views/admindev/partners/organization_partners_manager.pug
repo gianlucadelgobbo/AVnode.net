@@ -1,0 +1,49 @@
+extends ../layout
+block topmenu
+  include topmenu
+block content
+  if map
+    include map
+  else 
+    include submenu
+    script.
+      var event = "#{event}"
+    form.form-inline.d-print-none.mb-2.border-top.pt-2
+      each item, index in partnerships
+        .form-check-inline
+          input.form-check-input(type='checkbox', disabled=(item.users.length ? "disabled" : undefined), checked=(item.users.length ? "checked" : hide.indexOf(item.category._id.toString())!==-1 ? "checked" : undefined) value=item.category._id, name="hide[]", id=item.category._id)
+          label.form-check-label(for=item.category._id)!=item.category.name
+      button.btn.btn-primary.form-control.mr-2.btn-sm(type='submit')="UPDATE VIEW"
+
+    table.table.table-fixed.partners
+      thead
+        tr
+          th
+            h5="Not assigned"
+          each item, index in partnerships
+            if item.users.length || hide.indexOf(item.category._id.toString())!==-1
+              th
+                h5!=item.category.name
+                a.btn.btn-primary.btn-sm.sorter.float-right.pt-0.pb-0(data-target="sortable"+(index+1), href="#")="SORT"
+      tbody
+        tr
+          td
+            div(style="max-height: 100vh;overflow-y: scroll;")
+              ul.list-group.connectedSortable(id="sortable0")
+                each item in notassigned
+                  li.list-group-item
+                    !=item.stagename
+                    input(type="hidden", name="users", value=item._id)
+          - var conta = 1
+          each item, index in partnerships
+            if item.users.length || hide.indexOf(item.category._id.toString())!==-1
+              td
+                div(style="max-height: 100vh;overflow-y: scroll;")
+                  form(id="form"+conta)
+                    input(type="hidden", name="category", value=item.category._id)
+                    ul.list-group.connectedSortable(id="sortable"+conta)
+                      - conta++
+                      each uuu, index in item.users
+                        li.list-group-item
+                          !=uuu.stagename
+                          input(type="hidden", name="users", value=uuu._id)

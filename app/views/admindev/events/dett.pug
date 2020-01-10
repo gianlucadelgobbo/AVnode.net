@@ -1,6 +1,7 @@
 extends ../layout
+block topmenu
+  include topmenu
 block content
-  h3=data.event.title
   ul.nav.flex-column.nav-pills
     li.nav-item
       a.nav-link(href='/admindev/events/'+data.event._id+'/acts/')=global.__('Acts')

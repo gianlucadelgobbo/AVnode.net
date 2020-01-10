@@ -81,9 +81,8 @@ router.get('/', (req, res) => {
     } else {
       logger.debug(data);
       res.render('admindev/organizations/home', {
-        title: 'Events',
+        title: 'Organizations',
         currentUrl: req.originalUrl,
-        
         data: data.crews,
         script: false
       });

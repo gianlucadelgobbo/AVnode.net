@@ -42,19 +42,7 @@ html(lang=session.current_lang)
             .d-print-none
               include partials/menuSuper
             .col.maincontent
-              .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
-                h1.h2=title
-                .btn-toolbar.mb-2.mb-md-0.d-print-none
-                  .btn-group.mr-2
-                    button.btn.btn-sm.btn-outline-secondary(type='button') Share
-                    button.btn.btn-sm.btn-outline-secondary(type='button') Export
-                  button.btn.btn-sm.btn-outline-secondary.dropdown-toggle(type='button')
-                    svg.feather.feather-calendar(xmlns='http://www.w3.org/2000/svg', width='24', height='24', viewBox='0 0 24 24', fill='none', stroke='currentColor', stroke-width='2', stroke-linecap='round', stroke-linejoin='round')
-                      rect(x='3', y='4', width='18', height='18', rx='2', ry='2')
-                      line(x1='16', y1='2', x2='16', y2='6')
-                      line(x1='8', y1='2', x2='8', y2='6')
-                      line(x1='3', y1='10', x2='21', y2='10')
-                    |             This week
+              block topmenu
 
               include ../partials/flash
               .main(class=printable ? "printable" : undefined)
