@@ -49,7 +49,13 @@ class ModelTable extends Component {
               const { row, original } = props;
               return (
                 <Link to={`/admin/events/${original._id}/public`}>
-                  <img src={original.imageFormats.small} />
+                  <img
+                    src={
+                      original.imageFormats !== undefined
+                        ? original.imageFormats.small
+                        : ""
+                    }
+                  />
                   <p>{original.title}</p>
                 </Link>
               );
@@ -84,7 +90,6 @@ class ModelTable extends Component {
 
   render() {
     const { list, isFetching, errorMessage } = this.props;
-
     return (
       <div>
         {!list.length && <div>No events to display</div>}
@@ -93,7 +98,7 @@ class ModelTable extends Component {
 
         {errorMessage && <div>{errorMessage}</div>}
 
-        {list.length > 1 && this.renderTable()}
+        {list && this.renderTable()}
       </div>
     );
   }
