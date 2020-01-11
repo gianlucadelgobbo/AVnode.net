@@ -3,9 +3,9 @@ module.exports = {
   apps : [{
     name: 'AVnode',
     script: 'index.js',
-    error_file: 'err.log',
-    out_file: 'out.log',
-    log_file: 'combined.log',
+    error_file: 'avnode-err.log',
+    out_file: 'avnode-out.log',
+    log_file: 'avnode-combined.log',
     time: true,
   
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
