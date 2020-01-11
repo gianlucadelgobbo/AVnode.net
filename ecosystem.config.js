@@ -13,7 +13,7 @@ module.exports = {
     instances: 1,
     autorestart: true,
     watch: true,
-    ignore_watch: ["public","warehouse","glacier"],
+    ignore_watch: ["public","warehouse","glacier","locales","logs"],
     watch_options: {
         followSymlinks: false
     },
