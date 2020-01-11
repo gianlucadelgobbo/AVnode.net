@@ -84,7 +84,7 @@ class ModelTable extends Component {
 
   render() {
     const { list, isFetching, errorMessage } = this.props;
-
+    console.log(list);
     return (
       <div>
         {!list.length && <div>{ERROR_CREW_TO_DISPLAY}</div>}
@@ -93,7 +93,7 @@ class ModelTable extends Component {
 
         {errorMessage && <div>{errorMessage}</div>}
 
-        {list && this.renderTable()}
+        {list.length > 1 && this.renderTable()}
       </div>
     );
   }
@@ -115,9 +115,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-ModelTable = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModelTable);
+ModelTable = connect(mapStateToProps, mapDispatchToProps)(ModelTable);
 
 export default injectIntl(ModelTable);

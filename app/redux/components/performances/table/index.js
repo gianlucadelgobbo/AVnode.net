@@ -24,7 +24,7 @@ class ModelTable extends Component {
   };
 
   renderTable() {
-    const { list } = this.props;
+    const { list = {} } = this.props;
 
     const PerformanceItem = {
       label: (
@@ -102,7 +102,7 @@ class ModelTable extends Component {
 
         {errorMessage && <div>{errorMessage}</div>}
 
-        {list && this.renderTable()}
+        {list.length > 1 && this.renderTable()}
       </div>
     );
   }
@@ -124,9 +124,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-ModelTable = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModelTable);
+ModelTable = connect(mapStateToProps, mapDispatchToProps)(ModelTable);
 
 export default injectIntl(ModelTable);

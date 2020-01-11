@@ -60,9 +60,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-Performances = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Performances);
+Performances = connect(mapStateToProps, mapDispatchToProps)(Performances);
 
 export default Performances;
