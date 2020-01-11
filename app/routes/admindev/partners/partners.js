@@ -130,6 +130,7 @@ router.get('/:id', (req, res) => {
             title: 'Partners: '+user.stagename,
             currentUrl: req.originalUrl,
             map: req.query.map,
+            csv: req.query.csv,
             
             owner: req.params.id,
             events: events,
@@ -171,7 +172,7 @@ router.get('/:id/:event', (req, res) => {
           res.render('admindev/partners/organization_partners', {
             title: 'Partners: '+user.stagename,
             currentUrl: req.originalUrl,
-            
+            csv: req.query.csv,
             owner: req.params.id,
             events: events,
             event: req.params.event,

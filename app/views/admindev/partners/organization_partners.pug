@@ -6,63 +6,101 @@ block content
     include map
   else 
     include submenu
-    table.table.table-fixed
-      thead
-        tr
-          td="ID"
-          td=global.__("Brand")
-          td=global.__("Partnerships")
-          td=global.__("Channels")
-          td=global.__("Contacts")
-      tbody
-        if data.length
-          each item, index in data
-            tr
-              td=index+1
-              td
-                b!=item.stagename
-                !=" "
-                a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
-                !=" | "
-                a.unlink(href="#", data-owner=owner, data-partner=item._id)!=global.__("unlink")
-                !=" | "
-                if item.members && item.members.length
-                  a(href="/"+item.slug, target="_blank")!=global.__("view")
-                else
-                  .badge.badge-danger!="EXTERNAL"
-              td
-                if item.partnerships && item.partnerships.length
-                  - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+    if csv
+      table.table.table-fixed
+        thead
+          tr
+            td="ID"
+            td=global.__("Brand")
+            td=global.__("Partnerships")
+            td=global.__("Channels")
+            td=global.__("Contacts")
+        tbody
+          if data.length
+            each item, index in data
+              tr
+                td=index+1
+                td
+                  b!=item.stagename
+                td
+                  if item.partnerships && item.partnerships.length
+                    - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
 
-                  each partnership in item.partnerships
-                    .text-nowrap
-                      a(href="/"+partnership.slug, target="_blank")!=partnership.title
-                      !=" "
-                        
-              td
-                if item.web
-                  each web in item.web
-                    div
-                      a(href=web.url, target="_blank")!=web.url
-                if item.social
-                  each web in item.social
-                    div
-                      a(href=web.url, target="_blank")!=web.url
-              td
-                h5
-                  !="Contacts"
+                    each partnership in item.partnerships
+                      .text-nowrap!=partnership.title
+                td
+                  if item.web
+                    each web in item.web
+                      div!=web.url
+                  if item.social
+                    each web in item.social
+                      div!=web.url
+                td
+                  if item.partner_data && item.partner_data.contacts
+                    each contact in item.partner_data.contacts
+                      div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
+                  if item.members && item.members.length
+                    each contact in item.members
+                      div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
+
+    else 
+      table.table.table-fixed
+        thead
+          tr
+            td="ID"
+            td=global.__("Brand")
+            td=global.__("Partnerships")
+            td=global.__("Channels")
+            td=global.__("Contacts")
+        tbody
+          if data.length
+            each item, index in data
+              tr
+                td=index+1
+                td
+                  b!=item.stagename
                   !=" "
-                  // Button trigger modal
-                  button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-                if item.partner_data && item.partner_data.contacts
-                  each contact in item.partner_data.contacts
-                    div
-                      a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-                if item.members && item.members.length
-                  h5="Members"
-                  each contact in item.members
-                    div
-                      a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+                  a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+                  !=" | "
+                  a.unlink(href="#", data-owner=owner, data-partner=item._id)!=global.__("unlink")
+                  !=" | "
+                  if item.members && item.members.length
+                    a(href="/"+item.slug, target="_blank")!=global.__("view")
+                  else
+                    .badge.badge-danger!="EXTERNAL"
+                td
+                  if item.partnerships && item.partnerships.length
+                    - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+
+                    each partnership in item.partnerships
+                      .text-nowrap
+                        a(href="/"+partnership.slug, target="_blank")!=partnership.title
+                        !=" "
+                          
+                td
+                  if item.web
+                    each web in item.web
+                      div
+                        a(href=web.url, target="_blank")!=web.url
+                  if item.social
+                    each web in item.social
+                      div
+                        a(href=web.url, target="_blank")!=web.url
+                td
+                  h5
+                    !="Contacts"
+                    !=" "
+                    // Button trigger modal
+                    button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
+                  if item.partner_data && item.partner_data.contacts
+                    each contact in item.partner_data.contacts
+                      div
+                        a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+                  if item.members && item.members.length
+                    h5="Members"
+                    each contact in item.members
+                      div
+                        a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
 
   // Modal Add Partner
   #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
