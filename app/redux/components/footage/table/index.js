@@ -53,7 +53,11 @@ class ModelTable extends Component {
                   <img
                     height={140}
                     className="image-responsive"
-                    src={original.imageFormats.small}
+                    src={
+                      original.imageFormats !== undefined
+                        ? original.imageFormats.small
+                        : ""
+                    }
                   />
                   <p>{row.title}</p>
                 </Link>
@@ -98,7 +102,7 @@ class ModelTable extends Component {
 
         {errorMessage && <div>{errorMessage}</div>}
 
-        {list.length > 1 && this.renderTable()}
+        {list && this.renderTable()}
       </div>
     );
   }

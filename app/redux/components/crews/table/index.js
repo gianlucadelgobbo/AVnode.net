@@ -49,7 +49,14 @@ class ModelTable extends Component {
               const { row, original } = props;
               return (
                 <Link to={`/admin/crews/${original._id}/public`}>
-                  <img src={original.imageFormats.small} />
+                  <img
+                    className="image-responsive"
+                    src={
+                      original.imageFormats !== undefined
+                        ? original.imageFormats.small
+                        : ""
+                    }
+                  />
                   <p>{row.stagename}</p>
                 </Link>
               );
@@ -93,7 +100,7 @@ class ModelTable extends Component {
 
         {errorMessage && <div>{errorMessage}</div>}
 
-        {list.length > 1 && this.renderTable()}
+        {list && this.renderTable()}
       </div>
     );
   }
