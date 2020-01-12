@@ -32,27 +32,31 @@ const makeDescription = (abouts) => {
 };
 
 const dateFix = (date) => { 
-  const dateA = date.split("/");
-  const day = parseInt(dateA[0]);
-  const month = parseInt(dateA[1])-1;
-  const year = parseInt(dateA[2]);
-  const dateO = new Date(year,month,day,2,0,0);
-  logger.debug('birthday');
-  logger.debug(date);
-  logger.debug(dateO);
-  logger.debug("day");
-  logger.debug(day);
-  logger.debug(dateO.getDate());
-  logger.debug("month");
-  logger.debug(month);
-  logger.debug(dateO.getMonth());
-  logger.debug("year");
-  logger.debug(year);
-  logger.debug(dateO.getFullYear());
-  if (year !== dateO.getFullYear() || month !== dateO.getMonth() || day !== dateO.getDate()) {
+  if (!date) {
     return false;
   } else {
-    return dateO;
+    const dateA = date.split("/");
+    const day = parseInt(dateA[0]);
+    const month = parseInt(dateA[1])-1;
+    const year = parseInt(dateA[2]);
+    const dateO = new Date(year,month,day,2,0,0);
+    logger.debug('birthday');
+    logger.debug(date);
+    logger.debug(dateO);
+    logger.debug("day");
+    logger.debug(day);
+    logger.debug(dateO.getDate());
+    logger.debug("month");
+    logger.debug(month);
+    logger.debug(dateO.getMonth());
+    logger.debug("year");
+    logger.debug(year);
+    logger.debug(dateO.getFullYear());
+    if (year !== dateO.getFullYear() || month !== dateO.getMonth() || day !== dateO.getDate()) {
+      return false;
+    } else {
+      return dateO;
+    }
   }
 };
 
