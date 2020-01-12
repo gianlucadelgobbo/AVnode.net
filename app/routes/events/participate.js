@@ -144,13 +144,13 @@ router.post('/', (req, res) => {
                   }
                   logger.debug('performances '+performances.length);
                   logger.debug('admitted '+admittedA.length);
-                  //logger.debug(admitted);
+                  logger.debug(admitted);
+                  req.session.call.index = parseInt(req.body.index);
                   if (admittedA.length) {
                     req.session.call.step = parseInt(req.body.step)+1;
-                    req.session.call.index = parseInt(req.body.index);
                     req.session.call.admitted = admittedA;
                   } else {
-                    msg = {e:[{name:'index', m:__('Warning: You have no performance eligible for the call selected. Please create a performance and come back.')+" <a href=\"/admin/performances\">"+__("CREATE YOUR PERFORMANCE NOW")+"</a>"}]};
+                    msg = {e:[{name:'index', m:__('Warning: You need at least one performance of this types to participate to the call selected: <b>'+ data.organizationsettings.call.calls[req.body.index].admitted.map(a => a.name.toString()).join(", ") +'</b>. Please create a performance and come back.')+" <a href=\"/admin/performances\">"+__("CREATE YOUR PERFORMANCE NOW")+"</a>"}]};
                     logger.debug('STOCAZZO 1');
                     logger.debug(msg);
                   }

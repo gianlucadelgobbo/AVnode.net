@@ -19,12 +19,42 @@ const Models = {
 const logger = require('../../../utilities/logger');
 
 router.setStatsAndActivity = function(query) {
+  logger.debug('setStatsAndActivity');
+  logger.debug(query);
+  return new Promise(function (resolve, reject) {
+    //let query = JSON.parse('{"q": '+req.body.q+'}').q;
+    Models['User'].
+    find(query).
+    exec((err, e) => {
+      logger.debug('setStatsAndActivity');
+      logger.debug(query);
+      logger.debug(e.length);
+      var promises = [];
+      for (var item=0; item<e.length; item++) promises.push(router.setStatsAndActivitySingle({_id: e[item]._id}));
+      Promise.all(
+        promises
+      ).then( (resultsPromise) => {
+        setTimeout(function() {
+          logger.debug('resultsPromise');
+          logger.debug(resultsPromise);
+          resolve(resultsPromise);
+        }, 1000);
+      });
+
+    });
+  });
+}
+
+router.setStatsAndActivitySingle = function(query) {
+  logger.debug('setStatsAndActivitySingle');
+  logger.debug(query);
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
     Models['User'].
     findOne(query).
     exec((err, e) => {
       var myids = [e._id];
+      logger.debug('setStatsAndActivity start');
       Promise.all([
         Models['Event'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
         Models['Event'].find({"partners.users": {$in: myids}, "is_public": true}).select("_id"),

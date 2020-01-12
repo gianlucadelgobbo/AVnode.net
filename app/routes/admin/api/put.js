@@ -65,34 +65,48 @@ router.putData = (req, res) => {
               if (err) {
                 res.status(400).json(err);
               } else {
-                select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
-                let populate = config.cpanel[req.params.sez].forms[req.params.form].populate;
-    
-                Models[config.cpanel[req.params.sez].model]
-                .findById(id)
-                .select(select)
-                .populate(populate)
-                .exec((err, data) => {
-                  if (err) {
-                    res.status(500).json({ error: `${JSON.stringify(err)}` });
-                  } else {
-                    if (!data) {
-                      res.status(204).json({ error: `DOC_NOT_FOUND` });
+                logger.debug('USERS ?');
+                logger.debug(data.users);
+                logger.debug('MEMBERS ?');
+                logger.debug(data.members);
+                var query = {_id: {$in:data.users || data.members}};
+                Promise.all(
+                  [helpers.setStatsAndActivity(query)]
+                ).then( (results) => {
+                  select = Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
+                  let populate = config.cpanel[req.params.sez].forms[req.params.form].populate;
+      
+                  Models[config.cpanel[req.params.sez].model]
+                  .findById(id)
+                  .select(select)
+                  .populate(populate)
+                  .exec((err, data) => {
+                    if (err) {
+                      res.status(500).json({ error: `${JSON.stringify(err)}` });
                     } else {
-                      let send = {_id: data._id};
-                      for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
-                      res.json(send);
-                      /* if (data.emails && data.emails.filter(item => item.mailinglists) && data.emails.filter(item => item.mailinglists).length) {
-                        router.updateSendy(data, req, (err) => {
-                          let send = {_id: data._id};
-                          for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
-                          res.json(send);
-                        });
+                      if (!data) {
+                        res.status(204).json({ error: `DOC_NOT_FOUND` });
                       } else {
-                      } */
+                        let send = {_id: data._id};
+                        for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+                        res.json(send);
+                        /* if (data.emails && data.emails.filter(item => item.mailinglists) && data.emails.filter(item => item.mailinglists).length) {
+                          router.updateSendy(data, req, (err) => {
+                            let send = {_id: data._id};
+                            for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+                            res.json(send);
+                          });
+                        } else {
+                        } */
+                      }
                     }
-                  }
+                  });
                 });
+  
+
+
+
+
               }
             });
           } else {

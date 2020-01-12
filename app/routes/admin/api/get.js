@@ -214,7 +214,7 @@ router.getDelete = (req, res) => {
                   ).then( (resultsPromise) => {
                     results.setStatsAndActivity = resultsPromise;
                     res.json(results);
-                });
+                  });
                 break;
                 case "videos" :
                   results.Videos = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});

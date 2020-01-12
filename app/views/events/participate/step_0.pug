@@ -1,5 +1,7 @@
 #accordionCalls.accordion
   // Active calls
+  - console.log("call")
+  - console.log(call)
   - for(var a=0;a<dett.organizationsettings.call.calls.length;a++)
     - var admitted = []
     - for(var b=0;b<dett.organizationsettings.call.calls[a].admitted.length;b++)
@@ -17,7 +19,7 @@
           h4=dett.organizationsettings.call.calls[a].title
           p
             b=global.__("Deadline")+": "+dett.organizationsettings.call.calls[a].end_date_formatted
-      .row.collapse.card-body(aria-labelledby='heading'+a, data-parent='#accordionCalls',id="collapse"+a)
+      .row.collapse.card-body(class=call.index==a ? "show" : undefined, aria-labelledby='heading'+a, data-parent='#accordionCalls',id="collapse"+a)
         .col-sm-1
         .col-sm-11
           p=global.__("Start date")+": "+dett.organizationsettings.call.calls[a].start_date_formatted
