@@ -342,7 +342,8 @@
             }
           },
           "select": {
-            "image": 1
+            "image": 1,
+            "users": 1
           },
           "selectaddon": {
             "slug": 1,
@@ -655,7 +656,8 @@
             }
           },
           "select": {
-            "image": 1
+            "image": 1,
+            "users": 1
           },
           "selectaddon": {
             "slug": 1,
@@ -1119,7 +1121,8 @@
             }
           },
           "select": {
-            "image": 1
+            "image": 1,
+            "users": 1
           },
           "selectaddon": {
             "slug": 1,
@@ -2863,7 +2866,8 @@
             }
           },
           "select": {
-            "image": 1
+            "image": 1,
+            "users": 1
           },
           "selectaddon": {
             "slug": 1,
@@ -3134,7 +3138,8 @@
             }
           },
           "select": {
-            "image": 1
+            "image": 1,
+            "users": 1
           },
           "selectaddon": {
             "slug": 1,

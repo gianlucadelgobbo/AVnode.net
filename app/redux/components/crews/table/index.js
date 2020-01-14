@@ -94,7 +94,10 @@ class ModelTable extends Component {
     console.log(list);
     return (
       <div>
-        {!list.length && <div>{ERROR_CREW_TO_DISPLAY}</div>}
+        {!list.length && <div>{<FormattedMessage
+                                id="label.error.crew.to.display"
+                                defaultMessage="No Crew to display"
+                            />}</div>}
 
         {isFetching && <Loading />}
 
