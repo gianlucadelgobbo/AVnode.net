@@ -2,8 +2,8 @@ import * as api from "../../../api";
 import { news } from "../schema";
 import {
   fetchModel as generateFetchModel,
-  saveModel as generateSaveModel,
-  removeModel as generateRemoveModel
+  saveModel as generateSaveModel/* ,
+  removeModel as generateRemoveModel */
 } from "../../../actions";
 import * as selectors from "../selectors";
 import * as constants from "../constants";
@@ -26,7 +26,7 @@ export const saveModel = model =>
     model
   });
 
-export const uploadModel = model =>
+/* export const uploadModel = model =>
   generateSaveModel({
     selectors,
     constants,
@@ -42,4 +42,4 @@ export const removeModel = model =>
     request: api.removeNewsPublic,
     schema: news,
     model
-  });
+  }); */

@@ -1,0 +1,475 @@
+2020-01-14T20:43:35: (node:2704) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:35: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:35:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:35:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:35:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:35:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:35:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:35:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:35:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:35:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:35:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:35:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:35:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:35:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:35:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:35:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:35:   name: 'MongoError',
+2020-01-14T20:43:35:   message:
+2020-01-14T20:43:35:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:37: (node:2717) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:37: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:37:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:37:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:37:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:37:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:37:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:37:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:37:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:37:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:37:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:37:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:37:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:37:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:37:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:37:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:37:   name: 'MongoError',
+2020-01-14T20:43:37:   message:
+2020-01-14T20:43:37:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:40: (node:2724) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:40: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:40:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:40:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:40:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:40:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:40:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:40:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:40:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:40:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:40:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:40:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:40:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:40:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:40:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:40:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:40:   name: 'MongoError',
+2020-01-14T20:43:40:   message:
+2020-01-14T20:43:40:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:42: (node:2735) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:42: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:42:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:42:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:42:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:42:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:42:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:42:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:42:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:42:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:42:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:42:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:42:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:42:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:42:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:42:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:42:   name: 'MongoError',
+2020-01-14T20:43:42:   message:
+2020-01-14T20:43:42:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:44: (node:2738) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:44: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:44:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:44:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:44:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:44:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:44:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:44:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:44:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:44:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:44:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:44:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:44:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:44:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:44:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:44:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:44:   name: 'MongoError',
+2020-01-14T20:43:44:   message:
+2020-01-14T20:43:44:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:46: (node:2744) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:46: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:46:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:46:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:46:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:46:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:46:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:46:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:46:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:46:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:46:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:46:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:46:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:46:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:46:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:46:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:46:   name: 'MongoError',
+2020-01-14T20:43:46:   message:
+2020-01-14T20:43:46:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:47: (node:2752) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:47: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:47:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:47:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:47:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:47:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:47:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:47:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:47:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:47:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:47:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:47:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:47:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:47:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:47:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:47:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:47:   name: 'MongoError',
+2020-01-14T20:43:47:   message:
+2020-01-14T20:43:47:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:49: (node:2755) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:49: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:49:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:49:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:49:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:49:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:49:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:49:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:49:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:49:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:49:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:49:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:49:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:49:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:49:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:49:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:49:   name: 'MongoError',
+2020-01-14T20:43:49:   message:
+2020-01-14T20:43:49:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:51: (node:2766) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:51: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:51:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:51:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:51:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:51:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:51:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:51:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:51:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:51:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:51:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:51:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:51:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:51:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:51:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:51:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:51:   name: 'MongoError',
+2020-01-14T20:43:51:   message:
+2020-01-14T20:43:51:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:53: (node:2770) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:53: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:53:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:53:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:53:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:53:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:53:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:53:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:53:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:53:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:53:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:53:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:53:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:53:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:53:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:53:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:53:   name: 'MongoError',
+2020-01-14T20:43:53:   message:
+2020-01-14T20:43:53:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:55: (node:2773) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:55: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:55:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:55:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:55:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:55:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:55:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:55:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:55:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:55:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:55:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:55:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:55:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:55:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:55:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:55:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:55:   name: 'MongoError',
+2020-01-14T20:43:55:   message:
+2020-01-14T20:43:55:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:57: (node:2785) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:57: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:57:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:57:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:57:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:57:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:57:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:57:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:57:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:57:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:57:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:57:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:57:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:57:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:57:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:57:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:57:   name: 'MongoError',
+2020-01-14T20:43:57:   message:
+2020-01-14T20:43:57:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:43:59: (node:2789) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:43:59: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:43:59:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:43:59:     at Pool.emit (events.js:189:13)
+2020-01-14T20:43:59:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:59:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:43:59:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:59:     at Connection.emit (events.js:189:13)
+2020-01-14T20:43:59:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:59:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:43:59:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:43:59:     at Socket.emit (events.js:189:13)
+2020-01-14T20:43:59:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:43:59:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:43:59:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:43:59:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:43:59:   name: 'MongoError',
+2020-01-14T20:43:59:   message:
+2020-01-14T20:43:59:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:01: (node:2800) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:01: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:01:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:01:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:01:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:01:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:01:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:01:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:01:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:01:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:01:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:01:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:01:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:01:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:01:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:01:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:01:   name: 'MongoError',
+2020-01-14T20:44:01:   message:
+2020-01-14T20:44:01:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:03: (node:2803) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:03: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:03:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:03:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:03:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:03:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:03:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:03:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:03:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:03:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:03:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:03:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:03:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:03:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:03:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:03:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:03:   name: 'MongoError',
+2020-01-14T20:44:03:   message:
+2020-01-14T20:44:03:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:05: (node:2806) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:05: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:05:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:05:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:05:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:05:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:05:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:05:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:05:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:05:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:05:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:05:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:05:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:05:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:05:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:05:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:05:   name: 'MongoError',
+2020-01-14T20:44:05:   message:
+2020-01-14T20:44:05:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:07: (node:2817) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:07: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:07:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:07:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:07:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:07:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:07:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:07:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:07:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:07:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:07:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:07:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:07:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:07:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:07:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:07:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:07:   name: 'MongoError',
+2020-01-14T20:44:07:   message:
+2020-01-14T20:44:07:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:09: (node:2820) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:09: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:09:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:09:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:09:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:09:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:09:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:09:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:09:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:09:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:09:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:09:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:09:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:09:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:09:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:09:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:09:   name: 'MongoError',
+2020-01-14T20:44:09:   message:
+2020-01-14T20:44:09:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:11: (node:2825) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:11: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:11:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:11:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:11:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:11:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:11:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:11:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:11:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:11:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:11:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:11:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:11:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:11:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:11:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:11:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:11:   name: 'MongoError',
+2020-01-14T20:44:11:   message:
+2020-01-14T20:44:11:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:13: (node:2839) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:13: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:13:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:13:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:13:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:13:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:13:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:13:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:13:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:13:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:13:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:13:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:13:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:13:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:13:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:13:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:13:   name: 'MongoError',
+2020-01-14T20:44:13:   message:
+2020-01-14T20:44:13:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:15: (node:2842) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:15: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:15:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:15:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:15:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:15:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:15:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:15:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:15:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:15:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:15:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:15:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:15:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:15:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:15:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:15:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:15:   name: 'MongoError',
+2020-01-14T20:44:15:   message:
+2020-01-14T20:44:15:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:17: (node:2853) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:17: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:17:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:17:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:17:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:17:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:17:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:17:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:17:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:17:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:17:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:17:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:17:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:17:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:17:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:17:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:17:   name: 'MongoError',
+2020-01-14T20:44:17:   message:
+2020-01-14T20:44:17:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:19: (node:2856) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:19: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:19:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:19:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:19:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:19:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:19:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:19:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:19:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:19:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:19:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:19:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:19:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:19:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:19:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:19:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:19:   name: 'MongoError',
+2020-01-14T20:44:19:   message:
+2020-01-14T20:44:19:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:21: (node:2857) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:21: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:21:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:21:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:21:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:21:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:21:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:21:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:21:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:21:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:21:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:21:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:21:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:21:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:21:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:21:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:21:   name: 'MongoError',
+2020-01-14T20:44:21:   message:
+2020-01-14T20:44:21:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
+2020-01-14T20:44:22: (node:2868) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+2020-01-14T20:44:22: { MongoError: failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]
+2020-01-14T20:44:22:     at Pool.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/topologies/server.js:336:35)
+2020-01-14T20:44:22:     at Pool.emit (events.js:189:13)
+2020-01-14T20:44:22:     at Pool.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:22:     at Connection.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/pool.js:280:12)
+2020-01-14T20:44:22:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:22:     at Connection.emit (events.js:189:13)
+2020-01-14T20:44:22:     at Connection.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:22:     at Socket.<anonymous> (/Users/gianlucadelgobbo/GitHub/AVnode3.net/node_modules/mongodb-core/lib/connection/connection.js:189:49)
+2020-01-14T20:44:22:     at Object.onceWrapper (events.js:277:13)
+2020-01-14T20:44:22:     at Socket.emit (events.js:189:13)
+2020-01-14T20:44:22:     at Socket.EventEmitter.emit (domain.js:441:20)
+2020-01-14T20:44:22:     at emitErrorNT (internal/streams/destroy.js:82:8)
+2020-01-14T20:44:22:     at emitErrorAndCloseNT (internal/streams/destroy.js:50:3)
+2020-01-14T20:44:22:     at process._tickCallback (internal/process/next_tick.js:63:19)
+2020-01-14T20:44:22:   name: 'MongoError',
+2020-01-14T20:44:22:   message:
+2020-01-14T20:44:22:    'failed to connect to server [127.0.0.1:27017] on first connect [MongoError: connect ECONNREFUSED 127.0.0.1:27017]' }
