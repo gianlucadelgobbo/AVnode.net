@@ -194,12 +194,16 @@ router.editable = function(req, data, id) {
   if (!req.user) {
     return false;
   } else {
-    let meandcrews = req.user.crews && req.user.crews.length ? req.user.crews.map((item)=>{return item}) : [];
-    meandcrews.push(req.user._id);
-    const editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id}).some(v=> meandcrews.indexOf(v) !== -1)));
+    let meandcrews = req.user.crews && req.user.crews.length ? req.user.crews.map((item)=>{return item.toString()}) : [];
+    meandcrews.push(req.user._id.toString());
+    const editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
     logger.debug('editable');
     logger.debug(editable);
-    return editable;
+/*     logger.debug(data.users);
+    logger.debug(data.users.map((item)=>{return item._id.toString()}));
+    logger.debug(meandcrews);
+    logger.debug((data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
+ */    return editable;
   }
 }
 
