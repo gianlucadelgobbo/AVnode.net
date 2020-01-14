@@ -299,7 +299,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
           for(let b=0; b<res.advanced.programmebydayvenue[a].rooms.length;b++) {
             let performances = [];
             for(let c=0; c<res.advanced.programmebydayvenue[a].rooms[b].performances.length;c++) {
-              if (res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type.slug===req.params.type) {
+              if (res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type && res.advanced.programmebydayvenue[a].rooms[b].performances[c].performance.type.slug===req.params.type) {
                 performances.push(res.advanced.programmebydayvenue[a].rooms[b].performances[c]);
               }
             }

@@ -199,11 +199,11 @@ router.editable = function(req, data, id) {
     const editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
     logger.debug('editable');
     logger.debug(editable);
-    logger.debug(data);
+    /* logger.debug(data);
     if (data.users) logger.debug(data.users.map((item)=>{return item._id.toString()}));
     logger.debug(meandcrews);
     logger.debug((data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
-    return editable;
+     */return editable;
   }
 }
 
