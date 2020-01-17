@@ -19,7 +19,8 @@ block content
         - for(let a=0;a<=data.daysN;a++)
           - var d = new Date(data.days[0])
           - var dd = new Date(d.setDate(d.getDate() + a))
-          th=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
+          th(style="width:40px;")
+            div(style="width: 60px;transform: rotate(-58deg);height: 20px;position: relative;top: -10px;left: -10px;")=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][dd.getMonth()]+" "+dd.getDate()
     tbody
       - var conta = 0
       each subscription, index in data.subscriptions
