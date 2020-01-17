@@ -229,7 +229,7 @@ textarea#styled {
 .table-fixed {
   table-layout: fixed;
 }
-.table-fixed td:first-child {
+.table-fixed td:first-child, .table-fixed th:first-child {
   width: 50px;
 }
 .table-fixed td {
@@ -658,4 +658,16 @@ div.ReactTags__selected a.ReactTags__remove {
     padding-bottom: 10px;
     float: right;
   }
+}
+.connectedSortable{
+  color: #000;
+  background-color: #999;
+  min-height: 100px;
+}
+#app .connectedSortable .list-group-item{
+  background-color: #FFF;
+  margin: 3px 3px 0 3px;
+}
+#app .connectedSortable .list-group-item:last-child{
+  margin: 3px 3px 3px 3px;
 }

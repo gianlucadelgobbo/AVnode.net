@@ -8,8 +8,32 @@ block content
   - var emails_noaddress = []
   - var emails_notext = []
   - var emails_noname = []
+  - var counters = {Total:{}, Type: {}, Status:{}, Schedule: {"Scheduled": 0, "Not scheduled": 0}}
 
   include ./_filters
+
+  - counters.Total.Submissions = data.program.length
+  each item, index in data.program
+    - if (!counters.Type[item.performance.type.name]) counters.Type[item.performance.type.name] = 0
+    - counters.Type[item.performance.type.name]++
+    if item.schedule && item.schedule.length && item.schedule[0].boxDate
+      - counters.Schedule.Scheduled++
+    else
+      - counters.Schedule["Not scheduled"]++
+    each status in data.status
+      - if (item.status._id.toString()==status._id.toString()) {
+        - if(!counters.Status[status.name]) counters.Status[status.name] = 0
+        - counters.Status[status.name]++
+      - }
+
+  .row
+    each counter, countername in counters
+      .col
+        b=countername
+        ul
+          each item, index in counter
+            li!=index+": <b>"+item+"</b>"
+
   if data.performnce_missing
     pre=data.performnce_missing
   - var people = []
