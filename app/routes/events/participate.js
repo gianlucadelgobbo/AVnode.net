@@ -324,7 +324,7 @@ router.post('/', (req, res) => {
             };
             for (var a=0; a<req.session.call.subscriptions.length; a++) {
               if (req.session.call.subscriptions[a].subscriber_id){
-                if (req.session.call.subscriptions[a].packages[0].personal) {
+                if (req.session.call.subscriptions[a].packages && req.session.call.subscriptions[a].packages.length && req.session.call.subscriptions[a].packages[0].personal) {
                   var sub = JSON.parse(JSON.stringify(req.session.call.subscriptions[a]));
                   sub.packages = req.session.call.subscriptions[a].packages;
                 } else {

@@ -10,11 +10,11 @@ block content
     thead
       tr
         th="ID"
-        th="Status"
+        th(style="width: 210px;")="Status"
         th="Submission"
         th="Person"
         if get['subscriptions.packages.name'] == "Accommodation"
-          th="Accommodation"
+          th(style="width: 210px;")="Accommodation"
         th="Packages"
         - for(let a=0;a<=data.daysN;a++)
           - var d = new Date(data.days[0])
