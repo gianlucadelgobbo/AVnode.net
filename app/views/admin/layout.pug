@@ -44,6 +44,9 @@ html(lang=session.current_lang)
       .text-muted.text-right=global.__('AVnode.net')
     include ../partials/modals/modalGeneral
 
+    if paypal
+      script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
+
     script(src='/js/combo.min.js')
     script(src="/js/admindev.js")
     script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
