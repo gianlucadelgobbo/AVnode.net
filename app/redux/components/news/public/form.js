@@ -6,6 +6,7 @@ import { FORM_NAME, SECTION } from "./constants";
 import {
   inputText,
   textareaMultiTab,
+  checkboxField,
   /* tagsInput, */
   fieldWithLabel
 } from "../../common/form/components";
@@ -16,6 +17,7 @@ import {
   ABOUT,
   NEWS_NAME,
   NEWS_URL,
+  IS_PUBLIC,
   NEWS_URL_PRE,
   NEWS_URL_HELP,
   AUTHORS /* ,
@@ -70,6 +72,13 @@ class NewsPublicForm extends Component {
           placeholder={this.getIntlString({ id: ABOUT })}
         />
 
+        <br />
+
+        <Field
+          name="is_public"
+          component={checkboxField}
+          placeholder={this.getIntlString({ id: IS_PUBLIC })}
+        />
         <br />
 
         <FieldArray

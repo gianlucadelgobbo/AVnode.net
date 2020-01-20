@@ -60,6 +60,8 @@ class NewsPublic extends Component {
     //clone obj
     let model = Object.assign({}, values) || {};
 
+    model.is_public = model.is_public;
+
     /* const { tags } = this.state;
 
     model.tags = tags.map(m => ({ old_id: m.id, tag: m.text })); */
@@ -98,6 +100,8 @@ class NewsPublic extends Component {
     f.abouts = populateMultiLanguageObject("abouts", abouts);
 
     f.users = model.users || [];
+    
+    f.is_public = model.is_public;
 
     /* f.tags = model.tags || [];
     f.tags = [];
