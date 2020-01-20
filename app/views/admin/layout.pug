@@ -29,6 +29,9 @@ html(lang=session.current_lang)
 
     link(rel='stylesheet', href='/css/admin.css')
     link(rel='stylesheet', href='/css/admindev.css')
+    
+    if paypal
+      script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
 
   body
     #top
@@ -43,9 +46,6 @@ html(lang=session.current_lang)
     footer
       .text-muted.text-right=global.__('AVnode.net')
     include ../partials/modals/modalGeneral
-
-    if paypal
-      script(src="https://www.paypal.com/sdk/js?client-id="+process.env.PAYPAL_CLIENT_ID+"&currency=EUR")
 
     script(src='/js/combo.min.js')
     script(src="/js/admindev.js")
