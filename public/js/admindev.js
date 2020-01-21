@@ -175,10 +175,7 @@ $(function() {
       method: "post",
       data: data
     }).done(function(res) {
-      if (!res.info) {
-        alert("Some error occurred: "+res.err);
-      } 
-      //console.log(res);
+      console.log(res);
     });
   });
   $(".option_selected_hotel_room").blur(function(ev) {
@@ -231,8 +228,11 @@ $(function() {
         url: "/admin/api/subscriptionupdate",
         method: "post",
         data: {id:id, status:status}
-      }).done(function(data) {
-        //console.log("#"+id);
+      }).done(function(res) {
+        if (!res.info) {
+          alert("Some error occurred: "+res.err);
+        }  
+        console.log(data);
       });
     } 
   });

@@ -445,6 +445,8 @@ router.updateProgram = (req, res) => {
 
 
 router.updateSubscription = (req, res) => {
+  console.log("updateSubscription");
+
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 
   // 1b. Import the PayPal SDK client that was created in `Set up the Server SDK`.
@@ -524,6 +526,7 @@ router.updateSubscription = (req, res) => {
     .select({schedule: 1, call: 1, event: 1})
     .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, sub) => {
+      console.log(sub);
       Models.Event
       .findOne({_id: sub.event})
       .select({program: 1, organizationsettings: 1})
@@ -547,37 +550,45 @@ router.updateSubscription = (req, res) => {
         };
         sub.status = req.body.status;
         sub.save(function(err){
+          console.log("sub.save");
+          console.log(sub.call);
           //event.save(function(err){
-            if (sub.call && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
-              const auth = {
-                user: event.organizationsettings.call.calls[sub.call].email,
-                pass: event.organizationsettings.call.calls[sub.call].emailpassword
-              };
-              let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
-              if (req.body.status == "5be8708afc3961000000019e") {
-                email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/"+req.user.id+"/subscriptions ";
-              } else {
-                email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/"+req.user.id+"/subscriptions "; 
-              }
-              email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
-              const mail = {
-                from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
-                to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
-                subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
-                text: email
-              };
-              gmailer.gMailer({auth:auth, mail:mail}, function (result){
-                console.log("gMailer")
-                console.log(result)
-                res.json({res:result});
-                /* if (err) {
-                  logger.debug("Email sending failure");
-                  res.json({error: true, msg: "Email sending failure"});
+            if(!err) {
+              if (sub.call && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
+                const auth = {
+                  user: event.organizationsettings.call.calls[sub.call].email,
+                  pass: event.organizationsettings.call.calls[sub.call].emailpassword
+                };
+                let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
+                if (req.body.status == "5be8708afc3961000000019e") {
+                  email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/"+req.user.id+"/subscriptions ";
                 } else {
-                  logger.debug("Email sending OK");
-                  res.json({error: false, msg: "Email sending success"});
-                } */
-              });
+                  email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/"+req.user.id+"/subscriptions "; 
+                }
+                email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
+                const mail = {
+                  from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
+                  to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
+                  subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
+                  text: email
+                };
+                console.log("pre gMailer")
+                gmailer.gMailer({auth:auth, mail:mail}, function (result){
+                  console.log("gMailer");
+                  console.log(result);
+                  res.json({res:result});
+                  /* if (err) {
+                    logger.debug("Email sending failure");
+                    res.json({error: true, msg: "Email sending failure"});
+                  } else {
+                    logger.debug("Email sending OK");
+                    res.json({error: false, msg: "Email sending success"});
+                  } */
+                });
+              } else {
+                console.log("stocazzo")
+                res.json({err:err});
+              }
             } else {
               res.json({err:err});
             }
