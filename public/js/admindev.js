@@ -890,7 +890,7 @@ $(document).ready(function() {
             // Insert your code here
           }
         );
-      }, {scope: "user_birthday, user_hometown, user_location, user_likes, user_events, user_videos, user_friends, user_status, user_tagged_places, user_posts, user_gender, user_link, user_age_range, email, read_insights, publish_video, manage_pages, pages_manage_cta, pages_manage_instant_articles, pages_show_list, publish_pages, read_page_mailboxes, business_management, pages_messaging, pages_messaging_phone_number, instagram_basic, instagram_manage_comments, instagram_manage_insights, publish_to_groups, groups_access_member_info, leads_retrieval, public_profile"});
+      }, {scope: "groups_access_member_info"});
     });
 
   }
