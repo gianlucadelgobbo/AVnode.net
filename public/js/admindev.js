@@ -838,3 +838,60 @@ const request = (url, method, payload, cb) => {
     //window.location.reload();
   });
 } */
+
+
+function compare( a, b ) {
+  if ( a.unread < b.unread ){
+    return 1;
+  }
+  if ( a.unread > b.unread ){
+    return -1;
+  }
+  return 0;
+}
+function compare2( a, b ) {
+  if ( a.name < b.name ){
+    return -1;
+  }
+  if ( a.name > b.name ){
+    return 1;
+  }
+  return 0;
+}
+$(document).ready(function() {
+  if ($("#groups")) {
+    $.ajaxSetup({ cache: true });
+    $.getScript('https://connect.facebook.net/en_US/sdk.js', function(){
+      FB.init({
+        appId: '1243968378972425',
+        version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+      });
+      FB.getLoginStatus(function(response) {
+          console.log(response);
+      });
+      FB.login(function(response) {
+        FB.api(
+          '/me/groups',
+          'GET',
+          {
+            "fields":"name,unread,member_count",
+            "limit":"10000"
+          },
+          function(response) {
+            response.data.sort(compare2).sort(compare);
+            var str = "<table class=\"table\">";
+            str+= "<thead><tr><td>N</td><td>Name</td><td>URL</td><td>Unread</td></tr></thead><tbody>";
+            response.data.forEach((item, index)=>{
+              str+= "<tr><td>"+index+"</td><td>"+item.name+"</td><td><a href=\"https://www.facebook.com/groups/"+item.id+"/\" target=\"_blank\">"+item.id+"<a></td><td>"+item.unread+"</td></tr>";
+            });
+            str+= "</tbody></table>";
+            $("#groups").html(str);
+            console.log(response);
+            // Insert your code here
+          }
+        );
+      }, {scope: "user_birthday, user_hometown, user_location, user_likes, user_events, user_videos, user_friends, user_status, user_tagged_places, user_posts, user_gender, user_link, user_age_range, email, read_insights, publish_video, manage_pages, pages_manage_cta, pages_manage_instant_articles, pages_show_list, publish_pages, read_page_mailboxes, business_management, pages_messaging, pages_messaging_phone_number, instagram_basic, instagram_manage_comments, instagram_manage_insights, publish_to_groups, groups_access_member_info, leads_retrieval, public_profile"});
+    });
+
+  }
+});
