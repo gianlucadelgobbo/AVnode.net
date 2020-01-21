@@ -175,6 +175,9 @@ $(function() {
       method: "post",
       data: data
     }).done(function(res) {
+      if (!res.info) {
+        alert("Some error occurred: "+res.err);
+      } 
       //console.log(res);
     });
   });

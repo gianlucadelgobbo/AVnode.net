@@ -555,9 +555,9 @@ router.updateSubscription = (req, res) => {
               };
               let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
               if (req.body.status == "5be8708afc3961000000019e") {
-                email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
+                email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/"+req.user.id+"/subscriptions ";
               } else {
-                email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
+                email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/"+req.user.id+"/subscriptions "; 
               }
               email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
               const mail = {
@@ -566,8 +566,10 @@ router.updateSubscription = (req, res) => {
                 subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
                 text: email
               };
-              gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-                res.json({err:err, res:result});
+              gmailer.gMailer({auth:auth, mail:mail}, function (result){
+                console.log("gMailer")
+                console.log(result)
+                res.json({res:result});
                 /* if (err) {
                   logger.debug("Email sending failure");
                   res.json({error: true, msg: "Email sending failure"});
