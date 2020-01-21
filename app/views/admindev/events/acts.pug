@@ -104,10 +104,12 @@ block content
                     !="GENRE: "
                     b=item.performance.genre.name
                     br
-                  if (item.call && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
                     !="CALL: "
+                  if (item.call>=0 && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
                     b!=data.event.organizationsettings.call.calls[item.call].title
-                    br
+                  else 
+                    .badge.badge-danger MISSING CALL
+                  br
                   !="TOPICS: "
                   if item.topics
                     b!=item.topics.join(", ")
