@@ -552,6 +552,7 @@ router.updateSubscription = (req, res) => {
         sub.save(function(err){
           console.log("sub.save");
           console.log(sub.call);
+          console.log(sub.status);
           //event.save(function(err){
             if(!err) {
               if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
@@ -561,9 +562,9 @@ router.updateSubscription = (req, res) => {
                 };
                 let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
                 if (req.body.status == "5be8708afc3961000000019e") {
-                  email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/"+req.user.id+"/subscriptions ";
+                  email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
                 } else {
-                  email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/"+req.user.id+"/subscriptions "; 
+                  email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
                 }
                 email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
                 const mail = {
