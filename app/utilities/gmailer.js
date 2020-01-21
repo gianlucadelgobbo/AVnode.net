@@ -4,7 +4,7 @@ const OAuth2 = google.auth.OAuth2;
 const logger = require('./logger');
 
 module.exports.gMailer = (data, cb) => {
-  logger.debug('gMailer ');
+  logger.debug('gMailer gMailer');
   logger.debug(data);
 
   var transporter = nodemailer.createTransport({

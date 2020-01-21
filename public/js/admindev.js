@@ -229,10 +229,10 @@ $(function() {
         method: "post",
         data: {id:id, status:status}
       }).done(function(res) {
-        if (!res.info) {
-          alert("Some error occurred: "+res.err);
+        if (res.error) {
+          alert("Some error occurred: "+res.msg);
         }  
-        console.log(data);
+        console.log(res);
       });
     } 
   });

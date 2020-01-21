@@ -554,7 +554,7 @@ router.updateSubscription = (req, res) => {
           console.log(sub.call);
           //event.save(function(err){
             if(!err) {
-              if (sub.call && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
+              if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
                 const auth = {
                   user: event.organizationsettings.call.calls[sub.call].email,
                   pass: event.organizationsettings.call.calls[sub.call].emailpassword
@@ -573,20 +573,21 @@ router.updateSubscription = (req, res) => {
                   text: email
                 };
                 console.log("pre gMailer")
-                gmailer.gMailer({auth:auth, mail:mail}, function (result){
+                gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+                  /* console.log("gMailer");
+                  console.log(err);
                   console.log("gMailer");
                   console.log(result);
-                  res.json({res:result});
-                  /* if (err) {
+                  res.json({res:result}); */
+                  if (err) {
                     logger.debug("Email sending failure");
                     res.json({error: true, msg: "Email sending failure"});
                   } else {
                     logger.debug("Email sending OK");
                     res.json({error: false, msg: "Email sending success"});
-                  } */
+                  }
                 });
               } else {
-                console.log("stocazzo")
                 res.json({err:err});
               }
             } else {
