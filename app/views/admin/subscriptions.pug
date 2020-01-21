@@ -39,7 +39,7 @@ block content
                     .row.pb-3(id='heading'+index)
                       .col-md-5
                         span.mr-2!=(index+1)
-                        button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('MORE')
+                        button.mr-2.btn.btn-primary.btn-sm.btn-inline(type='button', data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapse'+index)=global.__('MORE')
                         span
                           if item.call && item.event.organizationsettings.call.calls && item.event.organizationsettings.call.calls[item.call]
                             !=item.event.organizationsettings.call.calls[item.call].title
@@ -65,13 +65,13 @@ block content
 
                       .col-md-2
                         if item.status._id=="5c38c57d9d426a9522c15ba5"
-                          .badge.badge-info=global.__('Wait for the evaluation')
+                          .badge.badge-info.mb-2=global.__('Wait for the evaluation')
                         if item.status._id=="5be8708afc3961000000019e"
-                          .badge.badge-info=global.__('Waiting your confirm')
-                          a.mr-2.btn.btn-success.btn-sm.btn-inline(href='#pay'+index, data-toggle='collapse', data-target='#collapse'+index, aria-expanded='true', aria-controls='collapseOne')=global.__('Confirm')
+                          .badge.badge-info.mb-2=global.__('Waiting your confirm')
+                          a.mr-2.mb-2.btn.btn-success.btn-sm.btn-inline(href='#collapse'+index, data-toggle='collapse', aria-expanded='true', aria-controls='collapse'+index)=global.__('Confirm')
                         if item.status._id!="5be8708afc39610000000013"
                           button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Cancel your proposal')
-                    .collapse(id='collapse'+index, aria-labelledby='heading'+index, data-parent='#accordion')
+                    .collapse(id='collapse'+index)
                       table.table
                         tr
                           th(scope="row")

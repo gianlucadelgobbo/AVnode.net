@@ -30,7 +30,7 @@ gulp.task('compress_js_avnode', function() {
       './gulp/js/main.js' */
     ])
     .pipe(concat('combo.min.js'))
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest(config.publicDir + '/js/'));
 });
 

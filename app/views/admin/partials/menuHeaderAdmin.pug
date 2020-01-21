@@ -11,7 +11,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
         li.nav-item.mt-2.mb-2.d-block.d-lg-none(class=currentUrl==menuitem.href ? "active" : undefined)
           a.nav-link(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id))
             span(class=menuitem.icon)
-            span=menuitem.label.defaultMessage+"AAAA"
+            span=menuitem.label.defaultMessage
       li.nav-item.mt-4.mb-2.d-block.d-lg-none
         a.nav-link(href='/logout')      
           span.fas.fa-sign-out-alt.fa-fw.mr-3
