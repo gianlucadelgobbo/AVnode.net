@@ -60,6 +60,13 @@ router.get('/', (req, res) => {
     }
   });
 });
+router.get('/fb-groups', (req, res) => {
+  res.render('admindev/fb-groups', {
+    title: 'FB Groups',
+    currentUrl: req.originalUrl
+    
+  });
+});
 
 router.get('/api/*', (req, res) => {
   res.status(404).json({ error: `API_NOT_FOUND` });
@@ -68,6 +75,7 @@ router.get('/api/*', (req, res) => {
 router.get('/api', (req, res) => {
   res.status(404).json({ error: `API_NOT_FOUND` });
 });
+
 
 router.get('/*', (req, res) => {
   res.status(404).json({ error: `API_NOT_FOUND` });

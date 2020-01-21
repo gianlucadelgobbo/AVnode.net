@@ -1,0 +1,27 @@
+html
+  head
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
+    title jQuery Example
+    script.
+      $(document).ready(function() {
+      $.ajaxSetup({ cache: true });
+      $.getScript('https://connect.facebook.net/en_US/sdk.js', function(){
+        FB.init({
+          appId: '286488314048',
+          version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+        });
+        FB.api(
+          '/me/groups',
+          'GET',
+          {
+            "fields":"name,unread,member_count",
+            "limit":"10000"
+          },
+          function(response) {
+            $("#app").html(response);
+            // Insert your code here
+          });
+        });
+      });
+  body
+    pre#app!="aa"
