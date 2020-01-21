@@ -548,26 +548,8 @@ router.updateSubscription = (req, res) => {
           "5be8708afc3961000000011a": "not_accepted" ,
           "5be8708afc39610000000221": "refused from user"
         };
+        const old_status_name = sub.status.name;
         sub.status = req.body.status;
-        if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
-          const auth = {
-            user: event.organizationsettings.call.calls[sub.call].email,
-            pass: event.organizationsettings.call.calls[sub.call].emailpassword
-          };
-          let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals "+event.organizationsettings.call.calls[sub.call].title+" with "+sub.performance.title+" changed the status from " + sub.status.name + " to " + status[req.body.status] + ".";
-          if (req.body.status == "5be8708afc3961000000019e") {
-            email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
-          } else {
-            email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
-          }
-          email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
-          const mail = {
-            from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
-            to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
-            subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
-            text: email
-          };
-        }
         sub.save(function(err){
           console.log("sub.save");
           console.log(sub.call);
@@ -575,6 +557,23 @@ router.updateSubscription = (req, res) => {
           //event.save(function(err){
             if(!err) {
               if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
+                const auth = {
+                  user: event.organizationsettings.call.calls[sub.call].email,
+                  pass: event.organizationsettings.call.calls[sub.call].emailpassword
+                };
+                let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals \""+event.organizationsettings.call.calls[sub.call].title+"\" with \""+sub.performance.title+"\" changed the status from \"" + old_status_name + "\" to \"" + status[req.body.status] + "\".";
+                if (req.body.status == "5be8708afc3961000000019e") {
+                  email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
+                } else {
+                  email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
+                }
+                email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
+                const mail = {
+                  from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
+                  to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
+                  subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
+                  text: email
+                };
                 console.log("pre gMailer")
                 gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
                   /* console.log("gMailer");
