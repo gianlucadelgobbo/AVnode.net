@@ -859,7 +859,8 @@ function compare2( a, b ) {
   return 0;
 }
 $(document).ready(function() {
-  if ($("#groups")) {
+  if (document.getElementById("groups") !== null) {
+    alert("stoca");
     $.ajaxSetup({ cache: true });
     $.getScript('https://connect.facebook.net/en_US/sdk.js', function(){
       FB.init({
@@ -867,30 +868,87 @@ $(document).ready(function() {
         version: 'v2.7' // or v2.1, v2.2, v2.3, ...
       });
       FB.getLoginStatus(function(response) {
-          console.log(response);
+        console.log(response);
+        if (response.status == "connected") {
+          getPagesAdmin();
+        } else {
+          FB.login(function(response) {
+            console.log(response);
+            getPagesAdmin();
+            //getList();
+          }, {scope: "user_likes, manage_pages, pages_show_list, groups_access_member_info, public_profile"});    
+        }
       });
-      FB.login(function(response) {
+      getPagesAdmin = () => {
         FB.api(
-          '/me/groups',
+          '/me/',
           'GET',
           {
-            "fields":"name,unread,member_count",
+            "fields":"name, id"
+          },
+          function(responseme) {
+            FB.api(
+              '/me/accounts',
+              'GET',
+              {
+                "fields":"name, id"
+              },
+              function(response) {
+                console.log(response);
+                response.data.sort(compare2);
+                response.data.unshift(responseme);
+                var str = "";
+                response.data.forEach((item, index)=>{
+                  //if (exclude.indexOf(item.id)===-1)
+                  str+= "<option value=\""+item.id+"\">"+item.name+"</option>";
+                });
+                $("#getFBdataSelect").html(str);
+                $("#getFBdataSelect").removeClass("d-none");
+                $("#getFBdataButton").removeClass("disabled");
+                $("#getFBdataButton span").html("GET DATA");
+                $("#getFBdataButton i").addClass("d-none");
+                
+                $("#getFBdataButton").click(()=>{
+                  $("#getFBdataSelect").addClass("disabled");
+                  $("#getFBdataButton").addClass("disabled");
+                  $("#getFBdataButton span").html("Loading data from Facebook... ");
+                  $("#getFBdataButton i").removeClass("d-none");
+                  getList();
+                });
+                // Insert your code here
+              }
+            );
+              }
+        );
+
+      }
+      getList = () => {
+        var exclude = ["34376839294"];
+        FB.api(
+          '/'+$("#getFBdataSelect").val()+'/groups',
+          'GET',
+          {
+            "fields":"name,unread,description,picture{url}", /* "can_post,best_page,name,link,fan_count,talking_about_count,about,description,picture{url}" */
             "limit":"10000"
           },
           function(response) {
-            response.data.sort(compare2).sort(compare);
+            response.data.sort(compare2);
             var str = "<table class=\"table\">";
             str+= "<thead><tr><td>N</td><td>Name</td><td>URL</td><td>Unread</td></tr></thead><tbody>";
             response.data.forEach((item, index)=>{
-              str+= "<tr><td>"+index+"</td><td>"+item.name+"</td><td><a href=\"https://www.facebook.com/groups/"+item.id+"/\" target=\"_blank\">"+item.id+"<a></td><td>"+item.unread+"</td></tr>";
+              if (exclude.indexOf(item.id)===-1) str+= "<tr><td>"+index+"</td><td>"+item.name+"</td><td><a href=\"https://www.facebook.com/groups/"+item.id+"/\" target=\"_blank\">"+item.id+"<a></td><td>"+item.unread+"</td></tr>";
             });
             str+= "</tbody></table>";
-            $("#groups").html(str);
+            $("#jsapp").html(str);
+            $("#getFBdataSelect").removeClass("disabled");
+            $("#getFBdataButton").removeClass("disabled");
+            $("#getFBdataButton span").html("GET DATA");
+            $("#getFBdataButton i").addClass("d-none");
             console.log(response);
             // Insert your code here
           }
         );
-      }, {scope: "groups_access_member_info"});
+      }
     });
 
   }

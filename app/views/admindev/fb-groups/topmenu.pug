@@ -2,7 +2,14 @@
   .float-left
     h2.h2
       !=title
-    .float-right.mb-2.mb-md-0.d-print-none
+  .float-right.mb-2.mb-md-0.d-print-none
+    .form.form-inline
+      select.form-control#getFBdataSelect.mr-2.d-none
+      button#getFBdataButton.btn.btn-inline.btn-primary.disabled(type="button")
+        span!="Connecting to Facebook... "
+        i.ml-2.fas.fa-spinner.fa-spin
+
+
       //form.d-print-none.text-right
         if events
           select.float-left.form-control-sm.btn-outline-secondary.mb-3.mr-2(style="width:300px" onchange="if (this.value) window.location.href='/admindev/partners/"+owner+"/'+this.value+'/'")
