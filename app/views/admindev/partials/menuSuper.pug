@@ -82,6 +82,10 @@
       .d-flex.w-100.justify-content-start.align-items-center
         span.fa.fa-handshake.fa-fw.mr-3
         span.menu-collapsed="Partners"
+    a.bg-dark.list-group-item.list-group-item-action(href='/admindev/facebook/')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fab.fa-facebook-square.fa-fw.mr-3
+        span.menu-collapsed="Facebook"
     if user.is_admin
       a.bg-dark.list-group-item.list-group-item-action(href='#submenuSuper', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/admindev/supertools/emails")===0 ? "true" : "false")
         .d-flex.w-100.justify-content-start.align-items-center

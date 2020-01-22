@@ -60,9 +60,9 @@ router.get('/', (req, res) => {
     }
   });
 });
-router.get('/fb-groups', (req, res) => {
-  res.render('admindev/fb-groups', {
-    title: 'FB Groups',
+router.get('/facebook', (req, res) => {
+  res.render('admindev/socialmedia/facebook', {
+    title: 'Facebook',
     currentUrl: req.originalUrl
     
   });

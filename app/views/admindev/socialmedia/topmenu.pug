@@ -5,6 +5,9 @@
   .float-right.mb-2.mb-md-0.d-print-none
     .form.form-inline
       select.form-control#getFBdataSelect.mr-2.d-none
+      button#getFBlikesButton.btn.btn-inline.btn-primary.mr-2.d-none(type="button")
+        span!="GET LIKES"
+        i.ml-2.fas.fa-spinner.fa-spin.d-none
       button#getFBdataButton.btn.btn-inline.btn-primary.disabled(type="button")
         span!="Connecting to Facebook... "
         i.ml-2.fas.fa-spinner.fa-spin
