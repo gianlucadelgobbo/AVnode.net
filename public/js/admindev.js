@@ -913,6 +913,7 @@ $(document).ready(function() {
                   $("#getFBdataButton").addClass("disabled");
                   $("#getFBlikesButton").addClass("disabled");
                   $("#getFBdataButton span").html("Loading data from Facebook... ");
+                  $("#jsapp").html("");
                   $("#getFBdataButton i").removeClass("d-none");
                   getGroupsList();
                 });
@@ -921,6 +922,7 @@ $(document).ready(function() {
                   $("#getFBdataButton").addClass("disabled");
                   $("#getFBlikesButton").addClass("disabled");
                   $("#getFBlikesButton span").html("Loading data from Facebook... ");
+                  $("#jsapp").html("");
                   $("#getFBlikesButton i").removeClass("d-none");
                   getLikesList();
                 });
@@ -941,21 +943,25 @@ $(document).ready(function() {
             "limit":"10000"
           },
           function(response) {
-            response.data.sort(compare2);
-            var str = "<table class=\"table\">";
-            str+= "<thead><tr><td>N</td><td>Name</td><td>URL</td><td>Unread</td></tr></thead><tbody>";
-            response.data.forEach((item, index)=>{
-              if (exclude.indexOf(item.id)===-1) str+= "<tr><td>"+index+"</td><td>"+item.name+"</td><td><a href=\"https://www.facebook.com/groups/"+item.id+"/\" target=\"_blank\">"+item.id+"<a></td><td>"+item.unread+"</td></tr>";
-            });
-            str+= "</tbody></table>";
+            console.log(response);
+            var str = "";
+            if (response.data && response.data.length) {
+              response.data.sort(compare2);
+              str = "<table class=\"table\">";
+              str+= "<thead><tr><td>N</td><td>Name</td><td>URL</td><td>Unread</td></tr></thead><tbody>";
+              response.data.forEach((item, index)=>{
+                if (exclude.indexOf(item.id)===-1) str+= "<tr><td>"+index+"</td><td>"+item.name+"</td><td><a href=\"https://www.facebook.com/groups/"+item.id+"/\" target=\"_blank\">"+item.id+"<a></td><td>"+item.unread+"</td></tr>";
+              });
+              str+= "</tbody></table>";
+            } else {
+              str = "<div class=\"alert alert-danger\">ERROR</div>";
+            }
             $("#jsapp").html(str);
             $("#getFBdataSelect").removeClass("disabled");
             $("#getFBdataButton").removeClass("disabled");
             $("#getFBlikesButton").removeClass("disabled");
             $("#getFBdataButton span").html("GET GROUPS");
             $("#getFBdataButton i").addClass("d-none");
-            console.log(response);
-            // Insert your code here
           }
         );
       }
@@ -969,21 +975,25 @@ $(document).ready(function() {
             "limit":"10000"
           },
           function(response) {
-            response.data.sort(compare2);
-            var str = "<table class=\"table\">";
-            str+= "<thead><tr><td>N</td><td>Name</td><td>URL</td><td>Can post</td></tr></thead><tbody>";
-            response.data.forEach((item, index)=>{
-              if (exclude.indexOf(item.id)===-1) str+= "<tr><td>"+index+"</td><td>"+item.name+"</td><td><a href=\""+item.link+"/\" target=\"_blank\">"+item.link+"<a></td><td>"+item.can_post+"</td></tr>";
-            });
-            str+= "</tbody></table>";
+            console.log(response);
+            var str = "";
+            if (response.data && response.data.length) {
+              response.data.sort(compare2);
+              str = "<table class=\"table\">";
+              str+= "<thead><tr><td>N</td><td>Name</td><td>URL</td><td>Can post</td></tr></thead><tbody>";
+              response.data.forEach((item, index)=>{
+                if (exclude.indexOf(item.id)===-1) str+= "<tr><td>"+index+"</td><td>"+item.name+"</td><td><a href=\""+item.link+"/\" target=\"_blank\">"+item.link+"<a></td><td>"+item.can_post+"</td></tr>";
+              });
+              str+= "</tbody></table>";
+            } else {
+              str = "ERROR";
+            }
             $("#jsapp").html(str);
             $("#getFBdataSelect").removeClass("disabled");
             $("#getFBdataButton").removeClass("disabled");
             $("#getFBlikesButton").removeClass("disabled");
             $("#getFBlikesButton span").html("GET LIKES");
             $("#getFBlikesButton i").addClass("d-none");
-            console.log(response);
-            // Insert your code here
           }
         );
       }
