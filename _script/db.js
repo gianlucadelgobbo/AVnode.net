@@ -765,7 +765,13 @@ event.program.forEach((program,i) =>{
 	}
 });
 
+db.program.count({"subscriptions.freezed": true, "event":ObjectId('5db2afa79d17b11363850679')}).forEach((program,i) =>{
+	printjson(program.subscriptions);
+});
 
+db.program.find({"subscriptions.subscriber_id" : ObjectId("5be873a8fc3961000000506b"), "event":ObjectId('5db2afa79d17b11363850679')}).forEach((program,i) =>{
+	printjson(program.subscriptions);
+});
 
 var program = {
 	"_id" : ObjectId("5c89290cb1312425911733fe"),

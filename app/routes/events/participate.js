@@ -197,7 +197,7 @@ router.post('/', (req, res) => {
               let perfpeoples = [];
               let allsubscriptions = [];
               logger.debug("req.session.call.admitted[req.session.call.performance].users");
-              logger.debug(req.session.call.admitted[req.session.call.performance].users);
+              //logger.debug(req.session.call.admitted[req.session.call.performance].users);
               for (var b=0;b<req.session.call.admitted[req.session.call.performance].users.length;b++) {
                 if (req.session.call.admitted[req.session.call.performance].users[b].members && req.session.call.admitted[req.session.call.performance].users[b].members.length){
                   //logger.debug(call.admitted[call.performance].users[b].members);
@@ -211,16 +211,18 @@ router.post('/', (req, res) => {
                 }          
               }
               logger.debug("perfpeoples");
-              logger.debug(perfpeoples);
+              logger.debug({"subscriptions.subscriber_id":{$in:perfpeoples}});
               myasync = false;
-              Program.find({"subscriptions.subscriber_id":{$in:perfpeoples}}).
+              Program.find({"subscriptions.subscriber_id":{$in:perfpeoples}, event: req.session.call.event._id}).
               lean().
               exec((err, subscriptions) => {
+                logger.debug("subscriptions");
+                logger.debug(subscriptions.count);
                 let subscriptionsfound = [];
                 for (var b=0;b<subscriptions.length;b++) {
                   subscriptionsfound = subscriptionsfound.concat(subscriptions[b].subscriptions);
-                  logger.debug(subscriptions[b].subscriptions);
-                  logger.debug(subscriptionsfound);
+                  //logger.debug(subscriptions[b].subscriptions);
+                  //logger.debug(subscriptionsfound);
                 }
                 for (var b=0;b<allsubscriptions.length;b++) {
                   for (var d=0;d<subscriptionsfound.length;d++) {
@@ -234,7 +236,7 @@ router.post('/', (req, res) => {
                 for (var b=0;b<allsubscriptions.length;b++) if (!allsubscriptions[b].freezed) delete allsubscriptions[b].subscriber_id;
                 req.session.call.subscriptions = allsubscriptions;
                 logger.debug("allsubscriptions");
-                logger.debug(allsubscriptions);
+                //logger.debug(allsubscriptions);
                 res.render('events/participate', {
                   title: data.title,
                   canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
