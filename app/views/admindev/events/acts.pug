@@ -183,6 +183,12 @@ block content
                     if user.is_crew
                       !=" "
                       .badge.badge-info CREW
+                    small
+                      !=" "
+                      a(href="/admin/"+(user.is_crew ? "crews" : "profile")+"/"+user._id+"/public", target="_blank")!=global.__("edit")
+                      !=" | "
+                      a(href="/"+user.slug, target="_blank")!=global.__("view")
+
                   if user.addressesFormatted && user.addressesFormatted.length
                     div!=user.addressesFormatted.join(", ")
                   else

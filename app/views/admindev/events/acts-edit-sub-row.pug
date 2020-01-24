@@ -27,7 +27,7 @@
               input(name="subscriptions[" + count + "][days][" + d + "]", value=days[d].date, type="hidden")
       .col-md-6
         - var packs = call.subscriptions[index] && call.subscriptions[index].packages ? call.subscriptions[index].packages.map(item => {return item.name}) : []
-        if call.call && call.event.organizationsettings.call && call.event.organizationsettings.call.calls[call.call].packages && call.event.organizationsettings.call.calls && call.event.organizationsettings.call.calls[call.call] && call.event.organizationsettings.call.calls[call.call].packages
+        if call.call>=0 && call.event.organizationsettings.call && call.event.organizationsettings.call.calls[call.call].packages && call.event.organizationsettings.call.calls && call.event.organizationsettings.call.calls[call.call] && call.event.organizationsettings.call.calls[call.call].packages
           each pack, d in call.event.organizationsettings.call.calls[call.call].packages
             .pack
               .form-check.pack_main

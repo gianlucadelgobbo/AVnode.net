@@ -276,9 +276,9 @@ block content
             h3.performers_infos
               b=data.advanced.performers.performersA
               !=" "+global.__('performers')+" ("+data.advanced.performers.performersN + " " + global.__('peoples') +") "
-              !=global.__('from') + " " + data.advanced.performers.countries.join(', ')+ " " + global.__('playing')+ " "
+              !=global.__('from') + " " + data.advanced.performers.countries.sort().join(', ')+ " " + global.__('playing')+ " "
               b=data.advanced.performers.actsN
-              !=" " + data.advanced.performers.acts.join(', ') + "."      
+              !=" " + data.advanced.performers.acts.sort().join(', ') + "."      
             .row
               each item, i in data.advanced.performers.performers
                 .col-sm-4
