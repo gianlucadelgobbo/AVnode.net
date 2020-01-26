@@ -777,6 +777,14 @@ export const removePerformanceUsers = model =>
       return result.data;
     });
 
+
+export const removeNewsUsers = model =>
+  axios
+    .get(`news/${model._id}/users/remove/${model.idusers}`, model)
+    .then(result => {
+      return result.data;
+    });
+
 export const savePerformanceUsers = model =>
   axios
     .get(`performances/${model._id}/users/add/${model.idusers}`, model)

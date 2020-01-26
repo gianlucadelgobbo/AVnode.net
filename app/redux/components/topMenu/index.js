@@ -25,14 +25,15 @@ class TopMenu extends Component {
     const { user } = this.props;
 
     const _id = user !== undefined ? user._id : "";
-    const _crews = user !== undefined ? user.stats.crews : "";
-    const _performances = user !== undefined ? user.stats.performances : "";
-    const _events = user !== undefined ? user.stats.events : "";
-    const _footage = user !== undefined ? user.stats.footage : "";
-    const _news = user !== undefined ? user.stats.news : "";
-    const _playlists = user !== undefined ? user.stats.playlists : "";
-    const _videos = user !== undefined ? user.stats.videos : "";
-    const _galleries = user !== undefined ? user.stats.galleries : "";
+    const _crews = user !== undefined && user.stats && user.stats.crews ? user.stats.crews : "";
+    const _performances = user !== undefined && user.stats && user.stats.performances ? user.stats.performances : "";
+    const _events = user !== undefined && user.stats && user.stats.events ? user.stats.events : "";
+    const _footage = user !== undefined && user.stats && user.stats.footage ? user.stats.footage : "";
+    const _news = user !== undefined && user.stats && user.stats.news ? user.stats.news : "";
+    const _playlists = user !== undefined && user.stats && user.stats.playlists ? user.stats.playlists : "";
+    const _videos = user !== undefined && user.stats && user.stats.videos ? user.stats.videos : "";
+    const _galleries = user !== undefined && user.stats && user.stats.galleries ? user.stats.galleries : "";
+    const user_url = user !== undefined ? "/" + user.slug : "/";
 
     const items = [
       {

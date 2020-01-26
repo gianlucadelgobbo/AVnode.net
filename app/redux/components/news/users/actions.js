@@ -14,7 +14,7 @@ export const fetchList = () =>
     constants,
     selectors,
     schema: news,
-    request: api.fetchPerformancePublic
+    request: api.fetchNewsPublic
   });
 
 export const saveModel = model =>
