@@ -64,15 +64,26 @@ block content
                     if schedule.boxDate
                       div=schedule.venue.room
                       div=schedule.boxDate
-                      div
-                        b="Price: "
-                        if schedule.price
-                          !=schedule.price
-                        else 
-                          .badge.badge-info=global.__('FREE ENTRY')
-                        !=" | "
-                        b
-                          a.edit-price(data-program=item._id, href="#")="EDIT"
+                      if schedule.price && !item.schedule[0].alleventschedulewithoneprice
+                        p.price
+                          ="Price: <b>"+schedule.price+",00 €</b>"
+                          !=" | "
+                          b
+                            a.edit-price(data-program=item._id, href="#")="EDIT"
+
+                  if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice && item.schedule[0].price && item.schedule[0].paypal
+                    p.price
+                      !="Price: <b>"+item.schedule[0].price+",00 €</b>"
+                      !=" | "
+                      b
+                        a.edit-price(data-program=item._id, href="#")="EDIT"
+                  else if !item.schedule[0].price
+                    p.price
+                      !="Price: "
+                      .badge.badge-info=global.__('FREE ENTRY')
+                      !=" | "
+                      b
+                        a.edit-price(data-program=item._id, href="#")="EDIT"
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
                 div
@@ -82,15 +93,15 @@ block content
                     a.edit-cost(data-program=item._id, href="#")="EDIT"
                   if item.fee || item.accommodation_cost || item.transfer_cost
                     br
-                    !="Fee: <b>"+(item.fee ? item.fee : "0")+"</b>"
+                    !="Fee: <b>"+(item.fee ? item.fee : "0")+" €</b>"
                     br
-                    !="Technical cost: <b>"+(item.technical_cost ? item.technical_cost : "0")+"</b>"
+                    !="Technical cost: <b>"+(item.technical_cost ? item.technical_cost : "0")+" €</b>"
                     br
-                    !="Accommodation cost: <b>"+(item.accommodation_cost ? item.accommodation_cost : "0")+"</b>"
+                    !="Accommodation cost: <b>"+(item.accommodation_cost ? item.accommodation_cost : "0")+" €</b>"
                     br
-                    !="Transfer cost: <b>"+(item.transfer_cost ? item.transfer_cost : "0")+"</b>"
+                    !="Transfer cost: <b>"+(item.transfer_cost ? item.transfer_cost : "0")+" €</b>"
                     br
-                    !="Total: <b>"+((item.accommodation_cost ? item.accommodation_cost : 0)+(item.technical_cost ? item.technical_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0))+"</b>"
+                    !="Total: <b>"+((item.accommodation_cost ? item.accommodation_cost : 0)+(item.technical_cost ? item.technical_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0))+" €</b>"
                   else 
                     .badge.badge-info=global.__('NO COSTS')
               .text-right.pb-1.mb-1
