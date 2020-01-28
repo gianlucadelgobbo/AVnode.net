@@ -124,7 +124,7 @@ $(function() {
     });
   });
   function bindEditSubscription(){
-    $(".pack_main input").change(function(ev) {
+      $(".pack_main input").change(function(ev) {
       if (this.checked) {
         $(this).parent().parent().find(".pack_sub").slideDown('slide');
       } else {
@@ -204,6 +204,36 @@ $(function() {
       data: data
     }).done(function(res) {
       //console.log(res);
+    });
+  });
+  $(".edit-price").on('click', function(ev) {
+    ev.preventDefault();
+    const id = $(this).data("program");
+    $('#modalEdit .content').html("Loading data...");
+    $('#modalEdit .alert-danger').addClass('d-none');
+    $('#modalEdit .alert-success').addClass('d-none');
+    $('#modalEdit').modal();
+    $.ajax({
+      url: "/admin/api/editsubscriptionprice",
+      method: "post",
+      data: {id:id}
+    }).done(function(data) {
+      $('#modalEdit .content').html(data);
+    });
+  });
+  $(".edit-cost").on('click', function(ev) {
+    ev.preventDefault();
+    const id = $(this).data("program");
+    $('#modalEdit .content').html("Loading data...");
+    $('#modalEdit .alert-danger').addClass('d-none');
+    $('#modalEdit .alert-success').addClass('d-none');
+    $('#modalEdit').modal();
+    $.ajax({
+      url: "/admin/api/editsubscriptioncost",
+      method: "post",
+      data: {id:id}
+    }).done(function(data) {
+      $('#modalEdit .content').html(data);
     });
   });
   $(".cancel-sub").on('click', function(ev) {

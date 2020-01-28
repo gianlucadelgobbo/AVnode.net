@@ -164,56 +164,100 @@ router.editSubscriptionSave = (req, res) => {
   logger.debug(req.body);
   Models.Program.findOne({_id: req.body.program})
   .exec((err, program) => {
-    var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed!="1");
-    var subscriptions_freezed = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed=="1").map(item => {return item.subscriber_id.toString()});
-    for (var item=0;item<subscriptions.length;item++) {
-      if (subscriptions[item].packages && subscriptions[item].packages.length) {
-        for (var pack=0;pack<subscriptions[item].packages.length;pack++) {
-          var tmpPack = JSON.parse("["+subscriptions[item].packages[pack].package+"]");
-          tmpPack[0].option = subscriptions[item].packages[pack].option;
-          subscriptions[item].packages[pack] = tmpPack[0];
+    if (req.body.schedule!=undefined) {
+      for(var a=0;a<req.body.schedule.length;a++){
+        program.schedule[a].price = req.body.schedule[a].price;
+        program.schedule[a].paypal = req.body.schedule[a].paypal;
+        program.schedule[a].alleventschedulewithoneprice = req.body.schedule[a].alleventschedulewithoneprice==="1";
+        program.schedule[a].priceincludesothershows = req.body.schedule[a].priceincludesothershows==="1";
+      }
+      program.save(function(err){
+        if (err) {
+          res.json(err);
+        } else {
+          Models.Performance.findOne({_id: program.performance})
+          .exec((err, performance) => {
+            logger.debug({_id: program.performance});
+            for(var a=0;a<performance.bookings.length;a++){
+              if (performance.bookings[a].event.toString()===program.event.toString()) {
+                performance.bookings[a].schedule = program.schedule;
+              }
+            }
+            logger.debug(performance.bookings);
+            performance.save(function(err){
+              if (err) {
+                res.json(err);
+              } else {
+                res.json({success: true});
+              }
+            });
+          });
         }
-        logger.debug("subscriptions[item].packages");
-        logger.debug(subscriptions[item].packages);  
+      });
+    } else if (req.body.fee!=undefined) {
+      program.fee = req.body.fee;
+      program.technical_cost = req.body.technical_cost;
+      program.accommodation_cost = req.body.accommodation_cost;
+      program.transfer_cost = req.body.transfer_cost;
+      program.save(function(err){
+        if (err) {
+          res.json(err);
+        } else {
+          res.json({success: true});
+        }
+      });
+    } else {
+      var subscriptions = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed!="1");
+      var subscriptions_freezed = req.body.subscriptions.filter(item => item.subscriber_id!="" && item.freezed=="1").map(item => {return item.subscriber_id.toString()});
+      for (var item=0;item<subscriptions.length;item++) {
+        if (subscriptions[item].packages && subscriptions[item].packages.length) {
+          for (var pack=0;pack<subscriptions[item].packages.length;pack++) {
+            var tmpPack = JSON.parse("["+subscriptions[item].packages[pack].package+"]");
+            tmpPack[0].option = subscriptions[item].packages[pack].option;
+            subscriptions[item].packages[pack] = tmpPack[0];
+          }
+          logger.debug("subscriptions[item].packages");
+          logger.debug(subscriptions[item].packages);  
+        }
       }
-    }
-    for (var item=0;item<program.subscriptions.length;item++) {
-      if (subscriptions_freezed.indexOf(program.subscriptions[item].subscriber_id.toString())!=-1) {
-        program.subscriptions[item].freezed = true;
-        subscriptions.push(program.subscriptions[item]);
+      for (var item=0;item<program.subscriptions.length;item++) {
+        if (subscriptions_freezed.indexOf(program.subscriptions[item].subscriber_id.toString())!=-1) {
+          program.subscriptions[item].freezed = true;
+          subscriptions.push(program.subscriptions[item]);
+        }
       }
-    }
-    program.reference = req.body.reference;
-    program.subscriptions = subscriptions;
-    program.save(function(err){
-      if (err) {
-        res.json(err);
-      } else {
-        Models.Program.find({_id: {$ne: program._id}, "subscriptions.subscriber_id": program.subscriptions.map(item => {return item.subscriber_id;})})
-        .exec((err, programs) => {
-          if (programs.length) {
-            let promises = [];
-            for (var item=0;item<programs.length;item++) { 
-              for (var subscription=0;subscription<programs[item].subscriptions.length;subscription++) { 
-                for (var subnew=0;subnew<program.subscriptions.length;subnew++) { 
-                  if (program.subscriptions[subnew].subscriber_id.toString() == programs[item].subscriptions[subscription].subscriber_id.toString()) {
-                    programs[item].subscriptions[subscription].packages = program.subscriptions[subnew].packages;
+      program.reference = req.body.reference;
+      program.subscriptions = subscriptions;
+      program.save(function(err){
+        if (err) {
+          res.json(err);
+        } else {
+          Models.Program.find({_id: {$ne: program._id}, "subscriptions.subscriber_id": program.subscriptions.map(item => {return item.subscriber_id;})})
+          .exec((err, programs) => {
+            if (programs.length) {
+              let promises = [];
+              for (var item=0;item<programs.length;item++) { 
+                for (var subscription=0;subscription<programs[item].subscriptions.length;subscription++) { 
+                  for (var subnew=0;subnew<program.subscriptions.length;subnew++) { 
+                    if (program.subscriptions[subnew].subscriber_id.toString() == programs[item].subscriptions[subscription].subscriber_id.toString()) {
+                      programs[item].subscriptions[subscription].packages = program.subscriptions[subnew].packages;
+                    }
                   }
                 }
+                promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]));
               }
-              promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]));
-            }
-            Promise.all(
-              promises
-            ).then( (resultsPromise) => {
+              Promise.all(
+                promises
+              ).then( (resultsPromise) => {
+                res.json({success: true});
+              });          
+            } else {
               res.json({success: true});
-            });          
-          } else {
-            res.json({success: true});
-          }
-        });
-      }
-    });   
+            }
+          });
+        }
+      });   
+    }
   });
 }
 router.editSubscription = (req, res) => {
@@ -248,6 +292,29 @@ router.editSubscription = (req, res) => {
     for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
     
     res.render('admindev/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
+      res.json(body);
+    });
+  });
+}
+router.editSubscriptionPrice = (req, res) => {
+  logger.debug(req.body);
+  Models.Program
+  .findOne({_id: req.body.id/* , members:req.user.id */})
+  .select({schedule: 1})
+  .exec((err, sub) => {
+    res.render('admindev/events/acts-edit-sub-price', {sub: sub}, function(err, body) {
+      res.json(body);
+    });
+  });
+}
+
+router.editSubscriptionCost = (req, res) => {
+  logger.debug(req.body);
+  Models.Program
+  .findOne({_id: req.body.id/* , members:req.user.id */})
+  .select({fee: 1, technical_cost: 1, accommodation_cost: 1, transfer_cost: 1})
+  .exec((err, sub) => {
+    res.render('admindev/events/acts-edit-sub-cost', {sub: sub}, function(err, body) {
       res.json(body);
     });
   });

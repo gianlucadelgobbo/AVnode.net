@@ -1,0 +1,25 @@
+// Price
+if sub.schedule && sub.schedule.length && sub.schedule[0].boxDate
+  each schedule, index in sub.schedule
+    .border-bottom.pb-1.mb-1
+      !=schedule.boxDate
+      .row
+        .col
+          .form-group
+            label(for="price"+index)="Price"
+            input.form-control(type='text', name="schedule["+index+"][price]", id="price"+index, value=schedule.price, placeholder="Price", aria-label="Price")
+        .col
+          .form-group
+            label(for="paypal"+index)="Paypal"
+            input.form-control(type='text', name="schedule["+index+"][paypal]", id="paypal"+index, value=schedule.paypal, placeholder="Paypal", aria-label="Paypal")
+      .row
+        .col
+          .form-check
+            input.form-check-input(type="checkbox", id="alleventschedulewithoneprice"+index, value=1, name="schedule["+index+"][alleventschedulewithoneprice]", checked=schedule.alleventschedulewithoneprice ? "" : undefined)
+            label(for="alleventschedulewithoneprice"+index)="Ticket includes all item schedule"
+        .col
+          .form-check
+            input.form-check-input(type="checkbox", id="priceincludesothershows"+index, value=1, name="schedule["+index+"][priceincludesothershows]", checked=schedule.alleventschedulewithoneprice ? "" : undefined)
+            label(for="priceincludesothershows"+index)="Ticket includes other shows"
+input(type='hidden', name="program", value=sub._id.toString())
+

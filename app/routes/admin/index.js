@@ -215,6 +215,14 @@ router.post('/api/editsubscription', (req, res)=>{
   post.editSubscription(req, res);
 });
 
+router.post('/api/editsubscriptionprice', (req, res)=>{
+  post.editSubscriptionPrice(req, res);
+});
+
+router.post('/api/editsubscriptioncost', (req, res)=>{
+  post.editSubscriptionCost(req, res);
+});
+
 router.post('/api/editsubscriptionsave', (req, res)=>{
   post.editSubscriptionSave(req, res);
 });

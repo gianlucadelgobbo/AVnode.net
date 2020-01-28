@@ -33,6 +33,10 @@ const programSchema = new Schema({
   performance_category: { type : Schema.ObjectId, ref : 'Category' },
   reference: { type: Schema.ObjectId, ref: 'User', required: true },
   status: { type: Schema.ObjectId, ref: 'Category' },
+  fee: { type: Number},
+  technical_cost: { type: Number},
+  accommodation_cost: { type: Number},
+  transfer_cost: { type: Number},
   subscriptions: {
     type: [subSchema],
     minlength: 1

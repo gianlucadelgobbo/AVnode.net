@@ -1,0 +1,14 @@
+// Fee
+.form-group
+  label(for="fee")="Fee"
+  input.form-control(type='text', name="fee", id="fee", value=sub.fee, placeholder="Fee", aria-label="Fee")
+.form-group
+  label(for="technical_cost")="Technical cost"
+  input.form-control(type='text', name="technical_cost", id="technical_cost", value=sub.technical_cost, placeholder="Technical cost", aria-label="Technical cost")
+.form-group
+  label(for="accommodation_cost")="Accommodation cost"
+  input.form-control(type='text', name="accommodation_cost", id="accommodation_cost", value=sub.accommodation_cost, placeholder="Accommodation cost", aria-label="Accommodation cost")
+.form-group
+  label(for="transfer_cost")="Transfer cost"
+  input.form-control(type='text', name="transfer_cost", id="transfer_cost", value=sub.transfer_cost, placeholder="Transfer cost", aria-label="Transfer cost")
+input(type='hidden', name="program", value=sub._id.toString())

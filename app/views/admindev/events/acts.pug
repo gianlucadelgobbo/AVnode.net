@@ -60,12 +60,39 @@ block content
               .border-bottom.pb-1.mb-1
                 h4=global.__('SCHEDULE')
                 if item.schedule && item.schedule.length && item.schedule[0].boxDate
-                  each schedule in item.schedule
+                  each schedule, index in item.schedule
                     if schedule.boxDate
                       div=schedule.venue.room
                       div=schedule.boxDate
+                      div
+                        b="Price: "
+                        if schedule.price
+                          !=schedule.price
+                        else 
+                          .badge.badge-info=global.__('FREE ENTRY')
+                        !=" | "
+                        b
+                          a.edit-price(data-program=item._id, href="#")="EDIT"
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
+                div
+                  b="Costs"
+                  !=" | "
+                  b
+                    a.edit-cost(data-program=item._id, href="#")="EDIT"
+                  if item.fee || item.accommodation_cost || item.transfer_cost
+                    br
+                    !="Fee: <b>"+(item.fee ? item.fee : "0")+"</b>"
+                    br
+                    !="Technical cost: <b>"+(item.technical_cost ? item.technical_cost : "0")+"</b>"
+                    br
+                    !="Accommodation cost: <b>"+(item.accommodation_cost ? item.accommodation_cost : "0")+"</b>"
+                    br
+                    !="Transfer cost: <b>"+(item.transfer_cost ? item.transfer_cost : "0")+"</b>"
+                    br
+                    !="Total: <b>"+((item.accommodation_cost ? item.accommodation_cost : 0)+(item.technical_cost ? item.technical_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0)+(item.transfer_cost ? item.transfer_cost : 0))+"</b>"
+                  else 
+                    .badge.badge-info=global.__('NO COSTS')
               .text-right.pb-1.mb-1
                 button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Delete')
           td(style="max-width:35vw;overflow: hidden;")

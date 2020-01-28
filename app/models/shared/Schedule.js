@@ -4,6 +4,10 @@ const moment = require('moment');
 
 const Schedule = new Schema({
   disableautoschedule: Boolean,
+  alleventschedulewithoneprice: Boolean,
+  priceincludesothershows: Boolean,
+  price: { type: Number},
+  paypal: { type: String},
   date: Date,
   starttime: Date,
   endtime: Date,
