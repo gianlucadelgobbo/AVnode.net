@@ -72,18 +72,18 @@ block content
                             a.edit-price(data-program=item._id, href="#")="EDIT"
 
                   if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice && item.schedule[0].price && item.schedule[0].paypal
-                    p.price
-                      !="Price: <b>"+item.schedule[0].price+",00 €</b>"
-                      !=" | "
-                      b
-                        a.edit-price(data-program=item._id, href="#")="EDIT"
-                  else if !item.schedule[0].price
-                    p.price
-                      !="Price: "
-                      .badge.badge-info=global.__('FREE ENTRY')
-                      !=" | "
-                      b
-                        a.edit-price(data-program=item._id, href="#")="EDIT"
+                  p.price
+                    !="Price: <b>"+item.schedule[0].price+",00 €</b>"
+                    !=" | "
+                    b
+                      a.edit-price(data-program=item._id, href="#")="EDIT"
+                else if !item.schedule ||  !item.schedule[0] || !item.schedule[0].price
+                  p.price
+                    !="Price: "
+                    .badge.badge-info=global.__('FREE ENTRY')
+                    !=" | "
+                    b
+                      a.edit-price(data-program=item._id, href="#")="EDIT"
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
                 div
