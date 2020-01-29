@@ -20,7 +20,7 @@ if sub.schedule && sub.schedule.length && sub.schedule[0].boxDate
               label(for="alleventschedulewithoneprice"+index)="Ticket includes all item schedule"
         .col
           .form-check
-            input.form-check-input(type="checkbox", id="priceincludesothershows"+index, value=1, name="schedule["+index+"][priceincludesothershows]", checked=schedule.alleventschedulewithoneprice ? "" : undefined)
+            input.form-check-input(type="checkbox", id="priceincludesothershows"+index, value=1, name="schedule["+index+"][priceincludesothershows]", checked=schedule.priceincludesothershows ? "" : undefined)
             label(for="priceincludesothershows"+index)="Ticket includes other shows"
 input(type='hidden', name="program", value=sub._id.toString())
 

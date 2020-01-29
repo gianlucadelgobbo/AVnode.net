@@ -66,24 +66,24 @@ block content
                       div=schedule.boxDate
                       if schedule.price && !item.schedule[0].alleventschedulewithoneprice
                         p.price
-                          ="Price: <b>"+schedule.price+",00 €</b>"
+                          !="Price: <b>"+schedule.price+",00 €</b>"
                           !=" | "
                           b
                             a.edit-price(data-program=item._id, href="#")="EDIT"
 
-                  if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice && item.schedule[0].price && item.schedule[0].paypal
-                  p.price
-                    !="Price: <b>"+item.schedule[0].price+",00 €</b>"
-                    !=" | "
-                    b
-                      a.edit-price(data-program=item._id, href="#")="EDIT"
-                else if !item.schedule ||  !item.schedule[0] || !item.schedule[0].price
-                  p.price
-                    !="Price: "
-                    .badge.badge-info=global.__('FREE ENTRY')
-                    !=" | "
-                    b
-                      a.edit-price(data-program=item._id, href="#")="EDIT"
+                  if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice
+                    p.price
+                      !="Price: <b>"+item.schedule[0].price+",00 €</b>"
+                      !=" | "
+                      b
+                        a.edit-price(data-program=item._id, href="#")="EDIT"
+                  else if !item.schedule[0].price
+                    p.price
+                      !="Price: "
+                      span.badge.badge-info=global.__('FREE ENTRY')
+                      !=" | "
+                      b
+                        a.edit-price(data-program=item._id, href="#")="EDIT"
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
                 div
@@ -91,8 +91,8 @@ block content
                   !=" | "
                   b
                     a.edit-cost(data-program=item._id, href="#")="EDIT"
+                  br
                   if item.fee || item.accommodation_cost || item.transfer_cost
-                    br
                     !="Fee: <b>"+(item.fee ? item.fee : "0")+" €</b>"
                     br
                     !="Technical cost: <b>"+(item.technical_cost ? item.technical_cost : "0")+" €</b>"
@@ -142,7 +142,7 @@ block content
                     !="GENRE: "
                     b=item.performance.genre.name
                     br
-                    !="CALL: "
+                  !="CALL: "
                   if (item.call>=0 && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
                     b!=data.event.organizationsettings.call.calls[item.call].title
                   else 
@@ -252,10 +252,6 @@ block content
                 p!=addressesaddresses.sort().join(", ")
 
           td
-            if (item.call && data.event.organizationsettings.call && data.event.organizationsettings.call.calls && data.event.organizationsettings.call.calls[item.call] && data.event.organizationsettings.call.calls[item.call].title)
-              p
-                b!="CALL: "
-                !=data.event.organizationsettings.call.calls[item.call].title
             p
               b!="AVAILABILITY"
               !=" | "

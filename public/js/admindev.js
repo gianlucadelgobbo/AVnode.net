@@ -342,16 +342,24 @@ $( ".program .connectedSortable" ).sortable({
             var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
           }
           if (!$(boxes[b]).hasClass("disabled")) {
+            console.log("disabled");
+            var price = day.program[b].schedule && day.program[b].schedule.price ? day.program[b].schedule.price : undefined;
+            var alleventschedulewithoneprice = day.program[b].schedule && day.program[b].schedule.alleventschedulewithoneprice ? day.program[b].schedule.alleventschedulewithoneprice : undefined;
+            var priceincludesothershows = day.program[b].schedule && day.program[b].schedule.priceincludesothershows ? day.program[b].schedule.priceincludesothershows : undefined;
+            console.log(day.program[b].schedule);
             day.program[b].schedule = [{
               starttime: start.toISOString(),
               endtime: end.toISOString(),
+              price: price,
+              alleventschedulewithoneprice: alleventschedulewithoneprice,
+              priceincludesothershows: priceincludesothershows,
               venue: day.room.venue
             }];
+            console.log(day.program[b].schedule);
             $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
             $(boxes[b]).find(".index").html(b+1);
           } else {
             day.program[b].schedule = [day.program[b].schedule]
-            //console.log("disabled");
           }
           //console.log(day.program[b]);
           data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
