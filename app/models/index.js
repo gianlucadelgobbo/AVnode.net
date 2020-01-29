@@ -15,3 +15,4 @@ require('./Program');
 require('./AddressDB');
 require('./VenueDB');
 require('./Partner');
+require('./Order');

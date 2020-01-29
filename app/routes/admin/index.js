@@ -207,6 +207,10 @@ router.post('/api/subscriptionupdate', (req, res)=>{
   post.updateSubscription(req, res);
 });
 
+router.post('/api/transactionupdate', (req, res)=>{
+  post.updateTransation(req, res);
+});
+
 router.post('/api/cancelsubscription', (req, res)=>{
   post.cancelSubscription(req, res);
 });
