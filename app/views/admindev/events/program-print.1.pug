@@ -4,7 +4,7 @@ block filters
 block content
   each day in data.programmebydayvenue
     each room,i in day.rooms
-      if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
+      if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
         if room.program
           h2.day=day.date+" | "+room.schedule.venue.room
           each program,ii in room.program

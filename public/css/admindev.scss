@@ -26,7 +26,17 @@
     background-color: #FFF;
     padding: 20px;
 }
-.list-group-item.disabled .edit-schedule, .list-group-item:disabled .edit-schedule, .list-group-item.disabled .duplicate, .list-group-item:disabled .duplicate {
+.dashboardcode-bsmultiselect li .custom-control {
+  align-items: left;
+  justify-content: left;
+}
+.dashboardcode-bsmultiselect .close {
+  padding-left: 5px;
+}
+.dashboardcode-bsmultiselect {
+  padding-right: 15px;
+}
+.list-group-item.disabled .edit-schedule, .list-group-item.disabled .lock-schedule, .list-group-item:disabled .lock-schedule, .list-group-item:disabled .edit-schedule, .list-group-item.disabled .duplicate, .list-group-item:disabled .duplicate {
   pointer-events: auto;
 }
 .index {

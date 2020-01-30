@@ -15,8 +15,8 @@ block content
         - var cols = 0
         each day in data.programmebydayvenue
           if Object.keys(day.rooms).length > cols
-            - cols = Object.keys(day.rooms).length
-        td(style="width:calc(100vw/"+(cols+3)+")")
+            - cols = Object.keys(day.rooms).length < 5 ? Object.keys(day.rooms).length : 5
+        td(style="width:calc(100vw/"+(cols+2)+")")
           h2=global.__("TO BE SCHEDULED")
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
             form(id="form"+conta)
@@ -40,7 +40,9 @@ block content
                         .type.small=program.performance.type.name
                         .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
                         .pull-left
-                          a.duplicate(href="#")
+                          a.lock-schedule(href="#")
+                            i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
+                          a.pl-3.duplicate(href="#")
                             i.fa.fa-clone
                           a.pl-3.edit-schedule(href="#")
                             i.fa.fa-edit
@@ -64,8 +66,8 @@ block content
                     h2=day.date
                 tr
                   each room,i in day.rooms
-                    if (get['bookings.schedule.venue.room'] && room.schedule.venue.room == get['bookings.schedule.venue.room']) || (!get['bookings.schedule.venue.room'] || get['bookings.schedule.venue.room'] == "0")
-                      td(style="width:calc(100vw/"+(cols+3)+")")
+                    if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
+                      td(style="calc(100vw/"+(cols)+")")
                         b=room.schedule.venue.room
                         div(style="width:calc(100vw/"+(cols+3)+");overflow: hidden;")
                           form(id="form"+conta)
@@ -85,8 +87,10 @@ block content
                                       b!=program.performance.title
                                     .type.small=program.performance.type.name
                                     .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
-                                    .pull-left
-                                      a.duplicate(href="#")
+                                    .float-left
+                                      a.lock-schedule(href="#")
+                                        i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
+                                      a.pl-3.duplicate(href="#")
                                         i.fa.fa-clone
                                       a.pl-3.edit-schedule(href="#")
                                         i.fa.fa-edit

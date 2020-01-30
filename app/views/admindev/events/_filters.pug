@@ -21,7 +21,7 @@
         each pack,i in packages
           option(value=pack, selected=get["subscriptions.packages.name"]==pack ? "selected" : undefined)=pack
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
-          input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.fullinfo ? "checked" : undefinded)
+          input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.fullinfo ? "checked" : undefined)
           label.mr-sm-3(for='not4') NOT
 
       select.form-control.mr-sm-2(name='status', style='max-width:100px')
@@ -29,48 +29,47 @@
         each stat in data.status
           option(value=stat._id, selected=get["status"]==stat._id ? "selected" : undefined)=stat.name
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not0(type='checkbox', name='program.schedule.statusNOT', value='1', checked=get['program.schedule.statusNOT'] ? "checked" : undefinded)
+        input.mr-sm-1#not0(type='checkbox', name='program.schedule.statusNOT', value='1', checked=get['program.schedule.statusNOT'] ? "checked" : undefined)
         label.mr-sm-3(for='not0') NOT
 
     if data.admitted && data.admitted.length
       select.form-control.mr-sm-2(name='performance_category', style='max-width:100px')
         option(value='0') Type
         each cat in data.admitted
-          option(value=cat._id, selected=get.performance_category==cat._id ? "selected" : undefinded)=cat.name
+          option(value=cat._id, selected=get.performance_category==cat._id ? "selected" : undefined)=cat.name
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not2(type='checkbox', name='not2', value='1', checked=get.not2 ? "checked" : undefinded)
+        input.mr-sm-1#not2(type='checkbox', name='not2', value='1', checked=get.not2 ? "checked" : undefined)
         label.mr-sm-3(for='not2') NOT
 
     if data.rooms && data.rooms.length
-      select.form-control.mr-sm-2(name='bookings.schedule.venue.room')
-        option(value='0') Venue
+      select.form-control.mr-sm-2.multiple-select(multiple="multiple",  style="display: none;", name='bookings.schedule.venue.room')
         each room in data.rooms
-          option(value=room, selected=get['bookings.schedule.venue.room']==room ? "selected" : undefinded)=room
+          option(value=room, selected=get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room)>-1 ? "selected" : undefined)=room
       //small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not3(type='checkbox', name='not3', value='1', checked=get.not3 ? "checked" : undefinded)
+        input.mr-sm-1#not3(type='checkbox', name='not3', value='1', checked=get.not3 ? "checked" : undefined)
         label.mr-sm-3(for='not3') NOT
     
     if data.hotels && data.hotels.length
       select.form-control.mr-sm-2(name='packages.option_selected_hotel')
         option(value='0') Hotels
         each hotel in data.hotels
-          option(value=hotel, selected=get['packages.option_selected_hotel']==hotel ? "selected" : undefinded)=hotel
+          option(value=hotel, selected=get['packages.option_selected_hotel']==hotel ? "selected" : undefined)=hotel
 
     if data.sortby && data.sortby.length
       select.form-control.mr-sm-3(name='sortby')
         option(value='0') Sort by
           each sortby in data.sortby
             //option(value='day') group by day
-            option(value=sortby.value, selected=get.sortby==sortby.value ? "selected" : undefinded)=sortby.key
+            option(value=sortby.value, selected=get.sortby==sortby.value ? "selected" : undefined)=sortby.key
 
-    //input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefinded)
+    //input.mr-sm-2#unlink(type='checkbox', name='unlink', value='1', checked=get.unlink ? "checked" : undefined)
       label.mr-sm-3(for='unlink') Performance suspect
       br
     if get.sez == "acts" || get.sez == "program-print"
-      input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefinded)
+      input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefined)
       label.mr-sm-3(for='fullinfo') FULL INFO
     if get.sez == "technical-riders"
-      input.mr-sm-2#techonly(type='checkbox', name='techonly', value='1', checked=get.techonly ? "checked" : undefinded)
+      input.mr-sm-2#techonly(type='checkbox', name='techonly', value='1', checked=get.techonly ? "checked" : undefined)
       label.mr-sm-3(for='techonly') TECH ONLY
       input.mr-sm-3.btn.btn-primary#print(type='button', value='PRINT')
 

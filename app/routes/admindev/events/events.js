@@ -464,6 +464,7 @@ router.get('/:event/peoples', (req, res) => {
 
 router.get('/:event/program', (req, res) => {
   logger.debug('/events/'+req.params.event+'/program');
+  logger.debug(req.query);
   let data = {};
   Event.
   findOne({"_id": req.params.event}).
@@ -1059,12 +1060,12 @@ router.get('/:event/pass-sheet', (req, res) => {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {
             populate[item].match = {type: req.query['performance_category']};
           }
-          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room'].length) {
             populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
           }
         }
       }
-      logger.debug(query);
+      logger.debug(populate);
       Program.
       find(query).
       select(select).

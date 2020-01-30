@@ -535,7 +535,7 @@ function getFormData($form){
   return indexed_array;
 }
 
-$('#modalAddContact').on('show.bs.modal', function (event) {
+  $('#modalAddContact').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var id = button.data('id') // Extract info from data-* attributes
     var stagename = button.data('stagename') // Extract info from data-* attributes
@@ -548,6 +548,21 @@ $('#modalAddContact').on('show.bs.modal', function (event) {
   
   $( ".duplicate" ).click(function( event ) {
     $(this).parent().parent().clone().insertAfter($(this).parent().parent())
+  });
+  if ($(".multiple-select").length) $(".multiple-select").bsMultiSelect({  placeholder:'Room'});
+
+  $( ".lock-schedule" ).click(function( event ) {
+    var box = $(this).parent().parent();
+    if($(this).parent().parent().hasClass("disabled")){
+      $(this).find("i").removeClass("fa-lock")
+      $(this).find("i").addClass("fa-lock-open")
+      $(this).parent().parent().removeClass("disabled")
+    } else {
+      $(this).find("i").removeClass("fa-lock-open")
+      $(this).find("i").addClass("fa-lock")
+      $(this).parent().parent().addClass("disabled")
+    }
+    console.log($(this).parent().parent());
   });
 
   $( ".unlink" ).click(function( event ) {
