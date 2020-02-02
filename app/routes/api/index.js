@@ -103,46 +103,55 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
     const gmailer = require('../../utilities/gmailer');
     Order
     .create(req.body, (err, data) => {
+      console.log("req.body.event");
+      console.log(req.body);
       if(!err) {
-        /* if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
-          const auth = {
-            user: event.organizationsettings.call.calls[sub.call].email,
-            pass: event.organizationsettings.call.calls[sub.call].emailpassword
-          };
-          let email = "Ciao " + sub.reference.name +",\n"+"your submisstion to the call for proposals \""+event.organizationsettings.call.calls[sub.call].title+"\" with \""+sub.performance.title+"\" changed the status from \"" + old_status_name + "\" to \"" + status[req.body.status] + "\".";
-          if (req.body.status == "5be8708afc3961000000019e") {
-            email+= "\n\nPlease confirm as soon your participation from this page https://avnode.net/admin/subscriptions ";
-          } else {
-            email+= "\n\nYou can follow the status of your submission from here https://avnode.net/admin/subscriptions "; 
-          }
-          email+= "\n\n"+event.organizationsettings.call.calls[sub.call].text_sign;
-          const mail = {
-            from: event.organizationsettings.call.calls[sub.call].emailname + " <"+ event.organizationsettings.call.calls[sub.call].email + ">",
-            to: sub.reference.name + " " + sub.reference.surname + " <"+ sub.reference.email + ">",
-            subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
-            text: email
-          };
-          console.log("pre gMailer")
-          gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-            /* console.log("gMailer");
-            console.log(err);
-            console.log("gMailer");
-            console.log(result);
-            res.json({res:result}); */
-            /*if (err) {
-              logger.debug("Email sending failure");
-              res.json({error: true, msg: "Email sending failure"});
+        if (req.body.event) {
+          console.log(req.body.event);
+          User
+          .findOne({"_id":req.body.event})
+          .select({title:1, organizationsettings:1})
+          .exec((err, event) => {
+            if (err) {
+              res.status(500).json({ error: `${JSON.stringify(err)}` });
             } else {
-              logger.debug("Email sending OK");
-              res.json({error: false, msg: "Email sending success"});
-            }
-          });
+              const auth = {
+                user: event.organizationsettings.email,
+                pass: event.organizationsettings.emailpassword
+              };
+              let email = "Ciao " + req.body.details.payer.name.given_name +",\n"+"your payment to \""+event.title+"\" was successful!!!";
+              email+= "\n\nYour purchase is:";
+              for (var a=0;a<req.body.details.purchase_units.length;a++) {
+                email+= "\n\n"+req.body.details.purchase_units.description+"           "+req.body.details.purchase_units.amount.value+" "+req.body.details.purchase_units.amount.currency_code+" ";
+              } 
+              email+= "\n\nThank you.";
+              email+= "\n\n"+event.organizationsettings.text_sign;
+              const mail = {
+                from: event.organizationsettings.emailname + " <"+ event.organizationsettings.email + ">",
+                to: req.body.details.payer.name.given_name + " " + req.body.details.payer.name.surname + " <"+ req.body.details.payer.email_address + ">",
+                subject: __("Payment Confirm") + " | " + event.title,
+                text: email
+              };
+              console.log("pre gMailer")
+              gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+                /* console.log("gMailer");
+                console.log(err);
+                console.log("gMailer");
+                console.log(result);
+                res.json({res:result}); */
+                if (err) {
+                  logger.debug("Email sending failure");
+                  res.json({error: true, msg: "Email sending failure"});
+                } else {
+                  logger.debug("Email sending OK");
+                  res.json({error: false, msg: "Email sending success"});
+                }
+              });
+            } 
+          });  
         } else {
           res.json({err:err});
-        } */
-        res.json({error: false, msg: "Email sending success"});
-      } else {
-        res.json({err:err});
+        }
       }
     });  
   });
