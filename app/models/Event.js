@@ -136,6 +136,10 @@ const eventSchema = new Schema({
     }
   },
   organizationsettings: {
+    email : String,
+    emailname : String,
+    emailpassword : String,
+    text_sign : String,
     program_builder: { type: Boolean, default: false },
     advanced_proposals_manager: { type: Boolean, default: false },
     call_is_active: { type: Boolean, default: false },

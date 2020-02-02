@@ -8,6 +8,7 @@ const imageUtil = require("../../utilities/image");
 const Footage = require('mongoose').model('Footage');
 const Video = require('mongoose').model('Video');
 const Order = require('mongoose').model('Order');
+const Event = require('mongoose').model('Event');
 
 const logger = require('../../utilities/logger');
 
@@ -108,10 +109,12 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
       if(!err) {
         if (req.body.event) {
           console.log(req.body.event);
-          User
+          Event
           .findOne({"_id":req.body.event})
           .select({title:1, organizationsettings:1})
           .exec((err, event) => {
+            console.log("event.organizationsettings.email");
+            console.log(event.organizationsettings.email);
             if (err) {
               res.status(500).json({ error: `${JSON.stringify(err)}` });
             } else {
@@ -122,7 +125,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
               let email = "Ciao " + req.body.details.payer.name.given_name +",\n"+"your payment to \""+event.title+"\" was successful!!!";
               email+= "\n\nYour purchase is:";
               for (var a=0;a<req.body.details.purchase_units.length;a++) {
-                email+= "\n\n"+req.body.details.purchase_units.description+"           "+req.body.details.purchase_units.amount.value+" "+req.body.details.purchase_units.amount.currency_code+" ";
+                email+= "\n\n"+req.body.details.purchase_units[a].description+"           "+req.body.details.purchase_units[a].amount.value+" "+req.body.details.purchase_units[a].amount.currency_code+" ";
               } 
               email+= "\n\nThank you.";
               email+= "\n\n"+event.organizationsettings.text_sign;
@@ -133,6 +136,8 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
                 text: email
               };
               console.log("pre gMailer")
+              console.log(auth)
+              console.log(mail)
               gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
                 /* console.log("gMailer");
                 console.log(err);
@@ -141,6 +146,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
                 res.json({res:result}); */
                 if (err) {
                   logger.debug("Email sending failure");
+                  logger.debug(err);
                   res.json({error: true, msg: "Email sending failure"});
                 } else {
                   logger.debug("Email sending OK");
