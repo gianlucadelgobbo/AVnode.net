@@ -267,8 +267,11 @@ router.get('/:event/acts', (req, res) => {
     if (err) {
       res.json(err);
     } else {
+      logger.debug("pre-populate");
+      const native_populate = JSON.parse(JSON.stringify(config.cpanel["events_advanced"].forms["acts"].populate));
+      logger.debug(native_populate);
       const select = config.cpanel["events_advanced"].forms["acts"].select;
-      const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["acts"].populate;
+      let populate = req.query.pure ? [] : native_populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
@@ -282,6 +285,8 @@ router.get('/:event/acts', (req, res) => {
           }
         }
       }
+      logger.debug("populate")
+      logger.debug(populate)
       Program.
       find(query).
       select(select).

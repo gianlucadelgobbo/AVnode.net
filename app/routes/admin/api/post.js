@@ -233,7 +233,7 @@ router.editSubscriptionSave = (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          Models.Program.find({_id: {$ne: program._id}, "subscriptions.subscriber_id": program.subscriptions.map(item => {return item.subscriber_id;})})
+          Models.Program.find({_id: {$ne: program._id}, event:program.event, "subscriptions.subscriber_id": program.subscriptions.map(item => {return item.subscriber_id;})})
           .exec((err, programs) => {
             if (programs.length) {
               let promises = [];
@@ -241,8 +241,11 @@ router.editSubscriptionSave = (req, res) => {
                 for (var subscription=0;subscription<programs[item].subscriptions.length;subscription++) { 
                   for (var subnew=0;subnew<program.subscriptions.length;subnew++) { 
                     if (program.subscriptions[subnew].subscriber_id.toString() == programs[item].subscriptions[subscription].subscriber_id.toString()) {
-                      programs[item].subscriptions[subscription].packages = program.subscriptions[subnew].packages;
-                    }
+                      program.subscriptions[subnew].freezed = programs[item].subscriptions[subscription].freezed;
+                      programs[item].subscriptions[subscription] = program.subscriptions[subnew];
+                      logger.debug("programs.length");
+                      logger.debug(programs.length);
+                                                  }
                   }
                 }
                 promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]));
