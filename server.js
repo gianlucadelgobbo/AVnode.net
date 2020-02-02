@@ -177,13 +177,13 @@ app.use((req, res, next) => {
 
 // Temporary cors to have redux come in cross origin
 const cors = require("cors");
+var corsOptions = {
+  origin: 'https://liveperformersmeeting.net',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 app.use(cors());
 app.use(routes);
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "liveperformersmeeting.net"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+
 app.use(function(err, req, res, next) {
   console.error("URL: " + req.headers.host + req.url); // URL of req made
   console.error(err.message); // Log error message in our server's console
