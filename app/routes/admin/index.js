@@ -207,22 +207,6 @@ router.post('/api/subscriptionupdate', (req, res)=>{
   post.updateSubscription(req, res);
 });
 
-var cors = require('cors')
-var whitelist = ['https://liveperformersmeeting.net']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-
-router.post('/api/transactionupdate', cors(corsOptions), (req, res)=>{
-  post.updateTransation(req, res);
-});
-
 router.post('/api/cancelsubscription', (req, res)=>{
   post.cancelSubscription(req, res);
 });
