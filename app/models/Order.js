@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
   orderID: String,
-  order: {},
+  event: { type : Schema.ObjectId, ref : 'Event' },
   details: {},
   data: {}
 }, {

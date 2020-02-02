@@ -9,6 +9,7 @@ const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const Program = mongoose.model('Program');
+const Order = mongoose.model('Order');
 
 const request = require('request');
 const fs = require('fs');
@@ -197,6 +198,62 @@ router.get('/:event', (req, res) => {
     }
   });
 });
+
+router.get('/:event/orders', (req, res) => {
+  logger.debug('/events/'+req.params.event+'/orders');
+  logger.debug(req.query)
+  let data = {};
+  Event.
+  findOne({"_id": req.params.event}).
+  select({title: 1, schedule: 1, organizationsettings: 1}).
+  populate([{"path": "organizationsettings.call.calls.admitted", "select": "name slug", "model": "Category"}]).
+  exec((err, event) => {
+    if (err) {
+      res.json(err);
+    } else {
+      let query = {"event": req.params.event};
+      logger.debug(query)
+      /* const select = config.cpanel["events_advanced"].forms["acts"].select;
+      const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["acts"].populate;
+      if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
+      for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['performance_category'] && req.query['performance_category']!='0') {
+            populate[item].match = {type: req.query['performance_category']};
+          }
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
+          }
+        }
+      } */
+      Order.
+      find(query).
+      /* select(select).
+      populate(populate). */
+      exec((err, orders) => {
+        if (err) {
+          res.json(err);
+        } else {
+          data.event = event;
+          data.orders = orders;
+          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            res.json(data);
+          } else {
+            req.query.sez = "acts";
+            res.render('admindev/events/orders', {
+              title: 'Events | '+data.event.title + ': Orders',
+              data: data,
+              currentUrl: req.originalUrl,
+              
+              get: req.query
+            });
+          }
+        }
+      });
+    }
+   });
+  });
 
 router.get('/:event/acts', (req, res) => {
   logger.debug('/events/'+req.params.event+'/acts');

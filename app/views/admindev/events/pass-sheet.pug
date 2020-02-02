@@ -1,9 +1,10 @@
-extends ../layout_nocss
-block filters
-  include ./_filters
+extends ../layout
+block topmenu
+  include topmenu
 block content
+  include ./_filters
   .white-content
-    table
+    table.table
       thead
         tr
           th="ID"
@@ -51,7 +52,8 @@ block content
               -   var ddd = new Date(subscription.subscription.days[b])
               -   if (ddd.toString() == dd.toString()) present = "#d8d8d8"
               - }
-              td(style="background-color:"+present+";color:"+present)=present=="#d8d8d8" ? "X" : ""
+              td
+                .mb-1.ml-1.mr-1.mt-1(style="background-color:"+present+";color:"+present)=present=="#d8d8d8" ? "X" : ""
             td
               .mb-1
                 each performance in subscription.performances

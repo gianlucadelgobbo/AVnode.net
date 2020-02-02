@@ -1,7 +1,8 @@
-extends ../layout_nocss
-block filters
-  include ./_filters
+extends ../layout
+block topmenu
+  include topmenu
 block content
+  include ./_filters
   .white-content
     #reset-style
       each subscription, index in data.subscriptions

@@ -1,0 +1,43 @@
+extends ../layout
+block topmenu
+  include topmenu
+block content
+
+  - var total = {}
+  - var currency_code = ""
+  table.table
+    thead
+      tr
+        th="ID"
+        th="orderID"
+        th="DATE"
+        th="STATUS"
+        th="NAME"
+        th="SURNAME"
+        th="EMAIL"
+        th="Description"
+        th="Price"
+    tbody
+      each item, index in data.orders
+        each purchase_unit, i in item.details.purchase_units
+          tr
+            td=(index+1)
+            td=item.orderID
+            td=item.details.create_time
+            td=item.details.status
+            td=item.details.payer.name.given_name
+            td=item.details.payer.name.surname
+            td=item.details.payer.email_address
+            td=purchase_unit.description
+            td
+              .text-right.text-nowrap=purchase_unit.amount.value+" "+(purchase_unit.amount.currency_code == "EUR" ? "€" : purchase_unit.amount.currency_code)
+            - if (!total[purchase_unit.amount.currency_code]) total[purchase_unit.amount.currency_code] = 0
+            - total[purchase_unit.amount.currency_code]+= parseFloat(purchase_unit.amount.value)
+            - currency_code = purchase_unit.amount.currency_code
+      each item, index in total
+        tr
+          td(colspan="8")
+            .text-right
+              b="TOTAL "+index
+          td
+            .text-right.text-nowrap=item+" "+(index == "EUR" ? "€" : index)
