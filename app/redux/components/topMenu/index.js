@@ -126,6 +126,14 @@ class TopMenu extends Component {
             </a>
             <a
               className="bg-dark list-group-item"
+              aria-current="false"
+              href="/adminpro/"
+            >
+              <span className="fas fa-tools fa-fw mr-3"></span>
+              <span className="menu-collapsed">Advanced Tools</span>
+            </a>
+            <a
+              className="bg-dark list-group-item"
               href="#"
               data-toggle="sidebar-collapse"
             >

@@ -1,0 +1,16 @@
+if event
+  .page-break-after-always.clearfix
+    if events
+      each item, index in events
+        if item._id==event
+          h3.float-left=item.title
+    .float-right
+      form.form-inline.d-print-none.text-right
+        a.btn.btn-sm.btn-primary.mb-3.mr-2(href="/adminpro/partners/"+owner+"/"+event+"/" class=currentUrl == "/adminpro/partners/"+owner+"/"+event+"/" ? "active" : undefined)=global.__("List")
+        a.btn.btn-sm.btn-primary.mb-3.mr-2(href="/adminpro/partners/"+owner+"/"+event+"/manage" class=currentUrl == "/adminpro/partners/"+owner+"/"+event+"/manage" ? "active" : undefined)=global.__("By types")
+        select.float-left.form-control-sm.btn-primary.mb-3(style="width:150px" onchange="if (this.value) window.location.href='/adminpro/partners/"+owner+"/"+event+"/'+this.value+'/'")
+          option(value=0)=global.__("Grant tools")
+          option(value="grantsdata" selected=(currentUrl == "/adminpro/partners/"+owner+"/"+event+"/grantsdata" ? "selected" : undefined))=global.__("Grants data")
+          option(value="grantsdata_table" selected=(currentUrl == "/adminpro/partners/"+owner+"/"+event+"/grantsdata_table" ? "selected" : undefined))=global.__("Grants data table")
+          option(value="grantsdata_events" selected=(currentUrl == "/adminpro/partners/"+owner+"/"+event+"/grantsdata_events" ? "selected" : undefined))=global.__("Grants events data")
+          option(value="mandates" selected=(currentUrl == "/adminpro/partners/"+owner+"/"+event+"/mandates" ? "selected" : undefined))=global.__("Mandates")

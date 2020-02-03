@@ -1,0 +1,10 @@
+extends ../layout
+block topmenu
+  include topmenu
+block content
+  b!="Your organizations"
+  if data.length
+    ol
+      each item, index in data
+        li
+          a(href="/adminpro/partners/"+item._id+"/")!=item.stagename

@@ -1,0 +1,24 @@
+nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
+  a.navbar-brand(href='/adminpro', title="AVnode.net")
+    img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')
+  button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
+    span.lnr.lnr-menu.toggle_icon
+  .collapse.navbar-collapse(id="navbar-collapse_performer_template")
+    include menuHeaderEvents
+
+    ul.user_navbar.navbar-nav.d-none.d-sm-block
+      if user
+        //li.nav-item.dropdown.user_menu.user_menu_logged                  
+        li.nav-item.dropdown.user_menu.user_menu_logged
+          a#userDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+            span.lnr.lnr-user
+          .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
+            a.dropdown-item(href='/'+user.slug)                    
+              span.pr-2.lnr.lnr-eye
+              !=" "+global.__('Profile')
+            a.dropdown-item(href='/admin/profile/'+user._id+'/public')                    
+              span.pr-2.lnr.lnr-cog
+              !=" "+global.__('Control Panel')
+            a.dropdown-item(href='/logout')                    
+              span.pr-2.lnr.lnr-exit
+              !=" "+global.__('Log out')

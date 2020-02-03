@@ -131,6 +131,12 @@ class TopBar extends Component {
                 <span>Subscriptions</span>
               </a>
             </li>
+            <li className="nav-item mt-2 mb-2 d-block d-lg-none">
+              <a className="nav-link" href="/adminpro/">
+                <span className="fas fa-tools fa-fw mr-3"></span>
+                <span>Advanced Tools</span>
+              </a>
+            </li>
             <li className="nav-item mt-4 mb-2 d-block d-lg-none">
               <a className="nav-link" href="/logout">
                 <span className="fas fa-sign-out-alt fa-fw mr-3"></span>

@@ -294,7 +294,7 @@ router.editSubscription = (req, res) => {
     let days = [];
     for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
     
-    res.render('admindev/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
+    res.render('adminpro/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
       logger.debug(err);
       logger.debug("sub");
       res.json(body);
@@ -307,7 +307,7 @@ router.editSubscriptionPrice = (req, res) => {
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .select({schedule: 1})
   .exec((err, sub) => {
-    res.render('admindev/events/acts-edit-sub-price', {sub: sub}, function(err, body) {
+    res.render('adminpro/events/acts-edit-sub-price', {sub: sub}, function(err, body) {
       res.json(body);
     });
   });
@@ -319,7 +319,7 @@ router.editSubscriptionCost = (req, res) => {
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .select({fee: 1, technical_cost: 1, accommodation_cost: 1, transfer_cost: 1})
   .exec((err, sub) => {
-    res.render('admindev/events/acts-edit-sub-cost', {sub: sub}, function(err, body) {
+    res.render('adminpro/events/acts-edit-sub-cost', {sub: sub}, function(err, body) {
       res.json(body);
     });
   });

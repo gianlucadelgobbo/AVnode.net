@@ -1,0 +1,209 @@
+#sidebar-container.sidebar-expanded.d-none.d-md-block
+  // !=currentUrl +(currentUrl.indexOf("/adminpro/supertools/files")===0)
+  // d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu'
+  // Bootstrap List Group
+  .list-group
+    // Separator with title
+    .list-group-item.sidebar-separator-title.d-flex
+      small.menu-collapsed ADVANCED TOOLS
+    // /END Separator
+    // Menu with submenu
+    a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/events/')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fa.fa-calendar.fa-fw.mr-3
+        span.menu-collapsed="Events"
+    if data && data.event && data.event._id
+      #submenuEvent.collapse.sidebar-submenu(class=currentUrl.indexOf("/adminpro/events")===0 ? " show" : "")
+        .list-group-item.sidebar-separator-title.d-flex
+          small.menu-collapsed=data.event.title
+        - var obj = {link:'/adminpro/events/'+data.event._id+'/acts/', title:global.__('Acts')}
+        a.list-group-item(href=obj.link, class=currentUrl.indexOf(obj.link)==0 ? "active" : "bg-dark")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-theater-masks.fa-fw.mr-3
+            span.menu-collapsed=obj.title
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/peoples/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-users.fa-fw.mr-3
+            span.menu-collapsed=global.__('Peoples')
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.far.fa-calendar-alt.fa-fw.mr-3
+            span.menu-collapsed=global.__('Program')
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/orders/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fas.fa-money-check-alt.fa-fw.mr-3
+            span.menu-collapsed=global.__('Orders')
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/technical-riders/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-tasks.fa-fw.mr-3
+            span.menu-collapsed=global.__('Technical Riders')
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program-social/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-rss-square.fa-fw.mr-3
+            span.menu-collapsed=global.__('Program Social')
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program-print/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-print.fa-fw.mr-3
+            span.menu-collapsed=global.__('Program Prints')
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/pass/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-print.fa-fw.mr-3
+            span.menu-collapsed=global.__('Pass Prints')
+        a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/pass-sheet/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-print.fa-fw.mr-3
+            span.menu-collapsed=global.__('Pass sheet Prints')
+        //a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/countries/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-sitemap.fa-fw.mr-3
+            span.menu-collapsed=global.__('Countries')
+          li.nav-item
+          a.nav-link(href='/adminpro/events/'+data.event._id+'/tweets/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-sitemap.fa-fw.mr-3
+            span.menu-collapsed=global.__('TWEETS')
+          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/partners/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-sitemap.fa-fw.mr-3
+            span.menu-collapsed=global.__('Partners')
+          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/numbers/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-sitemap.fa-fw.mr-3
+            span.menu-collapsed=global.__('Numbers')
+          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/guestlist/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-sitemap.fa-fw.mr-3
+            span.menu-collapsed=global.__('Guestlist')
+          a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/cachecreator/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-sitemap.fa-fw.mr-3
+            span.menu-collapsed=global.__('Cache Creator')
+    a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/organizations/')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fa.fa-sitemap.fa-fw.mr-3
+        span.menu-collapsed="Organizations"
+    a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/partners/')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fa.fa-handshake.fa-fw.mr-3
+        span.menu-collapsed="Partners"
+    a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/facebook/')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fab.fa-facebook-square.fa-fw.mr-3
+        span.menu-collapsed="Facebook"
+    if user.is_admin
+      a.bg-dark.list-group-item.list-group-item-action(href='#submenuSuper', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
+        .d-flex.w-100.justify-content-start.align-items-center
+          span.fa.fa-wrench.fa-fw.mr-3
+          span.menu-collapsed="SUPER Tools"
+      #submenuSuper.collapse.sidebar-submenu(class=currentUrl.indexOf("/adminpro/supertools")===0 ? " show" : "")
+        a.bg-dark.list-group-item(href='#subsubmenuSuper1', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.far.fa-envelope.fa-fw.mr-3
+            span.menu-collapsed Emails
+        // Submenu content
+        #subsubmenuSuper1.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? " show" : "")
+          - var obj = {link:"/emails", title:"Emails"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/emails/updateSendy", title:"Update Sendy"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+        a.bg-dark.list-group-item(href='#subsubmenuSuper2', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/addresses")===0 ? "true" : "false")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-map-marker.fa-fw.mr-3
+            span.menu-collapsed Addresses 
+        // Submenu content
+        #subsubmenuSuper2.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/addresses")===0 ? " show" : "")
+          - var obj = {link:"/addresses/venuesdbcheck", title:"Venues DB Check"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/venuesdbimport", title:"Venues DB Import"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/venuesgetgeometry", title:"Venues Get Geom"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/venuessetgeometry", title:"Venues Set Geom"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/usersdbcheck", title:"Users DB Check"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/showall", title:"Show All"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/updatedb", title:"Update DB"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/getgeometry", title:"Get Geom"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/addresses/setgeometry", title:"Get Geom"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+        a.bg-dark.list-group-item(href='#subsubmenuSuper4', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/files")===0 ? "true" : "false")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-archive.fa-fw.mr-3
+            span.menu-collapsed Files
+        // Submenu content
+        #subsubmenuSuper4.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/files")===0 ? " show" : "")
+          - var obj = {link:"/files/userimages", title:"User Images"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/userformatsgenerator", title:"User Formats Generator"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/performanceimages", title:"Performance Images"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/performanceformatsgenerator", title:"Performance Formats Generator"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/eventimages", title:"Event Images"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/eventformatsgenerator", title:"Event Formats Generator"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/newsimages", title:"News Images"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/newsformatsgenerator", title:"news Formats Generator"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/footagefiles", title:"Footage Files"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/footagerenamer", title:"Footage Renamer"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/footageformatsgenerator", title:"footage Formats Generator"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/videofiles", title:"Video Files"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/videoformatsgenerator", title:"video Formats Generator"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/galleryimages", title:"Gallery Images"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/files/gallerygenerator", title:"Gallery Generator"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+        a.bg-dark.list-group-item(href='#subsubmenuSuper5', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/wpimport")===0 ? "true" : "false")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-download.fa-fw.mr-3
+            span.menu-collapsed WP Import
+        // Submenu content
+        #subsubmenuSuper5.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/wpimport")===0 ? " show" : "")
+          - var obj = {link:"/wpimport/news", title:"News"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/wpimport/events", title:"Events"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+          - var obj = {link:"/wpimport/organizations", title:"Organizations"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+        
+        a.bg-dark.list-group-item(href='#subsubmenuSuper6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-tags.fa-fw.mr-3
+            span.menu-collapsed Categories
+        // Submenu content
+        #subsubmenuSuper6.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
+          - var obj = {link:"/categories/dbcheck", title:"Categories DB Check"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+        
+        a.bg-dark.list-group-item(href='#subsubmenuSuper6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-tags.fa-fw.mr-3
+            span.menu-collapsed Statistics
+        // Submenu content
+        #subsubmenuSuper6.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
+          - var obj = {link:"/stats/usersstatsupdate", title:"Users Update"}
+          a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
+        
+    a.bg-dark.list-group-item.list-group-item-action(href='/admin/profile/'+user._id+'/public')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.lnr.lnr-cog.mr-3
+        span.menu-collapsed="Control Panel"
+
+    a.bg-dark.list-group-item(href='#', data-toggle='sidebar-collapse')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fa.fa-arrow-alt-circle-left.fa-fw.mr-3
+        span.menu-collapsed Collapse
+            
