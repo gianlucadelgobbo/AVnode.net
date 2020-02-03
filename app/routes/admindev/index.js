@@ -24,6 +24,45 @@ if (process.env.DEBUG) {
     res.render('json', {data: require('getconfig').cpanel});
   });
 }
+router.get('/', (req, res) => {
+  if (req.user.is_pro || req.user.is_admin) {
+    logger.debug('/admindev');
+    let results = {};
+    const myids = req.user.crews.concat([req.user._id.toString()]);
+    Event.
+    find({"users": {$in: myids},"organizationsettings.call.calls.0":{$exists:true}}).
+    //lean().
+    select({title: 1, createdAt: 1}).
+    exec((err, data) => {
+      results.events = data;
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        res.json(results);
+      } else {
+        res.render('admindev/home', {
+          title: 'Advanced Tools',
+          currentUrl: req.originalUrl,
+          
+          data: results,
+          script: false
+        });
+      }
+    });  
+  } else {
+    res.render('admindev/noaccess', {
+      title: 'Advanced Tools',
+      currentUrl: req.originalUrl,
+      
+      script: false
+    });
+  }
+});
+router.get('/*', (req, res, next) => {
+  if (req.user.is_pro || req.user.is_admin) {
+    next();
+  } else {
+    res.redirect('/admindev/')
+  }
+});
 
 router.use('/events', events);
 router.use('/organizations', organizations);
@@ -37,29 +76,7 @@ router.use('/supertools/categories', categories);
 router.use('/supertools/stats', stats);
 router.use('/supertools', supertools);
 
-router.get('/', (req, res) => {
-  logger.debug('/events');
-  let results = {};
-  const myids = req.user.crews.concat([req.user._id.toString()]);
-  Event.
-  find({"users": {$in: myids},"organizationsettings.call.calls.0":{$exists:true}}).
-  //lean().
-  select({title: 1, createdAt: 1}).
-  exec((err, data) => {
-    results.events = data;
-    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-      res.json(results);
-    } else {
-      res.render('admindev/home', {
-        title: 'Advanced Tools',
-        currentUrl: req.originalUrl,
-        
-        data: results,
-        script: false
-      });
-    }
-  });
-});
+
 router.get('/facebook', (req, res) => {
   res.render('admindev/socialmedia/facebook', {
     title: 'Facebook',

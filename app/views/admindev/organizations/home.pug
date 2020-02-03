@@ -17,8 +17,9 @@ block content
             td=index+1
             td
               h3!=item.stagename
-              a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
-              !=" | "
+              if user.is_admin
+                a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+                !=" | "
               a(href="/"+item.slug, target="_blank")!=global.__("view")
             td
               each user in item.members

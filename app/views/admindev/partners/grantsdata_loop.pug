@@ -12,6 +12,7 @@ table.table.table-fixed.page-break-after-always
       td(width="70%")
         h3!=item.stagename
         span.d-print-none
+          if user.is_admin
           !=" "
           a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
           !=" | "

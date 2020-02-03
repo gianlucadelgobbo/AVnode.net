@@ -110,8 +110,9 @@ block content
             h2(style="overflow:hidden;max-width: 500px;")!=item.performance.title
               small
                 !=" "
-                a(href="/admin/performances/"+item.performance._id+"/public", target="_blank")!=global.__("edit")
-                !=" | "
+                if user.is_admin
+                  a(href="/admin/performances/"+item.performance._id+"/public", target="_blank")!=global.__("edit")
+                  !=" | "
                 a(href="/performances/"+item.performance.slug, target="_blank")!=global.__("view")
             .row
               if get.fullinfo
@@ -223,8 +224,9 @@ block content
                       .badge.badge-info CREW
                     small
                       !=" "
-                      a(href="/admin/"+(user.is_crew ? "crews" : "profile")+"/"+user._id+"/public", target="_blank")!=global.__("edit")
-                      !=" | "
+                      if user.is_admin
+                        a(href="/admin/"+(user.is_crew ? "crews" : "profile")+"/"+user._id+"/public", target="_blank")!=global.__("edit")
+                        !=" | "
                       a(href="/"+user.slug, target="_blank")!=global.__("view")
 
                   if user.addressesFormatted && user.addressesFormatted.length
@@ -263,68 +265,75 @@ block content
               ol
                 each subscription in item.subscriptions
                   li
-                    b!=subscription.subscriber_id.stagename
-                    !=" "+subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
-                    if !subscription.subscriber_id.name || !subscription.subscriber_id.surname
-                      - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
-                      - if (emails_noname.indexOf(str)==-1) emails_noname.push(str)
-                    br
-                    if subscription.subscriber_id.addressesFormatted && subscription.subscriber_id.addressesFormatted.length
-                      !=subscription.subscriber_id.addressesFormatted.join(", ")
-                    else
-                      .badge.badge-danger MISSING ADDRESS
-                      - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
-                      - if (emails_noaddress.indexOf(str)==-1) emails_noaddress.push(str)
-                    if subscription.freezed
-                      !=" "
-                      .badge.badge-info freezed
-                    if people.indexOf(subscription.subscriber_id._id.toString())==-1
-                      - people.push(subscription.subscriber_id._id.toString())
-                      if subscription.freezed && (!get.status || get.status=="0")
+                    if subscription.subscriber_id                    
+                      b!=subscription.subscriber_id.stagename
+                      !=" "+subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
+                      if !subscription.subscriber_id.name || !subscription.subscriber_id.surname
+                        - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
+                        - if (emails_noname.indexOf(str)==-1) emails_noname.push(str)
+                      br
+                      if subscription.subscriber_id.addressesFormatted && subscription.subscriber_id.addressesFormatted.length
+                        !=subscription.subscriber_id.addressesFormatted.join(", ")
+                      else
+                        .badge.badge-danger MISSING ADDRESS
+                        - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
+                        - if (emails_noaddress.indexOf(str)==-1) emails_noaddress.push(str)
+                      if subscription.freezed
                         !=" "
-                        .badge.badge-danger WRONG FREEZED?
-                    else if !subscription.freezed && (!get.status || get.status=="0")
-                      !=" "
-                      .badge.badge-danger MISSING FREEZED?
-                    br
-                    if subscription.daysFormatted
-                      u="Availability"
-                      !=": "
-                      !=subscription.daysFormatted.join(" | ")
-                    br
-                    u!="PACKAGES"
-                    ul
-                      each pack in subscription.packages
-                        li
-                          !=pack.name
-                          if pack.options_name
-                            br
-                            !=pack.options_name
-                            !=": "
-                            if pack.option
-                              !=pack.option
-                              if pack.option_value
-                                !=" | "+pack.option_value
-                            else 
-                              .badge.badge-danger!="MISSING"+" "+pack.options_name
+                        .badge.badge-info freezed
+                      if people.indexOf(subscription.subscriber_id._id.toString())==-1
+                        - people.push(subscription.subscriber_id._id.toString())
+                        if subscription.freezed && (!get.status || get.status=="0")
+                          !=" "
+                          .badge.badge-danger WRONG FREEZED?
+                      else if !subscription.freezed && (!get.status || get.status=="0")
+                        !=" "
+                        .badge.badge-danger MISSING FREEZED?
+                      br
+                      if subscription.daysFormatted
+                        u="Availability"
+                        !=": "
+                        !=subscription.daysFormatted.join(" | ")
+                      br
+                      u!="PACKAGES"
+                      ul
+                        each pack in subscription.packages
+                          li
+                            !=pack.name
+                            if pack.options_name
+                              br
+                              !=pack.options_name
+                              !=": "
+                              if pack.option
+                                !=pack.option
+                                if pack.option_value
+                                  !=" | "+pack.option_value
+                              else 
+                                .badge.badge-danger!="MISSING"+" "+pack.options_name
+                    else 
+                      .badge.badge-danger!="MISSING SUBSCRIBER ID"
+                        
             p
-              - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
-              - if (emails.indexOf(str)==-1) emails.push(str)
-              b!="REFERENCE"
-              br
-              !=item.reference.name+" "+item.reference.surname
-              br
-              if item.reference.email
-                !='<a href="mailto:'+item.reference.email+'" target="_blank">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'" target="_blank">SEARCH MESSAGES</a>'
-              else
-                !=" "
-                .badge.badge-danger MISSING EMAIL
-              br
-              if item.reference.mobile && item.reference.mobile.length
-                !=mobile=item.reference.mobile.map(item => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>';})
-              else
-                !=" "
-                .badge.badge-danger MISSING MOBILE
+              if item.reference
+                - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
+                - if (emails.indexOf(str)==-1) emails.push(str)
+                b!="REFERENCE"
+                br
+                !=item.reference.name+" "+item.reference.surname
+                br
+                if item.reference.email
+                  !='<a href="mailto:'+item.reference.email+'" target="_blank">'+item.reference.email+'</a> <a href="https://mail.google.com/mail/u/0/#search/'+item.reference.email+'" target="_blank">SEARCH MESSAGES</a>'
+                else
+                  !=" "
+                  .badge.badge-danger MISSING EMAIL
+                br
+                if item.reference.mobile && item.reference.mobile.length
+                  !=mobile=item.reference.mobile.map(item => {if (item.url) return item.url+' '+'<a href="https://web.whatsapp.com/send?phone='+item.url.replace("+","").replace(/ /g,"")+'" target="_blank">Whatsapp</a>';})
+                else
+                  !=" "
+                  .badge.badge-danger MISSING MOBILE
+              else 
+                .badge.badge-danger!="MISSING REFERENCE"
 
         //if get.fullinfo
           tr

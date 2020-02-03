@@ -1,7 +1,7 @@
 // Availability
 - var count = 0;
 - var people = [];
-- var subscriptionsIndex = call.subscriptions.map(item => {return item.subscriber_id._id.toString()})
+- var subscriptionsIndex = call.subscriptions.map(item => {return item.subscriber_id ? item.subscriber_id._id.toString() : null})
 input(type='hidden', name="program", value=call._id.toString())
 - for (var b=0;b<call.performance.users.length;b++)
   - if (call.performance.users[b].members && call.performance.users[b].members.length)
@@ -28,4 +28,4 @@ input(type='hidden', name="program", value=call._id.toString())
         each member in user.members
           option(value=member._id, selected=member._id.toString()==call.reference._id.toString() ? "selected" : undefined)=member.stagename
       else
-        option(value=user._id, selected=user._id.toString()==call.reference._id.toString() ? "selected" : undefined)=user.stagename
+        option(value=user._id, selected=call.reference && user._id.toString()==call.reference._id.toString() ? "selected" : undefined)=user.stagename

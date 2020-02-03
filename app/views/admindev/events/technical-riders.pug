@@ -30,7 +30,8 @@ block content
                         td!=room.schedule.venue.room
                         td!=program.performance.title
                         td
-                          a(href="/admin/performances/"+program.performance._id+"/public", target="_blank")!="EDIT"
+                          if user.is_admin
+                            a(href="/admin/performances/"+program.performance._id+"/public", target="_blank")!="EDIT"
                         - conta++
     else
 

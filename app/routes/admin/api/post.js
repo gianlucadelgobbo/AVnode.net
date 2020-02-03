@@ -275,6 +275,7 @@ router.editSubscription = (req, res) => {
   .findOne({_id: req.body.id/* , members:req.user.id */})
   .populate(populate)
   .exec((err, sub) => {
+    logger.debug(sub);
     let daysdays = [];
     let schedule = JSON.parse(JSON.stringify(sub.event.schedule));
     for(let a=0;a<schedule.length;a++) {
@@ -294,6 +295,8 @@ router.editSubscription = (req, res) => {
     for(let a=0;a<daysdays.length;a++) days.push({date:daysdays[a], date_formatted:moment(daysdays[a]).format(config.dateFormat[global.getLocale()].weekdaydaymonthyear)});
     
     res.render('admindev/events/acts-edit-sub', {call: sub,days:days}, function(err, body) {
+      logger.debug(err);
+      logger.debug("sub");
       res.json(body);
     });
   });

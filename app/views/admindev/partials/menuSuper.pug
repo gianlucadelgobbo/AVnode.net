@@ -19,45 +19,45 @@
         - var obj = {link:'/admindev/events/'+data.event._id+'/acts/', title:global.__('Acts')}
         a.list-group-item(href=obj.link, class=currentUrl.indexOf(obj.link)==0 ? "active" : "bg-dark")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.fa.fa-theater-masks.fa-fw.mr-3
             span.menu-collapsed=obj.title
         a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/peoples/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.fa.fa-users.fa-fw.mr-3
             span.menu-collapsed=global.__('Peoples')
         a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/program/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.far.fa-calendar-alt.fa-fw.mr-3
             span.menu-collapsed=global.__('Program')
         a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/orders/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.fas.fa-money-check-alt.fa-fw.mr-3
             span.menu-collapsed=global.__('Orders')
         a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/technical-riders/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.fa.fa-tasks.fa-fw.mr-3
             span.menu-collapsed=global.__('Technical Riders')
-        a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/program-print/')
-          .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Program Prints')
         a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/program-social/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.fa.fa-rss-square.fa-fw.mr-3
             span.menu-collapsed=global.__('Program Social')
+        a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/program-print/')
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-print.fa-fw.mr-3
+            span.menu-collapsed=global.__('Program Prints')
         a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/pass/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Pass')
+            span.fa.fa-print.fa-fw.mr-3
+            span.menu-collapsed=global.__('Pass Prints')
         a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/pass-sheet/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
-            span.menu-collapsed=global.__('Pass sheet')
-        a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/countries/')
+            span.fa.fa-print.fa-fw.mr-3
+            span.menu-collapsed=global.__('Pass sheet Prints')
+        //a.bg-dark.list-group-item(href='/admindev/events/'+data.event._id+'/countries/')
           .d-flex.w-100.justify-content-start.align-items-center
             span.fa.fa-sitemap.fa-fw.mr-3
             span.menu-collapsed=global.__('Countries')
-        //li.nav-item
+          li.nav-item
           a.nav-link(href='/admindev/events/'+data.event._id+'/tweets/')
           .d-flex.w-100.justify-content-start.align-items-center
             span.fa.fa-sitemap.fa-fw.mr-3
