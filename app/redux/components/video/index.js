@@ -163,7 +163,7 @@ class Video extends Component {
               className="float-right"
               onClick={() =>
                 showModal({
-                  type: `MODAL_ADD_${type}_VIDEOS`,
+                  type: modal,
                   props: { history, id }
                 })
               }
