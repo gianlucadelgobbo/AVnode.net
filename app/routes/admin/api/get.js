@@ -1576,7 +1576,7 @@ router.sendEmailVericaition = (req, res) => {
     } else if (!user) {
       logger.debug("USER NOT FOUND");     
       res.json({error: true, msg: "USER NOT FOUND"});
-    } else if (req.params.id !== user._id.toString()) {
+    } else if (req.params.id !== user._id.toString() && !req.user.is_admin) {
       logger.debug("EMAIL IS NOT YOUR");     
       res.json({error: true, msg: "EMAIL IS NOT YOUR"});
     } else {
@@ -1617,6 +1617,7 @@ router.sendEmailVericaition = (req, res) => {
               }, function (err){
                 if (err) {
                   logger.debug("Email sending failure");
+                  logger.debug(err);
                   res.json({error: true, msg: "Email sending failure"});
                 } else {
                   logger.debug("Email sending OK");
