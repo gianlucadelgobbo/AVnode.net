@@ -243,9 +243,7 @@ router.editSubscriptionSave = (req, res) => {
                     if (program.subscriptions[subnew].subscriber_id.toString() == programs[item].subscriptions[subscription].subscriber_id.toString()) {
                       program.subscriptions[subnew].freezed = programs[item].subscriptions[subscription].freezed;
                       programs[item].subscriptions[subscription] = program.subscriptions[subnew];
-                      logger.debug("programs.length");
-                      logger.debug(programs.length);
-                                                  }
+                    }
                   }
                 }
                 promises.push(Models.Program.findOneAndUpdate({_id: programs[item]._id}, programs[item]));
