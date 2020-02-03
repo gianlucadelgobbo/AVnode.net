@@ -10,57 +10,54 @@ block content
     p.lead!="With the Advanced tools orgnizations can empower the daily job, in details you will be able to easily manage:"
     .row
       .col-md-4
-        if data.events.length
-          h2=global.__("Events")
-          ul
-            li
-              b!="Artists & Guests"
-              ul
-                li="Call for proposals"
-                li="Selection"
-                li="Approvals"
-                li="Availability"
-                li="Costs (fee, accommodation, transports)"
-                li="Ticket price"
-            li
-              b!="Accommodation"
-              ul
-                li="Gant layout"
-                li="Payments status"
-                li="Hotels & rooms management"
-            li
-              b!="Program"
-              ul
-                li="Drag & Drop program build"
-                li="Replicas"
-            li
-              b!="Tickets"
-              ul
-                li="By event income"
-            li
-              b!="Prints"
-              ul
-                li="Technical Riders"
-                li="Program"
-                li="Social Posts"
-                li="Guests Pass"
-                li="Guests list"
+        h2=global.__("Events")
+        ul
+          li
+            b!="Artists & Guests"
+            ul
+              li="Call for proposals"
+              li="Selection"
+              li="Approvals"
+              li="Availability"
+              li="Costs (fee, accommodation, transports)"
+              li="Ticket price"
+          li
+            b!="Accommodation"
+            ul
+              li="Gant layout"
+              li="Payments status"
+              li="Hotels & rooms management"
+          li
+            b!="Program"
+            ul
+              li="Drag & Drop program build"
+              li="Replicas"
+          li
+            b!="Tickets"
+            ul
+              li="By event income"
+          li
+            b!="Prints"
+            ul
+              li="Technical Riders"
+              li="Program"
+              li="Social Posts"
+              li="Guests Pass"
+              li="Guests list"
       .col-md-4
-        if data.events.length
-          h2=global.__("Organizations")
-          ul
-            li
-              b!="Extra private data for grants"
-            li
-              b!="Grants tools"
+        h2=global.__("Organizations")
+        ul
+          li
+            b!="Extra private data for grants"
+          li
+            b!="Grants tools"
       .col-md-4
-        if data.events.length
-          h2=global.__("Partners")
-          ul
-            li
-              b!="Partnerships managment"
-            li
-              b!="Mass mail manager"
+        h2=global.__("Partners")
+        ul
+          li
+            b!="Partnerships managment"
+          li
+            b!="Mass mail manager"
     if !user.is_pro
       hr.my-4
       p!="If you are member of an organization please request to be able to use the advanced tools to <a href=\"mailto:join@avnode.org\">join@avnode.org</a>."
