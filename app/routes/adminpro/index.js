@@ -48,10 +48,9 @@ router.get('/', (req, res) => {
       }
     });  
   } else {
-    res.render('adminpro/noaccess', {
+    res.render('adminpro/home', {
       title: 'Advanced Tools',
       currentUrl: req.originalUrl,
-      
       script: false
     });
   }
