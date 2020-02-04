@@ -26,24 +26,52 @@ class AddCrewMember extends Component {
     this.state = {
       value: "",
       idmember: "",
-      suggestions: []
+      suggestions: [],
+      activeSuggestion: 0,
+      disable: true
     };
   }
 
-  onChange = (event, { newValue }) => {
+  onChange = (event, obj) => {
+    const { suggestions, activeSuggestion } = this.state;
+    const filteredSuggestions = suggestions.filter(
+      suggestion =>
+        suggestion.stagename.toLowerCase().indexOf(obj.newValue.toLowerCase()) >
+        -1
+    );
+
+    if (obj.newValue.length >= 3) {
+      this.setState({
+        disable: false
+      });
+    } else {
+      this.setState({
+        disable: true
+      });
+    }
+
     if (event.target.children.length !== 0) {
       this.setState({
-        value: newValue,
+        value: obj.newValue,
         idmember: event.target.children[0].id
       });
     } else {
-      //console.log("event");
-      //console.log(newValue);
-      //console.log(event.target);
-      //console.log(event.target.id);
       this.setState({
-        value: newValue,
+        value: obj.newValue,
         idmember: event.target.id
+      });
+    }
+
+    if (obj.method === "enter") {
+      this.setState({
+        value: obj.newValue,
+        idmember: filteredSuggestions[activeSuggestion]._id
+      });
+    }
+    if (obj.method === "down") {
+      this.setState({
+        value: obj.newValue,
+        idmember: filteredSuggestions[activeSuggestion]._id
       });
     }
   };
@@ -87,11 +115,11 @@ class AddCrewMember extends Component {
   render() {
     const { showModal, errorMessage } = this.props;
 
-    const { value, suggestions, idmember } = this.state;
+    const { value, suggestions, idmember, disable } = this.state;
 
     const inputProps = {
       className: "form-control",
-      placeholder: "Type a members",
+      placeholder: "Type the first three characters",
       value,
       idmember,
       onChange: this.onChange
@@ -101,7 +129,6 @@ class AddCrewMember extends Component {
       <div className="row">
         <div className="col-md-12">
           {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-
           <Form
             onSubmitForm={this.onSubmitForm.bind(this)}
             showModal={showModal}
@@ -118,6 +145,7 @@ class AddCrewMember extends Component {
             getSuggestionValue={getSuggestionValue}
             getSuggestionID={getSuggestionID}
             renderSuggestion={renderSuggestion}
+            disable={disable}
           />
         </div>
       </div>
@@ -144,9 +172,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-AddCrewMember = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddCrewMember);
+AddCrewMember = connect(mapStateToProps, mapDispatchToProps)(AddCrewMember);
 
 export default AddCrewMember;
