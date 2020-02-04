@@ -108,7 +108,7 @@ block content
                 button.mr-2.btn.btn-danger.btn-sm.btn-inline.cancel-sub(type='button', data-id=item._id)=global.__('Delete')
           td(style="max-width:35vw;overflow: hidden;")
             if index>0 && get.sortby=="sortby_perf_name" && item.performance._id == data.program[index-1].performance._id && item.call == data.program[index-1].call
-              span.badge.badge-danger="DUPLICATE"
+              span.badge.badge-danger="DUPLICATE"+item.call+" "+data.program[index-1].call
             h2(style="overflow:hidden;max-width: 500px;")!=item.performance.title
               small
                 !=" "
