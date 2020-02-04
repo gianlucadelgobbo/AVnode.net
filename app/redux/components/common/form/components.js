@@ -341,7 +341,14 @@ export const inputText = ({ input, meta, placeholder, isChild, pre, help }) => {
 };
 
 export const inputPassword = ({ input, meta, placeholder, isChild }) => {
-  return inputField({ input, type: "password", meta, placeholder, isChild, autocomplete: "new-password" });
+  return inputField({
+    input,
+    type: "password",
+    meta,
+    placeholder,
+    isChild,
+    autocomplete: "new-password"
+  });
 };
 
 export const inputUrl = ({ input, meta, placeholder, isChild }) => {
@@ -434,7 +441,6 @@ export const textareaMultiTab = ({
       </div>
       <div>
         <br />
-
         <ul className="nav nav-tabs justify-content-center" role="tablist">
           {tabs.map((k, index) => (
             <li className="nav-item" key={index}>
@@ -452,7 +458,6 @@ export const textareaMultiTab = ({
             </li>
           ))}
         </ul>
-
         <div className="tab-content">
           {fields.map((member, index) => {
             return (
@@ -473,8 +478,9 @@ export const textareaMultiTab = ({
             );
           })}
         </div>
-
-        {Object.keys(errors[fields.name] || {}).length && (
+        {Object.keys(errors[fields.name] || {}).length === 0 ? (
+          ""
+        ) : (
           <span className="error-message">Check tabs marked with "!"</span>
         )}
       </div>
