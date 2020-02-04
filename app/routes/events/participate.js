@@ -56,6 +56,7 @@ router.get('/', (req, res) => {
       canonical: (req.get('host') === "localhost:8006" ? "http" : "https") + '://' + req.get('host') + req.originalUrl.split("?")[0],
       dett: data,
       call: req.session.call,
+      code: req.query.code,
       participateMenu: participateMenu,
       user: req.user,
       msg: msg

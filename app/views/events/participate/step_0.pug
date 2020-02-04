@@ -2,31 +2,55 @@
   // Active calls
   - console.log("call")
   - console.log(call)
+  - var now = new Date()
+  - var button = true
+
   - for(var a=0;a<dett.organizationsettings.call.calls.length;a++)
     - var admitted = []
     - for(var b=0;b<dett.organizationsettings.call.calls[a].admitted.length;b++)
       - admitted.push(dett.organizationsettings.call.calls[a].admitted[b])
     - var topics = []
-    - for(var b=0;b<dett.organizationsettings.call.calls[a].topics.length;b++)
-      - topics.push(dett.organizationsettings.call.calls[a].topics[b].name)
-    .row
-      .col-1(id="heading"+a)
-        .form-check
-          .text-right
-            input.form-check-input.position-static(id="radio"+a type="radio" name="index" value=a checked=call.index==a ? "checked" : undefined, data-toggle='collapse', data-target='#collapse'+a, aria-expanded='true', aria-controls='collapseOne')
-      .col-11
-        label(for="radio"+a)
+      - for(var b=0;b<dett.organizationsettings.call.calls[a].topics.length;b++)
+        - topics.push(dett.organizationsettings.call.calls[a].topics[b].name)
+    if dett.organizationsettings.call.calls[a].start_date>now && !code
+      - button = false
+      .row
+        .col-12
           h4=dett.organizationsettings.call.calls[a].title
           p
-            b=global.__("Deadline")+": "+dett.organizationsettings.call.calls[a].end_date_formatted
-      .row.collapse.card-body(class=call.index==a ? "show" : undefined, aria-labelledby='heading'+a, data-parent='#accordionCalls',id="collapse"+a)
-        .col-sm-1
-        .col-sm-11
-          p=global.__("Start date")+": "+dett.organizationsettings.call.calls[a].start_date_formatted
-          p!=global.__("Email")+": <a href=\"mailto"+dett.organizationsettings.call.calls[a].email+"\">"+dett.organizationsettings.call.calls[a].email+"</a>"
-          p=global.__("Admitted projects") + ": "
-          ul
-            each cat in admitted
-              li=cat.name
-          p=global.__("Topics") + ": " + topics.join(", ")
-          p!=dett.organizationsettings.call.calls[a].excerpt
+            b=global.__("This call for proposals starts on")+" "+dett.organizationsettings.call.calls[a].start_date_formatted
+    else if dett.organizationsettings.call.calls[a].end_date<now && !code
+      - button = false
+      .row
+        .col-12
+          h4=dett.organizationsettings.call.calls[a].title
+          p
+            !=global.__("This call for proposals ended on")+" "
+            b!=dett.organizationsettings.call.calls[a].end_date_formatted+". "
+            if dett.organizationsettings.call.nextEdition
+              !=global.__("See you for the")+" "
+              b!=dett.organizationsettings.call.nextEdition+" "
+              !=global.__("call for proposals")+". "
+
+    else
+      .row
+        .col-1(id="heading"+a)
+          .form-check
+            .text-right
+              input.form-check-input.position-static(id="radio"+a type="radio" name="index" value=a checked=call.index==a ? "checked" : undefined, data-toggle='collapse', data-target='#collapse'+a, aria-expanded='true', aria-controls='collapseOne')
+        .col-11
+          label(for="radio"+a)
+            h4=dett.organizationsettings.call.calls[a].title
+            p
+              b=global.__("Deadline")+": "+dett.organizationsettings.call.calls[a].end_date_formatted
+        .row.collapse.card-body(class=call.index==a ? "show" : undefined, aria-labelledby='heading'+a, data-parent='#accordionCalls',id="collapse"+a)
+          .col-sm-1
+          .col-sm-11
+            p=global.__("Start date")+": "+dett.organizationsettings.call.calls[a].start_date_formatted
+            p!=global.__("Email")+": <a href=\"mailto"+dett.organizationsettings.call.calls[a].email+"\">"+dett.organizationsettings.call.calls[a].email+"</a>"
+            p=global.__("Admitted projects") + ": "
+            ul
+              each cat in admitted
+                li=cat.name
+            p=global.__("Topics") + ": " + topics.join(", ")
+            p!=dett.organizationsettings.call.calls[a].excerpt
