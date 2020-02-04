@@ -15,6 +15,7 @@ class AddMembersForm extends Component {
   render() {
     const {
       submitting,
+      disable,
       inputProps,
       suggestions,
       placeholder,
@@ -45,9 +46,8 @@ class AddMembersForm extends Component {
         />
 
         <hr />
-
         <button
-          disabled={submitting}
+          disabled={disable}
           onClick={() => onSubmitForm(idmember)}
           className="btn btn-primary btn-lg btn-block"
         >
