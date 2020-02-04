@@ -76,7 +76,7 @@ const status = [
   'user_id'
 ];
 var populate = [
-  {path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
+  {path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
   {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
   {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
 ];
@@ -110,8 +110,9 @@ router.get('/:id', (req, res) => {
   lean().
   select({stagename: 1}).
   exec((err, user) => {
+    var query = user._id.toString()=="5be8772bfc39610000007065" ? {"is_crew" : true, "activity_as_organization" : {"$gt": 0}} : {"partner_owner": req.params.id};
     User.
-    find({"partner_owner": req.params.id}).
+    find(query).
     lean().
     sort({stagename: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).

@@ -10,38 +10,65 @@ block content
       table.table.table-fixed
         thead
           tr
-            td="ID"
-            td=global.__("Brand")
-            td=global.__("Partnerships")
-            td=global.__("Channels")
-            td=global.__("Contacts")
+            th="ID"
+            th=global.__("Brand")
+            th=global.__("Name")
+            th=global.__("Surname")
+            th=global.__("Email")
+            th=global.__("lang")
+            th=global.__("Mobile")
+            th=global.__("Skype")
+            th=global.__("Facebook")
+            th=global.__("Type")
+            th=global.__("Is user")
         tbody
           if data.length
             each item, index in data
-              tr
-                td=index+1
-                td
-                  b!=item.stagename
-                td
-                  if item.partnerships && item.partnerships.length
-                    - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+              if item.partner_data && item.partner_data.contacts
+                each contact in item.partner_data.contacts
+                  tr
+                    td=index+1
+                    td
+                      b!=item.stagename
+                    td!=contact.name
+                    td!=contact.surname
+                    td!=contact.email
+                    td!=contact.lang
+                    td!=contact.mobile
+                    td!=contact.skype
+                    td!=contact.facebook
+                    td!=contact.type
+                    td!="NO"
+              if item.members && item.members.length
+                each contact in item.members
+                  - console.log(contact)
+                  tr
+                    td=index+1
+                    td
+                      b!=item.stagename
+                    td!=contact.name
+                    td!=contact.surname
+                    td!=contact.email
+                    td!=contact.lang
+                    td!=contact.mobile ? contact.mobile.map(item => {return item.url}).join("<br />\n") : ""
+                    td!=contact.skype ? contact.skype.map(item => {return item.url}).join("<br />\n") : ""
+                    td!=contact.social ? contact.social.filter(item => item.url.indexOf("facebook")!==-1).map(item => {return item.url}).join("<br />\n") : ""
+                    td!=contact.type
+                    td!="YES"
+                    //if item.partnerships && item.partnerships.length
+                        - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
 
-                    each partnership in item.partnerships
-                      .text-nowrap!=partnership.title
-                td
-                  if item.web
-                    each web in item.web
-                      div!=web.url
-                  if item.social
-                    each web in item.social
-                      div!=web.url
-                td
-                  if item.partner_data && item.partner_data.contacts
-                    each contact in item.partner_data.contacts
-                      div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
-                  if item.members && item.members.length
-                    each contact in item.members
-                      div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
+                        each partnership in item.partnerships
+                          .text-nowrap!=partnership.title
+                      td
+                        if item.web
+                          each web in item.web
+                            div!=web.url
+                        if item.social
+                          each web in item.social
+                            div!=web.url
+                      td
+                          div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
 
     else 
       table.table.table-fixed

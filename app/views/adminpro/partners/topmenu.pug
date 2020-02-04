@@ -22,4 +22,7 @@
           a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=0')="TABLE"
         else 
           a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=1')="MAP"
-        a.btn.btn-sm.btn-outline-secondary(href='?csv=1')="CSV"
+        if csv
+          a.btn.btn-sm.btn-outline-secondary(href='./')="TABLE"
+        else
+          a.btn.btn-sm.btn-outline-secondary(href='?csv=1')="CSV"
