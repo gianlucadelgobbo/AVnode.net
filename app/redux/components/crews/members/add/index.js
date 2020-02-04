@@ -119,7 +119,7 @@ class AddCrewMember extends Component {
 
     const inputProps = {
       className: "form-control",
-      placeholder: "Type the first three character",
+      placeholder: "Type the first three characters",
       value,
       idmember,
       onChange: this.onChange
