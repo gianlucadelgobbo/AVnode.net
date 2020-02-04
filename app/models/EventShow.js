@@ -324,7 +324,7 @@ eventSchema.virtual('advanced').get(function (req) {
     if (this.videos && this.videos.length) advanced.menu.push({slug: "videos", name: global.__("Videos")});
     if (this.partners && this.partners.length) advanced.menu.push({slug: "partners", name: global.__("Partners")});
 
-
+    advanced.performers.countries = advanced.performers.countries.sort();
     advanced.programmebydayvenue = programmebydayvenue;
   }
   return advanced;

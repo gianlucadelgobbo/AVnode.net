@@ -205,47 +205,47 @@ block content
                           .badge.badge-danger MISSING MEDIAS
                           - del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
           td(style="max-width: 23vw;overflow: hidden;")
-            each user in item.performance.users
-              if user.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
+            each useruser in item.performance.users
+              if useruser.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
                 - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
                 - if (emails_noimage.indexOf(str)==-1) emails_noimage.push(str)
-              if !user.about || !item.performance.about
+              if !useruser.about || !item.performance.about
                 - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title+'","'+item.reference.name+'","'+item.reference.surname+'","'+item.reference.email+'"]'
                 - if (emails_notext.indexOf(str)==-1) emails_notext.push(str)
               .row
                 if get.fullinfo
                   .col-md-6
-                    img.img-fluid(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                    img.img-fluid(class=useruser.imageFormats.small.substring(useruser.imageFormats.small.lastIndexOf(".")+1), src=useruser.imageFormats.small, alt=useruser.stagename)
                 div(class=get.fullinfo ? "col-md-6" : "col-md-12")
                   h3
-                    !=user.stagename
-                    if user.is_crew
+                    !=useruser.stagename
+                    if useruser.is_crew
                       !=" "
                       .badge.badge-info CREW
                     small
                       !=" "
                       if user.is_admin
-                        a(href="/admin/"+(user.is_crew ? "crews" : "profile")+"/"+user._id+"/public", target="_blank")!=global.__("edit")
+                        a(href="/admin/"+(useruser.is_crew ? "crews" : "profile")+"/"+useruser._id+"/public", target="_blank")!=global.__("edit")
                         !=" | "
-                      a(href="/"+user.slug, target="_blank")!=global.__("view")
+                      a(href="/"+useruser.slug, target="_blank")!=global.__("view")
 
-                  if user.addressesFormatted && user.addressesFormatted.length
-                    div!=user.addressesFormatted.join(", ")
+                  if useruser.addressesFormatted && useruser.addressesFormatted.length
+                    div!=useruser.addressesFormatted.join(", ")
                   else
                     .badge.badge-danger MISSING ADDRESS
               if get.fullinfo
-                .mt-2!=user.aboutFull ? user.aboutFull : user.about
-                if user.web
+                .mt-2!=useruser.aboutFull ? useruser.aboutFull : useruser.about
+                if useruser.web
                   .mt-3
                     b!="WEB"
                   ul
-                    each web in user.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                    each web in useruser.web.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
                       li!=web
-                if user.social
+                if useruser.social
                   .mt-3
                     b!="SOCIAL"
                   ul
-                    each social in user.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
+                    each social in useruser.social.map((item) => {return '<a href="'+item.url+'">'+item.url+'</a><br />'})
                       li!=social
               
               //td!=item.performance.users.map((item) => {return item.addressesFormatted}).join("<br />")
@@ -283,10 +283,10 @@ block content
                         .badge.badge-info freezed
                       if people.indexOf(subscription.subscriber_id._id.toString())==-1
                         - people.push(subscription.subscriber_id._id.toString())
-                        if subscription.freezed && (!get.status || get.status=="0")
+                        if subscription.freezed && (!get.sortby || get.sortby=="0") && (!get.status || get.status=="0") && (!get.performance_category || get.performance_category=="0") && (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0") && (!get["bookings.schedule.venue.room"] || get["bookings.schedule.venue.room"]=="0")
                           !=" "
                           .badge.badge-danger WRONG FREEZED?
-                      else if !subscription.freezed && (!get.status || get.status=="0")
+                      else if !subscription.freezed && (!get.sortby || get.sortby=="0") && (!get.status || get.status=="0") && (!get.performance_category || get.performance_category=="0") && (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0") && (!get["bookings.schedule.venue.room"] || get["bookings.schedule.venue.room"]=="0")
                         !=" "
                         .badge.badge-danger MISSING FREEZED?
                       br
