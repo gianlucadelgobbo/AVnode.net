@@ -175,6 +175,11 @@ router.post('/api/partnershipsupdate', (req, res) => {
   post.updatePartnerships(req, res);
 });
 
+router.post('/api/partners/contacts/add/', (req, res) => {
+  post.addContacts(req, res);
+});
+
+
 router.post('/api/:ancestor/:id/:sez/', (req, res) => {
   post.postData(req, res);
 });
@@ -226,7 +231,6 @@ router.post('/api/editsubscriptioncost', (req, res)=>{
 router.post('/api/editsubscriptionsave', (req, res)=>{
   post.editSubscriptionSave(req, res);
 });
-
 /* router.put('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';

@@ -825,7 +825,7 @@
             "slug": 1,
             "is_partner": 1,
             "is_public": 1,
-            "partner_data": 1,
+            "organizationData": 1,
             "partner_owner": 1,
             "social": 1,
             "web": 1

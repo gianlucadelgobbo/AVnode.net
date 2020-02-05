@@ -330,18 +330,18 @@ router.linkPartner = (req, res) => {
   Models.User
   .findOne({_id: req.body.id, is_crew: true},'_id partner_owner', (err, partner) => {
     if (partner) {
-      if (partner.partner_owner) {
-        partner.partner_owner.push(req.body.partner_owner);
+      if (!partner.partner_owner || partner.partner_owner.map(item => {return item.owner;}).indexOf(req.body.partner_owner)===-1) {
+        if (!partner.partner_owner) partner.partner_owner = [];
+        partner.partner_owner.push({owner: req.body.partner_owner, delegate: req.body.delegate});
+        logger.debug(partner);
+        partner.save(err => {
+          res.json({err: err});
+        });
       } else {
-        partner.partner_owner = [req.body.partner_owner];
+        res.json({err: "Partner already in"});
       }
-      partner.partner_data = {delegate: req.body.delegate};
-      logger.debug(partner);
-      partner.save(err => {
-        res.json(true);
-      });
     } else {
-      res.json(false);
+      res.json({err: "Partner not found"});
     }
 });
 }
@@ -350,16 +350,52 @@ router.unlinkPartner = (req, res) => {
   logger.debug("unlinkPartner");
   logger.debug(req.body);
   Models.User
-  .findOne({_id: req.body.id, is_crew: true, partner_owner: req.body.owner},'_id event partner_owner', (err, partner) => {
+  .findOne({_id: req.body.id, is_crew: true, "partner_owner.owner": req.body.owner},'_id event partner_owner', (err, partner) => {
     logger.debug(partner);
-    if (partner.partner_owner && partner.partner_owner.length) {
-      partner.partner_owner.splice(partner.partner_owner.map(item => {return item.toString();}).indexOf(req.body.owner), 1);
+    if (partner && partner.partner_owner && partner.partner_owner.length) {
+      partner.partner_owner.splice(partner.partner_owner.map(item => {return item.owner.toString();}).indexOf(req.body.owner), 1);
       partner.save(err => {
-        res.json(true);
+        res.json({err: err});
+      });
+    } else {
+      res.json({err: "Partner not found"});
+    }
+});
+}
+router.addContacts = (req, res) => {
+  logger.debug('/partners/contacts/addddddddd/');
+  logger.debug(req.body);
+  Models.User.
+  findOne({_id: req.body.crew})
+  .exec((err, user) => {
+  //select({stagename: 1, createdAt: 1, crews:1}).
+    logger.debug('stocazzo');
+    logger.debug(user);
+    if (err || !user) {
+      logger.debug('user err');
+      logger.debug(err);
+      res.status(400).json(err);
+    } else {
+      delete req.body.crew;
+      if (!user.organizationData) user.organizationData = {};
+      if (!user.organizationData.contacts) user.organizationData.contacts = [];
+      user.organizationData.contacts.push(req.body);
+      user.save((err) => {
+        logger.debug(err);
+        if (err) {
+          logger.debug('save user err');
+          logger.debug(err);
+          res.status(400).json(err);
+        } else {
+          logger.debug("save user success");
+          logger.debug(user.organizationData.contacts);
+          res.json(user.organizationData.contacts);                    
+        }
       });
     }
   });
 }
+
 
 router.updatePartnerships = (req, res) => {
   logger.debug("req.body");

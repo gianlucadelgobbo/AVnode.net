@@ -24,8 +24,8 @@ block content
         tbody
           if data.length
             each item, index in data
-              if item.partner_data && item.partner_data.contacts
-                each contact in item.partner_data.contacts
+              if item.organizationData && item.organizationData.contacts
+                each contact in item.organizationData.contacts
                   tr
                     td=index+1
                     td
@@ -119,8 +119,8 @@ block content
                     !=" "
                     // Button trigger modal
                     button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-                  if item.partner_data && item.partner_data.contacts
-                    each contact in item.partner_data.contacts
+                  if item.organizationData && item.organizationData.contacts
+                    each contact in item.organizationData.contacts
                       div
                         a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
                   if item.members && item.members.length

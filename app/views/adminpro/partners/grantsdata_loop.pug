@@ -175,8 +175,8 @@ table.table.table-fixed.page-break-after-always
       td!=item.is_partner
 
     //tr
-      td!="partner_data"
-      td!=item.partner_data
+      td!="organizationData"
+      td!=item.organizationData
 
     //tr
       td!="partnerships"
@@ -619,8 +619,8 @@ table.table.table-fixed.page-break-after-always
           !=" "
           // Button trigger modal
           button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-        if item.partner_data && item.partner_data.contacts
-          each contact in item.partner_data.contacts
+        if item.organizationData && item.organizationData.contacts
+          each contact in item.organizationData.contacts
             div
               a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
         if item.members && item.members.length

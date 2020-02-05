@@ -110,7 +110,7 @@ router.get('/:id', (req, res) => {
   lean().
   select({stagename: 1}).
   exec((err, user) => {
-    var query = {$or : [{"partner_owner": req.params.id}]}
+    var query = {$or : [{"partner_owner.owner": req.params.id}]}
     if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
     User.
     find(query).
@@ -148,7 +148,7 @@ router.get('/:id', (req, res) => {
 
 router.get('/:id/:event', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
-  const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
   logger.debug(query);
   User.
   findOne({"_id": req.params.id}).
@@ -292,7 +292,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
     }]};
 
 
-  const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
   logger.debug(query);
   User.
   find(query).
@@ -327,7 +327,7 @@ router.get('/:id/:event/mandates', (req, res) => {
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
-    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+    const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
     logger.debug(query);
     User.
@@ -365,7 +365,7 @@ router.get('/:id/:event/grantsdata_table', (req, res) => {
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
-    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+    const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
     logger.debug(query);
     User.
@@ -499,7 +499,7 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
-    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
+    const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
     logger.debug(query);
     User.
@@ -537,7 +537,7 @@ router.get('/:id/:event/manage', (req, res) => {
   find({ancestor: "5be8708afc396100000001eb"}).
   lean().
   exec((err, categories) => {
-    const query = {"partner_owner": req.params.id};
+    const query = {"partner_owner.owner": req.params.id};
     User.
     find(query).
     lean().
@@ -611,75 +611,6 @@ router.get('/:id/:event/manage', (req, res) => {
       });
     });
   });
-});
-
-router.post('/contacts/add/', (req, res) => {
-  logger.debug('/contacts/add/');
-  logger.debug(req.body);
-  /*Category.
-  find({ancestor: "5be8708afc396100000001eb"}).
-  lean().
-  exec((err, categories) => {
-    const query = {"partner_owner": req.params.id};
-    User.
-    find(query).
-    lean().
-    sort({stagename: 1}).
-    //select({stagename: 1, createdAt: 1, crews:1}).
-    populate(populate).
-    exec((err, data) => {
-      var populate = [
-        {path: "partners.users", select: {stagename:1}, model:"UserShow"},
-        {path: "partners.category", select: {name:1, slug:1}, model:"Category"}
-      ];
-
-      Event.
-      //find({"users": req.params.id}).
-      findOne({_id: req.params.event}).
-      populate(populate).
-      select({title: 1, partners:1}).
-      //sort({title: 1}).
-      //select({stagename: 1, createdAt: 1, crews:1}).
-      //exec((err, events) => {
-      exec((err, event) => {
-        var partnerships = event.partners.slice(0);
-        logger.debug(existingCat);
-        var notassigned = [];
-        var notassignedID = [];
-        var partnersID = [];
-
-        for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
-        for (var item in data) {
-          if (partnersID.indexOf(data[item]._id.toString())===-1) {
-            if (notassignedID.indexOf(data[item]._id.toString())===-1) {
-              notassignedID.push(data[item]._id.toString());
-              notassigned.push(data[item]);
-            }
-          }
-        }
-        var existingCat = partnerships.map(item => {return item.category._id.toString()});
-        for (var item in categories) {
-          if (existingCat.indexOf(categories[item]._id.toString())===-1) partnerships.push({category:categories[item], users:[]});
-        }
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-          res.json(data);
-        } else {
-          res.render('adminpro/partners/organization_partners_manager', {
-            title: 'Partners',
-            currentUrl: req.originalUrl,
-            
-            owner: req.params.id,
-            //events: events,
-            notassigned: notassigned,
-  
-            event: req.params.event,
-            partnerships: partnerships,
-            script: false
-          });
-        }
-      });
-    });
-  });*/
 });
 
 

@@ -594,7 +594,7 @@ function getFormData($form){
       }
     });
     $.ajax({
-      url: "/adminpro/partners/contacts/add/",
+      url: "/admin/api/partners/contacts/add/",
       method: "post",
       data: post
     }).done(function(data) {
@@ -661,7 +661,7 @@ function getFormData($form){
     post.is_public = false;
     post.is_crew = true;
     post.is_partner = true;
-    post.partner_data = {delegate: post.delegate};
+    post.organizationData = {delegate: post.delegate};
     delete post.delegate;
     post.slug = slugify(post.stagename);
     $.ajax({
