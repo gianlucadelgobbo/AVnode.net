@@ -110,7 +110,8 @@ router.get('/:id', (req, res) => {
   lean().
   select({stagename: 1}).
   exec((err, user) => {
-    var query = user._id.toString()=="5be8772bfc39610000007065" ? {"is_crew" : true, "activity_as_organization" : {"$gt": 0}} : {"partner_owner": req.params.id};
+    var query = {$or : [{"partner_owner": req.params.id}]}
+    if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
     User.
     find(query).
     lean().
