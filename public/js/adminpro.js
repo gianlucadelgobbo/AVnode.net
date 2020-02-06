@@ -539,11 +539,56 @@ function getFormData($form){
     var button = $(event.relatedTarget) // Button that triggered the modal
     var id = button.data('id') // Extract info from data-* attributes
     var stagename = button.data('stagename') // Extract info from data-* attributes
+    var item = button.data('item') // Extract info from data-* attributes
+    var index = button.data('index') // Extract info from data-* attributes
+    for (i in item) {
+      if ($( "#modalAddContact input[name='"+ i +"']" ).length) $( "#modalAddContact input[name='"+ i +"']" ).val( item[i] );
+      if ($( "#modalAddContact select[name='"+ i +"']" ).length) $( "#modalAddContact input[name='"+ i +"']" ).val( item[i][0] );
+      console.log(item[i]);
+      console.log("#modalAddContact input[name='"+ i +"']");
+    }
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     var modal = $(this)
     modal.find('.modal-title').text('New contact for ' + stagename)
     modal.find('.modal-id').val(id)
+    modal.find('.modal-index').val(index)
+  });
+  
+  $( "#modalAddContact form" ).submit(function( event ) {
+    event.preventDefault();
+    var post = {};
+    $( this ).serializeArray().map(n => {
+      if (n['name']=="type") {
+        post[n['name']] = n['value'].trim();
+
+      } else {
+        post[n['name']] = n['value'].trim();
+      }
+    });
+    $.ajax({
+      url: "/admin/api/partners/contacts/add/",
+      method: "post",
+      data: post
+    }).done(function(data) {
+      //console.log("#"+id);
+    });
+  });
+  
+  $( ".deleteContact" ).click(function( event ) {
+    event.preventDefault();
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var post = {};
+    post.id = button.data('id') // Extract info from data-* attributes
+    post.index = button.data('index') // Extract info from data-* attributes
+
+    $.ajax({
+      url: "/admin/api/partners/contacts/delete/",
+      method: "post",
+      data: post
+    }).done(function(data) {
+      //console.log("#"+id);
+    });
   });
   
   $( ".duplicate" ).click(function( event ) {
@@ -580,26 +625,6 @@ function getFormData($form){
         row.remove();
       });
     }
-  });
-  
-  $( "#modalAddContact form" ).submit(function( event ) {
-    event.preventDefault();
-    var post = {};
-    $( this ).serializeArray().map(n => {
-      if (n['name']=="type") {
-        post[n['name']] = [n['value'].trim()];
-
-      } else {
-        post[n['name']] = n['value'].trim();
-      }
-    });
-    $.ajax({
-      url: "/admin/api/partners/contacts/add/",
-      method: "post",
-      data: post
-    }).done(function(data) {
-      //console.log("#"+id);
-    });
   });
   
   $('#modalAddPartner').on('show.bs.modal', function (event) {
@@ -662,6 +687,7 @@ function getFormData($form){
     post.is_crew = true;
     post.is_partner = true;
     post.organizationData = {delegate: post.delegate};
+    post.partner_owner = [{owner: post.partner_owner}];
     delete post.delegate;
     post.slug = slugify(post.stagename);
     $.ajax({

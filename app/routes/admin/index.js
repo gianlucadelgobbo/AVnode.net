@@ -179,6 +179,10 @@ router.post('/api/partners/contacts/add/', (req, res) => {
   post.addContacts(req, res);
 });
 
+router.post('/api/partners/contacts/delete/', (req, res) => {
+  post.deleteContacts(req, res);
+});
+
 
 router.post('/api/:ancestor/:id/:sez/', (req, res) => {
   post.postData(req, res);

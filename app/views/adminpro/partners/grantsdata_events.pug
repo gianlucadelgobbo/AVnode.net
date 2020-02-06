@@ -28,18 +28,18 @@ block content
           .modal-body
             .alert.d-none
             .form-group
-              span(for='formPartnerAddName')=global.__("Brand")
-              input#formPartnerAddName.form-control(type='text', name="stagename", placeholder='')
+              label(for='formPartnerAddBrand')=global.__("Brand")
+              input#formPartnerAddBrand.form-control(type='text', name="stagename", placeholder='')
             .form-group
-              span(for='formPartnerAddSurname')=global.__("Web channels")
+              label(for='formPartnerAddWeb')=global.__("Web channels")
                 !=" "
                 small=global.__("one per line")
-              textarea#formPartnerAddSurname.form-control(name="web")
+              textarea#formPartnerAddWeb.form-control(name="web")
             .form-group
-              span(for='formPartnerAddSurname')=global.__("Social channels")
+              label(for='formPartnerAddSocial')=global.__("Social channels")
                 !=" "
                 small=global.__("one per line")
-              textarea#formPartnerAddSurname.form-control(name="social")
+              textarea#formPartnerAddSocial.form-control(name="social")
 
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")

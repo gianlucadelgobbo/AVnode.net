@@ -377,9 +377,48 @@ router.addContacts = (req, res) => {
       res.status(400).json(err);
     } else {
       delete req.body.crew;
-      if (!user.organizationData) user.organizationData = {};
-      if (!user.organizationData.contacts) user.organizationData.contacts = [];
-      user.organizationData.contacts.push(req.body);
+      if (req.body.index) {
+        delete req.body.crew;
+        user.organizationData.contacts.splice(req.body.index, 1, req.body);
+      } else {
+        if (!user.organizationData) user.organizationData = {};
+        if (!user.organizationData.contacts) user.organizationData.contacts = [];
+        user.organizationData.contacts.push(req.body);
+
+      }
+      
+      user.save((err) => {
+        logger.debug(err);
+        if (err) {
+          logger.debug('save user err');
+          logger.debug(err);
+          res.status(400).json(err);
+        } else {
+          logger.debug("save user success");
+          logger.debug(user.organizationData.contacts);
+          res.json(user.organizationData.contacts);                    
+        }
+      });
+    }
+  });
+}
+
+router.deleteContacts = (req, res) => {
+  logger.debug('/partners/contacts/deleteContacts/');
+  logger.debug(req.body);
+  Models.User.
+  findOne({_id: req.body.crew})
+  .exec((err, user) => {
+  //select({stagename: 1, createdAt: 1, crews:1}).
+    logger.debug('stocazzo');
+    logger.debug(user);
+    if (err || !user) {
+      logger.debug('user err');
+      logger.debug(err);
+      res.status(400).json(err);
+    } else {
+      user.organizationData.contacts.splice(req.body.index, 1);
+      
       user.save((err) => {
         logger.debug(err);
         if (err) {
