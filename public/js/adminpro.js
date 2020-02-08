@@ -621,12 +621,16 @@ function getFormData($form){
       method: "post",
       data: post
     }).done(function(data) {
-      button.parent().remove();
-      ul.find("li").each((index, item) => {
-        $(item).find("a").each((i, a) => {
-          $(a).attr("data-index", index);
+      if (data.message) {
+        alert(data.message);
+      } else {
+        button.parent().remove();
+        ul.find("li").each((index, item) => {
+          $(item).find("a").each((i, a) => {
+            $(a).attr("data-index", index);
+          });
         });
-      });
+      }
     });
   }
   

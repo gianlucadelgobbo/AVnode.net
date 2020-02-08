@@ -119,6 +119,11 @@ block content
                             span(data-toggle="tooltip", data-placement="top", title="Delete")
                               i.fas.fa-trash-alt
                           !=" | "
+                          if contact.lang
+                            !=contact.lang
+                          else
+                            .badge.badge-danger!="MISSING"
+                          !=" | "
                           a(href="mailto:"+contact.email, target="_blank")
                             !=contact.name+" "+contact.surname
                             =" <"+contact.email+">"
