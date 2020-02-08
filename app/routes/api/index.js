@@ -9,8 +9,51 @@ const Footage = require('mongoose').model('Footage');
 const Video = require('mongoose').model('Video');
 const Order = require('mongoose').model('Order');
 const Event = require('mongoose').model('Event');
+const Emailqueue = require('mongoose').model('Emailqueue');
 
 const logger = require('../../utilities/logger');
+
+router.get('/emailqueue', (req, res) => {
+  Emailqueue
+  .findOne({})
+  .exec((err, data) => {
+    console.log(data)
+    if (err) {
+      res.status(500).json({ error: `${JSON.stringify(err)}` });
+    } else {
+      const auth = {
+        user: data.user_email,
+        pass: data.user_password
+      };
+      const mail = {
+        from: data.from_name + " <"+ data.from_email + ">",
+        to: data.to_html,
+        subject: data.subject,
+        text: data.text
+      };
+      if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
+      console.log("pre gMailer")
+      console.log(auth)
+      console.log(mail)
+      const gmailer = require('../../utilities/gmailer');
+      gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+        /* console.log("gMailer");
+        console.log(err);
+        console.log("gMailer");
+        console.log(result);
+        res.json({res:result}); */
+        if (err) {
+          logger.debug("Email sending failure");
+          logger.debug(err);
+          res.json({error: true, msg: "Email sending failure"});
+        } else {
+          logger.debug("Email sending OK");
+          res.json({error: false, msg: "Email sending success"});
+        }
+      });
+    }
+  });
+});
 
 router.get('/tobeencoded/:sez', (req, res) => {
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;  

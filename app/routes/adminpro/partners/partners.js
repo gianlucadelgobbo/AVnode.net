@@ -6,7 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const Event = mongoose.model('Event');
 const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
-const Video = mongoose.model('Video');
+const Emailqueue = mongoose.model('Emailqueue');
 
 const request = require('request');
 const fs = require('fs');
@@ -76,7 +76,7 @@ const status = [
   'user_id'
 ];
 var populate = [
-  {path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
+  {path: "members", select: {stagename:1, gender:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
   {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
   {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
 ];
@@ -104,6 +104,26 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.get('/:id/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.post('/:id/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.get('/:id/event/:event', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.get('/:id/event/:event/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.getPartners = (req, res) => {
   logger.debug('/partners/'+req.params.id);
   User.
   findOne({"_id": req.params.id}).
@@ -128,23 +148,77 @@ router.get('/:id', (req, res) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          res.render('adminpro/partners/organization_partners', {
-            title: 'Partners: '+user.stagename,
-            currentUrl: req.originalUrl,
-            map: req.query.map,
-            csv: req.query.csv,
-            
-            owner: req.params.id,
-            events: events,
-            user: req.user,
-            data: data,
-            script: false
-          });
+          if (req.body && req.params.sez=="send") {
+            logger.debug(req.body);
+            var tosaveA = [];
+            data.forEach((item, index) => {
+              var tosave = {};
+              if (item.organizationData && item.organizationData.contacts) {
+                tosave.to_html = "";
+                tosave.cc_html = [];
+                tosave.from_name = req.body.from_name;
+                tosave.from_email = req.body.from_email;
+                tosave.user_email = req.body.user_email;
+                tosave.user_password = req.body.user_password;
+                tosave.subject = req.body.subject.split("[org_name]").join(item.stagename);;
+                item.organizationData.contacts.forEach((contact, cindex) => {
+                  if (cindex===0) {
+                    tosave.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">"
+                    tosave.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+                    tosave.text = tosave.text.split("[name]").join(contact.name);
+                    tosave.text = tosave.text.split("[slug]").join(item.slug);
+                  } else {
+                    tosave.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">")
+                  }
+                });
+                tosaveA.push(tosave)
+                logger.debug("tosave");
+              } else {
+                //logger.debug(item.stagename);
+              }
+            });
+            Emailqueue.create(tosaveA, function (err) {
+             /*  if (err) // ...
+          
+              for (var i=1; i<arguments.length; ++i) {
+                  var candy = arguments[i];
+                  // do some stuff with candy
+              } */
+              res.render('adminpro/partners/organization_partners'+(req.params.sez ? "_"+req.params.sez : ""), {
+                title: 'Partners: '+user.stagename,
+                currentUrl: req.originalUrl,
+                map: req.query.map,
+                csv: req.query.csv,
+                body: req.body,
+                
+                owner: req.params.id,
+                events: events,
+                user: req.user,
+                data: data,
+                script: false
+              });
+            });
+
+          } else {
+            res.render('adminpro/partners/organization_partners'+(req.params.sez ? "_"+req.params.sez : ""), {
+              title: 'Partners: '+user.stagename,
+              currentUrl: req.originalUrl,
+              map: req.query.map,
+              csv: req.query.csv,
+              body: req.body,
+              
+              owner: req.params.id,
+              events: events,
+              user: req.user,
+              data: data,
+              script: false
+            });  
+          }
         }
       });
     });
   });
-});
+}
 
 router.get('/:id/:event', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
@@ -175,6 +249,7 @@ router.get('/:id/:event', (req, res) => {
             title: 'Partners: '+user.stagename,
             currentUrl: req.originalUrl,
             csv: req.query.csv,
+            map: req.query.map,
             owner: req.params.id,
             events: events,
             event: req.params.event,

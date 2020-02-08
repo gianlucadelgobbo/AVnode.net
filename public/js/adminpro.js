@@ -537,22 +537,31 @@ function getFormData($form){
 
   $('#modalAddContact').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
+    $('#modalAddContact form')[0].reset();
+    $( "#modalAddContact input[name='type'][type='checkbox']").removeAttr("checked");
     var id = button.data('id') // Extract info from data-* attributes
     var stagename = button.data('stagename') // Extract info from data-* attributes
     var item = button.data('item') // Extract info from data-* attributes
     var index = button.data('index') // Extract info from data-* attributes
+    console.log(item);
     for (i in item) {
-      if ($( "#modalAddContact input[name='"+ i +"']" ).length) $( "#modalAddContact input[name='"+ i +"']" ).val( item[i] );
-      if ($( "#modalAddContact select[name='"+ i +"']" ).length) $( "#modalAddContact input[name='"+ i +"']" ).val( item[i][0] );
-      console.log(item[i]);
-      console.log("#modalAddContact input[name='"+ i +"']");
+      console.log(i+": "+item[i]);
+      console.log(i+": "+item[i]);
+      if ($( "#modalAddContact input[name='"+ i +"'][type='text']" ).length) $( "#modalAddContact input[name='"+ i +"']" ).val( item[i] );
+      if ($( "#modalAddContact select[name='"+ i +"']" ).length) $( "#modalAddContact select[name='"+ i +"']" ).val( item[i] );
     }
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    $( "#modalAddContact input[name='type'][type='checkbox']" ).each((index)=>{
+      if (item.types && item.types.indexOf($( $( "#modalAddContact input[name='type'][type='checkbox']" )[index] ).attr("value"))!==-1) {
+        $( $( "#modalAddContact input[name='type'][type='checkbox']" )[index] ).attr("checked", "checked");
+      } 
+    });
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     var modal = $(this)
-    modal.find('.modal-title').text('New contact for ' + stagename)
-    modal.find('.modal-id').val(id)
-    modal.find('.modal-index').val(index)
+    modal.find('.modal-title').text('Contact for ' + stagename);
+    modal.find('.modal-id').val(id);
+    modal.find('.modal-index').val(index);
+    modal.find('.modal-stagename').val(stagename);
   });
   
   $( "#modalAddContact form" ).submit(function( event ) {
@@ -571,29 +580,48 @@ function getFormData($form){
       method: "post",
       data: post
     }).done(function(data) {
-      //console.log("#"+id);
+      var index = $("#"+post.crew+" .contacts").children().length;
+      var str = $('<div><a href="#" data-toggle="modal" data-target="#modalAddContact" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-item="'+JSON.stringify(post)+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></span></a> <a class="text-danger deleteContact" href="#" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></span></a> | <a href="mailto:'+post.stagename+'" target="_blank">'+post.name+' '+post.surname+' &lt;'+post.email+'&gt;</a></div>');
+      var str2 = $(str.find("a")[0]).attr("data-item", JSON.stringify(post));
+      $("#"+post.crew+" .contacts").append($(str).prepend(str2));
+      $('#modalAddContact').modal('hide');
+      $( ".deleteContact" ).on('click', function( event ) {
+        deleteContact( $(this), event );
+      });    
     });
   });
   
-  $( ".deleteContact" ).click(function( event ) {
+  $( ".deleteContact" ).on('click', function( event ) {
+    deleteContact( $(this), event );
+  });
+  
+  deleteContact = (button, event ) => {
+    console.log("deleteContact");
     event.preventDefault();
-    var button = $(event.relatedTarget) // Button that triggered the modal
     var post = {};
     post.id = button.data('id') // Extract info from data-* attributes
     post.index = button.data('index') // Extract info from data-* attributes
+    post.stagename = button.data('stagename') // Extract info from data-* attributes
+    var ul = button.parent().parent();
 
     $.ajax({
       url: "/admin/api/partners/contacts/delete/",
       method: "post",
       data: post
     }).done(function(data) {
-      //console.log("#"+id);
+      button.parent().remove();
+      ul.find("li").each((index, item) => {
+        $(item).find("a").each((i, a) => {
+          $(a).attr("data-index", index);
+        });
+      });
     });
-  });
+  }
   
   $( ".duplicate" ).click(function( event ) {
     $(this).parent().parent().clone().insertAfter($(this).parent().parent())
   });
+
   if ($(".multiple-select").length) $(".multiple-select").bsMultiSelect({  placeholder:'Room'});
 
   $( ".lock-schedule" ).click(function( event ) {
