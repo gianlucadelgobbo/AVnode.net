@@ -551,7 +551,7 @@ function getFormData($form){
       if ($( "#modalAddContact select[name='"+ i +"']" ).length) $( "#modalAddContact select[name='"+ i +"']" ).val( item[i] );
     }
     $( "#modalAddContact input[name='type'][type='checkbox']" ).each((index)=>{
-      if (item.types && item.types.indexOf($( $( "#modalAddContact input[name='type'][type='checkbox']" )[index] ).attr("value"))!==-1) {
+      if (item && item.types && item.types.indexOf($( $( "#modalAddContact input[name='type'][type='checkbox']" )[index] ).attr("value"))!==-1) {
         $( $( "#modalAddContact input[name='type'][type='checkbox']" )[index] ).attr("checked", "checked");
       } 
     });

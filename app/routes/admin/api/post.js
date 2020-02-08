@@ -363,7 +363,7 @@ router.unlinkPartner = (req, res) => {
 });
 }
 router.addContacts = (req, res) => {
-  logger.debug('/partners/contacts/addddddddd/');
+  logger.debug('/partners/contacts/add/');
   logger.debug(req.body);
   Models.User.
   findOne({_id: req.body.crew})
