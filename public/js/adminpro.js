@@ -580,14 +580,23 @@ function getFormData($form){
       method: "post",
       data: post
     }).done(function(data) {
-      var index = $("#"+post.crew+" .contacts").children().length;
+      if (post.index!="") {
+        var index = post.index;
+      } else {
+        var index = $("#"+post.crew+" .contacts").children().length;
+      }
       var str = $('<div><a href="#" data-toggle="modal" data-target="#modalAddContact" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-item="'+JSON.stringify(post)+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></span></a> <a class="text-danger deleteContact" href="#" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></span></a> | <a href="mailto:'+post.stagename+'" target="_blank">'+post.name+' '+post.surname+' &lt;'+post.email+'&gt;</a></div>');
       var str2 = $(str.find("a")[0]).attr("data-item", JSON.stringify(post));
-      $("#"+post.crew+" .contacts").append($(str).prepend(str2));
-      $('#modalAddContact').modal('hide');
+      if (post.index!="") {
+        $($("#"+post.crew+" .contacts").children()[post.index]).html($(str).prepend(str2))
+      } else {
+        var index = $("#"+post.crew+" .contacts").children().length;
+        $("#"+post.crew+" .contacts").append($(str).prepend(str2));
+      }
       $( ".deleteContact" ).on('click', function( event ) {
         deleteContact( $(this), event );
       });    
+      $('#modalAddContact').modal('hide');
     });
   });
   
