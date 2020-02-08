@@ -601,7 +601,10 @@ function getFormData($form){
   });
   
   $( ".deleteContact" ).on('click', function( event ) {
-    deleteContact( $(this), event );
+    var result = confirm("Want to delete this contact?");
+    if (result) {
+      deleteContact( $(this), event );
+    }
   });
   
   deleteContact = (button, event ) => {
