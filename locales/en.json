@@ -496,5 +496,7 @@
 	"Title": "Title",
 	"Role": "Role",
 	"Legal representative": "Legal representative",
-	"Language": "Language"
+	"Language": "Language",
+	"Unlink": "Unlink",
+	"View": "View"
 }
