@@ -17,7 +17,6 @@ router.get('/emailqueue', (req, res) => {
   Emailqueue
   .findOne({})
   .exec((err, data) => {
-    console.log(data)
     if (err) {
       res.status(500).json({ error: `${JSON.stringify(err)}` });
     } else {
@@ -32,16 +31,8 @@ router.get('/emailqueue', (req, res) => {
         text: data.text
       };
       if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
-      console.log("pre gMailer")
-      console.log(auth)
-      console.log(mail)
       const gmailer = require('../../utilities/gmailer');
       gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-        /* console.log("gMailer");
-        console.log(err);
-        console.log("gMailer");
-        console.log(result);
-        res.json({res:result}); */
         if (err) {
           logger.debug("Email sending failure");
           logger.debug(err);
