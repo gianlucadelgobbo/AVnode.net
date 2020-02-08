@@ -619,9 +619,9 @@ function getFormData($form){
     $.ajax({
       url: "/admin/api/partners/contacts/delete/",
       method: "post",
-      data: post,
-      dataType: "jsonp"
-    }).done(function(data) {
+      data: post
+    })
+    .done(function(data) {
       console.log(data);
       if (data.message) {
         alert(data.message);
@@ -633,7 +633,8 @@ function getFormData($form){
           });
         });
       }
-    }).fail(function(data) {
+    })
+    .fail(function(data) {
       console.log(data);
       alert(data.message+"stocazzo");
     });
