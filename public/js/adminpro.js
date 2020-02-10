@@ -650,7 +650,7 @@ function getFormData($form){
     $('#modalEdit .alert-success').addClass('d-none');
     $('#modalEdit').modal(); */
   });
-
+  
   emailqueue = ( id, button ) => {
     console.log("emailqueue");
     console.log(button);
@@ -664,7 +664,8 @@ function getFormData($form){
       if (!data.error && data.msg == "Email sending completed") {
         button.html(data.msg)
       } else {
-        setTimeout(emailqueue( id, button ), 1500);
+        //setTimeout(emailqueue( id, button ), 1500);
+        emailqueue( id, button );
       }
     })
     .fail(function(xhr, status, error) {

@@ -259,19 +259,7 @@ router.getPartners = (req, res) => {
               //select({stagename: 1, createdAt: 1, crews:1}).
               populate(populate).
               exec((err, data) => {
-                res.render('adminpro/partners/organization_partners'+(req.params.sez ? "_"+req.params.sez : ""), {
-                  title: 'Partners: '+user.stagename,
-                  currentUrl: req.originalUrl,
-                  map: req.query.map,
-                  csv: req.query.csv,
-                  body: req.body,
-                  
-                  owner: req.params.id,
-                  events: events,
-                  user: req.user,
-                  data: data,
-                  script: false
-                });
+                res.redirect(req.originalUrl)
               });
             });
 
