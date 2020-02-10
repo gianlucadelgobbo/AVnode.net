@@ -626,6 +626,7 @@ router.get('/:event/program', (req, res) => {
               var duration = data.program[a].performance.duration;
               if (data.program[a].schedule && data.program[a].schedule.length) {
                 for(let b=0;b<data.program[a].schedule.length;b++) {
+                  var delSchedule = false;
                   if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
                     if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                       let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
@@ -642,6 +643,8 @@ router.get('/:event/program', (req, res) => {
                         delete data.program[a].schedule[b];
                       }
                     } else {
+                      console.log("data.program[a].schedule[b]");
+                      console.log(data.program[a].schedule[b]);
                       var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
                       for(let c=0;c<days;c++){
                         let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
@@ -655,11 +658,12 @@ router.get('/:event/program', (req, res) => {
                         if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
                           data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                         } else {
-                          delete data.program[a].schedule[b];
+                          delSchedule = true;
                         }
                       }
                     }
                   }
+                  if (delSchedule) delete data.program[a].schedule[b];
                 }  
               }
             }
