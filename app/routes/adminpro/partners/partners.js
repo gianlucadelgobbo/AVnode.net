@@ -223,18 +223,19 @@ router.getPartners = (req, res) => {
               if (item.organizationData && item.organizationData.contacts) {
                 message.to_html = "";
                 message.cc_html = [];
+                
                 message.from_name = req.body.from_name;
                 message.from_email = req.body.from_email;
                 message.user_email = req.body.user_email;
                 message.user_password = req.body.user_password;
                 message.subject = req.body.subject.split("[org_name]").join(item.stagename);;
                 item.organizationData.contacts.forEach((contact, cindex) => {
-                  if (message.to_html == "") {
+                  if (contact.email && message.to_html == "") {
                     message.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">"
                     message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
                     message.text = message.text.split("[name]").join(contact.name);
                     message.text = message.text.split("[slug]").join(item.slug);
-                  } else if (contact.email) {
+                  } else if (contact.email && message.to_html != "") {
                     message.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">")
                   }
                 });
