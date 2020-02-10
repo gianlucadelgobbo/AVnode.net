@@ -664,7 +664,7 @@ function getFormData($form){
       if (!data.error && data.msg == "Email sending completed") {
         button.html(data.msg)
       } else {
-        setTimeout(emailqueue( id, button ), 500);
+        setTimeout(emailqueue( id, button ), 1500);
       }
     })
     .fail(function(xhr, status, error) {

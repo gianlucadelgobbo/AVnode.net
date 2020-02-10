@@ -229,12 +229,12 @@ router.getPartners = (req, res) => {
                 message.user_password = req.body.user_password;
                 message.subject = req.body.subject.split("[org_name]").join(item.stagename);;
                 item.organizationData.contacts.forEach((contact, cindex) => {
-                  if (cindex===0) {
+                  if (message.to_html == "") {
                     message.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">"
                     message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
                     message.text = message.text.split("[name]").join(contact.name);
                     message.text = message.text.split("[slug]").join(item.slug);
-                  } else {
+                  } else if (contact.email) {
                     message.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">")
                   }
                 });

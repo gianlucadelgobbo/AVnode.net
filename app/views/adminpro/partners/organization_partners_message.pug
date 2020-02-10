@@ -38,11 +38,6 @@ block content
             b#subject_preview!="[org_name] | "+(typeof(body)!=="undefined" && body.subject_add ? body.subject_add : '')
             input(type="hidden",value=typeof(body)!=="undefined" && body.subject ? body.subject : '[org_name] | ', name='subject')#subject
       .row
-        .col-sm-12
-          p
-            label(for='to')="To"
-            textarea(rows="3",name="to")#to.form-control=(typeof(body)!=="undefined" && body.to ? body.to : '')
-      .row
         .col-sm-6
           p
             label(for='message_it')="Message IT"
@@ -53,11 +48,6 @@ block content
             textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
       .text-center
         button(type='submit').btn.btn-success="Compose"
-      - if ((typeof(failed)!=="undefined" ) && (typeof(success)!=="undefined") && (success[0].length || failed[0].length))
-        h1="Success"
-        textarea.form-control=success[0].length ? success[0].join(',') : ""
-        h1="Failed"
-        textarea.form-control=failed[0].length ? failed[0].join(',') : ""
     if body.from_name
       input(type="hidden",value=0, name='send')#send
       ol
