@@ -504,5 +504,7 @@
 	"Messages to send": "Messages to send",
 	"Messages sent": "Messages sent",
 	"User": "User",
-	"Actions": "Actions"
+	"Actions": "Actions",
+	"Messagge this list": "Messagge this list",
+	"Check emails queue": "Check emails queue"
 }
