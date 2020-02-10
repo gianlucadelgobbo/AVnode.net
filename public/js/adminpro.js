@@ -281,40 +281,8 @@ $(function() {
     } 
   });
 
-// PARTNERS
-  $( ".partners .connectedSortable" ).sortable({
-    remove: function( e, ui ) {
-      var partnerships = [];
-      var connectedSortable = $(".connectedSortable").parent();
-      for (var a=1;a<connectedSortable.length;a++) {
-        var partnership = {};
-        $(connectedSortable[a]).serializeArray().map(n => {
-          if (n['name']=="users") {
-            if (!partnership[n['name']]) partnership[n['name']] = []
-            partnership[n['name']].push(n['value']);
-    
-          } else {
-            partnership[n['name']] = n['value'];
-          }
-        });
-        if (partnership.users && partnership.users.length) partnerships.push(partnership);
-      }
-      var data = {
-        category: ui.item.parent().parent().find("input[name='category']").val(),
-        partner: ui.item.find("input[name='users']").val(),
-        event: event,
-        partnerships:partnerships
-      }
-      $.ajax({
-        url: "/admin/api/partnershipsupdate",
-        method: "post",
-        data: data
-      }).done(function(data) {
-        //console.log("#");
-      });
-    },
-    connectWith: ".connectedSortable"
-  }).disableSelection();
+
+
 
 // PROGRAM
 $( ".program .connectedSortable" ).sortable({
@@ -342,7 +310,8 @@ $( ".program .connectedSortable" ).sortable({
             var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
           }
           if (!$(boxes[b]).hasClass("disabled")) {
-            console.log("disabled");
+            console.log("NOT disabled");
+            console.log(day.room);
             var price = day.program[b].schedule && day.program[b].schedule.price ? day.program[b].schedule.price : undefined;
             var alleventschedulewithoneprice = day.program[b].schedule && day.program[b].schedule.alleventschedulewithoneprice ? day.program[b].schedule.alleventschedulewithoneprice : undefined;
             var priceincludesothershows = day.program[b].schedule && day.program[b].schedule.priceincludesothershows ? day.program[b].schedule.priceincludesothershows : undefined;
@@ -387,6 +356,7 @@ $( ".program .connectedSortable" ).sortable({
   },
   connectWith: ".connectedSortable"
 }).disableSelection();
+
 var current;
 $( ".edit-schedule" ).click(function( event ) {
   current = $(this).parent().parent().find("input");
@@ -399,16 +369,22 @@ $( ".edit-schedule" ).click(function( event ) {
   //console.log(new Date(schedule.endtime).getUTCHours());
   //console.log(new Date(schedule.endtime).getUTCMinutes());
   //const id = $(this).data("program");
-  $('#modalEditSchedule .starttime_hours').val(new Date(schedule.starttime).getUTCHours())
-  $('#modalEditSchedule .starttime_minutes').val(new Date(schedule.starttime).getUTCMinutes())
-  $('#modalEditSchedule .endtime_hours').val(new Date(schedule.endtime).getUTCHours())
-  $('#modalEditSchedule .endtime_minutes').val(new Date(schedule.endtime).getUTCMinutes())
+  var starttime = new Date(schedule.starttime);
+  $('#modalEditSchedule input[name="startday"][value="'+starttime.getFullYear()+"-"+("0"+(starttime.getMonth()+1)).substr(-2)+"-"+("0"+(starttime.getDate())).substr(-2)+'"]').attr("checked","checked");
+  var endtime = new Date(schedule.endtime);
+  $('#modalEditSchedule input[name="endday"][value="'+endtime.getFullYear()+"-"+("0"+(endtime.getMonth()+1)).substr(-2)+"-"+("0"+(endtime.getDate())).substr(-2)+'"]').attr("checked","checked");
+
+  $('#modalEditSchedule .starttime_hours').val(starttime.getUTCHours());
+  $('#modalEditSchedule .starttime_minutes').val(starttime.getUTCMinutes())
+  $('#modalEditSchedule .endtime_hours').val(endtime.getUTCHours())
+  $('#modalEditSchedule .endtime_minutes').val(endtime.getUTCMinutes())
 
 //$('#modalEditSchedule .endtime').html("Loading data...");
   //$('#modalEditSchedule .alert-danger').addClass('d-none');
   //$('#modalEditSchedule .alert-success').addClass('d-none');
   $('#modalEditSchedule').modal();
 });
+
 $( "#modalEditSchedule form" ).submit(function( event ) {
   event.preventDefault();
   var formdata = getFormData($( this ));
@@ -455,7 +431,7 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   current.val(JSON.stringify(currentObj));
   $(current.parent().parent().find(".timing")).html(timestr);
   $(current.parent().parent()).addClass("disabled");
-  //console.log((current.val()));
+  console.log($(current.parent().parent()));
   programSortableUpdate();
   //const id = $(this).data("program");
   /*$('#modalEditSchedule .starttime-hours').val(new Date(schedule.starttime).getUTCHours())
@@ -463,6 +439,7 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   $('#modalEditSchedule .endtime-hours').val(new Date(schedule.endtime).getUTCHours())
   $('#modalEditSchedule .endtime-minutes').val(new Date(schedule.endtime).getUTCMinutes())*/
 });
+
 function programSortableUpdate() {
   var data = [];
   var tobescheduled = [];
@@ -534,6 +511,56 @@ function getFormData($form){
 
   return indexed_array;
 }
+$( ".lock-schedule" ).click(function( event ) {
+  var box = $(this).parent().parent();
+  if($(this).parent().parent().hasClass("disabled")){
+    $(this).find("i").removeClass("fa-lock")
+    $(this).find("i").addClass("fa-lock-open")
+    $(this).parent().parent().removeClass("disabled")
+  } else {
+    $(this).find("i").removeClass("fa-lock-open")
+    $(this).find("i").addClass("fa-lock")
+    $(this).parent().parent().addClass("disabled")
+  }
+  programSortableUpdate();
+  console.log($(this).parent().parent());
+});
+
+// PARTNERS
+  $( ".partners .connectedSortable" ).sortable({
+    remove: function( e, ui ) {
+      var partnerships = [];
+      var connectedSortable = $(".connectedSortable").parent();
+      for (var a=1;a<connectedSortable.length;a++) {
+        var partnership = {};
+        $(connectedSortable[a]).serializeArray().map(n => {
+          if (n['name']=="users") {
+            if (!partnership[n['name']]) partnership[n['name']] = []
+            partnership[n['name']].push(n['value']);
+    
+          } else {
+            partnership[n['name']] = n['value'];
+          }
+        });
+        if (partnership.users && partnership.users.length) partnerships.push(partnership);
+      }
+      var data = {
+        category: ui.item.parent().parent().find("input[name='category']").val(),
+        partner: ui.item.find("input[name='users']").val(),
+        event: event,
+        partnerships:partnerships
+      }
+      $.ajax({
+        url: "/admin/api/partnershipsupdate",
+        method: "post",
+        data: data
+      }).done(function(data) {
+        //console.log("#");
+      });
+    },
+    connectWith: ".connectedSortable"
+  }).disableSelection();
+
 
   $('#modalAddContact').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
@@ -683,19 +710,6 @@ function getFormData($form){
 
   if ($(".multiple-select").length) $(".multiple-select").bsMultiSelect({  placeholder:'Room'});
 
-  $( ".lock-schedule" ).click(function( event ) {
-    var box = $(this).parent().parent();
-    if($(this).parent().parent().hasClass("disabled")){
-      $(this).find("i").removeClass("fa-lock")
-      $(this).find("i").addClass("fa-lock-open")
-      $(this).parent().parent().removeClass("disabled")
-    } else {
-      $(this).find("i").removeClass("fa-lock-open")
-      $(this).find("i").addClass("fa-lock")
-      $(this).parent().parent().addClass("disabled")
-    }
-    console.log($(this).parent().parent());
-  });
 
   $( ".unlink" ).click(function( event ) {
     var row = $(this).parent().parent();
