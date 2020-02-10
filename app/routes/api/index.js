@@ -28,8 +28,8 @@ router.post('/emailqueue', (req, res) => {
         };
         const mail = {
           from: data.from_name + " <"+ data.from_email + ">",
-          to: data.from_name + " <"+ data.from_email + ">",
-          //to: data.to_html,
+          //to: data.from_name + " <"+ data.from_email + ">",
+          to: data.to_html,
           subject: data.subject,
           text: data.text
         };
