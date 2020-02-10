@@ -33,7 +33,7 @@ router.post('/emailqueue', (req, res) => {
           subject: data.subject,
           text: data.text
         };
-        if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
+        //if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
         const gmailer = require('../../utilities/gmailer');
         gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
           if (err) {
