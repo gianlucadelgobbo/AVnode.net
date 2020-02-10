@@ -3,5 +3,28 @@ block topmenu
   include topmenu
 block content
   form(method="post").form-horizontal#myform
-    .well
-      !="Sending in progress"
+    table.table.table-fixed
+      thead
+        tr
+          th="ID"
+          th=global.__("Organization")
+          th=global.__("Event")
+          th=global.__("User")
+          th=global.__("Subject")
+          th=global.__("Messages to send")
+          th=global.__("Messages sent")
+          th=global.__("Actions")
+      tbody
+        if data.length
+          each item, index in data
+            tr
+              td=index+1
+              td
+                b!=item.organization.stagename
+              td!=(item.event ? item.event.title : "No event filter")
+              td!=item.user.stagename
+              td!=item.subject
+              td!=(item.messages_tosend ? item.messages_tosend.length : 0).toString()
+              td!=(item.messages_sent ? item.messages_sent.length : 0).toString()
+              td
+                button.btn.btn-sm.btn-primary.send(type="button", data-emailqueue=item._id)!="SEND"

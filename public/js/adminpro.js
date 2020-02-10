@@ -585,7 +585,7 @@ function getFormData($form){
       } else {
         var index = $("#"+post.crew+" .contacts").children().length;
       }
-      var str = $('<div><a href="#" data-toggle="modal" data-target="#modalAddContact" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-item="'+JSON.stringify(post)+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></span></a> <a class="text-danger deleteContact" href="#" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></span></a> | <a href="mailto:'+post.stagename+'" target="_blank">'+post.name+' '+post.surname+' &lt;'+post.email+'&gt;</a></div>');
+      var str = $('<div><a href="#" data-toggle="modal" data-target="#modalAddContact" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-item="'+JSON.stringify(post)+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></span></a> <a class="text-danger deleteContact" href="#" data-id="'+post.crew+'" data-stagename="'+post.stagename+'" data-index="'+index+'"><span data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></span></a> | '+(post.lang ? post.lang : '<i class="badge badge-danger">MISSING</i>')+' | <a href="mailto:'+post.stagename+'" target="_blank">'+post.name+' '+post.surname+' &lt;'+post.email+'&gt;</a></div>');
       var str2 = $(str.find("a")[0]).attr("data-item", JSON.stringify(post));
       if (post.index!="") {
         $($("#"+post.crew+" .contacts").children()[post.index]).html($(str).prepend(str2))
@@ -640,6 +640,42 @@ function getFormData($form){
     });
   }
   
+  $(".send").on('click', function(ev) {
+    ev.preventDefault();
+    const id = $(this).data("emailqueue");
+    $(this).attr("disabled", "disabled");
+    emailqueue( id, $(this) );
+   /*  $('#modalEdit .content').html("Loading data...");
+    $('#modalEdit .alert-danger').addClass('d-none');
+    $('#modalEdit .alert-success').addClass('d-none');
+    $('#modalEdit').modal(); */
+  });
+
+  emailqueue = ( id, button ) => {
+    console.log("emailqueue");
+    console.log(button);
+    console.log(id);
+    $.ajax({
+      url: "/api/emailqueue",
+      method: "post",
+      data: {id:id}
+    })
+    .done(function(data) {
+      if (!data.error && data.msg == "Email sending completed") {
+        button.html(data.msg)
+      } else {
+        setTimeout(emailqueue( id, button ), 500);
+      }
+    })
+    .fail(function(xhr, status, error) {
+      //Ajax request failed.
+      var errorMessage = xhr.status + ': ' + xhr.statusText
+      alert('Error - ' + errorMessage);
+    });
+  }
+
+
+
   $( ".duplicate" ).click(function( event ) {
     $(this).parent().parent().clone().insertAfter($(this).parent().parent())
   });

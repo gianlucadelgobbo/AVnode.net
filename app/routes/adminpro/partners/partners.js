@@ -107,6 +107,10 @@ router.get('/:id', (req, res) => {
   router.getPartners(req, res);
 });
 
+router.get('/:id/send', (req, res) => {
+  router.getEmailqueue(req, res);
+});
+
 router.get('/:id/:sez', (req, res) => {
   router.getPartners(req, res);
 });
@@ -123,8 +127,65 @@ router.get('/:id/event/:event/:sez', (req, res) => {
   router.getPartners(req, res);
 });
 
+router.getEmailqueue = (req, res) => {
+  logger.debug('/partners/'+req.params.id);
+  logger.debug("req.body");
+  logger.debug(req.body);
+  logger.debug("req.params");
+  logger.debug(req.params);
+
+  User.
+  findOne({"_id": req.params.id}).
+  lean().
+  select({stagename: 1}).
+  exec((err, user) => {
+    Event.
+    find({"users": req.params.id}).
+    select({title: 1}).
+    sort({title: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    exec((err, events) => {
+      var query = {organization: req.params.id};
+      if (req.params.event) query.event = req.params.event;
+      var populate = [
+        {path: "organization", select: {stagename:1, slug:1}, model:"UserShow"},
+        {path: "user", select: {stagename:1, slug:1}, model:"UserShow"},
+        {path: "event", select: {title:1, slug:1}, model:"EventShow"}
+      ];
+      Emailqueue.
+      find(query).
+      //sort({stagename: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      populate(populate).
+      exec((err, data) => {
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('adminpro/partners/organization_partners_send', {
+            title: 'Partners: '+user.stagename,
+            currentUrl: req.originalUrl,
+            map: req.query.map,
+            csv: req.query.csv,
+            body: req.body,
+            
+            owner: req.params.id,
+            events: events,
+            user: req.user,
+            data: data,
+            script: false
+          });
+        }
+      });
+    });
+  });
+}
+
 router.getPartners = (req, res) => {
   logger.debug('/partners/'+req.params.id);
+  logger.debug("req.body");
+  logger.debug(req.body);
+  logger.debug("req.params");
+  logger.debug(req.params);
   User.
   findOne({"_id": req.params.id}).
   lean().
@@ -150,52 +211,66 @@ router.getPartners = (req, res) => {
         } else {
           if (req.body && req.params.sez=="send") {
             logger.debug(req.body);
-            var tosaveA = [];
+            var tosave = {};
+            tosave.organization = req.params.id;
+            if (req.params.event) tosave.event = req.params.event;
+            tosave.user = req.user._id;
+            tosave.subject = req.body.subject;
+            tosave.messages_tosend = [];
+            tosave.messages_sent = [];
             data.forEach((item, index) => {
-              var tosave = {};
+              var message = {};
               if (item.organizationData && item.organizationData.contacts) {
-                tosave.to_html = "";
-                tosave.cc_html = [];
-                tosave.from_name = req.body.from_name;
-                tosave.from_email = req.body.from_email;
-                tosave.user_email = req.body.user_email;
-                tosave.user_password = req.body.user_password;
-                tosave.subject = req.body.subject.split("[org_name]").join(item.stagename);;
+                message.to_html = "";
+                message.cc_html = [];
+                message.from_name = req.body.from_name;
+                message.from_email = req.body.from_email;
+                message.user_email = req.body.user_email;
+                message.user_password = req.body.user_password;
+                message.subject = req.body.subject.split("[org_name]").join(item.stagename);;
                 item.organizationData.contacts.forEach((contact, cindex) => {
                   if (cindex===0) {
-                    tosave.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">"
-                    tosave.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
-                    tosave.text = tosave.text.split("[name]").join(contact.name);
-                    tosave.text = tosave.text.split("[slug]").join(item.slug);
+                    message.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">"
+                    message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+                    message.text = message.text.split("[name]").join(contact.name);
+                    message.text = message.text.split("[slug]").join(item.slug);
                   } else {
-                    tosave.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">")
+                    message.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" <"+contact.email+">")
                   }
                 });
-                tosaveA.push(tosave)
+                tosave.messages_tosend.push(message)
                 logger.debug("tosave");
               } else {
                 //logger.debug(item.stagename);
               }
             });
-            Emailqueue.create(tosaveA, function (err) {
-             /*  if (err) // ...
-          
-              for (var i=1; i<arguments.length; ++i) {
-                  var candy = arguments[i];
-                  // do some stuff with candy
-              } */
-              res.render('adminpro/partners/organization_partners'+(req.params.sez ? "_"+req.params.sez : ""), {
-                title: 'Partners: '+user.stagename,
-                currentUrl: req.originalUrl,
-                map: req.query.map,
-                csv: req.query.csv,
-                body: req.body,
-                
-                owner: req.params.id,
-                events: events,
-                user: req.user,
-                data: data,
-                script: false
+            Emailqueue.create(tosave, function (err) {
+              var query = {organization: req.params.id};
+              if (req.params.event) query.event = req.params.event;
+              var populate = [
+                {path: "organization", select: {stagename:1, slug:1}, model:"UserShow"},
+                {path: "user", select: {stagename:1, slug:1}, model:"UserShow"},
+                {path: "event", select: {title:1, slug:1}, model:"EventShow"}
+              ];
+              Emailqueue.
+              find(query).
+              //sort({stagename: 1}).
+              //select({stagename: 1, createdAt: 1, crews:1}).
+              populate(populate).
+              exec((err, data) => {
+                res.render('adminpro/partners/organization_partners'+(req.params.sez ? "_"+req.params.sez : ""), {
+                  title: 'Partners: '+user.stagename,
+                  currentUrl: req.originalUrl,
+                  map: req.query.map,
+                  csv: req.query.csv,
+                  body: req.body,
+                  
+                  owner: req.params.id,
+                  events: events,
+                  user: req.user,
+                  data: data,
+                  script: false
+                });
               });
             });
 

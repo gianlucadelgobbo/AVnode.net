@@ -498,5 +498,11 @@
 	"Legal representative": "Legal representative",
 	"Language": "Language",
 	"Unlink": "Unlink",
-	"View": "View"
+	"View": "View",
+	"Event": "Event",
+	"Subject": "Subject",
+	"Messages to send": "Messages to send",
+	"Messages sent": "Messages sent",
+	"User": "User",
+	"Actions": "Actions"
 }
