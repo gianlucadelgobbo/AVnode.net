@@ -275,6 +275,7 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
+      if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
       for(var item in populate) {
         if (populate[item].path == "performance") {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {
@@ -372,11 +373,13 @@ router.get('/:event/peoples', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["peoples"].populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
+      if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
+
       if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
         query['packages.options_name'] = 'hotels';
         query['packages.option'] = req.query['packages.option_selected_hotel'];
       }
-      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
       for(var item in populate) {
         if (populate[item].path == "performance") {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {

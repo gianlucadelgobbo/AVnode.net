@@ -512,6 +512,7 @@ function getFormData($form){
   return indexed_array;
 }
 $( ".lock-schedule" ).click(function( event ) {
+  event.preventDefault();
   var box = $(this).parent().parent();
   if($(this).parent().parent().hasClass("disabled")){
     $(this).find("i").removeClass("fa-lock")
