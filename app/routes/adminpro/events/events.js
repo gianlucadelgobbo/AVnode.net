@@ -19,137 +19,7 @@ const moment = require('moment');
 
 const logger = require('../../../utilities/logger');
 
-const populate_program = [
-  { 
-    "path": "performance", 
-    "select": "title slug image abouts stats duration tech_arts tech_reqs",
-    "model": "Performance", 
-    "populate": [
-      { 
-        "path": "users" , 
-        "select": "stagename image abouts addresses social web",
-        "model": "User",
-        "populate": [
-          { 
-            "path": "members" , 
-            "select": "stagename image abouts web social",
-            "model": "User"
-          }
-        ]
-      },{ 
-        "path": "type" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      },{ 
-        "path": "tecnique" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      },{ 
-        "path": "genre" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      }
-    ] 
-  },{ 
-    "path": "reference", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  },{ 
-    "path": "subscriptions.subscriber_id", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  }
-];
-
-/* let populate_event = [
-  { 
-    "path": "program.performance" , 
-    "select": "title image abouts stats duration tech_arts tech_reqs",
-    "model": "Performance",
-    "populate": [
-      { 
-        "path": "users" , 
-        "select": "stagename image abouts addresses social web",
-        "model": "UserShow"
-      },{ 
-        "path": "videos" , 
-        "select": "title media",
-        "model": "Video"
-      },{ 
-        "path": "galleries" , 
-        "select": "title image",
-        "model": "Gallery"
-      },{ 
-        "path": "categories" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      }
-    ]
-  },{ 
-        "path": "program.status" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      },{ 
-        "path": "organizationsettings.call.calls.admitted" , 
-        "select": "name slug",
-        "model": "Category"
-      },{ 
-        "path": "program.subscription_id" , 
-        //"select": "name slug",
-        "model": "Program",
-        "populate": [
-          { 
-            "path": "subscriptions.subscriber_id" , 
-            "select": "stagename slug",
-            "model": "UserShow"
-          },{ 
-            "path": "reference" , 
-            "select": "stagename name surname email mobile",
-            "model": "UserShow"
-          }
-        ]
-      }
-    ];
- */
-
-// V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
-// V {"addresses.country": "Italy", "addresses.locality":{$in: ["Rome","Roma"]}},{addresses:1}
-
+// HOME 
 router.get('/', (req, res) => {
   logger.debug('/events');
   let results = {};
@@ -175,6 +45,7 @@ router.get('/', (req, res) => {
     }
   });
 });
+
 router.get('/:event', (req, res) => {
   logger.debug('/events/'+req.params.event);
   let data = {};

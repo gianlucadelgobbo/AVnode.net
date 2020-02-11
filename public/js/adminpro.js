@@ -668,21 +668,27 @@ $( ".lock-schedule" ).click(function( event ) {
     });
   }
   
+  emailqueue2 = (idid, buttonbutton ) => {
+    console.log("emailqueue");
+    console.log(buttonbutton);
+    console.log(idid);
+    delayLoop(idid, buttonbutton)
+  }
+  
+  let delayLoop = (id, button) => {
+      setTimeout(() => {
+        emailqueue(id, button);
+      }, 1500);
+  };
+  
   $(".send").on('click', function(ev) {
     ev.preventDefault();
     const id = $(this).data("emailqueue");
     $(this).attr("disabled", "disabled");
     emailqueue( id, $(this) );
-   /*  $('#modalEdit .content').html("Loading data...");
-    $('#modalEdit .alert-danger').addClass('d-none');
-    $('#modalEdit .alert-success').addClass('d-none');
-    $('#modalEdit').modal(); */
   });
   
   emailqueue = ( id, button ) => {
-    console.log("emailqueue");
-    console.log(button);
-    console.log(id);
     $.ajax({
       url: "/api/emailqueue",
       method: "post",
@@ -693,7 +699,7 @@ $( ".lock-schedule" ).click(function( event ) {
         button.html(data.msg)
       } else {
         //setTimeout(emailqueue( id, button ), 1500);
-        emailqueue( id, button );
+        delayLoop(id, button);
       }
     })
     .fail(function(xhr, status, error) {

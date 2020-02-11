@@ -2,6 +2,8 @@ extends ../layout
 block topmenu
   include topmenu
 block content
+  .border-bottom.mb-3
+    include submenu
   form(method="post").form-horizontal#myform
     .well
       // store the userId on the client side in a hidden input field //
@@ -78,4 +80,4 @@ block content
               option(selected=body.realsend == 0, value=0)='Test send'
               option(selected=body.realsend == 1, value=1)='Real send'
         .col-sm-6
-          button(type='button', onclick='jQuery( "#myform" ).attr("action","/adminpro/partners/'+owner+'/send");jQuery( "#myform" ).submit();').btn.btn-success="Send"
+          button(type='submit', onclick='$( "#myform" ).attr("action","/adminpro/partners/'+owner+'/'+(event ? "event/"+event+"/" : "")+'send");jQuery( "#myform" ).submit();').btn.btn-success="Send"

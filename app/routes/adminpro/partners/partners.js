@@ -15,71 +15,13 @@ const sharp = require('sharp');
 
 const logger = require('../../../utilities/logger');
 
-const populate_Partner = [
-  { 
-    "path": "performance", 
-    "select": "title slug image abouts stats duration tech_arts tech_reqs",
-    "model": "Performance", 
-    "populate": [
-      { 
-        "path": "users" , 
-        "select": "stagename image abouts addresses social web",
-        "model": "User",
-        "populate": [
-          { 
-            "path": "members" , 
-            "select": "stagename image abouts web social",
-            "model": "User"
-          }
-        ]
-      },{ 
-        "path": "categories" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      }
-    ] 
-  },{ 
-    "path": "reference", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  },{ 
-    "path": "subscriptions.subscriber_id", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  }
-];
-
-const status = [
-  '_id',
-  'brand',
-  'legalentity',
-  'delegate',
-  'selecta',
-  'satellite',
-  'event',
-  'country',
-  'description',
-  'address',
-  'type',
-  'websites',
-  'contacts',
-  'partnerships',
-  'channels',
-  'users',
-  'user_id'
-];
 var populate = [
   {path: "members", select: {stagename:1, gender:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
   {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
   {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
 ];
+
+//HOME - ORGANIZATIONS LIST
 router.get('/', (req, res) => {
   const myids = req.user.crews.concat([req.user._id]);
   User.
@@ -123,12 +65,20 @@ router.get('/:id/event/:event', (req, res) => {
   router.getPartners(req, res);
 });
 
+router.get('/:id/event/:event/send', (req, res) => {
+  router.getEmailqueue(req, res);
+});
+
 router.get('/:id/event/:event/:sez', (req, res) => {
   router.getPartners(req, res);
 });
 
+router.post('/:id/event/:event/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
 router.getEmailqueue = (req, res) => {
-  logger.debug('/partners/'+req.params.id);
+  logger.debug('/getEmailqueue/'+req.params.id);
   logger.debug("req.body");
   logger.debug(req.body);
   logger.debug("req.params");
@@ -167,6 +117,7 @@ router.getEmailqueue = (req, res) => {
             map: req.query.map,
             csv: req.query.csv,
             body: req.body,
+            event: req.params.event,
             
             owner: req.params.id,
             events: events,
@@ -181,7 +132,7 @@ router.getEmailqueue = (req, res) => {
 }
 
 router.getPartners = (req, res) => {
-  logger.debug('/partners/'+req.params.id);
+  logger.debug('/getPartners/'+req.params.id);
   logger.debug("req.body");
   logger.debug(req.body);
   logger.debug("req.params");
@@ -191,26 +142,31 @@ router.getPartners = (req, res) => {
   lean().
   select({stagename: 1}).
   exec((err, user) => {
-    var query = {$or : [{"partner_owner.owner": req.params.id}]}
-    if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
-    User.
-    find(query).
-    lean().
-    sort({stagename: 1}).
+    Event.
+    find({"users": req.params.id}).
+    select({title: 1}).
+    sort({title: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).
-    populate(populate).
-    exec((err, data) => {
-      Event.
-      find({"users": req.params.id}).
-      select({title: 1}).
-      sort({title: 1}).
+    exec((err, events) => {
+      var query = {$or : [{"partner_owner.owner": req.params.id}]}
+      if (req.params.event) query.partnerships = req.params.event;
+      if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
+      User.
+      find(query).
+      lean().
+      sort({stagename: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
-      exec((err, events) => {
+      populate(populate).
+      exec((err, data) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          if (req.body && req.params.sez=="send") {
-            logger.debug(req.body);
+          logger.debug(query);
+          logger.debug("data");
+          logger.debug(data ? data.length : "stocazzo");
+          logger.debug("req.body");
+          logger.debug(req.body);
+          if (req.body.subject && req.params.sez=="send") {
             var tosave = {};
             tosave.organization = req.params.id;
             if (req.params.event) tosave.event = req.params.event;
@@ -240,7 +196,6 @@ router.getPartners = (req, res) => {
                   }
                 });
                 if (message.to_html != "") tosave.messages_tosend.push(message)
-                logger.debug("tosave");
               } else {
                 //logger.debug(item.stagename);
               }
@@ -270,6 +225,7 @@ router.getPartners = (req, res) => {
               map: req.query.map,
               csv: req.query.csv,
               body: req.body,
+              event: req.params.event,
               
               owner: req.params.id,
               events: events,
@@ -283,49 +239,6 @@ router.getPartners = (req, res) => {
     });
   });
 }
-
-router.get('/:id/:event', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
-  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
-  logger.debug(query);
-  User.
-  findOne({"_id": req.params.id}).
-  lean().
-  select({stagename: 1}).
-  exec((err, user) => {
-    User.
-    find(query).
-    lean().
-    sort({stagename: 1}).
-    //select({stagename: 1, createdAt: 1, crews:1}).
-    populate(populate).
-    exec((err, data) => {
-      Event.
-      find({"users": req.params.id}).
-      select({title: 1}).
-      sort({title: 1}).
-      //select({stagename: 1, createdAt: 1, crews:1}).
-      exec((err, events) => {
-        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-          res.json(data);
-        } else {
-          res.render('adminpro/partners/organization_partners', {
-            title: 'Partners: '+user.stagename,
-            currentUrl: req.originalUrl,
-            csv: req.query.csv,
-            map: req.query.map,
-            owner: req.params.id,
-            events: events,
-            event: req.params.event,
-            user: req.user,
-            data: data,
-            script: false
-          });
-        }
-      });
-    });
-  });
-});
 
 
 
@@ -755,6 +668,111 @@ router.get('/:id/:event/manage', (req, res) => {
 
 
 /*
+router.get('/:id/:event', (req, res) => {
+  logger.debug('/organizations/'+req.params.event);
+  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
+  logger.debug(query);
+  User.
+  findOne({"_id": req.params.id}).
+  lean().
+  select({stagename: 1}).
+  exec((err, user) => {
+    User.
+    find(query).
+    lean().
+    sort({stagename: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    populate(populate).
+    exec((err, data) => {
+      Event.
+      find({"users": req.params.id}).
+      select({title: 1}).
+      sort({title: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      exec((err, events) => {
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('adminpro/partners/organization_partners', {
+            title: 'Partners: '+user.stagename,
+            currentUrl: req.originalUrl,
+            csv: req.query.csv,
+            map: req.query.map,
+            owner: req.params.id,
+            events: events,
+            event: req.params.event,
+            user: req.user,
+            data: data,
+            script: false
+          });
+        }
+      });
+    });
+  });
+});
+
+
+const populate_Partner = [
+  { 
+    "path": "performance", 
+    "select": "title slug image abouts stats duration tech_arts tech_reqs",
+    "model": "Performance", 
+    "populate": [
+      { 
+        "path": "users" , 
+        "select": "stagename image abouts addresses social web",
+        "model": "User",
+        "populate": [
+          { 
+            "path": "members" , 
+            "select": "stagename image abouts web social",
+            "model": "User"
+          }
+        ]
+      },{ 
+        "path": "categories" , 
+        "select": "name slug",
+        "model": "Category",
+        "populate": [
+          { 
+            "path": "ancestor" , 
+            "select": "name slug",
+            "model": "Category"
+          }
+        ]
+      }
+    ] 
+  },{ 
+    "path": "reference", 
+    "select": "stagename image name surname addresses email mobile", 
+    "model": "User"
+  },{ 
+    "path": "subscriptions.subscriber_id", 
+    "select": "stagename image name surname addresses email mobile", 
+    "model": "User"
+  }
+];
+
+const status = [
+  '_id',
+  'brand',
+  'legalentity',
+  'delegate',
+  'selecta',
+  'satellite',
+  'event',
+  'country',
+  'description',
+  'address',
+  'type',
+  'websites',
+  'contacts',
+  'partnerships',
+  'channels',
+  'users',
+  'user_id'
+];
+ 
 router.get('/:event/acts', (req, res) => {
   logger.debug('/organizations/'+req.params.event+'/acts');
   logger.debug(req.query)
