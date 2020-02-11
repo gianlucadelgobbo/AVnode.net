@@ -65,6 +65,10 @@ router.get('/:id/event/:event', (req, res) => {
   router.getPartners(req, res);
 });
 
+router.get('/:id/event/:event/manage', (req, res) => {
+  getManageables(req, res);
+});
+
 router.get('/:id/event/:event/send', (req, res) => {
   router.getEmailqueue(req, res);
 });
@@ -583,7 +587,9 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
   });
 });
 
-router.get('/:id/:event/manage', (req, res) => {
+
+
+getManageables = (req, res) => {
   logger.debug('/organizations/'+req.params.event);
   Category.
   find({ancestor: "5be8708afc396100000001eb"}).
@@ -644,7 +650,7 @@ router.get('/:id/:event/manage', (req, res) => {
             if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
               res.json(data);
             } else {
-              res.render('adminpro/partners/organization_partners_manager', {
+              res.render('adminpro/partners/organization_partners_manage', {
                 title: 'Partners',
                 currentUrl: req.originalUrl,
                 hide: req.query.hide ? req.query.hide : [],
@@ -663,7 +669,7 @@ router.get('/:id/:event/manage', (req, res) => {
       });
     });
   });
-});
+}
 
 
 

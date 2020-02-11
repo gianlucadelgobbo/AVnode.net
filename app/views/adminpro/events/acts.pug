@@ -40,7 +40,7 @@ block content
   table.table.table-fixed
     thead
       tr
-        th="ID"
+        th.table-firstcolumn-ID="ID"
         th="STATUS"
         th="ACT"
         th="AUTHORS"
@@ -48,7 +48,7 @@ block content
     tbody
       each item, index in data.program
         tr(id='sub'+item._id) 
-          td!=(index+1)
+          td.table-firstcolumn-ID!=(index+1)
           td
             form(action="")
               .border-bottom.pb-1.mb-1

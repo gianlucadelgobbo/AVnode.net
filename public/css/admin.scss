@@ -229,7 +229,7 @@ textarea#styled {
 .table-fixed {
   table-layout: fixed;
 }
-.table-fixed td:first-child, .table-fixed th:first-child {
+.table-firstcolumn-ID, .table-firstcolumn-ID {
   width: 50px;
 }
 .table-fixed td {

@@ -74,65 +74,43 @@ block content
       table.table.table-fixed
         thead
           tr
-            td="ID"
-            td=global.__("Brand")
-            td=global.__("Partnerships")
-            td=global.__("Channels")
-            td=global.__("Contacts")
+            th.table-firstcolumn-ID="ID"
+            th=global.__("Brand")
+            th=global.__("Web Channels")
+            th=global.__("Social Channels")
         tbody
           if data.length
             each item, index in data
               tr
-                td=index+1
+                td.table-firstcolumn-ID=index+1
                 td
-                  b!=item.stagename
-                  !=" "
-                  a(href="/admin/crews/"+item._id+"/public", target="_blank")!=global.__("edit")
+                  a(href="/admin/crews/"+item._id+"/public", target="_blank", title=global.__("edit"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                      i.fas.fa-edit
                   !=" | "
-                  a.unlink(href="#", data-owner=owner, data-partner=item._id)!=global.__("unlink")
-                  !=" | "
+                  a.unlink(href="#", data-owner=owner, data-partner=item._id, title=global.__("Unlink"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
+                      i.fa.fa-unlink
                   if item.members && item.members.length
-                    a(href="/"+item.slug, target="_blank")!=global.__("view")
-                  else
+                    !=" | "
+                    a(href="/"+item.slug, target="_blank", title=global.__("View"))
+                      span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                        i.fa.fa-eye
+                  !=" | "
+                  b!=item.stagename
+                  if !item.members || !item.members.length
+                    !=" "
                     .badge.badge-danger!="EXTERNAL"
-                td
-                  if item.partnerships && item.partnerships.length
-                    - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
-
-                    each partnership in item.partnerships
-                      .text-nowrap
-                        a(href="/"+partnership.slug, target="_blank")!=partnership.title
-                        !=" "
-                          
                 td
                   if item.web
                     each web in item.web
                       div
                         a(href=web.url, target="_blank")!=web.url
+                td
                   if item.social
                     each web in item.social
                       div
                         a(href=web.url, target="_blank")!=web.url
-                td
-                  h5
-                    !="Contacts"
-                    !=" "
-                    // Button trigger modal
-                    button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-                  ul
-                    if item.organizationData && item.organizationData.contacts
-                      each contact, index in item.organizationData.contacts
-                        li
-                          a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-                          !=" "
-                          a.btn.btn-sm.btn-primary(data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify(contact), data-index=index)="EDIT"
-                          !=" "
-                          a.btn.btn-sm.btn-danger.deleteContact(data-id=item._id, data-stagename=item.stagename, data-index=index)="DEL"
-                  if item.members && item.members.length
-                    h5="Members"
-                    each contact in item.members
-                      div
-                        a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
 
   // Modal Add Partner
   #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')

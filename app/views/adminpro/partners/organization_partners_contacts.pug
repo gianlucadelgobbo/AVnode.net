@@ -10,7 +10,7 @@ block content
       table.table.table-fixed
         thead
           tr
-            th="ID"
+            th.table-firstcolumn-ID="ID"
             th=global.__("Brand")
             th=global.__("Name")
             th=global.__("Surname")
@@ -27,7 +27,7 @@ block content
               if item.organizationData && item.organizationData.contacts
                 each contact in item.organizationData.contacts
                   tr
-                    td=index+1
+                    td.table-firstcolumn-ID=index+1
                     td
                       b!=item.stagename
                     td!=contact.name

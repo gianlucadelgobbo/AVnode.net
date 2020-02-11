@@ -1,7 +1,7 @@
 table.table.table-fixed.page-break-after-always
   thead.d-print-none
     tr
-      td!="ID"
+      td.table-firstcolumn-ID!="ID"
       td!=global.__("Brand")
       td!="Organization legal name"
       td!="Name of the yearly event"
@@ -14,8 +14,8 @@ table.table.table-fixed.page-break-after-always
     if grantevents && grantevents[item.slug]
       each item2, index2 in grantevents[item.slug]
         tr
-          td(width="30%")!="P"+conta
-          td(width="70%")!=item.stagename
+          td.table-firstcolumn-ID!="P"+conta
+          td!=item.stagename
           td!=(item.organizationData.legal_name ? item.organizationData.legal_name : "<span class='badge badge-danger'>MANDATORY</span>")
           td!=item2["Event Name"] ? item2["Event Name"] : "<span class='badge badge-danger'>MANDATORY</span>"
           td!=item2["Event Month"] ? item2["Event Month"] : "<span class='badge badge-danger'>MANDATORY</span>"
