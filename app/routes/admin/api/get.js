@@ -253,7 +253,7 @@ router.getDelete = (req, res) => {
                   }
                 break;
                 case "profile" :
-                  if (data.activity == 0) {
+                  if (!data.activity || data.activity === 0) {
                     logger.debug("getDelete 3");
                     if (data.is_crew == 1) {
                       logger.debug("getDelete 4");
