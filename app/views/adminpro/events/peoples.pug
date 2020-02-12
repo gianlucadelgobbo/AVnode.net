@@ -9,7 +9,7 @@ block content
   table.table.table-fixed
     thead
       tr
-        th="ID"
+        th.table-firstcolumn-ID="ID"
         th(style="width: 210px;")="Status"
         th="Submission"
         th="Person"
@@ -29,7 +29,7 @@ block content
             - conta++
 
             tr
-              td=conta
+              td.table-firstcolumn-ID=conta
               td
                 .badge.badge-danger=subscription.status.name
                 //form(action="")

@@ -21,7 +21,7 @@
         each pack,i in packages
           option(value=pack, selected=get["subscriptions.packages.name"]==pack ? "selected" : undefined)=pack
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
-          input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.fullinfo ? "checked" : undefined)
+          input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.notaccommodation ? "checked" : undefined)
           label.mr-sm-3(for='not4') NOT
 
       select.form-control.mr-sm-2(name='status', style='max-width:100px')

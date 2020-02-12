@@ -5,7 +5,7 @@ block content
   table.table.table-fixed
     thead
       tr
-        td="ID"
+        td.table-firstcolumn-ID="ID"
         td=global.__("Organization")
         td=global.__("Members")
         td=global.__("Web")
@@ -14,7 +14,7 @@ block content
       if data.length
         each item, index in data
           tr
-            td=index+1
+            td.table-firstcolumn-ID=index+1
             td
               h3!=item.stagename
               if user.is_admin

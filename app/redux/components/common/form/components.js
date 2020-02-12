@@ -144,7 +144,7 @@ export const googleAutocompleteSelect = ({
     <div className="autocomplete-root">
       <input
         {...getInputProps({
-          placeholder: "City, country",
+          placeholder: placeholder,
           className: "form-control location-search-input"
         })}
       />
@@ -1633,7 +1633,7 @@ export const multiSchedule = ({
               <Field
                 name={`${member}.venue`}
                 component={googleAutocompleteSelect}
-                placeholder="Venue"
+                placeholder="Venue or Address"
                 options={{
                   types: ["establishment"]
                 }}

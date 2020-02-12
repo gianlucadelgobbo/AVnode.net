@@ -1,15 +1,15 @@
 table.table.table-fixed.page-break-after-always
   thead.d-print-none
     tr
-      td.text-right!="ID"
+      td.table-firstcolumn-ID!="ID"
       td!=global.__("Brand")
         !=" | "
         button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD"
 
   tbody
     tr
-      td(width="30%")!="P"+conta
-      td(width="70%")
+      td.table-firstcolumn-ID!="P"+conta
+      td
         h3!=item.stagename
         span.d-print-none
           if user.is_admin

@@ -9,8 +9,57 @@ const Footage = require('mongoose').model('Footage');
 const Video = require('mongoose').model('Video');
 const Order = require('mongoose').model('Order');
 const Event = require('mongoose').model('Event');
+const Emailqueue = require('mongoose').model('Emailqueue');
 
 const logger = require('../../utilities/logger');
+
+router.post('/emailqueue', (req, res) => {
+  Emailqueue
+  .findOne({_id: req.body.id})
+  .exec((err, emailqueue) => {
+    if (err) {
+      res.status(500).json({ error: `${JSON.stringify(err)}` });
+    } else {
+      if (emailqueue.messages_tosend && emailqueue.messages_tosend.length) {
+        const data = emailqueue.messages_tosend[0];
+        const auth = {
+          user: data.user_email,
+          pass: data.user_password
+        };
+        const mail = {
+          from: data.from_name + " <"+ data.from_email + ">",
+          to: data.from_name + " <"+ data.from_email + ">",
+          //to: data.to_html,
+          subject: data.subject,
+          text: data.text
+        };
+        //if (data.cc_html && data.cc_html.length) mail.cc = data.cc_html.join(", ");
+        const gmailer = require('../../utilities/gmailer');
+        gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+          if (err) {
+            logger.debug("Email sending failure");
+            logger.debug(err);
+            res.json({error: true, msg: "Email sending failure", id: req.body.id});
+          } else {
+            logger.debug("Email sending OK");
+            emailqueue.messages_sent.push(emailqueue.messages_tosend[0]);
+            emailqueue.messages_tosend = emailqueue.messages_tosend.splice(1, emailqueue.messages_tosend.length)
+            emailqueue.save((err) => {
+              if (err) {
+                res.json({error: true, msg: "Saving email queue failed", id: req.body.id});
+              } else {
+                res.json({error: false, msg: "Email sending success", id: req.body.id});
+              }
+            });
+          }
+        });
+      } else {
+        logger.debug("Email sending completed");
+        res.json({error: false, msg: "Email sending completed", id: req.body.id});
+      }
+    }
+  });
+});
 
 router.get('/tobeencoded/:sez', (req, res) => {
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;  

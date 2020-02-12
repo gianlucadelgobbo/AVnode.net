@@ -363,7 +363,7 @@ router.unlinkPartner = (req, res) => {
 });
 }
 router.addContacts = (req, res) => {
-  logger.debug('/partners/contacts/addddddddd/');
+  logger.debug('/partners/contacts/add/');
   logger.debug(req.body);
   Models.User.
   findOne({_id: req.body.crew})
@@ -378,7 +378,6 @@ router.addContacts = (req, res) => {
     } else {
       delete req.body.crew;
       if (req.body.index) {
-        delete req.body.crew;
         user.organizationData.contacts.splice(req.body.index, 1, req.body);
       } else {
         if (!user.organizationData) user.organizationData = {};
@@ -386,7 +385,7 @@ router.addContacts = (req, res) => {
         user.organizationData.contacts.push(req.body);
 
       }
-      
+      delete req.body.index;
       user.save((err) => {
         logger.debug(err);
         if (err) {
@@ -407,7 +406,7 @@ router.deleteContacts = (req, res) => {
   logger.debug('/partners/contacts/deleteContacts/');
   logger.debug(req.body);
   Models.User.
-  findOne({_id: req.body.crew})
+  findOne({_id: req.body.id})
   .exec((err, user) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
     logger.debug('stocazzo');

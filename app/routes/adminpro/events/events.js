@@ -19,137 +19,7 @@ const moment = require('moment');
 
 const logger = require('../../../utilities/logger');
 
-const populate_program = [
-  { 
-    "path": "performance", 
-    "select": "title slug image abouts stats duration tech_arts tech_reqs",
-    "model": "Performance", 
-    "populate": [
-      { 
-        "path": "users" , 
-        "select": "stagename image abouts addresses social web",
-        "model": "User",
-        "populate": [
-          { 
-            "path": "members" , 
-            "select": "stagename image abouts web social",
-            "model": "User"
-          }
-        ]
-      },{ 
-        "path": "type" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      },{ 
-        "path": "tecnique" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      },{ 
-        "path": "genre" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      }
-    ] 
-  },{ 
-    "path": "reference", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  },{ 
-    "path": "subscriptions.subscriber_id", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  }
-];
-
-/* let populate_event = [
-  { 
-    "path": "program.performance" , 
-    "select": "title image abouts stats duration tech_arts tech_reqs",
-    "model": "Performance",
-    "populate": [
-      { 
-        "path": "users" , 
-        "select": "stagename image abouts addresses social web",
-        "model": "UserShow"
-      },{ 
-        "path": "videos" , 
-        "select": "title media",
-        "model": "Video"
-      },{ 
-        "path": "galleries" , 
-        "select": "title image",
-        "model": "Gallery"
-      },{ 
-        "path": "categories" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      }
-    ]
-  },{ 
-        "path": "program.status" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      },{ 
-        "path": "organizationsettings.call.calls.admitted" , 
-        "select": "name slug",
-        "model": "Category"
-      },{ 
-        "path": "program.subscription_id" , 
-        //"select": "name slug",
-        "model": "Program",
-        "populate": [
-          { 
-            "path": "subscriptions.subscriber_id" , 
-            "select": "stagename slug",
-            "model": "UserShow"
-          },{ 
-            "path": "reference" , 
-            "select": "stagename name surname email mobile",
-            "model": "UserShow"
-          }
-        ]
-      }
-    ];
- */
-
-// V > db.events.findOne({"schedule.venue.location.locality":{$exists: true}},{schedule:1});
-// V {"addresses.country": "Italy", "addresses.locality":{$in: ["Rome","Roma"]}},{addresses:1}
-
+// HOME 
 router.get('/', (req, res) => {
   logger.debug('/events');
   let results = {};
@@ -175,6 +45,7 @@ router.get('/', (req, res) => {
     }
   });
 });
+
 router.get('/:event', (req, res) => {
   logger.debug('/events/'+req.params.event);
   let data = {};
@@ -275,6 +146,7 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
+      if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
       for(var item in populate) {
         if (populate[item].path == "performance") {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {
@@ -372,11 +244,13 @@ router.get('/:event/peoples', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["peoples"].populate;
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
+      if (req.query['subscriptions.packages.name'] && req.query['subscriptions.packages.name']!='0') query['subscriptions.packages.name'] = req.query['notaccommodation'] ? {$ne :req.query['subscriptions.packages.name']} : req.query['subscriptions.packages.name'];
+
       if (req.query['packages.option_selected_hotel'] && req.query['packages.option_selected_hotel']!='0') {
         query['packages.options_name'] = 'hotels';
         query['packages.option'] = req.query['packages.option_selected_hotel'];
       }
-      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['status'];
       for(var item in populate) {
         if (populate[item].path == "performance") {
           if (req.query['performance_category'] && req.query['performance_category']!='0') {
@@ -626,6 +500,7 @@ router.get('/:event/program', (req, res) => {
               var duration = data.program[a].performance.duration;
               if (data.program[a].schedule && data.program[a].schedule.length) {
                 for(let b=0;b<data.program[a].schedule.length;b++) {
+                  var delSchedule = false;
                   if (data.program[a].schedule[b] && data.program[a].schedule[b].venue && data.program[a].schedule[b].venue.room) {
                     if ((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000)<1) {
                       let date = new Date(data.program[a].schedule[b].starttime);  // dateStr you get from mongodb
@@ -642,6 +517,8 @@ router.get('/:event/program', (req, res) => {
                         delete data.program[a].schedule[b];
                       }
                     } else {
+                      console.log("data.program[a].schedule[b]");
+                      console.log(data.program[a].schedule[b]);
                       var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
                       for(let c=0;c<days;c++){
                         let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
@@ -655,11 +532,12 @@ router.get('/:event/program', (req, res) => {
                         if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
                           data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                         } else {
-                          delete data.program[a].schedule[b];
+                          delSchedule = true;
                         }
                       }
                     }
                   }
+                  if (delSchedule) delete data.program[a].schedule[b];
                 }  
               }
             }

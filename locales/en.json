@@ -492,5 +492,22 @@
 	"lang": "lang",
 	"Facebook": "Facebook",
 	"Is user": "Is user",
-	"Skype": "Skype"
+	"Skype": "Skype",
+	"Title": "Title",
+	"Role": "Role",
+	"Legal representative": "Legal representative",
+	"Language": "Language",
+	"Unlink": "Unlink",
+	"View": "View",
+	"Event": "Event",
+	"Subject": "Subject",
+	"Messages to send": "Messages to send",
+	"Messages sent": "Messages sent",
+	"User": "User",
+	"Actions": "Actions",
+	"Messagge this list": "Messagge this list",
+	"Check emails queue": "Check emails queue",
+	"Message this list": "Message this list",
+	"Web Channels": "Web Channels",
+	"Social Channels": "Social Channels"
 }

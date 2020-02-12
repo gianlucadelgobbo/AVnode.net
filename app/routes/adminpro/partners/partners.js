@@ -6,7 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const Event = mongoose.model('Event');
 const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
-const Video = mongoose.model('Video');
+const Emailqueue = mongoose.model('Emailqueue');
 
 const request = require('request');
 const fs = require('fs');
@@ -15,71 +15,13 @@ const sharp = require('sharp');
 
 const logger = require('../../../utilities/logger');
 
-const populate_Partner = [
-  { 
-    "path": "performance", 
-    "select": "title slug image abouts stats duration tech_arts tech_reqs",
-    "model": "Performance", 
-    "populate": [
-      { 
-        "path": "users" , 
-        "select": "stagename image abouts addresses social web",
-        "model": "User",
-        "populate": [
-          { 
-            "path": "members" , 
-            "select": "stagename image abouts web social",
-            "model": "User"
-          }
-        ]
-      },{ 
-        "path": "categories" , 
-        "select": "name slug",
-        "model": "Category",
-        "populate": [
-          { 
-            "path": "ancestor" , 
-            "select": "name slug",
-            "model": "Category"
-          }
-        ]
-      }
-    ] 
-  },{ 
-    "path": "reference", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  },{ 
-    "path": "subscriptions.subscriber_id", 
-    "select": "stagename image name surname addresses email mobile", 
-    "model": "User"
-  }
-];
-
-const status = [
-  '_id',
-  'brand',
-  'legalentity',
-  'delegate',
-  'selecta',
-  'satellite',
-  'event',
-  'country',
-  'description',
-  'address',
-  'type',
-  'websites',
-  'contacts',
-  'partnerships',
-  'channels',
-  'users',
-  'user_id'
-];
 var populate = [
-  {path: "members", select: {stagename:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
+  {path: "members", select: {stagename:1, gender:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
   {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
   {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
 ];
+
+//HOME - ORGANIZATIONS LIST
 router.get('/', (req, res) => {
   const myids = req.user.crews.concat([req.user._id]);
   User.
@@ -104,35 +46,82 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  logger.debug('/partners/'+req.params.id);
+  router.getPartners(req, res);
+});
+
+router.get('/:id/send', (req, res) => {
+  router.getEmailqueue(req, res);
+});
+
+router.get('/:id/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.post('/:id/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.get('/:id/event/:event', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.get('/:id/event/:event/manage', (req, res) => {
+  getManageables(req, res);
+});
+
+router.get('/:id/event/:event/send', (req, res) => {
+  router.getEmailqueue(req, res);
+});
+
+router.get('/:id/event/:event/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.post('/:id/event/:event/:sez', (req, res) => {
+  router.getPartners(req, res);
+});
+
+router.getEmailqueue = (req, res) => {
+  logger.debug('/getEmailqueue/'+req.params.id);
+  logger.debug("req.body");
+  logger.debug(req.body);
+  logger.debug("req.params");
+  logger.debug(req.params);
+
   User.
   findOne({"_id": req.params.id}).
   lean().
   select({stagename: 1}).
   exec((err, user) => {
-    var query = {$or : [{"partner_owner.owner": req.params.id}]}
-    if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
-    User.
-    find(query).
-    lean().
-    sort({stagename: 1}).
+    Event.
+    find({"users": req.params.id}).
+    select({title: 1}).
+    sort({title: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).
-    populate(populate).
-    exec((err, data) => {
-      Event.
-      find({"users": req.params.id}).
-      select({title: 1}).
-      sort({title: 1}).
+    exec((err, events) => {
+      var query = {organization: req.params.id};
+      if (req.params.event) query.event = req.params.event;
+      var populate = [
+        {path: "organization", select: {stagename:1, slug:1}, model:"UserShow"},
+        {path: "user", select: {stagename:1, slug:1}, model:"UserShow"},
+        {path: "event", select: {title:1, slug:1}, model:"EventShow"}
+      ];
+      Emailqueue.
+      find(query).
+      //sort({stagename: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
-      exec((err, events) => {
+      populate(populate).
+      exec((err, data) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          res.render('adminpro/partners/organization_partners', {
+          res.render('adminpro/partners/organization_partners_send', {
             title: 'Partners: '+user.stagename,
             currentUrl: req.originalUrl,
             map: req.query.map,
             csv: req.query.csv,
+            body: req.body,
+            event: req.params.event,
             
             owner: req.params.id,
             events: events,
@@ -144,49 +133,116 @@ router.get('/:id', (req, res) => {
       });
     });
   });
-});
+}
 
-router.get('/:id/:event', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
-  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
-  logger.debug(query);
+router.getPartners = (req, res) => {
+  logger.debug('/getPartners/'+req.params.id);
+  logger.debug("req.body");
+  logger.debug(req.body);
+  logger.debug("req.params");
+  logger.debug(req.params);
   User.
   findOne({"_id": req.params.id}).
   lean().
   select({stagename: 1}).
   exec((err, user) => {
-    User.
-    find(query).
-    lean().
-    sort({stagename: 1}).
+    Event.
+    find({"users": req.params.id}).
+    select({title: 1}).
+    sort({title: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).
-    populate(populate).
-    exec((err, data) => {
-      Event.
-      find({"users": req.params.id}).
-      select({title: 1}).
-      sort({title: 1}).
+    exec((err, events) => {
+      var query = {$or : [{"partner_owner.owner": req.params.id}]}
+      if (req.params.event) query.partnerships = req.params.event;
+      if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
+      User.
+      find(query).
+      lean().
+      sort({stagename: 1}).
       //select({stagename: 1, createdAt: 1, crews:1}).
-      exec((err, events) => {
+      populate(populate).
+      exec((err, data) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          res.render('adminpro/partners/organization_partners', {
-            title: 'Partners: '+user.stagename,
-            currentUrl: req.originalUrl,
-            csv: req.query.csv,
-            owner: req.params.id,
-            events: events,
-            event: req.params.event,
-            user: req.user,
-            data: data,
-            script: false
-          });
+          logger.debug(query);
+          logger.debug("data");
+          logger.debug(data ? data.length : "stocazzo");
+          logger.debug("req.body");
+          logger.debug(req.body);
+          if (req.body.subject && req.params.sez=="send") {
+            var tosave = {};
+            tosave.organization = req.params.id;
+            if (req.params.event) tosave.event = req.params.event;
+            tosave.user = req.user._id;
+            tosave.subject = req.body.subject;
+            tosave.messages_tosend = [];
+            tosave.messages_sent = [];
+            data.forEach((item, index) => {
+              var message = {};
+              if (item.organizationData && item.organizationData.contacts) {
+                message.to_html = "";
+                message.cc_html = [];
+
+                message.from_name = req.body.from_name;
+                message.from_email = req.body.from_email;
+                message.user_email = req.body.user_email;
+                message.user_password = req.body.user_password;
+                message.subject = req.body.subject.split("[org_name]").join(item.stagename);;
+                item.organizationData.contacts.forEach((contact, cindex) => {
+                  if (contact.email && message.to_html == "") {
+                    message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+                    message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+                    message.text = message.text.split("[name]").join(contact.name);
+                    message.text = message.text.split("[slug]").join(item.slug);
+                  } else if (contact.email && message.to_html != "") {
+                    message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+                  }
+                });
+                if (message.to_html != "") tosave.messages_tosend.push(message)
+              } else {
+                //logger.debug(item.stagename);
+              }
+            });
+            Emailqueue.create(tosave, function (err) {
+              var query = {organization: req.params.id};
+              if (req.params.event) query.event = req.params.event;
+              var populate = [
+                {path: "organization", select: {stagename:1, slug:1}, model:"UserShow"},
+                {path: "user", select: {stagename:1, slug:1}, model:"UserShow"},
+                {path: "event", select: {title:1, slug:1}, model:"EventShow"}
+              ];
+              Emailqueue.
+              find(query).
+              //sort({stagename: 1}).
+              //select({stagename: 1, createdAt: 1, crews:1}).
+              populate(populate).
+              exec((err, data) => {
+                res.redirect(req.originalUrl)
+              });
+            });
+
+          } else {
+            res.render('adminpro/partners/organization_partners'+(req.params.sez ? "_"+req.params.sez : ""), {
+              title: 'Partners: '+user.stagename,
+              currentUrl: req.originalUrl,
+              map: req.query.map,
+              csv: req.query.csv,
+              body: req.body,
+              event: req.params.event,
+              
+              owner: req.params.id,
+              events: events,
+              user: req.user,
+              data: data,
+              script: false
+            });  
+          }
         }
       });
     });
   });
-});
+}
 
 
 
@@ -531,7 +587,9 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
   });
 });
 
-router.get('/:id/:event/manage', (req, res) => {
+
+
+getManageables = (req, res) => {
   logger.debug('/organizations/'+req.params.event);
   Category.
   find({ancestor: "5be8708afc396100000001eb"}).
@@ -592,7 +650,7 @@ router.get('/:id/:event/manage', (req, res) => {
             if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
               res.json(data);
             } else {
-              res.render('adminpro/partners/organization_partners_manager', {
+              res.render('adminpro/partners/organization_partners_manage', {
                 title: 'Partners',
                 currentUrl: req.originalUrl,
                 hide: req.query.hide ? req.query.hide : [],
@@ -611,11 +669,116 @@ router.get('/:id/:event/manage', (req, res) => {
       });
     });
   });
-});
+}
 
 
 
 /*
+router.get('/:id/:event', (req, res) => {
+  logger.debug('/organizations/'+req.params.event);
+  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
+  logger.debug(query);
+  User.
+  findOne({"_id": req.params.id}).
+  lean().
+  select({stagename: 1}).
+  exec((err, user) => {
+    User.
+    find(query).
+    lean().
+    sort({stagename: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    populate(populate).
+    exec((err, data) => {
+      Event.
+      find({"users": req.params.id}).
+      select({title: 1}).
+      sort({title: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      exec((err, events) => {
+        if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+          res.json(data);
+        } else {
+          res.render('adminpro/partners/organization_partners', {
+            title: 'Partners: '+user.stagename,
+            currentUrl: req.originalUrl,
+            csv: req.query.csv,
+            map: req.query.map,
+            owner: req.params.id,
+            events: events,
+            event: req.params.event,
+            user: req.user,
+            data: data,
+            script: false
+          });
+        }
+      });
+    });
+  });
+});
+
+
+const populate_Partner = [
+  { 
+    "path": "performance", 
+    "select": "title slug image abouts stats duration tech_arts tech_reqs",
+    "model": "Performance", 
+    "populate": [
+      { 
+        "path": "users" , 
+        "select": "stagename image abouts addresses social web",
+        "model": "User",
+        "populate": [
+          { 
+            "path": "members" , 
+            "select": "stagename image abouts web social",
+            "model": "User"
+          }
+        ]
+      },{ 
+        "path": "categories" , 
+        "select": "name slug",
+        "model": "Category",
+        "populate": [
+          { 
+            "path": "ancestor" , 
+            "select": "name slug",
+            "model": "Category"
+          }
+        ]
+      }
+    ] 
+  },{ 
+    "path": "reference", 
+    "select": "stagename image name surname addresses email mobile", 
+    "model": "User"
+  },{ 
+    "path": "subscriptions.subscriber_id", 
+    "select": "stagename image name surname addresses email mobile", 
+    "model": "User"
+  }
+];
+
+const status = [
+  '_id',
+  'brand',
+  'legalentity',
+  'delegate',
+  'selecta',
+  'satellite',
+  'event',
+  'country',
+  'description',
+  'address',
+  'type',
+  'websites',
+  'contacts',
+  'partnerships',
+  'channels',
+  'users',
+  'user_id'
+];
+ 
 router.get('/:event/acts', (req, res) => {
   logger.debug('/organizations/'+req.params.event+'/acts');
   logger.debug(req.query)

@@ -74,16 +74,15 @@ block content
       table.table.table-fixed
         thead
           tr
-            th.table-firstcolumn-ID="ID"
+            th="ID"
             th=global.__("Brand")
-            th=global.__("Partnerships")
-            th=global.__("Channels")
             th=global.__("Contacts")
+            th=global.__("Members")
         tbody
           if data.length
             each item, index in data
-              tr
-                td.table-firstcolumn-ID=index+1
+              tr(id=item._id)
+                td=index+1
                 td
                   a(href="/admin/crews/"+item._id+"/public", target="_blank", title=global.__("edit"))
                     span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
@@ -103,36 +102,51 @@ block content
                     !=" "
                     .badge.badge-danger!="EXTERNAL"
                 td
-                  if item.partnerships && item.partnerships.length
-                    - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
-
-                    each partnership in item.partnerships
-                      .text-nowrap
-                        a(href="/"+partnership.slug, target="_blank")!=partnership.title
-                        !=" "
-                          
-                td
-                  if item.web
-                    each web in item.web
-                      div
-                        a(href=web.url, target="_blank")!=web.url
-                  if item.social
-                    each web in item.social
-                      div
-                        a(href=web.url, target="_blank")!=web.url
-                td
                   h5
                     !="Contacts"
-                  ul
+                    !=" "
+                    // Button trigger modal
+                    button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
+                  .contacts
                     if item.organizationData && item.organizationData.contacts
                       each contact, index in item.organizationData.contacts
-                        li
-                          a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+                        div
+                          a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify(contact), data-index=index)
+                            span(data-toggle="tooltip", data-placement="top", title="Edit")
+                              i.fas.fa-edit
+                          !=" "
+                          a.text-danger.deleteContact(href="#" data-id=item._id, data-stagename=item.stagename, data-index=index)
+                            span(data-toggle="tooltip", data-placement="top", title="Delete")
+                              i.fas.fa-trash-alt
+                          !=" | "
+                          if contact.lang
+                            !=contact.lang
+                          else
+                            .badge.badge-danger!="MISSING"
+                          !=" | "
+                          a(href="mailto:"+contact.email, target="_blank")
+                            !=contact.name+" "+contact.surname
+                            =" <"+contact.email+">"
+                td
                   if item.members && item.members.length
                     h5="Members"
-                    each contact in item.members
-                      div
-                        a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
+                    ol
+                      each contact in item.members
+                        li
+                            each email in contact.emails
+                              div
+                                a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
+                                  span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
+                                    i.fas.fa-arrow-left
+                                !=" | "
+                                a(href="/"+contact.slug, target="_blank", title=global.__("View"))
+                                  span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                                    i.fa.fa-eye
+                                !=" | "
+                                a(href="mailto:"+contact.email, target="_blank")
+                                  !=contact.name+" "+contact.surname
+                                  =" <"+email.email+">"
+                                !=" "
 
   // Modal Add Partner
   #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
@@ -197,60 +211,62 @@ block content
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
           .modal-body
-            .row
-              .col-2-md
-                .form-group
-                  input.modal-id(type='hidden', name="crew")
-                  input.modal-index(type='hidden', name="index")
-                  label(for='formContactAddTitle')=global.__("Title")
-                  input#formContactAddName.form-control(type='text', name="title", placeholder='')
-              .col-5-md
-                .form-group
-                  label(for='formContactAddName')=global.__("Name")
-                  input#formContactAddName.form-control(type='text', name="name", placeholder='')
-              .col-5-md
-                .form-group
-                  label(for='formContactAddSurname')=global.__("Surname")
-                  input#formContactAddSurname.form-control(type='text', name="surname", placeholder='')
-            .row
-              .col-6-md
-                .form-group
-                  label(for='formContactAddEmail')=global.__("Email")
-                  input#formContactAddEmail.form-control(type='email', name="email", placeholder='name@example.com')
-              .col-6-md
-                .form-group
-                  label(for='formContactAddLanguage')=global.__("Language")
-                  select#formContactAddLanguage.form-control(name="lang")
-                    option(value="it")="it"
-                    option(value="en")="en"
-            .row
-              .col-6-md
-                .form-group
-                  label(for='formContactAddRole')=global.__("Role")
-                  input#formContactAddRole.form-control(type='text', name="role", placeholder='')
-              .col-6-md
-                .form-group
-                  label(for='formContactAddMobile')=global.__("Mobile")
-                  input#formContactAddMobile.form-control(type='text', name="mobile_phone", placeholder='')
-            .row
-              .col-6-md
-                .form-group
-                  label=global.__("Type")
-                .form-check
-                  input#formContactAddType1.form-check-input(type='checkbox', value='Contact', name="type", placeholder='')
-                  label.form-check-label(for='formContactAddType1')=global.__("Contact")
-                .form-check
-                  input#formContactAddType2.form-check-input(type='checkbox', value='Legal representative', name="type", placeholder='')
-                  label.form-check-label(for='formContactAddType2')=global.__("Legal representative")
-            .row
-              .col-6-md
-                .form-group
-                  label(for='formContactAddFacebook')="Facebook"
-                  input#formContactAddFacebook.form-control(type='text', name="facebook", placeholder='')
-              .col-6-md
-                .form-group
-                  label(for='formContactAddSkype')="Skype"
-                  input#formContactAddSkype.form-control(type='text', name="skype", placeholder='Skype')
+            .container-fluid
+              .row
+                .col-md-2
+                  .form-group
+                    input.modal-id(type='hidden', name="crew")
+                    input.modal-index(type='hidden', name="index")
+                    input.modal-stagename(type='hidden', name="stagename")
+                    label(for='formContactAddTitle')=global.__("Title")
+                    input#formContactAddName.form-control(type='text', name="title", placeholder='')
+                .col-md-5
+                  .form-group
+                    label(for='formContactAddName')=global.__("Name")
+                    input#formContactAddName.form-control(type='text', name="name", placeholder='')
+                .col-md-5
+                  .form-group
+                    label(for='formContactAddSurname')=global.__("Surname")
+                    input#formContactAddSurname.form-control(type='text', name="surname", placeholder='')
+              .row
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddEmail')=global.__("Email")
+                    input#formContactAddEmail.form-control(type='text', name="email", placeholder='name@example.com')
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddLanguage')=global.__("Language")
+                    select#formContactAddLanguage.form-control(name="lang")
+                      option(value="it")="it"
+                      option(value="en")="en"
+              .row
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddRole')=global.__("Role")
+                    input#formContactAddRole.form-control(type='text', name="role", placeholder='')
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddMobile')=global.__("Mobile")
+                    input#formContactAddMobile.form-control(type='text', name="mobile_phone", placeholder='')
+              .row
+                .col-md-6
+                  .form-group
+                    label=global.__("Type")
+                    .form-check
+                      input#formContactAddType1.form-check-input(type='checkbox', value='Contact', name="type", placeholder='')
+                      label.form-check-label(for='formContactAddType1')=global.__("Contact")
+                    .form-check
+                      input#formContactAddType2.form-check-input(type='checkbox', value='Legal representative', name="type", placeholder='')
+                      label.form-check-label(for='formContactAddType2')=global.__("Legal representative")
+              .row
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddFacebook')="Facebook"
+                    input#formContactAddFacebook.form-control(type='text', name="facebook", placeholder='')
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddSkype')="Skype"
+                    input#formContactAddSkype.form-control(type='text', name="skype", placeholder='Skype')
 
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")

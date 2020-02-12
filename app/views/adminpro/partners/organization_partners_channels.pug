@@ -10,7 +10,7 @@ block content
       table.table.table-fixed
         thead
           tr
-            th.table-firstcolumn-ID="ID"
+            th="ID"
             th=global.__("Brand")
             th=global.__("Name")
             th=global.__("Surname")
@@ -27,7 +27,7 @@ block content
               if item.organizationData && item.organizationData.contacts
                 each contact in item.organizationData.contacts
                   tr
-                    td.table-firstcolumn-ID=index+1
+                    td=index+1
                     td
                       b!=item.stagename
                     td!=contact.name
@@ -76,9 +76,8 @@ block content
           tr
             th.table-firstcolumn-ID="ID"
             th=global.__("Brand")
-            th=global.__("Partnerships")
-            th=global.__("Channels")
-            th=global.__("Contacts")
+            th=global.__("Web Channels")
+            th=global.__("Social Channels")
         tbody
           if data.length
             each item, index in data
@@ -103,36 +102,15 @@ block content
                     !=" "
                     .badge.badge-danger!="EXTERNAL"
                 td
-                  if item.partnerships && item.partnerships.length
-                    - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
-
-                    each partnership in item.partnerships
-                      .text-nowrap
-                        a(href="/"+partnership.slug, target="_blank")!=partnership.title
-                        !=" "
-                          
-                td
                   if item.web
                     each web in item.web
                       div
                         a(href=web.url, target="_blank")!=web.url
+                td
                   if item.social
                     each web in item.social
                       div
                         a(href=web.url, target="_blank")!=web.url
-                td
-                  h5
-                    !="Contacts"
-                  ul
-                    if item.organizationData && item.organizationData.contacts
-                      each contact, index in item.organizationData.contacts
-                        li
-                          a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
-                  if item.members && item.members.length
-                    h5="Members"
-                    each contact in item.members
-                      div
-                        a(href="mailto:"+contact.email, target="_blank")!=contact.name+" "+contact.surname
 
   // Modal Add Partner
   #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')

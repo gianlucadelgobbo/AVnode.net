@@ -16,3 +16,4 @@ require('./AddressDB');
 require('./VenueDB');
 require('./Partner');
 require('./Order');
+require('./Emailqueue');

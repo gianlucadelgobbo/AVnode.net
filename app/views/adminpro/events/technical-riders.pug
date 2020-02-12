@@ -8,7 +8,7 @@ block content
       table.table.table-fixed
         thead
           tr
-            th="ID"
+            th.table-firstcolumn-ID="ID"
             th="Item"
             th="Day"
             th="Room"
@@ -24,7 +24,7 @@ block content
                     - var tech_reqs = program.performance.tech_req.split("- ")
                     each tech_req,iii in tech_reqs
                       tr
-                        td!=conta
+                        td.table-firstcolumn-ID!=conta
                         td!=tech_req
                         td!=day.date
                         td!=room.schedule.venue.room
