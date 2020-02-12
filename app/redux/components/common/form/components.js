@@ -4,7 +4,8 @@ import { Button, ButtonGroup, Image } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select, { Async } from "react-select";
-import "react-select/dist/react-select.css";
+import AsyncSelect from "react-select/async";
+//import "react-select/dist/react-select.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
@@ -23,7 +24,11 @@ import "react-phone-number-input/style.css";
 import Phone from "react-phone-number-input";
 import Reorder from "../../reorder";
 import Autosuggest from "react-autosuggest";
-import { fetchPerformancesForSelect, fetchUserForSelect } from "../../../api";
+import {
+  fetchPerformancesForSelect,
+  fetchUserForSelect,
+  loadSuggestion
+} from "../../../api";
 import { createMultiLanguageInitialObject } from "../../common/form";
 import { DATE_FORMAT } from "../../../conf";
 import { WithContext as ReactTags } from "react-tag-input";
@@ -33,6 +38,62 @@ import { FILE_UPLOAD, SUBSCRIPTIONS } from "../../common/form/labels";
 import { Player } from "video-react";
 import "video-react/dist/video-react.css";
 import LightBox from "../../lightboxGallery";
+
+export const autoCompleteSelectAsync = ({
+  input,
+  onSelectResetsInput,
+  onBlurResetsInput,
+  meta,
+  multi,
+  value,
+  label,
+  getOptionValue,
+  getOptionLabel,
+  placeholder,
+  loadOptions,
+  isChild,
+  noOptionsMessage
+}) => {
+  const field = (
+    <div className="form-group">
+      <AsyncSelect
+        {...input}
+        cacheOptions
+        multi={multi}
+        getOptionValue={getOptionValue}
+        getOptionLabel={getOptionLabel}
+        loadOptions={loadOptions}
+        onSelectResetsInput={onSelectResetsInput}
+        onBlurResetsInput={onBlurResetsInput}
+        placeholder={placeholder}
+        value={value}
+        onChange={value => input.onChange(value)}
+        onBlur={() => input.onBlur(input.value)}
+        //noOptionsMessage={() => noOptionsMessage}
+      />
+      {meta.error && meta.touched && (
+        <span className="error-message">
+          {isChild ? (
+            <FormattedMessage id={meta.error._error} />
+          ) : (
+            <FormattedMessage id={meta.error} />
+          )}
+        </span>
+      )}
+    </div>
+  );
+
+  const _label = <div className="labelField">{label}</div>;
+
+  return !!isChild ? (
+    field
+  ) : (
+    <dl className="row">
+      <dt className="col-sm-2">{_label}</dt>
+      <dd className="col-sm-10"> {field} </dd>
+    </dl>
+  );
+};
 
 export const autocompleteComponent = ({
   inputProps,

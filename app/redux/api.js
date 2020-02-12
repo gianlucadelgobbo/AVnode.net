@@ -777,7 +777,6 @@ export const removePerformanceUsers = model =>
       return result.data;
     });
 
-
 export const removeNewsUsers = model =>
   axios
     .get(`news/${model._id}/users/remove/${model.idusers}`, model)
@@ -1087,7 +1086,8 @@ export const saveSignupPublic = model =>
 export const verifyEmail = ({ email }) =>
   axios.get(encodeURI(`profile/emails/verify/${email}`));
 
-export const loadSuggestion = ({ value }) => axios.get(`getmembers/${value}`);
+export const loadSuggestion = searchTerm =>
+  axios.get(`getmembers/${searchTerm}`);
 
 export const loadSuggestionAuthors = ({ value }) =>
   axios.get(`getauthors/${value}`);
