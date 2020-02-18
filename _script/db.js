@@ -817,3 +817,9 @@ var program = {
 }
 db.program.save(program);
 
+
+var user = db.users.findOne({slug:"gianlucadelgobbo"})
+user.is_admin = true;
+user.is_pro = true;
+db.users.save(user);
+
