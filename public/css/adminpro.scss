@@ -8,6 +8,9 @@
     page-break-after: always
   }
 }
+.bootstrap-table .fixed-table-container .table td {
+  vertical-align: top;
+}
 .page-break{
   margin-bottom: 3rem !important;
 }
@@ -39,6 +42,23 @@
 .list-group-item.disabled .edit-schedule, .list-group-item.disabled .lock-schedule, .list-group-item:disabled .lock-schedule, .list-group-item:disabled .edit-schedule, .list-group-item.disabled .duplicate, .list-group-item:disabled .duplicate {
   pointer-events: auto;
 }
+.list-group-item{
+  line-height: 18px;
+  padding: 10px;
+}
+.duration {
+  font-weight: bold;
+}
+.timing {
+  position: absolute;
+  top: -4px;
+  left: -1px;
+  font-weight: bold;
+  background-color: #999;
+  height: 16px;
+  padding: 0 4px;
+}
+
 .index {
   position: absolute;
   top: 0;

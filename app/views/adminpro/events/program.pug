@@ -15,7 +15,7 @@ block content
         - var cols = 0
         each day in data.programmebydayvenue
           if Object.keys(day.rooms).length > cols
-            - cols = Object.keys(day.rooms).length < 5 ? Object.keys(day.rooms).length : 5
+            - cols = Object.keys(day.rooms).length < 3 ? Object.keys(day.rooms).length : 3
         td(style="width:calc(100vw/"+(cols+2)+")")
           h2=global.__("TO BE SCHEDULED")
           div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
@@ -30,16 +30,16 @@ block content
                       li.list-group-item(style="overflow: hidden;", class=(program.performance.duration != parseFloat(program.performance.duration) ? "disabled" : ""))
                         - conta++
                         .index.badge.disabled=(conta)
-                        .clearfix
-                          .pull-left
-                            .timing.small
-                          .float-right
-                            .small(class=(program.performance.duration == parseFloat(program.performance.duration) ? "" : "badge badge-danger"))=program.performance.duration+" min."
                         .title
                           b!=program.performance.title
-                        .type.small=program.performance.type.name
-                        .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
-                        .pull-left
+                        .clearfix
+                          .float-left
+                            .type.small=program.performance.type.name
+                          .float-right
+                            .duration.small(class=(program.performance.duration == parseFloat(program.performance.duration) ? "" : "badge badge-danger"))=program.performance.duration+" min."
+
+                        .authors.mb-2=program.performance.users.map(user => {return user.stagename}).join(", ")
+                        .float-left
                           a.lock-schedule(href="#")
                             i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
                           a.pl-3.duplicate(href="#")
@@ -67,9 +67,9 @@ block content
                 tr
                   each room,i in day.rooms
                     if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
-                      td(style="calc(100vw/"+(cols)+")")
+                      td(style="width:"+(100/cols)+"%;overflow: hidden;min-width: 300px;")
                         b=room.schedule.venue.room
-                        div(style="width:calc(100vw/"+(cols+3)+");overflow: hidden;")
+                        div
                           form(id="form"+conta)
                             input(type="hidden", name="room", value=JSON.stringify(room.schedule))
                             ul.list-group.connectedSortable(id="sortable"+conta)
@@ -77,33 +77,35 @@ block content
                               if room.program
                                 each program,ii in room.program
                                   li.list-group-item(class=program.schedule.disableautoschedule ? "disabled" : undefined)
+                                    .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
                                     .index.badge.disabled=(ii+1)
-                                    .clearfix
-                                      .pull-left
-                                        .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
-                                      .float-right
-                                        .small=program.performance.duration+" min."
-                                    .title
+                                    .title.mt-2
                                       b!=program.performance.title
-                                    .type.small=program.performance.type.name
-                                    .authors=program.performance.users.map(user => {return user.stagename}).join(", ")
-                                    .float-left
-                                      a.lock-schedule(href="#")
-                                        i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
-                                      a.pl-3.duplicate(href="#")
-                                        i.fa.fa-clone
-                                      a.pl-3.edit-schedule(href="#")
-                                        i.fa.fa-edit
-                                    .float-right
-                                      .availability.text-right
-                                        - var daydayA = []
-                                        each subscription in program.subscriptions
-                                          each day, i in data.days
-                                            - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
-                                        each day, i in daydayA
-                                          span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
-                                            !=new Date(data.days[i]).getDate()
-                                      input(type="hidden", name="program[]", value=JSON.stringify(program))
+                                    .clearfix
+                                      .float-left
+                                        .type.small=program.performance.type.name
+                                      .float-right
+                                        .duration.small=program.performance.duration+" min."
+
+                                    .authors.mb-1=program.performance.users.map(user => {return user.stagename}).join(", ")
+                                    .clearfix
+                                      .float-left
+                                        a.lock-schedule(href="#")
+                                          i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
+                                        a.pl-3.duplicate(href="#")
+                                          i.fa.fa-clone
+                                        a.pl-3.edit-schedule(href="#")
+                                          i.fa.fa-edit
+                                      .float-right
+                                        .availability.text-right
+                                          - var daydayA = []
+                                          each subscription in program.subscriptions
+                                            each day, i in data.days
+                                              - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
+                                          each day, i in daydayA
+                                            span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                                              !=new Date(data.days[i]).getDate()
+                                        input(type="hidden", name="program[]", value=JSON.stringify(program))
   #modalEditSchedule.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalEditScheduleLabel', aria-hidden='true')
     .modal-dialog.modal-lg(role='document')
       .modal-content

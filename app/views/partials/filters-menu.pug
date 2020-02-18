@@ -22,7 +22,7 @@
                     a(class="dropdown-item active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
                   else
                     a(class="dropdown-item", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
-    .pull-left
+    .float-left
       ul.nav.nav-pills
         each order in orderings
           li(class="nav-item")
