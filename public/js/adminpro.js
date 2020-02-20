@@ -1,37 +1,4 @@
 $(function() {
-  function sortUnorderedList(ul, sortDescending) {
-    if(typeof ul == "string")
-      ul = document.getElementById(ul);
-  
-    // Idiot-proof, remove if you want
-    if(!ul) {
-      alert("The UL object is null!");
-      return;
-    }
-  
-    // Get the list items and setup an array for sorting
-    var lis = ul.getElementsByTagName("li");
-    var vals = [];
-  
-    // Populate the array
-    for(var i = 0, l = lis.length; i < l; i++)
-      vals.push(lis[i].innerHTML);
-  
-    // Sort it
-    vals.sort();
-  
-    // Sometimes you gotta DESC
-    if(sortDescending)
-      vals.reverse();
-  
-    // Change the list on the page
-    for(var i = 0, l = lis.length; i < l; i++)
-      lis[i].innerHTML = vals[i];
-  }
-  $('.sorter').click(function() {
-    const id = $(this).data("target");
-    sortUnorderedList(id);
-});
   // Hide submenus
   $('#body-row .collapse').collapse('hide'); 
 
@@ -43,7 +10,7 @@ $(function() {
       SidebarCollapse();
   });
 
-  function SidebarCollapse () {
+  SidebarCollapse = () => {
     $('.menu-collapsed').toggleClass('d-none');
     $('.sidebar-submenu').toggleClass('d-none');
     $('.submenu-icon').toggleClass('d-none');
@@ -83,10 +50,68 @@ $(function() {
     } else {
         $("#to_top").removeClass("to_top_visibile");
     }
-  });  
+  });
+
+  // PARTNERS
+  $('.sorter').click(function() {
+    const id = $(this).data("target");
+    sortUnorderedList(id);
+  });
+  sortUnorderedList = (ul, sortDescending) => {
+    if(typeof ul == "string")
+      ul = document.getElementById(ul);
+  
+    // Idiot-proof, remove if you want
+    if(!ul) {
+      alert("The UL object is null!");
+      return;
+    }
+  
+    // Get the list items and setup an array for sorting
+    var lis = ul.getElementsByTagName("li");
+    var vals = [];
+  
+    // Populate the array
+    for(var i = 0, l = lis.length; i < l; i++)
+      vals.push(lis[i].innerHTML);
+  
+    // Sort it
+    vals.sort();
+  
+    // Sometimes you gotta DESC
+    if(sortDescending)
+      vals.reverse();
+  
+    // Change the list on the page
+    for(var i = 0, l = lis.length; i < l; i++)
+      lis[i].innerHTML = vals[i];
+  }
+  
+  // EVENTS - ACTS
+  $('#table-acts').on('post-body.bs.table', function (e) {
+    $(".edit-availability").on('click', function(ev) {
+      edit_availability(ev, this);
+    });
+    $(".change-status").on('click', function(ev) {
+      change_status(ev, this);
+    });
+    $(".cancel-sub").on('click', function(ev) {
+      cancel_sub(ev, this)
+    });
+    $(".edit-price").on('click', function(ev) {
+      edit_price(ev, this);
+    });
+    $(".edit-cost").on('click', function(ev) {
+      edit_cost(ev, this);
+    });
+  });
+
   $(".edit-availability").on('click', function(ev) {
+    edit_availability(ev, this);
+  });
+  edit_availability = (ev, obj) => {
     ev.preventDefault();
-    const id = $(this).data("program");
+    const id = $(obj).data("program");
     $('#modalEdit .content').html("Loading data...");
     $('#modalEdit .alert-danger').addClass('d-none');
     $('#modalEdit .alert-success').addClass('d-none');
@@ -99,32 +124,9 @@ $(function() {
       $('#modalEdit .content').html(data);
       bindEditSubscription();
     });
-  });
-  $("#editSubscription").submit(function(ev) {
-    ev.preventDefault();
-    var datastring = $("#editSubscription").serialize();
-    $.ajax({
-      type: "POST",
-      url: "/admin/api/editsubscriptionsave",
-      data: datastring
-    }).
-    done(function(data) {
-      if (data.errors) {
-        $('#modalEdit .alert-danger').html(data.errors.subscriptions.message);
-        $('#modalEdit .alert-danger').removeClass('d-none');
-      } else {
-        $('#modalEdit .alert-success').html("Data saved with success.");
-        $('#modalEdit .alert-success').removeClass('d-none');
-      }
-      //console.log(data);
-    })
-    .fail(function (jqXHR, textStatus) {
-      $('#modalEdit .alert-danger').html("Internal Server Error");
-      $('#modalEdit .alert-danger').removeClass('d-none');
-    });
-  });
-  function bindEditSubscription(){
-      $(".pack_main input").change(function(ev) {
+  }
+  bindEditSubscription = () => {
+    $(".pack_main input").change(function(ev) {
       if (this.checked) {
         $(this).parent().parent().find(".pack_sub").slideDown('slide');
       } else {
@@ -163,6 +165,107 @@ $(function() {
       }
     });
   }
+  $("#editSubscription").submit(function(ev) {
+    ev.preventDefault();
+    var datastring = $("#editSubscription").serialize();
+    $.ajax({
+      type: "POST",
+      url: "/admin/api/editsubscriptionsave",
+      data: datastring
+    }).
+    done(function(data) {
+      if (data.errors) {
+        $('#modalEdit .alert-danger').html(data.errors.subscriptions.message);
+        $('#modalEdit .alert-danger').removeClass('d-none');
+      } else {
+        $('#modalEdit .alert-success').html("Data saved with success.");
+        $('#modalEdit .alert-success').removeClass('d-none');
+      }
+      //console.log(data);
+    })
+    .fail(function (jqXHR, textStatus) {
+      $('#modalEdit .alert-danger').html("Internal Server Error");
+      $('#modalEdit .alert-danger').removeClass('d-none');
+    });
+  });
+
+  $(".change-status").on('click', function(ev) {
+    change_status(ev, this);
+  });
+  change_status = (ev, obj) => {
+    var result = confirm("Want to change status?");
+    if (result) {
+      const id = $(obj).data("id");
+      const status = $(obj).data("status");
+      $.ajax({
+        url: "/admin/api/subscriptionupdate",
+        method: "post",
+        data: {id:id, status:status}
+      }).done(function(res) {
+        if (res.error) {
+          alert("Some error occurred: "+res.msg);
+        }  
+        console.log(res);
+      });
+    } 
+  }
+
+  $(".cancel-sub").on('click', function(ev) {
+    cancel_sub(ev, this)
+  });
+  cancel_sub = (ev, obj) => {
+    var result = confirm("Want to delete?");
+    if (result) {
+      const id = $(this).data("id");
+      $.ajax({
+        url: "/admin/api/cancelsubscription",
+        method: "post",
+        data: {id:id}
+      }).done(function(data) {
+        $("#sub"+id).remove();
+      });
+    } 
+  }
+
+  $(".edit-price").on('click', function(ev) {
+    edit_price(ev, this);
+  });
+  edit_price = (ev, obj) => {
+    ev.preventDefault();
+    const id = $(obj).data("program");
+    $('#modalEdit .content').html("Loading data...");
+    $('#modalEdit .alert-danger').addClass('d-none');
+    $('#modalEdit .alert-success').addClass('d-none');
+    $('#modalEdit').modal();
+    $.ajax({
+      url: "/admin/api/editsubscriptionprice",
+      method: "post",
+      data: {id:id}
+    }).done(function(data) {
+      $('#modalEdit .content').html(data);
+    });
+  }
+
+  $(".edit-cost").on('click', function(ev) {
+    edit_cost(ev, this);
+  });
+  edit_cost = (ev, obj) => {
+    ev.preventDefault();
+    const id = $(obj).data("program");
+    $('#modalEdit .content').html("Loading data...");
+    $('#modalEdit .alert-danger').addClass('d-none');
+    $('#modalEdit .alert-success').addClass('d-none');
+    $('#modalEdit').modal();
+    $.ajax({
+      url: "/admin/api/editsubscriptioncost",
+      method: "post",
+      data: {id:id}
+    }).done(function(data) {
+      $('#modalEdit .content').html(data);
+    });
+  }
+
+  // EVENTS PEOPLES
   $(".option_selected_hotel").change(function(ev) {
     const data = {
       id: $(this).data("id"),
@@ -205,66 +308,6 @@ $(function() {
     }).done(function(res) {
       //console.log(res);
     });
-  });
-  $(".edit-price").on('click', function(ev) {
-    ev.preventDefault();
-    const id = $(this).data("program");
-    $('#modalEdit .content').html("Loading data...");
-    $('#modalEdit .alert-danger').addClass('d-none');
-    $('#modalEdit .alert-success').addClass('d-none');
-    $('#modalEdit').modal();
-    $.ajax({
-      url: "/admin/api/editsubscriptionprice",
-      method: "post",
-      data: {id:id}
-    }).done(function(data) {
-      $('#modalEdit .content').html(data);
-    });
-  });
-  $(".edit-cost").on('click', function(ev) {
-    ev.preventDefault();
-    const id = $(this).data("program");
-    $('#modalEdit .content').html("Loading data...");
-    $('#modalEdit .alert-danger').addClass('d-none');
-    $('#modalEdit .alert-success').addClass('d-none');
-    $('#modalEdit').modal();
-    $.ajax({
-      url: "/admin/api/editsubscriptioncost",
-      method: "post",
-      data: {id:id}
-    }).done(function(data) {
-      $('#modalEdit .content').html(data);
-    });
-  });
-  $(".cancel-sub").on('click', function(ev) {
-    var result = confirm("Want to delete?");
-    if (result) {
-      const id = $(this).data("id");
-      $.ajax({
-        url: "/admin/api/cancelsubscription",
-        method: "post",
-        data: {id:id}
-      }).done(function(data) {
-        $("#sub"+id).remove();
-      });
-    } 
-  });
-  $(".change-status").on('click', function(ev) {
-    var result = confirm("Want to change status?");
-    if (result) {
-      const id = $(this).data("id");
-      const status = $(this).data("status");
-      $.ajax({
-        url: "/admin/api/subscriptionupdate",
-        method: "post",
-        data: {id:id, status:status}
-      }).done(function(res) {
-        if (res.error) {
-          alert("Some error occurred: "+res.msg);
-        }  
-        console.log(res);
-      });
-    } 
   });
   $(".confirm-sub").on('click', function(ev) {
     var result = confirm("Want to confirm your subscription?");
