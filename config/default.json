@@ -3772,7 +3772,8 @@
             }
           },
           "select": {
-            "media": 1
+            "media": 1,
+            "users": 1
           },
           "selectaddon": {
             "slug": 1,
