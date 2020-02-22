@@ -645,15 +645,19 @@ export const fetchVideosVideo = ({ id }) => {
 };
 
 export const saveVideosMedia = model => {
+  console.log("ProgressEvent.loaded / ProgressEvent.total*100");
   // convert image to Form Data
   let formBox = new FormData();
   formBox.append("media", model.video[0]);
 
   // define request headers
   const config = { headers: { "Content-Type": "multipart/form-data" } };
-
   return axios
-    .put(`videos/${model._id}/video`, formBox, config)
+    .put(`videos/${model._id}/video`, formBox, config, {
+      onUploadProgress: ProgressEvent => {
+        console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+      }
+    })
     .then(result => {
       return result.data;
     });
