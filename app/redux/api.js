@@ -651,13 +651,14 @@ export const saveVideosMedia = model => {
   formBox.append("media", model.video[0]);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
   return axios
-    .put(`videos/${model._id}/video`, formBox, config, {
-      onUploadProgress: ProgressEvent => {
-        console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-      }
-    })
+    .put(`videos/${model._id}/video`, formBox, config)
     .then(result => {
       return result.data;
     });
