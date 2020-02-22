@@ -64,9 +64,7 @@ export const saveProfileImages = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
 
   return axios
@@ -84,9 +82,7 @@ export const saveFootageVideo = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
 
   return axios
@@ -386,9 +382,7 @@ export const savePerformanceImages = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
 
   return axios
@@ -406,9 +400,7 @@ export const saveEventImages = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
 
   return axios.put(`events/${model.id}/image`, formBox, config).then(result => {
@@ -568,9 +560,7 @@ export const saveNewsImages = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
 
   return axios.put(`news/${model.id}/image`, formBox, config).then(result => {
@@ -678,9 +668,7 @@ export const saveVideosMedia = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
   return axios
     .put(`videos/${model._id}/video`, formBox, config)
@@ -754,9 +742,7 @@ export const saveGalleriesMedia = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
 
   return axios
@@ -988,9 +974,7 @@ export const saveCrewImages = model => {
   // define request headers
   const config = { 
     headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+    onUploadProgress: model.onUploadProgress
   };
 
   return axios.put(`crews/${model.id}/image`, formBox, config).then(result => {
