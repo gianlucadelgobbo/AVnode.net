@@ -62,7 +62,12 @@ export const saveProfileImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
 
   return axios
     .put(`profile/${model.id}/image`, formBox, config)
@@ -77,7 +82,12 @@ export const saveFootageVideo = model => {
   formBox.append("media", model.video[0]);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
 
   return axios
     .put(`footage/${model.id}/media`, formBox, config)
@@ -374,7 +384,12 @@ export const savePerformanceImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
 
   return axios
     .put(`performances/${model.id}/image`, formBox, config)
@@ -389,7 +404,12 @@ export const saveEventImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
 
   return axios.put(`events/${model.id}/image`, formBox, config).then(result => {
     return result.data;
@@ -546,7 +566,12 @@ export const saveNewsImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
 
   return axios.put(`news/${model.id}/image`, formBox, config).then(result => {
     return result.data;
@@ -727,7 +752,12 @@ export const saveGalleriesMedia = model => {
   //formBox.append("image", model.galleries[0]);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
 
   return axios
     .put(`galleries/${model._id}/medias`, formBox, config)
@@ -956,7 +986,12 @@ export const saveCrewImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  const config = { 
+    headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress: ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
+  };
 
   return axios.put(`crews/${model.id}/image`, formBox, config).then(result => {
     return result.data;

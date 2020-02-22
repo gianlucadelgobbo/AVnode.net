@@ -6,9 +6,11 @@ const fs = require("fs");
 const path = require("path");
 const sizeOf = require("image-size");
 const imageUtil = require("../../../utilities/image");
+const progress = require('progress-stream');
 
+/*
 const mongoose = require("mongoose");
-const Models = {
+ const Models = {
   User: mongoose.model("User"),
   Performance: mongoose.model("Performance"),
   Event: mongoose.model("Event"),
@@ -18,6 +20,7 @@ const Models = {
   Playlist: mongoose.model("Playlist"),
   Video: mongoose.model("Video")
 };
+*/
 const logger = require("../../../utilities/logger");
 
 const upload = {};
@@ -48,6 +51,7 @@ upload.uploader = (req, res, done) => {
       cb(null, `${uuid.v4()}.${mime.getExtension(file.mimetype)}`);
     }
   });
+  var p = progress();
   const multerupload = multer({
     dest: options.storage,
     storage: storage,
@@ -75,47 +79,51 @@ upload.uploader = (req, res, done) => {
       }
     }
   });
+  req.pipe(p);
+  p.headers = req.headers;
+  p.on('progress', (progress) => {
+    console.log('progress:', progress.percentage);
+  });
 
   const up = multerupload.fields([options.fields]);
 
-  up(req, res, (err, r) => {
+  up(p, res, (err, r) => {
     error = false;
     logger.debug(err);
-    logger.debug("req.files");
-    logger.debug(req.files);
+    logger.debug("p.files");
+    logger.debug(p.files);
     logger.debug(options.fields.name);
 
     // if (err instanceof multer.MulterError) {
     if (err) {
-      logger.debug("upload err");
-      logger.debug(err);
+      console.log("upload err");
+      console.log(err);
       done({ errors: { form_error: [err] } }, null);
     } else if (!options) {
-      // MANCA ELSE
       done({ errors: { form_error: [{
         "fieldname":"image",
         "err": "UPLOAD_CONFIG_ERROR"
       }] } }, null);
-    } else if (req.files && req.files[options.fields.name] && req.files[options.fields.name].length) {
+    } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
       // MANCA ELSE
       let conta = 0;
       /* 
       { errors: {form_error: } }
        */
       if (options.filetypes.indexOf("image/jpeg") !== -1) {
-        for (let a = 0; a < req.files[options.fields.name].length; a++) {
-          const dimensions = sizeOf(req.files[options.fields.name][a].path);
+        for (let a = 0; a < p.files[options.fields.name].length; a++) {
+          const dimensions = sizeOf(p.files[options.fields.name][a].path);
 
-          req.files[options.fields.name][a].width = dimensions.width;
-          req.files[options.fields.name][a].height = dimensions.height;
-          logger.debug(req.files[options.fields.name][a]);
+          p.files[options.fields.name][a].width = dimensions.width;
+          p.files[options.fields.name][a].height = dimensions.height;
+          logger.debug(p.files[options.fields.name][a]);
           logger.debug("dimensions.width " + dimensions.width);
           logger.debug("dimensions.height " + dimensions.height);
           logger.debug("options.minwidth " + options.minwidth);
           logger.debug("options.minheight " + options.minheight);
           if (dimensions.width < options.minwidth || dimensions.height < options.minheight) {
             error = true;
-            req.files[options.fields.name][a].err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
+            p.files[options.fields.name][a].err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
             logger.debug( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
           } else {
             logger.debug("Image minimum size is ok");
@@ -124,7 +132,7 @@ upload.uploader = (req, res, done) => {
       }
       if (error) {
         logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
-        done({ errors: req.files }, null);
+        done({ errors: p.files }, null);
         /* done({
           "message": {
             "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
@@ -146,7 +154,7 @@ upload.uploader = (req, res, done) => {
       } else {
         if (options.filetypes.indexOf("image/jpeg") !== -1) {
           imageUtil.resizer(
-            req.files[options.fields.name],
+            p.files[options.fields.name],
             options,
             (resizeerr, info) => {
               conta++;
@@ -154,62 +162,62 @@ upload.uploader = (req, res, done) => {
                 if (resizeerr) {
                   error = true;
                   logger.debug(`Image resize ERROR: ${resizeerr}`);
-                  req.files[options.fields.name][a].err = `Image resize ERROR: ${resizeerr}`;
+                  p.files[options.fields.name][a].err = `Image resize ERROR: ${resizeerr}`;
                 }
                 if (!info) {
                   error = true;
                   logger.debug("Image resize ERROR: info undefined");
-                  req.files[options.fields.name][a].err = "Image resize ERROR: info undefined";
+                  p.files[options.fields.name][a].err = "Image resize ERROR: info undefined";
                 }
               }
               if (conta === conta) {
                 if (error) {
-                  done({ errors: req.files }, null);
+                  done({ errors: p.files }, null);
                 } else {
                   let put = {};
-                  if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+                  if (['galleries/medias'].indexOf(p.params.sez+'/'+p.params.form)!== -1) {
                     put.medias = [];
-                    for (let a = 0; a < req.files[options.fields.name].length; a++) {
+                    for (let a = 0; a < p.files[options.fields.name].length; a++) {
                       const ins = {
-                        file: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                        originalname: req.files[options.fields.name][a].originalname,
-                        encoding: req.files[options.fields.name][a].encoding,
-                        mimetype: req.files[options.fields.name][a].mimetype,
-                        folder: req.files[options.fields.name][a].destination,
-                        slug: req.files[options.fields.name][a].filename.replace(".jpeg", ""),
-                        filename: req.files[options.fields.name][a].filename,
-                        size: req.files[options.fields.name][a].size,
-                        width: req.files[options.fields.name][a].width,
-                        height: req.files[options.fields.name][a].height
+                        file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                        originalname: p.files[options.fields.name][a].originalname,
+                        encoding: p.files[options.fields.name][a].encoding,
+                        mimetype: p.files[options.fields.name][a].mimetype,
+                        folder: p.files[options.fields.name][a].destination,
+                        slug: p.files[options.fields.name][a].filename.replace(".jpeg", ""),
+                        filename: p.files[options.fields.name][a].filename,
+                        size: p.files[options.fields.name][a].size,
+                        width: p.files[options.fields.name][a].width,
+                        height: p.files[options.fields.name][a].height
                       };
                       put.medias.push(ins);
                     }
                   } else {
-                    if (req.files[options.fields.name].length == 1) {
+                    if (p.files[options.fields.name].length == 1) {
                       put[options.fields.name] = {
-                        file: req.files[options.fields.name][0].path.replace(global.appRoot,""),
-                        originalname: req.files[options.fields.name][0].originalname,
-                        encoding: req.files[options.fields.name][0].encoding,
-                        mimetype: req.files[options.fields.name][0].mimetype,
-                        folder: req.files[options.fields.name][0].destination,
-                        filename: req.files[options.fields.name][0].filename,
-                        size: req.files[options.fields.name][0].size,
-                        width: req.files[options.fields.name][0].width,
-                        height: req.files[options.fields.name][0].height
+                        file: p.files[options.fields.name][0].path.replace(global.appRoot,""),
+                        originalname: p.files[options.fields.name][0].originalname,
+                        encoding: p.files[options.fields.name][0].encoding,
+                        mimetype: p.files[options.fields.name][0].mimetype,
+                        folder: p.files[options.fields.name][0].destination,
+                        filename: p.files[options.fields.name][0].filename,
+                        size: p.files[options.fields.name][0].size,
+                        width: p.files[options.fields.name][0].width,
+                        height: p.files[options.fields.name][0].height
                       };
                     } else {
                       put[options.fields.name] = [];
-                      for (let a = 0; a < req.files[options.fields.name].length; a++) {
+                      for (let a = 0; a < p.files[options.fields.name].length; a++) {
                         const ins = {
-                          file: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                          originalname: req.files[options.fields.name][a].originalname,
-                          encoding: req.files[options.fields.name][a].encoding,
-                          mimetype: req.files[options.fields.name][a].mimetype,
-                          folder: req.files[options.fields.name][a].destination,
-                          filename: req.files[options.fields.name][a].filename,
-                          size: req.files[options.fields.name][a].size,
-                          width: req.files[options.fields.name][a].width,
-                          height: req.files[options.fields.name][a].height
+                          file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                          originalname: p.files[options.fields.name][a].originalname,
+                          encoding: p.files[options.fields.name][a].encoding,
+                          mimetype: p.files[options.fields.name][a].mimetype,
+                          folder: p.files[options.fields.name][a].destination,
+                          filename: p.files[options.fields.name][a].filename,
+                          size: p.files[options.fields.name][a].size,
+                          width: p.files[options.fields.name][a].width,
+                          height: p.files[options.fields.name][a].height
                         };
                         put[options.fields.name].push(ins);
                       }
@@ -223,31 +231,31 @@ upload.uploader = (req, res, done) => {
           );
         } else {
           let put = {};
-          if (req.files[options.fields.name].length == 1) {
+          if (p.files[options.fields.name].length == 1) {
             put[options.fields.name] = {
-              original: req.files[options.fields.name][0].path.replace(global.appRoot,""),
-              originalname: req.files[options.fields.name][0].originalname,
+              original: p.files[options.fields.name][0].path.replace(global.appRoot,""),
+              originalname: p.files[options.fields.name][0].originalname,
               encoding: 0,
-              mimetype: req.files[options.fields.name][0].mimetype,
-              //folder: req.files[options.fields.name][0].destination,
-              filename: req.files[options.fields.name][0].filename,
-              //size: req.files[options.fields.name][0].size,
-              //width: req.files[options.fields.name][0].width,
-              //height: req.files[options.fields.name][0].height
+              mimetype: p.files[options.fields.name][0].mimetype,
+              //folder: p.files[options.fields.name][0].destination,
+              filename: p.files[options.fields.name][0].filename,
+              //size: p.files[options.fields.name][0].size,
+              //width: p.files[options.fields.name][0].width,
+              //height: p.files[options.fields.name][0].height
             };
           } else {
             put[options.fields.name] = [];
-            for (let a = 0; a < req.files[options.fields.name].length; a++) {
+            for (let a = 0; a < p.files[options.fields.name].length; a++) {
               const ins = {
-                original: req.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                originalname: req.files[options.fields.name][a].originalname,
+                original: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                originalname: p.files[options.fields.name][a].originalname,
                 encoding: 0,
-                mimetype: req.files[options.fields.name][a].mimetype,
-                //folder: req.files[options.fields.name][a].destination,
-                filename: req.files[options.fields.name][a].filename,
-                //size: req.files[options.fields.name][a].size,
-                //width: req.files[options.fields.name][a].width,
-                //height: req.files[options.fields.name][a].height
+                mimetype: p.files[options.fields.name][a].mimetype,
+                //folder: p.files[options.fields.name][a].destination,
+                filename: p.files[options.fields.name][a].filename,
+                //size: p.files[options.fields.name][a].size,
+                //width: p.files[options.fields.name][a].width,
+                //height: p.files[options.fields.name][a].height
               };
               put[options.fields.name].push(ins);
             }
@@ -257,7 +265,7 @@ upload.uploader = (req, res, done) => {
         }
       }
     } else {
-      done({ errors: { form_error: [{err: "Missing req.files." + options.fields.name}] } }, null);
+      done({ errors: { form_error: [{err: "Missing p.files." + options.fields.name}] } }, null);
     }
   });
 };

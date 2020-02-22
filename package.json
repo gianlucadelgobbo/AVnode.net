@@ -83,6 +83,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "popper.js": "^1.14.6",
+    "progress-stream": "^2.0.0",
     "pug": "^2.0.3",
     "ramda": "^0.25.0",
     "rc-time-picker": "^3.3.1",
