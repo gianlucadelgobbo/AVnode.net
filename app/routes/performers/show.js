@@ -62,6 +62,10 @@ router.get("/performances", (req, res) => {
   dataprovider.show(req, res, section, "performances", Model);
 });
 
+router.get("/performances/:type", (req, res) => {
+  dataprovider.show(req, res, section, "performances", Model);
+});
+
 router.get("/performances/page/:page", (req, res) => {
   dataprovider.show(req, res, section, "performances", Model);
 });

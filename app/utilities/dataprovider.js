@@ -666,213 +666,232 @@ dataprovider.makeTextPlainToRich = (str) => {
   return str;	
 }
 
+dataprovider.addCat = (req, populate, cb) => {
+  logger.debug("addCat");
+  logger.debug(req.params);
+  if (req.params.type) {
+    Category.
+    findOne({slug: req.params.type}).
+    exec((err, cat) => {
+      if (cat) populate[0].match.type = cat._id;
+      cb(populate, cat)
+    });
+  } else {
+    cb(populate)
+  }
+}
+
 dataprovider.show = (req, res, section, subsection, model) => {
   logger.debug(section);
   logger.debug(subsection);
   //logger.debug(config.sections[section]);
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
-
-  for(let item in populate) {
-    if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
-    
-    if (populate[item].model === 'UserShow') populate[item].model = UserShow;
-    if (populate[item].model === 'Performance') populate[item].model = Performance;
-    if (populate[item].model === 'Event') populate[item].model = Event;
-    if (populate[item].model === 'Video') populate[item].model = Video;
-    if (populate[item].model === 'Footage') populate[item].model = Footage;
-    if (populate[item].model === 'Playlist') populate[item].model = Playlist;
-    if (populate[item].model === 'Category') populate[item].model = Category;
-    if (populate[item].model === 'News') populate[item].model = News;
-
-    if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
-    if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
-    if (populate[item].populate && populate[item].populate.model === 'Event') populate[item].populate.model = Event;
-    if (populate[item].populate && populate[item].populate.model === 'Video') populate[item].populate.model = Video;
-    if (populate[item].populate && populate[item].populate.model === 'Footage') populate[item].populate.model = Footage;
-    if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
-    if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
-    if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News;
-    if (populate[item].populate) {
-      for(let a=0;a<populate[item].populate.length;a++) {
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'UserShow') populate[item].populate[a].model = UserShow;
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'Performance') populate[item].populate[a].model = Performance;
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'Event') populate[item].populate[a].model = Event;
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'Video') populate[item].populate[a].model = Video;
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'Footage') populate[item].populate[a].model = Footage;
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'Playlist') populate[item].populate[a].model = Playlist;
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'Category') populate[item].populate[a].model = Category;
-        if (populate[item].populate[a] && populate[item].populate[a].model === 'News') populate[item].populate[a].model = News;
-      }
-    }
-  }
+  logger.debug("populate");
   logger.debug(populate);
-  const select = config.sections[section][subsection].select;
-  const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
-
-  dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
-    logger.debug("fetchShow END");
-    if (err || !data || data === null) {
-      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
-    } else {
-      logger.debug(select);
-      if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
-        const locations = data.schedule.map(obj =>{
-          if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
-            var rObj = {
-              "marker":{
-                "url":"/images/avnode_marker.svg",
-                "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
-                "origin":{"x":0,"y":0},
-                "anchor":{"x":23,"y":78}
-              }
-            };
-            rObj.lat = obj.venue.location.geometry.lat;
-            rObj.lng = obj.venue.location.geometry.lng;
-            return rObj;
-          }
-        });
-        if (locations && locations.length) {
-          data.locations = [];
-          for (let item in locations) {
-            if (locations[item]) data.locations.push(locations[item]);
-          }
+  dataprovider.addCat(req, populate, (populate, type) => {
+    for(let item in populate) {
+      if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
+      
+      if (populate[item].model === 'UserShow') populate[item].model = UserShow;
+      if (populate[item].model === 'Performance') populate[item].model = Performance;
+      if (populate[item].model === 'Event') populate[item].model = Event;
+      if (populate[item].model === 'Video') populate[item].model = Video;
+      if (populate[item].model === 'Footage') populate[item].model = Footage;
+      if (populate[item].model === 'Playlist') populate[item].model = Playlist;
+      if (populate[item].model === 'Category') populate[item].model = Category;
+      if (populate[item].model === 'News') populate[item].model = News;
+  
+      if (populate[item].populate && populate[item].populate.model === 'UserShow') populate[item].populate.model = UserShow;
+      if (populate[item].populate && populate[item].populate.model === 'Performance') populate[item].populate.model = Performance;
+      if (populate[item].populate && populate[item].populate.model === 'Event') populate[item].populate.model = Event;
+      if (populate[item].populate && populate[item].populate.model === 'Video') populate[item].populate.model = Video;
+      if (populate[item].populate && populate[item].populate.model === 'Footage') populate[item].populate.model = Footage;
+      if (populate[item].populate && populate[item].populate.model === 'Playlist') populate[item].populate.model = Playlist;
+      if (populate[item].populate && populate[item].populate.model === 'Category') populate[item].populate.model = Category;
+      if (populate[item].populate && populate[item].populate.model === 'News') populate[item].populate.model = News;
+      if (populate[item].populate) {
+        for(let a=0;a<populate[item].populate.length;a++) {
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'UserShow') populate[item].populate[a].model = UserShow;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'Performance') populate[item].populate[a].model = Performance;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'Event') populate[item].populate[a].model = Event;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'Video') populate[item].populate[a].model = Video;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'Footage') populate[item].populate[a].model = Footage;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'Playlist') populate[item].populate[a].model = Playlist;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'Category') populate[item].populate[a].model = Category;
+          if (populate[item].populate[a] && populate[item].populate[a].model === 'News') populate[item].populate[a].model = News;
         }
-        logger.debug("locations");
-        logger.debug(locations);
-        data.schedule = undefined;
-      }
-      if (data && data.addresses && data.addresses.length) {
-        const locations = data.addresses.map(obj =>{
-          if (obj && obj.geometry && obj.geometry.lat && obj.geometry.lng) {
-            var rObj = {
-              "marker":{
-                "url":"/images/avnode_marker.svg",
-                "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
-                "origin":{"x":0,"y":0},
-                "anchor":{"x":23,"y":78}
-              }
-            };
-            rObj.lat = obj.geometry.lat;
-            rObj.lng = obj.geometry.lng;
-            return rObj;
-          }
-        });
-        if (locations && locations.length) {
-          data.locations = [];
-          for (let item in locations) {
-            if (locations[item]) data.locations.push(locations[item]);
-          }
-        }
-      }
-      if (data && data.medias && req.params.img) {
-        for (let item in data.medias) {
-          if (data.medias[item].slug===req.params.img) {
-            if (!req.session[data._id+"#IMG:"+data.medias[item].slug]) {
-              req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
-              if (!data.medias[item].stats) data.medias[item].stats = {}
-              data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
-              model.updateOne({_id:data._id},{"medias":data.medias}, (err, raw) => {
-              });
-            }
-            data.img = data.medias[item];
-            data.img.index = item;
-          }
-        }
-        for (let item in data.medias2) {
-          if (data.medias2[item].slug===req.params.img) {
-            data.img.imageFormats = data.medias2[item].imageFormats;
-          }
-        }
-        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {
-          data.liked = false;
-        } else {
-          data.liked = true;
-        }
-      } else if (data && data.galleries && data.galleries[0] && data.galleries[0].medias && req.params.img) {
-        for (let item in data.galleries[0].medias) {
-          if (data.galleries[0].medias[item].slug===req.params.img) {
-            if (!req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug]) {
-              req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug] = true;
-              if (!data.galleries[0].medias[item].stats) data.galleries[0].medias[item].stats = {}
-              data.galleries[0].medias[item].stats.visits = data.galleries[0].medias[item].stats.visits ? data.galleries[0].medias[item].stats.visits+1 : 1;
-              model.updateOne({_id:data.galleries[0]._id},{"medias":data.galleries[0].medias}, (err, raw) => {
-              });
-            }
-            data.galleries[0].img = data.galleries[0].medias[item];
-            data.galleries[0].img.index = item;
-          }
-        }
-        for (let item in data.galleries[0].medias2) {
-          if (data.galleries[0].medias2[item].slug===req.params.img) {
-            data.galleries[0].img.imageFormats = data.galleries[0].medias2[item].imageFormats;
-          }
-        }
-        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+req.params.img).toString())===-1) {
-          data.liked = false;
-        } else {
-          data.liked = true;
-        }
-      } else {
-        if (!req.session[data._id]) {
-          req.session[data._id] = true;
-          if (!data.stats) data.stats = {};
-          data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
-          model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
-          });
-        }  
-        if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
-          data.liked = false;
-        } else {
-          data.liked = true;
-        }
-      }
-      data.pages = [];
-      if (total>0) {
-        let limit = req.query.limit ? parseInt(req.query.limit) : config.sections[section].limit;
-        let link = '/' + data.slug + '/' + subsection + '/page/';
-        let page = (req.params.page ? parseFloat(req.params.page) : 1);
-        skip = (page - 1) * limit;
-        data.pages = helper.getPagination(link, skip, limit, total); 
-      }
-      /* let editable = false;
-      if (req.user && req.user._id) {
-        if (req.user.is_admin) {
-          editable = true;
-        } else if (data.users) {
-          for(let a=0;a<data.users.length;a++) if (data.users[a]._id.toString() === req.user._id.toString() || req.user.crews.indexOf(data.users[a]._id.toString())!==-1) editable = true;
-        } else if (data._id.toString() === req.user._id.toString()) {
-          editable = true;
-        }
-      } */
-      if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
-        logger.debug("fetchShow END");
-        if (process.env.DEBUG) {
-          res.render('json', {data: data});
-        } else {
-          res.json(data);
-        }
-        //res.send(JSON.stringify(data, null, '\t'));
-      } else if (req.query.xml) {
-        res.render(section + '/fpData', {
-          title: data.stagename,
-          data: data,
-          nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
-        });
-      } else {
-
-        res.render(section + '/' + subsection, {
-          title: data.stagename ? data.stagename : data.title,
-          jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section),
-          canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
-          editable: helpers.editable(req, data, data._id),
-          data: data,
-          pages: data.pages,
-          section: section,
-          path: req.originalUrl,
-          nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
-        });
       }
     }
+    logger.debug(populate);
+    const select = config.sections[section][subsection].select;
+    const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
+  
+    dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
+      logger.debug("fetchShow END");
+      if (err || !data || data === null) {
+        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+      } else {
+        logger.debug(select);
+        if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
+          const locations = data.schedule.map(obj =>{
+            if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
+              var rObj = {
+                "marker":{
+                  "url":"/images/avnode_marker.svg",
+                  "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
+                  "origin":{"x":0,"y":0},
+                  "anchor":{"x":23,"y":78}
+                }
+              };
+              rObj.lat = obj.venue.location.geometry.lat;
+              rObj.lng = obj.venue.location.geometry.lng;
+              return rObj;
+            }
+          });
+          if (locations && locations.length) {
+            data.locations = [];
+            for (let item in locations) {
+              if (locations[item]) data.locations.push(locations[item]);
+            }
+          }
+          logger.debug("locations");
+          logger.debug(locations);
+          data.schedule = undefined;
+        }
+        if (data && data.addresses && data.addresses.length) {
+          const locations = data.addresses.map(obj =>{
+            if (obj && obj.geometry && obj.geometry.lat && obj.geometry.lng) {
+              var rObj = {
+                "marker":{
+                  "url":"/images/avnode_marker.svg",
+                  "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
+                  "origin":{"x":0,"y":0},
+                  "anchor":{"x":23,"y":78}
+                }
+              };
+              rObj.lat = obj.geometry.lat;
+              rObj.lng = obj.geometry.lng;
+              return rObj;
+            }
+          });
+          if (locations && locations.length) {
+            data.locations = [];
+            for (let item in locations) {
+              if (locations[item]) data.locations.push(locations[item]);
+            }
+          }
+        }
+        if (data && data.medias && req.params.img) {
+          for (let item in data.medias) {
+            if (data.medias[item].slug===req.params.img) {
+              if (!req.session[data._id+"#IMG:"+data.medias[item].slug]) {
+                req.session[data._id+"#IMG:"+data.medias[item].slug] = true;
+                if (!data.medias[item].stats) data.medias[item].stats = {}
+                data.medias[item].stats.visits = data.medias[item].stats.visits ? data.medias[item].stats.visits+1 : 1;
+                model.updateOne({_id:data._id},{"medias":data.medias}, (err, raw) => {
+                });
+              }
+              data.img = data.medias[item];
+              data.img.index = item;
+            }
+          }
+          for (let item in data.medias2) {
+            if (data.medias2[item].slug===req.params.img) {
+              data.img.imageFormats = data.medias2[item].imageFormats;
+            }
+          }
+          if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+data.img.slug).toString())===-1) {
+            data.liked = false;
+          } else {
+            data.liked = true;
+          }
+        } else if (data && data.galleries && data.galleries[0] && data.galleries[0].medias && req.params.img) {
+          for (let item in data.galleries[0].medias) {
+            if (data.galleries[0].medias[item].slug===req.params.img) {
+              if (!req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug]) {
+                req.session[data.galleries[0]._id+"#IMG:"+data.galleries[0].medias[item].slug] = true;
+                if (!data.galleries[0].medias[item].stats) data.galleries[0].medias[item].stats = {}
+                data.galleries[0].medias[item].stats.visits = data.galleries[0].medias[item].stats.visits ? data.galleries[0].medias[item].stats.visits+1 : 1;
+                model.updateOne({_id:data.galleries[0]._id},{"medias":data.galleries[0].medias}, (err, raw) => {
+                });
+              }
+              data.galleries[0].img = data.galleries[0].medias[item];
+              data.galleries[0].img.index = item;
+            }
+          }
+          for (let item in data.galleries[0].medias2) {
+            if (data.galleries[0].medias2[item].slug===req.params.img) {
+              data.galleries[0].img.imageFormats = data.galleries[0].medias2[item].imageFormats;
+            }
+          }
+          if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf((data._id+"#IMG:"+req.params.img).toString())===-1) {
+            data.liked = false;
+          } else {
+            data.liked = true;
+          }
+        } else {
+          if (!req.session[data._id]) {
+            req.session[data._id] = true;
+            if (!data.stats) data.stats = {};
+            data.stats.visits = data.stats.visits ? data.stats.visits+1 : 1;
+            model.updateOne({_id:data._id},{"stats.visits":data.stats.visits}, (err, raw) => {
+            });
+          }  
+          if (!req.user || !req.user.likes || !req.user.likes[section] || req.user.likes[section].map(function(e) { return e.id.toString(); }).indexOf(data._id.toString())===-1) {
+            data.liked = false;
+          } else {
+            data.liked = true;
+          }
+        }
+        data.pages = [];
+        if (total>0) {
+          let limit = req.query.limit ? parseInt(req.query.limit) : config.sections[section].limit;
+          let link = '/' + data.slug + '/' + subsection + '/page/';
+          let page = (req.params.page ? parseFloat(req.params.page) : 1);
+          skip = (page - 1) * limit;
+          data.pages = helper.getPagination(link, skip, limit, total); 
+        }
+        /* let editable = false;
+        if (req.user && req.user._id) {
+          if (req.user.is_admin) {
+            editable = true;
+          } else if (data.users) {
+            for(let a=0;a<data.users.length;a++) if (data.users[a]._id.toString() === req.user._id.toString() || req.user.crews.indexOf(data.users[a]._id.toString())!==-1) editable = true;
+          } else if (data._id.toString() === req.user._id.toString()) {
+            editable = true;
+          }
+        } */
+        if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
+          logger.debug("fetchShow END");
+          if (process.env.DEBUG) {
+            res.render('json', {data: data});
+          } else {
+            res.json(data);
+          }
+          //res.send(JSON.stringify(data, null, '\t'));
+        } else if (req.query.xml) {
+          res.render(section + '/fpData', {
+            title: data.stagename,
+            data: data,
+            nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+          });
+        } else {
+  
+          res.render(section + '/' + subsection, {
+            title: data.stagename ? data.stagename : data.title,
+            jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section),
+            canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+            editable: helpers.editable(req, data, data._id),
+            data: data,
+            type: type,
+            pages: data.pages,
+            section: section,
+            path: req.originalUrl,
+            nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+          });
+        }
+      }
+    });
   });
 };
 

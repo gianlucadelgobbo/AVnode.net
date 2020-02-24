@@ -15,7 +15,8 @@ block content
   .container
     section.row.mb-5
       .col-lg-12
-        h2.main_title.indented_title.color1!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"
+        - console.log(data.pages)
+        h2.main_title.indented_title.color1!=type ? type.name : global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"
         .row
           each item in data.performances
             .col-sm-4
