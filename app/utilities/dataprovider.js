@@ -56,6 +56,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
           find(query).
           populate(newpopulate).
           select(newselect).
+          sort({createdAt: -1}).
           limit(limit).
           exec((err, sub) => {
             let datadata = JSON.parse(JSON.stringify(data));
