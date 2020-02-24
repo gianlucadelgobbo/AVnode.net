@@ -37,7 +37,12 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         var meandcrews = data.crews;
         meandcrews.push(data._id);
         let submodel = (subsection == "performances" ? Performance : Event);
-        let query = (subsection == "partnerships" ? {"partners.users": {$in: meandcrews}} : {users: {$in: meandcrews}});
+        let query = populate.filter(pop => pop.path == subsection)[0].match;
+        if (subsection == "partnerships") {
+          query["partners.users"] = {$in: meandcrews};
+        } else {
+          query.users = {$in: meandcrews};
+        }
         const newselect = populate.filter(pop => pop.path == subsection)[0].select;
         const newpopulate = populate.filter(pop => pop.path == subsection)[0].populate;
         const limit = populate.filter(pop => pop.path == subsection)[0].options.limit;
@@ -667,8 +672,6 @@ dataprovider.makeTextPlainToRich = (str) => {
 }
 
 dataprovider.addCat = (req, populate, cb) => {
-  logger.debug("addCat");
-  logger.debug(req.params);
   if (req.params.type) {
     Category.
     findOne({slug: req.params.type}).
