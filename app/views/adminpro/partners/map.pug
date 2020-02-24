@@ -8,6 +8,29 @@
             - locations.push(address.geometry)
     -  locations = JSON.stringify(locations)
   #map(style="width: 100%;height: 500px;")
+  //pre#pre
+    var map;
+        var service;
+        var infowindow;
+
+        function initMap2() {
+          var sydney = new google.maps.LatLng(-33.867, 151.195);
+
+          infowindow = new google.maps.InfoWindow();
+
+          map = new google.maps.Map(document.getElementById('map'), {center: sydney, zoom: 15});
+
+          var service = new google.maps.places.PlacesService(map);
+          var request = {
+            placeId: 'ChIJp3A5zjZiLxMRDYO6Pvq40r0',
+          };
+          service.getDetails(request, function(results, status) {
+            console.log("results");
+            $("#pre").html(JSON.stringify(results, null, 2))
+            console.log(results);
+          });
+        }
+        initMap2();
   script(type='text/javascript').
     function initMap() {
 
@@ -30,6 +53,7 @@
           label: " "
         });
       });
+      
 
       // Add a marker clusterer to manage the markers.
       var markerCluster = new MarkerClusterer(map, markers,
@@ -37,6 +61,6 @@
     }
     var locations = !{locations};
   script(src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js")
-  script(async defer src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&callback=initMap")
+  script(async defer src="https://maps.googleapis.com/maps/api/js?key="+process.env.GOOGLEMAPSAPIKEY+"&libraries=places&callback=initMap")
 
 

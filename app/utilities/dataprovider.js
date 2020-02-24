@@ -22,42 +22,80 @@ const logger = require('./logger');
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
   logger.debug("populate");
   logger.debug(populate);
+  logger.debug("req.query");
+  logger.debug(req.query);
+  logger.debug("subsection");
+  logger.debug(subsection);
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
-    const nolimit = JSON.parse(JSON.stringify(populate));
-    delete nolimit[0].options;
-    if (req.query.limit) {
-      for(let a=0; a<populate.length;a++) {
-        if (populate[a].options && populate[a].options.limit) populate[a].options.limit = parseInt(req.query.limit);
-      }
-    }
-    model.
-    findOne({slug: req.params.slug}).
-    lean({ virtuals: false }).
-    // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
-    populate(nolimit).
-    select(select).
-    exec((err, d) => {
-      const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
+    if (req.query.crews) {
+      select.crews = 1;
       model.
       findOne({slug: req.params.slug}).
-      // lean({ virtuals: true }).
-      // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
       populate(populate).
       select(select).
       exec((err, data) => {
-        /* const res = Object.assign(select, data);
-        logger.debug(select);
-        logger.debug(Object.keys(res));
-        cb(err, res, total); */
-        logger.debug("res.partnershipaaaaaaab");
-        if(data && data.partnerships && data.partnerships_ordered) {
-          delete data.partnerships;
-          logger.debug(data.partnerships);
-        }
-        cb(err, data, total);
+        var meandcrews = data.crews;
+        meandcrews.push(data._id);
+        let submodel = (subsection == "performances" ? Performance : Event);
+        let query = (subsection == "partnerships" ? {"partners.users": {$in: meandcrews}} : {users: {$in: meandcrews}});
+        const newselect = populate.filter(pop => pop.path == subsection)[0].select;
+        const newpopulate = populate.filter(pop => pop.path == subsection)[0].populate;
+        const limit = populate.filter(pop => pop.path == subsection)[0].options.limit;
+        logger.debug("newselect");
+        logger.debug(newselect);
+        logger.debug(submodel);
+        //const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
+        submodel.
+        countDocuments(query, (err, d) => {
+          submodel.
+          find(query).
+          populate(newpopulate).
+          select(newselect).
+          limit(limit).
+          exec((err, sub) => {
+            let datadata = JSON.parse(JSON.stringify(data));
+            datadata[subsection] = sub;
+            const total = d;
+            cb(err, datadata, total);
+          });
+        });
       });
-    });
-  
+    } else {
+      const nolimit = JSON.parse(JSON.stringify(populate));
+      delete nolimit[0].options;
+      if (req.query.limit) {
+        for(let a=0; a<populate.length;a++) {
+          if (populate[a].options && populate[a].options.limit) populate[a].options.limit = parseInt(req.query.limit);
+        }
+      }
+      model.
+      findOne({slug: req.params.slug}).
+      lean({ virtuals: false }).
+      // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+      populate(nolimit).
+      select("_id").
+      exec((err, d) => {
+        const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
+        model.
+        findOne({slug: req.params.slug}).
+        // lean({ virtuals: true }).
+        // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
+        populate(populate).
+        select(select).
+        exec((err, data) => {
+          /* const res = Object.assign(select, data);
+          logger.debug(select);
+          logger.debug(Object.keys(res));
+          cb(err, res, total); */
+          logger.debug("res.partnershipaaaaaaab");
+          if(data && data.partnerships && data.partnerships_ordered) {
+            delete data.partnerships;
+            logger.debug(data.partnerships);
+          }
+          cb(err, data, total);
+        });
+      });
+    }
   } else {
     if (subsection === "program") {
       if (req.params.performance) {
@@ -788,17 +826,14 @@ dataprovider.show = (req, res, section, subsection, model) => {
           data.liked = true;
         }
       }
-      let pages;
-      if (total) {
+      data.pages = [];
+      if (total>0) {
         let limit = req.query.limit ? parseInt(req.query.limit) : config.sections[section].limit;
         let link = '/' + data.slug + '/' + subsection + '/page/';
         let page = (req.params.page ? parseFloat(req.params.page) : 1);
         skip = (page - 1) * limit;
-        pages = helper.getPagination(link, skip, limit, total); 
-      } else {
-        pages = false;
+        data.pages = helper.getPagination(link, skip, limit, total); 
       }
-      data.pages = pages;
       /* let editable = false;
       if (req.user && req.user._id) {
         if (req.user.is_admin) {

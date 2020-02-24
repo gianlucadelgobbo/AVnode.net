@@ -14,6 +14,24 @@ image.resizer = (files, options, done) => {
   });
 };
 
+image.resizerPromise = (file, options) => {
+  logger.debug('resizerPromise');
+  let sizesA = [];
+  for (let item in options.sizes) sizesA.push(options.sizes[item]);
+  logger.debug(sizesA);
+  counterresizes = 0;
+
+    image.resize(file, sizesA, (resizeActErr, info) => {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function() {
+          logger.debug('resultsPromise11');
+          logger.debug(resultsPromise);
+          resolve(resultsPromise);
+        }, 1000);
+    });
+  });
+};
+
 image.resizeAct = (files, options, done) => {
   logger.debug('resizeAct');
   counterresizes = 0;
