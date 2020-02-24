@@ -866,7 +866,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
           editable: helpers.editable(req, data, data._id),
           data: data,
-          pages: pages,
+          pages: data.pages,
           section: section,
           path: req.originalUrl,
           nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
