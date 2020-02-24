@@ -12,60 +12,36 @@ import { getList as getUsers } from "./selectors";
 import { loadSuggestionAuthors, fetchPerformancePublic } from "../../../api";
 import ErrorMessage from "../../errorMessage";
 
-const getSuggestionValue = suggestion => suggestion.stagename;
-
-const getSuggestionID = suggestion => suggestion._id;
-
-const renderSuggestion = suggestion => (
-  <span id={suggestion._id}>{suggestion.stagename}</span>
-);
-
 class AddUsersFootage extends Component {
+  getOptionLabel = option => `${option.stagename}`;
+  getOptionValue = option => `${option._id}`;
+  getOptions = (query, callback) => {
+    if (query && query.length >= 3) {
+      this.setState({ disable: false });
+      return loadSuggestionAuthors(query)
+        .then(resp => callback(resp.data))
+        .catch(error => callback(error, null));
+    } else {
+      return Promise.resolve([]);
+    }
+  };
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
-      idusers: "",
-      suggestions: []
+      disable: true
     };
   }
 
   componentDidMount() {}
 
-  onChange = (event, { newValue }) => {
-    if (event.target.children.length !== 0) {
-      this.setState({
-        value: newValue,
-        idusers: event.target.children[0].id
-      });
-    } else {
-      this.setState({
-        value: newValue,
-        idusers: event.target.id
-      });
-    }
-  };
-
-  onSuggestionsFetchRequested = ({ value }) => {
-    if (value.length >= 3) {
-      return loadSuggestionAuthors({ value }).then(response =>
-        this.setState({ suggestions: response.data })
-      );
-    }
-  };
-
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: []
-    });
-  };
-
   // Convert form values to API model
-  createModelToSave(idusers, _id) {
+  createModelToSave(value, _id) {
     //clone obj
     let model = {};
 
-    model.idusers = idusers;
+    model.idusers = value.users._id;
+
+    model.label = value.users.stagename;
 
     model._id = _id;
 
@@ -85,9 +61,10 @@ class AddUsersFootage extends Component {
     return v;
   }
 
-  onSubmitForm(idusers) {
-    const { fetchModel, saveModel, hideModal, _id } = this.props;
-    const modelToSave = this.createModelToSave(idusers, _id);
+  handleSubmit(value) {
+    const { _id } = this.props;
+    const { saveModel, hideModal } = this.props;
+    const modelToSave = this.createModelToSave(value, _id);
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model._id) {
         fetchPerformancePublic({ id: _id }).then(response => hideModal());
@@ -98,36 +75,26 @@ class AddUsersFootage extends Component {
   render() {
     const { showModal, errorMessage } = this.props;
 
-    const { value, suggestions, idusers } = this.state;
-
-    const inputProps = {
-      className: "form-control",
-      placeholder: "Type a users",
-      value,
-      idusers,
-      onChange: this.onChange
-    };
+    const { disable, optionSelect } = this.state;
 
     return (
       <div className="row">
         <div className="col-md-12">
           {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
           <Form
-            onSubmitForm={this.onSubmitForm.bind(this)}
+            onSubmit={this.handleSubmit.bind(this)}
             showModal={showModal}
             name="users"
-            inputProps={inputProps}
-            suggestions={suggestions}
-            placeholder="Users"
-            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested.bind(
-              this
-            )}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested.bind(
-              this
-            )}
-            getSuggestionValue={getSuggestionValue}
-            getSuggestionID={getSuggestionID}
-            renderSuggestion={renderSuggestion}
+            placeholder="Search a user"
+            label="User"
+            disable={disable}
+            loadOptions={this.getOptions.bind(this)}
+            getOptionValue={this.getOptionValue}
+            getOptionLabel={this.getOptionLabel}
+            onSelectResetsInput={false}
+            onBlurResetsInput={false}
+            value={optionSelect}
+            noOptionsMessage="No options"
           />
         </div>
       </div>
@@ -153,9 +120,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-AddUsersFootage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddUsersFootage);
+AddUsersFootage = connect(mapStateToProps, mapDispatchToProps)(AddUsersFootage);
 
 export default AddUsersFootage;

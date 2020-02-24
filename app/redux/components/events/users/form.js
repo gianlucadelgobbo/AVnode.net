@@ -1,54 +1,52 @@
 import React, { Component } from "react";
 import { reduxForm, Field } from "redux-form";
 import { FORM_NAME } from "./constants";
-import { userAutocompleteSelect } from "../../common/form/components";
-import { autocompleteComponent } from "../../common/form/components";
-//import validate from './validate';
+import { autoCompleteSelectAsync } from "../../common/form/components";
 
 class AddUsersForm extends Component {
   render() {
     const {
       submitting,
-      inputProps,
-      suggestions,
+      disable,
+      loadOptions,
+      handleSubmit,
       placeholder,
-      onSuggestionsFetchRequested,
-      onSuggestionsClearRequested,
-      getSuggestionValue,
-      getSuggestionID,
-      renderSuggestion,
+      label,
+      value,
+      getOptionValue,
+      getOptionLabel,
+      onSelectResetsInput,
+      onBlurResetsInput,
       name,
-      onSubmitForm
+      noOptionsMessage
     } = this.props;
 
-    const { idusers } = inputProps;
-
     return (
-      <div>
+      <form onSubmit={handleSubmit}>
         <Field
           name={name}
-          component={autocompleteComponent}
-          inputProps={inputProps}
-          suggestions={suggestions}
+          component={autoCompleteSelectAsync}
           placeholder={placeholder}
-          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          getSuggestionID={getSuggestionID}
-          renderSuggestion={renderSuggestion}
+          label={label}
+          multi={false}
+          loadOptions={loadOptions}
+          getOptionLabel={getOptionLabel}
+          getOptionValue={getOptionValue}
+          onSelectResetsInput={onSelectResetsInput}
+          onBlurResetsInput={onBlurResetsInput}
+          value={value}
+          noOptionsMessage={noOptionsMessage}
         />
-
         <hr />
 
         <button
           type="submit"
-          disabled={submitting}
-          onClick={() => onSubmitForm(idusers)}
+          disabled={disable}
           className="btn btn-primary btn-large btn-block"
         >
           {submitting ? "Saving..." : "Save"}
         </button>
-      </div>
+      </form>
     );
   }
 }
@@ -57,5 +55,4 @@ export default reduxForm({
   form: FORM_NAME,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true
-  //validate,
 })(AddUsersForm);

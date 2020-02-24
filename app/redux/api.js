@@ -62,7 +62,7 @@ export const saveProfileImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -80,7 +80,7 @@ export const saveFootageVideo = model => {
   formBox.append("media", model.video[0]);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -380,7 +380,7 @@ export const savePerformanceImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -398,7 +398,7 @@ export const saveEventImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -558,7 +558,7 @@ export const saveNewsImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -666,7 +666,7 @@ export const saveVideosMedia = model => {
   formBox.append("media", model.video[0]);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -740,7 +740,7 @@ export const saveGalleriesMedia = model => {
   //formBox.append("image", model.galleries[0]);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -972,7 +972,7 @@ export const saveCrewImages = model => {
   formBox.append("image", model.image);
 
   // define request headers
-  const config = { 
+  const config = {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: model.onUploadProgress
   };
@@ -1113,5 +1113,4 @@ export const verifyEmail = ({ email }) =>
 export const loadSuggestion = searchTerm =>
   axios.get(`getmembers/${searchTerm}`);
 
-export const loadSuggestionAuthors = ({ value }) =>
-  axios.get(`getauthors/${value}`);
+export const loadSuggestionAuthors = value => axios.get(`getauthors/${value}`);
