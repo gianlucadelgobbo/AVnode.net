@@ -5,7 +5,7 @@ import {
   inputText,
   textareaMultiTab,
   fieldWithLabel,
-  uploadComponent
+  checkboxField
 } from "../../common/form/components";
 import validate from "./validate";
 import { injectIntl } from "react-intl";
@@ -15,7 +15,8 @@ import {
   VIDEOS_URL,
   VIDEOS_URL_PRE,
   VIDEOS_URL_HELP,
-  AUTHORS
+  AUTHORS,
+  IS_PUBLIC
 } from "../../common/form/labels";
 
 class VideosPublicForm extends Component {
@@ -54,6 +55,13 @@ class VideosPublicForm extends Component {
           pre={this.getIntlString({ id: VIDEOS_URL_PRE })}
           help={this.getIntlString({ id: VIDEOS_URL_HELP })}
         />
+
+        <Field
+          name="is_public"
+          component={checkboxField}
+          placeholder={this.getIntlString({ id: IS_PUBLIC })}
+        />
+        <br />
 
         <FieldArray
           name="abouts"
