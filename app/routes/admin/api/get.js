@@ -1339,7 +1339,7 @@ router.removeUser = (req, res) => {
   });
 }
 
-router.addPerformance = (req, res) => {
+router.eventAddPerformance = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
@@ -1441,7 +1441,7 @@ router.addPerformance = (req, res) => {
   });
 }
 
-router.removePerformance = (req, res) => {
+router.eventRemovePerformance = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
 
@@ -1510,6 +1510,197 @@ router.removePerformance = (req, res) => {
                 res.status(404).json({ error: err });
               } else {
                 query = {performance: req.params.performance, event: req.params.id};
+                Models["Program"]
+                .findOneAndRemove(query, function (err, program) {
+                  if (err) {
+                    logger.debug(`${JSON.stringify(err)}`);
+                    res.status(404).json({ error: err });
+                  } else {
+                    req.params.sez = 'events';
+                    req.params.form = 'program';
+                    router.getData(req, res);            
+                  }
+                });
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}
+
+router.performanceAddEvent = (req, res) => {
+  var query = {_id: req.params.id};
+  //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  Models['Performance']
+  .findOne(query)
+  .select({_id:1, title:1, stats:1, bookings:1})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.bookings.map((item)=>{return item.event.toString()}).indexOf(req.params.event)!==-1) {
+      res.status(404).json({
+        "message": "EVENT_IS_ALREADY_IN",
+        "name": "MongoError",
+        "stringValue":"\"EVENT_IS_ALREADY_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"EVENT_IS_ALREADY_IN",
+          "name":"MongoError",
+          "stringValue":"\"EVENT_IS_ALREADY_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.bookings.push({event:req.params.event});
+      item.save(function(err){
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.event};
+          var select = {_id:1, program:1}
+          Models["Event"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, event) => {
+            event.program.push({performance:req.params.id});
+            event.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                query = {event: req.params.event, performance: req.params.id};
+                Models["Program"]
+                .findOne(query)
+                .exec((err, program) => {
+                  if (!program) {
+                    program = {};
+                    program.performance = req.params.id;
+                    program.reference = req.user._id;
+                    program.event = req.params.event;
+                    program.status = "5be8708afc39610000000013";
+                    Models["Program"]
+                    .create(program, function (err, program) {
+                      if (err) {
+                        logger.debug(`${JSON.stringify(err)}`);
+                        res.status(404).json({ error: err });
+                      } else {
+                        req.params.sez = 'events';
+                        req.params.form = 'program';
+                        router.getData(req, res);            
+                      }
+                    });
+                  } else {
+                    req.params.sez = 'events';
+                    req.params.form = 'program';
+                    router.getData(req, res);            
+                  }
+                });
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}
+
+router.performanceRemoveEvent = (req, res) => {
+  var query = {_id: req.params.id};
+  //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  Models['Performance']
+  .findOne(query)
+  .select({_id:1, bookings:1,})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"PERFORMANCE_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.bookings.map((item)=>{return item.event.toString()}).indexOf(req.params.event)===-1) {
+      res.status(404).json({
+        "message": "EVENT_IS_NOT_IN",
+        "name": "MongoError",
+        "stringValue":"\"EVENT_IS_NOT_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"EVENT_IS_NOT_IN",
+          "name":"MongoError",
+          "stringValue":"\"EVENT_IS_NOT_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.bookings.splice(item.bookings.map((item)=>{return item.event.toString()}).indexOf(req.params.event), 1);
+      //res.json(item);
+      item.save(function(err){
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.event};
+          var select = {_id:1, program:1}
+          //select[req.params.sez] = 1;
+          Models["Event"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, event) => {
+            event.program.splice(event.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.id), 1);
+            event.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                query = {event: req.params.event, performance: req.params.id};
                 Models["Program"]
                 .findOneAndRemove(query, function (err, program) {
                   if (err) {
@@ -1630,242 +1821,262 @@ router.sendEmailVericaition = (req, res) => {
 router.addGallery = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
-  Models['Event']
-  .findOne(query)
-  .select({_id:1, title:1, stats:1, galleries:1})
-  //.populate({ "path": "users", "select": "stagename", "model": "User"})
-  .exec((err, item) => {
-    if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
-    } else if (!item) {
-      res.status(404).json({
-        "message": "USER_NOT_ALLOWED_TO_EDIT",
-        "name": "MongoError",
-        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"USER_NOT_ALLOWED_TO_EDIT",
-          "name":"MongoError",
+  if (req.params.sez == "events" || req.params.sez == "performances") {
+    let model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
+    model
+    Models['Event']
+    .findOne(query)
+    .select({_id:1, title:1, stats:1, galleries:1})
+    //.populate({ "path": "users", "select": "stagename", "model": "User"})
+    .exec((err, item) => {
+      if (err) {
+        logger.debug(`${JSON.stringify(err)}`);
+        res.status(404).json({ error: err });
+      } else if (!item) {
+        res.status(404).json({
+          "message": "USER_NOT_ALLOWED_TO_EDIT",
+          "name": "MongoError",
           "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-          "kind":"string",
+          "kind":"Date",
           "value":null,
-          "path":"id"
-        }
-      });
-    } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)!==-1) {
-      res.status(404).json({
-        "message": "GALLERY_IS_ALREADY_IN",
-        "name": "MongoError",
-        "stringValue":"\"GALLERY_IS_ALREADY_IN\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"GALLERY_IS_ALREADY_IN",
-          "name":"MongoError",
+          "path":"id",
+          "reason":{
+            "message":"USER_NOT_ALLOWED_TO_EDIT",
+            "name":"MongoError",
+            "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+            "kind":"string",
+            "value":null,
+            "path":"id"
+          }
+        });
+      } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)!==-1) {
+        res.status(404).json({
+          "message": "GALLERY_IS_ALREADY_IN",
+          "name": "MongoError",
           "stringValue":"\"GALLERY_IS_ALREADY_IN\"",
-          "kind":"string",
+          "kind":"Date",
           "value":null,
-          "path":"id"
-        }
-      });
-    } else {
-      item.galleries.push(req.params.gallery);
-      item.save(function(err){
-        if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
-        } else {
-          var query = {_id: req.params.gallery};
-          var select = {_id:1, events:1}
-          Models["Gallery"]
-          .findOne(query)
-          .select(select)
-          //.populate({ "path": "members", "select": "addresses", "model": "User"})
-          .exec((err, gallery) => {
-            gallery.events.push(req.params.id);
-            gallery.save(function(err){
-              if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
-              } else {
-                req.params.sez = 'events';
-                req.params.form = 'galleries';
-                router.getData(req, res);            
-              }
+          "path":"id",
+          "reason":{
+            "message":"GALLERY_IS_ALREADY_IN",
+            "name":"MongoError",
+            "stringValue":"\"GALLERY_IS_ALREADY_IN\"",
+            "kind":"string",
+            "value":null,
+            "path":"id"
+          }
+        });
+      } else {
+        item.galleries.push(req.params.gallery);
+        item.save(function(err){
+          if (err) {
+            logger.debug(`${JSON.stringify(err)}`);
+            res.status(404).json({ error: err });
+          } else {
+            var query = {_id: req.params.gallery};
+            var select = {_id:1, events:1}
+            Models["Gallery"]
+            .findOne(query)
+            .select(select)
+            //.populate({ "path": "members", "select": "addresses", "model": "User"})
+            .exec((err, gallery) => {
+              gallery.events.push(req.params.id);
+              gallery.save(function(err){
+                if (err) {
+                  logger.debug(`${JSON.stringify(err)}`);
+                  res.status(404).json({ error: err });
+                } else {
+                  req.params.sez = 'events';
+                  req.params.form = 'galleries';
+                  router.getData(req, res);            
+                }
+              });
             });
-          });
-        }
-      });
-    }
-  });
+          }
+        });
+      }
+    });
+  } else {
+    res.status(404).json({ error: `API_NOT_FOUND` });
+  }
 }
 
 router.removeGallery = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
-
-  Models['Event']
-  .findOne(query)
-  .select({_id:1, galleries:1,})
-  //.populate({ "path": "users", "select": "stagename", "model": "User"})
-  .exec((err, item) => {
-    if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
-    } else if (!item) {
-      res.status(404).json({
-        "message": "USER_NOT_ALLOWED_TO_EDIT",
-        "name": "MongoError",
-        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"USER_NOT_ALLOWED_TO_EDIT",
-          "name":"MongoError",
+  if (req.params.sez == "events" || req.params.sez == "performances") {
+    let model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
+    model
+    .findOne(query)
+    .select({_id:1, galleries:1,})
+    //.populate({ "path": "users", "select": "stagename", "model": "User"})
+    .exec((err, item) => {
+      if (err) {
+        logger.debug(`${JSON.stringify(err)}`);
+        res.status(404).json({ error: err });
+      } else if (!item) {
+        res.status(404).json({
+          "message": "USER_NOT_ALLOWED_TO_EDIT",
+          "name": "MongoError",
           "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-          "kind":"string",
+          "kind":"Date",
           "value":null,
-          "path":"id"
-        }
-      });
-    } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)===-1) {
-      res.status(404).json({
-        "message": "GALLERY_IS_NOT_IN",
-        "name": "MongoError",
-        "stringValue":"\"GALLERY_IS_NOT_IN\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"GALLERY_IS_NOT_IN",
-          "name":"MongoError",
+          "path":"id",
+          "reason":{
+            "message":"USER_NOT_ALLOWED_TO_EDIT",
+            "name":"MongoError",
+            "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+            "kind":"string",
+            "value":null,
+            "path":"id"
+          }
+        });
+      } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)===-1) {
+        res.status(404).json({
+          "message": "GALLERY_IS_NOT_IN",
+          "name": "MongoError",
           "stringValue":"\"GALLERY_IS_NOT_IN\"",
-          "kind":"string",
+          "kind":"Date",
           "value":null,
-          "path":"id"
-        }
-      });
-    } else {
-      item.galleries.splice(item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery), 1);
-      //res.json(item);
-      item.save(function(err){
-        if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
-        } else {
-          var query = {_id: req.params.gallery};
-          var select = {_id:1, events:1}
-          //select[req.params.sez] = 1;
-          Models["Gallery"]
-          .findOne(query)
-          .select(select)
-          //.populate({ "path": "members", "select": "addresses", "model": "User"})
-          .exec((err, gallery) => {
-            gallery.events.splice(gallery.events.map((item)=>{return item.toString()}).indexOf(req.params.id), 1);
-            gallery.save(function(err){
-              if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
-              } else {
-                req.params.sez = 'events';
-                req.params.form = 'galleries';
-                router.getData(req, res);            
-              }
+          "path":"id",
+          "reason":{
+            "message":"GALLERY_IS_NOT_IN",
+            "name":"MongoError",
+            "stringValue":"\"GALLERY_IS_NOT_IN\"",
+            "kind":"string",
+            "value":null,
+            "path":"id"
+          }
+        });
+      } else {
+        item.galleries.splice(item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery), 1);
+        //res.json(item);
+        item.save(function(err){
+          if (err) {
+            logger.debug(`${JSON.stringify(err)}`);
+            res.status(404).json({ error: err });
+          } else {
+            var query = {_id: req.params.gallery};
+            var select = {_id:1, events:1}
+            //select[req.params.sez] = 1;
+            Models["Gallery"]
+            .findOne(query)
+            .select(select)
+            //.populate({ "path": "members", "select": "addresses", "model": "User"})
+            .exec((err, gallery) => {
+              gallery.events.splice(gallery.events.map((item)=>{return item.toString()}).indexOf(req.params.id), 1);
+              gallery.save(function(err){
+                if (err) {
+                  logger.debug(`${JSON.stringify(err)}`);
+                  res.status(404).json({ error: err });
+                } else {
+                  req.params.sez = 'events';
+                  req.params.form = 'galleries';
+                  router.getData(req, res);            
+                }
+              });
             });
-          });
-        }
-      });
-    }
-  });
+          }
+        });
+      }
+    });
+  } else {
+    res.status(404).json({ error: `API_NOT_FOUND` });
+  }
 }
 
 router.addVideo = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
-  Models['Event']
-  .findOne(query)
-  .select({_id:1, title:1, stats:1, videos:1})
-  //.populate({ "path": "users", "select": "stagename", "model": "User"})
-  .exec((err, item) => {
-    if (err) {
-      logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
-    } else if (!item) {
-      res.status(404).json({
-        "message": "USER_NOT_ALLOWED_TO_EDIT",
-        "name": "MongoError",
-        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"USER_NOT_ALLOWED_TO_EDIT",
-          "name":"MongoError",
+  if (req.params.sez == "events" || req.params.sez == "performances") {
+    let model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
+    model
+    Models['Event']
+    .findOne(query)
+    .select({_id:1, title:1, stats:1, videos:1})
+    //.populate({ "path": "users", "select": "stagename", "model": "User"})
+    .exec((err, item) => {
+      if (err) {
+        logger.debug(`${JSON.stringify(err)}`);
+        res.status(404).json({ error: err });
+      } else if (!item) {
+        res.status(404).json({
+          "message": "USER_NOT_ALLOWED_TO_EDIT",
+          "name": "MongoError",
           "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
-          "kind":"string",
+          "kind":"Date",
           "value":null,
-          "path":"id"
-        }
-      });
-    } else if (item.videos.map((item)=>{return item.toString()}).indexOf(req.params.video)!==-1) {
-      res.status(404).json({
-        "message": "VIDEO_IS_ALREADY_IN",
-        "name": "MongoError",
-        "stringValue":"\"VIDEO_IS_ALREADY_IN\"",
-        "kind":"Date",
-        "value":null,
-        "path":"id",
-        "reason":{
-          "message":"VIDEO_IS_ALREADY_IN",
-          "name":"MongoError",
+          "path":"id",
+          "reason":{
+            "message":"USER_NOT_ALLOWED_TO_EDIT",
+            "name":"MongoError",
+            "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+            "kind":"string",
+            "value":null,
+            "path":"id"
+          }
+        });
+      } else if (item.videos.map((item)=>{return item.toString()}).indexOf(req.params.video)!==-1) {
+        res.status(404).json({
+          "message": "VIDEO_IS_ALREADY_IN",
+          "name": "MongoError",
           "stringValue":"\"VIDEO_IS_ALREADY_IN\"",
-          "kind":"string",
+          "kind":"Date",
           "value":null,
-          "path":"id"
-        }
-      });
-    } else {
-      item.videos.push(req.params.video);
-      item.save(function(err){
-        if (err) {
-          logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
-        } else {
-          var query = {_id: req.params.video};
-          var select = {_id:1, events:1}
-          Models["Video"]
-          .findOne(query)
-          .select(select)
-          //.populate({ "path": "members", "select": "addresses", "model": "User"})
-          .exec((err, video) => {
-            video.events.push(req.params.id);
-            video.save(function(err){
-              if (err) {
-                logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
-              } else {
-                req.params.sez = 'events';
-                req.params.form = 'videos';
-                router.getData(req, res);            
-              }
+          "path":"id",
+          "reason":{
+            "message":"VIDEO_IS_ALREADY_IN",
+            "name":"MongoError",
+            "stringValue":"\"VIDEO_IS_ALREADY_IN\"",
+            "kind":"string",
+            "value":null,
+            "path":"id"
+          }
+        });
+      } else {
+        item.videos.push(req.params.video);
+        item.save(function(err){
+          if (err) {
+            logger.debug(`${JSON.stringify(err)}`);
+            res.status(404).json({ error: err });
+          } else {
+            var query = {_id: req.params.video};
+            var select = {_id:1, events:1}
+            Models["Video"]
+            .findOne(query)
+            .select(select)
+            //.populate({ "path": "members", "select": "addresses", "model": "User"})
+            .exec((err, video) => {
+              video.events.push(req.params.id);
+              video.save(function(err){
+                if (err) {
+                  logger.debug(`${JSON.stringify(err)}`);
+                  res.status(404).json({ error: err });
+                } else {
+                  req.params.sez = 'events';
+                  req.params.form = 'videos';
+                  router.getData(req, res);            
+                }
+              });
             });
-          });
-        }
-      });
-    }
-  });
+          }
+        });
+      }
+    });
+  } else {
+    res.status(404).json({ error: `API_NOT_FOUND` });
+  }
 }
 
 router.removeVideo = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
-
-  Models['Event']
+  if (req.params.sez == "events" || req.params.sez == "performances") {
+    let model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
+  } else {
+    res.status(404).json({ error: `API_NOT_FOUND` });
+  }
+  model
   .findOne(query)
   .select({_id:1, videos:1,})
   //.populate({ "path": "users", "select": "stagename", "model": "User"})

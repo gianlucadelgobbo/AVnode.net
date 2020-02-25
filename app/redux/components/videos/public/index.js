@@ -38,6 +38,8 @@ class VideosPublic extends Component {
     //clone obj
     let model = Object.assign({}, values) || {};
 
+    model.is_public = model.is_public;
+
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
       model.abouts = model.abouts.map(x => {
@@ -68,6 +70,8 @@ class VideosPublic extends Component {
     f.slug = model.slug;
     //Convert stagename
     f.title = model.title;
+    //Convert stagename
+    f.is_public = model.is_public;
     //Convert Video
     f.media = model.media;
     // Convert about format for FieldArray redux-form
