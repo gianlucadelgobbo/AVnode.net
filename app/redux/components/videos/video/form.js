@@ -51,7 +51,6 @@ class VideosVideoForm extends Component {
           multiple={false}
           //accept={this.renderImageType()}
         />
-        <input type="text" value={loaded} />
       </form>
     );
   }

@@ -18,12 +18,17 @@ import {
 import { locales, locales_labels } from "../../../../../config/default";
 import { populateMultiLanguageObject } from "../../common/form";
 import { VIDEO_NAME, SHOW } from "./constants";
-
+import { ProgressBar } from "react-bootstrap";
 // 1. LOADING BAR add actions generators
-import {hideLoading, showLoading} from 'react-redux-loading-bar';
-
+import { hideLoading, showLoading } from "react-redux-loading-bar";
 
 class VideosVideo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: 0
+    };
+  }
   componentDidMount() {
     const {
       fetchModel,
@@ -82,14 +87,22 @@ class VideosVideo extends Component {
   }
 
   uploadFile(files) {
-    const { model, uploadModel, showModal, showLoading, hideLoading } = this.props;
+    const { loaded } = this.state;
+    const {
+      model,
+      uploadModel,
+      showModal,
+      showLoading,
+      hideLoading
+    } = this.props;
     model.video = files;
     model.onUploadProgress = ProgressEvent => {
-      model.loaded = ProgressEvent.loaded / ProgressEvent.total*100;
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+      model.loaded = (ProgressEvent.loaded / ProgressEvent.total) * 100;
+      this.setState({ loaded: model.loaded });
+      console.log((ProgressEvent.loaded / ProgressEvent.total) * 100);
+    };
     // 4. LOADING BAR show loading bar
-    showLoading();
+    //showLoading();
 
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
@@ -104,7 +117,14 @@ class VideosVideo extends Component {
 
   onSubmit(values) {
     // 3. LOADING BAR get action from props
-    const { showModal, saveModel, model, showLoading, hideLoading } = this.props;
+    const {
+      showModal,
+      saveModel,
+      model,
+      showLoading,
+      hideLoading
+    } = this.props;
+
     const modelToSave = this.createModelToSave(values);
 
     modelToSave._id = model._id;
@@ -133,19 +153,20 @@ class VideosVideo extends Component {
       isFetching,
       errorMessage
     } = this.props;
+    const { loaded } = this.state;
     return (
       <div>
         {isFetching && !model && <Loading />}
-
         {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
-
         {!errorMessage && !isFetching && !model && <ItemNotFound />}
-
-        <TitleComponent title={model.title} link={"/videos/"+model.slug} show={SHOW} />
+        <TitleComponent
+          title={model.title}
+          link={"/videos/" + model.slug}
+          show={SHOW}
+        />
         <LateralMenu _id={_id} />
         <hr />
         <h3 className="labelField mb-3">{VIDEO_NAME}</h3>
-
         <Form
           initialValues={this.getInitialValues()}
           onSubmit={this.onSubmit.bind(this)}
@@ -156,6 +177,7 @@ class VideosVideo extends Component {
           labels={locales_labels}
           uploadFile={this.uploadFile.bind(this)}
         />
+        <ProgressBar now={loaded} label={`${loaded}%`} />
       </div>
     );
   }
@@ -189,9 +211,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-VideosVideo = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VideosVideo);
+VideosVideo = connect(mapStateToProps, mapDispatchToProps)(VideosVideo);
 
 export default VideosVideo;
