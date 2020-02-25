@@ -22,7 +22,6 @@ import { VIDEO_NAME, SHOW } from "./constants";
 // 1. LOADING BAR add actions generators
 import {hideLoading, showLoading} from 'react-redux-loading-bar';
 
-
 class VideosVideo extends Component {
   componentDidMount() {
     const {
@@ -84,10 +83,6 @@ class VideosVideo extends Component {
   uploadFile(files) {
     const { model, uploadModel, showModal, showLoading, hideLoading } = this.props;
     model.video = files;
-    model.onUploadProgress = ProgressEvent => {
-      model.loaded = ProgressEvent.loaded / ProgressEvent.total*100;
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
     // 4. LOADING BAR show loading bar
     showLoading();
 
@@ -150,7 +145,6 @@ class VideosVideo extends Component {
           initialValues={this.getInitialValues()}
           onSubmit={this.onSubmit.bind(this)}
           media={model.media}
-          loaded={model.loaded}
           showModal={showModal}
           tabs={locales}
           labels={locales_labels}

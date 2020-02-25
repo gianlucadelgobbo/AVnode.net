@@ -89,9 +89,6 @@ class FootageVideo extends Component {
       hideLoading
     } = this.props;
     model.video = files;
-    model.onUploadProgress = ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
     // 4. LOADING BAR show loading bar
     showLoading();
 

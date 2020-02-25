@@ -33,7 +33,6 @@ class VideosVideoForm extends Component {
       showModal,
       onSubmit,
       uploadFile,
-      loaded,
       media
     } = this.props;
 
@@ -51,7 +50,6 @@ class VideosVideoForm extends Component {
           multiple={false}
           //accept={this.renderImageType()}
         />
-        <input type="text" value={loaded} />
       </form>
     );
   }

@@ -13,9 +13,9 @@ class Videos extends Component {
     return (
       <div className="row">
         <div className="col-md-12">
-          <div className="row mt-3">
-            <div className="col-md-10">
-              <h3 className="labelField">VIDEOS</h3>
+          <div className="row">
+          <div className="col-md-10">
+              <h2 className="labelField">VIDEOS</h2>
             </div>
             <div className="col-md-2">
               <Button
