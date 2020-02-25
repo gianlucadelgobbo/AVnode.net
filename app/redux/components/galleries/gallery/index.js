@@ -84,6 +84,9 @@ class GalleriesGallery extends Component {
     //console.log("uploadFileuploadFileuploadFileuploadFileuploadFileuploadFileuploadFile");
     const { model, uploadModel, showModal, showLoading, hideLoading } = this.props;
     model.galleries = files;
+    model.onUploadProgress = ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
     // 4. LOADING BAR show loading bar
     showLoading();
     return uploadModel(model).then(response => {

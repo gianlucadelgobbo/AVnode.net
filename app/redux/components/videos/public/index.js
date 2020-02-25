@@ -85,6 +85,9 @@ class VideosPublic extends Component {
   uploadFile(files) {
     const { model, uploadModel, showModal } = this.props;
     model.video = files;
+    model.onUploadProgress = ProgressEvent => {
+      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
+    }
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
         showModal({
