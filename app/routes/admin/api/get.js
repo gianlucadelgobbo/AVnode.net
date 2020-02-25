@@ -1784,6 +1784,163 @@ router.removeGallery = (req, res) => {
   });
 }
 
+router.addVideo = (req, res) => {
+  var query = {_id: req.params.id};
+  //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  Models['Event']
+  .findOne(query)
+  .select({_id:1, title:1, stats:1, videos:1})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.videos.map((item)=>{return item.toString()}).indexOf(req.params.video)!==-1) {
+      res.status(404).json({
+        "message": "VIDEO_IS_ALREADY_IN",
+        "name": "MongoError",
+        "stringValue":"\"VIDEO_IS_ALREADY_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"VIDEO_IS_ALREADY_IN",
+          "name":"MongoError",
+          "stringValue":"\"VIDEO_IS_ALREADY_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.videos.push(req.params.video);
+      item.save(function(err){
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.video};
+          var select = {_id:1, events:1}
+          Models["Video"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, video) => {
+            video.events.push(req.params.id);
+            video.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'events';
+                req.params.form = 'videos';
+                router.getData(req, res);            
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}
+
+router.removeVideo = (req, res) => {
+  var query = {_id: req.params.id};
+  //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
+
+  Models['Event']
+  .findOne(query)
+  .select({_id:1, videos:1,})
+  //.populate({ "path": "users", "select": "stagename", "model": "User"})
+  .exec((err, item) => {
+    if (err) {
+      logger.debug(`${JSON.stringify(err)}`);
+      res.status(404).json({ error: err });
+    } else if (!item) {
+      res.status(404).json({
+        "message": "USER_NOT_ALLOWED_TO_EDIT",
+        "name": "MongoError",
+        "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"USER_NOT_ALLOWED_TO_EDIT",
+          "name":"MongoError",
+          "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else if (item.videos.map((item)=>{return item.toString()}).indexOf(req.params.video)===-1) {
+      res.status(404).json({
+        "message": "VIDEO_IS_NOT_IN",
+        "name": "MongoError",
+        "stringValue":"\"VIDEO_IS_NOT_IN\"",
+        "kind":"Date",
+        "value":null,
+        "path":"id",
+        "reason":{
+          "message":"VIDEO_IS_NOT_IN",
+          "name":"MongoError",
+          "stringValue":"\"VIDEO_IS_NOT_IN\"",
+          "kind":"string",
+          "value":null,
+          "path":"id"
+        }
+      });
+    } else {
+      item.videos.splice(item.videos.map((item)=>{return item.toString()}).indexOf(req.params.video), 1);
+      //res.json(item);
+      item.save(function(err){
+        if (err) {
+          logger.debug(`${JSON.stringify(err)}`);
+          res.status(404).json({ error: err });
+        } else {
+          var query = {_id: req.params.video};
+          var select = {_id:1, events:1}
+          //select[req.params.sez] = 1;
+          Models["Video"]
+          .findOne(query)
+          .select(select)
+          //.populate({ "path": "members", "select": "addresses", "model": "User"})
+          .exec((err, video) => {
+            video.events.splice(video.events.map((item)=>{return item.toString()}).indexOf(req.params.id), 1);
+            video.save(function(err){
+              if (err) {
+                logger.debug(`${JSON.stringify(err)}`);
+                res.status(404).json({ error: err });
+              } else {
+                req.params.sez = 'events';
+                req.params.form = 'videos';
+                router.getData(req, res);            
+              }
+            });
+          });
+        }
+      });
+    }
+  });
+}
+
 /*
 router.addVideos = (req, res) => {
   Models[req.params.model]

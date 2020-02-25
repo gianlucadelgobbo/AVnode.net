@@ -118,6 +118,14 @@ router.get('/api/events/:id/gallery/remove/:gallery', (req, res)=>{
   get.removeGallery(req, res);
 });
 
+router.get('/api/events/:id/video/add/:video', (req, res)=>{
+  get.addVideo(req, res);
+});
+
+router.get('/api/events/:id/video/remove/:video', (req, res)=>{
+  get.removeVideo(req, res);
+});
+
 router.get('/api/loggeduser', (req, res) => {
   res.json(req.user);
 });
