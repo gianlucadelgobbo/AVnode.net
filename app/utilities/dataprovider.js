@@ -677,7 +677,7 @@ dataprovider.addCat = (req, populate, cb) => {
     Category.
     findOne({slug: req.params.type}).
     exec((err, cat) => {
-      if (cat) populate[0].match.type = cat._id;
+      if (cat && populate[0].match) populate[0].match.type = cat._id;
       cb(populate, cat)
     });
   } else {
