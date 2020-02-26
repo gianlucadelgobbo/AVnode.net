@@ -103,26 +103,34 @@ router.get('/api/playlists/:id/footageremove/:footage', (req, res)=>{
 });
 
 router.get('/api/events/:id/performance/add/:performance', (req, res)=>{
-  get.addPerformance(req, res);
+  get.eventAddPerformance(req, res);
 });
 
 router.get('/api/events/:id/performance/remove/:performance', (req, res)=>{
-  get.removePerformance(req, res);
+  get.eventRemovePerformance(req, res);
 });
 
-router.get('/api/events/:id/gallery/add/:gallery', (req, res)=>{
+router.get('/api/performances/:id/event/add/:event', (req, res)=>{
+  get.performanceAddEvent(req, res);
+});
+
+router.get('/api/performances/:id/event/remove/:event', (req, res)=>{
+  get.performanceRemoveEvent(req, res);
+});
+
+router.get('/api/:sez/:id/gallery/add/:gallery', (req, res)=>{
   get.addGallery(req, res);
 });
 
-router.get('/api/events/:id/gallery/remove/:gallery', (req, res)=>{
+router.get('/api/:sez/:id/gallery/remove/:gallery', (req, res)=>{
   get.removeGallery(req, res);
 });
 
-router.get('/api/events/:id/video/add/:video', (req, res)=>{
+router.get('/api/:sez/:id/video/add/:video', (req, res)=>{
   get.addVideo(req, res);
 });
 
-router.get('/api/events/:id/video/remove/:video', (req, res)=>{
+router.get('/api/:sez/:id/video/remove/:video', (req, res)=>{
   get.removeVideo(req, res);
 });
 
