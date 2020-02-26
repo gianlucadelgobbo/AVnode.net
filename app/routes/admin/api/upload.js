@@ -175,7 +175,7 @@ upload.uploader = (req, res, done) => {
                   done({ errors: p.files }, null);
                 } else {
                   let put = {};
-                  if (['galleries/medias'].indexOf(p.params.sez+'/'+p.params.form)!== -1) {
+                  if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
                     put.medias = [];
                     for (let a = 0; a < p.files[options.fields.name].length; a++) {
                       const ins = {
