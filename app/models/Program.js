@@ -10,6 +10,7 @@ const subSchema = new Schema({
   subscriber_id: { type: Schema.ObjectId, ref: 'User' },
   freezed: { type: Boolean, default: false },
   wepay: { type: Boolean, default: false },
+  cash: { type: Boolean, default: false },
   days: { type: [Date], minlength: 1},
   packages: [Package]
 },

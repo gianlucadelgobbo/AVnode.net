@@ -4,7 +4,7 @@ block topmenu
 block content
   - var emails = []
   - var emailsbypackages = {}
-  - var packagespackages = {standard: {}, wepay: {}, options: {}}
+  - var packagespackages = {standard: {}, wepay: {}, cash: {}, options: {}}
   include ./_filters
   table.table.table-fixed
     thead
@@ -115,10 +115,11 @@ block content
                   - var tot = 0
                   each pack in subscription.subscription.packages
                     - if (!packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name]) packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.wepay ? " WE PAY" : ""), price:pack.price, count: 0}
+                    - if (!packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name]) packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name] = {name: pack.name + (subscription.subscription.cash ? " CASH" : ""), price:pack.price, count: 0}
                     - if (pack.options_name && !packagespackages["options"][pack.options_name]) packagespackages["options"][pack.options_name] = {}
 
                     - if (pack.options_name && pack.option && !packagespackages["options"][pack.options_name][pack.option]) packagespackages["options"][pack.options_name][pack.option] = 0
-                    - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]++
+                    - if (pack.options_name && pack.option) packagespackages["options"][pack.options_name][pack.option]+=1
                     
                     
                     tr
@@ -142,10 +143,12 @@ block content
                           !=subscription.subscription.days.length
                           br
                           - packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name].count+=subscription.subscription.days.length
+                          - packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=subscription.subscription.days.length
                           !=subscription.subscription.days.length*pack.price
                           - tot+= subscription.subscription.days.length*pack.price
                         else
                           - packagespackages[subscription.subscription.wepay ? "wepay" : "standard"][pack.name].count+=1
+                          - packagespackages[subscription.subscription.cash ? "cash" : "standard"][pack.name].count+=1
                           - tot+= pack.price
                   tr
                     td(style="white-space: nowrap;")
@@ -157,6 +160,9 @@ block content
                       .form-check.mt-1
                         input.option_wepay.form-check-input(id="wepay"+subscription.subscription.subscriber_id._id, type="checkbox", value="1" checked=subscription.subscription.wepay ? "checked" : undefined, name='subscription.wepay', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
                         label.form-check-label(for="wepay"+subscription.subscription.subscriber_id._id) WE PAY
+                      .form-check.mt-1
+                        input.option_cash.form-check-input(id="cash"+subscription.subscription.subscriber_id._id, type="checkbox", value="1" checked=subscription.subscription.cash ? "checked" : undefined, name='subscription.cash', data-id=subscription._id, data-subscriber_id=subscription.subscription.subscriber_id._id)
+                        label.form-check-label(for="cash"+subscription.subscription.subscriber_id._id) CASH
 
                   //pre=subscription.packages
               - for(let a=0;a<=data.daysN;a++)
@@ -177,6 +183,17 @@ block content
           table(style="width:100%;")
             - var tot = 0
             each pack in packagespackages["wepay"]
+              tr
+                td(style="white-space: nowrap;")
+                  !=pack.name
+                td.text-right
+                  !=pack.price+" €"
+                td.text-right
+                  !=pack.count
+                td.text-right
+                  - tot+=pack.count*pack.price
+                  !=(pack.count*pack.price)+" €"
+            each pack in packagespackages["cash"]
               tr
                 td(style="white-space: nowrap;")
                   !=pack.name

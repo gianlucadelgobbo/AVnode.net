@@ -44,3 +44,4 @@
     .text-center
       input.freezed(checked=call.subscriptions[index] && call.subscriptions[index].freezed ? "checked" : undefined, name="subscriptions[" + count + "][freezed]", value="1", data-b=b, data-count=count, type="checkbox",autocomplete="off")
       input.wepay(name="subscriptions[" + count + "][wepay]", value=call.subscriptions[index] && call.subscriptions[index].wepay ? "1" : "0", type="hidden")
+      input.cash(name="subscriptions[" + count + "][cash]", value=call.subscriptions[index] && call.subscriptions[index].cash ? "1" : "0", type="hidden")

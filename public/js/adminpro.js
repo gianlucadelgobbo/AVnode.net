@@ -309,6 +309,20 @@ $(function() {
       //console.log(res);
     });
   });
+  $(".option_cash").change(function(ev) {
+    const data = {
+      id: $(this).data("id"),
+      subscriber_id: $(this).data("subscriber_id"),
+      cash: $(this).prop('checked')
+    }
+    $.ajax({
+      url: "/admin/api/subscriptionupdate",
+      method: "post",
+      data: data
+    }).done(function(res) {
+      //console.log(res);
+    });
+  });
   $(".confirm-sub").on('click', function(ev) {
     var result = confirm("Want to confirm your subscription?");
     if (result) {
