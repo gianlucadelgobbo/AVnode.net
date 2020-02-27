@@ -1,6 +1,6 @@
 import React from "react";
 import Textarea from "react-textarea-autosize";
-import { Button, ButtonGroup, Image } from "react-bootstrap";
+import { Button, ButtonGroup, Image, ProgressBar } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select, { Async } from "react-select";
@@ -1424,6 +1424,7 @@ export const fieldInColumn = ({
 };
 
 export const renderDropzoneInput = field => {
+  console.log(field);
   let files = field.input.value;
   let myClassName = field.className === undefined ? "" : field.className;
   const getExtensionIcon = (name = "") => {
@@ -1490,70 +1491,79 @@ export const renderDropzoneInput = field => {
         </div>
       </Dropzone>
       {files && Array.isArray(files) && (
-        <ul className="list-group-upload attached-file">
-          {files.map((file, i) => (
-            <li className="list-upload" key={i}>
-              <div className="col ml-2 mt-2">
-                {/* getExtensionIcon(file.name) */}
-                {file.name}
-                <span className="file-size">({formatBytes(file.size)})</span>
-                {!field.uploadButton && (
-                  <button
-                    type="button"
-                    className="btn btn-danger ml-2 clear-attachment"
-                    onClick={() => {
-                      field.showModal({
-                        type: MODAL_REMOVE,
-                        props: {
-                          onRemove: () => {
-                            let result = [...files];
-                            result.splice(i, 1);
-                            field.input.onChange(result);
+        <div>
+          <ul className="list-group-upload attached-file">
+            {files.map((file, i) => (
+              <li className="list-upload" key={i}>
+                <div className="col mt-2">
+                  <i
+                    className={`fa fa-${field.icon}`}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  ></i>
+                  {file.name}
+                  <span className="file-size">({formatBytes(file.size)})</span>
+                  {!field.uploadButton && (
+                    <button
+                      type="button"
+                      className="btn btn-danger ml-2 clear-attachment"
+                      onClick={() => {
+                        field.showModal({
+                          type: MODAL_REMOVE,
+                          props: {
+                            onRemove: () => {
+                              let result = [...files];
+                              result.splice(i, 1);
+                              field.input.onChange(result);
+                            }
                           }
+                        });
+                      }}
+                    >
+                      <i
+                        className="fa fa-trash"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                      />
+                    </button>
+                  )}
+                </div>
+              </li>
+            ))}
+            <span className="btn-remove">
+              {field.uploadButton && files.length > 0 && (
+                <button
+                  type="button"
+                  className="btn btn-danger clear-attachment"
+                  onClick={() => {
+                    field.showModal({
+                      type: MODAL_REMOVE,
+                      props: {
+                        onRemove: () => {
+                          let result = [...files];
+                          result = [];
+                          field.input.onChange(result);
+                          field.input.value = [];
+                          console.log(field);
                         }
-                      });
-                    }}
-                  >
-                    <i
-                      className="fa fa-trash"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                    />
-                  </button>
-                )}
-              </div>
-            </li>
-          ))}
-          <span className="btn-remove">
-            {field.uploadButton && files.length > 0 && (
-              <button
-                type="button"
-                className="btn btn-danger clear-attachment"
-                onClick={() => {
-                  field.showModal({
-                    type: MODAL_REMOVE,
-                    props: {
-                      onRemove: () => {
-                        let result = [...files];
-                        result = [];
-                        field.input.onChange(result);
                       }
-                    }
-                  });
-                }}
-              >
-                <i
-                  className="fa fa-trash"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                />
-              </button>
-            )}
-          </span>
-        </ul>
+                    });
+                  }}
+                >
+                  <i
+                    className="fa fa-trash"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                  />
+                </button>
+              )}
+            </span>
+          </ul>
+          <ProgressBar now={field.loaded} label={`${field.loaded}%`} />
+        </div>
       )}
       <button
-        disabled
+        disabled={field.meta.pristine}
         type="button"
         className="btn btn-success"
         onClick={() => {
@@ -2470,7 +2480,9 @@ export const uploadComponent = ({
   accept,
   uploadFile,
   media,
-  multiple
+  multiple,
+  loaded,
+  icon
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
@@ -2492,6 +2504,8 @@ export const uploadComponent = ({
             uploadButton={uploadButton}
             spinner={false}
             multiple={multiple}
+            icon={icon}
+            loaded={loaded}
           />
         </div>
       </div>
