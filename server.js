@@ -48,14 +48,14 @@ app.set("trust proxy", "loopback");
 //app.use(expressStatusMonitor());
 
 app.use(compression());
-/* app.use(
+app.use(
   sass({
     src: path.join(__dirname, "public"),
     dest: path.join(__dirname, "public"),
     debug: true,
     outputStyle: "compressed"
   })
-); */
+);
 
 app.use(express.static(path.join(__dirname, "public"), { maxAge: 84600 }));
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -162,7 +162,7 @@ app.use((req, res, next) => {
     req.path.indexOf("/admin") === 0 &&
     req.path !== "/admin/api/signup"
   ) {
-    req.session.returnTo = req.path.replace("/admin/api/loggeduser" , "/");
+    req.session.returnTo = req.path.replace("/admin/api/loggeduser", "/");
     res.redirect("/login");
   } else {
     next();
@@ -178,9 +178,9 @@ app.use((req, res, next) => {
 // Temporary cors to have redux come in cross origin
 const cors = require("cors");
 var corsOptions = {
-  origin: 'https://liveperformersmeeting.net',
+  origin: "https://liveperformersmeeting.net",
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+};
 app.use(cors());
 app.use(routes);
 

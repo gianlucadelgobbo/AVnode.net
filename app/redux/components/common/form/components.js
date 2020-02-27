@@ -1463,7 +1463,7 @@ export const renderDropzoneInput = field => {
   }
 
   return (
-    <div className={`${myClassName} form-group`}>
+    <div className={`${myClassName} enableBorder form-group`}>
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
       <Dropzone
         className="attachment-dropzone"
@@ -1489,21 +1489,14 @@ export const renderDropzoneInput = field => {
           <FormattedMessage id={FILE_UPLOAD} />
         </div>
       </Dropzone>
-      {field.meta.touched && field.meta.error && (
-        <span className="error">
-          <FormattedMessage id={field.meta.error} />
-        </span>
-      )}
       {files && Array.isArray(files) && (
-        <ul className="list-group attached-file">
+        <ul className="list-group-upload attached-file">
           {files.map((file, i) => (
-            <li className="mt-3 list-upload row" key={i}>
-              <div className="col mt-2">
+            <li className="list-upload" key={i}>
+              <div className="col ml-2 mt-2">
                 {/* getExtensionIcon(file.name) */}
                 {file.name}
-                <span className="file-size ml-2">
-                  ({formatBytes(file.size)})
-                </span>
+                <span className="file-size">({formatBytes(file.size)})</span>
                 {!field.uploadButton && (
                   <button
                     type="button"
@@ -1531,48 +1524,48 @@ export const renderDropzoneInput = field => {
               </div>
             </li>
           ))}
-          <div className="float-right mr-3">
+          <span className="btn-remove">
             {field.uploadButton && files.length > 0 && (
-              <div>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={() => {
-                    field.uploadFile(field.input.value);
-                  }}
-                >
-                  <i
-                    className={"fa fa-upload"}
-                    data-toggle="tooltip"
-                    data-placement="top"
-                  />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger ml-2 clear-attachment"
-                  onClick={() => {
-                    field.showModal({
-                      type: MODAL_REMOVE,
-                      props: {
-                        onRemove: () => {
-                          let result = [...files];
-                          result = [];
-                          field.input.onChange(result);
-                        }
+              <button
+                type="button"
+                className="btn btn-danger clear-attachment"
+                onClick={() => {
+                  field.showModal({
+                    type: MODAL_REMOVE,
+                    props: {
+                      onRemove: () => {
+                        let result = [...files];
+                        result = [];
+                        field.input.onChange(result);
                       }
-                    });
-                  }}
-                >
-                  <i
-                    className="fa fa-trash"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                  />
-                </button>
-              </div>
+                    }
+                  });
+                }}
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+              </button>
             )}
-          </div>
+          </span>
         </ul>
+      )}
+      <button
+        disabled
+        type="button"
+        className="btn btn-success"
+        onClick={() => {
+          field.uploadFile(field.input.value);
+        }}
+      >
+        UPLOAD
+      </button>
+      {field.meta.touched && field.meta.error && (
+        <span className="error">
+          <FormattedMessage id={field.meta.error} />
+        </span>
       )}
     </div>
   );
@@ -2494,7 +2487,7 @@ export const uploadComponent = ({
             accept={accept}
             maxSize={maxSize}
             showModal={showModal}
-            className="enableBorder"
+            className="form-upload"
             uploadFile={uploadFile}
             uploadButton={uploadButton}
             spinner={false}
