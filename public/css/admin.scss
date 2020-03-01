@@ -17,11 +17,14 @@ $input-color-placeholder: $gray-light;
 .marginBottom {
   margin-bottom: 5px;
 }
-#navbar-collapse_admin .nav-item .fa, #navbar-collapse_admin .nav-item .fas, #navbar-collapse_admin .nav-item .far, #navbar-collapse_admin .nav-item.active {
+#navbar-collapse_admin .nav-item .fa,
+#navbar-collapse_admin .nav-item .fas,
+#navbar-collapse_admin .nav-item .far,
+#navbar-collapse_admin .nav-item.active {
   color: #fff;
 }
 
-#app .maincontent{
+#app .maincontent {
   background-color: $gray-lightest;
   color: $gray-dark;
 }
@@ -229,7 +232,8 @@ textarea#styled {
 .table-fixed {
   table-layout: fixed;
 }
-.table-firstcolumn-ID, .table-firstcolumn-ID {
+.table-firstcolumn-ID,
+.table-firstcolumn-ID {
   width: 50px;
 }
 .table-fixed td {
@@ -289,18 +293,6 @@ textarea#styled {
   cursor: pointer;
   font-style: italic;
 }
-.attachment-dropzone {
-  color: #495057;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-.uploader-comp {
-  max-width: 500px;
-}
-
 .card-header h4 {
   display: inline-block;
 }
@@ -606,6 +598,14 @@ div.ReactTags__selected a.ReactTags__remove {
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
 }
+.attachment-dropzone {
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 
 .rc-tree-select-tree li {
   color: #333 !important;
@@ -663,15 +663,35 @@ div.ReactTags__selected a.ReactTags__remove {
     float: right;
   }
 }
-.connectedSortable{
+.connectedSortable {
   color: #000;
   background-color: #999;
   min-height: 100px;
 }
-#app .connectedSortable .list-group-item{
-  background-color: #FFF;
+#app .connectedSortable .list-group-item {
+  background-color: #fff;
   margin: 3px 3px 0 3px;
 }
-#app .connectedSortable .list-group-item:last-child{
+#app .connectedSortable .list-group-item:last-child {
   margin: 3px 3px 3px 3px;
+}
+.form-upload {
+  .list-group-upload {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 0;
+    margin-bottom: 0;
+    padding: 20px 0;
+    list-style: none;
+  }
+  .btn-success {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .list-upload {
+    i {
+      padding-right: 10px;
+    }
+  }
 }
