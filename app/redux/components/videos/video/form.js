@@ -49,6 +49,8 @@ class VideosVideoForm extends Component {
           uploadButton={true}
           media={media}
           multiple={false}
+          icon="video"
+          loaded={loaded}
           //accept={this.renderImageType()}
         />
       </form>

@@ -1,6 +1,6 @@
 import React from "react";
 import Textarea from "react-textarea-autosize";
-import { Button, ButtonGroup, Image } from "react-bootstrap";
+import { Button, ButtonGroup, Image, ProgressBar } from "react-bootstrap";
 import { Field, FieldArray } from "redux-form";
 import PlacesAutocomplete from "react-places-autocomplete";
 import Select, { Async } from "react-select";
@@ -1424,6 +1424,7 @@ export const fieldInColumn = ({
 };
 
 export const renderDropzoneInput = field => {
+  console.log(field);
   let files = field.input.value;
   let myClassName = field.className === undefined ? "" : field.className;
   const getExtensionIcon = (name = "") => {
@@ -1463,7 +1464,7 @@ export const renderDropzoneInput = field => {
   }
 
   return (
-    <div className={`${myClassName} form-group`}>
+    <div className={`${myClassName} enableBorder form-group`}>
       {field.placeholder && <h4 className="labelField">{field.placeholder}</h4>}
       <Dropzone
         className="attachment-dropzone"
@@ -1489,67 +1490,51 @@ export const renderDropzoneInput = field => {
           <FormattedMessage id={FILE_UPLOAD} />
         </div>
       </Dropzone>
-      {field.meta.touched && field.meta.error && (
-        <span className="error">
-          <FormattedMessage id={field.meta.error} />
-        </span>
-      )}
       {files && Array.isArray(files) && (
-        <ul className="list-group attached-file">
-          {files.map((file, i) => (
-            <li className="mt-3 list-upload row" key={i}>
-              <div className="col mt-2">
-                {/* getExtensionIcon(file.name) */}
-                {file.name}
-                <span className="file-size ml-2">
-                  ({formatBytes(file.size)})
-                </span>
-                {!field.uploadButton && (
-                  <button
-                    type="button"
-                    className="btn btn-danger ml-2 clear-attachment"
-                    onClick={() => {
-                      field.showModal({
-                        type: MODAL_REMOVE,
-                        props: {
-                          onRemove: () => {
-                            let result = [...files];
-                            result.splice(i, 1);
-                            field.input.onChange(result);
-                          }
-                        }
-                      });
-                    }}
-                  >
-                    <i
-                      className="fa fa-trash"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                    />
-                  </button>
-                )}
-              </div>
-            </li>
-          ))}
-          <div className="float-right mr-3">
-            {field.uploadButton && files.length > 0 && (
-              <div>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={() => {
-                    field.uploadFile(field.input.value);
-                  }}
-                >
+        <div>
+          <ul className="list-group-upload attached-file">
+            {files.map((file, i) => (
+              <li className="list-upload" key={i}>
+                <div className="col mt-2">
                   <i
-                    className={"fa fa-upload"}
+                    className={`fa fa-${field.icon}`}
                     data-toggle="tooltip"
                     data-placement="top"
-                  />
-                </button>
+                  ></i>
+                  {file.name}
+                  <span className="file-size">({formatBytes(file.size)})</span>
+                  {!field.uploadButton && (
+                    <button
+                      type="button"
+                      className="btn btn-danger ml-2 clear-attachment"
+                      onClick={() => {
+                        field.showModal({
+                          type: MODAL_REMOVE,
+                          props: {
+                            onRemove: () => {
+                              let result = [...files];
+                              result.splice(i, 1);
+                              field.input.onChange(result);
+                            }
+                          }
+                        });
+                      }}
+                    >
+                      <i
+                        className="fa fa-trash"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                      />
+                    </button>
+                  )}
+                </div>
+              </li>
+            ))}
+            <span className="btn-remove">
+              {field.uploadButton && files.length > 0 && (
                 <button
                   type="button"
-                  className="btn btn-danger ml-2 clear-attachment"
+                  className="btn btn-danger clear-attachment"
                   onClick={() => {
                     field.showModal({
                       type: MODAL_REMOVE,
@@ -1558,6 +1543,8 @@ export const renderDropzoneInput = field => {
                           let result = [...files];
                           result = [];
                           field.input.onChange(result);
+                          field.input.value = [];
+                          console.log(field);
                         }
                       }
                     });
@@ -1569,10 +1556,26 @@ export const renderDropzoneInput = field => {
                     data-placement="top"
                   />
                 </button>
-              </div>
-            )}
-          </div>
-        </ul>
+              )}
+            </span>
+          </ul>
+          <ProgressBar now={field.loaded} label={`${field.loaded}%`} />
+        </div>
+      )}
+      <button
+        disabled={field.meta.pristine}
+        type="button"
+        className="btn btn-success"
+        onClick={() => {
+          field.uploadFile(field.input.value);
+        }}
+      >
+        UPLOAD
+      </button>
+      {field.meta.touched && field.meta.error && (
+        <span className="error">
+          <FormattedMessage id={field.meta.error} />
+        </span>
       )}
     </div>
   );
@@ -2477,7 +2480,9 @@ export const uploadComponent = ({
   accept,
   uploadFile,
   media,
-  multiple
+  multiple,
+  loaded,
+  icon
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
@@ -2494,11 +2499,13 @@ export const uploadComponent = ({
             accept={accept}
             maxSize={maxSize}
             showModal={showModal}
-            className="enableBorder"
+            className="form-upload"
             uploadFile={uploadFile}
             uploadButton={uploadButton}
             spinner={false}
             multiple={multiple}
+            icon={icon}
+            loaded={loaded}
           />
         </div>
       </div>

@@ -36,6 +36,21 @@ router.get('/api/profile/emails/email/:email', (req, res)=>{
   get.getEmail(req, res);
 });
 
+router.get('/api/subscriptions', (req, res) => {
+  req.params.id = req.user.id;
+  req.params.sez = 'subscriptions';
+  req.query.api = true;
+  get.getSubscriptions(req, res);
+});
+
+router.get('/api/:id/subscriptions', (req, res) => {
+  req.params.sez = 'subscriptions';
+  req.query.api = true;
+  get.getSubscriptions(req, res);
+});
+
+
+
 router.get('/api/:sez/new/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
@@ -138,24 +153,28 @@ router.get('/api/loggeduser', (req, res) => {
   res.json(req.user);
 });
 
-router.get('/api/subscriptions', (req, res) => {
-  req.params.id = req.user.id;
-  req.params.sez = 'subscriptions';
-  req.query.api = true;
-  get.getSubscriptions(req, res);
-});
-
 router.get('/api/:sez', (req, res) => {
   req.params.id = req.user.id;
   get.getList(req, res);
 });
 
+router.get('/api/subscriptions', (req, res) => {
+  req.params.id = req.user.id;
+  req.params.sez = 'subscriptions';
+  get.getSubscriptions(req, res);
+});
+
+router.get('/api/profile/:id/subscriptions', (req, res) => {
+  req.params.sez = 'subscriptions';
+  get.getSubscriptions(req, res);
+});
+
 router.get('/api/*', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
+  res.status(404).json({ error: `API_NOT_FOUNDa` });
 });
 
 router.get('/api', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
+  res.status(404).json({ error: `API_NOT_FOUNDv` });
 });
 
 router.get('/subscriptions', (req, res) => {
@@ -164,6 +183,10 @@ router.get('/subscriptions', (req, res) => {
   get.getSubscriptions(req, res);
 });
 
+router.get('/profile/:id/subscriptions', (req, res) => {
+  req.params.sez = 'subscriptions';
+  get.getSubscriptions(req, res);
+});
 
 router.get('/*', (req, res) => {
   res.render('admin/index', {
