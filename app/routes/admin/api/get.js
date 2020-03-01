@@ -430,6 +430,7 @@ router.removeFootage = (req, res) => {
 
 router.getSubscriptions = (req, res) => {
   logger.debug("getSubscriptions");
+  logger.debug(req.params.id);
   if (config.cpanel[req.params.sez] && req.params.id) {
     //const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const select = config.cpanel[req.params.sez].list.select;
