@@ -216,7 +216,7 @@ $(function() {
   cancel_sub = (ev, obj) => {
     var result = confirm("Want to delete?");
     if (result) {
-      const id = $(this).data("id");
+      const id = $(obj).data("id");
       $.ajax({
         url: "/admin/api/cancelsubscription",
         method: "post",
