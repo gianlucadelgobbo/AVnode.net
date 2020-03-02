@@ -35,7 +35,6 @@ block content
                         .clearfix
                           .float-left
                             .type.small=program.performance.type.name
-                            - console.log(program)
                           .float-right
                             .duration.small(class=(program.performance.duration == parseFloat(program.performance.duration) ? "" : "badge badge-danger"))=program.performance.duration+" min."
 

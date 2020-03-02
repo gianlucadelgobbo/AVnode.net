@@ -597,7 +597,7 @@ data: data
 
 
 router.updateSubscription = (req, res) => {
-  console.log("updateSubscription");
+  //console.log("updateSubscription");
 
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 
@@ -693,7 +693,7 @@ router.updateSubscription = (req, res) => {
     .select({schedule: 1, call: 1, event: 1})
     .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, sub) => {
-      console.log(sub);
+      //console.log(sub);
       Models.Event
       .findOne({_id: sub.event})
       .select({program: 1, organizationsettings: 1})
@@ -718,9 +718,9 @@ router.updateSubscription = (req, res) => {
         const old_status_name = sub.status.name;
         sub.status = req.body.status;
         sub.save(function(err){
-          console.log("sub.save");
-          console.log(sub.call);
-          console.log(sub.status);
+          //console.log("sub.save");
+          //console.log(sub.call);
+          //console.log(sub.status);
           //event.save(function(err){
             if(!err) {
               if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
@@ -741,13 +741,12 @@ router.updateSubscription = (req, res) => {
                   subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
                   text: email
                 };
-                console.log("pre gMailer")
+                //console.log("pre gMailer")
                 gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-                  /* console.log("gMailer");
-                  console.log(err);
-                  console.log("gMailer");
-                  console.log(result);
-                  res.json({res:result}); */
+                  //console.log("gMailer");
+                  //console.log(err);
+                  //console.log("gMailer");
+                  //console.log(result);
                   if (err) {
                     logger.debug("Email sending failure");
                     res.json({error: true, msg: "Email sending failure"});

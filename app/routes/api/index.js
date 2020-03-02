@@ -147,23 +147,23 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
-    console.log("updateTransation");
-    console.log(req.body);
+    logger.debug("updateTransation");
+    logger.debug(req.body);
   
     const gmailer = require('../../utilities/gmailer');
     Order
     .create(req.body, (err, data) => {
-      console.log("req.body.event");
-      console.log(req.body);
+      logger.debug("req.body.event");
+      logger.debug(req.body);
       if(!err) {
         if (req.body.event) {
-          console.log(req.body.event);
+          logger.debug(req.body.event);
           Event
           .findOne({"_id":req.body.event})
           .select({title:1, organizationsettings:1})
           .exec((err, event) => {
-            console.log("event.organizationsettings.email");
-            console.log(event.organizationsettings.email);
+            logger.debug("event.organizationsettings.email");
+            logger.debug(event.organizationsettings.email);
             if (err) {
               res.status(500).json({ error: `${JSON.stringify(err)}` });
             } else {
@@ -184,14 +184,14 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
                 subject: __("Payment Confirm") + " | " + event.title,
                 text: email
               };
-              console.log("pre gMailer")
-              console.log(auth)
-              console.log(mail)
+              logger.debug("pre gMailer")
+              logger.debug(auth)
+              logger.debug(mail)
               gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-                /* console.log("gMailer");
-                console.log(err);
-                console.log("gMailer");
-                console.log(result);
+                /* logger.debug("gMailer");
+                logger.debug(err);
+                logger.debug("gMailer");
+                logger.debug(result);
                 res.json({res:result}); */
                 if (err) {
                   logger.debug("Email sending failure");

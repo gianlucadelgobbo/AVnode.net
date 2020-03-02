@@ -1,6 +1,5 @@
 // Availability
 - var count = 0;
-- console.log("Availability")
 - var peoples = [];
 - call.performance = parseInt(call.performance)
 - for (var b=0;b<call.admitted[call.performance].users.length;b++)
@@ -60,8 +59,6 @@
               - var dates = call.subscriptions && call.subscriptions[count] &&  call.subscriptions[count].days ? call.subscriptions[count].days : []
               - var days = [];
               - for (var d=0;d<dett.schedule.length;d++)
-                - console.log("dett.schedule[d].date_formatted")
-                - console.log(dett.schedule[d].date_formatted)
                 - if (days.indexOf(dett.schedule[d].date_formatted) == -1)
                   - days.push(dett.schedule[d].date_formatted)
                   - var stringdate = dett.schedule[d].date.getFullYear()+"-"+(("0" + (dett.schedule[d].date.getMonth()+1)).slice(-2))+"-"+(("0" + (dett.schedule[d].date.getDate())).slice(-2))+"T00:00:00.000Z"
