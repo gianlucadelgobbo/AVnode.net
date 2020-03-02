@@ -25,9 +25,7 @@
             placeId: 'ChIJp3A5zjZiLxMRDYO6Pvq40r0',
           };
           service.getDetails(request, function(results, status) {
-            console.log("results");
             $("#pre").html(JSON.stringify(results, null, 2))
-            console.log(results);
           });
         }
         initMap2();

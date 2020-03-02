@@ -517,8 +517,6 @@ router.get('/:event/program', (req, res) => {
                         delete data.program[a].schedule[b];
                       }
                     } else {
-                      console.log("data.program[a].schedule[b]");
-                      console.log(data.program[a].schedule[b]);
                       var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
                       for(let c=0;c<days;c++){
                         let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));

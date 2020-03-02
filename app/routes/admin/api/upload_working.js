@@ -82,7 +82,7 @@ upload.uploader = (req, res, done) => {
   req.pipe(p);
   p.headers = req.headers;
   p.on('progress', (progress) => {
-    console.log('progress:', progress.percentage);
+    logger.debug('progress:', progress.percentage);
   });
 
   const up = multerupload.fields([options.fields]);
