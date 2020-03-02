@@ -35,6 +35,7 @@ block content
                         .clearfix
                           .float-left
                             .type.small=program.performance.type.name
+                            - console.log(program)
                           .float-right
                             .duration.small(class=(program.performance.duration == parseFloat(program.performance.duration) ? "" : "badge badge-danger"))=program.performance.duration+" min."
 
@@ -83,7 +84,13 @@ block content
                                       b!=program.performance.title
                                     .clearfix
                                       .float-left
-                                        .type.small=program.performance.type.name
+                                        .type.small
+                                          !=program.performance.type.name
+                                          if program.performance.genre && program.performance.genre.name
+                                            !=" | "+program.performance.genre.name
+                                          if program.performance.tecnique && program.performance.tecnique.name
+                                            !=" | "+program.performance.tecnique.name
+                                          !=" | "+program.topics.join(", ")
                                       .float-right
                                         .duration.small=program.performance.duration+" min."
 
