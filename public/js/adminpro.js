@@ -769,7 +769,7 @@ $( ".lock-schedule" ).click(function( event ) {
 
 
   $( ".duplicate" ).click(function( event ) {
-    $(this).parent().parent().clone().insertAfter($(this).parent().parent())
+    $(this).parent().parent().parent().clone().insertAfter($(this).parent().parent().parent())
   });
 
   if ($(".multiple-select").length) $(".multiple-select").bsMultiSelect({  placeholder:'Room'});
