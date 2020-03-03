@@ -5477,6 +5477,7 @@
           "model": "UserShow"
         }, {
           "path": "videos",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -5495,6 +5496,7 @@
           "model": "Category"
         }, {
           "path": "galleries",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -5557,6 +5559,7 @@
             "slug": 1
           },
           "model": "Performance",
+          "match": { "is_public": true},
           "populate": [{
             "path": "users",
             "select": {
@@ -5850,6 +5853,7 @@
           }]
         }, {
           "path": "videos",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -6094,6 +6098,7 @@
           "model": "Category"
         }, {
           "path": "videos",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -6106,6 +6111,7 @@
           "model": "Video"
         }, {
           "path": "galleries",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
@@ -6143,6 +6149,7 @@
           "model": "Category"
         }, {
           "path": "galleries",
+          "match": { "is_public": true}, 
           "select": {
             "title": 1,
             "slug": 1,
