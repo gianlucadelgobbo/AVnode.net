@@ -1,19 +1,16 @@
+locales/*
 .env*
+avnode-*
 node_modules
+
 npm-debug.log
 logs/*
 .DS_Store
 .vscode/
 package-lock.json
-.eslintrc.json
-*.iml
-.idea/
-AVnode.net.code-workspace
 __BUTTARE
 __IMPORT SCRIPTS
 ___MAINTENANCE_SCRIPTS
-/.db/
-/.elasticsearch/
 config/ses.json
 log.log
 
@@ -34,6 +31,8 @@ warehouse/organizations/*
 warehouse/performances/*
 warehouse/users/*
 warehouse/videos/*
+warehouse/footage_previews/*
+warehouse/videos_previews/*
 
 !glacier/events_originals/.folder_maker
 !glacier/footage_originals/.folder_maker
