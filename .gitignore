@@ -1,4 +1,14 @@
-locales/*
+locales/by.json
+locales/de.json
+locales/en.json
+locales/es.json
+locales/fr.json
+locales/gr.json
+locales/hu.json
+locales/it.json
+locales/pl.json
+locales/ru.json
+
 .env*
 avnode-*
 node_modules
