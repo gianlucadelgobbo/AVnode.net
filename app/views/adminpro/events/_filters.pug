@@ -44,7 +44,10 @@
     if data.rooms && data.rooms.length
       select.form-control.mr-sm-2.multiple-select(multiple="multiple",  style="display: none;", name='bookings.schedule.venue.room')
         each room in data.rooms
-          option(value=room, selected=get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room']==room ? "selected" : undefined)=room
+          - var selected = undefined
+          - if (get['bookings.schedule.venue.room'] && Array.isArray(get['bookings.schedule.venue.room']) && get['bookings.schedule.venue.room'].indexOf(room)>-1) { selected = "selected" }
+          - else if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'] ==room) { selected = "selected" }
+          option(value=room, selected=selected)=room
       //small.mr-sm-2(style="white-space: nowrap;display: contents;")
         input.mr-sm-1#not3(type='checkbox', name='not3', value='1', checked=get.not3 ? "checked" : undefined)
         label.mr-sm-3(for='not3') NOT
