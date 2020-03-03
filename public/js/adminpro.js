@@ -570,18 +570,16 @@ function getFormData($form){
 }
 $( ".lock-schedule" ).click(function( event ) {
   event.preventDefault();
-  var box = $(this).parent().parent();
-  if($(this).parent().parent().hasClass("disabled")){
+  if($(this).parent().parent().parent().hasClass("disabled")){
     $(this).find("i").removeClass("fa-lock")
     $(this).find("i").addClass("fa-lock-open")
-    $(this).parent().parent().removeClass("disabled")
+    $(this).parent().parent().parent().removeClass("disabled")
   } else {
     $(this).find("i").removeClass("fa-lock-open")
     $(this).find("i").addClass("fa-lock")
-    $(this).parent().parent().addClass("disabled")
+    $(this).parent().parent().parent().addClass("disabled")
   }
   programSortableUpdate();
-  console.log($(this).parent().parent());
 });
 
 // PARTNERS
