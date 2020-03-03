@@ -134,6 +134,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
             });
             populate[a].populate.push({
               "path": "galleries",
+              "match": { "is_public": true},
               "select": {
                 "title": 1,
                 "stats": 1,
@@ -144,6 +145,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
             });
             populate[a].populate.push({
               "path": "videos",
+              "match": { "is_public": true},
               "select": {
                 "title": 1,
                 "stats": 1,
@@ -690,7 +692,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
   logger.debug(subsection);
   //logger.debug(config.sections[section]);
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
-  logger.debug("populate");
+  logger.debug("populate PRE");
   logger.debug(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
@@ -726,12 +728,14 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
       }
     }
+    logger.debug("populate AFTER");
     logger.debug(populate);
     const select = config.sections[section][subsection].select;
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
-  
+
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
       logger.debug("fetchShow END");
+      logger.debug(data.performance);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
       } else {
