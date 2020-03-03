@@ -291,7 +291,8 @@ textarea#styled {
   font-weight: 400;
   padding: 10px;
   cursor: pointer;
-  font-style: italic;
+  text-align: center;
+  line-height: 2rem;
 }
 .card-header h4 {
   display: inline-block;
@@ -602,9 +603,10 @@ div.ReactTags__selected a.ReactTags__remove {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  border: 4px dotted #ced4da;
+  border-radius: 2rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  padding: 10px;
 }
 
 .rc-tree-select-tree li {

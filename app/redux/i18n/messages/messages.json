@@ -266,7 +266,7 @@
   },
   {
     "id": "label.form.file.upload",
-    "defaultMessage": "Drop files here, or click to select files to upload.",
+    "defaultMessage": "Drop file here",
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {

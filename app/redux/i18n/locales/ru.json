@@ -75,7 +75,7 @@
   "label.form.event.url": "Event Url",
   "label.form.event.url_help": "To have your event at https://avnode.net/events/mybeautyfulevent, please insert mybeautyfulevent (lower case, no spaces, no special characters)",
   "label.form.event.url_pre": "https://avnode.net/events/",
-  "label.form.file.upload": "Drop files here, or click to select files to upload.",
+  "label.form.file.upload": "Drop file here",
   "label.form.footage.name": "Footage Name",
   "label.form.footage.url": "Footage Url",
   "label.form.footage.url_help": "To have your footage at https://avnode.net/footage/mybeautyfulfootage, please insert mybeautyfulfootage (lower case, no spaces, no special characters)",

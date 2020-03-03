@@ -214,7 +214,7 @@ defineMessages({
   },
   [FILE_UPLOAD]: {
     id: FILE_UPLOAD,
-    defaultMessage: "Drop files here, or click to select files to upload."
+    defaultMessage: "Drop file here"
   },
   [PERFORMANCE_URL]: {
     id: PERFORMANCE_URL,

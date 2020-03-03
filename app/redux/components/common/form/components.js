@@ -1487,7 +1487,10 @@ export const renderDropzoneInput = field => {
         }}
       >
         <div className="labelFieldUpload">
+          <div><i className="h1 far fa-arrow-alt-circle-down"></i></div>
           <FormattedMessage id={FILE_UPLOAD} />
+          <div>OR</div>
+          <div className="btn btn-primary">BROWSE</div>
         </div>
       </Dropzone>
       {files && Array.isArray(files) && (
