@@ -84,20 +84,6 @@ router.get('/:event/orders', (req, res) => {
     } else {
       let query = {"event": req.params.event};
       logger.debug(query)
-      /* const select = config.cpanel["events_advanced"].forms["acts"].select;
-      const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["acts"].populate;
-      if (req.query.call && req.query.call!='none') query.call = req.query.call;
-      if (req.query['status'] && req.query['status']!='0') query['status'] = req.query['program.schedule.statusNOT'] ? {$ne :req.query['status']} : req.query['status'];
-      for(var item in populate) {
-        if (populate[item].path == "performance") {
-          if (req.query['performance_category'] && req.query['performance_category']!='0') {
-            populate[item].match = {type: req.query['performance_category']};
-          }
-          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room']!='0') {
-            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
-          }
-        }
-      } */
       Order.
       find(query).
       /* select(select).
@@ -578,6 +564,13 @@ router.get('/:event/technical-riders', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["technical-riders"].populate;
       let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room'].length) {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
+          }
+        }
+      }
       logger.debug(query);
       Program.
       find(query).
@@ -714,6 +707,13 @@ router.get('/:event/program-print', (req, res) => {
       const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["program-print"].populate;
       let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
+      for(var item in populate) {
+        if (populate[item].path == "performance") {
+          if (req.query['bookings.schedule.venue.room'] && req.query['bookings.schedule.venue.room'].length) {
+            populate[item].match = {'bookings.schedule.venue.room': req.query['bookings.schedule.venue.room']};
+          }
+        }
+      }
       logger.debug(query);
       Program.
       find(query).
