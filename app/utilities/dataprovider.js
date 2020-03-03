@@ -735,7 +735,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
 
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
       logger.debug("fetchShow END");
-      logger.debug(data.performance);
+      logger.debug(data);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
       } else {
