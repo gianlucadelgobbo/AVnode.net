@@ -160,7 +160,7 @@ class EventPublic extends Component {
 
     // Convert categories
     if (type) {
-      v.type = type._id;
+      v.type = { label: type.name, value: type._id };
     }
 
     // Convert categories
@@ -347,11 +347,14 @@ class EventPublic extends Component {
 
         {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-        <TitleComponent title={model.title} link={"/events/"+model.slug} show={SHOW} />
+        <TitleComponent
+          title={model.title}
+          link={"/events/" + model.slug}
+          show={SHOW}
+        />
         <LateralMenu _id={_id} />
         <hr />
         <h3 className="labelField mb-3">{EVENT_NAME}</h3>
-
 
         <Form
           initialValues={this.getInitialValues()}
@@ -381,7 +384,7 @@ const mapStateToProps = (
   model: getModel(state, _id),
   isFetching: getModelIsFetching(state, _id),
   errorMessage: getModelErrorMessage(state, _id),
-  categories: getCategories(state).map(c => ({ value: c.key, label: c.title }))
+  categories: getCategories(state).map(c => ({ value: c._id, label: c.name }))
 });
 
 const mapDispatchToProps = dispatch =>
@@ -398,9 +401,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-EventPublic = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventPublic);
+EventPublic = connect(mapStateToProps, mapDispatchToProps)(EventPublic);
 
 export default EventPublic;
