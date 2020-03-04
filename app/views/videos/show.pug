@@ -64,13 +64,15 @@ block content
         .data_footage_video_wrapper
           h3=__("Author")
           each user in data.users
-            .user_performance_wrapper
-              div.user_perfomance_image
-                img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
-              div.user_perfomance_country_city
-                p.users_performance_item_name=user.stagename
-                if user.addressesFormatted && user.addressesFormatted.length
-                  p.users_performance_item_country!=user.addressesFormatted.join(", ")
+            .users_video_item_wrapper
+              .media
+                a.mr-3(href="/"+user.slug+"/")
+                  img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                .media-body
+                  p.users_performance_item_name
+                    a.mr-3(href="/"+user.slug+"/")=user.stagename
+                  if user.addressesFormatted && user.addressesFormatted.length
+                    p.users_performance_item_country!=user.addressesFormatted.join(", ")
 
 
       

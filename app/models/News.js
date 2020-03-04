@@ -42,7 +42,7 @@ const newsSchema = new Schema({
   }
 });
 
-newsSchema.virtual('about').get(function (req) {
+/* newsSchema.virtual('about').get(function (req) {
   let about = __('Text is missing');
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
@@ -56,6 +56,35 @@ newsSchema.virtual('about').get(function (req) {
       }
     }
     return about;
+  }
+}); */
+newsSchema.virtual('about').get(function (req) {
+  let about = __('Text is missing');
+  let aboutA = [];
+  if (this.abouts && this.abouts.length) {
+    aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    if (aboutA.length && aboutA[0].abouttext) {
+      about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+    } else {
+      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      if (aboutA.length && aboutA[0].abouttext) {
+        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+      }
+    }
+    str = about;
+    str = str.replace(new RegExp(/\n/gi)," <br />"); 
+
+    str = helper.linkify(str);
+
+    /* var options = {
+      TruncateLength: 100,
+      TruncateBy : "words",
+      Strict : true,
+      StripHTML : false,
+    };
+    str = truncatise(str, options); */
+  
+    return str;
   }
 });
 

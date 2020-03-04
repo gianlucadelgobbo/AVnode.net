@@ -49,4 +49,17 @@ block content
           .mb-3
             each url in data.social
               a(href=url.url target="_blank")=url.url
+                .data_footage_video_wrapper
+        h3=__("Author")
+        each user in data.users
+          .users_video_item_wrapper
+            .media
+              a.mr-3(href="/"+user.slug+"/")
+                img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+              .media-body
+                p.users_performance_item_name
+                  a.mr-3(href="/"+user.slug+"/")=user.stagename
+                if user.addressesFormatted && user.addressesFormatted.length
+                  p.users_performance_item_country!=user.addressesFormatted.join(", ")
+
 
