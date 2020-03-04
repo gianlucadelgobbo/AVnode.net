@@ -32,7 +32,7 @@ class ProfileImageForm extends Component {
       showModal,
       images,
       multiple,
-      properties
+      loaded
     } = this.props;
 
     //const { components } = properties.cpanel.profile.forms.image;
@@ -44,9 +44,10 @@ class ProfileImageForm extends Component {
           component={renderDropzoneInput}
           showModal={showModal}
           multiple={multiple}
-          //properties={["jpeg, png"]}
           maxSize={10485760}
           accept="image/jpeg, image/png"
+          loaded={loaded}
+          icon="image"
           //accept={this.renderImageType()}
         />
 

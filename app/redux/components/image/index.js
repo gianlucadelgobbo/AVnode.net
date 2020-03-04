@@ -10,6 +10,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 class Image extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: 0
+    };
+  }
   componentDidMount() {
     const { fetchModel, id } = this.props;
     fetchModel({ id });
@@ -42,12 +48,20 @@ class Image extends Component {
     const { showModal, saveModel, model } = this.props;
     const modelToSave = this.createModelToSave(values);
 
+    model.onUploadProgress = ProgressEvent => {
+      model.loaded = (ProgressEvent.loaded / ProgressEvent.total) * 100;
+      this.setState({ loaded: model.loaded });
+      console.log((ProgressEvent.loaded / ProgressEvent.total) * 100);
+    };
+
     // Add auth user _id
     modelToSave.id = model._id;
 
+    modelToSave.onUploadProgress = model.onUploadProgress;
+
     //dispatch the action to save the model here
-    return saveModel(modelToSave).then(model => {
-      if (model && model.id) {
+    return saveModel(modelToSave).then(response => {
+      if (response.model && response.model._id) {
         showModal({
           type: MODAL_SAVED
         });
@@ -56,8 +70,15 @@ class Image extends Component {
   }
 
   render() {
-    const { model = {}, showModal, isFetching, errorMessage, properties, multiple = false} = this.props;
-
+    const {
+      model = {},
+      showModal,
+      isFetching,
+      errorMessage,
+      properties,
+      multiple = false
+    } = this.props;
+    const { loaded } = this.state;
     return (
       <div>
         <br />
@@ -67,25 +88,20 @@ class Image extends Component {
           <div className="col-md-6">
             {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
 
-            {!errorMessage &&
-              !isFetching &&
-              !model && (
-                <img
-                  src={UserPhotoNotFound}
-                  className="rounded mx-auto d-block"
-                  alt="Photo not found"
-                />
-              )}
+            {!errorMessage && !isFetching && !model && (
+              <img
+                src={UserPhotoNotFound}
+                className="rounded mx-auto d-block"
+                alt="Photo not found"
+              />
+            )}
 
-            {!errorMessage &&
-              !isFetching &&
-              model &&
-              model.image && (
-                <LightBox
-                  images={[model.imageFormats.large || UserPhotoNotFound]}
-                  alt={model.stagename}
-                />
-              )}
+            {!errorMessage && !isFetching && model && model.image && (
+              <LightBox
+                images={[model.imageFormats.large || UserPhotoNotFound]}
+                alt={model.stagename}
+              />
+            )}
           </div>
           <div className="col-md-6">
             <Form
@@ -95,6 +111,7 @@ class Image extends Component {
               showModal={showModal}
               properties={properties}
               multiple={multiple}
+              loaded={loaded}
             />
           </div>
         </div>
@@ -114,9 +131,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-Image = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Image);
+Image = connect(mapStateToProps, mapDispatchToProps)(Image);
 
 export default Image;

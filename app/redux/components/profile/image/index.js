@@ -4,9 +4,6 @@ import { bindActionCreators } from "redux";
 import LateralMenu from "../lateralMenu";
 import { showModal } from "../../modal/actions";
 import {
-  getDefaultModel,
-  getDefaultModelErrorMessage,
-  getDefaultModelIsFetching,
   getModel,
   getModelIsFetching,
   getModelErrorMessage
@@ -68,9 +65,6 @@ const mapStateToProps = (
     }
   }
 ) => ({
-  //model: getDefaultModel(state),
-  //isFetching: getDefaultModelIsFetching(state),
-  //errorMessage: getDefaultModelErrorMessage(state)
   model: getModel(state, _id),
   isFetching: getModelIsFetching(state, _id),
   errorMessage: getModelErrorMessage(state, _id)

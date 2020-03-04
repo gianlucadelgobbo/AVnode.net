@@ -1567,16 +1567,18 @@ export const renderDropzoneInput = field => {
           <ProgressBar now={field.loaded} label={`${field.loaded}%`} />
         </div>
       )}
-      <button
-        disabled={field.meta.pristine}
-        type="button"
-        className="btn btn-success"
-        onClick={() => {
-          field.uploadFile(field.input.value);
-        }}
-      >
-        UPLOAD
-      </button>
+      {field.uploadButton && (
+        <button
+          disabled={field.meta.pristine}
+          type="button"
+          className="btn btn-success"
+          onClick={() => {
+            field.uploadFile(field.input.value);
+          }}
+        >
+          UPLOAD
+        </button>
+      )}
       {field.meta.touched && field.meta.error && (
         <span className="error">
           <FormattedMessage id={field.meta.error} />
