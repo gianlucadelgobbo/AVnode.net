@@ -651,11 +651,6 @@ div.ReactTags__selected a.ReactTags__remove {
   }
 }
 
-.list-upload {
-  button {
-    margin: 5px 0 0 0;
-  }
-}
 .gallery-list {
   h4 {
     display: inline-block;
@@ -676,24 +671,4 @@ div.ReactTags__selected a.ReactTags__remove {
 }
 #app .connectedSortable .list-group-item:last-child {
   margin: 3px 3px 3px 3px;
-}
-.form-upload {
-  .list-group-upload {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-left: 0;
-    margin-bottom: 0;
-    padding: 20px 0;
-    list-style: none;
-  }
-  .btn-success {
-    width: 100%;
-    margin: 10px 0;
-  }
-  .list-upload {
-    i {
-      padding-right: 10px;
-    }
-  }
 }

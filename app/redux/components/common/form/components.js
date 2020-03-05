@@ -1497,21 +1497,23 @@ export const renderDropzoneInput = field => {
       </Dropzone>
       {files && Array.isArray(files) && (
         <div>
-          <ul className="list-group-upload attached-file">
+          <ul className="container-fluid attached-file">
             {files.map((file, i) => (
-              <li className="list-upload" key={i}>
-                <div className="col mt-2">
+              <li className="row mt-3" key={i}>
+                <div className="col pt-1">
                   <i
-                    className={`fa fa-${field.icon}`}
+                    className={`fa fa-${field.icon} mr-2`}
                     data-toggle="tooltip"
                     data-placement="top"
                   ></i>
                   {file.name}
                   <span className="file-size">({formatBytes(file.size)})</span>
+                </div>
+                <div className="float-right">
                   {!field.uploadButton && (
                     <button
                       type="button"
-                      className="btn btn-danger ml-2 clear-attachment"
+                      className="btn btn-danger ml-3 clear-attachment"
                       onClick={() => {
                         field.showModal({
                           type: MODAL_REMOVE,
@@ -1532,37 +1534,36 @@ export const renderDropzoneInput = field => {
                       />
                     </button>
                   )}
+                  {field.uploadButton && files.length > 0 && (
+                    <button
+                      type="button"
+                      className="btn btn-danger ml-3 clear-attachment"
+                      onClick={() => {
+                        field.showModal({
+                          type: MODAL_REMOVE,
+                          props: {
+                            onRemove: () => {
+                              let result = [...files];
+                              result = [];
+                              field.input.onChange(result);
+                              field.input.value = [];
+                              console.log(field);
+                            }
+                          }
+                        });
+                      }}
+                    >
+                      <i
+                        className="fa fa-trash"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                      />
+                    </button>
+                  )}
                 </div>
-              </li>
+            </li>
             ))}
-            <span className="btn-remove">
-              {field.uploadButton && files.length > 0 && (
-                <button
-                  type="button"
-                  className="btn btn-danger clear-attachment"
-                  onClick={() => {
-                    field.showModal({
-                      type: MODAL_REMOVE,
-                      props: {
-                        onRemove: () => {
-                          let result = [...files];
-                          result = [];
-                          field.input.onChange(result);
-                          field.input.value = [];
-                          console.log(field);
-                        }
-                      }
-                    });
-                  }}
-                >
-                  <i
-                    className="fa fa-trash"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                  />
-                </button>
-              )}
-            </span>
+
           </ul>
           <ProgressBar now={field.loaded} label={`${field.loaded}%`} />
         </div>
@@ -1571,7 +1572,7 @@ export const renderDropzoneInput = field => {
         <button
           disabled={field.meta.pristine}
           type="button"
-          className="btn btn-success"
+          className="btn btn-success btn-block mt-3"
           onClick={() => {
             field.uploadFile(field.input.value);
           }}
@@ -2724,7 +2725,7 @@ export const uploadGallery = ({
             maxSize={maxSize}
             accept={accept}
             showModal={showModal}
-            className="enableBorder"
+            className="form-upload"
             uploadFile={uploadFile}
             uploadButton={uploadButton}
             multiple={multiple}
@@ -2828,7 +2829,7 @@ export const multiActivities = ({
                 placeholder="Activity logo (.svg only)"
                 isChild={true}
                 showModal={showModal}
-                className="enableBorder"
+                className="form-upload"
               />
             </div>
           </div>
