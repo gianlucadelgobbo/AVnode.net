@@ -13,9 +13,6 @@ import { fetchList as fetchCountries } from "../../countries/actions";
 import { getList as getCountries } from "../../countries/selectors";
 import { MODAL_SAVED } from "../../modal/constants";
 import {
-  getDefaultModel,
-  getDefaultModelErrorMessage,
-  getDefaultModelIsFetching,
   getModel,
   getModelIsFetching,
   getModelErrorMessage
@@ -23,7 +20,8 @@ import {
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import moment from "moment";
 import axios from "axios";
-import { DATE_FORMAT } from "../../../conf";
+import { genders } from "../../../utils";
+import { locales, locales_labels } from "../../../../../config/default.json";
 
 import TitleComponent from "../../titleComponent";
 import { PROFILE_NAME, SHOW } from "./constants";
@@ -49,7 +47,6 @@ class ProfilePrivate extends Component {
     });
     fetchCountries();
   }
-
   // Convert form values to API model
   createModelToSave(values) {
     //clone obj
@@ -64,7 +61,7 @@ class ProfilePrivate extends Component {
       .utc()
       .format();
     // Convert citizenship
-    model.citizenship = model.citizenship.filter(a => a).map(a => a.value);
+    model.citizenship = model.citizenship;
     // Convert addresses_private
     model.addresses_private = model.addresses_private.map(a => {
       /* const originalString = a.text;
@@ -101,7 +98,7 @@ class ProfilePrivate extends Component {
 
   // Modify model from API to create form initial values
   getInitialValues() {
-    const { model } = this.props;
+    const { model, countries } = this.props;
 
     if (!model) {
       return {};
@@ -113,13 +110,22 @@ class ProfilePrivate extends Component {
     //Convert surname for redux-form
     v.surname = model.surname;
     //Convert gender for redux-form
-    v.gender = model.gender ? model.gender : "";
+    v.gender = model.gender
+      ? genders.filter(gender => gender.value === model.gender)
+      : "";
     //Convert language preferred for redux-form
-    v.lang = model.lang ? model.lang : "";
+    v.lang = model.lang
+      ? locales
+          .map(l => ({
+            value: l,
+            label: locales_labels[l]
+          }))
+          .filter(lang => lang.value === model.lang)
+      : "";
     //Convert birthday for redux-form
     v.birthday = new Date(model.birthday);
     //Convert citizenship for redux-form
-    v.citizenship = model.citizenship ? model.citizenship : "";
+    v.citizenship = model.citizenship;
     // Addresses_private: Add one item if value empty
     v.addresses_private =
       Array.isArray(model.addresses_private) &&
