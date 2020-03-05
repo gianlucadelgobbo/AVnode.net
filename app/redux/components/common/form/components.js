@@ -2630,10 +2630,10 @@ export const listGallery = ({
   return (
     <div>
       {/* if array of images */}
-      <div className="row">
+      <div className="row mb-3">
         <div className="col-sm-9">
           <div className="gallery-list labelField">
-            <h4>Gallery</h4>
+            <h4>Images</h4>
           </div>
         </div>
         <div className="col-sm-3 text-right">
@@ -2711,7 +2711,9 @@ export const uploadGallery = ({
   maxSize,
   uploadFile,
   media,
-  multiple
+  multiple,
+  loaded,
+  icon
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
@@ -2722,13 +2724,15 @@ export const uploadGallery = ({
           <Field
             name="gallery"
             component={renderDropzoneInput}
-            maxSize={maxSize}
             accept={accept}
+            maxSize={maxSize}
             showModal={showModal}
             className="form-upload"
             uploadFile={uploadFile}
             uploadButton={uploadButton}
             multiple={multiple}
+            icon={icon}
+            loaded={loaded}
           />
         </div>
       </div>
@@ -2737,13 +2741,6 @@ export const uploadGallery = ({
   return (
     <div>
       {/* if array of images */}
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="labelField">
-            <h4>Gallery</h4>
-          </div>
-        </div>
-      </div>
       <div>{renderSubField()}</div>
       {media && Array.isArray(media) && media.length > 0 && (
         <div className="row">
