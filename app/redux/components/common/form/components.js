@@ -1340,7 +1340,6 @@ export const renderTimePicker = ({
         withoutIcon={withoutIcon}
         colorPalette="dark"
       />
-      ,
       {meta.error && meta.touched && (
         <span className="error-message">
           <FormattedMessage id={meta.error} />
@@ -1561,9 +1560,8 @@ export const renderDropzoneInput = field => {
                     </button>
                   )}
                 </div>
-            </li>
+              </li>
             ))}
-
           </ul>
           <ProgressBar now={field.loaded} label={`${field.loaded}%`} />
         </div>

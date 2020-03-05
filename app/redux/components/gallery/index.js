@@ -191,7 +191,6 @@ class Gallery extends Component {
                   {model.galleries.map(this.renderImage.bind(this))}
                 </div>
               )}
-            }
           </div>
         </div>
       </div>
@@ -210,9 +209,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-Gallery = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Gallery);
+Gallery = connect(mapStateToProps, mapDispatchToProps)(Gallery);
 
 export default Gallery;
