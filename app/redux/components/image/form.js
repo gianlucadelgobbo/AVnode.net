@@ -43,6 +43,7 @@ class ProfileImageForm extends Component {
           name="images"
           component={renderDropzoneInput}
           showModal={showModal}
+          className="form-upload"
           multiple={multiple}
           maxSize={10485760}
           accept="image/jpeg, image/png"
