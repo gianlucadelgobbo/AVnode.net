@@ -35,8 +35,8 @@ class AddGalleries extends Component {
     modelToSave.id = "2";
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
-      if (response.model && response.model.id) {
-        history.push("/admin/galleries/" + `${response.model.id}` + "/gallery");
+      if (response.model && response.model._id) {
+        history.push("/admin/galleries/" + `${response.model._id}` + "/public");
         hideModal();
       }
     });
@@ -78,9 +78,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-AddGalleries = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddGalleries);
+AddGalleries = connect(mapStateToProps, mapDispatchToProps)(AddGalleries);
 
 export default AddGalleries;

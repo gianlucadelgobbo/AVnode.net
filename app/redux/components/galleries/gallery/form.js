@@ -14,6 +14,7 @@ class GalleriesGalleryForm extends Component {
       onSubmit,
       onRemove,
       uploadFile,
+      loaded,
       media
     } = this.props;
 
@@ -30,6 +31,8 @@ class GalleriesGalleryForm extends Component {
           media={media}
           multiple={true}
           onRemove={onRemove}
+          icon="video"
+          loaded={loaded}
         />
         <hr />
 

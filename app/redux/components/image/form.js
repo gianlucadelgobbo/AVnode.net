@@ -57,9 +57,9 @@ class ProfileImageForm extends Component {
         <button
           type="submit"
           disabled={submitting || !images || (images && !images.length)}
-          className="btn btn-primary btn-lg btn-block"
+          className="btn btn-success btn-lg btn-block"
         >
-          {submitting ? "Saving..." : "Save"}
+          {submitting ? "Uploading..." : "UPLOAD"}
         </button>
       </form>
     );

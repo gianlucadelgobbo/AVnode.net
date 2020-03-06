@@ -23,6 +23,12 @@ import { GALLERY_NAME, SHOW } from "./constants";
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 class GalleriesGallery extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: 0
+    };
+  }
   componentDidMount() {
     const {
       fetchModel,
@@ -81,19 +87,23 @@ class GalleriesGallery extends Component {
   }
 
   uploadFile(files) {
+    const { loaded } = this.state;
     //console.log("uploadFileuploadFileuploadFileuploadFileuploadFileuploadFileuploadFile");
-    const { model, uploadModel, showModal, showLoading, hideLoading } = this.props;
+    const { history, model, uploadModel, showModal, showLoading, hideLoading } = this.props;
     model.galleries = files;
     model.onUploadProgress = ProgressEvent => {
+      model.loaded = (ProgressEvent.loaded / ProgressEvent.total) * 100;
+      this.setState({ loaded: model.loaded });
       console.log(ProgressEvent.loaded / ProgressEvent.total*100);
     }
     // 4. LOADING BAR show loading bar
     showLoading();
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
-        showModal({
+        history.push("/admin/galleries/" + `${response.model._id}` + "/public");
+        /* showModal({
           type: MODAL_SAVED
-        });
+        }); */
         // 5. LOADING BAR hide loading bar
         hideLoading();
       }
@@ -102,7 +112,7 @@ class GalleriesGallery extends Component {
 
   onSubmit(values) {
     // 3. LOADING BAR get action from props
-    const { showModal, saveModel, model,  showLoading, hideLoading } = this.props;
+    const { history, showModal, saveModel, model,  showLoading, hideLoading } = this.props;
     const modelToSave = this.createModelToSave(values);
 
     modelToSave._id = model._id;
@@ -113,11 +123,12 @@ class GalleriesGallery extends Component {
     //dispatch the action to save the model here
     return saveModel(modelToSave).then(response => {
       if (response.model && response.model._id) {
+        history.push("/admin/galleries/" + `${response.model._id}` + "/public");
         // 5. LOADING BAR hide loading bar
         hideLoading();
-        showModal({
+        /* showModal({
           type: MODAL_SAVED
-        });
+        }); */
       }
     });
   }
@@ -133,6 +144,7 @@ class GalleriesGallery extends Component {
       errorMessage,
       removeModel
     } = this.props;
+    const { loaded } = this.state;
     return (
       <div>
         {isFetching && !model && <Loading />}
@@ -151,6 +163,7 @@ class GalleriesGallery extends Component {
           initialValues={this.getInitialValues()}
           onSubmit={this.onSubmit.bind(this)}
           media={model.media}
+          loaded={loaded}
           showModal={showModal}
           tabs={locales}
           labels={locales_labels}
