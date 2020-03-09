@@ -189,7 +189,7 @@ $('a[href*="#"]')
           data: datastring
         }).
         done(function(data) {
-          if (data.message) {
+          if (data && data.message) {
             $('#modalBookPerf .alert').html(data.message);
             $('#modalBookPerf .alert').addClass('alert-danger');
             $('#modalBookPerf .alert').removeClass('d-none');
