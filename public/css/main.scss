@@ -730,23 +730,26 @@ a:hover + .partner_stagename,
 
 /* performer page */
  
-.performer_links_list {
+/* .performer_links_list {
   background: $color1;
   padding: 0 15px;
   margin: 0;
   display: inline-block;
-}
+} */
 
 .performer_links_list a {
-  color: $color2;
+  color: $color1;
+  display: block;
+}
+.performer_links_list li {
   display: inline-block;
 }
-.performer_links_list li:after {
+/* .performer_links_list li:after {
   content: "/";
   color: $color4;
   display: inline-block;
   margin: 0 0px 0 5px;
-}
+} */
 
 .performer_links_list li:last-child:after {
   content: "";
@@ -1584,6 +1587,10 @@ ul.footer-nav.footer-nav-inline.socials {
 
 ul.footer-nav.footer-nav-inline.socials li {
   display: inline-block;
+}
+
+ul.footer-nav.footer-nav-inline.socials a {
+  display: block;
 }
 
 ul.footer-nav.footer-nav-inline.socials .about_button {
