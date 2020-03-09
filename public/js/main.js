@@ -189,8 +189,8 @@ $('a[href*="#"]')
           data: datastring
         }).
         done(function(data) {
-          if (data.errors) {
-            $('#modalBookPerf .alert').html(data.errors.message);
+          if (data.message) {
+            $('#modalBookPerf .alert').html(data.message);
             $('#modalBookPerf .alert').addClass('alert-danger');
             $('#modalBookPerf .alert').removeClass('d-none');
           } else {

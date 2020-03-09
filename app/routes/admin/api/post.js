@@ -627,8 +627,8 @@ router.bookingRequest = (req, res) => {
         email_content: {
           site: 'http://'+req.headers.host,
           subject:  req.body.subject+' | AVnode.net',
-          html_text: messagetext.replace(/\n/,"<br />"),
           text_text:  messagetext,
+          html_text: messagetext.replace(new RegExp("\n","g"),"<br />"),
           html_sign: "The AVnode.net Team",
           text_sign:  "The AVnode.net Team"
         }
@@ -636,7 +636,7 @@ router.bookingRequest = (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          message = {bcc: "bella <g.delgobbo@avnode.org>"};
+          message = {to: "bella <g.delgobbo@avnode.org>"};
           /* for (var a=0;a<perf.users.length;a++) {
             if (perf.users[a].is_crew) {
               console.log("crew")
@@ -666,9 +666,9 @@ router.bookingRequest = (req, res) => {
             },
             email_content: {
               site: 'http://'+req.headers.host,
-              subject:  req.body.subject+' | AVnode.net',
-              html_text: messagetext.replace(/\n/,"<br />"),
+              subject:  req.body.subject+' | AVnode.netaaaaa',
               text_text:  messagetext,
+              html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
               html_sign: "The AVnode.net Team",
               text_sign:  "The AVnode.net Team"
             }
