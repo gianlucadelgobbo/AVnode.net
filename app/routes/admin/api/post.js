@@ -597,7 +597,7 @@ data: data
 
 
 router.bookingRequest = (req, res) => {
-  console.log(req.body);
+  logger.debug(req.body);
   if (req.body.perf) {
     let message = {};
 
@@ -606,8 +606,8 @@ router.bookingRequest = (req, res) => {
     .select({title: 1})
     .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
     .exec((err, perf) => {
-      console.log(perf.users);
-      console.log(err);
+      logger.debug(perf.users);
+      logger.debug(err);
       message = {to: "bella <g.delgobbo@avnode.org>"};
       let messagetext = "";
       messagetext+= "Stagename: "+req.user.stagename+"\n";
@@ -617,7 +617,7 @@ router.bookingRequest = (req, res) => {
       if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
       messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n";
       messagetext+= req.body.request+"\n--------------";
-      console.log(messagetext);
+      logger.debug(messagetext);
       const mailer = require('../../../utilities/mailer');
       mailer.mySendMailer({
         template: 'bookingRequest',
@@ -639,7 +639,7 @@ router.bookingRequest = (req, res) => {
           message = {to: "bella <g.delgobbo@avnode.org>"};
           /* for (var a=0;a<perf.users.length;a++) {
             if (perf.users[a].is_crew) {
-              console.log("crew")
+              logger.debug("crew")
               for (var b=0;b<perf.users[a].members.length;b++) {
                 if (!message.to) {
                   message.to = perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">";
@@ -649,7 +649,7 @@ router.bookingRequest = (req, res) => {
                 }
                 }
             } else {
-              console.log("single")
+              logger.debug("single")
               if (!message.to) {
                 message.to = perf.users[a].stagename+" <"+perf.users[a].email+">";
               } else {
@@ -687,7 +687,7 @@ router.bookingRequest = (req, res) => {
 }
 
 router.updateSubscription = (req, res) => {
-  //console.log("updateSubscription");
+  //logger.debug("updateSubscription");
 
 /*   const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 
@@ -783,7 +783,7 @@ router.updateSubscription = (req, res) => {
     .select({schedule: 1, call: 1, event: 1})
     .populate([{ "path": "status", "select": "name", "model": "Category"},{ "path": "performance", "select": "title", "model": "Performance"},{ "path": "reference", "select": "stagename name surname email mobile", "model": "User"}])
     .exec((err, sub) => {
-      //console.log(sub);
+      //logger.debug(sub);
       Models.Event
       .findOne({_id: sub.event})
       .select({program: 1, organizationsettings: 1})
@@ -808,9 +808,9 @@ router.updateSubscription = (req, res) => {
         const old_status_name = sub.status.name;
         sub.status = req.body.status;
         sub.save(function(err){
-          //console.log("sub.save");
-          //console.log(sub.call);
-          //console.log(sub.status);
+          //logger.debug("sub.save");
+          //logger.debug(sub.call);
+          //logger.debug(sub.status);
           //event.save(function(err){
             if(!err) {
               if (sub.call >= 0 && event.organizationsettings.call && event.organizationsettings.call.calls && event.organizationsettings.call.calls[sub.call] && event.organizationsettings.call.calls[sub.call].email) {
@@ -831,12 +831,12 @@ router.updateSubscription = (req, res) => {
                   subject: __("Submission UPDATES") + " | " + sub.performance.title + " | " + event.organizationsettings.call.calls[sub.call].title,
                   text: email
                 };
-                //console.log("pre gMailer")
+                //logger.debug("pre gMailer")
                 gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-                  //console.log("gMailer");
-                  //console.log(err);
-                  //console.log("gMailer");
-                  //console.log(result);
+                  //logger.debug("gMailer");
+                  //logger.debug(err);
+                  //logger.debug("gMailer");
+                  //logger.debug(result);
                   if (err) {
                     logger.debug("Email sending failure");
                     res.json({error: true, msg: "Email sending failure"});
