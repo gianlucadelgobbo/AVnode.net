@@ -16,7 +16,7 @@
               !=global.__("Subject")+": "
               b=global.__("Booking request for")+" "+data.title
               input(type="hidden", name="perf", value=data._id)
-              input(type="hidden", name="subject", value="Booking request for "+data.title+" | AVnode.net")
+              input(type="hidden", name="subject", value="Booking request for "+data.title)
             .form-group
               label(for='organisation')=global.__("Organisation")+" ("+global.__("Crew")+") "+": "
               if user.crews

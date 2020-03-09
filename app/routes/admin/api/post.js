@@ -608,14 +608,14 @@ router.bookingRequest = (req, res) => {
     .exec((err, perf) => {
       logger.debug(perf.users);
       logger.debug(err);
-      message = {to: "bella <g.delgobbo@avnode.org>"};
+      message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
       let messagetext = "";
       messagetext+= "Stagename: "+req.user.stagename+"\n";
       messagetext+= "Name: "+req.user.name+"\n";
       messagetext+= "Surname: "+req.user.surname+"\n";
       messagetext+= "Email: "+req.user.email+"\n";
       if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
-      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n";
+      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n";
       messagetext+= req.body.request+"\n--------------";
       logger.debug(messagetext);
       const mailer = require('../../../utilities/mailer');
@@ -636,8 +636,8 @@ router.bookingRequest = (req, res) => {
         if (err) {
           res.json(err);
         } else {
-          message = {to: "bella <g.delgobbo@avnode.org>"};
-          /* for (var a=0;a<perf.users.length;a++) {
+          message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+          for (var a=0;a<perf.users.length;a++) {
             if (perf.users[a].is_crew) {
               logger.debug("crew")
               for (var b=0;b<perf.users[a].members.length;b++) {
@@ -657,8 +657,8 @@ router.bookingRequest = (req, res) => {
                 message.cc.push(perf.users[a].stagename+" <"+perf.users[a].email+">");
               }
             }
-          } */
-          messagetext = "Dear "+perf.users[0].stagename+",\nwe got this booking request, are you interested?\n\n---------"+req.body.request+"\n--------------";
+          }
+          messagetext = "Dear "+perf.users[0].stagename+",\nwe got this booking request, are you interested?\n\n---------\n"+req.body.request+"\n--------------";
           mailer.mySendMailer({
             template: 'bookingRequest',
             message: message,
@@ -666,7 +666,7 @@ router.bookingRequest = (req, res) => {
             },
             email_content: {
               site: 'http://'+req.headers.host,
-              subject:  req.body.subject+' | AVnode.netaaaaa',
+              subject:  req.body.subject+' | AVnode.net',
               text_text:  messagetext,
               html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
               html_sign: "The AVnode.net Team",
