@@ -610,12 +610,12 @@ router.bookingRequest = (req, res) => {
       console.log(err);
       message = {to: "bella <g.delgobbo@avnode.org>"};
       let messagetext = "";
-      messagetext+= "Stagename: "+user.stagename+"\n";
-      messagetext+= "Name: "+user.name+"\n";
-      messagetext+= "Surname: "+user.surname+"\n";
-      messagetext+= "Email: "+user.email+"\n";
+      messagetext+= "Stagename: "+req.user.stagename+"\n";
+      messagetext+= "Name: "+req.user.name+"\n";
+      messagetext+= "Surname: "+req.user.surname+"\n";
+      messagetext+= "Email: "+req.user.email+"\n";
       if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
-      messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n";
+      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n";
       messagetext+= req.body.request+"\n--------------";
       console.log(messagetext);
       const mailer = require('../../../utilities/mailer');
