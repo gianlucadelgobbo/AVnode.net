@@ -596,6 +596,96 @@ data: data
 */
 
 
+router.bookingRequest = (req, res) => {
+  console.log(req.body);
+  if (req.body.perf) {
+    let message = {};
+
+    Models.Performance
+    .findOne({_id: req.body.perf/* , members:req.user.id */})
+    .select({title: 1})
+    .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
+    .exec((err, perf) => {
+      console.log(perf.users);
+      console.log(err);
+      message = {to: "bella <g.delgobbo@avnode.org>"};
+      let messagetext = "";
+      messagetext+= "Stagename: "+user.stagename+"\n";
+      messagetext+= "Name: "+user.name+"\n";
+      messagetext+= "Surname: "+user.surname+"\n";
+      messagetext+= "Email: "+user.email+"\n";
+      if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
+      messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n";
+      messagetext+= req.body.request+"\n--------------";
+      console.log(messagetext);
+      const mailer = require('../../../utilities/mailer');
+      mailer.mySendMailer({
+        template: 'bookingRequest',
+        message: message,
+        locals: {
+        },
+        email_content: {
+          site: 'http://'+req.headers.host,
+          subject:  req.body.subject+' | AVnode.net',
+          html_text: messagetext.replace(/\n/,"<br />"),
+          text_text:  messagetext,
+          html_sign: "The AVnode.net Team",
+          text_sign:  "The AVnode.net Team"
+        }
+      }, function(err){
+        if (err) {
+          res.json(err);
+        } else {
+          message = {bcc: "bella <g.delgobbo@avnode.org>"};
+          /* for (var a=0;a<perf.users.length;a++) {
+            if (perf.users[a].is_crew) {
+              console.log("crew")
+              for (var b=0;b<perf.users[a].members.length;b++) {
+                if (!message.to) {
+                  message.to = perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">";
+                } else {
+                  if (!message.cc) message.cc = [];
+                  message.cc.push(perf.users[a].members[b].stagename+" <"+perf.users[a].members[b].email+">");
+                }
+                }
+            } else {
+              console.log("single")
+              if (!message.to) {
+                message.to = perf.users[a].stagename+" <"+perf.users[a].email+">";
+              } else {
+                if (!message.cc) message.cc = [];
+                message.cc.push(perf.users[a].stagename+" <"+perf.users[a].email+">");
+              }
+            }
+          } */
+          messagetext = "Dear "+perf.users[0].stagename+",\nwe got this booking request, are you interested?\n\n---------"+req.body.request+"\n--------------";
+          mailer.mySendMailer({
+            template: 'bookingRequest',
+            message: message,
+            locals: {
+            },
+            email_content: {
+              site: 'http://'+req.headers.host,
+              subject:  req.body.subject+' | AVnode.net',
+              html_text: messagetext.replace(/\n/,"<br />"),
+              text_text:  messagetext,
+              html_sign: "The AVnode.net Team",
+              text_sign:  "The AVnode.net Team"
+            }
+          }, function(err){
+            res.json(err);
+          });
+        }
+      });
+      /* program.save(err => {
+        res.json({res: err ? err : true});
+      }); */
+    });
+  } else {
+    res.json({errors:{message:"Performance do not exists"}});
+  }
+}
+
 router.updateSubscription = (req, res) => {
   //console.log("updateSubscription");
 

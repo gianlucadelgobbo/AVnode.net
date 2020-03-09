@@ -148,7 +148,76 @@ $('a[href*="#"]')
     } else {
         $("#to_top").removeClass("to_top_visibile");
     }
-  });  
+  });
+
+  $( ".print-perf" ).click(function( event ) {
+    event.preventDefault();
+    var user = $(this).data('user');
+    if (user) {
+      $('#msg_modal .modal-body').html('This featur is under development, we keep you posted.');
+      $('#msg_modal .modal-footer button').html('CONTINUE');
+      $('#msg_modal .modal-footer button').click(function( event ) {
+        $('#msg_modal ').modal('hide');
+      });  
+    } else {
+      var slug = $(this).data('slug');
+      $('#msg_modal .modal-body').html('Please login to use this feature.');
+      $('#msg_modal .modal-footer button').html('LOGIN');
+      $('#msg_modal .modal-footer button').click(function( event ) {
+        window.location.href="/login?returnTo=/performances/"+slug+"/";
+      });  
+    }
+    $('#msg_modal ').modal('show');
+  });
+
+  $( ".book-perf" ).click(function( event ) {
+    event.preventDefault();
+    var user = $(this).data('user');
+    $('#modalBookPerf .alert').addClass('d-none');
+    $('#modalBookPerf .alert').removeClass('alert-danger');
+    $('#modalBookPerf .alert').removeClass('alert-success');
+    if (user) {
+      $('#modalBookPerf .modal-footer .btn-primary').click(function( event ) {
+        $('#modalBookPerf .alert').addClass('d-none');
+        $('#modalBookPerf .alert').removeClass('alert-danger');
+        $('#modalBookPerf .alert').removeClass('alert-success');
+        var datastring = $("#modalBookPerf form").serialize();
+        console.log(datastring);
+        $.ajax({
+          type: "POST",
+          url: "/admin/api/bookingrequest",
+          data: datastring
+        }).
+        done(function(data) {
+          if (data.errors) {
+            $('#modalBookPerf .alert').html(data.errors.message);
+            $('#modalBookPerf .alert').addClass('alert-danger');
+            $('#modalBookPerf .alert').removeClass('d-none');
+          } else {
+            $('#modalBookPerf .alert').html("Request sent with success.");
+            $('#modalBookPerf .alert').addClass('alert-success');
+            $('#modalBookPerf .alert').removeClass('d-none');
+          }
+          //console.log(data);
+        })
+        .fail(function (jqXHR, textStatus) {
+          $('#modalBookPerf .alert').html("Internal Server Error");
+          $('#modalBookPerf .alert').addClass('alert-danger');
+          $('#modalBookPerf .alert').removeClass('d-none');
+        });
+      });  
+      $('#modalBookPerf ').modal('show');
+    } else {
+      var slug = $(this).data('slug');
+      $('#msg_modal .modal-body').html('Please login to use this feature.');
+      $('#msg_modal .modal-footer button').html('LOGIN');
+      $('#msg_modal .modal-footer button').click(function( event ) {
+        window.location.href="/login?returnTo=/performances/"+slug+"/";
+      });  
+      $('#msg_modal ').modal('show');
+    }
+  });
+
 });  
 
 

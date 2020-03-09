@@ -11,6 +11,16 @@ block title
             if editable
               !="  "
               a.badge.badge-danger(href="/admin/performances/"+data._id+"/public")=global.__("EDIT")
+          if data.type
+            ul.list-inline.d-block.d-sm-none
+              li.list-inline-item
+                  span=data.type.name
+              if data.tecnique
+                li.list-inline-item
+                  span=data.tecnique.name
+              if data.genre
+                li.list-inline-item
+                  span=data.genre.name
           if data.stats
             .performance_stat_container
               .performance_stat_wrapper
@@ -69,47 +79,56 @@ block content
                 h4.tech_info_title=global.__('What the artists brings')
                 p!=data.tech_art
 
-      .col-sm-4.performance_info_sidebar
-        if data.type
-          ul.list-inline.category_performance_item.single_performance
-            li.list-inline-item
-                span=data.type.name
-            if data.tecnique
-              li.list-inline-item
-                span=data.tecnique.name
-            if data.genre
-              li.list-inline-item
-                span=data.genre.name
-        .performance_users_item_wrapper
-          .row
-            each user in data.users
-              .col-sm-12
+      .col-sm-4.performance_info_sidebar-cnt.mb-5
+        .row.performance_info_sidebar
+          .col.pb-2
+            if data.type
+              ul.list-inline.category_performance_item.single_performance.d-none.d-sm-block
+                li.list-inline-item
+                    span=data.type.name
+                if data.tecnique
+                  li.list-inline-item
+                    span=data.tecnique.name
+                if data.genre
+                  li.list-inline-item
+                    span=data.genre.name
+            .row.mb-3
+              .col
+                button.btn.btn-primary.btn-block.print-perf(data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                  !=global.__('PRINT')
+                  br
+                  !=global.__('PDF')
+              .col
+                button.btn.btn-primary.btn-block.book-perf(data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                  !=global.__('REQUEST BOOKING')
+
+            .performance_users_item_wrapper
+              h3=global.__('Authors')  
+              each user in data.users
                 .performance_user_wrapper
                   .user_perfomance_image
-                    a.performance_event_title(href="/"+user.slug)
+                    a(href="/"+user.slug)
                       img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
                   .user_perfomance_country_city
-                    a.performance_event_title(href="/"+user.slug).users_performance_item_name=user.stagename
+                    a.performance_user_title(href="/"+user.slug).users_performance_item_name=user.stagename
                     if user.addressesFormatted && user.addressesFormatted.length
                       p.users_performance_item_country!=user.addressesFormatted.join(", ")
-        .performance_events_wrapper
-          if data.bookings.length
-            h3=global.__('Events')  
-            .row.performance_event_wrapper
-              each booking in data.bookings
-                .col-sm-3
-                  .performance_event_image
-                    a.performance_event_title(href="/events/"+booking.event.slug)
-                      img.img-fluid(src=booking.event.imageFormats.small, alt=booking.event.title)
-                .col-sm-9
-                  .performance_event_info
-                    a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
-                    br
-                    !=booking.boxDate
-                    //each schedule in booking.schedule
-                      !=schedule.boxDate
+            if data.bookings.length
+              .performance_events_wrapper
+                h3.mt-3=global.__('Events')  
+                each booking in data.bookings
+                  .performance_event_wrapper
+                    .performance_event_image.mt-2
+                      a(href="/events/"+booking.event.slug)
+                        img.img-fluid(src=booking.event.imageFormats.small, alt=booking.event.title)
+                    .performance_event_info
+                      a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
                       br
-                      !=schedule.venue.name + " | " + schedule.venue.room + " | " + schedule.venue.location.locality + ", " + schedule.venue.location.country
+                      !=booking.boxDate ? booking.boxDate : booking.event.boxDate
+                      //each schedule in booking.schedule
+                        !=schedule.boxDate
+                        br
+                        !=schedule.venue.name + " | " + schedule.venue.room + " | " + schedule.venue.location.locality + ", " + schedule.venue.location.country
   if data.galleries.length || data.videos.length
     .divider_gallery
       svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
@@ -138,3 +157,4 @@ block content
                 .owl-carousel.loop_3items.owl-theme
                   each item in data.videos            
                     include ../partials/boxVideo
+  include ../partials/modals/modalBookPerf

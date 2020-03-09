@@ -35,16 +35,16 @@ $(document).ready(function(){
       navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
       "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
       responsive:{
-                    100:{
-                        items:1
-                    },
-                    600:{
-                    items:2
-                    },
-                    768:{
-                        items:3
-                    }
-                }
+        100:{
+          items:1
+        },
+        600:{
+          items:2
+        },
+        768:{
+          items:3
+        }
+      }
     });
 
     $('.loop').owlCarousel({
@@ -59,20 +59,19 @@ $(document).ready(function(){
       navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
       "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
       responsive:{
-            100:{
-                items:1
-            },
-            600:{
-            items:2
-            },
-            768:{
-                items:3
-            }, 
-            990:{
-                items:4
-            }
-
+        100:{
+          items:1
+        },
+        600:{
+          items:2
+        },
+        768:{
+          items:3
+        }, 
+        990:{
+          items:4
         }
+      }
     });
 
     $('.mono').owlCarousel({
@@ -143,13 +142,18 @@ $('a[href*="#"]')
 
   $(window).scroll(function() {    
     var scroll = $(window).scrollTop();
-
     if (scroll >= 800) {
         $("#to_top").addClass("to_top_visibile");
     } else {
         $("#to_top").removeClass("to_top_visibile");
     }
-});  
-
-
   });  
+
+  $( ".print-perf" ).click(function( event ) {
+    event.preventDefault();
+    console.log("bella");
+    $('#msg_modal .modal-body').html('Please login to use this feature.');
+    $('#msg_modal ').modal('show');
+  });
+
+});  

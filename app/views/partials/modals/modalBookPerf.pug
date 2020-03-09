@@ -1,0 +1,37 @@
+.modal.fade#modalBookPerf(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h5#exampleModalCenterTitle.modal-title=global.__("Booking request")
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+      .modal-body
+        .alert.d-none
+        form
+          .form-group
+            !=global.__("From")+": "
+            b=user.stagename
+          .form-group
+            !=global.__("Subject")+": "
+            b=global.__("Booking request for")+" "+data.title
+            input(type="hidden", name="perf", value=data._id)
+            input(type="hidden", name="subject", value="Booking request for "+data.title+" | AVnode.net")
+          .form-group
+            label(for='organisation')=global.__("Organisation")+" ("+global.__("Crew")+") "+": "
+            if user.crews
+              select#organisation.form-control(name="crew")
+                option=global.__("Please select an organisation")
+                each crew in user.crews
+                  option=crew.stagename
+            else 
+              p=global.__("Please create a crew")
+          .form-group
+            label(for='request')=global.__("Booking request")
+            textarea#request.form-control(name="request", rows='10')
+              !=global.__("Dear")+" "+data.users[0].stagename+",\n"
+              !=global.__("I'm")+" "+user.stagename+", "+global.__("we would like to book")+" "+data.title+", "+global.__("are you interested?")+"\n\n"
+              !=global.__("Best regards")+"\n\n"
+              !=user.stagename
+      .modal-footer
+        button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("cancel")
+        button.btn.btn-primary(type='button')=global.__("SEND")

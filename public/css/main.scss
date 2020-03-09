@@ -566,13 +566,16 @@ a:hover + .partner_stagename,
 .event_galleries_wrapper .main_title {
   color: $color1;
 }
+.event_title h1 {
+  margin: 30px 0 0 0;
+  padding: 0 0 10px 0;
+}
+
 
 // PERFORMANCE PAGE
 
 .performer_title h1 {
-  border-bottom: 1px solid $color1;
   margin: 30px 0 0 0;
-  padding: 0 0 15px 0;
 }
 
 .share_like_list_column {
@@ -660,9 +663,13 @@ a:hover + .partner_stagename,
   margin-bottom: 0px;
 }
 
+.performance_users_item_wrapper h3 {
+  text-transform: inherit;
+  font-size: 18px;
+}
+
 .performance_events_wrapper h3 {
   text-transform: inherit;
-  font-weight: 300;
   font-size: 18px;
 }
 
@@ -680,8 +687,7 @@ a:hover + .partner_stagename,
 
 .category_performance_item.single_performance {
   border: none;
-  margin: 0 0 20px;
-  padding: 10px 0;
+  margin: 0;
 }
 
 .category_performance_item.single_performance li {
@@ -689,8 +695,12 @@ a:hover + .partner_stagename,
   font-size: 16px;
 }
 
-.performance_info_sidebar {
+.performance_info_sidebar-cnt {
   border-left: 1px solid $color1;
+}
+
+.performance_info_sidebar {
+  border-bottom: 1px solid $color1;
 }
 
 .performance_event_wrapper p {
@@ -700,16 +710,24 @@ a:hover + .partner_stagename,
 }
 
 .performance_event_wrapper {
-  border-bottom: 1px solid $color1;
+  display: flex;
   padding-bottom: 10px;
 }
 
 .performance_event_wrapper .performance_event_title {
-  color: $color3;
   font-size: 15px;
+  font-weight: bold;
+}
+.performance_user_wrapper .performance_user_title {
+  font-size: 15px;
+  font-weight: bold;
+}
+.performance_event_wrapper img {
+  height: auto !important;
+  width: 100px !important;
+  margin-right: 15px;
 }
 
-performance_event_title
 /* performer page */
  
 .performer_links_list {
@@ -1136,10 +1154,7 @@ section.performer_news_wrapper {
   font-weight: 300;
   font-size: 16px;
 }
-.performance_users_item_wrapper {
-  display: flex;
-  justify-content: space-between;
-}
+
 .performance_users_item_wrapper img {
   height: 50px !important;
   width: 50px !important;
@@ -1780,6 +1795,9 @@ span.seeall_label {
 }
 
 @media (min-width: 992px) {
+  .performer_title h1 {
+    padding: 0 0 10px 0;
+  }
   .navbar-toggleable-md > .container {
     display: flex;
     flex-wrap: nowrap;
@@ -2007,7 +2025,7 @@ span.seeall_label {
     margin-bottom: 10px;
   }
 
-  .performance_info_sidebar {
+  .performance_info_sidebar-cnt {
     border-left: none;
     border-top: 1px solid $color1;
   }

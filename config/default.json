@@ -6087,9 +6087,10 @@
           "select": {
             "title": 1,
             "image": 1,
+            "schedule": 1,
             "slug": 1
           },
-          "model": "Event"
+          "model": "EventShow"
         }, {
           "path": "bookings.schedule.categories",
           "select": {
