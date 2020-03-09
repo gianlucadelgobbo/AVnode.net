@@ -118,7 +118,7 @@ block content
                 h3.mt-3=global.__('Events')  
                 each booking in data.bookings
                   .performance_event_wrapper
-                    .performance_event_image.mt-2
+                    .performance_event_image.mt-2.mr-3
                       a(href="/events/"+booking.event.slug)
                         img.img-fluid(src=booking.event.imageFormats.small, alt=booking.event.title)
                     .performance_event_info
