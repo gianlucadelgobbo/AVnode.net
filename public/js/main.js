@@ -154,7 +154,7 @@ $('a[href*="#"]')
     event.preventDefault();
     var user = $(this).data('user');
     if (user) {
-      $('#msg_modal .modal-body').html('This featur is under development, we keep you posted.');
+      $('#msg_modal .modal-body').html('This feature is under development, we keep you posted.');
       $('#msg_modal .modal-footer button').html('CONTINUE');
       $('#msg_modal .modal-footer button').click(function( event ) {
         $('#msg_modal ').modal('hide');
