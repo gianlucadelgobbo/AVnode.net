@@ -615,7 +615,7 @@ router.bookingRequest = (req, res) => {
       messagetext+= "Surname: "+req.user.surname+"\n";
       messagetext+= "Email: "+req.user.email+"\n";
       if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
-      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n";
+      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
       messagetext+= req.body.request+"\n--------------";
       logger.debug(messagetext);
       const mailer = require('../../../utilities/mailer');

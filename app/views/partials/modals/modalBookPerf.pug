@@ -30,7 +30,7 @@
               label(for='request')=global.__("Booking request")
               textarea#request.form-control(name="request", rows='10')
                 !=global.__("Dear")+" "+data.users[0].stagename+",\n"
-                !=global.__("I'm")+" "+user.stagename+", "+global.__("we would like to book")+" "+data.title+", "+global.__("are you interested?")+"\n\n"
+                !=global.__("I'm")+" "+user.stagename+", "+global.__("we would like to book")+" \""+data.title+"\", "+global.__("are you interested?")+"\n\n"
                 !=global.__("Best regards")+"\n\n"
                 !=user.stagename
       .modal-footer
