@@ -639,8 +639,6 @@ router.contact = (req, res) => {
         }
       }, function(error_1){
         if (error_1 && error_1.message != "") {
-          error_1.step = 11111;
-          error_1.message = error_1.message;
           res.json(error_1);
         } else {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
@@ -677,9 +675,9 @@ router.contact = (req, res) => {
               html_sign: "The AVnode.net Team",
               text_sign:  "The AVnode.net Team"
             }
-          }, function(err){
-            err.step = 2;
-            res.json(err);
+          }, function(error_2){
+            error_2.step = 2;
+            res.json(error_2);
           });
         }
       });
