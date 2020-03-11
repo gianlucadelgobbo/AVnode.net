@@ -639,8 +639,8 @@ router.contact = (req, res) => {
         }
       }, function(err){
         if (err && err.message != "") {
-          err.step = 1;
-          err.message = err.message;
+          err.step = 11111;
+          err.stocazzo = err.message;
           res.json(err);
         } else {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
