@@ -638,8 +638,9 @@ router.contact = (req, res) => {
           text_sign:  "The AVnode.net Team"
         }
       }, function(err){
-        if (err && err.message) {
+        if (err && err.message != "") {
           err.step = 1;
+          err.message = err.message;
           res.json(err);
         } else {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
