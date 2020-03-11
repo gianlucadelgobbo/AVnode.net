@@ -638,7 +638,7 @@ router.contact = (req, res) => {
           text_sign:  "The AVnode.net Team"
         }
       }, function(err){
-        if (err) {
+        if (err && err.message) {
           res.json(err);
         } else {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
@@ -700,7 +700,7 @@ router.bookingRequest = (req, res) => {
 
     Models.Performance
     .findOne({_id: req.body.perf/* , members:req.user.id */})
-    .select({title: 1})
+    .select({title: 1, slug: 1})
     .populate([{ "path": "users", "select": "is_crew stagename name surname email", "model": "User", "populate": { "path": "members", "select": "stagename name surname email", "model": "User"}}])
     .exec((err, perf) => {
       logger.debug(perf.users);
@@ -713,6 +713,7 @@ router.bookingRequest = (req, res) => {
       messagetext+= "Email: "+req.user.email+"\n";
       if (req.body.crew) messagetext+= "Organization: "+req.body.crew+"\n";;
       messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
+      messagetext+= "Performance: http://"+req.headers.host+"/"+perf.slug+"\n\n---------\n";
       messagetext+= req.body.request+"\n--------------";
       logger.debug(messagetext);
       const mailer = require('../../../utilities/mailer');
@@ -730,7 +731,7 @@ router.bookingRequest = (req, res) => {
           text_sign:  "The AVnode.net Team"
         }
       }, function(err){
-        if (err) {
+        if (err && err.message) {
           res.json(err);
         } else {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
