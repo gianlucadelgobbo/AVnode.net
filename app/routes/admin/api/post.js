@@ -607,12 +607,21 @@ router.contact = (req, res) => {
       logger.debug(user);
       logger.debug(err);
       message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
-      let messagetext = "";
+      let messagetext = "FROM\n";
       messagetext+= "Stagename: "+req.user.stagename+"\n";
       messagetext+= "Name: "+req.user.name+"\n";
       messagetext+= "Surname: "+req.user.surname+"\n";
       messagetext+= "Email: "+req.user.email+"\n";
       messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
+      messagetext+= "Email: "+user.email+"\n\n";
+      messagetext+= "TO\n";
+      messagetext+= "Stagename: "+req.user.stagename+"\n";
+      if (user.is_crew) {
+        messagetext+= "Name: "+user.name+"\n";
+        messagetext+= "Surname: "+user.surname+"\n";
+        messagetext+= "Email: "+user.email+"\n";
+      }
+      messagetext+= "Link: http://"+req.headers.host+"/"+user.slug+"\n\n---------\n";
       messagetext+= req.body.message+"\n--------------";
       logger.debug(messagetext);
       const mailer = require('../../../utilities/mailer');
@@ -655,7 +664,7 @@ router.contact = (req, res) => {
               }
             }
           }
-          messagetext = "Dear "+perf.users[0].stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
+          messagetext = "Dear "+user.stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
           mailer.mySendMailer({
             template: 'bookingRequest',
             message: message,
