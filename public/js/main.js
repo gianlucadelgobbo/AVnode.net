@@ -213,23 +213,51 @@ $(document).ready(function(){
   });
 
   $( ".contact_performer" ).click(function( event ) {
+    console.log("contact_performer");
     event.preventDefault();
     var user = $(this).data('user');
+    $('#modalContact .alert').addClass('d-none');
+    $('#modalContact .alert').removeClass('alert-danger');
+    $('#modalContact .alert').removeClass('alert-success');
     if (user) {
-      $('#msg_modal .modal-body').html('This feature is under development, we keep you posted.');
-      $('#msg_modal .modal-footer button').html('CONTINUE');
-      $('#msg_modal .modal-footer button').click(function( event ) {
-        $('#msg_modal ').modal('hide');
-      });  
+      $('#modalContact .modal-footer .btn-primary').click(function( event ) {
+        $('#modalContact .alert').addClass('d-none');
+        $('#modalContact .alert').removeClass('alert-danger');
+        $('#modalContact .alert').removeClass('alert-success');
+        var datastring = $("#modalContact form").serialize();
+        $.ajax({
+          type: "POST",
+          url: "/admin/api/contact",
+          data: datastring
+        }).
+        done(function(data) {
+          if (data && data.message) {
+            $('#modalContact .alert').html(data.message);
+            $('#modalContact .alert').addClass('alert-danger');
+            $('#modalContact .alert').removeClass('d-none');
+          } else {
+            $('#modalContact .alert').html("Request sent with success.");
+            $('#modalContact .alert').addClass('alert-success');
+            $('#modalContact .alert').removeClass('d-none');
+          }
+          //console.log(data);
+        })
+        .fail(function (jqXHR, textStatus) {
+          $('#modalContact .alert').html("Internal Server Error");
+          $('#modalContact .alert').addClass('alert-danger');
+          $('#modalContact .alert').removeClass('d-none');
+        });
+      }); 
+      $('#modalContact ').modal('show');
     } else {
       var slug = $(this).data('slug');
       $('#msg_modal .modal-body').html('Please login to use this feature.');
       $('#msg_modal .modal-footer button').html('LOGIN');
       $('#msg_modal .modal-footer button').click(function( event ) {
-        window.location.href="/login?returnTo=/performances/"+slug+"/";
+        window.location.href="/login?returnTo=/"+slug+"/";
       });  
+      $('#msg_modal ').modal('show');
     }
-    $('#msg_modal ').modal('show');
   });
 
 });  

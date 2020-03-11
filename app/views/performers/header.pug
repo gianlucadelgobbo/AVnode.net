@@ -1,3 +1,4 @@
+include ../partials/modals/modalContact
 .container
   .row
     .col-lg-7
@@ -52,8 +53,8 @@
           if (data.web && data.web.length) || (data.social && data.social.length) || (data.publicEmails && data.publicEmails.length)
             div.performer_links_wrapper
               ul.performer_links_list.performer_links_list_2.list-inline
-                //li.list-inline-item.mb-3
-                  a.contact_performer(href="#")
+                li.list-inline-item.mb-3
+                  a.contact_performer(href="#", data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
                     span.contact_button!="CONTACT"       
                 each item in data.web
                   li.list-inline-item.mb-3

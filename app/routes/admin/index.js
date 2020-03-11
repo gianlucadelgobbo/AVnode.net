@@ -277,6 +277,9 @@ router.post('/api/editsubscriptionsave', (req, res)=>{
 router.post('/api/bookingrequest', (req, res)=>{
   post.bookingRequest(req, res);
 });
+router.post('/api/contact', (req, res)=>{
+  post.contact(req, res);
+});
 /* router.put('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';

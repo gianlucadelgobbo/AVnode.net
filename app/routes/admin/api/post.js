@@ -594,6 +594,95 @@ order: order,
 details: details,
 data: data
 */
+router.contact = (req, res) => {
+  logger.debug(req.body);
+  if (req.body.user) {
+    let message = {};
+
+    Models.User
+    .findOne({_id: req.body.user})
+    .select({stagename: 1,email: 1, is_crew:1})
+    .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
+    .exec((err, user) => {
+      logger.debug(user);
+      logger.debug(err);
+      message = {to: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+      let messagetext = "";
+      messagetext+= "Stagename: "+req.user.stagename+"\n";
+      messagetext+= "Name: "+req.user.name+"\n";
+      messagetext+= "Surname: "+req.user.surname+"\n";
+      messagetext+= "Email: "+req.user.email+"\n";
+      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
+      messagetext+= req.body.message+"\n--------------";
+      logger.debug(messagetext);
+      const mailer = require('../../../utilities/mailer');
+      mailer.mySendMailer({
+        template: 'bookingRequest',
+        message: message,
+        locals: {
+        },
+        email_content: {
+          site: 'http://'+req.headers.host,
+          subject:  req.body.subject+' | AVnode.net',
+          text_text:  messagetext,
+          html_text: messagetext.replace(new RegExp("\n","g"),"<br />"),
+          html_sign: "The AVnode.net Team",
+          text_sign:  "The AVnode.net Team"
+        }
+      }, function(err){
+        if (err) {
+          res.json(err);
+        } else {
+          message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
+          for (var a=0;a<perf.users.length;a++) {
+            if (user.is_crew) {
+              logger.debug("crew")
+              for (var b=0;b<user.members.length;b++) {
+                if (!message.to) {
+                  message.to = user.members[b].stagename+" <"+user.members[b].email+">";
+                } else {
+                  if (!message.cc) message.cc = [];
+                  message.cc.push(user.members[b].stagename+" <"+user.members[b].email+">");
+                }
+                }
+            } else {
+              logger.debug("single")
+              if (!message.to) {
+                message.to = user.stagename+" <"+user.email+">";
+              } else {
+                if (!message.cc) message.cc = [];
+                message.cc.push(user.stagename+" <"+user.email+">");
+              }
+            }
+          }
+          messagetext = "Dear "+perf.users[0].stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
+          mailer.mySendMailer({
+            template: 'bookingRequest',
+            message: message,
+            locals: {
+            },
+            email_content: {
+              site: 'http://'+req.headers.host,
+              subject:  req.body.subject+' | AVnode.net',
+              text_text:  messagetext,
+              html_text: messagetext.replace(new RegExp("\n","g"), "<br />"),
+              html_sign: "The AVnode.net Team",
+              text_sign:  "The AVnode.net Team"
+            }
+          }, function(err){
+            res.json(err);
+          });
+        }
+      });
+      /* program.save(err => {
+        res.json({res: err ? err : true});
+      }); */
+    });
+  } else {
+    res.json({message:"User do not exists"});
+  }
+}
+
 
 
 router.bookingRequest = (req, res) => {
