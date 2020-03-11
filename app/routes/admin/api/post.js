@@ -729,9 +729,10 @@ router.bookingRequest = (req, res) => {
           html_sign: "The AVnode.net Team",
           text_sign:  "The AVnode.net Team"
         }
-      }, function(err){
-        if (err && err.message) {
-          res.json(err);
+      }, function(error_1){
+        if (error_1 && error_1.message) {
+          error_1.step = 1;
+          res.json(error_1);
         } else {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
           for (var a=0;a<perf.users.length;a++) {
@@ -769,8 +770,9 @@ router.bookingRequest = (req, res) => {
               html_sign: "The AVnode.net Team",
               text_sign:  "The AVnode.net Team"
             }
-          }, function(err){
-            res.json(err);
+          }, function(error_2){
+            error_2.step = 2;
+            res.json(error_2);
           });
         }
       });
@@ -779,7 +781,7 @@ router.bookingRequest = (req, res) => {
       }); */
     });
   } else {
-    res.json({errors:{message:"Performance do not exists"}});
+    res.json({message:"Performance do not exists"});
   }
 }
 
