@@ -874,7 +874,7 @@ a:hover + .partner_stagename,
 .about_button {
   font-size: 40px;
   border: 1px solid $color1;
-  padding: 15px;
+  padding: 15px 0;
   border-radius: 50%;
   display: inline-block;
   height: 72px;
@@ -900,11 +900,6 @@ a:hover + .partner_stagename,
 .contact_button:hover {
   background-color: $color1 !important;
   color: $color2;
-}
-
-i.fa.about_button {
-  position: relative;
-  top: -4px;
 }
 
 .event_social_list li {
