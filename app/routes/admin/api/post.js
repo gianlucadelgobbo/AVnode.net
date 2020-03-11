@@ -637,32 +637,30 @@ router.contact = (req, res) => {
           html_sign: "The AVnode.net Team",
           text_sign:  "The AVnode.net Team"
         }
-      }, function(err){
-        if (err && err.message != "") {
-          err.step = 11111;
-          err.stocazzo = err.message;
-          res.json(err);
+      }, function(error_1){
+        if (error_1 && error_1.message != "") {
+          error_1.step = 11111;
+          error_1.message = error_1.message;
+          res.json(error_1);
         } else {
           message = {bcc: "Gianluca Del Gobbo <g.delgobbo@avnode.org>"};
-          for (var a=0;a<perf.users.length;a++) {
-            if (user.is_crew) {
-              logger.debug("crew")
-              for (var b=0;b<user.members.length;b++) {
-                if (!message.to) {
-                  message.to = user.members[b].stagename+" <"+user.members[b].email+">";
-                } else {
-                  if (!message.cc) message.cc = [];
-                  message.cc.push(user.members[b].stagename+" <"+user.members[b].email+">");
-                }
-                }
-            } else {
-              logger.debug("single")
+          if (user.is_crew) {
+            logger.debug("crew")
+            for (var b=0;b<user.members.length;b++) {
               if (!message.to) {
-                message.to = user.stagename+" <"+user.email+">";
+                message.to = user.members[b].stagename+" <"+user.members[b].email+">";
               } else {
                 if (!message.cc) message.cc = [];
-                message.cc.push(user.stagename+" <"+user.email+">");
+                message.cc.push(user.members[b].stagename+" <"+user.members[b].email+">");
               }
+              }
+          } else {
+            logger.debug("single")
+            if (!message.to) {
+              message.to = user.stagename+" <"+user.email+">";
+            } else {
+              if (!message.cc) message.cc = [];
+              message.cc.push(user.stagename+" <"+user.email+">");
             }
           }
           messagetext = "Dear "+user.stagename+",\nwe got this message, are you interested?\n\n---------\n"+req.body.message+"\n--------------";
