@@ -601,7 +601,7 @@ router.contact = (req, res) => {
 
     Models.User
     .findOne({_id: req.body.user})
-    .select({stagename: 1,email: 1, is_crew:1})
+    .select({stagename: 1, slug:1, name:1, surname:1, email: 1, is_crew:1})
     .populate([{ "path": "members", "select": "stagename name surname email", "model": "User"}])
     .exec((err, user) => {
       logger.debug(user);
@@ -612,11 +612,10 @@ router.contact = (req, res) => {
       messagetext+= "Name: "+req.user.name+"\n";
       messagetext+= "Surname: "+req.user.surname+"\n";
       messagetext+= "Email: "+req.user.email+"\n";
-      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n\n---------\n";
-      messagetext+= "Email: "+user.email+"\n\n";
+      messagetext+= "Link: http://"+req.headers.host+"/"+req.user.slug+"\n---------\n";
       messagetext+= "TO\n";
       messagetext+= "Stagename: "+req.user.stagename+"\n";
-      if (user.is_crew) {
+      if (!user.is_crew) {
         messagetext+= "Name: "+user.name+"\n";
         messagetext+= "Surname: "+user.surname+"\n";
         messagetext+= "Email: "+user.email+"\n";
