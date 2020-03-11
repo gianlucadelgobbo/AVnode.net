@@ -51,7 +51,10 @@
         .col-lg-12
           if (data.web && data.web.length) || (data.social && data.social.length) || (data.publicEmails && data.publicEmails.length)
             div.performer_links_wrapper
-              ul.performer_links_list.performer_links_list_2.list-inline                 
+              ul.performer_links_list.performer_links_list_2.list-inline
+                //li.list-inline-item.mb-3
+                  a.contact_performer(href="#")
+                    span.contact_button!="CONTACT"       
                 each item in data.web
                   li.list-inline-item.mb-3
                     a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
@@ -87,7 +90,7 @@
                       - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
                       a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
                         span.lnr.lnr-link.about_button
-                if data.publicEmails && data.publicEmails.length          
+                //if data.publicEmails && data.publicEmails.length          
                   each email in data.publicEmails
                     li.list-inline-item.mb-3
                       a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
@@ -96,7 +99,7 @@
 
     .col-lg-5
       .row
-        .col-sm-6
+        .col-sm-6.mb-3
           .performer_image_wrapper
             //.performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
             img.rounded-circle.img-fluid(
@@ -104,6 +107,6 @@
               src=data.imageFormats.large
               alt=data.stagename
               )
-        .col-sm-6
+        .col-sm-6.mb-3
           img.img-fluid(src="/images/logo_avnode_svg.svg")
 

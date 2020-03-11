@@ -20,4 +20,4 @@
         .users_video_item_likes
           span.color2.lnr.lnr-heart
           br
-          span=item.stats && item.stats.likes ? item.stats.likes : 0+" "+global.__("likes")
+          span.text-nowrap=item.stats && item.stats.likes ? item.stats.likes : 0+" "+global.__("likes")

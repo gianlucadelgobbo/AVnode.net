@@ -15,13 +15,22 @@
           li.list-inline-item=category.name
     if item.users
       .users_video_item_wrapper
-        each user in item.users
-          div
-            img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
-          div
-            p.users_video_item_name=user.stagename
-            p.users_video_item_views=item.stats.visits+" "+global.__("views")
-        .users_video_item_likes
-          span.color2.lnr.lnr-heart
-          br
-          span=item.stats.likes+" "+global.__("likes")
+        .flex_left      
+          if (item.users.length > 1)
+            div
+              img.img-fluid(src="/images/more_users.svg")
+            div
+              p.users_video_item_name=item.users.length+" "+global.__("authors")
+              p.users_video_item_views=item.stats.visits+" "+global.__("views")
+          else              
+            each user in item.users
+              div
+                img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+              div
+                p.users_video_item_name=user.stagename
+                p.users_video_item_views=item.stats.visits+" "+global.__("views")
+        .flex_right      
+          .users_performance_item_likes
+            span.color2.lnr.lnr-heart
+            br
+            span.text-nowrap=item.stats.likes+" "+global.__("likes")

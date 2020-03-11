@@ -102,25 +102,26 @@ block content
                 button.btn.btn-primary.btn-block.book-perf(data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
                   !=global.__('REQUEST BOOKING')
 
-            .performance_users_item_wrapper
+            .performance_users
               h3=global.__('Authors')  
               each user in data.users
-                .performance_user_wrapper
-                  .user_perfomance_image
-                    a(href="/"+user.slug)
-                      img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
-                  .user_perfomance_country_city
-                    a.performance_user_title(href="/"+user.slug).users_performance_item_name=user.stagename
-                    if user.addressesFormatted && user.addressesFormatted.length
-                      p.users_performance_item_country!=user.addressesFormatted.join(", ")
+                .performance_users_item_wrapper
+                  .performance_user_wrapper
+                    .user_perfomance_image
+                      a(href="/"+user.slug)
+                        img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                    .user_perfomance_country_city
+                      a.performance_user_title(href="/"+user.slug).users_performance_item_name=user.stagename
+                      if user.addressesFormatted && user.addressesFormatted.length
+                        p.users_performance_item_country!=user.addressesFormatted.join(", ")
             if data.bookings.length
               .performance_events_wrapper
                 h3.mt-3=global.__('Events')  
                 each booking in data.bookings
                   .performance_event_wrapper
-                    .performance_event_image.mt-2.mr-3
+                    .performance_event_image.mt-2
                       a(href="/events/"+booking.event.slug)
-                        img.img-fluid(src=booking.event.imageFormats.small, alt=booking.event.title)
+                        img(src=booking.event.imageFormats.small, alt=booking.event.title)
                     .performance_event_info
                       a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
                       br

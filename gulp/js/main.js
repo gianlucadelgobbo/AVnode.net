@@ -3,6 +3,7 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
     $( ".event_main_image_wrapper" ).click(function() {
+      console.log("click");
       $( ".event_main_image_wrapper" ).toggleClass("expanded");
     });
 

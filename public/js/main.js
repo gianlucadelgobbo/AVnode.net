@@ -1,109 +1,105 @@
 $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-    $( ".event_main_image_wrapper" ).click(function() {
-        //   $( ".event_main_image_wrapper" ).toggleClass("expanded");
-        $( ".event_main_image_wrapper" ).addClass("expanded");    
-    });
+  $('[data-toggle="tooltip"]').tooltip();
+  $( ".event_main_image_wrapper" ).click(function() {
+    //   $( ".event_main_image_wrapper" ).toggleClass("expanded");
+    $( ".event_main_image_wrapper" ).toggleClass("expanded");    
+  });
+  
+  $('.loop_2').owlCarousel({
+    center: true,
+    items:2,
+    loop:false,
+    margin:30,
+    dots: false,
+    nav: true,
+    //autoplay: true,
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    responsive:{
+      600:{
+        items:2
+      }
+    }
+  });
 
-    
-    $('.loop_2').owlCarousel({
-      center: true,
-      items:2,
-      loop:false,
-      margin:30,
-      dots: false,
-      nav: true,
-      //autoplay: true,
-      navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-      "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
-      responsive:{
-          600:{
-              items:2
-          }
-        }
-    });
+  $('.loop_3items').owlCarousel({      
+    items:3,
+    loop:false,
+    margin:30,
+    stagePadding: 50,
+    dots: false,
+    nav: true,
+    //autoplay: true,
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    responsive:{
+      100:{
+        items:1
+      },
+      600:{
+        items:2
+      },
+      768:{
+        items:3
+      }
+    }
+  });
 
-    $('.loop_3items').owlCarousel({      
-      items:3,
-      loop:false,
-      margin:30,
-      stagePadding: 50,
-      dots: false,
-      nav: true,
-      //autoplay: true,
-      navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-      "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
-      responsive:{
-                    100:{
-                        items:1
-                    },
-                    600:{
-                    items:2
-                    },
-                    768:{
-                        items:3
-                    }
-                }
-    });
+  $('.loop').owlCarousel({
+    //center: true,
+    stagePadding: 50,
+    items:2,
+    loop: false,
+    margin:30,
+    dots: false,
+    nav: true,
+    //autoplay: true,
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    responsive:{
+      100:{
+        items:1
+      },
+      600:{
+        items:2
+      },
+      768:{
+        items:3
+      }, 
+      990:{
+        items:4
+      }
+    }
+  });
 
-    $('.loop').owlCarousel({
-      //center: true,
-      stagePadding: 50,
-      items:2,
-      loop: false,
-      margin:30,
-      dots: false,
-      nav: true,
-      //autoplay: true,
-      navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-      "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
-      responsive:{
-            100:{
-                items:1
-            },
-            600:{
-            items:2
-            },
-            768:{
-                items:3
-            }, 
-            990:{
-                items:4
-            }
+  $('.mono').owlCarousel({
+    //center: true,    
+    items:0,
+    loop: true,
+    margin:30,
+    dots: false,
+    nav: true,
+    autoplay: true,
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    responsive:{
+      100:{
+          items:1
+      },
+      600:{
+        items:1
+      },
+      768:{
+        items:1
+      }, 
+      990:{
+        items:1
+      }
+    }
+  });
 
-        }
-    });
-
-    $('.mono').owlCarousel({
-      //center: true,    
-      items:0,
-      loop: true,
-      margin:30,
-      dots: false,
-      nav: true,
-      autoplay: true,
-      navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-      "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
-      responsive:{
-            100:{
-                items:1
-            },
-            600:{
-            items:1
-            },
-            768:{
-                items:1
-            }, 
-            990:{
-                items:1
-            }
-
-        }
-    });
-
-
-// Select all links with hashes
-$('a[href*="#"]')
+  // Select all links with hashes
+  $('a[href*="#"]')
   // Remove links that don't actually link to anything
   .not('[href="#"]')
   .not('[href="#0"]')
@@ -142,11 +138,10 @@ $('a[href*="#"]')
 
   $(window).scroll(function() {    
     var scroll = $(window).scrollTop();
-
     if (scroll >= 800) {
-        $("#to_top").addClass("to_top_visibile");
+      $("#to_top").addClass("to_top_visibile");
     } else {
-        $("#to_top").removeClass("to_top_visibile");
+      $("#to_top").removeClass("to_top_visibile");
     }
   });
 
@@ -182,7 +177,6 @@ $('a[href*="#"]')
         $('#modalBookPerf .alert').removeClass('alert-danger');
         $('#modalBookPerf .alert').removeClass('alert-success');
         var datastring = $("#modalBookPerf form").serialize();
-        console.log(datastring);
         $.ajax({
           type: "POST",
           url: "/admin/api/bookingrequest",
@@ -216,6 +210,26 @@ $('a[href*="#"]')
       });  
       $('#msg_modal ').modal('show');
     }
+  });
+
+  $( ".contact_performer" ).click(function( event ) {
+    event.preventDefault();
+    var user = $(this).data('user');
+    if (user) {
+      $('#msg_modal .modal-body').html('This feature is under development, we keep you posted.');
+      $('#msg_modal .modal-footer button').html('CONTINUE');
+      $('#msg_modal .modal-footer button').click(function( event ) {
+        $('#msg_modal ').modal('hide');
+      });  
+    } else {
+      var slug = $(this).data('slug');
+      $('#msg_modal .modal-body').html('Please login to use this feature.');
+      $('#msg_modal .modal-footer button').html('LOGIN');
+      $('#msg_modal .modal-footer button').click(function( event ) {
+        window.location.href="/login?returnTo=/performances/"+slug+"/";
+      });  
+    }
+    $('#msg_modal ').modal('show');
   });
 
 });  

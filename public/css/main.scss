@@ -663,9 +663,14 @@ a:hover + .partner_stagename,
   margin-bottom: 0px;
 }
 
-.performance_users_item_wrapper h3 {
+.performance_users h3 {
   text-transform: inherit;
   font-size: 18px;
+}
+
+.performance_users_item_wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 .performance_events_wrapper h3 {
@@ -737,12 +742,16 @@ a:hover + .partner_stagename,
   display: inline-block;
 } */
 
+.performer_links_list {
+  margin: 0;
+}
 .performer_links_list a {
   color: $color1;
   display: block;
 }
 .performer_links_list li {
-  display: inline-block;
+  display: block;
+  float: left;
 }
 /* .performer_links_list li:after {
   content: "/";
@@ -755,7 +764,7 @@ a:hover + .partner_stagename,
   content: "";
 }
 .performer_header_wrapper {
-  padding: 30px 0;
+  padding: 30px 0 0 0;
 }
 
 .main_title {
@@ -818,9 +827,6 @@ a:hover + .partner_stagename,
   color: $color2;
 }
 
-.performer_map_wrapper {
-  padding: 30px 0;
-}
 .about_wrapper {
   column-count: 1;
   -webkit-column-gap: 30px; /* Chrome, Safari, Opera */
@@ -874,6 +880,26 @@ a:hover + .partner_stagename,
   height: 72px;
   width: 72px;
   text-align: center;
+}
+.about_button:hover {
+  background-color: $color1 !important;
+  color: $color2;
+}
+
+
+.contact_button {
+  font-size: 40px;
+  border: 1px solid $color1;
+  padding: 15px 18px;
+  border-radius: 5px;
+  display: inline-block;
+  height: 72px;
+  text-align: center;
+  line-height: 1;
+}
+.contact_button:hover {
+  background-color: $color1 !important;
+  color: $color2;
 }
 
 i.fa.about_button {
@@ -1192,6 +1218,7 @@ section.performer_news_wrapper {
 .users_performance_item_views {
   color: $color3;
   font-size: 14px;
+  margin-bottom: 0px;
 }
 
 .users_performance_item_likes {
@@ -1333,6 +1360,7 @@ section.performer_news_wrapper {
   height: 50px !important;
   width: 50px !important;
   border-radius: 50%;
+  margin-right: 15px;
 }
 
 .category_video_item {
@@ -1362,6 +1390,7 @@ section.performer_news_wrapper {
 .users_video_item_views {
   color: $color3;
   font-size: 14px;
+  margin-bottom: 0px;
 }
 
 .users_video_item_likes {
