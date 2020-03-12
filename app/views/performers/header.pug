@@ -55,7 +55,10 @@ include ../partials/modals/modalContact
               ul.performer_links_list.performer_links_list_2.list-inline
                 li.list-inline-item.mb-3
                   a.contact_performer(href="#", data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
-                    span.contact_button!="CONTACT"       
+                    span.performer_button!="CONTACT"       
+                li.list-inline-item.mb-3
+                  a.cv_performer(href="/"+data.slug+"/print" : "#", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                    span.performer_button!="DOWNLOAD CV"       
                 each item in data.web
                   li.list-inline-item.mb-3
                     a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))

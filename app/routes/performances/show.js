@@ -10,6 +10,10 @@ router.get('/', (req, res) => {
   dataprovider.show(req, res, section, 'show', Model);
 });
 
+router.get('/print', (req, res) => {
+  dataprovider.show(req, res, section, 'print', Model);
+});
+
 router.get('/galleries/:gallery', (req, res) => {
   dataprovider.show(req, res, section, 'galleries', Model);
 });

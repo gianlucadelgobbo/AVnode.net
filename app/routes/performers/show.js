@@ -10,6 +10,10 @@ router.get("/", (req, res) => {
   dataprovider.show(req, res, section, "show", Model);
 });
 
+router.get("/print", (req, res) => {
+  dataprovider.show(req, res, section, "print", Model);
+});
+
 router.get("/events", (req, res) => {
   dataprovider.show(req, res, section, "events", Model);
 });

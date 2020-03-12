@@ -94,12 +94,12 @@ block content
                     span=data.genre.name
             .row.mb-3
               .col
-                button.btn.btn-primary.btn-block.print-perf(data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                a.performance_button.print-perf(href="/performances/"+data.slug+"/print", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
                   !=global.__('PRINT')
                   br
                   !=global.__('PDF')
               .col
-                button.btn.btn-primary.btn-block.book-perf(data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                a.performance_button.book-perf(href="#", data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
                   !=global.__('REQUEST BOOKING')
 
             .performance_users

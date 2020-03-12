@@ -4323,6 +4323,169 @@
           "model": "Category"
         }]
       },
+      "print": {
+        "select": {
+          "stagename": 1,
+          "abouts": 1,
+          "is_crew": 1,
+          "slug": 1,
+          "stats": 1,
+          "addresses": 1,
+          "partnerships": 1,
+          "web": 1,
+          "social": 1,
+          "emails": 1,
+          "organizationData":1,
+          "image": 1
+        },
+        "populate": [{
+          "path": "partnerships",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "abouts": 1,
+            "slug": 1,
+            "stats": 1,
+            "schedule": 1,
+            "categories": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "model": "EventShow"
+        }, {
+          "path": "news",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "createdAt":1,
+            "abouts":1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "sort": { "createdAt": -1 }},
+          "model": "News"
+        }, {
+          "path": "footage",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "abouts":1,
+            "tags": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "options": { "sort": { "createdAt": -1 }},
+          "model": "Footage"
+        }, {
+          "path": "playlists",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "abouts":1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "footage", "select": "media", "model": "Footage"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "sort": { "createdAt": -1 }},
+          "model": "Playlist"
+        }, {
+          "path": "galleries",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "options": { "sort": { "createdAt": -1 }},
+          "model": "Gallery"
+        }, {
+          "path": "videos",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "abouts":1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Video"
+        }, {
+          "path": "performances",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "abouts":1,
+            "type": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "style", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}],
+          "options": { "sort": { "createdAt": -1 }},
+          "model": "Performance"
+        }, {
+          "path": "events",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "abouts": 1,
+            "schedule": 1,
+            "categories": 1,
+            "web": 1,
+            "social": 1,
+            "image": 1
+          },
+          "populate": { "path": "categories", "select": "name slug", "model": "Category"},
+          "options": { "sort": { "schedule.0.starttime": -1 }},
+          "model": "EventShow"
+        }, {
+          "path": "crews",
+          "select": {
+            "stagename": 1,
+            "slug": 1,
+            "stats": 1,
+            "web": 1,
+            "social": 1,
+            "abouts":1,
+            "image": 1,
+            "organizationData.logo": 1
+          },
+          "options": { "sort": { "activity": -1 }},
+          "model": "UserShow"
+        }, {
+          "path": "members",
+          "select": {
+            "stagename": 1,
+            "name": 1,
+            "surname": 1,
+            "slug": 1,
+            "stats": 1,
+            "web": 1,
+            "social": 1,
+            "abouts":1,
+            "image": 1,
+            "organizationData.logo": 1
+          },
+          "options": {"sort": { "activity": -1 }},
+          "model": "UserShow"
+        }, {
+          "path": "categories",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }]
+      },
       "events": {
         "select": {
           "stagename": 1,
@@ -6117,6 +6280,104 @@
             "title": 1,
             "slug": 1,
             "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Gallery"
+        }]
+      },
+      "print": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "price": 1,
+          "paypal": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
+          "duration": 1,
+          "tech_arts": 1, 
+          "tech_reqs": 1,
+          "bookings":1
+        },
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "abouts": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "members": 1,
+            "addresses.country": 1,
+            "addresses.locality": 1,
+            "stats": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "tecnique",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "genre",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "bookings.event",
+          "select": {
+            "title": 1,
+            "image": 1,
+            "abouts": 1,
+            "web": 1,
+            "social": 1,
+            "schedule": 1,
+            "slug": 1
+          },
+          "model": "EventShow"
+        }, {
+          "path": "bookings.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "videos",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Video"
+        }, {
+          "path": "galleries",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "medias": 1,
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},

@@ -558,7 +558,7 @@ eventSchema.virtual('boxVenue').get(function () {
         }
       }
     }
-    return boxVenue;  
+    return boxVenue.trim();  
   }
 });
 

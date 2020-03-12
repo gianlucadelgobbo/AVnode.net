@@ -1,0 +1,32 @@
+nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse
+  a.navbar-brand(href='/', title="AVnode.net")
+    img(src='/images/LogoAVnode-bar.svg', height='30', class='main_logo' alt='AVnode.net')
+  button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
+    span.lnr.lnr-menu.toggle_icon
+  .collapse.navbar-collapse(id="navbar-collapse_performer_template")
+    if user
+      form.form-inline.mr-auto
+      form.form-inline
+        input#hideLinks.form-check-input.mr-2(type='checkbox', name="hideLinks", value=1, checked=get.hideLinks=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideLinks')="Hide items links"
+        input#hideImages.form-check-input.mr-2(type='checkbox', name="hideImages", value=1, checked=get.hideImages=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideImages')="Hide items images"
+        input#hideDescription.form-check-input.mr-2(type='checkbox', name="hideDescription", value=1, checked=get.hideDescription=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideDescription')="Hide items descriptions"
+        input#fullDescription.form-check-input.mr-2(type='checkbox', name="fullDescription", value=1, checked=get.fullDescription=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='fullDescription')="Full items descriptions"
+        button.btn.btn-primary.update(type='submit')="UPDATE"
+        .pl-2.pr-2!=" | "
+        button.btn.btn-success(type='button', onclick="window.print();return false;")="PRINT"
+        a#userDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+          span.lnr.lnr-user
+        .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
+          a.dropdown-item(href='/'+user.slug)                    
+            span.pr-2.lnr.lnr-eye
+            !=" "+global.__('Profile')
+          a.dropdown-item(href='/admin/profile/'+user._id+'/public')                    
+            span.pr-2.lnr.lnr-cog
+            !=" "+global.__('Control Panel')
+          a.dropdown-item(href='/logout')                    
+            span.pr-2.lnr.lnr-exit
+            !=" "+global.__('Log out')

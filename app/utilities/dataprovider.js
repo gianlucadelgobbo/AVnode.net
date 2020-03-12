@@ -890,6 +890,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section),
             canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
             editable: helpers.editable(req, data, data._id),
+            get: req.query,
             data: data,
             type: type,
             pages: data.pages,

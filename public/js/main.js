@@ -146,23 +146,17 @@ $(document).ready(function(){
   });
 
   $( ".print-perf" ).click(function( event ) {
-    event.preventDefault();
     var user = $(this).data('user');
-    if (user) {
-      $('#msg_modal .modal-body').html('This feature is under development, we keep you posted.');
-      $('#msg_modal .modal-footer button').html('CONTINUE');
-      $('#msg_modal .modal-footer button').click(function( event ) {
-        $('#msg_modal ').modal('hide');
-      });  
-    } else {
+    if (!user) {
+      event.preventDefault();
       var slug = $(this).data('slug');
       $('#msg_modal .modal-body').html('Please login to use this feature.');
       $('#msg_modal .modal-footer button').html('LOGIN');
       $('#msg_modal .modal-footer button').click(function( event ) {
         window.location.href="/login?returnTo=/performances/"+slug+"/";
       });  
+      $('#msg_modal ').modal('show');
     }
-    $('#msg_modal ').modal('show');
   });
 
   $( ".book-perf" ).click(function( event ) {
@@ -212,8 +206,21 @@ $(document).ready(function(){
     }
   });
 
+  $( ".cv_performer" ).click(function( event ) {
+    var user = $(this).data('user');
+    if (!user) {
+      event.preventDefault();
+      var slug = $(this).data('slug');
+      $('#msg_modal .modal-body').html('Please login to use this feature.');
+      $('#msg_modal .modal-footer button').html('LOGIN');
+      $('#msg_modal .modal-footer button').click(function( event ) {
+        window.location.href="/login?returnTo=/"+slug+"/";
+      });  
+      $('#msg_modal ').modal('show');
+    }
+  });
+
   $( ".contact_performer" ).click(function( event ) {
-    console.log("contact_performer");
     event.preventDefault();
     var user = $(this).data('user');
     $('#modalContact .alert').addClass('d-none');
