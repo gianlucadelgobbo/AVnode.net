@@ -17,6 +17,7 @@ const Media = new Schema({
   height: Number,
 
   encoded: { type: Number, default: 0 },
+  rencoded: { type: Number, default: 0 },
   users: [{ type : Schema.ObjectId, ref : 'User' }],
   stats: {
     visits: { type: Number, default: 0 },

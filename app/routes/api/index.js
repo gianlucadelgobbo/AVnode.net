@@ -74,7 +74,23 @@ router.get('/tobeencoded/:sez', (req, res) => {
     if (err) {
       res.status(500).json({ error: `${JSON.stringify(err)}` });
     } else {
-      res.json(data);
+      if (data.length) {
+        res.json(data);      
+      } else {
+        Model
+        .find({media:{$exists:true}, $or: [{"media.rencoded":{$exists:false}}]})
+        .lean(1)
+        .limit(1)
+        .select({media:1})
+        .sort({createdAt:-1})
+        .exec((err, data) => {
+          if (err) {
+            res.status(500).json({ error: `${JSON.stringify(err)}` });
+          } else {
+            res.json(data);
+          }
+        });      
+      }
     }
   });
 });
@@ -119,6 +135,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
               }
             } else {
               data.media.encoded = req.params.encoding;
+              data.media.rencoded = req.params.encoding;
               data.save((err) => {
                 if (err) {
                   res.json(err);
