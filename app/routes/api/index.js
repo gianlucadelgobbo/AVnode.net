@@ -136,12 +136,16 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
             } else {
               data.media.encoded = req.params.encoding;
               data.media.rencoded = req.params.encoding;
-              data.save((err) => {
-                if (err) {
-                  res.json(err);
-                } else {
-                  res.json(data);
-                }
+              const { getVideoDurationInSeconds } = require('get-video-duration')
+              getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
+                data.media.duration = duration;
+                data.save((err) => {
+                  if (err) {
+                    res.json(err);
+                  } else {
+                    res.json(data);
+                  }
+                });
               });
             }
           });
