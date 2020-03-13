@@ -2072,11 +2072,13 @@ router.addVideo = (req, res) => {
 router.removeVideo = (req, res) => {
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
+  let model;
   if (req.params.sez == "events" || req.params.sez == "performances") {
-    let model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
+    model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
   } else {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
+  console.log(model);
   model
   .findOne(query)
   .select({_id:1, videos:1,})
