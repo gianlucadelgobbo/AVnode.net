@@ -110,9 +110,9 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
     if (err) {
       res.status(500).json({ error: `${JSON.stringify(err)}` });
     } else {
-      if (!data || !data.media || data.media.file) {
+      /* if (!data || !data.media || data.media.file) {
         res.status(500).json({ error: "MEDIA NOT FOUND" });
-      } else {
+      } else { */
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
           console.log("ffprobe");
@@ -143,7 +143,7 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
         } else {
           res.json({error: "FILE NOT FOUND"});
         }
-      }
+      //}
     }
   });
 });
