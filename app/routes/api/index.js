@@ -217,7 +217,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
     });
   
   } else {
-    Model.updateOne({_id:req.params.id},{"media.encoded":req.params.encoding}, (err, raw) => {
+    Model.updateOne({_id:req.params.id},{"media.encoded":req.params.encoding, "media.rencoded":req.params.encoding}, (err, raw) => {
       res.json(raw);
     });
   }
