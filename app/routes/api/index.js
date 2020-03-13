@@ -5,9 +5,6 @@ const fs = require("fs");
 
 const imageUtil = require("../../utilities/image");
 
-const { getVideoDurationInSeconds } = require('get-video-duration')
-const getDimensions = require('get-video-dimensions');
-
 const Footage = require('mongoose').model('Footage');
 const Video = require('mongoose').model('Video');
 const Order = require('mongoose').model('Order');
