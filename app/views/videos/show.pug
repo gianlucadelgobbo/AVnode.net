@@ -56,7 +56,7 @@ block content
               if data.media.width && data.media.height
                 li=global.__('Video dimensions')+": "
                   b=data.media.width+"x"+data.media.height
-        if data.categories
+        if data.categories && data.categories.length
           .data_footage_video_wrapper
             h3=__("Categories")
             ul.list-inline.category_performance_item

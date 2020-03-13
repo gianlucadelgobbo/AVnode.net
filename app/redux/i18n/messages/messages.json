@@ -300,6 +300,11 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.category_vjtv",
+    "defaultMessage": "VJTV Category",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.authors",
     "defaultMessage": "Authors",
     "filepath": "./app/redux/components/common/form/labels.js"

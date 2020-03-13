@@ -44,6 +44,11 @@ class VideosPublic extends Component {
 
     model.is_public = model.is_public;
 
+    if (model.categories) {
+      model.categories = model.categories.value;
+    }
+
+
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
       model.abouts = model.abouts.map(x => {
@@ -66,9 +71,12 @@ class VideosPublic extends Component {
       return {};
     }
 
-    const { abouts } = model;
+    const { abouts, categories } = model;
 
     let f = {};
+    if (categories) {
+      f.categories = { label: categories.name, value: categories._id };
+    }
 
     //Convert slug for redux-form
     f.slug = model.slug;

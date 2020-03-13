@@ -11,7 +11,7 @@ import {
 import validate from "./validate";
 import { injectIntl } from "react-intl";
 import {
-  CATEGORY,
+  CATEGORY_VJTV,
   ABOUT,
   VIDEOS_NAME,
   VIDEOS_URL,
@@ -58,13 +58,18 @@ class VideosPublicForm extends Component {
           help={this.getIntlString({ id: VIDEOS_URL_HELP })}
         />
 
-        <Field
-          name="categories"
-          component={renderList}
-          placeholder={this.getIntlString({ id: CATEGORY })}
-          multiple={false}
-          options={categories}
-        />
+        <div className="vjtv">
+          <Field
+            name="categories"
+            component={renderList}
+            placeholder={this.getIntlString({ id: CATEGORY_VJTV })}
+            multiple={true}
+            options={categories}
+            labeladd = {<div className="labelADD"><a href="https://vjtelevision.com" target="_blank"><img src="/images/VJTV.png" /></a></div> }
+
+          />
+        </div>
+
 
         <Field
           name="is_public"
