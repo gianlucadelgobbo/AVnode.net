@@ -49,6 +49,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
     "express-status-monitor": "^1.0.1",
+    "ffprobe": "^1.1.0",
     "file-type": "^14.1.2",
     "get-video-dimensions": "^1.0.0",
     "get-video-duration": "^1.0.3",

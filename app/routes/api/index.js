@@ -106,33 +106,43 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
   .findOne({_id:req.params.id})
   .exec((err, data) => {
     console.log(data);
-    data.media.file = "/public/1f575e4c-7cd5-4609-a0cc-75b3b301c6f3.mp4";
+    //data.media.file = "/public/1f575e4c-7cd5-4609-a0cc-75b3b301c6f3.mp4";
     if (err) {
       res.status(500).json({ error: `${JSON.stringify(err)}` });
     } else {
-      console.log("existsSync");
-      console.log(global.appRoot+data.media.file);
-      if (fs.existsSync(global.appRoot+data.media.file)) {
-        data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-        console.log("getVideoDurationInSeconds");
-        getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
-          data.media.duration = duration*1000;
-          console.log("getDimensions");
-          getDimensions(global.appRoot+data.media.file).then((dimensions) => {
-            data.media.width = dimensions.width;
-            data.media.height = dimensions.height;
-            console.log("save");
-            data.save((err) => {
-              if (err) {
-                res.json(err);
-              } else {
-                res.json(data);
-              }
-            });
-          })
-        });
+      if (!data || !data.media || data.media.file) {
+        res.status(500).json({ error: "MEDIA NOT FOUND" });
       } else {
-        res.json({error: "FILE NOT FOUND"});
+        if (fs.existsSync(global.appRoot+data.media.file)) {
+          data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
+          console.log("ffprobe");
+          console.log(global.appRoot+data.media.file);
+      
+          var ffprobe = require('ffprobe');
+          var ffprobeStatic = require('ffprobe-static');
+          ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+            if (!info || !info.streams || !info.streams.length) {
+              res.json({error: "NO_STREAMS"});
+            } else {
+              for (var a=0; a<info.streams.length; a++) {
+                if (info.streams[a].width && info.streams[a].height) {
+                  data.media.width = info.streams[a].width;
+                  data.media.height = info.streams[a].height;
+                  data.media.duration = info.streams[a].duration*1000;
+                }
+              }
+              data.save((err) => {
+                if (err) {
+                  res.json(err);
+                } else {
+                  res.json(data);
+                }
+              });
+            }
+          });
+        } else {
+          res.json({error: "FILE NOT FOUND"});
+        }
       }
     }
   });
