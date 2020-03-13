@@ -100,6 +100,7 @@ router.get('/tobeencoded/:sez', (req, res) => {
 
 router.get('/setdurationandsize/:sez/:id/', (req, res) => {
   logger.debug('/setencodingstatus/:sez/:id/');
+  console.log("existsSync");
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   Model
   .findOne({_id:req.params.id})
@@ -107,13 +108,17 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
     if (err) {
       res.status(500).json({ error: `${JSON.stringify(err)}` });
     } else {
+      console.log("existsSync");
       if (fs.existsSync(global.appRoot+data.media.file)) {
         data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
+        console.log("getVideoDurationInSeconds");
         getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
           data.media.duration = duration*1000;
+          console.log("getDimensions");
           getDimensions(global.appRoot+data.media.file).then(function (dimensions) {
             data.media.width = dimensions.width;
             data.media.height = dimensions.height;
+            console.log("save");
             data.save((err) => {
               if (err) {
                 res.json(err);
