@@ -189,11 +189,19 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
             } else {
               data.media.encoded = req.params.encoding;
               data.media.rencoded = req.params.encoding;
-              getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
-                data.media.duration = duration*1000;
-                //getDimensions(global.appRoot+data.media.file).then(function (dimensions) {
-                  //data.media.width = dimensions.width;
-                  //data.media.height = dimensions.height;
+              var ffprobe = require('ffprobe');
+              var ffprobeStatic = require('ffprobe-static');
+              ffprobe(global.appRoot+data.media.file, { path: ffprobeStatic.path }, function (err, info) {
+                if (!info || !info.streams || !info.streams.length) {
+                  res.json({error: "NO_STREAMS"});
+                } else {
+                  for (var a=0; a<info.streams.length; a++) {
+                    if (info.streams[a].width && info.streams[a].height) {
+                      data.media.width = info.streams[a].width;
+                      data.media.height = info.streams[a].height;
+                      data.media.duration = info.streams[a].duration*1000;
+                    }
+                  }
                   data.save((err) => {
                     if (err) {
                       res.json(err);
@@ -201,9 +209,9 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
                       res.json(data);
                     }
                   });
-                //})
+                }
               });
-            }
+                }
           });
         } else {
           res.json({error: "FILE NOT FOUND"});
