@@ -105,17 +105,20 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
   Model
   .findOne({_id:req.params.id})
   .exec((err, data) => {
+    console.log(data);
+    data.media.file = "/public/1f575e4c-7cd5-4609-a0cc-75b3b301c6f3.mp4";
     if (err) {
       res.status(500).json({ error: `${JSON.stringify(err)}` });
     } else {
       console.log("existsSync");
+      console.log(global.appRoot+data.media.file);
       if (fs.existsSync(global.appRoot+data.media.file)) {
         data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
         console.log("getVideoDurationInSeconds");
         getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
           data.media.duration = duration*1000;
           console.log("getDimensions");
-          getDimensions(global.appRoot+data.media.file).then(function (dimensions) {
+          getDimensions(global.appRoot+data.media.file).then((dimensions) => {
             data.media.width = dimensions.width;
             data.media.height = dimensions.height;
             console.log("save");
@@ -178,9 +181,9 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
               data.media.rencoded = req.params.encoding;
               getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
                 data.media.duration = duration*1000;
-                getDimensions(global.appRoot+data.media.file).then(function (dimensions) {
-                  data.media.width = dimensions.width;
-                  data.media.height = dimensions.height;
+                //getDimensions(global.appRoot+data.media.file).then(function (dimensions) {
+                  //data.media.width = dimensions.width;
+                  //data.media.height = dimensions.height;
                   data.save((err) => {
                     if (err) {
                       res.json(err);
@@ -188,7 +191,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
                       res.json(data);
                     }
                   });
-                })
+                //})
               });
             }
           });
