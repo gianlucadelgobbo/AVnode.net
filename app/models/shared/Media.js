@@ -1,6 +1,7 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const Media = new Schema({
   url: String,
@@ -26,7 +27,19 @@ const Media = new Schema({
   title: String,
 }, {
   _id : false,
-  id : false
+  id : false,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
+  }
+});
+
+Media.virtual('durationHR').get(function (req) {
+  if (this.duration) {
+    return moment(this.duration).format("h:mm:ss");
+  }
 });
 
 module.exports = Media;

@@ -1068,6 +1068,12 @@ export const fetchEventsCategories = () => {
   });
 };
 
+export const fetchVideosCategories = () => {
+  return axios.get("/getcategories/videos/slug/tv").then(result => {
+    return result.data.childrens;
+  });
+};
+
 export const fetchPartnerCategories = () => {
   return new Promise(fulfil => {
     const items = [

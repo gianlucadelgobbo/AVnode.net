@@ -5,6 +5,9 @@ const fs = require("fs");
 
 const imageUtil = require("../../utilities/image");
 
+const { getVideoDurationInSeconds } = require('get-video-duration')
+const getDimensions = require('get-video-dimensions');
+
 const Footage = require('mongoose').model('Footage');
 const Video = require('mongoose').model('Video');
 const Order = require('mongoose').model('Order');
@@ -95,6 +98,38 @@ router.get('/tobeencoded/:sez', (req, res) => {
   });
 });
 
+router.get('/setdurationandsize/:sez/:id/', (req, res) => {
+  logger.debug('/setencodingstatus/:sez/:id/');
+  Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
+  Model
+  .findOne({_id:req.params.id})
+  .exec((err, data) => {
+    if (err) {
+      res.status(500).json({ error: `${JSON.stringify(err)}` });
+    } else {
+      if (fs.existsSync(global.appRoot+data.media.file)) {
+        data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
+        getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
+          data.media.duration = duration*1000;
+          getDimensions(global.appRoot+data.media.file).then(function (dimensions) {
+            data.media.width = dimensions.width;
+            data.media.height = dimensions.height;
+            data.save((err) => {
+              if (err) {
+                res.json(err);
+              } else {
+                res.json(data);
+              }
+            });
+          })
+        });
+      } else {
+        res.json({error: "FILE NOT FOUND"});
+      }
+    }
+  });
+});
+
 router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
   logger.debug('/setencodingstatus/:sez/:id/:encoding');
   logger.debug(req.params.encoding);
@@ -136,16 +171,19 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
             } else {
               data.media.encoded = req.params.encoding;
               data.media.rencoded = req.params.encoding;
-              const { getVideoDurationInSeconds } = require('get-video-duration')
               getVideoDurationInSeconds(global.appRoot+data.media.file).then((duration) => {
-                data.media.duration = duration;
-                data.save((err) => {
-                  if (err) {
-                    res.json(err);
-                  } else {
-                    res.json(data);
-                  }
-                });
+                data.media.duration = duration*1000;
+                getDimensions(global.appRoot+data.media.file).then(function (dimensions) {
+                  data.media.width = dimensions.width;
+                  data.media.height = dimensions.height;
+                  data.save((err) => {
+                    if (err) {
+                      res.json(err);
+                    } else {
+                      res.json(data);
+                    }
+                  });
+                })
               });
             }
           });

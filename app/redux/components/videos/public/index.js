@@ -16,6 +16,8 @@ import {
   getModelErrorMessage
 } from "../selectors";
 import { locales, locales_labels } from "../../../../../config/default";
+import { fetchVideoList as fetchVideosCategories } from "../../categories/actions";
+import { getList as getCategories } from "../../categories/selectors";
 import { populateMultiLanguageObject } from "../../common/form";
 import { VIDEO_NAME, SHOW } from "./constants";
 import { removeModel } from "../users/actions";
@@ -26,11 +28,13 @@ class VideosPublic extends Component {
       fetchModel,
       match: {
         params: { _id }
-      }
+      },
+      fetchVideosCategories
     } = this.props;
     fetchModel({
       id: _id
     });
+    fetchVideosCategories();
   }
 
   // Convert form values to API model
@@ -165,7 +169,8 @@ const mapStateToProps = (
 ) => ({
   model: getModel(state, _id),
   isFetching: getModelIsFetching(state, _id),
-  errorMessage: getModelErrorMessage(state, _id)
+  errorMessage: getModelErrorMessage(state, _id),
+  categories: getCategories(state).map(c => ({ value: c._id, label: c.name }))
 });
 
 const mapDispatchToProps = dispatch =>
@@ -175,7 +180,8 @@ const mapDispatchToProps = dispatch =>
       fetchModel,
       removeModel,
       showModal,
-      uploadModel
+      uploadModel,
+      fetchVideosCategories
     },
     dispatch
   );

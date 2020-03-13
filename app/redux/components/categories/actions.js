@@ -2,6 +2,7 @@ import * as api from '../../api';
 import {arrayOfCategories} from './schema'
 import {fetchList as generateFetchList} from '../../actions/'
 import {fetchEventList as generateFetchEventList} from '../../actions/'
+import {fetchVideoList as generateFetchVideoList} from '../../actions/'
 import * as selectors from "./selectors";
 import * as constants from './constants'
 
@@ -17,4 +18,11 @@ export const fetchEventList = () => generateFetchEventList({
     selectors,
     schema: arrayOfCategories,
     request: api.fetchEventsCategories
+});
+
+export const fetchVideoList = () => generateFetchVideoList({
+    constants,
+    selectors,
+    schema: arrayOfCategories,
+    request: api.fetchVideosCategories
 });

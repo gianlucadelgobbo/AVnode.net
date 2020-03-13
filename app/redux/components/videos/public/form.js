@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { reduxForm, Field, FieldArray } from "redux-form";
 import { FORM_NAME, SECTION } from "./constants";
 import {
+  renderList,
   inputText,
   textareaMultiTab,
   fieldWithLabel,
@@ -10,6 +11,7 @@ import {
 import validate from "./validate";
 import { injectIntl } from "react-intl";
 import {
+  CATEGORY,
   ABOUT,
   VIDEOS_NAME,
   VIDEOS_URL,
@@ -33,7 +35,7 @@ class VideosPublicForm extends Component {
       labels,
       showModal,
       onSubmit,
-      uploadFile,
+      categories,
       media,
       _id,
       removeModel,
@@ -54,6 +56,14 @@ class VideosPublicForm extends Component {
           placeholder={this.getIntlString({ id: VIDEOS_URL })}
           pre={this.getIntlString({ id: VIDEOS_URL_PRE })}
           help={this.getIntlString({ id: VIDEOS_URL_HELP })}
+        />
+
+        <Field
+          name="categories"
+          component={renderList}
+          placeholder={this.getIntlString({ id: CATEGORY })}
+          multiple={false}
+          options={categories}
         />
 
         <Field
