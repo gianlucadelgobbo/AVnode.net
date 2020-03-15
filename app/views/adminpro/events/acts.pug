@@ -198,7 +198,7 @@ block content
                   each video in item.performance.videos
                     if video.media && video.media.file
                       div(style='display:none;', id=video._id)
-                        video.lg-video-object.lg-html5.video-js.vjs-default-skin(controls='', preload='none')
+                        video.lg-video-object.lg-html5.video-js.vjs-big-play-centered.vjs-default-skin(controls='', preload='none')
                           source(src="https://avnode.net"+video.media.file, type='video/mp4')
                           !="Your browser does not support HTML5 video."
     

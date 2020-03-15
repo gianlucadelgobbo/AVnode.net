@@ -31,7 +31,7 @@ block content
       .col-md-8
         if data.media && data.media.file
           .embed-responsive.embed-responsive-16by9
-            video.embed-responsive-item#my-video.video-js(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{"aspectRatio":"16:9", "fluid": true}')
+            video.embed-responsive-item#my-video.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height='264', poster=data.imageFormats.large, data-setup='{"aspectRatio":"16:9", "fluid": true}')
               source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
               //source(src='MY_VIDEO.webm', type='video/webm')
               p.vjs-no-js

@@ -9,6 +9,7 @@ const Footage = require('mongoose').model('Footage');
 const Video = require('mongoose').model('Video');
 const Order = require('mongoose').model('Order');
 const Event = require('mongoose').model('Event');
+const Vjtv = require('mongoose').model('Vjtv');
 const Emailqueue = require('mongoose').model('Emailqueue');
 
 const logger = require('../../utilities/logger');
@@ -229,69 +230,109 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
-    logger.debug("updateTransation");
+  logger.debug("updateTransation");
+  logger.debug(req.body);
+
+  const gmailer = require('../../utilities/gmailer');
+  Order
+  .create(req.body, (err, data) => {
+    logger.debug("req.body.event");
     logger.debug(req.body);
-  
-    const gmailer = require('../../utilities/gmailer');
-    Order
-    .create(req.body, (err, data) => {
-      logger.debug("req.body.event");
-      logger.debug(req.body);
-      if(!err) {
-        if (req.body.event) {
-          logger.debug(req.body.event);
-          Event
-          .findOne({"_id":req.body.event})
-          .select({title:1, organizationsettings:1})
-          .exec((err, event) => {
-            logger.debug("event.organizationsettings.email");
-            logger.debug(event.organizationsettings.email);
-            if (err) {
-              res.status(500).json({ error: `${JSON.stringify(err)}` });
-            } else {
-              const auth = {
-                user: event.organizationsettings.email,
-                pass: event.organizationsettings.emailpassword
-              };
-              let email = "Ciao " + req.body.details.payer.name.given_name +",\n"+"your payment to \""+event.title+"\" was successful!!!";
-              email+= "\n\nYour purchase is:";
-              for (var a=0;a<req.body.details.purchase_units.length;a++) {
-                email+= "\n\n"+req.body.details.purchase_units[a].description+"           "+req.body.details.purchase_units[a].amount.value+" "+req.body.details.purchase_units[a].amount.currency_code+" ";
-              } 
-              email+= "\n\nThank you.";
-              email+= "\n\n"+event.organizationsettings.text_sign;
-              const mail = {
-                from: event.organizationsettings.emailname + " <"+ event.organizationsettings.email + ">",
-                to: req.body.details.payer.name.given_name + " " + req.body.details.payer.name.surname + " <"+ req.body.details.payer.email_address + ">",
-                subject: __("Payment Confirm") + " | " + event.title,
-                text: email
-              };
-              logger.debug("pre gMailer")
-              logger.debug(auth)
-              logger.debug(mail)
-              gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
-                /* logger.debug("gMailer");
-                logger.debug(err);
-                logger.debug("gMailer");
-                logger.debug(result);
-                res.json({res:result}); */
-                if (err) {
-                  logger.debug("Email sending failure");
-                  logger.debug(err);
-                  res.json({error: true, msg: "Email sending failure"});
-                } else {
-                  logger.debug("Email sending OK");
-                  res.json({error: false, msg: "Email sending success"});
-                }
-              });
+    if(!err) {
+      if (req.body.event) {
+        logger.debug(req.body.event);
+        Event
+        .findOne({"_id":req.body.event})
+        .select({title:1, organizationsettings:1})
+        .exec((err, event) => {
+          logger.debug("event.organizationsettings.email");
+          logger.debug(event.organizationsettings.email);
+          if (err) {
+            res.status(500).json({ error: `${JSON.stringify(err)}` });
+          } else {
+            const auth = {
+              user: event.organizationsettings.email,
+              pass: event.organizationsettings.emailpassword
+            };
+            let email = "Ciao " + req.body.details.payer.name.given_name +",\n"+"your payment to \""+event.title+"\" was successful!!!";
+            email+= "\n\nYour purchase is:";
+            for (var a=0;a<req.body.details.purchase_units.length;a++) {
+              email+= "\n\n"+req.body.details.purchase_units[a].description+"           "+req.body.details.purchase_units[a].amount.value+" "+req.body.details.purchase_units[a].amount.currency_code+" ";
             } 
-          });  
+            email+= "\n\nThank you.";
+            email+= "\n\n"+event.organizationsettings.text_sign;
+            const mail = {
+              from: event.organizationsettings.emailname + " <"+ event.organizationsettings.email + ">",
+              to: req.body.details.payer.name.given_name + " " + req.body.details.payer.name.surname + " <"+ req.body.details.payer.email_address + ">",
+              subject: __("Payment Confirm") + " | " + event.title,
+              text: email
+            };
+            logger.debug("pre gMailer")
+            logger.debug(auth)
+            logger.debug(mail)
+            gmailer.gMailer({auth:auth, mail:mail}, function (err, result){
+              /* logger.debug("gMailer");
+              logger.debug(err);
+              logger.debug("gMailer");
+              logger.debug(result);
+              res.json({res:result}); */
+              if (err) {
+                logger.debug("Email sending failure");
+                logger.debug(err);
+                res.json({error: true, msg: "Email sending failure"});
+              } else {
+                logger.debug("Email sending OK");
+                res.json({error: false, msg: "Email sending success"});
+              }
+            });
+          } 
+        });  
+      } else {
+        res.json({err:err});
+      }
+    }
+  });  
+});
+
+router.post('/getprograms', (req, res) => {
+  logger.debug("getprograms");
+  //req.body.month = "2020-03";
+  logger.debug(req.body.month);
+  var offset = 1*60*60*1000;
+  if(req.body.month) {
+    var pieces = req.body.month.split("-");
+    var date = new Date(pieces[0], parseInt(pieces[1])-1, 1, 0, 0,0,0);
+  } else {
+    var date = new Date();
+  }
+  var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
+  var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
+  console.log(start);
+  console.log(end);
+  Vjtv
+  .find({programming: { $lt: end, $gt: start}})
+  //.select(select)
+  .sort({programming: 1})
+  .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
+  .exec((err, data) => {
+    res.json(data);
+    /* if (err) {
+      res.status(404).json({ error: `${JSON.stringify(err)}` });
+    } else {
+      if (!data) {
+        res.status(204).json({ error: `DOC_NOT_FOUND` });
+      } else {
+        if (helpers.editable(req, data, id)) {
+          let send = {_id: data._id};
+          for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
+          res.json(send);
         } else {
-          res.json({err:err});
+          res.status(204).json({ error: `DOC_NOT_OWNED` });
         }
       }
-    });  
+    } */
   });
-
-
+});
+  
+  
 module.exports = router;

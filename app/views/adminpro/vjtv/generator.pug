@@ -1,0 +1,24 @@
+extends ../layout
+block topmenu
+  include topmenu
+block content
+  table.table
+    thead
+      tr
+        th=global.__("Programming")
+        th=global.__("Duration")
+        th=global.__("Title")
+        th=global.__("CAT")
+        th=global.__("Link")
+    tbody
+      if data.length
+        each item, index in data
+          tr
+            td=item.programming
+            td=item.media.durationHR
+            td=item.title
+            td=item.category
+            td
+              a(href="/admin/videos/"+item._id+"/public", target="_blank")!=global.__("edit")
+                !=" | "
+              a(href="/"+item.slug, target="_blank")!=global.__("view")

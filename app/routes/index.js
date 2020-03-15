@@ -31,6 +31,7 @@ const dataprovider = require('../utilities/dataprovider');
 const helper = require('../utilities/helper');
 
 const organizations = require('./organizations');
+const vjtv = require('./vjtv');
 
 /*
 const user = require('./user');
@@ -58,6 +59,7 @@ router.use('/videos', videos);
 router.use('/galleries', galleries);
 router.use('/news', news);
 router.use('/api', api);
+router.use('/vjtv', vjtv);
 
 router.use('/login', login);
 router.use('/flxerlogin', login);

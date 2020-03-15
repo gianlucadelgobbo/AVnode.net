@@ -2,6 +2,7 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
+const momentDurationFormatSetup = require('moment-duration-format');
 
 const Media = new Schema({
   url: String,
@@ -38,7 +39,7 @@ const Media = new Schema({
 
 Media.virtual('durationHR').get(function (req) {
   if (this.duration) {
-    return moment(this.duration).format("h:mm:ss");
+    return moment.duration(this.duration).format('hh:mm:ss', {trim: false});
   }
 });
 

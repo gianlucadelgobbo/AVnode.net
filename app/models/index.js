@@ -17,3 +17,4 @@ require('./VenueDB');
 require('./Partner');
 require('./Order');
 require('./Emailqueue');
+require('./Vjtv');

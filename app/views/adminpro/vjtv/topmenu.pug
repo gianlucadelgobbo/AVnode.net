@@ -1,0 +1,30 @@
+.clearfix.pt-3.pb-3
+  .float-left
+    h2.h2
+      if event
+        a(href="/adminpro/partners/"+owner)
+          i.pr-1.fas.fa-caret-square-left
+          !=title
+      else
+        !=title
+  .float-right.mb-2.mb-md-0.d-print-none
+    form.d-print-none.text-right
+      select.float-left.form-control-sm.btn-outline-secondary.mb-3.mr-2(style="width:300px" onchange="if (this.value) window.location.href='/adminpro/vjtv/?month='+this.value+''")
+        option(value=0)=global.__("Select month")
+        - var now = new Date();
+        - var mydate = new Date(now.setFullYear(now.getFullYear()-1))
+        - var end = new Date(now.setFullYear(now.getFullYear()+2))
+        - while (mydate<end) {
+          - str = mydate.getFullYear()+"-"+("0" + (mydate.getMonth() + 1)).slice(-2);
+          option(value=str, selected=str==get.month ? "selected" : undefined)=str
+          - mydate = new Date(mydate.setMonth(mydate.getMonth()+1));
+
+        - }
+      //.btn-group.mr-2
+        button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
+        button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
+        if map
+          a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=0')="TABLE"
+        else 
+          a.btn.btn-sm.btn-outline-secondary.mr-2(href='?map=1')="MAP"
+        a.btn.btn-sm.btn-outline-secondary(href='?csv=1')="CSV"
