@@ -63,13 +63,17 @@ class VideosPublicForm extends Component {
             name="categories"
             component={renderList}
             placeholder={this.getIntlString({ id: CATEGORY_VJTV })}
-            multiple={true}
+            multiple={false}
             options={categories}
-            labeladd = {<div className="labelADD"><a href="https://vjtelevision.com" target="_blank"><img src="/images/VJTV.png" /></a></div> }
-
+            labeladd={
+              <div className="labelADD">
+                <a href="https://vjtelevision.com" target="_blank">
+                  <img src="/images/VJTV.png" />
+                </a>
+              </div>
+            }
           />
         </div>
-
 
         <Field
           name="is_public"
