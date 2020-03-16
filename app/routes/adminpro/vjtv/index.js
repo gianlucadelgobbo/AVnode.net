@@ -122,8 +122,11 @@ router.get('/', (req, res) => {
       Vjtv
       .deleteMany({programming: { $lt: end, $gt: start}}, function (err, results) {
         console.log(results.deletedCount);
+        console.log(month.length);
         Vjtv
         .create(month, function (err, created) {
+          console.log("createok");
+          console.log(month.length);
           if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
             res.json(created);
           } else {
