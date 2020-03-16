@@ -14,10 +14,10 @@ block content
       if data.length
         each item, index in data
           tr
-            td=item.programming
-            td=item.media.durationHR
-            td=item.title
-            td=item.category
+            td=item.programming.toString().split(" GMT")[0]
+            td=item.video.media.durationHR
+            td=item.video.title
+            td=item.category.name
             td
               a(href="/admin/videos/"+item._id+"/public", target="_blank")!=global.__("edit")
                 !=" | "

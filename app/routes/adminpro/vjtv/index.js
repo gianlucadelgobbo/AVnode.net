@@ -105,41 +105,52 @@ router.get('/', (req, res) => {
           if(contavideo>=video.length) contavideo = 0;
         }
       }
-      var now = new Date();
-      var offset = 1*60*60*1000;
-      var start = new Date(new Date(now.getFullYear(), now.getMonth(), 1, 0, 0,0,0).getTime()+offset);
-      var end = new Date(new Date(now.getFullYear(), now.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
       console.log("start");
-      console.log(start);
+      console.log(date);
       console.log("end");
-      console.log(end);
+      console.log(enddate);
       /* printjson(start);
       printjson(end);
       db.vjtvs.find({programming: { $lt: end, $gt: start}}).forEach(function(e) {
         //printjson(e.media);
         printjson(e);
       }); */
+      var query = {programming: { $lt: enddate, $gt: date}};
+      console.log(query);
       Vjtv
-      .deleteMany({programming: { $lt: end, $gt: start}}, function (err, results) {
-        console.log(results.deletedCount);
+      .deleteMany(query, function (err, results) {
+        console.log(query);
+        console.log(results);
         console.log(month.length);
         Vjtv
         .create(month, function (err, created) {
           console.log("createok");
-          console.log(month.length);
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-            res.json(created);
-          } else {
+          /* var pieces = req.query.month.split("-");
+          var date = new Date(pieces[0], parseInt(pieces[1])-1, 1, 0, 0,0,0);
+          // 1 Month
+          var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
+          var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset); */
+          Vjtv
+          .find(query)
+          //.select(select)
+          //.limit(100)
+          .sort({programming: 1})
+          .populate([{path: "video", model: "Video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
+          .exec((err, data) => {
             console.log("adminpro");
-            res.render('adminpro/vjtv/generator', {
-              title: 'VJTV Generator',
-              currentUrl: req.originalUrl,
-              data: month,
-              get: req.query,
-              //data: data,
-              script: false
-            });
-          }
+            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+              res.json(data);
+            } else {
+              res.render('adminpro/vjtv/generator', {
+                title: 'VJTV Generator',
+                currentUrl: req.originalUrl,
+                data: data,
+                get: req.query,
+                //data: data,
+                script: false
+              });
+            }
+          });
         });
       });
     });
