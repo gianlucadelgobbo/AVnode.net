@@ -58,8 +58,8 @@ $(document).ready(function(){
 
     $.ajax({
       url: "/api/getprograms",
-      method: "post",
-      data: {month: now.getFullYear()+"-"+("0" + (now.getMonth() + 1)).slice(-2)}
+      method: "post"/* ,
+      data: {month: now.getFullYear()+"-"+("0" + (now.getMonth() + 1)).slice(-2)} */
     })
     .done(function(data) {
       var timeA = data.map(item => {return new Date(item.programming).getTime()});
@@ -80,7 +80,7 @@ $(document).ready(function(){
           poster: data[a].video.imageFormats.small
         })
         var id = new Date(data[a].programming).getTime();
-        html+="<li class=\"playlist-item bg-dark mt-3\" id=\"P"+a+"\">";
+        html+="<li class=\"playlist-item bg-dark mb-3\" id=\"P"+a+"\">";
         html+="  <div class=\"row text-monospace small playlist-header\">";
         html+="    <div class=\"col\"><div class=\"pl-2\">"+data[a].programming.split(".")[0].replace("T", " | ")+"</div></div>";
         html+="    <div class=\"col\"><div class=\"pr-2 text-right\">"+data[a].category.name+" | "+data[a].video.media.durationHR+"</div></div>";

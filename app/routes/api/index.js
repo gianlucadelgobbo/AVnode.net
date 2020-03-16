@@ -70,6 +70,7 @@ router.get('/tobeencoded/:sez', (req, res) => {
   .find({media:{$exists:true}, $or: [{"media.encoded":{$exists:false}}, {"media.encoded":0}]})
   .lean(1)
   .limit(1)
+  .sort({createdAt: -1})
   .select({media:1})
   .exec((err, data) => {
     if (err) {
@@ -98,12 +99,12 @@ router.get('/tobeencoded/:sez', (req, res) => {
 
 router.get('/setdurationandsize/:sez/:id/', (req, res) => {
   logger.debug('/setencodingstatus/:sez/:id/');
-  console.log("existsSync");
+  logger.debug("existsSync");
   Model = req.params.sez && req.params.sez == "videos" ? Video : Footage;
   Model
   .findOne({_id:req.params.id})
   .exec((err, data) => {
-    console.log(data);
+    logger.debug(data);
     //data.media.file = "/public/1f575e4c-7cd5-4609-a0cc-75b3b301c6f3.mp4";
     if (err) {
       res.status(500).json({ error: `${JSON.stringify(err)}` });
@@ -113,8 +114,8 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
       } else { */
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
-          console.log("ffprobe");
-          console.log(global.appRoot+data.media.file);
+          logger.debug("ffprobe");
+          logger.debug(global.appRoot+data.media.file);
       
           var ffprobe = require('ffprobe');
           var ffprobeStatic = require('ffprobe-static');
@@ -305,10 +306,24 @@ router.post('/getprograms', (req, res) => {
   } else {
     var date = new Date();
   }
-  var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
-  var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
-  console.log(start);
-  console.log(end);
+  // 1 Month
+  //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
+  //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
+  
+  //1 Week
+  var week = 7*24*60*60*1000;
+  //1 Full day
+  //var start = new Date(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0,0,0).getTime()+offset);
+  //var end = new Date(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59,0,0).getTime()+offset+offset);
+
+  //1 Full day
+  var day = 24*60*60*1000;
+  //var start = new Date(date.getTime()+offset);
+  var start = new Date(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0,0,0).getTime()+offset);
+  var end = new Date(date.getTime()+day+offset+offset);
+
+  logger.debug(start);
+  logger.debug(end);
   Vjtv
   .find({programming: { $lt: end, $gt: start}})
   //.select(select)
