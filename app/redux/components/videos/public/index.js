@@ -48,7 +48,6 @@ class VideosPublic extends Component {
       model.categories = model.categories.value;
     }
 
-
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
       model.abouts = model.abouts.map(x => {
@@ -75,7 +74,9 @@ class VideosPublic extends Component {
 
     let f = {};
     if (categories) {
-      f.categories = { label: categories.name, value: categories._id };
+      f.categories = categories.map(category => {
+        return { label: category.name, value: category._id };
+      });
     }
 
     //Convert slug for redux-form
@@ -98,8 +99,8 @@ class VideosPublic extends Component {
     const { model, uploadModel, showModal } = this.props;
     model.video = files;
     model.onUploadProgress = ProgressEvent => {
-      console.log(ProgressEvent.loaded / ProgressEvent.total*100);
-    }
+      console.log((ProgressEvent.loaded / ProgressEvent.total) * 100);
+    };
     return uploadModel(model).then(response => {
       if (response.model && response.model._id) {
         showModal({
@@ -134,7 +135,8 @@ class VideosPublic extends Component {
       },
       isFetching,
       errorMessage,
-      removeModel
+      removeModel,
+      categories
     } = this.props;
     return (
       <div>
@@ -144,7 +146,11 @@ class VideosPublic extends Component {
 
         {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-        <TitleComponent title={model.title} link={"/videos/"+model.slug} show={SHOW} />
+        <TitleComponent
+          title={model.title}
+          link={"/videos/" + model.slug}
+          show={SHOW}
+        />
         <LateralMenu _id={_id} />
         <hr />
         <h3 className="labelField mb-3">{VIDEO_NAME}</h3>
@@ -158,6 +164,7 @@ class VideosPublic extends Component {
           labels={locales_labels}
           uploadFile={this.uploadFile.bind(this)}
           _id={_id}
+          categories={categories}
           removeModel={removeModel}
           model={model}
         />
@@ -194,9 +201,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-VideosPublic = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VideosPublic);
+VideosPublic = connect(mapStateToProps, mapDispatchToProps)(VideosPublic);
 
 export default VideosPublic;
