@@ -2078,12 +2078,14 @@ router.removeVideo = (req, res) => {
   } else {
     res.status(404).json({ error: `API_NOT_FOUND` });
   }
-  console.log(model);
+  logger.debug(model);
   model
   .findOne(query)
-  .select({_id:1, videos:1,})
+  .select({_id:1, videos:1})
   //.populate({ "path": "users", "select": "stagename", "model": "User"})
   .exec((err, item) => {
+    logger.debug(req.params.video)
+    logger.debug(item.videos)
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
       res.status(404).json({ error: err });
