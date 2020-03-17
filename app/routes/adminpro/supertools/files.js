@@ -799,7 +799,7 @@ router.get('/videofiles', (req, res) => {
   Video.
   find({}).
   lean().
-  select({media: 1, title: 1, is_public: 1, createdAt: 1}).
+  select({media: 1, title: 1, slug: 1, is_public: 1, createdAt: 1}).
   exec((err, videos) => {
     for (let video in videos) {
       let oldPath
