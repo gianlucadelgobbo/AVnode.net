@@ -861,6 +861,9 @@ router.get('/videofiles', (req, res) => {
           }
         }
         if (videos[video].media.previewexists) {
+          if (!videos[video].media.imageFormats) videos[video].media.imageFormats = {};
+          if (!videos[video].media.imageFormatsExists) videos[video].media.imageFormatsExists = {};
+
           // logger.debug('previewFileName:' + previewFileName + ' previewFileFolder:' + previewFileFolder + ' previewFileNameWithoutExtension:' + previewFileNameWithoutExtension);
           for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
             videos[video].media.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`;
