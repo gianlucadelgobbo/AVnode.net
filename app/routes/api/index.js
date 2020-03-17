@@ -89,7 +89,7 @@ router.get('/tobeencoded/:sez', (req, res) => {
           if (err) {
             res.status(500).json({ error: `${JSON.stringify(err)}` });
           } else {
-            res.json([]);
+            res.json(data);
           }
         });      
       }
