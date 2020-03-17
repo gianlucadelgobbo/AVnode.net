@@ -4,7 +4,19 @@ block content
     if data.length
       each item, index in data
         li
-          !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          a(href="/videos/"+item.slug, target="_blank")!="show"
+          !=" | "
+          a(href="/admin/videos/"+item.id+"/public", target="_blank")!="edit"
+          !=" "
+          b=item.title
+          !="<br />"
+          !="Encoding: " + item.encoded
+          !=" | "
+          !="Rencoding: " + (item.rencoded ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">NO</span>' )
+          !=" | "
+          !="Public: " + (item.is_public == 1 ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">NO</span>' )
+          !="<br />"
+          !="File: " + global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
           !="<br />"
           !="Original: "
           if item.original 
