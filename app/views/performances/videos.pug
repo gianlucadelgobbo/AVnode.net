@@ -35,7 +35,7 @@ block title
                     =" "
                     !=data.type.name
 block content
-  if data.videos[0].events
+  if data.videos && data.videos[0] && data.videos[0].events
     if data.videos[0].title
       .container
         .row.performer_title
