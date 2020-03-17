@@ -799,7 +799,7 @@ router.get('/videofiles', (req, res) => {
   Video.
   find({"media.file": {$exists: true}}).
   lean().
-  select({media: 1, createdAt: 1}).
+  select({media: 1, title: 1, is_public: 1, createdAt: 1}).
   exec((err, videos) => {
     for (let video in videos) {
       videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
@@ -877,6 +877,8 @@ router.get('/videofiles', (req, res) => {
           videos[video].media.findoriginal= `mkdir /sites/avnode.net${originalFileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/videos", "/warehouse")}/original_video -name '${originalFileName}' -exec cp "{}" /sites/avnode.net${originalFileFolder}/${originalFileName} \\;`;
         }
       }
+      videos[video].media.id = videos[video]._id;
+      videos[video].media.is_public = videos[video].is_public;
       data.push(videos[video].media);
     }
     if (req.query.api==1) {
