@@ -76,5 +76,15 @@ block content
     ol
       each item, index in data
         if item.originalexists && !item.exists
-          li!="db.videos.update({ _id: ObjectId('"+item.id+"') },{ $set: {media: { encoded: 0 }}})"
+          li!="db.videos.update({ _id: ObjectId('"+item.id+"') },{ $set: {'media.encoded': 0 }})"
+
+    b="Rencode manually"
+    ol
+      each item, index in data
+        if item.originalexists && !item.exists
+          li!="cp /sites/avnode.net"+item.original+" /sites/avnode.net/glacier/_manual/"+item.original.substring(item.original.lastIndexOf("/"))
+    ol
+      each item, index in data
+        if item.originalexists && !item.exists
+          li!="cp /sites/avnode.net/glacier/_manual/"+item.original.substring(item.original.lastIndexOf("/"))+" /sites/avnode.net"+item.original+" "
 
