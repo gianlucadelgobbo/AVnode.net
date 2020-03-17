@@ -797,7 +797,7 @@ router.get('/videofiles', (req, res) => {
     "mpg"
   ];
   Video.
-  find({"media.file": {$exists: true}}).
+  find({}).
   lean().
   select({media: 1, title: 1, is_public: 1, createdAt: 1}).
   exec((err, videos) => {

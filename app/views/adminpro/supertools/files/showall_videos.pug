@@ -7,7 +7,10 @@ block content
           a(href="/videos/"+item.slug, target="_blank")!="show"
           !=" | "
           a(href="/admin/videos/"+item.id+"/public", target="_blank")!="edit"
-          !=" "
+          !=" | "
+          a(href="https://avnode.net/admin/api/videos/"+item.id+"/delete", target="_blank")!="delete"
+          //?delete=1
+          !=" | "
           b=item.title
           !="<br />"
           !="Encoding: " + item.encoded
