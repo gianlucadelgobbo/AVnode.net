@@ -72,3 +72,9 @@ block content
         if item.findoriginal
           li!=item.findoriginal
 
+    b="Rencode from Original"
+    ol
+      each item, index in data
+        if item.originalexists && !item.exists
+          li!="db.videos.update({ _id: ObjectId('"+item.id+"') },{ $set: {media: { encoded: 0 }}})"
+
