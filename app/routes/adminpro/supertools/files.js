@@ -889,6 +889,7 @@ router.get('/videofiles', (req, res) => {
         }
       }
       videos[video].media.title = videos[video].title;
+      videos[video].media.slug = videos[video].slug;
       videos[video].media.id = videos[video]._id;
       videos[video].media.is_public = videos[video].is_public;
       data.push(videos[video].media);

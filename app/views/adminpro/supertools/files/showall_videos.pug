@@ -13,7 +13,7 @@ block content
           !=" | "
           b=item.title
           !="<br />"
-          !="Encoding: " + item.encoded
+          !="Encoding: " + (item.encoded == 1 ? '<span class="badge badge-success">'+item.encoded+'</span>' : '<span class="badge badge-danger">'+item.encoded+'</span>' )
           !=" | "
           !="Rencoding: " + (item.rencoded ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">NO</span>' )
           !=" | "
