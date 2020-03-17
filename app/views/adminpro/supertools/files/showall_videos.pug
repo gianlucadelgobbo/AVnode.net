@@ -19,7 +19,11 @@ block content
           !=" | "
           !="Public: " + (item.is_public == 1 ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">NO</span>' )
           !="<br />"
-          !="File: " + global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          !="File: "
+          if item.file 
+            !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
+          else
+            !='<span class="badge badge-danger">MISSING</span>'
           !="<br />"
           !="Original: "
           if item.original 

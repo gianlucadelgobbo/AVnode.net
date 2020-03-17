@@ -802,27 +802,35 @@ router.get('/videofiles', (req, res) => {
   select({media: 1, title: 1, is_public: 1, createdAt: 1}).
   exec((err, videos) => {
     for (let video in videos) {
-      videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
-      videos[video].media.imageFormats = {};
-      videos[video].media.imageFormatsExists = {};
-      const file = videos[video].media.file;
-      const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-      const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
-      const publicPath = fileFolder.replace("/glacier/video_originals/", "/warehouse/videos/"); // /warehouse/2017/03
-      const oldPath = fileFolder.replace("/glacier/videos_originals/", "/warehouse/"); // /warehouse/2017/03
-      const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-      const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-      let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
-      let originalFileName = '';
-      if (!videos[video].media.exists) {
-        videos[video].media.find = `mkdir /sites/avnode.net${fileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/videos", "/warehouse")} -name '${fileName}' -exec cp "{}" /sites/avnode.net${fileFolder}/${fileName} \\;`;
-      }
+      let oldPath
+      let fileFolder
+      if (videos[video].media && videos[video].media.file) {
+        videos[video].media.exists = fs.existsSync(global.appRoot+videos[video].media.file);
+        videos[video].media.imageFormats = {};
+        videos[video].media.imageFormatsExists = {};
+        
+        const file = videos[video].media.file;
+        const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+        fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+        const publicPath = fileFolder.replace("/glacier/video_originals/", "/warehouse/videos/"); // /warehouse/2017/03
+        oldPath = fileFolder.replace("/glacier/videos_originals/", "/warehouse/"); // /warehouse/2017/03
+        const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        let originalFileExtension = fileNameWithoutExtension.substring(fileNameWithoutExtension.lastIndexOf('_') + 1);
+        let originalFileName = '';
+        if (!videos[video].media.exists) {
+          videos[video].media.find = `mkdir /sites/avnode.net${fileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/videos", "/warehouse")} -name '${fileName}' -exec cp "{}" /sites/avnode.net${fileFolder}/${fileName} \\;`;
+        }
 
-      if (valid.indexOf(originalFileExtension)===-1) {
-        originalFileName = fileNameWithoutExtension;
-        originalFileExtension = fileNameWithoutExtension;
+        if (valid.indexOf(originalFileExtension)===-1) {
+          originalFileName = fileNameWithoutExtension;
+          originalFileExtension = fileNameWithoutExtension;
+        } else {
+          originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+        }
       } else {
-        originalFileName = fileNameWithoutExtension.substring(0, fileNameWithoutExtension.lastIndexOf('_'));
+        if (!videos[video].media) videos[video].media = {};
+        videos[video].media.exists = false;
       }
       /*
       for(let format in config.cpanel[adminsez].forms.public.components.media.config.sizes) {
@@ -833,8 +841,8 @@ router.get('/videofiles', (req, res) => {
         videos[video].media.imageFormatsExists[format] = fs.existsSync(global.appRoot+videos[video].media.imageFormats[format]);
       }
       */
-     logger.debug("stocazzo1 "+videos[video].media.preview);
-     if (videos[video].media.preview) {
+      logger.debug("stocazzo1 "+videos[video].media.preview);
+      if (videos[video].media.preview) {
         logger.debug("stocazzo2 "+global.appRoot+videos[video].media.preview);
         videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
         logger.debug("stocazzo3 "+videos[video].media.preview);
@@ -848,7 +856,7 @@ router.get('/videofiles', (req, res) => {
           videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview.replace('.png','.jpg'));
           if (videos[video].media.previewexists) {
             videos[video].media.findpreview = `mv ${global.appRoot+videos[video].media.preview} ${global.appRoot+videos[video].media.preview.replace('.png','.jpg')}`;
-          } else {
+          } else if (oldPath) {
             videos[video].media.findpreview = `mkdir /sites/avnode.net${previewFileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/videos", "/warehouse")}/preview_files -name '${previewFileName}' -exec cp "{}" /sites/avnode.net${previewFileFolder}/${previewFileName} \\;`;
           }
         }
@@ -865,18 +873,19 @@ router.get('/videofiles', (req, res) => {
         //videos[video].media.preview = fileFolder.replace('/warehouse/videos/', '/warehouse/videos_previews/')+'/'+fileNameWithoutExtension+'.png';
         //videos[video].media.previewexists = fs.existsSync(global.appRoot+videos[video].media.preview);
       }
-      if (fileExtension=="mp4" && videos[video].media.original) {
+      if (/* fileExtension=="mp4" && */ videos[video].media.original) {
         //videos[video].media.original = fileFolder.replace('/warehouse/videos/', '/glacier/videos_originals/')+'/'+originalFileName+'.'+originalFileExtension;
         const originalFile = videos[video].media.original;
         const originalFileName = originalFile.substring(originalFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
         const originalFileFolder = originalFile.substring(0, originalFile.lastIndexOf('/')); // /warehouse/2017/03
-        const oldPath = fileFolder.replace("/glacier/videos_originals/", "/warehouse/"); // /warehouse/2017/03
+        if (fileFolder) oldPath = fileFolder.replace("/glacier/videos_originals/", "/warehouse/"); // /warehouse/2017/03
 
         videos[video].media.originalexists = fs.existsSync(global.appRoot+videos[video].media.original);
-        if (!videos[video].media.originalexists) {
+        if (!videos[video].media.originalexists && oldPath) {
           videos[video].media.findoriginal= `mkdir /sites/avnode.net${originalFileFolder}<br />find /space/PhpMysql2015/sites/flxer${oldPath.replace("/warehouse/videos", "/warehouse")}/original_video -name '${originalFileName}' -exec cp "{}" /sites/avnode.net${originalFileFolder}/${originalFileName} \\;`;
         }
       }
+      videos[video].media.title = videos[video].title;
       videos[video].media.id = videos[video]._id;
       videos[video].media.is_public = videos[video].is_public;
       data.push(videos[video].media);
