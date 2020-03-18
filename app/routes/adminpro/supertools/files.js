@@ -909,6 +909,109 @@ router.get('/videofiles', (req, res) => {
   });
 });
 
+router.get('/videocleaner', (req, res) => {
+  logger.debug('/adminpro/supertools/files/videocleaner');
+  const adminsez = 'videos';
+  let files = {
+    files: {
+      basefolder: "/warehouse/videos/",
+      filelist: []
+    },
+    originals: {
+      basefolder: "/glacier/videos_originals/",
+      filelist: []
+    },
+    previews: {
+      basefolder: "/glacier/videos_previews/",
+      filelist: []
+    },
+    previews_formats: {
+      basefolder: "/warehouse/videos_previews/",
+      filelist: []
+    }
+  };
+  var fs = require('fs');
+  var path = require('path');
+  var walk = function(dir, done) {
+    var results = [];
+    fs.readdir(dir, function(err, list) {
+      if (err) return done(err);
+      var i = 0;
+      (function next() {
+        var file = list[i++];
+        if (!file) return done(null, results);
+        file = path.resolve(dir, file);
+        fs.stat(file, function(err, stat) {
+          if (stat && stat.isDirectory()) {
+            walk(file, function(err, res) {
+              results = results.concat(res);
+              next();
+            });
+          } else {
+            results.push(file);
+            next();
+          }
+        });
+      })();
+    });
+  };
+  
+  walk(global.appRoot+files.files.basefolder, function(err, folder_list_files) {
+    if (err) throw err;
+    files.files.folder_list = folder_list_files;
+    walk(global.appRoot+files.originals.basefolder, function(err, folder_list_originals) {
+      if (err) throw err;
+      files.originals.folder_list = folder_list_originals;
+      walk(global.appRoot+files.previews.basefolder, function(err, folder_list_previews) {
+        if (err) throw err;
+        files.previews.folder_list = folder_list_previews;
+        walk(global.appRoot+files.previews_formats.basefolder, function(err, previews_formats) {
+          if (err) throw err;
+          files.previews_formats.folder_list = previews_formats;
+          Video.
+          find({}).
+          lean().
+          limit(100).
+          select({media: 1}).
+          exec((err, videos) => {
+            for (let video in videos) {
+              if (videos[video].media.file) files.files.filelist.push(global.appRoot+videos[video].media.file);
+              if (videos[video].media.original) files.originals.filelist.push(global.appRoot+videos[video].media.original);
+              if (videos[video].media.preview) files.previews.filelist.push(global.appRoot+videos[video].media.preview);
+              const previewFile = videos[video].media.preview;
+              const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+              const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+              const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos_previews/"); // /warehouse/2017/03
+              const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+              const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+              for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+                if (!files.previews_formats.filelist[format]) files.previews_formats.filelist[format] = [];
+                files.previews_formats.filelist.push(`${global.appRoot}${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`);
+              }
+            }
+            files.files.delete = files.files.folder_list.filter(x => !files.files.filelist.includes(x));
+            files.originals.delete = files.originals.folder_list.filter(x => !files.originals.filelist.includes(x));
+            files.previews.delete = files.previews.folder_list.filter(x => !files.previews.filelist.includes(x));
+            files.previews_formats.delete = files.previews_formats.folder_list.filter(x => !files.previews_formats.filelist.includes(x));
+            if (req.query.api==1) {
+              res.json(files);
+            } else {
+              logger.debug(req.path);
+              res.render('adminpro/supertools/files/showall_videos', {
+                title: 'Video images',
+                
+                currentUrl: req.originalUrl,
+                data: data,
+                script: false
+              });
+            }
+          });
+        });
+      });
+    });
+  });
+});
+
 router.get('/videoformatsgenerator', (req, res) => {
   logger.debug('/adminpro/supertools/files/videoformatsgenerator');
   var limit = 50;
