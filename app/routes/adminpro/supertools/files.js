@@ -977,16 +977,18 @@ router.get('/videocleaner', (req, res) => {
             for (let video in videos) {
               if (videos[video].media.file) files.files.filelist.push(global.appRoot+videos[video].media.file);
               if (videos[video].media.original) files.originals.filelist.push(global.appRoot+videos[video].media.original);
-              if (videos[video].media.preview) files.previews.filelist.push(global.appRoot+videos[video].media.preview);
-              const previewFile = videos[video].media.preview;
-              const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
-              const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
-              const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos_previews/"); // /warehouse/2017/03
-              const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
-              const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
-              for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
-                if (!files.previews_formats.filelist[format]) files.previews_formats.filelist[format] = [];
-                files.previews_formats.filelist.push(`${global.appRoot}${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`);
+              if (videos[video].media.preview) {
+                files.previews.filelist.push(global.appRoot+videos[video].media.preview);
+                const previewFile = videos[video].media.preview;
+                const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
+                const previewFileFolder = previewFile.substring(0, previewFile.lastIndexOf('/')); // /warehouse/2017/03
+                const publicPath = previewFileFolder.replace("/glacier/videos_previews/", "/warehouse/videos_previews/"); // /warehouse/2017/03
+                const previewFileNameWithoutExtension = previewFileName.substring(0, previewFileName.lastIndexOf('.'));
+                const previewFileExtension = previewFileName.substring(previewFileName.lastIndexOf('.') + 1);
+                for(let format in config.cpanel[adminsez].forms.video.components.media.config.sizes) {
+                  if (!files.previews_formats.filelist[format]) files.previews_formats.filelist[format] = [];
+                  files.previews_formats.filelist.push(`${global.appRoot}${publicPath}/${config.cpanel[adminsez].forms.video.components.media.config.sizes[format].folder}/${previewFileNameWithoutExtension}_${previewFileExtension}.jpg`);
+                }
               }
             }
             files.files.delete = files.files.folder_list.filter(x => !files.files.filelist.includes(x));
