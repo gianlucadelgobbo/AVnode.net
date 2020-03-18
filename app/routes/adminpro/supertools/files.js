@@ -971,7 +971,7 @@ router.get('/videocleaner', (req, res) => {
           Video.
           find({}).
           lean().
-          limit(100).
+          //limit(100).
           select({media: 1}).
           exec((err, videos) => {
             for (let video in videos) {
