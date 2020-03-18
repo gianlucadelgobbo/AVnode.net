@@ -1,5 +1,6 @@
 extends ../../layout
 block content
+  - var pre = ""
   ol
     if data.length
       each item, index in data
@@ -22,12 +23,14 @@ block content
             !="<br />"
             !="File: "
             if item.file 
+              - pre+="cp "+global.appRoot+item.file+" "
               !=global.appRoot+item.file + " "+(item.exists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             else
               !='<span class="badge badge-danger">MISSING</span>'
             !="<br />"
             !="Original: "
-            if item.original 
+            if item.original
+              - pre+=" "+global.appRoot+item.original+"\n"
               !=global.appRoot+item.original + " "+(item.originalexists ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
             else
               !='<span class="badge badge-danger">MISSING</span>'
@@ -44,6 +47,7 @@ block content
                 !="<br />"
                 !=format+": "+global.appRoot+image + " "+(item.imageFormatsExists[format] ? '<span class="badge badge-success">OK</span>' : '<span class="badge badge-danger">MISSING</span>' )
   - var mkdir = []
+  pre=pre
   if data.length
     each item, index in data
       if !item.exists && item.mkdir && mkdir.indexOf(item.mkdir)===-1
