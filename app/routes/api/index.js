@@ -295,7 +295,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
   });  
 });
 
-router.post('/getprograms', (req, res) => {
+router.get('/getprograms', (req, res) => {
   logger.debug("getprograms");
   //req.body.month = "2020-03";
   logger.debug(req.body.month);

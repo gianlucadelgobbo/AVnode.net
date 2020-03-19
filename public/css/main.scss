@@ -2088,9 +2088,16 @@ span.seeall_label {
 }
 
 .playlist{
+  position: relative;
   height: 100vh;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
+
+.playlist .list-unstyled{
+  position: relative;
+}
+
 .playlist-item{
   position: relative;
   margin-top: 2px;

@@ -262,6 +262,21 @@ router.editSubscriptionSave = (req, res) => {
     }
   });
 }
+router.setVideoCategory = (req, res) => {
+  logger.debug(req.body);
+  Models.Video
+  .findOne({_id: req.body.id},'_id, categories', (err, video) => {
+    if (video) {
+      video.categories = req.body.categories;
+      logger.debug(video);
+      video.save(err => {
+        res.json({err: err});
+      });
+    } else {
+      res.json({err: "Video not found"});
+    }
+  });
+}
 router.editSubscription = (req, res) => {
   logger.debug(req.body);
   let populate = [
@@ -343,7 +358,7 @@ router.linkPartner = (req, res) => {
     } else {
       res.json({err: "Partner not found"});
     }
-});
+  });
 }
 
 router.unlinkPartner = (req, res) => {

@@ -20,6 +20,10 @@ router.get('/api/profile/public/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
 
+router.post('/api/setvideocategory', (req, res)=>{
+  post.setVideoCategory(req, res);
+});
+
 router.get('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';

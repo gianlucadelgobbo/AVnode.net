@@ -5,6 +5,7 @@ const moment = require('moment');
 const momentDurationFormatSetup = require('moment-duration-format');
 
 const Media = new Schema({
+  title: String,
   url: String,
   slug: { type: String/* , unique: true */ },
   file: String,
@@ -25,7 +26,6 @@ const Media = new Schema({
     visits: { type: Number, default: 0 },
     likes: { type: Number, default: 0 }
   },
-  title: String,
 }, {
   _id : false,
   id : false,

@@ -1,10 +1,43 @@
 var goto = 0;
+var oldgoto = 0;
+function getFormData($form){
+  var unindexed_array = $form.serializeArray();
+  var indexed_array = {};
+
+  $.map(unindexed_array, function(n, i){
+      indexed_array[n['name']] = n['value'];
+  });
+
+  return indexed_array;
+}
+
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
   $( ".event_main_image_wrapper" ).click(function() {
     //   $( ".event_main_image_wrapper" ).toggleClass("expanded");
     $( ".event_main_image_wrapper" ).toggleClass("expanded");    
   });
+  
+  if ($('.category-manager').length) {
+    $('.category-manager input').change(function () {
+      var name = $(this).val();
+      var check = $(this).prop('checked');
+      console.log("Change: " + name + " to " + check);
+      console.log($('.category-manager').serialize());
+      $.ajax({
+        url: "/admin/api/setvideocategory",
+        method: "post" ,
+        data: $('.category-manager').serialize()
+      })
+      .done(function(data) {
+        console.log(data);
+      })
+      .fail(function(data) {
+        console.log(data);
+      });
+  
+      });
+  }
 
   if ($('#vjtv').length) {
     console.log("vjtv");
@@ -58,7 +91,7 @@ $(document).ready(function(){
 
     $.ajax({
       url: "/api/getprograms",
-      method: "post"/* ,
+      method: "get"/* ,
       data: {month: now.getFullYear()+"-"+("0" + (now.getMonth() + 1)).slice(-2)} */
     })
     .done(function(data) {
@@ -67,6 +100,7 @@ $(document).ready(function(){
       var closest = timeA.reduce(function(prev, curr) {
         return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
       });
+      oldgoto = timeA.indexOf(closest);
       goto = timeA.indexOf(closest);
       console.log(goto);
       var html = "<ul class=\"list-unstyled\">"
@@ -96,29 +130,41 @@ $(document).ready(function(){
         html+="</li>";
       }
       html+="</ul>";
-      player.playlist(playlist);
-      player.playlist.autoadvance(0);
-      player.playlist.currentItem(goto);
-      $('#vjtv .playlist').html(html);
-      $('#vjtv .playlist').imagesLoaded( function() {
-        $('#vjtv .playlist').animate({
-          scrollTop: $("#P"+goto).offset().top-(window.innerHeight/2)
-        }, 2000);
-        
+      player.playlist(playlist, goto);
+      player.on('playlistitem', (item) => {
+        console.log("playlistitem");
+        console.log(item);
+        oldgoto = goto;
+        goto = player.playlist.currentItem();
+        setMarker();
       });
+      player.playlist.autoadvance(0);
+      //player.playlist.currentItem(goto);
+      $('#vjtv .playlist').html(html);
       $(".vjs-big-play-button").show();
-      $('#P'+goto).removeClass("bg-dark");
-      $('#P'+goto).addClass("bg-danger");
-      $( ".playlist-item" ).click(function( event ) {
+      var setMarker = () => {
+        console.log("oldgoto");
+        console.log(oldgoto);
         console.log("goto");
         console.log(goto);
-        $('#P'+goto).addClass("bg-dark");
-        $('#P'+goto).removeClass("bg-danger");
-        goto = parseInt($(this).attr("id").substring(1));
-        console.log(goto);
-        player.playlist.currentItem(goto);
+        $('#P'+oldgoto).addClass("bg-dark");
+        $('#P'+oldgoto).removeClass("bg-danger");
         $('#P'+goto).removeClass("bg-dark");
         $('#P'+goto).addClass("bg-danger");
+        $('#vjtv .playlist').animate({
+          scrollTop: $("#P"+goto).position().top
+        }, 2000);
+        oldgoto = goto;
+        console.log("oldgoto");
+        console.log(oldgoto);
+      }
+      $( ".playlist-item" ).click(function( event ) {
+        //$('#P'+goto).addClass("bg-dark");
+        //$('#P'+goto).removeClass("bg-danger");
+        //goto = parseInt($(this).attr("id").substring(1));
+        player.playlist.currentItem(parseInt($(this).attr("id").substring(1)));
+        //$('#P'+goto).removeClass("bg-dark");
+        //$('#P'+goto).addClass("bg-danger");
       });
     })
     .fail(function(data) {
