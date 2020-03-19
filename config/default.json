@@ -6490,14 +6490,16 @@
         "performances",
         "vj-dj-sets",
         "docs",
-        "video"
+        "video",
+        "uncategorized"
       ],
       "categoriesQueries": {
         "all": {},
         "performances": {"categories": "5be8708afc39610000000195"},
         "vj-dj-sets": {"categories": "5be8708afc39610000000218"},
         "docs": {"categories": "5be8708afc3961000000008e" },
-        "video": {"categories": "5be8708afc39610000000112"}
+        "video": {"categories": "5be8708afc39610000000112"},
+        "uncategorized": {"categories.0":{"$exists": false}}
       },
       "ordersQueries": {
         "mostrecent": {
@@ -6518,7 +6520,8 @@
         "performances": "AV Performance",
         "vj-dj-sets": "VJ-DJ Sets",
         "docs": "Docs",
-        "video": "Video"
+        "video": "Video",
+        "uncategorized": "To be categorized"
       },
       "show": {
         "select": {

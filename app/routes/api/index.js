@@ -70,7 +70,7 @@ router.get('/tobeencoded/:sez', (req, res) => {
   .find({media:{$exists:true}, $or: [{"media.encoded":{$exists:false}}, {"media.encoded":0}]})
   .lean(1)
   .limit(1)
-  .sort({createdAt: -1})
+  .sort({categories: 1, createdAt: -1})
   .select({media:1})
   .exec((err, data) => {
     if (err) {
