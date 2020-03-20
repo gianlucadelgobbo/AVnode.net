@@ -6499,7 +6499,7 @@
         "vj-dj-sets": {"categories": "5be8708afc39610000000218"},
         "docs": {"categories": "5be8708afc3961000000008e" },
         "video": {"categories": "5be8708afc39610000000112"},
-        "uncategorized": {"categories.0":{"$exists": false}}
+        "uncategorized": {"categories.0":{"$exists": false}, "media.encoded": 1}
       },
       "ordersQueries": {
         "mostrecent": {
