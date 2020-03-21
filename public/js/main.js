@@ -47,6 +47,7 @@ $(document).ready(function(){
     };
     var player = videojs('my-video', options, function onPlayerReady() {
       videojs.log('Your player is ready!');
+      $(".playlist").height($("#my-video video").height());
       $(".vjs-big-play-button").hide();
     
       // In this context, `this` is the player that was created by Video.js.
@@ -57,34 +58,16 @@ $(document).ready(function(){
         videojs.log('Awww...over so soon?!');
       });
     });
-    $(".vjs-poster").on('click', function(ev) {
-      player.playlist([{
-        sources: [{
-          src: 'http://media.w3.org/2010/05/sintel/trailer.mp4',
-          type: 'video/mp4'
-        }],
-        poster: 'http://media.w3.org/2010/05/sintel/poster.png'
-      }, {
-        sources: [{
-          src: 'http://vjs.zencdn.net/v/oceans.mp4',
-          type: 'video/mp4'
-        }],
-        poster: 'http://www.videojs.com/img/poster.jpg'
-      }, {
-        sources: [{
-          src: 'http://media.w3.org/2010/05/bunny/movie.mp4',
-          type: 'video/mp4'
-        }],
-        poster: 'http://media.w3.org/2010/05/bunny/poster.png'
-      }, {
-        sources: [{
-          src: 'http://media.w3.org/2010/05/video/movie_300.mp4',
-          type: 'video/mp4'
-        }],
-        poster: 'http://media.w3.org/2010/05/video/poster.png'
-      }]);
-      player.playlist.autoadvance(0);
-      player.playlist.currentItem(2);
+    /* $(".vjs-poster").on('click', function(ev) {
+    }); */
+    player.logo({
+      image: 'https://vjtelevision.com/vjtelevision/images/VJTV_4x.svg',
+      url: "https://vjtelevision.com",
+      height: 50,
+      offsetH: 20,
+      offsetV: 20,
+      position: 'top-left',
+      width: 150
     });
 
     var now = new Date();
@@ -102,7 +85,6 @@ $(document).ready(function(){
       });
       oldgoto = timeA.indexOf(closest);
       goto = timeA.indexOf(closest);
-      console.log(goto);
       var html = "<ul class=\"list-unstyled\">"
       var playlist = [];
       for (var a=0;a<data.length;a++) {
@@ -132,8 +114,6 @@ $(document).ready(function(){
       html+="</ul>";
       player.playlist(playlist, goto);
       player.on('playlistitem', (item) => {
-        console.log("playlistitem");
-        console.log(item);
         oldgoto = goto;
         goto = player.playlist.currentItem();
         setMarker();
@@ -143,20 +123,14 @@ $(document).ready(function(){
       $('#vjtv .playlist').html(html);
       $(".vjs-big-play-button").show();
       var setMarker = () => {
-        console.log("oldgoto");
-        console.log(oldgoto);
-        console.log("goto");
-        console.log(goto);
         $('#P'+oldgoto).addClass("bg-dark");
         $('#P'+oldgoto).removeClass("bg-danger");
         $('#P'+goto).removeClass("bg-dark");
         $('#P'+goto).addClass("bg-danger");
-        $('#vjtv .playlist').animate({
-          scrollTop: $("#P"+goto).position().top
-        }, 2000);
+        $('#vjtv .playlist').imagesLoaded(() => {
+          $('#vjtv .playlist').animate({scrollTop: $("#P"+goto).position().top}, 2000);
+        });
         oldgoto = goto;
-        console.log("oldgoto");
-        console.log(oldgoto);
       }
       $( ".playlist-item" ).click(function( event ) {
         //$('#P'+goto).addClass("bg-dark");

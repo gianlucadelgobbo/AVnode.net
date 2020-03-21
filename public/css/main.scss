@@ -2131,7 +2131,12 @@ span.seeall_label {
   border-radius: 25px;
   animation: 0s linear .3s forwards vjs-spinner-show;
 }
-.vjs-loading-spinner {
+.playlist-loading .vjs-loading-spinner {
   display: block;
   animation: 0s linear .3s forwards vjs-spinner-show;
 }
+  
+/*! @name videojs-logo @version 2.0.0 @license MIT */
+.video-js.vjs-logo{display:block}
+.video-js.vjs-logo .vjs-logo-content{position:absolute;opacity:1;transition:visibility 2s,opacity 2s}
+//.video-js.vjs-logo .vjs-logo-content.vjs-logo-hide{visibility:hidden;opacity:0}
