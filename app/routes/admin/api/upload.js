@@ -105,7 +105,6 @@ upload.uploader = (req, res, done) => {
         "err": "UPLOAD_CONFIG_ERROR"
       }] } }, null);
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
-      // MANCA ELSE
       let conta = 0;
       /* 
       { errors: {form_error: } }
@@ -121,14 +120,21 @@ upload.uploader = (req, res, done) => {
           logger.debug("dimensions.height " + dimensions.height);
           logger.debug("options.minwidth " + options.minwidth);
           logger.debug("options.minheight " + options.minheight);
-          if (dimensions.width < options.minwidth || dimensions.height < options.minheight) {
-            error = true;
+          var dimensionError = true;
+          if (dimensions.width >= options.minwidth && dimensions.height >= options.minheight) dimensionError = false;
+          if (dimensionError && req.params.sez == "galleries")
+            if (dimensions.width >= options.minheight && dimensions.height >= options.minwidth) dimensionError = false;
+          if (dimensionError) {
             p.files[options.fields.name][a].err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
+            if (req.params.sez == "galleries") p.files[options.fields.name][a].err+= " " + __("or") + " " + options.minheight + " x " + options.minwidth;
             logger.debug( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
           } else {
             logger.debug("Image minimum size is ok");
           }
         }
+        error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(false)===-1;
+        logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
+        logger.debug(error);
       }
       if (error) {
         logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
@@ -171,6 +177,7 @@ upload.uploader = (req, res, done) => {
                 }
               }
               if (conta === conta) {
+                //error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(false)===-1;
                 if (error) {
                   done({ errors: p.files }, null);
                 } else {
@@ -178,19 +185,22 @@ upload.uploader = (req, res, done) => {
                   if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
                     put.medias = [];
                     for (let a = 0; a < p.files[options.fields.name].length; a++) {
-                      const ins = {
-                        file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                        originalname: p.files[options.fields.name][a].originalname,
-                        encoding: p.files[options.fields.name][a].encoding,
-                        mimetype: p.files[options.fields.name][a].mimetype,
-                        folder: p.files[options.fields.name][a].destination,
-                        slug: p.files[options.fields.name][a].filename.replace(".jpeg", ""),
-                        filename: p.files[options.fields.name][a].filename,
-                        size: p.files[options.fields.name][a].size,
-                        width: p.files[options.fields.name][a].width,
-                        height: p.files[options.fields.name][a].height
-                      };
-                      put.medias.push(ins);
+                      if (!p.files[options.fields.name][a].err) {
+                        const ins = {
+                          file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                          title: p.files[options.fields.name][a].originalname.substring(0, p.files[options.fields.name][a].originalname.lastIndexOf(".")),
+                          slug: p.files[options.fields.name][a].filename.replace(".jpeg", ""),
+                          originalname: p.files[options.fields.name][a].originalname,
+                          encoding: p.files[options.fields.name][a].encoding,
+                          mimetype: p.files[options.fields.name][a].mimetype,
+                          folder: p.files[options.fields.name][a].destination,
+                          filename: p.files[options.fields.name][a].filename,
+                          size: p.files[options.fields.name][a].size,
+                          width: p.files[options.fields.name][a].width,
+                          height: p.files[options.fields.name][a].height
+                        };
+                        put.medias.push(ins);
+                      }
                     }
                   } else {
                     if (p.files[options.fields.name].length == 1) {
@@ -208,23 +218,27 @@ upload.uploader = (req, res, done) => {
                     } else {
                       put[options.fields.name] = [];
                       for (let a = 0; a < p.files[options.fields.name].length; a++) {
-                        const ins = {
-                          file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                          originalname: p.files[options.fields.name][a].originalname,
-                          encoding: p.files[options.fields.name][a].encoding,
-                          mimetype: p.files[options.fields.name][a].mimetype,
-                          folder: p.files[options.fields.name][a].destination,
-                          filename: p.files[options.fields.name][a].filename,
-                          size: p.files[options.fields.name][a].size,
-                          width: p.files[options.fields.name][a].width,
-                          height: p.files[options.fields.name][a].height
-                        };
-                        put[options.fields.name].push(ins);
+                        if (!p.files[options.fields.name][a].err) {
+                          const ins = {
+                            file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                            originalname: p.files[options.fields.name][a].originalname,
+                            encoding: p.files[options.fields.name][a].encoding,
+                            mimetype: p.files[options.fields.name][a].mimetype,
+                            folder: p.files[options.fields.name][a].destination,
+                            filename: p.files[options.fields.name][a].filename,
+                            size: p.files[options.fields.name][a].size,
+                            width: p.files[options.fields.name][a].width,
+                            height: p.files[options.fields.name][a].height
+                          };
+                          put[options.fields.name].push(ins);
+                        }
                       }
                     }
                   }
                   logger.debug("SALVAAAAAAAAA");
-                  done(null, put);
+                  var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)===-1;
+                  logger.debug(error);
+                  done(error ? p.files : null , put);
                 }
               }
             }
@@ -246,22 +260,26 @@ upload.uploader = (req, res, done) => {
           } else {
             put[options.fields.name] = [];
             for (let a = 0; a < p.files[options.fields.name].length; a++) {
-              const ins = {
-                original: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                originalname: p.files[options.fields.name][a].originalname,
-                encoding: 0,
-                mimetype: p.files[options.fields.name][a].mimetype,
-                //folder: p.files[options.fields.name][a].destination,
-                filename: p.files[options.fields.name][a].filename,
-                //size: p.files[options.fields.name][a].size,
-                //width: p.files[options.fields.name][a].width,
-                //height: p.files[options.fields.name][a].height
-              };
-              put[options.fields.name].push(ins);
+              if (!p.files[options.fields.name][a].err) {
+                const ins = {
+                  original: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                  originalname: p.files[options.fields.name][a].originalname,
+                  encoding: 0,
+                  mimetype: p.files[options.fields.name][a].mimetype,
+                  //folder: p.files[options.fields.name][a].destination,
+                  filename: p.files[options.fields.name][a].filename,
+                  //size: p.files[options.fields.name][a].size,
+                  //width: p.files[options.fields.name][a].width,
+                  //height: p.files[options.fields.name][a].height
+                };
+                put[options.fields.name].push(ins);
+              }
             }
           }
           logger.debug("SALVAAAAAAAAA");
-          done(null, put);
+          var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)===-1;
+          logger.debug(error);
+          done(error ? p.files : null , put);
         }
       }
     } else {
