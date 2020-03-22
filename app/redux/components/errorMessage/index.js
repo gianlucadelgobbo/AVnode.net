@@ -42,7 +42,7 @@ class ErrorMessage extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-md-12 pt-3">
           {!isMultipleError ? (
             this.printError(errorMessage)
           ) : (

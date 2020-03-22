@@ -236,7 +236,7 @@ upload.uploader = (req, res, done) => {
                     }
                   }
                   logger.debug("SALVAAAAAAAAA");
-                  var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)===-1;
+                  var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
                   logger.debug(error);
                   done(error ? p.files : null , put);
                 }
@@ -277,7 +277,7 @@ upload.uploader = (req, res, done) => {
             }
           }
           logger.debug("SALVAAAAAAAAA");
-          var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)===-1;
+          var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
           logger.debug(error);
           done(error ? p.files : null , put);
         }
