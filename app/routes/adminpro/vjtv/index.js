@@ -16,7 +16,6 @@ router.get('/', (req, res) => {
      }
   }}]).
   exec((err, days) => {
-    console.log(days.map(item =>{return item._id}));
     if (req.query.day || req.query.month) {
       console.log("eccomi");
       Video.
@@ -45,12 +44,12 @@ router.get('/', (req, res) => {
           lastdate = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, 1));
           lastdate = new Date(lastdate.setUTCDate(lastdate.getUTCDate()-1));
         }
-        console.log("date");
+        /* console.log("date");
         console.log(date);
         console.log("enddate");
         console.log(enddate);
         console.log("lastdate");
-        console.log(lastdate);
+        console.log(lastdate); */
         var query = {programming: { $lt: date, $gt: lastdate}};
         Vjtv.
         find(query).
@@ -71,82 +70,82 @@ router.get('/', (req, res) => {
           if (last) {
 
             var vjdjsets_ids = vjdjsets.map(item => {return item._id.toString()});
-            console.log("vjdjsets_ids");
+/*             console.log("vjdjsets_ids");
             console.log(vjdjsets_ids);
             console.log("last");
             console.log(last);
-            contavjdjsets = 0;
+ */            contavjdjsets = 0;
             while(contavjdjsets == 0 && last>=0) {
-              console.log("contavjdjsets");
+/*               console.log("contavjdjsets");
               console.log(last);
               console.log(lasts[last].video._id.toString());
-              contavjdjsets = vjdjsets_ids.indexOf(lasts[last].video._id.toString())!==-1 ? vjdjsets_ids.indexOf(lasts[last].video._id.toString()) : 0
+ */              contavjdjsets = vjdjsets_ids.indexOf(lasts[last].video._id.toString())!==-1 ? vjdjsets_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
             last = lasts.length-1;
             var docs_ids = docs.map(item => {return item._id.toString()})
             contadocs = 0;
             while(contadocs == 0 && last>=0) {
-              console.log("contadocs");
+/*               console.log("contadocs");
               console.log(last);
               console.log(lasts[last].video._id.toString());
-              contadocs = docs_ids.indexOf(lasts[last].video._id.toString())!==-1 ? docs_ids.indexOf(lasts[last].video._id.toString()) : 0
+ */              contadocs = docs_ids.indexOf(lasts[last].video._id.toString())!==-1 ? docs_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
             last = lasts.length-1;
             var performances_ids = performances.map(item => {return item._id.toString()})
             contaperformances = 0;
             while(contaperformances == 0 && last>=0) {
-              console.log("contaperformances");
+              /* console.log("contaperformances");
               console.log(last);
-              console.log(lasts[last].video._id.toString());
+              console.log(lasts[last].video._id.toString()); */
               contaperformances = performances_ids.indexOf(lasts[last].video._id.toString())!==-1 ? performances_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
             last = lasts.length-1;
             var video_ids = video.map(item => {return item._id.toString()});
-            console.log(video_ids);
+            //console.log(video_ids);
             contavideo = 0;
-            console.log(lasts);
+            //console.log(lasts);
             while(contavideo == 0 && last>=0) {
-              console.log("contavideo");
+              /* console.log("contavideo");
               console.log(lasts[last].video._id.toString());
               console.log(video_ids.indexOf(lasts[last].video._id.toString()));
-              console.log(last);
+              console.log(last); */
               contavideo = video_ids.indexOf(lasts[last].video._id.toString())!==-1 ? video_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
           }
 
-          console.log("contavjdjsets");
+          /* console.log("contavjdjsets");
           console.log(contavjdjsets);
           console.log("contadocs");
           console.log(contadocs);
           console.log("contaperformances");
           console.log(contaperformances);
           console.log("contavideo");
-          console.log(contavideo);
+          console.log(contavideo); */
           let milliseconds;
           let dailyTime;
-          console.log("dailyTime");
+          //console.log("dailyTime");
           if (contavjdjsets>0) {
             dailyTime = -date.getTime();
-            console.log(dailyTime);
+            /* console.log(dailyTime);
             console.log(lasts[lasts.length-1]);
             console.log(lasts[lasts.length-1].programming);
-            console.log(lasts[lasts.length-1].programming.getTime());
+            console.log(lasts[lasts.length-1].programming.getTime()); */
             milliseconds = new Date(lasts[lasts.length-1].programming).getTime()+lasts[lasts.length-1].video.media.duration;
-            console.log(milliseconds);
+            //console.log(milliseconds);
             dailyTime+=milliseconds;
-            console.log(dailyTime);
+            //console.log(dailyTime);
           } else {
             milliseconds = date.getTime();
             dailyTime = 0;
           }
-          console.log("dailyTime");
+          /* console.log("dailyTime");
           console.log(dailyTime);
           console.log("milliseconds");
-          console.log(milliseconds);
+          console.log(milliseconds); */
           const enddatemilliseconds = enddate.getTime()
 
           var item;
@@ -223,15 +222,15 @@ router.get('/', (req, res) => {
             }
           }
           var query = {programming: { $lt: enddate, $gt: date}};
-          console.log(query);
+          //console.log(query);
           Vjtv
           .deleteMany(query, function (err, results) {
-            console.log(query);
+            /* console.log(query);
             console.log(results);
-            console.log(month.length);
+            console.log(month.length); */
             Vjtv
             .create(month, function (err, created) {
-              console.log("createok");
+              //console.log("createok");
               /* var pieces = req.query.month.split("-");
               var date = new Date(pieces[0], parseInt(pieces[1])-1, 1, 0, 0,0,0);
               // 1 Month
@@ -244,7 +243,7 @@ router.get('/', (req, res) => {
               .sort({programming: 1})
               .populate([{path: "video", model: "Video", select: {title: 1, slug: 1, createdAt: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
               .exec((err, data) => {
-                console.log("adminpro");
+                //console.log("adminpro");
                 if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
                   res.json(data);
                 } else {

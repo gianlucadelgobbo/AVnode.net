@@ -60,11 +60,8 @@ $(function() {
 
   function highlightDays(date) {
     for (var i = 0; i < dates.length; i++) {
-      console.log(dates[i]);
-      console.log(new Date(dates[i]).toString());
-      console.log(date.toString());
-      if (new Date(dates[i]).toString() == date.toString()) {
-          return [true, 'highlight'];
+      if (new Date(dates[i].replace("-","/").replace("-","/")).toString() == date.toString()) {
+        return [true, 'highlight'];
       }
     }
     return [true, ''];

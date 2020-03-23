@@ -33,7 +33,7 @@ $(document).ready(function(){
         console.log(data);
       })
       .fail(function(data) {
-          .log(data);
+        console.log(data);
       });
   
       });
