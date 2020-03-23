@@ -295,6 +295,20 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
   });  
 });
 
+router.get('/getprogramsdays', (req, res) => {
+  logger.debug("getprograms");
+  Vjtv.
+  aggregate([
+    {"$group":{
+     "_id":{
+       "$dateToString":{"format":"%Y-%m-%d","date":"$programming"}
+     }
+  }}]).
+  exec((err, days) => {
+    res.json(days.map(item =>{return item._id}));
+  });
+});
+
 router.get('/getprograms', (req, res) => {
   logger.debug("getprograms");
   //req.body.month = "2020-03";
