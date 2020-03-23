@@ -6152,7 +6152,7 @@
         "dj-set"
       ],
       "categoriesQueries": {
-        "all": {"categories": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+        "all": {"type": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
         "av-performance": {"type": "5be8708afc3961000000011b" },
         "mapping": {"type": "5be8708afc39610000000016" },
         "vj-set": {"type": "5be8708afc39610000000014" },
@@ -6489,7 +6489,7 @@
         "project-showcase"
       ],
       "categoriesQueries": {
-        "all": {"categories": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+        "all": {"type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
         "workshop": {"type": "5be8708afc39610000000099" },
         "lecture": {"type": "5be8708afc396100000001a1" },
         "project-showcase": {"type": "5be8708afc3961000000011c" }

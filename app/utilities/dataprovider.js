@@ -646,6 +646,7 @@ dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting,
   logger.debug("BINGOOOOO");
   logger.debug(query);
   logger.debug(select);
+  logger.debug(sorting);
   model.countDocuments(query, function(error, total) {
     model.find(query)
     .populate(populate)
