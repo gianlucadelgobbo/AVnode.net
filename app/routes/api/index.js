@@ -298,14 +298,14 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
 router.get('/getprograms', (req, res) => {
   logger.debug("getprograms");
   //req.body.month = "2020-03";
-  logger.debug(req.body.month);
-  var offset = 1*60*60*1000;
-  if(req.body.month) {
-    var pieces = req.body.month.split("-");
-    var date = new Date(pieces[0], parseInt(pieces[1])-1, 1, 0, 0,0,0);
+  logger.debug(req.query);
+  if(req.query.day) {
+    var pieces = req.query.day.split("-");
+    var date = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, parseInt(pieces[2]), 0, 0,0,0));
   } else {
     var date = new Date();
   }
+  logger.debug(date);
   // 1 Month
   //var start = new Date(new Date(date.getFullYear(), date.getMonth(), 1, 0, 0,0,0).getTime()+offset);
   //var end = new Date(new Date(date.getFullYear(), date.getMonth()+1, 1, 0, 0,0,0).getTime()+offset+offset);
@@ -319,8 +319,8 @@ router.get('/getprograms', (req, res) => {
   //1 Full day
   var day = 24*60*60*1000;
   //var start = new Date(date.getTime()+offset);
-  var start = new Date(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0,0,0).getTime()+offset);
-  var end = new Date(date.getTime()+day+offset+offset);
+  var start = date;
+  var end = new Date(date.getTime()+day);
 
   logger.debug(start);
   logger.debug(end);

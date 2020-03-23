@@ -2140,3 +2140,10 @@ span.seeall_label {
 .video-js.vjs-logo{display:block}
 .video-js.vjs-logo .vjs-logo-content{position:absolute;opacity:1;transition:visibility 2s,opacity 2s}
 //.video-js.vjs-logo .vjs-logo-content.vjs-logo-hide{visibility:hidden;opacity:0}
+.ui-datepicker td.highlight a{
+  background-color: $primary;
+}
+#headervjtv {
+  height: 53px;
+  margin-bottom: 5px;
+}

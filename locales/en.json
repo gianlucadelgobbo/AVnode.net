@@ -546,5 +546,10 @@
 	"Select month": "Select month",
 	"To be categorized": "To be categorized",
 	"The list of Videos: To be categorized Most recent": "The list of Videos: To be categorized Most recent",
-	"or": "or"
+	"or": "or",
+	"Date": "Date",
+	"Generator by day": "Generator by day",
+	"Select a day": "Select a day",
+	"GENERATE": "GENERATE",
+	"Generator by month": "Generator by month"
 }

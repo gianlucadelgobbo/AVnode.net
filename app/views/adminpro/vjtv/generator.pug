@@ -8,15 +8,17 @@ block content
         th=global.__("Programming")
         th=global.__("Duration")
         th=global.__("Title")
+        th=global.__("Date")
         th=global.__("CAT")
         th=global.__("Link")
     tbody
-      if data.length
+      if data.length  
         each item, index in data
           tr
-            td=item.programming.toString().split(" GMT")[0]
+            td=item.programming.toUTCString().split(" GMT")[0]
             td=item.video.media.durationHR
             td=item.video.title
+            td=item.video.createdAt.toDateString()
             td=item.category.name
             td
               a(href="/admin/videos/"+item._id+"/public", target="_blank")!=global.__("edit")

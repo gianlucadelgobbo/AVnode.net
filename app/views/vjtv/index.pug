@@ -11,6 +11,16 @@ block content
               !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
               a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
       .col-md-3
+        #headervjtv.clearfix.h3.m-0.p-2.mb-1.bg-dark
+          #date.float-left=date
+          .float-right
+            input#datepicker(type="hidden" name="date")
+            a#datepickerbutton.pr-3(href="#")
+              i.fa.fa-calendar
+          script.
+            var dates = !{JSON.stringify(availabledays)};
+
+        
         .playlist
           .vjs-waiting
             .vjs-loading-spinner
