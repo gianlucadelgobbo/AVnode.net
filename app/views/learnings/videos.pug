@@ -1,0 +1,133 @@
+extends ../layout
+block title
+  if data.imageFormats
+    .container
+      .event_main_image_wrapper
+        img.img-fluid.event_main_image(src=data.imageFormats.large, alt=data.title)
+        img.expand_image_event(src="/images/expand_image_event.svg")
+
+  
+  .wrapper_header_evento
+    .container
+      .row
+        .col-lg-12
+          header.header_event
+            .row
+              .col-lg-9
+                h1.main_title=data.title
+                  if editable
+                    !="  "
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                if data.stats
+                  .performance_stat_container
+                    .performance_stat_wrapper
+                      ul
+                        if data.stats.visits
+                          li=data.stats.visits + ' ' + global.__('Views')
+                        li
+                          span.likes_count=data.stats.likes ? data.stats.likes : 0
+                          !=' ' + global.__('Likes')                      
+              .col-lg-3.share_like_list_column
+                include ../partials/share_like
+                if data.type
+                  p.text-right
+                    i(class="fa fa-cube")
+                    =" "
+                    !=data.type.name
+block content
+  if data.videos && data.videos[0] && data.videos[0].events
+    if data.videos[0].title
+      .container
+        .row.performer_title
+          .col-lg-9
+            h1.main_title=data.videos[0].title
+              if editable
+                !="  "
+                a.badge.badge-danger(href="/admin/videos/"+data.videos[0]._id+"/public")=global.__("EDIT")
+            if data.videos[0].stats
+              .performance_stat_container
+                .performance_stat_wrapper
+                  ul
+                    if data.videos[0].stats.visits
+                      li=data.videos[0].stats.visits + ' ' + global.__('Views')
+                    li
+                      span.likes_count=data.videos[0].stats.likes ? data.videos[0].stats.likes : 0
+                      !=' ' + global.__('Likes')
+                    if data.videos[0].stats.downloads
+                      li=data.videos[0].stats.downloads + ' ' + global.__('Downloads')
+          .col-lg-3.share_like_list_column
+            include ../partials/share_like
+        .row
+          .col-md-8
+            if data.videos[0].media && data.videos[0].media.file
+              .embed-responsive.embed-responsive-16by9
+                video.embed-responsive-item#my-video.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height='264', poster=data.videos[0].imageFormats.large, data.videos[0]-setup='{aspectRatio:"16:9", fluid: true}')
+                  source(src=process.env.WAREHOUSE+data.videos[0].media.file, type='video/mp4')
+                  //source(src='MY_VIDEO.webm', type='video/webm')
+                  p.vjs-no-js
+                    !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
+                    a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
+
+          .col-md-4.data_footage_video
+            .data_footage_video_wrapper
+              h3=__("Data")
+              if data.videos[0].media && data.videos[0].media.file
+                ul
+                  li=global.__('File name')+": "
+                    b=data.videos[0].media.file.substring(data.videos[0].media.file.lastIndexOf("/")+1)
+                  li=global.__('File size')+": "
+                    b=( data.videos[0].media.filesize / Math.pow(1024, Math.floor( Math.log(data.videos[0].media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.videos[0].media.filesize) / Math.log(1024) )]
+                  li=global.__('File duration')+": "
+                    b=data.videos[0].media.duration
+                  li=global.__('File type')+": "
+                    b=ext
+            if data.videos[0].tags
+              .data_footage_video_wrapper
+                h3=__("Tags")
+                ul.list-inline.category_performance_item
+                  each tag in data.videos[0].tags
+                    li.list-inline-item=tag.tag
+            if data.videos[0].about
+              .data_footage_video_wrapper
+                h3=__("About")
+                .pt-2.pb-2!=data.videos[0].about
+            .data_footage_video_wrapper
+              h3=__("Author")
+              each user in data.videos[0].users
+                .user_performance_wrapper
+                  div.user_perfomance_image
+                    img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                  div.user_perfomance_country_city
+                    p.users_performance_item_name=user.stagename
+                    if user.addressesFormatted && user.addressesFormatted.length
+                      p.users_performance_item_country!=user.addressesFormatted.join(", ")
+
+
+          
+        if data.videos[0].events && data.videos[0].events.length 
+          h2.mt-5.main_title.indented_title.color1=__("Events")
+          .row.mb-5
+            each item in data.videos[0].events
+              .col-md-4
+                include ../partials/boxEvent
+        if data.videos[0].performances && data.videos[0].performances.length 
+          h2.mt-5.main_title.indented_title.color1=__("Performances")
+          .row.mb-5
+            each item in data.videos[0].performances
+              .col-md-4
+                include ../partials/boxPerformance
+
+
+  else if data.videos.length  
+    .video_event_wrapper_bkg
+      section.event_video_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  - var basepath = "/performances/"+data.slug
+                  each item in data.videos            
+                    include ../partials/boxVideo

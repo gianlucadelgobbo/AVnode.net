@@ -1,0 +1,161 @@
+extends ../layout
+
+block teaser
+
+block title
+  if data.title
+    .container
+      .row.performer_title
+        .col-lg-9
+          h1.main_title=data.title
+            if editable
+              !="  "
+              a.badge.badge-danger(href="/admin/performances/"+data._id+"/public")=global.__("EDIT")
+          if data.type
+            ul.list-inline.d-block.d-sm-none
+              li.list-inline-item
+                  span=data.type.name
+              if data.tecnique
+                li.list-inline-item
+                  span=data.tecnique.name
+              if data.genre
+                li.list-inline-item
+                  span=data.genre.name
+          if data.stats
+            .performance_stat_container
+              .performance_stat_wrapper
+                ul
+                  if data.stats.visits
+                    li=data.stats.visits + ' ' + global.__('Views')
+                  li
+                    span.likes_count=data.stats.likes ? data.stats.likes : 0
+                    !=' ' + global.__('Likes')                      
+        .col-lg-3.share_like_list_column
+          include ../partials/share_like
+
+          
+
+
+block content
+  - var basepath = "/performances/"+data.slug
+  .container
+    .row
+      .col-sm-12
+        if data.imageFormats
+          img.img-fluid.perfomance_image.bottom60(
+            src=data.imageFormats.large
+            alt=data.title
+          )
+    .row
+      .col-sm-8        
+        ul.nav.nav-tabs.tabs_single_performance(role='tablist')
+          if data.about
+            li.nav-item
+              a.tab_link.nav-link.active(href='#about', role='tab', data-toggle='tab') 
+                =global.__('About')
+          li.nav-item
+            a.tab_link.nav-link(href='#technical_specifications', role='tab', data-toggle='tab')    
+              =global.__('Technical specifications')
+          if data.paypal
+            li.nav-item
+              a.tab_link.nav-link(href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id='+data.paypal, target='_blank')    
+                =global.__('BUY NOW')
+        // Tab panes
+        .tab-content
+          //if data.about
+          #about.tab-pane.in.active(role='tabpanel')
+            .pt-2.pb-2!=data.about
+          #technical_specifications.tab-pane(role='tabpanel')
+            if data.duration
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('Duration (minutes)')
+                p!=data.duration
+            if data.tech_req
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('What is needed')
+                p!=data.tech_req
+            if data.tech_art
+              .tech_info_wrapper
+                h4.tech_info_title=global.__('What the artists brings')
+                p!=data.tech_art
+
+      .col-sm-4.performance_info_sidebar-cnt.mb-5
+        .row.performance_info_sidebar
+          .col.pb-2
+            if data.type
+              ul.list-inline.category_performance_item.single_performance.d-none.d-sm-block
+                li.list-inline-item
+                    span=data.type.name
+                if data.tecnique
+                  li.list-inline-item
+                    span=data.tecnique.name
+                if data.genre
+                  li.list-inline-item
+                    span=data.genre.name
+            .row.mb-3
+              .col
+                a.performance_button.print-perf(href="/performances/"+data.slug+"/print", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                  !=global.__('PRINT')
+                  br
+                  !=global.__('PDF')
+              .col
+                a.performance_button.book-perf(href="#", data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                  !=global.__('REQUEST BOOKING')
+
+            .performance_users
+              h3=global.__('Authors')  
+              each user in data.users
+                .performance_users_item_wrapper
+                  .performance_user_wrapper
+                    .user_perfomance_image
+                      a(href="/"+user.slug)
+                        img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                    .user_perfomance_country_city
+                      a.performance_user_title(href="/"+user.slug).users_performance_item_name=user.stagename
+                      if user.addressesFormatted && user.addressesFormatted.length
+                        p.users_performance_item_country!=user.addressesFormatted.join(", ")
+            if data.bookings.length
+              .performance_events_wrapper
+                h3.mt-3=global.__('Events')  
+                each booking in data.bookings
+                  .performance_event_wrapper
+                    .performance_event_image.mt-2
+                      a(href="/events/"+booking.event.slug)
+                        img(src=booking.event.imageFormats.small, alt=booking.event.title)
+                    .performance_event_info
+                      a.performance_event_title(href="/events/"+booking.event.slug)=booking.event.title
+                      br
+                      !=booking.boxDate ? booking.boxDate : booking.event.boxDate
+                      //each schedule in booking.schedule
+                        !=schedule.boxDate
+                        br
+                        !=schedule.venue.name + " | " + schedule.venue.room + " | " + schedule.venue.location.locality + ", " + schedule.venue.location.country
+  if data.galleries.length || data.videos.length
+    .divider_gallery
+      svg#Livello_1(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1300 170' enable-background='new 0 0 1300 170' xml:space='preserve')
+        polygon(fill='#282828' points='1300,170 0,170 0,0 649.2,170 1300,0 ')
+  if data.galleries.length  
+    .gallery_event_wrapper_bkg
+      section.event_galleries_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.galleries                    
+                    include ../partials/boxGallery
+  if data.videos.length  
+    .video_event_wrapper_bkg
+      section.event_video_wrapper
+        .content_wrapper
+          .container
+            .row
+              .col-lg-12
+                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                .performance_divider.basic_divider
+                .owl-carousel.loop_3items.owl-theme
+                  each item in data.videos            
+                    include ../partials/boxVideo
+  include ../partials/modals/modalBookPerf

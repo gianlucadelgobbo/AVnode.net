@@ -6142,26 +6142,20 @@
         "mostliked"
       ],
       "categories": [
-        "av-performance",
         "all",
+        "av-performance",
         "mapping",
         "vj-set",
-        "workshop",
-        "lecture",
-        "project-showcase",
         "video-installation",
         "lights-installation",
         "dvd-projection",
         "dj-set"
       ],
       "categoriesQueries": {
-        "all": {},
+        "all": {"categories": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
         "av-performance": {"type": "5be8708afc3961000000011b" },
         "mapping": {"type": "5be8708afc39610000000016" },
         "vj-set": {"type": "5be8708afc39610000000014" },
-        "workshop": {"type": "5be8708afc39610000000099" },
-        "lecture": {"type": "5be8708afc396100000001a1" },
-        "project-showcase": {"type": "5be8708afc3961000000011c" },
         "lights-installation": {"type": "5be8708afc39610000000017" },
         "video-installation": {"type": "5be8708afc3961000000019f" },
         "dj-set": {"type": "5be8708afc3961000000011d" },
@@ -6192,6 +6186,332 @@
         "project-showcase": "Project showcase",
         "dj-set": "DJ Set",
         "video-installation": "AV Installation",
+        "lecture": "Lecture"
+      },
+      "show": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "price": 1,
+          "paypal": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
+          "duration": 1,
+          "tech_arts": 1, 
+          "tech_reqs": 1,
+          "bookings":1
+        },
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "members": 1,
+            "addresses.country": 1,
+            "addresses.locality": 1,
+            "stats": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "tecnique",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "genre",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "bookings.event",
+          "select": {
+            "title": 1,
+            "image": 1,
+            "schedule": 1,
+            "slug": 1
+          },
+          "model": "EventShow"
+        }, {
+          "path": "bookings.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "videos",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Video"
+        }, {
+          "path": "galleries",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Gallery"
+        }]
+      },
+      "print": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "price": 1,
+          "paypal": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
+          "duration": 1,
+          "tech_arts": 1, 
+          "tech_reqs": 1,
+          "bookings":1
+        },
+        "populate": [{
+          "path": "users",
+          "select": {
+            "slug": 1,
+            "abouts": 1,
+            "image": 1,
+            "organizationData.logo": 1,
+            "members": 1,
+            "addresses.country": 1,
+            "addresses.locality": 1,
+            "stats": 1,
+            "stagename": 1
+          },
+          "model": "UserShow"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "tecnique",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "genre",
+          "select": {
+            "name": 1,
+            "slug": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "bookings.event",
+          "select": {
+            "title": 1,
+            "image": 1,
+            "abouts": 1,
+            "web": 1,
+            "social": 1,
+            "schedule": 1,
+            "slug": 1
+          },
+          "model": "EventShow"
+        }, {
+          "path": "bookings.schedule.categories",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "videos",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Video"
+        }, {
+          "path": "galleries",
+          "match": { "is_public": true},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "medias": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Gallery"
+        }]
+      },
+      "galleries": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "price": 1,
+          "paypal": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
+          "duration": 1,
+          "tech_arts": 1, 
+          "tech_reqs": 1,
+          "bookings":1
+        },
+        "populate": [
+        {
+          "path": "type",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }, {
+          "path": "galleries",
+          "match": { "is_public": true}, 
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
+          "options": {},
+          "model": "Gallery"
+        }]
+      },
+      "videos": {
+        "select": {
+          "title": 1,
+          "abouts": 1,
+          "slug": 1,
+          "stats": 1,
+          "image": 1,
+          "price": 1,
+          "paypal": 1,
+          "type":1,
+          "tecnique":1,
+          "genre":1,
+          "duration": 1,
+          "tech_arts": 1, 
+          "tech_reqs": 1,
+          "bookings":1
+        },
+        "populate": [{
+          "path": "videos",
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "categories": 1,
+            "stats": 1,
+            "media": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "options": {},
+          "model": "Video"
+        }, {
+          "path": "type",
+          "select": {
+            "name": 1
+          },
+          "model": "Category"
+        }]
+      }
+    },
+    "learnings": {
+      "title": "Learnings",
+      "model": "Performance",
+      "limit": 21,
+      "basepath": "learnings",
+      "main_image": "/images/sez_performances.jpg",
+      "sitemap_pages": 203,
+      "coll": "performances",
+      "view_list": "learnings/list",
+      "list_fields": {
+        "title":1,
+        "users":1,
+        "slug":1,
+        "createdAt": 1,
+        "updatedAt": 1,
+        "image":1,
+        "type":1,
+        "tecnique":1,
+        "genre":1,
+        "stats":1
+      },
+      "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "tecnique", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}],
+      "orders": [
+        "mostrecent",
+        "mostviewed",
+        "mostliked"
+      ],
+      "categories": [
+        "all",
+        "workshop",
+        "lecture",
+        "project-showcase"
+      ],
+      "categoriesQueries": {
+        "all": {"categories": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+        "workshop": {"type": "5be8708afc39610000000099" },
+        "lecture": {"type": "5be8708afc396100000001a1" },
+        "project-showcase": {"type": "5be8708afc3961000000011c" }
+      },
+      "ordersQueries": {
+        "mostrecent": {
+          "createdAt": -1
+        },
+        "mostviewed": {
+          "stats.visits": -1
+        },
+        "mostliked": {
+          "stats.likes": -1
+        }
+      },
+      "labels": {
+        "mostrecent": "Most recent",
+        "mostviewed": "Most viewed",
+        "mostliked": "Most liked",
+        "all": "All",
+        "workshop": "Workshop",
+        "project-showcase": "Project showcase",
         "lecture": "Lecture"
       },
       "show": {

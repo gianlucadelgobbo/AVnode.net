@@ -5,6 +5,7 @@ const performers = require('./performers');
 const show = require('./performers/show');
 
 const performances = require('./performances');
+const learnings = require('./learnings');
 const events = require('./events');
 
 const footage = require('./footage');
@@ -52,6 +53,7 @@ router.use('/cookies-in-use-on-this-site', pages);
 router.use('/performers', performers);
 router.use('/organizations', organizations);
 router.use('/performances', performances);
+router.use('/learnings', learnings);
 router.use('/events', events);
 router.use('/footage', footage);
 router.use('/playlists', playlists);

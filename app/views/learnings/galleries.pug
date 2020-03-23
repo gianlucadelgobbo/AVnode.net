@@ -1,0 +1,201 @@
+extends ../layout
+block title
+  if data.imageFormats
+    .container
+      .event_main_image_wrapper
+        img.img-fluid.event_main_image(src=data.imageFormats.large, alt=data.title)
+        img.expand_image_event(src="/images/expand_image_event.svg")
+
+  
+  .wrapper_header_evento
+    .container
+      .row
+        .col-lg-12
+          header.header_event
+            .row
+              .col-lg-9
+                h1.main_title=data.title
+                  if editable
+                    !="  "
+                    a.badge.badge-danger(href="/admin/events/"+data._id+"/public")=global.__("EDIT")
+                if data.stats
+                  .performance_stat_container
+                    .performance_stat_wrapper
+                      ul
+                        if data.stats.visits
+                          li=data.stats.visits + ' ' + global.__('Views')
+                        li
+                          span.likes_count=data.stats.likes ? data.stats.likes : 0
+                          !=' ' + global.__('Likes')                      
+              .col-lg-3.share_like_list_column
+                include ../partials/share_like
+                if data.type
+                  p.text-right
+                    i(class="fa fa-cube")
+                    =" "
+                    !=data.type.name
+
+block content
+  if data.galleries.length  
+    if data.galleries[0].medias
+      if data.galleries[0].title
+        .container
+          .row.performer_title
+            .col-lg-9
+              h1.main_title=data.galleries[0].img && data.galleries[0].img.title ? data.galleries[0].title+": "+data.galleries[0].img.title : data.galleries[0].title
+                if editable
+                  !="  "
+                  a.badge.badge-danger(href="/admin/galleries/"+data.galleries[0]._id+"/public")=global.__("EDIT")
+              if data.galleries[0].img
+                if data.galleries[0].img.stats
+                  .performance_stat_container
+                    .performance_stat_wrapper
+                      ul
+                        if data.galleries[0].img.stats.visits
+                          li=data.galleries[0].img.stats.visits + ' ' + global.__('Views')
+                        li
+                          span.likes_count=data.galleries[0].img.stats.likes ? data.galleries[0].img.stats.likes : 0
+                          !=' ' + global.__('Likes')
+              else 
+                if data.galleries[0].stats
+                  .performance_stat_container
+                    .performance_stat_wrapper
+                      ul
+                        if data.galleries[0].stats.visits
+                          li=data.galleries[0].stats.visits + ' ' + global.__('Views')
+                        li
+                          span.likes_count=data.galleries[0].stats.likes ? data.galleries[0].stats.likes : 0
+                          !=' ' + global.__('Likes')
+            .col-lg-3.share_like_list_column
+              include ../partials/share_like
+      .container
+        .row
+          if data.galleries[0].img
+            .col-md-8
+              if data.galleries[0].img.imageFormats
+                img.img-fluid.perfomance_image.bottom60(
+                  src=data.galleries[0].img.imageFormats.large
+                  alt=data.galleries[0].img.title
+                )
+            .col-md-4.data_footage_video          
+              if data.galleries[0].imageFormats
+                .data_footage_video_wrapper
+                  .gallery_item_wrapper.bottom30
+                    a(href="/galleries/"+data.galleries[0].slug alt=data.galleries[0].title)
+                      img.img-fluid.perfomance_image(
+                        src=data.galleries[0].imageFormats.large
+                        alt=data.galleries[0].title
+                      )
+                      .gallery_item_info_wrapper_single_gallery
+                        h3=__("Gallery: ")
+                          br
+                          =data.galleries[0].title
+              if data.galleries[0].about
+                .data_footage_video_wrapper
+                  h3=__("About")
+                  .pt-2.pb-2!=data.galleries[0].about
+              .data_footage_video_wrapper
+                h3=__("Author")
+                each user in data.galleries[0].users
+                  .row.mb-3
+                    .col-md-4
+                      a(href="/"+user.slug+"/")
+                        img.img-fluid(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                    .col-md-8
+                      a(href="/"+user.slug+"/")=user.stagename
+                      if user.addressesFormatted && user.addressesFormatted.length
+                        p.users_performance_item_country!=user.addressesFormatted.join(", ")
+              if (data.galleries[0].performances && data.galleries[0].performances.length)
+                .data_footage_video_wrapper
+                  h3=__("Performances")
+                  each performances in data.galleries[0].performances
+                    .row.mb-3
+                      .col-md-4
+                        a(href="/performances/"+performances.slug+"/")
+                          img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
+                      .col-md-8
+                        a(href="/performances/"+performances.slug+"/")=performances.title
+              if (data.galleries[0].events && data.galleries[0].events.length)
+                .data_performances_event_wrapper
+                  h3=__("Events")
+                  each event in data.galleries[0].events
+                    .row.mb-3
+                      .col-md-4
+                        a(href="/events/"+event.slug+"/")
+                          img.img-fluid(src=event.imageFormats.small, alt=event.title)
+                      .col-md-8
+                        a(href="/events/"+event.slug+"/")=event.title
+          else
+            .col-md-8
+              if data.galleries[0].imageFormats
+                img.img-fluid.perfomance_image.bottom60(
+                  src=data.galleries[0].imageFormats.large
+                  alt=data.galleries[0].title
+                )
+            .col-md-4.data_footage_video
+              if data.galleries[0].stats
+                .data_footage_video_wrapper
+                  h3=__("Stats")
+                  ul
+                    if data.galleries[0].stats.visits
+                      li=data.galleries[0].stats.visits + ' ' + global.__('Views')
+                    if data.galleries[0].stats.likes
+                      li=data.galleries[0].stats.likes + ' ' + global.__('Likes')
+                    if data.galleries[0].stats.medias
+                      li=data.galleries[0].stats.medias + ' ' + global.__('Images')  
+
+              if data.galleries[0].about
+                .data_footage_video_wrapper
+                  h3=__("About")
+                  .pt-2.pb-2!=data.galleries[0].about
+              .data_footage_video_wrapper
+                h3=__("Author")
+                each user in data.galleries[0].users
+                  .row.mb-3
+                    .col-md-4
+                      a(href="/"+user.slug+"/")
+                        img.img-fluid(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                    .col-md-8
+                      a(href="/"+user.slug+"/")=user.stagename
+                      if user.addressesFormatted && user.addressesFormatted.length
+                        p.users_performance_item_country!=user.addressesFormatted.join(", ")
+              if (data.galleries[0].performances && data.galleries[0].performances.length)
+                .data_footage_video_wrapper
+                  h3=__("Performances")
+                  each performances in data.galleries[0].performances
+                    .row.mb-3
+                      .col-md-4
+                        a(href="/performances/"+performances.slug+"/")
+                          img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
+                      .col-md-8
+                        a(href="/performances/"+performances.slug+"/")=performances.title
+              if (data.galleries[0].events && data.galleries[0].events.length)
+                .data_performances_event_wrapper
+                  h3=__("Events")
+                  each event in data.galleries[0].events
+                    .row.mb-3
+                      .col-md-4
+                        a(href="/events/"+event.slug+"/")
+                          img.img-fluid(src=event.imageFormats.small, alt=event.title)
+                      .col-md-8
+                        a(href="/events/"+event.slug+"/")=event.title
+        if data.galleries[0].medias.length 
+          h2.mt-5.main_title.indented_title.color1=__("Images")
+          .row.mb-5
+            each item in data.galleries[0].medias
+              .col-md-4
+                - var basepath = "/performances/"+data.slug+"/galleries/"+data.galleries[0].slug
+                include ../partials/boxImage
+    else  
+      .gallery_event_wrapper_bkg
+        section.event_galleries_wrapper
+          .content_wrapper
+            .container
+              .row
+                .col-lg-12
+                  h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                  .performance_divider.basic_divider
+                  .owl-carousel.loop_3items.owl-theme
+                    - var basepath = "/performances/"+data.slug
+                    each item in data.galleries
+                      include ../partials/boxGallery

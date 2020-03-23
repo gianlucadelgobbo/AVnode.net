@@ -1,0 +1,180 @@
+extends ../layout_print
+block content
+  .container
+    table
+      thead
+        tr
+          th         
+            //.row.mb-5.mt-5
+              .col
+                img(src='/images/LogoAVnode-bar-black.svg', height='50', class='main_logo' alt='AVnode.net')
+              .col(style="padding-top: 9px;font-size: 22px;")
+                .text-right!=global.__('CV GENERATOR')
+
+      tbody
+        tr
+          td
+            if data.imageFormats
+              img.img-fluid.perfomance_image.bottom60(
+                src=data.imageFormats.large
+                alt=data.title
+              )
+              h1.pt-3=data.title
+              if data.type
+                ul.list-inline
+                  li.list-inline-item
+                      span=data.type.name
+                  if data.tecnique
+                    li.list-inline-item
+                      span=data.tecnique.name
+                  if data.genre
+                    li.list-inline-item
+                      span=data.genre.name
+
+              .pt-2.pb-2.text-justify
+                !=data.about
+              h3.mt-5=global.__('Technical specifications')
+              .list-unstyled
+                li.media.mt-3.pt-3
+                  .media-body
+                    if data.duration
+                      .mb-3
+                        !=global.__('Duration (minutes)')+": "
+                        b!=data.duration
+                    if data.tech_req
+                      .mt-3
+                        u!=global.__('What is needed')
+                      .mb-3!=data.tech_req
+                    if data.tech_art
+                      .mt-3
+                        u=global.__('What the artists brings')
+                      .mb-3
+                        !=data.tech_art
+              .authors
+                h3.mt-5=global.__('Authors')  
+                ul.list-unstyled.mb-5
+                  each item in data.users
+                    li.media.mt-3.pt-3
+                      if !get.hideImages
+                        img.mr-3(
+                          src=item.imageFormats.small
+                          alt=item.stagename
+                        )
+                      .media-body
+                        h4!=item.stagename
+                        if item.addressesFormatted && item.addressesFormatted.length       
+                          ul.pl-2.list-inline
+                            each address in item.addressesFormatted
+                              li.list-inline-item.mb-3!=address
+
+                        if !get.hideDescription
+                          .text-justify!=get.fullDescription ? item.aboutFull : item.about
+
+                        if !get.hideLinks
+                          ul.list-unstyled.pt-3
+                            li.mb-3
+                              a(href="https://avnode.net/events/"+item.slug)
+                                i.lnr.lnr-link.mr-2
+                                !="https://avnode.net/events/"+item.slug
+                            if item.web && item.web.length
+                              each web in item.web
+                                li.mb-3
+                                  a(href=web.url)
+                                    i.lnr.lnr-link.mr-2
+                                    !=web.url
+                          if item.social && item.social.length
+                            ul.list-unstyled.pt-3
+                              each social in item.social
+                                li.mb-3
+                                  a(href=social.url)
+                                    if social.url.indexOf('instagram.com/')!=-1
+                                      i.fab.fa-instagram.mr-2
+                                    else if social.url.indexOf('twitter.com/')!=-1
+                                      i.fab.fa-twitter.mr-2
+                                    else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                      i.fab.fa-facebook.mr-2
+                                    else if social.url.indexOf('vimeo.com/')!=-1
+                                      i.fab.fa-vimeo.mr-2
+                                    else if social.url.indexOf('youtube.com/')!=-1
+                                      i.fab.fa-youtube.mr-2
+                                    else
+                                      i.lnr.lnr-link.mr-2
+                                    !=social.url
+              if data.bookings.length
+                .bookings
+                  h3.mt-3=global.__('Bookings')
+                  ul.list-unstyled.mb-5
+                    each booking in data.bookings
+                      li.media.mt-3.pt-3
+                        if !get.hideImages
+                          img.mr-3(
+                            src=booking.event.imageFormats.small
+                            alt=booking.event.title
+                          )
+                        .media-body
+                          h4=booking.event.title
+                          !=booking.boxDate ? booking.boxDate : booking.event.boxDate
+                          if !get.hideDescription
+                            .text-justify.mt-3!=get.fullDescription ? booking.event.aboutFull : booking.event.about
+
+                          if !get.hideLinks
+                            ul.list-unstyled.pt-3
+                              li.mb-3
+                                a(href="https://avnode.net/events/"+booking.event.slug)
+                                  i.lnr.lnr-link.mr-2
+                                  !="https://avnode.net/events/"+booking.event.slug
+                              if booking.event.web && booking.event.web.length
+                                each web in booking.event.web
+                                  li.mb-3
+                                    a(href=web.url)
+                                      i.lnr.lnr-link.mr-2
+                                      !=web.url
+                            if booking.social && booking.event.social.length
+                              ul.list-unstyled.pt-3
+                                each social in booking.social
+                                  li.mb-3
+                                    a(href=social.url)
+                                      if social.url.indexOf('instagram.com/')!=-1
+                                        i.fab.fa-instagram.mr-2
+                                      else if social.url.indexOf('twitter.com/')!=-1
+                                        i.fab.fa-twitter.mr-2
+                                      else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                        i.fab.fa-facebook.mr-2
+                                      else if social.url.indexOf('vimeo.com/')!=-1
+                                        i.fab.fa-vimeo.mr-2
+                                      else if social.url.indexOf('youtube.com/')!=-1
+                                        i.fab.fa-youtube.mr-2
+                                      else
+                                        i.lnr.lnr-link.mr-2
+                                      !=social.url
+                                      
+              if data.galleries.length || data.videos.length
+                .galleries
+                  h3.mt-5!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+                  each item in data.galleries                    
+                    h4=item.title
+                    .row
+                      each img in item.medias
+                        .col-md-6.pb-4
+                          a(href="/performances/"+data.slug+"/galleries/"+item.slug+"/img/fc50342e-0cb6-4a3d-9"+img.slug+"/")
+                            img.img-fluid(src=img.imageFormats.large)
+                        .mt-1
+                          !=img.title
+              if data.videos.length  
+                .videos
+                  h3!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+                  .row
+                    each item in data.videos            
+                      .col-md-6.pb-4
+                        a(href="/performances/"+data.slug+"/videos/"+item.slug+"/")
+                          img.img-fluid(src=item.imageFormats.large)
+                        .mt-1
+                          !=item.title
+      tfoot
+        tr
+          td
+            .d-flex.pt-5
+              .mr-auto
+                img(src='/images/LogoAVnode-bar-black.svg', height='50', class='main_logo' alt='AVnode.net')
+              div(style="padding-top: 11px;")
+                .text-right.text-muted="Created by \"AVnode Scheets Generator\", a service reserved to members at http://avnode.net"
