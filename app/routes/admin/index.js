@@ -24,6 +24,10 @@ router.post('/api/setvideocategory', (req, res)=>{
   post.setVideoCategory(req, res);
 });
 
+router.get('/api/setstatsandactivity/:id', (req, res)=>{
+  get.setStatsAndActivity(req, res);
+});
+
 router.get('/api/profile/:form/', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';

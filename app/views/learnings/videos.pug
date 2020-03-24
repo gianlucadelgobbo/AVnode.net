@@ -128,6 +128,6 @@ block content
                 h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
                 .performance_divider.basic_divider
                 .owl-carousel.loop_3items.owl-theme
-                  - var basepath = "/performances/"+data.slug
+                  - var basepath = "/learnings/"+data.slug
                   each item in data.videos            
                     include ../partials/boxVideo

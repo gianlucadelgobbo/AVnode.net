@@ -44,6 +44,7 @@ const userSchema = new Schema({
     events: Number,
     partnerships: Number,
     performances: Number,
+    learnings: Number,
     galleries: Number,
     videos: Number,
     'lights-installation': Number,
@@ -60,6 +61,7 @@ const userSchema = new Schema({
     lecture: Number,
     recent:{ 
       performances: Number,
+      learnings: Number,
       events: Number,
       news: Number,
       partnerships: Number,

@@ -111,10 +111,10 @@ block content
                   each performances in data.galleries[0].performances
                     .row.mb-3
                       .col-md-4
-                        a(href="/performances/"+performances.slug+"/")
+                        a(href="/learnings/"+performances.slug+"/")
                           img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
                       .col-md-8
-                        a(href="/performances/"+performances.slug+"/")=performances.title
+                        a(href="/learnings/"+performances.slug+"/")=performances.title
               if (data.galleries[0].events && data.galleries[0].events.length)
                 .data_performances_event_wrapper
                   h3=__("Events")
@@ -165,10 +165,10 @@ block content
                   each performances in data.galleries[0].performances
                     .row.mb-3
                       .col-md-4
-                        a(href="/performances/"+performances.slug+"/")
+                        a(href="/learnings/"+performances.slug+"/")
                           img.img-fluid(src=performances.imageFormats.small, alt=performances.title)
                       .col-md-8
-                        a(href="/performances/"+performances.slug+"/")=performances.title
+                        a(href="/learnings/"+performances.slug+"/")=performances.title
               if (data.galleries[0].events && data.galleries[0].events.length)
                 .data_performances_event_wrapper
                   h3=__("Events")
@@ -184,7 +184,7 @@ block content
           .row.mb-5
             each item in data.galleries[0].medias
               .col-md-4
-                - var basepath = "/performances/"+data.slug+"/galleries/"+data.galleries[0].slug
+                - var basepath = "/learnings/"+data.slug+"/galleries/"+data.galleries[0].slug
                 include ../partials/boxImage
     else  
       .gallery_event_wrapper_bkg
@@ -196,6 +196,6 @@ block content
                   h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
                   .performance_divider.basic_divider
                   .owl-carousel.loop_3items.owl-theme
-                    - var basepath = "/performances/"+data.slug
+                    - var basepath = "/learnings/"+data.slug
                     each item in data.galleries
                       include ../partials/boxGallery

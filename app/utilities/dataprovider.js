@@ -731,7 +731,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
       }
     }
     logger.debug("populate AFTER");
-    logger.debug(populate);
+    logger.debug(populate[0].match);
     const select = config.sections[section][subsection].select;
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 

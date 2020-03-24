@@ -37,7 +37,7 @@ block title
 
 
 block content
-  - var basepath = "/performances/"+data.slug
+  - var basepath = "/learnings/"+data.slug
   .container
     .row
       .col-sm-12
@@ -94,7 +94,7 @@ block content
                     span=data.genre.name
             .row.mb-3
               .col
-                a.performance_button.print-perf(href="/performances/"+data.slug+"/print", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                a.performance_button.print-perf(href="/learnings/"+data.slug+"/print", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
                   !=global.__('PRINT')
                   br
                   !=global.__('PDF')

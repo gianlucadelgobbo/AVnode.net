@@ -156,7 +156,7 @@ block content
                     .row
                       each img in item.medias
                         .col-md-6.pb-4
-                          a(href="/performances/"+data.slug+"/galleries/"+item.slug+"/img/fc50342e-0cb6-4a3d-9"+img.slug+"/")
+                          a(href="/learnings/"+data.slug+"/galleries/"+item.slug+"/img/fc50342e-0cb6-4a3d-9"+img.slug+"/")
                             img.img-fluid(src=img.imageFormats.large)
                         .mt-1
                           !=img.title
@@ -166,7 +166,7 @@ block content
                   .row
                     each item in data.videos            
                       .col-md-6.pb-4
-                        a(href="/performances/"+data.slug+"/videos/"+item.slug+"/")
+                        a(href="/learnings/"+data.slug+"/videos/"+item.slug+"/")
                           img.img-fluid(src=item.imageFormats.large)
                         .mt-1
                           !=item.title

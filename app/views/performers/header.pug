@@ -22,6 +22,9 @@ include ../partials/modals/modalContact
                 if data.stats.performances
                   li.list-inline-item
                     a(href="/"+data.slug+"/performances")!=global.__('Performances')+" (<span>"+data.stats.performances+"</span>)"  
+                if data.stats.learnings
+                  li.list-inline-item
+                    a(href="/"+data.slug+"/learnings")!=global.__('Learnings')+" (<span>"+data.stats.learnings+"</span>)"  
                 if data.stats.partnerships
                   li.list-inline-item
                     a(href="/"+data.slug+"/partnerships")!=global.__('Partnerships')+" (<span>"+data.stats.partnerships+"</span>)"
