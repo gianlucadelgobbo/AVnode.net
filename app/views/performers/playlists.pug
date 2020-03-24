@@ -18,7 +18,7 @@ block content
         h2.main_title.indented_title.color1!=global.__('Playlists')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"
         .row
           each item in data.playlists
-            .col-sm-4
+            .col-sm-4.list_item
               include ../partials/boxPlaylist
     hr
     include ../partials/pagination

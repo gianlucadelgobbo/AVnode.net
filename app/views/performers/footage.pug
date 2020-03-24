@@ -18,7 +18,7 @@ block content
         h2.main_title.indented_title.color1!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"
         .row
           each item in data.footage
-            .col-sm-4
+            .col-sm-4.list_item
               include ../partials/boxFootage
     hr
     include ../partials/pagination

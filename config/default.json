@@ -4267,7 +4267,20 @@
           "model": "Video"
         }, {
           "path": "performances",
-          "match": { "is_public": true},
+          "match": { "is_public": true, "type": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "type": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "type", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Performance"
+        }, {
+          "path": "learnings",
+          "match": { "is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
           "select": {
             "title": 1,
             "slug": 1,
@@ -5055,15 +5068,28 @@
           "model": "Video"
         }, {
           "path": "performances",
-          "match": { "is_public": true},
+          "match": { "is_public": true, "type": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
           "select": {
             "title": 1,
             "slug": 1,
-            "categories": 1,
+            "type": 1,
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "type", "select": "name slug", "model": "Category"}],
+          "options": { "limit": 21,"sort": { "createdAt": -1 }},
+          "model": "Performance"
+        }, {
+          "path": "learnings",
+          "match": { "is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+          "select": {
+            "title": 1,
+            "slug": 1,
+            "type": 1,
+            "stats": 1,
+            "image": 1
+          },
+          "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "type", "select": "name slug", "model": "Category"}],
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {

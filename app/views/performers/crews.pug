@@ -18,7 +18,7 @@ block content
         h2.main_title.indented_title.color1!=global.__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"
         .row
           each item in data.crews
-            .col-sm-4
+            .col-sm-4.list_item
               include ../partials/boxPerformer
     hr
     include ../partials/pagination

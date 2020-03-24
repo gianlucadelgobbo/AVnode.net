@@ -206,6 +206,15 @@ userSchema.virtual('birthdayFormatted').get(function () {
   }
 });
 
+userSchema.virtual('learnings', {
+  foreignField: '_id',
+  localField: '_id'
+}).get(function () {
+  if (this.performances) {
+    return this.performances;
+  }
+});
+
 // Return thumbnail
 userSchema.virtual('imageFormats').get(function () {
   let imageFormats = {};

@@ -303,8 +303,8 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     select(select).
     exec((err, ddd) => {
       logger.debug("STOCAZZOOOOOOO");
-      logger.debug(err);
-      logger.debug(ddd);
+      //logger.debug(err);
+      //logger.debug(ddd);
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
@@ -431,7 +431,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       logger.debug("res.partnershipaaaaaaa");
       if(res && res.partnerships && res.partnerships_ordered) {
         delete res.partnerships;
-        logger.debug(res.partnerships);
+        //logger.debug(res.partnerships);
       }
       logger.debug("fetchShow END");
       cb(err, res);
@@ -737,11 +737,11 @@ dataprovider.show = (req, res, section, subsection, model) => {
 
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
       logger.debug("fetchShow END");
-      logger.debug(data);
+      //logger.debug(data);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
       } else {
-        logger.debug(select);
+        //logger.debug(select);
         if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
           const locations = data.schedule.map(obj =>{
             if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
