@@ -7,7 +7,7 @@ urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://w
   each item in data
     url
       loc=host+"/"+(basepath==="performers" ? "" : basepath+"/")+item.slug
-      lastmod=lastmod
+      lastmod=item.updatedAt.toISOString()
       image:image
         image:loc=item.imageFormats.large
         image:title=global.__("Image of:")+" "+(basepath==="performers" ? item.stagename : item.title)

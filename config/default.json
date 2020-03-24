@@ -4901,7 +4901,7 @@
       "title": "Organizations",
       "model": "UserShow",
       "limit": 21,
-      "basepath": "performers",
+      "basepath": "organizations",
       "main_image": "/images/sez_performers.jpg",
       "sitemap_pages": 500,
       "coll": "users",

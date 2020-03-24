@@ -643,10 +643,10 @@ dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, sk
 
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
   query.is_public = true;
-  logger.debug("BINGOOOOO");
+  /* logger.debug("BINGOOOOO");
   logger.debug(query);
   logger.debug(select);
-  logger.debug(sorting);
+  logger.debug(sorting); */
   model.countDocuments(query, function(error, total) {
     model.find(query)
     .populate(populate)
@@ -939,18 +939,24 @@ dataprovider.list = (req, res, section, model) => {
             res.json({total:total, skip:skip, data:data});
           }
         } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
-          let lastmod = new Date();
-          lastmod.setHours( lastmod.getHours() -2 );
-          lastmod.setMinutes(0);
-          lastmod = helper.dateoW3CString(lastmod);
-          res.set('Content-Type', 'text/xml');
-          res.render('sitemaps/list', {
-            host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
-            data: data,
-            lastmod: lastmod,
-            basepath: config.sections[section].basepath,
-            nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
-          });
+          if (data.length) {
+            /* var dates = data.map(item => {return item.updatedAt}).sort().reverse()[0];
+            console.log(dates);
+            let lastmod = new Date();
+            lastmod.setHours( lastmod.getHours() -2 );
+            lastmod.setMinutes(0); */
+            let lastmod = helper.dateoW3CString(data.map(item => {return item.updatedAt}).sort().reverse()[0]);
+            res.set('Content-Type', 'text/xml');
+            res.render('sitemaps/list', {
+              host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
+              data: data,
+              lastmod: lastmod,
+              basepath: config.sections[section].basepath,
+              nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+            });
+          } else {
+            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+          }
         } else {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
           let link = '/' + section + '/' + filter + '/' + sorting + '/';
