@@ -169,7 +169,6 @@ userSchema.virtual('learnings', {
   }
 }).get(function () {
   if (this.performances) {
-    console.log(this.performances);
     return this.performances;
   }
 });

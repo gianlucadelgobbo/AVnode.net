@@ -207,8 +207,14 @@ userSchema.virtual('birthdayFormatted').get(function () {
 });
 
 userSchema.virtual('learnings', {
+  ref: "Performance",
   foreignField: '_id',
-  localField: '_id'
+  localField: 'performances',
+  justOne: false,
+  options: { 
+    //"match": { "is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+    limit: 21
+  }
 }).get(function () {
   if (this.performances) {
     return this.performances;
