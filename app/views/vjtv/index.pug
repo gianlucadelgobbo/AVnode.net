@@ -2,7 +2,7 @@ extends ../layout_base
 block content
   .container-fluid#vjtv
     .row
-      .col-md-9
+      .col-md-9.p-0
         .embed-responsive.embed-responsive-16by9
           video.embed-responsive-item#my-video.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height='264', poster="https://vjtelevision.com/vjtelevision/images/main-img.jpg", data-setup='{"aspectRatio":"16:9", "fluid": true}')
             //source(src=process.env.WAREHOUSE+data[0].media.file, type='video/mp4')
@@ -10,7 +10,7 @@ block content
             p.vjs-no-js
               !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
               a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
-      .col-md-3
+      .col-md-3.p-0
         #headervjtv.clearfix.h3.m-0.p-2.mb-1.bg-dark
           #date.float-left=date
           .float-right

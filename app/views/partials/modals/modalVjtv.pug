@@ -1,0 +1,55 @@
+.modal.admindevmodal.fade.bd-example-modal-lg#vjtv_modal(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content.text-body
+      .modal-header
+        h5#exampleModalCenterTitle.modal-title="VJ Television the first Audio Visuals Arts channel"
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+      .modal-body(style="line-height: 1.5;")
+        p
+          | VJ Television 24-hour programming born from a daily selection of contents from the biggest Audio Visuals Arts platform: 
+          a(href='https://avnode.net', target='_blank', rel='noopener noreferrer')
+            b AVnode.net
+          |. Interested to UPLOAD contents? 
+          a(href='https://vjtelevision.com/contents-programming/')
+            b CLICK HERE
+        p The daily programming is:
+        ul
+          li
+            b 06:00 – 12:00 Documentary
+            br
+            | Here is a collection of workshops, interview and report live video related.
+          li
+            b 12:00 – 18:00 Video
+            br
+            | All those videos are made from vjs and audio visual artists so you could find a lots of differences in technical and style.
+          li
+            b 18:00 – 00:00 Performances
+            br
+            | This is the time of the audio visual performances, live cinema, mapping, generative and many other styles of live performances.
+          li
+            b 00:00 – 06:00 VJ-DJ Sets
+            br
+            | Let’s get party with the best VJ from all over the world.
+        u Get VJ Television contents on demand jumping on a day from the calendar up right.
+      .modal-footer
+        button.btn(type='button', data-dismiss='modal')=global.__("Cancel")
+        button.btn.btn-primary.disabled#loadingplay(type='button', data-dismiss='modal')
+          i.fas.fa-spinner.fa-spin.mr-2
+          span!=global.__("Loading current day programming")
+//.modal.admindevmodal.fade.bd-example-modal-lg#msg_modal(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h5#exampleModalCenterTitle.modal-title=global.__("Alert")
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+      .modal-body
+        p!=global.__("AVnode.net is now at Alpha Version, feel free to test it but read the following alerts:")
+        ul
+          li=global.__("The database will be resetted more than once in the alpha phase, you could loose some data you insert")
+          li=global.__("Control panel is still under development, some features are still not fully working")
+        p!=global.__("Please send any suggestion to:")+" "
+          a(href="mailto:info@avnode.net") info@avnode.net
+      .modal-footer
+        button.btn.btn-primary(type='button', data-dismiss='modal')=global.__("I have read, continue")

@@ -96,3 +96,7 @@ h1 .badge {
   height: 53px;
   margin-bottom: 5px;
 }
+.vjs-logo-content img{
+  -webkit-filter: drop-shadow( 0 0 2px rgba(255, 255, 255, 1));
+  filter: drop-shadow( 0 0 2px rgba(255, 255, 255, 1));
+}

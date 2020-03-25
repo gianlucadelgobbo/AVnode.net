@@ -1,13 +1,22 @@
 var goto = 0;
 var oldgoto = 0;
 var dates = [];
+var playlist = [];
+var day = new Date();
+
 $(document).ready(function(){
   if ($('#vjtv').length) {
     console.log("vjtv");
+    $('#vjtv_modal').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
     var options = {
-      controls: true,
-      bigPlayButton: false
+      controls: true
     };
+    $( window ).resize(function() {
+      $(".playlist").height($("#my-video video").height()-58);
+    });
     var player = videojs('my-video', options, function onPlayerReady() {
       videojs.log('Your player is ready!');
       $(".playlist").height($("#my-video video").height()-58);
@@ -19,6 +28,13 @@ $(document).ready(function(){
       // How about an event listener?
       this.on('ended', function() {
         videojs.log('Awww...over so soon?!');
+        if (goto+1 == playlist.length) {
+          day.setDate(day.getDate()+1);
+          console.log(day)
+          loadDay();
+        }
+        videojs.log(goto);
+        videojs.log(playlist.length);
       });
     });
     /* $(".vjs-poster").on('click', function(ev) {
@@ -33,15 +49,15 @@ $(document).ready(function(){
       width: 150
     });
 
-    var now = new Date();
-    $("#vjtv #date").html(now.toDateString());
+    $("#vjtv #date").html(day.toDateString());
+
     $.ajax({
       url: "https://avnode.net/api/getprogramsdays",
       method: "get"
     })
     .done(function(dd) {
       dates = dd;
-      loadDay(now);
+      loadDay();
     })
     .fail(function(data) {
       $('#vjtv .playlist').html("error");
@@ -60,9 +76,8 @@ $(document).ready(function(){
       beforeShowDay: highlightDays
     });
     $("#vjtv #datepicker").change(function(){
-      var day = new Date($('#vjtv #datepicker').datepicker("getDate"));
-      $("#vjtv #date").html(day.toDateString());
-      loadDay(day);
+      day = new Date($('#vjtv #datepicker').datepicker("getDate"));
+      loadDay();
     });
 
     $( "#vjtv #datepickerbutton" ).click(function( event ) {
@@ -70,7 +85,6 @@ $(document).ready(function(){
       var visible = $("#vjtv #datepicker").datepicker("widget").is(":visible");
       $("#vjtv #datepicker").datepicker(visible ? "hide" : "show");
     });
-
 
     function highlightDays(date) {
       for (var i = 0; i < dates.length; i++) {
@@ -81,8 +95,9 @@ $(document).ready(function(){
       return [true, ''];
     }
   
-    function loadDay(day) {
+    function loadDay() {
       var daystr = day.getFullYear()+"-"+(("0" + (day.getMonth()+1)).slice(-2))+"-"+(("0" + (day.getDate())).slice(-2));
+      $("#vjtv #date").html(day.toDateString());
       if (dates.indexOf(daystr)===-1) {
         alert("No programming for this date!!!");
       } else {
@@ -93,8 +108,10 @@ $(document).ready(function(){
           data: {day: daystr}
         })
         .done(function(data) {
+          $('#loadingplay span').html("Building interface");
           var timeA = data.map(item => {return new Date(item.programming).getTime()});
-          var goal = new Date().getTime();
+          var now = new Date();
+          var goal = now.getTime()-(now.getTimezoneOffset()*60*1000);
           if (goal>=timeA[0] && goal<timeA[timeA.length-1]) {
             var closest = timeA.reduce(function(prev, curr) {
               return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
@@ -104,8 +121,9 @@ $(document).ready(function(){
           } else {
             oldgoto = goto = 0;
           }
+          console.log(new Date(timeA[goto]));
           var html = "<ul class=\"list-unstyled\">"
-          var playlist = [];
+          playlist = [];
           for (var a=0;a<data.length;a++) {
             playlist.push({
               sources: [{
@@ -114,10 +132,15 @@ $(document).ready(function(){
               }],
               poster: data[a].video.imageFormats.small
             })
+
+            /* console.log(data[a].programming);
+            console.log(new Date(data[a].programming).toISOString());
+            console.log(new Date(data[a].programming)); */
             var id = new Date(data[a].programming).getTime();
+            var date = new Date(data[a].programming);
             html+="<li class=\"playlist-item bg-dark mb-3\" id=\"P"+a+"\">";
-            html+="  <div class=\"row text-monospace small playlist-header\">";
-            html+="    <div class=\"col\"><div class=\"pl-2\">"+data[a].programming.split(".")[0].replace("T", "<br />")+"</div></div>";
+            html+="  <div class=\"row text-monospace small playlist-header\" id=\""+id+"\">";
+            html+="    <div class=\"col\" id=\""+data[a].programming+"\"><div class=\"pl-2\">"+date.getUTCFullYear()+"-"+(("0" + (date.getUTCMonth()+1)).slice(-2))+"-"+(("0" + (date.getUTCDate())).slice(-2))+ "<br />"+(("0" + (date.getUTCHours())).slice(-2))+":"+(("0" + (date.getUTCMinutes())).slice(-2))+":"+(("0" + (date.getUTCSeconds())).slice(-2))+"</div></div>";
             html+="    <div class=\"col\"><div class=\"pr-2 text-right\">"+data[a].category.name+"<br />"+data[a].video.media.durationHR+"</div></div>";
             html+="  </div>";
             html+="  <div class=\"media p-2\" id=\"P"+a+"\">";
@@ -139,6 +162,13 @@ $(document).ready(function(){
           });
           player.playlist.autoadvance(0);
           //player.playlist.currentItem(goto);
+          $('#loadingplay i').hide();
+          $('#loadingplay span').html("SWITCH ON TV!!!");
+          $('#loadingplay').removeClass("disabled");
+          $('#loadingplay').on('click', function(ev) {
+            player.play();
+          });
+      
           $("#vjtv .playlist").height($("#my-video video").height()-58);
           $('#vjtv .playlist').html(html);
           $(".vjs-big-play-button").show();
