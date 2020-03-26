@@ -1,24 +1,22 @@
 extends ../layout_base
 block content
-  .container-fluid#vjtv
-    .row
-      .col-md-9.p-0
-        .embed-responsive.embed-responsive-16by9
-          video.embed-responsive-item#my-video.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height='264', poster="https://vjtelevision.com/vjtelevision/images/main-img.jpg", data-setup='{"aspectRatio":"16:9", "fluid": true}')
-            //source(src=process.env.WAREHOUSE+data[0].media.file, type='video/mp4')
-            //source(src='MY_VIDEO.webm', type='video/webm')
-            p.vjs-no-js
-              !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
-              a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
-      .col-md-3.p-0
-        #headervjtv.clearfix.h3.m-0.p-2.mb-1.bg-dark
-          #date.float-left=date
-          .float-right
-            input#datepicker(type="hidden" name="date")
-            a#datepickerbutton.pr-3(href="#")
-              i.fa.fa-calendar
-
-        
-        .playlist
-          .vjs-waiting
-            .vjs-loading-spinner
+  .container-fluid.p-md-0
+    #vjtv
+      .row
+        .col-lg-9.pr-lg-0
+          .embed-responsive.embed-responsive-16by9
+            video.embed-responsive-item#my-video.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height='264', poster="https://vjtelevision.com/vjtelevision/images/main-img.jpg", data-setup='{"aspectRatio":"16:9", "fluid": true}')
+              p.vjs-no-js
+                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
+                a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
+        .col-lg-3.pl-lg-0
+          #headervjtv.clearfix.h3.p-2.bg-dark
+            #date.float-left.pt-1.pl-2=date
+            .float-right
+              input#datepicker(type="hidden" name="date")
+              a#datepickerbutton(href="#")
+                i.icon-calendar
+          .playlist
+            .vjs-waiting
+              .vjs-loading-spinner
+  include ../partials/modals/modalVjtv

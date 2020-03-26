@@ -40,7 +40,7 @@ $(document).ready(function(){
     /* $(".vjs-poster").on('click', function(ev) {
     }); */
     player.logo({
-      image: 'https://vjtelevision.com/vjtelevision/images/VJTV_4x.svg',
+      image: 'https://vjtelevision.com/vjtelevision/images/VJTV_4x_white.svg',
       url: "https://vjtelevision.com",
       height: 50,
       offsetH: 20,
