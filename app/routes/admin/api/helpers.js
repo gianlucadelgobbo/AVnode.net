@@ -90,8 +90,8 @@ router.setStatsAndActivitySingle = function(query) {
         Models['Playlist'].countDocuments({"users": {$in: myids}, "is_public": true, createdAt:{"$gte": new Date(new Date().getTime()-(365*3*24*60*60*1000))}})
 
       ]).then( ([
-        members,
         crews,
+        members,
         events,
         partnerships,
         performances,
