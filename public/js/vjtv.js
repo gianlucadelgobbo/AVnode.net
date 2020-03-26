@@ -150,7 +150,7 @@ $(document).ready(function(){
             html+="      <ul class=\"list-inline small\">"+data[a].video.users.map(user =>{return "<li>"+user.stagename+"</li>"})+"</ul>";
             html+="    </div>";
             html+="  </div>";
-            html+="   <div class=\"more p-2\"><a href=\"/videos/"+data[a].video.slug+"/\" class=\"badge badge-primary\">MORE</a></div>";
+            html+="   <div class=\"more p-2\"><a href=\"https://avnode.net/videos/"+data[a].video.slug+"/\" class=\"badge badge-primary\">MORE</a></div>";
             html+="</li>";
           }
           html+="</ul>";
