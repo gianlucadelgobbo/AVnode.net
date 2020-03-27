@@ -303,8 +303,8 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     select(select).
     exec((err, ddd) => {
       logger.debug("STOCAZZOOOOOOO");
-      logger.debug(err);
-      logger.debug(ddd);
+      //logger.debug(err);
+      //logger.debug(ddd);
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
@@ -431,7 +431,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       logger.debug("res.partnershipaaaaaaa");
       if(res && res.partnerships && res.partnerships_ordered) {
         delete res.partnerships;
-        logger.debug(res.partnerships);
+        //logger.debug(res.partnerships);
       }
       logger.debug("fetchShow END");
       cb(err, res);
@@ -643,8 +643,10 @@ dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, sk
 
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
   query.is_public = true;
-  logger.debug("BINGOOOOO");
+  /* logger.debug("BINGOOOOO");
+  logger.debug(query);
   logger.debug(select);
+  logger.debug(sorting); */
   model.countDocuments(query, function(error, total) {
     model.find(query)
     .populate(populate)
@@ -729,17 +731,17 @@ dataprovider.show = (req, res, section, subsection, model) => {
       }
     }
     logger.debug("populate AFTER");
-    logger.debug(populate);
+    logger.debug(populate[0].match);
     const select = config.sections[section][subsection].select;
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
       logger.debug("fetchShow END");
-      logger.debug(data);
+      //logger.debug(data);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
       } else {
-        logger.debug(select);
+        //logger.debug(select);
         if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
           const locations = data.schedule.map(obj =>{
             if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
@@ -937,18 +939,24 @@ dataprovider.list = (req, res, section, model) => {
             res.json({total:total, skip:skip, data:data});
           }
         } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
-          let lastmod = new Date();
-          lastmod.setHours( lastmod.getHours() -2 );
-          lastmod.setMinutes(0);
-          lastmod = helper.dateoW3CString(lastmod);
-          res.set('Content-Type', 'text/xml');
-          res.render('sitemaps/list', {
-            host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
-            data: data,
-            lastmod: lastmod,
-            basepath: config.sections[section].basepath,
-            nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
-          });
+          if (data.length) {
+            /* var dates = data.map(item => {return item.updatedAt}).sort().reverse()[0];
+            console.log(dates);
+            let lastmod = new Date();
+            lastmod.setHours( lastmod.getHours() -2 );
+            lastmod.setMinutes(0); */
+            let lastmod = helper.dateoW3CString(data.map(item => {return item.updatedAt}).sort().reverse()[0]);
+            res.set('Content-Type', 'text/xml');
+            res.render('sitemaps/list', {
+              host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,
+              data: data,
+              lastmod: lastmod,
+              basepath: config.sections[section].basepath,
+              nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+            });
+          } else {
+            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+          }
         } else {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
           let link = '/' + section + '/' + filter + '/' + sorting + '/';

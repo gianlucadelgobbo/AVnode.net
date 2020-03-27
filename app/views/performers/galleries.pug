@@ -18,7 +18,7 @@ block content
         h2.main_title.indented_title.color1!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"
         .row
           each item in data.galleries
-            .col-sm-4
+            .col-sm-4.list_item
               include ../partials/boxGallery
     hr
     include ../partials/pagination

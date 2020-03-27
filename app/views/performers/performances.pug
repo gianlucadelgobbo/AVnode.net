@@ -18,7 +18,7 @@ block content
         h2.main_title.indented_title.color1!=type ? type.name : global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"
         .row
           each item in data.performances
-            .col-sm-4
+            .col-sm-4.list_item
               include ../partials/boxPerformance
     hr
     include ../partials/pagination

@@ -52,6 +52,21 @@ $(function() {
     }
   });
 
+  $('#datepicker').datepicker({
+    dateFormat: 'yy-mm-dd',
+    //defaultDate: new Date('03/10/2017'), // this line is for testing
+    beforeShowDay: highlightDays
+  });
+
+  function highlightDays(date) {
+    for (var i = 0; i < dates.length; i++) {
+      if (new Date(dates[i].replace("-","/").replace("-","/")).toString() == date.toString()) {
+        return [true, 'highlight'];
+      }
+    }
+    return [true, ''];
+  }
+
   // PARTNERS
   $('.sorter').click(function() {
     const id = $(this).data("target");

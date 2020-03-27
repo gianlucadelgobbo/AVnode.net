@@ -18,7 +18,7 @@ block content
         h2.main_title.indented_title.color1!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"
         .row
           each item in data.videos
-            .col-sm-4
+            .col-sm-4.list_item
               include ../partials/boxVideo
     hr
     include ../partials/pagination

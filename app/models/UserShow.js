@@ -44,6 +44,7 @@ const userSchema = new Schema({
     events: Number,
     partnerships: Number,
     performances: Number,
+    learnings: Number,
     galleries: Number,
     videos: Number,
     'lights-installation': Number,
@@ -60,6 +61,7 @@ const userSchema = new Schema({
     lecture: Number,
     recent:{ 
       performances: Number,
+      learnings: Number,
       events: Number,
       news: Number,
       partnerships: Number,
@@ -128,7 +130,7 @@ const userSchema = new Schema({
   timestamps: true,
   collection: 'users',
   toObject: {
-    virtuals: false // BL FIXME check http://mongoosejs.com/docs/api.html#schema_Schema-virtual
+    virtuals: true // BL FIXME check http://mongoosejs.com/docs/api.html#schema_Schema-virtual
   },
   toJSON: {
     virtuals: true,
@@ -155,6 +157,21 @@ userSchema.virtual('crews', {
 }); */
 
 // Crews only
+
+userSchema.virtual('learnings', {
+  ref: "Performance",
+  foreignField: '_id',
+  localField: 'performances',
+  justOne: false,
+  options: { 
+    //"match": { "is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+    limit: 21
+  }
+}).get(function () {
+  if (this.performances) {
+    return this.performances;
+  }
+});
 
 userSchema.virtual('publicEmails').get(function () {
   let emails = [];

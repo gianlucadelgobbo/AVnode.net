@@ -48,6 +48,7 @@ const userSchema = new Schema({
     events: Number,
     partnerships: Number,
     performances: Number,
+    learnings: Number,
     galleries: Number,
     videos: Number,
     'lights-installation': Number,
@@ -64,6 +65,7 @@ const userSchema = new Schema({
     lecture: Number,
     recent:{ 
       performances: Number,
+      learnings: Number,
       events: Number,
       news: Number,
       partnerships: Number,
@@ -201,6 +203,21 @@ userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
     const lang = global.getLocale();
     return moment(this.birthday).format(config.dateFormat[lang].weekdaydaymonthyear);
+  }
+});
+
+userSchema.virtual('learnings', {
+  ref: "Performance",
+  foreignField: '_id',
+  localField: 'performances',
+  justOne: false,
+  options: { 
+    //"match": { "is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}},
+    limit: 21
+  }
+}).get(function () {
+  if (this.performances) {
+    return this.performances;
   }
 });
 

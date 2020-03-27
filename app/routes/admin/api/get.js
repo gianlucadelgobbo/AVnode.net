@@ -1742,6 +1742,21 @@ router.getCountries = (req, res) => {
   });
 }
 
+router.setStatsAndActivity = (req, res) => {
+  var promises = [];
+  promises.push(helpers.setStatsAndActivitySingle({_id: req.params.id}));
+  Promise.all(
+    promises
+  ).then( (resultsPromise) => {
+    setTimeout(function() {
+      logger.debug('resultsPromise');
+      logger.debug(resultsPromise);
+      //resolve(resultsPromise);
+      res.json(resultsPromise);
+    }, 1000);
+  });
+}
+
 router.sendEmailVericaition = (req, res) => {
   logger.debug("sendEmailVericaition");
   logger.debug(req.headers.host);
@@ -1825,7 +1840,6 @@ router.addGallery = (req, res) => {
   if (req.params.sez == "events" || req.params.sez == "performances") {
     let model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
     model
-    Models['Event']
     .findOne(query)
     .select({_id:1, title:1, stats:1, galleries:1})
     //.populate({ "path": "users", "select": "stagename", "model": "User"})
@@ -1987,16 +2001,18 @@ router.removeGallery = (req, res) => {
 }
 
 router.addVideo = (req, res) => {
+  console.log("addVideo");
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
   if (req.params.sez == "events" || req.params.sez == "performances") {
     let model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
     model
-    Models['Event']
     .findOne(query)
     .select({_id:1, title:1, stats:1, videos:1})
     //.populate({ "path": "users", "select": "stagename", "model": "User"})
     .exec((err, item) => {
+      console.log("addVideo");
+      console.log(item);
       if (err) {
         logger.debug(`${JSON.stringify(err)}`);
         res.status(404).json({ error: err });

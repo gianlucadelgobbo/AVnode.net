@@ -92,6 +92,21 @@ block content
                 a(href="/"+data.slug+"/performances", title=data.stagename)
                   span.button_more_label!=global.__('+ All the performances')
                   span.button_more_bkg                  
+  if data.learnings && data.learnings.length
+    section#learnings.performer_performances_wrapper
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=global.__('Learnings')+" <small>(<span>"+data.stats.learnings+"</span>)</small>"  
+              .performance_divider.basic_divider
+              .owl-carousel.loop.owl-theme
+                each item in data.learnings                
+                  include ../partials/boxLearnings
+              .button_more.button_more_grey
+                a(href="/"+data.slug+"/learnings", title=data.stagename)
+                  span.button_more_label!=global.__('+ All the learnings')
+                  span.button_more_bkg                  
     .polygon_divider_bottom
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
         g#layer2

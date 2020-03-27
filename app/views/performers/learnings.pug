@@ -15,11 +15,10 @@ block content
   .container
     section.row.mb-5
       .col-lg-12
-        h2.main_title.indented_title.color1!=global.__('Crews')+" <small>(<span>"+data.stats.crews+"</span>)</small>"
+        h2.main_title.indented_title.color1!=type ? type.name : global.__('Learnings')+" <small>(<span>"+data.stats.learnings+"</span>)</small>"
         .row
-          each item in data.crews
+          each item in data.performances
             .col-sm-4.list_item
-              include ../partials/boxPerformer
+              include ../partials/boxLearnings
     hr
     include ../partials/pagination
-                  

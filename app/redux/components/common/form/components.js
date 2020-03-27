@@ -1573,7 +1573,7 @@ export const renderDropzoneInput = field => {
               </li>
             ))}
           </ul>
-          <ProgressBar now={field.loaded} label={`${field.loaded}%`} />
+          <ProgressBar now={field.loaded} label={`${field.loaded.toFixed(0)} %`} />
         </div>
       )}
       {field.uploadButton && (

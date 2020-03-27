@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  .container
+    include ../partials/filters-menu
+    hr
+    .row
+      each item in data
+        .col-md-4.list_item
+          include ../partials/boxLearnings
+    hr
+    include ../partials/pagination
