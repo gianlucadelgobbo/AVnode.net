@@ -51,6 +51,8 @@ class EventPublicForm extends Component {
       _id,
       model,
       removeModel
+      //handleSelect
+      //handleChange
     } = this.props;
 
     return (
@@ -86,6 +88,8 @@ class EventPublicForm extends Component {
           component={multiSchedule}
           placeholder={this.getIntlString({ id: SCHEDULE })}
           showModal={showModal}
+          //handleSelect={handleSelect}
+          //handleChange={handleChange}
         />
 
         <br />
@@ -193,10 +197,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
-EventPublicForm = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventPublicForm);
+EventPublicForm = connect(mapStateToProps, mapDispatchToProps)(EventPublicForm);
 
 EventPublicForm = injectIntl(EventPublicForm);
 

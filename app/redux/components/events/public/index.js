@@ -166,34 +166,37 @@ class EventPublic extends Component {
     // Convert categories
     v.schedule = [];
     if (Array.isArray(model.schedule)) {
-      const createVenue = v => {
-        const { location = {}, name } = v;
-        const { locality, country } = location;
-        let venue = "";
-        if (name) {
-          venue += name;
-        }
-        if (locality) {
-          venue += `, ${locality}`;
-        }
-        if (country) {
-          venue += `, ${country}`;
-        }
-        return venue;
-      };
-      //console.log("First" + " " + model.schedule);
-      v.schedule = model.schedule.map(x => ({
-        startdate: moment(x.starttime)
-          .utc()
-          .format("DD/MM/YYYY"),
-        starttime: x.starttime ? x.starttime : "00:00",
-        enddate: moment(x.endtime)
-          .utc()
-          .format("DD/MM/YYYY"),
-        endtime: x.endtime ? x.endtime : "00:00",
-        venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
-        room: x.venue.room
-      }));
+      if (model.schedule.length > 0) {
+        const createVenue = v => {
+          const { location = {}, name } = v;
+          const { locality, country } = location;
+          let venue = "";
+          if (name) {
+            venue += name;
+          }
+          if (locality) {
+            venue += `, ${locality}`;
+          }
+          if (country) {
+            venue += `, ${country}`;
+          }
+          return venue;
+        };
+        v.schedule = model.schedule.map(x => ({
+          startdate: moment(x.starttime)
+            .utc()
+            .format("DD/MM/YYYY"),
+          starttime: x.starttime ? x.starttime : "00:00",
+          enddate: moment(x.endtime)
+            .utc()
+            .format("DD/MM/YYYY"),
+          endtime: x.endtime ? x.endtime : "00:00",
+          venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
+          room: x.venue.room
+        }));
+      } else {
+        v.schedule = [{ venue: "" }];
+      }
     }
 
     //Convert slug for redux-form
@@ -263,6 +266,14 @@ class EventPublic extends Component {
           return venue;
         });
     }
+  };
+
+  handleSelect = address => {
+    console.log(address);
+  };
+
+  handleChange = address => {
+    console.log(address);
   };
 
   onSubmit(values) {
@@ -366,6 +377,8 @@ class EventPublic extends Component {
           categories={categories}
           removeModel={removeModel}
           _id={_id}
+          //handleSelect={this.handleSelect.bind(this)}
+          //handleChange={this.handleChange.bind(this)}
         />
       </div>
     );

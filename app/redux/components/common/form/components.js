@@ -135,6 +135,8 @@ export const googleAutocompleteSelect = ({
   placeholder,
   options,
   isChild
+  //handleSelect
+  //handleChange
 }) => {
   const renderFunc = ({
     getInputProps,
@@ -170,7 +172,12 @@ export const googleAutocompleteSelect = ({
 
   const field = (
     <div className="form-group">
-      <PlacesAutocomplete {...input} searchOptions={options}>
+      <PlacesAutocomplete
+        {...input}
+        searchOptions={options}
+        //onSelect={handleSelect}
+        //onChange={handleChange}
+      >
         {renderFunc}
       </PlacesAutocomplete>
       {meta.error && meta.touched && (
@@ -330,7 +337,9 @@ export const renderList = ({
     field
   ) : (
     <dl className="row">
-      <dt className="col-sm-2">{label} {labeladd ? labeladd : ""}</dt>
+      <dt className="col-sm-2">
+        {label} {labeladd ? labeladd : ""}
+      </dt>
       <dd className="col-sm-10"> {field} </dd>
     </dl>
   );
@@ -1594,6 +1603,8 @@ export const multiSchedule = ({
   meta: { error },
   placeholder,
   showModal
+  //handleSelect
+  //handleChange
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -1643,6 +1654,8 @@ export const multiSchedule = ({
               <Field
                 name={`${member}.venue`}
                 component={googleAutocompleteSelect}
+                //handleSelect={handleSelect}
+                //handleChange={handleChange}
                 placeholder="Venue or Address"
                 options={{
                   types: ["establishment"]
@@ -1699,10 +1712,11 @@ export const multiSchedule = ({
     <div className="card">
       <div className="card-header">
         <h4>{label}</h4>
+        {console.log(fields)}
         <Button
           bsStyle="success"
           className="float-right mb-2 btn-sm"
-          onClick={() => fields.unshift({})}
+          onClick={() => fields.unshift({ venue: "" })}
         >
           <i
             className="fa fa-plus"

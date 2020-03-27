@@ -458,29 +458,24 @@ export const validateSchedule = ({
   if (Array.isArray(schedule)) {
     const scheduleErrors = [];
     const fields = Array.isArray(date) ? date : [date];
-
     schedule.forEach((s, i) => {
       const modelErrors = {};
-
       fields.forEach(f => {
         if (!s[f] || !isValidDate(s[f])) {
           modelErrors[f] = REQUIRED;
           scheduleErrors[i] = modelErrors;
         }
       });
-
       const start = moment(s.startdate)
         .clone()
         .startOf("day");
       const end = moment(s.enddate)
         .clone()
         .startOf("day");
-
       if (start.isAfter(end)) {
         modelErrors["enddate"] = START_IS_BEFORE_END;
         scheduleErrors[i] = modelErrors;
       }
-
       if (start.isSame(end)) {
         const sTime = moment(s.starttime)
           .year(2020)
@@ -490,14 +485,12 @@ export const validateSchedule = ({
           .year(2020)
           .month(9)
           .date(31);
-
         if (sTime.isAfter(eTime)) {
           modelErrors["enddate"] = START_IS_BEFORE_END;
           scheduleErrors[i] = modelErrors;
         }
       }
     });
-
     if (scheduleErrors.length) {
       errors[name] = scheduleErrors;
     }
