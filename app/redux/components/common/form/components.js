@@ -134,7 +134,8 @@ export const googleAutocompleteSelect = ({
   meta,
   placeholder,
   options,
-  isChild
+  isChild,
+  label
   //handleSelect
   //handleChange
 }) => {
@@ -172,6 +173,7 @@ export const googleAutocompleteSelect = ({
 
   const field = (
     <div className="form-group">
+      <label>{label}</label>
       <PlacesAutocomplete
         {...input}
         searchOptions={options}
@@ -192,12 +194,12 @@ export const googleAutocompleteSelect = ({
     </div>
   );
 
-  const label = <div className="labelField">{placeholder}</div>;
+  const myplaceholder = <div className="labelField">{placeholder}</div>;
   return !!isChild ? (
     field
   ) : (
     <dl className="row">
-      <dt className="col-sm-2">{label}</dt>
+      <dt className="col-sm-2">{myplaceholder}</dt>
       <dd className="col-sm-10"> {field} </dd>
     </dl>
   );
@@ -353,18 +355,20 @@ const inputField = ({
   isChild,
   pre,
   help,
-  handleSelect,
+  label,
+  formType = "input",
   disabled,
   autocomplete
 }) => {
   const field = (
     <div>
-      <div className="input-group">
+      <div className={`${formType}-group`}>
         {pre && (
           <div className="input-group-prepend">
             <span className="input-group-text">{pre}</span>
           </div>
         )}
+        {label && <label>{label}</label>}
         <input
           type={type}
           className="form-control"
@@ -375,6 +379,7 @@ const inputField = ({
           aria-describedby="slugHelpInline" //make it based on field name
         />
       </div>
+
       {help && (
         <small className="help" id="slugHelpInline">
           {help}
@@ -388,18 +393,27 @@ const inputField = ({
       )}
     </div>
   );
-  const label = <div className="labelField">{placeholder}</div>;
+  const mylabel = <div className="labelField">{placeholder}</div>;
   return !!isChild ? (
     field
   ) : (
     <dl className="row">
-      <dt className="col-sm-2">{label}</dt>
+      <dt className="col-sm-2">{mylabel}</dt>
       <dd className="col-sm-10 mb-4"> {field} </dd>
     </dl>
   );
 };
 
-export const inputText = ({ input, meta, placeholder, isChild, pre, help }) => {
+export const inputText = ({
+  input,
+  meta,
+  placeholder,
+  isChild,
+  pre,
+  help,
+  label,
+  formType
+}) => {
   return inputField({
     input,
     type: "text",
@@ -407,7 +421,9 @@ export const inputText = ({ input, meta, placeholder, isChild, pre, help }) => {
     placeholder,
     isChild,
     pre,
-    help
+    help,
+    label,
+    formType
   });
 };
 
@@ -1258,6 +1274,7 @@ export const tagsInput = ({
 export const renderDatePicker = ({ input, meta, placeholder, isChild }) => {
   const field = (
     <div className="form-group">
+      <label>{placeholder}</label>
       <DatePicker
         {...input}
         value={null}
@@ -1341,6 +1358,7 @@ export const renderTimePicker = ({
 }) => {
   const field = (
     <div className="form-group">
+      <label>{placeholder}</label>
       <TimePicker
         className={className}
         onTimeChange={input.onChange}
@@ -1573,7 +1591,10 @@ export const renderDropzoneInput = field => {
               </li>
             ))}
           </ul>
-          <ProgressBar now={field.loaded} label={`${field.loaded.toFixed(0)} %`} />
+          <ProgressBar
+            now={field.loaded}
+            label={`${field.loaded.toFixed(0)} %`}
+          />
         </div>
       )}
       {field.uploadButton && (
@@ -1657,6 +1678,7 @@ export const multiSchedule = ({
                 //handleSelect={handleSelect}
                 //handleChange={handleChange}
                 placeholder="Venue or Address"
+                label="locality"
                 options={{
                   types: ["establishment"]
                 }}
@@ -1671,12 +1693,16 @@ export const multiSchedule = ({
               />
             </div>
             <div className="col-md-6">
-              <Field
-                name={`${member}.room`}
-                component={inputText}
-                placeholder="Room"
-                isChild={true}
-              />
+              <form-group>
+                <Field
+                  name={`${member}.room`}
+                  component={inputText}
+                  placeholder="Room"
+                  label="Room"
+                  isChild={true}
+                  formType="form"
+                />
+              </form-group>
             </div>
           </div>
         </div>
@@ -1712,7 +1738,6 @@ export const multiSchedule = ({
     <div className="card">
       <div className="card-header">
         <h4>{label}</h4>
-        {console.log(fields)}
         <Button
           bsStyle="success"
           className="float-right mb-2 btn-sm"

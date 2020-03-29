@@ -345,6 +345,14 @@ export const isValidDate = date => {
   return wrapper.isValid();
 };
 
+export const isValidTimes = time => {
+  if (!time) {
+    return false;
+  } else {
+    return time;
+  }
+};
+
 export const validateDate = ({ values, name, errors, index, errorArray }) => {
   const nameIn = values[name];
   if (!nameIn || nameIn.trim() === "") {
@@ -451,13 +459,16 @@ export const validateSchedule = ({
   values,
   name,
   errors,
-  date = ["startdate", "enddate"]
+  date = ["startdate", "enddate"],
+  hours = ["starttime", "endtime"]
 }) => {
   const schedule = values[name];
 
   if (Array.isArray(schedule)) {
     const scheduleErrors = [];
     const fields = Array.isArray(date) ? date : [date];
+    const times = Array.isArray(hours) ? hours : [hours];
+
     schedule.forEach((s, i) => {
       const modelErrors = {};
       fields.forEach(f => {
@@ -466,6 +477,14 @@ export const validateSchedule = ({
           scheduleErrors[i] = modelErrors;
         }
       });
+
+      times.forEach(f => {
+        if (!s[f] || !isValidTimes(s[f])) {
+          modelErrors[f] = REQUIRED;
+          scheduleErrors[i] = modelErrors;
+        }
+      });
+
       const start = moment(s.startdate)
         .clone()
         .startOf("day");

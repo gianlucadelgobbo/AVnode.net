@@ -253,6 +253,7 @@ class EventPublic extends Component {
         .then(function([results, geometry]) {
           let venue = {};
           let loc = {};
+          console.log(geometry);
           results[0].address_components.forEach(address_component => {
             if (address_component.types.indexOf("country") !== -1)
               loc.country = address_component.long_name;
@@ -292,7 +293,7 @@ class EventPublic extends Component {
 
     schedule.forEach(a => {
       if (typeof a.venue !== "object") {
-        if (a.venue !== undefined) {
+        if (a.venue !== undefined && a.venue !== "") {
           promises.push(
             this.createLatLongToSave(a.venue)
               .then(result => {
