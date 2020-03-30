@@ -96,8 +96,8 @@ upload.uploader = (req, res, done) => {
 
     // if (err instanceof multer.MulterError) {
     if (err) {
-      console.log("upload err");
-      console.log(err);
+      logger.debug("upload err");
+      logger.debug(err);
       done({ errors: { form_error: [err] } }, null);
     } else if (!options) {
       done({ errors: { form_error: [{

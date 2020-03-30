@@ -941,7 +941,7 @@ dataprovider.list = (req, res, section, model) => {
         } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
           if (data.length) {
             /* var dates = data.map(item => {return item.updatedAt}).sort().reverse()[0];
-            console.log(dates);
+            logger.debug(dates);
             let lastmod = new Date();
             lastmod.setHours( lastmod.getHours() -2 );
             lastmod.setMinutes(0); */

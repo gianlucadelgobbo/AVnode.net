@@ -178,7 +178,7 @@ router.setStatsAndActivitySingle = function(query) {
         delete e.performances_only;
         delete e.learnings;
 
-        console.log(e);
+        logger.debug(e);
         e.save((err) => {
           if (err) {
             setTimeout(function() {

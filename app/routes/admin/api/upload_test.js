@@ -82,7 +82,7 @@ upload.uploader = (req, res, done) => {
   req.pipe(p);
   p.headers = req.headers;
   p.on('progress', (progress) => {
-    console.log('progress:', progress.percentage);
+    logger.debug('progress:', progress.percentage);
   });
 
   const up = multerupload.single(options.fields.name);
@@ -96,8 +96,8 @@ upload.uploader = (req, res, done) => {
 
     // if (err instanceof multer.MulterError) {
     if (err) {
-      console.log("upload err");
-      console.log(err);
+      logger.debug("upload err");
+      logger.debug(err);
       done({ errors: { form_error: [err] } }, null);
     } else if (!options) {
       done({ errors: { form_error: [{
@@ -212,9 +212,9 @@ upload.uploader = (req, res, done) => {
                 }
               }
               conta++;
-              console.log("conta");
-              console.log(resizeerr);
-              console.log(p.files[options.fields.name].length);
+              logger.debug("conta");
+              logger.debug(resizeerr);
+              logger.debug(p.files[options.fields.name].length);
               if (conta === p.files[options.fields.name].length) {
                 if (error) {
                   done({ errors: p.files }, null);

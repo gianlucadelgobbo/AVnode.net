@@ -160,15 +160,7 @@ router.get('/sitemap.xml', (req, res) => {
     });
 
   });
-/*   let lastmod = new Date();
-    lastmod.setHours( lastmod.getHours() -2 );
-    lastmod.setMinutes(0);
-    lastmod = helper.dateoW3CString(lastmod);
-    console.log("config.sections[a].basepath");
-    console.log(config.sections);
-    for (var a in config.sections) console.log(config.sections[a].basepath);
-    for (var a = 0; a<config.sections.length; a++) console.log(config.sections[a]);
- */});
+});
 
 router.get('/testlocale', (req, res) => {
   res.send('global.getLocale: '+global.getLocale());

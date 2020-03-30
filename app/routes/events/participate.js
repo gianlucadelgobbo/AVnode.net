@@ -313,8 +313,8 @@ router.post('/', (req, res) => {
           case 6 :
             myasync = false;
             // SAVE
-            //console.log('req.session.call.index');
-            //console.log(req.session.call.index);
+            //logger.debug('req.session.call.index');
+            //logger.debug(req.session.call.index);
             logger.debug(req.session.call.admitted[req.session.call.performance]);
             req.session.call.save = {
               event:        req.session.call.event._id,
@@ -344,8 +344,8 @@ router.post('/', (req, res) => {
                 req.session.call.save.subscriptions.push(sub);
               }
             }
-            //console.log('req.session.call.save');
-            //console.log(req.session.call.save);
+            //logger.debug('req.session.call.save');
+            //logger.debug(req.session.call.save);
             //logger.debug(req.session.call.save);
             Program.create(req.session.call.save, function (err, sub) {
               if (err) {

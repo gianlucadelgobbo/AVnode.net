@@ -2001,7 +2001,7 @@ router.removeGallery = (req, res) => {
 }
 
 router.addVideo = (req, res) => {
-  console.log("addVideo");
+  logger.debug("addVideo");
   var query = {_id: req.params.id};
   //if (req.user.is_admin) query.users = {$in: [req.user._id].concat(req.user.crews)};
   if (req.params.sez == "events" || req.params.sez == "performances") {
@@ -2011,8 +2011,8 @@ router.addVideo = (req, res) => {
     .select({_id:1, title:1, stats:1, videos:1})
     //.populate({ "path": "users", "select": "stagename", "model": "User"})
     .exec((err, item) => {
-      console.log("addVideo");
-      console.log(item);
+      logger.debug("addVideo");
+      logger.debug(item);
       if (err) {
         logger.debug(`${JSON.stringify(err)}`);
         res.status(404).json({ error: err });
