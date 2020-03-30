@@ -766,7 +766,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           }
           logger.debug("locations");
           logger.debug(locations);
-          data.schedule = undefined;
+          //data.schedule = undefined;
         }
         if (data && data.addresses && data.addresses.length) {
           const locations = data.addresses.map(obj =>{
