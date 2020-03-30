@@ -4525,6 +4525,7 @@
             "stats": 1,
             "schedule": 1,
             "categories": 1,
+            "boxEvents": 1,
             "image": 1
           },
           "populate": { "path": "categories", "select": "name slug", "model": "Category"},
@@ -6953,7 +6954,7 @@
           },
           "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
           "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
-          "model": "Event"
+          "model": "EventShow"
         }, { 
           "path": "categories", 
           "select": "name slug", 
@@ -7290,7 +7291,7 @@
           },
           "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
           "options": { "limit": 21,"sort": { "schedule.0.starttime": -1 }},
-          "model": "Event"
+          "model": "EventShow"
         }, {
           "path": "performances",
           "match": { "is_public": true},

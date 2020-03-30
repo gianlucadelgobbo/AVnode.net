@@ -36,7 +36,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       exec((err, data) => {
         var meandcrews = data.crews;
         meandcrews.push(data._id);
-        let submodel = (subsection == "performances" ? Performance : Event);
+        let submodel = (subsection == "performances" ? Performance : EventShow);
         let query = populate.filter(pop => pop.path == subsection)[0].match;
         if (subsection == "partnerships") {
           query["partners.users"] = {$in: meandcrews};
