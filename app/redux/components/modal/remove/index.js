@@ -18,8 +18,8 @@ class RemoveModal extends Component {
     render() {
 
         const {hideModal} = this.props;
-        return (<div>
-            <Button bsStyle="default" onClick={hideModal}>Close</Button>
+        return (<div className="text-right">
+            <Button bsStyle="default" className="mr-3" onClick={hideModal}>Close</Button>
             <Button bsStyle="danger" onClick={this.onRemove.bind(this)}>Remove</Button>
         </div>);
     }

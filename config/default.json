@@ -7019,6 +7019,8 @@
           "stats": 1,
           "web": 1,
           "social": 1,
+          "createdAt": 1,
+          "updatedAt": 1,
           "image": 1
         },
         "populate": [{
