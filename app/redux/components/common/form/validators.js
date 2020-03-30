@@ -345,6 +345,14 @@ export const isValidDate = date => {
   return wrapper.isValid();
 };
 
+export const isValidTimes = time => {
+  if (!time) {
+    return false;
+  } else {
+    return time;
+  }
+};
+
 export const validateDate = ({ values, name, errors, index, errorArray }) => {
   const nameIn = values[name];
   if (!nameIn || nameIn.trim() === "") {
@@ -451,19 +459,27 @@ export const validateSchedule = ({
   values,
   name,
   errors,
-  date = ["startdate", "enddate"]
+  date = ["startdate", "enddate"],
+  hours = ["starttime", "endtime"]
 }) => {
   const schedule = values[name];
 
   if (Array.isArray(schedule)) {
     const scheduleErrors = [];
     const fields = Array.isArray(date) ? date : [date];
+    const times = Array.isArray(hours) ? hours : [hours];
 
     schedule.forEach((s, i) => {
       const modelErrors = {};
-
       fields.forEach(f => {
         if (!s[f] || !isValidDate(s[f])) {
+          modelErrors[f] = REQUIRED;
+          scheduleErrors[i] = modelErrors;
+        }
+      });
+
+      times.forEach(f => {
+        if (!s[f] || !isValidTimes(s[f])) {
           modelErrors[f] = REQUIRED;
           scheduleErrors[i] = modelErrors;
         }
@@ -475,12 +491,10 @@ export const validateSchedule = ({
       const end = moment(s.enddate)
         .clone()
         .startOf("day");
-
       if (start.isAfter(end)) {
         modelErrors["enddate"] = START_IS_BEFORE_END;
         scheduleErrors[i] = modelErrors;
       }
-
       if (start.isSame(end)) {
         const sTime = moment(s.starttime)
           .year(2020)
@@ -490,14 +504,12 @@ export const validateSchedule = ({
           .year(2020)
           .month(9)
           .date(31);
-
         if (sTime.isAfter(eTime)) {
           modelErrors["enddate"] = START_IS_BEFORE_END;
           scheduleErrors[i] = modelErrors;
         }
       }
     });
-
     if (scheduleErrors.length) {
       errors[name] = scheduleErrors;
     }

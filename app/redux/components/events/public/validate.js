@@ -10,7 +10,7 @@ import {
   INVALID_STRING_1_3
 } from "../../common/form/errors";
 
-const profilePublicValidate = values => {
+const EventPublicValidate = values => {
   const errors = {};
 
   //categories
@@ -101,4 +101,4 @@ const profilePublicValidate = values => {
   return errors;
 };
 
-export default profilePublicValidate;
+export default EventPublicValidate;
