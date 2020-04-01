@@ -4206,11 +4206,12 @@
           "match": { "is_public": true},
           "select": {
             "title": 1,
-            "createdAt":1,
-            "abouts":1,
             "slug": 1,
+            "abouts": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
-            "image": 1
+            "image.file": 1
           },
           "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
@@ -4370,11 +4371,12 @@
           "match": { "is_public": true},
           "select": {
             "title": 1,
-            "createdAt":1,
-            "abouts":1,
             "slug": 1,
+            "abouts": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
-            "image": 1
+            "image.file": 1
           },
           "options": { "sort": { "createdAt": -1 }},
           "model": "News"
@@ -4776,14 +4778,14 @@
         },
         "populate": [{
           "path": "news",
+          "match": { "is_public": true},
           "select": {
             "title": 1,
             "slug": 1,
+            "abouts": 1,
             "createdAt": 1,
             "updatedAt": 1,
-            "categories": 1,
             "stats": 1,
-            "media.file": 1,
             "image.file": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
@@ -5008,11 +5010,12 @@
           "match": { "is_public": true},
           "select": {
             "title": 1,
-            "createdAt":1,
-            "abouts":1,
             "slug": 1,
+            "abouts": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
-            "image": 1
+            "image.file": 1
           },
           "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},
           "options": { "limit": 21,"sort": { "createdAt": -1 }},
@@ -5375,9 +5378,10 @@
           "select": {
             "title": 1,
             "slug": 1,
-            "categories": 1,
+            "abouts": 1,
+            "createdAt": 1,
+            "updatedAt": 1,
             "stats": 1,
-            "media.file": 1,
             "image.file": 1
           },
           "populate": [{ "path": "users", "select": "stagename", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
@@ -6972,15 +6976,13 @@
       "coll": "news",
       "view_list": "news/list",
       "list_fields": {
-        "title":1,
+        "title": 1,
+        "slug": 1,
         "createdAt": 1,
         "updatedAt": 1,
-        "users":1,
-        "abouts":1,
-        "slug":1,
-        "image":1,
-        "media":1,
-        "stats":1
+        "abouts": 1,
+        "stats": 1,
+        "image.file": 1
       },
       "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
       "orders": [
