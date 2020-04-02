@@ -46,9 +46,11 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         const newselect = populate.filter(pop => pop.path == subsection)[0].select;
         const newpopulate = populate.filter(pop => pop.path == subsection)[0].populate;
         const limit = populate.filter(pop => pop.path == subsection)[0].options.limit;
+        const sort = populate.filter(pop => pop.path == subsection)[0].options.sort;
         logger.debug("newselect");
         logger.debug(newselect);
         logger.debug(submodel);
+        logger.debug(sort);
         //const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
         submodel.
         countDocuments(query, (err, d) => {
@@ -56,7 +58,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
           find(query).
           populate(newpopulate).
           select(newselect).
-          sort({createdAt: -1}).
+          sort(sort).
           limit(limit).
           exec((err, sub) => {
             let datadata = JSON.parse(JSON.stringify(data));
