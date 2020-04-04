@@ -44,12 +44,11 @@ router.post('/', (req, res, next) => {
     }
     if (!user) {
       logger.debug('passport.authenticate !user:' + JSON.stringify(info));
-      logger.debug('trying on flxer with email:' + req.body.email);
       if (req.body.api=="1") {
         res.status(500).send(info);
       } else {
         req.flash('errors', info);
-        return res.redirect(returnTo);
+        return res.redirect(info.redirect ? info.redirect : "/login");
       }
     } else {
       req.logIn(user, (err) => {

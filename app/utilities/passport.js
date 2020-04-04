@@ -35,7 +35,11 @@ passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true
     }
     if (!user) {
       logger.debug('passport.use User.findOne Email not found user not found:' + email);
-      return done(null, false, { msg: __('Email %s not found.', email) });
+      if (email.indexOf("@")!==-1) {
+        return done(null, false, { msg: __('Email %s not found.', email), redirect: "/login" });
+      } else {
+        return done(null, false, { msg: __('Username %s not found.', email), redirect: "/flxerlogin" });
+      }
     }
     logger.debug('password:' + password);
     user.comparePassword(password, (err, isMatch) => {
@@ -49,12 +53,13 @@ passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true
       } else {
         logger.debug('passport.use User.comparePassword NO match, try flxer');
         flxer.flxerLogin(req, user, user.email, password, (isFlxerMatch) => {
-          if (isFlxerMatch) {
+          if (isFlxerMatch===true) {
             logger.debug('flxerLogin match');
             return done(null, user);
           } else {
             logger.debug('passport.use User.comparePassword and flxer Invalid email or password');
-            return done(null, false, { msg: __('Invalid email or password.') });
+            var msg = isFlxerMatch.errno == "ENETUNREACH" ?  __('Old FLxER website is temporarily unavailable. Please try later.') :  __('Invalid email or password.')
+            return done(null, false, { msg: msg });
           }
         });
       }
