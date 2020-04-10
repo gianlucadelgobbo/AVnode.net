@@ -41,7 +41,7 @@
   },
   {
     "id": "validation.error.invalid.string.length",
-    "defaultMessage": "Invalid string length (max 5000)",
+    "defaultMessage": "Invalid string length (max 10000)",
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {

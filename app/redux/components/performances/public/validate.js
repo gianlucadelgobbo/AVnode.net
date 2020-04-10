@@ -14,7 +14,7 @@ const performancePublicValidate = values => {
     isValidSlug({values,  name: "slug",  errors});
 
      // Abouts
-    validateMultiLang({values, name: "abouts", value: "value", errors, max: 5000});
+    validateMultiLang({values, name: "abouts", value: "value", errors, max: 10000});
     
     //Price
     isValidName({values, name:"price", errors});

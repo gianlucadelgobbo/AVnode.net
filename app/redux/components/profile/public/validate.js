@@ -17,7 +17,7 @@ const profilePublicValidate = values => {
   validateLength({values, name: "slug", min: 3, max: 50, errorKey: INVALID_STRING_3_50, errors});
 
   //abouts
-  validateMultiLang({values, name: "abouts", value: "value", errors, max: 5000});
+  validateMultiLang({values, name: "abouts", value: "value", errors, max: 10000});
 
   // web
   validateLength({values, name: "web", min: 0, max: 10, errorKey: INVALID_STRING_0_10, errors});

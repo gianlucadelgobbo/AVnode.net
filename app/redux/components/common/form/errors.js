@@ -59,7 +59,7 @@ defineMessages({
     },
     [INVALID_STRING_LENGTH]: {
         id: INVALID_STRING_LENGTH,
-        defaultMessage: "Invalid string length (max 5000)"
+        defaultMessage: "Invalid string length (max 10000)"
     },
     [INVALID_IMAGE_SIZE]: {
         id: INVALID_IMAGE_SIZE,

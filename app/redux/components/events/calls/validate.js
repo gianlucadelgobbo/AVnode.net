@@ -58,7 +58,7 @@ const validate = values => {
                 values,
                 name: "excerpt",
                 value: "value",
-                max: 5000,
+                max: 10000,
                 index: i,
                 errors: modelErrors,
                 errorArray: callsErrors
@@ -69,7 +69,7 @@ const validate = values => {
                 values,
                 name: "terms",
                 value: "value",
-                max: 5000,
+                max: 10000,
                 index: i,
                 errors: modelErrors,
                 errorArray: callsErrors
@@ -80,7 +80,7 @@ const validate = values => {
                 values,
                 name: "closedcalltext",
                 value: "value",
-                max: 5000,
+                max: 10000,
                 index: i,
                 errors: modelErrors,
                 errorArray: callsErrors
@@ -121,7 +121,7 @@ const validate = values => {
                         name: "description",
                         value: "value",
                         errors: pErrors,
-                        max: 5000,
+                        max: 10000,
                         index: i,
                         errorArray: packageErrors
                     });
@@ -170,7 +170,7 @@ const validate = values => {
                         name: "description",
                         value: "value",
                         errors: tErrors,
-                        max: 5000,
+                        max: 10000,
                         index: i,
                         errorArray: topicsErrors
                     });

@@ -168,7 +168,7 @@
   "validation.error.invalid.string.1.5": "Invalid length: please insert 1 to 5 values_es",
   "validation.error.invalid.string.3.20": "Invalid length: please insert 3 to 20 values_es",
   "validation.error.invalid.string.3.50": "Invalid length: please insert 3 to 50 values_es",
-  "validation.error.invalid.string.length": "Invalid string length (max 5000)_es",
+  "validation.error.invalid.string.length": "Invalid string length (max 10000)_es",
   "validation.error.multiple.primary.email": "Multiple primary email_es",
   "validation.error.no.primary.email": "No primary email_es",
   "validation.error.not.allowed": "Characters Not Allowed_es",

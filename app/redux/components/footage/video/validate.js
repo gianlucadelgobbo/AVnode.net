@@ -33,7 +33,7 @@ const validate = values => {
     name: "abouts",
     value: "value",
     errors,
-    max: 5000
+    max: 10000
   });
 
   return errors;
