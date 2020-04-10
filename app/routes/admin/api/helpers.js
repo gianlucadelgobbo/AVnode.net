@@ -55,9 +55,10 @@ router.setStatsAndActivitySingle = function(query) {
     exec((err, e) => {
       var myids = [e._id];
       logger.debug('setStatsAndActivity start');
+      logger.debug(myids);
       Promise.all([
-        Models['User'].find({"members": {$in: myids}, "is_public": true}).select("_id"),
-        Models['User'].find({"crews": {$in: myids}, "is_public": true}).select("_id"),
+        Models['User'].find({"members": {$in: myids}/* , "is_public": true */}).select("_id"),
+        Models['User'].find({"crews": {$in: myids}/* , "is_public": true */}).select("_id"),
         Models['Event'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
         Models['Event'].find({"partners.users": {$in: myids}, "is_public": true}).select("_id"),
         Models['Performance'].find({"users": {$in: myids}, "is_public": true}).select("_id"),
@@ -123,8 +124,8 @@ router.setStatsAndActivitySingle = function(query) {
         recent_footage,
         recent_playlists
       ]) => {
-        if (e.is_crew) e.members = members;
-        if (!e.is_crew) e.crews = crews;
+        if (e.members) e.members = members;
+        if (e.crews) e.crews = crews;
         e.events = events;
         e.performances = performances;
         e.performances_only = performances_only;
@@ -137,8 +138,8 @@ router.setStatsAndActivitySingle = function(query) {
         e.playlists = playlists;
 
         e.stats = {};
-        if (e.is_crew && e.members && e.members.length) e.stats.members = e.members.length;
-        if (!e.is_crew && e.crews && e.crews.length) e.stats.crews = e.crews.length;
+        if (e.members && e.members.length) e.stats.members = e.members.length;
+        if (e.crews && e.crews.length) e.stats.crews = e.crews.length;
     
         if (e.performances_only && e.performances_only.length) e.stats.performances = e.performances_only.length;
         if (e.learnings && e.learnings.length) e.stats.learnings = e.learnings.length;
