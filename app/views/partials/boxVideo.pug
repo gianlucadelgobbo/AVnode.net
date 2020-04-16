@@ -9,10 +9,16 @@
   .video_item_info_wrapper
     a(href=basepath+"/videos/"+item.slug+"/", title=item.title)
       h4.video_item_title=item.title
-    if item.categories
-      ul.list-inline.category_video_item
-        each category in item.categories
-          li.list-inline-item=category.name
+    .category_video_item
+      .row
+        .col-sm-6
+          if item.categories
+            ul.list-inline
+              each category in item.categories
+                li.list-inline-item=category.name
+        .col-sm-6
+          .text-right=item.media.durationHR
+
     if item.users
       .users_video_item_wrapper
         .flex_left      
