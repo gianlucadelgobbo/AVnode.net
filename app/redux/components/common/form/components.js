@@ -1514,8 +1514,8 @@ export const renderDropzoneInput = field => {
         }}
       >
         <div className="labelFieldUpload">
-          <div>
-            <i className="h1 far fa-arrow-alt-circle-down"></i>
+          <div className="h1">
+            <i className="far fa-arrow-alt-circle-down"></i>
           </div>
           <FormattedMessage id={FILE_UPLOAD} />
           <div>OR</div>

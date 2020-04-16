@@ -1,0 +1,22 @@
+!="Here is the VJ Television program of today "+new Date(data[0].programming).toDateString()
+- var oldcat
+each item in data
+  - var date = new Date(item.programming);
+  if oldcat != item.category.name
+    br
+    br
+    !="// "+item.category.name
+    
+  //p!=date.getUTCFullYear()+"-"+(("0" + (date.getUTCMonth()+1)).slice(-2))+"-"+(("0" + (date.getUTCDate())).slice(-2))+ "<br />"+(("0" + (date.getUTCHours())).slice(-2))+":"+(("0" + (date.getUTCMinutes())).slice(-2))+":"+(("0" + (date.getUTCSeconds())).slice(-2))
+  br
+  !=(("0" + (date.getUTCHours())).slice(-2))+":"+(("0" + (date.getUTCMinutes())).slice(-2))+":"+(("0" + (date.getUTCSeconds())).slice(-2))
+  !=" | "
+  //p!=item.video.media.durationHR
+  !=item.video.title
+  !=" | "
+  !=item.video.users.map(user =>{return user.stagename}).join(" / ")
+  //p="https://avnode.net/videos/"+item.video.slug+"/"
+  - oldcat = item.category.name
+br
+br
+!="https://vjtelevision.com"
