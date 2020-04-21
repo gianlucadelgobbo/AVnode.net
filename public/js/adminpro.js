@@ -738,18 +738,6 @@ $( ".lock-schedule" ).click(function( event ) {
     });
   }
   
-  emailqueue2 = (idid, buttonbutton ) => {
-    console.log("emailqueue");
-    console.log(buttonbutton);
-    console.log(idid);
-    delayLoop(idid, buttonbutton)
-  }
-  
-  let delayLoop = (id, button) => {
-      setTimeout(() => {
-        emailqueue(id, button);
-      }, 1500);
-  };
   
   $(".send").on('click', function(ev) {
     ev.preventDefault();
@@ -765,6 +753,7 @@ $( ".lock-schedule" ).click(function( event ) {
       data: {id:id}
     })
     .done(function(data) {
+      console.log(data)
       if (!data.error && data.msg == "Email sending completed") {
         button.html(data.msg)
       } else {
@@ -779,6 +768,20 @@ $( ".lock-schedule" ).click(function( event ) {
     });
   }
 
+  let delayLoop = (id, button) => {
+      setTimeout(() => {
+        emailqueue(id, button);
+      }, 1500);
+  };
+
+  emailqueue2 = (idid, buttonbutton ) => {
+    console.log("emailqueue");
+    console.log(buttonbutton);
+    console.log(idid);
+    delayLoop(idid, buttonbutton)
+  }
+  
+
 
 
   $( ".duplicate" ).click(function( event ) {
@@ -786,6 +789,7 @@ $( ".lock-schedule" ).click(function( event ) {
   });
 
   if ($(".multiple-select").length) $(".multiple-select").bsMultiSelect({  placeholder:'Room'});
+  if ($(".dashboardcode-bsmultiselect").length) $(".dashboardcode-bsmultiselect").addClass("mb-3");
 
 
   $( ".unlink" ).click(function( event ) {

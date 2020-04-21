@@ -2,12 +2,12 @@ extends ../layout
 block topmenu
   include topmenu
 block content
-  - var del = []
-  - var emails = []
-  - var emails_noimage = []
-  - var emails_noaddress = []
-  - var emails_notext = []
-  - var emails_noname = []
+  //- var del = []
+    - var emails = []
+    - var emails_noimage = []
+    - var emails_noaddress = []
+    - var emails_notext = []
+    - var emails_noname = []
   - var counters = {Total:{}, Type: {}, Status:{}, Schedule: {"Scheduled": 0, "Not scheduled": 0}}
 
   include ./_filters
@@ -194,7 +194,7 @@ block content
                       else
                         !=" "
                         .badge.badge-danger MISSING MEDIAS
-                        - del.push("db.videos.remove(_id:ObjectId('"+video._id+"')\n")
+                        //- del.push("db.videos.remove(_id:ObjectId('"+video._id+"')\n")
                   each video in item.performance.videos
                     if video.media && video.media.file
                       div(style='display:none;', id=video._id)
@@ -216,15 +216,16 @@ block content
                         else
                           !=" "
                           .badge.badge-danger MISSING MEDIAS
-                          - del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
+                          //- del.push("db.galleries.remove(_id:ObjectId('"+gallery._id+"')\n")
           td(style="max-width: 23vw;overflow: hidden;")
             each useruser in item.performance.users
-              if useruser.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
-                - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
-                - if (emails_noimage.indexOf(str)==-1) emails_noimage.push(str)
-              if !useruser.about || !item.performance.about
-                - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
-                - if (emails_notext.indexOf(str)==-1) emails_notext.push(str)
+              //
+                if useruser.imageFormats.small=="https://avnode.net/images/default-user.svg" || item.performance.imageFormats.small=="https://avnode.net/images/default-item.svg"
+                  - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
+                  - if (emails_noimage.indexOf(str)==-1) emails_noimage.push(str)
+                if !useruser.about || !item.performance.about
+                  - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
+                  - if (emails_notext.indexOf(str)==-1) emails_notext.push(str)
               .row
                 if get.fullinfo
                   .col-md-6
@@ -288,7 +289,7 @@ block content
                     if subscription.subscriber_id                    
                       b!=subscription.subscriber_id.stagename
                       !=" "+subscription.subscriber_id.name+" "+subscription.subscriber_id.surname
-                      if !subscription.subscriber_id.name || !subscription.subscriber_id.surname
+                      //if !subscription.subscriber_id.name || !subscription.subscriber_id.surname
                         - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
                         - if (emails_noname.indexOf(str)==-1) emails_noname.push(str)
                       br
@@ -296,13 +297,13 @@ block content
                         !=subscription.subscriber_id.addressesFormatted.join(", ")
                       else
                         .badge.badge-danger MISSING ADDRESS
-                        - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
-                        - if (emails_noaddress.indexOf(str)==-1) emails_noaddress.push(str)
+                        //- var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
+                          - if (emails_noaddress.indexOf(str)==-1) emails_noaddress.push(str)
                       if subscription.freezed
                         !=" "
                         .badge.badge-info freezed
                       if people.indexOf(subscription.subscriber_id._id.toString())==-1
-                        - people.push(subscription.subscriber_id._id.toString())
+                        //- people.push(subscription.subscriber_id._id.toString())
                         if subscription.freezed && (!get.sortby || get.sortby=="0") && (!get.status || get.status=="0") && (!get.performance_category || get.performance_category=="0") && (!get["subscriptions.packages.name"] || get["subscriptions.packages.name"]=="0") && (!get["bookings.schedule.venue.room"] || get["bookings.schedule.venue.room"]=="0")
                           !=" "
                           .badge.badge-danger WRONG FREEZED?
@@ -335,8 +336,8 @@ block content
                         
             p
               if item.reference
-                - var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
-                - if (emails.indexOf(str)==-1) emails.push(str)
+                //- var str = '["'+(item.reference.lang=="it" ? "it" : "en")+'","'+item.performance.title.replace(/"/g,"''")+'","'+item.reference.name.replace(/"/g,"''")+'","'+item.reference.surname.replace(/"/g,"''")+'","'+item.reference.email+'"]'
+                  - if (emails.indexOf(str)==-1) emails.push(str)
                 b!="REFERENCE"
                 br
                 !=item.reference.name+" "+item.reference.surname
@@ -381,6 +382,7 @@ block content
                       p=cat.name
                 //pre=item.schedule
 
+
   // Modal Add Partner
   #modalEdit.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
     .modal-dialog.modal-lg(role='document')
@@ -398,41 +400,43 @@ block content
           .modal-footer
             button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
             button.btn.btn-primary(type='submit')=global.__("Save")
-  textarea.form-control(name='to')=del.join("\n")
-  br
-  form(method='post', action='http://localhost:8004/composer')
-    textarea.form-control(name='to')="["+emails.join(",")+"]"
-    .text-center
-      br
-      button.btn.btn-success(type='submit') Compose email
-  if emails_noimage.length
-    h3="emails_noimage"
+  
+  //
+    textarea.form-control(name='to')=del.join("\n")
+    br
     form(method='post', action='http://localhost:8004/composer')
-      textarea.form-control(name='to')="["+emails_noimage.join(",")+"]"
+      textarea.form-control(name='to')="["+emails.join(",")+"]"
       .text-center
         br
         button.btn.btn-success(type='submit') Compose email
-  if emails_noaddress.length
-    h3="emails_noaddress"
-    form(method='post', action='http://localhost:8004/composer')
-      textarea.form-control(name='to')="["+emails_noaddress.join(",")+"]"
-      .text-center
-        br
-        button.btn.btn-success(type='submit') Compose email
-  if emails_notext.length
-    h3="emails_notext"
-    form(method='post', action='http://localhost:8004/composer')
-      textarea.form-control(name='to')="["+emails_notext.join(",")+"]"
-      .text-center
-        br
-        button.btn.btn-success(type='submit') Compose email
-  if emails_noname.length
-    h3="emails_noname"
-    form(method='post', action='http://localhost:8004/composer')
-      textarea.form-control(name='to')="["+emails_noname.join(",")+"]"
-      .text-center
-        br
-        button.btn.btn-success(type='submit') Compose email
+    if emails_noimage.length
+      h3="emails_noimage"
+      form(method='post', action='http://localhost:8004/composer')
+        textarea.form-control(name='to')="["+emails_noimage.join(",")+"]"
+        .text-center
+          br
+          button.btn.btn-success(type='submit') Compose email
+    if emails_noaddress.length
+      h3="emails_noaddress"
+      form(method='post', action='http://localhost:8004/composer')
+        textarea.form-control(name='to')="["+emails_noaddress.join(",")+"]"
+        .text-center
+          br
+          button.btn.btn-success(type='submit') Compose email
+    if emails_notext.length
+      h3="emails_notext"
+      form(method='post', action='http://localhost:8004/composer')
+        textarea.form-control(name='to')="["+emails_notext.join(",")+"]"
+        .text-center
+          br
+          button.btn.btn-success(type='submit') Compose email
+    if emails_noname.length
+      h3="emails_noname"
+      form(method='post', action='http://localhost:8004/composer')
+        textarea.form-control(name='to')="["+emails_noname.join(",")+"]"
+        .text-center
+          br
+          button.btn.btn-success(type='submit') Compose email
   
 
   //pre=JSON.stringify(data, null, 2)

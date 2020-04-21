@@ -17,6 +17,7 @@ const emails =      require('./supertools/emails');
 const categories =  require('./supertools/categories');
 const stats =       require('./supertools/stats');
 const vjtv =        require('./vjtv/index');
+const emailqueue =  require('./emailqueue/index');
 
 const logger = require('../../utilities/logger');
 
@@ -67,6 +68,7 @@ router.get('/*', (req, res, next) => {
 router.use('/events', events);
 router.use('/organizations', organizations);
 router.use('/partners', partners);
+router.use('/emailqueue', emailqueue);
 
 router.use('/supertools/wpimport', wpimport);
 router.use('/supertools/addresses', addresses);

@@ -10,6 +10,7 @@ const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const Program = mongoose.model('Program');
 const Order = mongoose.model('Order');
+const Emailqueue = mongoose.model('Emailqueue');
 
 const request = require('request');
 const fs = require('fs');
@@ -113,6 +114,32 @@ router.get('/:event/orders', (req, res) => {
   });
 
 router.get('/:event/acts', (req, res) => {
+  router.getActsData(req, res, data => {
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      req.query.sez = "acts";
+      res.render('adminpro/events/acts', {
+        title: 'Events | '+data.event.title + ': Acts',
+        data: data,
+        currentUrl: req.originalUrl,
+        
+        get: req.query
+      });
+    }
+  });
+});  
+router.get('/:event/acts/message', (req, res) => {
+  logger.debug('/events/'+req.params.event+'/acts/message');
+  router.getMessageActs(req, res);
+});
+
+router.post('/:event/acts/message', (req, res) => {
+  logger.debug('/events/'+req.params.event+'/acts');
+  router.getMessageActs(req, res);
+});
+
+router.getActsData = (req, res, cb) => {
   logger.debug('/events/'+req.params.event+'/acts');
   logger.debug(req.query)
   let data = {};
@@ -196,28 +223,96 @@ router.get('/:event/acts', (req, res) => {
             //{value: 'sortby_arrival_date', key: 'sort by arrival date'},
             {value: '0', key: 'sort by sub date'}
           ];
-          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-            res.json(data);
-          } else {
-            req.query.sez = "acts";
-            res.render('adminpro/events/acts', {
-              title: 'Events | '+data.event.title + ': Acts',
-              data: data,
-              currentUrl: req.originalUrl,
-              
-              get: req.query
+          if (req.query['missing_img'] && req.query['missing_img']!='0') {
+            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+            data.program = data.program.filter(item => {
+              return item.performance.users.map(item => {return item.imageFormats.small}).indexOf('https://avnode.net/images/default-user.svg')!==-1 || item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg';
             });
           }
+          if (req.query['missing_text'] && req.query['missing_text']!='0') {
+            //data.program = data.program.filter(item => {return item.performance.imageFormats.small == 'https://avnode.net/images/default-item.svg'})
+            data.program = data.program.filter(item => {
+              return item.performance.users.map(item => {console.log(item.about);return !item.about || item.about=="Text is missing"  ? "0" : "1"}).indexOf('0')!==-1 || item.performance.about == 'Text is missing';
+            });
+          }
+          cb(data);
         }
       });
     }
    });
-});
+};
+
+router.getMessageActs = (req, res) => {
+  router.getActsData(req, res, data => {
+    req.query.sez = "acts";
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      //logger.debug(query);
+      logger.debug("req.body");
+      logger.debug(req.body);
+      if (req.body.subject) {
+        var tosave = {};
+        tosave.event = req.params.event;
+        tosave.user = req.user._id;
+        tosave.subject = req.body.subject;
+        tosave.messages_tosend = [];
+        tosave.messages_sent = [];
+        data.program.forEach((item, index) => {
+          var message = {};
+          message.to_html = "";
+          message.cc_html = [];
+          message.from_name = req.body.from_name;
+          message.from_email = req.body.from_email;
+          message.user_email = req.body.user_email;
+          message.user_password = req.body.user_password;
+          message.subject = req.body.subject.split("[org_name]").join(item.performance.title);;
+          item.subscriptions.forEach((subscription, cindex) => {
+            var contact = subscription.subscriber_id;
+            if (cindex===0) {
+              message.to_html = (contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">"
+              message.text = req.body["message_"+(contact.lang=="it" ? "it" : "en")]
+              message.text = message.text.split("[name]").join(contact.name);
+              message.text = message.text.split("[slug]").join(contact.slug);
+              message.text = message.text.split("[performancetitle]").join(item.performance.title);
+              message.text = message.text.split("[performanceslug]").join(item.performance.slug);
+            } else {
+              message.cc_html.push((contact.name ? contact.name+" " : "")+(contact.surname ? contact.surname+" " : "")+"<"+contact.email+">")
+            }
+          });
+          if (message.to_html != "") tosave.messages_tosend.push(message)
+        });
+        if (req.body.send == "1") {
+          logger.debug(tosave);
+          Emailqueue.create(tosave, function (err) {
+            res.redirect("/adminpro/emailqueue/")
+          });
+        } else {
+          res.render('adminpro/events/message', {
+            title: 'Events | '+data.event.title + ': Acts message',
+            data: data,
+            tosave: tosave,
+            currentUrl: req.originalUrl,
+            body: req.body,
+            get: req.query
+          });
+        }
+      } else {
+        res.render('adminpro/events/message', {
+          title: 'Events | '+data.event.title + ': Acts message',
+          data: data,
+          currentUrl: req.originalUrl,
+          body: req.body,
+          get: req.query
+        });
+      }
+    }
+  });
+};
 
 router.get('/:event/peoples', (req, res) => {
   logger.debug('/events/'+req.params.event+'/peoples');
   logger.debug(req.query)
-  let data = {};
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).

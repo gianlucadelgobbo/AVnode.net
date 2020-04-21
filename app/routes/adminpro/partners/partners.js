@@ -49,9 +49,9 @@ router.get('/:id', (req, res) => {
   router.getPartners(req, res);
 });
 
-router.get('/:id/send', (req, res) => {
+/* router.get('/:id/send', (req, res) => {
   router.getEmailqueue(req, res);
-});
+}); */
 
 router.get('/:id/:sez', (req, res) => {
   router.getPartners(req, res);
@@ -69,9 +69,9 @@ router.get('/:id/event/:event/manage', (req, res) => {
   getManageables(req, res);
 });
 
-router.get('/:id/event/:event/send', (req, res) => {
+/* router.get('/:id/event/:event/send', (req, res) => {
   router.getEmailqueue(req, res);
-});
+}); */
 
 router.get('/:id/event/:event/:sez', (req, res) => {
   router.getPartners(req, res);
@@ -81,7 +81,7 @@ router.post('/:id/event/:event/:sez', (req, res) => {
   router.getPartners(req, res);
 });
 
-router.getEmailqueue = (req, res) => {
+/* router.getEmailqueue = (req, res) => {
   logger.debug('/getEmailqueue/'+req.params.id);
   logger.debug("req.body");
   logger.debug(req.body);
@@ -115,6 +115,7 @@ router.getEmailqueue = (req, res) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
+          res.redirect('/adminpro/emailqueue/')
           res.render('adminpro/partners/organization_partners_send', {
             title: 'Partners: '+user.stagename,
             currentUrl: req.originalUrl,
@@ -133,7 +134,7 @@ router.getEmailqueue = (req, res) => {
       });
     });
   });
-}
+} */
 
 router.getPartners = (req, res) => {
   logger.debug('/getPartners/'+req.params.id);

@@ -1,48 +1,48 @@
-.actsfilters.mt-2.mb-3.d-print-none
+.actsfilters.mt-2.mb-3.pt-3.pl-3.pr-3.d-print-none
   .actsfilters-header Filters
   form.form-inline(method='get')
-    //input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
+    //input.form-control.mb-3.mr-sm-2(type='hidden', name='eventid', value='967')
       label.mr-sm-3(for='confirm') Confirm from user
-      select.form-control.mr-sm-2#confirm(name='confirm')
+      select.form-control.mb-3.mr-sm-2#confirm(name='confirm')
         option(value='') Any status
         option(value='0000-00-00') none
         option(value='2019-01-11') before today
       
     if data.status && data.status.length
-      select.form-control.mr-sm-3(name='call', style='max-width:150px')
+      select.form-control.mb-3.mr-sm-3(name='call', style='max-width:150px')
         option(value='none') Call
         each call,i in data.event.organizationsettings.call.calls
           option(value=i, selected=get.call==i ? "selected" : undefined)=call.title
       //if get.call !== undefined && get.call !== "none"
       - var packages = [];
       - for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].packages.length;b++)  if (packages.indexOf(data.event.organizationsettings.call.calls[a].packages[b].name)==-1) packages.push(data.event.organizationsettings.call.calls[a].packages[b].name);
-      select.form-control.mr-sm-2(name='subscriptions.packages.name', style='max-width:100px')
+      select.form-control.mb-3.mr-sm-2(name='subscriptions.packages.name', style='max-width:100px')
         option(value='0') Package
         each pack,i in packages
           option(value=pack, selected=get["subscriptions.packages.name"]==pack ? "selected" : undefined)=pack
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
-          input.mr-sm-1#not4(type='checkbox', name='notaccommodation', value='1', checked=get.notaccommodation ? "checked" : undefined)
-          label.mr-sm-3(for='not4') NOT
+          input.mr-sm-1.mb-3#not4(type='checkbox', name='notaccommodation', value='1', checked=get.notaccommodation ? "checked" : undefined)
+          label.mr-sm-3.mb-3(for='not4') NOT
 
-      select.form-control.mr-sm-2(name='status', style='max-width:100px')
+      select.form-control.mb-3.mr-sm-2(name='status', style='max-width:100px')
         option(value='0') Status
         each stat in data.status
           option(value=stat._id, selected=get["status"]==stat._id ? "selected" : undefined)=stat.name
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not0(type='checkbox', name='program.schedule.statusNOT', value='1', checked=get['program.schedule.statusNOT'] ? "checked" : undefined)
-        label.mr-sm-3(for='not0') NOT
+        input.mr-sm-1.mb-3#not0(type='checkbox', name='program.schedule.statusNOT', value='1', checked=get['program.schedule.statusNOT'] ? "checked" : undefined)
+        label.mr-sm-3.mb-3(for='not0') NOT
 
     if data.admitted && data.admitted.length
-      select.form-control.mr-sm-2(name='performance_category', style='max-width:100px')
+      select.form-control.mb-3.mr-sm-2(name='performance_category', style='max-width:100px')
         option(value='0') Type
         each cat in data.admitted
           option(value=cat._id, selected=get.performance_category==cat._id ? "selected" : undefined)=cat.name
       small.mr-sm-2(style="white-space: nowrap;display: contents;")
-        input.mr-sm-1#not2(type='checkbox', name='not2', value='1', checked=get.not2 ? "checked" : undefined)
-        label.mr-sm-3(for='not2') NOT
+        input.mr-sm-1.mb-3#not2(type='checkbox', name='not2', value='1', checked=get.not2 ? "checked" : undefined)
+        label.mr-sm-3.mb-3(for='not2') NOT
 
     if data.rooms && data.rooms.length
-      select.form-control.mr-sm-2.multiple-select(multiple="multiple",  style="display: none;", name='bookings.schedule.venue.room')
+      select.form-control.mb-3.mr-sm-2.multiple-select(multiple="multiple",  style="display: none;", name='bookings.schedule.venue.room')
         each room in data.rooms
           - var selected = undefined
           - if (get['bookings.schedule.venue.room'] && Array.isArray(get['bookings.schedule.venue.room']) && get['bookings.schedule.venue.room'].indexOf(room)>-1) { selected = "selected" }
@@ -53,13 +53,13 @@
         label.mr-sm-3(for='not3') NOT
     
     if data.hotels && data.hotels.length
-      select.form-control.mr-sm-2(name='packages.option_selected_hotel')
+      select.form-control.mb-3.mr-sm-2(name='packages.option_selected_hotel')
         option(value='0') Hotels
         each hotel in data.hotels
           option(value=hotel, selected=get['packages.option_selected_hotel']==hotel ? "selected" : undefined)=hotel
 
     if data.sortby && data.sortby.length
-      select.form-control.mr-sm-3(name='sortby')
+      select.form-control.mb-3.mr-sm-3(name='sortby')
         option(value='0') Sort by
           each sortby in data.sortby
             //option(value='day') group by day
@@ -69,13 +69,20 @@
       label.mr-sm-3(for='unlink') Performance suspect
       br
     if get.sez == "acts" || get.sez == "program-print"
-      input.mr-sm-2#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefined)
-      label.mr-sm-3(for='fullinfo') FULL INFO
+      input.mr-sm-2.mb-3#fullinfo(type='checkbox', name='fullinfo', value='1', checked=get.fullinfo ? "checked" : undefined)
+      label.mr-sm-3.mb-3(for='fullinfo') FULL INFO
+      if get.fullinfo
+        input.mr-sm-2.mb-3#missing_img(type='checkbox', name='missing_img', value='1', checked=get.missing_img ? "checked" : undefined)
+        label.mr-sm-3.mb-3(for='missing_img') Missing Img
+        input.mr-sm-2.mb-3#missing_text(type='checkbox', name='missing_text', value='1', checked=get.missing_text ? "checked" : undefined)
+        label.mr-sm-3.mb-3(for='missing_text') Missing Text
+
     if get.sez == "technical-riders"
       input.mr-sm-2#techonly(type='checkbox', name='techonly', value='1', checked=get.techonly ? "checked" : undefined)
       label.mr-sm-3(for='techonly') TECH ONLY
       input.mr-sm-3.btn.btn-primary#print(type='button', value='PRINT')
 
-    input.form-control.mr-sm-2(type='hidden', name='eventid', value='967')
-    input.form-control.mr-sm-2(type='hidden', name='save', value='1')
-    input.btn.btn-primary(type='submit', name='submit_search', value='FILTER')
+    input.form-control.mb-3.mr-sm-2(type='hidden', name='eventid', value='967')
+    input.form-control.mb-3.mr-sm-2(type='hidden', name='save', value='1')
+    input.btn.btn-primary.mb-3(type='submit', name='submit_search', value='FILTER')
+    input.btn.btn-outline-primary.ml-3.mb-3(type='submit', name='submit_search', value='SEND MESSAGE TO THIS LIST', onclick="$(this).parent().attr('action','message')")

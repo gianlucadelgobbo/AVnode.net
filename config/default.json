@@ -1858,7 +1858,7 @@
             },
             {
               "path": "subscriptions.subscriber_id", 
-              "select": {"stagename": 1, "name": 1, "surname": 1, "addresses.country": 1, "addresses.locality": 1, "email": 1, "mobile.url": 1, "lang": 1, "gender": 1},
+              "select": {"stagename": 1, "name": 1, "surname": 1, "slug": 1, "addresses.country": 1, "addresses.locality": 1, "email": 1, "mobile.url": 1, "lang": 1, "gender": 1},
               "model": "UserShow"
             },
             { "path": "status", "select": "name", "model": "Category"},

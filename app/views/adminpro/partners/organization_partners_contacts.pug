@@ -132,20 +132,26 @@ block content
                     ol
                       each contact in item.members
                         li
-                            each email in contact.emails
-                              div
-                                a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
-                                  span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
-                                    i.fas.fa-arrow-left
-                                !=" | "
-                                a(href="/"+contact.slug, target="_blank", title=global.__("View"))
-                                  span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                                    i.fa.fa-eye
-                                !=" | "
-                                a(href="mailto:"+contact.email, target="_blank")
-                                  !=contact.name+" "+contact.surname
-                                  =" <"+email.email+">"
-                                !=" "
+                          if contact.emails
+                              each email in contact.emails
+                                div
+                                  a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
+                                    span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
+                                      i.fas.fa-arrow-left
+                                  !=" | "
+                                  a(href="/"+contact.slug, target="_blank", title=global.__("View"))
+                                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                                      i.fa.fa-eye
+                                  !=" | "
+                                  a(href="mailto:"+contact.email, target="_blank")
+                                    !=contact.name+" "+contact.surname
+                                    =" <"+email.email+">"
+                                  !=" "
+                          else 
+                            !=contact.stagename
+                            !=" "
+                            .badge.badge-danger!="MISSING"
+
 
   // Modal Add Partner
   #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
