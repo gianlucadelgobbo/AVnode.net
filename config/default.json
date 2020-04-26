@@ -1409,7 +1409,7 @@
                   }
                 }
               },
-                  "comp": "list_and_add_and_upload",
+              "comp": "list_and_add_and_upload",
               "rel_obj": "Video",
               "list_fields": [
                 "Video name",
@@ -1450,7 +1450,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "videos", "select": "title image imageFormats users", "model": "Video", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
+          "populate": [{ "path": "videos", "select": "title media users", "model": "Video", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
         },
         "calls": {
           "components": {
