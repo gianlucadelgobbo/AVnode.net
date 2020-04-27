@@ -101,14 +101,13 @@ block title
               a.participate.btn.btn-primary(href="/events/"+data.slug+"/participate/")=global.__('Participate')
 block content
   if data.videos.length  
-    .video_event_wrapper_bkg
-      section.event_video_wrapper
-        .content_wrapper
-          .container
-            .row
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
-                .performance_divider.basic_divider
-                .owl-carousel.loop_3items.owl-theme
-                  each item in data.videos            
+    section
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.videos.length+"</span>)</small>"  
+              .row
+                each item in data.videos            
+                  .col-lg-4.col-md-6.list_item
                     include ../partials/boxVideo

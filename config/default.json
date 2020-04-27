@@ -1376,6 +1376,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "videos": 1,
             "title": 1
           },
           "populate": [{ "path": "galleries", "select": "title image imageFormats users", "model": "Gallery", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
@@ -5934,6 +5935,7 @@
           "schedule": 1,
           "program": 1,
           "galleries": 1,
+          "videos": 1,
           "type": 1,
           "organizationsettings": 1,
           "partners": 1

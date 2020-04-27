@@ -101,14 +101,13 @@ block title
               a.participate.btn.btn-primary(href="/events/"+data.slug+"/participate/")=global.__('Participate')
 block content
   if data.galleries.length  
-    .gallery_event_wrapper_bkg
-      section.event_galleries_wrapper
-        .content_wrapper
-          .container
-            .row
-              .col-lg-12
-                h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
-                .performance_divider.basic_divider
-                .owl-carousel.loop_3items.owl-theme
-                  each item in data.galleries
+    section
+      .content_wrapper
+        .container
+          .row
+            .col-lg-12
+              h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.galleries.length+"</span>)</small>"  
+              .row
+                each item in data.galleries
+                  .col-lg-4.col-md-6.list_item
                     include ../partials/boxGallery

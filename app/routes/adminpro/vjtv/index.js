@@ -81,7 +81,10 @@ router.get('/', (req, res) => {
 /*               logger.debug("contavjdjsets");
               logger.debug(last);
               logger.debug(lasts[last].video._id.toString());
- */              contavjdjsets = vjdjsets_ids.indexOf(lasts[last].video._id.toString())!==-1 ? vjdjsets_ids.indexOf(lasts[last].video._id.toString()) : 0
+*/              
+              logger.debug("lasts");
+              logger.debug(lasts[last]);
+              contavjdjsets = vjdjsets_ids.indexOf(lasts[last].video._id.toString())!==-1 ? vjdjsets_ids.indexOf(lasts[last].video._id.toString()) : 0
               last--
             }
             last = lasts.length-1;
