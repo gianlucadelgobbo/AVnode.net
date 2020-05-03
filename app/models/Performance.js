@@ -21,8 +21,8 @@ const performanceSchema = new Schema({
   old_id : String,
 
   createdAt: Date,
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
-  title: { type: String, trim: true, required: true, maxlength: 50 },
+  title: { type: String, trim: true, required: true, maxlength: 100 },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100 },
   is_public: { type: Boolean, default: false },
   image: MediaImage,
   abouts: [About],

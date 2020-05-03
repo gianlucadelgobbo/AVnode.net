@@ -199,7 +199,15 @@ router.setStatsAndActivitySingle = function(query) {
 
 router.mySlugify = function (model, str, cb) {
   if (str) {
-    let slug = slugify(str);
+    slugify.extend({'|': ' '})
+    slugify.extend({'+': 'and'})
+
+    let slug = slugify(str, {
+      replacement: '-',  // replace spaces with replacement character, defaults to `-`
+      remove: undefined, // remove characters that match regex, defaults to `undefined`
+      lower: true,      // convert to lower case, defaults to `false`
+      strict: false,     // strip special characters except replacement, defaults to `false`
+    });
     model.countDocuments({slug: slug}, function (err, count) {
       if (count) {
         router.mySlugify(model, slug+"_1", cb);

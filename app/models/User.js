@@ -79,7 +79,7 @@ const userSchema = new Schema({
   },
   likes: {},
 
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100 },
   stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'FIELD_REQUIRED'], minlength: [3, 'FIELD_TOO_SHORT'], maxlength: [50, 'FIELD_TOO_LONG'] },
   addresses: [Address],
   abouts: [About],
