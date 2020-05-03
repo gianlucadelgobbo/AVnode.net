@@ -18,7 +18,8 @@ const videoSchema = new Schema({
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
-    }, 'URL_IS_NOT_VALID'] },
+    }, 'URL_IS_NOT_VALID']
+  },
   is_public: { type: Boolean, default: false },
   media: Media,
   // teaserImage: MediaImage,
