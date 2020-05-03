@@ -13,7 +13,7 @@ export const INVALID_STRING_0_5 = "validation.error.invalid.string.0.5";
 export const INVALID_STRING_0_10 = "validation.error.invalid.string.0.10";
 export const INVALID_STRING_1_5 = "validation.error.invalid.string.1.5";
 export const INVALID_STRING_1_3 = "validation.error.invalid.string.1.3";
-export const INVALID_STRING_3_50 = "validation.error.invalid.string.3.50";
+export const INVALID_STRING_3_100 = "validation.error.invalid.string.3.100";
 export const INVALID_EMAIL = "validation.error.invalid.email";
 export const INVALID_PASSWORD = "validation.error.invalid.password";
 export const INVALID_PASSWORD_LENGTH = "validation.error.invalid.passwordLength";
@@ -85,9 +85,9 @@ defineMessages({
         id: INVALID_STRING_1_3,
         defaultMessage: "Invalid length: please insert 1 to 3 values"
     },
-    [INVALID_STRING_3_50]: {
-        id: INVALID_STRING_3_50,
-        defaultMessage: "Invalid length: please insert 3 to 50 values"
+    [INVALID_STRING_3_100]: {
+        id: INVALID_STRING_3_100,
+        defaultMessage: "Invalid length: please insert 3 to 100 values"
     },
     [INVALID_EMAIL]: {
         id: INVALID_EMAIL,

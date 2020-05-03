@@ -49,8 +49,8 @@ const PUBLIC = {
                 required: true,
                 unique: false,
                 validators: {
-                    'String': {min: 3, max: 50},
-                    'geolocation': {min: 3, max: 50},
+                    'String': {min: 3, max: 100},
+                    'geolocation': {min: 3, max: 100},
                 }
             },
             room: {
@@ -59,7 +59,7 @@ const PUBLIC = {
                 required: false,
                 unique: false,
                 validators: {
-                    'String': {min: 3, max: 50},
+                    'String': {min: 3, max: 100},
                 }
             },
         }
@@ -70,7 +70,7 @@ const PUBLIC = {
         required: true,
         unique: true,
         validators: {
-            'String': {min: 3, max: 50},
+            'String': {min: 3, max: 100},
             'Unique': 'admin/api...'
         }
     },
@@ -80,7 +80,7 @@ const PUBLIC = {
         required: true,
         unique: true,
         validators: {
-            'String': {min: 3, max: 50},
+            'String': {min: 3, max: 100},
             'Unique': 'admin/api...'
         }
     },
@@ -218,8 +218,8 @@ const PROGRAM = {
                     required: true,
                     unique: false,
                     validators: {
-                        'String': {min: 3, max: 50},
-                        'geolocation': {min: 3, max: 50},
+                        'String': {min: 3, max: 100},
+                        'geolocation': {min: 3, max: 100},
                     }
                 },
                 room: {
@@ -228,7 +228,7 @@ const PROGRAM = {
                     required: false,
                     unique: false,
                     validators: {
-                        'String': {min: 3, max: 50},
+                        'String': {min: 3, max: 100},
                     }
                 },
             },
@@ -308,7 +308,7 @@ const CALLS = {
             required: false,
             unique: false,
             validators: {
-                'String': {min: 3, max: 50},
+                'String': {min: 3, max: 100},
             }
         },
         email: {
@@ -325,7 +325,7 @@ const CALLS = {
             required: true,
             unique: true,
             validators: {
-                'String': {min: 3, max: 50},
+                'String': {min: 3, max: 100},
                 'Unique': 'admin/api...'
             }
         },
@@ -379,7 +379,7 @@ const CALLS = {
                 required: false,
                 unique: false,
                 validators: {
-                    'String': {min: 3, max: 50},
+                    'String': {min: 3, max: 100},
                 }
             },
             price: {
@@ -388,7 +388,7 @@ const CALLS = {
                 required: false,
                 unique: false,
                 validators: {
-                    'Number': {min: 3, max: 50},
+                    'Number': {min: 3, max: 100},
                 }
             },
             description: {
@@ -433,7 +433,7 @@ const CALLS = {
                 required: false,
                 unique: false,
                 validators: {
-                    'String': {min: 3, max: 50},
+                    'String': {min: 3, max: 100},
                 }
             },
             options: [{
@@ -442,7 +442,7 @@ const CALLS = {
                 required: false,
                 unique: false,
                 validators: {
-                    'String': {min: 3, max: 50},
+                    'String': {min: 3, max: 100},
                 }
             }],
             daily: {
@@ -478,7 +478,7 @@ const CALLS = {
                 required: false,
                 unique: false,
                 validators: {
-                    'String': {min: 3, max: 50},
+                    'String': {min: 3, max: 100},
                 }
             },
             description: {

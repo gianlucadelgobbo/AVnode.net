@@ -75,8 +75,8 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
-    "id": "validation.error.invalid.string.3.50",
-    "defaultMessage": "Invalid length: please insert 3 to 50 values",
+    "id": "validation.error.invalid.string.3.100",
+    "defaultMessage": "Invalid length: please insert 3 to 100 values",
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {

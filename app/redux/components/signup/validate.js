@@ -4,7 +4,7 @@ import {
   isValidName,
   isValidDate
 } from "../common/form/validators";
-import { INVALID_STRING_3_50, INVALID_PASSWORD, REQUIRED } from "../common/form/errors";
+import { INVALID_STRING_3_100, INVALID_PASSWORD, REQUIRED } from "../common/form/errors";
 
 const signupValidate = values => {
   const errors = {};
@@ -24,8 +24,8 @@ const signupValidate = values => {
     values,
     name: "stagename",
     min: 3,
-    max: 50,
-    errorKey: INVALID_STRING_3_50,
+    max: 100,
+    errorKey: INVALID_STRING_3_100,
     errors
   });
 

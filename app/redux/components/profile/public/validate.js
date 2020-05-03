@@ -1,23 +1,23 @@
 import {isValidName, isValidSlug, validateLength, validateMultiLang} from "../../common/form/validators";
 import {
   INVALID_STRING_0_10,
-  INVALID_STRING_3_50} from "../../common/form/errors";
+  INVALID_STRING_3_100} from "../../common/form/errors";
 
 const profilePublicValidate = values => {
 
   const errors = {};
 
   //Stage name
-  validateLength({values, name: "stagename", min: 3, max: 50, errorKey: INVALID_STRING_3_50, errors});
+  validateLength({values, name: "stagename", min: 3, max: 100, errorKey: INVALID_STRING_3_100, errors});
 
   isValidName({values, name: "stagename", errors});
 
   // Slug
   isValidSlug({values, name: "slug", errors});
-  validateLength({values, name: "slug", min: 3, max: 50, errorKey: INVALID_STRING_3_50, errors});
+  validateLength({values, name: "slug", min: 3, max: 100, errorKey: INVALID_STRING_3_100, errors});
 
   //abouts
-  validateMultiLang({values, name: "abouts", value: "value", errors, max: 10000});
+  validateMultiLang({values, name: "abouts", value: "value", errors, max: 20000});
 
   // web
   validateLength({values, name: "web", min: 0, max: 10, errorKey: INVALID_STRING_0_10, errors});

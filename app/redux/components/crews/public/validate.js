@@ -1,12 +1,12 @@
 import {isValidName, isValidSlug, validateLength, validateMultiLang} from "../../common/form/validators";
-import {INVALID_STRING_3_50, INVALID_STRING_1_5} from "../../common/form/errors";
+import {INVALID_STRING_3_100, INVALID_STRING_1_5} from "../../common/form/errors";
 
 const crewPublicValidate = values => {
 
     const errors = {};
 
     //Stage name
-    validateLength({values, name: "stagename", min: 3, max: 50, errorKey:INVALID_STRING_3_50, errors});
+    validateLength({values, name: "stagename", min: 3, max: 100, errorKey:INVALID_STRING_3_100, errors});
 
     isValidName({values, name:"stagename", errors});
 
@@ -14,7 +14,7 @@ const crewPublicValidate = values => {
     isValidSlug({values,  name: "slug",  errors});
 
      // Abouts
-    validateMultiLang({values, name: "abouts", value: "value", errors, max: 10000});
+    validateMultiLang({values, name: "abouts", value: "value", errors, max: 20000});
 
     // Social
     validateLength({values, name: "social", min: 1, max: 5, errorKey:INVALID_STRING_1_5, errors});
