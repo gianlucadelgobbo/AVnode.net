@@ -201,6 +201,7 @@ router.mySlugify = function (model, str, cb) {
   if (str) {
     slugify.extend({'|': ' '})
     slugify.extend({'+': 'and'})
+    slugify.extend({'.': '-'})
 
     let slug = slugify(str, {
       replacement: '-',  // replace spaces with replacement character, defaults to `-`
