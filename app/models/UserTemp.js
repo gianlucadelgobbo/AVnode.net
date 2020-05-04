@@ -9,14 +9,10 @@ const adminsez = 'signup';
 
 const userSchema = new Schema({
   createdAt: Date,
-  crewname: { type: String, trim: true, required: true, maxlength: 100 },
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100,
-    /* validate: [(slug) => {
-      var re = /^[a-z0-9-_]+$/;
-      return re.test(slug)
-    }, 'URL_IS_NOT_VALID'] */
-  },
+  crewname: { type: String, trim: true, minlength: 3, maxlength: 100 },
+  crewslug: { type: String, trim: true, minlength: 3, maxlength: 100 },
   stagename: { type: String, trim: true, required: true, minlength: 3, maxlength: 100 },
+  slug: { type: String, trim: true, required: true, minlength: 3, maxlength: 100 },
   birthday: { type: Date, required: true},
   lang: { type: String, required: true},
   email: { type: String, required: true, unique: true, trim: true },
