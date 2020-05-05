@@ -201,14 +201,23 @@ router.mySlugify = function (model, str, cb) {
   if (str) {
     slugify.extend({'|': ' '})
     slugify.extend({'+': 'and'})
-    slugify.extend({'.': '-'})
-
+    slugify.extend({'@': 'at'})
+    slugify.extend({'†': ''})
+    /* slugify.extend({'\\': ''})
+    slugify.extend({"‘": "'"})
+    slugify.extend({"’": "'"})
+    slugify.extend({"“": "\\\""})
+    slugify.extend({"”": "\\\""})
+    slugify.extend({"†": "-"})
+    slugify.extend({"•": "-"})
+    slugify.extend({"…": "..."}) */
+  
     let slug = slugify(str, {
       replacement: '-',  // replace spaces with replacement character, defaults to `-`
-      remove: undefined, // remove characters that match regex, defaults to `undefined`
+      remove: /[*~.()[\]{\\}'‘’"“”…!:/]/g, // remove characters that match regex, defaults to `undefined`
       lower: true,      // convert to lower case, defaults to `false`
       strict: false,     // strip special characters except replacement, defaults to `false`
-    });
+    }).replace(/[^a-z0-9 -]/g, "");
     model.countDocuments({slug: slug}, function (err, count) {
       if (count) {
         router.mySlugify(model, slug+"_1", cb);
