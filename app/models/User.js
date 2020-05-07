@@ -95,7 +95,7 @@ const userSchema = new Schema({
 
   name: { type: String, trim: true, maxlength: 50 },
   surname: { type: String, trim: true, maxlength: 50 },
-  gender: { type: String, trim: true, enum: ['M', 'F', 'Other'] },
+  gender: { type: String, trim: true, enum: ['M', 'F', 'O'] },
   lang: { type: String, trim: true, required: function() { return !this.is_crew; }},
   birthday: { type: Date, required: function() { return !this.is_crew; }},
   citizenship: [],
