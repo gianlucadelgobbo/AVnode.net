@@ -102,8 +102,8 @@ class Video extends Component {
     const { showModal } = this.props;
 
     return (
-      <div>
-        <div className="row" key={i}>
+      <div key={i}>
+        <div className="row">
           <div className="col-sm-3">
             <Link to={`/admin/videos/${v._id}/public`}>
               <Image
@@ -114,9 +114,19 @@ class Video extends Component {
           </div>
           <div className="col-sm-9">
             <h3><Link to={`/admin/videos/${v._id}/public`}><i className="fas fa-edit"></i></Link> | <i className="fa fa-heart"></i> {v.stats.likes} | <Link to={`/videos/${v.slug}/`} target={`_blank`}><i className="fa fa-eye"></i> {v.stats.visits}</Link> | {v.title}</h3>
-            <p>{v.media.durationHR} | {v.media.originalname}</p>
-            <p>{v.users.map((item) => {return "<span class='label'>"+item.stagename+"</span>"}).join(", ")}</p>
-            <p>Type: {v.categories.map((item) => {return "<span><b>"+item.name+"</b></span>"}).join(", ")}</p>
+            <div>{v.media.durationHR} | {v.media.originalname}
+            {v.media.originalname && (
+              <span> | {v.media.originalname}</span>
+            )}</div>
+            <ul className='commalist'>{v.users.map((item, index) => (
+              <li key={index}>{item.stagename}</li>
+            ))}</ul>
+            {v.categories && v.categories.length && (
+              <div><span>Type: </span>
+              <ul className='commalist'>{v.categories.map((item, index) => (
+                <li key={index}><b>{item.name}</b></li>
+              ))}</ul></div>
+            )}
           </div>
           {/*<div className="row">
             <div className="col-sm-12">

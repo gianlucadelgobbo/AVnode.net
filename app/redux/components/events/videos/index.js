@@ -19,7 +19,7 @@ import {
 class EventsVideo extends Component {
   render() {
     const {
-      model,
+      model={},
       isFetching,
       errorMessage,
       fetchModel,

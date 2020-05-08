@@ -677,3 +677,20 @@ div.ReactTags__selected a.ReactTags__remove {
 #app .connectedSortable .list-group-item:last-child {
   margin: 3px 3px 3px 3px;
 }
+.commalist {
+  display: inline;
+  list-style: none;
+  padding: 0;
+}
+
+.commalist li {
+  display: inline;
+}
+
+.commalist li:after {
+  content: ", ";
+}
+
+.commalist li:last-child:after {
+    content: "";
+}
