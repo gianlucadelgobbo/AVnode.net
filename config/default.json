@@ -1451,7 +1451,7 @@
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "videos", "select": "title media users", "model": "Video", "populate": { "path": "users", "select": "stagename image organizationData.logo", "model": "User"}}]
+          "populate": [{ "path": "videos", "select": "title media imageFormats slug stats", "model": "Video", "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "categories", "select": "name", "model": "Category"}]}]
         },
         "calls": {
           "components": {
