@@ -36,9 +36,9 @@ class EventsVideo extends Component {
         <TitleComponent title={model.title} link={"/events/"+model.slug} show={SHOW} />
         <LateralMenu _id={_id} />
         <hr />
-        <h3 className="labelField mb-3">{EVENT_NAME}</h3>
         <Video
           model={model}
+          title={EVENT_NAME}
           modal={MODAL_ADD_EVENTS_VIDEOS}
           isFetching={isFetching}
           errorMessage={errorMessage}
