@@ -3307,13 +3307,14 @@
             }
           },
           "select": {
-            "videos": 1
+            "videos": 1,
+            "categories": 1
           },
           "selectaddon": {
             "slug": 1,
             "title": 1
           },
-          "populate": [{ "path": "videos", "select": "title media imageFormats", "model": "Video"}]
+          "populate": [{ "path": "videos", "select": "title media imageFormats slug stats", "model": "Video", "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "categories", "select": "name", "model": "Category"}]}]
         },
         "bookings": {
           "components": {

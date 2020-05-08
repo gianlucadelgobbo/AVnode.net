@@ -76,7 +76,7 @@ block content
                   li=global.__('File name')+": "
                     b=data.videos[0].media.file.substring(data.videos[0].media.file.lastIndexOf("/")+1)
                   li=global.__('File size')+": "
-                    b=( data.videos[0].media.filesize / Math.pow(1024, Math.floor( Math.log(data.videos[0].media.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(data.videos[0].media.filesize) / Math.log(1024) )]
+                    b=data.videos[0].media.filesizeHR
                   li=global.__('File duration')+": "
                     b=data.videos[0].media.duration
                   li=global.__('File type')+": "

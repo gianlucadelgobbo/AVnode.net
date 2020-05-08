@@ -2562,13 +2562,6 @@ export const uploadComponent = ({
       {mediaIsAnObj && mediaIsEncoded && (
         <div className="container-video">
           <div className="row">
-            <div className="col-sm-12">
-              <div className="labelField">
-                <h4>Video</h4>
-              </div>
-            </div>
-          </div>
-          <div className="row">
             <div className="col-sm-6">
               <Player playsInline src={media.file} />
             </div>
@@ -2577,15 +2570,23 @@ export const uploadComponent = ({
                 <tbody>
                   <tr>
                     <th>FILE NAME:</th>
-                    <td>{media.title}</td>
+                    <td>{media.originalname}</td>
                   </tr>
                   <tr>
                     <th>FILE SIZE:</th>
-                    <td>{media.filesize}</td>
+                    <td>{media.filesizeHR}</td>
                   </tr>
                   <tr>
-                    <th>MIME TYPE:</th>
+                    <th>DURATION:</th>
+                    <td>{media.durationHR}</td>
+                  </tr>
+                  <tr>
+                    <th>FILE TYPE:</th>
                     <td>{media.mimetype}</td>
+                  </tr>
+                  <tr>
+                    <th>Video dimensions:</th>
+                    <td>{media.width}x{media.height}</td>
                   </tr>
                 </tbody>
               </table>

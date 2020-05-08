@@ -47,14 +47,14 @@ import PerformancesVideos from "../performances/videos";
 
 // Events
 import Events from "../events/index.js";
-import EventPublic from "../events/public/";
-import EventImages from "../events/image/";
-import EventPartners from "../events/partners/";
-import EventProgram from "../events/program/";
-import EventGalleries from "../events/galleries/";
-import EventVideos from "../events/videos/";
-import EventCalls from "../events/calls/";
-import EventSettings from "../events/settings/";
+import EventPublic from "../events/public";
+import EventImages from "../events/image";
+import EventPartners from "../events/partners";
+import EventProgram from "../events/program";
+import EventGalleries from "../events/galleries";
+import EventVideos from "../events/videos";
+import EventCalls from "../events/calls";
+import EventSettings from "../events/settings";
 
 // // Footage
 import Footage from "../footage/index.js";
