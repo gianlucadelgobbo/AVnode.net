@@ -114,8 +114,7 @@ class Video extends Component {
           </div>
           <div className="col-sm-9">
             <h3><Link to={`/admin/videos/${v._id}/public`}><i className="fas fa-edit"></i></Link> | <i className="fa fa-heart"></i> {v.stats.likes} | <Link to={`/videos/${v.slug}/`} target={`_blank`}><i className="fa fa-eye"></i> {v.stats.visits}</Link> | {v.title}</h3>
-            <div>{v.media.durationHR} | {v.media.originalname}
-            {v.media.originalname && (
+            <div>{v.media.durationHR}{v.media.originalname && (
               <span> | {v.media.originalname}</span>
             )}</div>
             <ul className='commalist'>{v.users.map((item, index) => (
