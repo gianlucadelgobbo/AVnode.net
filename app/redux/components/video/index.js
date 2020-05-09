@@ -114,13 +114,28 @@ class Video extends Component {
           </div>
           <div className="col-sm-9">
             <h3><Link to={`/admin/videos/${v._id}/public`}><i className="fas fa-edit"></i></Link> | <i className="fa fa-heart"></i> {v.stats.likes} | <Link to={`/videos/${v.slug}/`} target={`_blank`}><i className="fa fa-eye"></i> {v.stats.visits}</Link> | {v.title}</h3>
-            <div>{v.media.durationHR}{v.media.originalname && (
-              <span> | {v.media.originalname}</span>
-            )}</div>
-            <ul className='commalist'>{v.users.map((item, index) => (
-              <li key={index}>{item.stagename}</li>
-            ))}</ul>
-            {v.categories && v.categories.length && (
+            {!v.media ? (
+              <b>NO VIDEO FILE UPLOADED</b>
+            ) : (v.media.encoded===0 ? (
+              <b>VIDEO ENCODING IN PROGRESS</b>
+            ) : (v.media.encoded!=1 ? (
+              <b>VIDEO ENCODING FAILED</b>
+            ) : (
+              <div>
+                <div>
+                {v.media.durationHR && (
+                  <span>{v.media.durationHR}</span>
+                )}
+                {v.media.originalname && (
+                  <span> | {v.media.originalname}</span>
+                )}
+                </div>
+                <ul className='commalist'>{v.users.map((item, index) => (
+                  <li key={index}>{item.stagename}</li>
+                ))}</ul>
+              </div>
+            )))}
+            {v.categories && v.categories.length>0 && (
               <div><span>Type: </span>
               <ul className='commalist'>{v.categories.map((item, index) => (
                 <li key={index}><b>{item.name}</b></li>
