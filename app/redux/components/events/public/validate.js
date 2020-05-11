@@ -5,7 +5,7 @@ import {
   validateMultiLang
 } from "../../common/form/validators";
 import {
-  INVALID_STRING_3_50,
+  INVALID_STRING_3_100,
   INVALID_STRING_1_5,
   INVALID_STRING_1_3
 } from "../../common/form/errors";
@@ -35,7 +35,7 @@ const EventPublicValidate = values => {
     name: "title",
     min: 3,
     max: 60,
-    errorKey: INVALID_STRING_3_50,
+    errorKey: INVALID_STRING_3_100,
     errors
   });
 
@@ -46,7 +46,7 @@ const EventPublicValidate = values => {
     name: "subtitles",
     value: "value",
     errors,
-    max: 50
+    max: 100
   });
   */
   //abouts

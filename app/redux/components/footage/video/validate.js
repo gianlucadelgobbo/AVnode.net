@@ -5,7 +5,7 @@ import {
   validateLength,
   validateMultiLang
 } from "../../common/form/validators";
-import { INVALID_STRING_3_50 } from "../../common/form/errors";
+import { INVALID_STRING_3_100 } from "../../common/form/errors";
 
 const validators = validatorsObj.validators;
 
@@ -17,8 +17,8 @@ const validate = values => {
     values,
     name: "title",
     min: 3,
-    max: 50,
-    errorKey: INVALID_STRING_3_50,
+    max: 100,
+    errorKey: INVALID_STRING_3_100,
     errors
   });
 
@@ -33,7 +33,7 @@ const validate = values => {
     name: "abouts",
     value: "value",
     errors,
-    max: 10000
+    max: 20000
   });
 
   return errors;

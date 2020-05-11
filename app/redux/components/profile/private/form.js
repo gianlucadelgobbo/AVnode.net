@@ -65,7 +65,7 @@ class ProfilePrivateForm extends Component {
           options={[
             { value: "M", label: "Male" },
             { value: "F", label: "Female" },
-            { value: "Others", label: "Other" }
+            { value: "O", label: "Other" }
           ]}
         />
 

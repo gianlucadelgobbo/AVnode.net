@@ -5,7 +5,7 @@ const PUBLIC = {
     required: true,
     unique: true,
     validators: {
-        'String': {min: 3, max: 50},
+        'String': {min: 3, max: 100},
         'Unique': 'admin/api...'
     }
   },
@@ -15,7 +15,7 @@ const PUBLIC = {
     required: true,
     unique: true,
     validators: {
-        'String': {min: 3, max: 50},
+        'String': {min: 3, max: 100},
         'Unique': 'admin/api...'
     }
   },

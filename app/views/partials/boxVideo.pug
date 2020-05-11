@@ -17,7 +17,8 @@
               each category in item.categories
                 li.list-inline-item=category.name
         .col-sm-6
-          .text-right.mb-2=item.media.durationHR
+          if item.media && item.media.durationHR
+            .text-right.mb-2=item.media.durationHR
 
     if item.users
       .users_video_item_wrapper

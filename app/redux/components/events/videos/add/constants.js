@@ -1,1 +1,1 @@
-export const FORM_NAME = "EVENTS.VIDEOS.ADD";
+export const FORM_NAME = "EVENT.VIDEOS.ADD";

@@ -102,42 +102,70 @@ class Video extends Component {
     const { showModal } = this.props;
 
     return (
-      <div className="col-md-6" key={i}>
+      <div key={i}>
         <div className="row">
-          <div className="col-sm-12">
-            <h3>{v.title}</h3>
+          <div className="col-sm-3">
             <Link to={`/admin/videos/${v._id}/public`}>
               <Image
                 src={v.imageFormats ? v.imageFormats.small : ""}
-                responsive
+                className="img-fluid"
               />
             </Link>
           </div>
-        </div>
-        {/*<div className="row">
-          <div className="col-sm-12">
-            <Button
-              bsStyle="danger"
-              className="btn-block"
-              onClick={() =>
-                showModal({
-                  type: MODAL_REMOVE,
-                  props: {
-                    onRemove: () => this.onRemove(v)
-                  }
-                })
-              }
-            >
-              <i
-                className="fa fa-trash"
-                data-toggle="tooltip"
-                data-placement="top"
-              />
-            </Button>
+          <div className="col-sm-9">
+            <h3><Link to={`/admin/videos/${v._id}/public`}><i className="fas fa-edit"></i></Link> | <i className="fa fa-heart"></i> {v.stats.likes} | <Link to={`/videos/${v.slug}/`} target={`_blank`}><i className="fa fa-eye"></i> {v.stats.visits}</Link> | {v.title}</h3>
+            {!v.media ? (
+              <b>NO VIDEO FILE UPLOADED</b>
+            ) : (v.media.encoded===0 ? (
+              <b>VIDEO ENCODING IN PROGRESS</b>
+            ) : (v.media.encoded!=1 ? (
+              <b>VIDEO ENCODING FAILED</b>
+            ) : (
+              <div>
+                <div>
+                {v.media.durationHR && (
+                  <span>{v.media.durationHR}</span>
+                )}
+                {v.media.originalname && (
+                  <span> | {v.media.originalname}</span>
+                )}
+                </div>
+                <ul className='commalist'>{v.users.map((item, index) => (
+                  <li key={index}>{item.stagename}</li>
+                ))}</ul>
+              </div>
+            )))}
+            {v.categories && v.categories.length>0 && (
+              <div><span>Type: </span>
+              <ul className='commalist'>{v.categories.map((item, index) => (
+                <li key={index}><b>{item.name}</b></li>
+              ))}</ul></div>
+            )}
           </div>
-            </div>*/}
-
-        <br />
+          {/*<div className="row">
+            <div className="col-sm-12">
+              <Button
+                bsStyle="danger"
+                className="btn-block"
+                onClick={() =>
+                  showModal({
+                    type: MODAL_REMOVE,
+                    props: {
+                      onRemove: () => this.onRemove(v)
+                    }
+                  })
+                }
+              >
+                <i
+                  className="fa fa-trash"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+              </Button>
+            </div>
+          </div>*/}
+        </div>
+        <hr />
       </div>
     );
   }
@@ -145,6 +173,7 @@ class Video extends Component {
   render() {
     const {
       model,
+      title,
       modal,
       showModal,
       isFetching,
@@ -157,7 +186,10 @@ class Video extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-md-9">
+            <h3 className="labelField">{title}</h3>
+          </div>
+          <div className="col-md-3">
             <Button
               bsStyle="success"
               className="float-right"
@@ -176,10 +208,9 @@ class Video extends Component {
             </Button>
           </div>
         </div>
-
+        <hr />
         <div className="row">
           <div className="col-md-12">
-            <br />
             {isFetching && !model && <Loading />}
 
             {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
@@ -191,7 +222,7 @@ class Video extends Component {
               model &&
               Array.isArray(model.videos) &&
               model.videos.length > 0 && (
-                <div className="row">
+                <div>
                   {model.videos.map(this.renderVideo.bind(this))}
                 </div>
               )}

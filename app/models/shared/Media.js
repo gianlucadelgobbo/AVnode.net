@@ -42,5 +42,10 @@ Media.virtual('durationHR').get(function (req) {
     return moment.duration(this.duration).format('hh:mm:ss', {trim: false});
   }
 });
+Media.virtual('filesizeHR').get(function (req) {
+  if (this.filesize) {
+    return ( this.filesize / Math.pow(1024, Math.floor( Math.log(this.filesize) / Math.log(1024) )) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][Math.floor( Math.log(this.filesize) / Math.log(1024) )];
+  }
+});
 
 module.exports = Media;

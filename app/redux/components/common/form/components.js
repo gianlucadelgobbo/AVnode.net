@@ -2549,7 +2549,8 @@ export const uploadComponent = ({
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
   const mediaIsAnObj = typeof media === "object";
-  const mediaIsEncoded = mediaIsAnObj && typeof media.file === "string";
+  //const mediaIsEncoded = mediaIsAnObj && typeof media.file === "string";
+  //const mediaIsEncoded = mediaIsAnObj && media.file === 0;
 
   const renderSubField = () => {
     return (
@@ -2575,15 +2576,8 @@ export const uploadComponent = ({
   };
   return (
     <div>
-      {mediaIsAnObj && mediaIsEncoded && (
+      {mediaIsAnObj && media.encoded === 1 && (
         <div className="container-video">
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="labelField">
-                <h4>Video</h4>
-              </div>
-            </div>
-          </div>
           <div className="row">
             <div className="col-sm-6">
               <Player playsInline src={media.file} />
@@ -2593,15 +2587,23 @@ export const uploadComponent = ({
                 <tbody>
                   <tr>
                     <th>FILE NAME:</th>
-                    <td>{media.title}</td>
+                    <td>{media.originalname}</td>
                   </tr>
                   <tr>
                     <th>FILE SIZE:</th>
-                    <td>{media.filesize}</td>
+                    <td>{media.filesizeHR}</td>
                   </tr>
                   <tr>
-                    <th>MIME TYPE:</th>
+                    <th>DURATION:</th>
+                    <td>{media.durationHR}</td>
+                  </tr>
+                  <tr>
+                    <th>FILE TYPE:</th>
                     <td>{media.mimetype}</td>
+                  </tr>
+                  <tr>
+                    <th>Video dimensions:</th>
+                    <td>{media.width}x{media.height}</td>
                   </tr>
                 </tbody>
               </table>
@@ -2609,7 +2611,7 @@ export const uploadComponent = ({
           </div>
         </div>
       )}
-      {mediaIsAnObj && !mediaIsEncoded && (
+      {mediaIsAnObj && media.encoded === 0 && (
         <div className="container-video">
           <div className="row">
             <div className="col-sm-12">
@@ -2628,7 +2630,7 @@ export const uploadComponent = ({
           </div>
         </div>
       )}
-      <div>{!media || !media.original ? renderSubField() : <br />}</div>
+      <div>{!media || !media.original || media.encoded > 1 ? renderSubField() : <br />}</div>
 
       {/* if array of video */}
       {media && Array.isArray(media) && media.length > 0 && (

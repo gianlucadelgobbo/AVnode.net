@@ -4,15 +4,12 @@ import { bindActionCreators } from "redux";
 import LateralMenu from "../lateralMenu";
 import { getModel } from "../selectors";
 import { fetchModel, saveModel, removeModel } from "./actions";
-import {
-  getModelIsFetching,
-  getModelErrorMessage,
-} from "../../events/selectors";
-import { MODAL_ADD_EVENTS_VIDEOS } from "../../modal/constants";
+import { getModelIsFetching, getModelErrorMessage } from "../selectors";
 import Video from "../../video";
 import { FormattedMessage } from "react-intl";
-import { EVENT_NAME, SHOW } from "./constants";
 import TitleComponent from "../../titleComponent";
+import { EVENT_NAME, SHOW } from "./constants";
+import { MODAL_ADD_EVENTS_VIDEOS } from "../../modal/constants";
 
 class EventsVideo extends Component {
   render() {
@@ -21,12 +18,12 @@ class EventsVideo extends Component {
       isFetching,
       errorMessage,
       fetchModel,
-      match: {
-        params: { _id },
-      },
       saveModel,
       removeModel,
       history,
+      match: {
+        params: { _id },
+      },
     } = this.props;
 
     return (
@@ -38,18 +35,17 @@ class EventsVideo extends Component {
         />
         <LateralMenu _id={_id} />
         <hr />
-        <h3 className="labelField mb-3">{EVENT_NAME}</h3>
-
         <Video
           model={model}
+          title={EVENT_NAME}
           modal={MODAL_ADD_EVENTS_VIDEOS}
           isFetching={isFetching}
           errorMessage={errorMessage}
           id={_id}
           fetchModel={fetchModel}
           saveModel={saveModel}
-          history={history}
           removeModel={removeModel}
+          history={history}
           type="EVENTS"
         />
       </div>

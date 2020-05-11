@@ -16,7 +16,8 @@ validators.isUrl = (e) => {
 }
 
 validators.isSlug = (e) => {
-  const re = /^[aA-zZ0-9]+(?:-[aA-zZ0-9]+)*$/;
+  //const re = /^[aA-zZ0-9]+(?:-[aA-zZ0-9]+)*$/;
+  const re = /^[a-z0-9-_]+$/;
   return re.test(e);
 };
 

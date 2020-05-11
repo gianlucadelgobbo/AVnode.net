@@ -79,7 +79,12 @@ const userSchema = new Schema({
   },
   likes: {},
 
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 50 },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100,
+    validate: [(slug) => {
+      var re = /^[a-z0-9-_]+$/;
+      return re.test(slug)
+    }, 'URL_IS_NOT_VALID']
+  },
   stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'FIELD_REQUIRED'], minlength: [3, 'FIELD_TOO_SHORT'], maxlength: [50, 'FIELD_TOO_LONG'] },
   addresses: [Address],
   abouts: [About],
@@ -90,7 +95,7 @@ const userSchema = new Schema({
 
   name: { type: String, trim: true, maxlength: 50 },
   surname: { type: String, trim: true, maxlength: 50 },
-  gender: { type: String, trim: true, enum: ['M', 'F', 'Other'] },
+  gender: { type: String, trim: true, enum: ['M', 'F', 'O'] },
   lang: { type: String, trim: true, required: function() { return !this.is_crew; }},
   birthday: { type: Date, required: function() { return !this.is_crew; }},
   citizenship: [],

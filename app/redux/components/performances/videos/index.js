@@ -7,7 +7,7 @@ import { fetchModel, saveModel, removeModel } from "./actions";
 import {
   getModelIsFetching,
   getModelErrorMessage
-} from "../../events/selectors";
+} from "../selectors";
 import Video from "../../video";
 import { FormattedMessage } from "react-intl";
 import TitleComponent from "../../titleComponent";
@@ -23,8 +23,8 @@ class PerformaceVideo extends Component {
       isFetching,
       errorMessage,
       fetchModel,
-      removeModel,
       saveModel,
+      removeModel,
       history,
       match: {
         params: { _id }
@@ -36,9 +36,9 @@ class PerformaceVideo extends Component {
         <TitleComponent title={model.title} link={"/performances/"+model.slug} show={SHOW} />
         <LateralMenu _id={_id} />
         <hr />
-        <h3 className="labelField mb-3">{PERFORMANCE_NAME}</h3>
         <Video
           model={model}
+          title={PERFORMANCE_NAME}
           modal={MODAL_ADD_PERFORMANCES_VIDEOS}
           isFetching={isFetching}
           errorMessage={errorMessage}
@@ -47,6 +47,7 @@ class PerformaceVideo extends Component {
           saveModel={saveModel}
           removeModel={removeModel}
           history={history}
+          
         />
       </div>
     );

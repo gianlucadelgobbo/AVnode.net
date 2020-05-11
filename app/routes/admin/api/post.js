@@ -30,6 +30,8 @@ router.postData = (req, res) => {
 
     helpers.mySlugify(Models[config.cpanel[req.params.sez].model], req.body.stagename ? req.body.stagename : req.body.title, (slug) => {
       req.body.slug = slug;
+      logger.debug("slug");
+      logger.debug(slug);
       //for (const item in select) if(req.body[item]) post[item] = req.body[item];
       // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
       logger.debug('select');
