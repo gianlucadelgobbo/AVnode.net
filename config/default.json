@@ -1791,6 +1791,11 @@
         "model": "Event",
         "select": {
           "title": 1,
+          "createdAt": 1,
+          "updatedAt": 1,
+          "schedule": 1,
+          "slug": 1,
+          "public": 1,
           "image": 1
         },
         "select_addon": {

@@ -3,6 +3,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import matchSorter from 'match-sorter'
 
 class Table extends Component {
 
@@ -13,6 +14,9 @@ class Table extends Component {
         return (
             <ReactTable
                 data={data}
+                filterable
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id]) === filter.value}
                 columns={ columns  }
                 defaultPageSize={defaultPageSize}
                 className="-striped -highlight"
