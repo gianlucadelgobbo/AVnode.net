@@ -13,14 +13,14 @@ import { loadSuggestionAuthors, fetchPerformancePublic } from "../../../api";
 import ErrorMessage from "../../errorMessage";
 
 class AddUsersEvent extends Component {
-  getOptionLabel = option => `${option.stagename}`;
-  getOptionValue = option => `${option._id}`;
+  getOptionLabel = (option) => `${option.stagename}`;
+  getOptionValue = (option) => `${option._id}`;
   getOptions = (query, callback) => {
     if (query && query.length >= 3) {
       this.setState({ disable: false });
       return loadSuggestionAuthors(query)
-        .then(resp => callback(resp.data))
-        .catch(error => callback(error, null));
+        .then((resp) => callback(resp.data))
+        .catch((error) => callback(error, null));
     } else {
       return Promise.resolve([]);
     }
@@ -28,7 +28,7 @@ class AddUsersEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      disable: true
+      disable: true,
     };
   }
 
@@ -65,10 +65,10 @@ class AddUsersEvent extends Component {
     const { fetchModel, saveModel, hideModal, _id } = this.props;
     const modelToSave = this.createModelToSave(idusers, _id);
     //console.log(modelToSave);
-    return saveModel(modelToSave).then(response => {
+    return saveModel(modelToSave).then((response) => {
       //console.log(response);
       if (response.model && response.model._id) {
-        fetchPerformancePublic({ id: _id }).then(response => hideModal());
+        fetchPerformancePublic({ id: _id }).then((response) => hideModal());
       }
     });
   }
@@ -77,10 +77,10 @@ class AddUsersEvent extends Component {
     console.log(value);
     const { saveModel, hideModal } = this.props;
     const modelToSave = this.createModelToSave(value, _id);
-    return saveModel(modelToSave).then(response => {
+    return saveModel(modelToSave).then((response) => {
       console.log(response);
       if (response.model && response.model._id) {
-        fetchPerformancePublic({ id: _id }).then(response => hideModal());
+        fetchPerformancePublic({ id: _id }).then((response) => hideModal());
       }
     });
   }
@@ -119,16 +119,16 @@ class AddUsersEvent extends Component {
 const mapStateToProps = (state, { _id }) => ({
   model: getModel(state),
   users: getUsers(state),
-  errorMessage: getModelErrorMessage(state, _id)
+  errorMessage: getModelErrorMessage(state, _id),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       showModal,
       hideModal,
       saveModel,
-      fetchModel
+      fetchModel,
     },
     dispatch
   );

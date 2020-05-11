@@ -11,11 +11,8 @@ class AddEventModal extends Component {
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
 
-AddEventModal = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddEventModal);
+AddEventModal = connect(mapStateToProps, mapDispatchToProps)(AddEventModal);
 
 export default AddEventModal;

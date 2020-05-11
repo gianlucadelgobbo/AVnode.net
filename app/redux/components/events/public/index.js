@@ -14,7 +14,7 @@ import { EVENT_NAME, SHOW } from "./constants";
 import {
   getModel,
   getModelErrorMessage,
-  getModelIsFetching
+  getModelIsFetching,
 } from "../selectors";
 import { removeModel } from "../users/actions";
 import { locales, locales_labels } from "../../../../../config/default";
@@ -24,6 +24,7 @@ import moment from "moment";
 import { populateMultiLanguageObject } from "../../common/form";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import axios from "axios";
+import { DATE_FORMAT } from "../../../conf";
 // 1. LOADING BAR add actions generators
 import { hideLoading, showLoading } from "react-redux-loading-bar";
 
@@ -32,12 +33,12 @@ class EventPublic extends Component {
     const {
       fetchModel,
       match: {
-        params: { _id }
+        params: { _id },
       },
-      fetchEventsCategories
+      fetchEventsCategories,
     } = this.props;
     fetchModel({
-      id: _id
+      id: _id,
     });
     fetchEventsCategories();
   }
@@ -54,26 +55,26 @@ class EventPublic extends Component {
 
     //Convert abouts for API
     if (Array.isArray(model.abouts)) {
-      model.abouts = model.abouts.map(x => {
+      model.abouts = model.abouts.map((x) => {
         const splitted = x.key.split(".");
         return {
           lang: splitted[splitted.length - 1],
-          abouttext: x.value
+          abouttext: x.value,
         };
       });
     }
 
     // Convert web
-    model.web = model.web.filter(w => w.url);
+    model.web = model.web.filter((w) => w.url);
 
     // Convert social
-    model.social = model.social.filter(w => w.url);
+    model.social = model.social.filter((w) => w.url);
 
     // Convert Phone Number
     model.phones = model.phones
-      .filter(a => a)
-      .map(p => ({
-        url: p.tel
+      .filter((a) => a)
+      .map((p) => ({
+        url: p.tel,
       }));
 
     // Convert schedule
@@ -109,7 +110,7 @@ class EventPublic extends Component {
       return r;
     });*/
 
-    model.schedule = model.schedule.map(s => {
+    model.schedule = model.schedule.map((s) => {
       let startArr = s.startdate.split("/");
       let endArr = s.enddate.split("/");
       const r = {
@@ -139,7 +140,7 @@ class EventPublic extends Component {
           0,
           0
         ),
-        venue: s.venue
+        venue: s.venue,
       };
       return r;
     });
@@ -167,7 +168,7 @@ class EventPublic extends Component {
     v.schedule = [];
     if (Array.isArray(model.schedule)) {
       if (model.schedule.length > 0) {
-        const createVenue = v => {
+        const createVenue = (v) => {
           const { location = {}, name } = v;
           const { locality, country } = location;
           let venue = "";
@@ -182,17 +183,13 @@ class EventPublic extends Component {
           }
           return venue;
         };
-        v.schedule = model.schedule.map(x => ({
-          startdate: moment(x.starttime)
-            .utc()
-            .format("DD/MM/YYYY"),
+        v.schedule = model.schedule.map((x) => ({
+          startdate: moment(x.starttime).format("DD/MM/YYYY"),
           starttime: x.starttime ? x.starttime : "00:00",
-          enddate: moment(x.endtime)
-            .utc()
-            .format("DD/MM/YYYY"),
+          enddate: moment(x.endtime).format("DD/MM/YYYY"),
           endtime: x.endtime ? x.endtime : "00:00",
           venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
-          room: x.venue.room
+          room: x.venue.room,
         }));
       } else {
         v.schedule = [{ venue: "" }];
@@ -237,24 +234,24 @@ class EventPublic extends Component {
 
     v.phones =
       Array.isArray(model.phones) && model.phones.length > 0
-        ? model.phones.filter(a => a).map(p => ({ tel: p.url }))
+        ? model.phones.filter((a) => a).map((p) => ({ tel: p.url }))
         : [""];
 
     return v;
   }
 
-  createLatLongToSave = address => {
+  createLatLongToSave = (address) => {
     if (address && typeof address !== "object") {
       let addressSplitted = address.split(",");
       return geocodeByAddress(address)
         .then(function(results) {
-          return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+          return getLatLng(results[0]).then((geometry) => [results, geometry]); // function(b) { return [resultA, b] }
         })
         .then(function([results, geometry]) {
           let venue = {};
           let loc = {};
           console.log(geometry);
-          results[0].address_components.forEach(address_component => {
+          results[0].address_components.forEach((address_component) => {
             if (address_component.types.indexOf("country") !== -1)
               loc.country = address_component.long_name;
             if (address_component.types.indexOf("locality") !== -1)
@@ -269,14 +266,6 @@ class EventPublic extends Component {
     }
   };
 
-  handleSelect = address => {
-    console.log(address);
-  };
-
-  handleChange = address => {
-    console.log(address);
-  };
-
   onSubmit(values) {
     // 3. LOADING BAR get action from props
     const {
@@ -284,24 +273,24 @@ class EventPublic extends Component {
       saveModel,
       model,
       showLoading,
-      hideLoading
+      hideLoading,
     } = this.props;
 
     let promises = [];
 
     const schedule = values.schedule;
 
-    schedule.forEach(a => {
+    schedule.forEach((a) => {
       if (typeof a.venue !== "object") {
         if (a.venue !== undefined && a.venue !== "") {
           promises.push(
             this.createLatLongToSave(a.venue)
-              .then(result => {
+              .then((result) => {
                 // add to a model
                 a.venue = {
                   location: result.location,
                   name: result.name,
-                  room: a.room !== undefined || null || "" ? a.room : ""
+                  room: a.room !== undefined || null || "" ? a.room : "",
                 };
               })
               .catch(() => {
@@ -323,12 +312,10 @@ class EventPublic extends Component {
 
       modelToSave._id = model._id;
 
-      //console.log("About to save", modelToSave);
-
-      return saveModel(modelToSave).then(response => {
+      return saveModel(modelToSave).then((response) => {
         if (response.model && response.model._id) {
           showModal({
-            type: MODAL_SAVED
+            type: MODAL_SAVED,
           });
         }
 
@@ -343,12 +330,12 @@ class EventPublic extends Component {
       model = {},
       showModal,
       match: {
-        params: { _id }
+        params: { _id },
       },
       isFetching,
       errorMessage,
       categories,
-      removeModel
+      removeModel,
     } = this.props;
 
     return (
@@ -378,8 +365,6 @@ class EventPublic extends Component {
           categories={categories}
           removeModel={removeModel}
           _id={_id}
-          //handleSelect={this.handleSelect.bind(this)}
-          //handleChange={this.handleChange.bind(this)}
         />
       </div>
     );
@@ -391,17 +376,20 @@ const mapStateToProps = (
   state,
   {
     match: {
-      params: { _id }
-    }
+      params: { _id },
+    },
   }
 ) => ({
   model: getModel(state, _id),
   isFetching: getModelIsFetching(state, _id),
   errorMessage: getModelErrorMessage(state, _id),
-  categories: getCategories(state).map(c => ({ value: c._id, label: c.name }))
+  categories: getCategories(state).map((c) => ({
+    value: c._id,
+    label: c.name,
+  })),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       saveModel,
@@ -410,7 +398,7 @@ const mapDispatchToProps = dispatch =>
       removeModel,
       fetchEventsCategories,
       hideLoading,
-      showLoading
+      showLoading,
     },
     dispatch
   );

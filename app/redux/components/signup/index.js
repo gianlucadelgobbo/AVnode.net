@@ -36,7 +36,7 @@ class SignUp extends Component {
     model.birthday = startDate;
 
     // Convert addresses
-    model.addresses = model.addresses.map(a => {
+    model.addresses = model.addresses.map((a) => {
       //return { originalString, locality, country, geometry };
       return a.loc;
     });
@@ -44,21 +44,21 @@ class SignUp extends Component {
     return model;
   }
 
-  createLatLongToSave = address => {
+  createLatLongToSave = (address) => {
     return geocodeByAddress(address)
       .then(function(results) {
-        return getLatLng(results[0]).then(geometry => [results, geometry]); // function(b) { return [resultA, b] }
+        return getLatLng(results[0]).then((geometry) => [results, geometry]); // function(b) { return [resultA, b] }
       })
       .then(function([results, geometry]) {
         let loc = {};
-        results[0].address_components.forEach(address_component => {
+        results[0].address_components.forEach((address_component) => {
           if (address_component.types.indexOf("country") !== -1)
             loc.country = address_component.long_name;
           if (address_component.types.indexOf("locality") !== -1)
             loc.locality = address_component.long_name;
         });
         if (!loc.locality) {
-          results[0].address_components.forEach(address_component => {
+          results[0].address_components.forEach((address_component) => {
             if (
               address_component.types.indexOf("administrative_area_level_1") !==
               -1
@@ -110,10 +110,10 @@ class SignUp extends Component {
     let promises = [];
 
     const addrs = [{ text: values.addresses }];
-    addrs.forEach(a => {
+    addrs.forEach((a) => {
       promises.push(
         this.createLatLongToSave(a.text)
-          .then(result => {
+          .then((result) => {
             // add to a model
             a.loc = result;
           })
@@ -130,10 +130,10 @@ class SignUp extends Component {
       modelToSave.id = "1";
       //dispatch the action to save the model here
       //console.log(modelToSave);
-      return saveModel(modelToSave).then(response => {
+      return saveModel(modelToSave).then((response) => {
         if (response && response.model && response.model._id) {
           showModal({
-            type: MODAL_SIGN_UP_SUCCESS
+            type: MODAL_SIGN_UP_SUCCESS,
           });
         }
         return response;
@@ -179,18 +179,18 @@ const mapStateToProps = (
   state,
   {
     match: {
-      params: { _id }
-    }
+      params: { _id },
+    },
   }
 ) => ({
-  errorMessage: getModelErrorMessage(state, (_id = "1"))
+  errorMessage: getModelErrorMessage(state, (_id = "1")),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       saveModel,
-      showModal
+      showModal,
     },
     dispatch
   );

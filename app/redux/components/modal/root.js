@@ -27,6 +27,7 @@ import AddEventsVideosModal from "../events/videos/add";
 import SignupModal from "./signup/index";
 import EmailVerificationSuccess from "./emails/success";
 import EmailVerificationError from "./emails/error";
+import AddLocation from "../events/location";
 
 import ModalWrapper from "./wrapper";
 import { connect } from "react-redux";
@@ -60,7 +61,8 @@ import {
   MODAL_ADD_EVENTS_VIDEOS,
   MODAL_SIGN_UP_SUCCESS,
   MODAL_EMAIL_VERIFICATION_SUCCESS,
-  MODAL_EMAIL_VERIFICATION_ERROR
+  MODAL_EMAIL_VERIFICATION_ERROR,
+  MODAL_SEARCH_LOCATION,
 } from "./constants";
 
 /*
@@ -100,7 +102,8 @@ const MODAL_COMPONENTS = {
   [MODAL_ADD_EVENTS_VIDEOS]: AddEventsVideosModal,
   [MODAL_SIGN_UP_SUCCESS]: SignupModal,
   [MODAL_EMAIL_VERIFICATION_SUCCESS]: EmailVerificationSuccess,
-  [MODAL_EMAIL_VERIFICATION_ERROR]: EmailVerificationError
+  [MODAL_EMAIL_VERIFICATION_ERROR]: EmailVerificationError,
+  [MODAL_SEARCH_LOCATION]: AddLocation,
 
   /* other modals */
 };
@@ -133,11 +136,12 @@ const MODAL_TITLES = {
   [MODAL_ADD_EVENTS_VIDEOS]: "Add Video",
   [MODAL_SIGN_UP_SUCCESS]: "Welcome!",
   [MODAL_EMAIL_VERIFICATION_SUCCESS]: "Verification sent!",
-  [MODAL_EMAIL_VERIFICATION_ERROR]: "Ops..."
+  [MODAL_EMAIL_VERIFICATION_ERROR]: "Ops...",
+  [MODAL_SEARCH_LOCATION]: "Search Location",
   /* other modals */
 };
 
-const getAdditionalProps = type => {
+const getAdditionalProps = (type) => {
   switch (type) {
     default:
       return {};
@@ -168,7 +172,4 @@ const ModalRoot = ({ modalType, modalProps, hideModal }) => {
   }
 };
 
-export default connect(
-  state => getModal(state),
-  actions
-)(ModalRoot);
+export default connect((state) => getModal(state), actions)(ModalRoot);

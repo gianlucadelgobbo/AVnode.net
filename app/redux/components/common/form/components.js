@@ -12,10 +12,7 @@ import moment from "moment";
 import Dropzone from "react-dropzone";
 import { NavLink } from "react-router-dom";
 
-import {
-  MODAL_ADD_USER_PERFORMANCE,
-  MODAL_REMOVE
-} from "../../modal/constants";
+import { MODAL_SEARCH_LOCATION, MODAL_REMOVE } from "../../modal/constants";
 import TimePicker from "react-times";
 import "react-times/css/classic/default.css";
 import ReactTooltip from "react-tooltip";
@@ -27,7 +24,7 @@ import Autosuggest from "react-autosuggest";
 import {
   fetchPerformancesForSelect,
   fetchUserForSelect,
-  loadSuggestion
+  loadSuggestion,
 } from "../../../api";
 import { createMultiLanguageInitialObject } from "../../common/form";
 import { DATE_FORMAT } from "../../../conf";
@@ -52,7 +49,7 @@ export const autoCompleteSelectAsync = ({
   placeholder,
   loadOptions,
   isChild,
-  noOptionsMessage
+  noOptionsMessage,
 }) => {
   const field = (
     <div className="form-group">
@@ -67,7 +64,7 @@ export const autoCompleteSelectAsync = ({
         onBlurResetsInput={onBlurResetsInput}
         placeholder={placeholder}
         value={value}
-        onChange={value => input.onChange(value)}
+        onChange={(value) => input.onChange(value)}
         onBlur={() => input.onBlur(input.value)}
         //noOptionsMessage={() => noOptionsMessage}
       />
@@ -103,7 +100,7 @@ export const autocompleteComponent = ({
   renderSuggestion,
   onSuggestionsFetchRequested,
   onSuggestionsClearRequested,
-  getSuggestionID
+  getSuggestionID,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
 
@@ -135,25 +132,25 @@ export const googleAutocompleteSelect = ({
   placeholder,
   options,
   isChild,
-  label
+  label,
   //handleSelect
   //handleChange
 }) => {
   const renderFunc = ({
     getInputProps,
     getSuggestionItemProps,
-    suggestions
+    suggestions,
   }) => (
     <div className="autocomplete-root">
       <input
         {...getInputProps({
           placeholder: placeholder,
-          className: "form-control location-search-input"
+          className: "form-control location-search-input",
         })}
       />
 
       <div className="autocomplete-dropdown-container">
-        {suggestions.map(suggestion => {
+        {suggestions.map((suggestion) => {
           const className = suggestion.active
             ? "suggestion-item--active"
             : "suggestion-item";
@@ -211,7 +208,7 @@ export const performanceAutocompleteSelect = ({
   multi = false,
   placeholder,
   options,
-  isChild
+  isChild,
 }) => {
   const field = (
     <div className="form-group">
@@ -259,7 +256,7 @@ export const userAutocompleteSelect = ({
   multi = false,
   placeholder,
   options,
-  isChild
+  isChild,
 }) => {
   const field = (
     <div className="form-group">
@@ -309,7 +306,7 @@ export const renderList = ({
   isChild,
   multiple,
   clearable,
-  labeladd
+  labeladd,
 }) => {
   const field = (
     <div className="form-group">
@@ -358,7 +355,7 @@ const inputField = ({
   label,
   formType = "input",
   disabled,
-  autocomplete
+  autocomplete,
 }) => {
   const field = (
     <div>
@@ -412,7 +409,7 @@ export const inputText = ({
   pre,
   help,
   label,
-  formType
+  formType,
 }) => {
   return inputField({
     input,
@@ -423,7 +420,7 @@ export const inputText = ({
     pre,
     help,
     label,
-    formType
+    formType,
   });
 };
 
@@ -434,7 +431,7 @@ export const inputPassword = ({ input, meta, placeholder, isChild }) => {
     meta,
     placeholder,
     isChild,
-    autocomplete: "new-password"
+    autocomplete: "new-password",
   });
 };
 
@@ -471,7 +468,7 @@ export const inputEmail = ({ input, meta, placeholder, isChild, disabled }) => {
     meta,
     placeholder,
     isChild,
-    disabled
+    disabled,
   });
 };
 
@@ -512,7 +509,7 @@ export const textareaMultiTab = ({
   labels = {},
   placeholder,
   fields,
-  errors = {}
+  errors = {},
 }) => {
   const id = `tabs-${Math.random() * 100000000000000000}`;
   const hasValue = (fields, index) =>
@@ -580,7 +577,7 @@ export const multiInputUrl = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
 }) => {
   return multiInput({
     fields,
@@ -590,7 +587,7 @@ export const multiInputUrl = ({
     placeholder,
     render: inputUrl,
     key: "url",
-    isChild: true
+    isChild: true,
   });
 };
 
@@ -599,7 +596,7 @@ export const multiInputText = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
 }) => {
   return multiInput({
     fields,
@@ -609,7 +606,7 @@ export const multiInputText = ({
     placeholder,
     render: inputText,
     key: "text",
-    isChild: true
+    isChild: true,
   });
 };
 
@@ -618,7 +615,7 @@ export const multiInputEmail = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
 }) => {
   return multiInput({
     fields,
@@ -628,7 +625,7 @@ export const multiInputEmail = ({
     placeholder,
     render: inputEmail,
     key: "text",
-    isChild: true
+    isChild: true,
   });
 };
 
@@ -637,7 +634,7 @@ export const multiInputCheckbox = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
 }) => {
   return multiInput({
     fields,
@@ -647,7 +644,7 @@ export const multiInputCheckbox = ({
     placeholder,
     render: checkboxField,
     key: "checkbox",
-    isChild: true
+    isChild: true,
   });
 };
 
@@ -663,7 +660,7 @@ export const fieldWithLabel = ({
   SECTION,
   hidemodal,
   param,
-  meta: { error }
+  meta: { error },
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
     return (
@@ -686,9 +683,9 @@ export const fieldWithLabel = ({
                   onRemove: () =>
                     removeModel({
                       idusers: users[index]._id || users[index].id,
-                      _id: _id
-                    })
-                }
+                      _id: _id,
+                    }),
+                },
               })
             }
           >
@@ -714,7 +711,7 @@ export const fieldWithLabel = ({
             onClick={() =>
               showModal({
                 type: "MODAL_ADD_USER_" + `${SECTION}`,
-                props: { _id }
+                props: { _id },
               })
             }
           >
@@ -750,7 +747,7 @@ export const fieldWithLabelNoModal = ({
   users,
   SECTION,
   hidemodal,
-  meta: { error }
+  meta: { error },
 }) => {
   const renderSubField = (member, index, fields, showModal) => {
     //console.log(member);
@@ -775,9 +772,9 @@ export const fieldWithLabelNoModal = ({
                   onRemove: () =>
                     removeModel({
                       idusers: users[index]._id || users[index].id,
-                      _id: _id
-                    })
-                }
+                      _id: _id,
+                    }),
+                },
               })
             }
           >
@@ -804,7 +801,7 @@ export const fieldWithLabelNoModal = ({
             onClick={() =>
               showModal({
                 type: "MODAL_ADD_USER_" + `${SECTION}`,
-                props: { _id }
+                props: { _id },
               })
             }
           >
@@ -838,7 +835,7 @@ export const multiInputEmailWithDetails = ({
   placeholder,
   meta,
   onVerifyEmail,
-  modelEmails
+  modelEmails,
 }) => {
   const { error } = meta;
   const renderSubField = (member, index, fields, showModal) => {
@@ -920,8 +917,8 @@ export const multiInputEmailWithDetails = ({
                 showModal({
                   type: MODAL_REMOVE,
                   props: {
-                    onRemove: () => fields.remove(index)
-                  }
+                    onRemove: () => fields.remove(index),
+                  },
                 })
               }
             >
@@ -1019,7 +1016,7 @@ export const multiInputTel = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
 }) => {
   return multiInput({
     fields,
@@ -1029,7 +1026,7 @@ export const multiInputTel = ({
     placeholder,
     render: inputTel,
     key: "tel",
-    isChild: true
+    isChild: true,
   });
 };
 
@@ -1038,7 +1035,7 @@ export const multiGoogleCityCountry = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
 }) => {
   return multiInput({
     showModal,
@@ -1049,9 +1046,9 @@ export const multiGoogleCityCountry = ({
     render: googleAutocompleteSelect,
     key: "text",
     options: {
-      types: ["locality", "country"]
+      types: ["locality", "country"],
     },
-    isChild: true
+    isChild: true,
   });
 };
 
@@ -1060,7 +1057,7 @@ export const singleGoogleCityCountry = ({
   title,
   showModal,
   placeholder,
-  meta: { error }
+  meta: { error },
 }) => {
   return singleInput({
     showModal,
@@ -1071,9 +1068,9 @@ export const singleGoogleCityCountry = ({
     render: googleAutocompleteSelect,
     key: "text",
     options: {
-      types: ["locality", "country"]
+      types: ["locality", "country"],
     },
-    isChild: false
+    isChild: false,
   });
 };
 
@@ -1082,7 +1079,7 @@ export const multiGoogleAddress = ({
   title,
   placeholder,
   meta: { error },
-  showModal
+  showModal,
 }) => {
   return multiInput({
     showModal,
@@ -1093,9 +1090,9 @@ export const multiGoogleAddress = ({
     render: googleAutocompleteSelect,
     key: "text",
     options: {
-      types: ["(address)"]
+      types: ["(address)"],
     },
-    isChild: true
+    isChild: true,
   });
 };
 
@@ -1106,7 +1103,7 @@ const singleInput = ({
   render,
   placeholder,
   key,
-  showModal
+  showModal,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ fields, render, key = "text" }) => (
@@ -1128,7 +1125,7 @@ const multiInput = ({
   render,
   placeholder,
   key,
-  showModal
+  showModal,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields, render, key = "text" }) => (
@@ -1148,8 +1145,8 @@ const multiInput = ({
             showModal({
               type: MODAL_REMOVE,
               props: {
-                onRemove: () => fields.remove(index)
-              }
+                onRemove: () => fields.remove(index),
+              },
             })
           }
         >
@@ -1199,12 +1196,12 @@ export const renderListRadio = ({
   meta,
   placeholder,
   options,
-  isChild
+  isChild,
 }) => {
   const field = (
     <div className="form-group">
       <ButtonGroup>
-        {options.map(option => (
+        {options.map((option) => (
           <Button
             key={option[0]}
             bsStyle={option[0] === input.value ? "primary" : "default"}
@@ -1241,7 +1238,7 @@ export const tagsInput = ({
   delimiters,
   handleDrag,
   handleDelete,
-  handleAddition
+  handleAddition,
 }) => {
   const field = (
     <div className="form-group">
@@ -1282,6 +1279,10 @@ export const renderDatePicker = ({ input, meta, placeholder, isChild }) => {
         className="form-control"
         //peekNextMonth
         showMonthDropdown
+        onChange={(value) => {
+          //console.log(moment(value).format(DATE_FORMAT));
+          input.onChange(moment(value).format(DATE_FORMAT));
+        }}
         showYearDropdown
         dropdownMode="select"
         selected={input.value ? moment(input.value, DATE_FORMAT) : null}
@@ -1309,8 +1310,7 @@ export const renderDatePickerSignup = ({
   input,
   meta,
   placeholder,
-  onChange,
-  isChild
+  isChild,
 }) => {
   const field = (
     <div className="form-group">
@@ -1320,7 +1320,7 @@ export const renderDatePickerSignup = ({
         dateFormat={DATE_FORMAT}
         className="form-control"
         //peekNextMonth
-        onChange={value => {
+        onChange={(value) => {
           input.onChange(value);
         }}
         showMonthDropdown
@@ -1354,7 +1354,7 @@ export const renderTimePicker = ({
   timeMode = "24",
   className,
   placeholder,
-  isChild
+  isChild,
 }) => {
   const field = (
     <div className="form-group">
@@ -1393,7 +1393,7 @@ export const checkboxField = ({
   placeholder,
   disabled,
   classNames,
-  isChild
+  isChild,
 }) => {
   const field = (
     <div className="form-check">
@@ -1431,7 +1431,7 @@ export const fieldInColumn = ({
   placeholder,
   disabled,
   classNames,
-  isChild
+  isChild,
 }) => {
   const field = (
     <div className="form-group">
@@ -1450,7 +1450,7 @@ export const fieldInColumn = ({
   );
 };
 
-export const renderDropzoneInput = field => {
+export const renderDropzoneInput = (field) => {
   console.log(field);
   let files = field.input.value;
   let myClassName = field.className === undefined ? "" : field.className;
@@ -1506,10 +1506,10 @@ export const renderDropzoneInput = field => {
         onDropRejected={() => {
           alert("Ops... it seems your file is invalid");
         }}
-        onDrop={filesToUpload => {
+        onDrop={(filesToUpload) => {
           let files = [...field.input.value, ...filesToUpload];
           files = files.filter((item, pos) => files.indexOf(item) === pos);
-          files = files.filter(item => item !== "");
+          files = files.filter((item) => item !== "");
           field.input.onChange(files);
         }}
       >
@@ -1549,8 +1549,8 @@ export const renderDropzoneInput = field => {
                               let result = [...files];
                               result.splice(i, 1);
                               field.input.onChange(result);
-                            }
-                          }
+                            },
+                          },
                         });
                       }}
                     >
@@ -1575,8 +1575,8 @@ export const renderDropzoneInput = field => {
                               field.input.onChange(result);
                               field.input.value = [];
                               console.log(field);
-                            }
-                          }
+                            },
+                          },
                         });
                       }}
                     >
@@ -1623,9 +1623,8 @@ export const multiSchedule = ({
   title,
   meta: { error },
   placeholder,
-  showModal
-  //handleSelect
-  //handleChange
+  showModal,
+  _id,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -1680,11 +1679,11 @@ export const multiSchedule = ({
                 placeholder="Venue or Address"
                 label="locality"
                 options={{
-                  types: ["establishment"]
+                  types: ["establishment"],
                 }}
                 isChild={true}
-                format={v => {
-                  const parseVenue = v => {
+                format={(v) => {
+                  const parseVenue = (v) => {
                     return v.formatted_address;
                   };
 
@@ -1714,8 +1713,8 @@ export const multiSchedule = ({
               showModal({
                 type: MODAL_REMOVE,
                 props: {
-                  onRemove: () => fields.remove(index)
-                }
+                  onRemove: () => fields.remove(index),
+                },
               })
             }
           >
@@ -1726,6 +1725,23 @@ export const multiSchedule = ({
             />
           </Button>
         </div>
+        {/*<div className="col-md-9 offset-1">
+          <Button
+            bsStyle="success"
+            onClick={() =>
+              showModal({
+                type: MODAL_SEARCH_LOCATION,
+                props: { _id },
+              })
+            }
+          >
+            <i
+              className="fa fa-globe"
+              data-toggle="tooltip"
+              data-placement="top"
+            />
+          </Button>
+          </div>*/}
 
         <div className="col-md-12">
           <hr />
@@ -1771,7 +1787,7 @@ export const multiProgram = ({
   meta: { error },
   placeholder,
   showModal,
-  categories
+  categories,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -1861,8 +1877,8 @@ export const multiProgram = ({
               showModal({
                 type: MODAL_REMOVE,
                 props: {
-                  onRemove: () => fields.remove(index)
-                }
+                  onRemove: () => fields.remove(index),
+                },
               })
             }
           >
@@ -1919,7 +1935,7 @@ export const multiPackages = ({
   placeholder,
   showModal,
   tabs,
-  labels
+  labels,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -2011,8 +2027,8 @@ export const multiPackages = ({
               showModal({
                 type: MODAL_REMOVE,
                 props: {
-                  onRemove: () => fields.remove(index)
-                }
+                  onRemove: () => fields.remove(index),
+                },
               })
             }
           >
@@ -2073,7 +2089,7 @@ export const multiTopic = ({
   placeholder,
   showModal,
   tabs,
-  labels
+  labels,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -2107,8 +2123,8 @@ export const multiTopic = ({
               showModal({
                 type: MODAL_REMOVE,
                 props: {
-                  onRemove: () => fields.remove(index)
-                }
+                  onRemove: () => fields.remove(index),
+                },
               })
             }
           >
@@ -2169,7 +2185,7 @@ export const multiCall = ({
   showModal,
   categories,
   tabs,
-  labels
+  labels,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields, showModal }) => {
@@ -2278,8 +2294,8 @@ export const multiCall = ({
               showModal({
                 type: MODAL_REMOVE,
                 props: {
-                  onRemove: () => fields.remove(index)
-                }
+                  onRemove: () => fields.remove(index),
+                },
               })
             }
           >
@@ -2335,7 +2351,7 @@ export const sort = ({
   placeholder,
   isChild,
   showModal,
-  onRemove
+  onRemove,
 }) => {
   const { onChange, value } = input;
   const items = value || [];
@@ -2357,7 +2373,7 @@ export const multiContacts = ({
   placeholder,
   showModal,
   tabs,
-  labels
+  labels,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -2373,7 +2389,7 @@ export const multiContacts = ({
                 isChild={true}
                 options={[
                   { value: "Mr", label: "Mr" },
-                  { value: "Miss", label: "Miss" }
+                  { value: "Miss", label: "Miss" },
                 ]}
               />
             </div>
@@ -2411,9 +2427,9 @@ export const multiContacts = ({
                 component={renderList}
                 placeholder="Organization contact language"
                 isChild={true}
-                options={tabs.map(l => ({
+                options={tabs.map((l) => ({
                   value: l,
-                  label: labels[l]
+                  label: labels[l],
                 }))}
               />
             </div>
@@ -2468,8 +2484,8 @@ export const multiContacts = ({
                 showModal({
                   type: MODAL_REMOVE,
                   props: {
-                    onRemove: () => fields.remove(index)
-                  }
+                    onRemove: () => fields.remove(index),
+                  },
                 })
               }
             >
@@ -2528,7 +2544,7 @@ export const uploadComponent = ({
   media,
   multiple,
   loaded,
-  icon
+  icon,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
@@ -2631,8 +2647,8 @@ export const uploadComponent = ({
                     showModal({
                       type: MODAL_REMOVE,
                       props: {
-                        onRemove: () => this.onRemove(i)
-                      }
+                        onRemove: () => this.onRemove(i),
+                      },
                     })
                   }
                 >
@@ -2661,7 +2677,7 @@ export const listGallery = ({
   _id,
   onRemove,
   removeImage,
-  model
+  model,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
@@ -2686,7 +2702,7 @@ export const listGallery = ({
           </NavLink>
           {media && Array.isArray(media) && media.length > 0 && (
             <LightBox
-              images={media.map(x => x.imageFormats.large)}
+              images={media.map((x) => x.imageFormats.large)}
               Button={
                 <Button bsStyle="primary" className="btn-inline">
                   <i
@@ -2720,8 +2736,8 @@ export const listGallery = ({
                         type: MODAL_REMOVE,
                         props: {
                           onRemove: () =>
-                            removeImage({ id: model._id, imgId: image.slug })
-                        }
+                            removeImage({ id: model._id, imgId: image.slug }),
+                        },
                       });
                     }}
                     className="fa fa-trash"
@@ -2751,7 +2767,7 @@ export const uploadGallery = ({
   media,
   multiple,
   loaded,
-  icon
+  icon,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const containerVideo = { marginBottom: "20px" };
@@ -2830,7 +2846,7 @@ export const multiActivities = ({
   maxSize,
   tabs,
   labels,
-  seasons
+  seasons,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -2885,7 +2901,7 @@ export const multiActivities = ({
                 placeholder="Activity is running?"
                 options={[
                   ["act-yes", "Yes"],
-                  ["act-no", "No"]
+                  ["act-no", "No"],
                 ]}
                 value=""
               />
@@ -2906,7 +2922,7 @@ export const multiActivities = ({
                 name={`${member}.activity_main_season`}
                 component={renderList}
                 placeholder="Activity main season"
-                options={seasons.map(s => ({ label: s, value: s }))}
+                options={seasons.map((s) => ({ label: s, value: s }))}
               />
             </div>
           </div>
@@ -2927,8 +2943,8 @@ export const multiActivities = ({
                 showModal({
                   type: MODAL_REMOVE,
                   props: {
-                    onRemove: () => fields.remove(index)
-                  }
+                    onRemove: () => fields.remove(index),
+                  },
                 })
               }
             >
@@ -2979,7 +2995,7 @@ export const multiLegalOrganization = ({
   title,
   meta: { error },
   placeholder,
-  showModal
+  showModal,
 }) => {
   const label = <div className="labelField">{placeholder}</div>;
   const renderSubField = ({ member, index, fields }) => {
@@ -2995,7 +3011,7 @@ export const multiLegalOrganization = ({
                 placeholder="Organization legal representative title"
                 options={[
                   { value: "Mr", label: "Mr" },
-                  { value: "Miss", label: "Miss" }
+                  { value: "Miss", label: "Miss" },
                 ]}
               />
             </div>
@@ -3044,8 +3060,8 @@ export const multiLegalOrganization = ({
                 showModal({
                   type: MODAL_REMOVE,
                   props: {
-                    onRemove: () => fields.remove(index)
-                  }
+                    onRemove: () => fields.remove(index),
+                  },
                 })
               }
             >
@@ -3099,12 +3115,12 @@ export const radioButton = ({
   height,
   isChild,
   _onOptionChange,
-  optionValue
+  optionValue,
 }) => {
   return (
     <div>
       <ButtonGroup>
-        {options.map(option => (
+        {options.map((option) => (
           <Button
             key={option[0]}
             bsStyle={option[0] === optionValue ? "primary" : "default"}
@@ -3129,7 +3145,7 @@ export const CollapsedPanel = ({
   pre,
   help,
   _onOptionChange,
-  optionValue
+  optionValue,
 }) => {
   const field = (
     <div className="form-group">
@@ -3189,14 +3205,14 @@ export const renderRadioButton = ({
   handleChange,
   categories,
   model,
-  selectedType
+  selectedType,
 }) => {
   const field = (
     <div className="form-group">
       <div className="row">
         <div className="col-md-3">
           <div className="labelField">Type</div>
-          {categories.map(category => (
+          {categories.map((category) => (
             <div className="form-check" key={category.key}>
               <input
                 className="form-check-input"

@@ -12,7 +12,7 @@ import {
   multiInputUrl,
   multiInputEmail,
   multiInputTel,
-  fieldWithLabel
+  fieldWithLabel,
 } from "../../common/form/components";
 import validate from "./validate";
 import asyncValidate from "./asyncValidate";
@@ -28,12 +28,12 @@ import {
   SOCIAL,
   EMAILS,
   PHONE,
-  AUTHORS
+  AUTHORS,
 } from "../../common/form/labels";
 import { injectIntl } from "react-intl";
 
 class EventPublicForm extends Component {
-  getIntlString = obj => {
+  getIntlString = (obj) => {
     const { intl } = this.props;
     return intl.formatMessage(obj);
   };
@@ -50,9 +50,8 @@ class EventPublicForm extends Component {
       errors,
       _id,
       model,
-      removeModel
-      //handleSelect
-      //handleChange
+      removeModel,
+      handleChange,
     } = this.props;
 
     return (
@@ -88,8 +87,7 @@ class EventPublicForm extends Component {
           component={multiSchedule}
           placeholder={this.getIntlString({ id: SCHEDULE })}
           showModal={showModal}
-          //handleSelect={handleSelect}
-          //handleChange={handleChange}
+          _id={_id}
         />
 
         <br />
@@ -187,15 +185,15 @@ EventPublicForm = reduxForm({
   keepDirtyOnReinitialize: true,
   validate,
   asyncValidate,
-  asyncBlurFields: ["slug", "schedule[].venue"]
+  asyncBlurFields: ["slug", "schedule[].venue"],
 })(EventPublicForm);
 
 //Get form's initial values from redux state here
-const mapStateToProps = state => ({
-  errors: getFormSyncErrors(FORM_NAME)(state)
+const mapStateToProps = (state) => ({
+  errors: getFormSyncErrors(FORM_NAME)(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);
 
 EventPublicForm = connect(mapStateToProps, mapDispatchToProps)(EventPublicForm);
 

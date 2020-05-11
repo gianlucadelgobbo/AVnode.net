@@ -6,7 +6,7 @@ import { getModel } from "../selectors";
 import { fetchModel, saveModel, removeModel } from "./actions";
 import {
   getModelIsFetching,
-  getModelErrorMessage
+  getModelErrorMessage,
 } from "../../events/selectors";
 import { MODAL_ADD_EVENTS_VIDEOS } from "../../modal/constants";
 import Video from "../../video";
@@ -17,21 +17,25 @@ import TitleComponent from "../../titleComponent";
 class EventsVideo extends Component {
   render() {
     const {
-      model,
+      model = {},
       isFetching,
       errorMessage,
       fetchModel,
       match: {
-        params: { _id }
+        params: { _id },
       },
       saveModel,
       removeModel,
-      history
+      history,
     } = this.props;
 
     return (
       <div>
-        <TitleComponent title={model.title} link={"/events/"+model.slug} show={SHOW} />
+        <TitleComponent
+          title={model.title}
+          link={"/events/" + model.slug}
+          show={SHOW}
+        />
         <LateralMenu _id={_id} />
         <hr />
         <h3 className="labelField mb-3">{EVENT_NAME}</h3>
@@ -58,21 +62,21 @@ const mapStateToProps = (
   state,
   {
     match: {
-      params: { _id }
-    }
+      params: { _id },
+    },
   }
 ) => ({
   model: getModel(state, _id),
   isFetching: getModelIsFetching(state),
-  errorMessage: getModelErrorMessage(state)
+  errorMessage: getModelErrorMessage(state),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchModel,
       saveModel,
-      removeModel
+      removeModel,
     },
     dispatch
   );
