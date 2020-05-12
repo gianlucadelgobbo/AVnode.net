@@ -27,12 +27,11 @@ class ModelTable extends Component {
     const { list = {} } = this.props;
 
     const PerformanceItem = {
-      label: (
-        <FormattedMessage
-          id="PerformancesTitle"
-          defaultMessage="Performances Name"
-        />
-      )
+      label_0: <FormattedMessage id="PerformanceTitleTitle" defaultMessage="Image" />,
+      label_1: <FormattedMessage id="PerformanceNameTitle" defaultMessage="Name" />,
+      label_2: <FormattedMessage id="PerformanceType" defaultMessage="Type" />,
+      label_3: <FormattedMessage id="PerformanceProductionTitle" defaultMessage="Productions" />,
+      label_4: <FormattedMessage id="PerformanceCreationDateTitle" defaultMessage="Date" />,
     };
 
     return (
@@ -43,53 +42,148 @@ class ModelTable extends Component {
             Header: () => {
               return (
                 <span>
-                  {PerformanceItem.label}
+                  {PerformanceItem.label_0}
                   <i className="fa fa-sort" />
                 </span>
               );
             },
-            //id: "PerformancesTitle",
-            className: "PerformanceTable",
+            id: "PerformanceImg",
+            className: "PerformanceImg",
+            accessor: "PerformanceImg",
+            maxWidth: 200,
             Cell: props => {
               const { row, original } = props;
               return (
                 <Link to={`/admin/performances/${original._id}/public`}>
                   <img
-                    height={140}
-                    className="image-responsive"
+                    className = "img-fluid"
                     src={
                       original.imageFormats !== undefined
                         ? original.imageFormats.small
                         : ""
                     }
                   />
-                  <p>{original.title}</p>
                 </Link>
               );
             }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {PerformanceItem.label_1}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "PerformanceTitle",
+            className: "PerformanceTitle",
+            accessor: original => original.title,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <div>
+                  <div><b><Link to={`/admin/performances/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/performances/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
+                  <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public</div>
+                  <div><i className="fa fa-heart" /> {original.stats.likes} | <i className="fa fa-eye" /> {original.stats.visits}</div>
+                </div>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {PerformanceItem.label_2}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "PerformanceType",
+            className: "PerformanceType",
+            accessor: original => original.type && original.type.name ? original.type.name : "MISSING",
+            width: 150,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <div>{original.type && original.type.name ? original.type.name : "MISSING"}</div>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {PerformanceItem.label_3}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "PerformanceProduction",
+            className: "PerformanceProduction",
+            accessor: original => original.users && original.users.length ? original.users.map( item =>{return item.stagename}).join(", ") : "MISSING USERS",
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <ul>
+                  {original.users.map((user, i) => (
+                    <li key={i}>{user.stagename}</li>
+                  ))}
+                </ul>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {PerformanceItem.label_4}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "PerformanceDate",
+            className: "PerformanceDate",
+            width: 100,
+            accessor: original => original.createdAt,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <div>{new Date(original.createdAt).toLocaleDateString()}<br />{new Date(original.updatedAt).toLocaleDateString()}</div>
+              );
+            }
           }
-          /*{
-                        Header: this.getIntlString({id:ACTION}),
-                        id: "actions",
-                        width: 100,
-                        Cell: (props) => {
-                            const {original} = props;
-                            return <Button
-                                bsStyle="danger"
-                                className="btn-block"
-                                onClick={() =>
-                                    showModal({
-                                        type: MODAL_REMOVE,
-                                        props: {
-                                            onRemove: () => removeModel({id: original._id})
-                                        }
-                                    })}
-                            >
-                                <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-                            </Button>
-                        }
 
-                    }*/
+        /*{
+                      Header: this.getIntlString({id:ACTION}),
+                      id: "actions",
+                      width: 100,
+                      Cell: (props) => {
+                          const {original} = props;
+                          return <Button
+                              bsStyle="danger"
+                              className="btn-block"
+                              onClick={() =>
+                                  showModal({
+                                      type: MODAL_REMOVE,
+                                      props: {
+                                          onRemove: () => removeModel({id: original._id})
+                                      }
+                                  })}
+                          >
+                              <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                          </Button>
+                      }
+
+                  }*/
         ]}
       />
     );

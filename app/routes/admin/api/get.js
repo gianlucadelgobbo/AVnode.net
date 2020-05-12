@@ -2064,13 +2064,13 @@ router.addVideo = (req, res) => {
             .select(select)
             //.populate({ "path": "members", "select": "addresses", "model": "User"})
             .exec((err, video) => {
-              video.events.push(req.params.id);
+              if (!video[req.params.sez]) video[req.params.sez] = [];
+              video[req.params.sez].push(req.params.id);
               video.save(function(err){
                 if (err) {
                   logger.debug(`${JSON.stringify(err)}`);
                   res.status(404).json({ error: err });
                 } else {
-                  req.params.sez = 'events';
                   req.params.form = 'videos';
                   router.getData(req, res);            
                 }

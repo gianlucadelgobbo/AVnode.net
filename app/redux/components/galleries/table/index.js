@@ -25,12 +25,14 @@ class ModelTable extends Component {
 
   renderTable() {
     const { showModal, removeModel, list } = this.props;
-    //console.log(list)
-    const GalleriesItem = {
-      label: (
-        <FormattedMessage id="GalleriesTitle" defaultMessage="Galleries Name" />
-      )
+    const GalleryItem = {
+      label_0: <FormattedMessage id="GalleryTitleTitle" defaultMessage="Image" />,
+      label_1: <FormattedMessage id="GalleryNameTitle" defaultMessage="Name" />,
+      label_3: <FormattedMessage id="GalleryProductionTitle" defaultMessage="Productions" />,
+      label_4: <FormattedMessage id="GalleryCreationDateTitle" defaultMessage="Date" />,
+      label_5: <FormattedMessage id="GalleryLinks" defaultMessage="Links" />
     };
+
     return (
       <Table
         data={list}
@@ -39,60 +41,170 @@ class ModelTable extends Component {
             Header: () => {
               return (
                 <span>
-                  {GalleriesItem.label}
+                  {GalleryItem.label_0}
                   <i className="fa fa-sort" />
                 </span>
               );
             },
-            id: "title",
-            accessor: "title",
-            className: "GalleriesTable",
+            id: "GalleryImg",
+            className: "GalleryImg",
+            accessor: "GalleryImg",
+            maxWidth: 200,
             Cell: props => {
               const { row, original } = props;
               return (
-                <Link to={`/admin/galleries/${original._id}/public`}>
+                <Link to={`/admin/Gallerys/${original._id}/public`}>
                   <img
-                    height={140}
-                    className="image-responsive"
+                    className = "img-fluid"
                     src={
                       original.imageFormats !== undefined
                         ? original.imageFormats.small
                         : ""
                     }
                   />
-                  <p>{original.title}</p>
                 </Link>
               );
             }
-          }
-          /*{
-            Header: this.getIntlString({ id: ACTION }),
-            id: "actions",
-            width: 100,
-            Cell: props => {
-              const { original } = props;
+          },{
+            Header: () => {
               return (
-                <Button
-                  bsStyle="danger"
-                  className="btn-block"
-                  onClick={() =>
-                    showModal({
-                      type: MODAL_REMOVE,
-                      props: {
-                        onRemove: () => removeModel({ id: original._id })
-                      }
-                    })
-                  }
-                >
-                  <i
-                    className="fa fa-trash"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                  />
-                </Button>
+                <span>
+                  {GalleryItem.label_1}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "GalleryTitle",
+            className: "GalleryTitle",
+            accessor: original => original.title,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <div>
+                  <div><b><Link to={`/admin/Gallerys/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/Gallerys/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
+                  <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public | <i className="fa fa-image" /> {original.stats.img}</div>
+                  <div><i className="fa fa-heart" /> {original.stats.likes} | <i className="fa fa-eye" /> {original.stats.visits}</div>
+                </div>
               );
             }
-          }*/
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {GalleryItem.label_3}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "GalleryProduction",
+            className: "GalleryProduction",
+            accessor: original => original.users && original.users.length ? original.users.map( item =>{return item.stagename}).join(", ") : "MISSING USERS",
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <ul>
+                  {original.users.map((user, i) => (
+                    <li key={i}>{user.stagename}</li>
+                  ))}
+                </ul>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {GalleryItem.label_4}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "GalleryDate",
+            className: "GalleryDate",
+            width: 100,
+            accessor: original => original.createdAt,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <p>{new Date(original.createdAt).toLocaleDateString()}<br />{new Date(original.updatedAt).toLocaleDateString()}</p>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {GalleryItem.label_5}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "GalleryLinks",
+            className: "GalleryLinks",
+            accessor: original => 
+              original.events && original.events.length && original.performances && original.performances.length ? 
+                original.events.map( item =>{return item.title}).concat(original.performances.map( item =>{return item.title})).join(", ") : 
+                original.events && original.events.length ? original.events.map( item =>{return item.title}) : 
+                original.performances && original.performances.length ? original.performances.map( item =>{return item.title}) : "MISSING USERS",
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <div>
+                  {original.events && original.events.length>0 ?
+                  <div>
+                    <div>Events</div>
+                    <ul>
+                      {original.events.map((event, i) => (
+                        <li key={i}>{event.title}</li>
+                      ))}
+                    </ul>
+                  </div> : ""}
+                  {original.performances && original.performances.length>0 ?
+                  <div>
+                    <div>Performances</div>
+                    <ul>
+                      {original.performances.map((performance, i) => (
+                        <li key={i}>{performance.title}</li>
+                      ))}
+                    </ul>
+                  </div> : ""}
+                </div>
+              );
+            }
+          }
+
+        /*{
+                      Header: this.getIntlString({id:ACTION}),
+                      id: "actions",
+                      width: 100,
+                      Cell: (props) => {
+                          const {original} = props;
+                          return <Button
+                              bsStyle="danger"
+                              className="btn-block"
+                              onClick={() =>
+                                  showModal({
+                                      type: MODAL_REMOVE,
+                                      props: {
+                                          onRemove: () => removeModel({id: original._id})
+                                      }
+                                  })}
+                          >
+                              <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                          </Button>
+                      }
+
+                  }*/
         ]}
       />
     );
@@ -103,7 +215,7 @@ class ModelTable extends Component {
 
     return (
       <div>
-        {!list.length && <div>No Videos to display</div>}
+        {!list.length && <div>No Gallerys to display</div>}
 
         {isFetching && <Loading />}
 

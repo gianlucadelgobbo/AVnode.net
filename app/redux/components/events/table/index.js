@@ -85,8 +85,9 @@ class ModelTable extends Component {
               const { row, original } = props;
               return (
                 <div>
-                  <p><b><Link to={`/admin/events/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/events/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></p>
-                  <p>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public</p>
+                  <div><b><Link to={`/admin/events/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/events/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
+                  <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public</div>
+                  <div><i className="fa fa-heart" /> {original.stats.likes} | <i className="fa fa-eye" /> {original.stats.visits}</div>
                 </div>
               );
             }
@@ -109,10 +110,10 @@ class ModelTable extends Component {
             Cell: props => {
               const { row, original } = props;
               return (
-                <p>{original.schedule && original.schedule.length ? 
+                <div>{original.schedule && original.schedule.length ? 
                   new Date(original.schedule[0].starttime).toLocaleDateString() :
                   "MISSING"
-                }</p>
+                }</div>
               );
             }
           },{
@@ -159,7 +160,7 @@ class ModelTable extends Component {
             Cell: props => {
               const { row, original } = props;
               return (
-                <p>{new Date(original.createdAt).toLocaleDateString()}<br />{new Date(original.updatedAt).toLocaleDateString()}</p>
+                <div>{new Date(original.createdAt).toLocaleDateString()}<br />{new Date(original.updatedAt).toLocaleDateString()}</div>
               );
             }
           }

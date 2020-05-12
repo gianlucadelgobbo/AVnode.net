@@ -26,7 +26,12 @@ class ModelTable extends Component {
   renderTable() {
     const { showModal, removeModel, list } = this.props;
     const CrewItem = {
-      label: <FormattedMessage id="CrewTitle" defaultMessage="Crew Name" />
+      label_0: <FormattedMessage id="CrewTitleTitle" defaultMessage="Image" />,
+      label_1: <FormattedMessage id="CrewNameTitle" defaultMessage="Name" />,
+      label_2: <FormattedMessage id="CrewType" defaultMessage="Type" />,
+      label_3: <FormattedMessage id="CrewMembersTitle" defaultMessage="Members" />,
+      label_4: <FormattedMessage id="CrewCreationDateTitle" defaultMessage="Date" />,
+      label_5: <FormattedMessage id="CrewLinks" defaultMessage="Links" />
     };
 
     return (
@@ -37,53 +42,181 @@ class ModelTable extends Component {
             Header: () => {
               return (
                 <span>
-                  {CrewItem.label}
+                  {CrewItem.label_0}
                   <i className="fa fa-sort" />
                 </span>
               );
             },
-            id: "stagename",
-            accessor: "stagename",
-            className: "CrewTable",
+            id: "CrewImg",
+            className: "CrewImg",
+            accessor: "CrewImg",
+            maxWidth: 200,
             Cell: props => {
               const { row, original } = props;
               return (
                 <Link to={`/admin/crews/${original._id}/public`}>
                   <img
-                    className="image-responsive"
+                    className = "img-fluid"
                     src={
                       original.imageFormats !== undefined
                         ? original.imageFormats.small
                         : ""
                     }
                   />
-                  <p>{row.stagename}</p>
                 </Link>
               );
             }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {CrewItem.label_1}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "CrewTitle",
+            className: "CrewTitle",
+            accessor: original => original.stagename,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <div>
+                  <div><b><Link to={`/admin/crews/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/crews/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.stagename}</b></div>
+                  <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public</div>
+                  <div><i className="fa fa-eye" /> {original.stats.visits}</div>
+                </div>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {CrewItem.label_2}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "CrewType",
+            className: "CrewType",
+            accessor:  original => (original.partner_owner && original.partner_owner.length && original.partner_owner.map(item => {return item.owner.toString()}).indexOf("5be8772bfc39610000007065") !== -1)  || original.activity_as_organization > 0 ? "ORGANIZATION" : "CREW",
+            width: 150,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                (original.partner_owner && original.partner_owner.length && original.partner_owner.map(item => {return item.owner.toString()}).indexOf("5be8772bfc39610000007065") !== -1)  || original.activity_as_organization > 0 ? "ORGANIZATION" : "CREW"
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {CrewItem.label_3}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "CrewMembers",
+            className: "CrewMembers",
+            accessor: original => original.members && original.members.length ? original.members.map( item =>{return item.stagename}).join(", ") : "MISSING USERS",
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <ul>
+                  {original.members.map((user, i) => (
+                    <li key={i}>{user.stagename}</li>
+                  ))}
+                </ul>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {CrewItem.label_4}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "CrewDate",
+            className: "CrewDate",
+            width: 100,
+            accessor: original => original.createdAt,
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <p>{new Date(original.createdAt).toLocaleDateString()}<br />{new Date(original.updatedAt).toLocaleDateString()}</p>
+              );
+            }
+          },{
+            Header: () => {
+              return (
+                <span>
+                  {CrewItem.label_5}
+                  <i className="fa fa-sort" />
+                </span>
+              );
+            },
+            id: "CrewLinks",
+            className: "CrewLinks",
+            accessor: original => Object.keys(original.stats).join(", "),
+            filterMethod: (filter, rows) => {
+              return rows[filter.id].toLowerCase().indexOf(filter.value.toLowerCase())!==-1 ? true : false
+            },
+            Cell: props => {
+              const { row, original } = props;
+              return (
+                <div>
+                  <ul className="compactList">
+                    {Object.keys(original.stats).map((k, i) => (
+                      k != "visits" && k != "members" ?  
+                        <li key={i}>{k}: { 
+                          k == "recent" ?  <ul>
+                            {Object.keys(original.stats[k]).map((key2, i) =>(
+                            <li key={i}>{key2}: {original.stats[k][key2]}</li>
+                          ))}</ul> : original.stats[k]}</li>
+                      : ""
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
           }
-          // {
-          //     Header: this.getIntlString({id:ACTION}),
-          //     id: "actions",
-          //     width: 100,
-          //     Cell: (props) => {
-          //         const {original} = props;
-          //         return <Button
-          //             bsStyle="danger"
-          //             className="btn-block"
-          //             onClick={() =>
-          //                 showModal({
-          //                     type: MODAL_REMOVE,
-          //                     props: {
-          //                         onRemove: () => removeModel({id: original._id})
-          //                     }
-          //                 })}
-          //         >
-          //             <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
-          //         </Button>
-          //     }
 
-          // }
+        /*{
+                      Header: this.getIntlString({id:ACTION}),
+                      id: "actions",
+                      width: 100,
+                      Cell: (props) => {
+                          const {original} = props;
+                          return <Button
+                              bsStyle="danger"
+                              className="btn-block"
+                              onClick={() =>
+                                  showModal({
+                                      type: MODAL_REMOVE,
+                                      props: {
+                                          onRemove: () => removeModel({id: original._id})
+                                      }
+                                  })}
+                          >
+                              <i className="fa fa-trash" data-toggle="tooltip" data-placement="top"/>
+                          </Button>
+                      }
+
+                  }*/
         ]}
       />
     );
