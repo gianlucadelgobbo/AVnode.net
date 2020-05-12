@@ -8,6 +8,77 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
     .collapse.navbar-collapse#navbar-collapse_performer_template
       include menuSections
       ul.user_navbar.navbar-nav
+        li.dropdown.mt-1.mr-2#dropdownContents
+          button#dropdownMenuContents.btn.btn-primary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')=global.__('New content')+" "
+          .dropdown-menu(aria-labelledby='dropdownMenuContents')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Performance Name")
+              data-title=global.__("Add Performance")
+              data-user=user && user._id ? user._id : undefined
+              data-param="title"
+              data-sez="performances")=global.__('New Performance')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Video Title")
+              data-title=global.__("Add VJ Television Video")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="videos")=global.__('New VJ Television Video')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Learning Title")
+              data-title=global.__("Add Learning")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="performances")=global.__('New Learning')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Event Name")
+              data-title=global.__("Add Event")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="events")=global.__('New Event')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("News Title")
+              data-title=global.__("Add News")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="news")=global.__('New News')
+            .dropdown-divider
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Video Title")
+              data-title=global.__("Add Video")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="videos")=global.__('New Video')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Gallery Name")
+              data-title=global.__("Add Gallery")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="galleries")=global.__('New Gallery')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Crew Name")
+              data-title=global.__("Add Crew")
+              data-param="stagename"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="users")=global.__('New Crew')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Organization Name")
+              data-title=global.__("Add Organization")
+              data-param="stagename"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="users")=global.__('New Organization')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Footage Title")
+              data-title=global.__("Add Footage")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="footage")=global.__('New Footage')
+            a.dropdown-item(href='#'
+              data-labelfield=global.__("Playlist Name")
+              data-title=global.__("Add Playlist")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="playlist")=global.__('New Playlist')
+
         if user
           //li.nav-item.dropdown.user_menu.user_menu_logged                  
           li.nav-item.dropdown.user_menu.user_menu_logged

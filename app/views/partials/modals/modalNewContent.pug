@@ -1,0 +1,22 @@
+.modal.fade.bd-example-modal-lg#modalNewContent(role='dialog', tabindex='-1', aria-labelledby='modalNewContent', aria-hidden='true')
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        h4.modal-title
+        button.close(type='button' data-dismiss="modal" aria-label="Close")
+          span(aria-hidden='true') ×
+      .modal-body
+        .alert.d-none
+        .row
+          .col-md-12
+            form
+              dl.row
+                dt.col-sm-2
+                  .labelfield Crew Name
+                dd.col-sm-10.mb-4
+                  div
+                    .input-group
+                      input.form-control.input(type='text', name='stagename', placeholder='Crew Name', aria-describedby='slugHelpInline', value='')
+                      input.sez(type='hidden', name='sez')
+              hr
+              button.btn.btn-primary.btn-large.btn-block(type='submit') Save

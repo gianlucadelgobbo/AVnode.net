@@ -1,4 +1,54 @@
 $(document).ready(function(){
+  $('#dropdownContents a').click(function (event) {
+    event.preventDefault();
+    var button = $(this) // Button that triggered the modal
+    var user = button.data('user') // Extract info from data-* attributes
+    console.log("user")
+    console.log(user)
+    if (!user) {
+      window.location.href = "/login";
+    } else {
+      console.log("stoca")
+      var sez = button.data('sez') // Extract info from data-* attributes
+      var title = button.data('title') // Extract info from data-* attributes
+      var labelfield = button.data('labelfield') // Extract info from data-* attributes
+      var param = button.data('param') // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $('#modalNewContent')
+      modal.find('.modal-title').text(title);
+      modal.find('.labelfield').text(labelfield);
+      modal.find('.input').attr("placeholder", labelfield);
+      modal.find('.input').attr("name", param);
+      modal.find('.sez').val(sez);
+      $('#modalNewContent').modal();
+    }
+  });
+  $( "#modalNewContent form" ).submit(function( event ) {
+    event.preventDefault();
+    var post = {};
+    $( this ).serializeArray().map(n => {
+      post[n['name']] = n['value'].trim();
+    });
+    var sez = post.sez;
+    delete post.sez
+    console.log(post)
+    $.ajax({
+      url: "/admin/api/"+sez+"/new/",
+      method: "post",
+      data: post
+    })
+    .done(function(data) {
+      console.log(data);
+      window.location.href = "/admin/"+sez+"/"+data._id+"/public";
+    })
+    .fail(function(err) {
+      console.log("err");
+      console.log(err);
+      $( "#modalNewContent form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
+    });
+  })
+
   $('[data-toggle="tooltip"]').tooltip();
   $( ".event_main_image_wrapper" ).click(function() {
     //   $( ".event_main_image_wrapper" ).toggleClass("expanded");
