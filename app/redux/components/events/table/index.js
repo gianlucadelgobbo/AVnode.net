@@ -11,7 +11,6 @@ import Loading from "../../loading";
 import Table from "../../table";
 import { injectIntl, FormattedMessage } from "react-intl";
 import { ACTION } from "../../common/form/labels";
-import matchSorter from 'match-sorter'
 
 class ModelTable extends Component {
   componentDidMount() {
