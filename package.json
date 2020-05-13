@@ -69,7 +69,6 @@
     "language-list": "0.0.3",
     "lodash": "^4.17.15",
     "lusca": "^1.6.0",
-    "match-sorter": "^1.8.1",
     "mime": "^2.3.1",
     "minimist": "^1.2.0",
     "moment": "^2.24.0",

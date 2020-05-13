@@ -35,8 +35,8 @@ block content
               source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
               //source(src='MY_VIDEO.webm', type='video/webm')
               p.vjs-no-js
-                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
-                a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
+                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
+                a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
 
       .col-md-4.data_footage_video
         .data_footage_video_wrapper

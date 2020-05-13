@@ -37,7 +37,7 @@ block content
             h2.home_title
               span.title_label!=global.__('Performances overview')
               a(href="/performances/",  title=global.__('All the performances'))
-                span.button_more_label!=global.__('See all+')                            
+                span.button_more_label!=global.__('See all')+"+"                            
             - var item = data.performances[0]
                 include partials/boxPerformanceHome
 
@@ -49,7 +49,7 @@ block content
             h2.home_title
               span.title_label!=global.__('Next events')
               a(href="/events/",  title=global.__('All the events'))
-                span.button_more_label!=global.__('See all+')                                                
+                span.button_more_label!=global.__('See all')+"+"                                                
         .row
           .col-sm-6
             each item, index in data.events
@@ -70,7 +70,7 @@ block content
             h2.home_title
               span.title_label!=global.__('News')
               a(href="/news/",  title=global.__('All the news'))
-                span.button_more_label!=global.__('See all+')                                                
+                span.button_more_label!=global.__('See all')+"+"                                                
         .row
           .col-sm-6
             a(href="/news/",  title=global.__('All the news'))

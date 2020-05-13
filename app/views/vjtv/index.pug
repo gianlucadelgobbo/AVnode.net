@@ -7,8 +7,8 @@ block content
           .embed-responsive.embed-responsive-16by9
             video.embed-responsive-item#my-video.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height='264', poster="https://vjtelevision.com/vjtelevision/images/main-img.jpg", data-setup='{"aspectRatio":"16:9", "fluid": true}')
               p.vjs-no-js
-                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that")
-                a(href='http://videojs.com/html5-video-support/', target='_blank')=!global.__("supports HTML5 video")
+                !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
+                a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
         .col-lg-3.pl-lg-0
           #headervjtv.clearfix.h3.p-2.bg-dark
             #date.float-left.pt-1.pl-2=date

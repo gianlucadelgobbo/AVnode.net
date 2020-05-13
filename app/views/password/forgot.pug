@@ -10,7 +10,7 @@ block content
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
               label(for='email')=global.__('Email')
-              input.form-control(type='email', name='email', id='email', placeholder=global.__('example@foo.bar'), value=email, autofocus, required)
+              input.form-control(type='email', name='email', id='email', placeholder='example@foo.bar', value=email, autofocus, required)
             .form-group
               button.btn.btn-primary.btn-success(type='submit')=global.__('reset password')
                 i.fa.fa-angle-right.fa-fw

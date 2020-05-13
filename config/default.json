@@ -32,6 +32,14 @@
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
+    "de": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
     "fr": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
       "weekdayday" : "dddd, DD",
@@ -86,6 +94,7 @@
     "en",
     "it",
     "es",
+    "de",
     "fr",
     "pl",
     "ru",
@@ -97,6 +106,7 @@
     "en":"English",
     "it":"Italiano",
     "es":"Español",
+    "de":"German",
     "fr":"Français",
     "pl":"Polski",
     "ru":"Russian",

@@ -53,7 +53,7 @@ block content
               include ../partials/boxEvent
           .button_more.button_more_program
             a(href="/"+data.slug+"/events", title=data.stagename)
-              span.button_more_label!=global.__('+ All the events')
+              span.button_more_label!='+ '+global.__('All the events')
               span.button_more_bkg
           
   
@@ -66,7 +66,7 @@ block content
               include ../partials/boxEvent
           .button_more.button_more_program
             a(href="/"+data.slug+"/partnerships", title=data.stagename)
-              span.button_more_label!=global.__('+ All the partnerships')
+              span.button_more_label!='+ '+global.__('All the partnerships')
               span.button_more_bkg
           
   
@@ -90,7 +90,7 @@ block content
                   include ../partials/boxPerformance
               .button_more.button_more_grey
                 a(href="/"+data.slug+"/performances", title=data.stagename)
-                  span.button_more_label!=global.__('+ All the performances')
+                  span.button_more_label!='+ '+global.__('All the performances')
                   span.button_more_bkg                  
     .polygon_divider_bottom
       svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
@@ -152,7 +152,7 @@ block content
                     include ../partials/boxFootage 
                 .button_more.button_more_grey
                   a(href="/"+data.slug+"/footage", title=data.stagename)
-                    span.button_more_label!=global.__('+ All the footages')
+                    span.button_more_label!='+ '+global.__('All the footages')
                     span.button_more_bkg                     
 
           if data.videos && data.videos.length
@@ -164,7 +164,7 @@ block content
                     include ../partials/boxVideo
                 .button_more.button_more_grey
                   a(href="/"+data.slug+"/videos", title=data.stagename)
-                    span.button_more_label!=global.__('+ All the videos')
+                    span.button_more_label!='+ '+global.__('All the videos')
                     span.button_more_bkg                    
 
           if data.playlists && data.playlists.length
@@ -176,7 +176,7 @@ block content
                     include ../partials/boxPlaylist
                 .button_more.button_more_grey
                   a(href="/"+data.slug+"/playlists", title=data.stagename)
-                    span.button_more_label!=global.__('+ All the playlists')
+                    span.button_more_label!='+ '+global.__('All the playlists')
                     span.button_more_bkg
 
 
@@ -194,7 +194,7 @@ block content
                   include ../partials/boxGallery  
               .button_more.button_more_program
                 a(href="/"+data.slug+"/galleries", title=data.stagename)
-                  span.button_more_label!=global.__('+ All the galleries')
+                  span.button_more_label!='+ '+global.__('All the galleries')
                   span.button_more_bkg                        
 
   if data.events && data.news.length
@@ -216,5 +216,5 @@ block content
                         include ../partials/boxNews
               .button_more.button_more_program
                 a(href="/"+data.slug+"/news", title=data.stagename)
-                  span.button_more_label!=global.__('+ All the news')
+                  span.button_more_label!='+ '+global.__('All the news')
                   span.button_more_bkg                        
