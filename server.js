@@ -57,7 +57,11 @@ app.use(compression());
   })
 ); */
 
-app.use(express.static(path.join(__dirname, "public"), { maxAge: 84600 }));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/storage", express.static(path.join(__dirname, "storage")));
+app.use("/warehouse", express.static(path.join(__dirname, "warehouse")));
+// app.use("/glacier", express.static(path.join(__dirname, "glacier")));
+
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(
   bodyParser.urlencoded({
@@ -68,8 +72,6 @@ app.use(
 );
 app.use(cookieParser());
 app.use(flash());
-app.use("/storage", express.static(path.join(__dirname, "storage")));
-app.use("/warehouse", express.static(path.join(__dirname, "warehouse")));
 
 app.use(i18n.init);
 app.use(function(req, res, next) {
@@ -78,7 +80,7 @@ app.use(function(req, res, next) {
   res.locals.protocol = req.get("host") === "localhost:8006" ? "http" : "https" /*req.protocol*/;
   if (req.headers && req.headers.host) {
     let hostA = req.headers.host.split(".");
-    // if (config.locales.indexOf(hostA[0]) >= 0) hostA.shift(); REDIRECT ON EN SITE
+    if (config.locales.indexOf(hostA[0]) >= 0) hostA.shift();
     res.locals.basehost = hostA.join(".");
   }
   next();
@@ -139,6 +141,7 @@ app.use((req, res, next) => {
   }
   global.setLocale(req.session.current_lang);
   moment.locale(req.session.current_lang);
+  logger.debug("global.getLocale: " + global.getLocale());
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
