@@ -1,14 +1,3 @@
-locales/by.json
-locales/de.json
-locales/en.json
-locales/es.json
-locales/fr.json
-locales/gr.json
-locales/hu.json
-locales/it.json
-locales/pl.json
-locales/ru.json
-
 .env*
 avnode-*
 node_modules
@@ -24,6 +13,8 @@ ___MAINTENANCE_SCRIPTS
 config/ses.json
 log.log
 
+glacier/_manual/*
+space/*
 glacier/events_originals/*
 glacier/footage_originals/*
 glacier/footage_previews/*
