@@ -10,4 +10,4 @@ urlset(xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://w
       lastmod=item.updatedAt.toISOString()
       image:image
         image:loc=item.imageFormats.large
-        image:title=global.__("Image of:")+" "+(basepath==="performers" ? item.stagename : item.title)
+        image:title=global.__("Image of")+": "+(basepath==="performers" ? item.stagename : item.title)
