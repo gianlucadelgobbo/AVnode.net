@@ -16,6 +16,7 @@ log.log
 glacier/_manual/*
 space/*
 glacier/events_originals/*
+glacier/_manuals/*
 glacier/footage_originals/*
 glacier/footage_previews/*
 glacier/galleries_originals/*

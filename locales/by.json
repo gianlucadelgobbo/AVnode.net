@@ -208,5 +208,8 @@
 	"Username": "Username",
 	"If your profile is https://flxer.net/USERNAME insert USERNAME": "If your profile is https://flxer.net/USERNAME insert USERNAME",
 	"You are logged in.": "You are logged in.",
-	"The list of Events: All Most viewed": "The list of Events: All Most viewed"
+	"The list of Events: All Most viewed": "The list of Events: All Most viewed",
+	"The list of Galleries: All Most recent": "The list of Galleries: All Most recent",
+	"The list of Performances: DVD projection Most liked": "The list of Performances: DVD projection Most liked",
+	"The list of Performances: All Most viewed": "The list of Performances: All Most viewed"
 }
