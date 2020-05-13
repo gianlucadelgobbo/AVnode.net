@@ -350,7 +350,7 @@
 	"The list of Playlists: All Most recent": "The list of Playlists: All Most recent",
 	"The list of Events: Clubbing Most recent": "The list of Events: Clubbing Most recent",
 	"The list of Performances: DJ Set Most recent": "The list of Performances: DJ Set Most recent",
-	"The list of Videos: Docs Most liked": "The list of Videos: Docs Most liked"
+	"The list of Videos: Docs Most liked": "The list of Videos: Docs Most liked",
 	"LOCALE_26": "------------------PASSWORD RESET------------------",
 	"Password reset link sent to:": "Password reset link sent to:",
 	"New Password": "New Password",
@@ -359,5 +359,5 @@
 	"Save & Continue": "Save & Continue",
 	"Password and Password confirm does not match. Try again...": "Password and Password confirm does not match. Try again...",
 	"Link to change the password has expired or is not valid.": "Link to change the password has expired or is not valid.",
-	"Your password has been reset.": "Your password has been reset.",
+	"Your password has been reset.": "Your password has been reset."
 }
