@@ -4386,6 +4386,7 @@
         }]
       },
       "print": {
+        "title": "Print",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4550,6 +4551,7 @@
         }]
       },
       "events": {
+        "title": "Events",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4584,6 +4586,7 @@
         }]
       },
       "partnerships": {
+        "title": "Partnerships",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4617,6 +4620,7 @@
         }]
       },
       "footage": {
+        "title": "Footage",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4656,6 +4660,7 @@
         }]
       },
       "playlists": {
+        "title": "Playlists",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4694,6 +4699,7 @@
         }]
       },
       "performances": {
+        "title": "Performances",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4732,6 +4738,7 @@
         }]
       },
       "learnings": {
+        "title": "Learnings",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4770,6 +4777,7 @@
         }]
       },
       "videos": {
+        "title": "Videos",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4809,6 +4817,7 @@
         }]
       },
       "news": {
+        "title": "News",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4849,6 +4858,7 @@
         }]
       },
       "galleries": {
+        "title": "Galleries",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4887,6 +4897,7 @@
         }]
       },
       "crews": {
+        "title": "Crews",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -4924,6 +4935,7 @@
         }]
       },
       "members": {
+        "title": "Members",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5190,6 +5202,7 @@
         }]
       },
       "events": {
+        "title": "Events",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5228,6 +5241,7 @@
         }]
       },
       "partnerships": {
+        "title": "Partnerships",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5259,6 +5273,7 @@
         }]
       },
       "footage": {
+        "title": "Footage",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5296,6 +5311,7 @@
         }]
       },
       "playlists": {
+        "title": "Playlists",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5332,6 +5348,7 @@
         }]
       },
       "performances": {
+        "title": "Performances",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5369,6 +5386,7 @@
         }]
       },
       "videos": {
+        "title": "Videos",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5406,6 +5424,7 @@
         }]
       },
       "news": {
+        "title": "News",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5445,6 +5464,7 @@
         }]
       },
       "galleries": {
+        "title": "Galleries",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5481,6 +5501,7 @@
         }]
       },
       "crews": {
+        "title": "Crews",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5516,6 +5537,7 @@
         }]
       },
       "members": {
+        "title": "Members",
         "select": {
           "stagename": 1,
           "abouts": 1,
@@ -5789,6 +5811,7 @@
         }]
       },
       "performers": {
+        "title": "Performers",
         "select": {
           "title": 1,
           "subtitles": 1,
@@ -5871,6 +5894,7 @@
         }]
       },
       "program": {
+        "title": "Program",
         "select": {
           "title": 1,
           "subtitles": 1,
@@ -5969,6 +5993,7 @@
         }]
       },
       "galleries": {
+        "title": "Galleries",
         "select": {
           "title": 1,
           "subtitles": 1,
@@ -6061,6 +6086,7 @@
         }]
       },
       "videos": {
+        "title": "Videos",
         "select": {
           "title": 1,
           "subtitles": 1,
@@ -6154,6 +6180,7 @@
         }]
       },
       "partners": {
+        "title": "Partners",
         "select": {
           "title": 1,
           "subtitles": 1,
@@ -6400,6 +6427,7 @@
         }]
       },
       "print": {
+        "title": "Print",
         "select": {
           "title": 1,
           "abouts": 1,
@@ -6498,6 +6526,7 @@
         }]
       },
       "galleries": {
+        "title": "Galleries",
         "select": {
           "title": 1,
           "abouts": 1,
@@ -6536,6 +6565,7 @@
         }]
       },
       "videos": {
+        "title": "Videos",
         "select": {
           "title": 1,
           "abouts": 1,
@@ -6726,6 +6756,7 @@
         }]
       },
       "print": {
+        "title": "Print",
         "select": {
           "title": 1,
           "abouts": 1,
@@ -6824,6 +6855,7 @@
         }]
       },
       "galleries": {
+        "title": "Galleries",
         "select": {
           "title": 1,
           "abouts": 1,
@@ -6862,6 +6894,7 @@
         }]
       },
       "videos": {
+        "title": "Videos",
         "select": {
           "title": 1,
           "abouts": 1,
