@@ -396,5 +396,6 @@
 	"Save & Continue": "Save & Continue",
 	"Password and Password confirm does not match. Try again...": "Password and Password confirm does not match. Try again...",
 	"Link to change the password has expired or is not valid.": "Link to change the password has expired or is not valid.",
-	"Your password has been reset.": "Your password has been reset."
+	"Your password has been reset.": "Your password has been reset.",
+	"LOCALE_27": "------------------NEW STUFF------------------"
 }
