@@ -834,55 +834,6 @@ $( ".lock-schedule" ).click(function( event ) {
       $("input[name='id']").val(ui.item.id);
     }
   });
-
-  $( "#localesgen" ).submit(function( event ) {
-    event.preventDefault();
-    var locale = {};
-    var localeTMP = $( "#localesgen #labelsinput" ).val().split("\n");
-    $(clone).find()
-    localeTMP.forEach((item,i)=>{
-      localeTMP[i] = item.split("\t");
-    })
-    localeTMP[0].forEach((item,i)=>{
-      if(i>0) locale[item] = {};
-    })
-    for(i=1;i<localeTMP.length;i++) {
-      if (i>0) {
-        for(y=1;y<localeTMP[i].length;y++) {
-            /* console.log(localeTMP[0][y]);
-            console.log(locale[localeTMP[0][y]]);
-            console.log(val); */
-            locale[localeTMP[0][y]][localeTMP[i][0]] = localeTMP[i][y];
-        }
-      }
-    }
-    /* var clone = $(" #localesresult .form-group");
-    $(" #localesresult .form-group").remove() */
-    for(item in locale){
-      console.log(item);
-      var clone = $(" #localesresult .form-group").clone();
-      $( clone ).find("label").text(item);
-      $( clone ).find("textarea").attr("name", item);
-      $( clone ).find("textarea").val(JSON.stringify(locale[item], null, 2));
-      $( clone ).appendTo("#localesresult");
-    }
-    /*var post = {};
-    $( this ).serializeArray().map(n => {
-      post[n['name']] = n['value'].trim();
-    });
-     $.ajax({
-      url: "/admin/api/partner/link/",
-      method: "post",
-      data: post
-    })
-    .done(function(data) {
-      $( this ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
-    })
-    .fail(function(err) {
-      $( "#modalLinkPartner form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
-    }); */
-  });
-
   
   $( "#modalAddPartner form" ).submit(function( event ) {
     event.preventDefault();

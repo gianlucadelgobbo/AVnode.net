@@ -204,8 +204,8 @@ const getgeometry = (req, res, cb) => {
     if (addressesA.length) {
       let conta = 0;
       addressesA.forEach((element, index) => {
-        logger.debug(process.env.GOOGLEMAPSAPIURL+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
-        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country), (error, response, body) => {
+        logger.debug("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
+        request.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country), (error, response, body) => {
           logger.debug("requestrequestrequestrequest");
           logger.debug(element);
           logger.debug(error);
@@ -443,8 +443,8 @@ const showall = (req, res, save, cb) => {
 
       const request = require('request');
       addressesA.forEach((element, index) => {
-        logger.debug(process.env.GOOGLEMAPSAPIURL+'&address='+element.newAddress.locality+','+element.newAddress.country);
-        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+element.newAddress.locality+','+element.newAddress.country, (error, response, body) => {
+        logger.debug("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+element.newAddress.locality+','+element.newAddress.country);
+        request.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+element.newAddress.locality+','+element.newAddress.country, (error, response, body) => {
           logger.debug(error);
           if (error) {
             logger.debug(error);
@@ -556,8 +556,8 @@ const venuesgetgeometry = (req, res, cb) => {
       addressesA.forEach((element, index) => {
         logger.debug("S");
         logger.debug(element);
-        logger.debug(process.env.GOOGLEMAPSAPIURL+'&address='+(element.name ? element.name+',' : '')+(element.route_new ? element.route_new+',' : '')+(element.street_number_new ? element.street_number_new+',' : '')+(element.locality ? element.locality+',' : '')+element.country);
-        request.get(process.env.GOOGLEMAPSAPIURL+'&address='+encodeURIComponent((element.name ? element.name+',' : '')+(element.route ? element.route+',' : '')+(element.street_number ? element.street_number+',' : '')+(element.locality ? element.locality+',' : '')+element.country), (error, response, b) => {
+        logger.debug("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.name ? element.name+',' : '')+(element.route_new ? element.route_new+',' : '')+(element.street_number_new ? element.street_number_new+',' : '')+(element.locality ? element.locality+',' : '')+element.country);
+        request.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.name ? element.name+',' : '')+(element.route ? element.route+',' : '')+(element.street_number ? element.street_number+',' : '')+(element.locality ? element.locality+',' : '')+element.country), (error, response, b) => {
           logger.debug("requestrequestrequestrequest");
           logger.debug(error);
           //logger.debug(b);

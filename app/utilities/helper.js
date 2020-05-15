@@ -18,7 +18,7 @@ const makeDescription = (abouts) => {
   } else {
     aboutA = abouts.filter(item => item.lang === config.defaultLocale);
     if (aboutA.length && aboutA[0].abouttext) {
-      about = aboutA[0].abouttext;
+      about = "[Text available only in English] "+aboutA[0].abouttext;
     }
   }
   about = about.replace(/\r\n/g, ' ').replace(new RegExp(/<(?:.|\n)*?>/gm), " ").trim().replace(/  /g , " ");

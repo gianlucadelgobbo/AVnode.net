@@ -1,150 +1,32 @@
 {
-  "imageWidth": 400,
-  "imageHeight": 300,
-  "teaserWidth": 1920,
-  "teaserHeight": 720,
   "maxImageSize": "2000000",
-  "maxFileComment": "1 * 1024 * 1024 * 1024",
-  "maxFileSize": 1073741824,
   "defaultLocale": "en",
-  "dateFormat": {
-    "en": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "MMMM DD",
-      "day2" : "DD YYYY"
-    },
-    "it": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "es": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "de": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "fr": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "pl": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "ru": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "hu": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "by": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    },
-    "gr": {
-      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
-      "weekdayday" : "dddd, DD",
-      "daymonth1" : "DD MMMM",
-      "daymonthyear" : "DD MMMM YYYY",
-      "day1" : "DD",
-      "day2" : "DD MMMM YYYY"
-    }
-  },
-
   "locales": [
     "en",
-    "it",
-    "es",
-    "de",
-    "fr",
-    "pl",
-    "ru",
-    "hu",
     "by",
-    "gr"
+    "de",
+    "es",
+    "fr",
+    "gr",
+    "hu",
+    "it",
+    "pl",
+    "pt",
+    "ru"
   ],
   "locales_labels": {
-    "en":"English",
-    "it":"Italiano",
-    "es":"Español",
-    "de":"Deutsche",
-    "fr":"Français",
-    "pl":"Polski",
-    "ru":"Russian",
-    "hu":"Hungarian",
-    "by":"Belarusian",
-    "gr":"Greek"
+    "en": "English",
+    "by": "Беларус",
+    "de": "Deutsche",
+    "es": "Español",
+    "fr": "Français",
+    "gr": "Ελληνικά",
+    "hu": "Magyar",
+    "it": "Italiano",
+    "pl": "Polski",
+    "pt": "Português",
+    "ru": "русский"
   },
-  "locales_labels_short": {
-    "it":"It",
-    "en":"En",
-    "es":"Es",
-    "fr":"Fr",
-    "pl":"Pl",
-    "ru":"Ru",
-    "hu":"Hu",
-    "by":"By",
-    "gr":"Gr"
-  },
-  "main_season":[
-    "Full Year",
-    "Winter",
-    "Spring",
-    "Summer",
-    "Autumn",
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ],
-  "cp_basepath": "controlpanel",
   "cpanel": {
     "signup": {
       "title": "Signup",
@@ -7391,6 +7273,96 @@
           "model": "Performance"
         }]
      }
+    }
+  },
+  "dateFormat": {
+    "en": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "MMMM DD",
+      "day2" : "DD YYYY"
+    },
+    "it": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "es": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "de": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "fr": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "pl": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "ru": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "hu": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "by": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "gr": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
+    },
+    "pt": {
+      "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
+      "weekdayday" : "dddd, DD",
+      "daymonth1" : "DD MMMM",
+      "daymonthyear" : "DD MMMM YYYY",
+      "day1" : "DD",
+      "day2" : "DD MMMM YYYY"
     }
   },
   "company": {

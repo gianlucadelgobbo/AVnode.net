@@ -78,7 +78,7 @@ playlistSchema.virtual('about').get(function (req) {
     } else {
       aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
       if (aboutA.length && aboutA[0].abouttext) {
-        about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "[Text available only in English] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     about = about.replace(new RegExp(/\n/gi)," <br />");

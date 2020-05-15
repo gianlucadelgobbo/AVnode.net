@@ -197,16 +197,23 @@
         #subsubmenuSuper6.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
           - var obj = {link:"/categories/dbcheck", title:"Categories DB Check"}
           a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
-        
-        a.bg-dark.list-group-item(href='#subsubmenuSuper6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
+
+        // Menu content
+        a.bg-dark.list-group-item(href='#subsubmenuSuper7', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
           .d-flex.w-100.justify-content-start.align-items-center
             span.fa.fa-tags.fa-fw.mr-3
             span.menu-collapsed Statistics
         // Submenu content
-        #subsubmenuSuper6.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
+        #subsubmenuSuper7.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
           - var obj = {link:"/stats/usersstatsupdate", title:"Users Update"}
           a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
         
+        // Menu content
+        a.list-group-item(href='/adminpro/supertools/localesgen', class=currentUrl.indexOf("/adminpro/supertools/localesgen")==0 ? "bg-secondary" : "bg-dark")
+          .d-flex.w-100.justify-content-start.align-items-center
+            span.fa.fa-flag.fa-fw.mr-3
+            span.menu-collapsed Locales
+
     a.bg-dark.list-group-item.list-group-item-action(href='/admin/profile/'+user._id+'/public')
       .d-flex.w-100.justify-content-start.align-items-center
         span.lnr.lnr-cog.mr-3

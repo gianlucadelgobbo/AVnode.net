@@ -1,5 +1,5 @@
 {
   "ignore": [
-    "warehouse_old/*"
+    "warehouse_old/*", "warehouse", "warehouse_old", "glagier", "locales"
   ]
 }
