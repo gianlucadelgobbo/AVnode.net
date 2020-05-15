@@ -16,6 +16,7 @@ const files =       require('./supertools/files');
 const emails =      require('./supertools/emails');
 const categories =  require('./supertools/categories');
 const stats =       require('./supertools/stats');
+const localesgen =  require('./supertools/localesgen');
 const vjtv =        require('./vjtv/index');
 const emailqueue =  require('./emailqueue/index');
 
@@ -76,6 +77,7 @@ router.use('/supertools/files', files);
 router.use('/supertools/emails', emails);
 router.use('/supertools/categories', categories);
 router.use('/supertools/stats', stats);
+router.use('/supertools/localesgen', localesgen);
 router.use('/vjtv', vjtv);
 router.use('/supertools', supertools);
 

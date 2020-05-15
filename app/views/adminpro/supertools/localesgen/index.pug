@@ -1,0 +1,15 @@
+extends ../../layout
+block content
+  include ../partials/menuHeaderSuperAdmin
+  form#localesgen
+    .form-group
+      label(for="labelsinput")="Copy from spreadsheet"
+      textarea#labelsinput.form-control(name="labelsinput", cols="30", rows="10")
+    button.btn.btn-primary(type="submit")="Generate"
+  form
+    #localesresult
+      .d-none
+        .form-group
+          label
+          textarea.form-control(name="labelsinput", cols="30", rows="10")
+    button.btn.btn-primary(type="submit")="Save"
