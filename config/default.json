@@ -5707,6 +5707,7 @@
           "schedule": 1,
           "program": 1,
           "galleries": 1,
+          "videos": 1,
           "type": 1,
           "organizationsettings": 1,
           "partners": 1
@@ -5789,6 +5790,7 @@
           "image": 1,
           "schedule": 1,
           "program": 1,
+          "videos": 1,
           "galleries": 1,
           "type": 1,
           "organizationsettings": 1,
@@ -6075,6 +6077,7 @@
           "image": 1,
           "schedule": 1,
           "program": 1,
+          "videos": 1,
           "galleries": 1,
           "type": 1,
           "organizationsettings": 1,
@@ -6097,13 +6100,47 @@
           "fullSchedule": 1,
           "participate": 1,
           "users": 1,
+          "program": 1,
+          "videos": 1,
+          "galleries": 1,
           "partners": 1,
           "advanced": {
             "menu": 1
           }
         },
-        "populate": [
-          {
+        "populate": [{
+          "path": "program.performance",
+          "select": {
+            "title": 1,
+            "stats": 1,
+            "users": 1,
+            "type": 1,
+            "image": 1,
+            "slug": 1
+          },
+          "model": "Performance",
+          "populate": [{
+            "path": "users",
+            "select": {
+              "slug": 1,
+              "image": 1,
+              "organizationData.logo": 1,
+              "members": 1,
+              "addresses.country": 1,
+              "addresses.locality": 1,
+              "stats": 1,
+              "stagename": 1
+            },
+            "model": "UserShow"
+          }, {
+            "path": "type",
+            "select": {
+              "name": 1,
+              "slug": 1
+            },
+            "model": "Category"
+          }]
+        }, {
           "path": "partners.category",
           "select": {
             "name": 1

@@ -305,6 +305,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     select(select).
     exec((err, ddd) => {
       logger.debug("STOCAZZOOOOOOO");
+      logger.debug(select);
       //logger.debug(err);
       //logger.debug(ddd);
       let data;
