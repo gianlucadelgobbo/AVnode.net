@@ -190,8 +190,8 @@ eventSchema.virtual('subtitle').get(function (req) {
   let subtitleA = [];
   if (this.subtitles && this.subtitles.length) {
     subtitleA = this.subtitles.filter(item => item.lang === global.getLocale());
-    if (subtitleA.length && subtitleA[0].subtitletext) {
-      subtitle = subtitleA[0].subtitletext.replace(/\r\n/g, '<br />');
+    if (subtitleA.length && subtitleA[0].abouttext) {
+      subtitle = subtitleA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
       subtitleA = this.subtitles.filter(item => item.lang === config.defaultLocale);
       if (subtitleA.length && subtitleA[0].abouttext) {
