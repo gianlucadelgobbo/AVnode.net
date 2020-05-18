@@ -20,23 +20,23 @@ const logger = require('../../../utilities/logger');
 
 router.setStatsAndActivity = function(query) {
   logger.debug('setStatsAndActivity');
-  logger.debug(query);
+  //logger.debug(query);
   return new Promise(function (resolve, reject) {
     //let query = JSON.parse('{"q": '+req.body.q+'}').q;
     Models['User'].
     find(query).
     exec((err, e) => {
       logger.debug('setStatsAndActivity');
-      logger.debug(query);
-      logger.debug(e.length);
+      //logger.debug(query);
+      //logger.debug(e.length);
       var promises = [];
       for (var item=0; item<e.length; item++) promises.push(router.setStatsAndActivitySingle({_id: e[item]._id}));
       Promise.all(
         promises
       ).then( (resultsPromise) => {
         setTimeout(function() {
-          logger.debug('resultsPromise');
-          logger.debug(resultsPromise);
+          //logger.debug('resultsPromise');
+          //logger.debug(resultsPromise);
           resolve(resultsPromise);
         }, 1000);
       });
@@ -179,7 +179,7 @@ router.setStatsAndActivitySingle = function(query) {
         delete e.performances_only;
         delete e.learnings;
 
-        logger.debug(e);
+        //logger.debug(e);
         e.save((err) => {
           if (err) {
             setTimeout(function() {

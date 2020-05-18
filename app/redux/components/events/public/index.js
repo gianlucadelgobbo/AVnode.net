@@ -64,6 +64,17 @@ class EventPublic extends Component {
       });
     }
 
+    //Convert subtitles for API
+    if (Array.isArray(model.subtitles)) {
+      model.subtitles = model.subtitles.map((x) => {
+        const splitted = x.key.split(".");
+        return {
+          lang: splitted[splitted.length - 1],
+          abouttext: x.value,
+        };
+      });
+    }
+
     // Convert web
     model.web = model.web.filter((w) => w.url);
 

@@ -1749,8 +1749,8 @@ router.setStatsAndActivity = (req, res) => {
     promises
   ).then( (resultsPromise) => {
     setTimeout(function() {
-      logger.debug('resultsPromise');
-      logger.debug(resultsPromise);
+      //logger.debug('resultsPromise');
+      //logger.debug(resultsPromise);
       //resolve(resultsPromise);
       res.json(resultsPromise);
     }, 1000);
