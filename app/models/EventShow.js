@@ -467,9 +467,9 @@ eventSchema.virtual('call_is_active').get(function (req) {
 });
 
 eventSchema.virtual('subtitle').get(function (req) {
-  let subtitle = __('Text is missing');
   let subtitleA = [];
   if (this.subtitles && this.subtitles.length) {
+    let subtitle;
     subtitleA = this.subtitles.filter(item => item.lang === global.getLocale());
     if (subtitleA.length && subtitleA[0].abouttext) {
       subtitle = subtitleA[0].abouttext.replace(/\r\n/g, '<br />');
