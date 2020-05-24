@@ -84,6 +84,7 @@
     "nodemailer-ses-transport": "^1.5.1",
     "normalizr": "^3.2.4",
     "npm": "^6.0.1",
+    "oembed-parser": "^1.3.9",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",

@@ -2445,7 +2445,7 @@ export const multiContacts = ({
               />
             </div>
           </div>
-          <div class="row">
+          <div className="row">
             <div className="col-md-12 form-group">
               <FieldArray
                 name="mobile"
@@ -2456,7 +2456,7 @@ export const multiContacts = ({
               />
             </div>
           </div>
-          <div class="row">
+          <div className="row">
             <div className="col-md-12 form-group">
               <FieldArray
                 name="skype"
@@ -2466,8 +2466,8 @@ export const multiContacts = ({
               />
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12 form-group">
+          <div className="row">
+            <div className="col-md-12 form-group">
               <FieldArray
                 name="social"
                 component={multiInputUrl}

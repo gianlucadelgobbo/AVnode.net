@@ -6,11 +6,17 @@ import {
 import { INVALID_STRING_3_100 } from "../../common/form/errors";
 
 const validate = values => {
-  const errors = {};
+  let errors = {};
 
   isValidName({ values, name: "title", errors });
 
-  isValidSlug({ values, name: "slug", errors });
+  isValidName({ values, name: "externalurl", errors });
+
+  if (!errors.title || !errors.externalurl) errors = {};
+
+  console.log(errors);
+
+  /* isValidSlug({ values, name: "slug", errors });
 
   validateLength({
     values,
@@ -19,7 +25,7 @@ const validate = values => {
     max: 100,
     errorKey: INVALID_STRING_3_100,
     errors
-  });
+  }); */
 
   return errors;
 };

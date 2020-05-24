@@ -1,6 +1,7 @@
 const router = require('../../router')();
 let config = require('getconfig');
 let slugify = require('slugify');
+let oembed = require('oembed-parser');
 
 const mongoose = require('mongoose');
 const Models = {
@@ -43,6 +44,24 @@ router.setStatsAndActivity = function(query) {
 
     });
   });
+}
+
+router.myExternalUrl = function(req, cb) {
+  logger.debug('myExternalUrl');
+  //logger.debug(query);
+  if (req.params.sez == 'videos' && req.body.externalurl) {
+     
+     
+    oembed.extract(req.body.externalurl, {maxwidth:1921, maxheight:1081}).then((oembed) => {
+      console.log(oembed);
+      cb(null);
+    }).catch((err) => {
+      console.trace(err);
+      cb(null);
+    });
+  } else {
+    cb(null);
+  }
 }
 
 router.setStatsAndActivitySingle = function(query) {

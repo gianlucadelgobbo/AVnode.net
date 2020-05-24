@@ -29,6 +29,21 @@ class Videos extends Component {
                 }
               >
                 <i
+                  className="fab fa-vimeo-square mr-3"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+                <i
+                  className="fab fa-youtube mr-3"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+                <i
+                  className="fab fa-facebook-square mr-3"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                />
+                <i
                   className="fa fa-plus"
                   data-toggle="tooltip"
                   data-placement="top"

@@ -12,6 +12,7 @@ import { injectIntl } from "react-intl";
 import {
   ABOUT,
   VIDEOS_NAME,
+  VIDEOS_EXTERNALURL,
   VIDEOS_URL,
   VIDEOS_URL_PRE,
   VIDEOS_URL_HELP,

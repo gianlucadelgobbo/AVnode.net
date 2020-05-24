@@ -92,6 +92,7 @@ export const PLAYLIST_URL_PRE = "label.form.playlist.url_pre";
 export const PLAYLIST_URL_HELP = "label.form.playlist.url_help";
 //Videos
 export const VIDEOS_NAME = "label.form.videos.name";
+export const VIDEOS_EXTERNALURL = "label.form.videos.externalurl";
 export const VIDEOS_URL = "label.form.videos.url";
 export const VIDEOS_URL_PRE = "label.form.videos.url_pre";
 export const VIDEOS_URL_HELP = "label.form.videos.url_help";
@@ -404,6 +405,10 @@ defineMessages({
   [VIDEOS_NAME]: {
     id: VIDEOS_NAME,
     defaultMessage: "Video Name"
+  },
+  [VIDEOS_EXTERNALURL]: {
+    id: VIDEOS_EXTERNALURL,
+    defaultMessage: "External URL"
   },
   [VIDEOS_URL]: {
     id: VIDEOS_URL,

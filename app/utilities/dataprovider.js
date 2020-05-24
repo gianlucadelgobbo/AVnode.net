@@ -1002,7 +1002,11 @@ dataprovider.list = (req, res, section, model) => {
             let lastmod = new Date();
             lastmod.setHours( lastmod.getHours() -2 );
             lastmod.setMinutes(0); */
-            let lastmod = helper.dateoW3CString(data.map(item => {return item.updatedAt}).sort().reverse()[0]);
+            let lastmod = helper.dateoW3CString(data.map(item => {
+              console.log("STOCAZZO STOCAZZO STOCAZZO STOCAZZO STOCAZZO STOCAZZO ");
+              console.log(item.updatedAt);
+              return item.updatedAt ? item.updatedAt : item.createdAt;
+            }).sort().reverse()[0]);
             res.set('Content-Type', 'text/xml');
             res.render('sitemaps/list', {
               host: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/+"://"+req.headers.host,

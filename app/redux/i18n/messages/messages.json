@@ -515,6 +515,11 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.videos.externalurl",
+    "defaultMessage": "External URL",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.videos.url_pre",
     "defaultMessage": "https://avnode.net/videos/",
     "filepath": "./app/redux/components/common/form/labels.js"
