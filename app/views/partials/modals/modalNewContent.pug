@@ -18,5 +18,32 @@
                     .input-group
                       input.form-control.input(type='text', name='stagename', placeholder='Crew Name', aria-describedby='slugHelpInline', value='')
                       input.sez(type='hidden', name='sez')
+              .video-only.d-none
+                hr
+                h3.text-center OR
+                hr
+                dl.row
+                  dt.col-sm-2
+                    .labelField External URL
+                  dd.col-sm-10.mb-4
+                    div
+                      .input-group
+                        input.form-control(type='text', name='externalurl', placeholder='External URL', aria-describedby='slugHelpInline', value='')
+                dl.row
+                  dt.col-sm-2
+                    .labelField.text-muted Paste examples
+                  dd.col-sm-10.mb-4.text-muted
+                    div
+                      i.fab.fa-vimeo-square.mr-3
+                      | https://vimeo.com/158683436
+                    div
+                      i.fab.fa-youtube.mr-3
+                      | https://www.youtube.com/watch?v=u2vYksfmtJc
+                    div
+                      i.fab.fa-instagram.mr-3
+                      | https://www.instagram.com/p/B7I57MwIfj6/
+                    div
+                      i.fab.fa-facebook-square.mr-3
+                      | https://www.facebook.com/avnode.net/videos/1074075152643709/
               hr
               button.btn.btn-primary.btn-large.btn-block(type='submit') Save

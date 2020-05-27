@@ -1,6 +1,11 @@
 - if (!basepath) basepath = ""
 .video_item_wrapper
-  if item.imageFormats
+  if !item.media.preview && item.media.iframe
+    div(style="position:relative")
+      div(style="position:relative")
+        !=item.media.iframe
+      a(href=basepath+"/videos/"+item.slug+"/", title=item.title, style="position: absolute; width: 100%;height: 100%;display: block;top: 0;")
+  else if item.imageFormats
     a(href=basepath+"/videos/"+item.slug+"/", title=item.title)
       img.card-img-top.img-fluid(
         src=item.imageFormats.small

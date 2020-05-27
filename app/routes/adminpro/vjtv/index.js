@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
     if (req.query.day || req.query.month) {
       logger.debug("eccomi");
       Video.
-      find({"categories.0":{$exists:true},"media.duration": {$gt:60000}, "media.encoded": 1}).
+      find({"categories.0":{$exists:true},"media.externalurl":{$exists:false},"media.duration": {$gt:60000}, "media.encoded": 1}).
       sort({createdAt: 1}).
       //select({title: 1, slug: 1, "media.duration": 1}).
       select({title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}).

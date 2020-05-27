@@ -46,18 +46,123 @@ router.setStatsAndActivity = function(query) {
   });
 }
 
+router.getServerpath = storage => {
+  // Set Folder and create if do not exist
+  const d = new Date();
+  let month = d.getMonth() + 1;
+  let serverpath = `${global.appRoot}${storage}${d.getFullYear()}/`;
+  month = month < 10 ? "0" + month : month;
+  if (!fs.existsSync(serverpath)) fs.mkdirSync(serverpath);
+  serverpath += month;
+  if (!fs.existsSync(serverpath)) fs.mkdirSync(serverpath);
+  return serverpath;
+};
+
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+router.download = (url, dest, cb) => {
+  var file = fs.createWriteStream(dest);
+  var h = url.indexOf("https")===0 ? https : http;
+  h.get(url, function(response) {
+    response.pipe(file);
+    file.on('finish', function() {
+      file.close(cb);  // close() is async, call cb after close completes.
+    });
+  }).on('error', function(err) { // Handle errors
+    fs.unlink(dest); // Delete the file async. (But we don't check the result)
+    if (cb) cb(err.message);
+  });
+};
+
+router.myTrim = (str, l) => {
+  str = str.split("\n")[0].trim();
+  if (str.length>100) {
+    var ta = str.split(" ");
+    var t = "";
+    var index = 0;
+    while ((t+ta[index]+" ").length<100) {
+      t = t+ta[index]+" ";
+      index++;
+    }
+    str = t.trim();
+  }
+  return str;
+};
+
 router.myExternalUrl = function(req, cb) {
   logger.debug('myExternalUrl');
-  //logger.debug(query);
   if (req.params.sez == 'videos' && req.body.externalurl) {
-     
-     
-    oembed.extract(req.body.externalurl, {maxwidth:1921, maxheight:1081}).then((oembed) => {
-      console.log(oembed);
-      cb(null);
+    oembed.extract(req.body.externalurl, {maxwidth:1920, maxheight:1080}).then((oembed) => {
+      logger.debug(oembed);
+      const uuid = require("uuid");
+      const imageUtil = require("../../../utilities/image");
+      req.body.media = {
+        externalurl: req.body.externalurl,
+        encoded: 1
+      };
+      if(!oembed.title) {
+        var xml2js = require('xml2js');
+        var parser = new xml2js.Parser();
+        parser.parseString(oembed.html.split("</script>")[1], function (err, result) {
+          logger.debug(result);
+          if (result && result.div && result.div.blockquote && result.div.blockquote[0] && result.div.blockquote[0].a && result.div.blockquote[0].a[0] && result.div.blockquote[0].a[0]._)
+            req.body.title = result.div.blockquote[0].a[0]._;
+          if (!req.body.title) req.body.title = uuid.v4();
+          if (result && result.div && result.div.blockquote && result.div.blockquote[0] && result.div.blockquote[0].p && result.div.blockquote[0].p[0])
+            req.body.abouts = [{
+              "is_primary" : false,
+              "lang" : "en",
+              "abouttext" : result.div.blockquote[0].p[0]
+            }];
+          if (req.body.title.length>100) {
+            req.body.title = router.myTrim(req.body.title, 100);
+          }
+          if (oembed.html) req.body.media.iframe = oembed.html;
+          if (oembed.duration) req.body.media.duration = oembed.duration*1000;
+          if (oembed.height) req.body.media.height = oembed.height;
+          if (oembed.width) req.body.media.width = oembed.width;
+          //if (req.body.title) req.body.is_public = 1; 
+          delete req.body.externalurl;
+          cb(null)
+        });
+      } else {
+        req.body.title = oembed.title;
+        if (req.body.title.length>100) {
+          req.body.title = router.myTrim(req.body.title, 100);
+        }
+        if (oembed.description) req.body.abouts = [{
+          "is_primary" : false,
+          "lang" : "en",
+          "abouttext" : oembed.description
+        }];
+        if (oembed.html) req.body.media.iframe = oembed.html;
+        if (oembed.duration) req.body.media.duration = oembed.duration*1000;
+        if (oembed.height) req.body.media.height = oembed.height;
+        if (oembed.width) req.body.media.width = oembed.width;
+        //if (req.body.title) req.body.is_public = 1; 
+        delete req.body.externalurl;
+        if (oembed.thumbnail_url) {
+          let thumbnail_file = oembed.thumbnail_url.substring(oembed.thumbnail_url.lastIndexOf("/")+1);
+          let glacier_folder = "/glacier/videos_previews/";
+          let glacier_file = uuid.v4()+"."+thumbnail_file.substring(thumbnail_file.lastIndexOf(".")+1);
+          req.body.media.preview  = glacier_folder+glacier_file;
+          router.download(oembed.thumbnail_url, router.getServerpath(glacier_folder)+glacier_file, (err) => {
+            imageUtil.resizer(
+              [{path: router.getServerpath(glacier_folder)+glacier_file}],
+              config.cpanel.videos.forms.video.components.media.config,
+              (resizeerr, info) => {
+                cb(null)
+              }
+            )
+          });
+        } else {
+          cb(null)
+        }
+      }
     }).catch((err) => {
-      console.trace(err);
-      cb(null);
+      cb(err);
     });
   } else {
     cb(null);
@@ -222,6 +327,7 @@ router.mySlugify = function (model, str, cb) {
     slugify.extend({'+': 'and'})
     slugify.extend({'@': 'at'})
     slugify.extend({'†': ''})
+    slugify.extend({'>': '-'})
     /* slugify.extend({'\\': ''})
     slugify.extend({"‘": "'"})
     slugify.extend({"’": "'"})

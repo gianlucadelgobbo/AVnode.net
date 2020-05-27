@@ -30,7 +30,7 @@ class AddVideosForm extends Component {
           placeholder={this.getIntlString({ id: VIDEOS_NAME })}
         />
 
-        {/* <hr />
+        <hr />
         <h3 className="text-center">OR</h3>
         <hr />
         <Field
@@ -48,7 +48,7 @@ class AddVideosForm extends Component {
               <div><i className="fab fa-instagram mr-3" />https://www.instagram.com/p/B7I57MwIfj6/</div>
               <div><i className="fab fa-facebook-square mr-3" />https://www.facebook.com/avnode.net/videos/1074075152643709/</div>
             </dd>
-        </dl> */}
+        </dl>
         <hr />
         <button
           type="submit"

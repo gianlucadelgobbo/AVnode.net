@@ -7,6 +7,8 @@ const momentDurationFormatSetup = require('moment-duration-format');
 const Media = new Schema({
   title: String,
   url: String,
+  externalurl: String,
+  iframe: String,
   slug: { type: String/* , unique: true */ },
   file: String,
   original: String,

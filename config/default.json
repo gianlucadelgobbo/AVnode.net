@@ -3798,6 +3798,7 @@
         "model": "Video",
         "select": {
           "title": 1,
+          "slug": 1,
           "media": 1,
           "is_public": 1,
           "createdAt": 1,

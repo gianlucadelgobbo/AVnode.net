@@ -14,8 +14,6 @@ const validate = values => {
 
   if (!errors.title || !errors.externalurl) errors = {};
 
-  console.log(errors);
-
   /* isValidSlug({ values, name: "slug", errors });
 
   validateLength({

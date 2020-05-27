@@ -37,6 +37,8 @@ block content
               p.vjs-no-js
                 !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
                 a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
+        if data.media && data.media.iframe
+          !=data.media.iframe
 
       .col-md-4.data_footage_video
         .data_footage_video_wrapper

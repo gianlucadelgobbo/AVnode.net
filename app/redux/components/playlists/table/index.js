@@ -84,7 +84,7 @@ class ModelTable extends Component {
               const { row, original } = props;
               return (
                 <div>
-                  <div><b><Link to={`/admin/playlists/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/playlists/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
+                  <div><b><Link to={`/admin/playlists/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link onClick={this.forceUpdate} to={`/playlists/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
                   <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public</div>
                   {!original.footage.length ? 
                     <b>NO FOOTAGE FILE </b> :

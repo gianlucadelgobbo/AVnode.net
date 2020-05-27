@@ -161,7 +161,7 @@ class Video extends Component {
               const { row, original } = props;
               return (
                 <div>
-                  <div><b><Link to={`/admin/videos/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/videos/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
+                  <div><b><Link to={`/admin/videos/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link onClick={this.forceUpdate} to={`/videos/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
                   <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public</div>
                   {!original.media ? (
                     <b>NO VIDEO FILE UPLOADED</b>
@@ -343,7 +343,7 @@ class Video extends Component {
             </Link>
           </div>
           <div className="col-sm-9">
-            <h3><Link to={`/admin/videos/${v._id}/public`}><i className="fas fa-edit"></i></Link> | <i className="fa fa-heart"></i> {v.stats.likes} | <Link to={`/videos/${v.slug}/`} target={`_blank`}><i className="fa fa-eye"></i> {v.stats.visits}</Link> | {v.title}</h3>
+            <h3><Link to={`/admin/videos/${v._id}/public`}><i className="fas fa-edit"></i></Link> | <i className="fa fa-heart"></i> {v.stats.likes} | <Link onClick={this.forceUpdate} to={`/videos/${v.slug}/`} target={`_blank`}><i className="fa fa-eye"></i> {v.stats.visits}</Link> | {v.title}</h3>
             {!v.media ? (
               <b>NO VIDEO FILE UPLOADED</b>
             ) : (v.media.encoded===0 ? (
@@ -430,6 +430,21 @@ class Video extends Component {
                 })
               }
             >
+              <i
+                className="fab fa-vimeo-square mr-3"
+                data-toggle="tooltip"
+                data-placement="top"
+              />
+              <i
+                className="fab fa-youtube mr-3"
+                data-toggle="tooltip"
+                data-placement="top"
+              />
+              <i
+                className="fab fa-facebook-square mr-3"
+                data-toggle="tooltip"
+                data-placement="top"
+              />
               <i
                 className="fa fa-plus"
                 data-toggle="tooltip"

@@ -83,7 +83,7 @@ class ModelTable extends Component {
               const { row, original } = props;
               return (
                 <div>
-                  <div><b><Link to={`/admin/news/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link to={`/news/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
+                  <div><b><Link to={`/admin/news/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link onClick={this.forceUpdate} to={`/news/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
                   <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public</div>
                   <div><i className="fa fa-heart" /> {original.stats.likes} | <i className="fa fa-eye" /> {original.stats.visits}</div>
                 </div>

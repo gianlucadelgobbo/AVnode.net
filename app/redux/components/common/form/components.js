@@ -2580,7 +2580,9 @@ export const uploadComponent = ({
         <div className="container-video">
           <div className="row">
             <div className="col-sm-6">
-              <Player playsInline src={media.file} />
+              {media.iframe ? 
+              media.iframe :
+              <Player playsInline src={media.file} />}
             </div>
             <div className="col-sm-6">
               <table className="table-video-detail">
@@ -2630,7 +2632,7 @@ export const uploadComponent = ({
           </div>
         </div>
       )}
-      <div>{!media || !media.original || media.encoded > 1 ? renderSubField() : <br />}</div>
+      <div>{!media || media.encoded > 1 ? renderSubField() : <br />}</div>
 
       {/* if array of video */}
       {media && Array.isArray(media) && media.length > 0 && (

@@ -24,12 +24,19 @@ router.postData = (req, res) => {
   logger.debug('req.params');
   logger.debug(req.params);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
-    let select = config.cpanel[req.params.sez].forms.new.select;
+    let select = Object. assign({}, config.cpanel[req.params.sez].forms.new.select);
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
     let post = {};
 
-    helpers.myExternalUrl(req, (title) => {
-      if (req.params.sez == "videos") req.body.title = title;
+    helpers.myExternalUrl(req, (err) => {
+      logger.debug("myExternalUrl result");
+      logger.debug(req.body);
+      if (req.params.sez == "videos" && req.body.media && req.body.media.externalurl) {
+        select.image = 1;
+        select.media = 1;
+        //select.is_public = 1;
+        select.abouts = 1;
+      }
       helpers.mySlugify(Models[config.cpanel[req.params.sez].model], req.body.stagename ? req.body.stagename : req.body.title, (slug) => {
         req.body.slug = slug;
         logger.debug("slug");

@@ -8,7 +8,6 @@ $(document).ready(function(){
     if (!user) {
       window.location.href = "/login";
     } else {
-      console.log("stoca")
       var sez = button.data('sez') // Extract info from data-* attributes
       var title = button.data('title') // Extract info from data-* attributes
       var labelfield = button.data('labelfield') // Extract info from data-* attributes
@@ -21,6 +20,12 @@ $(document).ready(function(){
       modal.find('.input').attr("placeholder", labelfield);
       modal.find('.input').attr("name", param);
       modal.find('.sez').val(sez);
+      if (sez == "videos") {
+        modal.find('.video-only').removeClass("d-none");
+      } else {
+        modal.find('.video-only').addClass("d-none");
+      }
+        
       $('#modalNewContent').modal();
     }
   });
