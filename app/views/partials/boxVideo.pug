@@ -1,6 +1,6 @@
 - if (!basepath) basepath = ""
 .video_item_wrapper
-  if !item.media.preview && item.media.iframe
+  if item.media && !item.media.preview && item.media.iframe
     div(style="position:relative")
       div(style="position:relative")
         !=item.media.iframe

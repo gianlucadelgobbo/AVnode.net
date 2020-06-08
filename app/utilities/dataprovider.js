@@ -1003,8 +1003,6 @@ dataprovider.list = (req, res, section, model) => {
             lastmod.setHours( lastmod.getHours() -2 );
             lastmod.setMinutes(0); */
             let lastmod = helper.dateoW3CString(data.map(item => {
-              console.log("STOCAZZO STOCAZZO STOCAZZO STOCAZZO STOCAZZO STOCAZZO ");
-              console.log(item.updatedAt);
               return item.updatedAt ? item.updatedAt : item.createdAt;
             }).sort().reverse()[0]);
             res.set('Content-Type', 'text/xml');
