@@ -7417,7 +7417,7 @@
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
-    "by": {
+    "be": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
       "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
@@ -7425,7 +7425,7 @@
       "day1" : "DD",
       "day2" : "DD MMMM YYYY"
     },
-    "gr": {
+    "el": {
       "weekdaydaymonthyear" : "dddd, DD MMMM YYYY",
       "weekdayday" : "dddd, DD",
       "daymonth1" : "DD MMMM",
