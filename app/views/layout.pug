@@ -17,7 +17,7 @@ html(lang=session.current_lang)
       meta(property="og:description" content=jsonld.description)
       meta(property="og:image" content=jsonld.image)
       meta(property="og:site_name" content="AVnode.net")
-      meta(property="og:locale" content=session.current_lang+"_"+session.current_lang.toUpperCase())
+      meta(property="og:locale" content=config.locales_iso[session.current_lang])
       if jsonld.video && jsonld.video_width && jsonld.video_height
         meta(property="og:video" content=jsonld.video)
         meta(property="og:video:width" content=jsonld.video_width)

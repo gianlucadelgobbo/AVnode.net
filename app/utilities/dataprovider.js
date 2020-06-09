@@ -549,7 +549,9 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
       if (type) jsonld.name+= ": "+type.name;
       if (req.params.day) jsonld.name+= ": "+req.params.day;
       jsonld.image = data.imageFormats.large;
-      if (data.performance) {
+      if (data.event) {
+        jsonld.description = data.event.description;
+      } else if (data.performance) {
         jsonld.description = data.performance.description;
       } else {
         jsonld.description = __("The "+config.sections[section][subsection].title+" of")+" "+(type ? type.name+" "+__("of")+" " : req.params.day ? req.params.day+" "+__("of")+" " : "") + data.title;
@@ -630,7 +632,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
       }
       if (data.media && data.media.file && data.media.width && data.media.height) {
-        jsonld.video = data.media.file;
+        jsonld.video = "https://"+req.headers.host+data.media.file;
         jsonld.video_width = data.media.width;
         jsonld.video_height = data.media.height;
       }

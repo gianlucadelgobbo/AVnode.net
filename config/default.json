@@ -16,16 +16,29 @@
   ],
   "locales_labels": {
     "en": "English",
-    "by": "Беларус",
+    "be": "Беларус",
     "de": "Deutsche",
     "es": "Español",
     "fr": "Français",
-    "gr": "Ελληνικά",
+    "el": "Ελληνικά",
     "hu": "Magyar",
     "it": "Italiano",
     "pl": "Polski",
     "pt": "Português",
     "ru": "русский"
+  },
+  "locales_iso": {
+    "en": "en_GB",
+    "be": "be_BY",
+    "de": "de_DE",
+    "es": "es_ES",
+    "fr": "fr_FR",
+    "el": "el_GR",
+    "hu": "hu_HU",
+    "it": "it_IT",
+    "pl": "pl_PL",
+    "pt": "pt_PT",
+    "ru": "ru_RU"
   },
   "cpanel": {
     "signup": {
