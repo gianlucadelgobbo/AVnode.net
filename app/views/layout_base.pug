@@ -18,7 +18,10 @@ html(lang=session.current_lang)
       meta(property="og:image" content=jsonld.image)
       meta(property="og:site_name" content="AVnode.net")
       meta(property="og:locale" content=session.current_lang+"_"+session.current_lang.toUpperCase())
-
+      if jsonld.video && jsonld.video_width && jsonld.video_height
+        meta(property="og:video" content=jsonld.video)
+        meta(property="og:video:width" content=jsonld.video_width)
+        meta(property="og:video:height" content=jsonld.video_height)
     link(rel='shortcut icon', href='/icons/favicon.ico', type='image/x-icon')
     link(rel='apple-touch-icon', href='/icons/apple-touch-icon.png')
     link(rel='apple-touch-icon', sizes='57x57', href='/icons/apple-touch-icon-57x57.png')

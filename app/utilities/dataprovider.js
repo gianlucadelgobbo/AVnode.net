@@ -629,6 +629,11 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
         if (data.web) for(let a=0;a<data.web.length;a++) jsonld.sameAs.push(data.web[a].url);
         if (data.social) for(let a=0;a<data.social.length;a++) jsonld.sameAs.push(data.social[a].url);
       }
+      if (data.media && data.media.file && data.media.width && data.media.height) {
+        jsonld.video = data.media.file;
+        jsonld.video_width = data.media.width;
+        jsonld.video_height = data.media.height;
+      }
     }
   } else if (data.length) {
     jsonld["@type"] = "ItemList";

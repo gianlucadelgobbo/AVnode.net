@@ -69,7 +69,7 @@ router.get('/', (req, res) => {
           let contadocs = 0;  
           let contaperformances = 0;
           let contavideo = 0;
-          if (last) {
+          if (last.length) {
 
             var vjdjsets_ids = vjdjsets.map(item => {return item._id.toString()});
 /*             logger.debug("vjdjsets_ids");
