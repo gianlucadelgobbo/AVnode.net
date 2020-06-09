@@ -80,7 +80,7 @@ app.use(function(req, res, next) {
   res.locals.protocol = req.get("host") === "localhost:8006" ? "http" : "https" /*req.protocol*/;
   if (req.headers && req.headers.host) {
     let hostA = req.headers.host.split(".");
-    if (config.locales.indexOf(hostA[0]) >= 0) hostA.shift();
+    if (config.domain_to_lang[hostA[0]]) hostA.shift();
     res.locals.basehost = hostA.join(".");
   }
   next();
@@ -125,22 +125,25 @@ app.use((req, res, next) => {
 logger.debug("global.getLocale: " + global.getLocale());
 app.use((req, res, next) => {
   const path = req.path.split("/")[1];
+  logger.debug("global.getLocale000: " + req.headers.host.split(".")[0]);
   const lang =
     req.headers.host.split(".")[0] != req.headers.host &&
     req.headers.host.split(".")[0] != "avnode" &&
     req.headers.host.split(".")[0] != "dev" &&
     req.headers.host.split(".")[0] != "api"
-      ? req.headers.host.split(".")[0]
+      ? config.domain_to_lang[req.headers.host.split(".")[0]]
       : "en";
-  //logger.debug('req.headers.host: '+req.headers.host.split('.')[0]);
-  if (!req.session.current_lang) {
+  logger.debug('req.headers.host: '+req.headers.host.split('.')[0]);
+  logger.debug('req.headers.host: '+lang);
+  /* if (!req.session.current_lang) {
     req.session.current_lang = config.defaultLocale;
-  }
+  } */
   if (req.session.current_lang != lang) {
     req.session.current_lang = lang;
   }
   global.setLocale(req.session.current_lang);
   moment.locale(req.session.current_lang);
+  logger.debug("global.getLocale: " + req.session.current_lang);
   logger.debug("global.getLocale: " + global.getLocale());
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {

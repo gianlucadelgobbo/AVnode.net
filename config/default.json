@@ -3,11 +3,11 @@
   "defaultLocale": "en",
   "locales": [
     "en",
-    "by",
+    "be",
     "de",
     "es",
     "fr",
-    "gr",
+    "el",
     "hu",
     "it",
     "pl",
@@ -39,6 +39,32 @@
     "pl": "pl_PL",
     "pt": "pt_PT",
     "ru": "ru_RU"
+  },
+  "domain_to_lang": {
+    "en": "en",
+    "by": "be",
+    "de": "de",
+    "es": "es",
+    "fr": "fr",
+    "gr": "el",
+    "hu": "hu",
+    "it": "it",
+    "pl": "pl",
+    "pt": "pt",
+    "ru": "ru"
+  },
+  "lang_to_domain": {
+    "en": "en",
+    "be": "by",
+    "de": "de",
+    "es": "es",
+    "fr": "fr",
+    "el": "gr",
+    "hu": "hu",
+    "it": "it",
+    "pl": "pl",
+    "pt": "pt",
+    "ru": "ru"
   },
   "cpanel": {
     "signup": {

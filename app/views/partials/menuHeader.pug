@@ -115,4 +115,4 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
             b=session.current_lang.toUpperCase()
           .dropdown-menu.dropdown-menu-right(aria-labelledby='langDropdown')
             each lang,slug in config.locales_labels
-              a.dropdown-item(href='//'+(slug!='en' ? slug+'.' : '')+basehost+current_url class=slug==session.current_lang ? 'disabled' : '')=lang
+              a.dropdown-item(href='//'+(slug!='en' ? config.lang_to_domain[slug]+'.' : '')+basehost+current_url class=slug==session.current_lang ? 'disabled' : '')=lang
