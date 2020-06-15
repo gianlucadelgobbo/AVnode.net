@@ -125,7 +125,6 @@ app.use((req, res, next) => {
 logger.debug("global.getLocale: " + global.getLocale());
 app.use((req, res, next) => {
   const path = req.path.split("/")[1];
-  logger.debug("global.getLocale000: " + req.headers.host.split(".")[0]);
   const lang =
     req.headers.host.split(".")[0] != req.headers.host &&
     req.headers.host.split(".")[0] != "avnode" &&
@@ -133,17 +132,14 @@ app.use((req, res, next) => {
     req.headers.host.split(".")[0] != "api"
       ? config.domain_to_lang[req.headers.host.split(".")[0]]
       : "en";
-  logger.debug('req.headers.host: '+req.headers.host.split('.')[0]);
-  logger.debug('req.headers.host: '+lang);
   /* if (!req.session.current_lang) {
     req.session.current_lang = config.defaultLocale;
   } */
-  if (req.session.current_lang != lang) {
+  if (!req.session.current_lang || req.session.current_lang != lang) {
     req.session.current_lang = lang;
   }
   global.setLocale(req.session.current_lang);
   moment.locale(req.session.current_lang);
-  logger.debug("global.getLocale: " + req.session.current_lang);
   logger.debug("global.getLocale: " + global.getLocale());
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
