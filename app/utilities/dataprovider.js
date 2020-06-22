@@ -951,19 +951,28 @@ dataprovider.show = (req, res, section, subsection, model) => {
           if (req.params.day) title+= ": "+req.params.day;
           if (data.performance) title+= ": "+data.performance.title;
 
-          res.render(section + '/' + subsection, {
-            title: title,
-            jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
-            canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
-            editable: helpers.editable(req, data, data._id),
-            get: req.query,
-            data: data,
-            type: type,
-            pages: data.pages,
-            section: section,
-            path: req.originalUrl,
-            nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
-          });
+          if (req.query.oembed) {
+            res.render(section + '/oembed', {
+              title: title,
+              jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
+              canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              data: data,
+            });
+          } else {
+            res.render(section + '/' + subsection, {
+              title: title,
+              jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
+              canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
+              editable: helpers.editable(req, data, data._id),
+              get: req.query,
+              data: data,
+              type: type,
+              pages: data.pages,
+              section: section,
+              path: req.originalUrl,
+              nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
+            });
+          }
         }
       }
     });
