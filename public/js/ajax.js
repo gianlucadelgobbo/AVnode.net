@@ -50,6 +50,9 @@ $(".cancel-sub").on('click', function(ev) {
 $("#liker").on('click', function(ev) {
   ///likes/?section=performances&id=5a9c32c3606624000000bccb
   ev.preventDefault();
+  liker()
+});
+var liker = () => {
   const $el = $("#liker");
   const $label = $("#liker .label_like_button");
   const $icon = $("#liker img");
@@ -79,7 +82,10 @@ $("#liker").on('click', function(ev) {
   request(url, method, payload, (data) => {
     //boxPerformerEvent(data);
     if(data.err) {
-      alert(data.msg);
+      var r = confirm(data.msg);
+      if (r == true) {
+        window.location.href = "/login?returnTo="+window.location.href;
+      }
     } else {
       if(data.status==="Unliked") {
         $label.html("Like");
@@ -95,7 +101,7 @@ $("#liker").on('click', function(ev) {
     }
   });
   //}
-});
+}
 
 const request = (url, method, payload, cb) => {
   $.ajax({

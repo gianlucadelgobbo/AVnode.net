@@ -35,7 +35,7 @@ block content
                           span.label_like_button="share"
                   - var payload = data.img ? "{\"section\":\""+section+"\",\"id\":\""+data._id+"\",\"img_index\":\""+data.img.index+"\",\"img_slug\":\""+data.img.slug+"\"}" : "{\"section\":\""+section+"\",\"id\":\""+data._id+"\"}" 
                   li
-                    button#liker.button_share_like(type="button" data-endpoint="/likes/" data-method="GET" data-payload=payload style=data.liked ? "opacity: .65;" : undefined)
+                    button#liker.button_share_like(type="button" onclick="liker()" data-endpoint="/likes/" data-method="GET" data-payload=payload style=data.liked ? "opacity: .65;" : undefined)
                       .share_button
                           img(src=data.liked ? "/images/like_full_icon.svg" : "/images/like_icon.svg")
                       .label_like_button_wrapper

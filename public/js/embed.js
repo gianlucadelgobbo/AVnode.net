@@ -36,6 +36,9 @@ player.getChild('ControlBar').removeChild("SeekToLive");
 // Modal Embed
 var myModal
 player.ready(function() {
+  modalcreate();
+});
+modalcreate = () => {
   myPlayer = this;
   options = {};
   var contentEl = document.createElement('div');
@@ -47,9 +50,12 @@ player.ready(function() {
   myModal = new ModalDialog(player, options);
   myModal.addClass('vjs-my-custom-modal');
   player.addChild(myModal);
-  
-  //myModal.open();
+  myModal.on('modalclose', function() {
+  modalcreate();
 });
+
+  //myModal.open();
+}
 function myCopy(id, button) {
   /* Get the text field */
   var copyText = document.getElementById(id);

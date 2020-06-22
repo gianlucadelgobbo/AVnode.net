@@ -957,6 +957,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
               jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
               canonical: (req.get('host') === "localhost:8006" ? "http" : "https") /*req.protocol*/ + '://' + req.get('host') + req.originalUrl.split("?")[0],
               data: data,
+              section: section,
             });
           } else {
             res.render(section + '/' + subsection, {

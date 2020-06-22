@@ -99,7 +99,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
             a.nav-link.disabled(href='#')
               span.pr-2.lnr.lnr-user
           li.nav-item.login
-            a.nav-link(href='/login', title=global.__('Login'))
+            a.nav-link(href="/login?returnTo="+canonical, title=global.__('Login'))
               !=global.__('Login')
           li.nav-item.signup
             a.nav-link(href='/signup', title=global.__('Sign up'))=global.__('Sign up')
