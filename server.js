@@ -48,14 +48,14 @@ app.set("trust proxy", "loopback");
 //app.use(expressStatusMonitor());
 
 app.use(compression());
-app.use(
+/* app.use(
   sass({
     src: path.join(__dirname, "public"),
     dest: path.join(__dirname, "public"),
     debug: true,
     outputStyle: "compressed"
   })
-);
+); */
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
@@ -74,6 +74,13 @@ app.use(cookieParser());
 app.use(flash());
 
 app.use(i18n.init);
+app.use(function(req, res, next) {
+  if (req.get("host") === "176.9.142.221:8006") {
+    res.redirect("https://avnode.net"+ req.originalUrl);
+  } else {
+    next();
+  }
+});
 app.use(function(req, res, next) {
   // ADD VARS TO JADE
   res.locals.current_url = req.url;
