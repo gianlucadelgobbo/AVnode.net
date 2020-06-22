@@ -48,14 +48,14 @@ app.set("trust proxy", "loopback");
 //app.use(expressStatusMonitor());
 
 app.use(compression());
-app.use(
+/* app.use(
   sass({
     src: path.join(__dirname, "public"),
     dest: path.join(__dirname, "public"),
     debug: true,
     outputStyle: "compressed"
   })
-);
+); */
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
