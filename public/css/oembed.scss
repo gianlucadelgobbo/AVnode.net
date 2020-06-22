@@ -2,11 +2,6 @@
 
 $color1: #0f8fcf;
 
-/*! @name videojs-logo @version 2.1.1 @license MIT */
-.video-js.vjs-logo{display:block}
-.video-js.vjs-logo .vjs-logo-content{position:absolute;width:100%;opacity:1;transition:visibility 2s,opacity 2s}
-.video-js.vjs-logo .vjs-logo-content.vjs-logo-hide{visibility:hidden;opacity:0}
-
 body {
   font-family: "Montserrat", sans-serif;
   // background-color: #303030;
@@ -20,12 +15,29 @@ a {
   color: $color1;
   text-decoration: none;
 }
-.oembed, html, body{
-  height: 100%;
-}
+
+/*! @name videojs-logo @version 2.1.1 @license MIT */
+.video-js.vjs-logo{display:block}
+.video-js.vjs-logo .vjs-logo-content{position:absolute;width:100%;opacity:1;transition:visibility 2s,opacity 2s}
+.video-js.vjs-logo .vjs-logo-content.vjs-logo-hide{visibility:hidden;opacity:0}
+
 .video-js .vjs-control.vjs-avnode-logo{
   width:67px;
 }
+.toclone{
+  display: none;
+}
+.video-js .vjs-control-bar {
+  display: flex;
+}
+.video-js .vjs-big-play-button {
+  z-index: 1000;
+}
+
+
+
+
+
 .video-js.vjs-fluid,
 .video-js.vjs-16-9,
 .video-js.vjs-4-3,
@@ -65,9 +77,6 @@ h1 {
   margin-right: 15px;
 }
 
-.toclone{
-  display: none;
-}
 
 table {
   font-family: "Montserrat", sans-serif;
@@ -144,7 +153,7 @@ textarea.form-control {
   height: auto;
   width: 60%;
 }
-.form-control {
+.vjs-modal-dialog-content .form-control {
   height: calc(1.5em + .75rem + 2px);
   padding: .375rem .75rem;
   font-size: 1rem;
@@ -157,12 +166,9 @@ textarea.form-control {
   border-radius: .25rem;
   transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
 }
-textarea {
+.vjs-modal-dialog-content textarea {
   overflow: auto;
   resize: vertical;
-}
-.video-js .vjs-control-bar {
-  display: flex;
 }
 .video-js button.btn {
   display: inline-block;

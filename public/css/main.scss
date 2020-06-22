@@ -2091,3 +2091,65 @@ span.seeall_label {
   }
 }
 
+
+
+.video-js.vjs-logo{display:block}
+.video-js.vjs-logo .vjs-logo-content{position:absolute;width:100%;opacity:1;transition:visibility 2s,opacity 2s}
+.video-js.vjs-logo .vjs-logo-content.vjs-logo-hide{visibility:hidden;opacity:0}
+
+.video-js .vjs-control.vjs-avnode-logo{
+  width:67px;
+}
+.toclone{
+  display: none;
+}
+.video-js .vjs-control-bar {
+  display: flex;
+}
+.video-js .vjs-big-play-button {
+  z-index: 1000;
+}
+.vjs-modal-dialog-content {
+  display: table;
+}
+.vjs-modal-dialog-content > div{
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+textarea.form-control {
+  height: auto;
+  width: 60%;
+}
+.vjs-modal-dialog-content .form-control {
+  display: inline;
+}
+.vjs-modal-dialog-content textarea {
+  overflow: auto;
+  resize: vertical;
+  height: 100px;
+}
+.video-js button.btn {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  padding: .375rem .75rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+}
+.video-js button.btn-block {
+  width: 60%;
+}
+.video-js button.btn-primary {
+  color: #fff;
+  background-color: $color1;
+  border-color: $color1;
+}
