@@ -359,7 +359,7 @@ router.editable = function(req, data, id) {
   if (!req.user) {
     return false;
   } else {
-    let meandcrews = req.user.crews && req.user.crews.length ? req.user.crews.map((item)=>{return item.toString()}) : [];
+    let meandcrews = req.user.crews && req.user.crews.length ? req.user.crews.map((item)=>{return item._id.toString()}) : [];
     meandcrews.push(req.user._id.toString());
     const editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
     logger.debug('editable');
