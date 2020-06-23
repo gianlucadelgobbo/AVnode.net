@@ -145,12 +145,13 @@ router.myExternalUrl = function(req, cb) {
         delete req.body.externalurl;
         if (oembed.thumbnail_url) {
           let thumbnail_file = oembed.thumbnail_url.substring(oembed.thumbnail_url.lastIndexOf("/")+1);
-          let glacier_folder = "/glacier/videos_previews/";
-          let glacier_file = uuid.v4()+"."+thumbnail_file.substring(thumbnail_file.lastIndexOf(".")+1);
-          req.body.media.preview  = glacier_folder+glacier_file;
-          router.download(oembed.thumbnail_url, router.getServerpath(glacier_folder)+glacier_file, (err) => {
+          
+          let glacier_filename = uuid.v4()+"."+thumbnail_file.substring(thumbnail_file.lastIndexOf(".")+1);
+          let glacier_file = router.getServerpath("/glacier/videos_previews/")+"/"+glacier_filename;
+          req.body.media.preview  = glacier_file.replace(global.appRoot,"");
+          router.download(oembed.thumbnail_url, glacier_file, (err) => {
             imageUtil.resizer(
-              [{path: router.getServerpath(glacier_folder)+glacier_file}],
+              [{path: glacier_file}],
               config.cpanel.videos.forms.video.components.media.config,
               (resizeerr, info) => {
                 cb(null)

@@ -513,14 +513,11 @@ router.getData = (req, res) => {
         if (!data) {
           res.status(404).send({ message: `DOC_NOT_FOUND` });
         } else {
-          console.log("stocazzo")
-          console.log(helpers.editable(req, data, id))
           if (helpers.editable(req, data, id)) {
             let send = {_id: data._id};
             for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
             res.json(send);
           } else {
-            console.log("stocazzoaaaaaa")
             res.status(404).send({ message: `DOC_NOT_OWNED` });
           }
         }
