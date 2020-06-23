@@ -178,11 +178,11 @@ router.get('/api/profile/:id/subscriptions', (req, res) => {
 });
 
 router.get('/api/*', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUNDa` });
+  res.status(404).send({ message: `API_NOT_FOUND` });
 });
 
 router.get('/api', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUNDv` });
+  res.status(404).send({ message: `API_NOT_FOUND` });
 });
 
 router.get('/subscriptions', (req, res) => {
@@ -295,7 +295,7 @@ router.post('/api/contact', (req, res)=>{
     req.params.comp = req.params.form;
     upload.uploader(req, res, (err, data) => {
       if (err) {
-        res.status(500).json(err);
+        res.status(500).send(err);
       } else {
         for (const item in data) req.body[item] = data[item];
         put.putData(req, res);
@@ -311,7 +311,7 @@ router.put('/api/:sez/:id/:form/', (req, res) => {
     req.params.comp = ['footage/media','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
     upload.uploader(req, res, (err, data) => {
       if (!data) {
-        res.status(500).json(err);
+        res.status(500).send(err);
       } else {
         for (const item in data) req.body[item] = data[item];
         put.putData(req, res);

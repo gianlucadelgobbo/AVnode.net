@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
           UserTemp.deleteMany({ email: data.email }, function (err) {
             data.save((err) => {
               if (err) {
-                res.status(400).json(err);
+                res.status(400).send(err);
               } else {
                 select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
                 //let populate = config.cpanel.signup.forms.signup.populate;      
@@ -54,10 +54,10 @@ router.post('/', (req, res) => {
                 .select(select)
                 .exec((err, data) => {
                   if (err) {
-                    res.status(500).json({ error: `${JSON.stringify(err)}` });
+                    res.status(500).send({ message: `${JSON.stringify(err)}` });
                   } else {
                     if (!data) {
-                      res.status(204).json({ error: `DOC_NOT_FOUND` });
+                      res.status(404).send({ message: `DOC_NOT_FOUND` });
                     } else {
                       mailer.mySendMailer({
                         template: 'signup',
@@ -93,7 +93,7 @@ router.post('/', (req, res) => {
             });
           });
         } else {
-          res.status(400).json(errors);  
+          res.status(400).send(errors);  
         }
       });      
     });

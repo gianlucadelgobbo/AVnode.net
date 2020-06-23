@@ -84,7 +84,7 @@ router.postData = (req, res) => {
                       if (err) {
                         logger.debug('save user err');
                         logger.debug(err);
-                        res.status(400).json(err);
+                        res.status(400).send(err);
                       } else {
                         logger.debug('save user success');
                         if (req.params.ancestor && req.params.id) {
@@ -96,7 +96,7 @@ router.postData = (req, res) => {
                               if (err) {
                                 logger.debug('save ancestor err');
                                 logger.debug(err);
-                                res.status(400).json(err);
+                                res.status(400).send(err);
                               } else {
                                 logger.debug("save ancestor success");
                                 logger.debug(data);
@@ -117,7 +117,7 @@ router.postData = (req, res) => {
                         .populate(populate)
                         .exec((err, data) => {
                           if (err) {
-                            res.status(500).json({ error: `${JSON.stringify(err)}` });
+                            res.status(500).send({ message: `${JSON.stringify(err)}` });
                           } else {
                             let send = {_id: data._id};
                             for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
@@ -130,16 +130,16 @@ router.postData = (req, res) => {
                     });  
                   }
                 } else {
-                  res.status(204).json({ error: `DOC_NOT_FOUND` });
+                  res.status(404).send({ message: `DOC_NOT_FOUND` });
                 }
               } else {
-                res.status(500).json({ error: `${JSON.stringify(err)}` });
+                res.status(500).send({ message: `${JSON.stringify(err)}` });
               }
             });
           } else {
             logger.debug('create err');
             logger.debug(err);
-            res.status(400).json(err);
+            res.status(400).send(err);
           }
         });
       });
@@ -147,7 +147,7 @@ router.postData = (req, res) => {
 
     
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -401,7 +401,7 @@ router.addContacts = (req, res) => {
     if (err || !user) {
       logger.debug('user err');
       logger.debug(err);
-      res.status(400).json(err);
+      res.status(400).send(err);
     } else {
       delete req.body.crew;
       if (req.body.index) {
@@ -418,7 +418,7 @@ router.addContacts = (req, res) => {
         if (err) {
           logger.debug('save user err');
           logger.debug(err);
-          res.status(400).json(err);
+          res.status(400).send(err);
         } else {
           logger.debug("save user success");
           logger.debug(user.organizationData.contacts);
@@ -441,7 +441,7 @@ router.deleteContacts = (req, res) => {
     if (err || !user) {
       logger.debug('user err');
       logger.debug(err);
-      res.status(400).json(err);
+      res.status(400).send(err);
     } else {
       user.organizationData.contacts.splice(req.body.index, 1);
       
@@ -450,7 +450,7 @@ router.deleteContacts = (req, res) => {
         if (err) {
           logger.debug('save user err');
           logger.debug(err);
-          res.status(400).json(err);
+          res.status(400).send(err);
         } else {
           logger.debug("save user success");
           logger.debug(user.organizationData.contacts);

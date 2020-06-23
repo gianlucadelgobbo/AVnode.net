@@ -91,16 +91,16 @@ router.get('/facebook', (req, res) => {
 });
 
 router.get('/api/*', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
+  res.status(404).send({ message: `API_NOT_FOUND` });
 });
 
 router.get('/api', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
+  res.status(404).send({ message: `API_NOT_FOUND` });
 });
 
 
 router.get('/*', (req, res) => {
-  res.status(404).json({ error: `API_NOT_FOUND` });
+  res.status(404).send({ message: `API_NOT_FOUND` });
 });
 
 
@@ -121,7 +121,7 @@ router.put('/api/profile/:form/', (req, res) => {
   if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     upload.uploader(req, res, (err, data) => {
       if (err) {
-        res.status(500).json(err);
+        res.status(500).send(err);
       } else {
         for (const item in data) req.body[item] = data[item];
         put.putData(req, res);
@@ -153,7 +153,7 @@ router.put('/api/:sez/:id/:form/', (req, res) => {
   if (['profile/image','crews/image','events/image','performances/image','footage/media','galleries/public','videos/public'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
     upload.uploader(req, res, (err, data) => {
       if (err) {
-        res.status(500).json(err);
+        res.status(500).send(err);
       } else {
         for (const item in data) req.body[item] = data[item];
         put.putData(req, res);

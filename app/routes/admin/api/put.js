@@ -63,7 +63,7 @@ router.putData = (req, res) => {
           if (helpers.editable(req, data, id)) {
             data.save((err) => {
               if (err) {
-                res.status(400).json(err);
+                res.status(400).send(err);
               } else {
                 logger.debug('USERS ?');
                 logger.debug(data.users);
@@ -82,10 +82,10 @@ router.putData = (req, res) => {
                   .populate(populate)
                   .exec((err, data) => {
                     if (err) {
-                      res.status(500).json({ error: `${JSON.stringify(err)}` });
+                      res.status(500).send({ message: `${JSON.stringify(err)}` });
                     } else {
                       if (!data) {
-                        res.status(204).json({ error: `DOC_NOT_FOUND` });
+                        res.status(404).send({ message: `DOC_NOT_FOUND` });
                       } else {
                         let send = {_id: data._id};
                         for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
@@ -110,18 +110,18 @@ router.putData = (req, res) => {
               }
             });
           } else {
-            res.status(204).json({ error: `DOC_NOT_OWNED` });
+            res.status(404).send({ message: `DOC_NOT_OWNED` });
           }
 
         } else {
-          res.status(204).json({ error: `DOC_NOT_FOUND` });
+          res.status(404).send({ message: `DOC_NOT_FOUND` });
         }
       } else {
-        res.status(500).json({ error: `${JSON.stringify(err)}` });
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
       }
     });
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 module.exports = router;

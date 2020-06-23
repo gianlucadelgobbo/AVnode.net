@@ -361,15 +361,17 @@ router.editable = function(req, data, id) {
   } else {
     let meandcrews = req.user.crews && req.user.crews.length ? req.user.crews.map((item)=>{return item._id.toString()}) : [];
     meandcrews.push(req.user._id.toString());
-    const editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
-    logger.debug('editable');
-    logger.debug(editable);
+    const is_editable = (req.user.is_admin || req.user.crews.indexOf(id)!==-1 || id == req.user._id || (data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
+    logger.debug('is_editable');
+    logger.debug(is_editable);
     /* logger.debug(id);
     logger.debug(data);
     if (data.users) logger.debug(data.users.map((item)=>{return item._id.toString()}));
     logger.debug(meandcrews);
     logger.debug((data.users && data.users.map((item)=>{return item._id.toString()}).some(v=> meandcrews.indexOf(v) !== -1)));
-     */return editable;
+     */
+    return is_editable;
+    //return false;
   }
 }
 

@@ -35,10 +35,10 @@ router.getDuplicate = (req, res) => {
           .lean()
           .exec(async (err, data) => {
             if (err) {
-              res.status(404).json({ error: `${JSON.stringify(err)}` });
+              res.status(404).send({ message: `${JSON.stringify(err)}` });
             } else {
               if (!data) {
-                res.status(404).json({ error: `DOC_NOT_FOUND` });
+                res.status(404).send({ message: `DOC_NOT_FOUND` });
               } else {
                 let exclude = req.query.exclude ? req.query.exclude.split(",") : [];
                 // Events
@@ -166,17 +166,17 @@ router.getDuplicate = (req, res) => {
             }
           });
         } else {
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         }
       });
     } else {
       let error = [];
       if (!req.query.title) error.push(`MISSING TITLE`);
       if (!req.query.slug) error.push(`MISSING SLUG`);
-      res.status(404).json({ error: error});
+      res.status(404).send({ message: error});
     } 
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   } 
 }
 
@@ -191,10 +191,10 @@ router.getDelete = (req, res) => {
       .lean()
       .exec(async (err, data) => {
         if (err) {
-          res.status(404).json({ error: `${JSON.stringify(err)}` });
+          res.status(404).send({ message: `${JSON.stringify(err)}` });
         } else {
           if (!data) {
-            res.status(404).json({ error: `DOC_NOT_FOUND` });
+            res.status(404).send({ message: `DOC_NOT_FOUND` });
           } else {
             if (req.query.delete!="1") {
               res.json(data);
@@ -297,7 +297,7 @@ router.getDelete = (req, res) => {
         }
       });
     } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -336,9 +336,9 @@ router.removeFootage = (req, res) => {
   .exec((err, playlist) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!playlist) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -355,7 +355,7 @@ router.removeFootage = (req, res) => {
         }
       });
     } else if (playlist.footage.map((item)=>{return item._id.toString()}).indexOf(req.params.footage)===-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "FOOTAGE_IS_NOT_IN_THE_PLAYLIST",
         "name": "MongoError",
         "stringValue":"\"FOOTAGE_IS_NOT_IN_THE_PLAYLIST\"",
@@ -372,7 +372,7 @@ router.removeFootage = (req, res) => {
         }
       });
     } else if (playlist.footage.length===1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "AT_LEAST_ONE_FOOTAGE_IS_REQUIRED",
         "name": "MongoError",
         "stringValue":"\"AT_LEAST_ONE_FOOTAGE_IS_REQUIRED\"",
@@ -398,7 +398,7 @@ router.removeFootage = (req, res) => {
       playlist.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.footage};
           Models["Footage"]
@@ -414,7 +414,7 @@ router.removeFootage = (req, res) => {
             footage.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 req.params.sez = 'playlists';
                 req.params.form = 'public';
@@ -449,7 +449,7 @@ router.getSubscriptions = (req, res) => {
     .exec((err, data) => {
       logger.debug(data);
       if (err) {
-        res.status(500).json({ error: `${JSON.stringify(err)}` });
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
@@ -466,7 +466,7 @@ router.getSubscriptions = (req, res) => {
       }
     });
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -484,7 +484,7 @@ router.getList = (req, res) => {
     .sort({createdAt:-1})
     .exec((err, data) => {
       if (err) {
-        res.status(500).json({ error: `${JSON.stringify(err)}` });
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
         let send = JSON.parse(JSON.stringify(req.user));
         send[req.params.sez] = data;
@@ -493,7 +493,7 @@ router.getList = (req, res) => {
       }
     });
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -508,23 +508,26 @@ router.getData = (req, res) => {
     .populate(populate)
     .exec((err, data) => {
       if (err) {
-        res.status(404).json({ error: `${JSON.stringify(err)}` });
+        res.status(404).send({ message: `${JSON.stringify(err)}` });
       } else {
         if (!data) {
-          res.status(204).json({ error: `DOC_NOT_FOUND` });
+          res.status(404).send({ message: `DOC_NOT_FOUND` });
         } else {
+          console.log("stocazzo")
+          console.log(helpers.editable(req, data, id))
           if (helpers.editable(req, data, id)) {
             let send = {_id: data._id};
             for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
             res.json(send);
           } else {
-            res.status(204).json({ error: `DOC_NOT_OWNED` });
+            console.log("stocazzoaaaaaa")
+            res.status(404).send({ message: `DOC_NOT_OWNED` });
           }
         }
       }
     });
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -978,9 +981,9 @@ router.addMember = (req, res) => {
   .exec((err, crew) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!crew) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -997,7 +1000,7 @@ router.addMember = (req, res) => {
         }
       });
     } else if (crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member)!==-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_IS_ALREADY_IN",
         "name": "MongoError",
         "stringValue":"\"USER_IS_ALREADY_IN\"",
@@ -1029,7 +1032,7 @@ router.addMember = (req, res) => {
         .exec((err, member) => {
           if (err) {
             logger.debug(`${JSON.stringify(err)}`);
-            res.status(404).json({ error: err });
+            res.status(404).send({ message: err });
           } else {
             member.crews.push(req.params.id);
             logger.debug("member.crews");
@@ -1039,7 +1042,7 @@ router.addMember = (req, res) => {
             member.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 req.params.sez = 'crews';
                 req.params.form = 'members';
@@ -1064,9 +1067,9 @@ router.removeMember = (req, res) => {
   .exec((err, crew) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!crew) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -1083,7 +1086,7 @@ router.removeMember = (req, res) => {
         }
       });
     } else if (crew.members.map((item)=>{return item._id.toString()}).indexOf(req.params.member)===-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "MEMBER_IS_NOT_A_MEMBER",
         "name": "MongoError",
         "stringValue":"\"MEMBER_IS_NOT_A_MEMBER\"",
@@ -1100,7 +1103,7 @@ router.removeMember = (req, res) => {
         }
       });
     } else if (crew.members.length===1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "LEAST_ONE_MEMBER_IS_REQUIRED",
         "name": "MongoError",
         "stringValue":"\"LEAST_ONE_MEMBER_IS_REQUIRED\"",
@@ -1126,7 +1129,7 @@ router.removeMember = (req, res) => {
       crew.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.member};
           Models["User"]
@@ -1142,7 +1145,7 @@ router.removeMember = (req, res) => {
             member.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 req.params.sez = 'crews';
                 req.params.form = 'members';
@@ -1167,9 +1170,9 @@ router.addUser = (req, res) => {
   .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!item) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -1186,7 +1189,7 @@ router.addUser = (req, res) => {
         }
       });
     } else if (item.users.indexOf(req.params.user)!==-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_IS_ALREADY_IN",
         "name": "MongoError",
         "stringValue":"\"USER_IS_ALREADY_IN\"",
@@ -1207,7 +1210,7 @@ router.addUser = (req, res) => {
       item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.user};
           var select = {_id:1, stats:1, crews:1}
@@ -1221,7 +1224,7 @@ router.addUser = (req, res) => {
             user.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 Promise.all(
                   [helpers.setStatsAndActivity(query)]
@@ -1251,9 +1254,9 @@ router.removeUser = (req, res) => {
   .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!item) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -1270,7 +1273,7 @@ router.removeUser = (req, res) => {
         }
       });
     } else if (item.users.indexOf(req.params.user)===-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_IS_NOT_IN",
         "name": "MongoError",
         "stringValue":"\"USER_IS_NOT_IN\"",
@@ -1287,7 +1290,7 @@ router.removeUser = (req, res) => {
         }
       });
     } else if (item.users.length===1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "LEAST_ONE_AUTHOR_IS_REQUIRED",
         "name": "MongoError",
         "stringValue":"\"LEAST_ONE_AUTHOR_IS_REQUIRED\"",
@@ -1309,7 +1312,7 @@ router.removeUser = (req, res) => {
       item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.user};
           var select = {_id:1, stats:1, crews:1}
@@ -1323,7 +1326,7 @@ router.removeUser = (req, res) => {
             user.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 Promise.all(
                   [helpers.setStatsAndActivity(query)]
@@ -1351,9 +1354,9 @@ router.eventAddPerformance = (req, res) => {
   .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!item) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
@@ -1370,7 +1373,7 @@ router.eventAddPerformance = (req, res) => {
         }
       });
     } else if (item.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.performance)!==-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "PERFORMANCE_IS_ALREADY_IN",
         "name": "MongoError",
         "stringValue":"\"PERFORMANCE_IS_ALREADY_IN\"",
@@ -1391,7 +1394,7 @@ router.eventAddPerformance = (req, res) => {
       item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.performance};
           var select = {_id:1, bookings:1}
@@ -1404,7 +1407,7 @@ router.eventAddPerformance = (req, res) => {
             performance.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 query = {performance: req.params.performance, event: req.params.id};
                 Models["Program"]
@@ -1420,7 +1423,7 @@ router.eventAddPerformance = (req, res) => {
                     .create(program, function (err, program) {
                       if (err) {
                         logger.debug(`${JSON.stringify(err)}`);
-                        res.status(404).json({ error: err });
+                        res.status(404).send({ message: err });
                       } else {
                         req.params.sez = 'events';
                         req.params.form = 'program';
@@ -1453,9 +1456,9 @@ router.eventRemovePerformance = (req, res) => {
   .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!item) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
@@ -1472,7 +1475,7 @@ router.eventRemovePerformance = (req, res) => {
         }
       });
     } else if (item.program.map((item)=>{return item.performance.toString()}).indexOf(req.params.performance)===-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "PERFORMANCE_IS_NOT_IN",
         "name": "MongoError",
         "stringValue":"\"PERFORMANCE_IS_NOT_IN\"",
@@ -1494,7 +1497,7 @@ router.eventRemovePerformance = (req, res) => {
       item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.performance};
           var select = {_id:1, bookings:1}
@@ -1508,14 +1511,14 @@ router.eventRemovePerformance = (req, res) => {
             performance.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 query = {performance: req.params.performance, event: req.params.id};
                 Models["Program"]
                 .findOneAndRemove(query, function (err, program) {
                   if (err) {
                     logger.debug(`${JSON.stringify(err)}`);
-                    res.status(404).json({ error: err });
+                    res.status(404).send({ message: err });
                   } else {
                     req.params.sez = 'events';
                     req.params.form = 'program';
@@ -1542,9 +1545,9 @@ router.performanceAddEvent = (req, res) => {
   .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!item) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
@@ -1561,7 +1564,7 @@ router.performanceAddEvent = (req, res) => {
         }
       });
     } else if (item.bookings.map((item)=>{return item.event.toString()}).indexOf(req.params.event)!==-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "EVENT_IS_ALREADY_IN",
         "name": "MongoError",
         "stringValue":"\"EVENT_IS_ALREADY_IN\"",
@@ -1582,7 +1585,7 @@ router.performanceAddEvent = (req, res) => {
       item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.event};
           var select = {_id:1, program:1}
@@ -1595,7 +1598,7 @@ router.performanceAddEvent = (req, res) => {
             event.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 query = {event: req.params.event, performance: req.params.id};
                 Models["Program"]
@@ -1611,7 +1614,7 @@ router.performanceAddEvent = (req, res) => {
                     .create(program, function (err, program) {
                       if (err) {
                         logger.debug(`${JSON.stringify(err)}`);
-                        res.status(404).json({ error: err });
+                        res.status(404).send({ message: err });
                       } else {
                         req.params.sez = 'events';
                         req.params.form = 'program';
@@ -1644,9 +1647,9 @@ router.performanceRemoveEvent = (req, res) => {
   .exec((err, item) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!item) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "PERFORMANCE_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"PERFORMANCE_NOT_ALLOWED_TO_EDIT\"",
@@ -1663,7 +1666,7 @@ router.performanceRemoveEvent = (req, res) => {
         }
       });
     } else if (item.bookings.map((item)=>{return item.event.toString()}).indexOf(req.params.event)===-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "EVENT_IS_NOT_IN",
         "name": "MongoError",
         "stringValue":"\"EVENT_IS_NOT_IN\"",
@@ -1685,7 +1688,7 @@ router.performanceRemoveEvent = (req, res) => {
       item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.event};
           var select = {_id:1, program:1}
@@ -1699,14 +1702,14 @@ router.performanceRemoveEvent = (req, res) => {
             event.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 query = {event: req.params.event, performance: req.params.id};
                 Models["Program"]
                 .findOneAndRemove(query, function (err, program) {
                   if (err) {
                     logger.debug(`${JSON.stringify(err)}`);
-                    res.status(404).json({ error: err });
+                    res.status(404).send({ message: err });
                   } else {
                     req.params.sez = 'events';
                     req.params.form = 'program';
@@ -1846,9 +1849,9 @@ router.addGallery = (req, res) => {
     .exec((err, item) => {
       if (err) {
         logger.debug(`${JSON.stringify(err)}`);
-        res.status(404).json({ error: err });
+        res.status(404).send({ message: err });
       } else if (!item) {
-        res.status(404).json({
+        res.status(404).send({
           "message": "USER_NOT_ALLOWED_TO_EDIT",
           "name": "MongoError",
           "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -1865,7 +1868,7 @@ router.addGallery = (req, res) => {
           }
         });
       } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)!==-1) {
-        res.status(404).json({
+        res.status(404).send({
           "message": "GALLERY_IS_ALREADY_IN",
           "name": "MongoError",
           "stringValue":"\"GALLERY_IS_ALREADY_IN\"",
@@ -1886,7 +1889,7 @@ router.addGallery = (req, res) => {
         item.save(function(err){
           if (err) {
             logger.debug(`${JSON.stringify(err)}`);
-            res.status(404).json({ error: err });
+            res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.gallery};
             var select = {_id:1, events:1}
@@ -1899,7 +1902,7 @@ router.addGallery = (req, res) => {
               gallery.save(function(err){
                 if (err) {
                   logger.debug(`${JSON.stringify(err)}`);
-                  res.status(404).json({ error: err });
+                  res.status(404).send({ message: err });
                 } else {
                   req.params.sez = 'events';
                   req.params.form = 'galleries';
@@ -1912,7 +1915,7 @@ router.addGallery = (req, res) => {
       }
     });
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -1928,9 +1931,9 @@ router.removeGallery = (req, res) => {
     .exec((err, item) => {
       if (err) {
         logger.debug(`${JSON.stringify(err)}`);
-        res.status(404).json({ error: err });
+        res.status(404).send({ message: err });
       } else if (!item) {
-        res.status(404).json({
+        res.status(404).send({
           "message": "USER_NOT_ALLOWED_TO_EDIT",
           "name": "MongoError",
           "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -1947,7 +1950,7 @@ router.removeGallery = (req, res) => {
           }
         });
       } else if (item.galleries.map((item)=>{return item.toString()}).indexOf(req.params.gallery)===-1) {
-        res.status(404).json({
+        res.status(404).send({
           "message": "GALLERY_IS_NOT_IN",
           "name": "MongoError",
           "stringValue":"\"GALLERY_IS_NOT_IN\"",
@@ -1969,7 +1972,7 @@ router.removeGallery = (req, res) => {
         item.save(function(err){
           if (err) {
             logger.debug(`${JSON.stringify(err)}`);
-            res.status(404).json({ error: err });
+            res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.gallery};
             var select = {_id:1, events:1}
@@ -1983,7 +1986,7 @@ router.removeGallery = (req, res) => {
               gallery.save(function(err){
                 if (err) {
                   logger.debug(`${JSON.stringify(err)}`);
-                  res.status(404).json({ error: err });
+                  res.status(404).send({ message: err });
                 } else {
                   req.params.sez = 'events';
                   req.params.form = 'galleries';
@@ -1996,7 +1999,7 @@ router.removeGallery = (req, res) => {
       }
     });
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -2015,9 +2018,9 @@ router.addVideo = (req, res) => {
       logger.debug(item);
       if (err) {
         logger.debug(`${JSON.stringify(err)}`);
-        res.status(404).json({ error: err });
+        res.status(404).send({ message: err });
       } else if (!item) {
-        res.status(404).json({
+        res.status(404).send({
           "message": "USER_NOT_ALLOWED_TO_EDIT",
           "name": "MongoError",
           "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -2034,7 +2037,7 @@ router.addVideo = (req, res) => {
           }
         });
       } else if (item.videos.map((item)=>{return item.toString()}).indexOf(req.params.video)!==-1) {
-        res.status(404).json({
+        res.status(404).send({
           "message": "VIDEO_IS_ALREADY_IN",
           "name": "MongoError",
           "stringValue":"\"VIDEO_IS_ALREADY_IN\"",
@@ -2055,7 +2058,7 @@ router.addVideo = (req, res) => {
         item.save(function(err){
           if (err) {
             logger.debug(`${JSON.stringify(err)}`);
-            res.status(404).json({ error: err });
+            res.status(404).send({ message: err });
           } else {
             var query = {_id: req.params.video};
             var select = {_id:1, events:1}
@@ -2069,7 +2072,7 @@ router.addVideo = (req, res) => {
               video.save(function(err){
                 if (err) {
                   logger.debug(`${JSON.stringify(err)}`);
-                  res.status(404).json({ error: err });
+                  res.status(404).send({ message: err });
                 } else {
                   req.params.form = 'videos';
                   router.getData(req, res);            
@@ -2081,7 +2084,7 @@ router.addVideo = (req, res) => {
       }
     });
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
 }
 
@@ -2092,7 +2095,7 @@ router.removeVideo = (req, res) => {
   if (req.params.sez == "events" || req.params.sez == "performances") {
     model = req.params.sez == "events" ? Models['Event'] : Models['Performance'];
   } else {
-    res.status(404).json({ error: `API_NOT_FOUND` });
+    res.status(404).send({ message: `API_NOT_FOUND` });
   }
   logger.debug(model);
   model
@@ -2104,9 +2107,9 @@ router.removeVideo = (req, res) => {
     logger.debug(item.videos)
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!item) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -2123,7 +2126,7 @@ router.removeVideo = (req, res) => {
         }
       });
     } else if (item.videos.map((item)=>{return item.toString()}).indexOf(req.params.video)===-1) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "VIDEO_IS_NOT_IN",
         "name": "MongoError",
         "stringValue":"\"VIDEO_IS_NOT_IN\"",
@@ -2145,7 +2148,7 @@ router.removeVideo = (req, res) => {
       item.save(function(err){
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           var query = {_id: req.params.video};
           var select = {_id:1, events:1}
@@ -2159,7 +2162,7 @@ router.removeVideo = (req, res) => {
             video.save(function(err){
               if (err) {
                 logger.debug(`${JSON.stringify(err)}`);
-                res.status(404).json({ error: err });
+                res.status(404).send({ message: err });
               } else {
                 req.params.sez = 'events';
                 req.params.form = 'videos';
@@ -2179,9 +2182,9 @@ router.addVideos = (req, res) => {
   .findOne({_id: req.params.id},'_id, videos', (err, result) => {
     if (err) {
       logger.debug(`${JSON.stringify(err)}`);
-      res.status(404).json({ error: err });
+      res.status(404).send({ message: err });
     } else if (!result) {
-      res.status(404).json({
+      res.status(404).send({
         "message": "USER_NOT_ALLOWED_TO_EDIT",
         "name": "MongoError",
         "stringValue":"\"USER_NOT_ALLOWED_TO_EDIT\"",
@@ -2202,7 +2205,7 @@ router.addVideos = (req, res) => {
       .create({slug:req.body.slug, slug:req.body.title}, (err, data) => {
         if (err) {
           logger.debug(`${JSON.stringify(err)}`);
-          res.status(404).json({ error: err });
+          res.status(404).send({ message: err });
         } else {
           result.videos.push(data._id);
           result.save(function(err){

@@ -19,7 +19,7 @@ router.post('/emailqueue', (req, res) => {
   .findOne({_id: req.body.id})
   .exec((err, emailqueue) => {
     if (err) {
-      res.status(500).json({ error: `${JSON.stringify(err)}` });
+      res.status(500).send({ message: `${JSON.stringify(err)}` });
     } else {
       if (emailqueue.messages_tosend && emailqueue.messages_tosend.length) {
         const data = emailqueue.messages_tosend[0];
@@ -74,7 +74,7 @@ router.get('/tobeencoded/:sez', (req, res) => {
   .select({media:1})
   .exec((err, data) => {
     if (err) {
-      res.status(500).json({ error: `${JSON.stringify(err)}` });
+      res.status(500).send({ message: `${JSON.stringify(err)}` });
     } else {
       if (data.length) {
         res.json(data);      
@@ -87,7 +87,7 @@ router.get('/tobeencoded/:sez', (req, res) => {
         .sort({createdAt:-1})
         .exec((err, data) => {
           if (err) {
-            res.status(500).json({ error: `${JSON.stringify(err)}` });
+            res.status(500).send({ message: `${JSON.stringify(err)}` });
           } else {
             res.json(data);
           }
@@ -107,10 +107,10 @@ router.get('/setdurationandsize/:sez/:id/', (req, res) => {
     logger.debug(data);
     //data.media.file = "/public/1f575e4c-7cd5-4609-a0cc-75b3b301c6f3.mp4";
     if (err) {
-      res.status(500).json({ error: `${JSON.stringify(err)}` });
+      res.status(500).send({ message: `${JSON.stringify(err)}` });
     } else {
       /* if (!data || !data.media || data.media.file) {
-        res.status(500).json({ error: "MEDIA NOT FOUND" });
+        res.status(500).send({ message: "MEDIA NOT FOUND" });
       } else { */
         if (fs.existsSync(global.appRoot+data.media.file)) {
           data.media.filesize = fs.statSync(global.appRoot+data.media.file).size;
@@ -156,7 +156,7 @@ router.get('/setencodingstatus/:sez/:id/:encoding', (req, res) => {
     .findOne({_id:req.params.id})
     .exec((err, data) => {
       if (err) {
-        res.status(500).json({ error: `${JSON.stringify(err)}` });
+        res.status(500).send({ message: `${JSON.stringify(err)}` });
       } else {
         logger.debug(data.media.original);
         const ext = data.media.original.substring(data.media.original.lastIndexOf(".")+1);
@@ -249,7 +249,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
           logger.debug("event.organizationsettings.email");
           logger.debug(event.organizationsettings.email);
           if (err) {
-            res.status(500).json({ error: `${JSON.stringify(err)}` });
+            res.status(500).send({ message: `${JSON.stringify(err)}` });
           } else {
             const auth = {
               user: event.organizationsettings.email,
@@ -346,17 +346,17 @@ router.get('/getprograms', (req, res) => {
   .exec((err, data) => {
     res.json(data);
     /* if (err) {
-      res.status(404).json({ error: `${JSON.stringify(err)}` });
+      res.status(404).send({ message: `${JSON.stringify(err)}` });
     } else {
       if (!data) {
-        res.status(204).json({ error: `DOC_NOT_FOUND` });
+        res.status(404).send({ message: `DOC_NOT_FOUND` });
       } else {
         if (helpers.editable(req, data, id)) {
           let send = {_id: data._id};
           for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
           res.json(send);
         } else {
-          res.status(204).json({ error: `DOC_NOT_OWNED` });
+          res.status(404).send({ message: `DOC_NOT_OWNED` });
         }
       }
     } */
