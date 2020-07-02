@@ -76,11 +76,14 @@ block content
                               i.lnr.lnr-link.mr-2
                             !=item.url
 
-                if data.publicEmails && data.publicEmails.length          
-                  each email in data.publicEmails
-                    li.mb-3
-                      i.far.fa-envelope.mr-2
-                      !=item.url
+                  if data.publicEmails && data.publicEmails.length    
+                    ul.pl-2.list-unstyled
+                      each email in data.publicEmails
+                        li.mb-3
+                          a(href="mailto:"+item)
+                            i.far.fa-envelope.mr-2
+                            - console.log(email)
+                            !=email
               .col-4
                 img.soft-rounded-circle.img-fluid(
                   class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
