@@ -4,9 +4,9 @@ module.exports = {
     name: "avnode.net",
     max_memory_restart: "600M",
     script: "index.js",
-    log_file: "node_avnode-combined.log",
-    out_file: "node_avnode-out.log",
-    error_file: "node_avnode-err.log",
+    log_file: "/var/logs/nginx/node_avnode-combined.log",
+    out_file: "/var/logs/nginx/node_avnode-out.log",
+    error_file: "/var/logs/nginx/node_avnode-err.log",
     ignore_watch: [
       "public",
       "warehouse",
