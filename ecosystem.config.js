@@ -2,7 +2,7 @@
 module.exports = {
   apps : [{
     name: "avnode.net",
-    max_memory_restart: "600M",
+    max_memory_restart: "2G",
     script: "index.js",
     log_file: "/sites/logs/node_avnode-combined.log",
     out_file: "/sites/logs/node_avnode-out.log",
