@@ -110,15 +110,15 @@ const setIdentifier = () => {
 const getStorageFolder = () => {
   //return `${process.cwd()}/${process.env.STORAGE}`;
 };
-const getPagination = (link, skip, limit, total) => {
+const getPagination = (link, skip, limit, total, add) => {
   var pages = [];
   total = Math.floor(total / limit);
   var current = Math.floor(skip / limit);
 
   // add prev link if not on first page
   if (current !== 0) {
-    pages.push({index: '<<', link: link + 1, active: false});
-    pages.push({index: '<', link: link + current, active: false});
+    pages.push({index: '<<', link: link + 1 + add, active: false});
+    pages.push({index: '<', link: link + current + add, active: false});
   }
 
   // go five items back and forth
@@ -129,7 +129,7 @@ const getPagination = (link, skip, limit, total) => {
       if (i === current) {
         active = true;
       }
-      pages.push({index: (i + 1), link: link + (i + 1), active: active});
+      pages.push({index: (i + 1), link: link + (i + 1) + add, active: active});
     }
   }
 

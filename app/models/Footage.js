@@ -9,47 +9,45 @@ const Media = require("./shared/Media");
 
 const adminsez = "footage";
 
-const footageSchema = new Schema(
-  {
-    old_id: String,
-    createdAt: Date,
-    title: { type: String, trim: true, required: true, maxlength: 100 },
-    slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100,
-      validate: [(slug) => {
-        var re = /^[a-z0-9-_]+$/;
-        return re.test(slug)
-      }, 'URL_IS_NOT_VALID']
-    },
-    is_public: { type: Boolean, default: false },
-    media: Media,
-    abouts: [About],
-    stats: {
-      visits: { type: Number, default: 0 },
-      likes: { type: Number, default: 0 }
-    },
-    users: [{ type: Schema.ObjectId, ref: "UserShow" }],
-    playlists: [{ type: Schema.ObjectId, ref: "Playlist" }],
-    tags: [
-      {
-        old_id: String,
-        tag: String,
-        tot: Number,
-        required: Boolean,
-        exclusive: Boolean
-      }
-    ]
+const footageSchema = new Schema({
+  old_id: String,
+  createdAt: Date,
+  title: { type: String, trim: true, required: true, maxlength: 100 },
+  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100,
+    validate: [(slug) => {
+      var re = /^[a-z0-9-_]+$/;
+      return re.test(slug)
+    }, 'URL_IS_NOT_VALID']
   },
-  {
-    collection: "footage",
-    timestamps: true,
-    toObject: {
-      virtuals: true
-    },
-    toJSON: {
-      virtuals: true
+  is_public: { type: Boolean, default: false },
+  media: Media,
+  abouts: [About],
+  stats: {
+    visits: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
+  },
+  users: [{ type: Schema.ObjectId, ref: "UserShow" }],
+  playlists: [{ type: Schema.ObjectId, ref: "Playlist" }],
+  tags: [
+    {
+      old_id: String,
+      tag: String,
+      tot: Number,
+      required: Boolean,
+      exclusive: Boolean
     }
+  ]
+},
+{
+  collection: "footage",
+  timestamps: true,
+  toObject: {
+    virtuals: true
+  },
+  toJSON: {
+    virtuals: true
   }
-);
+});
 
 // Return thumbnail
 footageSchema.virtual("imageFormats").get(function() {

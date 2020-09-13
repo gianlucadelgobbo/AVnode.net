@@ -1003,7 +1003,13 @@ dataprovider.list = (req, res, section, model) => {
       res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
     } else {
       //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
-      const query = config.sections[section].categoriesQueries[filter];
+      const query = Object.assign({}, config.sections[section].categoriesQueries[filter]);
+      if (req.query.country ) {
+        query["addresses.country"] = new RegExp(req.query.country, "i");
+      }
+      console.log(query);
+      console.log(req.params);
+      console.log(req.query);
       dataprovider.fetchLists(model, query, select, populate, config.sections[section].limit, skip, config.sections[section].ordersQueries[sorting], (err, data, total) => {
         const title = config.sections[section].title + ': ' + config.sections[section].labels[filter] + ' ' + config.sections[section].labels[sorting];
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
@@ -1036,7 +1042,7 @@ dataprovider.list = (req, res, section, model) => {
         } else {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;
           let link = '/' + section + '/' + filter + '/' + sorting + '/';
-          let pages = helper.getPagination(link, skip, config.sections[section].limit, total);
+          let pages = helper.getPagination(link, skip, config.sections[section].limit, total, (req.query.country ? "?country="+req.query.country : ""));
           res.render(config.sections[section].view_list, {
             title: title,
             section: section,

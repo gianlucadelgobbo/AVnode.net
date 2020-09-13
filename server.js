@@ -28,6 +28,8 @@ dotenv.load({ path: ".env.local" });
 global.appRoot = path.resolve(__dirname);
 
 const app = express();
+app.locals.moment = require('moment');
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(

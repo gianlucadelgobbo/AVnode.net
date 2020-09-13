@@ -661,8 +661,10 @@ $( ".lock-schedule" ).click(function( event ) {
     modal.find('.modal-index').val(index);
     modal.find('.modal-stagename').val(stagename);
   });
-  
+  console.log("stocazzo")
+
   $( "#modalAddContact form" ).submit(function( event ) {
+    console.log("stocazzo")
     event.preventDefault();
     var post = {};
     $( this ).serializeArray().map(n => {
@@ -867,6 +869,39 @@ $( ".lock-schedule" ).click(function( event ) {
     });
 
   });
+});
+
+$( "#modalLinkPartner form" ).submit(function( event ) {
+  event.preventDefault();
+  console.log("DAFARE");/* 
+  var post = {};
+  $( this ).serializeArray().map(n => {
+    if (n['name']=="web" || n['name']=="social") {
+      var urls = n['value'].split(/\n/);
+      post[n['name']] = [];
+      for (url in urls) post[n['name']].push({url:urls[url].trim()});
+    } else {
+      post[n['name']] = n['value'].trim();
+    }
+  });
+  post.is_public = false;
+  post.is_crew = true;
+  post.is_partner = true;
+  post.organizationData = {delegate: post.delegate};
+  post.partner_owner = [{owner: post.partner_owner}];
+  delete post.delegate;
+  post.slug = slugify(post.stagename);
+  $.ajax({
+    url: "/admin/api/partner/new/",
+    method: "post",
+    data: post
+  })
+  .done(function(data) {
+    $( this ).find(".alert").html("SAVED!!!").removeClass("d-none").removeClass("alert-danger").addClass("alert-success");
+  })
+  .fail(function(err) {
+    $( "#modalAddPartner form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
+  }); */
 });
 
 const slugify = (str) => {

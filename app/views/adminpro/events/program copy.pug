@@ -1,0 +1,195 @@
+extends ../layout
+block topmenu
+  include topmenu
+block content
+  include ./_filters
+  table.table.table-fixed.program
+    //thead
+      tr
+        th
+        each room,i in data.rooms
+          th
+            h5=room
+    tbody
+      tr
+        - var cols = 0
+        each day in data.programmebydayvenue
+          if Object.keys(day.rooms).length > cols
+            - cols = Object.keys(day.rooms).length < 3 ? Object.keys(day.rooms).length : 3
+        td(style="width:calc(100vw/"+(cols+2)+")")
+          h2=global.__("TO BE SCHEDULED")
+          div(style="max-height: calc(100vh - 100px);overflow-y: scroll;")
+            form(id="form"+conta)
+              input(type="hidden", name="event", value=data.event._id)
+              ul.list-group.connectedSortable(id="sortable0")
+                - var conta = 0
+                each program, i in data.program
+                  if !program.schedule || !program.schedule.length || !program.schedule[0] || !program.schedule[0].starttime
+                    if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
+                      
+                      li.list-group-item(style="overflow: hidden;", class=(program.performance.duration != parseFloat(program.performance.duration) ? "disabled" : ""))
+                        - conta++
+                        .index.badge.disabled=(conta)
+                        .title
+                          b!=program.performance.title
+                        .clearfix
+                          .float-left
+                            .type.small=program.performance.type.name
+                          .float-right
+                            .duration.small(class=(program.performance.duration == parseFloat(program.performance.duration) ? "" : "badge badge-danger"))=program.performance.duration+" min."
+
+                        .authors.mb-2=program.performance.users.map(user => {return user.stagename}).join(", ")
+                        .float-left
+                          a.lock-schedule(href="#")
+                            i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
+                          a.pl-3.duplicate(href="#")
+                            i.fa.fa-clone
+                          a.pl-3.edit-schedule(href="#")
+                            i.fa.fa-edit
+                        .float-right
+                          .availability.text-right
+                            - var daydayA = []
+                            each subscription in program.subscriptions
+                              each day, i in data.days
+                                - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return item.getTime()}).indexOf(day)
+                            each day, i in daydayA
+                              span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                                !=new Date(data.days[i]).getDate()
+                          input(type="hidden", name="program[]", value=JSON.stringify(program))
+        td(style="padding:0;border:none;")
+          div(style="max-height: calc(100vh - 40px);overflow-y: scroll;")
+            table(style='width: 100%')
+              - var conta = 1
+              each schedule in data.event.schedule
+                  if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(schedule.venue.room)>-1)
+                    tr
+                      td
+                        //(colspan=Object.keys(day.rooms).length)
+                        - let date = new Date(schedule.starttime);  // dateStr you get from mongodb
+                        - if (date.getUTCHours()<10) date = new Date(schedule.starttime-(24*60*60*1000));
+                        - let d = ('0'+date.getUTCDate()).substr(-2);
+                        - let m = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                        - let y = date.getUTCFullYear();
+                        - const lang = global.getLocale();
+                        - let newdate = data.moment(date).format(config.dateFormat[lang].weekdaydaymonthyear);
+                        - if (new Date(schedule.endtime).getTime() > new Date(schedule.starttime).getTime()+(24*60*60*1000)+(24*60*60*1000)) {
+                          - let endtime = new Date(schedule.endtime);  // dateStr you get from mongodb
+                          - let dd = ('0'+date.getUTCDate()).substr(-2);
+                          - let mm = ('0'+(date.getUTCMonth()+1)).substr(-2);
+                          - let yy = date.getUTCFullYear();
+                          - const lang = global.getLocale();
+                          - newdate+= " > " + data.moment(endtime).format(config.dateFormat[lang].weekdaydaymonthyear);
+                        - }
+
+                        h2=newdate
+                    tr
+                      ///each room,i in day.rooms
+                      //const room = day.venue.room;
+                      td(style="width:"+(100/cols)+"%;overflow: hidden;min-width: 300px;")
+                        b=schedule.venue.room
+                        div
+                          form(id="form"+conta)
+                            input(type="hidden", name="room", value=JSON.stringify(schedule.venue.room)) 
+                            ul.list-group.connectedSortable(id="sortable"+conta)
+                              - conta++
+                                //if room.program
+                              each program,ii in data.program
+                                if program.schedule.venue && program.schedule.venue.room == schedule.venue.room
+                                  li.list-group-item(class=program.schedule.disableautoschedule ? "disabled" : undefined)
+                                    .timing.small=program.schedule.starttimeTime+" - "+program.schedule.endtimeTime
+                                    .index.badge.disabled=(ii+1)
+                                    .title.mt-2
+                                      b!=program.performance.title
+                                    .clearfix
+                                      .float-left
+                                        .type.small
+                                          !=program.performance.type.name
+                                          if program.performance.genre && program.performance.genre.name
+                                            !=" | "+program.performance.genre.name
+                                          if program.performance.tecnique && program.performance.tecnique.name
+                                            !=" | "+program.performance.tecnique.name
+                                          !=" | "+program.topics.join(", ")
+                                      .float-right
+                                        .duration.small=program.performance.duration+" min."
+
+                                    .authors.mb-1=program.performance.users.map(user => {return user.stagename}).join(", ")
+                                    .clearfix
+                                      .float-left
+                                        a.lock-schedule(href="#")
+                                          i.fa(class=program.schedule && program.schedule.disableautoschedule ? "fa-lock" : "fa-lock-open")
+                                        a.pl-3.duplicate(href="#")
+                                          i.fa.fa-clone
+                                        a.pl-3.edit-schedule(href="#")
+                                          i.fa.fa-edit
+                                      .float-right
+                                        .availability.text-right
+                                          - var daydayA = []
+                                          each subscription in program.subscriptions
+                                            each day, i in data.days
+                                              - if (daydayA[i]!=-1) daydayA[i] = subscription.days.map(item => {return new Date(item).getTime()}).indexOf(day)
+                                          each day, i in daydayA
+                                            span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
+                                              !=new Date(data.days[i]).getDate()
+                                        input(type="hidden", name="program[]", value=JSON.stringify(program))
+  #modalEditSchedule.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalEditScheduleLabel', aria-hidden='true')
+    .modal-dialog.modal-lg(role='document')
+      .modal-content
+        form#editSchedule
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Edit schedule")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            //.alert.alert-danger bella
+            //.alert.alert-success bella
+            .content
+              - var lastdaystr
+              - var days = []
+              each day,index in data.programmebydayvenue
+                - days.push(day.day)
+                .row
+                  .col
+                    .form-check
+                      input.form-check-input(type="radio" id="startday"+index value=day.day name="startday")
+                      label.form-check-label(for="startday"+index)=day.day
+                  .col
+                    .form-check
+                      input.form-check-input(type="radio" id="endday"+index value=day.day name="endday")
+                      label.form-check-label(for="endday"+index)=day.day
+              - days = days.sort();
+              - lastdaystr = days[days.length-1]
+              - var lastday = new Date(lastdaystr)
+              - var nextday = new Date(lastdaystr)
+              - var nextday = new Date(lastday.setDate(lastday.getDate()+1));
+              - var nextstr = nextday.getFullYear()+"-"+("0"+(nextday.getMonth()+1)).substr(-2)+"-"+("0"+(nextday.getDate())).substr(-2)
+              .row
+                .col
+                  .form-check
+                    input.form-check-input(type="radio" id="startday"+data.programmebydayvenue.length value=nextstr name="startday")
+                    label.form-check-label(for="startday"+data.programmebydayvenue.length)=nextstr
+                .col
+                  .form-check
+                    input.form-check-input(type="radio" id="endday"+data.programmebydayvenue.length value=nextstr name="endday")
+                    label.form-check-label(for="endday"+data.programmebydayvenue.length)=nextstr
+              .row
+                .col
+                  .form-group
+                    label Start Time
+                    .form-row
+                      .col
+                        input.form-control.starttime_hours(type='text', name="starttime_hours")
+                      .col
+                        input.form-control.starttime_minutes(type='text', name='starttime_minutes')
+                .col
+                  .form-group
+                    label End Time
+                    .form-row
+                      .col
+                        input.form-control.endtime_hours(type='text', name="endtime_hours")
+                      .col
+                        input.form-control.endtime_minutes(type='text', name='endtime_minutes')
+
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")

@@ -491,6 +491,9 @@ router.get('/:event/program', (req, res) => {
     if (err) {
       res.json(err);
     } else {
+      event.schedule.sort((a,b) => {
+        return new Date(a.starttime) - new Date(b.starttime);
+      });
       const select = config.cpanel["events_advanced"].forms["program"].select;
       const populate = req.query.pure ? [] : config.cpanel["events_advanced"].forms["program"].populate;
       let query = {"event": req.params.event, status: "5be8708afc39610000000013"};
@@ -548,7 +551,6 @@ router.get('/:event/program', (req, res) => {
             //{value: 'sortby_arrival_date', key: 'sort by arrival date'},
             {value: '0', key: 'sort by sub date'}
           ];
-          
           data.programmebydayvenue = {}
           for(let a=0;a<event.schedule.length;a++) {
             let date = new Date(event.schedule[a].starttime);  // dateStr you get from mongodb
