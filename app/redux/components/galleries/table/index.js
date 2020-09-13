@@ -53,7 +53,7 @@ class ModelTable extends Component {
             Cell: props => {
               const { row, original } = props;
               return (
-                <Link to={`/admin/Gallerys/${original._id}/public`}>
+                <Link to={`/admin/galleries/${original._id}/public`}>
                   <img
                     className = "img-fluid"
                     src={
@@ -84,7 +84,7 @@ class ModelTable extends Component {
               const { row, original } = props;
               return (
                 <div>
-                  <div><b><Link to={`/admin/Gallerys/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link onClick={this.forceUpdate} to={`/Gallerys/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
+                  <div><b><Link to={`/admin/galleries/${original._id}/public`}> <i className="fa fa-edit" /> </Link> | <Link onClick={this.forceUpdate} to={`/galleries/${original.slug}/`}> <i className="fa fa-eye" /> </Link> | {original.title}</b></div>
                   <div>{original.is_public===true ? <i className="fas fa-circle text-success" /> : <i className="far fa-circle text-danger" />} Public | <i className="fa fa-image" /> {original.stats.img}</div>
                   <div><i className="fa fa-heart" /> {original.stats.likes} | <i className="fa fa-eye" /> {original.stats.visits}</div>
                 </div>
@@ -215,7 +215,7 @@ class ModelTable extends Component {
 
     return (
       <div>
-        {!list.length && <div>No Gallerys to display</div>}
+        {!list.length && <div>No galleries to display</div>}
 
         {isFetching && <Loading />}
 

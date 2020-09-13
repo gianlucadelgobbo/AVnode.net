@@ -3,6 +3,7 @@ import { reduxForm, Field, FieldArray } from "redux-form";
 import { FORM_NAME, SECTION } from "./constants";
 import {
   inputText,
+  checkboxField,
   textareaMultiTab,
   fieldWithLabel,
   listGallery
@@ -15,6 +16,7 @@ import {
   GALLERIES_URL,
   GALLERIES_URL_PRE,
   GALLERIES_URL_HELP,
+  IS_PUBLIC,
   AUTHORS
 } from "../../common/form/labels";
 
@@ -53,6 +55,12 @@ class GalleriesPublicForm extends Component {
           placeholder={this.getIntlString({ id: GALLERIES_URL })}
           pre={this.getIntlString({ id: GALLERIES_URL_PRE })}
           help={this.getIntlString({ id: GALLERIES_URL_HELP })}
+        />
+
+        <Field
+          name="is_public"
+          component={checkboxField}
+          placeholder={this.getIntlString({ id: IS_PUBLIC })}
         />
 
         {/*<Field

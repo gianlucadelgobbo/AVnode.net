@@ -73,6 +73,8 @@ class GalleriesPublic extends Component {
     f.medias = model.medias;
     // Convert about format for FieldArray redux-form
     f.abouts = populateMultiLanguageObject("abouts", abouts);
+    //Convert slug for redux-form
+    f.is_public = model.is_public;
 
     f.users = model.users || [];
 
