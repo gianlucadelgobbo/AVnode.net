@@ -49,8 +49,6 @@ router.post('/', (req, res) => {
     setTimeout(function() {
       logger.debug('resultsPromise');
       logger.debug(resultsPromise);
-      console.log("resultsPromise");
-      console.log(msg);
       res.render('adminpro/supertools/localesgen/index', {
         title: 'Locales Generator',
         currentUrl: req.originalUrl,

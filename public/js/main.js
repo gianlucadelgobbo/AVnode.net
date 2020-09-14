@@ -3,8 +3,6 @@ $(document).ready(function(){
     event.preventDefault();
     var button = $(this) // Button that triggered the modal
     var user = button.data('user') // Extract info from data-* attributes
-    console.log("user")
-    console.log(user)
     if (!user) {
       window.location.href = "/login";
     } else {
@@ -37,19 +35,15 @@ $(document).ready(function(){
     });
     var sez = post.sez;
     delete post.sez
-    console.log(post)
     $.ajax({
       url: "/admin/api/"+sez+"/new/",
       method: "post",
       data: post
     })
     .done(function(data) {
-      console.log(data);
       window.location.href = "/admin/"+sez+"/"+data._id+"/public";
     })
     .fail(function(err) {
-      console.log("err");
-      console.log(err);
       $( "#modalNewContent form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
     });
   })
@@ -64,8 +58,6 @@ $(document).ready(function(){
     $('.category-manager input').change(function () {
       var name = $(this).val();
       var check = $(this).prop('checked');
-      console.log("Change: " + name + " to " + check);
-      console.log($('.category-manager').serialize());
       $.ajax({
         url: "/admin/api/setvideocategory",
         method: "post" ,

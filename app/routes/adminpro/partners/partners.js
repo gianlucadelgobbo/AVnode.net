@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
   sort({stagename: 1}).
   select({stagename:1}).
   exec((err, data) => {
-    //logger.debug(Object.keys(data[0]));
+    //console.log(Object.keys(data[0]));
 
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
       res.json(data);
@@ -82,11 +82,11 @@ router.post('/:id/event/:event/:sez', (req, res) => {
 });
 
 /* router.getEmailqueue = (req, res) => {
-  logger.debug('/getEmailqueue/'+req.params.id);
-  logger.debug("req.body");
-  logger.debug(req.body);
-  logger.debug("req.params");
-  logger.debug(req.params);
+  console.log('/getEmailqueue/'+req.params.id);
+  console.log("req.body");
+  console.log(req.body);
+  console.log("req.params");
+  console.log(req.params);
 
   User.
   findOne({"_id": req.params.id}).
@@ -137,11 +137,11 @@ router.post('/:id/event/:event/:sez', (req, res) => {
 } */
 
 router.getPartners = (req, res) => {
-  logger.debug('/getPartners/'+req.params.id);
-  logger.debug("req.body");
-  logger.debug(req.body);
-  logger.debug("req.params");
-  logger.debug(req.params);
+  console.log('/getPartners/'+req.params.id);
+  console.log("req.body");
+  console.log(req.body);
+  console.log("req.params");
+  console.log(req.params);
   User.
   findOne({"_id": req.params.id}).
   lean().
@@ -166,11 +166,11 @@ router.getPartners = (req, res) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          logger.debug(query);
-          logger.debug("data");
-          logger.debug(data ? data.length : "stocazzo");
-          logger.debug("req.body");
-          logger.debug(req.body);
+          console.log(query);
+          console.log("data");
+          console.log(data ? data.length : "stocazzo");
+          console.log("req.body");
+          console.log(req.body);
           if (req.body.subject && req.params.sez=="send") {
             var tosave = {};
             tosave.organization = req.params.id;
@@ -202,10 +202,11 @@ router.getPartners = (req, res) => {
                 });
                 if (message.to_html != "") tosave.messages_tosend.push(message)
               } else {
-                //logger.debug(item.stagename);
+                //console.log(item.stagename);
               }
             });
             Emailqueue.create(tosave, function (err) {
+              console.log("Emailqueue.create")
               var query = {organization: req.params.id};
               if (req.params.event) query.event = req.params.event;
               var populate = [
@@ -250,7 +251,7 @@ router.getPartners = (req, res) => {
 
 
 router.get('/:id/:event/grantsdata', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
+  console.log('/organizations/'+req.params.event);
   var grantevents = {
     flyer: [{
       "Event Name": "Live Cinema Festival",
@@ -350,7 +351,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
 
 
   const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
-  logger.debug(query);
+  console.log(query);
   User.
   find(query).
   lean().
@@ -379,14 +380,14 @@ router.get('/:id/:event/grantsdata', (req, res) => {
 
 
 router.get('/:id/:event/mandates', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
+  console.log('/organizations/'+req.params.event);
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
     const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
-    logger.debug(query);
+    console.log(query);
     User.
     find(query).
     lean().
@@ -417,14 +418,14 @@ router.get('/:id/:event/mandates', (req, res) => {
 
 
 router.get('/:id/:event/grantsdata_table', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
+  console.log('/organizations/'+req.params.event);
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
     const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
-    logger.debug(query);
+    console.log(query);
     User.
     find(query).
     lean().
@@ -551,14 +552,14 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
       "Description": "Campus Festival is an annual open-air popular music and multi-art festival held in the Great Forest Park of Debrecen, Hungary.\n\nWith a four-day attendance of 113.000 in 2019, Campus is the biggest open-air youth cultural event in Eastern Hungary.\n\nThe venue is a beloved city park with emblematic buildings like the new stadium and the old water tower.\n\nThe festival has its own accompanying events at the same time: Campus Art is a showcase of local art organizations, Campus Kid is for families and kids and the Campus Olympics are for university sport teams.\n\nToday Campus usually runs with 18 stages and programme venues, representing a wide range of popular music genres and also other branches of art as theatre, literature, cinema, dance and circus art.\n\nWe also welcome several NGO’s to add their activities to our programme.\n\nIn 2017 and 2019, the event got the EFFE (Europe For Festivals, Festivals For Europe) Quality Label and also it recently won the ARTISJUS prize for the best event."
     }]};
 
-  logger.debug('/organizations/'+req.params.event);
+  console.log('/organizations/'+req.params.event);
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
     const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
-    logger.debug(query);
+    console.log(query);
     User.
     find(query).
     lean().
@@ -591,7 +592,7 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
 
 
 getManageables = (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
+  console.log('/organizations/'+req.params.event);
   Category.
   find({ancestor: "5be8708afc396100000001eb"}).
   lean().
@@ -628,7 +629,7 @@ getManageables = (req, res) => {
           //exec((err, events) => {
           exec((err, event) => {
             var partnerships = event.partners.slice(0);
-            logger.debug(existingCat);
+            console.log(existingCat);
             var notassigned = [];
             var notassignedID = [];
             var partnersID = [];
@@ -676,9 +677,9 @@ getManageables = (req, res) => {
 
 /*
 router.get('/:id/:event', (req, res) => {
-  logger.debug('/organizations/'+req.params.event);
+  console.log('/organizations/'+req.params.event);
   const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
-  logger.debug(query);
+  console.log(query);
   User.
   findOne({"_id": req.params.id}).
   lean().
@@ -781,8 +782,8 @@ const status = [
 ];
  
 router.get('/:event/acts', (req, res) => {
-  logger.debug('/organizations/'+req.params.event+'/acts');
-  logger.debug(req.query)
+  console.log('/organizations/'+req.params.event+'/acts');
+  console.log(req.query)
   let data = {};
   User.
   findOne({"_id": req.params.event}).
@@ -797,13 +798,13 @@ router.get('/:event/acts', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      logger.debug(query);
+      console.log(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
-        logger.debug(program);
+        console.log(program);
         if (err) {
           res.json(err);
         } else {
@@ -831,8 +832,8 @@ router.get('/:event/acts', (req, res) => {
 });
 
 router.get('/:event/peoples', (req, res) => {
-  logger.debug('/organizations/'+req.params.event+'/peoples');
-  logger.debug(req.query)
+  console.log('/organizations/'+req.params.event+'/peoples');
+  console.log(req.query)
   let data = {};
   User.
   findOne({"_id": req.params.event}).
@@ -847,14 +848,14 @@ router.get('/:event/peoples', (req, res) => {
       let query = {"event": req.params.event};
       if (req.query.call && req.query.call!='none') query.call = req.query.call;
       if (req.query['schedule.categories'] && req.query['schedule.categories']!='0') query['schedule.categories'] = req.query['schedule.categories'];
-      logger.debug(query);
+      console.log(query);
       Program.
       find(query).
       //select({title: 1, organizationsettings: 1}).
       populate(populate_program).
       exec((err, program) => {
 
-        logger.debug(program);
+        console.log(program);
         if (err) {
           res.json(err);
         } else {
@@ -895,7 +896,7 @@ router.get('/:event/peoples', (req, res) => {
 });
 
 router.get('/:event/program', (req, res) => {
-  logger.debug('/organizations/'+req.params.event+'/program');
+  console.log('/organizations/'+req.params.event+'/program');
 
   let data = {};
   User.
