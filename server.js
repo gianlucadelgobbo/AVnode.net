@@ -134,6 +134,7 @@ app.use((req, res, next) => {
 });
 console.log("server global.getLocale: " + global.getLocale());
 app.use((req, res, next) => {
+  /*
   const path = req.path.split("/")[1];
   const lang =
     req.headers.host.split(".")[0] != req.headers.host &&
@@ -142,15 +143,15 @@ app.use((req, res, next) => {
     req.headers.host.split(".")[0] != "api"
       ? config.domain_to_lang[req.headers.host.split(".")[0]]
       : "en";
-  /* if (!req.session.current_lang) {
+  if (!req.session.current_lang) {
     req.session.current_lang = config.defaultLocale;
-  } */
+  }
   console.log("req.session.current_lang "+req.session.current_lang)
+  */
   if (req.session.current_lang != config.defaultLocale) {
     req.session.current_lang = config.defaultLocale;
     global.setLocale(req.session.current_lang);
     moment.locale(req.session.current_lang);
-    console.log("server 2 global.getLocale: " + global.getLocale()+" "+process.argv[3]);
   }
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
