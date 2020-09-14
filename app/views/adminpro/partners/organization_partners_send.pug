@@ -17,14 +17,15 @@ block content
       tbody
         if data.length
           each item, index in data
-            tr
-              td.table-firstcolumn-ID=index+1
-              td
-                b!=item.organization.stagename
-              td!=(item.event ? item.event.title : "No event filter")
-              td!=item.user.stagename
-              td!=item.subject
-              td!=(item.messages_tosend ? item.messages_tosend.length : 0).toString()
-              td!=(item.messages_sent ? item.messages_sent.length : 0).toString()
-              td
-                button.btn.btn-sm.btn-primary.send(type="button", data-emailqueue=item._id)!="SEND"
+            if item.organization.stagename
+              tr
+                td.table-firstcolumn-ID=index+1
+                td
+                  b!=item.organization.stagename
+                td!=(item.event ? item.event.title : "No event filter")
+                td!=item.user.stagename
+                td!=item.subject
+                td!=(item.messages_tosend ? item.messages_tosend.length : 0).toString()
+                td!=(item.messages_sent ? item.messages_sent.length : 0).toString()
+                td
+                  button.btn.btn-sm.btn-primary.send(type="button", data-emailqueue=item._id)!="SEND"
