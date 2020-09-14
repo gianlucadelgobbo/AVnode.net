@@ -40,7 +40,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.set("port", process.env.PORT || 3000);
+config.defaultLocale = process.argv[3];
+app.set("port", config.ports[config.defaultLocale] || 3000);
 app.set("views", path.join(__dirname, "app/views"));
 app.set("view engine", "pug");
 app.set("view options", { debug: true });
@@ -144,12 +145,13 @@ app.use((req, res, next) => {
   /* if (!req.session.current_lang) {
     req.session.current_lang = config.defaultLocale;
   } */
-  if (!req.session.current_lang || req.session.current_lang != lang) {
-    req.session.current_lang = lang;
+  console.log("req.session.current_lang "+req.session.current_lang)
+  if (req.session.current_lang != config.defaultLocale) {
+    req.session.current_lang = config.defaultLocale;
+    global.setLocale(req.session.current_lang);
+    moment.locale(req.session.current_lang);
+    console.log("server 2 global.getLocale: " + global.getLocale()+" "+process.argv[3]);
   }
-  global.setLocale(req.session.current_lang);
-  moment.locale(req.session.current_lang);
-  console.log("server 2 global.getLocale: " + global.getLocale()+" "+req.ip);
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
