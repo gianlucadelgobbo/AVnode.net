@@ -131,7 +131,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-logger.debug("global.getLocale: " + global.getLocale());
+console.log("server global.getLocale: " + global.getLocale());
 app.use((req, res, next) => {
   const path = req.path.split("/")[1];
   const lang =
@@ -149,7 +149,7 @@ app.use((req, res, next) => {
   }
   global.setLocale(req.session.current_lang);
   moment.locale(req.session.current_lang);
-  logger.debug("global.getLocale: " + global.getLocale());
+  console.log("server 2 global.getLocale: " + global.getLocale());
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
