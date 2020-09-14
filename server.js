@@ -149,7 +149,7 @@ app.use((req, res, next) => {
   }
   global.setLocale(req.session.current_lang);
   moment.locale(req.session.current_lang);
-  console.log("server 2 global.getLocale: " + global.getLocale());
+  console.log("server 2 global.getLocale: " + global.getLocale()+" "+req.ip);
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
