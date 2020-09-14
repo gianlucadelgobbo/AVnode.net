@@ -17,7 +17,7 @@ block content
       tbody
         if data.length
           each item, index in data
-            if item.organization.stagename
+            if item.organization && item.organization.stagename
               tr
                 td.table-firstcolumn-ID=index+1
                 td
