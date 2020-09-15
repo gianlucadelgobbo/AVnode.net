@@ -14,7 +14,9 @@ const moment = require("moment");
 // Require mongoose models once!
 require("./app/models");
 
-global.config = require("getconfig");
+const config = require("getconfig");
+global.config = config;
+config.defaultLocale = process.argv[3];
 const i18n = require("./app/utilities/i18n");
 const passport = require("./app/utilities/passport");
 const routes = require("./app/routes");
@@ -39,7 +41,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.set("port", 8006);
+app.set("port", config.ports[config.defaultLocale] || 3000);
 app.set("views", path.join(__dirname, "app/views"));
 app.set("view engine", "pug");
 app.set("view options", { debug: true });
@@ -132,6 +134,7 @@ app.use((req, res, next) => {
 });
 console.log("server config.defaultLocale: " + config.defaultLocale);
 app.use((req, res, next) => {
+  /*
   const path = req.path.split("/")[1];
   const lang =
     req.headers.host.split(".")[0] != req.headers.host &&
@@ -140,14 +143,13 @@ app.use((req, res, next) => {
     req.headers.host.split(".")[0] != "api"
       ? config.domain_to_lang[req.headers.host.split(".")[0]]
       : "en";
-  /*
   if (!req.session.current_lang) {
     req.session.current_lang = config.defaultLocale;
   }
   console.log("req.session.current_lang "+req.session.current_lang)
   */
   //if (req.session.current_lang != config.defaultLocale) {
-    req.session.current_lang = lang;
+    req.session.current_lang = config.defaultLocale;
     global.setLocale(req.session.current_lang);
     moment.locale(req.session.current_lang);
   //}
