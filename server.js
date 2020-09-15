@@ -14,13 +14,14 @@ const moment = require("moment");
 // Require mongoose models once!
 require("./app/models");
 
-const i18n = require("./app/utilities/i18n");
 const passport = require("./app/utilities/passport");
 const routes = require("./app/routes");
 const logger = require("./app/utilities/logger");
 
 const config = require("getconfig");
 global.config = config;
+config.defaultLocale = process.argv[3];
+const i18n = require("./app/utilities/i18n");
 
 // FIXME Kids say not cool
 const dotenv = require("dotenv");
@@ -40,7 +41,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-config.defaultLocale = process.argv[3];
 app.set("port", config.ports[config.defaultLocale] || 3000);
 app.set("views", path.join(__dirname, "app/views"));
 app.set("view engine", "pug");
