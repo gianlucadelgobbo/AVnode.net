@@ -132,7 +132,8 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-console.log("server global.getLocale: " + global.getLocale());
+console.log("server req.session.current_lang: " + req.session.current_lang);
+console.log("server config.defaultLocale: " + config.defaultLocale);
 app.use((req, res, next) => {
   /*
   const path = req.path.split("/")[1];
