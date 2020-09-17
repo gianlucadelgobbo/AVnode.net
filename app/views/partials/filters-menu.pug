@@ -5,12 +5,18 @@
       ul.nav.nav-pills
         each category, index in categories
           if index < 5
-            li(class="nav-item")
+            li(class="nav-item").mt-3.mt-md-0
               if category === filter
                 - currentcat = category
                 a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
               else
                 a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+        if (section == "performers")
+          li(class="nav-item").btn-group.ml-md-3.mt-3.mt-md-0
+            select.custom-select.bg-primary.text-white.border-primary(onChange="window.document.location.href='/performers/?country='+this.options[this.selectedIndex].value;" id="inputGroupSelect01")
+              option=global.__("By Country")
+              each country in countries
+                option(value=country selected=selected_country==country ? "selected" : undefined)=country
 
         if categories.length > 5
           li(class="nav-item dropdown")
@@ -26,7 +32,7 @@
     .float-left
       ul.nav.nav-pills
         each order in orderings
-          li(class="nav-item")
+          li(class="nav-item").mt-3.mt-md-0
             if order === sort
               a(class="nav-link active", href="/"+section+"/"+currentcat+"/"+order+"/")=global.__(labels[order])
             else

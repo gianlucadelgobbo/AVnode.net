@@ -430,8 +430,8 @@
 	"Socials": "Socials",
 	"Stats": "Stats",
 	"Text is missing": "Text is missing",
-	"view": "visualizza",
-	"View": "Visualizza",
+	"view": "view",
+	"View": "View",
 	"Views": "Views",
 	"views": "views",
 	"Web": "Web",
@@ -458,5 +458,6 @@
 	"Edit subscription": "Edit subscription",
 	"TO BE SCHEDULED": "TO BE SCHEDULED",
 	"Edit schedule": "Edit schedule",
-	"Organization": "Organization"
+	"Organization": "Organization",
+	"By Country": "By Country"
 }

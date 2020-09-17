@@ -135,8 +135,8 @@ const getPagination = (link, skip, limit, total, add) => {
 
   // add next link if not on first page
   if (current !== total) {
-    pages.push({index: '>', link: link + (current + 2), active: false});
-    pages.push({index: '>>', link: link + (total + 1), active: false});
+    pages.push({index: '>', link: link + (current + 2) + add, active: false});
+    pages.push({index: '>>', link: link + (total + 1) + add, active: false});
   }
   return pages;
 }

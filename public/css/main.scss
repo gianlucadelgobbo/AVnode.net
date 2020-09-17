@@ -2153,3 +2153,7 @@ textarea.form-control {
   background-color: $color1;
   border-color: $color1;
 }
+
+.custom-select {
+  height: calc(1.5em + .9rem + 2px);
+}
