@@ -181,7 +181,7 @@ router.getPartners = (req, res) => {
             tosave.messages_sent = [];
             data.forEach((item, index) => {
               var message = {};
-              if (item.organizationData && item.organizationData.contacts) {
+              if (item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && req.body.exclude.indexOf(item._id.toString())===-1) {
                 message.to_html = "";
                 message.cc_html = [];
 

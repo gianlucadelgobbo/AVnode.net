@@ -48,6 +48,13 @@ block content
           p
             label(for='message_en')="Message EN"
             textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
+      h3="Exclude"
+      ol
+        each item in data
+          li
+            .form-check
+              input.form-check-input(type='checkbox', name='exclude', id=item._id.toString(), value=item._id.toString(), checked=body.exclude!=undefined && (item._id.toString()==body.exclude || body.exclude.indexOf(item._id.toString())!=-1) ? 'checked' : undefined)
+              label.form-check-label(for=item._id.toString())=item.stagename 
       .text-center
         button(type='submit').btn.btn-success="Compose"
     if body.from_name
@@ -56,7 +63,7 @@ block content
         each item, index in data
           - item.to_html = ""
           - item.cc_html = []
-          if item.organizationData && item.organizationData.contacts
+          if item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && body.exclude.indexOf(item._id.toString())===-1
             each contact, cindex in item.organizationData.contacts
               - if (cindex===0)
                 - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
