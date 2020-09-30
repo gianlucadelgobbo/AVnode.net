@@ -313,6 +313,7 @@ router.getMessageActs = (req, res) => {
 router.get('/:event/peoples', (req, res) => {
   logger.debug('/events/'+req.params.event+'/peoples');
   logger.debug(req.query)
+  let data = {};
   Event.
   findOne({"_id": req.params.event}).
   select({title: 1, schedule: 1, program: 1, organizationsettings: 1}).
@@ -594,13 +595,23 @@ router.get('/:event/program', (req, res) => {
                       let program = JSON.parse(JSON.stringify(data.program[a]));
                       program.schedule = data.program[a].schedule[b];
                       logger.debug(data.program[a].performance.title);
+                      logger.debug(data.program[a].performance._id);
                       if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
                         data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                       } else {
-                        delete data.program[a].schedule[b];
+                        logger.debug("------------------------------------------------------------");
+
+                        //delete data.program[a].schedule[b];
                       }
                     } else {
                       var days = Math.floor((data.program[a].schedule[b].endtime-data.program[a].schedule[b].starttime)/(24*60*60*1000))+1;
+                      logger.debug("stocazzo");
+                      logger.debug(data.program[a].performance._id);
+                      logger.debug(data.program[a].performance.title);
+                      logger.debug(data.program[a].schedule.length);
+                      logger.debug(days);
+                      logger.debug(a);
+                      logger.debug(b);
                       for(let c=0;c<days;c++){
                         let date = new Date((data.program[a].schedule[b].starttime.getTime())+((24*60*60*1000)*c));
                         let d = ('0'+date.getUTCDate()).substr(-2);
@@ -610,12 +621,15 @@ router.get('/:event/program', (req, res) => {
                         program.schedule = data.program[a].schedule[b];
                         data.program[a].performance.duration = duration/days;
                         logger.debug(data.program[a].schedule[b].venue.room);
+                        logger.debug(data.program[a].schedule[b].starttime);
                         if (data.programmebydayvenue[y+"-"+m+"-"+d] && data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room]) {
                           data.programmebydayvenue[y+"-"+m+"-"+d].rooms[data.program[a].schedule[b].venue.room].program.push(program);
                         } else {
-                          delSchedule = true;
+                          logger.debug("------------------------------------------------------------");
+                          //delSchedule = true;
                         }
                       }
+                      logger.debug("stocazzo end");
                     }
                   }
                   if (delSchedule) delete data.program[a].schedule[b];

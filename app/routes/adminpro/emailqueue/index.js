@@ -14,10 +14,10 @@ router.getEmailqueue = (req, res) => {
   logger.debug('/getEmailqueue/'+req.params.id);
   logger.debug("req.body");
   var ids = req.user.crews.map(item => {return item._id});
-  logger.debug(ids);
-  logger.debug(req.body);
-  logger.debug("req.params");
-  logger.debug(req.params);
+      logger.debug(ids);
+      logger.debug(req.body);
+      logger.debug("req.params");
+      logger.debug(req.params);
 
       var query = {$or:[{organization: {$in: ids}}, {user: req.user._id}]};
       if (req.params.event) query.event = req.params.event;

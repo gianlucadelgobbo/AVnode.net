@@ -14,8 +14,13 @@ block content
 
   - counters.Total.Submissions = data.program.length
   each item, index in data.program
-    - if (!counters.Type[item.performance.type.name]) counters.Type[item.performance.type.name] = 0
-    - counters.Type[item.performance.type.name]++
+    - console.log("perf: "+ item.performance.title)
+    if item.performance.type
+      - if (!counters.Type[item.performance.type.name]) counters.Type[item.performance.type.name] = 0
+      - counters.Type[item.performance.type.name]++
+    else
+      - if (!counters.Type["UNDEFINED"]) counters.Type["UNDEFINED"] = 0
+      - counters.Type["UNDEFINED"]++
     if item.schedule && item.schedule.length && item.schedule[0].boxDate
       - counters.Schedule.Scheduled++
     else
@@ -129,7 +134,10 @@ block content
                 span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
                   i.fa.fa-eye
               !=" | TYPE: "
-              b=item.performance.type.name
+              if item.performance.type
+                b=item.performance.type.name
+              else 
+                span.badge.badge-danger="UNDEFINED"
             .row
               if get.fullinfo
                 .col-md-6
