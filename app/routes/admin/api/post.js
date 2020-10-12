@@ -965,7 +965,7 @@ router.updateSubscription = (req, res) => {
                   //logger.debug(result);
                   if (err) {
                     logger.debug("Email sending failure");
-                    res.json({error: true, msg: "Email sending failure"});
+                    res.json({error: true, msg: "Email sending failure", err: err});
                   } else {
                     logger.debug("Email sending OK");
                     res.json({error: false, msg: "Email sending success"});

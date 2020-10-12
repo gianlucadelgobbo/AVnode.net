@@ -40,7 +40,7 @@ router.post('/emailqueue', (req, res) => {
           if (err) {
             logger.debug("Email sending failure");
             logger.debug(err);
-            res.json({error: true, msg: "Email sending failure", id: req.body.id});
+            res.json({error: true, msg: "Email sending failure", id: req.body.id, err: err});
           } else {
             logger.debug("Email sending OK");
             emailqueue.messages_sent.push(emailqueue.messages_tosend[0]);
@@ -280,7 +280,7 @@ router.post('/transactionupdate', cors(corsOptions), (req, res)=>{
               if (err) {
                 logger.debug("Email sending failure");
                 logger.debug(err);
-                res.json({error: true, msg: "Email sending failure"});
+                res.json({error: true, msg: "Email sending failure", err: err});
               } else {
                 logger.debug("Email sending OK");
                 res.json({error: false, msg: "Email sending success"});
