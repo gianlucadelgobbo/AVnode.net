@@ -46,6 +46,7 @@ router.use('/likes', likes);
 
 router.use('/contacts', pages);
 router.use('/terms', pages);
+router.use('/manifesto', pages);
 router.use('/privacy', pages);
 router.use('/cookies-in-use-on-this-site', pages);
 
