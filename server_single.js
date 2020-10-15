@@ -151,7 +151,7 @@ app.use((req, res, next) => {
     global.setLocale(req.session.current_lang);
     moment.locale(req.session.current_lang);
   //}
-  console.log("server req.session.current_lang: " + req.session.current_lang);
+  //console.log("server req.session.current_lang: " + req.session.current_lang);
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
