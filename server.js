@@ -132,7 +132,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-console.log("server config.defaultLocale: " + config.defaultLocale);
+//console.log("server config.defaultLocale: " + config.defaultLocale);
 app.use((req, res, next) => {
   /*
   const path = req.path.split("/")[1];
@@ -153,7 +153,7 @@ app.use((req, res, next) => {
     global.setLocale(req.session.current_lang);
     moment.locale(req.session.current_lang);
   //}
-  console.log("server req.session.current_lang: " + req.session.current_lang);
+  //console.log("server req.session.current_lang: " + req.session.current_lang);
 
   if (/auth|login|logout|signup|images|fonts/i.test(path)) {
     return next();
