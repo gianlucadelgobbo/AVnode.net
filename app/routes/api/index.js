@@ -353,8 +353,8 @@ router.get('/getprograms', (req, res) => {
       for(var i = 0; i<data.length;i++){
         stream.program.push({
           "in": 0,
-          "out": data[i].video.media.duration,
-          "duration": data[i].video.media.duration,
+          "out": data[i].video.media.duration/1000,
+          "duration": data[i].video.media.duration/1000,
           "source": data[i].video.media.file
         });
       }
