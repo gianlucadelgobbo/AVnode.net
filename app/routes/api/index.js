@@ -344,7 +344,24 @@ router.get('/getprograms', (req, res) => {
   .sort({programming: 1})
   .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
   .exec((err, data) => {
-    res.json(data);
+    if(req.query.stream) {
+      var stream = {
+        "channel": "VJ Television",
+        "date": req.query.day,
+        "program": []
+      };
+      for(var i = 0; i<data.length;i++){
+        stream.program.push({
+          "in": 0,
+          "out": data[0].video.media.duration,
+          "duration": data[0].video.media.duration,
+          "source": data[0].video.media.file
+        });
+      }
+      res.json(stream);
+    } else {
+      res.json(data);
+    }
     /* if (err) {
       res.status(404).send({ message: `${JSON.stringify(err)}` });
     } else {
