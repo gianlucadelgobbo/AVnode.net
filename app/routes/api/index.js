@@ -350,11 +350,19 @@ router.get('/getprograms', (req, res) => {
         "date": req.query.day,
         "program": []
       };
+      var tot = 0;
       for(var i = 0; i<data.length;i++){
+        duration = parseInt(data[i].video.media.duration)/1000;
+        if (tot+duration > 86400) {
+          duration = (86400000 - tot*1000)/1000;
+        } else {
+        }
+        tot = parseInt((tot+duration)*1000)/1000;
         stream.program.push({
           "in": 0,
-          "out": data[i].video.media.duration/1000,
-          "duration": data[i].video.media.duration/1000,
+          "tot": tot,
+          "out": duration,
+          "duration": duration,
           "source": data[i].video.media.file
         });
       }
