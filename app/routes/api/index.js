@@ -353,9 +353,9 @@ router.get('/getprograms', (req, res) => {
       for(var i = 0; i<data.length;i++){
         stream.program.push({
           "in": 0,
-          "out": data[0].video.media.duration,
-          "duration": data[0].video.media.duration,
-          "source": data[0].video.media.file
+          "out": data[i].video.media.duration,
+          "duration": data[i].video.media.duration,
+          "source": data[i].video.media.file
         });
       }
       res.json(stream);
