@@ -360,7 +360,6 @@ router.get('/getprograms', (req, res) => {
         tot = parseInt((tot+duration)*1000)/1000;
         stream.program.push({
           "in": 0,
-          "tot": tot,
           "out": duration,
           "duration": duration,
           "source": data[i].video.media.file
