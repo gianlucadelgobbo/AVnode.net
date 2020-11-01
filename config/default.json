@@ -5723,7 +5723,7 @@
             "media": 1
           },
           "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
-          "options": {},
+          "options": {"sort": { "createdAt": -1 }},
           "model": "Video"
         }, {
           "path": "type",
@@ -5741,7 +5741,7 @@
             "image": 1
           },
           "populate": { "path": "users", "select": "stagename", "model": "UserShow"},
-          "options": {},
+          "options": {"sort": { "createdAt": -1 }},
           "model": "Gallery"
         }]
       },
