@@ -399,12 +399,12 @@ router.get('/getcurrentprogram', (req, res) => {
   }
   logger.debug(date);
   Vjtv
-  .find({programming: { $gt: date}})
+  .find({programming: { $lt: date}})
   //.select(select)
   .sort({programming: 1})
   .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
   .exec((err, data) => {
-    res.json(data[0]);
+    res.json(data[data.length-1]);
   });
 });
   
