@@ -416,7 +416,42 @@ router.get('/getcurrentprogram', (req, res) => {
       data: data, 
       date: date
     };
-    res.json(r);
+    if(req.query.chat) {
+      const tmi = require('tmi.js');
+      const opts = {
+        identity: {
+          username: process.env.BOT_USERNAME,
+          password: process.env.OAUTH_TOKEN
+        },
+        channels: [
+          process.env.CHANNEL_NAME
+        ]
+      };
+      // Create a client with our options
+      const client = new tmi.client(opts);
+      console.log(opts)
+
+      // Register our event handlers (defined below)
+      client.on('connected', onConnectedHandler);
+      
+      // Connect to Twitch:
+      client.connect();
+      
+      // Called every time a message comes in
+      function onConnectedHandler (target, context, msg, self) {
+        console.log("stocazzo")
+        const https = require('https');
+        var mess = "";
+        mess+="\nTitle: " + data.video.title;
+        mess+="\nAuthor: " + data.video.users[0].stagename;
+        mess+="\nURL: https://avnode.net/videos/" + data.video.slug;
+        client.say("#vjtelevision", mess);
+        res.json(r);
+        console.log(`* Executed command`);
+      }
+    } else {
+      res.json(r);
+    }
   });
 });
   
