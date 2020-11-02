@@ -396,15 +396,27 @@ router.get('/getcurrentprogram', (req, res) => {
     var date = new Date(Date.UTC(parseInt(pieces[0]), parseInt(pieces[1])-1, parseInt(pieces[2]), 0, 0,0,0));
   } else {
     var date = new Date();
+    date = new Date(Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
+    ));
   }
   logger.debug(date);
   Vjtv
-  .find({programming: { $lt: date}})
+  .findOne({programming: { $lt: date}})
   //.select(select)
-  .sort({programming: 1})
+  .sort({programming: -1})
   .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
   .exec((err, data) => {
-    res.json(data[data.length-1]);
+    var r = {
+      data: data, 
+      date: date
+    };
+    res.json(r);
   });
 });
   
