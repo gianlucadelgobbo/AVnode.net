@@ -429,7 +429,6 @@ router.get('/getcurrentprogram', (req, res) => {
       };
       // Create a client with our options
       const client = new tmi.client(opts);
-      console.log(opts)
 
       // Register our event handlers (defined below)
       client.on('connected', onConnectedHandler);
@@ -439,7 +438,6 @@ router.get('/getcurrentprogram', (req, res) => {
       
       // Called every time a message comes in
       function onConnectedHandler (target, context, msg, self) {
-        console.log("stocazzo")
         const https = require('https');
         var mess = "";
         mess+="\nTitle: " + data.video.title;
@@ -447,7 +445,6 @@ router.get('/getcurrentprogram', (req, res) => {
         mess+="\nURL: https://avnode.net/videos/" + data.video.slug;
         client.say("#vjtelevision", mess);
         res.json(r);
-        console.log(`* Executed command`);
       }
     } else {
       res.json(r);
