@@ -988,6 +988,72 @@ router.get('/videofiles', (req, res) => {
   });
 });
 
+router.get('/videofilestodelete', (req, res) => {
+  var glob = require("glob")
+  let adminsez = "videos";
+  logger.debug('getVideosToDelete');
+  //logger.debug(query);
+  var files = [];
+  var options = {
+    nodir: true,
+    cwd: global.appRoot+"/warehouse/videos/"
+  }
+  glob("**/*", options, function (er, warehouse) {
+    for (var item in warehouse) warehouse[item] = "/warehouse/videos/"+warehouse[item]
+    files = files.concat(warehouse);
+    console.log(warehouse);
+    console.log(files);
+    options.cwd = global.appRoot+"/warehouse/videos_previews/";
+    glob("**/*", options, function (er, videos_previews) {
+      for (var item in videos_previews) videos_previews[item] = "/warehouse/videos_previews/"+videos_previews[item]
+      files = files.concat(videos_previews);
+      console.log(videos_previews);
+      console.log(files);
+      options.cwd = global.appRoot+"/glacier/videos_originals/";
+      glob("**/*", options, function (er, videos_originals) {
+        for (var item in videos_originals) videos_originals[item] = "/glacier/videos_originals/"+videos_originals[item]
+        files = files.concat(videos_originals);
+        options.cwd = global.appRoot+"/glacier/videos_previews/";
+        glob("**/*", options, function (er, videos_previews_originals) {
+          for (var item in videos_previews_originals) videos_previews_originals[item] = "/glacier/videos_previews/"+videos_previews_originals[item]
+          files = files.concat(videos_previews_originals);
+          Video
+          .find({"media": {$exists: true}})
+          .select({_id: 1, media: 1})
+          .exec((err, data) => {
+            //console.log(data[0]);
+            var dbfiles = data.map((item) => {return item.media.file});
+            dbfiles = dbfiles.concat(data.map((item) => {return item.media.original}));
+            dbfiles = dbfiles.concat(data.map((item) => {return item.media.preview}));
+            dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
+            dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
+            var todelete = files;
+            for (var item in todelete) {
+              if (dbfiles.indexOf(todelete[item])!== -1) todelete.splice(item, 1);
+            }
+            var promises = {
+              todelete: todelete,
+              files: files,
+              dbfiles: dbfiles
+            };
+            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+              res.json(promises);
+            } else {
+              res.render('adminpro/supertools/files/showall', {
+                title: 'User images',
+                currentUrl: req.originalUrl,
+                data: data,
+                script: false
+              });
+            }
+          });        
+        });  
+      });
+    })
+  })
+});
+
+
 router.get('/videocleaner', (req, res) => {
   logger.debug('/adminpro/supertools/files/videocleaner');
   const adminsez = 'videos';
@@ -1054,9 +1120,9 @@ router.get('/videocleaner', (req, res) => {
           select({media: 1}).
           exec((err, videos) => {
             for (let video in videos) {
-              if (videos[video].media.file) files.files.filelist.push(global.appRoot+videos[video].media.file);
-              if (videos[video].media.original) files.originals.filelist.push(global.appRoot+videos[video].media.original);
-              if (videos[video].media.preview) {
+              if (videos[video].media && videos[video].media.file) files.files.filelist.push(global.appRoot+videos[video].media.file);
+              if (videos[video].media && videos[video].media.original) files.originals.filelist.push(global.appRoot+videos[video].media.original);
+              if (videos[video].media && videos[video].media.preview) {
                 files.previews.filelist.push(global.appRoot+videos[video].media.preview);
                 const previewFile = videos[video].media.preview;
                 const previewFileName = previewFile.substring(previewFile.lastIndexOf('/') + 1); // previewFile.jpg this.previewFile.previewFile.substr(19)
