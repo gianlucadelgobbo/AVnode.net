@@ -51,7 +51,6 @@ router.get('/userimages', (req, res) => {
   let adminsez = "profile";
   User.
   find({"image.file": {$exists: true}}).
-  //limit(1).
   lean().
   select({image: 1, createdAt: 1}).
   exec((err, users) => {
@@ -70,7 +69,6 @@ router.get('/userimages', (req, res) => {
         const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
         const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
         // logger.debug('fileName:' + fileName + ' fileFolder:' + fileFolder + ' fileNameWithoutExtension:' + fileNameWithoutExtension);
-        logger.debug(config.cpanel[adminsez].forms.image.components.image);
         for(let format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
           users[user].image.imageFormats[format] = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
         }
@@ -80,8 +78,6 @@ router.get('/userimages', (req, res) => {
         if (!users[user].image.exists) {
           users[user].image.mkdir = `mkdir ${fileFolder.replace("/glacier/", "glacier/")}`;
           users[user].image.find = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")}  -maxdepth 1 -name '${fileName}' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")} \\;`;
-          //users[user].image.find2 = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")} -maxdepth 1 -name '${fileName.substring(0, fileName.lastIndexOf("_"))}*';`;
-          users[user].image.find2 = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")} -maxdepth 1 -name '${fileName.substring(0, fileName.lastIndexOf("_"))}*' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")}/${fileName} \\;`;
         }
       //}
       data.push(users[user].image);
@@ -155,12 +151,90 @@ router.get('/userformatsgenerator', (req, res) => {
     res.render('adminpro/supertools/files/showall', {
       title: 'User images generator',
       
-    currentUrl: req.originalUrl,
+      currentUrl: req.originalUrl,
       data: data,
       script: '<script>var timeout = setTimeout(function(){location.href="/adminpro/supertools/files/userformatsgenerator?skip=' + (skip+limit) + '"},1000);</script>'
     });
   });
 });
+
+router.get('/userimagestodelete', (req, res) => {
+  var glob = require("glob")
+  let adminsez = "profile";
+  logger.debug('getImagesToDelete');
+  //logger.debug(query);
+  return new Promise(function (resolve, reject) {
+    var options = {
+      nodir: true,
+      cwd: global.appRoot+"/warehouse/users/"
+    }
+    glob("**/*", options, function (er, warehouse) {
+      for (var item in warehouse) warehouse[item] = "/warehouse/users/"+warehouse[item]
+      options.cwd = global.appRoot+"/glacier/users_originals/";
+      glob("**/*", options, function (er, glacier) {
+        for (var item in glacier) glacier[item] = "/glacier/users_originals/"+glacier[item]
+        var promises = [];
+        for (var item in glacier) {
+          promises.push(User.find({"image.file": glacier[item]}).select({_id:1}));
+        }
+        //console.log(promises)
+        Promise.all(
+          promises
+        ).then( (resultsPromise) => {
+          setTimeout(function() {
+            //logger.debug('resultsPromise');
+            logger.debug(resultsPromise);
+            var data = []
+            for (var item in glacier) {
+              data.push({"image.original": glacier[item], res:resultsPromise[item].length});
+              if (resultsPromise[item].length) {
+                const file = glacier[item];
+                const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
+                const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
+                const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
+                const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+                const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+                logger.debug(warehouse);
+                for(var format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
+                  var format = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
+                  logger.debug(format);
+                  if (warehouse.indexOf(format)!==-1) warehouse.splice(warehouse.indexOf(format), 1);
+                }
+              }
+            }
+            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+              logger.debug(warehouse.length);
+              logger.debug(glacier.length);
+              logger.debug(data.length);
+              logger.debug(resultsPromise.length);
+              res.json({data:data, warehouse:warehouse});
+            } else {
+              res.render('adminpro/supertools/files/showall', {
+                title: 'User images',
+                currentUrl: req.originalUrl,
+                data: data,
+                script: false
+              });
+            }
+          }, 1000);
+        });
+      })
+    })
+  })
+});
+
+router.findFile = (query, coll) => {
+  coll.
+  find(query).
+  lean().
+  select({_id:1}).
+  exec((err, res) => {
+    query.res = res.length;
+    //logger.debug(query);
+    logger.debug(query);
+    return query;
+  });
+}
 
 router.get('/performanceimages', (req, res) => {
   logger.debug('/adminpro/supertools/files/performanceimages');
@@ -196,6 +270,7 @@ router.get('/performanceimages', (req, res) => {
           performances[performance].image.mkdir = `mkdir ${fileFolder.replace("/glacier/", "glacier/")}`;
           performances[performance].image.find = `find ${oldPath.replace("/warehouse/", "/space/PhpMysql2015/sites/flxer/warehouse/")} -name '${fileName}' -exec cp "{}" ${fileFolder.replace("/glacier/", "glacier/")} \\;`;
         }
+      //}
       data.push(performances[performance].image);
     }
     logger.debug(req.path);
