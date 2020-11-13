@@ -1128,6 +1128,7 @@ router.get('/videofilestodelete_1', (req, res) => {
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
+          
           res.json(dd);
         });
         //res.json(dd);
