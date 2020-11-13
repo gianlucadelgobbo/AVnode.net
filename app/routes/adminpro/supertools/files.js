@@ -1148,10 +1148,16 @@ router.moveFiles = (todelete) => {
   const fs = require('fs');
   var test = []
   for (var item in todelete) {
-    if (!fs.existsSync(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")))) 
-      //fs.mkdirSync(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")), { recursive: true });
-    test.push(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")));
-    //fs.renameSync(global.appRoot+todelete[item], global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare"))
+    var move = {
+      file: global.appRoot+todelete[item],
+      newf: global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare"),
+      fold: global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/"))
+
+    }
+    test.push(move);
+    /* if (!fs.existsSync(move.fold))
+      fs.mkdirSync(move.fold, { recursive: true });
+    fs.renameSync(move.file, move.newf) */
   }
   return(test)
 }
