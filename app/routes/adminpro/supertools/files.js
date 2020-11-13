@@ -1052,6 +1052,50 @@ router.get('/videofilestodelete', (req, res) => {
   })
 });
 
+router.get('/videofilestodelete_1', (req, res) => {
+  var glob = require("glob")
+  logger.debug('getVideosToDelete 1');
+  //logger.debug(query);
+  var files = [];
+  var options = {
+    nodir: true,
+    cwd: global.appRoot+"/warehouse/videos/"
+  }
+  glob("**/*", options, function (er, warehouse) {
+    for (var item in warehouse) warehouse[item] = "/warehouse/videos/"+warehouse[item]
+    files = files.concat(warehouse);
+    Video
+    .find({"media": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      dbfiles = data.map((item) => {return item.media.file});
+      var todelete = files;
+      for (var item in todelete) {
+        if (dbfiles.indexOf(todelete[item])!== -1) todelete.splice(item, 1);
+      }
+      var promises = {
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        //res.json(router.moveFiles(todelete));
+        res.json(promises);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
 
 router.moveFiles = (todelete) => {
   return new Promise(function (resolve, reject) {
