@@ -1150,14 +1150,13 @@ router.moveFiles = (todelete) => {
   for (var item in todelete) {
     var move = {
       file: global.appRoot+todelete[item],
-      newf: global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare"),
-      fold: global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/"))
-
+      newf: global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare")
     }
+    move.fold = move.newf.substring(0, move.newf.lastIndexOf("/"));
     test.push(move);
-    /* if (!fs.existsSync(move.fold))
+    if (!fs.existsSync(move.fold))
       fs.mkdirSync(move.fold, { recursive: true });
-    fs.renameSync(move.file, move.newf) */
+    fs.renameSync(move.file, move.newf);
   }
   return(test)
 }
