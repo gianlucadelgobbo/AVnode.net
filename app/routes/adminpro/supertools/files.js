@@ -1148,6 +1148,8 @@ router.moveFiles = (todelete) => {
   return new Promise(function (resolve, reject) {
     const util = require('util');
     const fs = require('fs');
+    console.log("fs.promises.rename");
+    console.log(fs.promises.rename);
 
     const rename = util.promisify(fs.rename);
     //console.log(todelete.map(oldname => console.log(global.appRoot+oldname, global.appRoot+"/buttare"+oldname)));
@@ -1155,11 +1157,12 @@ router.moveFiles = (todelete) => {
     for (var item in todelete) 
       if (!fs.existsSync(global.appRoot+"/buttare"+todelete[item].substring(0,todelete[item].lastIndexOf("/")))) 
         promises.push(fs.promises.mkdir(global.appRoot+"/buttare"+todelete[item].substring(0,todelete[item].lastIndexOf("/")), { recursive: true }))
-    for (var item in todelete) promises.push(fs.promises.rename(global.appRoot+todelete[item], global.appRoot+"/buttare"+todelete[item]))
+    for (var item in todelete) promises.push(fs.rename(global.appRoot+todelete[item], global.appRoot+"/buttare"+todelete[item]))
     Promise.all(promises)
     .then( (resultsPromise) => {
       setTimeout(function() {
         resolve(resultsPromise)
+        console.log(resultsPromise)
       }, 1000);
     });
   });
