@@ -1145,13 +1145,25 @@ router.get('/videofilestodelete_1', (req, res) => {
 
 
 router.moveFiles = (todelete) => {
+  const fs = require('fs');
+  var test = []
+  for (var item in todelete) {
+    if (!fs.existsSync(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")))) 
+      fs.mkdirSync(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")), { recursive: true });
+    test.push(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")));
+    fs.renameSync(global.appRoot+todelete[item], global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare"))
+  }
+  return(test)
+}
+
+router.moveFilesPromise = (todelete) => {
   return new Promise(function (resolve, reject) {
     const util = require('util');
     const fs = require('fs');
-    console.log("fs.promises.rename");
-    console.log(fs.promises.rename);
+    //console.log("fs.promises.rename");
+    //console.log(fs.promises.rename);
 
-    const rename = util.promisify(fs.rename);
+    //const rename = util.promisify(fs.rename);
     //console.log(todelete.map(oldname => console.log(global.appRoot+oldname, global.appRoot+"/buttare"+oldname)));
 
     var promises = []
