@@ -4130,13 +4130,18 @@
         "crews"
       ],
       "categoriesQueries": {
-        "all": {"performances.0":{"$exists": true}},
+        "all": {
+          "performances.0":{"$exists": true},
+          "is_public" : true
+        },
         "individuals": {
           "performances.0":{"$exists": true},
+          "is_public" : true,
           "is_crew": 0
         },
         "crews": {
           "performances.0":{"$exists": true},
+          "is_public" : true,
           "is_crew": 1
         }
       },
@@ -5527,7 +5532,7 @@
         "call_is_active": 1,
         "schedule": 1
       },
-      "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
+      "list_populate": [{ "path": "users", "select": "stagename image organizationData.logo is_public", "model": "UserShow"},{ "path": "categories", "select": "name slug", "model": "Category"}],
       "orders": [
         "mostrecent",
         "mostviewed",
@@ -5657,6 +5662,7 @@
             "select": {
               "slug": 1,
               "image": 1,
+              "is_public": 1,
               "organizationData.logo": 1,
               "members": 1,
               "addresses.country": 1,
@@ -5803,6 +5809,7 @@
             "path": "users",
             "select": {
               "slug": 1,
+              "is_public": 1,
               "image": 1,
               "organizationData.logo": 1,
               "members": 1,

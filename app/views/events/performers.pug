@@ -106,7 +106,10 @@ block content
       .row
         .col-lg-7
           h1.main_title
-            a(href="/"+data.performer.slug+"/")=data.performer.stagename
+            if data.performer.is_public
+              a(href="/"+data.performer.slug+"/")=data.performer.stagename
+            else
+              !=data.performer.stagename
             if editable
               !="  "
               a.badge.badge-danger(href="/admin/"+(data.performer.is_crew ? "crews" : "profile")+"/"+data.performer._id+"/public")=global.__("EDIT") 
@@ -114,89 +117,90 @@ block content
             ul.performer_address.list-inline
               each address in data.performer.addressesFormatted
                 li.list-inline-item(class=data.performer.addresses.length<5 ? "big" : undefined)!=address
-          .row
-            .col-lg-12
-              div.performer_stats_wrapper
-                if data.performer.stats
-                  ul.performer_stats_list.performer_stats_list_1.list-inline
-                    if data.performer.stats.events
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/events")!=global.__('Events')+" (<span>"+data.performer.stats.events+"</span>)"
-                    if data.performer.stats.performances
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/performances")!=global.__('Performances')+" (<span>"+data.performer.stats.performances+"</span>)"  
-                    if data.performer.stats.partnerships
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/partnerships")!=global.__('Partnerships')+" (<span>"+data.performer.stats.partnerships+"</span>)"
-                    if data.performer.stats.crews
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/crews")!=global.__('Crews')+" (<span>"+data.performer.stats.crews+"</span>)"    
-                    if data.performer.stats.members
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/members")!=global.__('Members')+" (<span>"+data.performer.stats.members+"</span>)"    
-              div.performer_stats_wrapper
-                if data.performer.stats
-                  ul.performer_stats_list.performer_stats_list_2.list-inline
-                    if data.performer.stats.footage
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/footage")!=global.__('Footage')+" (<span>"+data.performer.stats.footage+"</span>)"
-                    if data.performer.stats.playlists
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/playlists")!=global.__('Playlists')+" (<span>"+data.performer.stats.playlists+"</span>)"  
-                    if data.performer.stats.videos
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/videos")!=global.__('Videos')+" (<span>"+data.performer.stats.videos+"</span>)"    
-                    if data.performer.stats.galleries
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/galleries")!=global.__('Galleries')+" (<span>"+data.performer.stats.galleries+"</span>)"    
-                    if data.performer.stats.news
-                      li.list-inline-item
-                        a(href="/"+data.performer.slug+"/news")!=global.__('News')+" (<span>"+data.performer.stats.news+"</span>)"
-            .col-lg-12
-              if (data.performer.web && data.performer.web.length) || (data.performer.social && data.performer.social.length) || (data.performer.publicEmails && data.performer.publicEmails.length)
-                div.performer_links_wrapper
-                  ul.performer_links_list.performer_links_list_2.list-inline                 
-                    each item in data.performer.web
-                      li.list-inline-item.mb-3
-                        a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                          span.lnr.lnr-link.about_button
-                    each item in data.performer.social
-                      if item.url.indexOf('instagram.com/')!=-1
+          if data.performer.is_public
+            .row
+              .col-lg-12
+                div.performer_stats_wrapper
+                  if data.performer.stats
+                    ul.performer_stats_list.performer_stats_list_1.list-inline
+                      if data.performer.stats.events
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/events")!=global.__('Events')+" (<span>"+data.performer.stats.events+"</span>)"
+                      if data.performer.stats.performances
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/performances")!=global.__('Performances')+" (<span>"+data.performer.stats.performances+"</span>)"  
+                      if data.performer.stats.partnerships
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/partnerships")!=global.__('Partnerships')+" (<span>"+data.performer.stats.partnerships+"</span>)"
+                      if data.performer.stats.crews
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/crews")!=global.__('Crews')+" (<span>"+data.performer.stats.crews+"</span>)"    
+                      if data.performer.stats.members
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/members")!=global.__('Members')+" (<span>"+data.performer.stats.members+"</span>)"    
+                div.performer_stats_wrapper
+                  if data.performer.stats
+                    ul.performer_stats_list.performer_stats_list_2.list-inline
+                      if data.performer.stats.footage
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/footage")!=global.__('Footage')+" (<span>"+data.performer.stats.footage+"</span>)"
+                      if data.performer.stats.playlists
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/playlists")!=global.__('Playlists')+" (<span>"+data.performer.stats.playlists+"</span>)"  
+                      if data.performer.stats.videos
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/videos")!=global.__('Videos')+" (<span>"+data.performer.stats.videos+"</span>)"    
+                      if data.performer.stats.galleries
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/galleries")!=global.__('Galleries')+" (<span>"+data.performer.stats.galleries+"</span>)"    
+                      if data.performer.stats.news
+                        li.list-inline-item
+                          a(href="/"+data.performer.slug+"/news")!=global.__('News')+" (<span>"+data.performer.stats.news+"</span>)"
+              .col-lg-12
+                if (data.performer.web && data.performer.web.length) || (data.performer.social && data.performer.social.length) || (data.performer.publicEmails && data.performer.publicEmails.length)
+                  div.performer_links_wrapper
+                    ul.performer_links_list.performer_links_list_2.list-inline                 
+                      each item in data.performer.web
                         li.list-inline-item.mb-3
-                          - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                            i.fab.fa-instagram.about_button
-                      else if item.url.indexOf('twitter.com/')!=-1
-                        li.list-inline-item.mb-3
-                          - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                            i.fab.fa-twitter.about_button
-                      else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                        li.list-inline-item.mb-3
-                          - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                            i.fab.fa-facebook.about_button
-                      else if item.url.indexOf('vimeo.com/')!=-1
-                        li.list-inline-item.mb-3
-                          - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                            i.fab.fa-vimeo.about_button
-                      else if item.url.indexOf('youtube.com/')!=-1
-                        li.list-inline-item.mb-3
-                          - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                            i.fab.fa-youtube.about_button
-                      else
-                        li.list-inline-item.mb-3
-                          - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                          a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
                             span.lnr.lnr-link.about_button
-                    if data.performer.publicEmails && data.performer.publicEmails.length          
-                      each email in data.performer.publicEmails
-                        li.list-inline-item.mb-3
-                          a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
-                            i.far.fa-envelope.about_button
-                            
+                      each item in data.performer.social
+                        if item.url.indexOf('instagram.com/')!=-1
+                          li.list-inline-item.mb-3
+                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                              i.fab.fa-instagram.about_button
+                        else if item.url.indexOf('twitter.com/')!=-1
+                          li.list-inline-item.mb-3
+                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                              i.fab.fa-twitter.about_button
+                        else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                          li.list-inline-item.mb-3
+                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
+                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                              i.fab.fa-facebook.about_button
+                        else if item.url.indexOf('vimeo.com/')!=-1
+                          li.list-inline-item.mb-3
+                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                              i.fab.fa-vimeo.about_button
+                        else if item.url.indexOf('youtube.com/')!=-1
+                          li.list-inline-item.mb-3
+                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                              i.fab.fa-youtube.about_button
+                        else
+                          li.list-inline-item.mb-3
+                            - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                            a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                              span.lnr.lnr-link.about_button
+                      if data.performer.publicEmails && data.performer.publicEmails.length          
+                        each email in data.performer.publicEmails
+                          li.list-inline-item.mb-3
+                            a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
+                              i.far.fa-envelope.about_button
+                              
 
         .col-lg-5
           .row

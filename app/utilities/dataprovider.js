@@ -406,7 +406,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
 
     model.
-    findOne({slug: req.params.sub ? req.params.sub : req.params.slug}).
+    findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
     // lean({ virtuals: true }).
     // C populate({path: 'crews', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
     populate(populate).

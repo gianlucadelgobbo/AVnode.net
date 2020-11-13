@@ -1001,14 +1001,10 @@ router.get('/videofilestodelete', (req, res) => {
   glob("**/*", options, function (er, warehouse) {
     for (var item in warehouse) warehouse[item] = "/warehouse/videos/"+warehouse[item]
     files = files.concat(warehouse);
-    console.log(warehouse);
-    console.log(files);
     options.cwd = global.appRoot+"/warehouse/videos_previews/";
     glob("**/*", options, function (er, videos_previews) {
       for (var item in videos_previews) videos_previews[item] = "/warehouse/videos_previews/"+videos_previews[item]
       files = files.concat(videos_previews);
-      console.log(videos_previews);
-      console.log(files);
       options.cwd = global.appRoot+"/glacier/videos_originals/";
       glob("**/*", options, function (er, videos_originals) {
         for (var item in videos_originals) videos_originals[item] = "/glacier/videos_originals/"+videos_originals[item]
@@ -1036,8 +1032,10 @@ router.get('/videofilestodelete', (req, res) => {
               files: files,
               dbfiles: dbfiles
             };
+
+            //Do the stuff you need to do after renaming the files
             if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-              res.json(promises);
+              res.json(router.moveFiles(todelete));
             } else {
               res.render('adminpro/supertools/files/showall', {
                 title: 'User images',
@@ -1052,6 +1050,28 @@ router.get('/videofilestodelete', (req, res) => {
     })
   })
 });
+
+
+router.moveFiles = (todelete) => {
+  return new Promise(function (resolve, reject) {
+    const util = require('util');
+    const fs = require('fs');
+
+    const rename = util.promisify(fs.rename);
+    //console.log(todelete.map(oldname => console.log(global.appRoot+oldname, global.appRoot+"/buttare"+oldname)));
+    var promises = []
+    for (var item in todelete) 
+      if (!fs.existsSync(global.appRoot+"/buttare"+todelete[item].substring(0,todelete[item].lastIndexOf("/")))) 
+        promises.push(fs.promises.mkdir(global.appRoot+"/buttare"+todelete[item].substring(0,todelete[item].lastIndexOf("/")), { recursive: true }))
+    for (var item in todelete) promises.push(fs.promises.rename(global.appRoot+todelete[item], global.appRoot+"/buttare"+todelete[item]))
+    Promise.all(promises)
+    .then( (resultsPromise) => {
+      setTimeout(function() {
+        resolve(resultsPromise)
+      }, 1000);
+    });
+  });
+}
 
 
 router.get('/videocleaner', (req, res) => {

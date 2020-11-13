@@ -1,6 +1,7 @@
 .env*
 avnode-*
 node_modules
+buttare
 
 npm-debug.log
 logs/*
