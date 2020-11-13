@@ -1109,14 +1109,14 @@ router.get('/videofilestodelete_1', (req, res) => {
     for (var item in videos) videos[item] = "/warehouse/videos/"+videos[item]
     files = files.concat(videos);
     Video
-    .find({"media": {$exists: true}})
+    .find({"media.file": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
       //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.file});
-      var todelete = files;
-      for (var item in todelete) {
-        if (dbfiles.indexOf(todelete[item])!== -1) todelete.splice(item, 1);
+      var todelete = [];
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item])!== -1) todelete.push(files[item]);
       }
       var dd = {
         todelete: todelete,
