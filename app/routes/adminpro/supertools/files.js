@@ -1054,9 +1054,7 @@ router.get('/videofilestodelete', (req, res) => {
 
 router.get('/videofilestodelete_2', (req, res) => {
   var glob = require("glob")
-  let adminsez = "videos";
-  logger.debug('getVideosToDelete');
-  //logger.debug(query);
+  logger.debug('getVideosToDelete 2');
   var files = [];
   var options = {
     nodir: true,
@@ -1077,16 +1075,16 @@ router.get('/videofilestodelete_2', (req, res) => {
       for (var item in todelete) {
         if (dbfiles.indexOf(todelete[item])!== -1) todelete.splice(item, 1);
       }
-      var promises = {
+      var dd = {
         todelete: todelete,
-        files: files,
-        dbfiles: dbfiles
+        files: files.length,
+        dbfiles: dbfiles.length
       };
 
       //Do the stuff you need to do after renaming the files
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        //res.json(router.moveFiles(todelete));
-        res.json(promises);
+        res.json(router.moveFiles(todelete, req));
+        //res.json(promises);
       } else {
         res.render('adminpro/supertools/files/showall', {
           title: 'User images',
@@ -1102,12 +1100,11 @@ router.get('/videofilestodelete_2', (req, res) => {
 router.get('/videofilestodelete_1', (req, res) => {
   var glob = require("glob")
   logger.debug('getVideosToDelete 1');
-  //logger.debug(query);
   var files = [];
   var options = {
-    nodir: true,
-    cwd: global.appRoot+"/warehouse/videos/"
+    nodir: true
   }
+  options.cwd = global.appRoot+"/warehouse/videos/";
   glob("**/*", options, function (er, videos) {
     for (var item in videos) videos[item] = "/warehouse/videos/"+videos[item]
     files = files.concat(videos);
@@ -1129,7 +1126,7 @@ router.get('/videofilestodelete_1', (req, res) => {
 
       //Do the stuff you need to do after renaming the files
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        res.json(router.moveFiles(todelete));
+        res.json(router.moveFiles(todelete, req));
         //res.json(dd);
       } else {
         res.render('adminpro/supertools/files/showall', {
@@ -1144,7 +1141,7 @@ router.get('/videofilestodelete_1', (req, res) => {
 });
 
 
-router.moveFiles = (todelete) => {
+router.moveFiles = (todelete, req) => {
   const fs = require('fs');
   var test = []
   for (var item in todelete) {
@@ -1154,9 +1151,11 @@ router.moveFiles = (todelete) => {
     }
     move.fold = move.newf.substring(0, move.newf.lastIndexOf("/"));
     test.push(move);
-    if (!fs.existsSync(move.fold))
-      fs.mkdirSync(move.fold, { recursive: true });
-    fs.renameSync(move.file, move.newf);
+    if (req.query.move) {
+      if (!fs.existsSync(move.fold))
+        fs.mkdirSync(move.fold, { recursive: true });
+      fs.renameSync(move.file, move.newf);
+    }
   }
   return(test)
 }
