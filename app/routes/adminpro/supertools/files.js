@@ -1149,9 +1149,9 @@ router.moveFiles = (todelete) => {
   var test = []
   for (var item in todelete) {
     if (!fs.existsSync(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")))) 
-      fs.mkdirSync(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")), { recursive: true });
+      //fs.mkdirSync(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")), { recursive: true });
     test.push(global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare").substring(0,todelete[item].lastIndexOf("/")));
-    fs.renameSync(global.appRoot+todelete[item], global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare"))
+    //fs.renameSync(global.appRoot+todelete[item], global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare"))
   }
   return(test)
 }
