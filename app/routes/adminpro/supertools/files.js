@@ -1121,7 +1121,7 @@ router.get('/videofilestodelete_1', (req, res) => {
       var dd = {
         todelete: todelete,
         files: files.length,
-        dbfiles: dbfiles.length
+        dbfiles: dbfiles
       };
 
       //Do the stuff you need to do after renaming the files
