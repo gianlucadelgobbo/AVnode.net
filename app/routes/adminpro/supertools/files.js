@@ -1082,8 +1082,8 @@ router.get('/videofilestodelete_1', (req, res) => {
 
       //Do the stuff you need to do after renaming the files
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        //res.json(router.moveFiles(todelete));
-        res.json(promises);
+        res.json(router.moveFiles(todelete));
+        //res.json(promises);
       } else {
         res.render('adminpro/supertools/files/showall', {
           title: 'User images',
