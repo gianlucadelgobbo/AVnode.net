@@ -1128,7 +1128,7 @@ router.get('/videofilestodelete_1', (req, res) => {
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
         router.moveFiles(todelete, req, (move) => {
           dd.move = move.length;
-          
+
           res.json(dd);
         });
         //res.json(dd);
@@ -1145,7 +1145,7 @@ router.get('/videofilestodelete_1', (req, res) => {
 });
 
 
-router.moveFiles = (todelete, req) => {
+router.moveFiles = (todelete, req, callback) => {
   const fs = require('fs');
   var test = []
   for (var item in todelete) {
@@ -1161,7 +1161,7 @@ router.moveFiles = (todelete, req) => {
       fs.renameSync(move.file, move.newf);
     }
   }
-  return(test)
+  callback(test)
 }
 
 router.moveFilesPromise = (todelete) => {
