@@ -65,6 +65,7 @@ class ProfilePublic extends Component {
     // Convert social
     model.social = model.social.filter(w => w.url);
 
+
     // Convert addresses
     model.addresses = model.addresses.map(a => {
       /* const originalString = a.text;
@@ -91,6 +92,9 @@ class ProfilePublic extends Component {
 
     //Convert stagename for redux-form
     v.stagename = model.stagename;
+
+    //Convert slug for redux-form
+    v.is_public = model.is_public;
 
     //Convert slug for redux-form
     v.slug = model.slug;

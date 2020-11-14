@@ -70,6 +70,10 @@ class CrewPublic extends Component {
 
     //Convert slug for redux-form
     v.slug = model.slug;
+
+    //Convert slug for redux-form
+    v.is_public = model.is_public;
+
     //Convert stagename
     v.stagename = model.stagename;
 

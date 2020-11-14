@@ -8,7 +8,7 @@ import {
     checkboxField, multiInputText, multiGoogleCityCountry, multiInputUrl,
 } from "../../common/form/components";
 import validate from './validate';
-import {CREW_NAME, CREW_URL, CREW_URL_PRE, CREW_URL_HELP, ABOUT, WEB, SOCIAL} from "../../common/form/labels";
+import {CREW_NAME, CREW_URL, CREW_URL_PRE, CREW_URL_HELP, ABOUT, WEB, SOCIAL, IS_PUBLIC} from "../../common/form/labels";
 import {injectIntl} from 'react-intl';
 import asyncValidate from './asyncValidate';
 
@@ -47,6 +47,14 @@ class CrewPublicForm extends Component {
                     help={this.getIntlString({ id: CREW_URL_HELP })}
                 />
 
+
+                <Field
+                    name="is_public"
+                    component={checkboxField}
+                    placeholder={this.getIntlString({ id: IS_PUBLIC })}
+                />
+                <br/>
+
                 <FieldArray
                     name="abouts"
                     component={textareaMultiTab}
@@ -74,6 +82,7 @@ class CrewPublicForm extends Component {
                     title="Web"
                     showModal={showModal}
                 />
+
 
                 <br/>
 

@@ -1154,6 +1154,8 @@ router.get('/videofilestodelete_1', (req, res) => {
 
 
 router.moveFiles = (todelete, req, callback) => {
+  //find . -type d -empty -delete
+  //find . -type d -empty -print
   const fs = require('fs');
   var test = []
   for (var item in todelete) {

@@ -238,6 +238,7 @@
           "select": {
             "slug": 1,
             "stagename": 1,
+            "is_public": 1,
             "abouts": 1,
             "addresses": 1,
             "web": 1,
@@ -553,6 +554,7 @@
           "select": {
             "slug": 1,
             "stagename": 1,
+            "is_public": 1,
             "abouts": 1,
             "web": 1,
             "social": 1
