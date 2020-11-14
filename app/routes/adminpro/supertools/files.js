@@ -1121,7 +1121,7 @@ router.get('/videofilestodelete_1', (req, res) => {
       var dd = {
         todelete: todelete,
         files: files.length,
-        dbfiles: dbfiles
+        dbfiles: dbfiles.length
       };
 
       //Do the stuff you need to do after renaming the files
@@ -1151,7 +1151,7 @@ router.moveFiles = (todelete, req, callback) => {
   for (var item in todelete) {
     var move = {
       file: global.appRoot+todelete[item],
-      newf: global.appRoot+todelete[item].replace("warehouse", "warehouse/_buttare").replace("glacier", "glacier/_buttare")
+      newf: global.appRoot+todelete[item].replace("warehouse", "glacier/_buttare/warehouse").replace("glacier", "glacier/_buttare/glacier")
     }
     move.fold = move.newf.substring(0, move.newf.lastIndexOf("/"));
     test.push(move);
