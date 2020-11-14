@@ -1164,6 +1164,116 @@ router.get('/videofilestodelete_1', (req, res) => {
   })
 });
 
+router.get('/videofilestodelete_3', (req, res) => {
+  var glob = require("glob")
+  logger.debug('getVideosToDelete 3');
+  var files = [];
+  var options = {
+    nodir: true
+  }
+  options.cwd = global.appRoot+"/glacier/videos_previews/";
+  glob("**/*", options, function (er, videos) {
+    for (var item in videos) videos[item] = "/glacier/videos_previews/"+videos[item]
+    files = files.concat(videos);
+    Video
+    .find({"media.preview": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.media.preview})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/videofilestodelete_4', (req, res) => {
+  var glob = require("glob")
+  logger.debug('getVideosToDelete 4');
+  var files = [];
+  var options = {
+    nodir: true
+  }
+  options.cwd = global.appRoot+"/glacier/videos_originals/";
+  glob("**/*", options, function (er, videos) {
+    for (var item in videos) videos[item] = "/glacier/videos_originals/"+videos[item]
+    files = files.concat(videos);
+    Video
+    .find({"media.original": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.media.original})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
 
 router.moveFiles = (todelete, req, callback) => {
   //find . -type d -empty -delete
