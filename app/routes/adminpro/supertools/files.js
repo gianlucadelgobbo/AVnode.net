@@ -1158,7 +1158,7 @@ router.moveFiles = (todelete, req, callback) => {
     if (req.query.move) {
       if (!fs.existsSync(move.fold))
         fs.mkdirSync(move.fold, { recursive: true });
-      fs.renameSync(move.file, move.newf);
+      //fs.renameSync(move.file, move.newf);
     }
   }
   callback(test)
