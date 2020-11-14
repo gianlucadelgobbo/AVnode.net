@@ -1115,8 +1115,14 @@ router.get('/videofilestodelete_1', (req, res) => {
       //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.file});
       var todelete = [];
+      var tofind = [];
+      // find file not in db
       for (var item in files) {
         if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
       }
       var dd = {
         todelete: todelete,
