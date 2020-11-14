@@ -1071,11 +1071,19 @@ router.get('/videofilestodelete_2', (req, res) => {
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
-      var todelete = files;
-      for (var item in todelete) {
-        if (dbfiles.indexOf(todelete[item])!== -1) todelete.splice(item, 1);
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
       }
       var dd = {
+        tofind: tofind,
         todelete: todelete,
         files: files.length,
         dbfiles: dbfiles.length
@@ -1083,8 +1091,12 @@ router.get('/videofilestodelete_2', (req, res) => {
 
       //Do the stuff you need to do after renaming the files
       if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-        res.json(router.moveFiles(todelete, req));
-        //res.json(promises);
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
       } else {
         res.render('adminpro/supertools/files/showall', {
           title: 'User images',
