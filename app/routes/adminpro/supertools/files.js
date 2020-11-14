@@ -1151,7 +1151,7 @@ router.moveFiles = (todelete, req, callback) => {
   for (var item in todelete) {
     var move = {
       file: global.appRoot+todelete[item],
-      newf: global.appRoot+todelete[item].replace("warehouse", "glacier/_buttare/warehouse").replace("glacier", "glacier/_buttare/glacier")
+      newf: global.appRoot+todelete[item].replace("glacier", "glacier/_buttare/glacier").replace("warehouse", "glacier/_buttare/warehouse")
     }
     move.fold = move.newf.substring(0, move.newf.lastIndexOf("/"));
     test.push(move);
