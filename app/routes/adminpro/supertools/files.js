@@ -1125,6 +1125,7 @@ router.get('/videofilestodelete_1', (req, res) => {
         if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
       }
       var dd = {
+        tofind: tofind,
         todelete: todelete,
         files: files.length,
         dbfiles: dbfiles.length
