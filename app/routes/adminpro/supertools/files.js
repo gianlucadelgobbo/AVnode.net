@@ -1221,9 +1221,9 @@ router.get('/eventfilestodelete', (req, res) => {
   glob("**/*", options, function (er, videos_previews) {
     for (var item in videos_previews) videos_previews[item] = "/warehouse/events/"+videos_previews[item]
     files = files.concat(videos_previews);
-    Video
-    .find({"media": {$exists: true}})
-    .select({_id: 1, media: 1})
+    Event
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
     .exec((err, data) => {
       //console.log(data[0]);
       var dbfiles = [];
