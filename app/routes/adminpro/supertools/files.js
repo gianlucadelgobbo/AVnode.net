@@ -1197,7 +1197,7 @@ router.get('/eventfilestodelete_images', (req, res) => {
     .select({_id: 1, image: 1})
     .exec((err, data) => {
       //console.log(data[0]);
-      var dbfiles = data.map((item) => {return item.image.file})
+      var dbfiles = data.map((item) => {return item.image ? item.image.file : null})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
       var tofind = [];
