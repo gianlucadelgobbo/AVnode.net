@@ -158,71 +158,6 @@ router.get('/userformatsgenerator', (req, res) => {
   });
 });
 
-router.get('/userimagestodelete', (req, res) => {
-  var glob = require("glob")
-  let adminsez = "profile";
-  logger.debug('getImagesToDelete');
-  //logger.debug(query);
-  return new Promise(function (resolve, reject) {
-    var options = {
-      nodir: true,
-      cwd: global.appRoot+"/warehouse/users/"
-    }
-    glob("**/*", options, function (er, warehouse) {
-      for (var item in warehouse) warehouse[item] = "/warehouse/users/"+warehouse[item]
-      options.cwd = global.appRoot+"/glacier/users_originals/";
-      glob("**/*", options, function (er, glacier) {
-        for (var item in glacier) glacier[item] = "/glacier/users_originals/"+glacier[item]
-        var promises = [];
-        for (var item in glacier) {
-          promises.push(User.find({"image.file": glacier[item]}).select({_id:1}));
-        }
-        //console.log(promises)
-        Promise.all(
-          promises
-        ).then( (resultsPromise) => {
-          setTimeout(function() {
-            //logger.debug('resultsPromise');
-            logger.debug(resultsPromise);
-            var data = []
-            for (var item in glacier) {
-              data.push({"image.original": glacier[item], res:resultsPromise[item].length});
-              if (resultsPromise[item].length) {
-                const file = glacier[item];
-                const fileName = file.substring(file.lastIndexOf('/') + 1); // file.jpg this.file.file.substr(19)
-                const fileFolder = file.substring(0, file.lastIndexOf('/')); // /warehouse/2017/03
-                const publicPath = fileFolder.replace("/glacier/users_originals/", "/warehouse/users/"); // /warehouse/2017/03
-                const fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-                const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
-                logger.debug(warehouse);
-                for(var format in config.cpanel[adminsez].forms.image.components.image.config.sizes) {
-                  var format = `${publicPath}/${config.cpanel[adminsez].forms.image.components.image.config.sizes[format].folder}/${fileNameWithoutExtension}_${fileExtension}.jpg`;
-                  logger.debug(format);
-                  if (warehouse.indexOf(format)!==-1) warehouse.splice(warehouse.indexOf(format), 1);
-                }
-              }
-            }
-            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-              logger.debug(warehouse.length);
-              logger.debug(glacier.length);
-              logger.debug(data.length);
-              logger.debug(resultsPromise.length);
-              res.json({data:data, warehouse:warehouse});
-            } else {
-              res.render('adminpro/supertools/files/showall', {
-                title: 'User images',
-                currentUrl: req.originalUrl,
-                data: data,
-                script: false
-              });
-            }
-          }, 1000);
-        });
-      })
-    })
-  })
-});
-
 router.findFile = (query, coll) => {
   coll.
   find(query).
@@ -988,17 +923,16 @@ router.get('/videofiles', (req, res) => {
   });
 });
 
-router.get('/videofilestodelete_1', (req, res) => {
-  var glob = require("glob")
-  logger.debug('getVideosToDelete 1');
-  var files = [];
-  var options = {
-    nodir: true
-  }
-  options.cwd = global.appRoot+"/warehouse/videos/";
-  glob("**/*", options, function (er, videos) {
-    for (var item in videos) videos[item] = "/warehouse/videos/"+videos[item]
-    files = files.concat(videos);
+// CLEANER
+var glob = require("glob")
+
+router.get('/videofilestodelete_videos', (req, res) => {
+  logger.debug('videofilestodelete_videos');
+  var options = {nodir: true}
+  var basefolder = "/warehouse/videos/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
     Video
     .find({"media.file": {$exists: true}})
     .select({_id: 1, media: 1})
@@ -1043,17 +977,13 @@ router.get('/videofilestodelete_1', (req, res) => {
   })
 });
 
-router.get('/videofilestodelete_2', (req, res) => {
-  var glob = require("glob")
-  logger.debug('getVideosToDelete 2');
-  var files = [];
-  var options = {
-    nodir: true,
-  }
-  options.cwd = global.appRoot+"/warehouse/videos_previews/";
-  glob("**/*", options, function (er, videos_previews) {
-    for (var item in videos_previews) videos_previews[item] = "/warehouse/videos_previews/"+videos_previews[item]
-    files = files.concat(videos_previews);
+router.get('/videofilestodelete_formats', (req, res) => {
+  logger.debug('videofilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/warehouse/videos_previews/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
     Video
     .find({"media": {$exists: true}})
     .select({_id: 1, media: 1})
@@ -1100,17 +1030,13 @@ router.get('/videofilestodelete_2', (req, res) => {
   })
 });
 
-router.get('/videofilestodelete_3', (req, res) => {
-  var glob = require("glob")
-  logger.debug('getVideosToDelete 3');
-  var files = [];
-  var options = {
-    nodir: true
-  }
-  options.cwd = global.appRoot+"/glacier/videos_previews/";
-  glob("**/*", options, function (er, videos) {
-    for (var item in videos) videos[item] = "/glacier/videos_previews/"+videos[item]
-    files = files.concat(videos);
+router.get('/videofilestodelete_previews', (req, res) => {
+  logger.debug('videofilestodelete_previews');
+  var options = {nodir: true}
+  var basefolder = "/glacier/videos_previews/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
     Video
     .find({"media.preview": {$exists: true}})
     .select({_id: 1, media: 1})
@@ -1155,17 +1081,13 @@ router.get('/videofilestodelete_3', (req, res) => {
   })
 });
 
-router.get('/videofilestodelete_4', (req, res) => {
-  var glob = require("glob")
-  logger.debug('getVideosToDelete 4');
-  var files = [];
-  var options = {
-    nodir: true
-  }
-  options.cwd = global.appRoot+"/glacier/videos_originals/";
-  glob("**/*", options, function (er, videos) {
-    for (var item in videos) videos[item] = "/glacier/videos_originals/"+videos[item]
-    files = files.concat(videos);
+router.get('/videofilestodelete_originals', (req, res) => {
+  logger.debug('videofilestodelete_originals');
+  var options = {nodir: true}
+  var basefolder = "/glacier/videos_originals/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
     Video
     .find({"media.original": {$exists: true}})
     .select({_id: 1, media: 1})
@@ -1210,17 +1132,13 @@ router.get('/videofilestodelete_4', (req, res) => {
   })
 });
 
-router.get('/eventfilestodelete', (req, res) => {
-  var glob = require("glob")
-  logger.debug('getEventToDelete 2');
-  var files = [];
-  var options = {
-    nodir: true,
-  }
-  options.cwd = global.appRoot+"/warehouse/events/";
-  glob("**/*", options, function (er, videos_previews) {
-    for (var item in videos_previews) videos_previews[item] = "/warehouse/events/"+videos_previews[item]
-    files = files.concat(videos_previews);
+router.get('/eventfilestodelete_formats', (req, res) => {
+  logger.debug('eventfilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/warehouse/events/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
     Event
     .find({"image": {$exists: true}})
     .select({_id: 1, image: 1})
@@ -1229,6 +1147,575 @@ router.get('/eventfilestodelete', (req, res) => {
       var dbfiles = [];
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
       dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/eventfilestodelete_images', (req, res) => {
+  logger.debug('eventfilestodelete_images');
+  var options = {nodir: true}
+  var basefolder = "/glacier/events_originals/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    Event
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.image.file})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/userfilestodelete_formats', (req, res) => {
+  logger.debug('userfilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/glacier/users_originals/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    User
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = [];
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/usersfilestodelete_images', (req, res) => {
+  logger.debug('usersfilestodelete_images');
+  var options = {nodir: true}
+  var basefolder = "/glacier/users_originals/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    User
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.image.file})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/performancefilestodelete_formats', (req, res) => {
+  logger.debug('performancefilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/warehouse/performances/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    Performance
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = [];
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/performancefilestodelete_images', (req, res) => {
+  logger.debug('performancefilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/glacier/performances_originals/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    Performance
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.image.file})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/newsfilestodelete_formats', (req, res) => {
+  logger.debug('newsfilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/warehouse/news/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    News
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = [];
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/newsfilestodelete_images', (req, res) => {
+  logger.debug('newsfilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/glacier/news_originals/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    News
+    .find({"image": {$exists: true}})
+    .select({_id: 1, image: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.image.file})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/footagefilestodelete_videos', (req, res) => {
+  logger.debug('footagefilestodelete_videos');
+  var options = {nodir: true}
+  var basefolder = "/warehouse/footage/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    Footage
+    .find({"media.file": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.media.file})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/footagefilestodelete_formats', (req, res) => {
+  logger.debug('footagefilestodelete_formats');
+  var options = {nodir: true}
+  var basefolder = "/warehouse/footage_previews/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    Footage
+    .find({"media": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = [];
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/footagefilestodelete_previews', (req, res) => {
+  logger.debug('footagefilestodelete_previews');
+  var options = {nodir: true}
+  var basefolder = "/glacier/footage_previews/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    Footage
+    .find({"media.preview": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.media.preview})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/footagefilestodelete_originals', (req, res) => {
+  logger.debug('footagefilestodelete_originals');
+  var options = {nodir: true}
+  var basefolder = "/glacier/footage_originals/";
+  options.cwd = global.appRoot+basefolder;
+  glob("**/*", options, function (er, files) {
+    for (var item in files) files[item] = basefolder+files[item]
+    Footage
+    .find({"media.original": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = data.map((item) => {return item.media.original})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
       var tofind = [];
