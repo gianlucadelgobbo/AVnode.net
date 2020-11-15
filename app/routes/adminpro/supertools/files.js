@@ -1239,7 +1239,7 @@ router.get('/eventfilestodelete_images', (req, res) => {
 router.get('/userfilestodelete_formats', (req, res) => {
   logger.debug('userfilestodelete_formats');
   var options = {nodir: true}
-  var basefolder = "/glacier/users_originals/";
+  var basefolder = "/warehouse/users/";
   options.cwd = global.appRoot+basefolder;
   glob("**/*", options, function (er, files) {
     for (var item in files) files[item] = basefolder+files[item]
