@@ -988,89 +988,23 @@ router.get('/videofiles', (req, res) => {
   });
 });
 
-router.get('/videofilestodelete', (req, res) => {
+router.get('/videofilestodelete_1', (req, res) => {
   var glob = require("glob")
-  let adminsez = "videos";
-  logger.debug('getVideosToDelete');
-  //logger.debug(query);
+  logger.debug('getVideosToDelete 1');
   var files = [];
   var options = {
-    nodir: true,
-    cwd: global.appRoot+"/warehouse/videos/"
+    nodir: true
   }
-  glob("**/*", options, function (er, warehouse) {
-    for (var item in warehouse) warehouse[item] = "/warehouse/videos/"+warehouse[item]
-    files = files.concat(warehouse);
-    options.cwd = global.appRoot+"/warehouse/videos_previews/";
-    glob("**/*", options, function (er, videos_previews) {
-      for (var item in videos_previews) videos_previews[item] = "/warehouse/videos_previews/"+videos_previews[item]
-      files = files.concat(videos_previews);
-      options.cwd = global.appRoot+"/glacier/videos_originals/";
-      glob("**/*", options, function (er, videos_originals) {
-        for (var item in videos_originals) videos_originals[item] = "/glacier/videos_originals/"+videos_originals[item]
-        files = files.concat(videos_originals);
-        options.cwd = global.appRoot+"/glacier/videos_previews/";
-        glob("**/*", options, function (er, videos_previews_originals) {
-          for (var item in videos_previews_originals) videos_previews_originals[item] = "/glacier/videos_previews/"+videos_previews_originals[item]
-          files = files.concat(videos_previews_originals);
-          Video
-          .find({"media": {$exists: true}})
-          .select({_id: 1, media: 1})
-          .exec((err, data) => {
-            //console.log(data[0]);
-            var dbfiles = data.map((item) => {return item.media.file});
-            dbfiles = dbfiles.concat(data.map((item) => {return item.media.original}));
-            dbfiles = dbfiles.concat(data.map((item) => {return item.media.preview}));
-            dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
-            dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
-            var todelete = files;
-            for (var item in todelete) {
-              if (dbfiles.indexOf(todelete[item])!== -1) todelete.splice(item, 1);
-            }
-            var promises = {
-              todelete: todelete,
-              files: files,
-              dbfiles: dbfiles
-            };
-
-            //Do the stuff you need to do after renaming the files
-            if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
-              //res.json(router.moveFiles(todelete));
-              res.json(todelete);
-            } else {
-              res.render('adminpro/supertools/files/showall', {
-                title: 'User images',
-                currentUrl: req.originalUrl,
-                data: data,
-                script: false
-              });
-            }
-          });        
-        });  
-      });
-    })
-  })
-});
-
-router.get('/videofilestodelete_2', (req, res) => {
-  var glob = require("glob")
-  logger.debug('getVideosToDelete 2');
-  var files = [];
-  var options = {
-    nodir: true,
-  }
-  options.cwd = global.appRoot+"/warehouse/videos_previews/";
-  glob("**/*", options, function (er, videos_previews) {
-    for (var item in videos_previews) videos_previews[item] = "/warehouse/videos_previews/"+videos_previews[item]
-    files = files.concat(videos_previews);
+  options.cwd = global.appRoot+"/warehouse/videos/";
+  glob("**/*", options, function (er, videos) {
+    for (var item in videos) videos[item] = "/warehouse/videos/"+videos[item]
+    files = files.concat(videos);
     Video
-    .find({"media": {$exists: true}})
+    .find({"media.file": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
       //console.log(data[0]);
-      var dbfiles = [];
-      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
-      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
+      var dbfiles = data.map((item) => {return item.media.file})
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
       var tofind = [];
@@ -1109,23 +1043,25 @@ router.get('/videofilestodelete_2', (req, res) => {
   })
 });
 
-router.get('/videofilestodelete_1', (req, res) => {
+router.get('/videofilestodelete_2', (req, res) => {
   var glob = require("glob")
-  logger.debug('getVideosToDelete 1');
+  logger.debug('getVideosToDelete 2');
   var files = [];
   var options = {
-    nodir: true
+    nodir: true,
   }
-  options.cwd = global.appRoot+"/warehouse/videos/";
-  glob("**/*", options, function (er, videos) {
-    for (var item in videos) videos[item] = "/warehouse/videos/"+videos[item]
-    files = files.concat(videos);
+  options.cwd = global.appRoot+"/warehouse/videos_previews/";
+  glob("**/*", options, function (er, videos_previews) {
+    for (var item in videos_previews) videos_previews[item] = "/warehouse/videos_previews/"+videos_previews[item]
+    files = files.concat(videos_previews);
     Video
-    .find({"media.file": {$exists: true}})
+    .find({"media": {$exists: true}})
     .select({_id: 1, media: 1})
     .exec((err, data) => {
       //console.log(data[0]);
-      var dbfiles = data.map((item) => {return item.media.file})
+      var dbfiles = [];
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
       var tofind = [];
@@ -1236,6 +1172,63 @@ router.get('/videofilestodelete_4', (req, res) => {
     .exec((err, data) => {
       //console.log(data[0]);
       var dbfiles = data.map((item) => {return item.media.original})
+      dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
+      var todelete = [];
+      var tofind = [];
+      // find file not in db
+      for (var item in files) {
+        if (dbfiles.indexOf(files[item]) === -1) todelete.push(files[item]);
+      }
+      // find file not in filesystem
+      for (var item in dbfiles) {
+        if (files.indexOf(dbfiles[item]) === -1) tofind.push(dbfiles[item]);
+      }
+      var dd = {
+        tofind: tofind,
+        todelete: todelete,
+        files: files.length,
+        dbfiles: dbfiles.length
+      };
+
+      //Do the stuff you need to do after renaming the files
+      if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+        router.moveFiles(todelete, req, (move) => {
+          dd.move = move.length;
+
+          res.json(dd);
+        });
+        //res.json(dd);
+      } else {
+        res.render('adminpro/supertools/files/showall', {
+          title: 'User images',
+          currentUrl: req.originalUrl,
+          data: data,
+          script: false
+        });
+      }
+    });        
+  })
+});
+
+router.get('/eventfilestodelete', (req, res) => {
+  var glob = require("glob")
+  logger.debug('getEventToDelete 2');
+  var files = [];
+  var options = {
+    nodir: true,
+  }
+  options.cwd = global.appRoot+"/warehouse/events/";
+  glob("**/*", options, function (er, videos_previews) {
+    for (var item in videos_previews) videos_previews[item] = "/warehouse/events/"+videos_previews[item]
+    files = files.concat(videos_previews);
+    Video
+    .find({"media": {$exists: true}})
+    .select({_id: 1, media: 1})
+    .exec((err, data) => {
+      //console.log(data[0]);
+      var dbfiles = [];
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.small.replace("https://avnode.net","")}));
+      dbfiles = dbfiles.concat(data.map((item) => {return item.imageFormats.large.replace("https://avnode.net","")}));
       dbfiles = dbfiles.filter((item, index) => dbfiles.indexOf(item) === index);
       var todelete = [];
       var tofind = [];
