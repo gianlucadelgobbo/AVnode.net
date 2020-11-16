@@ -1026,7 +1026,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           let link = '/' + data.slug + '/' + subsection + '/page/';
           let page = (req.params.page ? parseFloat(req.params.page) : 1);
           skip = (page - 1) * limit;
-          data.pages = helper.getPagination(link, skip, limit, total); 
+          data.pages = helper.getPagination(link, skip, limit, total, "/"); 
         }
         /* let editable = false;
         if (req.user && req.user._id) {
