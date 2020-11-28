@@ -651,7 +651,7 @@ router.contact = (req, res) => {
       messagetext+= req.body.message+"\n--------------";
       logger.debug(messagetext);
       const mailer = require('../../../utilities/mailer');
-      mailer.mySendMailer({
+      /*mailer.mySendMailer({
         template: 'bookingRequest',
         message: message,
         locals: {
@@ -708,9 +708,7 @@ router.contact = (req, res) => {
           });
         }
       });
-      /* program.save(err => {
-        res.json({res: err ? err : true});
-      }); */
+       */
     });
   } else {
     res.json({message:"User do not exists"});
