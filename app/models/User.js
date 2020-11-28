@@ -193,6 +193,7 @@ const userSchema = new Schema({
   is_confirmed: { type: Boolean, default: false },
   is_pro: { type: Boolean, default: false },
   is_admin: { type: Boolean, default: false },
+  is_banned: { type: Boolean, default: false },
   confirm: String
 }, {
   timestamps: true,
