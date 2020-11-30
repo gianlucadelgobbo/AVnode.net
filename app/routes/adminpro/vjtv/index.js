@@ -227,7 +227,7 @@ router.get('/', (req, res) => {
             }
           }
           var query = {programming: { $lt: enddate, $gt: date}};
-          //logger.debug(query);
+          logger.debug(query);
           Vjtv
           .deleteMany(query, function (err, results) {
             /* logger.debug(query);

@@ -125,13 +125,15 @@ $(document).ready(function(){
           var html = "<ul class=\"list-unstyled\">"
           playlist = [];
           for (var a=0;a<data.length;a++) {
-            playlist.push({
-              sources: [{
-                src: "https://avnode.net"+data[a].video.media.file,
-                type: 'video/mp4'
-              }],
-              poster: data[a].video.imageFormats.small
-            })
+            if (data[a].video && data[a].video.media && data[a].video.media.file) {
+              playlist.push({
+                sources: [{
+                  src: "https://avnode.net"+data[a].video.media.file,
+                  type: 'video/mp4'
+                }],
+                poster: data[a].video.imageFormats.small
+              })  
+            }
 
             /* console.log(data[a].programming);
             console.log(new Date(data[a].programming).toISOString());

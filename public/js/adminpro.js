@@ -400,7 +400,10 @@ $( ".program .connectedSortable" ).sortable({
             $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
             $(boxes[b]).find(".index").html(b+1);
           } else {
-            day.program[b].schedule = [day.program[b].schedule]
+            console.log("start")
+            console.log(start.toISOString())
+            console.log(day.program[b].schedule.starttime)
+            if (start.toISOString() == day.program[b].schedule.starttime) day.program[b].schedule = [day.program[b].schedule]
           }
           //console.log(day.program[b]);
           data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
