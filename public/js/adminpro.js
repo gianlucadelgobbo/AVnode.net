@@ -383,6 +383,7 @@ $( ".program .connectedSortable" ).sortable({
           }
           if (!$(boxes[b]).hasClass("disabled")) {
             console.log("NOT disabled");
+            console.log(day.program[b].performance.title)
             console.log(day.room);
             var price = day.program[b].schedule && day.program[b].schedule.price ? day.program[b].schedule.price : undefined;
             var alleventschedulewithoneprice = day.program[b].schedule && day.program[b].schedule.alleventschedulewithoneprice ? day.program[b].schedule.alleventschedulewithoneprice : undefined;
@@ -399,14 +400,19 @@ $( ".program .connectedSortable" ).sortable({
             console.log(day.program[b].schedule);
             $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
             $(boxes[b]).find(".index").html(b+1);
+            data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
           } else {
-            console.log("start")
-            console.log(start.toISOString())
-            console.log(day.program[b].schedule.starttime)
-            if (start.toISOString() == day.program[b].schedule.starttime) day.program[b].schedule = [day.program[b].schedule]
+            console.log("disabled")
+            console.log(day.program[b].performance.title)
+            if (start.toISOString() == day.program[b].schedule.starttime){
+              console.log("salvo disabled")
+              console.log(start.toISOString())
+              console.log(day.program[b].schedule.starttime)
+              day.program[b].schedule = [day.program[b].schedule];
+              //data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
+            }
           }
           //console.log(day.program[b]);
-          data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
         }
       }
       //
@@ -539,6 +545,9 @@ function programSortableUpdate() {
           var end = new Date (timing+(parseFloat(day.program[b].performance.duration)*(60*1000)));
         }
         if (!$(boxes[b]).hasClass("disabled")) {
+          console.log("NOT disabled");
+          console.log(day.program[b].performance.title)
+          console.log(day.room);
           day.program[b].schedule = [{
             starttime: start.toISOString(),
             endtime: end.toISOString(),
@@ -546,13 +555,22 @@ function programSortableUpdate() {
           }];
           $(boxes[b]).find(".timing").html(moment(start).utc().format("H:mm")+" - "+moment(end).utc().format("H:mm"));
           $(boxes[b]).find(".index").html(b+1);
+          data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
         } else {
-          day.program[b].schedule.disableautoschedule = true;
-          day.program[b].schedule = [day.program[b].schedule]
-          //console.log("disabled");
+          console.log("disabled")
+          console.log(day.program[b].performance.title)
+          if (start.toISOString() == day.program[b].schedule.starttime){
+            console.log("salvo disabled")
+            console.log(start.toISOString())
+            console.log(day.program[b].schedule.starttime)
+
+            day.program[b].schedule.disableautoschedule = true;
+            day.program[b].schedule = [day.program[b].schedule]
+            //console.log("disabled");
+            data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
+          }
         }
         //console.log(day.program[b]);
-        data.push({_id: day.program[b]._id, schedule: day.program[b].schedule, performance: day.program[b].performance._id, event: day.program[b].event});
       }
     }
     //
