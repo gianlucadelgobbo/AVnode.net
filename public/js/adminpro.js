@@ -359,7 +359,8 @@ $(function() {
 // PROGRAM
 $( ".program .connectedSortable" ).sortable({
   update: function( e, ui ) {
-    var data = [];
+    programSortableUpdate();
+    /*var data = [];
     var tobescheduled = [];
     var connectedSortable = $(".connectedSortable").parent();
     for (var a=1;a<connectedSortable.length;a++) {
@@ -433,7 +434,7 @@ $( ".program .connectedSortable" ).sortable({
       data: {data: data, tobescheduled: tobescheduled, event: day.event}
     }).done(function(data) {
       //console.log(data);
-    });
+    });*/
   },
   connectWith: ".connectedSortable"
 }).disableSelection();
@@ -442,7 +443,7 @@ var current;
 $( ".edit-schedule" ).click(function( event ) {
   current = $(this).parent().parent().find("input");
   var schedule = JSON.parse(current.val()).schedule;
-  //console.log(schedule);
+  console.log(schedule);
   //console.log(schedule.starttime);
   //console.log(schedule.endtime);
   //console.log(new Date(schedule.starttime).getUTCHours());
@@ -470,6 +471,7 @@ $( "#modalEditSchedule form" ).submit(function( event ) {
   event.preventDefault();
   var formdata = getFormData($( this ));
   var currentObj = JSON.parse(current.val());
+  console.log(currentObj);
   currentObj.schedule.starttime = new Date(Date.UTC(
     parseFloat(formdata.startday.split("-")[0]),
     parseFloat(formdata.startday.split("-")[1])-1,
@@ -530,7 +532,10 @@ function programSortableUpdate() {
     day.room = JSON.parse(day.room);
     if (day.program && day.program.length) {
       var boxes = $(connectedSortable[a]).find("li");
+      var room_starttime = new Date (day.room.starttime).getTime();
       var timing = new Date (day.room.starttime).getTime();
+      console.log(new Date (day.room.starttime));
+      console.log(timing);
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
         if (day.room.venue.breakduration>-1) timing+= b > 0 ? (parseFloat(day.room.venue.breakduration)*(60*1000)) : 0;
@@ -559,7 +564,18 @@ function programSortableUpdate() {
         } else {
           console.log("disabled")
           console.log(day.program[b].performance.title)
-          if (start.toISOString() == day.program[b].schedule.starttime){
+          console.log(day.program[b].schedule)
+          var st = new Date(room_starttime);
+          var startNew = new Date(day.program[b].schedule.starttime);
+          console.log(st)
+          console.log(startNew)
+          console.log(st.getUTCFullYear()+"-"+st.getUTCMonth()+"-"+st.getUTCDate())
+          console.log(startNew.getUTCFullYear()+"-"+startNew.getUTCMonth()+"-"+startNew.getUTCDate())
+          console.log(st.getUTCHours())
+          console.log(startNew.getUTCHours())
+
+
+          if (startNew.getUTCFullYear()+startNew.getUTCMonth()+startNew.getUTCDate() == st.getUTCFullYear()+st.getUTCMonth()+st.getUTCDate()){
             console.log("salvo disabled")
             console.log(start.toISOString())
             console.log(day.program[b].schedule.starttime)
