@@ -61,7 +61,7 @@ block content
                             each day, i in daydayA
                               span.ml-1.badge.badge-pill(class=day==-1 ? "badge-danger" : "badge-success")
                                 !=new Date(data.days[i]).getDate()
-                          input(type="hidden", name="program[]", value=JSON.stringify(program))
+                        input(type="hidden", name="program[]", value=JSON.stringify(program))
         td(style="padding:0;border:none;")
           div(style="max-height: calc(100vh - 40px);overflow-y: scroll;")
             table(style='width: 100%')
