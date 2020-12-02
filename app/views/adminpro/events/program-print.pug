@@ -13,6 +13,7 @@ block content
   include ./_filters
 
   - counters.Total.Submissions = data.program.length
+  
   each item, index in data.program
     - console.log("perf: "+ item.performance.title)
     if item.performance.type
