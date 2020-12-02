@@ -534,8 +534,7 @@ function programSortableUpdate() {
       var boxes = $(connectedSortable[a]).find("li");
       var room_starttime = new Date (day.room.starttime).getTime();
       var timing = new Date (day.room.starttime).getTime();
-      console.log(new Date (day.room.starttime));
-      console.log(timing);
+      console.log("----------");
       for (var b=0;b<day.program.length;b++) {
         day.program[b] = JSON.parse(day.program[b]);
         if (day.room.venue.breakduration>-1) timing+= b > 0 ? (parseFloat(day.room.venue.breakduration)*(60*1000)) : 0;
@@ -575,7 +574,7 @@ function programSortableUpdate() {
           console.log(startNew.getUTCHours())
 
 
-          if (startNew.getUTCFullYear()+startNew.getUTCMonth()+startNew.getUTCDate() == st.getUTCFullYear()+st.getUTCMonth()+st.getUTCDate()){
+          if (startNew.getUTCFullYear()+startNew.getUTCMonth()+startNew.getUTCDate() === st.getUTCFullYear()+st.getUTCMonth()+st.getUTCDate()){
             console.log("salvo disabled")
             console.log(start.toISOString())
             console.log(day.program[b].schedule.starttime)

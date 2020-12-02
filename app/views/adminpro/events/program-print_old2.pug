@@ -1,0 +1,24 @@
+extends ../layout
+block topmenu
+  include topmenu
+block content
+  include ./_filters
+  table
+    each day in data.programmebydayvenue
+      each room,i in day.rooms
+        if (get['bookings.schedule.venue.room'] && get['bookings.schedule.venue.room'].indexOf(room.schedule.venue.room)>-1)
+          if room.program
+            each program,ii in room.program
+              tr
+                td!=data.event.title
+                td!=program.performance.title
+                td=day.date
+                - hours = "0"+program.schedule.starttime.getHours()
+                - minutes = "0"+program.schedule.starttime.getMinutes()
+                td!=hours.substring(hours.length - 2, hours.length) +":"+minutes.substring(minutes.length - 2, minutes.length)
+                - hours = "0"+program.schedule.endtime.getHours()
+                - minutes = "0"+program.schedule.endtime.getMinutes()
+                td!=hours.substring(hours.length - 2, hours.length) +":"+minutes.substring(minutes.length - 2, minutes.length)
+                td=program.performance.type.name
+                td=program.schedule.venue.name
+                td=program.schedule.venue.room

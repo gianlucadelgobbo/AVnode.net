@@ -113,6 +113,23 @@ router.get('/:event/orders', (req, res) => {
    });
   });
 
+router.get('/:event/program-print', (req, res) => {
+  router.getActsData(req, res, data => {
+    if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+      res.json(data);
+    } else {
+      req.query.sez = "acts";
+      res.render('adminpro/events/program-print', {
+        title: 'Events | '+data.event.title + ': Acts',
+        data: data,
+        currentUrl: req.originalUrl,
+        
+        get: req.query
+      });
+    }
+  });
+});  
+
 router.get('/:event/acts', (req, res) => {
   router.getActsData(req, res, data => {
     if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
@@ -803,7 +820,7 @@ router.get('/:event/technical-riders', (req, res) => {
   });
 });
 
-router.get('/:event/program-print', (req, res) => {
+/* router.get('/:event/program-print', (req, res) => {
   logger.debug('/events/'+req.params.event+'/program-print');
   let data = {};
   Event.
@@ -837,11 +854,6 @@ router.get('/:event/program-print', (req, res) => {
           data.event = event;
           //data.status = config.cpanel["events_advanced"].status;
           data.program = program;
-/*           data.admitted = [];
-          let admittedO = {};
-          for(let a=0;a<data.event.organizationsettings.call.calls.length;a++) for(let b=0; b<data.event.organizationsettings.call.calls[a].admitted.length;b++)  admittedO[data.event.organizationsettings.call.calls[a].admitted[b]._id.toString()] = (data.event.organizationsettings.call.calls[a].admitted[b]);
-          for(let adm in admittedO) data.admitted.push(admittedO[adm]);
- */
           data.rooms = [];
           for(let a=0;a<data.event.schedule.length;a++)  if (data.event.schedule[a].venue && data.event.schedule[a].venue.room && data.rooms.indexOf(data.event.schedule[a].venue.room) == -1) data.rooms.push(data.event.schedule[a].venue.room);
 
@@ -855,13 +867,6 @@ router.get('/:event/program-print', (req, res) => {
           }
           data.days = daysdays;
 
-          /* data.sortby = [
-            {value: 'sortby_perf_name', key: 'sort by perf name'},
-            {value: 'sortby_ref_name', key: 'sort by ref name'},
-            //{value: 'sortby_person_name', key: 'sort by person name'},
-            //{value: 'sortby_arrival_date', key: 'sort by arrival date'},
-            {value: '0', key: 'sort by sub date'}
-          ]; */
           
           data.programmebydayvenue = {}
           for(let a=0;a<event.schedule.length;a++) {
@@ -946,7 +951,7 @@ router.get('/:event/program-print', (req, res) => {
   });
 });
 
-
+ */
 router.get('/:event/program-social', (req, res) => {
   logger.debug('/events/'+req.params.event+'/program-print');
   let data = {};
