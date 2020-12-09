@@ -40,7 +40,7 @@ const userSchema = new Schema({
   activity: Number,
   activity_as_performer: Number,
   activity_as_organization: Number,
-  is_public: { type: Boolean, default: false },
+  is_public: { type: Boolean, default: true },
   createdAt: Date,
   stats: {
     crews: Number,
