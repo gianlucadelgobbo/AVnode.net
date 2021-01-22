@@ -183,7 +183,7 @@
     "mocha-mongoose-fix-overwitemodelerror": "^1.0.0",
     "morgan": "^1.9.0",
     "ncp": "^2.0.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.14.1",
     "nodemon": "^1.17.4",
     "offline-plugin": "^5.0.3",
     "promise-polyfill": "^7.1.2",
