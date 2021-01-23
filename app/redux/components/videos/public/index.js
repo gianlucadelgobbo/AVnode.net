@@ -68,7 +68,7 @@ class VideosPublic extends Component {
 
     if (!model) {
       return {};
-    }
+    } else {
 
     const { abouts, categories } = model;
 
@@ -78,6 +78,9 @@ class VideosPublic extends Component {
         return { label: category.name, value: category._id };
       });
     }
+    console.log(model)
+    console.log(model.is_public)
+    console.log(model.media)
 
     //Convert slug for redux-form
     f.slug = model.slug;
@@ -87,12 +90,14 @@ class VideosPublic extends Component {
     f.is_public = model.is_public;
     //Convert Video
     f.media = model.media;
+    //f.iframe = model.media.iframe;
     // Convert about format for FieldArray redux-form
     f.abouts = populateMultiLanguageObject("abouts", abouts);
 
     f.users = model.users || [];
 
     return f;
+    }
   }
 
   uploadFile(files) {
@@ -146,7 +151,9 @@ class VideosPublic extends Component {
 
         {!errorMessage && !isFetching && !model && <ItemNotFound />}
 
-        <TitleComponent
+        {!errorMessage && !isFetching && model.title && 
+      <div>
+      <TitleComponent
           title={model.title}
           link={"/videos/" + model.slug}
           show={SHOW}
@@ -168,8 +175,9 @@ class VideosPublic extends Component {
           removeModel={removeModel}
           model={model}
         />
+        </div>}
       </div>
-    );
+      );
   }
 }
 

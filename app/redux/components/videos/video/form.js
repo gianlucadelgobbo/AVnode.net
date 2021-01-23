@@ -38,6 +38,7 @@ class VideosVideoForm extends Component {
     } = this.props;
 
     return (
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <Field
           name="video"

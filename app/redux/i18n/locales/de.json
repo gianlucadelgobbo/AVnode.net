@@ -52,6 +52,7 @@
   "label.form.birthday": "Birthday",
   "label.form.category": "Category",
   "label.form.category_vjtv": "VJTV Category",
+  "label.form.category_vjtv_no_external": "External videos can not be involeved in VJ Television. To candidate this video for VJ Television programming you have to upload it.",
   "label.form.citizenship": "Citizenship",
   "label.form.confirmpassword": "Confirm Password",
   "label.form.crew.name": "Crew Name",

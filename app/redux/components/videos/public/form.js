@@ -12,6 +12,7 @@ import validate from "./validate";
 import { injectIntl } from "react-intl";
 import {
   CATEGORY_VJTV,
+  CATEGORY_VJTV_NO_EXTERNAL,
   ABOUT,
   VIDEOS_NAME,
   VIDEOS_URL,
@@ -36,10 +37,10 @@ class VideosPublicForm extends Component {
       showModal,
       onSubmit,
       categories,
-      media,
       _id,
       removeModel,
-      model
+      model,
+      media
     } = this.props;
 
     return (
@@ -57,8 +58,20 @@ class VideosPublicForm extends Component {
           pre={this.getIntlString({ id: VIDEOS_URL_PRE })}
           help={this.getIntlString({ id: VIDEOS_URL_HELP })}
         />
-
+        
         <div className="vjtv">
+          {media.iframe ?
+            <dl className="row">
+              <dt className="col-sm-2">
+                <div class="labelField">VJTV Category</div>
+                <div className="labelADD">
+                  <a href="https://vjtelevision.com" target="_blank">
+                    <img src="/images/VJTV.png" />
+                  </a>
+                </div>
+              </dt>
+              <dd className="col-sm-10 h3"><b>{this.getIntlString({ id: CATEGORY_VJTV_NO_EXTERNAL })}</b></dd>
+            </dl> :
           <Field
             name="categories"
             component={renderList}
@@ -72,7 +85,7 @@ class VideosPublicForm extends Component {
                 </a>
               </div>
             }
-          />
+          />}
         </div>
 
         <Field

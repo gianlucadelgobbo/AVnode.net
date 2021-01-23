@@ -50,7 +50,7 @@ const PUBLIC = {
     unique: true,
     validators: {
         'Array_max_length': 2
-    }]
+    }
   }],
   users: [{
     comp: 'simpleselect',
@@ -58,7 +58,7 @@ const PUBLIC = {
     required: true,
     unique: true,
     validators: {
-    }]
+    }
   }],
 }
 
@@ -70,7 +70,7 @@ const EVENTS = {
     list_actions: ['add', 'remove', 'sort', 'view_sort'],
     add_form_search: ['Event name'],
     view_sort_modes: ['Event name'],
-    rel_api: '/admin/api/...'
+    rel_api: '/admin/api/...',
     label: 'Events',
     validators: {
       'Confirm': {},
@@ -86,7 +86,7 @@ const PERFORMANCES = {
     list_actions: ['add', 'remove', 'sort', 'view_sort'],
     add_form_search: ['Performance name'],
     view_sort_modes: ['Performance name'],
-    rel_api: '/admin/api/...'
+    rel_api: '/admin/api/...',
     label: 'Performance',
     validators: {
       'Confirm': {},

@@ -305,6 +305,11 @@
     "filepath": "./app/redux/components/common/form/labels.js"
   },
   {
+    "id": "label.form.category_vjtv_no_external",
+    "defaultMessage": "External videos can not be involeved in VJ Television. To candidate this video for VJ Television programming you have to upload it.",
+    "filepath": "./app/redux/components/common/form/labels.js"
+  },
+  {
     "id": "label.form.authors",
     "defaultMessage": "Authors",
     "filepath": "./app/redux/components/common/form/labels.js"

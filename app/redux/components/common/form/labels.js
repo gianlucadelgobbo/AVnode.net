@@ -69,6 +69,7 @@ export const DESCRIPTION = "label.form.event.calls.description";
 //Video
 export const NO_VIDEO_TO_SHOW = "label.form.video.no.show";
 export const CATEGORY_VJTV = "label.form.category_vjtv";
+export const CATEGORY_VJTV_NO_EXTERNAL = "label.form.category_vjtv_no_external";
 //Table
 export const ACTION = "label.table.action";
 export const ERROR_CREW_TO_DISPLAY = "label.error.crew.to.display";
