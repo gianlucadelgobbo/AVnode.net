@@ -174,11 +174,11 @@ router.get('/', (req, res) => {
               if(contavjdjsets>=vjdjsets.length) contavjdjsets = 0;
             }
             while(dailyTime<12*60*60*1000 && milliseconds<enddatemilliseconds) {
-              item = docs[contadocs];
+              item = video[contavideo];
               month.push({
                 video: item._id,
                 programming: new Date(milliseconds),
-                category : "5be8708afc3961000000008e"
+                category : "5be8708afc39610000000112"
                 /* title: item.title,
                 imageFormats: item.imageFormats,
                 media: item.media,
@@ -187,15 +187,15 @@ router.get('/', (req, res) => {
               });
               dailyTime+=item.media.duration;
               milliseconds+=item.media.duration;
-              contadocs++;
-              if(contadocs>=docs.length) contadocs = 0;
+              contavideo++;
+              if(contavideo>=video.length) contavideo = 0;
             }
             while(dailyTime<18*60*60*1000 && milliseconds<enddatemilliseconds) {
-              item = performances[contaperformances];
+              item = docs[contadocs];
               month.push({
                 video: item._id,
                 programming: new Date(milliseconds),
-                category : "5be8708afc39610000000195"
+                category : "5be8708afc3961000000008e"
                 /* title: item.title,
                 imageFormats: item.imageFormats,
                 media: item.media,
@@ -204,15 +204,15 @@ router.get('/', (req, res) => {
               });
               dailyTime+=item.media.duration;
               milliseconds+=item.media.duration;
-              contaperformances++;
-              if(contaperformances>=performances.length) contaperformances = 0;
+              contadocs++;
+              if(contadocs>=docs.length) contadocs = 0;
             }
             while(dailyTime<24*60*60*1000 && milliseconds<enddatemilliseconds) {
-              item = video[contavideo];
+              item = performances[contaperformances];
               month.push({
                 video: item._id,
                 programming: new Date(milliseconds),
-                category : "5be8708afc39610000000112"
+                category : "5be8708afc39610000000195"
                 /* .toUTCString().replace(" GMT", "")
                 title: item.title,
                 imageFormats: item.imageFormats,
@@ -222,8 +222,8 @@ router.get('/', (req, res) => {
               });
               dailyTime+=item.media.duration;
               milliseconds+=item.media.duration;
-              contavideo++;
-              if(contavideo>=video.length) contavideo = 0;
+              contaperformances++;
+              if(contaperformances>=performances.length) contaperformances = 0;
             }
           }
           var query = {programming: { $lt: enddate, $gt: date}};
