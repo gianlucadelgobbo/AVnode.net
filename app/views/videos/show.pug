@@ -80,12 +80,14 @@ block content
       .col-md-4.data_footage_video
         .data_footage_video_wrapper
           h3=__("Data")
-          if data.media && data.media.file
+          if data.media
             ul
-              li=global.__('File name')+": "
-                b=data.media.originalname ? data.media.originalname : data.media.file.substring(data.media.file.lastIndexOf("/")+1)
-              li=global.__('File size')+": "
-                b=data.media.filesizeHR
+              if data.media.originalname || data.media.file
+                li=global.__('File name')+": "
+                  b=data.media.originalname ? data.media.originalname : data.media.file.substring(data.media.file.lastIndexOf("/")+1)
+              if data.media.filesizeHR
+                li=global.__('File size')+": "
+                  b=data.media.filesizeHR
               if data.media.duration
                 li=global.__('File duration')+": "
                   b=data.media.durationHR
@@ -102,7 +104,7 @@ block content
               ul.list-inline.category_performance_item
                 each category in data.categories
                   li.list-inline-item=category.name
-        if editable
+        if editable && !data.media.iframe
           form.category-manager
             input(type="hidden" name="id" value=data._id)
             ul.list-unstyled
