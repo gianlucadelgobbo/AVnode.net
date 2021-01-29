@@ -31,7 +31,7 @@ block content
     .row
       .col-md-8
         if data.media && data.media.file
-          .embed-responsive.embed-responsive-16by9
+            //.embed-responsive.embed-responsive-16by9
             - var ext = data.media.file.substring(data.media.file.lastIndexOf(".")+1)
             if ext==="swf"
               object.embed-responsive-item(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', width='550', height='400', align='middle',  type="application/x-shockwave-flash", data='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')

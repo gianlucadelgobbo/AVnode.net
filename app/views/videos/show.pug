@@ -29,7 +29,8 @@ block content
   .container
     .row
       .col-md-8
-        .embed-responsive.embed-responsive-16by9
+          //.embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
+            .embed-responsive
           if data.media && data.media.file
             .toclone
               table
