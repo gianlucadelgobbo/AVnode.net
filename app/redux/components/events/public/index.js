@@ -81,12 +81,18 @@ class EventPublic extends Component {
     // Convert social
     model.social = model.social.filter((w) => w.url);
 
+    // Convert emails
+    model.emails = model.emails.filter((w) => w.url);
+    
+    // Convert phones
+    model.phones = model.phones.filter((w) => w.url);
+
     // Convert Phone Number
-    model.phones = model.phones
+    /* model.phones = model.phones
       .filter((a) => a)
       .map((p) => ({
         url: p.tel,
-      }));
+      })); */
 
     // Convert schedule
     /*model.schedule = model.schedule.map(s => {
@@ -241,12 +247,17 @@ class EventPublic extends Component {
     v.emails =
       Array.isArray(model.emails) && model.emails.length > 0
         ? model.emails
-        : [{ text: "" }];
+        : [{ url: "" }];
 
     v.phones =
       Array.isArray(model.phones) && model.phones.length > 0
-        ? model.phones.filter((a) => a).map((p) => ({ tel: p.url }))
-        : [""];
+        ? model.phones
+        : [{ url: "" }];
+
+    // v.phones =
+    //   Array.isArray(model.phones) && model.phones.length > 0
+    //     ? model.phones.filter((a) => a).map((p) => ({ tel: p.url }))
+    //     : [""];
 
     return v;
   }

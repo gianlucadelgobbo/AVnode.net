@@ -697,10 +697,8 @@ $( ".lock-schedule" ).click(function( event ) {
     modal.find('.modal-index').val(index);
     modal.find('.modal-stagename').val(stagename);
   });
-  console.log("stocazzo")
 
   $( "#modalAddContact form" ).submit(function( event ) {
-    console.log("stocazzo")
     event.preventDefault();
     var post = {};
     $( this ).serializeArray().map(n => {

@@ -624,7 +624,7 @@ export const multiInputEmail = ({
     showModal,
     placeholder,
     render: inputEmail,
-    key: "text",
+    key: "url",
     isChild: true,
   });
 };
@@ -1025,7 +1025,7 @@ export const multiInputTel = ({
     showModal,
     placeholder,
     render: inputTel,
-    key: "tel",
+    key: "url",
     isChild: true,
   });
 };

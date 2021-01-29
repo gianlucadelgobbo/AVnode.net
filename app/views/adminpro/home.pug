@@ -54,33 +54,33 @@ block content
         $('#myModal .modal-body').html("");
         for (var a=0;a<genUrl.length;a++) {
           $('#myModal .modal-body').append("<div id=\"genUrl"+a+"\"><i class=\"fas fa-spinner fa-spin\"></i> "+genUrl[a]+"</div>");
-          //window.open(genUrl[a], a);
+          window.open(genUrl[a], a);
         }
         $('#myModal .modal-footer .btn-primary').addClass("disabled");
         $('#myModal').modal();
       }
       
-      $.ajax({
-        url: genUrl[conta],
-        context: document.body
-      }).fail(function() {
-        error++;
-        if (error>2) {
-          error=0;
-          generateHomes(conta+1);
-        } else {
-          generateHomes(conta);
-        }
-      }).done(function(doc) {
-        $('#myModal .modal-body #genUrl'+conta+" .fas").removeClass("fa-spinner fa-spin");
-        $('#myModal .modal-body #genUrl'+conta+" .fas").addClass("fa-check-circle");
-        if (conta+1 < genUrl.length) {
-          generateHomes(conta+1);
-        } else {
-          $('#myModal .modal-body').append('<br/><div class="alert alert-success" role="alert">DONE</div>');
-          $('#myModal .modal-footer .btn-primary').removeClass("disabled");
-        }
-      });
+      //- $.ajax({
+      //-   url: genUrl[conta],
+      //-   context: document.body,
+      //- }).fail(function() {
+      //-   error++;
+      //-   if (error>2) {
+      //-     error=0;
+      //-     generateHomes(conta+1);
+      //-   } else {
+      //-     generateHomes(conta);
+      //-   }
+      //- }).done(function(doc) {
+      //-   $('#myModal .modal-body #genUrl'+conta+" .fas").removeClass("fa-spinner fa-spin");
+      //-   $('#myModal .modal-body #genUrl'+conta+" .fas").addClass("fa-check-circle");
+      //-   if (conta+1 < genUrl.length) {
+      //-     generateHomes(conta+1);
+      //-   } else {
+      //-     $('#myModal .modal-body').append('<br/><div class="alert alert-success" role="alert">DONE</div>');
+      //-     $('#myModal .modal-footer .btn-primary').removeClass("disabled");
+      //-   }
+      //- });
       
     }
     function generateLocals(conta) {
@@ -99,8 +99,8 @@ block content
         $('#myModal .modal-footer .btn-primary').addClass("disabled");
         $('#myModal').modal();
       }
-      window.open(genUrllocal[conta], "_blank");
-      /*$.ajax({
+      //window.open(genUrllocal[conta], "_blank");
+      $.ajax({
         url: genUrllocal[conta],
         context: document.body
       }).fail(function() {
@@ -120,7 +120,7 @@ block content
           $('#myModal .modal-body').append('<br/><div class="alert alert-success" role="alert">DONE</div>');
           $('#myModal .modal-footer .btn-primary').removeClass("disabled");
         }
-      });*/
+      });
       
     }
     window.addEventListener("load", function(){

@@ -121,6 +121,7 @@ const eventSchema = new Schema({
   web: [Link],
   social: [Link],
   emails: [Link],
+  phones: [Link],
   is_public: { type: Boolean, default: false },
   gallery_is_public: { type: Boolean, default: false },
   is_freezed: { type: Boolean, default: false },

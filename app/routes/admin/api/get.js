@@ -502,11 +502,14 @@ router.getData = (req, res) => {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].forms[req.params.form].populate;
+    console.log(select)
+
     Models[config.cpanel[req.params.sez].model]
     .findById(id)
     .select(select)
     .populate(populate)
     .exec((err, data) => {
+      console.log(err || data)
       if (err) {
         res.status(404).send({ message: `${JSON.stringify(err)}` });
       } else {
