@@ -24,6 +24,10 @@ router.post('/api/setvideocategory', (req, res)=>{
   post.setVideoCategory(req, res);
 });
 
+router.post('/api/setvideoexclude', (req, res)=>{
+  post.setVideoExclude(req, res);
+});
+
 router.get('/api/setstatsandactivity/:id', (req, res)=>{
   get.setStatsAndActivity(req, res);
 });

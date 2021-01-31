@@ -289,6 +289,21 @@ router.setVideoCategory = (req, res) => {
     }
   });
 }
+router.setVideoExclude = (req, res) => {
+  logger.debug(req.body);
+  Models.Video
+  .findOne({_id: req.body.id},'_id', (err, video) => {
+    if (video) {
+      video.vjtv_exclude = req.body.vjtv_exclude;
+      logger.debug(video);
+      video.save(err => {
+        res.json({err: err});
+      });
+    } else {
+      res.json({err: "Video not found"});
+    }
+  });
+}
 router.editSubscription = (req, res) => {
   logger.debug(req.body);
   let populate = [

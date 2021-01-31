@@ -21,6 +21,7 @@ const videoSchema = new Schema({
     }, 'URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
+  vjtv_exclude: { type: Boolean, default: false },
   media: Media,
   // teaserImage: MediaImage,
   //  file: {file: String},

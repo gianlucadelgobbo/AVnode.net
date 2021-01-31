@@ -72,6 +72,24 @@ $(document).ready(function(){
   
       });
   }
+  if ($('.exclude-manager').length) {
+    $('.exclude-manager input').change(function () {
+      var name = $(this).val();
+      var check = $(this).prop('checked');
+      $.ajax({
+        url: "/admin/api/setvideoexclude",
+        method: "post" ,
+        data: $('.exclude-manager').serialize()
+      })
+      .done(function(data) {
+        console.log(data);
+      })
+      .fail(function(data) {
+        console.log(data);
+      });
+  
+      });
+  }
 
   $('.loop_2').owlCarousel({
     center: true,

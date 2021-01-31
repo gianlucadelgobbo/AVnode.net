@@ -29,8 +29,8 @@ block content
   .container
     .row
       .col-md-8
-          //.embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
-            .embed-responsive
+        .embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
+          //.embed-responsive
           if data.media && data.media.file
             .toclone
               table
@@ -121,6 +121,13 @@ block content
               li
                 input.mr-2(id="VJ-DJ_SET", name="categories[]", type="checkbox" value="5be8708afc39610000000218", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000218")!==-1 ? "checked" : undefined)
                 label(for="VJ-DJ_SET")="VJ-DJ_SET"
+          form.exclude-manager
+            input(type="hidden" name="id" value=data._id)
+            ul.list-unstyled
+              li
+                input.mr-2(id="vjtv_exclude", name="vjtv_exclude", type="checkbox" value="1", checked=data.vjtv_exclude==1 ? "checked" : undefined)
+                label(for="vjtv_exclude")
+                  b="VJ TV EXCLUDE"
         if data.tags
           .data_footage_video_wrapper
             h3=__("Tags")

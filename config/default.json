@@ -6953,7 +6953,7 @@
         "vj-dj-sets": {"categories": "5be8708afc39610000000218"},
         "docs": {"categories": "5be8708afc3961000000008e" },
         "video": {"categories": "5be8708afc39610000000112"},
-        "uncategorized": {"categories.0":{"$exists": false}, "media.iframe":{"$exists": false}, "media.encoded": 1,"media.duration": {"$gt":60000}}
+        "uncategorized": {"categories.0":{"$exists": false}, "media.iframe":{"$exists": false}, "media.encoded": 1,"media.duration": {"$gt":60000}, "$or":[{"vjtv_exclude": {"$exists": false}},{"vjtv_exclude": false}]}
       },
       "ordersQueries": {
         "mostrecent": {
@@ -6983,6 +6983,7 @@
           "abouts": 1,
           "slug": 1,
           "stats": 1,
+          "vjtv_exclude": 1,
           "media": 1
         },
         "populate": [{
