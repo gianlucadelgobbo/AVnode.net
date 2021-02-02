@@ -183,36 +183,34 @@ class EventPublic extends Component {
 
     // Convert categories
     v.schedule = [];
-    if (Array.isArray(model.schedule)) {
-      if (model.schedule.length > 0) {
-        const createVenue = (v) => {
-          const { location = {}, name } = v;
-          const { locality, country } = location;
-          let venue = "";
-          if (name) {
-            venue += name;
-          }
-          if (locality) {
-            venue += `, ${locality}`;
-          }
-          if (country) {
-            venue += `, ${country}`;
-          }
-          return venue;
-        };
-        v.schedule = model.schedule.map((x) => ({
-          startdate: moment(x.starttime).format("DD/MM/YYYY"),
-          starttime: x.starttime ? x.starttime : "00:00",
-          enddate: moment(x.endtime).format("DD/MM/YYYY"),
-          endtime: x.endtime ? x.endtime : "00:00",
-          venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
-          room: x.venue.room,
-        }));
-      } else {
-        v.schedule = [{ venue: "" }];
-      }
+    if (Array.isArray(model.schedule) && model.schedule.length > 0) {
+      const createVenue = (v) => {
+        const { location = {}, name } = v;
+        const { locality, country } = location;
+        let venue = "";
+        if (name) {
+          venue += name;
+        }
+        if (locality) {
+          venue += `, ${locality}`;
+        }
+        if (country) {
+          venue += `, ${country}`;
+        }
+        return venue;
+      };
+      v.schedule = model.schedule.map((x) => ({
+        startdate: moment(x.starttime).format("DD/MM/YYYY"),
+        starttime: x.starttime ? x.starttime : "00:00",
+        enddate: moment(x.endtime).format("DD/MM/YYYY"),
+        endtime: x.endtime ? x.endtime : "00:00",
+        venue: x.venue && x.venue.location ? createVenue(x.venue) : {},
+        room: x.venue.room,
+      }));
+    } else {
+      v.schedule = [{ venue: "" }];
     }
-
+    console.log(v.schedule)
     //Convert slug for redux-form
     v.slug = model.slug;
 

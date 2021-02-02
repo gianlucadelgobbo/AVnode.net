@@ -1014,9 +1014,7 @@
           },
           "select": {
             "type": 1,
-            "schedule.starttime": 1,
-            "schedule.endtime": 1,
-            "schedule.venue": 1,
+            "schedule": 1,
             "users": 1,
             "slug": 1,
             "is_public": 1,

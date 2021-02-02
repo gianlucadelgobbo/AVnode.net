@@ -98,36 +98,36 @@ block content
               if data.media.width && data.media.height
                 li=global.__('Video dimensions')+": "
                   b=data.media.width+"x"+data.media.height
-        if data.categories && data.categories.length
+        if (data.categories && data.categories.length) || (editable && !data.media.iframe)
           .data_footage_video_wrapper
             h3=__("Categories")
-            if !editable
+            if data.categories && data.categories.length && !editable
               ul.list-inline.category_performance_item
                 each category in data.categories
                   li.list-inline-item=category.name
-        if editable && !data.media.iframe
-          form.category-manager
-            input(type="hidden" name="id" value=data._id)
-            ul.list-unstyled
-              li
-                input.mr-2(id="DOC", name="categories[]", type="checkbox" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
-                label(for="DOC")="DOC"
-              li
-                input.mr-2(id="PERFORMANCE", name="categories[]", type="checkbox" value="5be8708afc39610000000195", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000195")!==-1 ? "checked" : undefined)
-                label(for="PERFORMANCE")="PERFORMANCE"
-              li
-                input.mr-2(id="VIDEO", name="categories[]", type="checkbox" value="5be8708afc39610000000112", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000112")!==-1 ? "checked" : undefined)
-                label(for="VIDEO")="VIDEO"
-              li
-                input.mr-2(id="VJ-DJ_SET", name="categories[]", type="checkbox" value="5be8708afc39610000000218", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000218")!==-1 ? "checked" : undefined)
-                label(for="VJ-DJ_SET")="VJ-DJ_SET"
-          form.exclude-manager
-            input(type="hidden" name="id" value=data._id)
-            ul.list-unstyled
-              li
-                input.mr-2(id="vjtv_exclude", name="vjtv_exclude", type="checkbox" value="1", checked=data.vjtv_exclude==1 ? "checked" : undefined)
-                label(for="vjtv_exclude")
-                  b="VJ TV EXCLUDE"
+            if editable && !data.media.iframe
+              form.category-manager
+                input(type="hidden" name="id" value=data._id)
+                ul.list-unstyled
+                  li
+                    input.mr-2(id="DOC", name="categories[]", type="checkbox" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
+                    label(for="DOC")="DOC"
+                  li
+                    input.mr-2(id="PERFORMANCE", name="categories[]", type="checkbox" value="5be8708afc39610000000195", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000195")!==-1 ? "checked" : undefined)
+                    label(for="PERFORMANCE")="PERFORMANCE"
+                  li
+                    input.mr-2(id="VIDEO", name="categories[]", type="checkbox" value="5be8708afc39610000000112", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000112")!==-1 ? "checked" : undefined)
+                    label(for="VIDEO")="VIDEO"
+                  li
+                    input.mr-2(id="VJ-DJ_SET", name="categories[]", type="checkbox" value="5be8708afc39610000000218", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000218")!==-1 ? "checked" : undefined)
+                    label(for="VJ-DJ_SET")="VJ-DJ_SET"
+              form.exclude-manager
+                input(type="hidden" name="id" value=data._id)
+                ul.list-unstyled
+                  li
+                    input.mr-2(id="vjtv_exclude", name="vjtv_exclude", type="checkbox" value="1", checked=data.vjtv_exclude==1 ? "checked" : undefined)
+                    label(for="vjtv_exclude")
+                      b="VJ TV EXCLUDE"
         if data.tags
           .data_footage_video_wrapper
             h3=__("Tags")

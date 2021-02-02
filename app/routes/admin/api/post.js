@@ -274,6 +274,27 @@ router.editSubscriptionSave = (req, res) => {
     }
   });
 }
+router.shareOnTelegram = (req, res) => {
+  const TG = require('telegram-bot-api')
+
+  const api = new TG({
+      token: process.env.TG_API
+  })
+
+  api.sendPhoto({
+    chat_id: "@avnode",
+    parse_mode: "Markdown",
+    caption: '*TEST* CIAO',
+    photo: "https://avnode.net/warehouse/performances/2020/12/400x225/2060b7d4-602c-432e-9461-38450f12cb4f_png.jpg"
+  })
+  .then((value) => {
+    res.json(value);
+  })
+  .catch((value) => {
+    res.json(value);
+  })
+}
+
 router.setVideoCategory = (req, res) => {
   logger.debug(req.body);
   Models.Video
