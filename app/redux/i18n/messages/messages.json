@@ -60,6 +60,11 @@
     "filepath": "./app/redux/components/common/form/errors.js"
   },
   {
+    "id": "validation.error.invalid.string.1.15",
+    "defaultMessage": "Invalid length: please insert 1 to 15 values",
+    "filepath": "./app/redux/components/common/form/errors.js"
+  },
+  {
     "id": "validation.error.invalid.string.0.5",
     "defaultMessage": "Invalid length: max 5 values",
     "filepath": "./app/redux/components/common/form/errors.js"
