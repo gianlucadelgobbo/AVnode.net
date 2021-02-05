@@ -67,7 +67,7 @@ performanceSchema.virtual('about').get(function (req) {
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
         about = "[Text available only in English] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
@@ -94,7 +94,7 @@ performanceSchema.virtual('tech_req').get(function (req) {
     if (tech_reqA.length && tech_reqA[0].abouttext) {
       tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />').replace(/\n/g, '<br />');
     } else {
-      tech_reqA = this.tech_reqs.filter(item => item.lang === config.defaultLocale);
+      tech_reqA = this.tech_reqs.filter(item => item.lang === "en");
       if (tech_reqA.length && tech_reqA[0].abouttext) {
         tech_req = tech_reqA[0].abouttext.replace(/\r\n/g, '<br />').replace(/\n/g, '<br />');
       }
@@ -121,7 +121,7 @@ performanceSchema.virtual('tech_art').get(function (req) {
     if (tech_artA.length && tech_artA[0].abouttext) {
       tech_art = tech_artA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      tech_artA = this.tech_arts.filter(item => item.lang === config.defaultLocale);
+      tech_artA = this.tech_arts.filter(item => item.lang === "en");
       if (tech_artA.length && tech_artA[0].abouttext) {
         tech_art = tech_artA[0].abouttext.replace(/\r\n/g, '<br />');
       }

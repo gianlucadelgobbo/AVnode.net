@@ -55,7 +55,7 @@ const newsSchema = new Schema({
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
@@ -71,7 +71,7 @@ newsSchema.virtual('about').get(function (req) {
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
         about = "[Text available only in English] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
@@ -107,7 +107,7 @@ newsSchema.virtual('excerpt').get(function (req) {
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
         about = "[Text available only in English] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }

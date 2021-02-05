@@ -128,12 +128,12 @@ var countries = [
 ];
 
 dataprovider.fetchShow = (req, section, subsection, model, populate, select, output, cb) => {
-  logger.debug("populate");
-  logger.debug(populate);
-  logger.debug("req.query");
-  logger.debug(req.query);
-  logger.debug("subsection");
-  logger.debug(subsection);
+  //logger.debug("populate");
+  //logger.debug(populate);
+  //logger.debug("req.query");
+  //logger.debug(req.query);
+  //logger.debug("subsection");
+  //logger.debug(subsection);
   if ((section=="performers" || section=="organizations") &&  subsection != "show") {
     if (req.query.crews) {
       select.crews = 1;
@@ -155,10 +155,10 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         const newpopulate = populate.filter(pop => pop.path == subsection)[0].populate;
         const limit = populate.filter(pop => pop.path == subsection)[0].options.limit;
         const sort = populate.filter(pop => pop.path == subsection)[0].options.sort;
-        logger.debug("newselect");
-        logger.debug(newselect);
-        logger.debug(submodel);
-        logger.debug(sort);
+        //logger.debug("newselect");
+        //logger.debug(newselect);
+        //logger.debug(submodel);
+        //logger.debug(sort);
         //const total = d && d[nolimit[0].path] && d[nolimit[0].path].length ? d[nolimit[0].path].length : 0;
         submodel.
         countDocuments(query, (err, d) => {
@@ -200,13 +200,13 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         select(select).
         exec((err, data) => {
           /* const res = Object.assign(select, data);
-          logger.debug(select);
-          logger.debug(Object.keys(res));
+          //logger.debug(select);
+          //logger.debug(Object.keys(res));
           cb(err, res, total); */
-          logger.debug("res.partnershipaaaaaaab");
+          //logger.debug("res.partnershipaaaaaaab");
           if(data && data.partnerships && data.partnerships_ordered) {
             delete data.partnerships;
-            logger.debug(data.partnerships);
+            //logger.debug(data.partnerships);
           }
           cb(err, data, total);
         });
@@ -270,7 +270,7 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
       if (req.params.day) {
         /*
         const date = new Date(req.params.day);
-        logger.debug(date);
+        //logger.debug(date);
         select['program.schedule.date.$'] = date;
         populate.push({
           "path": "program.schedule",
@@ -401,9 +401,9 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
       }
     }
-    logger.debug("BINGOOOOO");
-    logger.debug(select);
-    logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
+    //logger.debug("BINGOOOOO");
+    //logger.debug(select);
+    //logger.debug({slug: req.params.sub ? req.params.sub : req.params.slug});
 
     model.
     findOne({slug: req.params.sub ? req.params.sub : req.params.slug, is_public: 1}).
@@ -412,8 +412,8 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
-      logger.debug("STOCAZZOOOOOOO");
-      logger.debug(select);
+      //logger.debug("STOCAZZOOOOOOO");
+      //logger.debug(select);
       //logger.debug(err);
       //logger.debug(ddd);
       let data;
@@ -539,12 +539,12 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
         }
         delete res.advanced.performers;
       }
-      logger.debug("res.partnershipaaaaaaa");
+      //logger.debug("res.partnershipaaaaaaa");
       if(res && res.partnerships && res.partnerships_ordered) {
         delete res.partnerships;
         //logger.debug(res.partnerships);
       }
-      logger.debug("fetchShow END");
+      //logger.debug("fetchShow END");
       cb(err, res);
       //cb(err, data);
     });
@@ -558,15 +558,15 @@ dataprovider.getPerformanceByIds = (req, ids, cb) => {
   populate({path: 'users', select: 'stagename slug members', populate: { path: 'members', select: 'stagename slug'}}).
   select({ title: 1, categories: 1 }).
   exec((err, data) => {
-    //for (var item in data) logger.debug(data[item].users);  
+    //for (var item in data) //logger.debug(data[item].users);  
     cb(err, data);
   });
 };
 
 /* dataprovider.getEmailById = (id, cb) => {
   UserShow.findOne({'_id':id}, "email",(err, data) => {
-    logger.debug("getEmailById");  
-    logger.debug(data);  
+    //logger.debug("getEmailById");  
+    //logger.debug(data);  
     cb(err, data);
   });
 }; */
@@ -787,7 +787,7 @@ dataprovider.getJsonld = (data, req, title, section, subsection, type) => {
     jsonld.image = data.imageFormats.large; */
   }
 
-  logger.debug(jsonld);
+  //logger.debug(jsonld);
   return jsonld;
 };
 
@@ -808,10 +808,10 @@ dataprovider.fetchRandomPerformance = (model, query, select, populate, limit, sk
 
 dataprovider.fetchLists = (model, query, select, populate, limit, skip, sorting, cb) => {
   query.is_public = true;
-  /* logger.debug("BINGOOOOO");
-  logger.debug(query);
-  logger.debug(select);
-  logger.debug(sorting); */
+  /* //logger.debug("BINGOOOOO");
+  //logger.debug(query);
+  //logger.debug(select);
+  //logger.debug(sorting); */
   model.countDocuments(query, function(error, total) {
     model.find(query)
     .populate(populate)
@@ -855,12 +855,12 @@ dataprovider.addCat = (req, populate, cb) => {
 }
 
 dataprovider.show = (req, res, section, subsection, model) => {
-  logger.debug(section);
-  logger.debug(subsection);
+  //logger.debug(section);
+  //logger.debug(subsection);
   //logger.debug(config.sections[section]);
   let populate = JSON.parse(JSON.stringify(config.sections[section][subsection].populate));
-  logger.debug("populate PRE");
-  logger.debug(populate);
+  //logger.debug("populate PRE");
+  //logger.debug(populate);
   dataprovider.addCat(req, populate, (populate, type) => {
     for(let item in populate) {
       if (req.params.page && populate[item].options && populate[item].options.limit) populate[item].options.skip = populate[item].options.limit*(req.params.page-1);
@@ -895,13 +895,13 @@ dataprovider.show = (req, res, section, subsection, model) => {
         }
       }
     }
-    logger.debug("populate AFTER");
-    logger.debug(populate[0].match);
+    //logger.debug("populate AFTER");
+    //logger.debug(populate[0].match);
     const select = config.sections[section][subsection].select;
     const output = config.sections[section][subsection].output ? config.sections[section][subsection].output : false;
 
     dataprovider.fetchShow(req, section, subsection, model, populate, select, output, (err, data, total) => {
-      logger.debug("fetchShow END");
+      //logger.debug("fetchShow END");
       //logger.debug(data);
       if (err || !data || data === null) {
         res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
@@ -929,8 +929,8 @@ dataprovider.show = (req, res, section, subsection, model) => {
               if (locations[item]) data.locations.push(locations[item]);
             }
           }
-          logger.debug("locations");
-          logger.debug(locations);
+          //logger.debug("locations");
+          //logger.debug(locations);
           //data.schedule = undefined;
         }
         if (data && data.addresses && data.addresses.length) {
@@ -1039,7 +1039,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           }
         } */
         if (req.query.api || req.headers.host.split('.')[0] === 'api' || req.headers.host.split('.')[1] === 'api') {
-          logger.debug("fetchShow END");
+          //logger.debug("fetchShow END");
           if (process.env.DEBUG) {
             res.render('json', {data: data});
           } else {
@@ -1126,7 +1126,7 @@ dataprovider.list = (req, res, section, model) => {
         } else if (req.originalUrl.indexOf("-sitemap.xml")!==-1) {
           if (data.length) {
             /* var dates = data.map(item => {return item.updatedAt}).sort().reverse()[0];
-            logger.debug(dates);
+            //logger.debug(dates);
             let lastmod = new Date();
             lastmod.setHours( lastmod.getHours() -2 );
             lastmod.setMinutes(0); */

@@ -177,7 +177,7 @@ const eventSchema = new Schema({
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      aboutA = this.abouts.filter(item => item.lang === config.defaultLocale);
+      aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
         about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
@@ -194,7 +194,7 @@ eventSchema.virtual('subtitle').get(function (req) {
     if (subtitleA.length && subtitleA[0].abouttext) {
       subtitle = subtitleA[0].abouttext.replace(/\r\n/g, '<br />');
     } else {
-      subtitleA = this.subtitles.filter(item => item.lang === config.defaultLocale);
+      subtitleA = this.subtitles.filter(item => item.lang === "en");
       if (subtitleA.length && subtitleA[0].abouttext) {
         subtitle = subtitleA[0].abouttext.replace(/\r\n/g, '<br />');
       }
