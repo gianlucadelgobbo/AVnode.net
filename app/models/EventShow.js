@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 const moment = require('moment');
 const truncatise = require('truncatise');
-const indexPlugin = require('../utilities/elasticsearch/Event');
+//const indexPlugin = require('../utilities/elasticsearch/Event');
 
 const About = require('./shared/About');
 const Category = require('./shared/Category');

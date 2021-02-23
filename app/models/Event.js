@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
 
-const indexPlugin = require('../utilities/elasticsearch/Event');
+//const indexPlugin = require('../utilities/elasticsearch/Event');
 
 const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');

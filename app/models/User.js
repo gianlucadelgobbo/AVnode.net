@@ -5,7 +5,7 @@ const axios = require('axios')
 
 const Schema = mongoose.Schema;
 const moment = require('moment');
-const indexPlugin = require('../utilities/elasticsearch/User');
+//const indexPlugin = require('../utilities/elasticsearch/User');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const MediaImage = require('./shared/MediaImage');

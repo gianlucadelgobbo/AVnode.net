@@ -1,7 +1,7 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const indexPlugin = require('../utilities/elasticsearch/Playlist');
+//const indexPlugin = require('../utilities/elasticsearch/Playlist');
 const helper = require('../utilities/helper');
 
 const About = require('./shared/About');

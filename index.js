@@ -4,7 +4,8 @@ const mongoose = require('./app/utilities/mongoose');
 
 const options = {
   useCreateIndex: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
   //useMongoClient: true
 };
 
