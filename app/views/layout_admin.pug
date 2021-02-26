@@ -38,7 +38,6 @@ html(lang=session.current_lang)
       span.lnr.lnr-arrow-up-circle
     #app
       div
-        - console.log(currentUrl.indexOf("/adminpro"))
         if currentUrl.indexOf("/adminpro") == 0
           include adminpro/partials/menuHeaderAdmindev
           .container-fluid

@@ -73,7 +73,6 @@ flxer.flxerLogin = (req, existingUser, email, password, done) => {
   axios.post('https://old.flxer.net/api/login', querystring.stringify({ email: email, password: password }))
   .then((response) => {
     var ress = response.data;
-    console.log(response);
 
     logger.debug('passport.authenticate flxer:' + JSON.stringify(ress));
     //let ress = JSON.parse(body);
