@@ -170,8 +170,6 @@ upload.uploader = (req, res, done) => {
                     put.medias.push(ins);
                   }
                 } else {
-                  console.log("wwwwwwwwwwwwwwwwwwwwwww")
-                  console.log(files)
                   if (files.length == 1) {
                     put[options.fields.name] = {
                       file: files[0].path.replace(global.appRoot,""),

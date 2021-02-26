@@ -76,7 +76,7 @@ $(function () {
 		});
 	}
 	// UPLOAD IMAGE
-	// UPLOAD IMAGE
+
 	if ($("#formupload") && $("#formupload").length) {
 		if ($("#image-preview") && $("#image-preview").length) {
 			$("#image-preview").on( "click", function () {
@@ -171,6 +171,7 @@ $(function () {
 			autoProcessQueue: true,
 			addRemoveLinks: false,
 			maxFiles: 1,
+	    timeout: 0,
 			thumbnailWidth: 225,
 			thumbnailHeight:400,
 			previewTemplate: tpl,

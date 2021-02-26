@@ -256,10 +256,6 @@ userSchema.pre('validate', function (next) {
   let user = this;
   if (user.oldpassword) {
     if (user.oldpassword === "") {
-      console.log("PREVALIDATE")
-      console.log("user.oldpassword")
-      console.log(user)
-      console.log(user.oldpassword)
       var err = {
         errors: {
           oldpassword: {
@@ -278,12 +274,6 @@ userSchema.pre('validate', function (next) {
       next(err);
   
     } else if (user.newpassword !== user.newpassword_confirm) {
-      console.log("PREVALIDATE")
-      console.log("user.newpassword")
-      console.log(user)
-      console.log(user.newpassword)
-      console.log(user.newpassword_confirm)
-      console.log(user.password)
       var err = {
         errors: {
           password: {
@@ -303,21 +293,15 @@ userSchema.pre('validate', function (next) {
   
     } else {
       user.comparePassword(user.oldpassword, (err, isMatch) => {
-        console.log(user.oldpassword)
-        console.log("PREVALIDATE")
         if (err) {
-           console.log("PREVALIDATE 1")
-           console.log(err)
            return next(err);
         }
         if (isMatch) {
-          console.log("PREVALIDATE 2")
           user.password = user.newpassword;
           user.set("oldpassword", undefined, {strict: false});
           user.set("newpassword", undefined, {strict: false});
           next();
         } else {
-          console.log("PREVALIDATE 3")
           var err = {
             errors: {
               oldpassword: {
@@ -361,19 +345,13 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre('save', function (next) {
-  console.log("ECCHICE")
   let user = this;
   if (!user.isModified('password') || user.hashed) { if (user.hashed) delete user.hashed; return next(); }
-  console.log("ECCHICE 2")
   bcrypt.genSalt(10, (err, salt) => {
-    console.log(err)
     if (err) { return next(err); }
-    console.log("ECCHICE 3")
     bcrypt.hash(user.password, salt, (err, hash) => {
-      console.log(err)
       if (err) { return next(err); }
       user.password = hash;
-      console.log("ECCHICE 4")
       next();
     });
   });

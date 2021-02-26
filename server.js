@@ -131,7 +131,6 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-//console.log("server config.defaultLocale: " + config.defaultLocale);
 app.use((req, res, next) => {
   req.session.current_lang = config.defaultLocale;
   global.setLocale(req.session.current_lang);

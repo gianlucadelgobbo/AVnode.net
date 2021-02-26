@@ -517,20 +517,16 @@ router.getList = (req, res, view) => {
 }
 
 router.getData = (req, res, view) => {
-  console.log("getDatagetDatagetDatagetDatagetData");
-  console.log(config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].forms[req.params.form].populate;
-    console.log(select)
 
     Models[config.cpanel[req.params.sez].model]
     .findById(id)
     .select(select)
     .populate(populate)
     .exec((err, data) => {
-      console.log(err || data)
       if (err) {
         if (view == "json") {
           res.status(500).send({ message: `${JSON.stringify(err)}` });

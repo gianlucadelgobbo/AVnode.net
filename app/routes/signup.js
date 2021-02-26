@@ -214,11 +214,7 @@ router.signupValidator = (put, cb) => {
       "message": "Email is required"
     }
   }
-  console.log("errors.errorserrors.errorserrors.errorserrors.errorserrors.errors")
-  console.log(errors)
-  console.log(Object.keys(errors.errors))
   if (Object.keys(errors.errors).length)  {
-    console.log("errors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errors")
     cb(put, errors);
   } else {
     User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id", function(err, docs) {

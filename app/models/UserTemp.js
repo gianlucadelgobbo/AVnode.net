@@ -50,15 +50,9 @@ userSchema.plugin(uniqueValidator, { message: 'FIELD_ALREADY_EXISTS' });
 
 userSchema.pre('save', function (next) {
   const user = this;
-  console.log("pre('save")
-  console.log(user)
   bcrypt.genSalt(10, (err, salt) => {
-    console.log("genSalt")
-    console.log(user.password)
     if (err) { return next(err); }
     bcrypt.hash(user.password, salt, (err, hash) => {
-      console.log("hash")
-      console.log(err)
       if (err) { return next(err); }
       user.password = hash;
       user.confirm = uid.v4();

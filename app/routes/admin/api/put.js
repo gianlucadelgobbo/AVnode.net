@@ -58,7 +58,6 @@ router.putData = (req, res, view) => {
             data.stats.img = data.medias.length;
             data.image = data.medias[0];
             data.medias.forEach((item)=>{
-              console.log(item)
               delete item.imageFormats
             });
           }
@@ -113,8 +112,6 @@ router.putData = (req, res, view) => {
                       if (view == "json") {
                         res.status(500).send({ message: `${JSON.stringify(err)}` });
                       } else {
-                        console.log("stocazzo")
-                        console.log(err)
                         req.flash('errors', {msg: `${JSON.stringify(err)}`});
                         res.status(500).render(view, {
                           title: view,

@@ -25,9 +25,6 @@ router.post('/', (req, res) => {
   for(i=1;i<localeTMP.length;i++) {
     if (i>0) {
       for(y=1;y<localeTMP[i].length;y++) {
-          /* console.log(localeTMP[0][y]);
-          console.log(locale[localeTMP[0][y]]);
-          console.log(val); */
           locale[localeTMP[0][y]][localeTMP[i][0]] = localeTMP[i][y];
       }
     }
