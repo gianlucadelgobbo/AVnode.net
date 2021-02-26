@@ -25,8 +25,6 @@ block content
                 - var conta = 0
                 each program, i in data.program
                   if !program.schedule || !program.schedule.length || !program.schedule[0] || !program.schedule[0].starttime
-                    - console.log(program.performance.title)
-                    - console.log(program.schedule)
                     if (get.performance_category && program.performance.type._id.toString() == get.performance_category) || (!get.performance_category || get.performance_category == "0")
                       
                       li.list-group-item(style="overflow: hidden;", class=(program.performance.duration != parseFloat(program.performance.duration) ? "disabled" : ""))

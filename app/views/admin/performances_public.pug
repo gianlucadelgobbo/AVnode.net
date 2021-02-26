@@ -13,7 +13,6 @@ block content
           .form-group
             label.labelField(for='title')=__("Title")
             input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
-            - console.log(err)
             if err && Object.keys(err.errors).indexOf('title')!==-1
               .error-message=err.errors.title.message
           - var slugtitle = __("Performance Url")
@@ -35,7 +34,6 @@ block content
         label.labelField(for='duration')=__("Duration")
         input.form-control.mr-3.ml-3(type='text' name='duration' id='duration' placeholder=__("Duration") value=data.duration aria-describedby="durationHelpInline")
         #durationHelpInline=__("minutes")
-        - console.log(err)
         if err && Object.keys(err.errors).indexOf('duration')!==-1
           .error-message=err.errors.duration.message
       include partials/tech_arts

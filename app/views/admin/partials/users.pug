@@ -3,7 +3,6 @@
 	#users
 		.alert.d-none
 		each user, i in data.users
-			- console.log(user)
 			.mb-3
 				a(href='#' data-id=user._id data-obj=get.sez data-objid=data._id class=(data.users.length == 1 ? "disabled" : undefined))
 					i.fa.fa-trash

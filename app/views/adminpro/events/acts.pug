@@ -14,7 +14,6 @@ block content
 
   - counters.Total.Submissions = data.program.length
   each item, index in data.program
-    - console.log("perf: "+ item.performance.title)
     if item.performance.type
       - if (!counters.Type[item.performance.type.name]) counters.Type[item.performance.type.name] = 0
       - counters.Type[item.performance.type.name]++

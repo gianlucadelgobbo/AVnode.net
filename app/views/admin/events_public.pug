@@ -13,7 +13,6 @@ block content
           .form-group
             label.labelField(for='title')=__("Title")
             input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
-            - console.log(err)
             if err && Object.keys(err.errors).indexOf('title')!==-1
               .error-message=err.errors.title.message
           - var slugtitle = __("Event Url")
