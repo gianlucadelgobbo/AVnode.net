@@ -1,0 +1,20 @@
+.form-group
+	label.h4.labelField=__("Authors")
+	#users
+		.alert.d-none
+		each user, i in data.users
+			- console.log(user)
+			.mb-3
+				a(href='#' data-id=user._id data-obj=get.sez data-objid=data._id class=(data.users.length == 1 ? "disabled" : undefined))
+					i.fa.fa-trash
+				!=" | "
+				!=user.stagename
+	.row
+		.col-md-6.offset-md-3
+			.input-group.autocomplete_users
+				input.form-control(type='text' autocomplete='off' placeholder='Author' value='')
+				.input-group-append
+					button.mb-2.btn.btn-success.disabled(type='button' data-objid=data._id data-obj=get.sez)
+						i.fa.fa-plus
+						!=" "
+						b=__("ADD AUTHOR")

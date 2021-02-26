@@ -1,0 +1,16 @@
+#sidebar-container.sidebar-expanded.d-none.d-md-block
+  // !=currentUrl +(currentUrl.indexOf("/adminpro/supertools/files")===0)
+  // d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu'
+  // Bootstrap List Group
+  .list-group
+    // Separator with title
+    .list-group-item.sidebar-separator-title.d-flex
+      small.menu-collapsed Control panel
+    each menuitem in config.adminMenu
+      a.bg-dark.list-group-item.list-group-item-action(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id) class=currentUrl==menuitem.href ? "active" : undefined)
+        span(class=menuitem.icon)
+        span.menu-collapsed=menuitem.label.defaultMessage
+    a.bg-dark.list-group-item(href='#', data-toggle='sidebar-collapse')
+      .d-flex.w-100.justify-content-start.align-items-center
+        span.fa.fa-arrow-alt-circle-left.fa-fw.mr-3
+        span.menu-collapsed Collapse

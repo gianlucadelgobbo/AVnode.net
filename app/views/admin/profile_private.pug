@@ -1,0 +1,62 @@
+extends ../layout_admin
+block content
+	.formcontainer(class=printable ? "printable" : undefined)
+		.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+			h1.h2=data.stagename
+			.btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+				a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+		include partials/menuobj
+		h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+		form(method="post")
+			.row
+				.col-sm-6
+					.form-group
+						label.labelField Name
+						input.form-control(type='text' name='name' placeholder='Name' aria-describedby='slugHelpInline' value='Gianluca')
+				.col-sm-6
+					.form-group
+						label.labelField Surname
+						input.form-control(type='text' name='surname' placeholder='Surname' aria-describedby='slugHelpInline' value='Del Gobbo')
+			.row
+				.col-sm-3
+					.form-group
+						label.labelField=__("Gender")
+						select.form-control(name='gender')
+							option=__("Please select")
+							option(value="M" selected="M"==data.gender ? "selected" : undefined)=__("Male")
+							option(value="F" selected="F"==data.gender ? "selected" : undefined)=__("Female")
+							option(value="O" selected="O"==data.gender ? "selected" : undefined)=__("Other")
+				.col-sm-3
+					.form-group
+						label.labelField=__("Preferred Language")
+						select.form-control(name='lang')
+							option=__("Please select")
+							each language in languages
+								option(value=language.value selected=language.value==data.lang ? "selected" : undefined)=language.label
+				.col-sm-3
+					.form-group
+						label.labelField(for="birthday")=__("Birthday")+" "+__("DD/MM/YYYY")
+						.d-flex
+							input.form-control.mr-3(type='text' onchange='$(".birthday_real").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0])' id='birthday' style='width:125px' value=data.birthday && data.birthday.getDate() ? data.birthday.getDate()+"/"+(data.birthday.getMonth()+1)+"/"+data.birthday.getFullYear() : "")
+							input.birthday_real(type='hidden' name='birthday' value=data.birthday && data.birthday.getDate() ? data.birthday.getFullYear()+"/"+(data.birthday.getMonth()+1)+"/"+data.birthday.getDate() : "")
+				.col-sm-3
+					.form-group
+						label.labelField=__("Citizenship")
+						select.form-control(name='citizenship[0][value]' onchange="$('.citizenship_label').val($(this).find(':selected').text())")
+							option=__("Please select")
+							each country in countries
+								option(value=country.value selected=country.value==data.citizenship[0].value ? "selected" : undefined)=country.label
+							input.citizenship_label(type='text' name='citizenship[0][label]' value=data.citizenship[0].label)
+
+			.row
+				.col-sm-6
+					include partials/addresses_private
+				.col-sm-6
+					include partials/phones
+			.row
+				.col-sm-6
+					include partials/mobile
+				.col-sm-6
+					include partials/skype
+			hr
+			button.btn.btn-primary.btn-lg.btn-block(type='submit') Save

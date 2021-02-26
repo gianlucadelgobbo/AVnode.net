@@ -24,14 +24,14 @@ router.get('/', (req, res) => {
 //validationConfig.validate()
 router.post('/', (req, res, next) => {
   const returnTo = req.session.returnTo ? req.session.returnTo : req.body.returnTo ? req.body.returnTo : "/";
-  logger.debug("req.body");
-  logger.debug(req.body);
+  logger.debug("req.body login");
+  /* logger.debug(req.body);
   logger.debug(req.params);
   logger.debug(req.query);
 
   logger.debug('passport.loginredirect req:' + req.body.returnTo);
   
-  logger.debug('passport.authenticate req:' + JSON.stringify(req.body.email));
+  logger.debug('passport.authenticate req:' + JSON.stringify(req.body.email)); */
 
   passport.authenticate('local', (err, user, info) => {
     if (err) {

@@ -19,6 +19,24 @@ const Models = {
 }
 const logger = require('../../../utilities/logger');
 
+router.getCountries = (req, res) => {
+  const allCountries = require('countries-list');
+  let convert = [];
+  for (var item in allCountries.countries) {
+    convert.push( {"value": item, "label": allCountries.countries[item].name})
+  }
+  return convert;
+}
+
+router.getLanguages = (req, res) => {
+  const allLanguages = require('countries-list');
+  let convert = [];
+  for (var item in allLanguages.languages) {
+    convert.push( {"value": item, "label": allLanguages.languages[item].name})
+  }
+  return convert;
+}
+
 router.setStatsAndActivity = function(query) {
   logger.debug('setStatsAndActivity');
   //logger.debug(query);

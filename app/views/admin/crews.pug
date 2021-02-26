@@ -1,0 +1,71 @@
+extends ../layout_admin
+block content
+	.row
+		.col-md-12
+			.row.mt-3
+				.col-md-10
+					h3.labelField=__("Crews")
+				.col-md-2
+					#dropdownContents
+						a.float-right.btn.btn-success(href='#'
+              data-labelfield=global.__("Crew Name")
+              data-title=global.__("Add Crew")
+              data-param="stagename"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="users")=global.__('New Crew')
+			hr
+			.row
+				.col-md-12
+					table(data-toggle="table", data-valign="top", data-show-columns="true", data-search="true")
+						thead
+							tr
+								th=__("Image")
+								th(data-sortable="true")=__("Name")
+								th(data-sortable="true")=__("Type")
+								th(data-sortable="true")=__("Members")
+								th(data-sortable="true")=__("Date")
+								th=__("Links")
+						tbody
+							each crew in data.crews
+								tr
+									td
+										a(href='/admin/crews/'+crew._id+'/public')
+											img.img-fluid(src=crew.imageFormats.small)
+									td
+										b
+											a(href='/admin/crews/'+crew._id+'/public')
+												i.fa.fa-edit
+											!=" | "  
+											a(href='/'+crew.slug+'/')
+												i.fa.fa-eye
+											!=" | "  
+											!=crew.stagename 
+											div
+												if crew.is_public
+													i.fas.fa-circle(class=crew.is_public ? "text-success" : "text-danger")
+												!=" "  
+												!=__("Public")
+											//div
+												i.fa.fa-eye
+												!=crew.stats.partnerships
+									td=(crew.partner_owner && crew.partner_owner.length && crew.partner_owner.map(item => {return item.owner.toString()}).indexOf("5be8772bfc39610000007065") !== -1)  || crew.activity_as_organization > 0 ? "ORGANIZATION" : "CREW"
+									td
+										ul
+											each member in crew.members
+												li=member.stagename
+									td
+										p
+											!=new Date(crew.createdAt).toLocaleDateString()
+											br
+											!=new Date(crew.updatedAt).toLocaleDateString()
+									td
+										b!=__("Recents")+":" 
+										ul
+											each recent in Object.keys(crew.stats.recent)
+												if stat!="$init" && crew.stats.recent[stat]
+													li=recent+": "+crew.stats.recent[recent]
+										b!=__("Global")+":" 
+										ul
+											each stat in Object.keys(crew.stats)
+												if stat!="recent" && stat!="$init" && crew.stats[stat]
+													li=stat+": "+crew.stats[stat]

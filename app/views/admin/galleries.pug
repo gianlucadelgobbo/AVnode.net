@@ -1,0 +1,82 @@
+extends ../layout_admin
+block content
+	.row
+		.col-md-12
+			.row.mt-3
+				.col-md-10
+					h3.labelField=__("Galleries")
+				.col-md-2
+					#dropdownContents
+						a.float-right.btn.btn-success(href='#'
+              data-labelfield=global.__("Gallery Name")
+              data-title=global.__("Add Gallery")
+              data-param="title"
+              data-user=user && user._id ? user._id : undefined
+              data-sez="galleries")=global.__('New Gallery')
+			hr
+			.row
+				.col-md-12
+					table(data-toggle="table", data-show-columns="true", data-search="true")
+						thead
+							tr
+								th=__("Image")
+								th(data-sortable="true")=__("Title")
+								th(data-sortable="true")=__("Images")
+								th(data-sortable="true")=__("Productions")
+								th(data-sortable="true")=__("Date")
+								th(data-sortable="true")=__("Links")
+						tbody
+							each gallerie in data.galleries
+								tr
+									td
+										a(href='/admin/galleries/'+gallerie._id+'/public')
+											img.img-fluid(src=gallerie.imageFormats.small)
+									td
+										b
+											a(href='/admin/galleries/'+gallerie._id+'/public')
+												i.fa.fa-edit
+											!=" | "  
+											a(href='/'+gallerie.slug+'/')
+												i.fa.fa-eye
+											!=" | "  
+											!=gallerie.title 
+											div
+												if gallerie.is_public
+													i.fas.fa-circle(class=gallerie.is_public ? "text-success" : "text-danger")
+												!=" "  
+												!=__("Public")
+											div
+												i.fa.fa-eye
+												!=" "  
+												!=gallerie.stats.visits
+												!=" | "  
+												i.fa.fa-heart
+												!=" "  
+												!=gallerie.stats.likes
+									td=gallerie.stats.img
+									td
+										ul
+											each member in gallerie.users
+												li=member.stagename
+									td
+										p
+											!=new Date(gallerie.createdAt).toLocaleDateString()
+											br
+											!=new Date(gallerie.updatedAt).toLocaleDateString()
+									td
+										div
+											b!=__("Events")+":"
+										if gallerie.events && gallerie.events.length
+											ul
+												each event in gallerie.events
+													li=event.title
+										else
+											!="NO EVENT"
+										div
+											b!=__("Performances")+":"
+										if gallerie.performances && gallerie.performances.length
+											ul
+												each performance in gallerie.performances
+													li=performance.title
+										else
+											!="NO PERFORMANCE"

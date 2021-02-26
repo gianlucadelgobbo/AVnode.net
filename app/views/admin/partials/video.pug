@@ -1,0 +1,26 @@
+#video.mb-3
+	#video-preview(class=data.media && (data.media.original || data.media.iframe) ? undefined : "d-none")
+		if data.media && data.media.iframe
+			div(style="position:relative")
+				div(style="position:relative")
+					!=data.media.iframe
+		else if data.imageFormats && data.imageFormats.large.indexOf("default-item.svg") === -1
+			img.img-fluid(src=data.imageFormats.large alt=data.title)
+		else if data.media && data.media.encoded==0
+			img.img-fluid(src="/images/default-item-tobeencoded.svg" alt=data.title)
+		else if data.media && data.media.encoded>1
+			img.img-fluid(src="/images/default-item-encodingfailed.svg" alt=data.title)
+		else
+			img.img-fluid.d-none(src="/images/default-item-tobeencoded.svg" alt=data.title)
+	if !((data.media && data.media.iframe) || (data.media && data.media.original) || (data.media && data.media.encoded<2))
+		#formuploadvideo(class=(data.media && data.media.file ? "d-none" : undefined) style='max-width:400px')
+			.enableBorder
+				.embed-responsive.embed-responsive-16by9.mb-0
+					.embed-responsive-item
+						.attachment-dropzone(aria-disabled='false' style='position: relative;height:100%')
+							.labelFieldUpload
+								.h1
+									i.far.fa-arrow-alt-circle-down
+								span=__("Drop file here")
+								div=__("OR")
+								.btn.btn-primary=__("BROWSE")

@@ -432,8 +432,6 @@ router.addContacts = (req, res) => {
   findOne({_id: req.body.crew})
   .exec((err, user) => {
   //select({stagename: 1, createdAt: 1, crews:1}).
-    logger.debug('stocazzo');
-    logger.debug(user);
     if (err || !user) {
       logger.debug('user err');
       logger.debug(err);

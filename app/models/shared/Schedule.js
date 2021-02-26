@@ -20,6 +20,7 @@ const Schedule = new Schema({
   confirm: String,
   day: String,
   venue: Venue,
+  physical: Boolean,
   categories: [{ type: Schema.ObjectId, ref: 'Category' }]
 },{
   _id : false,

@@ -1,0 +1,73 @@
+extends ../layout
+
+block content
+  .container
+    .row
+      .offset-lg-2.col-lg-8.col-md-12
+        form(method="post")
+          - console.log("errerrerrerrerrerrerrerr")
+          - console.log(err)
+          //(autocomplete='off')
+          div
+            .form-group.row
+              label.col-form-label.col-md-3.labelSignup=__("Subscribe as")
+              .col-md-9
+                .form-group
+                  .btn-group.btn-group-toggle(data-toggle="buttons")
+                    label.col-form-label.btn.btn-primary.active
+                      input(type="radio" name="is_crew" value='false' autocomplete="off" onclick="$('#crew').collapse('hide')" checked)
+                      !=__("Single")
+                    label.col-form-label.btn.btn-primary
+                      input(type="radio" name="is_crew" value='true' autocomplete="off" onclick="$('#crew').collapse('show')")
+                      !=__("Crew/Organization")
+              
+          .collapse#crew
+            .form-group.row
+              label.col-form-label.col-md-3=__("Crew Name")
+              .col-md-9.mb-4
+                input.form-control(type='text' name='crewName' placeholder=__("Crew Name") value='')
+            h4.mt-2=__("YOU AS MEMBER OF THE CREW")
+            .mb-4=__("You will be able to add crew members once you confirmed your account")
+          .form-group.row
+            label.col-form-label.col-md-3=__("Stage Name")
+            .col-md-9.mb-4
+              input.form-control(type='text' name='stagename' placeholder=__("Stage Name") value=get.stagename)
+              if err && Object.keys(err.errors).indexOf('stagename')!==-1
+                .error-message=err.errors.stagename.message
+          .form-group.row
+            label.col-form-label.col-md-3=__("Birthday")
+            .col-md-9.mb-4
+              .d-flex
+                - if(get.birthday) get.birthday = new Date(get.birthday)
+                input.form-control.mr-3(type='text' onchange='$(".birthday_real").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0])' id='birthday' style='width:125px' value=get.birthday && get.birthday.getDate() ? get.birthday.getDate()+"/"+(get.birthday.getMonth()+1)+"/"+get.birthday.getFullYear() : "")
+                input.birthday_real(type='hidden' name='birthday' value=get.birthday && get.birthday.getDate() ? get.birthday.getFullYear()+"/"+(get.birthday.getMonth()+1)+"/"+get.birthday.getDate() : "")
+              if err && Object.keys(err.errors).indexOf('birthday')!==-1
+                .error-message=err.errors.birthday.message
+          .form-group.row
+            label.col-form-label.col-md-3=__("Email")
+            .col-md-9.mb-4
+              input.form-control(type='email' name='email' placeholder=__("Email") value=get.email)
+              if err && Object.keys(err.errors).indexOf('email')!==-1
+                .error-message=err.errors.email.message
+          .form-group.row
+            label.col-form-label.col-md-3=__("City, country")
+            .col-md-9.mb-4
+              - if (!get.addresses) get.addresses = [{geometry:{}}]
+              input.form-control.location-search-input(type='text' name='addresses[0][formatted_address]' autocomplete='off' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder='City, country' value=get.addresses[0].formatted_address)
+              input.lat(type='hidden' name='addresses[0][geometry][lat]' value=get.addresses[0].geometry.lat)
+              input.lng(type='hidden' name='addresses[0][geometry][lng]' value=get.addresses[0].geometry.lng)
+              input.locality(type='hidden' name='addresses[0][locality]' value=get.addresses[0].locality)
+              input.country(type='hidden' name='addresses[0][country]' value=get.addresses[0].country)
+              if err && Object.keys(err.errors).indexOf('addresses.0.country')!==-1
+                .error-message=err.errors["addresses.0.country"].message
+          .form-group.row
+            label.col-form-label.col-md-3=__("Password")
+            .col-md-9.mb-4
+              input.form-control(type='password' name='password' autocomplete='new-password' placeholder=__("Password") value='')
+              if err && Object.keys(err.errors).indexOf('password')!==-1
+                .error-message=err.errors.password.message
+          .form-group.row
+            label.col-form-label.col-md-3=__("Confirm Password")
+            .col-md-9.mb-4
+              input.form-control(type='password' name='confirmPassword' autocomplete='new-password' placeholder=__("Confirm Password") value='')
+          button.btn.btn-primary.float-right.btn-lg.mb-3(type='submit')=__("SIGNUP")

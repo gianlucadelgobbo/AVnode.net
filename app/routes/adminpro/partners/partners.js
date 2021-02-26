@@ -8,7 +8,7 @@ const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
 const Emailqueue = mongoose.model('Emailqueue');
 
-const request = require('request');
+const request = require('axios');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');
@@ -166,11 +166,6 @@ router.getPartners = (req, res) => {
         if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
           res.json(data);
         } else {
-          logger.debug(query);
-          logger.debug("data");
-          logger.debug(data ? data.length : "stocazzo");
-          logger.debug("req.body");
-          logger.debug(req.body);
           if (req.body.subject && req.params.sez=="send") {
             var tosave = {};
             tosave.organization = req.params.id;

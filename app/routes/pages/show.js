@@ -1,5 +1,5 @@
 const router = require('../router')();
-const request = require('request');
+const request = require('axios');
 
 const logger = require('../../utilities/logger');
 

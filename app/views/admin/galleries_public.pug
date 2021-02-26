@@ -1,0 +1,77 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.title
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href='/galleries/'+data.slug)=__("SHOW")
+    //include partials/menuobj
+    //h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+    form(method="post")
+      .row
+        .col-md-7
+          .form-group
+            label.labelField(for='title')=__("Title")
+            input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
+            - console.log(err)
+            if err && Object.keys(err.errors).indexOf('title')!==-1
+              .error-message=err.errors.title.message
+          - var slugtitle = __("Profile Url")
+          - var slugplaceholder = __("Profile Url")
+          - var slughelptext = __("To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)")
+          include partials/slug
+          
+          include partials/is_public
+          
+          //include partials/addresses
+
+
+        .col-md-5
+          .mb-3
+            img.img-fluid(src=data.medias[0].imageFormats.large alt=data.title)
+      #gallery
+        .d-flex.justify-content-between.mb-3
+          h4 Images
+          .text-right
+            a.btn.btn-success.btn-inline(href='#rowformmultiupload' data-toggle="collapse" role="button" aria-expanded="false" aria-controls="rowformmultiupload")
+              b=__("Add images")
+        .collapse.mb-4#rowformmultiupload
+          #formmultiupload.row
+            .enableBorder.col-lg-6.offset-lg-3
+              .embed-responsive.embed-responsive-16by9.mb-0
+                .embed-responsive-item
+                  .attachment-dropzone(aria-disabled='false' style='position: relative;height:100%')
+                    .labelFieldUpload
+                      .h1
+                        i.far.fa-arrow-alt-circle-down
+                      span=__("Drop file here")
+                      div=__("OR")
+                      .btn.btn-primary=__("BROWSE")
+          #rowformmultiuploadbuttons.d-none
+            .d-flex.justify-content-center.mt-3
+              button.tryagain.btn.btn-success(type="button")=__("UPLOAD ONLY THE FILES THAT ARE OK")
+              button.cancel.btn.btn-danger.ml-3(type="button")=__("CANCEL")
+          hr
+
+        .row#medias
+          for item, i in data.medias
+            .col-md-4.col-sm-6
+              div(style="position: relative;")
+                img.img-fluid(src=item.imageFormats.large)
+                .btn.btn-secondary(type="button" style="position: absolute; top:10px; left:10px")
+                  i.fa.fa-arrows-alt
+              .d-flex.justify-content-between.mb-3.mt-1
+                  input.form-control.mediaitem(type="text" value=JSON.stringify(item) data-id=i name="mediastr")
+                  input.form-control.title(type="text" value=item.title)
+                  button.btn.btn-danger.ml-2.remove(type="button")
+                    i.fa.fa-trash
+
+
+
+
+
+
+      include partials/abouts
+      include partials/users
+      hr
+      button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")

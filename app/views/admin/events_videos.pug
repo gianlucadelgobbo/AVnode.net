@@ -1,0 +1,79 @@
+extends ../layout_admin
+block content
+	.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+		h1.h2=data.title
+		.btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+			a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+	include partials/menuobj
+	.row.mt-3
+		.col-md-10
+			h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+		.col-md-2
+			button.float-right.btn.btn-success(type='button')
+				i.fa.fa-plus(data-toggle='tooltip' data-placement='top')
+	hr
+	.row
+		.col-md-12
+			table(data-toggle="table", data-show-columns="true", data-search="true")
+				thead
+					tr
+						th=__("Image")
+						th(data-sortable="true")=__("Title")
+						th(data-sortable="true")=__("Type")
+						th(data-sortable="true")=__("Productions")
+						th(data-sortable="true")=__("Date")
+						th(data-sortable="true")=__("Links")
+				tbody
+					each video in data.videos
+						tr
+							td
+								a(href='/admin/videos/'+video._id+'/public')
+									img.img-fluid(src=video.imageFormats.small)
+							td
+								b
+									a(href='/admin/videos/'+video._id+'/public')
+										i.fa.fa-edit
+									!=" | "  
+									a(href='/'+video.slug+'/')
+										i.fa.fa-eye
+									!=" | "  
+									!=video.title 
+									div
+										i.fas.fa-circle(class=video.is_public ? "text-success" : "text-danger")
+										!=" "  
+										!=__("Public")
+									div
+										i.fa.fa-eye
+										!=" "  
+										!=video.stats.visits
+										!=" | "  
+										i.fa.fa-heart
+										!=" "  
+										!=video.stats.likes
+							td=video.type && video.type.name ? video.type.name : "MISSING"
+							td
+								ul
+									each member in video.users
+										li=member.stagename
+							td
+								p
+									!=new Date(video.createdAt).toLocaleDateString()
+									br
+									!=new Date(video.updatedAt).toLocaleDateString()
+							td
+								div
+									b!=__("Events")+":"
+								if video.events && video.events.length
+									ul
+										each event in video.events
+											li=event.title
+								else
+									!="NO EVENT"
+								div
+									b!=__("Performances")+":"
+								if video.events && video.events.length
+									ul
+										each performance in video.events
+											li=performance.title
+								else
+									!="NO PERFORMANCE"

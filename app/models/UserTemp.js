@@ -1,9 +1,14 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
+const Address = require('./shared/Address');
 const Schema = mongoose.Schema;
+const uniqueValidator = require('mongoose-unique-validator');
 
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 const uid = require('uuid');
+const hasNumber = (str) => /\d/.test(str);
+const hasLowerCase = (str) => /[a-z]/.test(str);
+const hasUpperCase = (str) => /[A-Z]/.test(str);
 
 const adminsez = 'signup';
 
@@ -16,15 +21,20 @@ const userSchema = new Schema({
   birthday: { type: Date, required: true},
   lang: { type: String, required: true},
   email: { type: String, required: true, unique: true, trim: true },
-  addresses: [{
-    locality: { type: String, required: true },
-    country: { type: String, required: true },
-    geometry: { 
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true }
-    }
-  }],
-  password: { type: String, required: true, minlength: 3, maxlength: 50 },
+  addresses: [Address],
+  password: {
+    type: String,
+    validate: [{
+      validator : function(password) {
+        return password && password.length > 7;
+      }, msg: "Password is too shorth, the minimum length is 8 characters. Try again..." //'INVALID_PASSWORD_LENGTH'
+    },
+    {
+      validator : function(password) {
+        return hasNumber(password) && hasLowerCase(password) && hasUpperCase(password);
+      }, msg: "Password is not valid, have to contain at least 1 number, 1 lower case and 1 uppercase characters. Try again..." //'INVALID_PASSWORD_CHR'
+    }]
+  },
   confirm: String
 }, {
   timestamps: true,
@@ -36,12 +46,19 @@ const userSchema = new Schema({
     virtuals: true
   }
 });
+userSchema.plugin(uniqueValidator, { message: 'FIELD_ALREADY_EXISTS' });
 
 userSchema.pre('save', function (next) {
   const user = this;
+  console.log("pre('save")
+  console.log(user)
   bcrypt.genSalt(10, (err, salt) => {
+    console.log("genSalt")
+    console.log(user.password)
     if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      console.log("hash")
+      console.log(err)
       if (err) { return next(err); }
       user.password = hash;
       user.confirm = uid.v4();
@@ -49,6 +66,8 @@ userSchema.pre('save', function (next) {
     });
   });
 });
+
+userSchema.plugin(uniqueValidator);
 
 const UserTemp = mongoose.model('UserTemp', userSchema);
 

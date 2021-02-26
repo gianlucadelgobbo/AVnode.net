@@ -1,0 +1,31 @@
+.form-group
+	.row
+		.col-md-4
+			#types
+				label.labelField=__("Type")
+				each typee in config.types.children
+					.form-check
+						input.form-check-input(type="radio" name="type" id=typee._id value=typee._id checked=data.type && typee._id.toString()==data.type._id.toString() ? "checked" : undefined)
+						label.form-check-label(for=typee._id)=typee.name
+
+		.col-md-4
+			#tecnique
+				each typee in config.types.children
+					if typee.children.length
+						.tecnique(id=typee._id+"tecnique" class=data.type && typee._id.toString()==data.type._id.toString() ? undefined : "d-none")
+							label.labelField=__(typee.name)+" "+__("Technique")
+							div(id=typee._id)
+							each performance_category_children in typee.children
+								.form-check
+									input.form-check-input(type="radio" name="tecnique" id=performance_category_children._id value=performance_category_children._id checked=data.tecnique && performance_category_children._id.toString()==data.tecnique._id.toString() ? "checked" : undefined)
+									label.form-check-label(for=performance_category_children._id)=performance_category_children.name
+
+		.col-md-4
+			#genre
+					label.labelField=__("Genre")
+					each genre in config.genres.children
+						.form-check
+							input.form-check-input(type="radio" name="genre" id=genre._id value=genre._id checked=data.genre && genre._id.toString()==data.genre._id.toString() ? "checked" : undefined)
+							label.form-check-label(for=genre._id)=genre.name
+
+

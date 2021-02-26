@@ -1,0 +1,73 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.stagename
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+    include partials/menuobj
+    h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+    form(method="post")
+      #emails
+        each email, i in data.emails
+          .mb-3
+            input(type='hidden' name='emails['+i+'][is_confirmed]' value=email.is_confirmed ? "true" : "false")
+            if email.is_confirmed
+              .input-group
+                input.form-control(type='email' name='emails['+i+'][email]' value=email.email readonly=email.is_confirmed ? "readonly" : undefined)
+                .input-group-append
+                  .input-group-text(style="padding-left:2rem")
+                    input.form-check-input(type='checkbox' disabled=!email.is_confirmed ? "disabled" : undefined id="email"+i+"is_public" name='emails['+i+'][is_public]' value='true' checked=email.is_public ? "checked" : undefined)
+                    label.form-check-label(for="email"+i+"is_public")=__("Is public")
+                .input-group-append
+                  .input-group-text(style="padding-left:2rem")
+                    input.form-check-input(type='checkbox' disabled=!email.is_confirmed ? "disabled" : undefined id="email"+i+"is_primary" name='emails['+i+'][is_primary]' value='true' checked=email.is_primary ? "checked" : undefined)
+                    label.form-check-label(for="email"+i+"is_primary")=__("Is primary")
+                .input-group-append
+                    .input-group-text
+                      .badge.badge-success.mr-2.ml-2=__("Verified")
+                .input-group-append
+                    button.btn.btn-danger.remove(type='button')
+                      i.fa.fa-trash
+              .d-flex.mt-1
+                .form-check.mr-3
+                  b=__("Subscriptions")
+                .form-check.mr-3
+                  input.form-check-input(type='hidden' id='emails'+i+'mailinglistsrealflxerreal' name='emails['+i+'][mailinglists][flxer]' value=email.mailinglists && email.mailinglists.flxer ? 'true' : "false")
+                  input.form-check-input(type='checkbox' onclick='$("#emails'+i+'mailinglistsrealflxerreal").val(this.checked ? "true" : "false")' id='emails'+i+'mailinglistsrealflxer' value='true' checked=email.mailinglists && email.mailinglists.flxer ? "checked" : undefined)
+                  label.form-check-label(for='emails['+i+'].mailinglists.flxer') FLxER
+                .form-check.mr-3
+                  input.form-check-input(type='hidden' id='emails'+i+'mailinglistsrealflyerreal' name='emails['+i+'][mailinglists][flyer]' value=email.mailinglists && email.mailinglists.flyer ? 'true' : "false")
+                  input.form-check-input(type='checkbox' onclick='$("#emails'+i+'mailinglistsrealflyerreal").val(this.checked ? "true" : "false")' id='emails'+i+'mailinglistsrealflyer' value='true' checked=email.mailinglists && email.mailinglists.flyer ? "checked" : undefined)
+                  label.form-check-label(for='emails['+i+'].mailinglists.flyer') Flyer
+                .form-check.mr-3
+                  input.form-check-input(type='hidden' id='emails'+i+'mailinglistsreallivevisualsreal' name='emails['+i+'][mailinglists][livevisuals]' value=email.mailinglists && email.mailinglists.livevisuals ? 'true' : "false")
+                  input.form-check-input(type='checkbox' onclick='$("#emails'+i+'mailinglistsreallivevisualsreal").val(this.checked ? "true" : "false")' id='emails'+i+'mailinglistsreallivevisuals' value='true' checked=email.mailinglists && email.mailinglists.livevisuals ? "checked" : undefined)
+                  label.form-check-label(for='emails['+i+'].mailinglists.livevisuals') Live Visuals
+                .form-check.mr-3
+                  input.form-check-input(type='hidden' id='emails'+i+'mailinglistsrealupdatesreal' name='emails['+i+'][mailinglists][updates]' value=email.mailinglists && email.mailinglists.updates ? 'true' : "false")
+                  input.form-check-input(type='checkbox' onclick='$("#emails'+i+'mailinglistsrealupdatesreal").val(this.checked ? "true" : "false")' id='emails'+i+'mailinglistsrealupdates' value='true' checked=email.mailinglists && email.mailinglists.updates ? "checked" : undefined)
+                  label.form-check-label(for='emails['+i+'].mailinglists.updates') Updates
+            else 
+              .emailresult.alert.d-none
+              .input-group
+                input.form-control(type='email' name='emails['+i+'][email]' value=email.email readonly=email.is_confirmed ? "readonly" : undefined)
+                .input-group-append
+                  buttton.btn.btn-warning.validateemail=__("Verify")
+                .input-group-append
+                    button.btn.btn-danger.remove(type='button')
+                      i.fa.fa-trash
+      .text-center
+        input.btn.btn-primary(type="submit" value=__("SAVE"))
+    hr.mb-5
+    #addemail
+      .row
+        .col-md-8.offset-md-2
+          .emailresult.alert.d-none
+          .input-group
+            input.form-control(type='email')
+            .input-group-append
+              button.btn.btn-success.validateemail
+                i.fa.fa-plus
+                !=" "
+                b=__("ADD EMAIL")

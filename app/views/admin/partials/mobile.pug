@@ -1,0 +1,20 @@
+.form-group
+	label.labelField=__("Mobile")
+	#mobile
+		//
+		- if (!data.mobile || !data.mobile.length) {
+		-  data.mobile = []
+		-  data.mobile.push({url:""});
+		- }
+		each item, i in data.mobile
+			.mb-3
+				.input-group
+					input.form-control(type='text' name='mobile['+i+'][url]' placeholder=__("Mobile") value=item.url)
+					.input-group-append
+						button.btn.btn-danger(type='button' disabled=(i==0 ? "disabled" : undefined) onclick=(i>0 ? "$(this).parent().parent().parent().remove()" : undefined))
+							i.fa.fa-trash
+	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-duplicate="mobile")
+		i.fa.fa-plus
+		!=" "
+		b=__("ADD MOBILE")
+

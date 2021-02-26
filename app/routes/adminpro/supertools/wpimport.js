@@ -1,5 +1,5 @@
 const router = require('../../router')();
-const request = require('request');
+const request = require('axios');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;

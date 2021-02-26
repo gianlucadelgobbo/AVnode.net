@@ -1,0 +1,5 @@
+nav.mb-3.border-bottom
+	- var exclude = ["image", "connections"]
+	each obj,form in config.cpanel[get.sez].forms
+		if exclude.indexOf(form)===-1 && config.cpanel[get.sez].forms[form].title
+			a.btn.btn-primary.btn-sm.mr-3.mb-3(aria-current=(form==get.form ? 'true' : undefined) class=(form==get.form ? 'disabled' : undefined) href='/admin/'+get.sez+'/'+get.id+'/'+form)=__(config.cpanel[get.sez].forms[form].title)

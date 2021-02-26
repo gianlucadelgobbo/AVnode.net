@@ -1,0 +1,88 @@
+extends ../layout_admin
+block content
+	.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+		h1.h2=data.title
+		.btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+			a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+	include partials/menuobj
+	.row.mt-3
+		.col-md-10
+			h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+		.col-md-2
+			#dropdownContents
+				a.float-right.btn.btn-success(href='#'
+					data-labelfield=global.__("Gallery Name")
+					data-title=global.__("Add Gallery")
+					data-param="title"
+					data-user=user && user._id ? user._id : undefined
+					data-id=data._id
+					data-sez="performances"
+					data-newsez="galleries"
+					)=global.__('New Gallery')
+	hr
+	.row
+		.col-md-12
+			table(data-toggle="table", data-show-columns="true", data-search="true")
+				thead
+					tr
+						th=__("Image")
+						th(data-sortable="true")=__("Title")
+						th(data-sortable="true")=__("Images")
+						th(data-sortable="true")=__("Productions")
+						th(data-sortable="true")=__("Date")
+						th(data-sortable="true")=__("Links")
+				tbody
+					each gallery in data.galleries
+						tr
+							td
+								a(href='/admin/galleries/'+gallery._id+'/public')
+									img.img-fluid(src=gallery.imageFormats.small)
+							td
+								b
+									a(href='/admin/galleries/'+gallery._id+'/public')
+										i.fa.fa-edit
+									!=" | "  
+									a(href='/'+gallery.slug+'/')
+										i.fa.fa-eye
+									!=" | "  
+									!=gallery.title 
+									div
+										if gallery.is_public
+											i.fas.fa-circle(class=gallery.is_public ? "text-success" : "text-danger")
+										!=" "  
+										!=__("Public")
+									div
+										i.fa.fa-eye
+										!=" "  
+										!=gallery.stats.visits
+										!=" | "  
+										i.fa.fa-heart
+										!=" "  
+										!=gallery.stats.likes
+							td=gallery.stats.img
+							td
+								ul
+									each member in gallery.users
+										li=member.stagename
+							td
+								p
+									!=new Date(gallery.createdAt).toLocaleDateString()
+									br
+									!=new Date(gallery.updatedAt).toLocaleDateString()
+							td
+								div
+									b!=__("Events")+":"
+								if gallery.events && gallery.events.length
+									ul
+										each event in gallery.events
+											li=event.title
+								else
+									!="NO EVENT"
+								div
+									b!=__("Performances")+":"
+								if gallery.performances && gallery.performances.length
+									ul
+										each performance in gallery.performances
+											li=performance.title
+								else
+									!="NO PERFORMANCE"

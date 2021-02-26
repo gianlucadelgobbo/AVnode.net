@@ -115,10 +115,10 @@ block title
             script(src='https://maps.googleapis.com/maps/api/js?key='+process.env.GOOGLEMAPSAPIKEY+'&extension=.js')
             script.
               var locations = !{JSON.stringify(data.locations)}
-            script(src='/js/mymaps.js')
+            script(src='/js/combo_mymaps.min.js')
             #performer_map
   .wrapper_about_partecipate_evento
-    .abouts_wrapper(style='background-image: url(/images/logo_avnode_svg_grey.svg)') 
+    .abouts_wrapper(style='background-image: url(/images/logo_avnode_grey.svg)') 
       .container 
         if data.about   
           .row

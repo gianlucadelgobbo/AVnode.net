@@ -1,5 +1,4 @@
 const config = require('getconfig');
-const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
@@ -228,6 +227,7 @@ userSchema.virtual('about').get(function (req) {
   let aboutA = [];
   if (this.abouts && this.abouts.length) {
     aboutA = this.abouts.filter(item => item.lang === global.getLocale());
+    console.log(aboutA);
 
     if (aboutA.length && aboutA[0].abouttext) {
       about = aboutA[0].abouttext.replace(/\r\n/g, '<br />');

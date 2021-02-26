@@ -412,10 +412,6 @@ dataprovider.fetchShow = (req, section, subsection, model, populate, select, out
     populate(populate).
     select(select).
     exec((err, ddd) => {
-      //logger.debug("STOCAZZOOOOOOO");
-      //logger.debug(select);
-      //logger.debug(err);
-      //logger.debug(ddd);
       let data;
       if (ddd) data = JSON.parse(JSON.stringify(ddd));
       let res = {};
@@ -912,7 +908,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             if (obj.venue.location.geometry && obj.venue.location.geometry.lat && obj.venue.location.geometry.lng) {
               var rObj = {
                 "marker":{
-                  "url":"/images/avnode_marker.svg",
+                  "url":"/images/icon_marker.svg",
                   "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
                   "origin":{"x":0,"y":0},
                   "anchor":{"x":23,"y":78}
@@ -938,7 +934,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
             if (obj && obj.geometry && obj.geometry.lat && obj.geometry.lng) {
               var rObj = {
                 "marker":{
-                  "url":"/images/avnode_marker.svg",
+                  "url":"/images/icon_marker.svg",
                   "scaledSize":{"width":46,"height":78,"f":"px","b":"px"},
                   "origin":{"x":0,"y":0},
                   "anchor":{"x":23,"y":78}
@@ -1068,6 +1064,8 @@ dataprovider.show = (req, res, section, subsection, model) => {
               section: section,
             });
           } else {
+            var scripts = [];
+            if (data && data.media && data.media.file) scripts.push("video");
             res.render(section + '/' + subsection, {
               title: title,
               jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
@@ -1075,6 +1073,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
               editable: helpers.editable(req, data, data._id),
               get: req.query,
               data: data,
+              scripts: scripts,
               type: type,
               pages: data.pages,
               section: section,

@@ -17,10 +17,16 @@ const Models = {
 }
 const logger = require('../../../utilities/logger');
 
-router.putData = (req, res) => {
+router.putData = (req, res, view) => {
   logger.debug('putData');
   logger.debug(req.body);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
+    if (req.body.mediastr) {
+      for (var item in req.body.mediastr) {
+        if (!req.body.medias) req.body.medias = [];
+        req.body.medias[item] = JSON.parse(req.body.mediastr[item])
+      }
+    }
     const id = req.params.id;
     Models[config.cpanel[req.params.sez].model]
     .findById(id, config.cpanel[req.params.sez].forms[req.params.form].select, (err, data) => {
@@ -48,11 +54,13 @@ router.putData = (req, res) => {
           logger.debug('DataDataDataDataDataData');
           logger.debug(data);
           Object.assign(data, put);
-          logger.debug('putDataputDataputDataputDataputDataputData');
-          logger.debug(data);
           if (data.medias){
             data.stats.img = data.medias.length;
             data.image = data.medias[0];
+            data.medias.forEach((item)=>{
+              console.log(item)
+              delete item.imageFormats
+            });
           }
           if (data.emails){
             if (req.user.name) data.name = req.user.name;
@@ -60,10 +68,30 @@ router.putData = (req, res) => {
             if (req.user.stagename) data.stagename = req.user.stagename;
             if (req.user.addresses && req.user.addresses[0] && req.user.addresses[0].locality) data.addresses = req.user.addresses;
           }
+          logger.debug('putDataputDataputDataputDataputDataputData');
+          logger.debug(data);
           if (helpers.editable(req, data, id)) {
+            logger.debug('savesavesavesavesavesavesavesave');
             data.save((err) => {
               if (err) {
-                res.status(400).send(err);
+                if (view == "json") {
+                  logger.debug(err);
+                  logger.debug("view");
+                  logger.debug(view);
+                  res.status(400).send({ message: `${JSON.stringify(err)}` });
+                } else {
+                  req.flash('errors', {msg: `${JSON.stringify(err)}`});
+                  res.status(400).render(view, {
+                    title: view,
+                    scripts: [],
+                    currentUrl: req.originalUrl,
+                    countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                    languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                    get: req.params,
+                    err: err,
+                    data: data
+                  });
+                }
               } else {
                 logger.debug('USERS ?');
                 logger.debug(data.users);
@@ -82,14 +110,46 @@ router.putData = (req, res) => {
                   .populate(populate)
                   .exec((err, data) => {
                     if (err) {
-                      res.status(500).send({ message: `${JSON.stringify(err)}` });
+                      if (view == "json") {
+                        res.status(500).send({ message: `${JSON.stringify(err)}` });
+                      } else {
+                        console.log("stocazzo")
+                        console.log(err)
+                        req.flash('errors', {msg: `${JSON.stringify(err)}`});
+                        res.status(500).render(view, {
+                          title: view,
+                          scripts: [],
+                          currentUrl: req.originalUrl,
+                          countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                          languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                          msg_tmp: { message: `${JSON.stringify(err)}` }
+                        });
+                      }
                     } else {
                       if (!data) {
-                        res.status(404).send({ message: `DOC_NOT_FOUND` });
+                        if (view == "json") {
+                          res.status(404).send({ message: `DOC_NOT_FOUND` });
+                        } else {
+                          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+                        }  
                       } else {
                         let send = {_id: data._id};
                         for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
-                        res.json(send);
+                        if (view == "json") {
+                          res.json(send);
+                        } else {
+                          req.flash('success', {msg: __("Data saved with success")});
+                          res.render(view, {
+                            title: view,
+                            scripts: [],
+                            currentUrl: req.originalUrl,
+                            countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                            languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                            get: req.params,
+                            msg_tmp: { }, 
+                            data: send
+                          });
+                        }  
                         /* if (data.emails && data.emails.filter(item => item.mailinglists) && data.emails.filter(item => item.mailinglists).length) {
                           router.updateSendy(data, req, (err) => {
                             let send = {_id: data._id};
@@ -102,22 +162,35 @@ router.putData = (req, res) => {
                     }
                   });
                 });
-  
-
-
-
-
               }
             });
           } else {
-            res.status(404).send({ message: `DOC_NOT_OWNED` });
+            if (view == "json") {
+              res.status(404).send({ message: `DOC_NOT_OWNED` });
+            } else {
+              res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+            }  
           }
 
         } else {
-          res.status(404).send({ message: `DOC_NOT_FOUND` });
+          if (view == "json") {
+            res.status(404).send({ message: `DOC_NOT_FOUND` });
+          } else {
+            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+          }  
         }
       } else {
-        res.status(500).send({ message: `${JSON.stringify(err)}` });
+        if (view == "json") {
+          res.status(500).send({ message: `${JSON.stringify(err)}` });
+        } else {
+          req.flash('errors', {msg: `${JSON.stringify(err)}`});
+          res.status(500).render(view, {
+            title: view,
+            scripts: [],
+            currentUrl: req.originalUrl,
+            msg_tmp: { message: `${JSON.stringify(err)}` }
+          });
+        }
       }
     });
   } else {

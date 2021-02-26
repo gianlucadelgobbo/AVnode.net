@@ -1,0 +1,37 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.stagename
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+    //include partials/menuobj
+    //h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+    form(method="post")
+      .row
+        .col-md-7
+          .form-group
+            label.labelField(for='stagename')=__("Stage Name")
+            input.form-control(type='text' name='stagename' id='stagename' placeholder=__("Stage Name") value=data.stagename)
+            - console.log(err)
+            if err && Object.keys(err.errors).indexOf('stagename')!==-1
+              .error-message=err.errors.stagename.message
+          - var slugtitle = __("Profile Url")
+          - var slugplaceholder = __("Profile Url")
+          - var slughelptext = __("To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)")
+          include partials/slug
+          
+          include partials/is_public
+          
+          //include partials/addresses
+
+
+        .col-md-5
+          include partials/image
+      include partials/abouts
+      include partials/members
+      hr
+      include partials/social
+      include partials/web
+      hr
+      button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")

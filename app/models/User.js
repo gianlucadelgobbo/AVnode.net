@@ -1,6 +1,5 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
-const request = require('request');
 const axios = require('axios')
 
 const Schema = mongoose.Schema;
@@ -14,8 +13,9 @@ const Address = require('./shared/Address');
 const AddressPrivate = require('./shared/AddressPrivate');
 const Link = require('./shared/Link');
 const OrganizationData = require('./shared/OrganizationData');
+const Citizenship = require('./shared/Citizenship');
 
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 
 const adminsez = 'profile';
 
@@ -79,7 +79,7 @@ const userSchema = new Schema({
   },
   likes: {},
 
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100,
+  slug: { type: String, unique: true, trim: true, required: [true, 'FIELD_REQUIRED'], minlength: [3, 'FIELD_TOO_SHORT'], maxlength: [50, 'FIELD_TOO_LONG'] ,
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
@@ -98,7 +98,7 @@ const userSchema = new Schema({
   gender: { type: String, trim: true, enum: ['M', 'F', 'O'] },
   lang: { type: String, trim: true, required: function() { return !this.is_crew; }},
   birthday: { type: Date, required: function() { return !this.is_crew; }},
-  citizenship: [],
+  citizenship: [Citizenship],
   addresses_private: [AddressPrivate],
   phone: [Link],
   mobile: [Link],
@@ -119,11 +119,15 @@ const userSchema = new Schema({
           return re.test(email)
         }, 'EMAIL_IS_NOT_VALID']
       },
-      stored: { type: Boolean, default: true },
       is_public: { type: Boolean, default: false },
       is_primary: { type: Boolean, default: false },
       is_confirmed: { type: Boolean, default: false },
-      mailinglists: {},
+      mailinglists: {
+        flxer: { type: Boolean, default: false },
+        flyer: { type: Boolean, default: false },
+        livevisuals: { type: Boolean, default: false },
+        updates: { type: Boolean, default: false },
+      },
       confirm: String
     }],
     required : function() { return this.is_crew === false ? "EMAIL_IS_REQUIRED" : false; },
@@ -188,6 +192,7 @@ const userSchema = new Schema({
   },
   newpassword: String,
   oldpassword: String,
+  newpassword_confirm: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
   is_confirmed: { type: Boolean, default: false },
@@ -204,6 +209,7 @@ const userSchema = new Schema({
     virtuals: true
   }
 });
+userSchema.plugin(uniqueValidator, { message: 'FIELD_ALREADY_EXISTS' });
 
 userSchema.virtual('birthdayFormatted').get(function () {
   if (this.birthday) {
@@ -248,33 +254,89 @@ userSchema.virtual('imageFormats').get(function () {
 
 userSchema.pre('validate', function (next) {
   let user = this;
-  if ((user.oldpassword || user.oldpassword === "") && (user.newpassword || user.newpassword === "")) {
-    user.comparePassword(user.oldpassword, (err, isMatch) => {
-      if (err) return next(err);
-      if (isMatch) {
-        user.password = user.newpassword;
-        user.set("oldpassword", undefined, {strict: false});
-        user.set("newpassword", undefined, {strict: false});
-        next();
-      } else {
-        var err = {
-          errors: {
-            oldpassword: {
-              message: 'INVALID_PASSWORD',
-              name: 'ValidatorError',
-              kind: 'user defined',
-              path: 'oldpassword',
-              value: user.oldpassword,
-              reason: undefined,
-              '$isValidatorError': true
-            }
-          },
-          _message: 'User validation failed',
-          name: 'ValidationError'
-        };
-        next(err);
-      }
-    });
+  if (user.oldpassword) {
+    if (user.oldpassword === "") {
+      console.log("PREVALIDATE")
+      console.log("user.oldpassword")
+      console.log(user)
+      console.log(user.oldpassword)
+      var err = {
+        errors: {
+          oldpassword: {
+            message: 'OLD PASSWORD CAN NOT BE EMPTY',
+            name: 'ValidatorError',
+            kind: 'user defined',
+            path: 'password',
+            value: user.oldpassword,
+            reason: undefined,
+            '$isValidatorError': true
+          }
+        },
+        message: 'OLD PASSWORD CAN NOT BE EMPTY',
+        name: 'ValidationError'
+      };
+      next(err);
+  
+    } else if (user.newpassword !== user.newpassword_confirm) {
+      console.log("PREVALIDATE")
+      console.log("user.newpassword")
+      console.log(user)
+      console.log(user.newpassword)
+      console.log(user.newpassword_confirm)
+      console.log(user.password)
+      var err = {
+        errors: {
+          password: {
+            message: 'NEW PASSWORD AND NEW PASSWORD CONFIRM DO NOT MATCH',
+            name: 'ValidatorError',
+            kind: 'user defined',
+            path: 'password',
+            value: user.password,
+            reason: undefined,
+            '$isValidatorError': true
+          }
+        },
+        message: 'NEW PASSWORD AND NEW PASSWORD CONFIRM DO NOT MATCH',
+        name: 'ValidationError'
+      };
+      next(err);
+  
+    } else {
+      user.comparePassword(user.oldpassword, (err, isMatch) => {
+        console.log(user.oldpassword)
+        console.log("PREVALIDATE")
+        if (err) {
+           console.log("PREVALIDATE 1")
+           console.log(err)
+           return next(err);
+        }
+        if (isMatch) {
+          console.log("PREVALIDATE 2")
+          user.password = user.newpassword;
+          user.set("oldpassword", undefined, {strict: false});
+          user.set("newpassword", undefined, {strict: false});
+          next();
+        } else {
+          console.log("PREVALIDATE 3")
+          var err = {
+            errors: {
+              oldpassword: {
+                message: 'INVALID_PASSWORD',
+                name: 'ValidatorError',
+                kind: 'user defined',
+                path: 'oldpassword',
+                value: user.oldpassword,
+                reason: undefined,
+                '$isValidatorError': true
+              }
+            },
+            message: 'INVALID_PASSWORD',
+            name: 'ValidationError'
+          };
+          next(err);
+        }
+      });
+    }
   } else {
     next();
   }
@@ -299,13 +361,19 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre('save', function (next) {
+  console.log("ECCHICE")
   let user = this;
   if (!user.isModified('password') || user.hashed) { if (user.hashed) delete user.hashed; return next(); }
+  console.log("ECCHICE 2")
   bcrypt.genSalt(10, (err, salt) => {
+    console.log(err)
     if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
+    console.log("ECCHICE 3")
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      console.log(err)
       if (err) { return next(err); }
       user.password = hash;
+      console.log("ECCHICE 4")
       next();
     });
   });
@@ -474,8 +542,16 @@ userSchema.pre('save', function (next) {
 });*/
 
 userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
+  bcrypt.compare(candidatePassword, this.password, (error, isMatch) => {
+    const err = {
+      "errors": {
+        "password": {
+          "message": error,
+          "name": "MongoError"
+        }
+      }
+    };
+    cb(error ? err : error, isMatch);
   });
 };
 

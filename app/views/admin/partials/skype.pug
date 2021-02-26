@@ -1,0 +1,20 @@
+.form-group
+	label.labelField=__("Skype")
+	#skype
+		//
+		- if (!data.skype || !data.skype.length) {
+		-  data.skype = []
+		-  data.skype.push({url:""});
+		- }
+		each item, i in data.skype
+			.mb-3
+				.input-group
+					input.form-control(type='text' name='skype['+i+'][url]' placeholder=__("Skype") value=item.url)
+					.input-group-append
+						button.btn.btn-danger(type='button' disabled=(i==0 ? "disabled" : undefined) onclick=(i>0 ? "$(this).parent().parent().parent().remove()" : undefined))
+							i.fa.fa-trash
+	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-duplicate="skype")
+		i.fa.fa-plus
+		!=" "
+		b=__("ADD SKYPE")
+

@@ -11,7 +11,9 @@ const Address = new Schema({
     lat: Number,
     lng: Number
   }
-},{ _id : false });
+},{ 
+  _id : false
+});
 
 Address.virtual('mapUrl').get(function () {
   let url = '';

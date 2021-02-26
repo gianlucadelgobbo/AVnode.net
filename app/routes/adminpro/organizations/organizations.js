@@ -9,7 +9,7 @@ const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const Program = mongoose.model('Program');
 
-const request = require('request');
+const request = require('axios');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');

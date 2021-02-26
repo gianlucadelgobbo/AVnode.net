@@ -1,0 +1,21 @@
+extends ../layout_admin
+block content
+  .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+    h1.h2=data.stagename
+    .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+      a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+  include partials/menuobj
+  h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+  #image-preview
+    img.img-fluid(src=data.imageFormats.large alt=data.stagename)
+  #formupload.d-none(style='max-width:400px')
+    .enableBorder
+      .embed-responsive.embed-responsive-1by1.mb-0
+        .embed-responsive-item
+          .attachment-dropzone(aria-disabled='false' style='position: relative;height:100%')
+            .labelFieldUpload
+              .h1
+                i.far.fa-arrow-alt-circle-down
+              span=__("Drop file here")
+              div=__("OR")
+              .btn.btn-primary=__("BROWSE")

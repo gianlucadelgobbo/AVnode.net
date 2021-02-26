@@ -1,13 +1,12 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt-nodejs');
 
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const logger = require('../utilities/logger');
 
 // for flxer auth
-let request = require('request');
+let axios = require('axios');
 let querystring = require('querystring');
 const flxer = {};
 const mailer = require('../utilities/mailer');
@@ -69,18 +68,15 @@ passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true
 
 flxer.flxerLogin = (req, existingUser, email, password, done) => {
   // try with flxer api
-  request.post({
-    uri: 'https://old.flxer.net/api/login',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    body: querystring.stringify({ email: email, password: password })
-  }, function (err, res, body) {
-    if (err) {
-      logger.debug('flxer.authenticate error:' + JSON.stringify(err));
-      return done(err);
-    }
+  // headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  // body: querystring.stringify({ email: email, password: password })
+  axios.post('https://old.flxer.net/api/login', querystring.stringify({ email: email, password: password }))
+  .then((response) => {
+    var ress = response.data;
+    console.log(response);
 
-    logger.debug('passport.authenticate flxer:' + JSON.stringify(body));
-    let ress = JSON.parse(body);
+    logger.debug('passport.authenticate flxer:' + JSON.stringify(ress));
+    //let ress = JSON.parse(body);
     if (ress.login) {
       logger.debug('flxer.authenticate successful');
 
@@ -91,7 +87,8 @@ flxer.flxerLogin = (req, existingUser, email, password, done) => {
       logger.debug('existingUser.save existingUser.password:' + existingUser.password);
       existingUser.save((err) => {
         if (err) {
-          logger.debug('existingUser.save error:' + err);
+          logger.debug('existingUser.save error:');
+          logger.debug(err);
         } else {
           logger.debug('existingUser.save success');
           mailer.mySendMailer({
@@ -125,8 +122,11 @@ flxer.flxerLogin = (req, existingUser, email, password, done) => {
       done(false);
       logger.debug('flxer.authenticate failed');
     }
+  }, (err) => {
+    logger.debug('flxer.authenticate error:' + JSON.stringify(err));
+    return done(err);
   });
-};
+}
 
 module.exports = passport;
 

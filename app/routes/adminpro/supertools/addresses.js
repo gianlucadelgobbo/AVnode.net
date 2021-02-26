@@ -5,7 +5,7 @@ const VenueDB = mongoose.model('VenueDB');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 
-const request = require('request');
+const request = require('axios');
 
 const logger = require('../../../utilities/logger');
 
@@ -441,7 +441,7 @@ const showall = (req, res, save, cb) => {
     });
     /* SAVE
 
-      const request = require('request');
+      const request = require('axios');
       addressesA.forEach((element, index) => {
         logger.debug("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+element.newAddress.locality+','+element.newAddress.country);
         request.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+element.newAddress.locality+','+element.newAddress.country, (error, response, body) => {

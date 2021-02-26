@@ -1,0 +1,10 @@
+#slug.form-group
+	label.labelField(for='slug')=slugtitle
+	.input-group
+		.input-group-prepend
+			span.input-group-text https://avnode.net/
+		input.form-control(type='text' name='slug' id='slug' aria-describedby="slugHelpInline" placeholder=slugplaceholder value=data.slug)
+	small#slugHelpInline.help=slughelptext
+	.error-message
+		if err && Object.keys(err.errors).indexOf('slug')!==-1
+			!=err.errors.slug.message

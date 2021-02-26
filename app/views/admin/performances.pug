@@ -1,0 +1,72 @@
+extends ../layout_admin
+block content
+	.row
+		.col-md-12
+			.row.mt-3
+				.col-md-10
+					h3.labelField=__("Performances")
+				.col-md-2
+					#dropdownContents
+						a.float-right.btn.btn-success(href='#'
+							data-labelfield=global.__("Performance Name")
+							data-title=global.__("Add Performance")
+							data-user=user && user._id ? user._id : undefined
+							data-param="title"
+							data-sez="performances")=global.__('New Performance')
+			hr
+			.row
+				.col-md-12
+					table(data-toggle="table", data-show-columns="true", data-search="true")
+						thead
+							tr
+								th=__("Image")
+								th(data-sortable="true")=__("Title")
+								th(data-sortable="true")=__("Type")
+								th(data-sortable="true")=__("Productions")
+								th(data-sortable="true")=__("Date")
+								th(data-sortable="true")=__("Bookings")
+						tbody
+							each performance in data.performances
+								tr
+									td
+										a(href='/admin/performances/'+performance._id+'/public')
+											img.img-fluid(src=performance.imageFormats.small)
+									td
+										b
+											a(href='/admin/performances/'+performance._id+'/public')
+												i.fa.fa-edit
+											!=" | "  
+											a(href='/'+performance.slug+'/')
+												i.fa.fa-eye
+											!=" | "  
+											!=performance.title 
+											div
+												if performance.is_public
+													i.fas.fa-circle(class=performance.is_public ? "text-success" : "text-danger")
+												!=" "  
+												!=__("Public")
+											div
+												i.fa.fa-eye
+												!=" "  
+												!=performance.stats.visits
+												!=" | "  
+												i.fa.fa-heart
+												!=" "  
+												!=performance.stats.likes
+									td=performance.type && performance.type.name ? performance.type.name : "MISSING"
+									td
+										ul
+											each member in performance.users
+												li=member.stagename
+									td
+										p
+											!=new Date(performance.createdAt).toLocaleDateString()
+											br
+											!=new Date(performance.updatedAt).toLocaleDateString()
+									td
+										if performance.bookings
+											ul
+												each booking in performance.bookings
+													li=booking.event.title
+										else
+											!="NO BOOKING YET"

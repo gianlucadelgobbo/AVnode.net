@@ -18,8 +18,10 @@ router.get('/', (req, res) => {
   if (req.user) {
     return res.redirect('/admin/profile/'+req.user._id+'/public');
   }
-  res.render('admin/index', {
-    title: __('Create Account')
+  res.render('admin/signup', {
+    title: __('Create Account'),
+    scripts: ['signup'],
+    get: {}
   });
 });
 
@@ -33,18 +35,33 @@ router.post('/', (req, res) => {
   let select = config.cpanel.signup.forms.signup.select;
   let put = {};
   for (const item in select) if(req.body[item]) put[item] = req.body[item];
+  logger.debug("put");
+  logger.debug(put);
+
   helpers.mySlugify(User, put.stagename, (slug) => {
     put.slug = slug;
     helpers.mySlugify(User, put.crewname, (crewslug) => {
       put.crewslug = crewslug;
       router.signupValidator(put, (put, errors) => {
-        if (errors.message === "") {
+        logger.debug("signupValidatorsignupValidatorsignupValidatorsignupValidator");
+        logger.debug(errors);
+        if (!Object.keys(errors.errors).length) {
+          logger.debug("deleteManydeleteManydeleteManydeleteMany");
           Object.assign(data, put);
-                    
+          logger.debug(  data)      
           UserTemp.deleteMany({ email: data.email }, function (err) {
             data.save((err) => {
+              logger.debug("deleteManydeleteManydeleteManydeleteMany");
               if (err) {
-                res.status(400).send(err);
+                //res.status(400).send(err);
+                req.flash('errors', {msg: `${JSON.stringify(err)}`});
+                res.render('admin/signup', {
+                  title: __('Create Account'),
+                  get: req.body,
+                  currentUrl: req.originalUrl,
+                  scripts: ['signup'],
+                  err: err
+                });  
               } else {
                 select = Object.assign(config.cpanel.signup.forms.signup.select, config.cpanel.signup.forms.signup.selectaddon);
                 //let populate = config.cpanel.signup.forms.signup.populate;      
@@ -54,7 +71,15 @@ router.post('/', (req, res) => {
                 .select(select)
                 .exec((err, data) => {
                   if (err) {
-                    res.status(500).send({ message: `${JSON.stringify(err)}` });
+                    //res.status(500).send({ message: `${JSON.stringify(err)}` });
+                    req.flash('errors', {msg: `${JSON.stringify(err)}`});
+                    res.render('admin/signup', {
+                      title: __('Create Account'),
+                      get: req.body,
+                      currentUrl: req.originalUrl,
+                      scripts: ['signup'],
+                      err: err
+                    });  
                   } else {
                     if (!data) {
                       res.status(404).send({ message: `DOC_NOT_FOUND` });
@@ -85,7 +110,15 @@ router.post('/', (req, res) => {
                       });
                       let send = {_id: data._id};
                       for (const item in config.cpanel.signup.forms.signup.select) send[item] = data[item];
-                      res.json(send);
+                      //res.json(send);
+                      req.flash('success', {msg: __("We have sent a confirmation email, please confirm activate your accont")});
+                      res.render('admin/signup', {
+                        title: __('Create Account'),
+                        get: req.body,
+                        currentUrl: req.originalUrl,
+                        scripts: ['signup'],
+                        err: errors
+                      });  
                     }
                   }
                 });
@@ -93,7 +126,19 @@ router.post('/', (req, res) => {
             });
           });
         } else {
-          res.status(400).send(errors);  
+          if (req.params.api==1) {
+            //res.status(400).send(errors); 
+          } else {
+            req.flash('errors', {msg: `${JSON.stringify(errors)}`});
+            res.render('admin/signup', {
+              title: __('Create Account'),
+              get: req.body,
+              currentUrl: req.originalUrl,
+              scripts: ['signup'],
+              err: errors
+            });  
+          }
+        
         }
       });      
     });
@@ -101,7 +146,9 @@ router.post('/', (req, res) => {
 
 });
 
-router.signupValidator = (put, cb) => { 
+router.signupValidator = (put, cb) => {
+  logger.debug("signupValidator")
+  logger.debug(put)
   let errors = {
     "errors":{},
     "_message":"",
@@ -110,31 +157,18 @@ router.signupValidator = (put, cb) => {
   };
   //put = {};
   //put.birthday="01-09-2018";
-  const birthday = helper.dateFix(put.birthday);
-  if (!birthday) {
-    errors.errors.birthday = {
-      "message": "Birthday is in a wrong date format",
-      "name": "CastError",
-      "stringValue":"\"Invalid Date\"",
-      "kind":"Date",
-      "value":null,
-      "path":"birthday",
-      "reason":{
-        "message":"Birthday is in a wrong date format",
-        "name":"CastError","stringValue":"\"Invalid Date\"",
-        "kind":"date",
-        "value":null,
-        "path":"birthday"
-      }
+  //const birthday = helper.dateFix(put.birthday);
+  if (!put.password || put.password == "") {
+    errors.errors.password = {
+      "message": "Password is required"
     };
-    errors._message += "UserTemp validation failed"+"<br/>";
-    errors.message += "Birthday is in a wrong date format"+"<br/>";
-    errors.name += "ValidationError"+"<br/>";
-  } else {
-    put.birthday = birthday;
-  }
+  } else if (put.password !== put.confirmPassword) {
+    errors.errors.confirmPassword = {
+      "message": "Password confirm do not match"
+    };
+  } 
   if (!put.addresses || !put.addresses[0] || !put.addresses[0].geometry) {
-    errors.errors.address = {
+    errors.errors.addresses = {
       "message": "City, Country is in a wrong format, please select one from the results list on the bottom of the field",
       "name": "CastError",
       "stringValue":"\"Invalid Date\"",
@@ -149,7 +183,6 @@ router.signupValidator = (put, cb) => {
         "path":"birthday"
       }
     };
-    errors._message += "UserTemp validation failed"+"<br/>";
     errors.message += "City, Country is in a wrong format, please select one from the results list on the bottom of the field"+"<br/>";
     errors.name += "ValidationError"+"<br/>";
   } 
@@ -176,35 +209,49 @@ router.signupValidator = (put, cb) => {
     errors.message += "Crew Profile URL can not be the equal to the Profile URL"+"<br/>";
     errors.name += "MongoError"+"<br/>";
   }
-  User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id", function(err, docs) {
-    if (err) {
-      errors.errors.err = err;
-      cb(put, errors);
-    } else {
-      if (docs.length) {
-        errors.errors.email = {
-          "message": "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
-          "name": "MongoError",
-          "stringValue":"\"Duplicate Key\"",
-          "kind":"Date",
-          "value":null,
-          "path":"email",
-          "reason":{
-            "message":"There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
-            "name":"MongoError",
-            "stringValue":"\"Duplicate Key\"",
-            "kind":"string",
-            "value":null,
-            "path":"email"
-          }
-        };
-        errors._message += "UserTemp validation failed"+"<br/>",
-        errors.message += "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>"+"<br/>",
-        errors.name += "MongoError"+"<br/>"
-      }
-      cb(put, errors);
+  if (!put.email) {
+    errors.errors.email = {
+      "message": "Email is required"
     }
-  });
+  }
+  console.log("errors.errorserrors.errorserrors.errorserrors.errorserrors.errors")
+  console.log(errors)
+  console.log(Object.keys(errors.errors))
+  if (Object.keys(errors.errors).length)  {
+    console.log("errors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errorserrors.errors")
+    cb(put, errors);
+  } else {
+    User.find({ $or: [ { 'email': put.email }, { 'emails.email': put.email } ] }, "_id", function(err, docs) {
+      if (err) {
+        errors.errors.err = err;
+        cb(put, errors);
+      } else {
+        if (docs.length) {
+          errors.errors.email = {
+            "message": "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
+            "name": "MongoError",
+            "stringValue":"\"Duplicate Key\"",
+            "kind":"Date",
+            "value":null,
+            "path":"email",
+            "reason":{
+              "message":"There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
+              "name":"MongoError",
+              "stringValue":"\"Duplicate Key\"",
+              "kind":"string",
+              "value":null,
+              "path":"email"
+            }
+          };
+          errors._message += "UserTemp validation failed"+"<br/>",
+          errors.message += "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>"+"<br/>",
+          errors.name += "MongoError"+"<br/>"
+        }
+        cb(put, errors);
+      }
+    });
+  
+  }
 }
 
 

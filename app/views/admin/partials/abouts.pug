@@ -1,0 +1,15 @@
+#abouts.mb-3
+	.card-header.mb-3
+		h4.labelField=__("About")
+	ul.nav.nav-tabs(role='tablist')
+		each lang, i in config.locales
+			li.nav-item
+				a.nav-link(class=(i==0 ? "active" : undefined) id="lang"+lang+"tab" data-toggle='tab' href="#" data-target="#lang"+lang role='tab' aria-controls="lang"+lang aria-selected=(i==0 ? "true" : undefined))=config.locales_labels[lang]
+	.tab-content
+		each lang, i in config.locales
+			.tab-pane(class=(i==0 ? "active show" : undefined) id="lang"+lang role='tabpanel' aria-labelledby="lang"+lang+"tab")
+				.form-group
+					input(type='hidden' name='abouts['+i+'][is_primary]' value="false")
+					input(type='hidden' name='abouts['+i+'][lang]' value=lang)
+					- var about = data.abouts.filter(item => item.lang==lang)
+					textarea.form-control(name='abouts['+i+'][abouttext]')=data.abouts && data.abouts.length && about[0] && about[0].abouttext ? about[0].abouttext : ""

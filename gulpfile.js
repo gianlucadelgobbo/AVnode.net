@@ -1,308 +1,108 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
-var uglify = require('gulp-uglify');
+var uglify = require('gulp-terser');
 var concat = require('gulp-concat');
 
 var config = {
-  modulesDir: './node_modules',
+  npmDir: './node_modules',
   publicDir: './public',
 };
 
 var tasklist = [
-  //'css_avnode_bs',
-  'compress_js_avnode'
+  'fonts_bs',
+  'compress_css',
+  'compress_js'
 ];
 
-gulp.task('css_avnode_bs', function() {
-  return gulp.src('./gulp/sass/avnode/*.scss')
-    .pipe(sass({
-      outputStyle: 'compressed',
-      includePaths: [config.modulesDir + '/bootstrap-sass/assets/stylesheets'],
-    }))
-    .pipe(gulp.dest(config.publicDir + '/avnode/css'));
-});
-
-gulp.task('compress_js_avnode', function() {
-  return gulp.src([
-      config.modulesDir + '/jquery/dist/jquery.min.js',
-      config.modulesDir + '/popper.js/dist/umd/popper.min.js',
-      config.modulesDir + '/bootstrap/dist/js/bootstrap.min.js'/* ,
-      './gulp/js/main.js' */
-    ])
-    .pipe(concat('combo.min.js'))
-    //.pipe(uglify())
-    .pipe(gulp.dest(config.publicDir + '/js/'));
-});
-
-
-
-gulp.task('default', tasklist);
-
-/*
-var editions_lpm = [
-  '2004-rome',
-  '2005-rome',
-  '2006-rome',
-  '2007-rome',
-  '2008-mex',
-  '2008-rome',
-  '2009-rome',
-  '2010-rome',
-  '2011-minsk',
-  '2011-rome',
-  '2012-rome',
-  '2013-cape-town',
-  '2013-mex',
-  '2013-rome',
-  '2014-eindhoven',
-  '2015-rome',
-  '2016-amsterdam',
-  '2017-amsterdam',
-  '2018-rome'
-];
-var excludeXL = [
-  '2011-minsk',
-  '2011-rome',
-  '2010-rome',
-  '2009-rome',
-  '2008-rome',
-  '2008-mex',
-  '2007-rome',
-  '2006-rome',
-  '2005-rome',
-  '2004-rome'
-];
-var editions_lcf = [
-  '2014-rome',
-  '2015-rome',
-  '2016-rome',
-  '2017-rome'
-];
-
-var editions_chromosphere = [
-  'nye-2016-rome'
-];
-
-var editions_fotonica = [
-  '2017-rome'
-];
-
-
-gulp.task('js_bs', function() {
-  return gulp.src(config.modulesDir + '/bootstrap-sass/assets/javascripts/bootstrap.min.js')
-  //.pipe(gulp.dest(config.publicDir + '/_common/js'));
-  .pipe(gulp.dest('./gulp/js/_common'));
-});
-
-gulp.task('js_jq', function() {
-  return gulp.src(config.modulesDir + '/jquery/dist/jquery.min.js')
-    .pipe(gulp.dest('./gulp/js/_common'));
-});
-
-gulp.task('compress_js_common', function() {
-  gulp.src(['!./gulp/js/_common/*.min.js', './gulp/js/_common/*.js'])
-      .pipe(minify({
-        ext:{
-          min:'.min.js'
-        },
-        exclude: ['tasks'],
-        ignoreFiles: ['.combo.js', '-min.js']
-      }))
-      .pipe(gulp.dest(config.publicDir + '/_common/js/'))
-});
-
-gulp.task('concat_common_scripts', function() {
-  return gulp.src([
-    config.publicDir + '/_common/js/jquery.min.js',
-    config.publicDir + '/_common/js/jquery.isotope.min.js',
-    config.publicDir + '/_common/js/imagesloaded.pkgd.min.js',
-    config.publicDir + '/_common/js/cookielawinfo.min.js',
-    config.publicDir + '/_common/js/bootstrap.min.js',
-    config.publicDir + '/_common/js/script.min.js'
-  ])
-      .pipe(concat('combo.min.js'))
-      .pipe(gulp.dest(config.publicDir + '/_common/js/'));
-});
-gulp.task('concat_avnode_css', function() {
-  return gulp.src([
-    config.publicDir + '/_common/css/fontello.css',
-    config.publicDir + '/_common/css/fontello-animation.css',
-    config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-    config.publicDir + '/_common/css/cookielawinfo.css',
-    config.publicDir + '/avnode/css/bootstrap.min.css',
-    config.publicDir + '/_common/css/bootstrapXL.css',
-    config.publicDir + '/_common/css/style.css',
-    config.publicDir + '/avnode/css/style.css'
-  ])
-    .pipe(concat('combo.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/avnode/css/'));
-});
-
-gulp.task('concat_flyer_css', function() {
-  return gulp.src([
-    config.publicDir + '/_common/css/fontello.css',
-    config.publicDir + '/_common/css/fontello-animation.css',
-    config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-    config.publicDir + '/_common/css/cookielawinfo.css',
-    config.publicDir + '/flyer/css/bootstrap.min.css',
-    config.publicDir + '/_common/css/bootstrapXL.css',
-    config.publicDir + '/_common/css/style.css',
-    config.publicDir + '/flyer/css/style.css'
-  ])
-    .pipe(concat('combo.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/flyer/css/'));
-});
-
-gulp.task('concat_linuxclub_css', function() {
-  return gulp.src([
-    config.publicDir + '/_common/css/fontello.css',
-    config.publicDir + '/_common/css/fontello-animation.css',
-    config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-    config.publicDir + '/_common/css/cookielawinfo.css',
-    config.publicDir + '/linuxclub/css/bootstrap.min.css',
-    config.publicDir + '/_common/css/bootstrapXL.css',
-    config.publicDir + '/_common/css/style.css',
-    config.publicDir + '/linuxclub/css/style.css'
-  ])
-    .pipe(concat('combo.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/linuxclub/css/'));
-});
-
-gulp.task('concat_shockart_css', function() {
-  return gulp.src([
-    config.publicDir + '/_common/css/fontello.css',
-    config.publicDir + '/_common/css/fontello-animation.css',
-    config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-    config.publicDir + '/_common/css/cookielawinfo.css',
-    config.publicDir + '/shockart/css/bootstrap.min.css',
-    config.publicDir + '/_common/css/bootstrapXL.css',
-    config.publicDir + '/_common/css/style.css',
-    config.publicDir + '/shockart/css/style.css',
-  ])
-    .pipe(concat('combo.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/shockart/css/'));
-});
-
-gulp.task('concat_vjtelevision_css', function() {
-  return gulp.src([
-    config.publicDir + '/_common/css/fontello.css',
-    config.publicDir + '/_common/css/fontello-animation.css',
-    config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-    config.publicDir + '/_common/css/cookielawinfo.css',
-    config.publicDir + '/vjtelevision/css/bootstrap.min.css',
-    config.publicDir + '/_common/css/bootstrapXL.css',
-    config.publicDir + '/_common/css/style.css',
-    config.publicDir + '/vjtelevision/css/style.css'
-  ])
-    .pipe(concat('combo.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/vjtelevision/css/'));
-});
-
-gulp.task('concat_wam_css', function() {
-  return gulp.src([
-    config.publicDir + '/_common/css/fontello.css',
-    config.publicDir + '/_common/css/fontello-animation.css',
-    config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-    config.publicDir + '/_common/css/cookielawinfo.css',
-    config.publicDir + '/wam/css/bootstrap.min.css',
-    config.publicDir + '/_common/css/bootstrapXL.css',
-    config.publicDir + '/_common/css/style.css',
-    config.publicDir + '/wam/css/style.css'
-  ])
-    .pipe(concat('combo.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/wam/css/'));
-});
-
-gulp.task('concat_lcf_css', function() {
-  for (var item in editions_lcf) {
-    var csslist = [
-      config.publicDir + '/_common/css/fontello.css',
-      config.publicDir + '/_common/css/fontello-animation.css',
-      config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-      config.publicDir + '/_common/css/cookielawinfo.css',
-      config.publicDir + '/lcf/css/bootstrap.min.lcf.' + editions_lcf[item] + '.css',
-      config.publicDir + '/_common/css/style.css',
-      config.publicDir + '/lcf/css/style.lcf.css',
-      config.publicDir + '/lcf/css/style.lcf.' + editions_lcf[item] + '.css',
-    ];
-    csslist.push(config.publicDir + '/_common/css/bootstrapXL.css');
-    bella_lcf(csslist,editions_lcf,item);
-
-  }
-});
-
-gulp.task('concat_chromosphere_css', function() {
-  for (var item in editions_chromosphere) {
-    var csslist = [
-      config.publicDir + '/_common/css/fontello.css',
-      config.publicDir + '/_common/css/fontello-animation.css',
-      config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-      config.publicDir + '/_common/css/cookielawinfo.css',
-      config.publicDir + '/chromosphere/css/bootstrap.min.chromosphere.' + editions_chromosphere[item] + '.css',
-      config.publicDir + '/_common/css/style.css',
-      config.publicDir + '/chromosphere/css/style.chromosphere.css',
-      config.publicDir + '/chromosphere/css/style.chromosphere.' + editions_chromosphere[item] + '.css',
-    ];
-    csslist.push(config.publicDir + '/_common/css/bootstrapXL.css');
-    bella_chromosphere(csslist,editions_chromosphere,item);
-
-  }
-});
-
-gulp.task('concat_fotonica_css', function() {
-  for (var item in editions_fotonica) {
-    var csslist = [
-      config.publicDir + '/_common/css/fontello.css',
-      config.publicDir + '/_common/css/fontello-animation.css',
-      config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-      config.publicDir + '/_common/css/cookielawinfo.css',
-      config.publicDir + '/fotonica/css/bootstrap.min.fotonica.' + editions_fotonica[item] + '.css',
-      config.publicDir + '/_common/css/style.css',
-      config.publicDir + '/fotonica/css/style.fotonica.css',
-      config.publicDir + '/fotonica/css/style.fotonica.' + editions_fotonica[item] + '.css',
-    ];
-    csslist.push(config.publicDir + '/_common/css/bootstrapXL.css');
-    bella_fotonica(csslist,editions_fotonica,item);
-
-  }
-});
-
-gulp.task('concat_lpm_css', function() {
-  for (var item in editions_lpm) {
-    var csslist = [
-      config.publicDir + '/_common/css/fontello.css',
-      config.publicDir + '/_common/css/fontello-animation.css',
-      config.publicDir + '/_common/css/socialGalleryPluginLite.css',
-      config.publicDir + '/_common/css/cookielawinfo.css',
-      config.publicDir + '/lpm/css/bootstrap.min.lpm.' + editions_lpm[item] + '.css',
-      config.publicDir + '/_common/css/style.css',
-      config.publicDir + '/lpm/css/style.lpm.css',
-      config.publicDir + '/lpm/css/style.lpm.' + editions_lpm[item] + '.css',
-      config.modulesDir  + '/swiper/dist/css/swiper.min.css',
-    ];
-    if (excludeXL.indexOf(editions_lpm[item]) == -1) csslist.push(config.publicDir + '/_common/css/bootstrapXL.css');
-    bella_lpm(csslist,editions_lpm,item);
-
-  }
-});
-function bella_lpm (csslist,editions_lpm,item){
-  return gulp.src(csslist)
-    .pipe(concat('combo.lpm.' + editions_lpm[item] + '.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/lpm/css/'));
+const fonts_bs = () => {
+  return gulp.src(config.npmDir + '/bootstrap-sass/assets/fonts/bootstrap/**/*')
+    .pipe(gulp.dest(config.publicDir + '/fonts'));
 }
-function bella_lcf (csslist,editions_lcf,item){
-  return gulp.src(csslist)
-    .pipe(concat('combo.lcf.' + editions_lcf[item] + '.min.css'), {newLine: '\r\n'})
-    .pipe(gulp.dest(config.publicDir + '/lcf/css/'));
+
+const compress_css = () => {
+  return gulp.src(["./gulp/sass/main.scss"])
+  .pipe(sass({outputStyle: 'compressed'}))
+  .pipe(concat('main.min.css'))
+  //.pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/css'));
 }
-function bella_chromosphere (csslist,editions_chromosphere,item){
-  return gulp.src(csslist)
-      .pipe(concat('combo.chromosphere.' + editions_chromosphere[item] + '.min.css'), {newLine: '\r\n'})
-      .pipe(gulp.dest(config.publicDir + '/chromosphere/css/'));
+
+const compress_css_admin = () => {
+  return gulp.src(["./gulp/sass/admin.scss"])
+  .pipe(sass({outputStyle: 'compressed'}))
+  .pipe(concat('admin.min.css'))
+  //.pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/css'));
 }
-function bella_fotonica (csslist,editions_fotonica,item){
-  return gulp.src(csslist)
-      .pipe(concat('combo.fotonica.' + editions_fotonica[item] + '.min.css'), {newLine: '\r\n'})
-      .pipe(gulp.dest(config.publicDir + '/fotonica/css/'));
+
+const compress_js = () => {
+  return gulp.src([
+    config.npmDir + '/jquery/dist/jquery.min.js',
+    config.npmDir + '/popper.js/dist/umd/popper.min.js',
+    //config.npmDir + '/@popperjs/core/dist/umd/popper.min.js',
+    config.npmDir + '/bootstrap/dist/js/bootstrap.min.js',
+    './gulp/js/includes_main/owl.carousel.min.js',
+    './gulp/js/main.js',
+    './gulp/js/includes_main/ajax.js',
+    './gulp/js/includes_main/cookielawinfo.min.js'
+    
+  ])
+  .pipe(concat('combo.min.js'))
+  .pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/js/'));
 }
-*/
+
+const compress_js_video = () => {
+  return gulp.src([
+    './gulp/js/videojs.js',
+    './gulp/js/includes_video/videojs-logo.min.js',
+    './gulp/js/includes_video/embed.js'
+  ])
+  .pipe(concat('combo_video.min.js'))
+  .pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/js/'));
+}
+
+const compress_js_admin = () => {
+  return gulp.src([
+    './gulp/js/admin.js',
+    './gulp/js/includes_admin/jquery-ui.js',
+    './gulp/js/includes_admin/moment-with-locales.min.js',
+    './gulp/js/includes_admin/jquery.serializejson.min.js',
+    './gulp/js/includes_admin/bootstrap-table.min.js',
+    './gulp/js/includes_admin/cookielawinfo.min.js',
+    './gulp/js/includes_admin/jquery.geocomplete.js',
+    './gulp/js/includes_admin/dropzone.min.js'
+  ])
+  .pipe(concat('combo_admin.min.js'))
+  .pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/js/'));
+}
+
+const compress_js_maps = () => {
+  return gulp.src([
+    './gulp/js/mymaps.js'/* ,
+    './gulp/js/includes_video/embed.js',
+    './gulp/js/includes_video/videojs-logo.min.js' */
+  ])
+  .pipe(concat('combo_mymaps.min.js'))
+  .pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/js/'));
+}
+
+const compress_js_vjtv = () => {
+  return gulp.src([
+    './gulp/js/vjtv.js' ,
+    './gulp/js/includes_vjtv/videojs-playlist.min.js'/*,
+    './gulp/js/includes_video/videojs-logo.min.js' */
+  ])
+  .pipe(concat('vjtv.min.js'))
+  .pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/js/'));
+}
+
+
+gulp.task('default', gulp.series(compress_css, compress_css_admin, compress_js, compress_js_video, compress_js_maps, compress_js_vjtv, compress_js_admin));
+//gulp.task('default', gulp.series(compress_js, compress_js_fotonica,css_fotonica_bs));
+//gulp.task('default', gulp.series(compress_js, compress_js_pac,css_pac_bs));
+//gulp.task('default', gulp.series(compress_js, compress_js_lcf,css_lcf_bs));

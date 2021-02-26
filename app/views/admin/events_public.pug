@@ -1,0 +1,128 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.title
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+    include partials/menuobj
+    h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+    form(method="post")
+      .row
+        .col-md-7
+          .form-group
+            label.labelField(for='title')=__("Title")
+            input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
+            - console.log(err)
+            if err && Object.keys(err.errors).indexOf('title')!==-1
+              .error-message=err.errors.title.message
+          - var slugtitle = __("Event Url")
+          - var slugplaceholder = __("Event Url")
+          - var slughelptext = __("To have your profile at https://avnode.net/events/mybeautyfulevent, please insert mybeautyfulevent (lower case, no spaces, no special characters)")
+          include partials/slug
+          .form-inline
+            .mr-5
+              include partials/is_public
+            
+            label.labelField.mb-3.mr-3(for='type')=__("Type")
+            select.form-control.mb-3(name="type" id="type")
+              for eventtype in config["event-type"]
+                option(value=eventtype._id selected=eventtype._id==data.type._id ? "selected" : undefined)=eventtype.name
+
+
+        .col-md-5
+          include partials/image
+      #schedules.mb-3
+        .card-header.mb-3
+          h4.labelField=__("Schedule")
+        #scheduleslist
+          for schedule, i in data.schedule
+            .alert-secondary.mb-3
+              .d-flex.justify-content-between.bg-secondary.pt-1.pr-1.pb-1
+                b.pt-1.pl-2.text-white
+                  !=__("Schedule")
+                  !=": "
+                  span.number=i+1
+                button.btn.btn-danger.remove(role="button")
+                  i.fa.fa-trash
+
+              .p-2 
+                .row 
+                  .col-md-4
+                    .form-group
+                      label.labelField(for="schedule"+i+"starttime_preview")=__("Start date and time")
+                      !="  "
+                      small=__("DD/MM/YYYY HH:MM")
+                      .d-flex
+                        - var starttime_preview = schedule.starttime  ? schedule.starttime : new Date()
+                        input.form-control.mr-3.datetime-format(type='text' id='schedule['+i+']starttime_preview' onchange='$("#schedule['+i+']starttime").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0]+" "+$(this).val().split(" ")[0].split(":")[0]+":"+$(this).val().split(" ")[0].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
+                        input(type='hidden' id="schedule"+i+"starttime" name="schedule["+i+"][starttime]" value=starttime_preview ? starttime_preview.getFullYear()+"/"+(starttime_preview.getMonth()+1)+"/"+starttime_preview.getDate()+" "+starttime_preview.getHours()+":"+starttime_preview.getMinutes() : "")
+                        //
+                  .col-md-4
+                    .form-group
+                      label.labelField(for="schedule"+i+"starttime_preview")=__("End date and time")
+                      !="  "
+                      small=__("DD/MM/YYYY HH:MM")
+                      .d-flex
+                        - var starttime_preview = schedule.endtime  ? schedule.endtime : new Date()
+                        input.form-control.mr-3.datetime-format(type='text' id='schedule['+i+']starttime_preview' onchange='$("#schedule['+i+']endtime").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0]+" "+$(this).val().split(" ")[0].split(":")[0]+":"+$(this).val().split(" ")[0].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
+                        input(type='hidden' id="schedule"+i+"endtime" name="schedule["+i+"][endtime]" value=starttime_preview ? starttime_preview.getFullYear()+"/"+(starttime_preview.getMonth()+1)+"/"+starttime_preview.getDate()+" "+starttime_preview.getHours()+":"+starttime_preview.getMinutes() : "")
+                        //
+                  .col-md-4
+                    .form-group
+                      label.labelField=__("Venue")
+                      input.form-control(type='text' autocomplete='off' name='schedule['+i+'][venue][name]' placeholder=__('Venue') value=schedule.venue.name)
+                .row
+                  .col-md-3
+                    .form-group
+                      label.labelField(for="schedule"+i+"starttime_preview")=__("End date and time")
+                      .d-flex
+                        .form-check.mr-4
+                          input.form-check-input(type='radio' id='location['+i+']virtual' name="schedule["+i+"][location]" value='false' autocomplete="off" onclick="$('#location_"+i+"_physicalform').collapse('hide');$('#location_"+i+"_virtualform').collapse('show')" checked=schedule.physical ? "checked" : undefined)
+                          label.form-check-label(for='location['+i+']virtual')
+                            b=__("Virtual")
+                        .form-check
+                          input.form-check-input(type='radio' id='location['+i+']physical' name="schedule["+i+"][location]" value='true' autocomplete="off" onclick="$('#location_"+i+"_physicalform').collapse('show');$('#location_"+i+"_virtualform').collapse('hide');" checked=schedule.physical ? undefined : "checked")
+                          label.form-check-label(for='location['+i+']physical')
+                            b=__("Physical")
+                  .col-md-9
+                    .row.collapse(id="location_"+i+"_virtualform" class=schedule.physical ? "show" : undefined)
+                      .col-md-12
+                        .form-group
+                          label.labelField=__("URL")
+                          input.form-control(type='text' name='schedule['+i+'][venue][url]' placeholder=__('Venue') value=schedule.venue.url)
+                    .row.collapse(id="location_"+i+"_physicalform" class=schedule.physical ? undefined : "show")
+                      .col-md-8
+                        .form-group
+                          label.labelField=__("Street, City, country")
+                          input.form-control.address-search-input(type='text' autocomplete='off' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder=__('Street, City, country') value=schedule.venue.location.formatted_address)
+                          input.lat(type='hidden' name='schedule['+i+'][venue][location][geometry][lat]' value=schedule.venue.location.geometry.lat)
+                          input.lng(type='hidden' name='schedule['+i+'][venue][location][geometry][lng]' value=schedule.venue.location.geometry.lng)
+                          input.locality(type='hidden' name='schedule['+i+'][venue][location][locality]' value=schedule.venue.location.locality)
+                          input.country(type='hidden' name='schedule['+i+'][venue][location][country]' value=schedule.venue.location.country)
+                          input.formatted_address(type='hidden' name='schedule['+i+'][venue][location][formatted_address]' value=schedule.venue.location.formatted_address)
+                          input.postal_code(type='hidden' name='schedule['+i+'][venue][location][postal_code]' value=schedule.venue.location.postal_code)
+                          input.route(type='hidden' name='schedule['+i+'][venue][location][route]' value=schedule.venue.location.route)
+                          input.street_number(type='hidden' name='schedule['+i+'][venue][location][street_number]' value=schedule.venue.location.street_number)
+                          input.street_number(type='hidden' name='schedule['+i+'][venue][name]' value=schedule.venue.name)
+                      .col-md-4
+                        .form-group
+                          label.labelField=__("Room")
+                          !="  "
+                          small=__("(Optional)")
+                          input.form-control(type='text' autocomplete='off' name='schedule['+i+'][venue][room]' placeholder=__('Room') value=schedule.venue.room)
+        button.mb-2.btn.btn-success.btn-sm.duplicator2(type='button' data-duplicate="scheduleslist")
+          i.fa.fa-plus
+          !=" "
+          b=__("ADD CITY")
+      include partials/abouts
+      //include partials/performance_categories
+      include partials/social
+      include partials/web
+      include partials/phones
+      include partials/emails
+      include partials/users
+      hr
+
+      hr
+      button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")

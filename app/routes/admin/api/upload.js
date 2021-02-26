@@ -38,8 +38,10 @@ upload.getServerpath = storage => {
 };
 
 upload.uploader = (req, res, done) => {
+  logger.debug("upload.uploader");
   logger.debug(req.params.sez);
   logger.debug(req.params.form);
+  logger.debug(req.files);
   const options = config.cpanel[req.params.sez].forms[req.params.form].components[req.params.comp].config;
   logger.debug(options.maxsize);
   const storage = multer.diskStorage({
@@ -88,7 +90,6 @@ upload.uploader = (req, res, done) => {
   const up = multerupload.fields([options.fields]);
 
   up(p, res, (err, r) => {
-    error = false;
     logger.debug(err);
     logger.debug("p.files");
     logger.debug(p.files);
@@ -98,17 +99,14 @@ upload.uploader = (req, res, done) => {
     if (err) {
       logger.debug("upload err");
       logger.debug(err);
-      done({ errors: { form_error: [err] } }, null);
+      done({ errors: { image: [err] } }, null);
     } else if (!options) {
-      done({ errors: { form_error: [{
+      done({ errors: { image: [{
         "fieldname":"image",
         "err": "UPLOAD_CONFIG_ERROR"
       }] } }, null);
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
-      let conta = 0;
-      /* 
-      { errors: {form_error: } }
-       */
+
       if (options.filetypes.indexOf("image/jpeg") !== -1) {
         for (let a = 0; a < p.files[options.fields.name].length; a++) {
           const dimensions = sizeOf(p.files[options.fields.name][a].path);
@@ -126,161 +124,131 @@ upload.uploader = (req, res, done) => {
             if (dimensions.width >= options.minheight && dimensions.height >= options.minwidth) dimensionError = false;
           if (dimensionError) {
             p.files[options.fields.name][a].err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
-            if (req.params.sez == "galleries") p.files[options.fields.name][a].err+= " " + __("or") + " " + options.minheight + " x " + options.minwidth;
             logger.debug( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
           } else {
             logger.debug("Image minimum size is ok");
           }
         }
-        error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(false)===-1;
-        logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
-        logger.debug(error);
-      }
-      if (error) {
-        logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
-        done({ errors: p.files }, null);
-        /* done({
-          "message": {
-            "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-            "name": "UploadError",
-            "stringValue": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-            "kind":"Date",
-            "value":null,
-            "path":"image",
-            "reason":{
-              "message": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-              "name":"UploadError",
-              "stringValue": __('Images minimum size is') + ': ' + options.minwidth + ' x ' + options.minheight,
-              "kind":"string",
-              "value":null,
-              "path":"image"
-            }
-          }
-        }, null); */
-      } else {
-        if (options.filetypes.indexOf("image/jpeg") !== -1) {
+        if (p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
+          logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
+          logger.debug(p.files);
+          done(p.files, null);
+        } else {
           imageUtil.resizer(
             p.files[options.fields.name],
             options,
-            (resizeerr, info) => {
-              conta++;
-              if (resizeerr || !info) {
-                if (resizeerr) {
-                  error = true;
-                  logger.debug(`Image resize ERROR: ${resizeerr}`);
-                  p.files[options.fields.name][a].err = `Image resize ERROR: ${resizeerr}`;
-                }
-                if (!info) {
-                  error = true;
-                  logger.debug("Image resize ERROR: info undefined");
-                  p.files[options.fields.name][a].err = "Image resize ERROR: info undefined";
-                }
-              }
-              if (conta === conta) {
-                //error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(false)===-1;
-                if (error) {
-                  done({ errors: p.files }, null);
+            (err, files) => {
+              logger.debug(`imageUtil.resizer`);
+              logger.debug(err);
+              logger.debug(files);
+              logger.debug(`imageUtil.resizer end`);
+              logger.debug(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
+
+              if (err) {
+                done(null, err);
+              } else if (files.map(item => {return item.err ? true : false}).indexOf(true)!==-1) {
+                done(files, null);
+              } else {
+                let put = {};
+                if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
+                  logger.debug("galleries/medias");
+                  put.medias = [];
+                  for (let a = 0; a < files.length; a++) {
+                    const ins = {
+                      file: files[a].path.replace(global.appRoot, ""),
+                      title: files[a].originalname.substring(0, files[a].originalname.lastIndexOf(".")),
+                      slug: files[a].filename.replace(".jpeg", ""),
+                      originalname: files[a].originalname,
+                      encoding: files[a].encoding,
+                      mimetype: files[a].mimetype,
+                      folder: files[a].destination,
+                      filename: files[a].filename,
+                      size: files[a].size,
+                      width: files[a].width,
+                      height: files[a].height
+                    };
+                    put.medias.push(ins);
+                  }
                 } else {
-                  let put = {};
-                  if (['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
-                    put.medias = [];
-                    for (let a = 0; a < p.files[options.fields.name].length; a++) {
-                      if (!p.files[options.fields.name][a].err) {
-                        const ins = {
-                          file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                          title: p.files[options.fields.name][a].originalname.substring(0, p.files[options.fields.name][a].originalname.lastIndexOf(".")),
-                          slug: p.files[options.fields.name][a].filename.replace(".jpeg", ""),
-                          originalname: p.files[options.fields.name][a].originalname,
-                          encoding: p.files[options.fields.name][a].encoding,
-                          mimetype: p.files[options.fields.name][a].mimetype,
-                          folder: p.files[options.fields.name][a].destination,
-                          filename: p.files[options.fields.name][a].filename,
-                          size: p.files[options.fields.name][a].size,
-                          width: p.files[options.fields.name][a].width,
-                          height: p.files[options.fields.name][a].height
-                        };
-                        put.medias.push(ins);
-                      }
-                    }
+                  console.log("wwwwwwwwwwwwwwwwwwwwwww")
+                  console.log(files)
+                  if (files.length == 1) {
+                    put[options.fields.name] = {
+                      file: files[0].path.replace(global.appRoot,""),
+                      originalname: files[0].originalname,
+                      encoding: files[0].encoding,
+                      mimetype: files[0].mimetype,
+                      folder: files[0].destination,
+                      filename: files[0].filename,
+                      size: files[0].size,
+                      width: files[0].width,
+                      height: files[0].height
+                    };
                   } else {
-                    if (p.files[options.fields.name].length == 1) {
-                      put[options.fields.name] = {
-                        file: p.files[options.fields.name][0].path.replace(global.appRoot,""),
-                        originalname: p.files[options.fields.name][0].originalname,
-                        encoding: p.files[options.fields.name][0].encoding,
-                        mimetype: p.files[options.fields.name][0].mimetype,
-                        folder: p.files[options.fields.name][0].destination,
-                        filename: p.files[options.fields.name][0].filename,
-                        size: p.files[options.fields.name][0].size,
-                        width: p.files[options.fields.name][0].width,
-                        height: p.files[options.fields.name][0].height
-                      };
-                    } else {
-                      put[options.fields.name] = [];
-                      for (let a = 0; a < p.files[options.fields.name].length; a++) {
-                        if (!p.files[options.fields.name][a].err) {
-                          const ins = {
-                            file: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                            originalname: p.files[options.fields.name][a].originalname,
-                            encoding: p.files[options.fields.name][a].encoding,
-                            mimetype: p.files[options.fields.name][a].mimetype,
-                            folder: p.files[options.fields.name][a].destination,
-                            filename: p.files[options.fields.name][a].filename,
-                            size: p.files[options.fields.name][a].size,
-                            width: p.files[options.fields.name][a].width,
-                            height: p.files[options.fields.name][a].height
-                          };
-                          put[options.fields.name].push(ins);
-                        }
+                    put[options.fields.name] = [];
+                    for (let a = 0; a < files.length; a++) {
+                      if (!files[a].err) {
+                        const ins = {
+                          file: files[a].path.replace(global.appRoot, ""),
+                          originalname: files[a].originalname,
+                          encoding: files[a].encoding,
+                          mimetype: files[a].mimetype,
+                          folder: files[a].destination,
+                          filename: files[a].filename,
+                          size: files[a].size,
+                          width: files[a].width,
+                          height: files[a].height
+                        };
+                        put[options.fields.name].push(ins);
                       }
                     }
                   }
-                  logger.debug("SALVAAAAAAAAA");
-                  var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
-                  logger.debug(error);
-                  done(error ? p.files : null , put);
                 }
+                logger.debug("SALVAAAAAAAAA");
+                //var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
+                logger.debug(put);
+                done(null , put);
               }
             }
           );
+        }
+      } else {
+        let put = {};
+        if (p.files[options.fields.name].length == 1) {
+          put[options.fields.name] = {
+            original: p.files[options.fields.name][0].path.replace(global.appRoot,""),
+            originalname: p.files[options.fields.name][0].originalname,
+            encoding: 0,
+            mimetype: p.files[options.fields.name][0].mimetype,
+            //folder: p.files[options.fields.name][0].destination,
+            filename: p.files[options.fields.name][0].filename,
+            //size: p.files[options.fields.name][0].size,
+            //width: p.files[options.fields.name][0].width,
+            //height: p.files[options.fields.name][0].height
+          };
         } else {
-          let put = {};
-          if (p.files[options.fields.name].length == 1) {
-            put[options.fields.name] = {
-              original: p.files[options.fields.name][0].path.replace(global.appRoot,""),
-              originalname: p.files[options.fields.name][0].originalname,
-              encoding: 0,
-              mimetype: p.files[options.fields.name][0].mimetype,
-              //folder: p.files[options.fields.name][0].destination,
-              filename: p.files[options.fields.name][0].filename,
-              //size: p.files[options.fields.name][0].size,
-              //width: p.files[options.fields.name][0].width,
-              //height: p.files[options.fields.name][0].height
-            };
-          } else {
-            put[options.fields.name] = [];
-            for (let a = 0; a < p.files[options.fields.name].length; a++) {
-              if (!p.files[options.fields.name][a].err) {
-                const ins = {
-                  original: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
-                  originalname: p.files[options.fields.name][a].originalname,
-                  encoding: 0,
-                  mimetype: p.files[options.fields.name][a].mimetype,
-                  //folder: p.files[options.fields.name][a].destination,
-                  filename: p.files[options.fields.name][a].filename,
-                  //size: p.files[options.fields.name][a].size,
-                  //width: p.files[options.fields.name][a].width,
-                  //height: p.files[options.fields.name][a].height
-                };
-                put[options.fields.name].push(ins);
-              }
+          put[options.fields.name] = [];
+          for (let a = 0; a < p.files[options.fields.name].length; a++) {
+            if (!p.files[options.fields.name][a].err) {
+              const ins = {
+                original: p.files[options.fields.name][a].path.replace(global.appRoot, ""),
+                originalname: p.files[options.fields.name][a].originalname,
+                encoding: 0,
+                mimetype: p.files[options.fields.name][a].mimetype,
+                //folder: p.files[options.fields.name][a].destination,
+                filename: p.files[options.fields.name][a].filename,
+                //size: p.files[options.fields.name][a].size,
+                //width: p.files[options.fields.name][a].width,
+                //height: p.files[options.fields.name][a].height
+              };
+              put[options.fields.name].push(ins);
             }
           }
-          logger.debug("SALVAAAAAAAAA");
-          var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
-          logger.debug(error);
-          done(error ? p.files : null , put);
         }
+        logger.debug("SALVAAAAAAAAA");
+        var error = p.files[options.fields.name].map(item => {return item.err ? true : false}).indexOf(true)!==-1;
+        logger.debug(error);
+        done(error ? p.files : null , put);
       }
     } else {
       done({ errors: { form_error: [{err: "Missing p.files." + options.fields.name}] } }, null);

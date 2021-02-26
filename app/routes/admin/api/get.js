@@ -314,13 +314,13 @@ router.removeImage = (req, res) => {
     gallery.stats.img = gallery.medias.length;
     gallery.save(function(err){
       req.params.form = 'public';
-      router.getData(req, res);
+      router.getData(req, res, "json");
     });
   });
 
 /*   Models[config.cpanel[req.params.sez].model].update( query , { $pull: {"medias": {"slug": req.params.image } } }, function(err){
     req.params.form = 'public';
-    router.getData(req, res);
+    router.getData(req, res, "json");
   }); */
 
 }
@@ -418,7 +418,7 @@ router.removeFootage = (req, res) => {
               } else {
                 req.params.sez = 'playlists';
                 req.params.form = 'public';
-                router.getData(req, res);
+                router.getData(req, res, "json");
               }
             });
           });
@@ -456,7 +456,7 @@ router.getSubscriptions = (req, res) => {
         } else {
           res.render('admin/subscriptions', {
             title: 'Subscriptions',
-            paypal: true,
+            scripts: ["paypal"],
             currentUrl: req.originalUrl,
             
             data: data,
@@ -470,7 +470,7 @@ router.getSubscriptions = (req, res) => {
   }
 }
 
-router.getList = (req, res) => {
+router.getList = (req, res, view) => {
   if (config.cpanel[req.params.sez] && req.params.id) {
     const select = req.query.pure ? config.cpanel[req.params.sez].list.select : Object.assign(config.cpanel[req.params.sez].list.select, config.cpanel[req.params.sez].list.selectaddon);
     const populate = req.query.pure ? [] : config.cpanel[req.params.sez].list.populate;
@@ -484,20 +484,41 @@ router.getList = (req, res) => {
     .sort({createdAt:-1})
     .exec((err, data) => {
       if (err) {
-        res.status(500).send({ message: `${JSON.stringify(err)}` });
+        if (view == "json") {
+          res.status(500).send({ message: `${JSON.stringify(err)}` });
+        } else {
+          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+        }
       } else {
         let send = JSON.parse(JSON.stringify(req.user));
         send[req.params.sez] = data;
         //for (const item in config.cpanel[req.params.sez].list.select) send[item] = data[item];
-        res.json(send);
+        if (view == "json") {
+          res.json(send);
+        } else {
+          res.render(view, {
+            title: view,
+            scripts: [],
+            currentUrl: req.originalUrl,
+            get: req.params,
+            msg_tmp: { }, 
+            data: send
+          });
+        }  
       }
     });
   } else {
-    res.status(404).send({ message: `API_NOT_FOUND` });
+    if (view == "json") {
+      res.status(404).send({ message: `API_NOT_FOUND` });
+    } else {
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+    }  
   }
 }
 
-router.getData = (req, res) => {
+router.getData = (req, res, view) => {
+  console.log("getDatagetDatagetDatagetDatagetData");
+  console.log(config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     const id = req.params.id;
     const select = req.query.pure ? config.cpanel[req.params.sez].forms[req.params.form].select : Object.assign(config.cpanel[req.params.sez].forms[req.params.form].select, config.cpanel[req.params.sez].forms[req.params.form].selectaddon);
@@ -511,24 +532,52 @@ router.getData = (req, res) => {
     .exec((err, data) => {
       console.log(err || data)
       if (err) {
-        res.status(404).send({ message: `${JSON.stringify(err)}` });
+        if (view == "json") {
+          res.status(500).send({ message: `${JSON.stringify(err)}` });
+        } else {
+          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+        }
       } else {
         if (!data) {
-          res.status(404).send({ message: `DOC_NOT_FOUND` });
+          if (view == "json") {
+            res.status(404).send({ message: `DOC_NOT_FOUND` });
+          } else {
+            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+          }  
         } else {
-          console.log(data);
           if (helpers.editable(req, data, id)) {
             let send = {_id: data._id};
             for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
-            res.json(send);
+            if (view == "json") {
+              res.json(send);
+            } else {
+              res.render(view, {
+                title: view,
+                scripts: [],
+                currentUrl: req.originalUrl,
+                get: req.params,
+                countries: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getCountries() : undefined,
+                languages: (['profile/private'].indexOf(req.params.sez+'/'+req.params.form)!== -1) ? helpers.getLanguages() : undefined,
+                msg_tmp: { }, 
+                data: send
+              });
+            }  
           } else {
-            res.status(404).send({ message: `DOC_NOT_OWNED` });
+            if (view == "json") {
+              res.status(404).send({ message: `DOC_NOT_OWNED` });
+            } else {
+              res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+            }  
           }
         }
       }
     });
   } else {
-    res.status(404).send({ message: `API_NOT_FOUND` });
+    if (view == "json") {
+      res.status(404).send({ message: `API_NOT_FOUND` });
+    } else {
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+    }  
   }
 }
 
@@ -569,7 +618,9 @@ router.getCategoryByAncestor = (cat, cb) => {
 
 router.getCategories = (req, res) => {
   if (req.params.rel == "performances" && req.params.q == "type") {
-    router.getPerfCategories(req, res);
+    router.getPerfCategories(req, res, (result) => {
+      res.json(result);
+    });
   } else {
     let conta = 0;
     Models.Category.findOne({slug: req.params.q, rel: req.params.rel })
@@ -604,7 +655,7 @@ router.getCategories = (req, res) => {
   }
 }
 
-router.getPerfCategories = (req, res) => {
+router.getPerfCategories = (req, res, cb) => {
   Models.Category.find({ancestor: "5be8708afc3961000000021c", rel: req.params.rel })
   .select({name:1 , slug:1})
   .exec( (err, genre) => {
@@ -625,30 +676,30 @@ router.getPerfCategories = (req, res) => {
               if (childrens.length == conta) {
                 category.childrens = childrens;
                 let send = {
-                  title: category.name,
-                  value: category.slug,
-                  key: category._id,
+                  name: category.name,
+                  slug: category.slug,
+                  _id: category._id,
                   children:[]
                 };
                 for(let a=0; a<category.childrens.length;a++){
                   let child = {
-                    title: category.childrens[a].name,
-                    value: category.childrens[a].slug,
-                    key: category.childrens[a]._id,
+                    name: category.childrens[a].name,
+                    slug: category.childrens[a].slug,
+                    _id: category.childrens[a]._id,
                     children:[]
                   };
                   for(let b=0; b<category.childrens[a].childrens.length;b++){
                     let childchild = {
-                      title: category.childrens[a].childrens[b].name,
-                      value: category.childrens[a].childrens[b].slug,
-                      key: category.childrens[a].childrens[b]._id,
+                      name: category.childrens[a].childrens[b].name,
+                      slug: category.childrens[a].childrens[b].slug,
+                      _id: category.childrens[a].childrens[b]._id,
                       children:[]
                     };
                     for(let c=0; c<category.childrens[a].childrens[b].childrens.length;c++){
                       let childchildchild = {
-                        title: category.childrens[a].childrens[b].childrens[c].name,
-                        value: category.childrens[a].childrens[b].childrens[c].slug,
-                        key: category.childrens[a].childrens[b].childrens[c]._id,
+                        name: category.childrens[a].childrens[b].childrens[c].name,
+                        slug: category.childrens[a].childrens[b].childrens[c].slug,
+                        _id: category.childrens[a].childrens[b].childrens[c]._id,
                         children:[]
                       };
                       childchild.children.push(childchildchild);
@@ -657,14 +708,14 @@ router.getPerfCategories = (req, res) => {
                   }
                   send.children.push(child);
                 }
-                res.json(send);
+                cb(send);
               }
             });
           }
       
         });  
       } else {
-        res.json(category);
+        cb(category);
       }    
     });
   });
@@ -717,10 +768,8 @@ router.removeAddress = (req, res) => {
   if (req.query.db === "venues") {
     logger.debug(req.query);
     router.removeVenueDB(req, res, (newaddr) => {
-      logger.debug("newaddr");
       //logger.debug(newaddr);
       router.removeAddressEvents(req, res, newaddr, () => {
-        logger.debug("stocazzo END");
         res.json(req.query);
       });
     });
@@ -735,7 +784,6 @@ router.removeAddressUsers = (req, res, cb) => {
   .find({"addresses.country": req.query.country, "addresses.locality": req.query.locality},'_id, addresses', (err, users) => {
     if (err) logger.debug(`${JSON.stringify(err)}`);
     if (users.length) {
-      logger.debug("stocazzo");
       for(var a=0;a<users.length;a++){
         for(var b=0;b<users[a].addresses.length;b++){
           if (users[a].addresses[b].country === req.query.country && users[a].addresses[b].locality === req.query.locality) {
@@ -1047,7 +1095,7 @@ router.addMember = (req, res) => {
               } else {
                 req.params.sez = 'crews';
                 req.params.form = 'members';
-                router.getData(req, res);
+                router.getData(req, res, "json");
               }
             });              
           }
@@ -1150,7 +1198,7 @@ router.removeMember = (req, res) => {
               } else {
                 req.params.sez = 'crews';
                 req.params.form = 'members';
-                router.getData(req, res);
+                router.getData(req, res, "json");
               }
             });
           });
@@ -1232,7 +1280,7 @@ router.addUser = (req, res) => {
                 ).then( (results) => {
                   //res.json(item);
                   req.params.form = 'public';
-                  router.getData(req, res);
+                  router.getData(req, res, "json");
                 });
               
               }
@@ -1333,7 +1381,7 @@ router.removeUser = (req, res) => {
                   [helpers.setStatsAndActivity(query)]
                 ).then( (results) => {
                   req.params.form = 'public';
-                  router.getData(req, res);
+                  router.getData(req, res, "json");
                 });
               }
             });
@@ -1428,13 +1476,13 @@ router.eventAddPerformance = (req, res) => {
                       } else {
                         req.params.sez = 'events';
                         req.params.form = 'program';
-                        router.getData(req, res);            
+                        router.getData(req, res, "json");            
                       }
                     });
                   } else {
                     req.params.sez = 'events';
                     req.params.form = 'program';
-                    router.getData(req, res);            
+                    router.getData(req, res, "json");            
                   }
                 });
               }
@@ -1523,7 +1571,7 @@ router.eventRemovePerformance = (req, res) => {
                   } else {
                     req.params.sez = 'events';
                     req.params.form = 'program';
-                    router.getData(req, res);            
+                    router.getData(req, res, "json");            
                   }
                 });
               }
@@ -1619,13 +1667,13 @@ router.performanceAddEvent = (req, res) => {
                       } else {
                         req.params.sez = 'events';
                         req.params.form = 'program';
-                        router.getData(req, res);            
+                        router.getData(req, res, "json");            
                       }
                     });
                   } else {
                     req.params.sez = 'events';
                     req.params.form = 'program';
-                    router.getData(req, res);            
+                    router.getData(req, res, "json");            
                   }
                 });
               }
@@ -1714,7 +1762,7 @@ router.performanceRemoveEvent = (req, res) => {
                   } else {
                     req.params.sez = 'events';
                     req.params.form = 'program';
-                    router.getData(req, res);            
+                    router.getData(req, res, "json");            
                   }
                 });
               }
@@ -1727,23 +1775,7 @@ router.performanceRemoveEvent = (req, res) => {
 }
 
 router.getCountries = (req, res) => {
-  const allCountries = require('node-countries-list');
-  const R = require('ramda');
-  // FIXME: Later evaluate language param to return
-  // localized list depending on the user settings.
-  const convert = R.compose(
-    R.map(
-      R.zipObj(['key', 'name'])
-    ),
-    R.toPairs
-  );
-
-  allCountries('en', (err, countries) => {
-    if (err) {
-      throw err;
-    }
-    res.json(convert(countries));
-  });
+  res.json(helpers.getCountries());
 }
 
 router.setStatsAndActivity = (req, res) => {
@@ -1765,24 +1797,31 @@ router.sendEmailVericaition = (req, res) => {
   logger.debug("sendEmailVericaition");
   logger.debug(req.headers.host);
   const uid = require('uuid');
-  //const request = require('request');
+  //const request = require('axios');
   const mongoose = require('mongoose');
   const User = mongoose.model('User');
-  User.findOne({"emails.email": req.params.email}, "emails", (err, user) => {
-    logger.debug(user._id.toString());
-    logger.debug(req.params.id);
+  //User.findOne({"emails.email": req.params.email}, "emails", (err, user) => {
+  User.findOne({"_id": req.user._id}, "emails", (err, user) => {
     if (err) { 
       logger.debug("MAIL SEARCH ERROR");
-      res.json({error: true, msg: "MAIL SEARCH ERROR"});
+      res.json({error: true, msg: __("MAIL SEARCH ERROR")});
     } else if (!user) {
       logger.debug("USER NOT FOUND");     
-      res.json({error: true, msg: "USER NOT FOUND"});
-    } else if (req.params.id !== user._id.toString() && !req.user.is_admin) {
+      res.json({error: true, msg: __("USER NOT FOUND")});
+    } else if (req.user._id.toString() !== user._id.toString() /*&& !req.user.is_admin*/) {
       logger.debug("EMAIL IS NOT YOUR");     
-      res.json({error: true, msg: "EMAIL IS NOT YOUR"});
+      res.json({error: true, msg: __("EMAIL IS NOT YOUR")});
     } else {
       logger.debug("Email OK");
       let nothingToDo = true;
+      if (user.emails.map(item => {return item.email}).indexOf(req.params.email)===-1) {
+        user.emails.push({
+          "is_public": false,
+          "is_primary": false,
+          "is_confirmed": false,
+          "email": req.params.email,
+        });
+      }
       for(let item=0;item<user.emails.length;item++) {
         if (user.emails[item].email === req.params.email && !user.emails[item].is_confirmed) {
           nothingToDo = false;
@@ -1792,9 +1831,9 @@ router.sendEmailVericaition = (req, res) => {
           logger.debug(user);
           user.save((err) => {
             if (err) {
-              logger.debug("Save failure");
+              logger.debug("Save failuresssss");
               logger.debug(err);
-              res.json({error: true, msg: "Save failure"});
+              res.json({error: true, msg: __(err.message)});
             } else {
               logger.debug("Save success");
               logger.debug("mySendMailer");
@@ -1819,10 +1858,10 @@ router.sendEmailVericaition = (req, res) => {
                 if (err) {
                   logger.debug("Email sending failure");
                   logger.debug(err);
-                  res.json({error: true, msg: "Email sending failure", err: err});
+                  res.json({error: true, msg: __("Confirmation email sending failure, please try later"), err: err});
                 } else {
                   logger.debug("Email sending OK");
-                  res.json({error: false, msg: "Email sending success"});
+                  res.json({error: false, msg: __("Confirmation Email sending success, please check your inbox and confirm")});
                 }
               });
             }
@@ -1907,7 +1946,7 @@ router.addGallery = (req, res) => {
                 } else {
                   req.params.sez = 'events';
                   req.params.form = 'galleries';
-                  router.getData(req, res);            
+                  router.getData(req, res, "json");            
                 }
               });
             });
@@ -1991,7 +2030,7 @@ router.removeGallery = (req, res) => {
                 } else {
                   req.params.sez = 'events';
                   req.params.form = 'galleries';
-                  router.getData(req, res);            
+                  router.getData(req, res, "json");            
                 }
               });
             });
@@ -2076,7 +2115,7 @@ router.addVideo = (req, res) => {
                   res.status(404).send({ message: err });
                 } else {
                   req.params.form = 'videos';
-                  router.getData(req, res);            
+                  router.getData(req, res, "json");            
                 }
               });
             });
@@ -2167,7 +2206,7 @@ router.removeVideo = (req, res) => {
               } else {
                 req.params.sez = 'events';
                 req.params.form = 'videos';
-                router.getData(req, res);            
+                router.getData(req, res, "json");            
               }
             });
           });
