@@ -1,5 +1,5 @@
 .form-group
-	label.h4.labelField=__("Authors")
+	label.h4.labelField=get.sez=="events" ? __("Production") : __("Authors")
 	#users
 		.alert.d-none
 		each user, i in data.users

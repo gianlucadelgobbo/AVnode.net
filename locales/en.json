@@ -226,5 +226,15 @@
 	"Venue": "Venue",
 	"Virtual": "Virtual",
 	"Physical": "Physical",
-	"URL": "URL"
+	"URL": "URL",
+	"CALL/EVENT": "CALL/EVENT",
+	"PERFORMANCE": "PERFORMANCE",
+	"STATUS": "STATUS",
+	"ACTIONS": "ACTIONS",
+	"Control panel": "Control panel",
+	"Collapse": "Collapse",
+	"News Url": "News Url",
+	"To have your news at https://avnode.net/news/mybeautyfulnews, please insert mybeautyfulnews (lower case, no spaces, no special characters)": "To have your news at https://avnode.net/news/mybeautyfulnews, please insert mybeautyfulnews (lower case, no spaces, no special characters)",
+	"Production": "Production",
+	"Connections": "Connections"
 }

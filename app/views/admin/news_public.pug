@@ -1,0 +1,35 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.title
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+    form(method="post")
+      .row
+        .col-md-7
+          .form-group
+            label.labelField(for='title')=__("Title")
+            input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
+            - console.log(err)
+            if err && Object.keys(err.errors).indexOf('title')!==-1
+              .error-message=err.errors.title.message
+          - var slugtitle = __("News Url")
+          - var slugplaceholder = __("News Url")
+          - var slughelptext = __("To have your news at https://avnode.net/news/mybeautyfulnews, please insert mybeautyfulnews (lower case, no spaces, no special characters)")
+          include partials/slug
+          
+          include partials/is_public
+          
+
+
+        .col-md-5
+          include partials/image
+      include partials/abouts
+      hr
+      include partials/social
+      include partials/web
+      hr
+      include partials/users
+      hr
+      button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")

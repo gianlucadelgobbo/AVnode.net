@@ -2858,6 +2858,7 @@
             "social": 1
           },
           "selectaddon": {
+            "imageFormats": 1
           },
           "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}, { "path": "categories" , "select": "name" }]
         },

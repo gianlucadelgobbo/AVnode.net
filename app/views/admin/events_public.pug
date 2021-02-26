@@ -27,7 +27,8 @@ block content
             label.labelField.mb-3.mr-3(for='type')=__("Type")
             select.form-control.mb-3(name="type" id="type")
               for eventtype in config["event-type"]
-                option(value=eventtype._id selected=eventtype._id==data.type._id ? "selected" : undefined)=eventtype.name
+                option(value=eventtype._id selected=(data.type && eventtype._id && eventtype._id==data.type._id) ? "selected" : undefined)
+                  !=eventtype.name
 
 
         .col-md-5

@@ -5,12 +5,14 @@
   .list-group
     // Separator with title
     .list-group-item.sidebar-separator-title.d-flex
-      small.menu-collapsed Control panel
+      small.menu-collapsed=__("Control panel")
+    - var exclude = ["/admin/footage", "/admin/playlists", "/admin/subscriptions"]
     each menuitem in config.adminMenu
-      a.bg-dark.list-group-item.list-group-item-action(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id) class=currentUrl==menuitem.href ? "active" : undefined)
-        span(class=menuitem.icon)
-        span.menu-collapsed=menuitem.label.defaultMessage
+      if user.is_admin || exclude.indexOf(menuitem.href) === -1
+        a.bg-dark.list-group-item.list-group-item-action(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id) class=currentUrl==menuitem.href ? "active" : undefined)
+          span(class=menuitem.icon)
+          span.menu-collapsed=menuitem.label.defaultMessage
     a.bg-dark.list-group-item(href='#', data-toggle='sidebar-collapse')
       .d-flex.w-100.justify-content-start.align-items-center
         span.fa.fa-arrow-alt-circle-left.fa-fw.mr-3
-        span.menu-collapsed Collapse
+        span.menu-collapsed=__("Collapse")
