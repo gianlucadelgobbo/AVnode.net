@@ -9,8 +9,16 @@ block content
 		.col-md-10
 			h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
 		.col-md-2
-			button.float-right.btn.btn-success(type='button')
-				i.fa.fa-plus(data-toggle='tooltip' data-placement='top')
+			#dropdownContents
+				a.float-right.btn.btn-success(href='#'
+					data-labelfield=global.__("Video title")
+					data-title=global.__("Add Video")
+					data-param="title"
+					data-user=user && user._id ? user._id : undefined
+					data-id=data._id
+					data-sez="events"
+					data-newsez="videos"
+					)=global.__('New Video')
 	hr
 	.row
 		.col-md-12

@@ -1,0 +1,67 @@
+extends ../layout_admin
+block content
+	.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+		h1.h2=data.title
+		.btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+			a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+	include partials/menuobj
+	.row.mt-3
+		.col-md-10
+			h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+		.col-md-2
+			#dropdownContents
+				a.float-right.btn.btn-success(href='#'
+					data-labelfield=global.__("Event title")
+					data-title=global.__("Add Booking")
+					data-param="title"
+					data-user=user && user._id ? user._id : undefined
+					data-id=data._id
+					data-sez="performances"
+					data-newsez="booking"
+					)=global.__('Add Booking')
+	hr
+	.row
+		.col-md-12
+			table(data-toggle="table", data-show-columns="true", data-search="true")
+				thead
+					tr
+						th=__("Image")
+						th(data-sortable="true")=__("Title")
+						th(data-sortable="true")=__("Schedule")
+				tbody
+					each booking in data.bookings
+						tr
+							td
+								a(href='/admin/events/'+booking.event._id+'/public')
+									img.img-fluid(src=booking.event.imageFormats.small)
+							td
+								b
+									//a(href='/admin/events/'+booking.event._id+'/public')
+										i.fa.fa-edit
+										!=" | "  
+									a(href='/'+booking.event.slug+'/')
+										i.fa.fa-eye
+									!=" | "  
+									!=booking.event.title 
+									//div
+										i.fas.fa-circle(class=booking.event.is_public ? "text-success" : "text-danger")
+										!=" "  
+										!=__("Public")
+									//div
+										i.fa.fa-eye
+										!=" "  
+										!=booking.event.stats.visits
+										!=" | "  
+										i.fa.fa-heart
+										!=" "  
+										!=booking.event.stats.likes
+							td
+								if booking.schedule.length
+									each schedule in booking.schedule
+										p
+											//!=new Date(booking.schedule.starttime).toLocaleDateString()
+											b!=schedule.venue.name
+											!=" | "  
+											!=schedule.boxDate
+								else 
+									!="TBD"
