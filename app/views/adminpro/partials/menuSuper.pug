@@ -10,7 +10,7 @@
     // Menu with submenu
     a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/events/')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-calendar.fa-fw.mr-3
+        span.icon-calendar.fa-fw.mr-3
         span.menu-collapsed="Events"
     if data && data.event && data.event._id
       #submenuEvent.collapse.sidebar-submenu(class=currentUrl.indexOf("/adminpro/events")===0 ? " show" : "")
@@ -19,11 +19,11 @@
         - var obj = {link:'/adminpro/events/'+data.event._id+'/acts/', title:global.__('Acts')}
         a.list-group-item(href=obj.link, class=currentUrl.indexOf(obj.link)==0 ? "active" : "bg-dark")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-theater-masks.fa-fw.mr-3
+            span.icon-theater-masks.fa-fw.mr-3
             span.menu-collapsed=obj.title
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/peoples/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-users.fa-fw.mr-3
+            span.icon-users.fa-fw.mr-3
             span.menu-collapsed=global.__('Peoples')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program/')
           .d-flex.w-100.justify-content-start.align-items-center
@@ -35,60 +35,60 @@
             span.menu-collapsed=global.__('Orders')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/technical-riders/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-tasks.fa-fw.mr-3
+            span.icon-tasks.fa-fw.mr-3
             span.menu-collapsed=global.__('Technical Riders')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program-social/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-rss-square.fa-fw.mr-3
+            span.icon-rss-square.fa-fw.mr-3
             span.menu-collapsed=global.__('Program Social')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program-print/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-print.fa-fw.mr-3
+            span.icon-print.fa-fw.mr-3
             span.menu-collapsed=global.__('Program Prints')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/pass/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-print.fa-fw.mr-3
+            span.icon-print.fa-fw.mr-3
             span.menu-collapsed=global.__('Pass Prints')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/pass-sheet/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-print.fa-fw.mr-3
+            span.icon-print.fa-fw.mr-3
             span.menu-collapsed=global.__('Pass sheet Prints')
         //a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/countries/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.icon-sitemap.fa-fw.mr-3
             span.menu-collapsed=global.__('Countries')
           li.nav-item
           a.nav-link(href='/adminpro/events/'+data.event._id+'/tweets/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.icon-sitemap.fa-fw.mr-3
             span.menu-collapsed=global.__('TWEETS')
           a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/partners/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.icon-sitemap.fa-fw.mr-3
             span.menu-collapsed=global.__('Partners')
           a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/numbers/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.icon-sitemap.fa-fw.mr-3
             span.menu-collapsed=global.__('Numbers')
           a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/guestlist/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.icon-sitemap.fa-fw.mr-3
             span.menu-collapsed=global.__('Guestlist')
           a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/cachecreator/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-sitemap.fa-fw.mr-3
+            span.icon-sitemap.fa-fw.mr-3
             span.menu-collapsed=global.__('Cache Creator')
     a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/organizations/')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-sitemap.fa-fw.mr-3
+        span.icon-sitemap.fa-fw.mr-3
         span.menu-collapsed="Organizations"
     a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/partners/')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-handshake.fa-fw.mr-3
+        span.icon-handshake.fa-fw.mr-3
         span.menu-collapsed="Partners"
     a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/emailqueue/')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-mail-bulk.fa-fw.mr-3
+        span.icon-mail-bulk.fa-fw.mr-3
         span.menu-collapsed="Emails Queue"
     a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/vjtv/')
       .d-flex.w-100.justify-content-start.align-items-center
@@ -96,12 +96,12 @@
         span.menu-collapsed="VJ Television"
     a.bg-dark.list-group-item.list-group-item-action(href='/adminpro/facebook/')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fab.fa-facebook-square.fa-fw.mr-3
+        span.icon-facebook-square.fa-fw.mr-3
         span.menu-collapsed="Facebook"
     if user.is_admin
       a.bg-dark.list-group-item.list-group-item-action(href='#submenuSuper', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
         .d-flex.w-100.justify-content-start.align-items-center
-          span.fa.fa-wrench.fa-fw.mr-3
+          span.icon-wrench.fa-fw.mr-3
           span.menu-collapsed="SUPER Tools"
       #submenuSuper.collapse.sidebar-submenu(class=currentUrl.indexOf("/adminpro/supertools")===0 ? " show" : "")
         a.bg-dark.list-group-item(href='#subsubmenuSuper1', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
@@ -116,7 +116,7 @@
           a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
         a.bg-dark.list-group-item(href='#subsubmenuSuper2', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/addresses")===0 ? "true" : "false")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-map-marker.fa-fw.mr-3
+            span.icon-map-marker.fa-fw.mr-3
             span.menu-collapsed Addresses 
         // Submenu content
         #subsubmenuSuper2.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/addresses")===0 ? " show" : "")
@@ -140,7 +140,7 @@
           a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
         a.bg-dark.list-group-item(href='#subsubmenuSuper4', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/files")===0 ? "true" : "false")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-archive.fa-fw.mr-3
+            span.icon-archive.fa-fw.mr-3
             span.menu-collapsed Files
         // Submenu content
         #subsubmenuSuper4.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/files")===0 ? " show" : "")
@@ -218,7 +218,7 @@
           a.list-group-item.list-group-item-action.text-white(href='/adminpro/supertools'+obj.link, class=currentUrl.indexOf("/adminpro/supertools"+obj.link)==0 ? "active" : "bg-dark")=obj.title
         a.bg-dark.list-group-item(href='#subsubmenuSuper5', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/wpimport")===0 ? "true" : "false")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-download.fa-fw.mr-3
+            span.icon-download.fa-fw.mr-3
             span.menu-collapsed WP Import
         // Submenu content
         #subsubmenuSuper5.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/wpimport")===0 ? " show" : "")
@@ -231,7 +231,7 @@
         
         a.bg-dark.list-group-item(href='#subsubmenuSuper6', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-tags.fa-fw.mr-3
+            span.icon-tags.fa-fw.mr-3
             span.menu-collapsed Categories
         // Submenu content
         #subsubmenuSuper6.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
@@ -241,7 +241,7 @@
         // Menu content
         a.bg-dark.list-group-item(href='#subsubmenuSuper7', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? "true" : "false")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-tags.fa-fw.mr-3
+            span.icon-tags.fa-fw.mr-3
             span.menu-collapsed Statistics
         // Submenu content
         #subsubmenuSuper7.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/categories")===0 ? " show" : "")
@@ -251,16 +251,16 @@
         // Menu content
         a.list-group-item(href='/adminpro/supertools/localesgen', class=currentUrl.indexOf("/adminpro/supertools/localesgen")==0 ? "bg-secondary" : "bg-dark")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.fa.fa-flag.fa-fw.mr-3
+            span.icon-flag.fa-fw.mr-3
             span.menu-collapsed Locales
 
     a.bg-dark.list-group-item.list-group-item-action(href='/admin/profile/'+user._id+'/public')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.lnr.lnr-cog.mr-3
+        span.icon-cog.mr-3
         span.menu-collapsed="Control Panel"
 
     a.bg-dark.list-group-item(href='#', data-toggle='sidebar-collapse')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-arrow-alt-circle-left.fa-fw.mr-3
+        span.icon-arrow-alt-circle-left.fa-fw.mr-3
         span.menu-collapsed Collapse
             

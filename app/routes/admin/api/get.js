@@ -487,7 +487,7 @@ router.getList = (req, res, view) => {
         if (view == "json") {
           res.status(500).send({ message: `${JSON.stringify(err)}` });
         } else {
-          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
         }
       } else {
         let send = JSON.parse(JSON.stringify(req.user));
@@ -511,7 +511,7 @@ router.getList = (req, res, view) => {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
     } else {
-      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
     }  
   }
 }
@@ -531,14 +531,14 @@ router.getData = (req, res, view) => {
         if (view == "json") {
           res.status(500).send({ message: `${JSON.stringify(err)}` });
         } else {
-          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
         }
       } else {
         if (!data) {
           if (view == "json") {
             res.status(404).send({ message: `DOC_NOT_FOUND` });
           } else {
-            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
           }  
         } else {
           if (helpers.editable(req, data, id)) {
@@ -562,7 +562,7 @@ router.getData = (req, res, view) => {
             if (view == "json") {
               res.status(404).send({ message: `DOC_NOT_OWNED` });
             } else {
-              res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+              res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
             }  
           }
         }
@@ -572,7 +572,7 @@ router.getData = (req, res, view) => {
     if (view == "json") {
       res.status(404).send({ message: `API_NOT_FOUND` });
     } else {
-      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
     }  
   }
 }
@@ -1793,7 +1793,6 @@ router.sendEmailVericaition = (req, res) => {
   logger.debug("sendEmailVericaition");
   logger.debug(req.headers.host);
   const uid = require('uuid');
-  //const request = require('axios');
   const mongoose = require('mongoose');
   const User = mongoose.model('User');
   //User.findOne({"emails.email": req.params.email}, "emails", (err, user) => {

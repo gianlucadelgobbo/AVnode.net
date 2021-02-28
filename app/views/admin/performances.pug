@@ -34,10 +34,10 @@ block content
 									td
 										b
 											a(href='/admin/performances/'+performance._id+'/public')
-												i.fa.fa-edit
+												i.icon-edit
 											!=" | "  
 											a(href='/'+performance.slug+'/')
-												i.fa.fa-eye
+												i.icon-eye
 											!=" | "  
 											!=performance.title 
 											div
@@ -46,11 +46,11 @@ block content
 												!=" "  
 												!=__("Public")
 											div
-												i.fa.fa-eye
+												i.icon-eye
 												!=" "  
 												!=performance.stats.visits
 												!=" | "  
-												i.fa.fa-heart
+												i.icon-heart
 												!=" "  
 												!=performance.stats.likes
 									td=performance.type && performance.type.name ? performance.type.name : "MISSING"

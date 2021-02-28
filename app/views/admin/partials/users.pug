@@ -5,7 +5,7 @@
 		each user, i in data.users
 			.mb-3
 				a(href='#' data-id=user._id data-obj=get.sez data-objid=data._id class=(data.users.length == 1 ? "disabled" : undefined))
-					i.fa.fa-trash
+					i.icon-trash
 				!=" | "
 				!=user.stagename
 	.row
@@ -14,6 +14,6 @@
 				input.form-control(type='text' autocomplete='off' placeholder='Author' value='')
 				.input-group-append
 					button.mb-2.btn.btn-success.disabled(type='button' data-objid=data._id data-obj=get.sez)
-						i.fa.fa-plus
+						i.icon-plus
 						!=" "
 						b=__("ADD AUTHOR")

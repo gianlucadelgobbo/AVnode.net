@@ -8,7 +8,6 @@ const Category = mongoose.model('Category');
 const Gallery = mongoose.model('Gallery');
 const Emailqueue = mongoose.model('Emailqueue');
 
-const request = require('axios');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');

@@ -33,10 +33,10 @@ block content
 									td
 										b
 											a(href='/admin/events/'+event._id+'/public')
-												i.fa.fa-edit
+												i.icon-edit
 											!=" | "  
 											a(href='/'+event.slug+'/')
-												i.fa.fa-eye
+												i.icon-eye
 											!=" | "  
 											!=event.title 
 											div
@@ -45,11 +45,11 @@ block content
 												!=" "  
 												!=__("Public")
 											div
-												i.fa.fa-eye
+												i.icon-eye
 												!=" "  
 												!=event.stats.visits
 												!=" | "  
-												i.fa.fa-heart
+												i.icon-heart
 												!=" "  
 												!=event.stats.likes
 									td=event.type && event.type.name ? event.type.name : "MISSING"

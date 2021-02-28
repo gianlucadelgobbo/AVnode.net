@@ -5,7 +5,7 @@ const VenueDB = mongoose.model('VenueDB');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 
-const request = require('axios');
+const axios = require('axios');
 
 const logger = require('../../../utilities/logger');
 
@@ -205,34 +205,54 @@ const getgeometry = (req, res, cb) => {
       let conta = 0;
       addressesA.forEach((element, index) => {
         logger.debug("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.locality ? element.locality+',' : '')+','+element.country);
-        request.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country), (error, response, body) => {
-          logger.debug("requestrequestrequestrequest");
-          logger.debug(element);
-          logger.debug(error);
-          logger.debug(body);
+        axios.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.locality ? element.locality+',' : '')+element.country))
+        .then((body) => {
           conta++;
-          if (error) {
-            logger.debug(error);
-          } else {
-            try {
-              logger.debug("ADDRESS try");
-              let json = JSON.parse(body);
-              logger.debug(json.results[0].address_components);
-              if (json.results.length) {
-                addressesA[index].formatted_address = json.results[0].formatted_address;
-                addressesA[index].status = json.status;
-                for(const part in json.results[0].address_components) {
-                  if (json.results[0].address_components[part].types[0] === "locality") addressesA[index].locality_new = json.results[0].address_components[part].long_name;
-                  if (json.results[0].address_components[part].types[0] === "country") addressesA[index].country_new = json.results[0].address_components[part].long_name;
-                }
-                if (!addressesA[index].locality_new || !addressesA[index].country_new || addressesA[index].locality_new !== addressesA[index].locality || addressesA[index].country_new !== addressesA[index].country) {
-                  addressesA[index].status = "CHECK";
-                }
-                addressesA[index].geometry = json.results[0].geometry.location;
-              } else {
-                addressesA[index].formatted_address = "";
-                addressesA[index].status = json.status;
+          try {
+            logger.debug("ADDRESS try");
+            let json = JSON.parse(body.data);
+            logger.debug(json.results[0].address_components);
+            if (json.results.length) {
+              addressesA[index].formatted_address = json.results[0].formatted_address;
+              addressesA[index].status = json.status;
+              for(const part in json.results[0].address_components) {
+                if (json.results[0].address_components[part].types[0] === "locality") addressesA[index].locality_new = json.results[0].address_components[part].long_name;
+                if (json.results[0].address_components[part].types[0] === "country") addressesA[index].country_new = json.results[0].address_components[part].long_name;
               }
+              if (!addressesA[index].locality_new || !addressesA[index].country_new || addressesA[index].locality_new !== addressesA[index].locality || addressesA[index].country_new !== addressesA[index].country) {
+                addressesA[index].status = "CHECK";
+              }
+              addressesA[index].geometry = json.results[0].geometry.location;
+            } else {
+              addressesA[index].formatted_address = "";
+              addressesA[index].status = json.status;
+            }
+            AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+              if (err) {
+                logger.debug(err);
+              } else {
+                AddressDB.find({_id: addressesA[index]._id}).
+                then(function(resres) {
+                  if (err) {
+                    logger.debug(err);
+                  } else {
+                    allres = allres.concat(resres);
+                  }
+                  logger.debug("update end");
+                  if (conta === addressesA.length) {
+                    logger.debug("update end");
+                    cb(allres);
+                  }
+              });
+              }
+            });
+          } catch(e) {
+            const error = JSON.parse(body);
+            logger.debug("ADDRESS catch");
+            logger.debug(error);
+
+            if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
+              addressesA[index].status = error.status;
               AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
                 if (err) {
                   logger.debug(err);
@@ -244,47 +264,23 @@ const getgeometry = (req, res, cb) => {
                     } else {
                       allres = allres.concat(resres);
                     }
-                    logger.debug("update end");
                     if (conta === addressesA.length) {
-                      logger.debug("update end");
                       cb(allres);
                     }
-                });
+                  });
                 }
               });
-            } catch(e) {
-              const error = JSON.parse(body);
-              logger.debug("ADDRESS catch");
-              logger.debug(error);
-
-              if (error.status == "ZERO_RESULTS" || error.status == "INVALID_REQUEST") {
-                addressesA[index].status = error.status;
-                AddressDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
-                  if (err) {
-                    logger.debug(err);
-                  } else {
-                    AddressDB.find({_id: addressesA[index]._id}).
-                    then(function(resres) {
-                      if (err) {
-                        logger.debug(err);
-                      } else {
-                        allres = allres.concat(resres);
-                      }
-                      if (conta === addressesA.length) {
-                        cb(allres);
-                      }
-                    });
-                  }
-                });
-              } else {
-                //logger.debug(JSON.parse(body));
-                allres = allres.concat([error]);
-                if (conta === addressesA.length) {
-                  cb(allres);
-                }
+            } else {
+              //logger.debug(JSON.parse(body));
+              allres = allres.concat([error]);
+              if (conta === addressesA.length) {
+                cb(allres);
               }
             }
           }
+          console.log(response);
+        }, (error) => {
+          logger.debug(error);
         });
         /* UPDATE USERS
                 if (json.results[0].geometry.location) {
@@ -557,82 +553,80 @@ const venuesgetgeometry = (req, res, cb) => {
         logger.debug("S");
         logger.debug(element);
         logger.debug("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+(element.name ? element.name+',' : '')+(element.route_new ? element.route_new+',' : '')+(element.street_number_new ? element.street_number_new+',' : '')+(element.locality ? element.locality+',' : '')+element.country);
-        request.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.name ? element.name+',' : '')+(element.route ? element.route+',' : '')+(element.street_number ? element.street_number+',' : '')+(element.locality ? element.locality+',' : '')+element.country), (error, response, b) => {
-          logger.debug("requestrequestrequestrequest");
+        axios.get("https://maps.googleapis.com/maps/api/geocode/json?key="+process.env.GOOGLEMAPSAPIKEY+'&address='+encodeURIComponent((element.name ? element.name+',' : '')+(element.route ? element.route+',' : '')+(element.street_number ? element.street_number+',' : '')+(element.locality ? element.locality+',' : '')+element.country))
+        .then((b) => {
+          logger.debug("axiosaxiosaxiosaxios");
           logger.debug(error);
-          //logger.debug(b);
-          if (error) {
-            logger.debug(error);
-          } else {
             try {
               logger.debug("ADDRESS try");
               let eee = JSON.parse(b).results[0];
               logger.debug(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id);
-              request.get(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id, (error, response, body) => {
-                logger.debug("requestrequestrequestrequest");
+              axios.get(process.env.GOOGLEMAPSAPIURLBYID+'&placeid='+eee.place_id)
+              .then((body) => {
+                logger.debug("axiosaxiosaxiosaxios");
                 //logger.debug(element);
                 //logger.debug(error);
                 //logger.debug(body);
                 conta++;
-                if (error) {
-                  logger.debug(error);
-                } else {
-                  try {
-                    logger.debug("ADDRESS try");
-                    let json = JSON.parse(body);
-                    if (json.result) {
-                      logger.debug(json.result.address_components);
-                      addressesA[index].name_new = json.result.name;
-                      addressesA[index].formatted_address = json.result.formatted_address;
-                      addressesA[index].status = json.status;
-                      for(const part in json.result.address_components) {
-                        if (json.result.address_components[part].types[0] === "locality") addressesA[index].locality_new = json.result.address_components[part].long_name;
-                        if (json.result.address_components[part].types[0] === "country") addressesA[index].country_new = json.result.address_components[part].long_name;
-                        if (json.result.address_components[part].types[0] === "street_number") addressesA[index].street_number_new = json.result.address_components[part].long_name;
-                        if (json.result.address_components[part].types[0] === "route") addressesA[index].route_new = json.result.address_components[part].long_name;
-                        if (json.result.address_components[part].types[0] === "postal_code") addressesA[index].postal_code_new = json.result.address_components[part].long_name;
-                      }
-                      if (!addressesA[index].locality_new || !addressesA[index].country_new || addressesA[index].locality_new !== addressesA[index].locality || addressesA[index].country_new !== addressesA[index].country) {
-                        addressesA[index].status = "CHECK";
-                      }
-                      addressesA[index].geometry_new = json.result.geometry.location;
-                      if (!addressesA[index].geometry && addressesA[index].geometry_new) addressesA[index].geometry = addressesA[index].geometry_new
-                      logger.debug("addressesA[index]");
-                      logger.debug(addressesA[index]);
-                    } else {
-                      addressesA[index].formatted_address = "";
-                      addressesA[index].status = json.status;
+                try {
+                  logger.debug("ADDRESS try");
+                  let json = JSON.parse(body.data);
+                  if (json.result) {
+                    logger.debug(json.result.address_components);
+                    addressesA[index].name_new = json.result.name;
+                    addressesA[index].formatted_address = json.result.formatted_address;
+                    addressesA[index].status = json.status;
+                    for(const part in json.result.address_components) {
+                      if (json.result.address_components[part].types[0] === "locality") addressesA[index].locality_new = json.result.address_components[part].long_name;
+                      if (json.result.address_components[part].types[0] === "country") addressesA[index].country_new = json.result.address_components[part].long_name;
+                      if (json.result.address_components[part].types[0] === "street_number") addressesA[index].street_number_new = json.result.address_components[part].long_name;
+                      if (json.result.address_components[part].types[0] === "route") addressesA[index].route_new = json.result.address_components[part].long_name;
+                      if (json.result.address_components[part].types[0] === "postal_code") addressesA[index].postal_code_new = json.result.address_components[part].long_name;
                     }
-                    VenueDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
-                      if (err) {
-                        logger.debug(err);
-                      } else {
-                        VenueDB.find({_id: addressesA[index]._id}).
-                        then(function(resres) {
-                          if (err) {
-                            logger.debug(err);
-                          } else {
-                            allres = allres.concat(resres);
-                          }
-                          logger.debug("update end");
-                          if (conta === addressesA.length) {
-                            logger.debug("update end");
-                            cb(allres);
-                          }
-                        });
-                      }
-                    });
-                  } catch(e) {
-                    const error = JSON.parse(body);
-                    logger.debug("ADDRESS catch");
-                    logger.debug(error);
+                    if (!addressesA[index].locality_new || !addressesA[index].country_new || addressesA[index].locality_new !== addressesA[index].locality || addressesA[index].country_new !== addressesA[index].country) {
+                      addressesA[index].status = "CHECK";
+                    }
+                    addressesA[index].geometry_new = json.result.geometry.location;
+                    if (!addressesA[index].geometry && addressesA[index].geometry_new) addressesA[index].geometry = addressesA[index].geometry_new
+                    logger.debug("addressesA[index]");
+                    logger.debug(addressesA[index]);
+                  } else {
+                    addressesA[index].formatted_address = "";
+                    addressesA[index].status = json.status;
                   }
+                  VenueDB.updateOne({_id: addressesA[index]._id}, { $set: addressesA[index]}, function(err, res) {
+                    if (err) {
+                      logger.debug(err);
+                    } else {
+                      VenueDB.find({_id: addressesA[index]._id}).
+                      then(function(resres) {
+                        if (err) {
+                          logger.debug(err);
+                        } else {
+                          allres = allres.concat(resres);
+                        }
+                        logger.debug("update end");
+                        if (conta === addressesA.length) {
+                          logger.debug("update end");
+                          cb(allres);
+                        }
+                      });
+                    }
+                  });
+                } catch(e) {
+                  const error = JSON.parse(body);
+                  logger.debug("ADDRESS catch");
+                  logger.debug(error);
+                  cb([{error_message: error}]);
                 }
               });    
             } catch(e) {
               const error = JSON.parse(b);
+              cb([{error_message: error}]);
             }
-          }
+        }, (error) => {
+          logger.debug(error);
+          cb([{error_message: error}]);
         });
       });  
     } else {

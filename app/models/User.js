@@ -1,6 +1,5 @@
 const config = require('getconfig');
 const mongoose = require('mongoose');
-const axios = require('axios')
 
 const Schema = mongoose.Schema;
 const moment = require('moment');

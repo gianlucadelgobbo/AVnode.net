@@ -127,7 +127,7 @@ router.putData = (req, res, view) => {
                         if (view == "json") {
                           res.status(404).send({ message: `DOC_NOT_FOUND` });
                         } else {
-                          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+                          res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
                         }  
                       } else {
                         let send = {_id: data._id};
@@ -165,7 +165,7 @@ router.putData = (req, res, view) => {
             if (view == "json") {
               res.status(404).send({ message: `DOC_NOT_OWNED` });
             } else {
-              res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+              res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
             }  
           }
 
@@ -173,7 +173,7 @@ router.putData = (req, res, view) => {
           if (view == "json") {
             res.status(404).send({ message: `DOC_NOT_FOUND` });
           } else {
-            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
           }  
         }
       } else {

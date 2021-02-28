@@ -11,7 +11,6 @@ const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
-const request = require('axios');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');

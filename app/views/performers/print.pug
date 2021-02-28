@@ -48,12 +48,12 @@ block content
                   ul.pl-2.list-unstyled
                     li.mb-3
                       a(href="https://avnode.net/"+data.slug)
-                        i.lnr.lnr-link.mr-2
+                        i.icon-link.mr-2
                         !="https://avnode.net/"+data.slug
                     each item in data.web
                       li.mb-3
                         a(href=item.url)
-                          i.lnr.lnr-link.mr-2
+                          i.icon-link.mr-2
                           !=item.url
                   if data.social && data.social.length
                     .pb-2
@@ -63,17 +63,17 @@ block content
                         li.mb-3
                           a(href=item.url)
                             if item.url.indexOf('instagram.com/')!=-1
-                              i.fab.fa-instagram.mr-2
+                              i.icon-instagram.mr-2
                             else if item.url.indexOf('twitter.com/')!=-1
-                              i.fab.fa-twitter.mr-2
+                              i.icon-twitter.mr-2
                             else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                              i.fab.fa-facebook.mr-2
+                              i.icon-facebook.mr-2
                             else if item.url.indexOf('vimeo.com/')!=-1
-                              i.fab.fa-vimeo.mr-2
+                              i.icon-vimeo.mr-2
                             else if item.url.indexOf('youtube.com/')!=-1
-                              i.fab.fa-youtube.mr-2
+                              i.icon-youtube.mr-2
                             else
-                              i.lnr.lnr-link.mr-2
+                              i.icon-link.mr-2
                             !=item.url
 
                   if data.publicEmails && data.publicEmails.length    
@@ -115,12 +115,12 @@ block content
                           ul.list-unstyled.pt-3
                             li.mb-3
                               a(href="https://avnode.net/"+item.slug)
-                                i.lnr.lnr-link.mr-2
+                                i.icon-link.mr-2
                                 !="https://avnode.net/"+item.slug
                             each web in item.web
                               li.mb-3
                                 a(href=web.url)
-                                  i.lnr.lnr-link.mr-2
+                                  i.icon-link.mr-2
                                   !=web.url
                           if item.social && item.social.length
                             ul.list-unstyled.pt-3
@@ -128,17 +128,17 @@ block content
                                 li.mb-3
                                   a(href=social.url)
                                     if social.url.indexOf('instagram.com/')!=-1
-                                      i.fab.fa-instagram.mr-2
+                                      i.icon-instagram.mr-2
                                     else if social.url.indexOf('twitter.com/')!=-1
-                                      i.fab.fa-twitter.mr-2
+                                      i.icon-twitter.mr-2
                                     else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
-                                      i.fab.fa-facebook.mr-2
+                                      i.icon-facebook.mr-2
                                     else if social.url.indexOf('vimeo.com/')!=-1
-                                      i.fab.fa-vimeo.mr-2
+                                      i.icon-vimeo.mr-2
                                     else if social.url.indexOf('youtube.com/')!=-1
-                                      i.fab.fa-youtube.mr-2
+                                      i.icon-youtube.mr-2
                                     else
-                                      i.lnr.lnr-link.mr-2
+                                      i.icon-link.mr-2
                                     !=social.url
 
             if data.members && data.members.length
@@ -165,12 +165,12 @@ block content
                           ul.list-unstyled.pt-3
                             li.mb-3
                               a(href="https://avnode.net/"+item.slug)
-                                i.lnr.lnr-link.mr-2
+                                i.icon-link.mr-2
                                 !="https://avnode.net/"+item.slug
                             each web in item.web
                               li.mb-3
                                 a(href=web.url)
-                                  i.lnr.lnr-link.mr-2
+                                  i.icon-link.mr-2
                                   !=web.url
                           if item.social && item.social.length
                             ul.list-unstyled.pt-3
@@ -178,17 +178,17 @@ block content
                                 li.mb-3
                                   a(href=social.url)
                                     if social.url.indexOf('instagram.com/')!=-1
-                                      i.fab.fa-instagram.mr-2
+                                      i.icon-instagram.mr-2
                                     else if social.url.indexOf('twitter.com/')!=-1
-                                      i.fab.fa-twitter.mr-2
+                                      i.icon-twitter.mr-2
                                     else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
-                                      i.fab.fa-facebook.mr-2
+                                      i.icon-facebook.mr-2
                                     else if social.url.indexOf('vimeo.com/')!=-1
-                                      i.fab.fa-vimeo.mr-2
+                                      i.icon-vimeo.mr-2
                                     else if social.url.indexOf('youtube.com/')!=-1
-                                      i.fab.fa-youtube.mr-2
+                                      i.icon-youtube.mr-2
                                     else
-                                      i.lnr.lnr-link.mr-2
+                                      i.icon-link.mr-2
                                     !=social.url
 
             if data.events && data.events.length
@@ -215,12 +215,12 @@ block content
                           ul.list-unstyled.pt-3
                             li.mb-3
                               a(href="https://avnode.net/events/"+item.slug)
-                                i.lnr.lnr-link.mr-2
+                                i.icon-link.mr-2
                                 !="https://avnode.net/events/"+item.slug
                             each web in item.web
                               li.mb-3
                                 a(href=web.url)
-                                  i.lnr.lnr-link.mr-2
+                                  i.icon-link.mr-2
                                   !=web.url
                           if item.social && item.social.length
                             ul.list-unstyled.pt-3
@@ -228,17 +228,17 @@ block content
                                 li.mb-3
                                   a(href=social.url)
                                     if social.url.indexOf('instagram.com/')!=-1
-                                      i.fab.fa-instagram.mr-2
+                                      i.icon-instagram.mr-2
                                     else if social.url.indexOf('twitter.com/')!=-1
-                                      i.fab.fa-twitter.mr-2
+                                      i.icon-twitter.mr-2
                                     else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
-                                      i.fab.fa-facebook.mr-2
+                                      i.icon-facebook.mr-2
                                     else if social.url.indexOf('vimeo.com/')!=-1
-                                      i.fab.fa-vimeo.mr-2
+                                      i.icon-vimeo.mr-2
                                     else if social.url.indexOf('youtube.com/')!=-1
-                                      i.fab.fa-youtube.mr-2
+                                      i.icon-youtube.mr-2
                                     else
-                                      i.lnr.lnr-link.mr-2
+                                      i.icon-link.mr-2
                                     !=social.url
 
                     
@@ -286,7 +286,7 @@ block content
                           ul.list-unstyled.pt-3
                             li.mb-3
                               a(href="https://avnode.net/performances/"+item.slug)
-                                i.lnr.lnr-link.mr-2
+                                i.icon-link.mr-2
                                 !="https://avnode.net/performances/"+item.slug
 
             if data.news && data.news.length
@@ -311,7 +311,7 @@ block content
                           ul.list-unstyled.pt-3
                             li.mb-3
                               a(href="https://avnode.net/news/"+item.slug)
-                                i.lnr.lnr-link.mr-2
+                                i.icon-link.mr-2
                                 !="https://avnode.net/news/"+item.slug
                             
             //if data.footage && data.footage.length

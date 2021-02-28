@@ -34,10 +34,10 @@ block content
 									td
 										b
 											a(href='/admin/crews/'+crew._id+'/public')
-												i.fa.fa-edit
+												i.icon-edit
 											!=" | "  
 											a(href='/'+crew.slug+'/')
-												i.fa.fa-eye
+												i.icon-eye
 											!=" | "  
 											!=crew.stagename 
 											div
@@ -46,7 +46,7 @@ block content
 												!=" "  
 												!=__("Public")
 											//div
-												i.fa.fa-eye
+												i.icon-eye
 												!=crew.stats.partnerships
 									td=(crew.partner_owner && crew.partner_owner.length && crew.partner_owner.map(item => {return item.owner.toString()}).indexOf("5be8772bfc39610000007065") !== -1)  || crew.activity_as_organization > 0 ? "ORGANIZATION" : "CREW"
 									td

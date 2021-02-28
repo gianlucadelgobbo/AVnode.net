@@ -15,7 +15,7 @@
           input#datepicker.form-control(type="text", name="day", value=get.day placeholder=global.__("Select a day"))
           .input-group-append
             button.btn.btn-outline-secondary(type="button" onclick="$( '#datepicker' ).datepicker( 'show' );")
-              i.fa.fa-calendar
+              i.icon-calendar
       script.
         var dates = !{JSON.stringify(availabledays)};
       .text-right

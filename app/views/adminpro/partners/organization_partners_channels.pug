@@ -89,12 +89,12 @@ block content
                   !=" | "
                   a.unlink(href="#", data-owner=owner, data-partner=item._id, title=global.__("Unlink"))
                     span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
-                      i.fa.fa-unlink
+                      i.icon-unlink
                   if item.members && item.members.length
                     !=" | "
                     a(href="/"+item.slug, target="_blank", title=global.__("View"))
                       span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                        i.fa.fa-eye
+                        i.icon-eye
                   !=" | "
                   b!=item.stagename
                   if !item.members || !item.members.length

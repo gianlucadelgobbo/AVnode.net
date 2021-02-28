@@ -37,10 +37,10 @@ block content
 							td
 								b
 									//a(href='/admin/events/'+booking.event._id+'/public')
-										i.fa.fa-edit
+										i.icon-edit
 										!=" | "  
 									a(href='/'+booking.event.slug+'/')
-										i.fa.fa-eye
+										i.icon-eye
 									!=" | "  
 									!=booking.event.title 
 									//div
@@ -48,11 +48,11 @@ block content
 										!=" "  
 										!=__("Public")
 									//div
-										i.fa.fa-eye
+										i.icon-eye
 										!=" "  
 										!=booking.event.stats.visits
 										!=" | "  
-										i.fa.fa-heart
+										i.icon-heart
 										!=" "  
 										!=booking.event.stats.likes
 							td

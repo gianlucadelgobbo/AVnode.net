@@ -40,10 +40,10 @@ block content
 							td
 								b
 									a(href='/admin/galleries/'+gallery._id+'/public')
-										i.fa.fa-edit
+										i.icon-edit
 									!=" | "  
 									a(href='/'+gallery.slug+'/')
-										i.fa.fa-eye
+										i.icon-eye
 									!=" | "  
 									!=gallery.title 
 									div
@@ -52,11 +52,11 @@ block content
 										!=" "  
 										!=__("Public")
 									div
-										i.fa.fa-eye
+										i.icon-eye
 										!=" "  
 										!=gallery.stats.visits
 										!=" | "  
-										i.fa.fa-heart
+										i.icon-heart
 										!=" "  
 										!=gallery.stats.likes
 							td=gallery.stats.img

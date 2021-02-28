@@ -12,7 +12,6 @@ const Program = mongoose.model('Program');
 const Order = mongoose.model('Order');
 const Emailqueue = mongoose.model('Emailqueue');
 
-const request = require('axios');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');

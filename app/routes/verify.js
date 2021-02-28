@@ -1,6 +1,6 @@
 const router = require('./router')();
 const uuid = require('uuid');
-const request = require('axios');
+const axios = require('axios');
 
 const mongoose = require('mongoose');
 const UserTemp = mongoose.model('UserTemp');
@@ -178,7 +178,7 @@ router.updateSendy = (user, email, cb) => {
   var postData = querystring.stringify(formData);
   
   // request option
-  var options = {
+  /* var options = {
     host: 'ml.avnode.net',
     port: 443,
     method: 'POST',
@@ -202,15 +202,22 @@ router.updateSendy = (user, email, cb) => {
       cb(error);
     })
   });
-  
   // req error
   req.on('error', function (err) {
     logger.debug(err);
   });
-  
-  //send request witht the postData form
+   //send request witht the postData form
   req.write(postData);
   req.end();
+    */
+
+  axios.post('https://ml.avnode.net/subscribe', postData)
+  .then((response) => {
+    cb();
+  }, (error) => {
+    cb(error);
+  });
+
   
 }
 

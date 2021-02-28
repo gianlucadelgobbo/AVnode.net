@@ -22,32 +22,32 @@ html(lang='en')
     .header-top
       #top
       a#to_top.d-print-none(href="#top", title=global.__('Back to the top'))
-        span.lnr.lnr-arrow-up-circle
+        span.icon-arrow-up-circle
       nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-top.navbar-inverse.bg-inverse
         a.navbar-brand(href='/adminpro', title="AVnode.net")
           img(src='/images/logo_avnode_bar.svg', height='30', class='main_logo' alt='AVnode.net')
         button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
-          span.lnr.lnr-menu.toggle_icon
+          span.icon-menu.toggle_icon
         .collapse.navbar-collapse(id="navbar-collapse_performer_template")
           include partials/menuHeaderEvents
 
           ul.user_navbar
             li.nav-item.dropdown.user_menu.user_menu_logged                  
               a#userDropdown.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                span.lnr.lnr-user
+                span.icon-user
               .dropdown-menu(aria-labelledby='userDropdown')
                 ul
                   li.nav-item
                     a(href='/'+user.slug)                    
-                      span.lnr.lnr-eye
+                      span.icon-eye
                       !=" "+global.__('Profile')
                   li.nav-item
                     a(href='/admin/profile/public')                    
-                      span.lnr.lnr-cog
+                      span.icon-cog
                       !=" "+global.__('Control Panel')
                   li.nav-item
                     a(href='/logout')                    
-                      span.lnr.lnr-exit
+                      span.icon-exit
                       !=" "+global.__('Log out')
       .container-fluid
         .row

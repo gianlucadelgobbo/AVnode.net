@@ -18,6 +18,6 @@
             p.users_video_item_name=user.stagename
             p.users_video_item_views=item.stats && item.stats.visits ? item.stats.visits : 0+" "+global.__("views")
         .users_video_item_likes
-          span.color2.lnr.lnr-heart
+          span.color2.icon-heart
           br
           span.text-nowrap=item.stats && item.stats.likes ? item.stats.likes : 0+" "+global.__("likes")

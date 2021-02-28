@@ -47,16 +47,16 @@
         .col-lg-12
           if (data.web && data.web.length) || (data.social && data.social.length) || (data.publicEmails && data.publicEmails.length)
             div.performer_links_wrapper
-              ul.performer_links_list.performer_links_list_2.list-inline                 
+              ul.links_list.list-inline                 
                 if data.social && data.social.length
                   each link in data.social
                     li.list-inline-item
                       if link.label == "facebook.com"
                         a(href=link.url, target="_blank")
-                          i.fab.fa-facebook
+                          i.icon-facebook
                       if link.label == "twitter.com"
                         a(href=link.url, target="_blank")
-                          i.fab.fa-twitter                            
+                          i.icon-twitter                            
                 if data.publicEmails && data.publicEmails.length          
                   each email in data.publicEmails
                     li.list-inline-item

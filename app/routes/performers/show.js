@@ -111,7 +111,7 @@ router.get("/news/page/:page", (req, res) => {
 });
 
 /* router.get("/*", (req, res) => {
-  res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+  res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
 }); */
 
 module.exports = router;

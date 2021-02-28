@@ -15,8 +15,8 @@
 					input.street_number(type='hidden' name='addresses_private['+i+'][street_number]' value=address.street_number)
 					.input-group-append
 						button.btn.btn-danger(type='button' disabled=(i==0 ? "disabled" : undefined) onclick=(i>0 ? "$(this).parent().parent().parent().remove()" : undefined))
-							i.fa.fa-trash
+							i.icon-trash
 	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-duplicate="addresses_private")
-		i.fa.fa-plus
+		i.icon-plus
 		!=" "
 		b=__("ADD PRIVATE ADDRESS")

@@ -44,7 +44,7 @@ block content
                   !=": "
                   span.number=i+1
                 button.btn.btn-danger.remove(role="button")
-                  i.fa.fa-trash
+                  i.icon-trash
 
               .p-2 
                 .row 
@@ -112,7 +112,7 @@ block content
                           small=__("(Optional)")
                           input.form-control(type='text' autocomplete='off' name='schedule['+i+'][venue][room]' placeholder=__('Room') value=schedule.venue.room)
         button.mb-2.btn.btn-success.btn-sm.duplicator2(type='button' data-duplicate="scheduleslist")
-          i.fa.fa-plus
+          i.icon-plus
           !=" "
           b=__("ADD CITY")
       include partials/abouts

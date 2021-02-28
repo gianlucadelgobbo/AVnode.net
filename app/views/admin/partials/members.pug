@@ -5,7 +5,7 @@
 		each member, i in data.members
 			.mb-3
 				a(href='#' data-id=member._id data-crewid=data._id class=(data.members.length == 1 ? "disabled" : undefined))
-					i.fa.fa-trash
+					i.icon-trash
 				!=" | "
 				!=member.stagename
 	.row
@@ -14,6 +14,6 @@
 				input.form-control(type='text' autocomplete='off' placeholder='Member' value='')
 				.input-group-append
 					button.mb-2.btn.btn-success.disabled(type='button' data-crewid=data._id)
-						i.fa.fa-plus
+						i.icon-plus
 						!=" "
 						b=__("ADD MEMBER")

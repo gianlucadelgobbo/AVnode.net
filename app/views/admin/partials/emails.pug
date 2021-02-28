@@ -12,9 +12,9 @@
 					input.form-control(type='text' name='emails['+i+'][url]' placeholder=__("Emails") value=item.url)
 					.input-group-append
 						button.btn.btn-danger(type='button' disabled=(i==0 ? "disabled" : undefined) onclick=(i>0 ? "$(this).parent().parent().parent().remove()" : undefined))
-							i.fa.fa-trash
+							i.icon-trash
 	button.mb-2.btn.btn-success.btn-sm.duplicator(type='button' data-duplicate="emails")
-		i.fa.fa-plus
+		i.icon-plus
 		!=" "
 		b=__("ADD EMAILS")
 

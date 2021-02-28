@@ -45,7 +45,7 @@ html(lang=session.current_lang)
   body
     #top
     a#to_top(href="#top", title=global.__('Back to the top'))
-      span.lnr.lnr-arrow-up-circle
+      span.icon-arrow-up-circle
     
        
     include partials/menuHeader
@@ -59,7 +59,7 @@ html(lang=session.current_lang)
             .container
               h1
                 if titleicon
-                  span.lnr.lnr-warning.titleicon
+                  span.icon-warning.titleicon
                   span.titleicontext!=title
                 else 
                   !=title

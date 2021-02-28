@@ -2,12 +2,10 @@
   if item.bookings
     each booking in item.bookings
       each schedule in booking.schedule
-        div.time_schedule
-          span=schedule.starttimeTime 
-          span.lnr.lnr-chevron-right
-          span=schedule.endtimeTime
+        .time_schedule
+          !=item.schedule.starttimeTime + " > "+item.schedule.endtimeTime
           !=" | "
-          span=schedule.venue.room
+          !=schedule.venue.room
 
   if item.imageFormats
     a(href="/events/"+data.slug+"/program/"+item.slug+"/", title=item.title)
@@ -40,6 +38,6 @@
                 p.users_performance_item_views=item.stats.visits+" "+global.__("views")
         .flex_right      
           .users_performance_item_likes
-            span.color2.lnr.lnr-heart
+            span.color2.icon-heart
             br
             span.text-nowrap=item.stats.likes+" "+global.__("likes")

@@ -34,10 +34,10 @@ block content
 									td
 										b
 											a(href='/admin/videos/'+video._id+'/public')
-												i.fa.fa-edit
+												i.icon-edit
 											!=" | "  
 											a(href='/'+video.slug+'/')
-												i.fa.fa-eye
+												i.icon-eye
 											!=" | "  
 											!=video.title 
 											div
@@ -45,11 +45,11 @@ block content
 												!=" "  
 												!=__("Public")
 											div
-												i.fa.fa-eye
+												i.icon-eye
 												!=" "  
 												!=video.stats.visits
 												!=" | "  
-												i.fa.fa-heart
+												i.icon-heart
 												!=" "  
 												!=video.stats.likes
 									td=video.type && video.type.name ? video.type.name : "MISSING"

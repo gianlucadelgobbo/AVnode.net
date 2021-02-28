@@ -900,7 +900,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
       //logger.debug("fetchShow END");
       //logger.debug(data);
       if (err || !data || data === null) {
-        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+        res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
       } else {
         // MAP
         if (data && data.schedule && data.schedule.length && data.schedule[0].venue && data.schedule[0].venue.location) {
@@ -1090,7 +1090,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
 dataprovider.list = (req, res, section, model) => {
 
   if (!model) {
-    res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+    res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
   } else {
     const page = req.params.page;
     const filter = req.params.filter;
@@ -1107,7 +1107,7 @@ dataprovider.list = (req, res, section, model) => {
     const populate = config.sections[section].list_populate;
   
     if (notfound) {
-      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+      res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
     } else {
       //const query = filter=='individuals' ? {is_crew: 0} : filter=='crews' ? {is_crew: 1} : {};
       const query = Object.assign({}, config.sections[section].categoriesQueries[filter]);
@@ -1141,7 +1141,7 @@ dataprovider.list = (req, res, section, model) => {
               nextpage: req.params.page ? parseFloat(req.params.page)+1 : 2
             });
           } else {
-            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"lnr-warning"});
+            res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
           }
         } else {
           let info = ' From ' + skip + ' to ' + (skip + config.sections[section].limit) + ' on ' + total + ' ' + title;

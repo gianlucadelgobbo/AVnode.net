@@ -19,15 +19,17 @@ block content
           - var slugplaceholder = __("Video Url")
           - var slughelptext = __("To have your video at https://avnode.net/videos/mybeautyfulvideo, please insert mybeautifulvideo (lower case, no spaces, no special characters)")
           include partials/slug
-          
-          .row
-            .col-md-6
-              include partials/is_public
-            .col-md-6
-              #categories
-                label.labelField=__("Categories")
+          include partials/is_public
+          #categories.vjtv
+            .row
+              .col-sm-4
+                label.labelField=__("VJTV Category")
+                .labelADD
+                  a(href='https://vjtelevision.com' target='_blank')
+                    img(src='/images/VJTV.png')
+              .col-sm-8
                 if !user.is_admin
-                  ul.list-unstyled
+                  ul.list-unstyled.mt-3
                     li
                       input.mr-2(id="DOC", name="categories", type="checkbox" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
                       label(for="DOC")="DOC"
@@ -45,7 +47,7 @@ block content
                       label(for="vjtv_exclude")
                         b="VJ TV EXCLUDE"
                 else
-                  ul.list-unstyled
+                  ul.list-unstyled.mt-3
                     li
                       input.mr-2(id="DOC", name="categories", type="radio" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
                       label(for="DOC")="DOC"

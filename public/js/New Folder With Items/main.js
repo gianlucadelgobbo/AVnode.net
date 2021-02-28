@@ -99,8 +99,8 @@ $(document).ready(function(){
     dots: false,
     nav: true,
     //autoplay: true,
-    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='icon-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='icon-chevron-right'></i></div>"],
     responsive:{
       600:{
         items:2
@@ -116,8 +116,8 @@ $(document).ready(function(){
     dots: false,
     nav: true,
     //autoplay: true,
-    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='icon-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='icon-chevron-right'></i></div>"],
     responsive:{
       100:{
         items:1
@@ -140,8 +140,8 @@ $(document).ready(function(){
     dots: false,
     nav: true,
     //autoplay: true,
-    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='icon-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='icon-chevron-right'></i></div>"],
     responsive:{
       100:{
         items:1
@@ -166,8 +166,8 @@ $(document).ready(function(){
     dots: false,
     nav: true,
     autoplay: true,
-    navText : ["<div class='carousel_nav carousel_nav_left'><i class='fa fa-chevron-left'></i></div>",
-    "<div class='carousel_nav carousel_nav_right'><i class='fa fa-chevron-right'></i></div>"],
+    navText : ["<div class='carousel_nav carousel_nav_left'><i class='icon-chevron-left'></i></div>",
+    "<div class='carousel_nav carousel_nav_right'><i class='icon-chevron-right'></i></div>"],
     responsive:{
       100:{
           items:1

@@ -1,9 +1,6 @@
 .performance_item_wrapper
   if item.schedule
-    div.time_schedule
-      span=item.schedule.starttimeTime 
-      span.lnr.lnr-chevron-right
-      span=item.schedule.endtimeTime
+    .time_schedule=item.schedule.starttimeTime + " > "+item.schedule.endtimeTime
 
   if item.performance.imageFormats
     a(href="/events/"+data.slug+"/program/"+item.performance.slug+"/", title=item.performance.title)
@@ -36,6 +33,6 @@
                 p.users_performance_item_views=item.performance.stats.visits+" "+global.__("views")
         .flex_right      
           .users_performance_item_likes
-            span.color2.lnr.lnr-heart
+            span.color2.icon-heart
             br
             span.text-nowrap=item.performance.stats.likes+" "+global.__("likes")

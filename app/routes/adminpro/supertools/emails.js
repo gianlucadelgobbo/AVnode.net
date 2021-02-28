@@ -11,7 +11,7 @@ const Playlist = mongoose.model('Playlist');
 const Gallery = mongoose.model('Gallery');
 const Video = mongoose.model('Video');
 const News = mongoose.model('News');
-const request = require('axios');
+const axios = require('axios');
 const fs = require('fs');
 const config = require('getconfig');
 const sharp = require('sharp');
@@ -139,13 +139,10 @@ router.get('/updateSendy', (req, res) => {
           //email.mailinglists = ee.mailinglists;
           mailinglists.push(email);
   
-          request.post({          
-              url: 'https://ml.avnode.net/subscribe',
-              formData: email
-          }, function (error, response, body) {
+          axios.post('https://ml.avnode.net/subscribe', {email})
+          .then((response) => {
             conta++;
-            logger.debug(error);
-            logger.debug(body);
+            logger.debug(response);
             if (conta === fatto) {
               res.render('adminpro/supertools/emails/showall', {
                 title: 'Emails',

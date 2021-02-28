@@ -1,23 +1,19 @@
 const router = require('../router')();
-const request = require('axios');
+const axios = require('axios');
 
 const logger = require('../../utilities/logger');
 
 router.get('/', (req, res, next) => {
-  request.get({
-      url: 'https://cms.avnode.net/'+global.getLocale()+'/wp-json/wp/v2/mypages'+req.baseUrl,
-      json: true
-    }, function (error, response, body) {
-      if (body) {
-        res.render('pages/show', {
-          title: body.post_title,
-          data: body
-        });
-      } else {
-        res.status(408).render('404', {path: req.originalUrl, title:__("408: Request Timeout"), titleicon:"lnr-warning"});
-      }
-    }
-  );
+  axios.get('https://cms.avnode.net/'+global.getLocale()+'/wp-json/wp/v2/mypages'+req.baseUrl)
+  .then((body) => {
+    logger.debug(body)
+    res.render('pages/show', {
+      title: body.data.post_title,
+      data: body.data
+    });
+  }, (error) => {
+    res.status(408).render('404', {path: req.originalUrl, title:__("408: Request Timeout"), titleicon:"icon-warning"});
+  });
 });
 
 module.exports = router;
