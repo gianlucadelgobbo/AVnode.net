@@ -27,7 +27,8 @@ html(lang='en')
         a.navbar-brand(href='/adminpro', title="AVnode.net")
           img(src='/images/logo_avnode_bar.svg', height='30', class='main_logo' alt='AVnode.net')
         button.navbar-toggler.navbar-toggler-right(type="button" data-toggle="collapse" data-target="#navbar-collapse_performer_template")
-          span.icon-menu.toggle_icon
+          .sr-only=__("Open menu")
+          i.icon-menu.toggle_icon
         .collapse.navbar-collapse(id="navbar-collapse_performer_template")
           include partials/menuHeaderEvents
 
