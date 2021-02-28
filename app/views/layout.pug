@@ -34,9 +34,9 @@ html(lang=session.current_lang)
     link(rel='apple-touch-icon', sizes='152x152', href='/icons/apple-touch-icon-152x152.png')
     link(rel='apple-touch-icon', sizes='180x180', href='/icons/apple-touch-icon-180x180.png')
 
-    link(rel='stylesheet', type='text/css', href='/css/main.min.css')
+    link(rel='stylesheet', rel="preload", type='text/css', href='/css/main.min.css')
     if scripts && scripts.indexOf("video")!==-1
-      link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
+      link(rel='stylesheet', rel="preload", type='text/css', href='/css/video-js.min.css')
     script(type="application/ld+json")
       !=JSON.stringify(jsonld)
     if scripts && scripts.indexOf("paypal")!==-1
