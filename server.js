@@ -47,9 +47,9 @@ app.set("view engine", "pug");
 app.set("view options", { debug: true });
 app.set("trust proxy", "loopback");
 
-var accessLogStream = fs.createWriteStream(__dirname + '/../logs/'+process.argv[3]+'_access.log', {flags: 'a'})
+var accessLogStream = fs.createWriteStream(__dirname + '/../logs/avnode_'+process.argv[3]+'_errors.log', {flags: 'a'})
 
-app.use(morgan('combined',  {"stream": accessLogStream}));
+app.use(morgan('combined',  { skip: function (req, res) { return res.statusCode < 400 }, "stream": accessLogStream}));
 //app.use(expressStatusMonitor());
 
 app.use(compression());

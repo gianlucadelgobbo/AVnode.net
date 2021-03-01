@@ -3,7 +3,7 @@
     each booking in item.bookings
       each schedule in booking.schedule
         .time_schedule
-          !=item.schedule.starttimeTime + " > "+item.schedule.endtimeTime
+          !=schedule.starttimeTime + " > "+schedule.endtimeTime
           !=" | "
           !=schedule.venue.room
 
