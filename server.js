@@ -13,6 +13,7 @@ const moment = require("moment");
 // Require mongoose models once!
 require("./app/models");
 
+const fs = require("fs");
 const config = require("getconfig");
 global.config = config;
 config.defaultLocale = process.argv[3];
@@ -46,7 +47,9 @@ app.set("view engine", "pug");
 app.set("view options", { debug: true });
 app.set("trust proxy", "loopback");
 
-app.use(morgan('combined'));
+var accessLogStream = fs.createWriteStream(__dirname + '/../logs/'+process.argv[3]+'_access.log', {flags: 'a'})
+
+app.use(morgan('combined',  {"stream": accessLogStream}));
 //app.use(expressStatusMonitor());
 
 app.use(compression());
