@@ -4,7 +4,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const path = require("path");
-//const morgan = require('morgan');
+const morgan = require('morgan');
 const MongoStore = require("connect-mongo")(session);
 const flash = require("express-flash");
 //const expressStatusMonitor = require('express-status-monitor');
@@ -46,7 +46,7 @@ app.set("view engine", "pug");
 app.set("view options", { debug: true });
 app.set("trust proxy", "loopback");
 
-//app.use(morgan('short'));
+app.use(morgan('combined'));
 //app.use(expressStatusMonitor());
 
 app.use(compression());
