@@ -1,6 +1,10 @@
 .form-group
 	label.labelField=__("City, country")
 	#addresses
+		- if (!data.addresses_private || !data.addresses_private.length) {
+		-  data.addresses_private = []
+		-  data.addresses_private.push({formatted_address:"", geometry: {}});
+		- }
 		each address, i in data.addresses
 			.mb-3
 				.input-group

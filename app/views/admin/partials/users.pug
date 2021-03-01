@@ -11,9 +11,9 @@
 	.row
 		.col-md-6.offset-md-3
 			.input-group.autocomplete_users
-				input.form-control(type='text' autocomplete='off' placeholder='Author' value='')
+				input.form-control(type='text' autocomplete='off' placeholder=get.sez=="events" ? __("Organization") : __("Author") value='')
 				.input-group-append
 					button.mb-2.btn.btn-success.disabled(type='button' data-objid=data._id data-obj=get.sez)
 						i.icon-plus
 						!=" "
-						b=__("ADD AUTHOR")
+						b=get.sez=="events" ? __("ADD ORGANIZATION") : __("ADD AUTHOR")

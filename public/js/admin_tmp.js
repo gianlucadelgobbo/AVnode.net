@@ -322,7 +322,7 @@ $(function () {
 				search: addUserAutocomplete/* ,
 				formatResult: addUserAutocompleteSelect */
 			},
-			noResultsText: "NO performers found, think about to invite him to join AVnode"
+			noResultsText: "NO user found, think about to invite him to join AVnode"
 		});
 		removeuser = (elem, event) => {
 			event.preventDefault();
@@ -391,7 +391,7 @@ $(function () {
 				search: addMemberAutocomplete/* ,
 				formatResult: addMemberAutocompleteSelect */
 			},
-			noResultsText: "NO performers found, think about to invite him to join AVnode"
+			noResultsText: "NO user found, think about to invite him to join AVnode"
 		});
 		removeMember = (elem, event) => {
 			event.preventDefault();

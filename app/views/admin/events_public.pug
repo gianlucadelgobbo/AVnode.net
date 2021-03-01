@@ -36,6 +36,10 @@ block content
         .card-header.mb-3
           h4.labelField=__("Schedule")
         #scheduleslist
+          - if (!data.schedule || !data.schedule.length) {
+          -  data.schedule = []
+          -  data.schedule.push({venue: {location:{geometry:{}}}});
+          - }
           for schedule, i in data.schedule
             .alert-secondary.mb-3
               .d-flex.justify-content-between.bg-secondary.pt-1.pr-1.pb-1
