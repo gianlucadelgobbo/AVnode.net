@@ -12,11 +12,11 @@ block content
 				.col-sm-6
 					.form-group
 						label.labelField Name
-						input.form-control(type='text' name='name' placeholder='Name' aria-describedby='slugHelpInline' value='Gianluca')
+						input.form-control(type='text' name='name' placeholder='Name' aria-describedby='slugHelpInline' value=data.name)
 				.col-sm-6
 					.form-group
 						label.labelField Surname
-						input.form-control(type='text' name='surname' placeholder='Surname' aria-describedby='slugHelpInline' value='Del Gobbo')
+						input.form-control(type='text' name='surname' placeholder='Surname' aria-describedby='slugHelpInline' value=data.surname)
 			.row
 				.col-sm-3
 					.form-group
@@ -27,7 +27,7 @@ block content
 							option(value="F" selected="F"==data.gender ? "selected" : undefined)=__("Female")
 							option(value="O" selected="O"==data.gender ? "selected" : undefined)=__("Other")
 				.col-sm-3
-					.form-group
+					//.form-group
 						label.labelField=__("Preferred Language")
 						select.form-control(name='lang')
 							option=__("Please select")
@@ -40,7 +40,7 @@ block content
 							input.form-control.mr-3(type='text' onchange='$(".birthday_real").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0])' id='birthday' style='width:125px' value=data.birthday && data.birthday.getDate() ? data.birthday.getDate()+"/"+(data.birthday.getMonth()+1)+"/"+data.birthday.getFullYear() : "")
 							input.birthday_real(type='hidden' name='birthday' value=data.birthday && data.birthday.getDate() ? data.birthday.getFullYear()+"/"+(data.birthday.getMonth()+1)+"/"+data.birthday.getDate() : "")
 				.col-sm-3
-					.form-group
+					//.form-group
 						label.labelField=__("Citizenship")
 						select.form-control(name='citizenship[0][value]' onchange="$('.citizenship_label').val($(this).find(':selected').text())")
 							option=__("Please select")
