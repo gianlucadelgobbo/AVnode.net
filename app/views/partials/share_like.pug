@@ -9,6 +9,6 @@ ul.list-inline.share_like_list
     li.list-inline-item
         button#liker.btn.btn-primary.button_share_like(type="button" data-endpoint="/likes/" data-method="GET" data-payload=payload style=data.liked ? "opacity: .65;" : undefined)
             .share_button
-                img(src=data.liked ? "/images/like_full_icon.svg" : "/images/icon_like.svg")
+                img(src=data.liked ? "/images/icon_like_full.svg" : "/images/icon_like.svg")
             .label_like_button_wrapper
                 span.label_like_button=data.liked ? "Unlike" : "Like"        

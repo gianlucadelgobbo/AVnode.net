@@ -37,7 +37,7 @@ block content
                   li
                     button#liker.button_share_like(type="button" onclick="liker()" data-endpoint="/likes/" data-method="GET" data-payload=payload style=data.liked ? "opacity: .65;" : undefined)
                       .share_button
-                          img(src=data.liked ? "/images/like_full_icon.svg" : "/images/icon_like.svg")
+                          img(src=data.liked ? "/images/icon_like_full.svg" : "/images/icon_like.svg")
                       .label_like_button_wrapper
                           span.label_like_button=data.liked ? "Unlike" : "Like"        
         video#my-video.video-js.vjs-big-play-centered(disablePictureInPicture width='100%', height='100%', poster=data.imageFormats.large)

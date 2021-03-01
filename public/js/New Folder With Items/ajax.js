@@ -96,7 +96,7 @@ var liker = () => {
         $label.html("Unlike");
         $likes_count.html(parseFloat($likes_count.html())+1);
         $el.attr("style","opacity: .65;");
-        $icon.attr("src","/images/like_full_icon.svg");
+        $icon.attr("src","/images/icon_like_full.svg");
       }
     }
   });
