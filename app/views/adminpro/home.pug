@@ -52,7 +52,7 @@ block content
       if (conta==0) {
         $('#myModal .modal-body').html("");
         for (var a=0;a<genUrl.length;a++) {
-          $('#myModal .modal-body').append("<div id=\"genUrl"+a+"\"><i class=\"fas fa-spinner fa-spin\"></i> "+genUrl[a]+"</div>");
+          $('#myModal .modal-body').append("<div id=\"genUrl"+a+"\"><i class=\"fas fa-spinner animate-spin\"></i> "+genUrl[a]+"</div>");
           window.open(genUrl[a], a);
         }
         $('#myModal .modal-footer .btn-primary').addClass("disabled");
@@ -71,7 +71,7 @@ block content
       //-     generateHomes(conta);
       //-   }
       //- }).done(function(doc) {
-      //-   $('#myModal .modal-body #genUrl'+conta+" .fas").removeClass("fa-spinner fa-spin");
+      //-   $('#myModal .modal-body #genUrl'+conta+" .fas").removeClass("fa-spinner animate-spin");
       //-   $('#myModal .modal-body #genUrl'+conta+" .fas").addClass("fa-check-circle");
       //-   if (conta+1 < genUrl.length) {
       //-     generateHomes(conta+1);

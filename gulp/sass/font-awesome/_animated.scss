@@ -2,14 +2,14 @@
 // --------------------------
 
 .#{$fa-css-prefix}-spin {
-  animation: fa-spin 2s infinite linear;
+  animation: animate-spin 2s infinite linear;
 }
 
 .#{$fa-css-prefix}-pulse {
-  animation: fa-spin 1s infinite steps(8);
+  animation: animate-spin 1s infinite steps(8);
 }
 
-@keyframes fa-spin {
+@keyframes animate-spin {
   0% {
     transform: rotate(0deg);
   }

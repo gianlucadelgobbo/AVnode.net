@@ -85,7 +85,7 @@ block content
                 td
                   a(href="/admin/crews/"+item._id+"/public", target="_blank", title=global.__("edit"))
                     span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                      i.fas.fa-edit
+                      i.icon-edit
                   !=" | "
                   a.unlink(href="#", data-owner=owner, data-partner=item._id, title=global.__("Unlink"))
                     span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
@@ -112,11 +112,11 @@ block content
                         div
                           a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify(contact), data-index=index)
                             span(data-toggle="tooltip", data-placement="top", title="Edit")
-                              i.fas.fa-edit
+                              i.icon-edit
                           !=" "
                           a.text-danger.deleteContact(href="#" data-id=item._id, data-stagename=item.stagename, data-index=index)
                             span(data-toggle="tooltip", data-placement="top", title="Delete")
-                              i.fas.fa-trash
+                              i.icon-trash
                           !=" | "
                           if contact.lang
                             !=contact.lang
@@ -137,7 +137,7 @@ block content
                                 div
                                   a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
                                     span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
-                                      i.fas.fa-arrow-left
+                                      i.icon-arrow-left
                                   !=" | "
                                   a(href="/"+contact.slug, target="_blank", title=global.__("View"))
                                     span(data-toggle="tooltip", data-placement="top", title=global.__("View"))

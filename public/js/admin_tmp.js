@@ -268,7 +268,7 @@ $(function () {
 					dz.removeAllFiles()
 					$("#medias").html("")
 					for (var item=0; item<data2.medias.length; item++) {
-						$("#medias").append('<div class="col-md-4 col-sm-6 ui-sortable-handle"><img class="img-fluid" src="'+data2.medias[item].imageFormats.large+'"><div class="d-flex justify-content-between mb-3 mt-1"><input class="form-control mediaitem" type="text" value=\''+JSON.stringify(data2.medias[item])+'\' data-id="'+item+'" name="mediastr"><input class="form-control title" type="text" value="'+data2.medias[item].title+'"><button class="btn btn-danger ml-2 remove" type="button"><i class="fa fa-trash"></i></button></div></div>')
+						$("#medias").append('<div class="col-md-4 col-sm-6 ui-sortable-handle"><img class="img-fluid" src="'+data2.medias[item].imageFormats.large+'"><div class="d-flex justify-content-between mb-3 mt-1"><input class="form-control mediaitem" type="text" value=\''+JSON.stringify(data2.medias[item])+'\' data-id="'+item+'" name="mediastr"><input class="form-control title" type="text" value="'+data2.medias[item].title+'"><button class="btn btn-danger ml-2 remove" type="button"><i class="icon-trash"></i></button></div></div>')
 					}
 					activateSortable();
 					$("#formmultiupload .enableBorder").removeClass("d-none");
@@ -331,7 +331,7 @@ $(function () {
 			$("#users .alert").addClass("d-none")
 			if(confirm("Are you sure you want to remove elem user?")) {
 				$(elem).find("i").addClass("fa-spinner");
-				$(elem).find("i").addClass("fa-spin");
+				$(elem).find("i").addClass("animate-spin");
 				$(elem).find("i").removeClass("fa-trash");
 				$.ajax({
 					url: "/admin/api/crews/"+$(elem).data("crewid")+"/users/remove/"+$(elem).data("id")+"",
@@ -341,7 +341,7 @@ $(function () {
 				})
 				.fail((error) => {
 					$(elem).find("i").removeClass("fa-spinner");
-					$(elem).find("i").removeClass("fa-spin");
+					$(elem).find("i").removeClass("animate-spin");
 					$(elem).find("i").addClass("fa-trash");
 					$("#users .alert").addClass("alert-danger");
 					$("#users .alert").html(error.responseJSON.message);
@@ -356,13 +356,13 @@ $(function () {
 			$(elem).parent().find("button").on("click", function () {
 				var objid = $(this).data("objid");
 				var obj = $(this).data("obj");
-				$("#users").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="fa fa-spinner fa-spin"></i></a> | '+item.text+'</div>')
+				$("#users").append('<div class="mb-3 saving"><a href="#" data-objid="'+objid+'" data-obj="'+obj+'"><i class="icon-spinner animate-spin"></i></a> | '+item.text+'</div>')
 				$.ajax({
 					url: "/admin/api/"+ obj +"/"+ objid +"/users/add/"+item.value,
 					method: "get"
 				}).done((data) => {
 					$("#users .saving a i").removeClass("fa-spinner");
-					$("#users .saving a i").removeClass("fa-spin");
+					$("#users .saving a i").removeClass("animate-spin");
 					$("#users .saving a i").addClass("fa-trash");
 					$("#users .saving a").attr("data-id", item.value)
 					$("#users .saving").removeClass("saving");
@@ -400,7 +400,7 @@ $(function () {
 			$("#members .alert").addClass("d-none")
 			if(confirm("Are you sure you want to remove elem member?")) {
 				$(elem).find("i").addClass("fa-spinner");
-				$(elem).find("i").addClass("fa-spin");
+				$(elem).find("i").addClass("animate-spin");
 				$(elem).find("i").removeClass("fa-trash");
 				$.ajax({
 					url: "/admin/api/crews/"+$(elem).data("crewid")+"/members/remove/"+$(elem).data("id")+"",
@@ -410,7 +410,7 @@ $(function () {
 				})
 				.fail((error) => {
 					$(elem).find("i").removeClass("fa-spinner");
-					$(elem).find("i").removeClass("fa-spin");
+					$(elem).find("i").removeClass("animate-spin");
 					$(elem).find("i").addClass("fa-trash");
 					$("#members .alert").addClass("alert-danger");
 					$("#members .alert").html(error.responseJSON.message);
@@ -424,13 +424,13 @@ $(function () {
 			$(elem).parent().find("button").removeClass("disabled");
 			$(elem).parent().find("button").on("click", function () {
 				var crewid = $(this).data("crewid");
-				$("#members").append('<div class="mb-3 saving"><a href="#" data-crewid="'+crewid+'"><i class="fa fa-spinner fa-spin"></i></a> | '+item.text+'</div>')
+				$("#members").append('<div class="mb-3 saving"><a href="#" data-crewid="'+crewid+'"><i class="icon-spinner animate-spin"></i></a> | '+item.text+'</div>')
 				$.ajax({
 					url: "/admin/api/crews/"+ crewid +"/members/add/"+item.value,
 					method: "get"
 				}).done((data) => {
 					$("#members .saving a i").removeClass("fa-spinner");
-					$("#members .saving a i").removeClass("fa-spin");
+					$("#members .saving a i").removeClass("animate-spin");
 					$("#members .saving a i").addClass("fa-trash");
 					$("#members .saving a").attr("data-id", item.value)
 					$("#members .saving").removeClass("saving");

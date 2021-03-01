@@ -75,7 +75,7 @@ block content
                           b
                             a.edit-price(data-program=item._id, href="#")
                               span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                                i.fas.fa-edit
+                                i.icon-edit
 
                   if item.schedule[0].price && item.schedule[0].alleventschedulewithoneprice
                     p.price
@@ -84,7 +84,7 @@ block content
                       b
                         a.edit-price(data-program=item._id, href="#")
                           span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                            i.fas.fa-edit
+                            i.icon-edit
                   else if !item.schedule[0].price
                     p.price
                       !="Price: "
@@ -93,7 +93,7 @@ block content
                       b
                         a.edit-price(data-program=item._id, href="#")
                           span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                            i.fas.fa-edit
+                            i.icon-edit
                 else
                   .badge.badge-danger=global.__('TO BE SCHEDULED')
                 div
@@ -102,7 +102,7 @@ block content
                   b
                     a.edit-cost(data-program=item._id, href="#")
                       span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                        i.fas.fa-edit
+                        i.icon-edit
                   br
                   if item.fee || item.accommodation_cost || item.transfer_cost
                     !="Fee: <b>"+(item.fee ? item.fee : "0")+" €</b>"
@@ -127,7 +127,7 @@ block content
               if user.is_admin
                 a(href="/admin/performances/"+item.performance._id+"/public", target="_blank")
                   span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                    i.fas.fa-edit
+                    i.icon-edit
                 !=" | "
               a(href="/performances/"+item.performance.slug, target="_blank")
                 span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
@@ -248,7 +248,7 @@ block content
                     if user.is_admin
                       a(href="/admin/"+(useruser.is_crew ? "crews" : "profile")+"/"+useruser._id+"/public", target="_blank")
                         span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                          i.fas.fa-edit
+                          i.icon-edit
                       !=" | "
                     a(href="/"+useruser.slug, target="_blank")
                       span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
@@ -286,7 +286,7 @@ block content
               b
                 a.edit-availability(data-program=item._id, href="#")
                   span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                    i.fas.fa-edit
+                    i.icon-edit
             if !item.subscriptions || !item.subscriptions.length
               .badge.badge-danger MISSING
             else
