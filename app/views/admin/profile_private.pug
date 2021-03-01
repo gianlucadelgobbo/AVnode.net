@@ -45,9 +45,7 @@ block content
 						select.form-control(name='citizenship[0][value]' onchange="$('.citizenship_label').val($(this).find(':selected').text())")
 							option=__("Please select")
 							each country in countries
-								option(value=country.value selected=country.value==data.citizenship[0].value ? "selected" : undefined)=country.label
-							input.citizenship_label(type='text' name='citizenship[0][label]' value=data.citizenship[0].label)
-
+								option(value=country.value selected=data.citizenship && data.citizenship[0] && data.citizenship[0].value && data.citizenship[0].value==country.value ? "selected" : undefined)=country.label
 			.row
 				.col-sm-6
 					include partials/addresses_private
