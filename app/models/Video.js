@@ -78,7 +78,7 @@ videoSchema.virtual('about').get(function (req) {
     } else {
       aboutA = this.abouts.filter(item => item.lang === "en");
       if (aboutA.length && aboutA[0].abouttext) {
-        about = "[Text available only in English] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
+        about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext.replace(/\r\n/g, '<br />');
       }
     }
     about = about.replace(new RegExp(/\n/gi)," <br />");

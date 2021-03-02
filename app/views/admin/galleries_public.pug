@@ -14,7 +14,7 @@ block content
             label.labelField(for='title')=__("Title")
             input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
             if err && Object.keys(err.errors).indexOf('title')!==-1
-              .error-message=err.errors.title.message
+              .badge.badge-danger=err.errors.title.message
           - var slugtitle = __("Profile Url")
           - var slugplaceholder = __("Profile Url")
           - var slughelptext = __("To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)")
@@ -27,7 +27,7 @@ block content
 
         .col-md-5
           .mb-3
-            img.img-fluid(src=data.medias[0].imageFormats.large alt=data.title)
+            img.img-fluid(src=data.imageFormats.large alt=data.title)
       #gallery
         .d-flex.justify-content-between.mb-3
           h4 Images

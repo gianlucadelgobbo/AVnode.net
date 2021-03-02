@@ -158,62 +158,58 @@ router.signupValidator = (put, cb) => {
   //put = {};
   //put.birthday="01-09-2018";
   //const birthday = helper.dateFix(put.birthday);
-  if (!put.password || put.password == "") {
-    errors.errors.password = {
-      "message": "Password is required"
-    };
-  } else if (put.password !== put.confirmPassword) {
-    errors.errors.confirmPassword = {
-      "message": "Password confirm do not match"
-    };
-  } 
-  if (!put.addresses || !put.addresses[0] || !put.addresses[0].geometry) {
-    errors.errors.addresses = {
-      "message": "City, Country is in a wrong format, please select one from the results list on the bottom of the field",
-      "name": "CastError",
-      "stringValue":"\"Invalid Date\"",
-      "kind":"Date",
-      "value":null,
-      "path":"birthday",
-      "reason":{
-        "message":"City, Country is in a wrong format, please select one from the results list on the bottom of the field",
-        "name":"CastError","stringValue":"\"Invalid Date\"",
-        "kind":"date",
-        "value":null,
-        "path":"birthday"
-      }
-    };
-    errors.message += "City, Country is in a wrong format, please select one from the results list on the bottom of the field"+"<br/>";
-    errors.name += "ValidationError"+"<br/>";
-  } 
-  /*
-  */
-  if (put.crewslug && put.slug.trim() === put.crewslug.trim()) {
-    errors.errors.slug = {
-      "message": "Crew Profile URL can not be the equal to the Profile URL",
-      "name": "MongoError",
-      "stringValue":"\"Duplicate Key\"",
-      "kind":"Date",
-      "value":null,
-      "path":"slug",
-      "reason":{
-        "message":"Crew Profile URL can not be the equal to the Profile URL",
-        "name":"MongoError",
-        "stringValue":"\"Duplicate Key\"",
-        "kind":"string",
-        "value":null,
-        "path":"slug"
-      }
-    };
-    errors._message += "UserTemp validation failed"+"<br/>";
-    errors.message += "Crew Profile URL can not be the equal to the Profile URL"+"<br/>";
-    errors.name += "MongoError"+"<br/>";
+  if (put.crewname && put.crewname.trim() === put.stagename.trim()) {
+    errors.errors.crewname = {
+      "message": __("Crew name can not be the equal to the Stage name")
+    }
   }
-  if (!put.email) {
+  if (!put.stagename || put.stagename == "") {
+    errors.errors.stagename = {
+      "message": __("Stage name is required")
+    };
+  }
+  if (!put.birthday || put.birthday == "") {
+    errors.errors.birthday = {
+      "message": __("Birthday is required")
+    };
+  }
+  if (!put.email || put.email == "") {
     errors.errors.email = {
       "message": "Email is required"
     }
   }
+
+
+  if (!put.addresses || !put.addresses.length) {
+    errors.errors.addresses = [{
+      "message": __("City, Country is in a wrong format, please select one from the results list on the bottom of the field")
+    }]
+  } else {
+    for(var i=0; i<put.addresses.length; i++ ){
+      if (!put.addresses[i].geometry || !put.addresses[i].formatted_address || !put.addresses[i].geometry.lat){
+        if (!errors.errors.addresses) errors.errors.addresses = [];
+        errors.errors.addresses[i] = {
+          "message": __("City, Country is in a wrong format, please select one from the results list on the bottom of the field")
+        }
+      }
+    }
+  }
+  if (!put.password || put.password == "") {
+    errors.errors.password = {
+      "message": __("Password is required")
+    };
+  }
+  if (!put.confirmPassword || put.confirmPassword == "") {
+    errors.errors.confirmPassword = {
+      "message": __("Password confirm is required")
+    };
+  } else if (put.password !== put.confirmPassword) {
+    errors.errors.confirmPassword = {
+      "message": __("Password confirm do not match")
+    };
+  }
+  /*
+  */
   if (Object.keys(errors.errors).length)  {
     cb(put, errors);
   } else {
@@ -224,29 +220,12 @@ router.signupValidator = (put, cb) => {
       } else {
         if (docs.length) {
           errors.errors.email = {
-            "message": "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
-            "name": "MongoError",
-            "stringValue":"\"Duplicate Key\"",
-            "kind":"Date",
-            "value":null,
-            "path":"email",
-            "reason":{
-              "message":"There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>",
-              "name":"MongoError",
-              "stringValue":"\"Duplicate Key\"",
-              "kind":"string",
-              "value":null,
-              "path":"email"
-            }
-          };
-          errors._message += "UserTemp validation failed"+"<br/>",
-          errors.message += "There is already an account with this email: \""+put.email+"\". Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>"+"<br/>",
-          errors.name += "MongoError"+"<br/>"
+            "message": "There is already an account with this email: \""+put.email+"\".<br />Please login <a href='/login?email="+put.email+"'>here</a> or ask for a password <a href='/password/forgot?email="+put.email+"'>here</a>"
+          }
         }
         cb(put, errors);
       }
     });
-  
   }
 }
 

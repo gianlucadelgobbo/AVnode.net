@@ -22,7 +22,7 @@ block content
 					.form-group
 						label.labelField=__("Gender")
 						select.form-control(name='gender')
-							option=__("Please select")
+							option(value="")=__("Please select")
 							option(value="M" selected="M"==data.gender ? "selected" : undefined)=__("Male")
 							option(value="F" selected="F"==data.gender ? "selected" : undefined)=__("Female")
 							option(value="O" selected="O"==data.gender ? "selected" : undefined)=__("Other")

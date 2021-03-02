@@ -14,7 +14,7 @@ block content
             label.labelField(for='title')=__("Title")
             input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
             if err && Object.keys(err.errors).indexOf('title')!==-1
-              .error-message=err.errors.title.message
+              .badge.badge-danger=err.errors.title.message
           - var slugtitle = __("Performance Url")
           - var slugplaceholder = __("Performance Url")
           - var slughelptext = __("To have your performance at https://avnode.net/performances/mybeautyfulperformance, please insert mybeautyfulperformance (lower case, no spaces, no special characters)")
@@ -35,7 +35,7 @@ block content
         input.form-control.mr-3.ml-3(type='text' name='duration' id='duration' placeholder=__("Duration") value=data.duration aria-describedby="durationHelpInline")
         #durationHelpInline=__("minutes")
         if err && Object.keys(err.errors).indexOf('duration')!==-1
-          .error-message=err.errors.duration.message
+          .badge.badge-danger=err.errors.duration.message
       include partials/tech_arts
       include partials/tech_reqs
 

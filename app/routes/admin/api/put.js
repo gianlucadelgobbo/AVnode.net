@@ -79,6 +79,7 @@ router.putData = (req, res, view) => {
                   logger.debug(view);
                   res.status(400).send({ message: `${JSON.stringify(err)}` });
                 } else {
+                  for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
                   req.flash('errors', {msg: `${JSON.stringify(err)}`});
                   res.status(400).render(view, {
                     title: view,
@@ -112,6 +113,7 @@ router.putData = (req, res, view) => {
                       if (view == "json") {
                         res.status(500).send({ message: `${JSON.stringify(err)}` });
                       } else {
+                        for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
                         req.flash('errors', {msg: `${JSON.stringify(err)}`});
                         res.status(500).render(view, {
                           title: view,
@@ -180,6 +182,7 @@ router.putData = (req, res, view) => {
         if (view == "json") {
           res.status(500).send({ message: `${JSON.stringify(err)}` });
         } else {
+          for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
           req.flash('errors', {msg: `${JSON.stringify(err)}`});
           res.status(500).render(view, {
             title: view,

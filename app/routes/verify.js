@@ -250,9 +250,6 @@ router.signupVerifyValidator = (put, cb) => {
             "path":"email"
           }
         };
-        errors._message += "User validation failed"+"<br/>",
-        errors.message += "E11000 duplicate key error collection: avnode.users index: email_1 dup key: { : \""+put.email+"\" }"+"<br/>",
-        errors.name += "MongoError"+"<br/>"
       }
       User.find({ 'slug': put.slug }, "_id", function(err, docs) {
         if (err) {
@@ -261,24 +258,8 @@ router.signupVerifyValidator = (put, cb) => {
         } else {
           if (docs.length) {
             errors.errors.slug = {
-              "message": "E11000 duplicate key error collection: avnode.user index: slug_1 dup key: { : \""+put.slug+"\" }",
-              "name": "MongoError",
-              "stringValue":"\"Duplicate Key\"",
-              "kind":"Date",
-              "value":null,
-              "path":"slug",
-              "reason":{
-                "message":"E11000 duplicate key error collection: avnode.user index: slug_1 dup key: { : \""+put.slug+"\" }",
-                "name":"MongoError",
-                "stringValue":"\"Duplicate Key\"",
-                "kind":"string",
-                "value":null,
-                "path":"slug"
-              }
+              "message": "E11000 duplicate key error collection: avnode.user index: slug_1 dup key: { : \""+put.slug+"\" }"
             };
-            errors._message += "User validation failed"+"<br/>",
-            errors.message += "E11000 duplicate key error collection: avnode.user index: slug_1 dup key: { : \""+put.slug+"\" }"+"<br/>",
-            errors.name += "MongoError"+"<br/>"
           }
           if (put.crewslug) {
             User.find({ 'slug': put.crewslug }, "_id", function(err, docs) {
@@ -288,24 +269,8 @@ router.signupVerifyValidator = (put, cb) => {
               } else {
                 if (docs.length) {
                   errors.errors.crewslug = {
-                    "message": "E11000 duplicate key error collection: avnode.user index: crewslug_1 dup key: { : \""+put.crewslug+"\" }",
-                    "name": "MongoError",
-                    "stringValue":"\"Duplicate Key\"",
-                    "kind":"Date",
-                    "value":null,
-                    "path":"crewslug",
-                    "reason":{
-                      "message":"E11000 duplicate key error collection: avnode.user index: crewslug_1 dup key: { : \""+put.crewslug+"\" }",
-                      "name":"MongoError",
-                      "stringValue":"\"Duplicate Key\"",
-                      "kind":"string",
-                      "value":null,
-                      "path":"crewslug"
-                    }
+                    "message": "E11000 duplicate key error collection: avnode.user index: crewslug_1 dup key: { : \""+put.crewslug+"\" }"
                   };
-                  errors._message += "User validation failed"+"<br/>",
-                  errors.message += "E11000 duplicate key error collection: avnode.user index: crewslug_1 dup key: { : \""+put.crewslug+"\" }"+"<br/>",
-                  errors.name += "MongoError"+"<br/>"
                 } 
                 cb(put, errors);
               }

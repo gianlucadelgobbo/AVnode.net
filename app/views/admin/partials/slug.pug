@@ -5,6 +5,6 @@
 			span.input-group-text https://avnode.net/
 		input.form-control(type='text' name='slug' id='slug' aria-describedby="slugHelpInline" placeholder=slugplaceholder value=data.slug)
 	small#slugHelpInline.help=slughelptext
-	.error-message
+	.badge.badge-danger
 		if err && Object.keys(err.errors).indexOf('slug')!==-1
 			!=err.errors.slug.message

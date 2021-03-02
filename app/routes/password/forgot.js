@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
       throw err;
     }
     if (user === null) {
-      req.flash('errors', {msg: __('User not found.')});
+      req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: __('User not found.')}}})}`});
       res.redirect('/password/forgot');
     } else {
       const token = uuid.v4();
@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
 
       user.save((err) => {
         if (err) {
-          req.flash('errors', {msg: __('Password not generated, please retry.')});
+          req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: __('Password not generated, please retry.')}}})}`});
           res.redirect('/password/forgot');
         } else {
           mailer.mySendMailer({
@@ -55,7 +55,7 @@ router.post('/', (req, res) => {
         }
           }, function (err){
             if (err) {
-              req.flash('errors', {msg: __('Unable to send Confirm Email.')});
+              req.flash('errors', {msg: `${JSON.stringify({errors: {email: { message: __('Unable to send Confirm Email.')}}})}`});
               res.redirect('/password/forgot');
             } else {
               req.flash('success', {msg: __('Password reset link sent to:')+" "+req.body.email });

@@ -61,6 +61,7 @@ $(function () {
 		$(".duplicator").on("click", function () {
 			console.log($(this).data("duplicate"));
 			var list = $("#"+$(this).data("duplicate"));
+			var clone = $($(list).children()[0]).clone();
 			console.log(list);
 			console.log(clone);
 			clone.find('button').each(function() {

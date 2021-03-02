@@ -9,6 +9,7 @@ router.get('/:email?/:token?', (req, res) => {
       throw err;
     }
     if (user === null) {
+      req.flash('errors', {msg: `${JSON.stringify({errors: {token: { message: __('User not found.')}}})}`});
       req.flash('errors', {msg: __('User not found.')});
       res.redirect('/login');
     }
@@ -17,7 +18,7 @@ router.get('/:email?/:token?', (req, res) => {
     const expired = moment(user.passwordResetExpires).unix();
 
     if (now > expired) {
-      req.flash('errors', {msg: __('This link is expired. Request a new one…')});
+      req.flash('errors', {msg: `${JSON.stringify({errors: {token: { message: __('This link is expired. Request a new one...')}}})}`});
       res.redirect('/password/forgot');
     } else {
       res.render('password/reset', {

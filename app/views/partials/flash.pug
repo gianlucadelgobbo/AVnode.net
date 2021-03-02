@@ -1,12 +1,24 @@
 if messages.errors
+  - console.log(messages.errors)
   .container.mt-3
     .alert.alert-danger
+      h4=global.__("ERROR")
       for error in messages.errors
-        if error.msg instanceof Object
-          for item in error.msg
-            if item instanceof Object
+        if error instanceof Object
+          - error.msg = JSON.parse(error.msg)
+        if Object.keys(error.msg).length
+          ul.mb-0
+            for item in error.msg
               for err in item
-                div!=err.message
+                if err instanceof Object && err.length
+                  for err2 in err
+                    if err2.message
+                      li!=err2.message
+                else
+                  if err.message
+                    li!=err.message
+        else if error.msg.message
+          div!=error.msg.message
         else
           div!=error.msg
 

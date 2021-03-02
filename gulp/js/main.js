@@ -3,7 +3,13 @@ $(document).ready(function(){
 		$('#birthday').datetimeEntry({datetimeFormat: 'D/O/Y', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
   }
   
-	if ($(".location-search-input") && $(".location-search-input").length) {
+	if ($(".form-control") && $(".form-control").length) {
+    $(".form-control").on("focus", function(){
+      if ($(this).parent().find('.badge').length) $(this).parent().find('.badge').remove();
+    });
+  }
+
+  if ($(".location-search-input") && $(".location-search-input").length) {
 		$(".location-search-input").on("keyup", function() {
 			$(this).parent().find(".lat").val("");
 			$(this).parent().find(".lng").val("");
@@ -91,6 +97,7 @@ $(document).ready(function(){
       $('#modalNewContent').modal();
     }
   });
+  
   $( "#modalNewContent form" ).submit(function( event ) {
     event.preventDefault();
     var post = $( this ).serialize();

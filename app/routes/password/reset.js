@@ -11,17 +11,17 @@ router.get('/:token', (req, res) => {
 
 router.post('/', (req, res) => {
   if (req.body.token.length<5) {
-    req.flash('errors', {msg: __('Link to change the password has expired or is not valid.')});
+    req.flash('errors', {msg: `${JSON.stringify({errors: {token: { message: __('Link to change the password has expired or is not valid.')}}})}`});
     res.redirect('/password/forgot/');
   } else {
     User.findOne({passwordResetToken: req.body.token}, "password passwordResetToken passwordResetExpires", (err, user) => {
       if (!user) {
-        req.flash('errors', {msg: __('Link to change the password has expired or is not valid.')});
+        req.flash('errors', {msg: `${JSON.stringify({errors: {password: { message: __('Link to change the password has expired or is not valid.')}}})}`});
         res.redirect('/password/forgot/');
       } else {
         // FIXME Validate password…
         if (req.body.password !== req.body.retypePassword) {
-          req.flash('errors', {msg: __('Password and Password confirm does not match. Try again...')});
+          req.flash('errors', {msg: `${JSON.stringify({errors: {password: { message: __('Password and Password confirm does not match. Try again...')}}})}`});
           res.redirect('/password/reset/'+user.passwordResetToken);
         } else {
           user.passwordResetExpires = null;

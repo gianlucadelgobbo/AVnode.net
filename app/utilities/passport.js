@@ -58,7 +58,7 @@ passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true
           } else {
             logger.debug('passport.use User.comparePassword and flxer Invalid email or password');
             var msg = isFlxerMatch.errno == "ENETUNREACH" ?  __('Old FLxER website is temporarily unavailable. Please try later.') :  __('Invalid email or password.')
-            return done(null, false, { msg: msg });
+            return done(null, false, { msg: JSON.stringify({errors:{password: {message: msg}}}) });
           }
         });
       }

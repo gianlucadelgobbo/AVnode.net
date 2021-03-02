@@ -78,13 +78,13 @@ const userSchema = new Schema({
   },
   likes: {},
 
-  slug: { type: String, unique: true, trim: true, required: [true, 'FIELD_REQUIRED'], minlength: [3, 'FIELD_TOO_SHORT'], maxlength: [50, 'FIELD_TOO_LONG'] ,
+  slug: { type: String, unique: true, trim: true, required: [true, 'PROFILE_URL_IS_REQUIRED'], minlength: [3, 'PROFILE_URL_IS_TOO_SHORT'], maxlength: [50, 'PROFILE_URL_IS_TOO_LONG'] ,
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
     }, 'URL_IS_NOT_VALID']
   },
-  stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'FIELD_REQUIRED'], minlength: [3, 'FIELD_TOO_SHORT'], maxlength: [50, 'FIELD_TOO_LONG'] },
+  stagename: { type: String, /*unique: true, TODO TO CHECK*/ required: [true, 'STAGE_NAME_IS_REQUIRED'], minlength: [3, 'STAGE_NAME_IS_TOO_SHORT'], maxlength: [50, 'STAGE_NAME_IS_TOO_LONG'] },
   addresses: [Address],
   abouts: [About],
   web: [Link],
@@ -94,7 +94,10 @@ const userSchema = new Schema({
 
   name: { type: String, trim: true, maxlength: 50 },
   surname: { type: String, trim: true, maxlength: 50 },
-  gender: { type: String, trim: true, enum: ['M', 'F', 'O'] },
+  gender: { type: String, trim: true, enum: {
+    values: ['M', 'F', 'O'],
+    message: 'GENDER_IS_NOT_VALID'
+  } },
   lang: { type: String, trim: true, required: function() { return !this.is_crew; }},
   birthday: { type: Date, required: function() { return !this.is_crew; }},
   citizenship: [Citizenship],
@@ -469,37 +472,19 @@ userSchema.pre('save', function (next) {
   if (this.emails && this.emails.length) {
     if (this.emails.filter(item => item.is_primary).length===0) {
       const err = {
-        "message": "MISSING ONE PRIMARY EMAIL",
-        "name": "MongoError",
-        "stringValue":"\"MISSING ONE PRIMARY EMAIL\"",
-        "kind":"Email",
-        "value":null,
-        "path":"email",
-        "reason":{
-          "message":"MISSING ONE PRIMARY EMAIL",
-          "name":"MongoError",
-          "stringValue":"\"MISSING ONE PRIMARY EMAIL\"",
-          "kind":"string",
-          "value":null,
-          "path":"email"
+        "errors": {
+          "email": {
+            "message": "MISSING_ONE_PRIMARY_EMAIL"
+          }
         }
       };
       next(err);
     } else if (this.emails.filter(item => item.is_primary).length>1) {
       const err = {
-        "message": "ONLY ONE EMAIL CAN BE PRIMARY",
-        "name": "MongoError",
-        "stringValue":"\"ONLY ONE EMAIL CAN BE PRIMARY\"",
-        "kind":"Email",
-        "value":null,
-        "path":"email",
-        "reason":{
-          "message":"ONLY ONE EMAIL CAN BE PRIMARY",
-          "name":"MongoError",
-          "stringValue":"\"ONLY ONE EMAIL CAN BE PRIMARY\"",
-          "kind":"string",
-          "value":null,
-          "path":"email"
+        "errors": {
+          "email": {
+            "message": "ONLY_ONE_EMAIL_CAN_BE_PRIMARY"
+          }
         }
       };
       next(err);
@@ -523,8 +508,7 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
     const err = {
       "errors": {
         "password": {
-          "message": error,
-          "name": "MongoError"
+          "message": error
         }
       }
     };
