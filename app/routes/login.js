@@ -82,7 +82,7 @@ const postLoginSchema = {
   body: {
     _csrf: Joi.string().required().error(new Error(__('Sorry, malformed request.'))),
     email: Joi.string().email().required().error(new Error(__('E-mail is not correct.'))),
-    password: Joi.string().required().error(new Error(__('Password is required!')))
+    password: Joi.string().required().error(new Error(__('PASSWORD_IS_REQUIRED!')))
   }
 };
 */

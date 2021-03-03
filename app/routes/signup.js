@@ -160,48 +160,48 @@ router.signupValidator = (put, cb) => {
   //const birthday = helper.dateFix(put.birthday);
   if (put.crewname && put.crewname.trim() === put.stagename.trim()) {
     errors.errors.crewname = {
-      "message": __("Crew name can not be the equal to the Stage name")
+      "message": __("CREW_NAME_CAN_NOT_BE_THE_EQUAL_TO_THE_STAGE_NAME")
     }
   }
   if (!put.stagename || put.stagename == "") {
     errors.errors.stagename = {
-      "message": __("Stage name is required")
+      "message": __("STAGE_NAME_IS_REQUIRED")
     };
   }
   if (!put.birthday || put.birthday == "") {
     errors.errors.birthday = {
-      "message": __("Birthday is required")
+      "message": __("BIRTHDAY_IS_REQUIRED")
     };
   }
   if (!put.email || put.email == "") {
     errors.errors.email = {
-      "message": "Email is required"
+      "message": "EMAIL_IS_REQUIRED"
     }
   }
 
 
   if (!put.addresses || !put.addresses.length) {
     errors.errors.addresses = [{
-      "message": __("City, Country is in a wrong format, please select one from the results list on the bottom of the field")
+      "message": __("ADDRESS_IS_IN_A_WRONG_FORMAT")
     }]
   } else {
     for(var i=0; i<put.addresses.length; i++ ){
       if (!put.addresses[i].geometry || !put.addresses[i].formatted_address || !put.addresses[i].geometry.lat){
         if (!errors.errors.addresses) errors.errors.addresses = [];
         errors.errors.addresses[i] = {
-          "message": __("City, Country is in a wrong format, please select one from the results list on the bottom of the field")
+          "message": __("ADDRESS_IS_IN_A_WRONG_FORMAT")
         }
       }
     }
   }
   if (!put.password || put.password == "") {
     errors.errors.password = {
-      "message": __("Password is required")
+      "message": __("PASSWORD_IS_REQUIRED")
     };
   }
   if (!put.confirmPassword || put.confirmPassword == "") {
     errors.errors.confirmPassword = {
-      "message": __("Password confirm is required")
+      "message": __("PASSWORD_CONFIRM_IS_REQUIRED")
     };
   } else if (put.password !== put.confirmPassword) {
     errors.errors.confirmPassword = {

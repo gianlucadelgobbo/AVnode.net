@@ -17,12 +17,12 @@ const newsSchema = new Schema({
   old_id : String,
 
   createdAt: Date,
-  title: { type: String, trim: true, required: true, maxlength: 100 },
-  slug: { type: String, unique: true, trim: true, required: true, minlength: 3, maxlength: 100,
+  title: { type: String, trim: true, required: [true, 'NEWS_TITLE_IS_REQUIRED'], minlength: [3, 'NEWS_TITLE_IS_TOO_SHORT'], maxlength: [100, 'NEWS_TITLE_IS_TOO_LONG'] },
+  slug: { type: String, unique: true, trim: true, required: [true, 'NEWS_URL_IS_REQUIRED'], minlength: [3, 'NEWS_URL_IS_TOO_SHORT'], maxlength: [100, 'NEWS_URL_IS_TOO_LONG'],
     validate: [(slug) => {
       var re = /^[a-z0-9-_]+$/;
       return re.test(slug)
-    }, 'URL_IS_NOT_VALID']
+    }, 'NEWS_URL_IS_NOT_VALID']
   },
   is_public: { type: Boolean, default: false },
   image: MediaImage,

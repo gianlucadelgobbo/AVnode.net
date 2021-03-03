@@ -137,7 +137,7 @@ router.putData = (req, res, view) => {
                         if (view == "json") {
                           res.json(send);
                         } else {
-                          req.flash('success', {msg: __("Data saved with success")});
+                          req.flash('success', {msg: __("DATA_SAVED_WITH_SUCCESS")});
                           res.render(view, {
                             title: view,
                             scripts: [],
