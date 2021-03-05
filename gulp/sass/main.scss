@@ -1883,6 +1883,9 @@ span.seeall_label {
   .navbar-inverse .user_navbar .nav-link.signup a {
     color: rgba(255, 255, 255, 0.5);
   }
+  .navbar-nav a.nav-link:hover {
+    color: rgba(255, 255, 255, 1);
+  }
   .user_navbar .signup_ico .disabled {
     color: $color1;
     padding-right: 0;
@@ -1907,7 +1910,7 @@ span.seeall_label {
     background-color: $color1;
     border: none;
     border-radius: 0;
-    top: 48px;
+    top: 24px;
   }
 
   .user_navbar .login a {
@@ -1928,11 +1931,19 @@ span.seeall_label {
     text-decoration: underline;
   }
 
+  .navbar .signup a:hover {
+    color: $color2;
+    text-decoration: underline;
+  }
+
   @media (min-width: 992px){
     .navbar-toggleable-md .navbar-nav .nav-link {
         padding-right: 0.3rem;
         padding-left: 0.3rem;
         font-size: 13px;
+    }
+    .navbar-toggleable-md .navbar-nav .lang {
+      font-size: 13px;
     }
   }
   .user_menu i,
@@ -1960,7 +1971,12 @@ span.seeall_label {
   .user_menu_logged .dropdown-menu a {
     color: $color3;
   }
-
+  #dropdownMenuContents {
+      padding: .05rem .3rem;
+      font-size: 12px;
+      line-height: 1.5;
+      border-radius: .2rem;
+  }
   /* 
 .user_menu_logged ul {
     padding: 10px 10px 0 10px;

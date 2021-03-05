@@ -9,7 +9,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
     .collapse.navbar-collapse#navbar-collapse_performer_template
       include menuSections
       ul.user_navbar.navbar-nav
-        //li.dropdown.mt-1.mr-2#dropdownContents.d-md-block.d-lg-none.d-xl-block
+        li.dropdown.mt-1.mr-2#dropdownContents(class=["ru", "de", "es", "fr", "pt"].indexOf(session.current_lang)!==-1 ? "d-md-block d-lg-none d-xl-block" : "")
           button#dropdownMenuContents.btn.btn-primary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')=global.__('New content')+" "
           .dropdown-menu(aria-labelledby='dropdownMenuContents')
             a.dropdown-item(href='#'
@@ -111,8 +111,8 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
           else
             a.nav-link(href='#searchbar', title=__('Search'), data-toggle="collapse", role="button", aria-expanded="false", aria-controls="searchbar")
               i.icon-search.fa-lg.fa-fw
-        li.nav-item.dropdown.lang
-          a#langDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+        li.nav-item.dropdown.mt-2.ml-1.lang
+          a#langDropdown.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             b=session.current_lang.toUpperCase()
           .dropdown-menu.dropdown-menu-right(aria-labelledby='langDropdown')
             each lang,slug in config.locales_labels
