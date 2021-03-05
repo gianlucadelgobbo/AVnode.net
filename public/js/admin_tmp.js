@@ -118,6 +118,7 @@ $(function () {
 				});
 				this.on("success", function(file, data) {
 					var dz = this
+					console.log(data.imageFormats.large)
 					$("#image-preview img").attr("src", data.imageFormats.large)
 					$("#image-preview").removeClass("d-none");
 					$("#formupload").addClass("d-none");
