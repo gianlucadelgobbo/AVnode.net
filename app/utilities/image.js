@@ -3,6 +3,8 @@ const fs = require('fs');
 const logger = require('./logger');
 let counter = 0;
 let counterresizes = 0;
+const FileType = require('file-type');
+const sizeOf = require("image-size");
 
 const image = {};
 
@@ -19,10 +21,30 @@ image.resizer = (files, options, done) => {
   ).then( (resultsPromise) => {
     logger.debug('resultsPromise');
     logger.debug(resultsPromise);
-    done(null, resultsPromise);
+    done(resultsPromise);
   })
   .catch(error => {
-    done(error, null);
+    done(error);
+  });
+};
+
+image.checksizer = (files, options, req, done) => {
+  logger.debug('checksizer');
+  let sizesA = [];
+  for (let item in options.sizes) sizesA.push(options.sizes[item]);
+  var promises = [];
+  for (let a=0; a<files.length; a++) {
+    promises.push(image.checksize(files[a], sizesA, options, req));
+  }
+  Promise.all(
+    promises
+  ).then( (resultsPromise) => {
+    logger.debug('resultsPromise check');
+    logger.debug(resultsPromise);
+    done(resultsPromise);
+  })
+  .catch(error => {
+    done(error);
   });
 };
 
@@ -64,7 +86,50 @@ image.resize = (file, sizeA) => {
     .all(sizeA.map(resize))
     .then(() => {
       setTimeout(resolve, 100, file);
+    }, () => {
+      file.err = __("FILE_IS_DAMAGED")
+      setTimeout(resolve, 100, file);
     });
+  });
+  return promise
+};
+
+image.checksize = (file, sizeA, options, req) => {
+  var promise = new Promise((resolve, reject) => {
+    logger.debug('checksize');
+    (async () => {
+      var format = (await FileType.fromFile(file.path));
+      logger.debug("post FileType");
+      logger.debug(format);
+      if (format.mime.indexOf("image")!==-1) {
+        logger.debug("pre sizeOf");
+        const dimensions = sizeOf(file.path);
+
+        file.width = dimensions.width;
+        file.height = dimensions.height;
+        logger.debug(file);
+        logger.debug("dimensions.width " + dimensions.width);
+        logger.debug("dimensions.height " + dimensions.height);
+        logger.debug("options.minwidth " + options.minwidth);
+        logger.debug("options.minheight " + options.minheight);
+        var dimensionError = true;
+        if (dimensions.width >= options.minwidth && dimensions.height >= options.minheight) dimensionError = false;
+        if (dimensionError && req.params.sez == "galleries")
+          if (dimensions.width >= options.minheight && dimensions.height >= options.minwidth) dimensionError = false;
+        if (dimensionError) {
+          file.err = __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight;
+          logger.debug( __("Images minimum size is") + ": " + options.minwidth + " x " + options.minheight);
+          setTimeout(resolve, 100, file);
+        } else {
+          setTimeout(resolve, 100, file);
+          logger.debug("Image minimum size is ok");
+        }
+      } else {
+        file.err = __("File is not an image");
+        setTimeout(resolve, 100, file);
+      }
+      //=> {ext: 'png', mime: 'image/png'}
+    })(); 
   });
   return promise
 };

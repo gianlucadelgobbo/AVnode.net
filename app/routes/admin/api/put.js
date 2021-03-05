@@ -22,11 +22,15 @@ router.putData = (req, res, view) => {
   logger.debug(req.body);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms[req.params.form]) {
     if (req.body.mediastr) {
-      for (var item in req.body.mediastr) {
-        if (!req.body.medias) req.body.medias = [];
-        req.body.medias[item] = JSON.parse(req.body.mediastr[item])
+      if (!req.body.medias) req.body.medias = [];
+      if (Array.isArray(req.body.mediastr)) {
+        for (var item in req.body.mediastr) req.body.medias[item] = JSON.parse(req.body.mediastr[item])
+      } else {
+        req.body.medias[0] = JSON.parse(req.body.mediastr)
       }
+      delete req.body.mediastr;
     }
+    logger.debug(req.body);
     const id = req.params.id;
     Models[config.cpanel[req.params.sez].model]
     .findById(id, config.cpanel[req.params.sez].forms[req.params.form].select, (err, data) => {
@@ -35,30 +39,21 @@ router.putData = (req, res, view) => {
         if (data) {
           let select = config.cpanel[req.params.sez].forms[req.params.form].select;
           let put = {};
-          //for (const item in select) if(req.body[item]) put[item] = req.body[item];
-          // db.users.updateOne({slug:'gianlucadelgobbo'},{$unset: {oldpassword:""}});
           logger.debug('Data');
           logger.debug(data);
           logger.debug('select');
           logger.debug(select);
-          for (const item in select) if(item in req.body) {
-            logger.debug(item);
-            if (item == "medias" && data[item] && data[item].length && req.params.form == "medias") {
-              put[item] = data[item].concat(req.body[item]);
-            } else {
-              put[item] = req.body[item];
-            }
-          }
           logger.debug('putputputputputput');
           logger.debug(put);
           logger.debug('DataDataDataDataDataData');
           logger.debug(data);
           Object.assign(data, put);
           if (data.medias){
+            data.medias = req.body.medias
             data.stats.img = data.medias.length;
             data.image = data.medias[0];
             data.medias.forEach((item)=>{
-              delete item.imageFormats
+              if (item && item.imageFormats) delete item.imageFormats
             });
           }
           if (data.emails){
@@ -135,6 +130,19 @@ router.putData = (req, res, view) => {
                         let send = {_id: data._id};
                         for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
                         if (view == "json") {
+                          // TODO: check if is the same file
+                          if (send.medias) {
+                            var newmedias = []
+                            for (var item in req.body.medias) {
+                              for (var item2 in send.medias) {
+                                if (req.body.medias[item].file == send.medias[item2].file) {
+                                  req.body.medias[item].imageFormats = send.medias[item2].imageFormats
+                                }
+                              }
+                              newmedias.push(req.body.medias[item])
+                            }
+                            send.medias = newmedias;
+                          }
                           res.json(send);
                         } else {
                           req.flash('success', {msg: __("DATA_SAVED_WITH_SUCCESS")});

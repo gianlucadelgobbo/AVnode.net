@@ -14,23 +14,54 @@ if (process.env.DEBUG) {
   });
 }
 
+// UTILITIES
 
+router.get('/loggeduser', (req, res) => {
+  res.json(req.user);
+});
 
-// PROFILE GET
-router.get('/profile/public/slugs/:slug', (req, res)=>{
-  req.params.id = req.user.id;
-  req.params.sez = 'profile';
-  get.getSlug(req, res);
+router.get('/countries', (req, res) => {
+  get.getCountries(req, res);
+});
+
+router.get('/removeAddress', (req, res)=>{
+  get.removeAddress(req, res);
+});
+
+router.get('/getmembers/:q', (req, res)=>{
+  get.getMembers(req, res);
+});
+
+router.get('/getauthors/:q', (req, res)=>{
+  get.getAuthors(req, res);
 });
 
 router.get('/setstatsandactivity/:id', (req, res)=>{
   get.setStatsAndActivity(req, res);
 });
 
-router.get('/profile/:form/', (req, res) => {
+router.get('/profile/:form', (req, res) => {
   req.params.id = req.user.id;
   req.params.sez = 'profile';
   get.getData(req, res, "json");
+});
+
+router.get('/:sez/:id/delete', (req, res) => {
+  get.getDelete(req, res);
+});
+
+router.get('/:sez/:id/duplicate', (req, res) => {
+  get.getDuplicate(req, res);
+});
+
+router.get('/getcategories/:rel/slug/:q', (req, res)=>{
+  get.getCategories(req, res);
+});
+
+router.get('/profile/public/slugs/:slug', (req, res)=>{
+  req.params.id = req.user.id;
+  req.params.sez = 'profile';
+  get.getSlug(req, res);
 });
 
 router.get('/profile/emails/verify/:email', (req, res)=>{
@@ -43,61 +74,12 @@ router.get('/profile/emails/email/:email', (req, res)=>{
   get.getEmail(req, res);
 });
 
-router.get('/subscriptions', (req, res) => {
-  req.params.id = req.user.id;
-  req.params.sez = 'subscriptions';
-  req.query.api = true;
-  get.getSubscriptions(req, res);
-});
-
-router.get('/:id/subscriptions', (req, res) => {
-  req.params.sez = 'subscriptions';
-  req.query.api = true;
-  get.getSubscriptions(req, res);
-});
-
-// ALL GET
-
 router.get('/:sez/new/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
 });
 
 router.get('/:sez/:id/public/slugs/:slug', (req, res)=>{
   get.getSlug(req, res);
-});
-
-router.get('/:sez/:id/delete', (req, res) => {
-  get.getDelete(req, res);
-});
-
-router.get('/:sez/:id/duplicate', (req, res) => {
-  get.getDuplicate(req, res);
-});
-
-router.get('/:sez/:id/:form/', (req, res) => {
-  get.getData(req, res, "json");
-});
-
-// UTILITIES
-
-router.get('/countries', (req, res) => {
-  get.getCountries(req, res);
-});
-
-router.get('/getcategories/:rel/slug/:q', (req, res)=>{
-  get.getCategories(req, res);
-});
-
-router.get('/getmembers/:q', (req, res)=>{
-  get.getMembers(req, res);
-});
-
-router.get('/getauthors/:q', (req, res)=>{
-  get.getAuthors(req, res);
-});
-
-router.get('/removeAddress', (req, res)=>{
-  get.removeAddress(req, res);
 });
 
 router.get('/crews/:id/members/add/:member', (req, res)=>{
@@ -158,33 +140,40 @@ router.get('/:sez/:id/video/remove/:video', (req, res)=>{
   get.removeVideo(req, res);
 });
 
-router.get('/loggeduser', (req, res) => {
-  res.json(req.user);
+router.get('/:sez/:id/:form/', (req, res) => {
+  if (req.params.sez == "performances" && req.params.form == "public") {
+    req.params.rel = "performances";
+    req.params.q = "type";
+    get.getPerfCategories(req, res, (types) => {
+      config.types = types;
+      req.params.q = "genre";
+      get.getPerfCategories(req, res, (genres) => {
+        config.genres = genres;
+        get.getData(req, res, "json");
+      });
+    });
+  } else if (req.params.sez == "profile" && req.params.form == "subscriptions") {
+    get.getSubscriptions(req, res);
+  } else {
+    get.getData(req, res, "json");
+  }
 });
 
 router.get('/:sez', (req, res) => {
-  req.params.id = req.user.id;
-  get.getList(req, res, "json");
-});
-/* 
-router.get('/subscriptions', (req, res) => {
-  req.params.id = req.user.id;
-  req.params.sez = 'subscriptions';
-  get.getSubscriptions(req, res);
-}); */
-
-router.get('/profile/:id/subscriptions', (req, res) => {
-  req.params.sez = 'subscriptions';
-  get.getSubscriptions(req, res);
+  if (req.params.sez == "profile") {
+    res.redirect("/admin/api/profile/"+req.user.id+"/public")
+  } else if (req.params.sez == "subscriptions") {
+    res.redirect("/admin/api/subscriptions/"+req.user.id+"/public")
+  } else {
+    req.params.id = req.user.id;
+    get.getList(req, res, "json");
+  }
 });
 
 router.get('/*', (req, res) => {
   res.status(404).send({ message: `API_NOT_FOUND` });
 });
 
-router.get('', (req, res) => {
-  res.status(404).send({ message: `API_NOT_FOUND` });
-});
 
 
 
@@ -202,56 +191,6 @@ router.post('/shareontelegram', (req, res)=>{
 router.post('/setvideoexclude', (req, res)=>{
   post.setVideoExclude(req, res);
 });
-
-router.post('/profile/emails/updateSendy', (req, res)=>{
-  post.updateSendy(req, res);
-});
-
-router.post('/:sez/new/', (req, res) => {
-  post.postData(req, res);
-});
-
-router.post('/partner/unlink/', (req, res) => {
-  post.unlinkPartner(req, res);
-});
-
-router.post('/partner/link/', (req, res) => {
-  post.linkPartner(req, res);
-});
-
-router.post('/partnershipsupdate', (req, res) => {
-  post.updatePartnerships(req, res);
-});
-
-router.post('/partners/contacts/add/', (req, res) => {
-  post.addContacts(req, res);
-});
-
-router.post('/partners/contacts/delete/', (req, res) => {
-  post.deleteContacts(req, res);
-});
-
-
-
-/* router.post('/performances/:id/videos', (req, res)=>{
-  req.params.model = 'Performance';
-  get.addVideo(req, res);
-});
-
-router.post('/performances/:id/galleries', (req, res)=>{
-  req.params.model = 'Performance';
-  get.addGallery(req, res);
-});
-
-router.post('/events/:id/videos', (req, res)=>{
-  req.params.model = 'Event';
-  get.addVideo(req, res);
-});
-
-router.post('/events/:id/galleries', (req, res)=>{
-  req.params.model = 'Event';
-  get.addGallery(req, res);
-}); */
 
 router.post('/programupdate', (req, res)=>{
   post.updateProgram(req, res);
@@ -287,45 +226,70 @@ router.post('/contact', (req, res)=>{
   post.contact(req, res);
 });
 
-router.post('/:ancestor/:id/:sez/new', (req, res) => {
+/* router.post('/:ancestor/:id/:sez/new', (req, res) => {
+  post.postData(req, res);
+}); */
+
+router.post('/partnershipsupdate', (req, res) => {
+  post.updatePartnerships(req, res);
+});
+
+router.post('/partner/unlink/', (req, res) => {
+  post.unlinkPartner(req, res);
+});
+
+router.post('/partner/link/', (req, res) => {
+  post.linkPartner(req, res);
+});
+
+router.post('/partners/contacts/add/', (req, res) => {
+  post.addContacts(req, res);
+});
+
+router.post('/partners/contacts/delete/', (req, res) => {
+  post.deleteContacts(req, res);
+});
+
+router.post('/profile/emails/updateSendy', (req, res)=>{
+  post.updateSendy(req, res);
+});
+
+router.post('/:sez/new/', (req, res) => {
   post.postData(req, res);
 });
 
+router.post('/galleries/:id/medias', (req, res) => {
+  upload.galleryAddImages(req, res);
+});
+
+router.post('/:sez/:id/image', (req, res) => {
+  upload.setImage(req, res);
+});
+
+router.post('/:sez/:id/video', (req, res) => {
+  upload.setVideo(req, res);
+});
+
 router.post('/:sez/:id/:form/', (req, res) => {
-  logger.debug("req.bodyreq.bodyreq.bodyreq.bodyreq.bodyreq.body")
-  logger.debug(req.body)
-  if (['footage/media','profile/image','events/image','news/image','performances/image','galleries/medias','crews/image','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
-    req.params.comp = ['footage/media','videos/video'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "media" : ['galleries/medias'].indexOf(req.params.sez+'/'+req.params.form)!== -1 ? "image" : req.params.form;
-    upload.uploader(req, res, (err, data) => {
-      if (!data) {
-        res.status(500).send(err);
-      } else {
-        for (const item in data) req.body[item] = data[item];
+  if (req.params.sez == "performances" && req.params.form == "public") {
+    req.params.rel = "performances";
+    req.params.q = "type";
+    get.getPerfCategories(req, res, (types) => {
+      config.types = types;
+      req.params.q = "genre";
+      get.getPerfCategories(req, res, (genres) => {
+        config.genres = genres;
         put.putData(req, res, "json");
-      }
+      });
     });
   } else {
     put.putData(req, res, "json");
   }
 });
 
-/* router.put('/profile/:form/', (req, res) => {
-  req.params.id = req.user.id;
-  req.params.sez = 'profile';
-  if (['profile/image'].indexOf(req.params.sez+'/'+req.params.form)!== -1) {
-    req.params.comp = req.params.form;
-    upload.uploader(req, res, (err, data) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        for (const item in data) req.body[item] = data[item];
-        put.putData(req, res);
-      }
-    });
-  } else {
-    put.putData(req, res);
-  }
-}); */
+router.post('/*', (req, res) => {
+  res.status(404).send({ message: `API_NOT_FOUND` });
+});
 
 
 module.exports = router;
