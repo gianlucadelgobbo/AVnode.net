@@ -320,12 +320,22 @@ upload.setImage = (req, res) => {
                   logger.debug(put);
                   const id = req.params.id;
                   Models[config.cpanel[req.params.sez].model]
-                  .findOneAndUpdate({_id:id}, put, {upsert: false}, function(err, doc) {
-                    if (err) {
-                      res.status(500).send({ message: `${JSON.stringify(err)}` });
-                    } else {
-                      res.send(doc);
-                    }
+                  .findOne({_id:id}, function(err, doc) {
+                    doc[options.fields.name] = put[options.fields.name];
+                    doc.save((err) => {
+                      if (err) {
+                        res.status(500).send({ message: `${JSON.stringify(err)}` });
+                      } else {
+                        Models[config.cpanel[req.params.sez].model]
+                        .findById(id, "image", (err, data) => {
+                          if (err) {
+                            res.status(500).send({ message: `${JSON.stringify(err)}` });
+                          } else {
+                            res.send(data);
+                          }
+                        });
+                      }
+                    });
                   });              
                 }
               }
