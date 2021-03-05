@@ -1928,20 +1928,27 @@ span.seeall_label {
     text-decoration: underline;
   }
 
+  @media (min-width: 992px){
+    .navbar-toggleable-md .navbar-nav .nav-link {
+        padding-right: 0.3rem;
+        padding-left: 0.3rem;
+        font-size: 13px;
+    }
+  }
   .user_menu i,
   .navbar-inverse .navbar-nav .search .nav-link,
   .navbar-inverse .navbar-nav .lang .nav-link {
     color: $color1;
   }
   .user_navbar .login .nav-link {
-    padding: 0.4rem 0;
+    padding: 0.4rem 0 0.4rem 0.4rem;
   }
   .user_navbar .dropdown-toggle::after {
     color: $color3;
     vertical-align: 0.055em;
   }
   .user_navbar .signup .nav-link {
-    padding: 0.4rem 1rem 0.4rem 0;
+    padding: 0.4rem 0.3rem 0.4rem 0;
   }
 
   .user_menu_logged .dropdown-menu {

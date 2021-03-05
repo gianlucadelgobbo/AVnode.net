@@ -250,7 +250,7 @@ $(function () {
 							$($(".dz-success-message")[i]).html(''+"The file is ok"+'');
 							$($(".dz-error-message")[i]).addClass("d-none");
 							$($(".dz-success-message")[i]).removeClass("d-none");
-							$("#medias").append('<div class="col-md-4 col-sm-6 ui-sortable-handle"><img class="img-fluid" src="'+data2[i].imageFormats.large+'"><div class="d-flex justify-content-between mb-3 mt-1"><input class="form-control mediaitem" type="text" value=\''+JSON.stringify(data2[i])+'\' data-id="'+($("#medias").length)+'" name="mediastr"><input class="form-control title" type="text" value="'+data2[i].title+'"><button class="btn btn-danger ml-2 remove" type="button"><i class="icon-trash"></i></button></div></div>')
+							$("#medias").append('<div class="col-md-4 col-sm-6 ui-sortable-handle"><img class="img-fluid" src="'+data2[i].imageFormats.large+'"><div class="d-flex justify-content-between mb-3 mt-1"><input type="hidden" value=\''+JSON.stringify(data2[i])+'\' data-id="'+($("#medias").length)+'" name="mediastr"><input class="form-control title" type="text" value="'+data2[i].title+'"><button class="btn btn-danger ml-2 remove" type="button"><i class="icon-trash"></i></button></div></div>')
 						}
 					}
 					setTimeout(function(){
@@ -324,12 +324,12 @@ $(function () {
 			$("#users .alert").removeClass("alert-danger");
 			$("#users .alert").html("");
 			$("#users .alert").addClass("d-none")
-			if(confirm("Are you sure you want to remove elem user?")) {
+			if(confirm("Are you sure you want to remove the user?")) {
 				$(elem).find("i").addClass("fa-spinner");
 				$(elem).find("i").addClass("animate-spin");
 				$(elem).find("i").removeClass("fa-trash");
 				$.ajax({
-					url: "/admin/api/crews/"+$(elem).data("objid")+"/users/remove/"+$(elem).data("id")+"",
+					url: "/admin/api/"+get.sez+"/"+$(elem).data("objid")+"/users/remove/"+$(elem).data("id")+"",
 					method: "get"
 				}).done((data) => {
 					$(elem).parent().remove();

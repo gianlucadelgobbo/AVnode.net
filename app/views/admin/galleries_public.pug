@@ -56,16 +56,10 @@ block content
                 .btn.btn-secondary(type="button" style="position: absolute; top:10px; left:10px")
                   i.icon-arrows-alt
               .d-flex.justify-content-between.mb-3.mt-1
-                  input.form-control.mediaitem(type="text" value=JSON.stringify(item) data-id=i name="mediastr")
+                  input(type="hidden" value=JSON.stringify(item) data-id=i name="mediastr")
                   input.form-control.title(type="text" value=item.title)
                   button.btn.btn-danger.ml-2.remove(type="button")
                     i.icon-trash
-
-
-
-
-
-
       include partials/abouts
       include partials/users
       hr

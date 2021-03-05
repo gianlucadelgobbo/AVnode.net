@@ -9,7 +9,7 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
     .collapse.navbar-collapse#navbar-collapse_performer_template
       include menuSections
       ul.user_navbar.navbar-nav
-        li.dropdown.mt-1.mr-2#dropdownContents
+        //li.dropdown.mt-1.mr-2#dropdownContents.d-md-block.d-lg-none.d-xl-block
           button#dropdownMenuContents.btn.btn-primary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')=global.__('New content')+" "
           .dropdown-menu(aria-labelledby='dropdownMenuContents')
             a.dropdown-item(href='#'
@@ -96,9 +96,9 @@ nav.navbar.navbar_extended_template.navbar-toggleable-md.navbar-fixed-top.navbar
                 i.pr-2.icon-exit
                 !=" "+global.__('Log out')
         else
-          li.nav-item.signup_ico
+          //li.nav-item.signup_ico
             a.nav-link.disabled(href='#')
-              i.pr-2.icon-user
+              i.pr-2.icon-user-outline
           li.nav-item.login
             a.nav-link(href="/login?returnTo="+canonical, title=global.__('Login'))
               !=global.__('Login')
