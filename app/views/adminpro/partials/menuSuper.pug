@@ -17,7 +17,7 @@
         .list-group-item.sidebar-separator-title.d-flex
           small.menu-collapsed=data.event.title
         - var obj = {link:'/adminpro/events/'+data.event._id+'/acts/', title:global.__('Acts')}
-        a.list-group-item(href=obj.link, class=currentUrl.indexOf(obj.link)==0 ? "active" : "bg-dark")
+        a.list-group-item(href=obj.link, class=currentUrl.indexOf(obj.link)==0 ? "active secondary" : "bg-dark")
           .d-flex.w-100.justify-content-start.align-items-center
             span.icon-theater-masks.fa-fw.mr-3
             span.menu-collapsed=obj.title
