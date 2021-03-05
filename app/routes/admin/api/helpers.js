@@ -25,6 +25,15 @@ router.getCountries = (req, res) => {
   for (var item in allCountries.countries) {
     convert.push( {"value": item, "label": allCountries.countries[item].name})
   }
+  convert.sort((a,b)=>{
+    if ( a.label < b.label ){
+      return -1;
+    }
+    if ( a.label > b.label ){
+      return 1;
+    }
+    return 0;
+  });
   return convert;
 }
 
@@ -34,6 +43,15 @@ router.getLanguages = (req, res) => {
   for (var item in allLanguages.languages) {
     convert.push( {"value": item, "label": allLanguages.languages[item].name})
   }
+  convert.sort((a,b)=>{
+    if ( a.label < b.label ){
+      return -1;
+    }
+    if ( a.label > b.label ){
+      return 1;
+    }
+    return 0;
+  });
   return convert;
 }
 

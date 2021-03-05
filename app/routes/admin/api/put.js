@@ -43,6 +43,11 @@ router.putData = (req, res, view) => {
           logger.debug(data);
           logger.debug('select');
           logger.debug(select);
+          for(key in data) {
+            if (req.body[key]) {
+                put[key] = req.body[key];
+            }
+          }
           logger.debug('putputputputputput');
           logger.debug(put);
           logger.debug('DataDataDataDataDataData');
