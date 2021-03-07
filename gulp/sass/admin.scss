@@ -4,6 +4,10 @@
 @import "./includes_admin/dropzone.min.scss";
 @import "./includes_admin/adminpro.scss";
 
+.form-check {
+  line-height: 1.5;
+}
+
 .formcontainer{max-width:1020px}
 .myDropzone {
   min-height: 150px;

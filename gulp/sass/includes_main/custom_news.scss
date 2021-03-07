@@ -1,0 +1,25 @@
+// ITEM NEWS
+
+.news_item_wrapper h4 {
+  text-transform: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.news_date {
+  margin-bottom: 0;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.news_item_wrapper {
+  border-bottom: 1px dashed $color1;
+  margin-bottom: 10px;
+}
+
+.news_excerpt {
+  line-height: 20px;
+  font-size: 14px;
+}
+

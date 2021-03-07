@@ -40,14 +40,14 @@ block content
       if data.img
         .col-md-8
           if data.img.imageFormats
-            img.img-fluid.perfomance_image.bottom60(
+            img.img-fluid.perfomance_image.mb-4(
               src=data.img.imageFormats.large
               alt=data.img.title
             )
         .col-md-4.data_footage_video          
           if data.imageFormats
             .data_footage_video_wrapper
-              .gallery_item_wrapper.bottom30
+              .gallery_item_wrapper.mb-4
                 a(href="/galleries/"+data.slug alt=data.title)
                   img.img-fluid.perfomance_image(
                     src=data.imageFormats.large
@@ -95,7 +95,7 @@ block content
       else
         .col-md-8
           if data.imageFormats
-            img.img-fluid.perfomance_image.bottom60(
+            img.img-fluid.perfomance_image.mb-4(
               src=data.imageFormats.large
               alt=data.title
             )

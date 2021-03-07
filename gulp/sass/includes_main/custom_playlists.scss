@@ -1,0 +1,72 @@
+// ITEM PLAYLIST
+
+.playlist_item_info_wrapper {
+  background-color: $color4;
+  padding: 15px;
+}
+
+.playlist_item_title {
+  color: $color1;
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.category_playlist_item {
+  color: $color3;
+  font-size: 13px;
+  border-bottom: 1px solid $color3;
+  padding-bottom: 10px;
+}
+
+.category_playlist_item li:after {
+  content: "/";
+  color: $color1;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.category_playlist_item li:last-child:after {
+  content: "";
+}
+
+.stats_playlist_item_wrapper .value {
+  font-size: 12px;
+}
+
+.playlist_item_videos,
+.playlist_item_images {
+  color: $color1;
+}
+
+.stats_playlist_item_wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stats_playlist_item_wrapper .flex_left {
+  display: flex;
+  flex-direction: row;
+}
+
+.stats_playlist_item_wrapper .flex_left > div {
+  margin-right: 10px;
+}
+
+.stats_playlist_item_wrapper .flex_right > div {
+  margin-left: 10px;
+}
+.stats_playlist_item_wrapper .flex_right {
+  display: flex;
+  flex-direction: row;
+}
+
+.stats_playlist_item_wrapper > div {
+  text-align: center;
+}
+
+.playlist_item_likes,
+.playlist_item_downloads,
+.playlist_item_visits {
+  color: $color3;
+}

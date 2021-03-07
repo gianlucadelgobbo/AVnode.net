@@ -1,6 +1,13 @@
+include ../partials/modals/modalContact
+.text-center.d-md-none
+  img.mb-3.img-fluid(
+    class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+    src=data.imageFormats.large
+    alt=data.stagename
+  )
 .container
   .row
-    .col-lg-7
+    .col-lg-8
       h1.main_title
         a(href="/"+data.slug+"/")=data.stagename
         if editable
@@ -46,7 +53,7 @@
                     a(href="/"+data.slug+"/news")!=global.__('News')+" (<span>"+data.stats.news+"</span>)"
         .col-lg-12
           if (data.web && data.web.length) || (data.social && data.social.length) || (data.publicEmails && data.publicEmails.length)
-            div.performer_links_wrapper
+            div
               ul.links_list.list-inline                 
                 if data.social && data.social.length
                   each link in data.social
@@ -68,16 +75,10 @@
                       a(href=link.url, target="_blank")=link.label
                         
 
-    .col-lg-5
-      .row
-        .col-sm-6
-          .performer_image_wrapper
-            //.performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
-            img.rounded-circle.img-fluid(
-              class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
-              src=data.imageFormats.large
-              alt=data.stagename
-              )
-        .col-sm-6
-          img.img-fluid(src="/images/logo_avnode.svg")
+    .col-md-4
+      img.img-fluid.d-none.d-md-block(
+        class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+        src=data.imageFormats.large
+        alt=data.stagename
+      )
 

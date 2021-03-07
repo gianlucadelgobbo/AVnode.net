@@ -9,7 +9,7 @@
                     )
         .col-sm-6
   
-            .performance_item_info_wrapper
+            .performance_item_info_wrapper.mt-3.mt-md-0
                 a(href="/performances/"+item.slug+"/", title=item.title)
                     h4=item.title
                 if item.categories
@@ -17,7 +17,7 @@
                         each category in item.categories
                             li.list-inline-item=category.name
                 if item.users
-                    .performance_users_item_wrapper
+                    .performance_users_item_wrapper.mb-2
                         .flex_left      
                             if (item.users.length > 1)
                                 div

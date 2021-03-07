@@ -1,0 +1,47 @@
+
+
+// ITEM GALLERY
+
+.gallery_item_wrapper a {
+  color: $color2;
+}
+.gallery_item_info_wrapper h4 {
+  font-size: 14px;
+  font-weight: 300;
+  text-transform: none;
+}
+
+.gallery_item_info_wrapper {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  width: -webkit-calc(100% - 30px);
+  width: -moz-calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+
+.gallery_stats {
+  text-align: center;
+}
+
+.gallery_stats .value {
+  font-size: 12px;
+}
+
+.gallery_item_likes,
+.gallery_item_visits {
+  color: $color1;
+}
+
+.gallery_item_info_wrapper_single_gallery {
+  background: $color4;
+  padding: 10px;
+}
+
+.gallery_item_info_wrapper_single_gallery h3 {
+  margin: 0;
+  line-height: 24px;
+}

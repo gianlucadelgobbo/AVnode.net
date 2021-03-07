@@ -73,14 +73,14 @@ block content
           if data.galleries[0].img
             .col-md-8
               if data.galleries[0].img.imageFormats
-                img.img-fluid.perfomance_image.bottom60(
+                img.img-fluid.perfomance_image.mb-4(
                   src=data.galleries[0].img.imageFormats.large
                   alt=data.galleries[0].img.title
                 )
             .col-md-4.data_footage_video          
               if data.galleries[0].imageFormats
                 .data_footage_video_wrapper
-                  .gallery_item_wrapper.bottom30
+                  .gallery_item_wrapper.mb-4
                     a(href="/galleries/"+data.galleries[0].slug alt=data.galleries[0].title)
                       img.img-fluid.perfomance_image(
                         src=data.galleries[0].imageFormats.large
@@ -128,7 +128,7 @@ block content
           else
             .col-md-8
               if data.galleries[0].imageFormats
-                img.img-fluid.perfomance_image.bottom60(
+                img.img-fluid.perfomance_image.mb-4(
                   src=data.galleries[0].imageFormats.large
                   alt=data.galleries[0].title
                 )

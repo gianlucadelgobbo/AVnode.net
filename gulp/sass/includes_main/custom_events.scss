@@ -1,0 +1,280 @@
+// EVENT PAGE
+.subtitle {
+  color: $color1;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+header.header_event {
+  border-bottom: 1px solid $color1;
+  margin-bottom: 30px;
+}
+
+.expand_image_event {
+  width: 130px;
+  margin: 0 auto;
+  display: block;
+}
+
+.event_main_image_wrapper {
+  position: relative;
+  top: -400px;
+  margin-bottom: -400px;
+  transition: all 0.5s ease-in-out;
+}
+
+.event_main_image_wrapper.expanded {
+  position: relative;
+  top: 0px;
+  margin-bottom: 0px;
+  transition: all 0.5s ease-in-out;
+}
+
+.expand_image_event:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+section.row.program_event_wrapper {
+  padding: 60px 0;
+}
+
+.date_schedule_title {
+  color: $color1;
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 24px;
+  margin-bottom: 20px;
+  margin-top: 140px;
+}
+
+.data_program_divider {
+  width: 100%;
+  height: 7px;
+  background: $color1;
+  left: -50%;
+  position: relative;
+  top: 0px;
+  margin-bottom: 60px;
+}
+
+div.time_schedule {
+  background: rgba(20, 141, 212, 0.76);
+  padding: 5px;
+  font-size: 12px;
+  display: inline;
+  position: absolute;
+  top: 0px;
+}
+
+.program_event_wrapper .basic_divider {
+  background: $color1;
+}
+
+.program_event_wrapper .main_title {
+  margin-bottom: 60px;
+}
+
+.performers_event_wrapper_bkg {
+  background-color: #232323;
+}
+
+.performers_event_wrapper {
+  padding: 80px 0;
+}
+
+.performers_infos {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 18px;
+  margin-bottom: 80px;
+}
+
+.partners_event_wrapper {
+  padding: 80px 0;
+}
+
+.partners_event_wrapper .basic_divider {
+  background: $color4;
+  top: 40px;
+}
+
+.partners_list_wrapper {
+  margin-bottom: 100px;
+}
+
+.partners_event_wrapper .partners_block h4 {
+  font-size: 18px;
+  font-weight: normal;
+  text-transform: inherit;
+  margin-bottom: 60px;
+}
+
+.partners_event_wrapper .partners_list_wrapper img {
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.partners_event_wrapper .partners_list_wrapper img:hover {
+  border-radius: 0;
+}
+
+.partners_event_wrapper .partner_stagename {
+  background-color: $color1;
+  color: $color2;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px;
+  display: none;
+  position: absolute;
+  bottom: -1px;
+  width: -webkit-calc(100% - 30px);
+  width: -moz-calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+
+a:hover + .partner_stagename,
+.partner_stagename:hover {
+  display: block;
+}
+
+.partner_stagename a span {
+  color: $color2;
+}
+
+.partner_box_wrapper a {
+  display: block;
+}
+
+.gallery_event_wrapper_bkg {
+  background-color: #282828;
+}
+
+.video_event_wrapper_bkg {
+  background-color: #282828;
+}
+
+.event_video_wrapper {
+  background-color: $color4;
+}
+
+.event_video_wrapper .main_title {
+  color: $color1;
+}
+
+.event_galleries_wrapper {
+  background-color: #282828;
+  padding: 60px 0;
+}
+
+.event_galleries_wrapper .main_title {
+  color: $color1;
+}
+.event_title h1 {
+  margin: 30px 0 0 0;
+  padding: 0 0 10px 0;
+}
+
+.tech_info_title {
+  color: $color1;
+  text-transform: inherit;
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+.tech_info_wrapper {
+  border-bottom: 1px dashed $color1;
+  margin-bottom: 20px;
+}
+
+// ITEM EXTENDED PERFORMER EVENT PAGE
+
+.performer_extended_item_wrapper {
+  border-top: 1px solid $color1;
+  margin: 0 0px 30px 0px;
+}
+
+.performer_extended_item_wrapper img {
+  width: 100%;
+  height: auto;
+}
+
+.performer_extended_item_wrapper .performer_info {
+  background-color: #282828;
+  padding: 10px;
+}
+
+.performer_extended_item_wrapper p {
+  margin-bottom: 0px;
+}
+
+.performer_extended_item_wrapper .performer_name {
+  color: $color1;
+  font-size: 16px;
+}
+
+.performer_extended_item_wrapper .performer_city_country {
+  color: $color3;
+  font-size: 12px;
+}
+
+.performer_city_country span::after {
+  content: "/";
+  color: $color1;
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.performer_city_country span:last-child::after {
+  content: "";
+}
+.participate {
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 14px 40px;
+  font-size: 30px;
+  border-radius: 3px;
+}
+// ITEM EVENT
+
+.event_item_title {
+  text-transform: inherit;
+  font-weight: 300;
+  font-size: 16px;
+  color: $color3;
+}
+
+.event_item_info_wrapper {
+  padding: 15px;
+  background-color: $color4;
+}
+
+.event_item_date {
+  color: $color1;
+}
+
+.event_item_locality {
+  color: $color1;
+}
+
+.event_item_date_and_locality li:after {
+  content: "/";
+  color: $color2;
+  display: inline-block;
+  margin: 0 0px 0 5px;
+}
+
+.event_item_date_and_locality li:last-child:after {
+  content: "";
+}
+
+.event_item_date_and_locality {
+  border-bottom: 1px solid #0f8fcf;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+  font-size: 13px;
+}
+
+.event_item_wrapper {
+  margin-bottom: 30px;
+}

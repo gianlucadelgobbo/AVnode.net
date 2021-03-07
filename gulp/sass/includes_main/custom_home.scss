@@ -1,0 +1,160 @@
+// HOMEPAGE
+
+#home_main_carousel {
+  background-color: $color5;
+}
+
+#home_main_carousel .owl-carousel {
+  margin: 0;
+}
+
+section#home_main_title {
+  padding-top: 30px;
+  background-color: $color5;
+}
+.home_main_title p {
+  margin: 0;
+}
+
+.home_main_title_bkg {
+  background-image: url("/images/home_title_bkg.svg");
+	background-position-x: center;
+  background-repeat: no-repeat;
+  background-color: $color4;
+}
+
+.home_main_title {
+  max-width: 585px;
+  margin: 0 auto;
+  padding: 10px;
+  display: block;
+  text-align: center;
+}
+
+#performances_home {
+  background-color: $color5;
+  padding: 30px 0;
+}
+
+.section_home .home_title {
+  font-weight: 400;
+  font-size: 18px;
+  border-bottom: 1px solid $color1;
+  margin-bottom: 30px;
+}
+
+.section_home .home_title .title_label {
+  display: inline-block;
+  background: $color1;
+  padding: 5px 10px;
+}
+
+.section_home .home_title .button_more_label {
+  display: inline-block;
+  background: transparent;
+  padding: 5px 10px;
+  color: $color2;
+}
+
+#performances_home .performance_item_info_wrapper {
+  background-color: transparent;
+  padding: 0;
+}
+
+#performances_home .performance_about {
+  color: $color3;
+  line-height: 22px;
+}
+
+.arrow_seeall {
+  position: absolute;
+  right: 15px;
+  height: 100%;
+}
+
+#performances_home .bkg_seeall {
+  background-image: url("/images/seeall_performance_img.jpg");
+  height: 100%;
+  background-size: cover;
+}
+
+span.seeall_label {
+  color: #fff;
+  text-transform: uppercase;
+  position: relative;
+  top: 50%;
+  text-align: center;
+  display: block;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+#home_events_wrapper {
+  background-color: $color4;
+  padding: 30px 0;
+}
+
+#home_events_wrapper .event_item_wrapper {
+  margin-bottom: 0;
+}
+
+#home_events_wrapper .bkg_seeall {
+  background-image: url("/images/seeall_events_img.jpg");
+  height: 100%;
+  background-size: cover;
+}
+
+#home_events_wrapper .home_title {
+  border-bottom: 1px solid $color6;
+}
+
+#home_events_wrapper .home_title .title_label {
+  background: $color6;
+}
+
+#home_events_wrapper .event_item_date_and_locality {
+  border-bottom: none;
+}
+
+#home_events_wrapper .event_item_date_and_locality a,
+#home_events_wrapper .event_item_date_and_locality .event_item_date,
+#home_events_wrapper .event_item_locality_paese {
+  color: $color6;
+}
+
+#home_events_wrapper .event_item_info_wrapper {
+  padding: 0;
+  background-color: transparent;
+  border-bottom: 1px solid $color6;
+  padding: 15px;
+}
+
+#home_events_wrapper .event_item_info_wrapper:hover {
+  background: $color5;
+}
+#home_events_wrapper .event_item_title {
+  color: $color2;
+}
+#home_events_wrapper .open_call_home {
+  color: $color6;
+  border: 1px solid $color6;
+  display: inline-block;
+  padding: 2px 15px;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.bkg_seeall {
+  min-height: 300px;
+}
+
+#home_news_wrapper .bkg_seeall {
+  background-image: url("/images/seeall_news_img.jpg");
+  height: 100%;
+  background-size: cover;
+}
+
+#home_news_wrapper {
+  padding: 30px 0;
+  background-color: $color5;
+}

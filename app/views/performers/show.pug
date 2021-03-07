@@ -159,7 +159,7 @@ block content
       .content_wrapper
         .container
           if data.footage && data.footage.length
-            #footage.row.performer_footage.bottom60
+            #footage.row.performer_footage.mb-4
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
                 .owl-carousel.loop.owl-theme
@@ -174,7 +174,7 @@ block content
             #videos.row.performer_video
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
-                .owl-carousel.loop.owl-theme.bottom60
+                .owl-carousel.loop.owl-theme.mb-4
                   each item in data.videos            
                     include ../partials/boxVideo
                 .button_more.button_more_grey
@@ -186,7 +186,7 @@ block content
             #playlists.row.performer_playlist
               .col-lg-12
                 h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
-                .owl-carousel.loop.owl-theme.bottom60
+                .owl-carousel.loop.owl-theme.mb-4
                   each item in data.playlists
                     include ../partials/boxPlaylist
                 .button_more.button_more_grey

@@ -3,6 +3,13 @@ $(document).ready(function(){
 		$('#birthday').datetimeEntry({datetimeFormat: 'D/O/Y', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
   }
   
+	if ($("#filters") && $("#filters").length) {
+    $("#filters a").on("click", function(event){
+      event.preventDefault();
+      $('#collapsefilters').hasClass('d-sm-none') ? $('#collapsefilters').removeClass('d-sm-none') : $('#collapsefilters').addClass('d-sm-none');
+    });
+  }
+
 	if ($(".form-control") && $(".form-control").length) {
     $(".form-control").on("focus", function(){
       if ($(this).parent().find('.badge').length) $(this).parent().find('.badge').remove();
@@ -126,10 +133,10 @@ $(document).ready(function(){
   })
 
   $('[data-toggle="tooltip"]').tooltip();
-  $( ".event_main_image_wrapper" ).click(function() {
+  /* $( ".event_main_image_wrapper" ).click(function() {
     //   $( ".event_main_image_wrapper" ).toggleClass("expanded");
     $( ".event_main_image_wrapper" ).toggleClass("expanded");    
-  });
+  }); */
   
   if ($('.category-manager').length) {
     $('.category-manager input').change(function () {

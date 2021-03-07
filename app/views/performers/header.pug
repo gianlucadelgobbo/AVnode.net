@@ -1,7 +1,13 @@
 include ../partials/modals/modalContact
+.text-center.d-md-none
+  img.mb-3.img-fluid(
+    class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+    src=data.imageFormats.large
+    alt=data.stagename
+  )
 .container
   .row
-    .col-lg-7
+    .col-md-8
       h1.main_title
         a(href="/"+data.slug+"/")=data.stagename
         if editable
@@ -12,7 +18,7 @@ include ../partials/modals/modalContact
           each address in data.addressesFormatted
             li.list-inline-item(class=data.addresses.length<5 ? "big" : undefined)!=address
       .row
-        .col-lg-12
+        .col-md-12
           div.performer_stats_wrapper
             if data.stats
               ul.performer_stats_list.performer_stats_list_1.list-inline
@@ -52,60 +58,66 @@ include ../partials/modals/modalContact
                 if data.stats.news
                   li.list-inline-item
                     a(href="/"+data.slug+"/news")!=global.__('News')+" (<span>"+data.stats.news+"</span>)"
-        .col-lg-12
+        .col-md-12
           if (data.web && data.web.length) || (data.social && data.social.length) || (data.publicEmails && data.publicEmails.length)
-            div.performer_links_wrapper
-              ul.links_list.list-inline
+            ul.links_list.list-inline
+              li.list-inline-item.mb-3
+                a.contact_performer(href="#", data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                  span.performer_button!="CONTACT"       
+              li.list-inline-item.mb-3
+                a.cv_performer(href="/"+data.slug+"/print" : "#", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
+                  span.performer_button!="DOWNLOAD CV"       
+        .col-md-12
+          ul.links_list.list-inline
+            each item in data.web
+              li.list-inline-item.mb-3
+                a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
+                  span.icon-link-light.about_button
+            each item in data.social
+              if item.url.indexOf('instagram.com/')!=-1
                 li.list-inline-item.mb-3
-                  a.contact_performer(href="#", data-id=data._id, data-title=data.title, data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
-                    span.performer_button!="CONTACT"       
+                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.icon-instagram.about_button
+              else if item.url.indexOf('twitter.com/')!=-1
                 li.list-inline-item.mb-3
-                  a.cv_performer(href="/"+data.slug+"/print" : "#", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
-                    span.performer_button!="DOWNLOAD CV"       
-                each item in data.web
-                  li.list-inline-item.mb-3
-                    a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=item.url.replace("http://","").replace("https://",""))
-                      span.icon-link-light.about_button
-                each item in data.social
-                  if item.url.indexOf('instagram.com/')!=-1
-                    li.list-inline-item.mb-3
-                      - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                        i.icon-instagram.about_button
-                  else if item.url.indexOf('twitter.com/')!=-1
-                    li.list-inline-item.mb-3
-                      - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                        i.icon-twitter.about_button
-                  else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
-                    li.list-inline-item.mb-3
-                      - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                        i.icon-facebook.about_button
-                  else if item.url.indexOf('vimeo.com/')!=-1
-                    li.list-inline-item.mb-3
-                      - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                        i.icon-vimeo.about_button
-                  else if item.url.indexOf('youtube.com/')!=-1
-                    li.list-inline-item.mb-3
-                      - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                        i.icon-youtube.about_button
-                  else
-                    li.list-inline-item.mb-3
-                      - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
-                      a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                        span.icon-link-light.about_button
-                //if data.publicEmails && data.publicEmails.length          
-                  each email in data.publicEmails
-                    li.list-inline-item.mb-3
-                      a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
-                        i.far.fa-envelope.about_button
-                        
+                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.icon-twitter.about_button
+              else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                li.list-inline-item.mb-3
+                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").replace("facebook.com","fb.com").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.icon-facebook.about_button
+              else if item.url.indexOf('vimeo.com/')!=-1
+                li.list-inline-item.mb-3
+                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.icon-vimeo.about_button
+              else if item.url.indexOf('youtube.com/')!=-1
+                li.list-inline-item.mb-3
+                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.icon-youtube.about_button
+              else
+                li.list-inline-item.mb-3
+                  - var tooltip = item.url.replace("http://","").replace("https://","").replace("www.","").split("/")
+                  a(href=item.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    span.icon-link-light.about_button
+            //if data.publicEmails && data.publicEmails.length          
+              each email in data.publicEmails
+                li.list-inline-item.mb-3
+                  a(href="mailto:"+email data-toggle="tooltip" data-placement="top" title=global.__("Write an email to")+" "+email)
+                    i.far.fa-envelope.about_button
+                    
 
-    .col-lg-5
-      .row
+    .col-md-4
+      img.img-fluid.rounded-circle.d-none.d-md-block(
+        class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+        src=data.imageFormats.large
+        alt=data.stagename
+      )
+      //.row
         .col-sm-6.mb-3
           .performer_image_wrapper
             //.performer_image_bkg(style="background-image: url('"+data.imageFormats.large+"');")
@@ -116,4 +128,5 @@ include ../partials/modals/modalContact
               )
         .col-sm-6.mb-3
           img.img-fluid(src="/images/logo_avnode.svg")
+
 
