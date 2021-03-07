@@ -71,6 +71,7 @@ a#to_top {
   display: none;
   z-index: 99;
 }
+
 a#to_top.to_top_visibile {
   display: block;
 }
@@ -82,24 +83,8 @@ pre {
 h1 .badge {
   vertical-align: text-top;
 }
-/* .card {
-  background: none;
-}
-.card-header {
-  padding-bottom: 0;
-}
-.card-body {
-  padding-top: 0;
-}
-.card-header label {
-  margin-bottom: 0;
-} 
 
-.nav-link {
-  display: block;
-  padding: 0.4rem 1rem;
-}
-*/
+// TITLE WITH  ICON (404)
 .titleicon {
   font-size: 200%;
   vertical-align: middle;
@@ -182,35 +167,36 @@ h1 .badge {
 .owl-carousel .owl-stage {
   padding-left: 0px !important;
 }
-/* 
+
 .carousel_nav {
   position: absolute;
   display: block;
   background: $color1;
   top: 0;
   height: 100%;
-  width: 30px;
+  width: 16px;
   z-index: 20;
 }
 
 .carousel_nav i {
-  position: relative;
-  top: 50%;
+	position: relative;
+	top: calc(50% - 15px);
+	left: -2px;
 }
 
 .carousel_nav.carousel_nav_left {
-  left: -30px;
+  left: -16px;
 }
 
 .carousel_nav.carousel_nav_right {
-  right: -30px;
+  right: -16px;
 }
-small,
+/* small,
 .small {
   font-size: 60%;
   font-weight: inherit;
-}
- */
+} */
+
 
 @keyframes blink {
   50% {

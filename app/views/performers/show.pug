@@ -46,7 +46,7 @@ block content
   .container
     if data.events && data.events.length
       section#events.row.performer_events_wrapper
-        .col-lg-12
+        .col-lg-12(style="padding:0 15px")
           h2.main_title.indented_title.color1!=global.__('Events')+" <small>(<span>"+data.stats.events+"</span>)</small>"
           .owl-carousel.loop.owl-theme
             each item in data.events
