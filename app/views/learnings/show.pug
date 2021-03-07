@@ -30,7 +30,7 @@ block title
                   li
                     span.likes_count=data.stats.likes ? data.stats.likes : 0
                     !=' ' + global.__('Likes')                      
-        .col-lg-3.share_like_list_column
+        .col-lg-3.mt-md-4
           include ../partials/share_like
 
           
@@ -64,7 +64,7 @@ block content
         .tab-content
           //if data.about
           #about.tab-pane.in.active(role='tabpanel')
-            .pt-2.pb-2!=data.about
+            .pt-2.pb-4!=data.about
           #technical_specifications.tab-pane(role='tabpanel')
             if data.duration
               .tech_info_wrapper
