@@ -79,6 +79,12 @@ pre {
   background-color: $color2;
 }
 
+@media (max-width: 575px){
+	.container.p-sm-0 {
+    padding: 0;
+	}
+}
+
 // EDIT INLINE BUTTON
 h1 .badge {
   vertical-align: text-top;
@@ -772,14 +778,14 @@ ul.footer-nav.corporate {
   /* .clearfix.submenu > div {
     float: left;
     margin-bottom: 10px;
-  } */
+  } 
 
   .performance_info_sidebar-cnt {
     border-left: none;
     border-top: 1px solid $color1;
   }
 
-  /* .event_main_image_wrapper {
+  .event_main_image_wrapper {
     top: -130px;
     margin-bottom: -100px;
   } */

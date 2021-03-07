@@ -27,7 +27,7 @@ block title
                         li
                           span.likes_count=data.stats.likes ? data.stats.likes : 0
                           !=' ' + global.__('Likes')                      
-              .col-lg-3.share_like_list_column
+              .col-lg-3.mt-md-4
                 include ../partials/share_like
                 if data.type
                   p.text-right
@@ -66,7 +66,7 @@ block content
                         li
                           span.likes_count=data.galleries[0].stats.likes ? data.galleries[0].stats.likes : 0
                           !=' ' + global.__('Likes')
-            .col-lg-3.share_like_list_column
+            .col-lg-3.mt-md-4
               include ../partials/share_like
       .container
         .row

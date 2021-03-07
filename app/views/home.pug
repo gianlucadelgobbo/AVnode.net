@@ -5,8 +5,7 @@ block title
 
 block content
   section#home_main_carousel
-    .container
-      .row
+    .container.p-sm-0
         .owl-carousel.mono.owl-theme
           //a(href="/events/live-cinema-festival-2019/")
             img.img-fluid(src="/images/home/2019/LCF2019-avnode.jpg")
@@ -35,7 +34,7 @@ block content
       .container
         .row
           .col-lg-12
-            h2.home_title
+            h2.home_title.mb-3
               span.title_label!=global.__('Performances overview')
               a(href="/performances/",  title=global.__('All the performances'))
                 span.button_more_label!=global.__('See all')+"+"                            
@@ -47,7 +46,7 @@ block content
       .container
         .row
           .col-lg-12
-            h2.home_title
+            h2.home_title.mb-3
               span.title_label!=global.__('Next events')
               a(href="/events/",  title=global.__('All the events'))
                 span.button_more_label!=global.__('See all')+"+"                                                
@@ -68,7 +67,7 @@ block content
       .container
         .row
           .col-lg-12
-            h2.home_title
+            h2.home_title.mb-3
               span.title_label!=global.__('News')
               a(href="/news/",  title=global.__('All the news'))
                 span.button_more_label!=global.__('See all')+"+"                                                

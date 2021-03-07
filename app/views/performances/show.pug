@@ -64,7 +64,7 @@ block content
         .tab-content
           //if data.about
           #about.tab-pane.in.active(role='tabpanel')
-            .pt-2.pb-2!=data.about
+            .pt-2.pb-4!=data.about
           #technical_specifications.tab-pane(role='tabpanel')
             if data.duration
               .tech_info_wrapper
@@ -92,7 +92,7 @@ block content
                 if data.genre
                   li.list-inline-item
                     span=data.genre.name
-            .row.mb-3
+            .row.mt-3.mb-4
               .col
                 a.performance_button.print-perf(href="/performances/"+data.slug+"/print", data-slug=data.slug, data-user=user && user._id ? user._id : undefined)
                   !=global.__('PRINT')
