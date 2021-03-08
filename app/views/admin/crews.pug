@@ -8,11 +8,11 @@ block content
 				.col-md-2
 					#dropdownContents
 						a.float-right.btn.btn-success(href='#'
-              data-labelfield=global.__("Crew Name")
-              data-title=global.__("Add Crew")
-              data-param="stagename"
-              data-user=user && user._id ? user._id : undefined
-              data-sez="users")=global.__('New Crew')
+							data-labelfield=global.__("Crew Name")
+							data-title=global.__("Add Crew")
+							data-param="stagename"
+							data-user=user && user._id ? user._id : undefined
+							data-sez="crews")=global.__('New Crew')
 			hr
 			.row
 				.col-md-12
@@ -27,12 +27,16 @@ block content
 								th=__("Links")
 						tbody
 							each crew in data.crews
-								tr
+								tr(id=crew._id)
 									td
 										a(href='/admin/crews/'+crew._id+'/public')
 											img.img-fluid(src=crew.imageFormats.small)
 									td
 										b
+											if user.is_admin
+												a.text-danger.delete(href='#' data-id=crew._id data-sez=get.sez)
+													i.icon-trash
+												!=" | "  
 											a(href='/admin/crews/'+crew._id+'/public')
 												i.icon-edit
 											!=" | "  

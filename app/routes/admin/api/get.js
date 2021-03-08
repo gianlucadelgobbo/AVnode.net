@@ -18,6 +18,7 @@ const Models = {
   'Program': mongoose.model('Program')
 }
 const logger = require('../../../utilities/logger');
+const { __ } = require('i18n');
 
 router.getDuplicate = (req, res) => {
   logger.debug("getDuplicate");
@@ -287,7 +288,7 @@ router.getDelete = (req, res) => {
                   } else {
                     logger.debug("getDelete 8");
                     let errors = [];
-                    if (data.activity != 0) errors.push({error:"User is involved in some activities and can not be deleted", activity: data.activity});
+                    if (data.activity != 0) errors.push({error:__("Performer is involved in some activities and can not be deleted"), activity: data.activity});
                     res.json(errors);
                   }
                   break;

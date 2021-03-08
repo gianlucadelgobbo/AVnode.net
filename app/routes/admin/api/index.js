@@ -242,6 +242,10 @@ router.post('/partner/link/', (req, res) => {
   post.linkPartner(req, res);
 });
 
+router.post('/:sez/new/', (req, res) => {
+  post.postData(req, res);
+});
+
 router.post('/partners/contacts/add/', (req, res) => {
   post.addContacts(req, res);
 });
@@ -252,10 +256,6 @@ router.post('/partners/contacts/delete/', (req, res) => {
 
 router.post('/profile/emails/updateSendy', (req, res)=>{
   post.updateSendy(req, res);
-});
-
-router.post('/:sez/new/', (req, res) => {
-  post.postData(req, res);
 });
 
 router.post('/galleries/:id/medias', (req, res) => {

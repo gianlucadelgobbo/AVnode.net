@@ -24,6 +24,7 @@ router.postData = (req, res) => {
   logger.debug('req.params');
   logger.debug(req.params);
   if (config.cpanel[req.params.sez] && config.cpanel[req.params.sez].forms.new) {
+    logger.debug('BINGO');
     let select = Object. assign({}, config.cpanel[req.params.sez].forms.new.select);
     let selectaddon = config.cpanel[req.params.sez].forms.new.selectaddon;
     let post = {};

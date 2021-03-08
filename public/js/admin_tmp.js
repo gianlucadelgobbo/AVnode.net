@@ -1,4 +1,43 @@
 $(function () {
+  $('.delete').click(function (event) {
+    event.preventDefault();
+    var sez = $(this).data('sez'); // Extract info from data-* attributes
+    var id = $(this).data('id'); // Extract info from data-* attributes
+		$('#msg_modal').modal('show');
+		$('#msg_modal	.modal-confirm').removeClass('btn-primary');
+		$('#msg_modal	.modal-confirm').addClass('btn-danger');
+		$('#msg_modal	.modal-confirm').html('DELETE');
+		$('#msg_modal	.modal-confirm').removeAttr("disabled");
+		$('#msg_modal	.modal-confirm').attr('data-id', id);
+		$('#msg_modal	.modal-confirm').attr('data-sez', sez); 
+		$('#msg_modal	.modal-confirm').removeAttr('data-dismiss');
+		$('#msg_modal	.modal-body').html('Are you sure you want to delete it?');
+		$('#msg_modal	.modal-confirm').click(function (event) {
+			$('#msg_modal	.modal-body').html('<div class="text-center h1"><i class="icon-spinner animate-spin"></i></div>')
+			//console.log(sez);
+			//console.log(id);
+			//console.log("/admin/api/"+(sez=="crews" ? "profile" : sez)+"/"+id+"/delete");
+			$('#msg_modal	.modal-confirm').attr("disabled", true);
+			$.ajax({
+				url: "/admin/api/"+(sez=="crews" ? "profile" : sez)+"/"+id+"/delete",
+				method: "get",
+				data: {delete: 1}
+			})
+			.done(function(data) {
+				if (data && data.length && data[0].error) {
+					$('#msg_modal	.modal-body').html('<div class="alert alert-danger">'+data[0].error+'</div>');
+				} else {
+					$("#"+id).html('<td colspan="'+$("#"+id).children().length+'"><div class="alert alert-success mb-0">'+Object.keys(data)[0] + " Deleted with success"+'</div></td>');
+					$('#msg_modal').modal('hide');
+				}
+			})
+			.fail(function(data) {
+				console.log("error");
+				console.log(data);
+			});
+		});
+	});
+  
 
 	if ($("#birthday") && $("#birthday").length) {
 		$('#birthday').datetimeEntry({datetimeFormat: 'D/O/Y', spinnerBigImage: '/datetimeentry/spinnerDefaultBig.png'});
