@@ -1,5 +1,5 @@
 if categories
-  
+  .clearfix
     #filters.d-sm-block.d-md-none.text-right
       a(href="#filters")
         b=__("Filters")
@@ -7,9 +7,37 @@ if categories
         i.icon-sliders
 
     #collapsefilters.d-sm-none.d-md-block
-      .d-flex.justify-content-between
-        - var currentcat
-        .float-lefta
+      //.justify-content-between
+      - var currentcat
+      .float-right
+        ul.nav.nav-pills
+          each category, index in categories
+            if index < 5
+              li(class="nav-item").mt-3.mt-md-0
+                if category === filter
+                  - currentcat = category
+                  a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+                else
+                  a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+          if (section == "performers")
+            li(class="nav-item").btn-group.ml-md-3.mt-3.mt-md-0
+              select.custom-select.bg-primary.text-white.border-primary(onChange="window.document.location.href='/performers/?country='+this.options[this.selectedIndex].value;" id="inputGroupSelect01")
+                option=global.__("By Country")
+                each country in countries
+                  option(value=country selected=selected_country==country ? "selected" : undefined)=country
+
+          if categories.length > 5
+            li(class="nav-item dropdown")
+              a(class="nav-link dropdown-toggle", data-toggle="dropdown", href="#", role="button", aria-haspopup="true", aria-expanded="false")=""
+              .dropdown-menu
+                each category, index in categories
+                  if index > 4
+                    if category === filter
+                      - currentcat = category
+                      a(class="dropdown-item active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+                    else
+                      a(class="dropdown-item", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
+      .float-left
           ul.nav.nav-pills
             each order in orderings
               li(class="nav-item").mt-3.mt-md-0
@@ -17,31 +45,3 @@ if categories
                   a(class="nav-link active", href="/"+section+"/"+currentcat+"/"+order+"/")=global.__(labels[order])
                 else
                   a(class="nav-link", href="/"+section+"/"+currentcat+"/"+order+"/")=global.__(labels[order])
-        .float-righta
-          ul.nav.nav-pills
-            each category, index in categories
-              if index < 5
-                li(class="nav-item").mt-3.mt-md-0
-                  if category === filter
-                    - currentcat = category
-                    a(class="nav-link active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
-                  else
-                    a(class="nav-link", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
-            if (section == "performers")
-              li(class="nav-item").btn-group.ml-md-3.mt-3.mt-md-0
-                select.custom-select.bg-primary.text-white.border-primary(onChange="window.document.location.href='/performers/?country='+this.options[this.selectedIndex].value;" id="inputGroupSelect01")
-                  option=global.__("By Country")
-                  each country in countries
-                    option(value=country selected=selected_country==country ? "selected" : undefined)=country
-
-            if categories.length > 5
-              li(class="nav-item dropdown")
-                a(class="nav-link dropdown-toggle", data-toggle="dropdown", href="#", role="button", aria-haspopup="true", aria-expanded="false")=""
-                .dropdown-menu
-                  each category, index in categories
-                    if index > 4
-                      if category === filter
-                        - currentcat = category
-                        a(class="dropdown-item active", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
-                      else
-                        a(class="dropdown-item", href="/"+section+"/"+category+"/"+sort+"/")=global.__(labels[category])
