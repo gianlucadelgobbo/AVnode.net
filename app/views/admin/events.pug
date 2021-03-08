@@ -26,12 +26,16 @@ block content
 								th(data-sortable="true")=__("Date")
 						tbody
 							each event in data.events
-								tr
+								tr(id=event._id)
 									td
 										a(href='/admin/events/'+event._id+'/public')
 											img.img-fluid(src=event.imageFormats.small)
 									td
 										b
+											//if user.is_admin
+												a.text-danger.delete(href='#' data-id=event._id data-sez=get.sez)
+													i.icon-trash
+												!=" | "  
 											a(href='/admin/events/'+event._id+'/public')
 												i.icon-edit
 											!=" | "  

@@ -216,7 +216,18 @@ router.getDelete = (req, res) => {
                     results.setStatsAndActivity = resultsPromise;
                     res.json(results);
                   });
-                break;
+                case "news" :
+                  results.News = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                  results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {news: [data._id] } });
+                  var promises = [];
+                  promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                  Promise.all(
+                    promises
+                  ).then( (resultsPromise) => {
+                    results.setStatsAndActivity = resultsPromise;
+                    res.json(results);
+                  });
+                  break;
                 case "videos" :
                   results.Videos = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
                   results.Performance = await Models["Performance"].updateMany( {_id: { $in: data.performances}}, { $pullAll: {videos: [data._id] } });
@@ -247,9 +258,31 @@ router.getDelete = (req, res) => {
                   } else {
                     logger.debug("getDelete 4");
                     let errors = [];
-                    if (data.bookings && data.bookings.length) errors.push({error:"Performace is booked and can not be deleted", bookings: data.bookings});
-                    if (data.galleries && data.galleries.length) errors.push({error:"Performace own galleries and can not be deleted", galleries: data.galleries});
-                    if (data.videos && data.videos.length) errors.push({error:"Performace own videos and can not be deleted", videos: data.videos});
+                    if (data.bookings && data.bookings.length) errors.push({error:__("Performace is booked and can not be deleted"), bookings: data.bookings});
+                    if (data.galleries && data.galleries.length) errors.push({error:__("Performace own galleries and can not be deleted"), galleries: data.galleries});
+                    if (data.videos && data.videos.length) errors.push({error:__("Performace own videos and can not be deleted"), videos: data.videos});
+                    res.json(errors);
+                  }
+                break;
+                case "events" :
+                  logger.debug("getDelete events");
+                  if ((!data.schedule || !data.schedule.length) && (!data.galleries || !data.galleries.length) && (!data.videos || !data.videos.length)) {
+                    results.Event = await Models[config.cpanel[req.params.sez].model].deleteOne( {_id: data._id});
+                    results.User = await Models["User"].updateMany( {_id: { $in: data.users}}, { $pullAll: {performances: [data._id] } });
+                    var promises = [];
+                    promises.push(helpers.setStatsAndActivity({_id: { $in: data.users}}));
+                    Promise.all(
+                      promises
+                    ).then( (resultsPromise) => {
+                      results.setStatsAndActivity = resultsPromise;
+                      res.json(results);
+                    });
+                  } else {
+                    logger.debug("getDelete 4");
+                    let errors = [];
+                    if (data.schedule && data.schedule.length) errors.push({error:__("Event have a program and can not be deleted"), bookings: data.bookings});
+                    if (data.galleries && data.galleries.length) errors.push({error:__("Event own galleries and can not be deleted"), galleries: data.galleries});
+                    if (data.videos && data.videos.length) errors.push({error:__("Event own videos and can not be deleted"), videos: data.videos});
                     res.json(errors);
                   }
                 break;

@@ -27,12 +27,16 @@ block content
 								th(data-sortable="true")=__("Bookings")
 						tbody
 							each performance in data.performances
-								tr
+								tr(id=performance._id)
 									td
 										a(href='/admin/performances/'+performance._id+'/public')
 											img.img-fluid(src=performance.imageFormats.small)
 									td
 										b
+											if user.is_admin
+												a.text-danger.delete(href='#' data-id=performance._id data-sez=get.sez)
+													i.icon-trash
+												!=" | "  
 											a(href='/admin/performances/'+performance._id+'/public')
 												i.icon-edit
 											!=" | "  

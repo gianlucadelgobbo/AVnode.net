@@ -27,12 +27,16 @@ block content
 								th(data-sortable="true")=__("Links")
 						tbody
 							each video in data.videos
-								tr
+								tr(id=video._id)
 									td
 										a(href='/admin/videos/'+video._id+'/public')
 											img.img-fluid(src=video.imageFormats.small)
 									td
 										b
+											if user.is_admin
+												a.text-danger.delete(href='#' data-id=video._id data-sez=get.sez)
+													i.icon-trash
+												!=" | "  
 											a(href='/admin/videos/'+video._id+'/public')
 												i.icon-edit
 											!=" | "  

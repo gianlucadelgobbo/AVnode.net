@@ -26,12 +26,16 @@ block content
 								th(data-sortable="true")=__("Date")
 						tbody
 							each neww in data.news
-								tr
+								tr(id=neww._id)
 									td
 										a(href='/admin/news/'+neww._id+'/public')
 											img.img-fluid(src=neww.imageFormats.small)
 									td
 										b
+											if user.is_admin
+												a.text-danger.delete(href='#' data-id=neww._id data-sez=get.sez)
+													i.icon-trash
+												!=" | "  
 											a(href='/admin/news/'+neww._id+'/public')
 												i.icon-edit
 											!=" | "  

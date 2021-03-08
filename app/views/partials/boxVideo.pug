@@ -1,8 +1,8 @@
 - if (!basepath) basepath = ""
 .video_item_wrapper
   if item.media && !item.media.preview && item.media.iframe
-    div(style="position:relative")
-      div(style="position:relative")
+    .embed-responsive.embed-responsive-16by9.mb-0
+      .embed-responsive-item
         !=item.media.iframe
       a(href=basepath+"/videos/"+item.slug+"/", title=item.title, style="position: absolute; width: 100%;height: 100%;display: block;top: 0;")
   else if item.imageFormats

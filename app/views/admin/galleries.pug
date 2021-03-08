@@ -27,12 +27,16 @@ block content
 								th(data-sortable="true")=__("Links")
 						tbody
 							each gallerie in data.galleries
-								tr
+								tr(id=gallerie._id)
 									td
 										a(href='/admin/galleries/'+gallerie._id+'/public')
 											img.img-fluid(src=gallerie.imageFormats.small)
 									td
 										b
+											if user.is_admin
+												a.text-danger.delete(href='#' data-id=gallerie._id data-sez=get.sez)
+													i.icon-trash
+												!=" | "  
 											a(href='/admin/galleries/'+gallerie._id+'/public')
 												i.icon-edit
 											!=" | "  
