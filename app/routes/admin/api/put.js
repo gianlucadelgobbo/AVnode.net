@@ -38,14 +38,18 @@ router.putData = (req, res, view) => {
       if (!err) {
         if (data) {
           let select = config.cpanel[req.params.sez].forms[req.params.form].select;
+          //if (select.is_public)
+          req.body.is_public = req.body.is_public ? req.body.is_public : false;
           let put = {};
           logger.debug('Data');
           logger.debug(data);
           logger.debug('select');
           logger.debug(select);
-          for(key in data) {
-            if (req.body[key]) {
-                put[key] = req.body[key];
+          logger.debug(Object.keys(select));
+          const selectkeys = Object.keys(select);
+          for(var k in selectkeys) {
+            if (req.body[selectkeys[k]]!==undefined) {
+              put[selectkeys[k]] = req.body[selectkeys[k]];
             }
           }
           logger.debug('putputputputputput');
