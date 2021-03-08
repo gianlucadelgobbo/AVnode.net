@@ -20,47 +20,48 @@ block content
           - var slughelptext = __("To have your video at https://avnode.net/videos/mybeautyfulvideo, please insert mybeautifulvideo (lower case, no spaces, no special characters)")
           include partials/slug
           include partials/is_public
-          #categories.vjtv
-            .row
-              .col-sm-4
-                label.labelField=__("VJTV Category")
-                .labelADD
-                  a(href='https://vjtelevision.com' target='_blank')
-                    img(src='/images/VJTV.png')
-              .col-sm-8
-                if !user.is_admin
-                  ul.list-unstyled.mt-3
-                    li
-                      input.mr-2(id="DOC", name="categories", type="checkbox" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
-                      label(for="DOC")="DOC"
-                    li
-                      input.mr-2(id="PERFORMANCE", name="categories", type="checkbox" value="5be8708afc39610000000195", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000195")!==-1 ? "checked" : undefined)
-                      label(for="PERFORMANCE")="PERFORMANCE"
-                    li
-                      input.mr-2(id="VIDEO", name="categories", type="checkbox" value="5be8708afc39610000000112", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000112")!==-1 ? "checked" : undefined)
-                      label(for="VIDEO")="VIDEO"
-                    li
-                      input.mr-2(id="VJ-DJ_SET", name="categories", type="checkbox" value="5be8708afc39610000000218", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000218")!==-1 ? "checked" : undefined)
-                      label(for="VJ-DJ_SET")="VJ-DJ_SET"
-                    li
-                      input.mr-2(id="vjtv_exclude", name="vjtv_exclude", type="checkbox" value="1", checked=data.vjtv_exclude==1 ? "checked" : undefined)
-                      label(for="vjtv_exclude")
-                        b="VJ TV EXCLUDE"
-                else
-                  ul.list-unstyled.mt-3
-                    li
-                      input.mr-2(id="DOC", name="categories", type="radio" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
-                      label(for="DOC")="DOC"
-                    li
-                      input.mr-2(id="PERFORMANCE", name="categories", type="radio" value="5be8708afc39610000000195", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000195")!==-1 ? "checked" : undefined)
-                      label(for="PERFORMANCE")="PERFORMANCE"
-                    li
-                      input.mr-2(id="VIDEO", name="categories", type="radio" value="5be8708afc39610000000112", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000112")!==-1 ? "checked" : undefined)
-                      label(for="VIDEO")="VIDEO"
-                    li
-                      input.mr-2(id="VJ-DJ_SET", name="categories", type="radio" value="5be8708afc39610000000218", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000218")!==-1 ? "checked" : undefined)
-                      label(for="VJ-DJ_SET")="VJ-DJ_SET"
-          
+          if !data.media && !data.media.iframe
+            #categories.vjtv
+              .row
+                .col-sm-4
+                  label.labelField=__("VJTV Category")
+                  .labelADD
+                    a(href='https://vjtelevision.com' target='_blank')
+                      img(src='/images/VJTV.png')
+                .col-sm-8
+                  if !user.is_admin
+                    ul.list-unstyled.mt-3
+                      li
+                        input.mr-2(id="DOC", name="categories", type="checkbox" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
+                        label(for="DOC")="DOC"
+                      li
+                        input.mr-2(id="PERFORMANCE", name="categories", type="checkbox" value="5be8708afc39610000000195", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000195")!==-1 ? "checked" : undefined)
+                        label(for="PERFORMANCE")="PERFORMANCE"
+                      li
+                        input.mr-2(id="VIDEO", name="categories", type="checkbox" value="5be8708afc39610000000112", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000112")!==-1 ? "checked" : undefined)
+                        label(for="VIDEO")="VIDEO"
+                      li
+                        input.mr-2(id="VJ-DJ_SET", name="categories", type="checkbox" value="5be8708afc39610000000218", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000218")!==-1 ? "checked" : undefined)
+                        label(for="VJ-DJ_SET")="VJ-DJ_SET"
+                      li
+                        input.mr-2(id="vjtv_exclude", name="vjtv_exclude", type="checkbox" value="1", checked=data.vjtv_exclude==1 ? "checked" : undefined)
+                        label(for="vjtv_exclude")
+                          b="VJ TV EXCLUDE"
+                  else
+                    ul.list-unstyled.mt-3
+                      li
+                        input.mr-2(id="DOC", name="categories", type="radio" value="5be8708afc3961000000008e", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc3961000000008e")!==-1 ? "checked" : undefined)
+                        label(for="DOC")="DOC"
+                      li
+                        input.mr-2(id="PERFORMANCE", name="categories", type="radio" value="5be8708afc39610000000195", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000195")!==-1 ? "checked" : undefined)
+                        label(for="PERFORMANCE")="PERFORMANCE"
+                      li
+                        input.mr-2(id="VIDEO", name="categories", type="radio" value="5be8708afc39610000000112", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000112")!==-1 ? "checked" : undefined)
+                        label(for="VIDEO")="VIDEO"
+                      li
+                        input.mr-2(id="VJ-DJ_SET", name="categories", type="radio" value="5be8708afc39610000000218", checked=data.categories.map(item => {return item._id;}).indexOf("5be8708afc39610000000218")!==-1 ? "checked" : undefined)
+                        label(for="VJ-DJ_SET")="VJ-DJ_SET"
+            
           //include partials/addresses
 
 

@@ -1,8 +1,8 @@
 #video.mb-3
 	#video-preview(class=data.media && (data.media.original || data.media.iframe) ? undefined : "d-none")
 		if data.media && data.media.iframe
-			div(style="position:relative")
-				div(style="position:relative")
+			.embed-responsive.embed-responsive-16by9.mb-0
+				.embed-responsive-item
 					!=data.media.iframe
 		else if data.imageFormats && data.imageFormats.large.indexOf("default-item.svg") === -1
 			img.img-fluid(src=data.imageFormats.large alt=data.title)
