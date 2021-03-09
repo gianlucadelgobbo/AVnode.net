@@ -20,7 +20,8 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
         .pl-2.pr-2!=" | "
         button.btn.btn-success(type='button', onclick="window.print();return false;")="PRINT"
         a#userDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-          span.icon-user
+          span.icon-user-outline
+          span.sr-only=__("User Menu")
         .dropdown-menu.dropdown-menu-right(aria-labelledby='userDropdown')
           a.dropdown-item(href='/'+user.slug)                    
             span.pr-2.icon-eye
