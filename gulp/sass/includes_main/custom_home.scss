@@ -12,8 +12,10 @@ section#home_main_title {
   padding-top: 30px;
   background-color: $color5;
 }
-.home_main_title p {
-  margin: 0;
+.home_main_title h1 {
+	font-size: 1rem;
+	text-transform: inherit;
+	font-weight: 200;
 }
 
 .home_main_title_bkg {
