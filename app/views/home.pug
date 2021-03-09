@@ -20,7 +20,7 @@ block content
         //a(href="/events/live-cinema-festival-2020/")
           img.img-fluid(src="/images/home/2020/03_Patchlab_2020.jpg")
         a(href="https://vjtelevision.com" target="_blank")
-          img.img-fluid(src="/images/home/2020/01_vjtelevision.jpg" alt="VJ Television")
+          img.img-fluid(src="/images/home/2020/01_vjtelevision.jpg" alt="VJ Television", width="1110", height="468")
 
       
   section#home_main_title
@@ -58,7 +58,7 @@ block content
           .col-sm-6
             a(href="/events/",  title=global.__('All the events'))
               .bkg_seeall
-                img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg" alt="All the events")
+                img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg" alt="All the events", width="32", height="150")
                 span.seeall_label!=global.__('All the events')            
 
 
@@ -75,7 +75,7 @@ block content
           .col-sm-6.mb-3
             a(href="/news/",  title=global.__('All the news'))
                 .bkg_seeall
-                    img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg" alt="All the news")
+                    img.img-fluid.arrow_seeall(src="/images/seeall_arrow.svg" alt="All the news", width="32", height="150")
                     span.seeall_label!=global.__('All the news')                                                                           
           .col-sm-6
             each item, index in data.news
