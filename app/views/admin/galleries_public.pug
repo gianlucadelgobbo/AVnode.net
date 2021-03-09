@@ -15,9 +15,9 @@ block content
             input.form-control(type='text' name='title' id='title' placeholder=__("Title") value=data.title)
             if err && Object.keys(err.errors).indexOf('title')!==-1
               .badge.badge-danger=err.errors.title.message
-          - var slugtitle = __("Profile Url")
-          - var slugplaceholder = __("Profile Url")
-          - var slughelptext = __("To have your profile at https://avnode.net/mybeautyfulprofile, please insert mybeautifulprofile (lower case, no spaces, no special characters)")
+          - var slugtitle = __("Gallery Url")
+          - var slugplaceholder = __("Gallery Url")
+          - var slughelptext = __("To have your gallery at https://avnode.net/galleries/mybeautyfulgallery, please insert mybeautifulgallery (lower case, no spaces, no special characters)")
           include partials/slug
           
           include partials/is_public

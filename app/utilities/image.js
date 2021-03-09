@@ -72,8 +72,10 @@ image.resize = (file, sizeA) => {
       const localFileNameWithoutExtension = localFileName.substring(0, localFileName.lastIndexOf('.'));
       const localFileNameExtension = localFileName.substring(localFileName.lastIndexOf('.') + 1);
       const scaledFilename = `${localPath}/${size.folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.jpg`;
+      const scaledFilenameWebP = `${localPath}/${size.folder}/${localFileNameWithoutExtension}_${localFileNameExtension}.webp`;
       sizeA[a].in = file.path;
       sizeA[a].out = scaledFilename;
+      sizeA[a].outWebP = scaledFilenameWebP;
       logger.debug('resize in  ' + file.path);
       logger.debug('resize out ' + scaledFilename);
       logger.debug(sizeA[a]);
@@ -81,11 +83,23 @@ image.resize = (file, sizeA) => {
     const resize = size => sharp(size.in)
     .resize(size.w, size.h)
     .toFile(size.out);
-  
+
+    const resizeWebP = size => sharp(size.in)
+    .resize(size.w, size.h)
+    .webp()
+    .toFile(size.outWebP);
+    console.log("stocazzo")
     Promise
     .all(sizeA.map(resize))
     .then(() => {
-      setTimeout(resolve, 100, file);
+      Promise
+      .all(sizeA.map(resizeWebP))
+      .then(() => {
+        setTimeout(resolve, 100, file);
+      }, () => {
+        file.err = __("FILE_IS_DAMAGED")
+        setTimeout(resolve, 100, file);
+      });
     }, () => {
       file.err = __("FILE_IS_DAMAGED")
       setTimeout(resolve, 100, file);

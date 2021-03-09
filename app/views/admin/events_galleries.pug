@@ -3,7 +3,7 @@ block content
 	.d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
 		h1.h2=data.title
 		.btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
-			a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+			a.btn.btn-primary(href='/events/'+data.slug)=__("SHOW")
 	include partials/menuobj
 	.row.mt-3
 		.col-md-10
@@ -42,7 +42,7 @@ block content
 									a(href='/admin/galleries/'+gallery._id+'/public')
 										i.icon-edit
 									!=" | "  
-									a(href='/'+gallery.slug+'/')
+									a(href='/galleries/'+gallery.slug+'/')
 										i.icon-eye
 									!=" | "  
 									!=gallery.title 
