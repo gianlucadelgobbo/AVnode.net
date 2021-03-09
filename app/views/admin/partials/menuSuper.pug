@@ -10,9 +10,13 @@
     each menuitem in config.adminMenu
       if user.is_admin || exclude.indexOf(menuitem.href) === -1
         a.list-group-item.list-group-item-action(href=menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id) class=currentUrl.indexOf(menuitem.href.replace("/admin/profile", "/admin/profile/"+user._id))!==-1 ? "active bg-secondary" : "bg-dark")
-          span(class=menuitem.icon)
+          span.mr-3(class=menuitem.icon)
           span.menu-collapsed=menuitem.label.defaultMessage
-    a.bg-dark.list-group-item(href='#', data-toggle='sidebar-collapse')
+    if user.is_pro
+      a.list-group-item.list-group-item-action.bg-dark(href="/adminpro")
+        span.mr-3(class="icon-cog")
+        span.menu-collapsed="Advanced Tools"
+    a.list-group-item.bg-dark(href='#', data-toggle='sidebar-collapse')
       .d-flex.w-100.justify-content-start.align-items-center
         span.icon-arrow-alt-circle-left.fa-fw.mr-3
         span.menu-collapsed=__("Collapse")

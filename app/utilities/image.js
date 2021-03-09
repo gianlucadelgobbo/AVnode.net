@@ -88,7 +88,7 @@ image.resize = (file, sizeA) => {
     .resize(size.w, size.h)
     .webp()
     .toFile(size.outWebP);
-    console.log("stocazzo")
+
     Promise
     .all(sizeA.map(resize))
     .then(() => {

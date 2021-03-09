@@ -134,8 +134,13 @@ router.get('/userformatsgenerator', (req, res) => {
               sharp(global.appRoot+users[user].image.file)
               .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
               .toFile(global.appRoot+users[user].image.imageFormats[format], (err, info) => {
-                logger.debug(err);
-                logger.debug(info);
+                sharp(global.appRoot+users[user].image.file)
+                .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+                .webp()
+                .toFile(global.appRoot+users[user].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
               });  
             });
             if (!fs.existsSync(global.appRoot+folder)) {
@@ -260,8 +265,13 @@ router.get('/performanceformatsgenerator', (req, res) => {
               sharp(global.appRoot+performances[performance].image.file)
               .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
               .toFile(global.appRoot+performances[performance].image.imageFormats[format], (err, info) => {
-                logger.debug(err);
-                logger.debug(info);
+                sharp(global.appRoot+performances[performance].image.file)
+                .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+                .webp()
+                .toFile(global.appRoot+performances[performance].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
               });
             });
           }
@@ -370,8 +380,13 @@ router.get('/eventformatsgenerator', (req, res) => {
               sharp(global.appRoot+events[event].image.file)
               .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
               .toFile(global.appRoot+events[event].image.imageFormats[format], (err, info) => {
-                //logger.debug(err);
-                //logger.debug(info);
+                sharp(global.appRoot+events[event].image.file)
+                .resize(config.cpanel[adminsez].forms.image.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.image.components.image.config.sizes[format].h)
+                .webp()
+                .toFile(global.appRoot+events[event].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
               });
             });
           }
@@ -475,8 +490,13 @@ router.get('/newsformatsgenerator', (req, res) => {
               sharp(global.appRoot+newss[news].image.file)
               .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
               .toFile(global.appRoot+newss[news].image.imageFormats[format], (err, info) => {
-                logger.debug(err);
-                logger.debug(info);
+                sharp(global.appRoot+newss[news].image.file)
+                .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
+                .webp()
+                .toFile(global.appRoot+newss[news].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                  logger.debug(err);
+                  logger.debug(info);
+                });
               });
             });
           }
@@ -762,8 +782,13 @@ router.get('/footageformatsgenerator', (req, res) => {
                 sharp(global.appRoot+previewFile)
                 .resize(config.cpanel[adminsez].forms.public.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.media.config.sizes[format].h)
                 .toFile(global.appRoot+footages[footage].media.imageFormats[format], (err, info) => {
-                  logger.debug(err);
-                  logger.debug(info);
+                  sharp(global.appRoot+previewFile)
+                  .resize(config.cpanel[adminsez].forms.public.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.media.config.sizes[format].h)
+                  .webp()
+                  .toFile(global.appRoot+footages[footage].media.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                    logger.debug(err);
+                    logger.debug(info);
+                  });
                 });
               });
             }
@@ -1980,8 +2005,13 @@ router.get('/videoformatsgenerator', (req, res) => {
                 sharp(global.appRoot+previewFile)
                 .resize(config.cpanel[adminsez].forms.video.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.video.components.media.config.sizes[format].h)
                 .toFile(global.appRoot+videos[video].media.imageFormats[format], (err, info) => {
-                  logger.debug(err);
-                  logger.debug(info);
+                  sharp(global.appRoot+previewFile)
+                  .resize(config.cpanel[adminsez].forms.video.components.media.config.sizes[format].w, config.cpanel[adminsez].forms.video.components.media.config.sizes[format].h)
+                  .webp()
+                  .toFile(global.appRoot+videos[video].media.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                    logger.debug(err);
+                    logger.debug(info);
+                  });
                 });
               });
             }
@@ -2112,8 +2142,13 @@ router.get('/gallerygenerator', (req, res) => {
                   sharp(global.appRoot+previewFile)
                   .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
                   .toFile(global.appRoot+galleries[gallery].medias[media].imageFormats[format], (err, info) => {
-                    logger.debug(err);
-                    logger.debug(info);
+                    sharp(global.appRoot+previewFile)
+                    .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
+                    .webp()
+                    .toFile(global.appRoot+galleries[gallery].medias[media].imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                      logger.debug(err);
+                      logger.debug(info);
+                    });
                   });
                 });
               }

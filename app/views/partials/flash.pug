@@ -4,8 +4,9 @@ if messages.errors
     .alert.alert-danger
       h4=global.__("ERROR")
       for error in messages.errors
-        if !error instanceof Object
-          - error.msg = JSON.parse(error.msg)
+        if error instanceof Object
+          if !error.msg instanceof Object
+            - error.msg = JSON.parse(error.msg)
         if Object.keys(error.msg).length
           ul.mb-0
             for item in error.msg
