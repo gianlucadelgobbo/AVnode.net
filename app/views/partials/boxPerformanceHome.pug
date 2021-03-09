@@ -23,14 +23,14 @@
                         .flex_left      
                             if (item.users.length > 1)
                                 div
-                                    img.img-fluid(src="/images/icon_authors.svg")
+                                    img.img-fluid(src="/images/icon_authors.svg", width="50", height="50", alt=global.__("Authors icon"))
                                 div
                                     p.users_performance_item_name=item.users.length+" "+global.__("authors")
                                     p.users_performance_item_views=item.stats.visits+" "+global.__("views")
                             else              
                                 each user in item.users
                                     div
-                                        img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename)
+                                        img(class=user.imageFormats.small.substring(user.imageFormats.small.lastIndexOf(".")+1), src=user.imageFormats.small, alt=user.stagename, width="50", height="50")
                                     div
                                         p.users_performance_item_name=user.stagename
                                         p.users_performance_item_views=item.stats.visits+" "+global.__("views")
