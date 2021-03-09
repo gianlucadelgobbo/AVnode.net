@@ -1,5 +1,5 @@
 doctype html
-html(lang=session.current_lang)
+html.no-js(lang=session.current_lang)
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -77,7 +77,8 @@ html(lang=session.current_lang)
     include partials/modals/modalGeneral
     include partials/modals/modalNewContent
 
-    
+    script.
+      document.documentElement.classList.remove("no-js");
     script(defer src='/js/combo.min.js')
 
     //- script(src="/js/owl.carousel.min.js")
