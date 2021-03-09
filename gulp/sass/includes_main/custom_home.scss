@@ -73,11 +73,18 @@ section#home_main_title {
   height: 100%;
 }
 
-#performances_home .bkg_seeall {
+/* #performances_home .bkg_seeall {
+  background-image: url("/images/seeall_performance_img.wepb");
+}
+
+.no-js #performances_home .bkg_seeall {
   background-image: url("/images/seeall_performance_img.jpg");
+}
+
+#performances_home .bkg_seeall {
   height: 100%;
   background-size: cover;
-}
+} */
 
 span.seeall_label {
   color: #fff;
@@ -100,7 +107,14 @@ span.seeall_label {
 }
 
 #home_events_wrapper .bkg_seeall {
+  background-image: url("/images/seeall_events_img.webp");
+}
+
+.no-js #home_events_wrapper .bkg_seeall {
   background-image: url("/images/seeall_events_img.jpg");
+}
+
+#home_events_wrapper .bkg_seeall {
   height: 100%;
   background-size: cover;
 }
@@ -150,7 +164,14 @@ span.seeall_label {
 }
 
 #home_news_wrapper .bkg_seeall {
+  background-image: url("/images/seeall_news_img.webp");
+}
+
+.no-js #home_news_wrapper .bkg_seeall {
   background-image: url("/images/seeall_news_img.jpg");
+}
+
+#home_news_wrapper .bkg_seeall {
   height: 100%;
   background-size: cover;
 }

@@ -8,7 +8,10 @@ block content
     .container.full-small
       .owl-carousel.mono.owl-theme
         a(href="https://vjtelevision.com" target="_blank" rel="noopener")
-          img.img-fluid(src="/images/home/2020/01_vjtelevision.jpg" alt="VJ Television", width="1110", height="468")
+          picture
+            source(srcset="/images/home/2020/01_vjtelevision.webp"  type="image/webp")
+            source(srcset="/images/home/2020/01_vjtelevision.jpg" type="image/jpeg")
+            img.img-fluid(src="/images/home/2020/01_vjtelevision.jpg" alt="VJ Television", width="1110", height="468")
 
       
   section#home_main_title
