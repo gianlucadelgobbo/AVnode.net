@@ -1,5 +1,13 @@
-extends ../layout_print
-block content
+#top
+a#to_top.d-print-none(href="#top", title=global.__('Back to the top'))
+  span.icon-arrow-up-circle
+include ../partials/menuHeaderPrint
+
+if !user
+  .text-center
+    .mt-5="Please login to use this tool"
+    a.btn.btn-primary.mt-5(href="/login?returnTo="+canonical)="LOGIN"
+else
   .container
     table
       thead
