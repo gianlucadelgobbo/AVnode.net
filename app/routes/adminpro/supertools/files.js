@@ -488,7 +488,7 @@ router.get('/newsformatsgenerator', (req, res) => {
         }
         for(let format in config.cpanel[adminsez].forms.public.components.image.config.sizes) {
           newss[news].image.imageFormatsExists[format] = fs.existsSync(global.appRoot+newss[news].image.imageFormats[format]);
-          if (!newss[news].image.imageFormatsExists[format]) {
+          //if (!newss[news].image.imageFormatsExists[format]) {
             let folder = newss[news].image.imageFormats[format].substring(0, newss[news].image.imageFormats[format].lastIndexOf('/'))
             router.checkAndCreate(folder, () => {
               sharp(global.appRoot+newss[news].image.file)
@@ -504,7 +504,7 @@ router.get('/newsformatsgenerator', (req, res) => {
                 });
               });
             });
-          }
+          //}
         }
       }
       data.push(newss[news].image);
