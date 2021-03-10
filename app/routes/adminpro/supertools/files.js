@@ -494,6 +494,7 @@ router.get('/newsformatsgenerator', (req, res) => {
                 .resize(config.cpanel[adminsez].forms.public.components.image.config.sizes[format].w, config.cpanel[adminsez].forms.public.components.image.config.sizes[format].h)
                 .webp()
                 .toFile(global.appRoot+newss[news].image.imageFormats[format].replace(".jpg", ".webp"), (err, info) => {
+                  console.log(err || info)
                   logger.debug(err);
                   logger.debug(info);
                 });
