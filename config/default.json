@@ -4493,7 +4493,25 @@
             "stats": 1,
             "image": 1
           },
-          "populate": [{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "style", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"}],
+          "populate": [{ "path": "type", "select": "name slug", "model": "Category"},{ "path": "style", "select": "name slug", "model": "Category"},{ "path": "genre", "select": "name slug", "model": "Category"        }, {
+            "path": "bookings.event",
+            "select": {
+              "title": 1,
+              "image": 1,
+              "abouts": 1,
+              "web": 1,
+              "social": 1,
+              "schedule": 1,
+              "slug": 1
+            },
+            "model": "EventShow"
+          }, {
+            "path": "bookings.schedule.categories",
+            "select": {
+              "name": 1
+            },
+            "model": "Category"
+          }],
           "options": { "sort": { "createdAt": -1 }},
           "model": "Performance"
         }, {

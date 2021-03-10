@@ -288,6 +288,15 @@ block content
                               a(href="https://avnode.net/performances/"+item.slug)
                                 i.icon-link.mr-2
                                 !="https://avnode.net/performances/"+item.slug
+                        if !get.hideBookings && item.bookings
+                          h5!=global.__('Bookings')+"stoca"
+                          each booking in item.bookings                
+                            .d-flex
+                              img(src=booking.event.imageFormats.small, alt=booking.event.title)
+                              .ml-3
+                                !=booking.event.title
+                                br
+                                !=booking.boxDate ? booking.boxDate : booking.event.boxDate
 
             if data.news && data.news.length
               .news

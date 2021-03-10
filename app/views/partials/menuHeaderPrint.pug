@@ -10,6 +10,8 @@ nav.d-print-none.navbar.navbar_extended_template.navbar-expand-lg.navbar-fixed-t
       form.form-inline
         input#hideLinks.form-check-input.mr-2(type='checkbox', name="hideLinks", value=1, checked=get.hideLinks=="1" ? "checked" : undefined)
         label.form-check-label.mr-3(for='hideLinks')="Hide items links"
+        input#hideLinks.form-check-input.mr-2(type='checkbox', name="hideBookings", value=1, checked=get.hideBookings=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideBookings')="Hide items Performances Bookings"
         input#hideImages.form-check-input.mr-2(type='checkbox', name="hideImages", value=1, checked=get.hideImages=="1" ? "checked" : undefined)
         label.form-check-label.mr-3(for='hideImages')="Hide items images"
         input#hideDescription.form-check-input.mr-2(type='checkbox', name="hideDescription", value=1, checked=get.hideDescription=="1" ? "checked" : undefined)
