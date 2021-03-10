@@ -290,13 +290,19 @@ block content
                                 !="https://avnode.net/performances/"+item.slug
                         if !get.hideBookings && item.bookings
                           h5!=global.__('Bookings')+"stoca"
-                          each booking in item.bookings                
-                            .d-flex
-                              img(src=booking.event.imageFormats.small, alt=booking.event.title)
-                              .ml-3
-                                !=booking.event.title
+                          each booking in item.bookings
+                            if !get.hideImages
+                              .mb-3
+                                b!=booking.event.title
                                 br
                                 !=booking.boxDate ? booking.boxDate : booking.event.boxDate
+                            else             
+                              .d-flex.mb-3
+                                img(src=booking.event.imageFormats.small, alt=booking.event.title)
+                                .ml-3
+                                  b!=booking.event.title
+                                  br
+                                  !=booking.boxDate ? booking.boxDate : booking.event.boxDate
 
             if data.news && data.news.length
               .news
