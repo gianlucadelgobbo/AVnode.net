@@ -460,7 +460,7 @@ router.get('/newsformatsgenerator', (req, res) => {
   limit(limit).
   skip(skip).
   lean().
-  select({image: 1, createdAt: 1}).
+  select({title: 1, image: 1, createdAt: 1}).
   exec((err, newss) => {
     for (let news in newss) {
       newss[news].image.exists = fs.existsSync(global.appRoot+newss[news].image.file);
