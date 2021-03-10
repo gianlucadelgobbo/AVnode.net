@@ -219,15 +219,18 @@ block content
                                 i.icon-link.mr-2
                                 !="https://avnode.net/performances/"+item.slug
                         if !get.hideBookings && item.bookings
-                          h5.mt-3!=global.__('Bookings')
-                          each booking in item.bookings
-                            if get.hideImages
-                              ul.mb-3
+                          h5.mt-3!='Bookings'
+                          if get.hideImages
+                            ul.mb-3
+                              each booking in item.bookings
                                 li
                                   b!=booking.event.title
                                   br
-                                  !=booking.boxDate ? booking.boxDate : booking.event.boxDate
-                            else             
+                                  !=booking.event.boxDate
+                                  br
+                                  !=booking.event.boxVenue
+                          else             
+                            each booking in item.bookings
                               .d-flex.mb-3
                                 img(src=booking.event.imageFormats.small, alt=booking.event.title)
                                 .ml-3
