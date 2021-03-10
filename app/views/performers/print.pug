@@ -289,9 +289,9 @@ block content
                                 i.icon-link.mr-2
                                 !="https://avnode.net/performances/"+item.slug
                         if !get.hideBookings && item.bookings
-                          h5!=global.__('Bookings')+"stoca"
+                          h5!=global.__('Bookings')
                           each booking in item.bookings
-                            if !get.hideImages
+                            if get.hideImages
                               .mb-3
                                 b!=booking.event.title
                                 br
