@@ -220,6 +220,7 @@ block content
                                 !="https://avnode.net/performances/"+item.slug
                         if !get.hideBookings && item.bookings
                           h5.mt-3!='Bookings'
+                          - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
                           if get.hideImages
                             ul.mb-3
                               each booking in item.bookings
@@ -236,7 +237,9 @@ block content
                                 .ml-3
                                   b!=booking.event.title
                                   br
-                                  !=booking.boxDate ? booking.boxDate : booking.event.boxDate
+                                  !=booking.event.boxDate
+                                  br
+                                  !=booking.event.boxVenue
 
             if data.events && data.events.length
               .events
