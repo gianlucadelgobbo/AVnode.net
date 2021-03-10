@@ -206,12 +206,14 @@ block content
                         )
                       .media-body
                         h4!=item.title
-                        ul.list-inline
-                          li.list-inline-item=item.type.name
+                        small
+                          !=item.type.name
                           if item.style
-                            li.list-inline-item=item.style.name
+                            !=" | "
+                            !=item.style.name
                           if item.genre
-                            li.list-inline-item=item.genre.name
+                            !=" | "
+                            !=item.genre.name
                         if !get.hideDescription
                           .text-justify!=item.about
                         if !get.hideLinks
@@ -224,10 +226,10 @@ block content
                           h5.mt-3!='Bookings'
                           - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
                           if get.hideImages
-                            ul.mb-3
+                            ul
                               each booking in item.bookings
                                 li
-                                  b!=booking.event.title
+                                  strong!=booking.event.title
                                   br
                                   !=booking.event.boxDate
                                   br
