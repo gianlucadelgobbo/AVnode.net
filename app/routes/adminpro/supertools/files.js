@@ -449,6 +449,7 @@ router.get('/newsimages', (req, res) => {
 });
 
 router.get('/newsformatsgenerator', (req, res) => {
+  console.log('/adminpro/supertools/files/newsimages')
   logger.debug('/adminpro/supertools/files/newsimages');
   var limit = 50;
   var skip = req.query.skip ? parseFloat(req.query.skip) : 0;
