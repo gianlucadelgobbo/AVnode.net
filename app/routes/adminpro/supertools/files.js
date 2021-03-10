@@ -473,6 +473,7 @@ router.get('/newsformatsgenerator', (req, res) => {
       logger.debug(newss[news]);
       //logger.debug(config.cpanel[adminsez].config.sizes.image);
       console.log('newss[news].image.exists')
+      console.log(newss[news].title)
       console.log(newss[news].image.exists)
       if (newss[news].image.exists) {
         const file = newss[news].image.file;
