@@ -526,7 +526,7 @@
 	"ADD AUTHOR": "AUTOR HINZUFÜGEN",
 	"minutes": "Protokoll",
 	"Technologies with the artists": "Technologien mit den Künstlern",
-	"Technical requirements": "Technische Anforderungen",
+	"Technical requests": "Technische Anforderungen",
 	"Video title": "Videotitel",
 	"Event title": "Ereignistitel",
 	"Add Booking": "Buchung hinzufügen",
@@ -607,6 +607,6 @@
 	"STAGE_NAME_IS_REQUIRED": "Der Künstlername ist erforderlich",
 	"MISSING_ONE_PRIMARY_EMAIL": "Es fehlt eine primäre E-Mail",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Es kann nur eine E-Mail primär sein",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
-	"Text available only in English": "Text available only in English"
+	"Text available only in English": "Text nur in englischer Sprache verfügbar",
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
 }

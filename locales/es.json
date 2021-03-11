@@ -527,7 +527,7 @@
 	"ADD AUTHOR": "AÑADIR AUTOR",
 	"minutes": "minutos",
 	"Technologies with the artists": "Tecnologías con los artistas",
-	"Technical requirements": "Requerimientos técnicos",
+	"Technical requests": "Requerimientos técnicos",
 	"Video title": "Titulo del Video",
 	"Event title": "Título del evento",
 	"Add Booking": "Agregar reserva",
@@ -608,6 +608,6 @@
 	"STAGE_NAME_IS_REQUIRED": "El nombre artístico es obligatorio",
 	"MISSING_ONE_PRIMARY_EMAIL": "Falta un correo electrónico principal",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Solo un correo electrónico puede ser principal",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
-	"Text available only in English": "Text available only in English"
+	"Text available only in English": "Texto disponible solo en inglés",
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
 }

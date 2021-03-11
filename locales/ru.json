@@ -527,7 +527,7 @@
 	"ADD AUTHOR": "ДОБАВИТЬ АВТОРА",
 	"minutes": "минут",
 	"Technologies with the artists": "Технологии с художниками",
-	"Technical requirements": "Технические требования",
+	"Technical requests": "Технические требования",
 	"Video title": "Название видео",
 	"Event title": "Название события",
 	"Add Booking": "Добавить бронирование",
@@ -608,6 +608,6 @@
 	"STAGE_NAME_IS_REQUIRED": "Укажите название сцены.",
 	"MISSING_ONE_PRIMARY_EMAIL": "Отсутствует один основной адрес электронной почты",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Только один адрес электронной почты может быть основным",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
-	"Text available only in English": "Text available only in English"
+	"Text available only in English": "Текст доступен только на английском языке",
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
 }

@@ -3114,7 +3114,7 @@
             "tech_reqs": {
               "schema": "shared/About",
               "comp": "textarea_multilang",
-              "label": "Technical requirements",
+              "label": "Technical requests",
               "validators": {
                 "String": {
                   "min": 0,

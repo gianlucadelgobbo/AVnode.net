@@ -527,7 +527,7 @@
 	"ADD AUTHOR": "ADICIONAR AUTOR",
 	"minutes": "minutos",
 	"Technologies with the artists": "Tecnologias com os artistas",
-	"Technical requirements": "Requerimentos técnicos",
+	"Technical requests": "Requerimentos técnicos",
 	"Video title": "Título do vídeo",
 	"Event title": "Título do evento",
 	"Add Booking": "Adicionar reserva",
@@ -608,6 +608,6 @@
 	"STAGE_NAME_IS_REQUIRED": "O nome do estágio é obrigatório",
 	"MISSING_ONE_PRIMARY_EMAIL": "Falta um e-mail principal",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Apenas um e-mail pode ser principal",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
-	"Text available only in English": "Text available only in English"
+	"Text available only in English": "Texto disponível apenas em inglês",
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
 }

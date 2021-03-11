@@ -527,7 +527,7 @@
 	"ADD AUTHOR": "ΠΡΟΣΘΗΚΗ ΣΥΓΓΡΑΦΕΑ",
 	"minutes": "λεπτά",
 	"Technologies with the artists": "Τεχνολογίες με τους καλλιτέχνες",
-	"Technical requirements": "Τεχνικές απαιτήσεις",
+	"Technical requests": "Τεχνικές απαιτήσεις",
 	"Video title": "Τίτλος βίντεο",
 	"Event title": "Τίτλος εκδήλωσης",
 	"Add Booking": "Προσθήκη κράτησης",
@@ -608,6 +608,6 @@
 	"STAGE_NAME_IS_REQUIRED": "Απαιτείται όνομα σκηνής",
 	"MISSING_ONE_PRIMARY_EMAIL": "Λείπει ένα κύριο μήνυμα ηλεκτρονικού ταχυδρομείου",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Μόνο ένα email μπορεί να είναι το κύριο",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
-	"Text available only in English": "Text available only in English"
+	"Text available only in English": "Το κείμενο διατίθεται μόνο στα Αγγλικά",
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
 }

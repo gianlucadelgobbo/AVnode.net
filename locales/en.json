@@ -527,7 +527,7 @@
 	"ADD AUTHOR": "ADD AUTHOR",
 	"minutes": "minutes",
 	"Technologies with the artists": "Technologies with the artists",
-	"Technical requirements": "Technical requirements",
+	"Technical requests": "Technical requests",
 	"Video title": "Video title",
 	"Event title": "Event title",
 	"Add Booking": "Add Booking",
@@ -621,5 +621,6 @@
 	"Authors icon": "Authors icon",
 	"File upload only supports the following filetypes": "File upload only supports the following filetypes",
 	"The list of Print by": "The list of Print by",
-	"TOP": "TOP"
+	"TOP": "TOP",
+	"The Print of": "The Print of"
 }

@@ -527,7 +527,7 @@
 	"ADD AUTHOR": "SZERZŐ hozzáadása",
 	"minutes": "percek",
 	"Technologies with the artists": "Technológiák a művészekkel",
-	"Technical requirements": "Technikai követelmények",
+	"Technical requests": "Technikai követelmények",
 	"Video title": "Videó címe",
 	"Event title": "Esemény címe",
 	"Add Booking": "Foglalás hozzáadása",
@@ -608,6 +608,6 @@
 	"STAGE_NAME_IS_REQUIRED": "A szakasz neve kötelező",
 	"MISSING_ONE_PRIMARY_EMAIL": "Hiányzik egy elsődleges e-mail",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Csak egy e-mail lehet elsődleges",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
-	"Text available only in English": "Text available only in English"
+	"Text available only in English": "A szöveg csak angol nyelven érhető el",
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
 }

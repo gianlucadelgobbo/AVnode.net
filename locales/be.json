@@ -527,7 +527,7 @@
 	"ADD AUTHOR": "ДАДАЦЬ АЎТОРА",
 	"minutes": "хвілін",
 	"Technologies with the artists": "Тэхналогіі з мастакамі",
-	"Technical requirements": "Тэхнічныя патрабаванні",
+	"Technical requests": "Тэхнічныя патрабаванні",
 	"Video title": "Назва відэа",
 	"Event title": "Назва падзеі",
 	"Add Booking": "Дадаць браніраванне",
@@ -608,6 +608,6 @@
 	"STAGE_NAME_IS_REQUIRED": "Патрабуецца назва сцэны",
 	"MISSING_ONE_PRIMARY_EMAIL": "Адсутнічае адзін асноўны адрас электроннай пошты",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Першасным можа быць толькі адзін электронны адрас",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
-	"Text available only in English": "Text available only in English"
+	"Text available only in English": "Тэкст даступны толькі на англійскай мове",
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
 }
