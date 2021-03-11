@@ -11,5 +11,5 @@
 				.form-group
 					input(type='hidden' name='tech_arts['+i+'][is_primary]' value="false")
 					input(type='hidden' name='tech_arts['+i+'][lang]' value=lang)
-					- var about = data.abouts.filter(item => item.lang==lang)
-					textarea.form-control(name='tech_arts['+i+'][abouttext]')=data.abouts && data.abouts.length && about[0] && about[0].abouttext ? about[0].abouttext : ""
+					- var about = data.tech_arts.filter(item => item.lang==lang)
+					textarea.form-control(name='tech_arts['+i+'][abouttext]')=data.tech_arts && data.tech_arts.length && about[0] && about[0].abouttext ? about[0].abouttext : ""
