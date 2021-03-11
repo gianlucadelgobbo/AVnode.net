@@ -1,13 +1,5 @@
-#top
-a#to_top.d-print-none(href="#top", title=global.__('Back to the top'))
-  span.icon-arrow-up-circle
-include ../partials/menuHeaderPrint
-
-if !user
-  .text-center
-    .mt-5="Please login to use this tool"
-    a.btn.btn-primary.mt-5(href="/login?returnTo="+canonical)="LOGIN"
-else
+extends ../layout_print
+block content
   .container
     table
       thead
@@ -92,11 +84,13 @@ else
                             i.far.fa-envelope.mr-2
                             !=email
               .col-4
-                img.soft-rounded-circle.img-fluid(
-                  class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
-                  src=data.imageFormats.large
-                  alt=data.stagename
-                )
+                .page-break
+                  img.soft-rounded-circle.img-fluid(
+                    class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+                    src=data.imageFormats.large
+                    alt=data.stagename
+                    height=347
+                  )
 
             .mb-5.text-justify!=data.aboutFull
 
@@ -106,12 +100,13 @@ else
                 each item in data.crews
                   li.media.mt-3.pt-3
                     if !get.hideImages
-                      img.mr-3(
-                        src=item.imageFormats.small
-                        alt=item.stagename
-                        width=100
-                        height=100
-                      )
+                      .page-break
+                        img.mr-3(
+                          src=item.imageFormats.small
+                          alt=item.stagename
+                          width=100
+                          height=100
+                        )
                     .media-body
                       h4!=item.stagename
                       if item.addressesFormatted && item.addressesFormatted.length       
@@ -158,10 +153,12 @@ else
                   each item in data.members
                     li.media.mt-3.pt-3
                       if !get.hideImages
-                        img.mr-3(
-                          src=item.imageFormats.small
-                          alt=data.organizationData ? item.name+" "+item.surname : item.stagename
-                        )
+                        .page-break
+                          img.mr-3(
+                            src=item.imageFormats.small
+                            alt=data.organizationData ? item.name+" "+item.surname : item.stagename
+                            height=100
+                          )
                       .media-body
                         h4!=data.organizationData ? item.name+" "+item.surname : item.stagename
                         if item.addressesFormatted && item.addressesFormatted.length       
@@ -208,10 +205,11 @@ else
                   each item in data.performances                
                     li.media.mt-3.pt-3
                       if !get.hideImages
-                        img.mr-3(
-                          src=item.imageFormats.small
-                          alt=item.title
-                        )
+                        .page-break
+                          img.mr-3(
+                            src=item.imageFormats.small
+                            alt=item.title
+                          )
                       .media-body
                         h4!=item.title
                         small
@@ -231,7 +229,7 @@ else
                                 i.icon-link.mr-2
                                 !="https://avnode.net/performances/"+item.slug
                         if !get.hideBookings && item.bookings
-                          h5.mt-3!='Bookings'
+                          u.mb-2.mt-3!='Bookings'
                           - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
                           if get.hideImages
                             ul
@@ -245,7 +243,8 @@ else
                           else             
                             each booking in item.bookings
                               .d-flex.mb-3
-                                img(src=booking.event.imageFormats.small, alt=booking.event.title)
+                                .page-break
+                                  img(src=booking.event.imageFormats.small, alt=booking.event.title, height=113)
                                 .ml-3
                                   b!=booking.event.title
                                   br
@@ -260,10 +259,12 @@ else
                   each item in data.events
                     li.media.mt-3.pt-3
                       if !get.hideImages
-                        img.mr-3(
-                          src=item.imageFormats.small
-                          alt=item.title
-                        )
+                        .page-break
+                          img.mr-3(
+                            src=item.imageFormats.small
+                            alt=item.title
+                            height=113
+                          )
                       .media-body
                         h4!=item.title
                         ul.list-inline
@@ -311,10 +312,12 @@ else
                   each item in data.partnerships_ordered
                     li.media.mt-3.pt-3
                       if !get.hideImages
-                        img.mr-3(
-                          src=item.imageFormats.small
-                          alt=item.title
-                        )
+                        .page-break
+                          img.mr-3(
+                            src=item.imageFormats.small
+                            alt=item.title
+                            height=113
+                          )
                       .media-body
                         h4!=item.title
                         ul.list-inline
@@ -330,10 +333,12 @@ else
                   each item in data.news            
                     li.media.mt-3.pt-3
                       if !get.hideImages
-                        img.mr-3(
-                          src=item.imageFormats.small
-                          alt=item.title
-                        )
+                        .page-break
+                          img.mr-3(
+                            src=item.imageFormats.small
+                            alt=item.title
+                            height=113
+                          )
                       .media-body
                         h4!=item.title
                         ul.pl-2.list-inline

@@ -1,0 +1,443 @@
+include ../layout_print
+block content
+  #top
+  a#to_top(href="#top", title=global.__('Back to the top'))=__("TOP")
+  if user
+    .navbar
+      a.navbar-brand(href='/', title="AVnode.net")
+        img(src='/images/logo_avnode_bar.svg', height='30', class='main_logo' alt='AVnode.net')
+      form.form-inline
+        input#hideLinks.mr-2(type='checkbox', name="hideLinks", value=1, checked=get.hideLinks=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideLinks')="Hide items links"
+        input#hideLinks.mr-2(type='checkbox', name="hideBookings", value=1, checked=get.hideBookings=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideBookings')="Hide items Performances Bookings"
+        input#hideImages.mr-2(type='checkbox', name="hideImages", value=1, checked=get.hideImages=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideImages')="Hide items images"
+        input#hideDescription.mr-2(type='checkbox', name="hideDescription", value=1, checked=get.hideDescription=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='hideDescription')="Hide items descriptions"
+        input#fullDescription.mr-2(type='checkbox', name="fullDescription", value=1, checked=get.fullDescription=="1" ? "checked" : undefined)
+        label.form-check-label.mr-3(for='fullDescription')="Full items descriptions"
+        button.btn.btn-primary.update(type='submit')="UPDATE"
+        !=" | "
+        button.btn.btn-success(type='button', onclick="window.print();return false;")="PRINT"
+  .container
+    if !user
+      .text-center
+        .mt-5="Please login to use this tool"
+        a.btn.btn-primary.mt-5(href="/login?returnTo="+canonical)="LOGIN"
+    else
+      .clearfix
+        .col
+          h1=data.stagename
+          if data.addressesFormatted && data.addressesFormatted.length       
+            ul.pl-2.list-inline
+              each address in data.addressesFormatted
+                li.list-inline-item.mb-3!=address
+          if Object.keys(data.organizationData).length
+            .pb-2
+              b="Organization Data"
+            ul.pl-2.list-unstyled
+              li.mb-3
+                !="Foundation year: "
+                b!=data.organizationData.foundation_year
+              li.mb-3
+                !="Organization type: "
+                b!=data.organizationData.type
+              li.mb-3
+                !="Organization phone: "
+                b!=data.organizationData.phone
+              li.mb-3
+                !="Organization email: "
+                b!=data.organizationData.public_email
+            //each item in data.organizationData
+              li.mb-3
+                !="Foundation year: "
+                b!=item.foundation_year
+
+          if !get.hideLinks 
+            .pb-2
+              b="Web sites"
+            ul.pl-2.list-unstyled
+              li.mb-3
+                a(href="https://avnode.net/"+data.slug)
+                  i.icon-link.mr-2
+                  !="https://avnode.net/"+data.slug
+              each item in data.web
+                li.mb-3
+                  a(href=item.url)
+                    i.icon-link.mr-2
+                    !=item.url
+            if data.social && data.social.length
+              .pb-2
+                b="Social media"
+              ul.pl-2.list-unstyled
+                each item in data.social
+                  li.mb-3
+                    a(href=item.url)
+                      if item.url.indexOf('instagram.com/')!=-1
+                        i.icon-instagram.mr-2
+                      else if item.url.indexOf('twitter.com/')!=-1
+                        i.icon-twitter.mr-2
+                      else if item.url.indexOf('facebook.com/')!=-1 || item.url.indexOf('fb.com/')!=-1
+                        i.icon-facebook.mr-2
+                      else if item.url.indexOf('vimeo.com/')!=-1
+                        i.icon-vimeo.mr-2
+                      else if item.url.indexOf('youtube.com/')!=-1
+                        i.icon-youtube.mr-2
+                      else
+                        i.icon-link.mr-2
+                      !=item.url
+
+            if data.publicEmails && data.publicEmails.length    
+              ul.pl-2.list-unstyled
+                each email in data.publicEmails
+                  li.mb-3
+                    a(href="mailto:"+item)
+                      i.far.fa-envelope.mr-2
+                      !=email
+        .col
+          .text-right
+            img.soft-rounded-circle.img-fluid(
+              class=data.imageFormats.large.substring(data.imageFormats.large.lastIndexOf(".")+1)
+              src=data.imageFormats.large
+              alt=data.stagename
+            )
+
+      .text-justify!=data.aboutFull
+
+      if data.crews && data.crews.length
+        h2!=global.__('Crews & Organizations')+" <small>(<span>"+data.stats.crews+"</span>)</small>"  
+        ul.list-unstyled.mb-5
+          each item in data.crews
+            li.media.mt-3.pt-3
+              if !get.hideImages
+                img.mr-3(
+                  src=item.imageFormats.small
+                  alt=item.stagename
+                  width=100
+                  height=100
+                )
+              .media-body
+                h4!=item.stagename
+                if item.addressesFormatted && item.addressesFormatted.length       
+                  ul.pl-2.list-inline
+                    each address in item.addressesFormatted
+                      li.list-inline-item.mb-3!=address
+
+                  if !get.hideDescription
+                    .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                  if !get.hideLinks
+                    ul.list-unstyled.pt-3
+                      li.mb-3
+                        a(href="https://avnode.net/"+item.slug)
+                          i.icon-link.mr-2
+                          !="https://avnode.net/"+item.slug
+                      each web in item.web
+                        li.mb-3
+                          a(href=web.url)
+                            i.icon-link.mr-2
+                            !=web.url
+                    if item.social && item.social.length
+                      ul.list-unstyled.pt-3
+                        each social in item.social
+                          li.mb-3
+                            a(href=social.url)
+                              if social.url.indexOf('instagram.com/')!=-1
+                                i.icon-instagram.mr-2
+                              else if social.url.indexOf('twitter.com/')!=-1
+                                i.icon-twitter.mr-2
+                              else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                i.icon-facebook.mr-2
+                              else if social.url.indexOf('vimeo.com/')!=-1
+                                i.icon-vimeo.mr-2
+                              else if social.url.indexOf('youtube.com/')!=-1
+                                i.icon-youtube.mr-2
+                              else
+                                i.icon-link.mr-2
+                              !=social.url
+
+      if data.members && data.members.length
+        .members
+          h2!=global.__('Members')+" <small>(<span>"+data.stats.members+"</span>)</small>"  
+          ul
+            each item in data.members
+              li.fleximage
+                if !get.hideImages
+                  img.mr-3(
+                    src=item.imageFormats.small
+                    alt=data.organizationData ? item.name+" "+item.surname : item.stagename
+                    width=100
+                    height=100
+                     style="vertical-align:middle;margin:0px 50px"
+                  )
+                .media-body
+                  h4!=data.organizationData ? item.name+" "+item.surname : item.stagename
+                  if item.addressesFormatted && item.addressesFormatted.length       
+                    ul.pl-2.list-inline
+                      each address in item.addressesFormatted
+                        li.list-inline-item.mb-3!=address
+
+                  if !get.hideDescription
+                    .text-justify!=get.fullDescription ? item.aboutFull : item.about
+                  if !get.hideLinks
+                    ul.list-unstyled.pt-3
+                      li.mb-3
+                        a(href="https://avnode.net/"+item.slug)
+                          i.icon-link.mr-2
+                          !="https://avnode.net/"+item.slug
+                      each web in item.web
+                        li.mb-3
+                          a(href=web.url)
+                            i.icon-link.mr-2
+                            !=web.url
+                    if item.social && item.social.length
+                      ul.list-unstyled.pt-3
+                        each social in item.social
+                          li.mb-3
+                            a(href=social.url)
+                              if social.url.indexOf('instagram.com/')!=-1
+                                i.icon-instagram.mr-2
+                              else if social.url.indexOf('twitter.com/')!=-1
+                                i.icon-twitter.mr-2
+                              else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                i.icon-facebook.mr-2
+                              else if social.url.indexOf('vimeo.com/')!=-1
+                                i.icon-vimeo.mr-2
+                              else if social.url.indexOf('youtube.com/')!=-1
+                                i.icon-youtube.mr-2
+                              else
+                                i.icon-link.mr-2
+                              !=social.url
+
+      if data.performances && data.performances.length
+        .performances
+          h2!=global.__('Performances')+" <small>(<span>"+data.stats.performances+"</span>)</small>"  
+          ul.list-unstyled.mb-5
+            each item in data.performances                
+              li.fleximage
+                if !get.hideImages
+                  img.mr-3(
+                    src=item.imageFormats.small
+                    alt=item.title
+                  )
+                .media-body
+                  h3!=item.title
+                  small
+                    !=item.type.name
+                    if item.style
+                      !=" | "
+                      !=item.style.name
+                    if item.genre
+                      !=" | "
+                      !=item.genre.name
+                  if !get.hideDescription
+                    .text-justify!=item.about
+                  if !get.hideLinks
+                    ul.list-unstyled.pt-3
+                      li.mb-3
+                        a(href="https://avnode.net/performances/"+item.slug)
+                          i.icon-link.mr-2
+                          !="https://avnode.net/performances/"+item.slug
+                  if !get.hideBookings && item.bookings
+                    p
+                      u!='Bookings'
+                    - item.bookings.sort((a,b)=>{return new Date(b.event.schedule[0].starttime) - new Date(a.event.schedule[0].starttime);})
+                    if get.hideImages
+                      ul
+                        each booking in item.bookings
+                          li
+                            strong!=booking.event.title
+                            br
+                            !=booking.event.boxDate
+                            br
+                            !=booking.event.boxVenue
+                            br
+                            br
+                    else             
+                      each booking in item.bookings
+                        .fleximage
+                          img(src=booking.event.imageFormats.small, alt=booking.event.title)
+                          .ml-3
+                            b!=booking.event.title
+                            br
+                            !=booking.event.boxDate
+                            br
+                            !=booking.event.boxVenue
+
+      if data.events && data.events.length
+        .events
+          h2!=global.__('Productions')+" <small>(<span>"+data.stats.events+"</span>)</small>"
+          ul.list-unstyled.mb-5
+            each item in data.events
+              li.media.mt-3.pt-3
+                if !get.hideImages
+                  img.mr-3(
+                    src=item.imageFormats.small
+                    alt=item.title
+                  )
+                .media-body
+                  h4!=item.title
+                  ul.list-inline
+                    li.list-inline-item=item.boxDate
+                    li.list-inline-item=item.boxVenue
+                    if item.categories && item.categories.length
+                      li.list-inline-item=item.categories[0].name
+                  if !get.hideDescription
+                    .mt-3.text-justify!=get.fullDescription ? item.aboutFull : item.about
+                  if !get.hideLinks
+                    ul.list-unstyled.pt-3
+                      li.mb-3
+                        a(href="https://avnode.net/events/"+item.slug)
+                          i.icon-link.mr-2
+                          !="https://avnode.net/events/"+item.slug
+                      each web in item.web
+                        li.mb-3
+                          a(href=web.url)
+                            i.icon-link.mr-2
+                            !=web.url
+                    if item.social && item.social.length
+                      ul.list-unstyled.pt-3
+                        each social in item.social
+                          li.mb-3
+                            a(href=social.url)
+                              if social.url.indexOf('instagram.com/')!=-1
+                                i.icon-instagram.mr-2
+                              else if social.url.indexOf('twitter.com/')!=-1
+                                i.icon-twitter.mr-2
+                              else if social.url.indexOf('facebook.com/')!=-1 || social.url.indexOf('fb.com/')!=-1
+                                i.icon-facebook.mr-2
+                              else if social.url.indexOf('vimeo.com/')!=-1
+                                i.icon-vimeo.mr-2
+                              else if social.url.indexOf('youtube.com/')!=-1
+                                i.icon-youtube.mr-2
+                              else
+                                i.icon-link.mr-2
+                              !=social.url
+
+              
+      if data.partnerships_ordered && data.partnerships_ordered.length
+        .partnerships
+          h2!=global.__('Partnerships')+" <small>(<span>"+data.stats.partnerships+"</span>)</small>"
+          ul.list-unstyled.mb-5
+            each item in data.partnerships_ordered
+              li.media.mt-3.pt-3
+                if !get.hideImages
+                  img.mr-3(
+                    src=item.imageFormats.small
+                    alt=item.title
+                  )
+                .media-body
+                  h4!=item.title
+                  ul.list-inline
+                    li.list-inline-item=item.boxDate
+                    li.list-inline-item=item.boxVenue
+                  if !get.hideDescription
+                    .text-justify!=get.fullDescription ? item.aboutFull : item.about
+              
+      if data.news && data.news.length
+        .news
+          h2.main_title.indented_title!=global.__('Publications')
+          ul.list-unstyled.mb-5
+            each item in data.news            
+              li.media.mt-3.pt-3
+                if !get.hideImages
+                  img.mr-3(
+                    src=item.imageFormats.small
+                    alt=item.title
+                  )
+                .media-body
+                  h4!=item.title
+                  ul.pl-2.list-inline
+                    li.list-inline-item.mb-3!=item.creation_dateFormatted
+
+                  if !get.hideDescription
+                    .text-justify!=get.fullDescription ? item.about : item.excerpt
+                  if !get.hideLinks
+                    ul.list-unstyled.pt-3
+                      li.mb-3
+                        a(href="https://avnode.net/news/"+item.slug)
+                          i.icon-link.mr-2
+                          !="https://avnode.net/news/"+item.slug
+                      
+      //if data.footage && data.footage.length
+        h2.main_title.indented_title!=global.__('Footage')+" <small>(<span>"+data.stats.footage+"</span>)</small>"  
+        ul.list-unstyled.mb-5
+          each item in data.footage            
+            li.media.mt-3.pt-3
+              if !get.hideImages
+                img.mr-3(
+                  src=item.imageFormats.small
+                  alt=item.title
+                )
+              .media-body
+                h4!=item.title
+                ul.pl-2.list-inline
+                  each tag in item.tags
+                    li.list-inline-item.mb-3!="#"+tag.tag
+
+                if !get.hideDescription
+                  .text-justify!=item.about
+
+      //if data.videos && data.videos.length
+        h2.main_title.indented_title!=global.__('Videos')+" <small>(<span>"+data.stats.videos+"</span>)</small>"  
+        ul.list-unstyled.mb-5
+          each item in data.videos            
+            li.media.mt-3.pt-3
+              if !get.hideImages
+                img.mr-3(
+                  src=item.imageFormats.small
+                  alt=item.title
+                )
+              .media-body
+                h4!=item.title
+                if item.categories && item.categories.length
+                  ul.list-inline
+                    li.list-inline-item=item.categories[0].name
+
+                if !get.hideDescription
+                  .text-justify!=item.about
+
+      //if data.playlists && data.playlists.length
+        h2.main_title.indented_title!=global.__('Playlist')+" <small>(<span>"+data.stats.playlists+"</span>)</small>"  
+        ul.list-unstyled.mb-5
+          each item in data.playlists
+            li.media.mt-3.pt-3
+              if !get.hideImages
+                img.mr-3(
+                  src=item.imageFormats.small
+                  alt=item.title
+                )
+              .media-body
+                h4!=item.title
+                .pl-2
+                  !="Footage: "
+                  b=item.footage.length
+
+                if !get.hideDescription
+                  .text-justify!=item.about
+    
+      //if data.galleries && data.galleries.length    
+        h2.main_title.indented_title!=global.__('Galleries')+" <small>(<span>"+data.stats.galleries+"</span>)</small>"  
+        ul.list-unstyled.mb-5
+          each item in data.galleries            
+            li.media.mt-3.pt-3
+              if !get.hideImages
+                img.mr-3(
+                  src=item.imageFormats.small
+                  alt=item.title
+                )
+              .media-body
+                h4!=item.title
+                .pl-2
+                  !="Images: "
+                  b=item.stats.img
+
+                if !get.hideDescription
+                  .text-justify!=item.about
+
+
+      .d-flex.pt-5
+        .mr-auto
+          img(src='/images/logo_avnode_bar-black.svg', height='50', class='main_logo' alt='AVnode.net')
+        div(style="padding-top: 11px;")
+          .text-right.text-muted="Created by \"AVnode Scheets Generator\", a service reserved to members at http://avnode.net"
