@@ -6,7 +6,7 @@ $(document).ready(function(){
 	if ($("#filters") && $("#filters").length) {
     $("#filters a").on("click", function(event){
       event.preventDefault();
-      $('#collapsefilters').hasClass('d-sm-none') ? $('#collapsefilters').removeClass('d-sm-none') : $('#collapsefilters').addClass('d-sm-none');
+      $('#collapsefilters').hasClass('d-none') ? $('#collapsefilters').removeClass('d-none') : $('#collapsefilters').addClass('d-none');
     });
   }
 

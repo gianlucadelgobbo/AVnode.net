@@ -1,11 +1,12 @@
 .performer_item_wrapper
-  if item.imageFormats
-    a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
-      img.card-img-top.img-fluid(
-        class=item.imageFormats.small.substring(item.imageFormats.small.lastIndexOf(".")+1)
-        src=item.imageFormats.small
-        alt=item.stagename
-      )
+  .performer_image_wrapper
+    if item.imageFormats
+      a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
+        img.card-img-top.img-fluid(
+          class=item.imageFormats.small.substring(item.imageFormats.small.lastIndexOf(".")+1)
+          src=item.imageFormats.small
+          alt=item.stagename
+        )
   .performer_item_info_wrapper
     a(href="/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
       h4.performer_item_title=item.stagename
