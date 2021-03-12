@@ -89,8 +89,6 @@ if ($("#my-video").length) {
   console.log("swfobjectswfobject")
 }
 
-console.log("swfobject")
-console.log(el["data-swf"])
 if(swfobject.hasFlashPlayerVersion()){
   var el = document.getElementById("swfcontainer");
   var swf = $(el).data("swf")
