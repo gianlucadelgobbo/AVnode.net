@@ -48,12 +48,14 @@ html(lang=session.current_lang)
 
     if !user
       .text-center
-        .mt-5="Please login to use this tool"
+        .mt-5=__("Please login to use this tool")
         a.btn.btn-primary.mt-5(href="/login?returnTo="+canonical)="LOGIN"
     else
       block content
 
-    script(src="/js/cookielawinfo.min.js")
+    script.
+      document.documentElement.classList.remove("no-js");
+    script(defer src='/js/combo.min.js')
     script(async src="https://www.googletagmanager.com/gtag/js?id=UA-124799696-1")
     include partials/modals/cookielawinfo
     script.
