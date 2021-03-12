@@ -29,6 +29,13 @@ block title
                           !=' ' + global.__('Likes')                      
               .col-lg-3.mt-md-4
                 include ../partials/share_like
+            .row
+              .col-lg-9
+                a(href="/performances/"+data.slug)
+                  i.icon-chevron-left
+                  !=" "
+                  b!=__("BACK TO PERFORMANCE")
+              .col-lg-3
                 if data.type
                   p.text-right
                     i.icon-cube
@@ -59,14 +66,16 @@ block content
             include ../partials/share_like
         .row
           .col-md-8
-            if data.videos[0].media && data.videos[0].media.file
-                //.embed-responsive.embed-responsive-16by9
-                video.embed-responsive-item#my-video.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height='264', poster=data.videos[0].imageFormats.large, data.videos[0]-setup='{aspectRatio:"16:9", fluid: true}')
+            .embed-responsive(class=(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
+              if data.videos[0].media && data.videos[0].media.file
+                video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "480" : "264"), poster=data.videos[0].imageFormats.large, data-setup='{aspectRatio:"'+(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "4:3" : "16:9")+'", fluid: true}')
                   source(src=process.env.WAREHOUSE+data.videos[0].media.file, type='video/mp4')
                   //source(src='MY_VIDEO.webm', type='video/webm')
                   p.vjs-no-js
                     !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
                     a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"
+            if data.videos[0].media && data.videos[0].media.iframe
+              !=data.videos[0].media.iframe
 
           .col-md-4.data_footage_video
             .data_footage_video_wrapper

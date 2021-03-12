@@ -1,5 +1,8 @@
 // ITEM video
 
+#swfcontainer img {
+  position: absolute;
+}
 .video_item_info_wrapper {
   background-color: $color4;
   padding: 15px;

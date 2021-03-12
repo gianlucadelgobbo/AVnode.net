@@ -54,9 +54,10 @@ const compress_js = () => {
 
 const compress_js_video = () => {
   return gulp.src([
-    './gulp/js/videojs.js',
+    './gulp/js/includes_video/swfobject.js',
+    './gulp/js/includes_video/videojs.js',
     './gulp/js/includes_video/videojs-logo.min.js',
-    './gulp/js/includes_video/embed.js'
+    './gulp/js/video.js'
   ])
   .pipe(concat('combo_video.min.js'))
   .pipe(uglify({mangle: { reserved: ['glink'] } }))
