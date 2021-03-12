@@ -609,5 +609,8 @@
 	"MISSING_ONE_PRIMARY_EMAIL": "Отсутствует один основной адрес электронной почты",
 	"ONLY_ONE_EMAIL_CAN_BE_PRIMARY": "Только один адрес электронной почты может быть основным",
 	"Text available only in English": "Текст доступен только на английском языке",
-	"------------------NEW ADD------------------": "------------------NEW ADD------------------"
+	"------------------NEW ADD------------------": "------------------NEW ADD------------------",
+	"User Menu": "User Menu",
+	"Read More about privacy": "Read More about privacy",
+	"Authors icon": "Authors icon"
 }
