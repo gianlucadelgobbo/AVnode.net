@@ -31,9 +31,9 @@ block content
       .col-md-8
         .embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
           if data.media && data.media.file
-            video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.media.width/data.media.height<1.4 ? "480" : "264"), poster=data.imageFormats.large, data-setup='{aspectRatio:"'+(data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", fluid: true}')
+            video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=data.media.width/data.media.height<1.4 ? "480" : "264", poster=data.imageFormats.large, data-setup='{"aspectRatio":"'+(data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
               source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')
-              //source(src='MY_VIDEO.webm', type='video/webm')
+              //-source(src='MY_VIDEO.webm', type='video/webm')
               p.vjs-no-js
                 !=global.__("To view this video please enable JavaScript, and consider upgrading to a web browser that supports")
                 a(href='http://videojs.com/html5-video-support/', target='_blank')=!"HTML5 video"

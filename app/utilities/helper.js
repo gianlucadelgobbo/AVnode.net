@@ -21,7 +21,7 @@ const makeDescription = (abouts) => {
       about = "["+__("Text available only in English")+"] "+aboutA[0].abouttext;
     }
   }
-  about = about.replace(/\r\n/g, ' ').replace(new RegExp(/<(?:.|\n)*?>/gm), " ").trim().replace(/  /g , " ");
+  about = about.replace(/\r\n/g, ' ').replace(/\n/g, ' ').replace(new RegExp(/<(?:.|\n)*?>/gm), " ").trim().replace(/  /g , " ");
 
   descriptionA = about.split(" ");
   let descriptionShort = "";

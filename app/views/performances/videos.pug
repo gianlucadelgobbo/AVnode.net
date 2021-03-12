@@ -68,7 +68,7 @@ block content
           .col-md-8
             .embed-responsive(class=(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
               if data.videos[0].media && data.videos[0].media.file
-                video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "480" : "264"), poster=data.videos[0].imageFormats.large, data-setup='{aspectRatio:"'+(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "4:3" : "16:9")+'", fluid: true}')
+                video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "480" : "264"), poster=data.videos[0].imageFormats.large, data-setup='{"aspectRatio":"'+(data.videos[0].media.width/data.videos[0].media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
                   source(src=process.env.WAREHOUSE+data.videos[0].media.file, type='video/mp4')
                   //source(src='MY_VIDEO.webm', type='video/webm')
                   p.vjs-no-js

@@ -1066,7 +1066,7 @@ dataprovider.show = (req, res, section, subsection, model) => {
           } else {
             var scripts = [];
             if (data && data.media && data.media.file) scripts.push("video");
-            if (data && data.videos && data.videos[0].media) scripts.push("video");
+            if (data && data.videos && data.videos && data.videos.length && data.videos[0].media) scripts.push("video");
             res.render(section + '/' + subsection, {
               title: title,
               jsonld:dataprovider.getJsonld(data, req, data.stagename ? data.stagename : data.title, section, subsection, type),
