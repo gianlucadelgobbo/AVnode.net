@@ -35,6 +35,14 @@ const compress_css_admin = () => {
   .pipe(gulp.dest(config.publicDir + '/css'));
 }
 
+const compress_css_oembed = () => {
+  return gulp.src(["./gulp/sass/oembed.scss"])
+  .pipe(sass({outputStyle: 'compressed'}))
+  .pipe(concat('oembed.min.css'))
+  //.pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/css'));
+}
+
 const compress_js = () => {
   return gulp.src([
     config.npmDir + '/jquery/dist/jquery.min.js',
@@ -48,6 +56,20 @@ const compress_js = () => {
     
   ])
   .pipe(concat('combo.min.js'))
+  .pipe(uglify({mangle: { reserved: ['glink'] } }))
+  .pipe(gulp.dest(config.publicDir + '/js/'));
+}
+
+const compress_js_oembed = () => {
+  return gulp.src([
+    config.npmDir + '/jquery/dist/jquery.min.js',
+    './gulp/js/includes_video/swfobject.js',
+    './gulp/js/includes_video/videojs.js',
+    './gulp/js/includes_video/videojs-logo.min.js',
+    './gulp/js/includes_main/ajax.js',
+    './gulp/js/includes_main/cookielawinfo.min.js'    
+  ])
+  .pipe(concat('oembed.min.js'))
   .pipe(uglify({mangle: { reserved: ['glink'] } }))
   .pipe(gulp.dest(config.publicDir + '/js/'));
 }
@@ -103,7 +125,7 @@ const compress_js_vjtv = () => {
 }
 
 
-gulp.task('default', gulp.series(compress_css, compress_css_admin, compress_js, compress_js_video, compress_js_maps, compress_js_vjtv, compress_js_admin));
+gulp.task('default', gulp.series(compress_css, compress_css_admin, compress_js, compress_js_video, compress_js_maps, compress_js_vjtv, compress_js_admin,compress_css_oembed,compress_js_oembed));
 //gulp.task('default', gulp.series(compress_js, compress_js_fotonica,css_fotonica_bs));
 //gulp.task('default', gulp.series(compress_js, compress_js_pac,css_pac_bs));
 //gulp.task('default', gulp.series(compress_js, compress_js_lcf,css_lcf_bs));

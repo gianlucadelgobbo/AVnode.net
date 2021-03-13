@@ -33,10 +33,10 @@ html(lang=session.current_lang)
     link(rel='apple-touch-icon', sizes='152x152', href='/icons/apple-touch-icon-152x152.png')
     link(rel='apple-touch-icon', sizes='180x180', href='/icons/apple-touch-icon-180x180.png')
 
-    link(rel='stylesheet', type='text/css', href='/css/font-awesome/font-awesome.css')
-    link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
-    link(rel="stylesheet", type='text/css', href='/css/jquery-ui.min.css')
-    link(rel='stylesheet', type='text/css', href='/css/oembed.css')
+    //-link(rel='stylesheet', type='text/css', href='/css/font-awesome/font-awesome.css')
+    //-link(rel='stylesheet', type='text/css', href='/css/video-js.min.css')
+    //-link(rel="stylesheet", type='text/css', href='/css/jquery-ui.min.css')
+    link(rel='stylesheet', type='text/css', href='/css/oembed.min.css')
     script(type="application/ld+json")
       !=JSON.stringify(jsonld)
 
@@ -44,12 +44,8 @@ html(lang=session.current_lang)
     block content
     script.
       var logo_url = "!{canonical}"
-    script(src='/js/combo.min.js')
-    script(src='/js/video.min.js')
-    script(src='/js/videojs-logo.min.js')
-    script(src="/js/embed.js")
-    script(src="/js/ajax.js")
-    script(src="/js/cookielawinfo.min.js")
+    script(src='/js/oembed.min.js')
+    script(src='/js/combo_video.min.js')
     script(async src="https://www.googletagmanager.com/gtag/js?id=UA-124799696-1")
     include partials/modals/cookielawinfo
     script.
