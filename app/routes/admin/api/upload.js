@@ -72,10 +72,10 @@ upload.uploader = (req, res, options, done) => {
         cb(null, true);
       } else {
         logger.debug( __("File upload only supports the following filetypes") + ": " + options.fileext.join(", "));
-        const e = {
+        const e = [{
           "fieldname":"image",
           "err": __("File upload only supports the following filetypes") + ": " + options.fileext.join(", ")
-        };
+        }];
         cb(e);
       }
     }
@@ -266,7 +266,7 @@ upload.setImage = (req, res) => {
     if (err) {
       logger.debug("Upload ERROR");
       logger.debug(err);
-      res.status(500).send({ message: `${JSON.stringify(err)}` });
+      res.status(500).send(err);
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
       logger.debug("Upload SUCCESS");
       logger.debug("checksizer");
@@ -276,14 +276,14 @@ upload.setImage = (req, res) => {
         req,
         (files_checked) => {
           logger.debug("checksizer 2");
-          logger.debug(files_checked);
+          logger.debug(files_checked.map(item => {return item.err ? true : false}));
           //var r = err | files;
-          if (files_checked.map(item => {return item.err ? true : false}).indexOf(true)!==-1){
+          if (files_checked.map(item => {return item.err ? true : false}).indexOf(false)===-1){
             //p.files[options.fields.name] = err.err ? [err] : err;
             logger.debug("p.files");
             logger.debug(p.files);
             logger.debug(files_checked);
-            logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
+            logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR 1");
             res.send(files_checked);
           } else {
             imageUtil.resizer(
@@ -431,7 +431,7 @@ upload.galleryAddImages = (req, res) => {
     if (err) {
       logger.debug("Upload ERROR");
       logger.debug(err);
-      res.status(500).send({ message: `${JSON.stringify(err)}` });
+      res.status(500).send(err);
     } else if (p.files && p.files[options.fields.name] && p.files[options.fields.name].length) {
       logger.debug("Upload SUCCESS");
       logger.debug("checksizer");
@@ -443,12 +443,12 @@ upload.galleryAddImages = (req, res) => {
           logger.debug("checksizer DONE");
           logger.debug(files_checked);
           //var r = err | files;
-          if (files_checked.map(item => {return item.err ? true : false}).indexOf(true)!==-1){
+          if (files_checked.map(item => {return item.err ? true : false}).indexOf(false)===-1){
             //p.files[options.fields.name] = err.err ? [err] : err;
             logger.debug("p.files");
             logger.debug(p.files);
             logger.debug(files_checked);
-            logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR");
+            logger.debug("ERRORERRORERRORERRORERRORERRORERRORERRORERROR 2");
             res.send(files_checked);
           } else {
             imageUtil.resizer(

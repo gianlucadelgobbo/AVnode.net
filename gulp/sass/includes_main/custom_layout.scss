@@ -532,6 +532,9 @@ ul.footer-nav.corporate {
 
 
 @media (min-width: 992px) {
+  .share_like_list {
+    margin-top: 6px;
+  }
   .navbar-toggleable-md > .container {
     display: flex;
     flex-wrap: nowrap;

@@ -34,15 +34,13 @@ block content
           .embed-responsive(class=(data.media.width/data.media.height<1.4 ? "embed-responsive-4by3" : "embed-responsive-16by9"))
             - var ext = data.media.file.substring(data.media.file.lastIndexOf(".")+1)
             if ext==="swf"
-              #swfcontainer.embed-responsive-item(data-swf='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
-                img.img-fluid(src=data.imageFormats.large alt=data.title)
-                img.img-fluid(src="/images/NO-FLASH.svg" alt=__("THIS ART CONTENT IS MADE IN FLASH FLASH IS NOT INSTALLED ON YOUR BROWSER ADOBE REMOVED THE DOWNLOAD OF THE PLUGIN BUT YOU CAN FIND A WAY TO FIND IT ;)"))
-                //-object.embed-responsive-item(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', width='550', height='400', align='middle',  type="application/x-shockwave-flash", data='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
+              #swfcontainer.embed-responsive-item
+                #noflash
+                  img.img-fluid(src=data.imageFormats.large alt=data.title)
+                  img.img-fluid(src="/images/NO-FLASH.svg" alt=__("THIS ART CONTENT IS MADE IN FLASH FLASH IS NOT INSTALLED ON YOUR BROWSER ADOBE REMOVED THE DOWNLOAD OF THE PLUGIN BUT YOU CAN FIND A WAY TO FIND IT ;)"))
+                object#flash.d-none.embed-responsive-item(classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', width='550', height='400', align='middle',  type="application/x-shockwave-flash", data='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
                   param(name='movie', value='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
                   embed(width='550', height='400', align='middle',  src='/_fp/flxerPlayer.swf?cnt='+path+'?xml=1')
-                  br
-                  a(href='http://www.adobe.com/go/getflash')
-                    img(src='http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif', alt='Get Adobe Flash player')
             else
               video.embed-responsive-item.video-js.vjs-big-play-centered(controls='', preload='auto', width='640', height=(data.media.width/data.media.height<1.4 ? "480" : "264"), poster=data.imageFormats.large, data-setup='{"aspectRatio":"'+(data.media.width/data.media.height<1.4 ? "4:3" : "16:9")+'", "fluid": true}')
                 source(src=process.env.WAREHOUSE+data.media.file, type='video/mp4')

@@ -88,10 +88,10 @@ if ($("#my-video").length) {
   $('.vjs-avnode-logo').html('<a class="navbar-brand" href="'+logo_url+'" target="_blanck" title="AVnode.net"><img class="main_logo" src="https://avnode.net/images/logo_avnode_bar.svg" height="20" alt="AVnode.net"></a>')
   console.log("swfobjectswfobject")
 }
+console.log("swfobject.getFlashPlayerVersion().major")
+console.log(swfobject.getFlashPlayerVersion())
 
-if(swfobject.hasFlashPlayerVersion()){
-  var el = document.getElementById("swfcontainer");
-  var swf = $(el).data("swf")
-  console.log(el["data-swf"])
-  swfobject.embedSWF(el["data-swf"], el, 300, 120, 10);
+if(swfobject.getFlashPlayerVersion().major){
+  $("#noflash").addClass("d-none");
+  $("#flash").removeClass("d-none");
 }

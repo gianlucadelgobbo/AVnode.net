@@ -156,13 +156,19 @@ $(function () {
 					$("#formupload").addClass("d-none");
 				});
 				this.on("success", function(file, data) {
-					var dz = this
-					console.log(data.imageFormats.large)
-					$("#image-preview img").attr("src", data.imageFormats.large)
-					$("#image-preview").removeClass("d-none");
-					$("#formupload").addClass("d-none");
-					dz.removeAllFiles()
-					//$(".dz-error-message").html('<div class="alert alert-danger">'+error.errors.image[0].err+'</div>');
+					if (data && data.length && data[0].err) {
+						$(".data-dz-remove").removeClass("d-none");
+						$(".progress-bar").css('width', '0');
+						$(".dz-error-message").removeClass("d-none");
+						$(".dz-error-message").html(''+data[0].err+'');
+					} else {
+						var dz = this
+ 						$("#image-preview img").attr("src", data.imageFormats.large)
+						$("#image-preview").removeClass("d-none");
+						$("#formupload").addClass("d-none");
+						dz.removeAllFiles()
+						//$(".dz-error-message").html('<div class="alert alert-danger">'+error.errors.image[0].err+'</div>');
+					}
 				});
 				this.on("error", function(file, error) {
 					var err = error && error[0] && error[0].err ? error[0].err : error
@@ -278,8 +284,12 @@ $(function () {
 				this.on("addedfile", function(file) { 
 					$("#formmultiupload .enableBorder").addClass("d-none");
 				});
-				this.on("completemultiple", function(file, file2) {
-					var data2 = JSON.parse(file[0].xhr.response)
+				this.on("completemultiple", function(data2) {
+					console.log("file")
+					console.log(data2)
+					if (Array.isArray(data2) && data2.length && data2[0].xhr)
+						data2 = JSON.parse(data2[0].xhr.response)
+					console.log(data2)
 					for (var i=0; i<data2.length; i++) {
 						if (data2[i].err) {
 							$($(".dz-error-message span")[i]).html(''+data2[i].err+'');
@@ -293,10 +303,11 @@ $(function () {
 							$("#medias").append('<div class="col-md-4 col-sm-6 ui-sortable-handle"><img class="img-fluid" src="'+data2[i].imageFormats.large+'"><div class="d-flex justify-content-between mb-3 mt-1"><input type="hidden" value=\''+JSON.stringify(data2[i])+'\' data-id="'+($("#medias").length)+'" name="mediastr"><input class="form-control title" type="text" value="'+data2[i].title+'"><button class="btn btn-danger ml-2 remove" type="button"><i class="icon-trash"></i></button></div></div>')
 						}
 					}
+					var dz = this
 					setTimeout(function(){
-						var dz = this
+						$("#formmultiupload .enableBorder").removeClass("d-none");
 						dz.removeAllFiles();
-					});
+					}, 2000);
 					activateSortable();
 				});
 				this.on("error", function(file, error) {

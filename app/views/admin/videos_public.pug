@@ -20,7 +20,7 @@ block content
           - var slughelptext = __("To have your video at https://avnode.net/videos/mybeautyfulvideo, please insert mybeautifulvideo (lower case, no spaces, no special characters)")
           include partials/slug
           include partials/is_public
-          if !data.media && !data.media.iframe
+          if data.media && !data.media.iframe
             #categories.vjtv
               .row
                 .col-sm-4
