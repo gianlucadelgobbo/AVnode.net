@@ -108,7 +108,6 @@ block content
                           input.postal_code(type='hidden' name='schedule['+i+'][venue][location][postal_code]' value=schedule.venue.location && schedule.venue.location.country ? schedule.venue.location.postal_code : "")
                           input.route(type='hidden' name='schedule['+i+'][venue][location][route]' value=schedule.venue.location && schedule.venue.location.route ? schedule.venue.location.route : "")
                           input.street_number(type='hidden' name='schedule['+i+'][venue][location][street_number]' value=schedule.venue.location && schedule.venue.location.street_number ? schedule.venue.location.street_number : "")
-                          input.street_number(type='hidden' name='schedule['+i+'][venue][name]' value=schedule.venue.name ? schedule.venue.name : "")
                       .col-md-4
                         .form-group
                           label.labelField=__("Room")

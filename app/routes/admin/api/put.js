@@ -84,7 +84,7 @@ router.putData = (req, res, view) => {
                   res.status(400).send({ message: `${JSON.stringify(err)}` });
                 } else {
                   for (e in err.errors) err.errors[e].message = __(err.errors[e].message)
-                  req.flash('errors', {msg: `${JSON.stringify(err)}`});
+                  req.flash('errors', {msg: err});
                   res.status(400).render(view, {
                     title: view,
                     scripts: [],
