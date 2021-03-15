@@ -1,13 +1,13 @@
 .performer_item_wrapper
   if item.imageFormats
-    a(href="/events/"+data.slug+"/performers/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
+    a(href="/events/"+data.slug+"/performers/"+item.slug+"/", title=item.stagename)
       img.card-img-top.img-fluid(
         class=item.imageFormats.small.substring(item.imageFormats.small.lastIndexOf(".")+1)
         src=item.imageFormats.small
         alt=item.stagename
       )
   .performer_item_info_wrapper
-    a(href="/events/"+data.slug+"/performers/"+item.slug+"/", stagename=item.stagename, title=item.stagename)
+    a(href="/events/"+data.slug+"/performers/"+item.slug+"/", title=item.stagename)
       h4.performer_item_title=item.stagename
     if item.addressesFormatted
       ul.list-inline.performer_infos_list

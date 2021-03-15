@@ -30,9 +30,9 @@
         .flex_left      
           if (item.users.length > 1)
             div
-              img.img-fluid(src="/images/icon_authors.svg")
+                img.img-fluid(src="/images/icon_authors.svg", width="50", height="50", alt=global.__("Multiple authors"))
             div
-              p.users_video_item_name=item.users.length+" "+global.__("authors")
+                p.users_performance_item_name=item.users.length+" "+global.__("authors")
               p.users_video_item_views=item.stats.visits+" "+global.__("views")
           else              
             each user in item.users
