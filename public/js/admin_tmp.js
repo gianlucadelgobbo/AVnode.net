@@ -593,7 +593,7 @@ addLocationAutocomplete = function () {
 			},
 			"locality": "",
 			"country": "",
-			"formatted_address": ""
+			"formatted_address": place.formatted_address
 		}
 		for(var item in place.address_components) {
 			if (place.address_components[item].types.indexOf("country")!==-1) {
@@ -664,7 +664,9 @@ addAddressAutocomplete = function () {
 				}
 			}
 		}
-		
+		res.formatted_address+= res.route ? res.route + (res.street_number ? " "+res.street_number : "") +", " : "";
+		res.formatted_address+= res.locality && res.country ? res.locality +", "+ res.country : res.locality ? res.locality : res.country ? res.country : "";
+		event.target.value = res.formatted_address
 		$(event.target).parent().find(".lat").val(res.geometry.lat)
 		$(event.target).parent().find(".lng").val(res.geometry.lng)
 		$(event.target).parent().find(".locality").val(res.locality)

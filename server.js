@@ -65,7 +65,7 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/storage", express.static(path.join(__dirname, "storage")));
 app.use("/warehouse", express.static(path.join(__dirname, "warehouse")));
-// app.use("/glacier", express.static(path.join(__dirname, "glacier")));
+app.use("/glacier", express.static(path.join(__dirname, "glacier")));
 // app.use("/gulp", express.static(path.join(__dirname, "gulp")));
 
 app.use(bodyParser.json({ limit: "50mb" }));
