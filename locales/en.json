@@ -635,5 +635,7 @@
 	"Validation failed: name: Cast to string failed for value \"[ '', '' ]\" at path \"name\"": "Validation failed: name: Cast to string failed for value \"[ '', '' ]\" at path \"name\"",
 	"Main Events carousel": "Main Events carousel",
 	"Share icon": "Share icon",
-	"Like icon": "Like icon"
+	"Like icon": "Like icon",
+	"Program menu": "Program menu",
+	"Multiple performers": "Multiple performers"
 }
