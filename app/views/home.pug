@@ -5,6 +5,7 @@ block title
 
 block content
   section#home_main_carousel
+    h2.sr-only=__("Main Events carousel")
     .container.full-small
       .owl-carousel.mono.owl-theme
         a(href="https://vjtelevision.com" target="_blank" rel="noopener")
@@ -23,24 +24,20 @@ block content
   section#performances_home.section_home
     .content_wrapper
       .container
-        .row
-          .col-lg-12
-            h2.home_title.mb-3
-              span.title_label!=global.__('Performances overview')
-              a(href="/performances/",  title=global.__('All the performances'))
-                span.button_more_label!=global.__('See all')+"+"                            
-            - var item = data.performances[0]
-                include partials/boxPerformanceHome
+        h2.home_title.mb-3
+          span.title_label!=global.__('Performances overview')
+          a(href="/performances/",  title=global.__('All the performances'))
+            span.button_more_label!=global.__('See all')+"+"                            
+        - var item = data.performances[0]
+            include partials/boxPerformanceHome
 
   section#home_events_wrapper.section_home
     .content_wrapper
       .container
-        .row
-          .col-lg-12
-            h2.home_title.mb-3
-              span.title_label!=global.__('Next events')
-              a(href="/events/",  title=global.__('All the events'))
-                span.button_more_label!=global.__('See all')+"+"                                                
+        h2.home_title.mb-3
+          span.title_label!=global.__('Next events')
+          a(href="/events/",  title=global.__('All the events'))
+            span.button_more_label!=global.__('See all')+"+"                                                
         .row
           .col-sm-6
             each item, index in data.events
@@ -56,12 +53,10 @@ block content
   section#home_news_wrapper.section_home
     .content_wrapper
       .container
-        .row
-          .col-lg-12
-            h2.home_title.mb-3
-              span.title_label!=global.__('News')
-              a(href="/news/",  title=global.__('All the news'))
-                span.button_more_label!=global.__('See all')+"+"                                                
+        h2.home_title.mb-3
+          span.title_label!=global.__('News')
+          a(href="/news/",  title=global.__('All the news'))
+            span.button_more_label!=global.__('See all')+"+"                                                
         .row
           .col-sm-6.mb-3
             a(href="/news/",  title=global.__('All the news'))

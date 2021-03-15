@@ -632,5 +632,6 @@
 	"Cast to string failed for value \"[ 'Teatro del Lido', '22' ]\" at path \"name\"": "Cast to string failed for value \"[ 'Teatro del Lido', '22' ]\" at path \"name\"",
 	"Validation failed: name: Cast to string failed for value \"[ 'Teatro del Lido', '22' ]\" at path \"name\"": "Validation failed: name: Cast to string failed for value \"[ 'Teatro del Lido', '22' ]\" at path \"name\"",
 	"Cast to string failed for value \"[ '', '' ]\" at path \"name\"": "Cast to string failed for value \"[ '', '' ]\" at path \"name\"",
-	"Validation failed: name: Cast to string failed for value \"[ '', '' ]\" at path \"name\"": "Validation failed: name: Cast to string failed for value \"[ '', '' ]\" at path \"name\""
+	"Validation failed: name: Cast to string failed for value \"[ '', '' ]\" at path \"name\"": "Validation failed: name: Cast to string failed for value \"[ '', '' ]\" at path \"name\"",
+	"Main Events carousel": "Main Events carousel"
 }
