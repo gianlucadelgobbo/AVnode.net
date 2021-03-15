@@ -2,7 +2,7 @@
   .modal-dialog.modal-lg
     .modal-content
       .modal-header
-        h4.modal-title
+        h4.modal-title="Modal title"
         button.close(type='button' data-dismiss="modal" aria-label="Close")
           span(aria-hidden='true') ×
       .modal-body
@@ -16,7 +16,7 @@
                 dd.col-sm-10.mb-4
                   div
                     .input-group
-                      input.form-control.input(type='text', name='stagename', placeholder='Crew Name', aria-describedby='slugHelpInline', value='')
+                      input.form-control.input(type='text', name='stagename', placeholder='Crew Name', value='')
                       input.id(type='hidden', name='_id')
                       input.sez(type='hidden', name='sez')
                       input.newsez(type='hidden', name='newsez')
@@ -30,7 +30,7 @@
                   dd.col-sm-10.mb-4
                     div
                       .input-group
-                        input.form-control(type='text', name='externalurl', placeholder='External URL', aria-describedby='slugHelpInline', value='')
+                        input.form-control(type='text', name='externalurl', placeholder='External URL', value='')
                 dl.row
                   dt.col-sm-2
                     .labelField.text-muted Paste examples

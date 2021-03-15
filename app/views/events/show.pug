@@ -63,7 +63,7 @@ block title
                     .btn-group.ml-3
                       a.mb-3.btn.btn-primary(href="/events/"+data.slug+"/"+item.slug+"/")=item.name
                       a.mb-3.btn.btn-primary.dropdown-toggle.dropdown-toggle-split( data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
-                        .sr-only Toggle Dropdown
+                        span.sr-only Toggle Dropdown
                       .dropdown-menu
                         each item2 in item.days
                           a.dropdown-item(href="/events/"+data.slug+"/program/day/"+item2.slug+"/")=item2.name
