@@ -225,12 +225,14 @@ img.miss {
   background: transparent;
   border: none;
   padding: 0;
+  display: block;
 }
 
 .label_like_button_wrapper {
   position: relative;
   width: 100%;
   text-align: center;
+  display: block;
 }
 .label_like_button_wrapper .label_like_button {
   background-color: $color1;

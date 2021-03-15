@@ -33,7 +33,7 @@ block title
                 span#about_collapseFull.about_collapse.about_more.collapse!=data.aboutFull
             if data.aboutFull && data.aboutFull.length > data.about.length
               .more_button
-                span.color1.icon-plus-circle.collapsed(data-toggle='collapse', data-target=".about_collapse", href='#about_collapse', role='button', aria-expanded='false', aria-controls='about_collapse about_collapseFull')
+                span.color1.icon-plus-circle.collapsed(data-toggle='collapse', data-target=".about_collapse", role='button', aria-expanded='false', aria-controls='about_collapse about_collapseFull')
   .polygon_divider_bottom
     svg(version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewbox='0 0 1920 100' enable-background='new 0 0 1920 100' xml:space='preserve')
       g#layer2
