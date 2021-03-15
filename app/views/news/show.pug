@@ -4,8 +4,8 @@ block teaser
   if data.teaserImage
     .d-flex.justify-content-center.align-items-start
       img.card-img-top.img-fluid(
-        src=`${data.teaserImageFormats.large}`
-        alt=`${data.name}`
+        src=data.teaserImageFormats.large
+        alt=data.title
       )
 
 block title

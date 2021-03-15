@@ -92,7 +92,7 @@ block title
         .col-lg-8
           h2.main_title.indented_title.color1!=global.__('Production')
         .col-lg-4
-          img.img-fluid(src="/images/logo_avnode_symbol_dark.svg" alt="AVnode logo")
+          img.img-fluid(src="/images/logo_avnode_symbol_dark.svg", width="300", height="143", alt="AVnode logo")
         .col-sm-12
           .row.partners_list_wrapper
             each partner in data.users
@@ -103,7 +103,7 @@ block title
                       img.card-img-top.img-fluid(
                         class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
                         src=partner.imageFormats.small
-                        alt=partner.title
+                        alt=partner.stagename
                       )
                   p.partner_stagename
                     a(href="/"+partner.slug+"/", title=partner.stagename)
@@ -116,7 +116,7 @@ block title
           .col-lg-8
             h2.main_title.indented_title.color1!=global.__('Partners')
           .col-lg-4
-            img.img-fluid(src="/images/logo_avnode_symbol_dark.svg")
+            img.img-fluid(src="/images/logo_avnode_symbol_dark.svg", width="300", height="143", alt="AVnode logo")
           .col-sm-12
             .row
               each partners_block in data.partners
@@ -137,7 +137,7 @@ block title
                                 img.card-img-top.img-fluid(
                                   class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
                                   src=partner.imageFormats.small
-                                  alt=partner.title
+                                  alt=partner.stagename
                                 )
                             p.partner_stagename
                               a(href="/"+partner.slug+"/", title=partner.stagename)
@@ -151,7 +151,7 @@ block title
                                   img.card-img-top.img-fluid(
                                     class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
                                     src=partner.imageFormats.small
-                                    alt=partner.title
+                                    alt=partner.stagename
                                   )
                               p.partner_stagename
                                 a(href=url, target="_blank", title=partner.stagename)
@@ -163,7 +163,7 @@ block title
                                 img.card-img-top.img-fluid(
                                   class=partner.imageFormats.small.substring(partner.imageFormats.small.lastIndexOf(".")+1)
                                   src=partner.imageFormats.small
-                                  alt=partner.title
+                                  alt=partner.stagename
                                 )
                               p.partner_stagename
                                 span=partner.stagename
