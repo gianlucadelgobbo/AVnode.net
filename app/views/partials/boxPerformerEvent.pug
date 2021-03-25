@@ -1,7 +1,7 @@
 .performer_item_wrapper
   if item.imageFormats
     a(href="/events/"+data.slug+"/performers/"+item.slug+"/", title=item.stagename)
-      img.card-img-top.img-fluid(
+      img.img-fluid.mr-3(
         class=item.imageFormats.small.substring(item.imageFormats.small.lastIndexOf(".")+1)
         src=item.imageFormats.small
         alt=item.stagename

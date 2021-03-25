@@ -23,6 +23,8 @@ router.get('/:sez/:id/:form/', (req, res) => {
     });
   } else if (req.params.sez == "profile" && req.params.form == "subscriptions") {
     get.getSubscriptions(req, res);
+  } else if (req.params.sez == "events" && req.params.form == "partners") {
+    get.getPartners(req, res);
   } else {
     get.getData(req, res, "admin/"+req.params.sez+"_"+req.params.form);
   }
@@ -40,6 +42,8 @@ router.post('/:sez/:id/:form/', (req, res) => {
         put.putData(req, res, "admin/"+req.params.sez+"_"+req.params.form);
       });
     });
+  } else if (req.params.sez == "events" && req.params.form == "partners") {
+    get.getPartners(req, res);
   } else {
     put.putData(req, res, "admin/"+req.params.sez+"_"+req.params.form);
   }

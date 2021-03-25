@@ -53,11 +53,15 @@ router.getVjtvPost = (req, res) => {
   .sort({programming: 1})
   .populate([{path: "video", select: {title: 1, slug: 1, "media.preview": 1, "media.duration": 1,"media.file": 1}, populate: {path:"users", select: {stagename: 1}}},{path:"category", select: "name"}])
   .exec((err, data) => {
-    res.render('vjtv/vjtv_post', {
-      title: 'VJTV',
-      currentUrl: req.originalUrl,
-      data: data
-    });
+    if (res.params.api) {
+      res.send(data)
+    } else {
+      res.render('vjtv/vjtv_post', {
+        title: 'VJTV',
+        currentUrl: req.originalUrl,
+        data: data
+      });
+    }
   });
 };
 

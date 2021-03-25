@@ -1,0 +1,274 @@
+extends ../layout_admin
+block content
+  //include submenu
+  if csv
+    table.table.table-fixed
+      thead
+        tr
+          th.table-firstcolumn-ID="ID"
+          th=global.__("Brand")
+          th=global.__("Name")
+          th=global.__("Surname")
+          th=global.__("Email")
+          th=global.__("lang")
+          th=global.__("Mobile")
+          th=global.__("Skype")
+          th=global.__("Facebook")
+          th=global.__("Type")
+          th=global.__("Is user")
+      tbody
+        if data.length
+          each item, index in data
+            if item.organizationData && item.organizationData.contacts
+              each contact in item.organizationData.contacts
+                tr
+                  td.table-firstcolumn-ID=index+1
+                  td
+                    b!=item.stagename
+                  td!=contact.name
+                  td!=contact.surname
+                  td!=contact.email
+                  td!=contact.lang
+                  td!=contact.mobile
+                  td!=contact.skype
+                  td!=contact.facebook
+                  td!=contact.type
+                  td!="NO"
+            if item.members && item.members.length
+              each contact in item.members
+                tr
+                  td=index+1
+                  td
+                    b!=item.stagename
+                  td!=contact.name
+                  td!=contact.surname
+                  td!=contact.email
+                  td!=contact.lang
+                  td!=contact.mobile ? contact.mobile.map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.skype ? contact.skype.map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.social ? contact.social.filter(item => item.url.indexOf("facebook")!==-1).map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.type
+                  td!="YES"
+                  //if item.partnerships && item.partnerships.length
+                      - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+
+                      each partnership in item.partnerships
+                        .text-nowrap!=partnership.title
+                    td
+                      if item.web
+                        each web in item.web
+                          div!=web.url
+                      if item.social
+                        each web in item.social
+                          div!=web.url
+                    td
+                        div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
+
+  else 
+    table.table.table-fixed
+      thead
+        tr
+          th="ID"
+          th=global.__("Brand")
+          th=global.__("Contacts")
+          th=global.__("Members")
+      tbody
+        if data.length
+          each item, index in data
+            tr(id=item._id)
+              td=index+1
+              td
+                a(href="/admin/crews/"+item._id+"/public", target="_blank", title=global.__("edit"))
+                  span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                    i.icon-edit
+                !=" | "
+                a.unlink(href="#", data-owner=owner, data-partner=item._id, title=global.__("Unlink"))
+                  span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
+                    i.icon-unlink
+                if item.members && item.members.length
+                  !=" | "
+                  a(href="/"+item.slug, target="_blank", title=global.__("View"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                      i.icon-eye
+                !=" | "
+                b!=item.stagename
+                if !item.members || !item.members.length
+                  !=" "
+                  .badge.badge-danger!="EXTERNAL"
+              td
+                h5
+                  !="Contacts"
+                  !=" "
+                  // Button trigger modal
+                  button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
+                .contacts
+                  if item.organizationData && item.organizationData.contacts
+                    each contact, index in item.organizationData.contacts
+                      div
+                        a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify(contact), data-index=index)
+                          span(data-toggle="tooltip", data-placement="top", title="Edit")
+                            i.icon-edit
+                        !=" "
+                        a.text-danger.deleteContact(href="#" data-id=item._id, data-stagename=item.stagename, data-index=index)
+                          span(data-toggle="tooltip", data-placement="top", title="Delete")
+                            i.icon-trash
+                        !=" | "
+                        if contact.lang
+                          !=contact.lang
+                        else
+                          .badge.badge-danger!="MISSING"
+                        !=" | "
+                        a(href="mailto:"+contact.email, target="_blank")
+                          !=contact.name+" "+contact.surname
+                          =" <"+contact.email+">"
+              td
+                if item.members && item.members.length
+                  h5="Members"
+                  ol
+                    each contact in item.members
+                      li
+                        if contact.emails
+                            each email in contact.emails
+                              div
+                                a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
+                                  span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
+                                    i.icon-arrow-left
+                                !=" | "
+                                a(href="/"+contact.slug, target="_blank", title=global.__("View"))
+                                  span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                                    i.icon-eye
+                                !=" | "
+                                a(href="mailto:"+contact.email, target="_blank")
+                                  !=contact.name+" "+contact.surname
+                                  =" <"+email.email+">"
+                                !=" "
+                        else 
+                          !=contact.stagename
+                          !=" "
+                          .badge.badge-danger!="MISSING"
+
+
+  // Modal Add Partner
+  #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          input(type='hidden', name="partner_owner", value=owner)
+          //input(type='hidden', name="delegate", value=user.name)
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .alert.d-none
+            .form-group
+              label(for='formPartnerAddBrand')=global.__("Brand")
+              input#formPartnerAddBrand.form-control(type='text', name="stagename", placeholder='')
+            .form-group
+              label(for='formPartnerAddWeb')=global.__("Web channels")
+                !=" "
+                small=global.__("one per line")
+              textarea#formPartnerAddWeb.form-control(name="web")
+            .form-group
+              label(for='formPartnerAddSocial')=global.__("Social channels")
+                !=" "
+                small=global.__("one per line")
+              textarea#formPartnerAddSocial.form-control(name="social")
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+
+  // Modal Link Partner
+  #modalLinkPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalLinkPartnerLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          input(type='hidden', name="partner_owner", value=owner)
+          //input(type='hidden', name="delegate", value=user.name)
+          input(type='hidden', name="id")
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Add partner")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .alert.d-none
+            .form-group
+              label(for='formPartnerLinkName')=global.__("Brand")
+              input#formPartnerLinkName.form-control(type='text', name="brand", placeholder='')
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+
+  // Modal Add Contact
+  #modalAddContact.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddContactLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        form
+          .modal-header
+            h5#modalAddPartnerLabel.modal-title=global.__("Add contact")
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .container-fluid
+              .row
+                .col-md-2
+                  .form-group
+                    input.modal-id(type='hidden', name="crew")
+                    input.modal-index(type='hidden', name="index")
+                    input.modal-stagename(type='hidden', name="stagename")
+                    label(for='formContactAddTitle')=global.__("Title")
+                    input#formContactAddName.form-control(type='text', name="title", placeholder='')
+                .col-md-5
+                  .form-group
+                    label(for='formContactAddName')=global.__("Name")
+                    input#formContactAddName.form-control(type='text', name="name", placeholder='')
+                .col-md-5
+                  .form-group
+                    label(for='formContactAddSurname')=global.__("Surname")
+                    input#formContactAddSurname.form-control(type='text', name="surname", placeholder='')
+              .row
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddEmail')=global.__("Email")
+                    input#formContactAddEmail.form-control(type='text', name="email", placeholder='name@example.com')
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddLanguage')=global.__("Language")
+                    select#formContactAddLanguage.form-control(name="lang")
+                      option(value="it")="it"
+                      option(value="en")="en"
+              .row
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddRole')=global.__("Role")
+                    input#formContactAddRole.form-control(type='text', name="role", placeholder='')
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddMobile')=global.__("Mobile")
+                    input#formContactAddMobile.form-control(type='text', name="mobile_phone", placeholder='')
+              .row
+                .col-md-6
+                  .form-group
+                    label=global.__("Type")
+                    .form-check
+                      input#formContactAddType1.form-check-input(type='checkbox', value='Contact', name="type", placeholder='')
+                      label.form-check-label(for='formContactAddType1')=global.__("Contact")
+                    .form-check
+                      input#formContactAddType2.form-check-input(type='checkbox', value='Legal representative', name="type", placeholder='')
+                      label.form-check-label(for='formContactAddType2')=global.__("Legal representative")
+              .row
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddFacebook')="Facebook"
+                    input#formContactAddFacebook.form-control(type='text', name="facebook", placeholder='')
+                .col-md-6
+                  .form-group
+                    label(for='formContactAddSkype')="Skype"
+                    input#formContactAddSkype.form-control(type='text', name="skype", placeholder='Skype')
+
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal')=global.__("Close")
+            button.btn.btn-primary(type='submit')=global.__("Save")
+

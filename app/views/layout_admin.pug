@@ -91,9 +91,12 @@ html(lang=session.current_lang)
     script(src='/lightgallery/js/lg-video.min.js')
     script(src='/datetimeentry/jquery.plugin.js')
     script(src='/datetimeentry/jquery.datetimeentry.js')
-    script.
-      var get = !{JSON.stringify(get)};
-      var slug = "#{data.slug}";
+    if get
+      script.
+        var get = !{JSON.stringify(get)};
+    if data && data.slug
+      script.
+        var slug = "#{data.slug}";
     script(src='/js/admin_tmp.js')
     script(src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js")
 

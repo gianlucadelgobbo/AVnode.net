@@ -1,6 +1,7 @@
 !="Here is the VJ Television program of today "+new Date(data[0].programming).toDateString()
 - var oldcat
 each item in data
+  if item.video
   - var date = new Date(item.programming);
   if oldcat != item.category.name
     br
@@ -17,6 +18,8 @@ each item in data
   !=item.video.users.map(user =>{return user.stagename}).join(" / ")
   //p="https://avnode.net/videos/"+item.video.slug+"/"
   - oldcat = item.category.name
+  else 
+  !="MISSING "+ item._id
 br
 br
 !="https://vjtelevision.com"

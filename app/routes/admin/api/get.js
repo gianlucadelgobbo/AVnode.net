@@ -2245,6 +2245,98 @@ router.removeVideo = (req, res) => {
   });
 }
 
+router.getPartners = (req, res) => {
+  logger.debug('/organizations/'+req.params.id);
+  logger.debug(req.user.crews.map(item => {return item._id}));
+  var crews = req.user.crews.map(item => {return item._id});
+  Models.Category.
+  find({ancestor: "5be8708afc396100000001eb"}).
+  lean().
+  exec((err, categories) => {
+    var populate = [
+      {path: "users", select: {stagename:1}, model:"UserShow"},
+      {path: "partners.users", select: {stagename:1}, model:"UserShow"},
+      {path: "partners.category", select: {name:1, slug:1}, model:"Category"}
+    ];
+    Models.Event.
+    //find({"users": req.params.id}).
+    findOne({_id: req.params.id}).
+    populate(populate).
+    select({title: 1, slug: 1, partners:1, users:1}).
+    //sort({title: 1}).
+    //select({stagename: 1, createdAt: 1, crews:1}).
+    //exec((err, events) => {
+    exec((err, event) => {
+      var populate = [
+        {path: "members", select: {stagename:1, gender:1, name:1, surname:1, email:1, emails:1, phone:1, mobile:1, lang:1, skype:1, slug:1, social:1, web:1}, model:"UserShow"},
+        {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
+        {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
+      ];
+      const query = {"partner_owner.owner": {$in: event.users.map(item =>{return item._id})}};
+      Models.User.
+      find(query).
+      lean().
+      sort({stagename: 1}).
+      //select({stagename: 1, createdAt: 1, crews:1}).
+      populate(populate).
+      exec((err, data) => {
+        /* Models.Event.
+        find({"users": req.params.id}).
+        select({title: 1}).
+        sort({title: 1}).
+        //select({stagename: 1, createdAt: 1, crews:1}).
+        exec((err, events) => { */
+          if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+            res.json(data);
+          } else {
+    
+            var partnerships = event.partners.slice(0);
+              logger.debug(existingCat);
+              var notassigned = [];
+              var notassignedID = [];
+              var partnersID = [];
+
+              for (var item=0; item<partnerships.length; item++) partnersID = partnersID.concat(partnerships[item].users.map(item => {return item._id.toString()}));
+              for (var item in data) {
+                if (partnersID.indexOf(data[item]._id.toString())===-1) {
+                  if (notassignedID.indexOf(data[item]._id.toString())===-1) {
+                    notassignedID.push(data[item]._id.toString());
+                    notassigned.push(data[item]);
+                  }
+                }
+              }
+              var existingCat = partnerships.map(item => {return item.category._id.toString()});
+              var pp = partnerships.map(item => {return item});
+              
+              for (var item in categories) {
+                if (existingCat.indexOf(categories[item]._id.toString())===-1) pp.push({category:categories[item], users:[]});
+              }
+              if (req.query.api || req.headers.host.split('.')[0]=='api' || req.headers.host.split('.')[1]=='api') {
+                res.json(data);
+              } else {
+                res.render('admin/events_partners', {
+                  title: 'Partners',
+                  currentUrl: req.originalUrl,
+                  hide: req.query.hide ? req.query.hide : [],
+                  owner: crews,
+                  get: req.params,
+                  body: req.body,
+                  //events: events,
+                  notassigned: notassigned,
+                  data: event,
+                  //events: events,
+                  event: event,
+                  partnerships: pp,
+                  script: false
+                });
+              }
+          }
+        //});
+      });
+    });
+  });
+}
+
 /*
 router.addVideos = (req, res) => {
   Models[req.params.model]

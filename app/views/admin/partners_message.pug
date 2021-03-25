@@ -1,0 +1,90 @@
+extends ../../layout_admin
+block topmenu
+  include topmenu
+block content
+  .border-bottom.mb-3
+    include submenu
+  form(method="post").form-horizontal#myform
+    .well
+      // store the userId on the client side in a hidden input field //
+      - if (typeof msg !== "undefined" && typeof msg.e !== "undefined" && msg.e.length)
+        .alert.alert-error
+          h4="There are some errors"
+          ul
+            - for(a=0;a<msg.e.length;a++)
+              li=msg.e[a].m
+      - if (typeof msg !== "undefined" && typeof msg.c !== "undefined" && msg.c.length)
+        .alert.alert-success
+          h4="There are some messages"
+          ul
+            - for(a=0;a<msg.c.length;a++)
+              li=msg.c[a].m
+      .row
+        .col-sm-6
+          p
+            label(for='from_name')="From name"
+            input(type="text",placeholder="From name", value=typeof(body)!=="undefined" && body.from_name ? body.from_name : 'Gianluca Del Gobbo', name='from_name')#from_name.form-control
+          p
+            label(for='from_email')="From Email"
+            input(type="email",        placeholder="From Email",    name='from_email',     value=typeof(body) !== "undefined" && body.from_email ? body.from_email : 'g.delgobbo@flyer.it')#from_email.form-control
+          p
+            label(for='user_email')="User Email"
+            input(type="email",        placeholder="User Email",    name='user_email',     value=typeof(body) !== "undefined" && body.user_email ? body.user_email : 'g.delgobbo@flyer.it')#user_email.form-control
+          p
+            label(for='user_password')="User Password"
+            input(type="password",  placeholder="User Password",name='user_password',value=typeof(body)!=="undefined" && body.user_password ? body.user_password : '')#user_password.form-control
+        .col-sm-6
+          p
+            label(for='subject_add')="Subject"
+            input(type="text",onkeyup="jQuery('#subject_preview').html('[org_name] | '+this.value);jQuery('#subject').val('[org_name] | '+this.value)",placeholder="Subject", value=typeof(body)!=="undefined" && body.subject_add ? body.subject_add : '', name='subject_add')#subject_add.form-control
+            b#subject_preview!="[org_name] | "+(typeof(body)!=="undefined" && body.subject_add ? body.subject_add : '')
+            input(type="hidden",value=typeof(body)!=="undefined" && body.subject ? body.subject : '[org_name] | ', name='subject')#subject
+      .row
+        .col-sm-6
+          p
+            label(for='message_it')="Message IT"
+            textarea(rows="20",name="message_it")#message_it.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_it : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]\n\n\n[signature]\n\n\n[signature]')
+        .col-sm-6
+          p
+            label(for='message_en')="Message EN"
+            textarea(rows="20",name="message_en")#message_en.form-control=(typeof(body)!=="undefined" && body.message_it ? body.message_en : 'Ciao [name],\n\n\n[slug]\n\n\n[signature]')
+      h3="Exclude"
+      ol
+        each item in data
+          li
+            .form-check
+              input.form-check-input(type='checkbox', name='exclude', id=item._id.toString(), value=item._id.toString(), checked=body.exclude!=undefined && (item._id.toString()==body.exclude || body.exclude.indexOf(item._id.toString())!=-1) ? 'checked' : undefined)
+              label.form-check-label(for=item._id.toString())=item.stagename 
+      .text-center
+        button(type='submit').btn.btn-success="Compose"
+    if body.from_name
+      input(type="hidden",value=0, name='send')#send
+      ol
+        each item, index in data
+          - item.to_html = ""
+          - item.cc_html = []
+          if item.organizationData && item.organizationData.contacts && item.organizationData.contacts[0] && item.organizationData.contacts[0].email && body.exclude.indexOf(item._id.toString())===-1
+            each contact, cindex in item.organizationData.contacts
+              - if (cindex===0)
+                - item.to_html = contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt"
+                - item.text = body["message_"+(contact.lang=="it" ? "it" : "en")]
+                - item.text = item.text.split("[name]").join(contact.name);
+                - item.text = item.text.split("[slug]").join(item.slug);
+              - else
+                - item.cc_html.push(contact.name+(contact.surname ? " "+contact.surname : "")+" &lt"+contact.email+"&gt")
+            li
+              p!="From: <b>"+body.from_name+" &lt"+body.from_email+"&gt</b>"
+              p!="To: <b>"+item.to_html+"</b>"
+              - if (item.cc_html)
+                p!="CC: <b>"+item.cc_html.join("</b>, <b>")+"</b>"
+              p!="Subject: <b>"+body.subject.split("[org_name]").join(item.stagename)+"</b>"
+              p="Message:"
+                pre=item.text
+      .row.mb-3
+        .col-sm-6
+          .pull-right
+            select(name="realsend")#status.form-control
+              option(selected=body.realsend == 0, value=0)='Test send'
+              option(selected=body.realsend == 1, value=1)='Real send'
+        .col-sm-6
+          button(type='submit', onclick='$( "#myform" ).attr("action","/adminpro/partners/'+owner+'/'+(event ? "event/"+event+"/" : "")+'send");jQuery( "#myform" ).submit();').btn.btn-success="Send"

@@ -775,6 +775,293 @@
         }
       }
     },
+    "partners": {
+      "title": "artners",
+      "limit": 1,
+      "basepath": "partners",
+      "model": "User",
+      "forms": {
+        "new": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Crew url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "stagename": {
+              "comp": "simpletext",
+              "label": "Crew name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "stagename": 1
+          },
+          "selectaddon": {
+            "is_crew": true
+          },
+          "populate": []
+        },
+        "contacts": {
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Crew url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "stagename": {
+              "comp": "simpletext",
+              "label": "Crew name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "About crew",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "web": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Websites",
+              "validators": {
+                "Url": {}
+              }
+            },
+            "social": {
+              "comp": "multilink",
+              "label": "Websites",
+              "validators": {
+                "Url": {}
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "stagename": 1,
+            "is_public": 1,
+            "abouts": 1,
+            "image": 1,
+            "members": 1,
+            "web": 1,
+            "social": 1
+          },
+          "selectaddon": {
+            "imageFormats": 1
+          },
+          "populate": [{ "path": "members", "select": "stagename image organizationData.logo", "model": "User"}]
+        },
+        "image": {
+          "components": {
+            "image": {
+              "config":{
+                "fields": {
+                  "name": "image",
+                  "maxCount": 1
+                },
+                "fileext": ["jpg","jpeg","png","gif","svg"],
+                "filetypes": ["image/webp","image/jpeg","image/png","image/gif","image/tiff","image/svg+xml"],
+                "storage": "/glacier/users_originals/",
+                "maxsize": 20971520,
+                "minwidth": 1000,
+                "minheight": 1000,
+                "sizes": {
+                  "small": {
+                    "w": 100,
+                    "h": 100,
+                    "folder": "100x100",
+                    "default": "/images/default-user.svg"
+                  },
+                  "large": {
+                    "w": 400,
+                    "h": 400,
+                    "folder": "400x400",
+                    "default": "/images/default-user.svg"
+                  }
+                }
+              },
+              "comp": "uploader",
+              "label": "Crew Image",
+              "validators": {
+                "Mime": {},
+                "Weight": {},
+                "Size": {}
+              }
+            }
+          },
+          "select": {
+            "image": 1,
+            "users": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1,
+            "imageFormats": 1
+          },
+          "populate": []
+        },
+        "members": {
+          "components": {
+            "members": [
+              {
+                "ref": "User"
+              }
+            ]
+          },
+          "select": {
+            "members": 1
+          },
+          "selectaddon": {
+            "slug": 1,
+            "stagename": 1
+          },
+          "populate": [{ "path": "members", "select": "stagename image organizationData.logo", "model": "User"}]
+        },
+        "organization_data": {
+          "components": {
+            "links": [],
+            "address": [],
+            "contacts": [
+              {}
+            ],
+            "activities": [
+              {
+                "links": [],
+                "gallery": [
+                  {
+                    "ref": "Gallery"
+                  }
+                ],
+                "editions": [
+                  {
+                    "event": {
+                      "ref": "Event"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "select": {
+            "name": 1,
+            "foundation_year": 1,
+            "type": 1,
+            "logo": 1,
+            "phone": 1,
+            "description": 1,
+            "links": 1,
+            "public_email": 1,
+            "pic_code": 1,
+            "address": 1,
+            "vat_number": 1,
+            "able_to_recuperate_vat": 1,
+            "official_registration_number": 1,
+            "legal_representative_title": 1,
+            "legal_representative_role": 1,
+            "legal_representative_name": 1,
+            "legal_representative_surname": 1,
+            "legal_representative_email": 1,
+            "legal_representative_mobile_phone": 1,
+            "legal_representative_skype": 1,
+            "legal_representative_facebook": 1,
+            "statute": 1,
+            "members_cv": 1,
+            "activity_report": 1,
+            "permanent_employees": 1,
+            "permanent_employees_avnode": 1,
+            "temporary_employees": 1,
+            "temporary_employees_avnode": 1,
+            "relevance_in_the_project": 1,
+            "emerging_artists_definition": 1,
+            "eu_grants_received_in_the_last_3_years": 1,
+            "annual_turnover_in_euro": 1,
+            "contacts": 1,
+            "summaryofmemberscvs": 1,
+            "membershipdate": 1,
+            "avnodedelegate": 1,
+            "agreementstatus": 1,
+            "introducedby1": 1,
+            "introducedby2": 1,
+            "activities": 1
+          },
+          "selectaddon": {
+          },
+          "populate": []
+        }
+      },
+      "list": {
+        "model": "User",
+        "select": {
+          "stagename": 1,
+          "slug": 1,
+          "image": 1,
+          "imageFormats": 1
+        },
+        "selectaddon": {
+          "createdAt": 1,
+          "updatedAt": 1,
+          "stats": 1,
+          "activity_as_organization": 1,
+          "partner_owner": 1,
+          "is_public": 1
+        },
+        "populate": [{ "path": "crews" , "select": "stagename"}],
+        "orders": [
+          "mostrecent",
+          "mostactive"
+        ],
+        "ordersQueries": {
+          "mostrecent": {
+            "createdAt": -1
+          },
+          "mostactive": {
+            "activity": -1
+          }
+        },
+        "labels": {
+          "mostrecent":"Most recent",
+          "mostactive":"Most active"
+        }
+      }
+    },
     "partner": {
       "title": "Partner",
       "limit": 1,
@@ -3961,7 +4248,7 @@
         },
         {
             "href": "/admin/profile/emails",
-            "icon": "far fa-envelope",
+            "icon": "icon-envelope",
             "label": {"id": "emailsProfile", "defaultMessage": "Emails"}
     
         },
@@ -4000,7 +4287,30 @@
         },
         {
           "href": "/admin/crews/:_id/members",
-          "icon": "far fa-user",
+          "icon": "icon-user",
+          "label": {"id": "membersCrews", "defaultMessage": "Members"}
+        }
+      ]
+    },
+    "partners": {
+      "href": "/admin/partners",
+      "icon": "icon-users",
+      "counter": 0,
+      "label": {"id": "partners", "defaultMessage": "Partners"},
+      "submenu": [
+        {
+          "href": "/admin/partners/:_id/public",
+          "icon": "icon-info",
+          "label": {"id": "publicDataCrews", "defaultMessage": "Public data"}
+        },
+        {
+          "href": "/admin/partners/:_id/images",
+          "icon": "icon-image",
+          "label": {"id": "imageCrews", "defaultMessage": "Image"}
+        },
+        {
+          "href": "/admin/partners/:_id/members",
+          "icon": "icon-user",
           "label": {"id": "membersCrews", "defaultMessage": "Members"}
         }
       ]
@@ -4036,7 +4346,7 @@
     },
     "events": {
       "href": "/admin/events",
-      "icon": "far fa-calendar",
+      "icon": "icon-calendar",
       "counter": 0,
       "label": {"id": "events", "defaultMessage": "Events"},
       "submenu": [

@@ -27,7 +27,7 @@
             span.menu-collapsed=global.__('Peoples')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/program/')
           .d-flex.w-100.justify-content-start.align-items-center
-            span.far.fa-calendar-alt.fa-fw.mr-3
+            span.icon-calendar-alt.fa-fw.mr-3
             span.menu-collapsed=global.__('Program')
         a.bg-dark.list-group-item(href='/adminpro/events/'+data.event._id+'/orders/')
           .d-flex.w-100.justify-content-start.align-items-center
@@ -106,7 +106,7 @@
       #submenuSuper.collapse.sidebar-submenu(class=currentUrl.indexOf("/adminpro/supertools")===0 ? " show" : "")
         a.bg-dark.list-group-item(href='#subsubmenuSuper1', data-toggle='collapse', aria-expanded=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? "true" : "false")
           .d-flex.w-100.justify-content-start.align-items-center
-            span.far.fa-envelope.fa-fw.mr-3
+            span.icon-envelope.fa-fw.mr-3
             span.menu-collapsed Emails
         // Submenu content
         #subsubmenuSuper1.collapse.sidebar-subsubmenu(class=currentUrl.indexOf("/adminpro/supertools/emails")===0 ? " show" : "")
