@@ -97,7 +97,7 @@ const Models = {
 router.get('/sitemap.xml', (req, res) => {
   Promise.all([
     Models['User'].find(  {"performances.0":{"$exists": true}, "is_public": true}).select("_id updatedAt"),
-    Models['User'].find(  {"$or" : [{"partner_owner.owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}], "is_crew" : true, "is_public": true}).select("_id updatedAt"),
+    Models['User'].find(  {"$or" : [{"partner_owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}], "is_crew" : true, "is_public": true}).select("_id updatedAt"),
     Models['Event'].find( {"is_public": true}).select("_id updatedAt"),
     Models['Performance'].find({"is_public": true, "type": {"$nin":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}}).select("_id updatedAt"),
     Models['Performance'].find({"is_public": true, "type": {"$in":["5be8708afc39610000000099", "5be8708afc396100000001a1", "5be8708afc3961000000011c"]}}).select("_id updatedAt"),

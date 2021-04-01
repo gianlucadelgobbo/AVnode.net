@@ -2272,7 +2272,7 @@ router.getPartners = (req, res) => {
         {path: "partnerships", select: {title:1, slug:1}, model:"EventShow"},
         {path: "partnerships.category", select: {name:1, slug:1}, model:"Category"}
       ];
-      const query = {"partner_owner.owner": {$in: event.users.map(item =>{return item._id})}};
+      const query = {"partner_owner": {$in: event.users.map(item =>{return item._id})}};
       Models.User.
       find(query).
       lean().

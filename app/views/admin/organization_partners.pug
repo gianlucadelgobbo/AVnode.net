@@ -20,8 +20,7 @@ block content
             th=global.__("Type")
             th=global.__("Is user")
         tbody
-          if data.length
-            each item, index in data
+            each item, index in data.partners
               if item.organizationData && item.organizationData.contacts
                 each contact in item.organizationData.contacts
                   tr
@@ -78,7 +77,7 @@ block content
             th=global.__("Contacts")
         tbody
           if data.length
-            each item, index in data
+            each item, index in data.partners
               tr
                 td.table-firstcolumn-ID=index+1
                 td

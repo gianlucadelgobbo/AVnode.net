@@ -278,6 +278,86 @@
           },
           "populate": []
         },
+        "groups": {
+          "title": "Groups",
+          "components": {
+            "slug": {
+              "comp": "simpletext",
+              "label": "Profile url",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "stagename": {
+              "comp": "simpletext",
+              "label": "Stage name",
+              "required": true,
+              "unique": true,
+              "validators": {
+                "String": {
+                  "min": 3,
+                  "max": 50
+                },
+                "Unique": "admin/api..."
+              }
+            },
+            "abouts": {
+              "schema": "shared/About",
+              "comp": "textarea_multilang",
+              "label": "About me",
+              "validators": {
+                "String": {
+                  "min": 0,
+                  "max": 50000
+                }
+              }
+            },
+            "addresses": {
+              "schema": "shared/Address",
+              "comp": "citycountry_multi_googleautocomplete",
+              "label": "Where I'm based",
+              "required": true,
+              "validators": {
+                "geometry": true
+              }
+            },
+            "web": {
+              "schema": "shared/Link",
+              "comp": "multilink",
+              "label": "Websites",
+              "validators": {
+                "Url": {}
+              }
+            },
+            "social": {
+              "comp": "multilink",
+              "label": "Social networks",
+              "validators": {
+                "Url": {}
+              }
+            }
+          },
+          "select": {
+            "slug": 1,
+            "stagename": 1,
+            "image": 1,
+            "is_public": 1,
+            "abouts": 1,
+            "addresses": 1,
+            "web": 1,
+            "social": 1
+          },
+          "selectaddon": {
+            "imageFormats": 1
+          },
+          "populate": []
+        },
         "image": {
           "title": "Image",
           "components": {
@@ -877,17 +957,12 @@
           "select": {
             "slug": 1,
             "stagename": 1,
-            "is_public": 1,
-            "abouts": 1,
-            "image": 1,
-            "members": 1,
-            "web": 1,
-            "social": 1
+            "partners": 1
           },
           "selectaddon": {
             "imageFormats": 1
           },
-          "populate": [{ "path": "members", "select": "stagename image organizationData.logo", "model": "User"}]
+          "populate": [{ "path": "partners", "select": "stagename contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
         },
         "image": {
           "components": {
@@ -5338,17 +5413,17 @@
           "$or":[{"events.0": {"$exists": true}},{"partnerships.0": {"$exists": true}}]
         },
         "all": {
-          "$or" : [{"partner_owner.owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}],
+          "$or" : [{"partner_owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}],
           "is_crew" : true
         },
         "producers": {
           "is_crew" : true,
-          "$or" : [{"partner_owner.owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}],
+          "$or" : [{"partner_owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}],
           "events.0": {"$exists": true}
         },
         "partners": {
           "is_crew" : true,
-          "$or" : [{"partner_owner.owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}],
+          "$or" : [{"partner_owner": "5be8772bfc39610000007065"},{"activity_as_organization" : {"$gt": 0}}],
           "partnerships.0": {"$exists": true}
         }
       },

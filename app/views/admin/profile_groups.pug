@@ -1,0 +1,40 @@
+extends ../layout_admin
+block content
+  .formcontainer(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.stagename
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        a.btn.btn-primary(href='/'+data.slug)=__("SHOW")
+    include partials/menuobj
+    h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
+    form(method="post")
+      script.
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId            : '457341845506141',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v10.0'
+          });
+          FB.login(function(response) {
+            if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api(
+              '/me/groups',
+              'GET',
+              {"fields":"member_count,name,updated_time","limit":"1000"},
+              function(response) {
+                console.log(response)
+                  // Insert your code here
+              }
+            );
+          } else {
+            console.log('User cancelled login or did not fully authorize.');
+            }
+          });
+        };
+      script(async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js")
+
+
+      hr
+      button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")

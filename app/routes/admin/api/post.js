@@ -414,7 +414,7 @@ router.unlinkPartner = (req, res) => {
   logger.debug("unlinkPartner");
   logger.debug(req.body);
   Models.User
-  .findOne({_id: req.body.id, is_crew: true, "partner_owner.owner": req.body.owner},'_id event partner_owner', (err, partner) => {
+  .findOne({_id: req.body.id, is_crew: true, "partner_owner": req.body.owner},'_id event partner_owner', (err, partner) => {
     logger.debug(partner);
     if (partner && partner.partner_owner && partner.partner_owner.length) {
       partner.partner_owner.splice(partner.partner_owner.map(item => {return item.owner.toString();}).indexOf(req.body.owner), 1);

@@ -152,7 +152,7 @@ router.getPartners = (req, res) => {
     sort({title: 1}).
     //select({stagename: 1, createdAt: 1, crews:1}).
     exec((err, events) => {
-      var query = {$or : [{"partner_owner.owner": req.params.id}]}
+      var query = {$or : [{"partner_owner": req.params.id}]}
       if (req.params.event) query.partnerships = req.params.event;
       if (user._id.toString()=="5be8772bfc39610000007065") query["$or"].push({"is_crew" : true, "activity_as_organization" : {"$gt": 0}});
       User.
@@ -344,7 +344,7 @@ router.get('/:id/:event/grantsdata', (req, res) => {
     }]};
 
 
-  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
+  const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
   logger.debug(query);
   User.
   find(query).
@@ -379,7 +379,7 @@ router.get('/:id/:event/mandates', (req, res) => {
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
-    const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
+    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
     logger.debug(query);
     User.
@@ -417,7 +417,7 @@ router.get('/:id/:event/grantsdata_table', (req, res) => {
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
-    const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
+    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
     logger.debug(query);
     User.
@@ -551,7 +551,7 @@ router.get('/:id/:event/grantsdata_events', (req, res) => {
   findOne({"_id": req.params.event}).
   select({title: 1}).
   exec((err, event) => {
-    const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
+    const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
     const mandate = "";
     logger.debug(query);
     User.
@@ -591,7 +591,7 @@ getManageables = (req, res) => {
   find({ancestor: "5be8708afc396100000001eb"}).
   lean().
   exec((err, categories) => {
-    const query = {"partner_owner.owner": req.params.id};
+    const query = {"partner_owner": req.params.id};
     User.
     find(query).
     lean().
@@ -672,7 +672,7 @@ getManageables = (req, res) => {
 /*
 router.get('/:id/:event', (req, res) => {
   logger.debug('/organizations/'+req.params.event);
-  const query = {"partner_owner.owner": req.params.id, "partnerships":req.params.event};
+  const query = {"partner_owner": req.params.id, "partnerships":req.params.event};
   logger.debug(query);
   User.
   findOne({"_id": req.params.id}).
