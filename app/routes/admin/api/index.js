@@ -226,9 +226,9 @@ router.post('/contact', (req, res)=>{
   post.contact(req, res);
 });
 
-/* router.post('/:ancestor/:id/:sez/new', (req, res) => {
+router.post('/:ancestor/:id/:sez/new', (req, res) => {
   post.postData(req, res);
-}); */
+});
 
 router.post('/partnershipsupdate', (req, res) => {
   post.updatePartnerships(req, res);
