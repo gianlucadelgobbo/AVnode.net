@@ -2,6 +2,7 @@ const config = require('getconfig');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
+const uniqueValidator = require('mongoose-unique-validator');
 
 //const indexPlugin = require('../utilities/elasticsearch/Event');
 
@@ -225,6 +226,7 @@ eventSchema.virtual('imageFormats').get(function () {
 });
 
 
+eventSchema.plugin(uniqueValidator);
 
 //eventSchema.plugin(indexPlugin());
 

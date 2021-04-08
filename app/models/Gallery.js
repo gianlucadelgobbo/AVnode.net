@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const MediaImage = require('./shared/MediaImage');
 const GalleryItem = require('./shared/GalleryItem');
 const About = require('./shared/About');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const adminsez = 'galleries';
 
@@ -89,6 +90,7 @@ gallerySchema.virtual('imageFormats').get(function () {
         next
     );
 }); */
+gallerySchema.plugin(uniqueValidator);
 
 const Gallery = mongoose.model('Gallery', gallerySchema);
 

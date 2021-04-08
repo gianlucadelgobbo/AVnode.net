@@ -647,5 +647,6 @@
 	"Mandates": "Mandates",
 	"Web Channels": "Web Channels",
 	"Social Channels": "Social Channels",
-	"Groups": "Groups"
+	"Groups": "Groups",
+	"Error, expected `slug` to be unique. Value: `sonic-bites`": "Error, expected `slug` to be unique. Value: `sonic-bites`"
 }

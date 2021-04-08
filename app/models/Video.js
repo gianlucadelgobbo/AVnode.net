@@ -6,6 +6,7 @@ const helper = require('../utilities/helper');
 
 const About = require('./shared/About');
 const Media = require('./shared/Media');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const adminsez = 'videos';
 
@@ -110,6 +111,7 @@ videoSchema.virtual('description').get(function (req) {
 }); */
 
 //videoSchema.plugin(indexPlugin());
+videoSchema.plugin(uniqueValidator);
 
 const Video = mongoose.model('Video', videoSchema);
 

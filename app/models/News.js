@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
 const helper = require('../utilities/helper');
+const uniqueValidator = require('mongoose-unique-validator');
 
 //const indexPlugin = require('../utilities/elasticsearch/News');
 
@@ -157,6 +158,7 @@ newsSchema.virtual('creation_dateFormatted').get(function () {
 
 
 //newsSchema.plugin(indexPlugin());
+newsSchema.plugin(uniqueValidator);
 
 const News = mongoose.model('News', newsSchema);
 

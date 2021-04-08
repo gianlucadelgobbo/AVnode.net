@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 //const indexPlugin = require("../utilities/elasticsearch/Footage");
 const helper = require("../utilities/helper");
+const uniqueValidator = require('mongoose-unique-validator');
 
 const About = require("./shared/About");
 const Media = require("./shared/Media");
@@ -131,6 +132,7 @@ footageSchema.virtual("description").get(function(req) {
 }); */
 
 //footageSchema.plugin(indexPlugin());
+footageSchema.plugin(uniqueValidator);
 
 const Footage = mongoose.model("Footage", footageSchema);
 

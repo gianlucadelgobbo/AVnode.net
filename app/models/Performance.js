@@ -8,6 +8,7 @@ const About = require('./shared/About');
 const MediaImage = require('./shared/MediaImage');
 const Booking = require('./shared/Booking');
 const moment = require('moment');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const adminsez = 'performances';
 function ignoreEmpty (val) {
@@ -170,6 +171,7 @@ performanceSchema.pre('validate', function(next) {
  */
 
 //performanceSchema.plugin(indexPlugin());
+performanceSchema.plugin(uniqueValidator);
 
 const Performance = mongoose.model('Performance', performanceSchema);
 

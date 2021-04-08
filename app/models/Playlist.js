@@ -6,6 +6,7 @@ const helper = require('../utilities/helper');
 
 const About = require('./shared/About');
 const Media = require('./shared/Media');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const adminsez = 'playlists';
 
@@ -108,6 +109,7 @@ playlistSchema.pre('remove', function(next) {
 });
 
 //playlistSchema.plugin(indexPlugin());
+playlistSchema.plugin(uniqueValidator);
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 
