@@ -59,7 +59,7 @@ block content
                       small=__("DD/MM/YYYY HH:MM")
                       .d-flex
                         - var starttime_preview = schedule.starttime  ? schedule.starttime : new Date()
-                        input.form-control.mr-3.datetime-format(type='text' id='schedule['+i+']starttime_preview' onchange='$("#schedule['+i+']starttime").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0]+" "+$(this).val().split(" ")[0].split(":")[0]+":"+$(this).val().split(" ")[0].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
+                        input.form-control.mr-3.datetime-format(type='text' id='schedule'+i+'starttime_preview' onchange='$("#schedule'+i+'starttime").val($(this).val().split(" ")[0].split("/")[2]+"/"+$(this).val().split(" ")[0].split("/")[1]+"/"+$(this).val().split(" ")[0].split("/")[0]+" "+$(this).val().split(" ")[1].split(":")[0]+":"+$(this).val().split(" ")[1].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
                         input(type='hidden' id="schedule"+i+"starttime" name="schedule["+i+"][starttime]" value=starttime_preview ? starttime_preview.getFullYear()+"/"+(starttime_preview.getMonth()+1)+"/"+starttime_preview.getDate()+" "+starttime_preview.getHours()+":"+starttime_preview.getMinutes() : "")
                         //
                   .col-md-4
@@ -69,7 +69,7 @@ block content
                       small=__("DD/MM/YYYY HH:MM")
                       .d-flex
                         - var starttime_preview = schedule.endtime  ? schedule.endtime : new Date()
-                        input.form-control.mr-3.datetime-format(type='text' id='schedule['+i+']starttime_preview' onchange='$("#schedule['+i+']endtime").val($(this).val().split("/")[2]+"/"+$(this).val().split("/")[1]+"/"+$(this).val().split("/")[0]+" "+$(this).val().split(" ")[0].split(":")[0]+":"+$(this).val().split(" ")[0].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
+                        input.form-control.mr-3.datetime-format(type='text' id='schedule'+i+'starttime_preview' onchange='$("#schedule'+i+'endtime").val($(this).val().split(" ")[0].split("/")[2]+"/"+$(this).val().split(" ")[0].split("/")[1]+"/"+$(this).val().split(" ")[0].split("/")[0]+" "+$(this).val().split(" ")[1].split(":")[0]+":"+$(this).val().split(" ")[1].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
                         input(type='hidden' id="schedule"+i+"endtime" name="schedule["+i+"][endtime]" value=starttime_preview ? starttime_preview.getFullYear()+"/"+(starttime_preview.getMonth()+1)+"/"+starttime_preview.getDate()+" "+starttime_preview.getHours()+":"+starttime_preview.getMinutes() : "")
                         //
                   .col-md-4
@@ -117,7 +117,7 @@ block content
         button.mb-2.btn.btn-success.btn-sm.duplicator2(type='button' data-duplicate="scheduleslist")
           i.icon-plus
           !=" "
-          b=__("ADD CITY")
+          b=__("ADD SCHEDULE")
       include partials/abouts
       //include partials/performance_categories
       include partials/social

@@ -52,6 +52,7 @@ block content
 											//div
 												i.icon-eye
 												!=crew.stats.partnerships
+									//- console.log(crew.partner_owner)
 									td=(crew.partner_owner && crew.partner_owner.length && crew.partner_owner.map(item => {return item.owner.toString()}).indexOf("5be8772bfc39610000007065") !== -1)  || crew.activity_as_organization > 0 ? "ORGANIZATION" : "CREW"
 									td
 										ul
