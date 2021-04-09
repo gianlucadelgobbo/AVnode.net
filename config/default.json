@@ -151,6 +151,7 @@
             "createdAt": 1
           },
           "selectaddon": {
+            "is_public": 1
           },
           "populate": []
         }
@@ -403,6 +404,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1,
             "imageFormats": 1
           },
@@ -426,6 +428,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1
           },
           "populate": []
@@ -532,6 +535,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1
           },
           "populate": []
@@ -547,6 +551,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1
           },
           "populate": []
@@ -561,6 +566,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1
           },
           "populate": []
@@ -726,6 +732,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1,
             "imageFormats": 1
           },
@@ -744,6 +751,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1
           },
           "populate": [{ "path": "members", "select": "stagename image organizationData.logo", "model": "User"}]
@@ -816,6 +824,8 @@
             "activities": 1
           },
           "selectaddon": {
+            "slug": 1,
+            "is_public": 1
           },
           "populate": []
         }
@@ -960,6 +970,7 @@
             "partners": 1
           },
           "selectaddon": {
+            "is_public": 1,
             "imageFormats": 1
           },
           "populate": [{ "path": "partners", "select": "stagename contacts", "model": "User", "populate": [{ "path": "members", "select": "stagename name surname emails", "model": "User"}]}]
@@ -1008,6 +1019,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1,
             "imageFormats": 1
           },
@@ -1026,6 +1038,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "stagename": 1
           },
           "populate": [{ "path": "members", "select": "stagename image organizationData.logo", "model": "User"}]
@@ -1098,6 +1111,7 @@
             "activities": 1
           },
           "selectaddon": {
+            "is_public": 1
           },
           "populate": []
         }
@@ -1197,6 +1211,7 @@
           "imageFormats": 1
         },
         "selectaddon": {
+          "is_public": 1,
           "createdAt": 1
         },
         "populate": [{ "path": "members" , "select": "stagename"}],
@@ -1256,6 +1271,7 @@
             "title": 1
           },
           "selectaddon": {
+            "is_public": 1
           },
           "populate": []
         },
@@ -1479,6 +1495,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1,
             "imageFormats": 1
           },
@@ -1523,6 +1540,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "partners.users", "select": "stagename image organizationData.logo", "model": "User"},{ "path": "partners.category", "select": "name", "model": "Category"}]
@@ -1659,6 +1677,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "program.performance", "select": "title image imageFormats", "model": "Performance"},{ "path": "program.schedule.categories", "select": "name"}]
@@ -1732,6 +1751,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "videos": 1,
             "title": 1
           },
@@ -1806,6 +1826,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "videos", "select": "title media imageFormats slug stats createdAt updatedAt is_public", "model": "Video", "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "performances", "select": "title", "model": "Performance"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "categories", "select": "name", "model": "Category"}]}]
@@ -2057,6 +2078,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": []
@@ -2141,6 +2163,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": []
@@ -2207,6 +2230,7 @@
             "createdAt": 1
           },
           "selectaddon": {
+            "is_public": 1
           },
           "populate": [
             { 
@@ -3017,6 +3041,7 @@
             "medias": 1
           },
           "selectaddon": {
+            "is_public": 1
           },
           "populate": [{ "path": "users", "select": "stagename image organizationData.logo", "model": "User"}]
         }
@@ -3270,6 +3295,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1,
             "imageFormats": 1
           },
@@ -3549,6 +3575,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1,
             "imageFormats": 1
           },
@@ -3623,6 +3650,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "galleries", "select": "title image imageFormats createdAt updatedAt is_public stats", "model": "Gallery","populate":[{ "path": "categories" , "select": "name"},{ "path": "users" , "select": "stagename image organizationData.logo"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "performances", "select": "title", "model": "Performance"}]}]
@@ -3697,6 +3725,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "videos", "select": "title media imageFormats slug stats createdAt updatedAt is_public", "model": "Video", "populate": [{ "path": "users", "select": "stagename", "model": "User"},{ "path": "performances", "select": "title", "model": "Performance"},{ "path": "events", "select": "title", "model": "Event"},{ "path": "categories", "select": "name", "model": "Category"}]}]
@@ -3770,6 +3799,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "bookings.event", "select": "title image imageFormats", "model": "Event"},{ "path": "bookings.schedule.status", "select": "name", "model": "Category"}]
@@ -4189,6 +4219,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": []
@@ -4227,6 +4258,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "events", "match": { "is_public": true}, "select": "title image imageFormats", "model": "Event"}]
@@ -4265,6 +4297,7 @@
           },
           "selectaddon": {
             "slug": 1,
+            "is_public": 1,
             "title": 1
           },
           "populate": [{ "path": "performances", "match": { "is_public": true}, "select": "title image imageFormats", "model": "Performance"}, { "path": "categories" , "select": "name" }]

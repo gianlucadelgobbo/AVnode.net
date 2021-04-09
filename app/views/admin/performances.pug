@@ -40,13 +40,12 @@ block content
 											a(href='/admin/performances/'+performance._id+'/public')
 												i.icon-edit
 											!=" | "  
-											a(href='/performances/'+performance.slug+'/')
+											a(href=performance.is_public ? '/performances/'+performance.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
 												i.icon-eye
 											!=" | "  
 											!=performance.title 
 											div
-												if performance.is_public
-													i.icon-circle(class=performance.is_public ? "text-success" : "text-danger")
+												i.icon-circle(class=performance.is_public ? "text-success" : "text-danger")
 												!=" "  
 												!=__("Public")
 											div

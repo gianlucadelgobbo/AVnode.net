@@ -4,7 +4,7 @@ block content
     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
       h1.h2=data.title
       .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
-        a.btn.btn-primary(href='/events/'+data.slug)=__("SHOW")
+        a.btn.btn-primary(href=data.is_public ? '/events/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
     include partials/menuobj
     h3.labelField.mb-3=__(config.cpanel[get.sez].title)+" "+__(config.cpanel[get.sez].forms[get.form].title)
     form(method="post")
@@ -47,7 +47,7 @@ block content
                   !=__("Schedule")
                   !=": "
                   span.number=i+1
-                button.btn.btn-danger.remove(role="button")
+                button.btn.btn-danger.remove(role="button" type="button")
                   i.icon-trash
 
               .p-2 
@@ -60,7 +60,7 @@ block content
                       .d-flex
                         - var starttime_preview = schedule.starttime  ? schedule.starttime : new Date()
                         input.form-control.mr-3.datetime-format(type='text' id='schedule'+i+'starttime_preview' onchange='$("#schedule'+i+'starttime").val($(this).val().split(" ")[0].split("/")[2]+"/"+$(this).val().split(" ")[0].split("/")[1]+"/"+$(this).val().split(" ")[0].split("/")[0]+" "+$(this).val().split(" ")[1].split(":")[0]+":"+$(this).val().split(" ")[1].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
-                        input(type='hidden' id="schedule"+i+"starttime" name="schedule["+i+"][starttime]" value=starttime_preview ? starttime_preview.getFullYear()+"/"+(starttime_preview.getMonth()+1)+"/"+starttime_preview.getDate()+" "+starttime_preview.getHours()+":"+starttime_preview.getMinutes() : "")
+                        input(type='hidden' id="schedule"+i+"starttime" name="schedule["+i+"][starttime]" value=starttime_preview ? starttime_preview.getUTCFullYear()+"/"+(starttime_preview.getUTCMonth()+1)+"/"+starttime_preview.getUTCDate()+" "+starttime_preview.getUTCHours()+":"+starttime_preview.getUTCMinutes() : "")
                         //
                   .col-md-4
                     .form-group
@@ -70,7 +70,7 @@ block content
                       .d-flex
                         - var starttime_preview = schedule.endtime  ? schedule.endtime : new Date()
                         input.form-control.mr-3.datetime-format(type='text' id='schedule'+i+'starttime_preview' onchange='$("#schedule'+i+'endtime").val($(this).val().split(" ")[0].split("/")[2]+"/"+$(this).val().split(" ")[0].split("/")[1]+"/"+$(this).val().split(" ")[0].split("/")[0]+" "+$(this).val().split(" ")[1].split(":")[0]+":"+$(this).val().split(" ")[1].split(":")[1])' style='width:200px' value=("0"+starttime_preview.getUTCDate()).slice(-2)+"/"+("0"+(starttime_preview.getUTCMonth()+1)).slice(-2)+"/"+starttime_preview.getUTCFullYear()+" "+("0"+starttime_preview.getUTCHours()).slice(-2)+":"+("0"+starttime_preview.getUTCMinutes()).slice(-2))
-                        input(type='hidden' id="schedule"+i+"endtime" name="schedule["+i+"][endtime]" value=starttime_preview ? starttime_preview.getFullYear()+"/"+(starttime_preview.getMonth()+1)+"/"+starttime_preview.getDate()+" "+starttime_preview.getHours()+":"+starttime_preview.getMinutes() : "")
+                        input(type='hidden' id="schedule"+i+"endtime" name="schedule["+i+"][endtime]" value=starttime_preview ? starttime_preview.getUTCFullYear()+"/"+(starttime_preview.getUTCMonth()+1)+"/"+starttime_preview.getUTCDate()+" "+starttime_preview.getUTCHours()+":"+starttime_preview.getUTCMinutes() : "")
                         //
                   .col-md-4
                     .form-group
@@ -82,20 +82,20 @@ block content
                       label.labelField(for="schedule"+i+"starttime_preview")=__("End date and time")
                       .d-flex
                         .form-check.mr-4
-                          input.form-check-input(type='radio' id='location['+i+']virtual' name="schedule["+i+"][location]" value='false' autocomplete="off" onclick="$('#location_"+i+"_physicalform').collapse('hide');$('#location_"+i+"_virtualform').collapse('show')" checked=schedule.physical ? "checked" : undefined)
+                          input.form-check-input(type='radio' id='location['+i+']virtual' name="schedule["+i+"][venue][type]" value='virtual' autocomplete="off" onclick="$('#location_"+i+"_physicalform').collapse('hide');$('#location_"+i+"_virtualform').collapse('show');$('#location_"+i+"_physicalform input').val('');" checked=schedule.venue.type=="virtual" ? "checked" : undefined)
                           label.form-check-label(for='location['+i+']virtual')
                             b=__("Virtual")
                         .form-check
-                          input.form-check-input(type='radio' id='location['+i+']physical' name="schedule["+i+"][location]" value='true' autocomplete="off" onclick="$('#location_"+i+"_physicalform').collapse('show');$('#location_"+i+"_virtualform').collapse('hide');" checked=schedule.physical ? undefined : "checked")
+                          input.form-check-input(type='radio' id='location['+i+']physical' name="schedule["+i+"][venue][type]" value='physical' autocomplete="off" onclick="$('#location_"+i+"_physicalform').collapse('show');$('#location_"+i+"_virtualform').collapse('hide');$('#location_"+i+"_virtualform input').val('');" checked=schedule.venue.type=="virtual" ? undefined : "checked")
                           label.form-check-label(for='location['+i+']physical')
                             b=__("Physical")
                   .col-md-9
-                    .row.collapse(id="location_"+i+"_virtualform" class=schedule.physical ? "show" : undefined)
+                    .row.collapse(id="location_"+i+"_virtualform" class=schedule.venue.type=="virtual" ? "show" : undefined)
                       .col-md-12
                         .form-group
                           label.labelField=__("URL")
                           input.form-control(type='text' name='schedule['+i+'][venue][url]' placeholder=__('Venue') value=schedule.venue.url)
-                    .row.collapse(id="location_"+i+"_physicalform" class=schedule.physical ? undefined : "show")
+                    .row.collapse(id="location_"+i+"_physicalform" class=schedule.venue.type=="virtual" ? undefined : "show")
                       .col-md-8
                         .form-group
                           label.labelField=__("Street, City, country")

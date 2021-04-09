@@ -651,5 +651,6 @@
 	"Error, expected `slug` to be unique. Value: `sonic-bites`": "Error, expected `slug` to be unique. Value: `sonic-bites`",
 	"Cast to date failed for value \"2021 10:00/04/09 09/04/2021:undefined\" at path \"starttime\"": "Cast to date failed for value \"2021 10:00/04/09 09/04/2021:undefined\" at path \"starttime\"",
 	"Cast to date failed for value \"2021 10:00/04/10 10/04/2021:undefined\" at path \"endtime\"": "Cast to date failed for value \"2021 10:00/04/10 10/04/2021:undefined\" at path \"endtime\"",
-	"ADD SCHEDULE": "ADD SCHEDULE"
+	"ADD SCHEDULE": "ADD SCHEDULE",
+	"Content have to be public to be seen on the website": "Content have to be public to be seen on the website"
 }

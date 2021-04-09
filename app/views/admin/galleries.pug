@@ -40,13 +40,12 @@ block content
 											a(href='/admin/galleries/'+gallerie._id+'/public')
 												i.icon-edit
 											!=" | "  
-											a(href='/galleries/'+gallerie.slug+'/')
+											a(href=gallerie.is_public ? '/galleries/'+gallerie.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
 												i.icon-eye
 											!=" | "  
 											!=gallerie.title 
 											div
-												if gallerie.is_public
-													i.icon-circle(class=gallerie.is_public ? "text-success" : "text-danger")
+												i.icon-circle(class=gallerie.is_public ? "text-success" : "text-danger")
 												!=" "  
 												!=__("Public")
 											div

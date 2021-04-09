@@ -39,13 +39,12 @@ block content
 											a(href='/admin/news/'+neww._id+'/public')
 												i.icon-edit
 											!=" | "  
-											a(href='/news/'+neww.slug+'/')
+											a(href=neww.is_public ? '/news/'+neww.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
 												i.icon-eye
 											!=" | "  
 											!=neww.title 
 											div
-												if neww.is_public
-													i.icon-circle(class=neww.is_public ? "text-success" : "text-danger")
+												i.icon-circle(class=neww.is_public ? "text-success" : "text-danger")
 												!=" "  
 												!=__("Public")
 											div

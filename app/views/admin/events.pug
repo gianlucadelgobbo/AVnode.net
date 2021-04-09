@@ -39,13 +39,12 @@ block content
 											a(href='/admin/events/'+event._id+'/public')
 												i.icon-edit
 											!=" | "  
-											a(href='/events/'+event.slug+'/')
+											a(href=event.is_public ? '/events/'+event.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")
 												i.icon-eye
 											!=" | "  
 											!=event.title 
 											div
-												if event.is_public
-													i.icon-circle(class=event.is_public ? "text-success" : "text-danger")
+												i.icon-circle(class=event.is_public ? "text-success" : "text-danger")
 												!=" "  
 												!=__("Public")
 											div
