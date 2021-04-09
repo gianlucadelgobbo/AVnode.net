@@ -22,7 +22,9 @@ const datevenueSchema = new Schema({
   endtime: Date,
   breakduration: Number,
   admitted: [{ type : Schema.ObjectId, ref : 'Category' }],
-  venue: Venue
+  venue: Venue,
+  location: String,
+  location: String
 },{ _id : false });
 
 datevenueSchema.virtual('date').get(function () {
