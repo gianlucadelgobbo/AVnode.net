@@ -407,12 +407,12 @@ $(function () {
 					url: "/admin/api/"+ obj +"/"+ objid +"/users/add/"+item.value,
 					method: "get"
 				}).done((data) => {
-					$("#users .saving a:last-child i").removeClass("fa-spinner");
-					$("#users .saving a:last-child i").removeClass("animate-spin");
-					$("#users .saving a:last-child i").addClass("fa-trash");
-					$("#users .saving a:last-child").attr("data-id", item.value)
+					$("#users .saving a:last i").removeClass("fa-spinner");
+					$("#users .saving a:last i").removeClass("animate-spin");
+					$("#users .saving a:last i").addClass("fa-trash");
+					$("#users .saving a:last").attr("data-id", item.value)
 					$("#users .saving").removeClass("saving");
-					$("#users a:last-child").on("click", function (event) {
+					$("#users a:last").on("click", function (event) {
 						removeuser(this, event)
 					});
 				});
@@ -475,12 +475,12 @@ $(function () {
 					url: "/admin/api/crews/"+ crewid +"/members/add/"+item.value,
 					method: "get"
 				}).done((data) => {
-					$("#members .saving a:last-child i").removeClass("fa-spinner");
-					$("#members .saving a:last-child i").removeClass("animate-spin");
-					$("#members .saving a:last-child i").addClass("fa-trash");
-					$("#members .saving a:last-child").attr("data-id", item.value)
+					$("#members .saving a:last i").removeClass("fa-spinner");
+					$("#members .saving a:last i").removeClass("animate-spin");
+					$("#members .saving a:last i").addClass("fa-trash");
+					$("#members .saving a:last").attr("data-id", item.value)
 					$("#members .saving").removeClass("saving");
-					$("#members a:last-child").on("click", function (event) {
+					$("#members a:last").on("click", function (event) {
 						removeMember(this, event)
 					});
 				});

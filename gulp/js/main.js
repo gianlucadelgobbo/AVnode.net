@@ -125,7 +125,11 @@ $(document).ready(function(){
       data: post
     })
     .done(function(data) {
-      window.location.href = "/admin/"+$('.newsez').val()+"/"+data._id+"/public";
+      if ($('.id').val()){
+        window.location.href = "/admin/"+$('.newsez').val()+"/"+data._id+"/public";
+      } else {
+        window.location.href = "/admin/"+sez+"/"+data._id+"/public";
+      }
     })
     .fail(function(err) {
       $( "#modalNewContent form" ).find(".alert").html(err.responseJSON.message).removeClass("d-none").removeClass("alert-success").addClass("alert-danger");
