@@ -53,7 +53,7 @@ block content
             label.col-form-label.col-md-3=__("City, country")
             .col-md-9.mb-4
               - if (!get.addresses) get.addresses = [{geometry:{}}]
-              input.form-control.location-search-input(type='text' autocomplete='off' role='combobox' aria-autocomplete='list' aria-expanded='false' placeholder='City, country' value=get.addresses[0].formatted_address)
+              input.form-control.location-search-input(type='text' autocomplete='off' placeholder='City, country' value=get.addresses[0].formatted_address)
               input.lat(type='hidden' name='addresses[0][geometry][lat]' value=get.addresses[0].geometry.lat)
               input.lng(type='hidden' name='addresses[0][geometry][lng]' value=get.addresses[0].geometry.lng)
               input.locality(type='hidden' name='addresses[0][locality]' value=get.addresses[0].locality)
