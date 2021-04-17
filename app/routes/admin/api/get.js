@@ -594,9 +594,9 @@ router.getData = (req, res, view) => {
             }  
           } else {
             if (view == "json") {
-              res.status(404).send({ message: `DOC_NOT_OWNED` });
+              res.status(401).send({ message: `DOC_NOT_OWNED` });
             } else {
-              res.status(404).render('404', {path: req.originalUrl, title:__("404: Page not found"), titleicon:"icon-warning"});
+              res.status(401).render('401', {path: req.originalUrl, title:__("401: Access to the content is denied"), titleicon:"icon-warning"});
             }  
           }
         }

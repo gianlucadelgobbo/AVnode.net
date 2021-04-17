@@ -653,5 +653,7 @@
 	"Cast to date failed for value \"2021 10:00/04/10 10/04/2021:undefined\" at path \"endtime\"": "Cast to date failed for value \"2021 10:00/04/10 10/04/2021:undefined\" at path \"endtime\"",
 	"ADD SCHEDULE": "ADD SCHEDULE",
 	"Content have to be public to be seen on the website": "Content have to be public to be seen on the website",
-	"Invalid email or password.": "Invalid email or password."
+	"Invalid email or password.": "Invalid email or password.",
+	"401: Access to the content is denied": "401: Access to the content is denied",
+	"Your account can not edit this content.": "Your account can not edit this content."
 }

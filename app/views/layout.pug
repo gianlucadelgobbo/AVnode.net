@@ -90,7 +90,7 @@ html.no-js(lang=session.current_lang)
 
     script.
       document.documentElement.classList.remove("no-js");
-    script(src='/js/combo.min.js')
+    script(defer src='/js/combo.min.js')
 
     //- script(src="/js/owl.carousel.min.js")
     //- script(src="/js/main.js")
@@ -101,11 +101,11 @@ html.no-js(lang=session.current_lang)
     if scripts && scripts.indexOf("video")!==-1
       script.
         var logo_url = "!{canonical}"
-      script(src='/js/combo_video.min.js')
-      //-script(src='/gulp/js/includes_video/swfobject.js')
-      //-script(src='/gulp/js/includes_video/videojs.js')
-      //-script(src='/gulp/js/includes_video/videojs-logo.min.js')
-      //-script(src='/gulp/js/video.js')
+      script(defer src='/js/combo_video.min.js')
+      //-script(defer src='/gulp/js/includes_video/swfobject.js')
+      //-script(defer src='/gulp/js/includes_video/videojs.js')
+      //-script(defer src='/gulp/js/includes_video/videojs-logo.min.js')
+      //-script(defer src='/gulp/js/video.js')
     if scripts && scripts.indexOf("signup")!==-1
       script(src='/lightgallery/js/lightgallery.min.js')
       script(src='/lightgallery/js/lg-video.min.js')

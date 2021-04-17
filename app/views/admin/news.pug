@@ -32,10 +32,10 @@ block content
 											img.img-fluid(src=neww.imageFormats.small)
 									td
 										b
-											if user.is_admin
-												a.text-danger.delete(href='#' data-id=neww._id data-sez=get.sez)
-													i.icon-trash
-												!=" | "  
+											//if user.is_admin
+											a.text-danger.delete(href='#' data-id=neww._id data-sez=get.sez)
+												i.icon-trash
+											!=" | "  
 											a(href='/admin/news/'+neww._id+'/public')
 												i.icon-edit
 											!=" | "  

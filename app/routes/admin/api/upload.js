@@ -564,7 +564,7 @@ upload.galleryAddImages = (req, res) => {
     }
   });
 /* } else {
-  res.status(404).send({ message: `DOC_NOT_OWNED` });
+  res.status(401).send({ message: `DOC_NOT_OWNED` });
 } */
 }
 

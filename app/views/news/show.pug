@@ -42,14 +42,54 @@ block content
               alt=data.title
             )
         if data.web
-          .mb-3
+          ul.mb-3.list-unstyled
             each url in data.web
-              a(href=url.url target="_blank")=url.url
+              li.text-nowrap.text-truncate.mb-3
+                - var tooltip = url.url.replace("http://","").replace("https://","").split("/")
+                a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                  i.icon-link-light
+                  !=" "
+                  !=url.url
         if data.social
-          .mb-3
+          ul.mb-3.list-unstyled
             each url in data.social
-              a(href=url.url target="_blank")=url.url
-                .data_footage_video_wrapper
+              if url.url.indexOf('instagram.com/')!=-1
+                li.text-nowrap.text-truncate.mb-3
+                  - var tooltip = url.url.replace("http://","").replace("https://","").split("/")
+                  a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.icon-instagram
+                    !=" "
+                    !=url.url
+              else if url.url.indexOf('twitter.com/')!=-1
+                li.text-nowrap.text-truncate.mb-3
+                  a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=url.url.replace("http://","").replace("https://",""))
+                    i.icon-twitter
+                    !=" "
+                    !=url.url
+              else if url.url.indexOf('facebook.com/')!=-1 || url.url.indexOf('fb.com/')!=-1
+                li.text-nowrap.text-truncate.mb-3
+                  a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=url.url.replace("http://","").replace("https://",""))
+                    i.icon-facebook
+                    !=" "
+                    !=url.url
+              else if url.url.indexOf('vimeo.com/')!=-1
+                li.text-nowrap.text-truncate.mb-3
+                  a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=url.url.replace("http://","").replace("https://",""))
+                    i.icon-vimeo
+                    !=" "
+                    !=url.url
+              else if url.url.indexOf('youtube.com/')!=-1
+                li.text-nowrap.text-truncate.mb-3
+                  a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=url.url.replace("http://","").replace("https://",""))
+                    i.icon-youtube
+                    !=" "
+                    !=url.url
+              else
+                li.text-nowrap.text-truncate.mb-3
+                  a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=url.url.replace("http://","").replace("https://",""))
+                    span.icon-link-light
+                    !=" "
+                    !=url.url
         h3=__("Author")
         each user in data.users
           .users_video_item_wrapper

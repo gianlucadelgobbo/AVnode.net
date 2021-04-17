@@ -380,7 +380,7 @@ router.get('/getprograms', (req, res) => {
           for (const item in config.cpanel[req.params.sez].forms[req.params.form].select) send[item] = data[item];
           res.json(send);
         } else {
-          res.status(404).send({ message: `DOC_NOT_OWNED` });
+          res.status(401).send({ message: `DOC_NOT_OWNED` });
         }
       }
     } */
