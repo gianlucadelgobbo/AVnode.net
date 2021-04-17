@@ -44,12 +44,13 @@ block content
         if data.web
           ul.mb-3.list-unstyled
             each url in data.web
-              li.text-nowrap.text-truncate.mb-3
-                - var tooltip = url.url.replace("http://","").replace("https://","").split("/")
-                a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
-                  i.icon-link-light
-                  !=" "
-                  !=url.url
+              if url.url
+                li.text-nowrap.text-truncate.mb-3
+                  - var tooltip = url.url.replace("http://","").replace("https://","").split("/")
+                  a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=tooltip[0]+"/"+tooltip[1])
+                    i.icon-link-light
+                    !=" "
+                    !=url.url
         if data.social
           ul.mb-3.list-unstyled
             each url in data.social
@@ -84,7 +85,7 @@ block content
                     i.icon-youtube
                     !=" "
                     !=url.url
-              else
+              else if url.url
                 li.text-nowrap.text-truncate.mb-3
                   a(href=url.url target="_blank" data-toggle="tooltip" data-placement="top" title=url.url.replace("http://","").replace("https://",""))
                     span.icon-link-light
