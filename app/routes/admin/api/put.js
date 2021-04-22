@@ -69,7 +69,7 @@ router.putData = (req, res, view) => {
           logger.debug('DataDataDataDataDataData');
           logger.debug(data);
           Object.assign(data, put);
-          if (data.medias){
+          if (data.medias && data.medias.length){
             data.medias = req.body.medias
             data.stats.img = data.medias.length;
             data.image = data.medias[0];

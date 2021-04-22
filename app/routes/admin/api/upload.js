@@ -460,13 +460,13 @@ upload.galleryAddImages = (req, res) => {
                 logger.debug(`imageUtil.resizer end`);
                 //logger.debug(files.map(item => {return item.err ? true : false}).indexOf(true)!==-1);
 
-                if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)===-1) {
+                /* if (files_resized.map(item => {return item.err ? true : false}).indexOf(true)===-1) {
                   //var e = {errors:{}}
                   //e.errors[options.fields.name] = err.err ? [err] : err; 
                   logger.debug(`stocazzo`);
                   //err = err.err ? [err] : err;
                   res.send(files_resized);
-                } else {
+                } else { */
                   let put = {};
                   logger.debug("galleries/medias");
                   put.medias = [];
@@ -553,7 +553,7 @@ upload.galleryAddImages = (req, res) => {
 
 
 
-                }
+                //}
               }
             );
           }
