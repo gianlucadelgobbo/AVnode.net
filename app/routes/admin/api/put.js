@@ -56,11 +56,11 @@ router.putData = (req, res, view) => {
             for(var s in put.schedule) {
               var tmp = put.schedule[s].starttime.split(" ")[0].split("/").concat(put.schedule[s].starttime.split(" ")[1].split(":"));
               console.log(put.schedule[s].starttime);
-              put.schedule[s].starttime = new Date(Date.UTC(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4]));
+              put.schedule[s].starttime = new Date(Date.UTC(tmp[0],tmp[1]-1,tmp[2],tmp[3],tmp[4]));
               console.log(put.schedule[s].starttime);
               var tmp = put.schedule[s].endtime.split(" ")[0].split("/").concat(put.schedule[s].endtime.split(" ")[1].split(":"));
               console.log(put.schedule[s].endtime);
-              put.schedule[s].endtime = new Date(Date.UTC(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4]));
+              put.schedule[s].endtime = new Date(Date.UTC(tmp[0],tmp[1]-1,tmp[2],tmp[3],tmp[4]));
               console.log(put.schedule[s].endtime);
             }
           }
