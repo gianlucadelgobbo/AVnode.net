@@ -426,6 +426,45 @@ router.unlinkPartner = (req, res) => {
     }
 });
 }
+router.setStatus = (req, res) => {
+  logger.debug('/partners/status/');
+  logger.debug(req.body);
+  if (!req.body || !req.body.owner || !req.body.id || !req.body.name || req.body.value === undefined) {
+    res.status(400).send("NO DATA");
+  } else {
+    Models.User.
+    findOne({_id: req.body.owner})
+    .select({partners:1})
+    .exec((err, user) => {
+      if (err || !user) {
+        logger.debug('user err');
+        logger.debug(err);
+        res.status(400).send(err);
+      } else {
+        for (var a=0;a<user.partners.length;a++) {
+          if (user.partners[a].partner._id.toString() === req.body.id) {
+            user.partners[a][req.body.name] = req.body.value;
+            logger.debug(user.partners[a]);
+          }
+        }
+        user.save((err) => {
+          logger.debug(err);
+          if (err) {
+            logger.debug('save user err');
+            logger.debug(err);
+            res.status(400).send(err);
+          } else {
+            logger.debug("save user success");
+            logger.debug(req.body);
+            res.json(req.body);                    
+          }
+        });
+      }
+    });
+
+  }
+}
+
 router.addContacts = (req, res) => {
   logger.debug('/partners/contacts/add/');
   logger.debug(req.body);

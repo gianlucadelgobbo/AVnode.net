@@ -4,155 +4,168 @@ block content
     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
       h1.h2=data.stagename
       .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
-        a.btn.btn-primary(href=data.is_public ? '/events/'+data.slug : "javascript:alert('"+__("Content have to be public to be seen on the website")+"')")=__("SHOW")
-    .text-right
+        .mr-2.mb-3
+          button.btn.btn-primary.mr-3(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
+          button.btn.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
+  include partials/menuobj
+  if csv
+    table.table.table-fixed
+      thead
+        tr
+          th.table-firstcolumn-ID="ID"
+          th=global.__("Brand")
+          th=global.__("Name")
+          th=global.__("Surname")
+          th=global.__("Email")
+          th=global.__("lang")
+          th=global.__("Mobile")
+          th=global.__("Skype")
+          th=global.__("Facebook")
+          th=global.__("Type")
+          th=global.__("Is user")
+      tbody
+          each item, index in data.partners
+            if item.partner && item.partner.contacts
+              each contact in item.partner.contacts
+                tr
+                  td.table-firstcolumn-ID=index+1
+                  td
+                    b!=item.partner.stagename
+                  td!=contact.name
+                  td!=contact.surname
+                  td!=contact.email
+                  td!=contact.lang
+                  td!=contact.mobile
+                  td!=contact.skype
+                  td!=contact.facebook
+                  td!=contact.type
+                  td!="NO"
+            if item.partner.members && item.partner.members.length
+              each contact in item.partner.members
+                tr
+                  td=index+1
+                  td
+                    b!=item.partner.stagename
+                  td!=contact.name
+                  td!=contact.surname
+                  td!=contact.email
+                  td!=contact.lang
+                  td!=contact.mobile ? contact.mobile.map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.skype ? contact.skype.map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.social ? contact.social.filter(item => item.url.indexOf("facebook")!==-1).map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.type
+                  td!="YES"
+                  //if item.partnerships && item.partnerships.length
+                      - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+
+                      each partnership in item.partnerships
+                        .text-nowrap!=partnership.title
+                    td
+                      if item.web
+                        each web in item.web
+                          div!=web.url
+                      if item.social
+                        each web in item.social
+                          div!=web.url
+                    td
+                        div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
+  else 
+    #toolbar
       .btn-group.mr-2.mb-3
-        button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
-        button.btn.btn-sm.btn-outline-secondary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
-    //include submenu
-    if csv
-      table.table.table-fixed
-        thead
-          tr
-            th.table-firstcolumn-ID="ID"
-            th=global.__("Brand")
-            th=global.__("Name")
-            th=global.__("Surname")
-            th=global.__("Email")
-            th=global.__("lang")
-            th=global.__("Mobile")
-            th=global.__("Skype")
-            th=global.__("Facebook")
-            th=global.__("Type")
-            th=global.__("Is user")
-        tbody
-            each item, index in data.partners
-              if item.organizationData && item.organizationData.contacts
-                each contact in item.organizationData.contacts
-                  tr
-                    td.table-firstcolumn-ID=index+1
-                    td
-                      b!=item.stagename
-                    td!=contact.name
-                    td!=contact.surname
-                    td!=contact.email
-                    td!=contact.lang
-                    td!=contact.mobile
-                    td!=contact.skype
-                    td!=contact.facebook
-                    td!=contact.type
-                    td!="NO"
-              if item.members && item.members.length
-                each contact in item.members
-                  tr
-                    td=index+1
-                    td
-                      b!=item.stagename
-                    td!=contact.name
-                    td!=contact.surname
-                    td!=contact.email
-                    td!=contact.lang
-                    td!=contact.mobile ? contact.mobile.map(item => {return item.url}).join("<br />\n") : ""
-                    td!=contact.skype ? contact.skype.map(item => {return item.url}).join("<br />\n") : ""
-                    td!=contact.social ? contact.social.filter(item => item.url.indexOf("facebook")!==-1).map(item => {return item.url}).join("<br />\n") : ""
-                    td!=contact.type
-                    td!="YES"
-                    //if item.partnerships && item.partnerships.length
-                        - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
-
-                        each partnership in item.partnerships
-                          .text-nowrap!=partnership.title
-                      td
-                        if item.web
-                          each web in item.web
-                            div!=web.url
-                        if item.social
-                          each web in item.social
-                            div!=web.url
-                      td
-                          div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
-
-    else 
-      table.table
-        thead
-          tr
-            th="ID"
-            th=global.__("Brand")
-            th=global.__("Contacts")
-            th=global.__("Members")
-        tbody
-            each item, index in data.partners
-              tr(id=item._id)
-                td=index+1
-                td
-                  a(href="/admin/crews/"+item._id+"/public", target="_blank", title=global.__("edit"))
-                    span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                      i.icon-edit
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['true','false']})")!=__("ALL")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['true']})")!=__("ACTIVE")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['false']})")!=__("NOT ACTIVE")
+    table(data-toggle="table", data-show-columns="true", data-search="true", data-toolbar="#toolbar")
+      thead
+        tr
+          th="ID"
+          th=global.__("Brand")
+          th=global.__("Status")
+          th(data-field="status" data-visible="false")=global.__("Status short")
+          th=global.__("Contacts")
+          th=global.__("Members")
+      tbody
+          each item, index in data.partners
+            tr(id=item._id)
+              td=index+1
+              td
+                a(href="/admin/crews/"+item.partner._id+"/public", target="_blank", title=global.__("edit"))
+                  span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                    i.icon-edit
+                !=" | "
+                a.unlink(href="#", data-owner=owner, data-partner=item.partner._id, title=global.__("Unlink"))
+                  span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
+                    i.icon-unlink
+                if item.partner.members && item.partner.members.length
                   !=" | "
-                  a.unlink(href="#", data-owner=owner, data-partner=item._id, title=global.__("Unlink"))
-                    span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
-                      i.icon-unlink
-                  if item.members && item.members.length
-                    !=" | "
-                    a(href="/"+item.slug, target="_blank", title=global.__("View"))
-                      span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                        i.icon-eye
-                  !=" | "
-                  b!=item.stagename
-                  if !item.members || !item.members.length
-                    !=" "
-                    .badge.badge-danger!="EXTERNAL"
-                td
-                  h5
-                    !="Contacts"
-                    !=" "
-                    // Button trigger modal
-                    button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename)="ADD"
-                  .contacts
-                    if item.organizationData && item.organizationData.contacts
-                      each contact, index in item.organizationData.contacts
-                        div
-                          a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify(contact), data-index=index)
-                            span(data-toggle="tooltip", data-placement="top", title="Edit")
-                              i.icon-edit
+                  a(href="/"+item.partner.slug, target="_blank", title=global.__("View"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                      i.icon-eye
+                !=" | "
+                b!=item.partner.stagename
+                if !item.partner.members || !item.partner.members.length
+                  !=" "
+                  .badge.badge-danger!="EXTERNAL"
+              td
+                b=__("Active")
+                .form-check
+                  input.form-check-input(type="radio" name="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined id="is_active"+item.partner._id+"true")
+                  label.form-check-label(for="is_active"+item.partner._id+"true")=__("YES")
+                .form-check
+                  input.form-check-input(type="radio" name="is_active"+item.partner._id value="false" checked=!item.is_active ? "checked" : undefined id="is_active"+item.partner._id+"false")
+                  label.form-check-label(for="is_active"+item.partner._id+"false")=__("NOT")
+              td=item.is_active ? "true" : "false"
+              td
+                h5
+                  !="Contacts"
+                  !=" "
+                  // Button trigger modal
+                  button.btn.btn-sm.btn-primary(type='button', data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename)="ADD"
+                .contacts
+                  if item.partner && item.partner.organizationData.contacts
+                    each contact, index in item.partner.organizationData.contacts
+                      div
+                        a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify(contact), data-index=index)
+                          span(data-toggle="tooltip", data-placement="top", title="Edit")
+                            i.icon-edit
+                        !=" "
+                        a.text-danger.deleteContact(href="#" data-id=item.partner._id, data-stagename=item.partner.stagename, data-index=index)
+                          span(data-toggle="tooltip", data-placement="top", title="Delete")
+                            i.icon-trash
+                        !=" | "
+                        if contact.lang
+                          !=contact.lang
+                        else
+                          .badge.badge-danger!="MISSING"
+                        !=" | "
+                        a(href="mailto:"+contact.email, target="_blank")
+                          !=contact.name+" "+contact.surname
+                          =" <"+contact.email+">"
+              td
+                if item.partner.members && item.partner.members.length
+                  h5="Members"
+                  ol
+                    each contact in item.partner.members
+                      li
+                        if contact.emails
+                            each email in contact.emails
+                              div
+                                a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item.partner._id, data-stagename=item.partner.stagename, data-item.partner=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
+                                  span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
+                                    i.icon-arrow-alt-circle-left
+                                !=" | "
+                                a(href="/"+contact.slug, target="_blank", title=global.__("View"))
+                                  span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                                    i.icon-eye
+                                !=" | "
+                                a(href="mailto:"+contact.email, target="_blank")
+                                  !=contact.name+" "+contact.surname
+                                  =" <"+email.email+">"
+                                !=" "
+                        else 
+                          !=contact.stagename
                           !=" "
-                          a.text-danger.deleteContact(href="#" data-id=item._id, data-stagename=item.stagename, data-index=index)
-                            span(data-toggle="tooltip", data-placement="top", title="Delete")
-                              i.icon-trash
-                          !=" | "
-                          if contact.lang
-                            !=contact.lang
-                          else
-                            .badge.badge-danger!="MISSING"
-                          !=" | "
-                          a(href="mailto:"+contact.email, target="_blank")
-                            !=contact.name+" "+contact.surname
-                            =" <"+contact.email+">"
-                td
-                  if item.members && item.members.length
-                    h5="Members"
-                    ol
-                      each contact in item.members
-                        li
-                          if contact.emails
-                              each email in contact.emails
-                                div
-                                  a(href="#" data-toggle='modal', data-target='#modalAddContact', data-id=item._id, data-stagename=item.stagename, data-item=JSON.stringify({title: contact.gender=="M" ? "Mr" : "Miss", name: contact.name, surname:contact.surname, lang:contact.lang, email:email.email }))
-                                    span(data-toggle="tooltip", data-placement="top", title="Copy to contacts")
-                                      i.icon-arrow-alt-circle-left
-                                  !=" | "
-                                  a(href="/"+contact.slug, target="_blank", title=global.__("View"))
-                                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                                      i.icon-eye
-                                  !=" | "
-                                  a(href="mailto:"+contact.email, target="_blank")
-                                    !=contact.name+" "+contact.surname
-                                    =" <"+email.email+">"
-                                  !=" "
-                          else 
-                            !=contact.stagename
-                            !=" "
-                            .badge.badge-danger!="MISSING"
+                          .badge.badge-danger!="MISSING"
 
 
   // Modal Add Partner

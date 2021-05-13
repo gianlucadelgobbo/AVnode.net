@@ -44,6 +44,7 @@ $input-color-placeholder: $gray-light;
 #app .maincontent {
   background-color: $gray-lightest;
   color: $gray-dark;
+  overflow: scroll;
 }
 .spinner {
   display: flex;

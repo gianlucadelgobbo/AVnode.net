@@ -246,6 +246,10 @@ router.post('/:sez/new/', (req, res) => {
   post.postData(req, res);
 });
 
+router.post('/partners/status/', (req, res) => {
+  post.setStatus(req, res);
+});
+
 router.post('/partners/contacts/add/', (req, res) => {
   post.addContacts(req, res);
 });

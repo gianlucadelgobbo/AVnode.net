@@ -33,3 +33,6 @@ block content
 
       hr
       button.btn.btn-primary.btn-lg.btn-block(type='submit')=__("Save")
+      if user.is_admin
+        .mt-2
+          a.small.text-danger.deletedett(href='#' data-id=data._id data-sez=get.sez)=__("delete")

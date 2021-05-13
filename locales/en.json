@@ -656,5 +656,16 @@
 	"Invalid email or password.": "Invalid email or password.",
 	"401: Access to the content is denied": "401: Access to the content is denied",
 	"Your account can not edit this content.": "Your account can not edit this content.",
-	"Technical support by": "Technical support by"
+	"Technical support by": "Technical support by",
+	"Status": "Status",
+	"Active": "Active",
+	"NOT Active": "NOT Active",
+	"YES": "YES",
+	"NOT": "NOT",
+	"ALL": "ALL",
+	"ACTIVE": "ACTIVE",
+	"NOT ACTIVE": "NOT ACTIVE",
+	"Status short": "Status short",
+	"delete": "delete",
+	"Selecta": "Selecta"
 }

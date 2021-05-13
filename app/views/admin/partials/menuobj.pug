@@ -1,4 +1,5 @@
 nav.mb-3.border-bottom
+	- console.log(config.cpanel[get.sez].forms)
 	- var exclude = ["connections", "partners", "program", "calls", "settings","groups"]
 	each obj,form in config.cpanel[get.sez].forms
 		if (user.is_admin || exclude.indexOf(form)===-1) && config.cpanel[get.sez].forms[form].title

@@ -26,16 +26,24 @@ const userSchema = new Schema({
   old_id: String,
   is_crew: Boolean,
   is_partner: Boolean,
-  /* partner_owner: [{
+  partner_owner: [{
     "owner": { type: Schema.ObjectId, ref: 'User' },
     "delegate": String,
     "is_selecta": Boolean,
     "is_satellite": Boolean,
     "is_event": Boolean,
     "is_active": Boolean
-  }], */
-  partner_owner: [{ type: Schema.ObjectId, ref: 'User' }],
-  partners: [{ type: Schema.ObjectId, ref: 'User' }],
+  }],
+  partners: [{
+    "partner": { type: Schema.ObjectId, ref: 'User' },
+    "delegate": String,
+    "is_selecta": Boolean,
+    "is_satellite": Boolean,
+    "is_event": Boolean,
+    "is_active": Boolean
+  }],
+  /* partner_owner: [{ type: Schema.ObjectId, ref: 'User' }],
+  partners: [{ type: Schema.ObjectId, ref: 'User' }], */
   partner_data: {},
   user_type : Number,
   activity: Number,

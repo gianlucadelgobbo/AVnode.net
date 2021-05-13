@@ -1,115 +1,138 @@
-extends ../../layout_admin
-block topmenu
-  include topmenu
+extends ../layout_admin
 block content
-  if map
-    include map
+  div(class=printable ? "printable" : undefined)
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-3.pb-2.mb-3.border-bottom
+      h1.h2=data.stagename
+      .btn-toolbar.mb-2.mb-md-0.d-print-none.text-right
+        .mr-2.mb-3
+          button.btn.btn-primary.mr-3(type='button', data-toggle='modal', data-target='#modalLinkPartner', data-owner=owner)="ADD FROM AVNODE"
+          button.btn.btn-primary(type='button', data-toggle='modal', data-target='#modalAddPartner', data-id=owner)="ADD NEW"
+  include partials/menuobj
+  if csv
+    table.table.table-fixed
+      thead
+        tr
+          th="ID"
+          th=global.__("Brand")
+          th=global.__("Name")
+          th=global.__("Surname")
+          th=global.__("Email")
+          th=global.__("lang")
+          th=global.__("Mobile")
+          th=global.__("Skype")
+          th=global.__("Facebook")
+          th=global.__("Type")
+          th=global.__("Is user")
+      tbody
+        if data.length
+          each item, index in data
+            if item.partner.organizationData && item.partner.organizationData.contacts
+              each contact in item.partner.organizationData.contacts
+                tr
+                  td=index+1
+                  td
+                    b!=item.partner.stagename
+                  td!=contact.name
+                  td!=contact.surname
+                  td!=contact.email
+                  td!=contact.lang
+                  td!=contact.mobile
+                  td!=contact.skype
+                  td!=contact.facebook
+                  td!=contact.type
+                  td!="NO"
+            if item.partner.members && item.partner.members.length
+              each contact in item.partner.members
+                tr
+                  td=index+1
+                  td
+                    b!=item.partner.stagename
+                  td!=contact.name
+                  td!=contact.surname
+                  td!=contact.email
+                  td!=contact.lang
+                  td!=contact.mobile ? contact.mobile.map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.skype ? contact.skype.map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.social ? contact.social.filter(item => item.url.indexOf("facebook")!==-1).map(item => {return item.url}).join("<br />\n") : ""
+                  td!=contact.type
+                  td!="YES"
+                  //if item.partnerships && item.partnerships.length
+                      - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+
+                      each partnership in item.partnerships
+                        .text-nowrap!=partnership.title
+                    td
+                      if item.web
+                        each web in item.web
+                          div!=web.url
+                      if item.social
+                        each web in item.social
+                          div!=web.url
+                    td
+                        div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
+
   else 
-    include submenu
-    if csv
-      table.table.table-fixed
-        thead
-          tr
-            th="ID"
-            th=global.__("Brand")
-            th=global.__("Name")
-            th=global.__("Surname")
-            th=global.__("Email")
-            th=global.__("lang")
-            th=global.__("Mobile")
-            th=global.__("Skype")
-            th=global.__("Facebook")
-            th=global.__("Type")
-            th=global.__("Is user")
-        tbody
-          if data.length
-            each item, index in data
-              if item.organizationData && item.organizationData.contacts
-                each contact in item.organizationData.contacts
-                  tr
-                    td=index+1
-                    td
-                      b!=item.stagename
-                    td!=contact.name
-                    td!=contact.surname
-                    td!=contact.email
-                    td!=contact.lang
-                    td!=contact.mobile
-                    td!=contact.skype
-                    td!=contact.facebook
-                    td!=contact.type
-                    td!="NO"
-              if item.members && item.members.length
-                each contact in item.members
-                  tr
-                    td=index+1
-                    td
-                      b!=item.stagename
-                    td!=contact.name
-                    td!=contact.surname
-                    td!=contact.email
-                    td!=contact.lang
-                    td!=contact.mobile ? contact.mobile.map(item => {return item.url}).join("<br />\n") : ""
-                    td!=contact.skype ? contact.skype.map(item => {return item.url}).join("<br />\n") : ""
-                    td!=contact.social ? contact.social.filter(item => item.url.indexOf("facebook")!==-1).map(item => {return item.url}).join("<br />\n") : ""
-                    td!=contact.type
-                    td!="YES"
-                    //if item.partnerships && item.partnerships.length
-                        - item.partnerships.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
-
-                        each partnership in item.partnerships
-                          .text-nowrap!=partnership.title
-                      td
-                        if item.web
-                          each web in item.web
-                            div!=web.url
-                        if item.social
-                          each web in item.social
-                            div!=web.url
-                      td
-                          div!=contact.name+" "+contact.surname+" "+contact.email+" "+contact.lang
-
-    else 
-      table.table.table-fixed
-        thead
-          tr
-            th.table-firstcolumn-ID="ID"
-            th=global.__("Brand")
-            th=global.__("Web Channels")
-            th=global.__("Social Channels")
-        tbody
-          if data.length
-            each item, index in data
-              tr
-                td.table-firstcolumn-ID=index+1
-                td
-                  a(href="/admin/crews/"+item._id+"/public", target="_blank", title=global.__("edit"))
-                    span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
-                      i.icon-edit
+    #toolbar
+      .btn-group.mr-2.mb-3
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['true','false']})")!=__("ALL")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['true']})")!=__("ACTIVE")
+        button.btn.btn-outline-secondary(type="button" onclick="$('table').bootstrapTable('filterBy', {status: ['false']})")!=__("NOT ACTIVE")
+    table(data-toggle="table", data-show-columns="true", data-search="true", data-toolbar="#toolbar")
+      thead
+        tr
+          th.table-firstcolumn-ID="ID"
+          th=global.__("Brand")
+          th=global.__("Status")
+          th(data-field="status" data-visible="false")=global.__("Status short")
+          th=global.__("Web Channels")
+          th=global.__("Social Channels")
+      tbody
+          each item, index in data.partners
+            tr
+              td.table-firstcolumn-ID=index+1
+              td
+                a(href="/admin/crews/"+item.partner._id+"/public", target="_blank", title=global.__("edit"))
+                  span(data-toggle="tooltip", data-placement="top", title=global.__("edit"))
+                    i.icon-edit
+                !=" | "
+                a.unlink(href="#", data-owner=owner, data-partner=item.partner._id, title=global.__("Unlink"))
+                  span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
+                    i.icon-unlink
+                if item.partner.members && item.partner.members.length
                   !=" | "
-                  a.unlink(href="#", data-owner=owner, data-partner=item._id, title=global.__("Unlink"))
-                    span(data-toggle="tooltip", data-placement="top", title=global.__("Unlink"))
-                      i.icon-unlink
-                  if item.members && item.members.length
-                    !=" | "
-                    a(href="/"+item.slug, target="_blank", title=global.__("View"))
-                      span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
-                        i.icon-eye
-                  !=" | "
-                  b!=item.stagename
-                  if !item.members || !item.members.length
-                    !=" "
-                    .badge.badge-danger!="EXTERNAL"
-                td
-                  if item.web
-                    each web in item.web
-                      div
-                        a(href=web.url, target="_blank")!=web.url
-                td
-                  if item.social
-                    each web in item.social
-                      div
-                        a(href=web.url, target="_blank")!=web.url
+                  a(href="/"+item.partner.slug, target="_blank", title=global.__("View"))
+                    span(data-toggle="tooltip", data-placement="top", title=global.__("View"))
+                      i.icon-eye
+                !=" | "
+                b!=item.partner.stagename
+                if !item.partner.members || !item.partner.members.length
+                  !=" "
+                  .badge.badge-danger!="EXTERNAL"
+              td
+                .text-nowrap
+                  .form-check
+                    input.edit_partners_partner.form-check-input(type="checkbox" id="is_active"+item.partner._id value="true" checked=item.is_active ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_active")
+                    label.form-check-label(for="is_active"+item.partner._id)
+                      b=__("Active")
+                  .form-check
+                    input.edit_partners_partner.form-check-input(type="checkbox" id="is_event"+item.partner._id value="true" checked=item.is_event ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_event")
+                    label.form-check-label(for="is_event"+item.partner._id)
+                      b=__("Event")
+                  .form-check
+                    input.edit_partners_partner.form-check-input(type="checkbox" id="is_selecta"+item.partner._id value="true" checked=item.is_selecta ? "checked" : undefined data-partner=item.partner._id data-owner=data._id data-name="is_selecta")
+                    label.form-check-label(for="is_selecta"+item.partner._id)
+                      b=__("Selecta")
+              td=item.is_active ? "true" : "false"
+              td
+                if item.partner.web
+                  each web in item.partner.web
+                    div
+                      a(href=web.url, target="_blank")!=web.url
+              td
+                if item.partner.social
+                  each web in item.partner.social
+                    div
+                      a(href=web.url, target="_blank")!=web.url
 
   // Modal Add Partner
   #modalAddPartner.modal.admindevmodal.fade(tabindex='-1', role='dialog', aria-labelledby='modalAddPartnerLabel', aria-hidden='true')
